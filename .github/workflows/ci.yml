@@ -77,7 +77,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v23.2.0
 
     steps:
       - uses: actions/checkout@v3
@@ -164,19 +164,20 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
-      - name: Zip HTML Documentation before upload
-        run: |
-          sudo apt install zip -y
-          pushd doc/_build/html
-          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
-          popd
+      # Enable the following during 23.2 release
+      # - name: Zip HTML Documentation before upload
+      #   run: |
+      #     sudo apt install zip -y
+      #     pushd doc/_build/html
+      #     zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+      #     popd
 
-      - name: Upload HTML Documentation
-        uses: actions/upload-artifact@v3
-        with:
-          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
-          retention-days: 7
+      # - name: Upload HTML Documentation
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+      #     path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
+      #     retention-days: 7
 
   build:
     name: Build
@@ -286,6 +287,40 @@ jobs:
           cat src/ansys/fluent/core/fluent_version_231.py
           python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Cache 23.2 API Code
+        uses: actions/cache@v3
+        id: cache-232-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel_232
+            src/ansys/fluent/core/fluent_version_232.py
+            src/ansys/fluent/core/meshing/tui_232.py
+            src/ansys/fluent/core/solver/settings_232
+            src/ansys/fluent/core/solver/tui_232.py
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
+
+      - name: Pull 23.2 Fluent docker image
+        if: steps.cache-232-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v23.2.0
+
+      - name: Run 23.2 API codegen
+        if: steps.cache-232-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v23.2.0
+
+      - name: Print 23.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_232.py
+          python -c "from ansys.fluent.core.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Install again after codegen
         run: |
           rm -rf dist
@@ -317,6 +352,8 @@ jobs:
             version: 222
           - image-tag: v23.1.0
             version: 231
+          - image-tag: v23.2.0
+            version: 232
 
     steps:
 
@@ -359,23 +396,24 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload 23.1 Coverage Results to Codecov
-        if: matrix.image-tag == 'v23.1.0' && github.event_name == 'push'
-        uses: codecov/codecov-action@v3
-        with:
-          root_dir: ${{ github.workspace }}
-          name: cov_xml.xml
+      # Enable the following during 23.2 release
+      # - name: Upload 23.2 Coverage Results to Codecov
+      #   if: matrix.image-tag == 'v23.2.0' && github.event_name == 'push'
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     root_dir: ${{ github.workspace }}
+      #     name: cov_xml.xml
 
-      - name: Upload 23.1 Coverage Artifacts
-        if: matrix.image-tag == 'v23.1.0'
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage_report
-          path: ./htmlcov
+      # - name: Upload 23.2 Coverage Artifacts
+      #   if: matrix.image-tag == 'v23.2.0'
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: coverage_report
+      #     path: ./htmlcov
 
-# Separate build+test job for 23.2 and 24.1 Fluent
+# Separate build+test job for 24.1 Fluent
 # Don't upload anything to artifacts/cache/release-package from here
-  build_test_232_241:
+  build_test_241:
     name: Build and Test
     needs: test-import
     runs-on: ubuntu-latest
@@ -383,8 +421,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v23.2.0
-            version: 232
           - image-tag: v24.1.0
             version: 241
 
@@ -450,7 +486,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, build_test_232_241]
+    needs: [test, build_test_241]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
