@@ -39,9 +39,9 @@ def _is_windows():
 class LaunchMode(Enum):
     """An enumeration over supported Fluent launch modes."""
 
-    LAUNCH_FLUENT_STANDALONE = 1
-    LAUNCH_FLUENT_PIM = 2
-    LAUNCH_FLUENT_CONTAINER = 3
+    STANDALONE = 1
+    PIM = 2
+    CONTAINER = 3
 
 
 class FluentVersion(Enum):
@@ -575,13 +575,13 @@ def launch_fluent(
     _raise_exception_g_gu_in_windows_os(additional_arguments)
 
     if pypim.is_configured():
-        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_PIM
+        fluent_launch_mode = LaunchMode.PIM
     elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_CONTAINER
+        fluent_launch_mode = LaunchMode.CONTAINER
     else:
-        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_STANDALONE
+        fluent_launch_mode = LaunchMode.STANDALONE
 
-    if flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_STANDALONE:
+    if fluent_launch_mode == LaunchMode.STANDALONE:
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
@@ -645,7 +645,7 @@ def launch_fluent(
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
                 server_info_file.unlink()
-    elif flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_PIM:
+    elif fluent_launch_mode == LaunchMode.PIM:
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
@@ -666,7 +666,7 @@ def launch_fluent(
             launcher_args=argvals,
         )
 
-    elif flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_CONTAINER:
+    elif fluent_launch_mode == LaunchMode.CONTAINER:
         args = _build_fluent_launch_args_string(**argvals).split()
         if meshing_mode:
             args.append(" -meshing")
