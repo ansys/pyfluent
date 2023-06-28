@@ -136,7 +136,7 @@ class DatamodelService(StreamingService):
         """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    @catch_grpc_error_quiet
+    @catch_grpc_error_quiet  # there is a bug in old Fluent versions
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
