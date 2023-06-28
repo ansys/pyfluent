@@ -42,7 +42,7 @@ def test_gpu_launch_arg(monkeypatch):
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
     with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(gpu=True, start_timeout=0, start_instance=True)
+        pyfluent.launch_fluent(gpu=True, start_timeout=0)
 
     assert "-gpu" in str(error.value).split()
 
@@ -54,11 +54,7 @@ def test_gpu_launch_arg_additional_arg(monkeypatch):
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
     with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(
-            additional_arguments="-gpu",
-            start_timeout=0,
-            start_instance=True,
-        )
+        pyfluent.launch_fluent(additional_arguments="-gpu", start_timeout=0)
 
     assert "-gpu" in str(error.value).split()
 

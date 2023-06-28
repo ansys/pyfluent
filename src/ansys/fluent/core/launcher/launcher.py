@@ -42,7 +42,6 @@ class LaunchMode(Enum):
     LAUNCH_FLUENT_STANDALONE = 1
     LAUNCH_FLUENT_PIM = 2
     LAUNCH_FLUENT_CONTAINER = 3
-    CONNECT_WITH_RUNNING_FLUENT = 4
 
 
 class FluentVersion(Enum):
@@ -357,13 +356,10 @@ def _await_fluent_launch(
         )
 
 
-def _get_server_info(server_info_filepath: str, argvals: dict = None):
+def _get_server_info(
+    server_info_filepath: str, ip: str = None, port: int = None, password: str = None
+):
     """Get server connection information of an already running session."""
-    if argvals is None:
-        argvals = {}
-    ip = argvals.get("ip", None)
-    port = argvals.get("port", None)
-    password = argvals.get("password", None)
     if ip and port:
         logger.debug(
             "The server-info file was not parsed because ip and port were provided explicitly."
@@ -397,19 +393,6 @@ def _get_running_session_mode(
         except BaseException:
             raise RuntimeError("Fluent session password mismatch")
     return session_mode.value[1]
-
-
-def _start_instance(start_instance: Union[bool, None]):
-    """Sets up how to start an instance of fluent."""
-    if start_instance is None:
-        return bool(
-            int(
-                os.getenv(
-                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
-                )
-            )
-        )
-    return start_instance
 
 
 def _generate_launch_string(
@@ -466,10 +449,7 @@ def launch_fluent(
     start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
-    start_instance: bool = None,
-    ip: str = None,
-    port: int = None,
-    cleanup_on_exit: bool = None,
+    cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
@@ -477,7 +457,6 @@ def launch_fluent(
     lightweight_mode: bool = False,
     mode: Union[FluentMode, str, None] = None,
     server_info_filepath: str = None,
-    password: str = None,
     py: bool = None,
     gpu: bool = None,
     cwd: str = None,
@@ -517,22 +496,6 @@ def launch_fluent(
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
-    start_instance : bool, optional
-        Whether to start a local Fluent instance. The default is None, which
-        indicates True. Otherwise, connect to an existing Fluent instance at a
-        specified IP address on a specified port, using the arguments ``ip`` and
-        ``port``. You can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
-        to set ``start_instance`` if you do not pass it as an argument.
-    ip : str, optional
-        IP address for connecting to an existing Fluent instance. This parameter
-        is used only when ``start_instance`` is ``False``. Otherwise, the
-        IP address defaults to ``"127.0.0.1"``. You can also use the environment
-        variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
-    port : int, optional
-        Port to listen on for an existing Fluent instance. This parameter is
-        used only when ``start_instance`` is ``False``. You can use the
-        environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
-        value.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
@@ -543,8 +506,7 @@ def launch_fluent(
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
     show_gui : bool, optional
-        Whether to display the Fluent GUI, only when ``start_instance``
-        is set to ``True``. The default is ``None``, which does not
+        Whether to display the Fluent GUI. The default is ``None``, which does not
         cause the GUI to be shown. If a value of ``False`` is
         not explicitly provided, the GUI will also be shown if
         the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
@@ -563,13 +525,6 @@ def launch_fluent(
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
         ``"pure-meshing"`` and ``"solver"``.
-    server_info_filepath: str
-        Path to server-info file written out by Fluent server. The default is
-        ``None``. ``server_info_filepath`` can be specified if ``start_instance``
-        is ``False``, where PyFluent will use the connection information in the file to
-        connect to a running Fluent session.
-    password : str, optional
-        Password to connect to existing Fluent instance.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
     gpu : bool, optional
@@ -619,20 +574,12 @@ def launch_fluent(
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     _raise_exception_g_gu_in_windows_os(additional_arguments)
 
-    import ansys.fluent.core as pyfluent
-
-    # TODO Replace start_instance argument with flunet_launch_mode in launch_fluent
-    if _start_instance(start_instance):
-        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_STANDALONE
-    elif pypim.is_configured():
+    if pypim.is_configured():
         flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_PIM
-    elif pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+    elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_CONTAINER
     else:
-        flunet_launch_mode = LaunchMode.CONNECT_WITH_RUNNING_FLUENT
-
-    if cleanup_on_exit is None:
-        cleanup_on_exit = flunet_launch_mode != LaunchMode.CONNECT_WITH_RUNNING_FLUENT
+        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_STANDALONE
 
     if flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_STANDALONE:
         server_info_filepath = _get_server_info_filepath()
@@ -724,6 +671,8 @@ def launch_fluent(
         if meshing_mode:
             args.append(" -meshing")
 
+        import ansys.fluent.core as pyfluent
+
         host_mount_path = pyfluent.EXAMPLES_PATH
         if not os.path.exists(host_mount_path):
             os.makedirs(host_mount_path)
@@ -753,15 +702,60 @@ def launch_fluent(
             watchdog.launch(os.getpid(), port, password)
 
         return session
-    else:
-        ip, port, password = _get_server_info(server_info_filepath, argvals)
-        fluent_connection = FluentConnection(
-            ip=ip,
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
-            launcher_args=argvals,
-        )
-        new_session = _get_running_session_mode(fluent_connection, mode)
-        return new_session(fluent_connection=fluent_connection)
+
+
+def connect_fluent(
+    ip: str = None,
+    port: int = None,
+    cleanup_on_exit: bool = False,
+    start_transcript: bool = True,
+    server_info_filepath: str = None,
+    password: str = None,
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    """Connect to a running Fluent server instance.
+
+    Parameters
+    ----------
+    ip : str, optional
+        IP address for connecting to an existing Fluent instance. The
+        IP address defaults to ``"127.0.0.1"``. You can also use the environment
+        variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
+    port : int, optional
+        Port to listen on for an existing Fluent instance. You can use the
+        environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
+        value.
+    cleanup_on_exit : bool, optional
+        Whether to shut down the connected Fluent session when PyFluent is
+        exited, or the ``exit()`` method is called on the session instance,
+        or if the session instance becomes unreferenced. The default is ``False``.
+    start_transcript : bool, optional
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via the method calls, ``transcript.start()``
+        and ``transcript.stop()`` on the session object.
+    server_info_filepath: str
+        Path to server-info file written out by Fluent server. The default is
+        ``None``. PyFluent uses the connection information in the file to
+        connect to a running Fluent session.
+    password : str, optional
+        Password to connect to existing Fluent instance.
+
+    Returns
+    -------
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+        Session object.
+
+    """
+    ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
+    fluent_connection = FluentConnection(
+        ip=ip,
+        port=port,
+        password=password,
+        cleanup_on_exit=cleanup_on_exit,
+        start_transcript=start_transcript,
+    )
+    new_session = _get_running_session_mode(fluent_connection)
+    return new_session(fluent_connection=fluent_connection)

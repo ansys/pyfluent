@@ -125,9 +125,7 @@ def test_does_not_exit_fluent_by_default_when_connected_with_running_fluent(
     with_launching_container, monkeypatch
 ) -> None:
     session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    session2 = pyfluent.launch_fluent(
-        start_instance=False,
+    session2 = pyfluent.connect_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
@@ -142,9 +140,7 @@ def test_exit_fluent_when_connected_with_running_fluent(
     with_launching_container, monkeypatch
 ) -> None:
     session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    session2 = pyfluent.launch_fluent(
-        start_instance=False,
+    session2 = pyfluent.connect_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
