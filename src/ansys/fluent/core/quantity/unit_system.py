@@ -26,11 +26,8 @@ class UnitSystem:
     def __init__(self, name: str = None, base_units: list = None, unit_sys: str = None):
         self._units_table = q.UnitsTable()
 
-        if name and unit_sys:
-            raise UnitSystemError.NAME_AND_UNIT_SYS()
-
-        if base_units and unit_sys:
-            raise UnitSystemError.BASE_UNITS_AND_UNIT_SYS()
+        if name and unit_sys or base_units and unit_sys:
+            raise UnitSystemError.EXCESSIVE_PARAMETERS()
 
         if base_units:
             if len(base_units) != 9:
@@ -100,12 +97,10 @@ class UnitSystemError(ValueError):
         super().__init__(err)
 
     @classmethod
-    def NAME_AND_UNIT_SYS(cls):
-        return cls("Cannot define `name` when using a pre-defined unit system.")
-
-    @classmethod
-    def BASE_UNITS_AND_UNIT_SYS(cls):
-        return cls("Cannot define `base_units` when using a pre-defined unit system.")
+    def EXCESSIVE_PARAMETERS(cls):
+        return cls(
+            "UnitSystem only accepts 1 of the following: (name, base_units) or (unit_sys)."
+        )
 
     @classmethod
     def BASE_UNITS_LENGTH(cls, len):
@@ -114,7 +109,7 @@ class UnitSystemError(ValueError):
     @classmethod
     def UNIT_UNDEFINED(cls, unit):
         return cls(
-            f"`{unit}` is an undefined unit. To use `{unit}` add it to the `fundamental_units` table within `quantity_config.yaml`."
+            f"`{unit}` is an undefined unit. To use `{unit}` add it to the `fundamental_units` table within quantity_config.yaml."
         )
 
     @classmethod

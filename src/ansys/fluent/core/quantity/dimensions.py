@@ -22,9 +22,7 @@ class Dimensions(object):
         self, units: str = None, dimensions: list = None, unit_sys: str = None
     ):
         if units and dimensions:
-            raise ValueError(
-                "Dimensions only accepts 1 of the following: units, dimensions."
-            )
+            raise DimensionsError.EXCESSIVE_PARAMETERS()
 
         self._units_table = q.UnitsTable()
         unit_sys = unit_sys or self._units_table.unit_systems["SI"]
@@ -34,6 +32,9 @@ class Dimensions(object):
             self._dimensions = self._units_to_dim(units=units)
 
         if dimensions:
+            if len(dimensions) > 9:
+                raise DimensionsError.EXCESSIVE_DIMENSIONS(len(dimensions))
+
             self._dimensions, self._unit = self._dim_to_units(
                 dimensions=dimensions, unit_sys=unit_sys
             )
@@ -124,3 +125,18 @@ class Dimensions(object):
     def dimensions(self):
         """Dimensions list"""
         return self._dimensions
+
+
+class DimensionsError(TypeError):
+    """Custom dimensions errors."""
+
+    def __init__(self, err):
+        super().__init__(err)
+
+    @classmethod
+    def EXCESSIVE_PARAMETERS(cls):
+        cls("Dimensions only accepts 1 of the following: (units) or (dimensions).")
+
+    @classmethod
+    def EXCESSIVE_DIMENSIONS(cls, len):
+        cls(f"`dimensions` must contain 9 values or less, currently there are {len}.")

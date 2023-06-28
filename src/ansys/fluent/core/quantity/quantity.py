@@ -99,11 +99,9 @@ class Quantity(float):
         : str
             SI unit string of new quantity.
         """
-        # Cannot perform operations between quantities with opposing dimensions
+        # Cannot perform operations between quantities with incompatible dimensions
         if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
-            raise QuantityError.INCOMPATIBLE_DIMENSIONS(
-                from_unit=self.units, to_unit=__value.units
-            )
+            raise QuantityError.INCOMPATIBLE_DIMENSIONS(self.units, __value.units)
         # Cannot perform operations on a non-dimensionless quantity
         if (
             caller not in ["__mul__", "__truediv__"]
@@ -285,12 +283,12 @@ class QuantityError(ValueError):
     @classmethod
     def EXCESSIVE_PARAMETERS(cls):
         return cls(
-            "Quantity only accepts 1 of the following: units, quantity_map, dimensions"
+            "Quantity only accepts 1 of the following: (units) or (quantity_map) or (dimensions)."
         )
 
     @classmethod
     def INCOMPATIBLE_DIMENSIONS(cls, from_unit, to_unit):
-        return cls(f"'{from_unit}' and '{to_unit}' have incompatible dimensions.")
+        return cls(f"`{from_unit}` and `{to_unit}` have incompatible dimensions.")
 
     @classmethod
     def INCOMPATIBLE_VALUE(cls, value):

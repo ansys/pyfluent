@@ -248,7 +248,7 @@ class UnitsTable(object):
 
         units = ""
 
-        # Concatenate unit string based on terms and powers (Removed duplications)
+        # Concatenate unit string
         for term, power in terms_and_powers.items():
             if power == 1.0:
                 units += f"{term} "

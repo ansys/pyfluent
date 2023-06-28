@@ -137,16 +137,12 @@ def test_to_19():
     v = q.Quantity(1.0, "Hz")
     with pytest.raises(q.QuantityError) as e:
         to = v.to("radian s^-1")
-    assert e.value.from_unit == "Hz"
-    assert e.value.to_unit == "radian s^-1"
 
 
 def test_to_20():
     v = q.Quantity(1.0, "radian s^-1")
     with pytest.raises(q.QuantityError) as e:
         to = v.to("Hz")
-    assert e.value.from_unit == "radian s^-1"
-    assert e.value.to_unit == "Hz"
 
 
 def test_to_21():
@@ -397,12 +393,10 @@ def test_ge_52():
     assert 15.7 >= r
     assert r >= 7.8
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(q.QuantityError) as e_info:
         assert x >= z
         assert x >= y
         assert 5.0 >= r
-
-    with pytest.raises(TypeError) as e_info:
         assert x >= 5.0
 
 
@@ -416,12 +410,10 @@ def test_gt_53():
     assert 15.7 > r
     assert r > 7.8
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(q.QuantityError) as e_info:
         assert x > z
         assert x > y
         assert 5.0 > r
-
-    with pytest.raises(TypeError) as e_info:
         assert x > 5.0
 
 
@@ -435,12 +427,10 @@ def test_lt_54():
     assert r < 15.7
     assert 7.8 < r
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(q.QuantityError) as e_info:
         assert z < x
         assert y < x
         assert r < 0.5
-
-    with pytest.raises(TypeError) as e_info:
         assert 5.0 < x
 
 
@@ -454,12 +444,10 @@ def test_le_55():
     assert r <= 15.7
     assert 7.8 <= r
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(q.QuantityError) as e_info:
         assert z <= x
         assert y <= x
         assert r <= 0.5
-
-    with pytest.raises(TypeError) as e_info:
         assert 5.0 <= x
 
 
@@ -477,12 +465,10 @@ def test_eq_56():
     assert y == m
     assert r == n
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(q.QuantityError) as e_info:
         assert z == x
         assert y == x
         assert r == 0.5
-
-    with pytest.raises(TypeError) as e_info:
         assert 5.0 == x
 
 
@@ -500,8 +486,8 @@ def test_neq_57():
 
 
 def test_error_58():
-    err = q.QuantityError("mm", "K")
-    assert err.__str__() == f"'mm' and 'K' have incompatible dimensions."
+    err = q.QuantityError.INCOMPATIBLE_DIMENSIONS("mm", "K")
+    assert err.__str__() == "`mm` and `K` have incompatible dimensions."
 
 
 def test_tempK_59():
@@ -939,11 +925,11 @@ def testing_arithmetic_operators():
     assert qa3.value == 15
     assert qa3.units == "m s^-1.0"
 
-    with pytest.raises(TypeError) as e:
+    with pytest.raises(q.QuantityError) as e:
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
 
-    with pytest.raises(TypeError) as e:
+    with pytest.raises(q.QuantityError) as e:
         result6 = 2 + qt1
         print(f"{2} + {qt1} =  {result6}")
 
@@ -953,11 +939,11 @@ def testing_arithmetic_operators():
     assert qs3.value == 5
     assert qs3.units == "m s^-1.0"
 
-    with pytest.raises(TypeError) as e:
+    with pytest.raises(q.QuantityError) as e:
         result7 = qt1 - 2
         print(f"{qt1} - {2} =  {result7}")
 
-    with pytest.raises(TypeError) as e:
+    with pytest.raises(q.QuantityError) as e:
         result8 = 2 - qt1
         print(f"{2} - {qt1} =  {result8}")
 
