@@ -489,7 +489,7 @@ def test_errors():
     e1 = q.QuantityError.EXCESSIVE_PARAMETERS()
     assert (
         e1.__str__()
-        == "Quantity only accepts 1 of the following: (units) or (quantity_map) or (dimensions)."
+        == "Quantity only accepts 1 of the following parameters: (units) or (quantity_map) or (dimensions)."
     )
 
     e2 = q.QuantityError.INCOMPATIBLE_DIMENSIONS("mm", "K")
@@ -501,11 +501,14 @@ def test_errors():
     e4 = q.UnitSystemError.EXCESSIVE_PARAMETERS()
     assert (
         e4.__str__()
-        == "UnitSystem only accepts 1 of the following: (name, base_units) or (unit_sys)."
+        == "UnitSystem only accepts 1 of the following parameters: (name, base_units) or (unit_sys)."
     )
 
     e5 = q.UnitSystemError.BASE_UNITS_LENGTH(10)
-    assert e5.__str__() == "`base_units` must contain 9 units, currently there are 10."
+    assert (
+        e5.__str__()
+        == "The `base_units` argument must contain 9 units, currently there are 10."
+    )
 
     e6 = q.UnitSystemError.UNIT_UNDEFINED("pizza")
     assert (
@@ -525,13 +528,13 @@ def test_errors():
     e9 = q.DimensionsError.EXCESSIVE_PARAMETERS()
     assert (
         e9.__str__()
-        == "Dimensions only accepts 1 of the following: (units) or (dimensions)."
+        == "Dimensions only accepts 1 of the following parameters: (units) or (dimensions)."
     )
 
     e10 = q.DimensionsError.EXCESSIVE_DIMENSIONS(200)
     assert (
         e10.__str__()
-        == "`dimensions` must contain 9 values or less, currently there are 200."
+        == "The `dimensions` argument must contain 9 values or less, currently there are 200."
     )
 
     e11 = q.QuantityMapError.UNKNOWN_MAP_ITEM("Risk")

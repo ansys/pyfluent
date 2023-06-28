@@ -32,7 +32,7 @@ class Dimensions(object):
             self._dimensions = self._units_to_dim(units=units)
 
         if dimensions:
-            if len(dimensions) > 9:
+            if len(dimensions) > self.max_dim_len():
                 raise DimensionsError.EXCESSIVE_DIMENSIONS(len(dimensions))
 
             self._dimensions, self._unit = self._dim_to_units(
@@ -56,7 +56,10 @@ class Dimensions(object):
             Unit string representation of dimensions.
         """
         # Ensure dimensions list contains 9 terms
-        dimensions = [float(dim) for dim in dimensions + ((9 - len(dimensions)) * [0])]
+        dimensions = [
+            float(dim)
+            for dim in dimensions + ((self.max_dim_len() - len(dimensions)) * [0])
+        ]
         units = ""
 
         # Define unit term and associated value from dimension with dimensions list
@@ -87,7 +90,7 @@ class Dimensions(object):
         """
 
         power = power or 1.0
-        dimensions = dimensions or [0.0] * 9
+        dimensions = dimensions or [0.0] * self.max_dim_len()
 
         # Split unit string into terms and parse data associated with individual terms
         for term in units.split(" "):
@@ -126,6 +129,11 @@ class Dimensions(object):
         """Dimensions list."""
         return self._dimensions
 
+    @staticmethod
+    def max_dim_len():
+        """Maximum number of elements within a dimensions list."""
+        return 9
+
 
 class DimensionsError(ValueError):
     """Custom dimensions errors."""
@@ -136,11 +144,11 @@ class DimensionsError(ValueError):
     @classmethod
     def EXCESSIVE_PARAMETERS(cls):
         return cls(
-            "Dimensions only accepts 1 of the following: (units) or (dimensions)."
+            "Dimensions only accepts 1 of the following parameters: (units) or (dimensions)."
         )
 
     @classmethod
     def EXCESSIVE_DIMENSIONS(cls, len):
         return cls(
-            f"`dimensions` must contain 9 values or less, currently there are {len}."
+            f"The `dimensions` argument must contain 9 values or less, currently there are {len}."
         )

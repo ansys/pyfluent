@@ -283,7 +283,7 @@ class QuantityError(ValueError):
     @classmethod
     def EXCESSIVE_PARAMETERS(cls):
         return cls(
-            "Quantity only accepts 1 of the following: (units) or (quantity_map) or (dimensions)."
+            "Quantity only accepts 1 of the following parameters: (units) or (quantity_map) or (dimensions)."
         )
 
     @classmethod

@@ -30,7 +30,7 @@ class UnitSystem:
             raise UnitSystemError.EXCESSIVE_PARAMETERS()
 
         if base_units:
-            if len(base_units) != 9:
+            if len(base_units) != q.Dimensions.max_dim_len():
                 raise UnitSystemError.BASE_UNITS_LENGTH(len(base_units))
 
             for idx, unit in enumerate(base_units):
@@ -99,12 +99,14 @@ class UnitSystemError(ValueError):
     @classmethod
     def EXCESSIVE_PARAMETERS(cls):
         return cls(
-            "UnitSystem only accepts 1 of the following: (name, base_units) or (unit_sys)."
+            "UnitSystem only accepts 1 of the following parameters: (name, base_units) or (unit_sys)."
         )
 
     @classmethod
     def BASE_UNITS_LENGTH(cls, len):
-        return cls(f"`base_units` must contain 9 units, currently there are {len}.")
+        return cls(
+            f"The `base_units` argument must contain 9 units, currently there are {len}."
+        )
 
     @classmethod
     def UNIT_UNDEFINED(cls, unit):
