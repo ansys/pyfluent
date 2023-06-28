@@ -55,7 +55,7 @@ def test_session_starts_no_transcript_if_disabled(
     assert not print_transcript.called
 
 
-def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
+def test_server_exits_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent()
         _fluent_host_pid = session.connection_properties.fluent_host_pid
@@ -78,9 +78,7 @@ def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -
         assert not psutil.pid_exists(fluent_host_pid)
 
 
-def test_server_does_not_exit_when_session_goes_out_of_scope(
-    with_launching_container,
-) -> None:
+def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
         _fluent_host_pid = session.connection_properties.fluent_host_pid
@@ -122,7 +120,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
 
 
 def test_does_not_exit_fluent_by_default_when_connected_with_running_fluent(
-    with_launching_container, monkeypatch
+    monkeypatch,
 ) -> None:
     session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
     session2 = pyfluent.connect_fluent(
@@ -136,9 +134,7 @@ def test_does_not_exit_fluent_by_default_when_connected_with_running_fluent(
     session1.exit()
 
 
-def test_exit_fluent_when_connected_with_running_fluent(
-    with_launching_container, monkeypatch
-) -> None:
+def test_exit_fluent_when_connected_with_running_fluent(monkeypatch) -> None:
     session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
     session2 = pyfluent.connect_fluent(
         ip=session1.connection_properties.ip,

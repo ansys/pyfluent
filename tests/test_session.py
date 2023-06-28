@@ -258,7 +258,7 @@ def test_journal_creation(file_format, new_mesh_session):
 
 
 @pytest.mark.skip("Failing in GitHub CI")
-def test_old_style_session(with_launching_container):
+def test_old_style_session():
     session = pyfluent.launch_fluent()
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     session.solver.root.file.read(file_type="case", file_name=case_path)
@@ -302,7 +302,7 @@ def test_solverworkflow_in_solver_session(new_solver_session):
 @pytest.mark.dev
 @pytest.mark.fluent_232
 @pytest.mark.skip("Failing in github")
-def test_read_case_using_lightweight_mode(with_launching_container):
+def test_read_case_using_lightweight_mode():
     import_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )

@@ -51,21 +51,21 @@ def get_name_info(allnamesdict, namescheck):
 
 
 @pytest.fixture
-def sample_solver_session(with_launching_container):
+def sample_solver_session():
     solver_session = pyfluent.launch_fluent(mode="solver")
     yield solver_session
     solver_session.exit()
 
 
 @pytest.fixture
-def launch_fluent_pure_meshing(with_launching_container):
+def launch_fluent_pure_meshing():
     pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
     yield pure_meshing_session
     pure_meshing_session.exit()
 
 
 @pytest.fixture
-def launch_fluent_solver_3ddp_t2(with_launching_container):
+def launch_fluent_solver_3ddp_t2():
     solver_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="solver"
     )
@@ -74,7 +74,7 @@ def launch_fluent_solver_3ddp_t2(with_launching_container):
 
 
 @pytest.fixture
-def launch_fluent_solver_2ddp_t2(with_launching_container):
+def launch_fluent_solver_2ddp_t2():
     solver_session = pyfluent.launch_fluent(
         version="2d", precision="double", processor_count=2, mode="solver"
     )
@@ -141,7 +141,7 @@ _mixing_elbow_geom_filename = None
 
 
 @pytest.fixture
-def load_mixing_elbow_pure_meshing(with_launching_container):
+def load_mixing_elbow_pure_meshing():
     pure_meshing_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="pure-meshing"
     )
@@ -161,7 +161,7 @@ def load_mixing_elbow_pure_meshing(with_launching_container):
 
 
 @pytest.fixture
-def load_mixing_elbow_meshing(with_launching_container):
+def load_mixing_elbow_meshing():
     meshing_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="meshing"
     )

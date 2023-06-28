@@ -13,14 +13,14 @@ from ansys.fluent.core.launcher.launcher import (
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
-def test_unsuccessful_fluent_connection(with_launching_container):
+def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(RuntimeError) as msg:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
     assert msg.value.args[0] == "The launch process has been timed out."
 
 
-def test_additional_argument_g_gu(with_launching_container):
+def test_additional_argument_g_gu():
     default_windows_flag = launcher._is_windows()
     launcher._is_windows = lambda: True
 

@@ -19,10 +19,8 @@ def pytest_collection_modifyitems(items, config):
                 item.add_marker(m)
 
 
-@pytest.fixture
-def with_launching_container(
+@pytest.fixture(autouse=True)
+def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "1")
-    monkeypatch.setenv("PYFLUENT_TIMEOUT_FORCE_EXIT", "5")
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
