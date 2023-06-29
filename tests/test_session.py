@@ -17,7 +17,7 @@ from ansys.api.fluent.v0 import (
 )
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import connect_fluent, examples
+from ansys.fluent.core import connect_to_fluent, examples
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session import BaseSession
@@ -188,7 +188,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
         MockSchemeEvalServicer(), server
     )
     server.start()
-    session = connect_fluent(
+    session = connect_to_fluent(
         ip=ip,
         port=port,
         cleanup_on_exit=False,
@@ -218,7 +218,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = connect_fluent(cleanup_on_exit=False, password="12345")
+    session = connect_to_fluent(cleanup_on_exit=False, password="12345")
     # check a few dir elements
     session_dir = dir(session)
     for attr in ("field_data", "field_info"):

@@ -15,7 +15,7 @@ from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentMode,
     FluentVersion,
-    connect_fluent,
+    connect_to_fluent,
     launch_fluent,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401

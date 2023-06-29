@@ -704,7 +704,7 @@ def launch_fluent(
         return session
 
 
-def connect_fluent(
+def connect_to_fluent(
     ip: str = None,
     port: int = None,
     cleanup_on_exit: bool = False,
