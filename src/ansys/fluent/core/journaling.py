@@ -2,7 +2,7 @@
 
 
 class Journal:
-    """Control the writig of Fluent Python journals."""
+    """Control the writing of Fluent Python journals."""
 
     def __init__(self, scheme_eval):
         self.scheme_eval = scheme_eval

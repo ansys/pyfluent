@@ -46,6 +46,7 @@ class Container:
 
     @property
     def type(self):
+        """Type."""
         return "object"
 
     def _init_module(self, obj, mod, post_api_helper):

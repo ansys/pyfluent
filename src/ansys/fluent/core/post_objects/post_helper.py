@@ -13,6 +13,7 @@ class PostAPIHelper:
 
         @staticmethod
         def surface_name_on_server(local_surface_name):
+            """Returns the surface name on server"""
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
@@ -25,6 +26,7 @@ class PostAPIHelper:
                 self.delete_surface_on_server()
 
         def create_surface_on_server(self):
+            """Creates the surface on server"""
             if self.obj.definition.type() == "iso-surface":
                 iso_surface = self.obj.definition.iso_surface
                 field = iso_surface.field()
@@ -84,6 +86,7 @@ class PostAPIHelper:
                 raise RuntimeError("Surface creation failed.")
 
         def delete_surface_on_server(self):
+            """Deletes the surface on server"""
             self._get_api_handle().delete_surface(self._surface_name_on_server)
 
     def __init__(self, obj):
@@ -98,6 +101,7 @@ class PostAPIHelper:
             self.surface_api = PostAPIHelper._SurfaceAPI(obj)
 
     def remote_surface_name(self, local_surface_name):
+        """Returns the surface name."""
         local_surfaces_provider = (
             self.obj._get_top_most_parent()._local_surfaces_provider()
         )
@@ -108,10 +112,12 @@ class PostAPIHelper:
 
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
+        """Returns vector field."""
         scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"  # noqa: E501
         return self._scheme_str_to_py_list(scheme_eval_str)
 
     def get_field_unit(self, field):
+        """Returns the unit of the field."""
         quantity = self._field_unit_quantity(field)
         if quantity == "*null*":
             return ""
