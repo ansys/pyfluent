@@ -647,6 +647,8 @@ def test_watertight_workflow(mixing_elbow_geometry, with_launching_container):
 
 
 @pytest.mark.dev
+@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 def test_watertight_workflow_children(mixing_elbow_geometry, with_launching_container):
     watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
     add_local_sizing = watertight.add_local_sizing
@@ -678,6 +680,8 @@ def test_watertight_workflow_children(mixing_elbow_geometry, with_launching_cont
     ]
 
 
+@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 @pytest.mark.dev
 def test_watertight_workflow_dynamic_interface(
     mixing_elbow_geometry, with_launching_container
@@ -713,7 +717,6 @@ def test_watertight_workflow_dynamic_interface(
     # watertight.insert_new_task()
 
 
-# TODO upload fmd file to examples
 @pytest.mark.dev
 def test_fault_tolerant_workflow(with_launching_container, exhaust_system_geometry):
     fault_tolerant = fault_tolerant_workflow()
