@@ -580,7 +580,8 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 
 @pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     watertight = new_mesh_session.watertight()
     import_geometry = watertight.import_geometry
