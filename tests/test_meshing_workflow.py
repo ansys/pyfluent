@@ -631,6 +631,8 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
     assert tasks[0].name() == "Import Geometry"
 
 
+@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 @pytest.mark.dev
 def test_watertight_workflow(mixing_elbow_geometry, with_launching_container):
     watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
@@ -717,6 +719,8 @@ def test_watertight_workflow_dynamic_interface(
     # watertight.insert_new_task()
 
 
+@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 @pytest.mark.dev
 def test_fault_tolerant_workflow(with_launching_container, exhaust_system_geometry):
     fault_tolerant = fault_tolerant_workflow()
