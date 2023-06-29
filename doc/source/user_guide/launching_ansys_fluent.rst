@@ -1,7 +1,7 @@
 .. _ref_user_guide_launch:
 
-Launch Fluent locally
-=====================
+Launch or Connect to Fluent
+===========================
 You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
 method to start Fluent from Python in gRPC mode. This code starts Fluent in the background
 so that commands can be sent to Fluent from the Python interpreter:
@@ -10,6 +10,19 @@ so that commands can be sent to Fluent from the Python interpreter:
 
     import ansys.fluent.core as pyfluent
     solver = pyfluent.launch_fluent(mode="solver")
+
+You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
+method to connect to a running Fluent session that has started the gRPC server. The gRPC
+server in Fluent can be started using the ``-sifile=<server_info_filepath>`` command line
+startup option, ``server/start-server`` text command or
+``File -> Applications -> Server -> Start...`` ribbon menu. Fluent writes out a server-info file on
+startig the gRPC server. This code connects to a running Fluent session
+using a server-info file server.txt in the working directory:
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    solver = pyfluent.connect_to_fluent(server_info_filepath="server.txt")
 
 Launcher options
 ----------------
