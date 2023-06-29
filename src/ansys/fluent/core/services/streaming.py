@@ -8,10 +8,9 @@ class _StreamingServiceHelper:
 
     Methods
     -------
-    begin_streaming
+    begin_streaming(request, started_evt)
         Begin streaming from Fluent.
-
-    end_streaming
+    end_streaming()
         End streaming
     """
 
@@ -45,10 +44,9 @@ class StreamingService:
 
     Methods
     -------
-    begin_streaming
+    begin_streaming(request, started_evt, id, stream_begin_method)
         Begin streaming from Fluent.
-
-    end_streaming
+    end_streaming(id, stream_begin_method)
         End streaming
     """
 

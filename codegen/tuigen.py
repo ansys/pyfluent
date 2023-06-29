@@ -253,7 +253,9 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
-    def _write_doc_for_menu(self, menu, doc_dir: Path, heading, class_name) -> None:
+    def _write_doc_for_menu(
+        self, menu, doc_dir: Path, heading, class_name, noindex=True
+    ) -> None:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
         with open(index_file, "w", encoding="utf8") as f:
@@ -276,6 +278,8 @@ class TUIGenerator:
             ]
 
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
+            if noindex:
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
@@ -333,6 +337,7 @@ class TUIGenerator:
                 Path(self._tui_doc_dir),
                 self._tui_heading,
                 self._main_menu.name,
+                False,
             )
 
 

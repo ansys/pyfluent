@@ -1,10 +1,8 @@
 import time
 
-import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core import connect_to_fluent
 
 
 def transcript(data):
@@ -13,8 +11,8 @@ def transcript(data):
 
 def run_transcript(i, ip, port, password):
     transcript("")
-    session = BaseSession(
-        FluentConnection(ip=ip, port=port, password=password, cleanup_on_exit=False)
+    session = connect_to_fluent(
+        ip=ip, port=port, password=password, cleanup_on_exit=False
     )
     session.transcript.register_callback(transcript)
 
@@ -35,9 +33,6 @@ def run_transcript(i, ip, port, password):
     return transcript_checked, transcript_passed
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
 def test_transcript(new_solver_session):
     solver = new_solver_session
     ip = solver.connection_properties.ip

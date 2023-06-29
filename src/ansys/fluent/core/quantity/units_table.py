@@ -32,11 +32,12 @@ class UnitsTable(object):
         with open(qc_path, "r") as qc_yaml:
             qc_data = yaml.safe_load(qc_yaml)
 
+        self._dimension_order: dict = qc_data["dimension_order"]
+        self._multipliers: dict = qc_data["multipliers"]
+        self._unit_systems: dict = qc_data["unit_systems"]
         self._api_quantity_map: dict = qc_data["api_quantity_map"]
         self._fundamental_units: dict = qc_data["fundamental_units"]
         self._derived_units: dict = qc_data["derived_units"]
-        self._multipliers: dict = qc_data["multipliers"]
-        self._unit_systems: dict = qc_data["unit_systems"]
 
     def _has_multiplier(self, unit_term: str) -> bool:
         """Check if a unit term contains a multiplier.
@@ -48,7 +49,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : bool
+        bool
             Boolean of multiplier within unit_term.
         """
         # Check if the unit term is not an existing fundamental or derived unit.
@@ -102,6 +103,11 @@ class UnitsTable(object):
         """Predefined unit systems and units."""
         return self._unit_systems
 
+    @property
+    def dimension_order(self):
+        """Order of dimensions."""
+        return self._dimension_order
+
     def filter_unit_term(self, unit_term: str) -> tuple:
         """Separate multiplier, base, and power from a unit term.
 
@@ -112,7 +118,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : tuple
+        tuple
             Tuple containing multiplier, base, and power of the unit term.
         """
         multiplier = ""
@@ -161,7 +167,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : tuple
+        tuple
             Tuple containing si_unitsing, si_multiplier and si_offset.
         """
 
@@ -226,7 +232,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        unitsing : str
+        str
             Simplified unit string.
         """
         terms_and_powers = {}
@@ -242,7 +248,7 @@ class UnitsTable(object):
 
         units = ""
 
-        # Concatenate unit string based on terms and powers (Removed duplications)
+        # Concatenate unit string
         for term, power in terms_and_powers.items():
             if power == 1.0:
                 units += f"{term} "
@@ -261,7 +267,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : str
+        str
             Type of quantity.
         """
 

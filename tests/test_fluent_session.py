@@ -55,7 +55,7 @@ def test_session_starts_no_transcript_if_disabled(
     assert not print_transcript.called
 
 
-def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
+def test_server_exits_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent()
         _fluent_host_pid = session.connection_properties.fluent_host_pid
@@ -64,16 +64,21 @@ def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -
         return _fluent_host_pid, _cortex_host, _inside_container
 
     fluent_host_pid, cortex_host, inside_container = f()
-    time.sleep(5)
+
+    for _ in range(31):
+        if (inside_container and cortex_host not in get_container_ids()) or (
+            not inside_container and not psutil.pid_exists(fluent_host_pid)
+        ):
+            break
+        time.sleep(1)
+
     if inside_container:
         assert cortex_host not in get_container_ids()
     else:
         assert not psutil.pid_exists(fluent_host_pid)
 
 
-def test_server_does_not_exit_when_session_goes_out_of_scope(
-    with_launching_container,
-) -> None:
+def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
         _fluent_host_pid = session.connection_properties.fluent_host_pid
@@ -112,6 +117,34 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
         )
         time.sleep(2)
         assert not psutil.pid_exists(fluent_host_pid)
+
+
+def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
+    monkeypatch,
+) -> None:
+    session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
+    session2 = pyfluent.connect_to_fluent(
+        ip=session1.connection_properties.ip,
+        port=session1.connection_properties.port,
+        password=session1.connection_properties.password,
+    )
+    session2.exit()
+    time.sleep(5)
+    assert session1.health_check_service.is_serving
+    session1.exit()
+
+
+def test_exit_fluent_when_connected_to_running_fluent(monkeypatch) -> None:
+    session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
+    session2 = pyfluent.connect_to_fluent(
+        ip=session1.connection_properties.ip,
+        port=session1.connection_properties.port,
+        password=session1.connection_properties.password,
+        cleanup_on_exit=True,
+    )
+    session2.exit()
+    time.sleep(5)
+    assert not session1.health_check_service.is_serving
 
 
 def test_fluent_connection_properties(

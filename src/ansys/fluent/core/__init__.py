@@ -3,7 +3,7 @@
 import os
 import pydoc
 
-import appdirs
+import platformdirs
 
 # Logging has to be set up before importing other PyFluent modules
 import ansys.fluent.core.logging as logging
@@ -13,8 +13,9 @@ logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
+    FluentMode,
     FluentVersion,
-    LaunchMode,
+    connect_to_fluent,
     launch_fluent,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
@@ -49,11 +50,10 @@ def version_info() -> str:
 
 
 # Setup data directory
-USER_DATA_PATH = appdirs.user_data_dir(appname="ansys_fluent_core", appauthor="Ansys")
+USER_DATA_PATH = platformdirs.user_data_dir(
+    appname="ansys_fluent_core", appauthor="Ansys"
+)
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
-
-# For Sphinx documentation build
-BUILDING_GALLERY = False
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True

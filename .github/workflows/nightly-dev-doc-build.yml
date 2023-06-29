@@ -9,7 +9,6 @@ env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
   DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  PYFLUENT_START_INSTANCE: 0
   PYFLUENT_TIMEOUT_FORCE_EXIT: 5
   PYFLUENT_LAUNCH_CONTAINER: 1
 
@@ -19,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image-tag: [v22.2.0, v23.1.0, v23.2.0, v24.1.0]
+        image-tag: [v23.1.0, v23.2.0, v24.1.0]
 
     steps:
       - uses: actions/checkout@v3

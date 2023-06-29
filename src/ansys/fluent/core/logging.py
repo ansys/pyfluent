@@ -44,14 +44,14 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: dict = None):
     custom_config : dict, optional
         Used to provide a customized logging config file.
 
+    Notes
+    -----
+    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.logging.enable()
-
-    Notes
-    -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
     """
     global _logging_file_enabled
 
@@ -89,6 +89,10 @@ def set_global_level(level: Union[str, int]):
     level : str or int
         Specified logging level to set PyFluent loggers to.
 
+    Notes
+    -----
+    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
@@ -97,10 +101,6 @@ def set_global_level(level: Union[str, int]):
     or
 
     >>> pyfluent.logging.set_global_level('DEBUG')
-
-    Notes
-    -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
     """
     if not is_active():
         print("Logging is not active, enable it first.")
@@ -126,6 +126,11 @@ def list_loggers():
         Each list element is a PyFluent logger name that can be individually controlled
         through :func:`ansys.fluent.core.logging.get_logger`.
 
+    Notes
+    -----
+    PyFluent loggers use the standard Python logging library, for more details
+    see https://docs.python.org/3/library/logging.html#logger-objects
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
@@ -138,11 +143,6 @@ def list_loggers():
     >>> logger.setLevel('ERROR')
     >>> logger
     <Logger pyfluent.networking (ERROR)>
-
-    Notes
-    -----
-    PyFluent loggers use the standard Python logging library, for more details
-    see https://docs.python.org/3/library/logging.html#logger-objects
     """
     logger_dict = logging.root.manager.loggerDict
     pyfluent_loggers = []

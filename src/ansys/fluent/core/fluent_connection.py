@@ -100,11 +100,11 @@ class FluentConnectionProperties:
     inside_container: bool = None
 
     def list_names(self) -> list:
-        """List all property names."""
+        """Returns list with all property names."""
         return [k for k, _ in vars(self).items()]
 
     def list_values(self) -> dict:
-        """Dictionary with all property names and values."""
+        """Returns dictionary with all property names and values."""
         return vars(self)
 
 
@@ -285,17 +285,16 @@ class FluentConnection:
         Immediately terminates the Fluent client,
         losing unsaved progress and data.
 
+        Notes
+        -----
+        If the Fluent session is responsive, prefer using :func:`exit()` instead.
+
         Examples
         --------
 
         >>> import ansys.fluent.core as pyfluent
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
-
-        Notes
-        -----
-        If the Fluent session is responsive, prefer using :func:`exit()` instead.
-
         """
         if self.connection_properties.inside_container:
             logger.error(
@@ -393,19 +392,19 @@ class FluentConnection:
             exit request reached timeout. Executes :func:`force_exit()` or :func:`force_exit_container()`,
             depending on how Fluent was launched.
 
-        Examples
-        --------
-
-        >>> import ansys.fluent.core as pyfluent
-        >>> session = pyfluent.launch_fluent()
-        >>> session.exit()
-
         Notes
         -----
         Can also set the ``PYFLUENT_TIMEOUT_FORCE_EXIT`` environment variable to specify the number of seconds and
         alter the default ``timeout`` value. Setting this env var to a non-number value, such as ``OFF``,
         will return this function to default behavior. Note that the environment variable will be ignored if
         timeout is specified when calling this function.
+
+        Examples
+        --------
+
+        >>> import ansys.fluent.core as pyfluent
+        >>> session = pyfluent.launch_fluent()
+        >>> session.exit()
         """
 
         if timeout is None:
