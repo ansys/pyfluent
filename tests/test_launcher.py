@@ -13,14 +13,14 @@ from ansys.fluent.core.launcher.launcher import (
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
-def test_unsuccessful_fluent_connection(with_launching_container):
+def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(RuntimeError) as msg:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
     assert msg.value.args[0] == "The launch process has been timed out."
 
 
-def test_additional_argument_g_gu(with_launching_container):
+def test_additional_argument_g_gu():
     default_windows_flag = launcher._is_windows()
     launcher._is_windows = lambda: True
 
@@ -41,8 +41,9 @@ def test_gpu_launch_arg(monkeypatch):
     monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
     with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(gpu=True, start_timeout=0, start_instance=True)
+        pyfluent.launch_fluent(gpu=True, start_timeout=0)
 
     assert "-gpu" in str(error.value).split()
 
@@ -53,12 +54,9 @@ def test_gpu_launch_arg_additional_arg(monkeypatch):
     monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
     with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(
-            additional_arguments="-gpu",
-            start_timeout=0,
-            start_instance=True,
-        )
+        pyfluent.launch_fluent(additional_arguments="-gpu", start_timeout=0)
 
     assert "-gpu" in str(error.value).split()
 

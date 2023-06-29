@@ -102,7 +102,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 @pytest.mark.optislang
 @pytest.mark.integration
 @pytest.mark.codegen_required
-def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
+def test_generate_read_mesh(mixing_elbow_geometry):
     """Use case 2: This optiSLang integration test performs these steps.
 
     - Launch Fluent in Meshing Mode
