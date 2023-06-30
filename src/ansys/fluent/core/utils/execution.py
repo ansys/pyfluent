@@ -4,7 +4,7 @@ import functools
 from multiprocessing.context import TimeoutError
 import multiprocessing.pool
 import time
-from typing import Callable
+from typing import Any, Callable
 
 
 def asynchronous(f: Callable) -> Callable:
@@ -39,7 +39,20 @@ def asynchronous(f: Callable) -> Callable:
 
 
 def timeout_exec(obj, timeout, args=None, kwargs=None):
-    """Executes object with the timeout limit.
+    """Executes object with the timeout limit. Tries to return whatever the provided object returns.
+    If the object returns nothing, this function will return ``True``.
+    If it times out, returns ``False``.
+
+    Parameters
+    ----------
+    obj : Any
+        Object to execute.
+    timeout : float
+        Time before cancelling execution and returning early.
+    args : Any, optional
+        Arguments to be passed to the specified object.
+    kwargs : Any, optional
+        Keyword arguments to be passed to the specified object.
 
     Examples
     --------
@@ -66,7 +79,7 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
     try:
         return_obj = async_result.get(timeout=timeout)
         pool.close()
-        if return_obj is None:
+        if not return_obj and return_obj is not False:
             return True
         return return_obj
     except TimeoutError:
@@ -75,9 +88,48 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
 
 
 def timeout_loop(
-    obj, timeout, args=None, kwargs=None, idle_period=0.2, expected="truthy"
-):
-    """Loops while specified object does not return expected response. Timeouts after specified time has elapsed."""
+    obj: Any,
+    timeout: float,
+    args: Any = None,
+    kwargs: Any = None,
+    idle_period: float = 0.2,
+    expected: str = "truthy",
+) -> Any:
+    """Loops while specified object does not return expected response. Timeouts after specified time has elapsed.
+    Tries to return whatever is returned by the specified object.
+    If nothing is returned before timeout, returns the opposite of the expected value, i.e.
+    ``True`` if ``expected == "falsy"`` and ``False`` if ``expected == "truthy"``.
+
+    Parameters
+    ----------
+    obj : Any
+        Object to evaluate while looping if it does not return expected response.
+    timeout : float
+        Time before cancelling execution and returning early.
+    args : Any, optional
+        Arguments to be passed to the specified object.
+    kwargs : Any, optional
+        Keyword arguments to be passed to the specified object.
+    idle_period : float, optional
+        Time in seconds to wait between object evaluations, defaults to 0.2 seconds.
+    expected: str, optional
+        Possible values are ``"truthy"`` or ``"falsy"``, indicating what type of return is expected.
+        By default, expects a ``"truthy"`` return from the specified object.
+
+    Examples
+    --------
+    Waiting 5 seconds to see if ``func("whatever")`` returns True:
+
+    >>> func("whatever")
+    False
+    >>> response = timeout_loop(func, timeout=5.0, args=("whatever",))
+
+    Waiting 5 seconds to see if ``func2("whatever",word="hello")`` returns False:
+
+    >>> func2("whatever", word="hello")
+    True
+    >>> response = timeout_loop(func2, timeout=5.0, expected="falsy", args=("whatever",), kwargs={"word":"hello",})
+    """
     if args is None:
         args = ()
     if kwargs is None:

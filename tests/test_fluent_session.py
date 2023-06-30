@@ -2,7 +2,6 @@ import os
 import subprocess
 import threading
 import time
-from typing import Union
 
 from docker.models.containers import Container
 import psutil
@@ -175,8 +174,8 @@ def test_fluent_connection_properties(
     assert isinstance(session.connection_properties.cortex_pid, int)
     assert isinstance(session.connection_properties.cortex_host, str)
     assert isinstance(
-        session.connection_properties.inside_container, Union[bool, Container]
-    )
+        session.connection_properties.inside_container, bool
+    ) or isinstance(session.connection_properties.inside_container, Container)
     assert isinstance(session.connection_properties.fluent_host_pid, int)
 
 
