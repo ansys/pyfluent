@@ -1,4 +1,4 @@
-from ansys.fluent.core.launcher.launcher import LaunchMode, launch_fluent
+from ansys.fluent.core.launcher.launcher import FluentMode, launch_fluent
 
 from .meshing_workflow import MeshingWorkflow
 
@@ -11,12 +11,12 @@ def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
     if "session" in launch_args:
         session = launch_args["session"]
     else:
-        args = dict(mode=LaunchMode.PURE_MESHING_MODE)
+        args = dict(mode=FluentMode.PURE_MESHING_MODE)
         args.update(launch_args)
         try:
             session = launch_fluent(**args)
         except BaseException:
-            args["mode"] = LaunchMode.MESHING_MODE
+            args["mode"] = FluentMode.MESHING_MODE
             session = launch_fluent(**args)
     meshing_workflow = session.workflow
     meshing_workflow.watertight(dynamic_interface=dynamic_interface)
