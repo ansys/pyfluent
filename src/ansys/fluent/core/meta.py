@@ -14,6 +14,7 @@ class Attribute:
         "allowed_values",
         "help_str",
         "is_valid",
+        "is_active",
         "help_context",
         "show_as_separate_object",
         "display_text",
