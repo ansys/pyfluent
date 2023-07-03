@@ -39,7 +39,7 @@ class FieldDataService(StreamingService):
         )
 
     @catch_grpc_error
-    def get_scalar_fields_range(self, request):
+    def get_scalar_field_range(self, request):
         """GetRange rpc of FieldData service."""
         return self._stub.GetRange(request, metadata=self._metadata)
 
@@ -74,7 +74,7 @@ class FieldInfo:
 
     Methods
     -------
-    get_scalar_fields_range(fields: List[str], node_value: bool, surface_ids: List[int])
+    get_scalar_field_range(field: str, node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
@@ -92,37 +92,33 @@ class FieldInfo:
         """__init__ method of FieldInfo class."""
         self._service = service
 
-    def get_scalar_fields_range(
-        self, fields: List[str], node_value: bool = False, surface_ids: List[int] = None
+    def get_scalar_field_range(
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> Dict[str, List[float]]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
-        fields: List[str]
-            List containing field names
+        field: str
+            Field name
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
 
         Returns
         -------
-        Union[List[float], Dict[str, List[float]]]
+        List[float]
         """
-        range_data = {}
-        for field in fields:
-            if not surface_ids:
-                surface_ids = []
-            request = FieldDataProtoModule.GetRangeRequest()
-            request.fieldName = field
-            request.nodeValue = node_value
-            request.surfaceid.extend(
-                [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
-            )
-            response = self._service.get_scalar_fields_range(request)
-            range_data[field] = [response.minimum, response.maximum]
-
-        return range_data
+        if not surface_ids:
+            surface_ids = []
+        request = FieldDataProtoModule.GetRangeRequest()
+        request.fieldName = field
+        request.nodeValue = node_value
+        request.surfaceid.extend(
+            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+        )
+        response = self._service.get_scalar_field_range(request)
+        return [response.minimum, response.maximum]
 
     def get_scalar_fields_info(self) -> Dict[str, Dict]:
         """Get fields information (field name, domain, and section).
