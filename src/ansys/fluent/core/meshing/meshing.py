@@ -1,5 +1,8 @@
 class Meshing:
+    """Encapsulates a Fluent meshing session."""
+
     def __init__(self, session_execute_tui, meshing, tui, fluent_connection):
+        """Initializes a Meshing session object."""
         self.execute_tui = session_execute_tui
         self._meshing = meshing
         self._tui = tui

@@ -109,9 +109,11 @@ class MachineList(object):
         self._machines = []
 
     def add(self, m):
+        """Add to machine list."""
         self._machines.append(m)
 
     def remove(self, m):
+        """Remove from machine list."""
         self._machines.remove(m)
 
     def sort_by_core_count(self):

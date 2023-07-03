@@ -61,6 +61,7 @@ class Solver(BaseSession):
         self.reduction = Reduction(self._reduction_service)
 
     def build_from_fluent_connection(self, fluent_connection):
+        """Build a solver session object from fluent_connection object."""
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
@@ -74,6 +75,7 @@ class Solver(BaseSession):
 
     @property
     def version(self):
+        """Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_filepath(session=self)
         return self._version
@@ -108,6 +110,7 @@ class Solver(BaseSession):
 
     @property
     def workflow(self):
+        """Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = WorkflowWrapper(self._workflow_se, Solver)
         return self._workflow
