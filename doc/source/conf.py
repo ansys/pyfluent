@@ -7,10 +7,7 @@ import subprocess
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core import __version__
-
-pyfluent.BUILDING_GALLERY = True
 
 # -- Project information -----------------------------------------------------
 
@@ -45,9 +42,11 @@ if skip_examples:
 else:
     extensions.append("sphinx_gallery.gen_gallery")
 
+typehints_document_rtype = False
+
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None),
+    "python": ("https://docs.python.org/", None),
     "numpy": ("https://numpy.org/doc/stable", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
 }

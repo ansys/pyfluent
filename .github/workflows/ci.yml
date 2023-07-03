@@ -27,7 +27,6 @@ env:
   PACKAGE_NAME: 'ansys-fluent-core'
   PACKAGE_NAMESPACE: 'ansys.fluent.core'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  PYFLUENT_START_INSTANCE: 0
   PYFLUENT_TIMEOUT_FORCE_EXIT: 5
   PYFLUENT_LAUNCH_CONTAINER: 1
 
@@ -309,7 +308,7 @@ jobs:
   test:
     name: Unit Testing
     needs: build
-    runs-on: [self-hosted, pyfluent]
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -379,7 +378,7 @@ jobs:
   build_test_232_241:
     name: Build and Test
     needs: test-import
-    runs-on: [self-hosted, pyfluent]
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:

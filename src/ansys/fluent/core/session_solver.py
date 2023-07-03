@@ -61,6 +61,7 @@ class Solver(BaseSession):
         self.reduction = Reduction(self._reduction_service)
 
     def build_from_fluent_connection(self, fluent_connection):
+        """Build a solver session object from fluent_connection object."""
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
@@ -74,6 +75,7 @@ class Solver(BaseSession):
 
     @property
     def version(self):
+        """Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_filepath(session=self)
         return self._version
@@ -95,7 +97,7 @@ class Solver(BaseSession):
 
     @property
     def _workflow_se(self):
-        """workflow datamodel root."""
+        """Datamodel root for workflow."""
         try:
             workflow_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
@@ -108,13 +110,14 @@ class Solver(BaseSession):
 
     @property
     def workflow(self):
+        """Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = WorkflowWrapper(self._workflow_se, Solver)
         return self._workflow
 
     @property
     def _root(self):
-        """root settings object."""
+        """Root settings object."""
         if self._settings_root is None:
             self._settings_root = settings_get_root(
                 flproxy=self._settings_service, version=self.version
@@ -123,59 +126,59 @@ class Solver(BaseSession):
 
     @property
     def file(self):
-        """file settings."""
+        """Settings for file."""
         return self._root.file
 
     @property
     def mesh(self):
-        """mesh settings."""
+        """Settings for mesh."""
         return self._root.mesh
 
     @property
     def setup(self):
-        """setup settings."""
+        """Settings for setup."""
         return self._root.setup
 
     @property
     def solution(self):
-        """solution settings."""
+        """Settings for solution."""
         return self._root.solution
 
     @property
     def results(self):
-        """results settings."""
+        """Settings for results."""
         return self._root.results
 
     @property
     def parametric_studies(self):
-        """parametric_studies settings."""
+        """Settings for parametric_studies."""
         return self._root.parametric_studies
 
     @property
     def current_parametric_study(self):
-        """current_parametric_study settings."""
+        """Settings for current_parametric_study."""
         return self._root.current_parametric_study
 
     @property
     def parallel(self):
-        """parallel settings."""
+        """Settings for parallel."""
         return self._root.parallel
 
     @property
     def report(self):
-        """report settings."""
+        """Settings for report."""
         return self._root.report
 
     @property
     def preferences(self):
-        """preferences datamodel root."""
+        """Datamodel root of preferences."""
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
 
     @property
     def solverworkflow(self):
-        """solverworkflow datamodel root."""
+        """Datamodel root of solverworkflow."""
         if self._solverworkflow is None:
             self._solverworkflow = _get_solverworkflow(self)
         return self._solverworkflow

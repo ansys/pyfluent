@@ -1,9 +1,14 @@
-name: Nightly Test Run (No Codegen)
+
+name: Run Custom Tests
 
 on:
-  schedule:  # UTC at 0400 on Monday and Thursday
-    - cron:  '0 4 * * MON,THU'
+# Enable to run automatically on PR update
+  #pull_request:
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -11,9 +16,16 @@ env:
   PYFLUENT_LAUNCH_CONTAINER: 1
 
 jobs:
-  test:
-    name: Unit Testing
+
+  build_test:
+    name: Build and Test
     runs-on: [self-hosted, pyfluent]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image-tag: v24.1.0
+            version: 241
 
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +33,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.8
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -50,42 +62,26 @@ jobs:
           username: ${{ secrets.GH_USERNAME }}
           password: ${{ secrets.REPO_DOWNLOAD_PAT }}
 
-      - name: Pull 22.2 Fluent docker image
+      - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Pull 23.1 Fluent docker image
-        run: make docker-pull
+      - name: Run API codegen
+        run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v23.1.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Pull 23.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
+      - name: Print Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_${{ matrix.version }}.py
 
-      - name: Pull 24.1 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
 
-      - name: 24.1 Unit Testing
-        run: make unittest-all-241-no-codegen
+      - name: Unit Testing
+        run: make unittest-custom
         env:
-          FLUENT_IMAGE_TAG: v24.1.0
-
-      - name: 23.2 Unit Testing
-        run: make unittest-all-232-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
-      - name: 23.1 Unit Testing
-        run: make unittest-all-231-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: 22.2 Unit Testing
-        run: make unittest-all-222-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}

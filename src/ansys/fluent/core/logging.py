@@ -25,41 +25,53 @@ def is_active() -> bool:
     return _logging_file_enabled
 
 
-def enable(level: Union[str, int] = "DEBUG"):
+def get_default_config() -> dict:
+    file_path = os.path.abspath(__file__)
+    file_dir = os.path.dirname(file_path)
+    yaml_path = os.path.join(file_dir, "logging_config.yaml")
+    with open(yaml_path, "rt") as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def enable(level: Union[str, int] = "DEBUG", custom_config: dict = None):
     """Enables PyFluent logging to file.
 
     Parameters
     ----------
     level : str or int, optional
         Specified logging level to set PyFluent loggers to. If omitted, level is set to DEBUG.
+    custom_config : dict, optional
+        Used to provide a customized logging config file.
+
+    Notes
+    -----
+    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
 
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.logging.enable()
-
-    Notes
-    -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
     """
     global _logging_file_enabled
 
     if _logging_file_enabled:
-        print("PyFluent logging to file is already active.")
-        return
+        print(
+            "PyFluent logging to file is already active, overwriting previous configuration..."
+        )
 
     _logging_file_enabled = True
 
     # Configure the logging system
-    file_path = os.path.abspath(__file__)
-    file_dir = os.path.dirname(file_path)
-    yaml_path = os.path.join(file_dir, "logging_config.yaml")
-
-    with open(yaml_path, "rt") as f:
-        config = yaml.safe_load(f)
+    if custom_config is not None:
+        config = custom_config
+    else:
+        config = get_default_config()
 
     logging.config.dictConfig(config)
-    print(f"PyFluent logging file {os.path.join(os.getcwd(),'pyfluent.log')}")
+    filename = config["handlers"]["pyfluent_file"]["filename"]
+
+    print(f"PyFluent logging file {os.path.join(os.getcwd(),filename)}")
 
     set_global_level(level)
 
@@ -77,6 +89,10 @@ def set_global_level(level: Union[str, int]):
     level : str or int
         Specified logging level to set PyFluent loggers to.
 
+    Notes
+    -----
+    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
@@ -85,10 +101,6 @@ def set_global_level(level: Union[str, int]):
     or
 
     >>> pyfluent.logging.set_global_level('DEBUG')
-
-    Notes
-    -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
     """
     if not is_active():
         print("Logging is not active, enable it first.")
@@ -114,6 +126,11 @@ def list_loggers():
         Each list element is a PyFluent logger name that can be individually controlled
         through :func:`ansys.fluent.core.logging.get_logger`.
 
+    Notes
+    -----
+    PyFluent loggers use the standard Python logging library, for more details
+    see https://docs.python.org/3/library/logging.html#logger-objects
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
@@ -126,11 +143,6 @@ def list_loggers():
     >>> logger.setLevel('ERROR')
     >>> logger
     <Logger pyfluent.networking (ERROR)>
-
-    Notes
-    -----
-    PyFluent loggers use the standard Python logging library, for more details
-    see https://docs.python.org/3/library/logging.html#logger-objects
     """
     logger_dict = logging.root.manager.loggerDict
     pyfluent_loggers = []

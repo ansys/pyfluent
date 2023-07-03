@@ -10,7 +10,7 @@ scheme code can be executed.
 
 .. autosummary::
     :toctree: _autosummary
-    :template: flobject-class-template.rst
+    :template: noindex-class.rst
     :recursive:
 
     Symbol

@@ -21,8 +21,6 @@ class Quantity(float):
     -------
     to()
         Converts to given unit string.
-    convert()
-        Converts to given unit system.
 
     Returns
     -------
@@ -35,9 +33,7 @@ class Quantity(float):
             or (units and dimensions)
             or (quantity_map and dimensions)
         ):
-            raise ValueError(
-                "Quantity only accepts 1 of the following: units, quantity_map, dimensions"
-            )
+            raise QuantityError.EXCESSIVE_PARAMETERS()
 
         _units_table = q.UnitsTable()
         _value = float(value)
@@ -64,9 +60,7 @@ class Quantity(float):
             or (units and dimensions)
             or (quantity_map and dimensions)
         ):
-            raise ValueError(
-                "Quantity only accepts 1 of the following: units, quantity_map, dimensions"
-            )
+            raise QuantityError.EXCESSIVE_PARAMETERS()
 
         self._units_table = q.UnitsTable()
         self._value = float(value)
@@ -102,12 +96,12 @@ class Quantity(float):
             Name of caller function.
         Returns
         -------
-        : str
+        str
             SI unit string of new quantity.
         """
-        # Cannot perform operations between quantities with opposing dimensions
+        # Cannot perform operations between quantities with incompatible dimensions
         if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
-            raise QuantityError(from_unit=self.units, to_unit=__value.units)
+            raise QuantityError.INCOMPATIBLE_DIMENSIONS(self.units, __value.units)
         # Cannot perform operations on a non-dimensionless quantity
         if (
             caller not in ["__mul__", "__truediv__"]
@@ -115,9 +109,7 @@ class Quantity(float):
             and (not isinstance(__value, Quantity))
             and isinstance(__value, (float, int))
         ):
-            raise TypeError(
-                f"Error: '{__value}' is incompatible with the current quantity object."
-            )
+            raise QuantityError.INCOMPATIBLE_VALUE(__value)
 
         return (
             "delta_K"
@@ -127,7 +119,7 @@ class Quantity(float):
 
     @property
     def value(self):
-        """Real value"""
+        """Real value."""
         return self._value
 
     @value.setter
@@ -136,22 +128,22 @@ class Quantity(float):
 
     @property
     def units(self):
-        """Unit string"""
+        """Unit string."""
         return self._unit
 
     @property
     def si_value(self):
-        """SI conversion value"""
+        """SI conversion value."""
         return self._si_value
 
     @property
     def si_units(self):
-        """SI conversion unit string"""
+        """SI conversion unit string."""
         return self._si_units
 
     @property
     def dimensions(self):
-        """Dimensions"""
+        """Dimensions."""
         return self._dimensions.dimensions
 
     @property
@@ -161,7 +153,7 @@ class Quantity(float):
 
     @property
     def type(self):
-        """Type"""
+        """Type."""
         return self._type
 
     def to(self, to_units: str) -> "Quantity":
@@ -174,12 +166,12 @@ class Quantity(float):
 
         Returns
         -------
-        : Quantity
+        Quantity
             Quantity object containing desired quantity conversion.
         """
 
         if not isinstance(to_units, str):
-            raise TypeError("'to_units' should be of 'str' type.")
+            raise TypeError("`to_units` should be a `str` type.")
 
         # Retrieve all SI required SI data and perform conversion
         _, si_multiplier, si_offset = self._units_table.si_data(to_units)
@@ -191,31 +183,6 @@ class Quantity(float):
         self._arithmetic_precheck(new_obj)
 
         return new_obj
-
-    def convert(self, to_sys: str) -> "Quantity":
-        """Perform unit system conversions.
-
-        Parameters
-        ----------
-        to_sys : str
-            Desired unit system to convert to.
-
-        Returns
-        -------
-        : Quantity
-            Quantity object containing desired unit system conversion.
-        """
-
-        # Verify specified system is supported
-        if to_sys not in self._units_table.unit_systems:
-            raise ValueError(
-                f"'{to_sys}' is not a supported unit system. Only {', '.join(self._units_table.unit_systems.keys())} are supported."
-            )
-
-        # Create new dimensions with desired unit system
-        new_dim = q.Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
-
-        return Quantity(value=self.value, units=new_dim.units)
 
     def __str__(self):
         return f'({self.value}, "{self.units}")'
@@ -230,7 +197,7 @@ class Quantity(float):
         return Quantity(value=new_si_value, units=new_dimensions.units)
 
     def __mul__(self, __value):
-        new_units = self._arithmetic_precheck(__value, "__mul__")
+        new_units = self._arithmetic_precheck(__value, caller="__mul__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim + __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
@@ -247,7 +214,7 @@ class Quantity(float):
         return self.__mul__(__value)
 
     def __truediv__(self, __value):
-        new_units = self._arithmetic_precheck(__value, "__truediv__")
+        new_units = self._arithmetic_precheck(__value, caller="__truediv__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim - __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
@@ -310,19 +277,19 @@ class Quantity(float):
 class QuantityError(ValueError):
     """Custom quantity errors."""
 
-    def __init__(self, from_unit, to_unit):
-        """
-        Quantity errors with custom messages.
+    def __init__(self, err):
+        super().__init__(err)
 
-        Parameters
-        ----------
-        from_unit: str
-            Unit of quantity
-        to_unit: str
-            Desired conversion unit
-        """
-        self.from_unit = from_unit
-        self.to_unit = to_unit
+    @classmethod
+    def EXCESSIVE_PARAMETERS(cls):
+        return cls(
+            "Quantity only accepts 1 of the following parameters: (units) or (quantity_map) or (dimensions)."
+        )
 
-    def __str__(self):
-        return f"'{self.from_unit}' and '{self.to_unit}' have incompatible dimensions."
+    @classmethod
+    def INCOMPATIBLE_DIMENSIONS(cls, from_unit, to_unit):
+        return cls(f"`{from_unit}` and `{to_unit}` have incompatible dimensions.")
+
+    @classmethod
+    def INCOMPATIBLE_VALUE(cls, value):
+        return cls(f"`{value}` is incompatible with the current quantity object.")

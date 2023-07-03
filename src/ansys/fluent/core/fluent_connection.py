@@ -2,6 +2,8 @@ from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
 import logging
+import multiprocessing
+from multiprocessing.context import TimeoutError
 import os
 from pathlib import Path
 import socket
@@ -49,10 +51,27 @@ class MonitorThread(threading.Thread):
         self.cbs: List[Callable] = []
 
     def run(self) -> None:
+        """Run monitor thread."""
         main_thread = threading.main_thread()
         main_thread.join()
         for cb in self.cbs:
             cb()
+
+
+def get_container_ids() -> List[str]:
+    """Get a list of docker container IDs."""
+    try:
+        logger.debug("Attempting to get docker container IDs...")
+        proc = subprocess.Popen(
+            ["docker", "ps", "-q"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+        )
+        output_bytes = proc.stdout.read()
+        output_str = output_bytes.decode()
+        ids = output_str.strip().split()
+    except:
+        logger.warning("Failed to get docker container IDs.")
+        ids = []
+    return ids
 
 
 @dataclass(frozen=True)
@@ -83,11 +102,11 @@ class FluentConnectionProperties:
     inside_container: bool = None
 
     def list_names(self) -> list:
-        """List all property names."""
+        """Returns list with all property names."""
         return [k for k, _ in vars(self).items()]
 
     def list_values(self) -> dict:
-        """Dictionary with all property names and values."""
+        """Returns dictionary with all property names and values."""
         return vars(self)
 
 
@@ -229,6 +248,15 @@ class FluentConnection:
             cortex_pwd = None
             fluent_host_pid = None
 
+        if inside_container is None and not remote_instance and cortex_host is not None:
+            logger.debug("Checking if Fluent is running inside a container.")
+            if cortex_host in get_container_ids():
+                logger.debug("Fluent is running inside a container.")
+                inside_container = True
+            else:
+                logger.debug("Assuming Fluent is not running inside a container.")
+                inside_container = False
+
         self.connection_properties = FluentConnectionProperties(
             ip,
             port,
@@ -259,17 +287,16 @@ class FluentConnection:
         Immediately terminates the Fluent client,
         losing unsaved progress and data.
 
+        Notes
+        -----
+        If the Fluent session is responsive, prefer using :func:`exit()` instead.
+
         Examples
         --------
 
         >>> import ansys.fluent.core as pyfluent
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
-
-        Notes
-        -----
-        If the Fluent session is responsive, prefer using :func:`exit()` instead.
-
         """
         if self.connection_properties.inside_container:
             logger.error(
@@ -341,9 +368,24 @@ class FluentConnection:
         subprocess.run(["docker", "kill", container_id])
 
     def register_finalizer_cb(self, cb):
+        """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
     def create_service(self, service, add_arg=None):
+        """Create a gRPC service.
+
+        Parameters
+        ----------
+        service : Any
+            service class
+        add_arg : Any, optional
+            additional arguments, by default None
+
+        Returns
+        -------
+        Any
+            service object
+        """
         if add_arg:
             return service(self._channel, self._metadata, add_arg)
         return service(self._channel, self._metadata)
@@ -367,19 +409,19 @@ class FluentConnection:
             exit request reached timeout. Executes :func:`force_exit()` or :func:`force_exit_container()`,
             depending on how Fluent was launched.
 
-        Examples
-        --------
-
-        >>> import ansys.fluent.core as pyfluent
-        >>> session = pyfluent.launch_fluent()
-        >>> session.exit()
-
         Notes
         -----
         Can also set the ``PYFLUENT_TIMEOUT_FORCE_EXIT`` environment variable to specify the number of seconds and
         alter the default ``timeout`` value. Setting this env var to a non-number value, such as ``OFF``,
         will return this function to default behavior. Note that the environment variable will be ignored if
         timeout is specified when calling this function.
+
+        Examples
+        --------
+
+        >>> import ansys.fluent.core as pyfluent
+        >>> session = pyfluent.launch_fluent()
+        >>> session.exit()
         """
 
         if timeout is None:
@@ -398,39 +440,38 @@ class FluentConnection:
         if timeout is None:
             self._finalizer()
         else:
-
-            def _connection_finalizer(connection):
-                return connection._finalizer()
-
-            tmp_thread = threading.Thread(
-                target=_connection_finalizer, args=(self,), daemon=True
-            )
-            tmp_thread.start()
-
-            tmp_thread.join(timeout)
-
-            if tmp_thread.is_alive():
-                pass
+            if not self.health_check_service.is_serving:
+                logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
-                logger.debug("session.exit() successful")
-                return
+                logger.debug("Attempting session.exit()")
 
-            logger.debug("session.exit() timeout")
+                def _connection_finalizer(connection):
+                    return connection._finalizer()
+
+                pool = multiprocessing.pool.ThreadPool(processes=1)
+                async_result = pool.apply_async(_connection_finalizer, args=(self,))
+                try:
+                    _ = async_result.get(timeout=timeout)
+                    logger.debug("session.exit() successful")
+                    pool.close()
+                    return
+                except TimeoutError:
+                    logger.debug("session.exit() timeout")
+                    pool.terminate()
+
+            logger.debug("Continuing...")
             if timeout_force:
                 if self._remote_instance:
-                    logger.warning(
-                        "Cannot force exit from Fluent remote instance, and exit command has timed out."
-                    )
+                    logger.warning("Cannot force exit from Fluent remote instance.")
                     return
                 elif self.connection_properties.inside_container:
-                    logger.debug("Fluent running inside container, killing it...")
+                    logger.debug(
+                        "Fluent running inside container, killing container..."
+                    )
                     self.force_exit_container()
                 else:
-                    logger.debug("Fluent running locally, killing it...")
+                    logger.debug("Fluent running locally, killing processes...")
                     self.force_exit()
-                if tmp_thread.is_alive():
-                    logger.debug("Closing existing thread...")
-                    tmp_thread.join()
                 logger.debug("Done.")
             else:
                 logger.debug("Timeout force exit disabled, returning...")

@@ -19,6 +19,11 @@ test-import:
 
 unittest: unittest-dev-231
 
+unittest-custom:
+	@echo "Running custom unittest"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -k test_transcript  # Update custom testlist
+
 unittest-dev-222:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
@@ -29,15 +34,15 @@ unittest-dev-231:
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_231" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
-unittest-dev-241:
-	@echo "Running unittests"
-	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "dev and fluent_241" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
-
 unittest-dev-232:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_232" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
+
+unittest-dev-241:
+	@echo "Running unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "dev and fluent_241" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-all-222:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*

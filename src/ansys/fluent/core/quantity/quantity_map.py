@@ -16,7 +16,12 @@ class QuantityMap(object):
 
     def __init__(self, quantity_map):
         self._units_table = q.UnitsTable()
-        self._unit = self._map_to_units(quantity_map)
+
+        for item in quantity_map:
+            if item not in self._units_table.api_quantity_map:
+                raise QuantityMapError.UNKNOWN_MAP_ITEM(item)
+
+        self._units = self._map_to_units(quantity_map)
 
     def _map_to_units(self, quantity_map: dict) -> str:
         """Convert a quantity map into a unit string.
@@ -28,7 +33,7 @@ class QuantityMap(object):
 
         Returns
         -------
-        : str
+        str
             Unit string representation of quantity map.
         """
         unit_dict = {
@@ -54,5 +59,16 @@ class QuantityMap(object):
 
     @property
     def units(self):
-        """Unit string representation of quantity map"""
-        return self._unit
+        """Unit string representation of quantity map."""
+        return self._units
+
+
+class QuantityMapError(ValueError):
+    """Custom quantity map errors."""
+
+    def __init__(self, err):
+        super().__init__(err)
+
+    @classmethod
+    def UNKNOWN_MAP_ITEM(cls, item):
+        return cls(f"`{item}` is not a valid quantity map item.")
