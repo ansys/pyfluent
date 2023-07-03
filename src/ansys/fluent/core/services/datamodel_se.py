@@ -141,7 +141,14 @@ class DatamodelService(StreamingService):
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
         """deleteCommandArguments rpc of DataModel service."""
-        return self._stub.deleteCommandArguments(request, metadata=self._metadata)
+        try:
+            return self._stub.deleteCommandArguments(request, metadata=self._metadata)
+        except grpc.RpcError as ex:
+            raise RuntimeError(
+                f"The following excepton was caught\n {ex.details()}\n "
+                "while deleting a command instance. Command instancing is"
+                "supported from Ansys 2023R2 onward."
+            ) from None
 
     @catch_grpc_error
     def get_specs(
