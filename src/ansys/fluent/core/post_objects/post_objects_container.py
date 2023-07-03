@@ -32,6 +32,7 @@ class Container:
         post_api_helper,
         local_surfaces_provider=None,
     ):
+        """__init__ method of Container class."""
         session_state = container_type._sessions_state.get(session)
         if not session_state:
             session_state = self.__dict__
@@ -46,6 +47,7 @@ class Container:
 
     @property
     def type(self):
+        """Type."""
         return "object"
 
     def _init_module(self, obj, mod, post_api_helper):
@@ -89,6 +91,7 @@ class Plots(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
+        """__init__ method of Plots class."""
         super().__init__(
             session, self.__class__, module, post_api_helper, local_surfaces_provider
         )
@@ -127,6 +130,7 @@ class Graphics(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
+        """__init__ method of Graphics class."""
         super().__init__(
             session, self.__class__, module, post_api_helper, local_surfaces_provider
         )

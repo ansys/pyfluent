@@ -17,6 +17,8 @@ tui_logger = logging.getLogger("pyfluent.tui")
 
 
 class BaseMeshing:
+    """Encapsulates base methods of a meshing session."""
+
     def __init__(
         self,
         session_execute_tui,
@@ -52,6 +54,7 @@ class BaseMeshing:
 
     @property
     def version(self):
+        """Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_filepath(session=self)
         return self._version
@@ -110,6 +113,7 @@ class BaseMeshing:
 
     @property
     def workflow(self):
+        """Datamodel root of workflow."""
         if not self._workflow:
             self._workflow = MeshingWorkflow(
                 self._workflow_se,
