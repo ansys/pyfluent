@@ -12,10 +12,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
-from ansys.fluent.core.services.error_handler import (
-    catch_grpc_error,
-    catch_grpc_error_quiet,
-)
+from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 from ansys.fluent.core.services.streaming import StreamingService
 
@@ -136,7 +133,6 @@ class DatamodelService(StreamingService):
         """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    @catch_grpc_error_quiet  # there is a bug in old Fluent versions
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
