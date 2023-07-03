@@ -51,6 +51,7 @@ class MonitorThread(threading.Thread):
         self.cbs: List[Callable] = []
 
     def run(self) -> None:
+        """Run monitor thread."""
         main_thread = threading.main_thread()
         main_thread.join()
         for cb in self.cbs:
@@ -58,6 +59,7 @@ class MonitorThread(threading.Thread):
 
 
 def get_container_ids() -> List[str]:
+    """Get a list of docker container IDs."""
     try:
         logger.debug("Attempting to get docker container IDs...")
         proc = subprocess.Popen(
@@ -366,9 +368,24 @@ class FluentConnection:
         subprocess.run(["docker", "kill", container_id])
 
     def register_finalizer_cb(self, cb):
+        """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
     def create_service(self, service, add_arg=None):
+        """Create a gRPC service.
+
+        Parameters
+        ----------
+        service : Any
+            service class
+        add_arg : Any, optional
+            additional arguments, by default None
+
+        Returns
+        -------
+        Any
+            service object
+        """
         if add_arg:
             return service(self._channel, self._metadata, add_arg)
         return service(self._channel, self._metadata)
