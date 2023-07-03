@@ -10,7 +10,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
-    with_launching_container_for_meshing,
 )
 
 from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
@@ -636,10 +635,10 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
 @pytest.mark.fluent_232
 @pytest.mark.fluent_241
 @pytest.mark.dev
-def test_watertight_workflow(
-    mixing_elbow_geometry, with_launching_container_for_meshing
-):
-    watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
+def test_watertight_workflow(mixing_elbow_geometry, shared_mesh_session):
+    watertight = watertight_workflow(
+        geometry_filepath=mixing_elbow_geometry, session=shared_mesh_session
+    )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
     add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
@@ -655,10 +654,10 @@ def test_watertight_workflow(
 @pytest.mark.dev
 @pytest.mark.fluent_232
 @pytest.mark.fluent_241
-def test_watertight_workflow_children(
-    mixing_elbow_geometry, with_launching_container_for_meshing
-):
-    watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
+def test_watertight_workflow_children(mixing_elbow_geometry, shared_mesh_session):
+    watertight = watertight_workflow(
+        geometry_filepath=mixing_elbow_geometry, session=shared_mesh_session
+    )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
     add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
@@ -692,10 +691,10 @@ def test_watertight_workflow_children(
 @pytest.mark.fluent_241
 @pytest.mark.dev
 def test_watertight_workflow_dynamic_interface(
-    mixing_elbow_geometry, with_launching_container_for_meshing
+    mixing_elbow_geometry, shared_mesh_session
 ):
     watertight = watertight_workflow(
-        geometry_filepath=mixing_elbow_geometry, start_transcript=False
+        geometry_filepath=mixing_elbow_geometry, session=shared_mesh_session
     )
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
@@ -728,10 +727,8 @@ def test_watertight_workflow_dynamic_interface(
 @pytest.mark.fluent_232
 @pytest.mark.fluent_241
 @pytest.mark.dev
-def test_fault_tolerant_workflow(
-    exhaust_system_geometry, with_launching_container_for_meshing
-):
-    fault_tolerant = fault_tolerant_workflow()
+def test_fault_tolerant_workflow(exhaust_system_geometry, shared_mesh_session):
+    fault_tolerant = fault_tolerant_workflow(session=shared_mesh_session)
     part_management = fault_tolerant.part_management
     filename = exhaust_system_geometry
     part_management.LoadFmdFile(FilePath=filename)

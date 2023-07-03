@@ -156,15 +156,6 @@ def exhaust_system_geometry():
     return _exhaust_system_geometry_filename
 
 
-@pytest.fixture
-def with_launching_container_for_meshing(
-    monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
-) -> None:
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "1")
-    monkeypatch.setenv("PYFLUENT_TIMEOUT_FORCE_EXIT", "5")
-    monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-
-
 """
 @pytest.fixture
 def model_object_throws_on_invalid_arg():
