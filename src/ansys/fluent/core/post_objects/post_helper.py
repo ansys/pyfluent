@@ -90,6 +90,7 @@ class PostAPIHelper:
             self._get_api_handle().delete_surface(self._surface_name_on_server)
 
     def __init__(self, obj):
+        """__init__ method of PostAPIHelper class."""
         self.obj = obj
         self.field_info = lambda: obj._get_top_most_parent().session.field_info
         self.field_data = lambda: obj._get_top_most_parent().session.field_data
