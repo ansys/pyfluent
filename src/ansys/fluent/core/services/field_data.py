@@ -259,6 +259,7 @@ class _AllowedNames:
         self._field_info = field_info
 
     def is_valid(self, name, respect_data_valid=True):
+        """Checks validity."""
         return name in self(respect_data_valid)
 
 
@@ -268,6 +269,7 @@ class _AllowedFieldNames(_AllowedNames):
         self._is_data_valid = is_data_valid
 
     def valid_name(self, field_name):
+        """Returns valid names."""
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):
@@ -285,6 +287,7 @@ class _AllowedSurfaceNames(_AllowedNames):
         return self._field_info.get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
+        """Returns valid names."""
         if validate_inputs:
             if not self.is_valid(surface_name):
                 raise SurfaceNameError(
@@ -334,6 +337,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         )
 
     def is_valid(self, name, respect_data_valid=True):
+        """Checks validity."""
         return name in self(respect_data_valid)
 
 
@@ -343,6 +347,7 @@ class _FieldMethod:
             self._accessor = accessor
 
         def allowed_values(self):
+            """Returns set of allowed values."""
             return sorted(self._accessor())
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):
@@ -743,15 +748,16 @@ class ChunkParser:
     Parameters
     ----------
     callbacks_provider : object
-        The object which can register and unregister callbacks.
-        It provides callbacks, which are triggered with following arguments:
-            zone_id : int
-            field_name : str
-            field : numpy array
+    The object which can register and unregister callbacks.
+    It provides callbacks, which are triggered with following arguments:
+        zone_id : int
+        field_name : str
+        field : numpy array
 
     """
 
     def __init__(self, callbacks_provider: object = None):
+        """__init__ method of ChunkParser class."""
         self._callbacks_provider = callbacks_provider
 
     def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
@@ -885,19 +891,23 @@ class BaseFieldData:
     """Contains common properties required by all field data types."""
 
     def __init__(self, i_d, data):
+        """__init__ method of BaseFieldData class."""
         self._data = data
         self._id = i_d
 
     @property
     def data(self):
+        """Returns data."""
         return self._data
 
     @property
     def surface_id(self):
+        """Returns surface id."""
         return self._id
 
     @property
     def size(self):
+        """Returns size of data."""
         return len(self._data)
 
     def __getitem__(self, item):
@@ -911,9 +921,11 @@ class ScalarFieldData(BaseFieldData):
         """Stores and provides the data as a scalar."""
 
         def __init__(self, data):
+            """__init__ method of ScalarData class."""
             self.scalar_data = data
 
     def __init__(self, i_d, data):
+        """__init__ method of ScalarFieldData class."""
         super().__init__(i_d, [ScalarFieldData.ScalarData(_data) for _data in data])
 
 
@@ -921,20 +933,24 @@ class Vector:
     """Stores the data as a vector ``(x, y, z)``."""
 
     def __init__(self, x, y, z):
+        """__init__ method of Vector class."""
         self._x = x
         self._y = y
         self._z = z
 
     @property
     def x(self) -> float:
+        """Returns vector point x."""
         return self._x
 
     @property
     def y(self) -> float:
+        """Returns vector point y."""
         return self._y
 
     @property
     def z(self) -> float:
+        """Returns vector point z."""
         return self._z
 
 
@@ -954,15 +970,18 @@ class VectorFieldData(BaseFieldData):
         """Stores and provides the data as a vector."""
 
         def __init__(self, x, y, z):
+            """__init__ method of VectorData class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data, scale):
+        """__init__ method of VectorFieldData class."""
         _resolve_into_array_of_vectors(data)
         self._scale = scale
         super().__init__(i_d, [VectorFieldData.VectorData(x, y, z) for x, y, z in data])
 
     @property
     def scale(self) -> float:
+        """Returns scale of the vector field."""
         return self._scale
 
 
@@ -973,9 +992,11 @@ class Vertices(BaseFieldData):
         """Stores and provides the data as a vector of a vertex."""
 
         def __init__(self, x, y, z):
+            """__init__ method of Vertex class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
+        """__init__ method of Vertices class."""
         _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [(Vertices.Vertex(x, y, z)) for x, y, z in data])
 
@@ -987,9 +1008,11 @@ class FacesCentroid(BaseFieldData):
         """Stores and provides the face centroid data as a vector."""
 
         def __init__(self, x, y, z):
+            """__init__ method of Centroid class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
+        """__init__ method of FacesCentroid class."""
         _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [(FacesCentroid.Centroid(x, y, z)) for x, y, z in data])
 
@@ -1001,10 +1024,12 @@ class FacesConnectivity(BaseFieldData):
         """Stores and provides the face connectivity data as an array."""
 
         def __init__(self, node_count, node_indices):
+            """__init__ method of Faces class."""
             self.node_count = node_count
             self.node_indices = node_indices
 
     def __init__(self, i_d, data):
+        """__init__ method of FacesConnectivity class."""
         faces_data = []
         i = 0
 
@@ -1023,9 +1048,11 @@ class FacesNormal(BaseFieldData):
         """Stores and provides the face normal data as a vector."""
 
         def __init__(self, x, y, z):
+            """__init__ method of Normal class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
+        """__init__ method of FacesNormal class."""
         _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [FacesNormal.Normal(x, y, z) for x, y, z in data])
 

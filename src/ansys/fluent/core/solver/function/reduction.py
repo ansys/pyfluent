@@ -64,6 +64,7 @@ from numpy import array
 
 class BadReductionRequest(Exception):
     def __init__(self, err):
+        """__init__ method of BadReductionRequest class."""
         super().__init__(f"Could not complete reduction function request: {err}")
 
 
