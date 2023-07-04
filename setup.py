@@ -32,6 +32,7 @@ install_requires = [
     "lxml>=4.9.2",
     "pyyaml",
     "docker",
+    "psutil",
 ]
 
 
