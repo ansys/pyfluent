@@ -36,6 +36,7 @@ class SolverIcing(Solver):
 
     @property
     def version(self):
+        """Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_filepath(session=self)
         return self._version

@@ -110,6 +110,7 @@ class BaseSession:
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
+        """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -234,6 +235,7 @@ class BaseSession:
         return self.scheme_eval.version
 
     def exit(self, **kwargs) -> None:
+        "Exit session."
         self.fluent_connection.exit(**kwargs)
 
     def __enter__(self):
