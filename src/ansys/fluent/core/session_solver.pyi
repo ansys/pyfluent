@@ -1,18 +1,18 @@
-from ansys.fluent.core.datamodel_231.preferences import Root as preferences_root
-from ansys.fluent.core.datamodel_231.solverworkflow import Root as solverworkflow_root
-from ansys.fluent.core.datamodel_231.workflow import Root as workflow_root
-from ansys.fluent.core.solver.settings_231.current_parametric_study import (
+from ansys.fluent.core.datamodel_232.preferences import Root as preferences_root
+from ansys.fluent.core.datamodel_232.solverworkflow import Root as solverworkflow_root
+from ansys.fluent.core.datamodel_232.workflow import Root as workflow_root
+from ansys.fluent.core.solver.settings_232.current_parametric_study import (
     current_parametric_study,
 )
-from ansys.fluent.core.solver.settings_231.file import file
-from ansys.fluent.core.solver.settings_231.mesh import mesh
-from ansys.fluent.core.solver.settings_231.parallel import parallel
-from ansys.fluent.core.solver.settings_231.parametric_studies import parametric_studies
-from ansys.fluent.core.solver.settings_231.report import report
-from ansys.fluent.core.solver.settings_231.results import results
-from ansys.fluent.core.solver.settings_231.setup import setup
-from ansys.fluent.core.solver.settings_231.solution import solution
-from ansys.fluent.core.solver.tui_231 import main_menu
+from ansys.fluent.core.solver.settings_232.file import file
+from ansys.fluent.core.solver.settings_232.mesh import mesh
+from ansys.fluent.core.solver.settings_232.parallel import parallel
+from ansys.fluent.core.solver.settings_232.parametric_studies import parametric_studies
+from ansys.fluent.core.solver.settings_232.report import report
+from ansys.fluent.core.solver.settings_232.results import results
+from ansys.fluent.core.solver.settings_232.setup import setup
+from ansys.fluent.core.solver.settings_232.solution import solution
+from ansys.fluent.core.solver.tui_232 import main_menu
 
 class Solver:
     def build_from_fluent_connection(self, fluent_connection): ...
