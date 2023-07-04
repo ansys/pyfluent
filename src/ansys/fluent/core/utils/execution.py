@@ -118,17 +118,17 @@ def timeout_loop(
 
     Examples
     --------
-    Waiting 5 seconds to see if ``func("whatever")`` returns True:
+    Waiting 5 seconds to see if ``func("test")`` returns True:
 
-    >>> func("whatever")
+    >>> func("test")
     False
-    >>> response = timeout_loop(func, timeout=5.0, args=("whatever",))
+    >>> response = timeout_loop(func, timeout=5.0, args=("test",))
 
-    Waiting 5 seconds to see if ``func2("whatever",word="hello")`` returns False:
+    Waiting 5 seconds to see if ``func2("test",word="hello")`` returns False:
 
-    >>> func2("whatever", word="hello")
+    >>> func2("test", word="hello")
     True
-    >>> response = timeout_loop(func2, timeout=5.0, expected="falsy", args=("whatever",), kwargs={"word":"hello",})
+    >>> response = timeout_loop(func2, timeout=5.0, expected="falsy", args=("test",), kwargs={"word":"hello",})
     """
     if args is None:
         args = ()

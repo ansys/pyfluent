@@ -105,6 +105,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     if success:
         time.sleep(0.1)
         init_file.unlink()
+        logger.info("Watchdog initialized.")
     else:
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."

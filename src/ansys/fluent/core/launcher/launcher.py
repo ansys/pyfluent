@@ -49,13 +49,11 @@ class LaunchMode(Enum):
 
 def check_docker_support():
     """Checks whether Python Docker SDK is supported by the current system."""
-    from docker.errors import DockerException
-
     import docker
 
     try:
         _ = docker.from_env()
-    except DockerException:
+    except docker.errors.DockerException:
         return False
     return True
 

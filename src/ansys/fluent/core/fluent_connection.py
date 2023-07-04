@@ -12,7 +12,6 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import warnings
 import weakref
 
-from docker.errors import DockerException, NotFound
 from docker.models.containers import Container
 import grpc
 
@@ -82,9 +81,9 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     try:
         docker_client = docker.from_env()
         container = docker_client.containers.get(container_id_or_name)
-    except NotFound:  # NotFound is a child from DockerException
+    except docker.errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except DockerException:
+    except docker.errors.DockerException:
         return None
     return container
 
@@ -393,7 +392,13 @@ class FluentConnection:
         cleanup_filename = f"cleanup-fluent-{container_id}-{pid}.sh"
         logger.debug(f"Executing Fluent container cleanup script: {cleanup_filename}")
         if get_container(container_id):
-            container.exec_run(["bash", cleanup_filename], detach=True)
+            try:
+                container.exec_run(["bash", cleanup_filename], detach=True)
+            except docker.errors.APIError as e:
+                logger.debug("%s: %s" % (type(e).__name__, e))
+                logger.debug(
+                    "Caught Docker APIError, Docker container probably not running anymore."
+                )
         else:
             logger.debug(f"Container not found, cancelling cleanup script execution.")
 
