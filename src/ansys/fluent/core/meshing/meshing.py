@@ -8,13 +8,13 @@ class Meshing:
         self._tui = tui
         self._fluent_connection = fluent_connection
 
-    def switch_to_solver(self):
-        """Switch to solver session."""
-        from ansys.fluent.core.session_solver import Solver
-
-        self._tui.switch_to_solution_mode("yes")
-        solver_session = Solver(fluent_connection=self._fluent_connection)
-        return solver_session
+    # def switch_to_solver(self):
+    #     """Switch to solver session."""
+    #     from ansys.fluent.core.session_solver import Solver
+    #
+    #     self._tui.switch_to_solution_mode("yes")
+    #     solver_session = Solver(fluent_connection=self._fluent_connection)
+    #     return solver_session
 
     def __getattr__(self, attr):
         return getattr(self._meshing, attr)
