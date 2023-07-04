@@ -267,7 +267,7 @@ def launch_remote_fluent(
         server. The default is ``100``.
     product_version : str, optional
         Select an installed version of ANSYS. The string must be in a format like
-        ``"23.1.0"`` (for 2023 R1) matching the documented version format in the
+        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
         FluentVersion class. The default is ``None``, in which case the newest installed
         version is used.
     cleanup_on_exit : bool, optional
@@ -488,7 +488,7 @@ def launch_fluent(
     ----------
     product_version : str, optional
         Select an installed version of ANSYS. The string must be in a format like
-        ``"23.1.0"`` (for 2023 R1) matching the documented version format in the
+        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
         FluentVersion class. The default is ``None``, in which case the newest installed
         version is used.
     version : str, optional
