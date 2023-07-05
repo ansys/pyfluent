@@ -63,7 +63,10 @@ inlet_guide_vane_file, rotor_file, stator_file = [
 # four processors.
 
 solver = pyfluent.launch_fluent(
-    precision="double", processor_count=4, mode="solver", cwd=pyfluent.EXAMPLES_PATH
+    precision="double",
+    processor_count=4,
+    mode="solver",
+    cwd=pyfluent.EXAMPLES_PATH,
 )
 
 ###############################################################################
@@ -86,21 +89,27 @@ solver.workflow.InitializeWorkflow(WorkflowType="Turbo Workflow")
 # ~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *inflow*, *in*
 
-solver.preferences.TurboWorkflow.FaceZoneSettings.InletRegion("*inflow* *in*")
+solver.preferences.TurboWorkflow.FaceZoneSettings.InletRegion.set_state(
+    "*inflow*, *in*"
+)
 
 ###############################################################################
 # Updating outlet region
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *outflow*, *out*
 
-solver.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion("*outflow* *out*")
+solver.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion.set_state(
+    "*outflow*, *out*"
+)
 
 ###############################################################################
 # Updating periodic 1 region
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *per*1*, *per*
 
-solver.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region("*per*1* *per*")
+solver.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region.set_state(
+    "*per*1*, *per*"
+)
 
 ###############################################################################
 # Updating search order
@@ -110,8 +119,8 @@ solver.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region("*per*1* *per*
 # *per*1*, *per*2*, *per*b*, *high*per*, *per*, *hub*, *shr*, *cas*, *inflow*, *outflow*,
 # *in*, *out*
 
-solver.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
-    "*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"
+solver.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder.set_state(
+    "*int*, *def*, *bld*, *blade*, *tip*2*, *tip*b*, *tip*out*, *tip*, *sym*, *per*1*, *per*2*, *per*b*, *high*per*, *per*, *hub*, *shr*, *cas*, *inflow*, *outflow*, *in*, *out*"
 )
 
 ###############################################################################
@@ -132,12 +141,12 @@ solver.workflow.TaskObject["Describe Component"].Arguments.set_state(
         "ComponentName": "hannover",
         "ComponentType": "Axial Compressor",
         "NewEnableTipGapList": ["no", "yes", "no"],
-        "NewNumOfBladesList": ["30", "23", "26"],
+        "NewNumOfBladesList": [30, 23, 26],
         "NewRowNameList": ["s1", "r1", "igv"],
         "NewRowTypeList": ["stationary", "rotating", "stationary"],
         "NumRows": 3,
         "OldEnableTipGapList": ["no", "yes", "no"],
-        "OldNumOfBladesList": ["3", "3", "3"],
+        "OldNumOfBladesList": [3, 3, 3],
         "OldRowNameList": ["stator_1", "rotor_1", "stator_0"],
         "OldRowTypeList": ["stationary", "rotating", "stationary"],
         "RowNumList": ["row 3", "row 2", "row 1"],
@@ -145,7 +154,6 @@ solver.workflow.TaskObject["Describe Component"].Arguments.set_state(
 )
 
 solver.workflow.TaskObject["Describe Component"].Execute()
-
 
 ###############################################################################
 # Define blade row scope
@@ -741,13 +749,6 @@ solver.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 # on the specified turbo-surfaces, as well as turbo-specific report definitions and monitors
 
 solver.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
-
-###############################################################################
-# Initialize flow field
-# ~~~~~~~~~~~~~~~~~~~~~
-# Initialize the flow field using hybrid initialization.
-
-solver.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Write case file
