@@ -52,10 +52,10 @@ def dump_session_data(
             session_data["range"][field][surface] = {}
             session_data["range"][field][surface][
                 "node_value"
-            ] = session.field_info.get_scalar_fields_range(field, True, [surface])
+            ] = session.field_info.get_scalar_field_range(field, True, [surface])
             session_data["range"][field][surface][
                 "cell_value"
-            ] = session.field_info.get_scalar_fields_range(field, False, [surface])
+            ] = session.field_info.get_scalar_field_range(field, False, [surface])
 
     transaction = session.field_data.new_transaction()
     transaction.add_surfaces_request(

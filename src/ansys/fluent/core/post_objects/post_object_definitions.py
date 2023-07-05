@@ -264,7 +264,7 @@ class SurfaceDefn(GraphicsDefn):
                     @Attribute
                     def range(self):
                         """Z value range."""
-                        return self._api_helper.field_info().get_scalar_fields_range(
+                        return self._api_helper.field_info().get_scalar_field_range(
                             "z-coordinate", True
                         )
 
@@ -279,7 +279,7 @@ class SurfaceDefn(GraphicsDefn):
                     @Attribute
                     def range(self):
                         """X value range."""
-                        return self._api_helper.field_info().get_scalar_fields_range(
+                        return self._api_helper.field_info().get_scalar_field_range(
                             "x-coordinate", True
                         )
 
@@ -294,7 +294,7 @@ class SurfaceDefn(GraphicsDefn):
                     @Attribute
                     def range(self):
                         """Y value range."""
-                        return self._api_helper.field_info().get_scalar_fields_range(
+                        return self._api_helper.field_info().get_scalar_field_range(
                             "y-coordinate", True
                         )
 
@@ -346,7 +346,7 @@ class SurfaceDefn(GraphicsDefn):
                     """Iso value range."""
                     field = self._parent.field()
                     if field:
-                        return self._api_helper.field_info().get_scalar_fields_range(
+                        return self._api_helper.field_info().get_scalar_field_range(
                             field, True
                         )
 
@@ -475,7 +475,7 @@ class ContourDefn(GraphicsDefn):
                         field = self._get_ancestors_by_type(ContourDefn).field()
                         if field:
                             field_info = self._api_helper.field_info()
-                            field_range = field_info.get_scalar_fields_range(
+                            field_range = field_info.get_scalar_field_range(
                                 field,
                                 self._get_ancestors_by_type(ContourDefn).node_values(),
                             )
@@ -504,7 +504,7 @@ class ContourDefn(GraphicsDefn):
                         field = self._get_ancestors_by_type(ContourDefn).field()
                         if field:
                             field_info = self._api_helper.field_info()
-                            field_range = field_info.get_scalar_fields_range(
+                            field_range = field_info.get_scalar_field_range(
                                 field,
                                 self._get_ancestors_by_type(ContourDefn).node_values(),
                             )
@@ -615,7 +615,7 @@ class VectorDefn(GraphicsDefn):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
                         field_info = self._api_helper.field_info()
-                        field_range = field_info.get_scalar_fields_range(
+                        field_range = field_info.get_scalar_field_range(
                             "velocity-magnitude",
                             False,
                         )
@@ -636,7 +636,7 @@ class VectorDefn(GraphicsDefn):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
                         field_info = self._api_helper.field_info()
-                        field_range = field_info.get_scalar_fields_range(
+                        field_range = field_info.get_scalar_field_range(
                             "velocity-magnitude",
                             False,
                         )

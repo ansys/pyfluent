@@ -43,6 +43,7 @@ class InputParameter:
     """
 
     def __init__(self, raw_data):
+        """__init__ method of InputParameter class."""
         self.name, self.value = None, None
         for k, v in raw_data:
             if k == "name":
@@ -94,6 +95,7 @@ class OutputParameter:
     """
 
     def __init__(self, raw_data):
+        """__init__ method of OutputParameter class."""
         parameter = raw_data[1]
         for elem in parameter:
             if len(elem) and elem[0] == "name":
@@ -174,6 +176,7 @@ class CaseFile:
     """
 
     def __init__(self, case_filepath: str = None, project_filepath: str = None):
+        """__init__ method of CaseFile class."""
         if case_filepath and project_filepath:
             raise RuntimeError(
                 "Please enter either the case file path or the project file path"

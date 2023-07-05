@@ -18,10 +18,10 @@ the following code snippets) whose interface directly exposes the
   >>> solver = pyfluent.launch_fluent(mode="solver")
 
 
-The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.solver.settings_231.file.file`,
-:obj:`~ansys.fluent.core.solver.settings_231.setup.setup`,
-:obj:`~ansys.fluent.core.solver.settings_231.solution.solution`, and
-:obj:`~ansys.fluent.core.solver.settings_231.results.results`,
+The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.solver.settings_232.file.file`,
+:obj:`~ansys.fluent.core.solver.settings_232.setup.setup`,
+:obj:`~ansys.fluent.core.solver.settings_232.solution.solution`, and
+:obj:`~ansys.fluent.core.solver.settings_232.results.results`,
 which are also instances of settings objects. Note that the last three are
 top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
 of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
@@ -38,9 +38,9 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 
 - The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
   can be accessed as attributes. For example, using the expression ``solver.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.solver.settings_231.energy.energy`,
-  which is a child of :obj:`~ansys.fluent.core.solver.settings_231.models_1.models`,
-  which itself is a child of :obj:`~ansys.fluent.core.solver.settings_231.setup.setup`, and each of those
+  which resolves to :obj:`~ansys.fluent.core.solver.settings_232.energy.energy`,
+  which is a child of :obj:`~ansys.fluent.core.solver.settings_232.models_1.models`,
+  which itself is a child of :obj:`~ansys.fluent.core.solver.settings_232.setup.setup`, and each of those
   three objects is a ``Group``.
   The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
@@ -331,5 +331,5 @@ The following list summarizes common wildcards:
 
 Root object
 -----------
-The :obj:`~ansys.fluent.core.solver.settings_231.root.root` object (named solver in the preceding examples) is the top-level
+The :obj:`~ansys.fluent.core.solver.settings_232.root.root` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.
