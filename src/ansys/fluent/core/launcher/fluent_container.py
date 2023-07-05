@@ -39,7 +39,7 @@ def start_fluent_container(
     port = get_free_port()
     password = ""
     container_sifile = container_mount_path + "/" + Path(sifile).name
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
     test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
 
     try:
