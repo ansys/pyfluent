@@ -22,7 +22,7 @@ if __name__ == "__main__":
         parser.add_argument(
             "--fluent-path",
             dest="fluent_path",
-            help="Specify the fluent folder to use, with full path.  Such as /apps/ansys_inc/v231/fluent",
+            help="Specify the fluent folder to use, with full path.  Such as /apps/ansys_inc/v232/fluent",
         )
         args = parser.parse_args()
 

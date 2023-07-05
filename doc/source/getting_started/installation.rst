@@ -51,14 +51,14 @@ method:
 
 To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
 environment variable, where ``<ver>`` is the three-digit format for the release.
-For example, ``AWP_ROOT231`` is the environment variable for the 2023 R1 release. 
+For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release. 
 
 On a Windows system, this environment variable is configured when a release is installed.
 
 On a Linux system, you must configure this environment variable to point to the absolute
 path of the installed release. For example, for the 2023 R1 release, you would set
-the ``AWP_ROOT231`` environment variable to point to an absolute location such as
-``/apps/ansys_inc/v231``.
+the ``AWP_ROOT232`` environment variable to point to an absolute location such as
+``/apps/ansys_inc/v232``.
 
 For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
 
