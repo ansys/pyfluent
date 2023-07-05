@@ -719,7 +719,7 @@ def launch_fluent(
             args.append(" -meshing")
 
         if dry_run:
-            image_name, config_dict, _, _, _, _ = configure_container_dict(
+            image_name, config_dict, *_ = configure_container_dict(
                 args, container_dict
             )
             from pprint import pprint
