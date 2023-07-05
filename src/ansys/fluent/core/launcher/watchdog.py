@@ -83,8 +83,6 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     else:
         kwargs.update(stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    logger.debug(f"kwargs: {kwargs}")
-
     if os.name == "nt":
         # https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
         os_cmd = ["start"]
@@ -231,17 +229,13 @@ if __name__ == "__main__":
         logger.info("Checking if Fluent processes are still alive...")
         if fluent.connection_properties.inside_container:
             _response = timeout_loop(
-                get_container, IDLE_PERIOD * 2, args=(cortex_host,), expected="falsy"
+                get_container, IDLE_PERIOD * 5, args=(cortex_host,), expected="falsy"
             )
         else:
-
-            def check_pids_remain(_host, _cortex):
-                return psutil.pid_exists(_host) or psutil.pid_exists(_cortex)
-
             _response = timeout_loop(
-                check_pids_remain,
-                IDLE_PERIOD * 2,
-                args=(fluent_host_pid, cortex_pid),
+                lambda: psutil.pid_exists(fluent_host_pid)
+                or psutil.pid_exists(cortex_pid),
+                IDLE_PERIOD * 5,
                 expected="falsy",
             )
         return _response
@@ -258,7 +252,7 @@ if __name__ == "__main__":
 
         if is_serving:
             logger.info("Fluent client healthy, trying soft exit with timeout...")
-            fluent.exit(timeout=IDLE_PERIOD * 3, timeout_force=False)
+            fluent.exit(timeout=IDLE_PERIOD * 2, timeout_force=False)
             response = check_fluent_processes()
             if response:
                 logger.info("Fluent client or container remains...")
@@ -267,9 +261,10 @@ if __name__ == "__main__":
         else:
             logger.info("Fluent client not healthy.")
 
-    logger.info("Finalizing cleanup...")
     if fluent.connection_properties.inside_container:
-        logger.info("Running Fluent cleanup scripts inside container...")
+        logger.info(
+            "Running Fluent cleanup scripts inside container if they are still available..."
+        )
         fluent.force_exit_container()
         response = timeout_loop(
             get_container,
@@ -285,7 +280,9 @@ if __name__ == "__main__":
         else:
             logger.info("Fluent container successfully shut down.")
     else:
-        logger.info("Running local Fluent cleanup scripts...")
+        logger.info(
+            "Running local Fluent cleanup scripts if they are still available..."
+        )
         fluent.force_exit()
 
     logger.info("Done.")

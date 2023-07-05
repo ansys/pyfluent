@@ -76,7 +76,7 @@ class FluentVersion(Enum):
             else:
                 raise RuntimeError(
                     f"The specified version '{version[:-2]}' is not supported."
-                    + f" Supported versions are: "
+                    + " Supported versions are: "
                     + ", ".join([ver.value for ver in FluentVersion][::-1])
                 )
 
@@ -358,7 +358,7 @@ def _await_fluent_launch(
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
-            logger.info("Fluent process is successfully launched.")
+            logger.info("Fluent has been successfully launched.")
             break
         if start_timeout == 0:
             raise RuntimeError("The launch process has been timed out.")
@@ -515,12 +515,12 @@ def launch_fluent(
         is ``None``.
     start_container : bool, optional
         Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-        :ref:`ref_launcher_container`.
+        :mod:`~ansys.fluent.core.launcher.fluent_container`.
     container_dict : dict, optional
         Dictionary for Fluent Docker container configuration. If specified,
         setting ``start_container = True`` as well is redundant.
         Will launch Fluent inside a Docker container using the configuration changes specified.
-        See also :ref:`ref_launcher_container`.
+        See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
     dry_run : bool, optional
         Defaults to False. If True, will not launch Fluent, and will instead print configuration information
         that would be used as if Fluent was being launched. If dry running a container start,
@@ -601,11 +601,9 @@ def launch_fluent(
         fluent_launch_mode = LaunchMode.PIM
     elif start_container is True or (
         start_container is None
-        and container_dict
-        or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+        and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
         if check_docker_support():
-            start_container = True
             fluent_launch_mode = LaunchMode.CONTAINER
         else:
             raise SystemError(
@@ -615,11 +613,13 @@ def launch_fluent(
     else:
         fluent_launch_mode = LaunchMode.STANDALONE
 
+    del start_container
+
     if start_watchdog is None and cleanup_on_exit:
         start_watchdog = True
 
     if dry_run:
-        if not start_container:
+        if not fluent_launch_mode == LaunchMode.CONTAINER:
             raise ValueError(
                 "'start_container' is false, but 'dry_run' argument for 'launch_fluent' currently is only"
                 " supported when starting containers."

@@ -50,11 +50,11 @@ import logging
 import os
 from pathlib import Path
 import tempfile
-import time
 from typing import List, Union
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.session import _parse_server_info_file
+from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 import docker
 
@@ -68,13 +68,13 @@ def configure_container_dict(
     timeout: int = 30,
     port: int = None,
     license_server: str = None,
-    container_server_info_file: str = None,
+    container_server_info_file: Union[str, Path] = None,
     remove_server_info_file: bool = True,
     fluent_image: str = None,
     image_name: str = None,
     image_tag: str = None,
     **container_dict,
-) -> (str, dict, int, Union[str, Path], int):
+) -> (str, dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
@@ -86,12 +86,12 @@ def configure_container_dict(
     container_mount_path : Union[str, Path], optional
         Path inside the container where host mount path will be mounted to.
     timeout : int, optional
-        Time limit  for the Fluent container to start.
+        Time limit  for the Fluent container to start, in seconds. By default, 30 seconds.
     port : int, optional
         Port for Fluent container to use.
     license_server : str, optional
         License server for Ansys Fluent to use.
-    container_server_info_file : str, optional
+    container_server_info_file : Union[str, Path], optional
         Name of the server information file for Fluent to write on the ``host_mount_path``.
     remove_server_info_file : bool, optional
         Defaults to True, and automatically deletes the server information file after PyFluent has finished using it.
@@ -109,14 +109,15 @@ def configure_container_dict(
     Returns
     -------
     fluent_image : str
-    config_dict : dict
+    container_dict : dict
     timeout : int
-    container_server_info_file : str
     port : int
+    container_server_info_file : Path
+    remove_server_info_file: bool
 
     Notes
     -----
-    This function should usually not be called directly, it will be automatically called through
+    This function should usually not be called directly, it will be automatically used by
     :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` instead.
 
     For a list of additional Docker container run configuration options that can also be specified using
@@ -177,6 +178,11 @@ def configure_container_dict(
     if "command" in container_dict:
         for v in container_dict["command"]:
             if v.startswith("-sifile="):
+                if container_server_info_file:
+                    raise ValueError(
+                        "Specified a server info file command argument as well as "
+                        "a container_server_info_file, pick one."
+                    )
                 container_server_info_file = Path(v.lstrip("-sifile=")).name
                 logger.debug(
                     f"Found server info file specification for {container_server_info_file}."
@@ -271,26 +277,30 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
     ) = container_vars
 
     try:
+        if not container_server_info_file.exists():
+            container_server_info_file.mkdir(exist_ok=True)
+
+        container_server_info_file.touch(exist_ok=True)
+        last_mtime = container_server_info_file.stat().st_mtime
+
         docker_client = docker.from_env()
 
-        logger.debug(f"Starting Fluent docker container with dict: {config_dict}")
+        logger.debug("Starting Fluent docker container...")
 
         docker_client.containers.run(fluent_image, **config_dict)
 
-        last_mtime = os.stat(container_server_info_file).st_mtime
-        while True:
-            if os.stat(container_server_info_file).st_mtime > last_mtime:
-                time.sleep(1)
-                _, _, password = _parse_server_info_file(container_server_info_file)
-                break
-            if timeout == 0:
-                raise RuntimeError(
-                    "Fluent container launch timeout, will have to stop container manually."
-                )
-                break
-            time.sleep(1)
-            timeout -= 1
-        return port, password
+        success = timeout_loop(
+            lambda: container_server_info_file.stat().st_mtime > last_mtime, timeout
+        )
+
+        if not success:
+            raise RuntimeError(
+                "Fluent container launch timeout, will have to stop container manually."
+            )
+        else:
+            _, _, password = _parse_server_info_file(str(container_server_info_file))
+
+            return port, password
     finally:
-        if remove_server_info_file and os.path.exists(container_server_info_file):
-            os.remove(container_server_info_file)
+        if remove_server_info_file and container_server_info_file.exists():
+            container_server_info_file.unlink()

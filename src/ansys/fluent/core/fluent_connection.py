@@ -83,7 +83,8 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
         container = docker_client.containers.get(container_id_or_name)
     except docker.errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except docker.errors.DockerException:
+    except docker.errors.DockerException as exc:
+        logger.info("%s: %s" % (type(exc).__name__, exc))
         return None
     return container
 
@@ -320,12 +321,12 @@ class FluentConnection:
         """
         if self.connection_properties.inside_container:
             logger.error(
-                f"Cannot execute cleanup script, Fluent running inside container. "
-                f"Use force_exit_container() instead."
+                "Cannot execute cleanup script, Fluent running inside container. "
+                "Use force_exit_container() instead."
             )
             return
         if self._remote_instance is not None:
-            logger.error(f"Cannot execute cleanup script, Fluent running remotely.")
+            logger.error("Cannot execute cleanup script, Fluent running remotely.")
             return
 
         pwd = self.connection_properties.cortex_pwd
@@ -344,7 +345,7 @@ class FluentConnection:
             cmd_list = ["bash"]
         else:
             logger.error(
-                f"Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
+                "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
             )
             return
         cleanup_filename = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
@@ -362,7 +363,7 @@ class FluentConnection:
                 stderr=subprocess.DEVNULL,
             )
         else:
-            logger.error(f"Could not find cleanup file.")
+            logger.error("Could not find cleanup file.")
 
     def force_exit_container(self):
         """
@@ -377,14 +378,14 @@ class FluentConnection:
         """
         if self._remote_instance is not None:
             logger.error(
-                f"Fluent is running remotely, cannot terminate Fluent container."
+                "Fluent is running remotely, cannot terminate Fluent container."
             )
             return
         container = self.connection_properties.inside_container
         if not container:
             logger.error(
-                f"Session is not inside a container, cannot terminate Fluent container. "
-                f"Try force_exit() instead."
+                "Session is not inside a container, cannot terminate Fluent container. "
+                "Try force_exit() instead."
             )
             return
         container_id = self.connection_properties.cortex_host
@@ -400,7 +401,7 @@ class FluentConnection:
                     "Caught Docker APIError, Docker container probably not running anymore."
                 )
         else:
-            logger.debug(f"Container not found, cancelling cleanup script execution.")
+            logger.debug("Container not found, cancelling cleanup script execution.")
 
     def register_finalizer_cb(self, cb):
         """Register a callback to run with the finalizer."""

@@ -8,7 +8,11 @@ requires = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore-glob=tests/test_pro/* --ignore-glob=tests/test_datamodel_server/*"
+addopts = """
+--show-capture=all
+--ignore-glob=tests/test_pro/*
+--ignore-glob=tests/test_datamodel_server/*
+"""
 markers = [
     "integration: Short-running tests which read a simple input file and check the exposure and values of various setting objects",
     "quick: Run the quick tests",
