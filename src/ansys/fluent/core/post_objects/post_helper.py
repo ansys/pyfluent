@@ -101,6 +101,7 @@ class PostAPIHelper:
 
     def remote_surface_name(self, local_surface_name):
         """Returns the surface name."""
+
         local_surfaces_provider = self.obj.get_root()._local_surfaces_provider()
 
         if local_surface_name in list(local_surfaces_provider):
