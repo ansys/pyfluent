@@ -1143,9 +1143,8 @@ class PyCommandArguments(PyStateContainer):
         request.commandid = self.path[-1][1]
         try:
             self.service.delete_command_arguments(request)
-        except BaseException:
-            # "Cannot invoke RPC on closed channel!"
-            pass
+        except BaseException as exc:
+            logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
