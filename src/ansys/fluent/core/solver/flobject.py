@@ -885,15 +885,6 @@ class Action(Base):
                 cls = getattr(self.__class__, argument)
                 self._setattr(argument, cls(None, self))
 
-    def arguments(self) -> Any:
-        """Get the arguments for the Action."""
-        attrs = self.get_attrs(["arguments"])
-        if attrs:
-            attrs = attrs.get("attrs", attrs)
-        if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError(f"{self.__class__.__name__} is not active")
-        return attrs["arguments"] if attrs else None
-
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all arguments.
 
