@@ -38,15 +38,19 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     # disable additional services/addons?
 
     # Path to the Python interpreter executable
-    python_executable = sys.executable
+    python_executable = Path(sys.executable)
+    logger.debug(f"sys.executable: {python_executable}")
+
     if os.name == "nt":
-        pythonw_executable = Path(sys.executable).parent / "pythonw.exe"
+        pythonw_executable = python_executable.parent / "pythonw.exe"
         if pythonw_executable.exists():
             python_executable = pythonw_executable
+        else:
+            logger.debug("Could not find Windows 'pythonw.exe' executable.")
 
     # Command to be executed by the new process
     command_list = [
-        Path(python_executable),
+        python_executable,
         Path(__file__),
         str(main_pid),
         str(sv_ip),
@@ -90,7 +94,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
         os_cmd = []
 
     cmd_send = os_cmd + command_list
-    logger.debug(f"Command list: {cmd_send}")
+    logger.debug(f"Watchdog command list: {cmd_send}")
 
     init_file = Path(WATCHDOG_INIT_FILE.format(watchdog_id))
     if init_file.is_file():
