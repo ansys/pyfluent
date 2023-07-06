@@ -718,7 +718,6 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     assert watertight.describe_geometry.enclose_fluid_regions is None
     watertight.create_volume_mesh.delete()
     assert watertight.create_volume_mesh is None
-    # watertight.insert_new_task()
 
 
 @pytest.mark.fluent_232
