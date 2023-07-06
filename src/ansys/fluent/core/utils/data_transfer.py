@@ -4,7 +4,7 @@ import os
 import tempfile
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.async_execution import asynchronous
+from ansys.fluent.core.utils.execution import asynchronous
 
 network_logger = logging.getLogger("pyfluent.networking")
 
