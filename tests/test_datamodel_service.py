@@ -171,7 +171,6 @@ def test_add_on_affected(new_mesh_session):
         sleep(5)
         calls_after_execute.append(list(calls))
         execute_state.append(meshing.workflow())
-    # assert execute_state[1] != execute_state[0]
     assert all(state == execute_state[1] for state in execute_state[2:])
     call_count = sum(map(len, calls_after_execute))
     assert call_count == 6 * loop_count
