@@ -695,9 +695,6 @@ class WorkflowWrapper:
         except AttributeError:
             pass
 
-    # def _task_with_cmd_matching_help_string(self, help_string):
-    #    init_task_accessors(self)
-    #    return getattr(self, help_string)
 
     def _new_workflow(self, name: str, dynamic_interface: bool):
         self._workflow.InitializeWorkflow(WorkflowType=name)
