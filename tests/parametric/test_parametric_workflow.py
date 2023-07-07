@@ -7,6 +7,10 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
+@pytest.mark.fluent_222
+@pytest.mark.fluent_231
+@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 def test_parametric_workflow():
     save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     import_filename = examples.download_file(
