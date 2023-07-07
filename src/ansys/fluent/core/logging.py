@@ -170,9 +170,7 @@ def configure_env_var() -> None:
             env_logging_level = int(env_logging_level)
         else:
             env_logging_level = env_logging_level.upper()
-        if env_logging_level in [0, "OFF"] or is_active():
-            pass
-        else:
+        if not (env_logging_level in [0, "OFF"] or is_active()):
             print(
                 "PYFLUENT_LOGGING environment variable specified, enabling logging..."
             )

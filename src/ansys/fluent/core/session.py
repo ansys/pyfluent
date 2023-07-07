@@ -58,7 +58,7 @@ def _get_datamodel_attributes(session, attribute: str):
             f"ansys.fluent.core.datamodel_{session.version}." + attribute
         )
         return preferences_module.Root(session._se_service, attribute, [])
-    except (ImportError, ModuleNotFoundError):
+    except ImportError:
         datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 

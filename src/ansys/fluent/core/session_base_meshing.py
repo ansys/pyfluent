@@ -67,7 +67,7 @@ class BaseMeshing:
                     f"ansys.fluent.core.meshing.tui_{self.version}"
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
-            except (ImportError, ModuleNotFoundError):
+            except ImportError:
                 tui_logger.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenu([], self._tui_service)
         return self._tui
@@ -80,7 +80,7 @@ class BaseMeshing:
                 f"ansys.fluent.core.datamodel_{self.version}.meshing"
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
-        except (ImportError, ModuleNotFoundError):
+        except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             meshing_root = PyMenuGeneric(self._se_service, "meshing")
         return meshing_root
@@ -104,7 +104,7 @@ class BaseMeshing:
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, ModuleNotFoundError):
+        except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
@@ -127,7 +127,7 @@ class BaseMeshing:
                 self._part_management = pm_module.Root(
                     self._se_service, "PartManagement", []
                 )
-            except (ImportError, ModuleNotFoundError):
+            except ImportError:
                 datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._part_management = PyMenuGeneric(
                     self._se_service, "PartManagement"
@@ -145,7 +145,7 @@ class BaseMeshing:
                 self._pm_file_management = pmfm_module.Root(
                     self._se_service, "PMFileManagement", []
                 )
-            except (ImportError, ModuleNotFoundError):
+            except ImportError:
                 datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._pm_file_management = PyMenuGeneric(
                     self._se_service, "PMFileManagement"

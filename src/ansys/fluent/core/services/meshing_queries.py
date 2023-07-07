@@ -645,9 +645,8 @@ class MeshingQueries:
             for obj in object:
                 if obj not in allowed_args:
                     raise ValueError(f"Allowed objects - {allowed_args}\n")
-        elif isinstance(object, str):
-            if object not in allowed_args:
-                raise ValueError(f"Allowed objects - {allowed_args}\n")
+        elif isinstance(object, str) and object not in allowed_args:
+            raise ValueError(f"Allowed objects - {allowed_args}\n")
 
     def get_region_name_list_of_object(self, object) -> Any:
         """
@@ -676,9 +675,8 @@ class MeshingQueries:
             for reg in region:
                 if reg not in regions:
                     raise ValueError(f"Allowed regions - {regions}\n")
-        elif isinstance(region, str):
-            if region not in regions:
-                raise ValueError(f"Allowed regions - {regions}\n")
+        elif isinstance(region, str) and region not in regions:
+            raise ValueError(f"Allowed regions - {regions}\n")
 
     def get_face_zone_at_location(self, location) -> Any:
         """

@@ -103,7 +103,7 @@ class Solver(BaseSession):
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, ModuleNotFoundError):
+        except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
