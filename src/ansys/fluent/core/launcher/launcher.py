@@ -653,10 +653,7 @@ def launch_fluent(
             "journal_filepath",
             "case_data_filepath",
         ]
-        invalid_arg_names = []
-        for arg_name in arg_names:
-            if argvals[arg_name] is not None:
-                invalid_arg_names.append(arg_name)
+        invalid_arg_names = list(filter(lambda arg_name:argvals[arg_name] is not None, arg_names))
         if len(invalid_arg_names) != 0:
             invalid_str_names = ", ".join(invalid_arg_names)
             raise ValueError(
