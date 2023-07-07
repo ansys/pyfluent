@@ -628,9 +628,7 @@ def launch_fluent(
     if (
         start_watchdog is None
         and cleanup_on_exit
-        and (
-            fluent_launch_mode == LaunchMode.CONTAINER
-            or fluent_launch_mode == LaunchMode.STANDALONE
+        and (fluent_launch_mode in (LaunchMode.CONTAINER, LaunchMode.STANDALONE)
         )
     ):
         start_watchdog = True
