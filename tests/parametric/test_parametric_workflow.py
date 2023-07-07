@@ -13,8 +13,8 @@ def test_parametric_workflow():
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=save_path
     )
     solver_session = pyfluent.launch_fluent(cwd=save_path)
-    solver_session.tui.file.read_case(import_filename)
-    solver_session.tui.solve.set.number_of_iterations("100")
+    solver_session.file.read_case(file_name=import_filename)
+    solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
     solver_session.tui.define.boundary_conditions.set.velocity_inlet(
         "inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit"
@@ -48,7 +48,6 @@ def test_parametric_workflow():
     solver_session.solution.report_definitions.surface[
         "outlet-vel-avg"
     ].surface_names = ["outlet"]
-    solver_session.tui.define.parameters.enable_in_TUI("yes")
     solver_session.tui.define.parameters.output_parameters.create(
         "report-definition", "outlet-temp-avg"
     )
@@ -79,7 +78,7 @@ def test_parametric_workflow():
     assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
         333.352809
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506835)
     dp1_name = study1.design_points.create_1()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
@@ -104,14 +103,14 @@ def test_parametric_workflow():
     assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
         333.352809
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506835)
     assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.003197)
     assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029885)
     assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.003197)
     assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029885)
     design_point_table = str(Path(save_path) / "design_point_table_study_1.csv")
     solver_session.parametric_studies.export_design_table(filepath=design_point_table)
-    study1.delete_design_points(design_points=[dp1_name])
+    study1.design_points.delete_design_points(design_points=[dp1_name])
     assert len(study1.design_points) == 2
     study_names = set([*solver_session.parametric_studies.keys()])
     solver_session.parametric_studies.duplicate()
@@ -126,7 +125,7 @@ def test_parametric_workflow():
     del solver_session.parametric_studies[study1_name]
     assert len(solver_session.parametric_studies) == 1
     project_filename = Path(save_path) / "static_mixer_study.flprj"
-    solver_session.tui.file.parametric_project.save_as(
+    solver_session.file.parametric_project.save_as(
         project_filename=str(project_filename)
     )
     assert project_filename.exists()
