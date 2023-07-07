@@ -611,6 +611,14 @@ def launch_fluent(
 
     del start_container
 
+    if additional_arguments is None:
+        additional_arguments = ""
+    elif fluent_launch_mode == LaunchMode.PIM:
+        raise ValueError(
+            "'additional_arguments' option for 'launch_fluent' is currently not supported "
+            "when starting a remote Fluent PyPIM client."
+        )
+
     if fluent_launch_mode == LaunchMode.PIM and start_watchdog:
         raise ValueError(
             "'start_watchdog' argument for 'launch_fluent' is currently not supported "
@@ -637,7 +645,6 @@ def launch_fluent(
 
     if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
-            "additional_arguments",
             "env",
             "cwd",
             "topy",
@@ -661,11 +668,9 @@ def launch_fluent(
 
     if fluent_launch_mode == LaunchMode.STANDALONE:
         if lightweight_mode is None:
+            # note argvals is no longer locals() here due to _get_session_info() pass
+            argvals.pop("lightweight_mode")
             lightweight_mode = False
-        if additional_arguments is None:
-            additional_arguments = ""
-
-        argvals = locals()
 
         _raise_exception_g_gu_in_windows_os(additional_arguments)
 
