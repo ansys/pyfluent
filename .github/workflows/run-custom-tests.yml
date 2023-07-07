@@ -2,8 +2,7 @@
 name: Run Custom Tests
 
 on:
-# Enable to run automatically on PR update
-  #pull_request:
+  pull_request:
   workflow_dispatch:
 
 concurrency:
