@@ -244,7 +244,7 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except BaseException as ex:
             logger.debug(str(ex))
-        self._command_source._wait_on_refresh()
+        # self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __setattr__(self, attr, value):
@@ -641,7 +641,7 @@ class WorkflowWrapper:
         )  # or self._task_with_cmd_matching_help_string(attr)
         if obj:
             return obj
-        self._wait_on_refresh()
+        # self._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __dir__(self):
@@ -695,7 +695,6 @@ class WorkflowWrapper:
         except AttributeError:
             pass
 
-
     def _new_workflow(self, name: str, dynamic_interface: bool):
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)
@@ -716,7 +715,7 @@ class WorkflowWrapper:
                 self._refresh_count += 1
                 self._refreshing = False
 
-            self.add_on_affected(refresh_after_sleep)
+            # self.add_on_affected(refresh_after_sleep)
 
 
 class _MakeReadOnly:

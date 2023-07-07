@@ -702,6 +702,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     # is still updating after the command has returned and the client can try to access
     # while it is in that update phase, leading to (difficult to understand) exceptions.
     # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
+    sleep(5)
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is None
     watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
