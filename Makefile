@@ -21,7 +21,7 @@ unittest: unittest-dev-231
 
 unittest-custom:
 	@echo "Running custom unittest"
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -k test_parametric_workflow  # Update custom testlist
 
