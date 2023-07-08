@@ -21,26 +21,31 @@ unittest: unittest-dev-231
 
 unittest-custom:
 	@echo "Running custom unittest"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -k test_parametric_workflow  # Update custom testlist
 
 unittest-dev-222:
 	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_222" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-dev-231:
 	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_231" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-dev-232:
 	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_232" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-dev-241:
 	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_241" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
