@@ -2,7 +2,6 @@
 name: Run Custom Tests
 
 on:
-  pull_request:
   workflow_dispatch:
 
 concurrency:

@@ -15,9 +15,6 @@ def test_parametric_workflow():
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=save_path
     )
     solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
-    # solver_session.scheme_eval.scheme_eval(
-    #    "(set parametric-study-dependents-manager save-project-at-exit? #f)"
-    # )
     solver_session.file.read_case(file_name=import_filename)
     solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
@@ -136,7 +133,7 @@ def test_parametric_workflow():
     assert project_filename.exists()
     solver_session.exit()
     time.sleep(10)
-    solver_session = pyfluent.launch_fluent(cwd=save_path)
+    solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
     solver_session.file.parametric_project.open(project_filename=str(project_filename))
     solver_session.file.parametric_project.save()
     project_save_as_name = Path(save_path) / "static_mixer_study_save_as.flprj"
