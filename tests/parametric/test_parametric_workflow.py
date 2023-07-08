@@ -8,8 +8,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
-@pytest.mark.fluent_222
-@pytest.mark.fluent_231
 @pytest.mark.fluent_232
 @pytest.mark.fluent_241
 def test_parametric_workflow():
@@ -155,6 +153,6 @@ def test_parametric_workflow():
     )
     assert project_save_as_copy_name.exists()
     archive_name = Path(save_path) / "static_mixer_study.flprz"
-    solver_session.file.parametric_project.save_as(archive_name=str(archive_name))
+    solver_session.file.parametric_project.archive(archive_name=str(archive_name))
     assert archive_name.exists()
     solver_session.exit()
