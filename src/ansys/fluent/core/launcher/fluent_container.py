@@ -48,7 +48,7 @@ image_name = 'ghcr.io/ansys/pyfluent:v23.1.0'
 """
 import logging
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import tempfile
 from typing import List, Union
 
@@ -112,7 +112,7 @@ def configure_container_dict(
     container_dict : dict
     timeout : int
     port : int
-    container_server_info_file : Path
+    host_server_info_file : Path
     remove_server_info_file: bool
 
     Notes
@@ -132,9 +132,7 @@ def configure_container_dict(
         os.makedirs(host_mount_path)
 
     if not container_mount_path:
-        container_mount_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
-        )
+        container_mount_path = os.getenv("PYFLUENT_CONTAINER_MOUNT_PATH", "/temp")
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
@@ -183,21 +181,24 @@ def configure_container_dict(
                         "Specified a server info file command argument as well as "
                         "a container_server_info_file, pick one."
                     )
-                container_server_info_file = Path(v.lstrip("-sifile=")).name
+                container_server_info_file = PurePosixPath(v.lstrip("-sifile=")).name
                 logger.debug(
                     f"Found server info file specification for {container_server_info_file}."
                 )
 
     if container_server_info_file:
         container_server_info_file = (
-            Path(container_mount_path) / Path(container_server_info_file).name
+            PurePosixPath(container_mount_path)
+            / PurePosixPath(container_server_info_file).name
         )
     else:
         fd, sifile = tempfile.mkstemp(
             suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
         os.close(fd)
-        container_server_info_file = Path(container_mount_path) / Path(sifile).name
+        container_server_info_file = (
+            PurePosixPath(container_mount_path) / Path(sifile).name
+        )
 
     if not fluent_image:
         if not image_tag:
@@ -228,12 +229,14 @@ def configure_container_dict(
 
     logger.debug(f"container_dict after processing: {container_dict}")
 
+    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
+
     return (
         fluent_image,
         container_dict,
         timeout,
         port,
-        container_server_info_file,
+        host_server_info_file,
         remove_server_info_file,
     )
 
@@ -272,16 +275,16 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
         config_dict,
         timeout,
         port,
-        container_server_info_file,
+        host_server_info_file,
         remove_server_info_file,
     ) = container_vars
 
     try:
-        if not container_server_info_file.exists():
-            container_server_info_file.mkdir(exist_ok=True)
+        if not host_server_info_file.exists():
+            host_server_info_file.mkdir(exist_ok=True)
 
-        container_server_info_file.touch(exist_ok=True)
-        last_mtime = container_server_info_file.stat().st_mtime
+        host_server_info_file.touch(exist_ok=True)
+        last_mtime = host_server_info_file.stat().st_mtime
 
         docker_client = docker.from_env()
 
@@ -290,7 +293,7 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
         docker_client.containers.run(fluent_image, **config_dict)
 
         success = timeout_loop(
-            lambda: container_server_info_file.stat().st_mtime > last_mtime, timeout
+            lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
 
         if not success:
@@ -298,9 +301,9 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
                 "Fluent container launch timeout, will have to stop container manually."
             )
         else:
-            _, _, password = _parse_server_info_file(str(container_server_info_file))
+            _, _, password = _parse_server_info_file(str(host_server_info_file))
 
             return port, password
     finally:
-        if remove_server_info_file and container_server_info_file.exists():
-            container_server_info_file.unlink()
+        if remove_server_info_file and host_server_info_file.exists():
+            host_server_info_file.unlink()
