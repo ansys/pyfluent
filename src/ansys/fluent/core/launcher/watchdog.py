@@ -38,8 +38,18 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     # disable additional services/addons?
 
     # Path to the Python interpreter executable
-    python_executable = Path(sys.executable)
+    python_executable = sys.executable
+
+    if not python_executable:
+        logger.warning(
+            "Python executable not found, please verify Python environment. "
+            "Cancelling PyFluent Watchdog monitoring."
+        )
+        return
+
     logger.debug(f"sys.executable: {python_executable}")
+
+    python_executable = Path(python_executable)
 
     if os.name == "nt":
         pythonw_executable = python_executable.parent / "pythonw.exe"
@@ -97,18 +107,31 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     logger.info(f"Watchdog command list: {cmd_send}")
 
     init_file = Path(WATCHDOG_INIT_FILE.format(watchdog_id))
+    watchdog_err = Path("pyfluent_watchdog.err")
+
     if init_file.is_file():
         init_file.unlink()
+
+    if watchdog_err.is_file():
+        watchdog_err.unlink()
 
     subprocess.Popen(cmd_send, **kwargs)
 
     logger.info(f"Waiting for Watchdog to initialize, then proceeding...")
-    success = timeout_loop(init_file.is_file, 10.0)
-    if success:
+    file_exists = timeout_loop(
+        lambda: init_file.is_file() or watchdog_err.is_file(), 10.0
+    )
+
+    if file_exists and init_file.is_file():
         time.sleep(0.1)
         init_file.unlink()
         logger.info("Watchdog initialized.")
     else:
+        if watchdog_err.is_file():
+            with open(watchdog_err) as f:
+                err_content = f.read()
+            watchdog_err.unlink()
+            logger.error("Watchdog - %s" % err_content.replace("\n", ""))
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
@@ -295,6 +318,7 @@ if __name__ == "__main__":
 
         logger.info("Done.")
 
-    except Exception as exc:
-        with open("pyfluent_watchdog.err", "a") as file:
+    except BaseException as exc:
+        with open("pyfluent_watchdog.err", "w") as file:
             file.write("%s: %s" % (type(exc).__name__, exc))
+        raise
