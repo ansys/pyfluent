@@ -1,7 +1,7 @@
 .. _ref_launcher:
 
-Launcher
-========
+Fluent launcher
+===============
 
 .. automodule:: ansys.fluent.core.launcher.launcher
    :members:
@@ -10,3 +10,9 @@ Launcher
    :exclude-members: __weakref__, __dict__
    :special-members: __init__
    :autosummary:
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    fluent_container

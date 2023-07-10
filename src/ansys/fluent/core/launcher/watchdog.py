@@ -1,4 +1,3 @@
-import multiprocessing.pool
 import os
 from pathlib import Path
 import random
@@ -8,6 +7,7 @@ import sys
 import time
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
 IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
@@ -22,9 +22,6 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
 
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
     if env_watchdog_debug in ("1", "ON"):
-        print(f"Number of arguments: {len(sys.argv)} arguments.")
-        print(f"Argument list: {sys.argv}")
-
         print(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
             f"enabling debugging for watchdog id {watchdog_id}..."
@@ -86,8 +83,6 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     else:
         kwargs.update(stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    logger.debug(f"kwargs: {kwargs}")
-
     if os.name == "nt":
         # https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
         os_cmd = ["start"]
@@ -103,29 +98,24 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
 
     subprocess.Popen(cmd_send, **kwargs)
 
-    logger.debug(f"Waiting for Watchdog to initialize, then proceeding...")
-    i = 0.0
-    success = False
-    while i <= 10:
-        if init_file.is_file():
-            success = True
-            init_file.unlink()
-            break
-        i += 0.5
-        time.sleep(0.5)
-    if not success:
+    logger.info(f"Waiting for Watchdog to initialize, then proceeding...")
+    success = timeout_loop(init_file.is_file, 10.0)
+    if success:
+        time.sleep(0.1)
+        init_file.unlink()
+        logger.info("Watchdog initialized.")
+    else:
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
 
 
 if __name__ == "__main__":
-    from multiprocessing.context import TimeoutError
     import signal
 
     import psutil
 
-    from ansys.fluent.core.fluent_connection import FluentConnection, get_container_ids
+    from ansys.fluent.core.fluent_connection import FluentConnection, get_container
 
     print(
         "Starting PyFluent Watchdog process, do not manually close or terminate this process, "
@@ -180,7 +170,7 @@ if __name__ == "__main__":
     if ip == "None":
         ip = None
 
-    logger.debug("Attempting to connect to existing Fluent session...")
+    logger.info("Attempting to connect to existing Fluent session...")
 
     kwargs = {
         "ip": ip,
@@ -188,23 +178,19 @@ if __name__ == "__main__":
         "password": password,
         "launcher_args": None,
         "start_transcript": False,
-        "cleanup_on_exit": False,
+        "cleanup_on_exit": True,
     }
 
-    def _start_connection(**connection_kwargs):
-        return FluentConnection(**connection_kwargs)
+    fluent = timeout_exec(FluentConnection, timeout=IDLE_PERIOD * 5, kwargs=kwargs)
+    if not fluent:
+        logger.error("Fluent connection timeout.")
+        sys.exit()
 
-    pool = multiprocessing.pool.ThreadPool(processes=1)
-    async_result = pool.apply_async(_start_connection, kwds=kwargs)
-    try:
-        fluent = async_result.get(timeout=IDLE_PERIOD * 5)
-        pool.close()
-    except TimeoutError:
-        logger.debug("Fluent connection timeout")
-        pool.terminate()
-        sys.exit("Unable to connect to Fluent client")
+    if fluent._remote_instance:
+        logger.error("PyFluentWatchdog does not work with remote Fluent instances.")
+        sys.exit()
 
-    logger.debug("Fluent connection successful")
+    logger.info("Fluent connection successful")
 
     open(WATCHDOG_INIT_FILE.format(watchdog_id), "w").close()
 
@@ -216,95 +202,87 @@ if __name__ == "__main__":
     logger.debug(f"cortex_pid: {cortex_pid}")
     logger.debug(f"cortex_host: {cortex_host}")
 
+    down = []
     while True:
         if not psutil.pid_exists(launcher_pid):
             logger.debug("Python launcher down")
+            down.append("Python")
+        if not fluent.connection_properties.inside_container:
+            if not psutil.pid_exists(cortex_pid):
+                logger.debug("Cortex down")
+                down.append("Cortex")
+            if not psutil.pid_exists(fluent_host_pid):
+                logger.debug("Fluent down")
+                down.append("Fluent")
+        else:
+            if not get_container(cortex_host):
+                logger.debug("Fluent container down")
+                down.append("Fluent container")
+        if down:
             break
-        if not fluent._remote_instance:
-            if fluent.connection_properties.inside_container is False:
-                if not psutil.pid_exists(cortex_pid):
-                    logger.debug("Cortex down")
-                    break
-                if not psutil.pid_exists(fluent_host_pid):
-                    logger.debug("Fluent down")
-                    break
-            elif fluent.connection_properties.inside_container is True:
-                if not cortex_host in get_container_ids():
-                    logger.debug("Fluent container down")
-                    break
-                # additional wait due to expensive get_container_ids() call
-                time.sleep(IDLE_PERIOD * 2)
-            else:
-                logger.debug(
-                    "Undefined whether Fluent is inside a container or not, "
-                    "monitoring only the Python process..."
-                )
-        logger.debug("Waiting...")
+        logger.info("Waiting...")
         time.sleep(IDLE_PERIOD)
 
-    down = []
-    if not psutil.pid_exists(launcher_pid):
-        down.append("Python")
+    logger.info(", ".join(down) + " not running anymore")
+
+    def check_fluent_processes():
+        logger.info("Checking if Fluent processes are still alive...")
+        if fluent.connection_properties.inside_container:
+            _response = timeout_loop(
+                get_container, IDLE_PERIOD * 5, args=(cortex_host,), expected="falsy"
+            )
+        else:
+            _response = timeout_loop(
+                lambda: psutil.pid_exists(fluent_host_pid)
+                or psutil.pid_exists(cortex_pid),
+                IDLE_PERIOD * 5,
+                expected="falsy",
+            )
+        return _response
+
+    alive = check_fluent_processes()
+
+    if alive:
+        logger.info(
+            "Fluent processes remain. Checking if Fluent gRPC service is healthy..."
+        )
+        is_serving = timeout_exec(
+            fluent.health_check_service.is_serving, timeout=IDLE_PERIOD * 3
+        )
+
+        if is_serving:
+            logger.info("Fluent client healthy, trying soft exit with timeout...")
+            fluent.exit(timeout=IDLE_PERIOD * 2, timeout_force=False)
+            response = check_fluent_processes()
+            if response:
+                logger.info("Fluent client or container remains...")
+            else:
+                logger.info("Exit call succeeded.")
+        else:
+            logger.info("Fluent client not healthy.")
+
     if fluent.connection_properties.inside_container:
-        if cortex_host not in get_container_ids():
-            down.append("Fluent container")
-
-    if (
-        fluent.connection_properties.inside_container is False
-        and not fluent._remote_instance
-    ):
-        if not psutil.pid_exists(fluent_host_pid):
-            down.append("Fluent")
-        if not psutil.pid_exists(cortex_pid):
-            down.append("Cortex")
-
-    logger.debug(", ".join(down) + " not running anymore")
-    # wait a bit as processes may be currently closing down
-    time.sleep(IDLE_PERIOD * 2)
-
-    def _check_serving(fl):
-        return fl.health_check_service.is_serving
-
-    pool = multiprocessing.pool.ThreadPool(processes=1)
-    async_result = pool.apply_async(_check_serving, args=(fluent,))
-    try:
-        is_serving = async_result.get(timeout=IDLE_PERIOD * 3)
-        pool.close()
-    except TimeoutError:
-        is_serving = False
-        pool.terminate()
-
-    force = False
-    if is_serving:
-        logger.debug("Fluent client healthy, trying soft exit with timeout...")
-        fluent.exit(timeout=IDLE_PERIOD * 3, timeout_force=False)
-        logger.debug("Waiting...")
-        time.sleep(IDLE_PERIOD * 2)
-        if (
-            fluent.connection_properties.inside_container
-            and cortex_host in get_container_ids()
-        ):
-            logger.debug("Exit call passed, but Fluent container remains...")
-            force = True
-        elif psutil.pid_exists(fluent_host_pid) or psutil.pid_exists(cortex_pid):
-            logger.debug("Exit call passed, but Fluent client remains...")
-            force = True
+        logger.info(
+            "Running Fluent cleanup scripts inside container if they are still available..."
+        )
+        fluent.force_exit_container()
+        response = timeout_loop(
+            get_container,
+            IDLE_PERIOD * 3,
+            args=(cortex_host,),
+            expected="falsy",
+        )
+        if response:
+            logger.info(
+                "Fluent container still alive somehow, directly terminating it..."
+            )
+            subprocess.run(["docker", "kill", cortex_host])
         else:
-            logger.debug("Exit call succeeded.")
-        logger.debug("Continuing...")
+            logger.info("Fluent container successfully shut down.")
     else:
-        logger.debug("Fluent client not healthy")
-        force = True
+        logger.info(
+            "Running local Fluent cleanup scripts if they are still available..."
+        )
+        fluent.force_exit()
 
-    if force:
-        logger.debug("Forcing cleanup...")
-        if fluent._remote_instance:
-            logger.error("Cannot terminate remote Fluent client.")
-        elif fluent.connection_properties.inside_container:
-            logger.debug("Terminating Fluent container...")
-            fluent.force_exit_container()
-        else:
-            logger.debug("Terminating local Fluent client...")
-            fluent.force_exit()
-
-    logger.debug("Done.")
+    logger.info("Done.")
