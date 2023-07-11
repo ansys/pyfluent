@@ -59,6 +59,7 @@ from ansys.fluent.core.utils.networking import get_free_port
 import docker
 
 logger = logging.getLogger("pyfluent.launcher")
+DEFAULT_CONTAINER_MOUNT_PATH = "/tmpdir"
 
 
 def configure_container_dict(
@@ -132,7 +133,9 @@ def configure_container_dict(
         os.makedirs(host_mount_path)
 
     if not container_mount_path:
-        container_mount_path = os.getenv("PYFLUENT_CONTAINER_MOUNT_PATH", "/temp")
+        container_mount_path = os.getenv(
+            "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
+        )
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
