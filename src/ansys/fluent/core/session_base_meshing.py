@@ -2,8 +2,6 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.meshing.meshing import Meshing
-
 from ansys.fluent.core.meshing.meshing_workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -89,12 +87,7 @@ class BaseMeshing:
     @property
     def meshing(self):
         if self._meshing is None:
-            self._meshing = Meshing(
-                self._session_execute_tui,
-                self._meshing_root,
-                self.tui,
-                self._fluent_connection,
-            )
+            self._meshing = self._meshing_root
         return self._meshing
 
     @property

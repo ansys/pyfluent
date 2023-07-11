@@ -2,8 +2,6 @@
 name: Run Custom Tests
 
 on:
-# Enable to run automatically on PR update
-  #pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -24,6 +22,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - image-tag: v22.2.0
+            version: 222
+          - image-tag: v23.1.0
+            version: 231
+          - image-tag: v23.2.0
+            version: 232
           - image-tag: v24.1.0
             version: 241
 
