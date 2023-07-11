@@ -16,7 +16,7 @@ class Attribute:
         "is_valid",
         "is_active",
         "help_context",
-        "show_as_separate_object",
+        "show_border",
         "display_text",
         "layout",
         "previous",
