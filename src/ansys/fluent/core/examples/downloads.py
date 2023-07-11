@@ -100,7 +100,9 @@ def download_file(
     save_path : str, optional
         Path to download the specified file to.
     return_only_filename : bool, optional
-        Mainly relevant when using Fluent Docker container images, as the full path for the imported file from
+        When unspecified, defaults to False, unless the PYFLUENT_LAUNCH_CONTAINER=1 environment variable is specified,
+        in which case defaults to True.
+        Relevant when using Fluent Docker container images, as the full path for the imported file from
         the host side is not necessarily going to be the same as the one for Fluent inside the container.
         Assuming the Fluent inside the container has its working directory set to the path that was mounted from
         the host, and that the example files are being downloaded by the host to this same path, only the filename is
@@ -121,8 +123,11 @@ def download_file(
     >>> filename
     'bracket.iges'
     """
-    if return_only_filename is None and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        return_only_filename = True
+    if return_only_filename is None:
+        if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+            return_only_filename = True
+        else:
+            return_only_filename = False
 
     url = _get_file_url(filename, directory)
     return _retrieve_file(url, filename, save_path, return_only_filename)
