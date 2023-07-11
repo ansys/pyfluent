@@ -614,13 +614,13 @@ def launch_fluent(
     if additional_arguments is None:
         additional_arguments = ""
     elif fluent_launch_mode == LaunchMode.PIM:
-        raise ValueError(
+        logger.warning(
             "'additional_arguments' option for 'launch_fluent' is currently not supported "
             "when starting a remote Fluent PyPIM client."
         )
 
     if fluent_launch_mode == LaunchMode.PIM and start_watchdog:
-        raise ValueError(
+        logger.warning(
             "'start_watchdog' argument for 'launch_fluent' is currently not supported "
             "when starting a remote Fluent PyPIM client."
         )
@@ -633,7 +633,7 @@ def launch_fluent(
         start_watchdog = True
 
     if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
-        raise ValueError(
+        logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
             "supported when starting containers."
         )
@@ -655,7 +655,7 @@ def launch_fluent(
         )
         if len(invalid_arg_names) != 0:
             invalid_str_names = ", ".join(invalid_arg_names)
-            raise ValueError(
+            logger.warning(
                 f"These specified arguments are only supported when starting "
                 f"local standalone Fluent clients: {invalid_str_names}."
             )
