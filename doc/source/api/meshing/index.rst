@@ -118,8 +118,6 @@ TUI commands example
     :template: flobject-module-template.rst
     :recursive:
 
-    meshing
-
 .. toctree::
    :maxdepth: 2
    :hidden:
