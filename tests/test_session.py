@@ -252,7 +252,10 @@ def test_journal_creation(file_format, new_mesh_session):
     print(f"prev_stat: {prev_stat}")
 
     session = new_mesh_session
-    session.journal.start(file_path.name)
+    if session.connection_properties.inside_container:
+        session.journal.start(file_path.name)
+    else:
+        session.journal.start(file_path)
     session = session.switch_to_solver()
     session.journal.stop()
     new_stat = file_path.stat()

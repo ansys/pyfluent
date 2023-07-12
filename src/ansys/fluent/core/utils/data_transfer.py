@@ -75,9 +75,7 @@ def transfer_case(
     -------
     None
     """
-    inside_container = (
-        source_instance.fluent_connection.connection_properties.inside_container
-    )
+    inside_container = source_instance.connection_properties.inside_container
     if not workdir:
         workdir = Path(pyfluent.EXAMPLES_PATH)
     else:

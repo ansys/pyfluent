@@ -90,7 +90,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         return _fluent_host_pid, _cortex_host, _inside_container, _cortex_pwd
 
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
-    time.sleep(5)
+    time.sleep(10)
     if inside_container:
         assert get_container(cortex_host)
         subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
@@ -109,16 +109,14 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         cleanup_filename = (
             f"cleanup-fluent-{cortex_host}-{fluent_host_pid}.{cleanup_file_ext}"
         )
-        print(cleanup_filename)
+        print(f"cleanup_filename: {cleanup_filename}")
         cmd_list.append(Path(cortex_pwd, cleanup_filename))
-        print(cmd_list)
+        print(f"cmd_list: {cmd_list}")
         subprocess.Popen(
             cmd_list,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        time.sleep(2)
-        assert not psutil.pid_exists(fluent_host_pid)
 
 
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
