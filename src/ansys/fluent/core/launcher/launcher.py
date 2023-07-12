@@ -356,10 +356,7 @@ def _await_fluent_launch(
             raise RuntimeError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
-        logger.info(
-            "Waiting for Fluent to launch...%02d seconds remaining",
-            start_timeout,
-        )
+        logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
 
 
 def _get_server_info(
