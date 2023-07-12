@@ -461,7 +461,7 @@ def launch_fluent(
     processor_count: int = None,
     journal_filepath: str = None,
     start_timeout: int = 100,
-    additional_arguments: str = "",
+    additional_arguments: str = None,
     env: Dict[str, Any] = None,
     start_container: bool = None,
     container_dict: dict = None,
@@ -471,9 +471,8 @@ def launch_fluent(
     show_gui: bool = None,
     case_filepath: str = None,
     case_data_filepath: str = None,
-    lightweight_mode: bool = False,
+    lightweight_mode: bool = None,
     mode: Union[FluentMode, str, None] = None,
-    server_info_filepath: str = None,
     py: bool = None,
     gpu: bool = None,
     cwd: str = None,
@@ -509,7 +508,6 @@ def launch_fluent(
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
-        The default is``""``.
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
@@ -543,7 +541,7 @@ def launch_fluent(
         If provided, the case file at ``case_filepath`` is read into the Fluent session.
     case_data_filepath : str, optional
         If provided, the case and data files at ``case_data_filepath`` are read into the Fluent session.
-    lightweight_mode: bool, optional
+    lightweight_mode : bool, optional
         Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
         current Fluent solver session. The mesh is read into a background Fluent solver session which will
         replace the current Fluent solver session once the mesh read is complete and the lightweight settings
@@ -558,13 +556,12 @@ def launch_fluent(
         If True, Fluent will run in Python mode. Default is None.
     gpu : bool, optional
         If True, Fluent will start with GPU Solver.
-    cwd: str, Optional
-        Path to specify current working directory to launch fluent from the defined directory as
-        current working directory.
-    topy: str or list, optional
+    cwd : str, Optional
+        Working directory for the Fluent client.
+    topy : str or list, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s) and write the equivalent Python journal(s).
-    start_watchdog: bool, optional
+    start_watchdog : bool, optional
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
@@ -595,7 +592,6 @@ def launch_fluent(
                 f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
             )
     del kwargs
-    argvals = locals()
 
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM
@@ -615,20 +611,65 @@ def launch_fluent(
 
     del start_container
 
-    if start_watchdog is None and cleanup_on_exit:
+    if additional_arguments is None:
+        additional_arguments = ""
+    elif fluent_launch_mode == LaunchMode.PIM:
+        logger.warning(
+            "'additional_arguments' option for 'launch_fluent' is currently not supported "
+            "when starting a remote Fluent PyPIM client."
+        )
+
+    if fluent_launch_mode == LaunchMode.PIM and start_watchdog:
+        logger.warning(
+            "'start_watchdog' argument for 'launch_fluent' is currently not supported "
+            "when starting a remote Fluent PyPIM client."
+        )
+
+    if (
+        start_watchdog is None
+        and cleanup_on_exit
+        and (fluent_launch_mode in (LaunchMode.CONTAINER, LaunchMode.STANDALONE))
+    ):
         start_watchdog = True
 
-    if dry_run:
-        if not fluent_launch_mode == LaunchMode.CONTAINER:
-            raise ValueError(
-                "'start_container' is false, but 'dry_run' argument for 'launch_fluent' currently is only"
-                " supported when starting containers."
+    if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
+        logger.warning(
+            "'dry_run' argument for 'launch_fluent' currently is only "
+            "supported when starting containers."
+        )
+
+    argvals = locals()
+
+    if fluent_launch_mode != LaunchMode.STANDALONE:
+        arg_names = [
+            "env",
+            "cwd",
+            "topy",
+            "case_filepath",
+            "lightweight_mode",
+            "journal_filepath",
+            "case_data_filepath",
+        ]
+        invalid_arg_names = list(
+            filter(lambda arg_name: argvals[arg_name] is not None, arg_names)
+        )
+        if len(invalid_arg_names) != 0:
+            invalid_str_names = ", ".join(invalid_arg_names)
+            logger.warning(
+                f"These specified arguments are only supported when starting "
+                f"local standalone Fluent clients: {invalid_str_names}."
             )
 
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
-    _raise_exception_g_gu_in_windows_os(additional_arguments)
 
     if fluent_launch_mode == LaunchMode.STANDALONE:
+        if lightweight_mode is None:
+            # note argvals is no longer locals() here due to _get_session_info() pass
+            argvals.pop("lightweight_mode")
+            lightweight_mode = False
+
+        _raise_exception_g_gu_in_windows_os(additional_arguments)
+
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
