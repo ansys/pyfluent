@@ -207,11 +207,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     old_argval = argval
                     argval = default
                     logger.warning(
-                        f"Default value {argval} is chosen for {k} as the passed, value {old_argval} is outside, allowed values {allowed_values}."
+                        f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values}), default value '{argval}' is going to be used instead."
                     )
                 else:
                     logger.warning(
-                        f"{k} = {argval} is discarded as it is outside, allowed values {allowed_values}"
+                        f"{k} = {argval} is discarded as it is not an allowed value. Allowed values: {allowed_values}"
                     )
                     continue
             fluent_map = v.get("fluent_map")
