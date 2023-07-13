@@ -39,7 +39,6 @@ config_dict =
  'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
  'labels': {'test_name': 'none'},
  'ports': {'54000': 54000},
- 'tty': True,
  'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/tmpdir'],
  'working_dir': '/tmpdir'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
@@ -228,8 +227,10 @@ def configure_container_dict(
         command=fluent_commands,
         detach=True,
         auto_remove=True,
-        tty=True,
     )
+
+    if fluent_image.split(":")[1] == "v24.1.0":
+        container_dict_default.update(tty=True)
 
     for k, v in container_dict_default.items():
         if k not in container_dict:

@@ -760,7 +760,9 @@ def launch_fluent(
             args.append(" -meshing")
 
         if dry_run:
-            config_dict, *_ = configure_container_dict(args, container_dict)
+            if container_dict is None:
+                container_dict = {}
+            config_dict, *_ = configure_container_dict(args, **container_dict)
             from pprint import pprint
 
             print("\nDocker container run configuration:\n")
