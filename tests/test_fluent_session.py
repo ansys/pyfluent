@@ -67,12 +67,11 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
 
     fluent_host_pid, cortex_host, inside_container = f()
 
-    for _ in range(31):
-        if (inside_container and not get_container(cortex_host)) or (
-            not inside_container and not psutil.pid_exists(fluent_host_pid)
-        ):
-            break
-        time.sleep(1)
+    timeout_loop(
+        lambda: (inside_container and not get_container(cortex_host))
+        or (not inside_container and not psutil.pid_exists(fluent_host_pid)),
+        60,
+    )
 
     if inside_container:
         assert not get_container(cortex_host)
