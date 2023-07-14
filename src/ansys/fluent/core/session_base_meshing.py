@@ -2,11 +2,11 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.meshing.meshing_workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
-from ansys.fluent.core.workflow import WorkflowWrapper
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -107,7 +107,12 @@ class BaseMeshing:
     def workflow(self):
         """Datamodel root of workflow."""
         if not self._workflow:
-            self._workflow = WorkflowWrapper(self._workflow_se, self.meshing)
+            self._workflow = MeshingWorkflow(
+                self._workflow_se,
+                self.meshing,
+                self.PartManagement,
+                self.PMFileManagement,
+            )
         return self._workflow
 
     @property
