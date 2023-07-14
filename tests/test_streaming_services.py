@@ -1,5 +1,6 @@
 import time
 
+import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import connect_to_fluent
@@ -33,6 +34,7 @@ def run_transcript(i, ip, port, password):
     return transcript_checked, transcript_passed
 
 
+@pytest.mark.skip("Skipping for now while investigating Fluent v241, see #1802")
 def test_transcript(new_solver_session):
     solver = new_solver_session
     ip = solver.connection_properties.ip

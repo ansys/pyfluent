@@ -52,7 +52,7 @@ class InputParameter:
                 self.value = v.strip('"')
                 if "[" in self.value:
                     sep_index = self.value.index("[")
-                    if not self.value[sep_index - 1] == " ":
+                    if self.value[sep_index - 1] != " ":
                         self.value = "".join(
                             (self.value[:sep_index], " ", self.value[sep_index:])
                         )
