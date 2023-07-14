@@ -18,7 +18,7 @@ The Modeling External Compressible Flow Using the Meshing Workflow guides you th
 - Set boundary conditions for external aerodynamics.
 - Use the k-w SST turbulence model.
 - Calculate a solution using the pressure-based coupled solver with global time step selected for the pseudo time method.
-- Check the near-wall mesh resolution by plotting the distribution of .
+- Check the near-wall mesh resolution by plotting the distribution of y+.
 
 **Problem description**
 
