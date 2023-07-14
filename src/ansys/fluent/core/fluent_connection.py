@@ -332,7 +332,7 @@ class FluentConnection:
         pwd = self.connection_properties.cortex_pwd
         pid = self.connection_properties.fluent_host_pid
         host = self.connection_properties.cortex_host
-        if not host == socket.gethostname():
+        if host != socket.gethostname():
             logger.error(
                 "Fluent host is not the current host, cancelling forced exit..."
             )

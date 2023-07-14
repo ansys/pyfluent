@@ -94,7 +94,7 @@ class FieldInfo:
 
     def get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> Dict[str, List[float]]:
+    ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
@@ -288,12 +288,11 @@ class _AllowedSurfaceNames(_AllowedNames):
 
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names."""
-        if validate_inputs:
-            if not self.is_valid(surface_name):
-                raise SurfaceNameError(
-                    surface_name=surface_name,
-                    allowed_values=self(),
-                )
+        if validate_inputs and not self.is_valid(surface_name):
+            raise SurfaceNameError(
+                surface_name=surface_name,
+                allowed_values=self(),
+            )
         return surface_name
 
 
@@ -765,10 +764,10 @@ class ChunkParser:
         then callbacks are triggered with extracted data.
         """
 
-        def _get_tag_for_surface_request(surface_request):
+        def _get_tag_for_surface_request():
             return (("type", "surface-data"),)
 
-        def _get_tag_for_vector_field_request(vector_field_request):
+        def _get_tag_for_vector_field_request():
             return (("type", "vector-field"),)
 
         def _get_tag_for_scalar_field_request(scalar_field_request):
@@ -823,15 +822,13 @@ class ChunkParser:
             request_type = field_request_info.WhichOneof("request")
             if request_type is not None:
                 payload_tag_id = (
-                    _get_tag_for_surface_request(field_request_info.surfaceRequest)
+                    _get_tag_for_surface_request()
                     if request_type == "surfaceRequest"
                     else _get_tag_for_scalar_field_request(
                         field_request_info.scalarFieldRequest
                     )
                     if request_type == "scalarFieldRequest"
-                    else _get_tag_for_vector_field_request(
-                        field_request_info.vectorFieldRequest
-                    )
+                    else _get_tag_for_vector_field_request()
                     if request_type == "vectorFieldRequest"
                     else _get_tag_for_pathlines_field_request(
                         field_request_info.pathlinesFieldRequest
