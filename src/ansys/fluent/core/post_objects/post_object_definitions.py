@@ -333,8 +333,8 @@ class SurfaceDefn(GraphicsDefn):
                 def value(self):
                     """Iso value property setter."""
                     if getattr(self, "_value", None) is None:
-                        range = self.range
-                        self._value = (range[0] + range[1]) / 2.0 if range else None
+                        rnge = self.range
+                        self._value = (rnge[0] + rnge[1]) / 2.0 if rnge else None
                     return self._value
 
                 @value.setter

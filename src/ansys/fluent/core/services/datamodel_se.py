@@ -133,12 +133,18 @@ class DatamodelService(StreamingService):
         """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
         """deleteCommandArguments rpc of DataModel service."""
-        return self._stub.deleteCommandArguments(request, metadata=self._metadata)
+        try:
+            return self._stub.deleteCommandArguments(request, metadata=self._metadata)
+        except grpc.RpcError as ex:
+            raise RuntimeError(
+                f"The following excepton was caught\n {ex.details()}\n "
+                "while deleting a command instance. Command instancing is"
+                "supported from Ansys 2023R2 onward."
+            ) from None
 
     @catch_grpc_error
     def get_specs(
@@ -1137,9 +1143,8 @@ class PyCommandArguments(PyStateContainer):
         request.commandid = self.path[-1][1]
         try:
             self.service.delete_command_arguments(request)
-        except ValueError:
-            # "Cannot invoke RPC on closed channel!"
-            pass
+        except BaseException as exc:
+            logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:

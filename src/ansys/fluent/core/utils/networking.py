@@ -81,4 +81,3 @@ def find_remoting_ip() -> str:
                         return ip
                 except Exception:
                     network_logger.debug(f"Cannot use {ip} as remoting ip")
-                    pass

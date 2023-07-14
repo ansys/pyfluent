@@ -23,5 +23,5 @@ def allowed_name_error_message(
 
 def allowed_values_error(
     context: str, trial_name: str, allowed_values: List[str]
-) -> str:
+) -> ValueError:
     return ValueError(allowed_name_error_message(context, trial_name, allowed_values))

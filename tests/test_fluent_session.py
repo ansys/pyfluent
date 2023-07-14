@@ -124,12 +124,13 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
-    session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
+    session1 = pyfluent.launch_fluent()
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
+    assert session2.health_check_service.is_serving
     session2.exit()
 
     timeout_loop(
