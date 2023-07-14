@@ -92,6 +92,7 @@ def test_kwargs():
 
 def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
     monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.delenv("AWP_ROOT241", raising=False)
     monkeypatch.delenv("AWP_ROOT232", raising=False)
     monkeypatch.delenv("AWP_ROOT231", raising=False)
     monkeypatch.delenv("AWP_ROOT222", raising=False)
@@ -103,6 +104,7 @@ def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
 
 def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
     monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.delenv("AWP_ROOT241", raising=False)
     monkeypatch.delenv("AWP_ROOT232", raising=False)
     monkeypatch.delenv("AWP_ROOT231", raising=False)
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
@@ -116,6 +118,7 @@ def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
 
 def test_get_fluent_exe_path_from_awp_root_231(monkeypatch):
     monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.delenv("AWP_ROOT241", raising=False)
     monkeypatch.delenv("AWP_ROOT232", raising=False)
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
@@ -129,6 +132,7 @@ def test_get_fluent_exe_path_from_awp_root_231(monkeypatch):
 
 def test_get_fluent_exe_path_from_awp_root_232(monkeypatch):
     monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.delenv("AWP_ROOT241", raising=False)
     monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
@@ -140,8 +144,23 @@ def test_get_fluent_exe_path_from_awp_root_232(monkeypatch):
     assert get_fluent_exe_path() == expected_path
 
 
+def test_get_fluent_exe_path_from_awp_root_241(monkeypatch):
+    monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.setenv("AWP_ROOT241", "ansys_inc/v241")
+    monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
+    monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
+    monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
+    if platform.system() == "Windows":
+        expected_path = Path("ansys_inc/v241/fluent") / "ntbin" / "win64" / "fluent.exe"
+    else:
+        expected_path = Path("ansys_inc/v241/fluent") / "bin" / "fluent"
+    assert get_ansys_version() == "24.1.0"
+    assert get_fluent_exe_path() == expected_path
+
+
 def test_get_fluent_exe_path_from_product_version_launcher_arg(monkeypatch):
     monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.setenv("AWP_ROOT241", "ansys_inc/v241")
     monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
@@ -154,6 +173,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(monkeypatch):
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
     monkeypatch.setenv("PYFLUENT_FLUENT_ROOT", "dev/vNNN/fluent")
+    monkeypatch.setenv("AWP_ROOT241", "ansys_inc/v241")
     monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
     monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
     monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
