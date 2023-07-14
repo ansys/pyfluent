@@ -10,10 +10,14 @@ from ansys.fluent.core import examples
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
-def test_parametric_workflow():
+def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("PYFLUENT_CONTAINER_MOUNT_PATH", pyfluent.EXAMPLES_PATH)
     save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     import_filename = examples.download_file(
-        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=save_path
+        "Static_Mixer_main.cas.h5",
+        "pyfluent/static_mixer",
+        save_path=save_path,
+        return_only_filename=False,
     )
     solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
     solver_session.file.read_case(file_name=import_filename)
