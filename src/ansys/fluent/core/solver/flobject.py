@@ -743,6 +743,27 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
+    def get_completer_info(self, prefix="") -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        ret = []
+        for command_name in self.command_names:
+            if command_name.startswith(prefix):
+                command = getattr(self, command_name)
+                if command.is_active():
+                    ret.append([command_name, Command.__name__, command.__doc__])
+        for query_name in self.query_names:
+            if query_name.startswith(prefix):
+                query = getattr(self, query_name)
+                if query.is_active():
+                    ret.append([query_name, Query.__name__, query.__doc__])
+        return ret
+
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
