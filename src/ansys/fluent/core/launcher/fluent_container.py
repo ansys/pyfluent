@@ -28,27 +28,26 @@ Getting default Fluent Docker container configuration, then launching with custo
 
 >>> import ansys.fluent.core as pyfluent
 >>> config_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-Container run configuration information:
-image_name = 'ghcr.io/ansys/pyfluent:v23.1.0'
->>> config_dict
+Docker container run configuration information:
+
+config_dict =
 {'auto_remove': True,
- 'command': ['-gu',
-             '-sifile=/home/user/.local/share/ansys_fluent_core/examples/serverinfo-reh96tuo.txt',
-             '3ddp'],
+ 'command': ['-gu', '-sifile=/tmpdir/serverinfo-lpqsdldw.txt', '3ddp'],
  'detach': True,
- 'environment': {'ANSYSLMD_LICENSE_FILE': '1450@license_server.com',
-                 'REMOTING_PORTS': '57193/portspan=2'},
+ 'environment': {'ANSYSLMD_LICENSE_FILE': '2048@licenseserver.com',
+                 'REMOTING_PORTS': '54000/portspan=2'},
+ 'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
  'labels': {'test_name': 'none'},
- 'ports': {'57193': 57193},
- 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/home/user/.local/share/ansys_fluent_core/examples'],
- 'working_dir': '/home/user/.local/share/ansys_fluent_core/examples'}
+ 'ports': {'54000': 54000},
+ 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/tmpdir'],
+ 'working_dir': '/tmpdir'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 
 """
 import logging
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import tempfile
 from typing import List, Union
 
@@ -59,13 +58,14 @@ from ansys.fluent.core.utils.networking import get_free_port
 import docker
 
 logger = logging.getLogger("pyfluent.launcher")
+DEFAULT_CONTAINER_MOUNT_PATH = "/tmpdir"
 
 
 def configure_container_dict(
     args: List[str],
     host_mount_path: Union[str, Path] = None,
     container_mount_path: Union[str, Path] = None,
-    timeout: int = 30,
+    timeout: int = 60,
     port: int = None,
     license_server: str = None,
     container_server_info_file: Union[str, Path] = None,
@@ -74,7 +74,7 @@ def configure_container_dict(
     image_name: str = None,
     image_tag: str = None,
     **container_dict,
-) -> (str, dict, int, int, Path, bool):
+) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
@@ -112,7 +112,7 @@ def configure_container_dict(
     container_dict : dict
     timeout : int
     port : int
-    container_server_info_file : Path
+    host_server_info_file : Path
     remove_server_info_file: bool
 
     Notes
@@ -133,7 +133,7 @@ def configure_container_dict(
 
     if not container_mount_path:
         container_mount_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
+            "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
         )
 
     if "volumes" not in container_dict:
@@ -183,21 +183,26 @@ def configure_container_dict(
                         "Specified a server info file command argument as well as "
                         "a container_server_info_file, pick one."
                     )
-                container_server_info_file = Path(v.lstrip("-sifile=")).name
+                container_server_info_file = PurePosixPath(
+                    v.replace("-sifile=", "")
+                ).name
                 logger.debug(
                     f"Found server info file specification for {container_server_info_file}."
                 )
 
     if container_server_info_file:
         container_server_info_file = (
-            Path(container_mount_path) / Path(container_server_info_file).name
+            PurePosixPath(container_mount_path)
+            / PurePosixPath(container_server_info_file).name
         )
     else:
         fd, sifile = tempfile.mkstemp(
             suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
         os.close(fd)
-        container_server_info_file = Path(container_mount_path) / Path(sifile).name
+        container_server_info_file = (
+            PurePosixPath(container_mount_path) / Path(sifile).name
+        )
 
     if not fluent_image:
         if not image_tag:
@@ -210,8 +215,10 @@ def configure_container_dict(
             fluent_image = f"{image_name}:{image_tag}"
         else:
             raise ValueError(
-                "Missing 'fluent_image' specification for Docker container launch."
+                "Missing 'fluent_image', or 'image_tag' and 'image_name', specification for Docker container launch."
             )
+
+    container_dict["fluent_image"] = fluent_image
 
     fluent_commands = ["-gu", f"-sifile={container_server_info_file}"] + args
 
@@ -222,18 +229,22 @@ def configure_container_dict(
         auto_remove=True,
     )
 
+    if fluent_image.split(":")[1] == "v24.1.0":
+        container_dict_default.update(tty=True)
+
     for k, v in container_dict_default.items():
         if k not in container_dict:
             container_dict[k] = v
 
     logger.debug(f"container_dict after processing: {container_dict}")
 
+    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
+
     return (
-        fluent_image,
         container_dict,
         timeout,
         port,
-        container_server_info_file,
+        host_server_info_file,
         remove_server_info_file,
     )
 
@@ -268,29 +279,28 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
     logger.debug(f"container_vars:{container_vars}")
 
     (
-        fluent_image,
         config_dict,
         timeout,
         port,
-        container_server_info_file,
+        host_server_info_file,
         remove_server_info_file,
     ) = container_vars
 
     try:
-        if not container_server_info_file.exists():
-            container_server_info_file.mkdir(exist_ok=True)
+        if not host_server_info_file.exists():
+            host_server_info_file.parents[0].mkdir(exist_ok=True)
 
-        container_server_info_file.touch(exist_ok=True)
-        last_mtime = container_server_info_file.stat().st_mtime
+        host_server_info_file.touch(exist_ok=True)
+        last_mtime = host_server_info_file.stat().st_mtime
 
         docker_client = docker.from_env()
 
         logger.debug("Starting Fluent docker container...")
 
-        docker_client.containers.run(fluent_image, **config_dict)
+        docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
 
         success = timeout_loop(
-            lambda: container_server_info_file.stat().st_mtime > last_mtime, timeout
+            lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
 
         if not success:
@@ -298,9 +308,9 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
                 "Fluent container launch timeout, will have to stop container manually."
             )
         else:
-            _, _, password = _parse_server_info_file(str(container_server_info_file))
+            _, _, password = _parse_server_info_file(str(host_server_info_file))
 
             return port, password
     finally:
-        if remove_server_info_file and container_server_info_file.exists():
-            container_server_info_file.unlink()
+        if remove_server_info_file and host_server_info_file.exists():
+            host_server_info_file.unlink()

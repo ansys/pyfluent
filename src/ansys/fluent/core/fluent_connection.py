@@ -255,8 +255,8 @@ class FluentConnection:
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
-                "Cortex properties unobtainable, force exit "
-                " methods are not going to work, proceeding..."
+                "Fluent Cortex properties unobtainable, force exit and other"
+                "methods are not going to work properly, proceeding..."
             )
             cortex_host = None
             cortex_pid = None
@@ -332,7 +332,7 @@ class FluentConnection:
         pwd = self.connection_properties.cortex_pwd
         pid = self.connection_properties.fluent_host_pid
         host = self.connection_properties.cortex_host
-        if not host == socket.gethostname():
+        if host != socket.gethostname():
             logger.error(
                 "Fluent host is not the current host, cancelling forced exit..."
             )

@@ -143,6 +143,40 @@ def test_add_on_affected(new_mesh_session):
     sleep(5)
     assert len(data) > 0
     assert data[0] == True
+
+    calls = []
+    subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
+    geom = examples.download_file(
+        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    )
+    import_geom = meshing.workflow.TaskObject["Import Geometry"]
+    assert "FileName" not in import_geom.Arguments()
+    assert import_geom.CommandArguments()["FileName"] is None
+    import_geom.Arguments = {"FileName": geom}
+    assert import_geom.Arguments()["FileName"] == geom
+    assert import_geom.CommandArguments()["FileName"] == geom
+    sleep(1)
+    assert calls == [True]
+    import_geom.Arguments = {"FileName": "dummy"}
+    sleep(1)
+    assert calls == 2 * [True]
+    import_geom.Arguments = {"FileName": geom}
+    sleep(1)
+    assert calls == 3 * [True]
+    execute_state = [meshing.workflow()]
+    import_geom.Execute()
+    calls_after_execute = []
+    loop_count = 10
+    for i in range(loop_count):
+        sleep(5)
+        calls_after_execute.append(list(calls))
+        execute_state.append(meshing.workflow())
+    assert all(state == execute_state[1] for state in execute_state[2:])
+    call_count = sum(map(len, calls_after_execute))
+    assert call_count == 6 * loop_count
+    assert calls_after_execute == loop_count * [6 * [True]]
+    subscription2.unsubscribe()
+
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
