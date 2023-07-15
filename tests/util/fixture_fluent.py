@@ -19,7 +19,7 @@ def get_file_type(full_file_name):
 
 def download_input_file(directory_name, full_file_name, data_file_name=None):
     file_type = get_file_type(full_file_name)
-    file_name = "_%s_%s_filename" % (full_file_name.split(".")[0], file_type)
+    file_name = f'_{full_file_name.split(".")[0]}_{file_type}_filename'
     globals()[file_name] = None
     if not globals()[file_name]:
         globals()[file_name] = download_file(
@@ -29,7 +29,7 @@ def download_input_file(directory_name, full_file_name, data_file_name=None):
     file_name = globals()[file_name]
     if data_file_name:
         dat_file_type = get_file_type(data_file_name)
-        dat_name = "_%s_%s_filename" % (data_file_name.split(".")[0], dat_file_type)
+        dat_name = f'_{data_file_name.split(".")[0]}_{dat_file_type}_filename'
         globals()[dat_name] = None
         if not globals()[dat_name]:
             globals()[dat_name] = download_file(

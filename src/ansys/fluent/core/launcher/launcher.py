@@ -207,19 +207,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     old_argval = argval
                     argval = default
                     logger.warning(
-                        "Default value %s is chosen for %s as the passed "
-                        "value  %s is outside allowed values %s.",
-                        argval,
-                        k,
-                        old_argval,
-                        allowed_values,
+                        f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values}), default value '{argval}' is going to be used instead."
                     )
                 else:
                     logger.warning(
-                        "%s = %s is discarded as it is outside " "allowed values %s.",
-                        k,
-                        argval,
-                        allowed_values,
+                        f"{k} = {argval} is discarded as it is not an allowed value. Allowed values: {allowed_values}"
                     )
                     continue
             fluent_map = v.get("fluent_map")
@@ -364,10 +356,7 @@ def _await_fluent_launch(
             raise RuntimeError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
-        logger.info(
-            "Waiting for Fluent to launch...%02d seconds remaining",
-            start_timeout,
-        )
+        logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
 
 
 def _get_server_info(
@@ -676,7 +665,7 @@ def launch_fluent(
         )
 
         try:
-            logger.debug("Launching Fluent with cmd: %s", launch_string)
+            logger.debug(f"Launching Fluent with cmd: {launch_string}")
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
