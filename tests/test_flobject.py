@@ -732,23 +732,23 @@ def test_find_children_from_settings_root(load_static_mixer_case):
     setup_cls = load_static_mixer_case.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
-    assert set(find_children(setup_cls(), "general*")) >= set(
+    assert set(find_children(setup_cls(), "general*")) >= {
         "general",
         "models/discrete_phase/general_settings",
         "models/virtual_blade_model/disk/general",
-    )
-    assert set(find_children(setup_cls(), "general")) >= set(
+    }
+    assert set(find_children(setup_cls(), "general")) >= {
         "general",
         "models/virtual_blade_model/disk/general",
-    )
-    assert set(find_children(setup_cls(), "*gen")) >= set(
+    }
+    assert set(find_children(setup_cls(), "*gen")) >= {
         "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
         "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/p_backflow_spec_gen",
         "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
         "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
-    )
+    }
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -758,16 +758,16 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     assert len(setup_children) >= 18514
 
     viscous = load_static_mixer_case.setup.models.viscous
-    assert set(find_children(viscous, "prod*")) >= set(
+    assert set(find_children(viscous, "prod*")) >= {
         "options/production_kato_launder",
         "turbulence_expert/production_limiter",
-    )
+    }
 
     assert set(
         find_children(
             load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
         )
-    ) >= set(
+    ) >= {
         "phase/geom_dir_spec",
         "phase/geom_dir_x",
         "phase/geom_dir_y",
@@ -776,7 +776,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
         "geom_dir_x",
         "geom_dir_y",
         "geom_dir_z",
-    )
+    }
 
     assert set(
         find_children(
@@ -784,12 +784,12 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
                 "air"
             ].density.piecewise_polynomial
         )
-    ) >= set(
+    ) >= {
         "minimum",
         "maximum",
         "number_of_coefficients",
         "coefficients",
-    )
+    }
 
 
 @pytest.mark.fluent_version(">=23.2")
