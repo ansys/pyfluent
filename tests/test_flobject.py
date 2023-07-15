@@ -751,6 +751,31 @@ def test_find_children_from_settings_root(load_static_mixer_case):
     }
 
 
+@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
+def test_find_children_from_settings_root(load_static_mixer_case):
+    setup_cls = load_static_mixer_case.setup.__class__
+    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls(), "gen*")) >= 9
+    assert set(find_children(setup_cls(), "general*")) >= {
+        "general",
+        "models/discrete_phase/general_settings",
+        "models/virtual_blade_model/rotor/general",
+    }
+    assert set(find_children(setup_cls(), "general")) >= {
+        "general",
+        "models/virtual_blade_model/rotor/general",
+    }
+    assert set(find_children(setup_cls(), "*gen")) >= {
+        "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
+        "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
+        "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
+        "boundary_conditions/outlet_vent/p_backflow_spec_gen",
+        "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
+        "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
+    }
+
+
 @pytest.mark.fluent_version(">=23.1")
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
