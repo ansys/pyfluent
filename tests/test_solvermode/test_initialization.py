@@ -2,6 +2,7 @@ import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_231
@@ -54,6 +55,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     # solver.exit()
 
 
+@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_231

@@ -9,8 +9,8 @@ from util.solver import SettingsValDict as D
 from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
 
-@pytest.mark.fluent_231
-@pytest.mark.fluent_222
+@pytest.mark.nightly
+@pytest.mark.fluent_version(">=22.2")
 @pytest.mark.integration
 @pytest.mark.setup
 @pytest.mark.codegen_required
@@ -85,9 +85,10 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 
 
 # TODO: Skipped for the nightly test run to be successful. Later decide what to do with this test (discard?).
+@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.setup
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.skip
 def test_boundaries_periodic(load_periodic_rot_cas):
     solver_session = load_periodic_rot_cas

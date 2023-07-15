@@ -8,6 +8,7 @@ from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 import ansys.fluent.core as pyfluent
 
 
+@pytest.mark.nightly
 @pytest.mark.optislang
 @pytest.mark.integration
 @pytest.mark.codegen_required
