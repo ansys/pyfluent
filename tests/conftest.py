@@ -19,12 +19,9 @@ def pytest_runtest_setup(item):
     version_specs = [
         SpecifierSet(mark.args[0]) for mark in item.iter_markers(name="fluent_version")
     ]
-    print(version_specs)
     if version_specs:
         combined_spec = functools.reduce(operator.and_, version_specs)
-        print(combined_spec)
         version = Version(item.config.getoption("--fluent-version"))
-        print(version)
         if version not in combined_spec:
             pytest.skip()
 
