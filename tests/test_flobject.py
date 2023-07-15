@@ -700,8 +700,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     )
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
     solver = load_static_mixer_case
 
@@ -727,8 +726,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
     )
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_find_children_from_settings_root():
     from ansys.fluent.core.solver.settings_231.setup import setup
@@ -754,8 +752,7 @@ def test_find_children_from_settings_root():
     ]
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
 
@@ -790,7 +787,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     ]
 
 
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
@@ -820,8 +817,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     root = solver._root
@@ -903,9 +899,7 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
-@pytest.mark.fluent_231
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
+@pytest.mark.fluent_version(">=23.1")
 def test_strings_with_allowed_values(load_static_mixer_case):
     solver = load_static_mixer_case
 

@@ -13,8 +13,7 @@ from ansys.fluent.core.services.datamodel_se import (
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_event_subscription(new_mesh_session):
     session = new_mesh_session
@@ -71,8 +70,7 @@ def test_event_subscription(new_mesh_session):
     )
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_child_created(new_mesh_session):
     meshing = new_mesh_session
@@ -91,8 +89,7 @@ def test_add_on_child_created(new_mesh_session):
     assert child_paths == []
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_deleted(new_mesh_session):
     meshing = new_mesh_session
@@ -107,8 +104,7 @@ def test_add_on_deleted(new_mesh_session):
     assert len(data) > 0
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_changed(new_mesh_session):
     meshing = new_mesh_session
@@ -129,8 +125,7 @@ def test_add_on_changed(new_mesh_session):
     assert data == []
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_affected(new_mesh_session):
     meshing = new_mesh_session
@@ -184,8 +179,7 @@ def test_add_on_affected(new_mesh_session):
     assert data == []
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_affected_at_type_path(new_mesh_session):
     meshing = new_mesh_session
@@ -205,8 +199,7 @@ def test_add_on_affected_at_type_path(new_mesh_session):
     assert data == []
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_command_executed(new_mesh_session):
     meshing = new_mesh_session
@@ -235,8 +228,7 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
@@ -262,8 +254,7 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_mesh_session
@@ -291,8 +282,7 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session

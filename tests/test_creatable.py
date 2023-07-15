@@ -2,7 +2,7 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_creatable(new_solver_session) -> None:
     has_not = (
         new_solver_session.setup.boundary_conditions.velocity_inlet,

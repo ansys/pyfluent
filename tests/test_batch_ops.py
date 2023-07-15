@@ -7,8 +7,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.skipif(
     sys.platform.startswith("linux"), reason="Linux specific issue in server"
 )
@@ -26,8 +25,7 @@ def test_batch_ops_create_mesh(new_solver_session):
     assert "mesh-1" in solver.results.graphics.mesh.get_object_names()
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.skipif(
     sys.platform.startswith("linux"), reason="Linux specific issue in server"
 )
