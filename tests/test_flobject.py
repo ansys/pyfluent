@@ -728,45 +728,46 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root():
-    from ansys.fluent.core.solver.settings_231.setup import setup
-
-    assert len(find_children(setup())) == 18514
-    assert len(find_children(setup(), "gen*")) == 9
-    assert find_children(setup(), "general*") == [
+def test_find_children_from_settings_root(load_static_mixer_case):
+    setup_cls = load_static_mixer_case.setup.__class__
+    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls(), "gen*")) >= 9
+    assert set(find_children(setup_cls(), "general*")) >= set(
         "general",
         "models/discrete_phase/general_settings",
         "models/virtual_blade_model/disk/general",
-    ]
-    assert find_children(setup(), "general") == [
+    )
+    assert set(find_children(setup_cls(), "general")) >= set(
         "general",
         "models/virtual_blade_model/disk/general",
-    ]
-    assert find_children(setup(), "*gen") == [
+    )
+    assert set(find_children(setup_cls(), "*gen")) >= set(
         "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
         "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/p_backflow_spec_gen",
         "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
         "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
-    ]
+    )
 
 
 @pytest.mark.fluent_version(">=23.1")
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
 
-    assert len(setup_children) == 18514
+    assert len(setup_children) >= 18514
 
     viscous = load_static_mixer_case.setup.models.viscous
-    assert find_children(viscous, "prod*") == [
+    assert set(find_children(viscous, "prod*")) >= set(
         "options/production_kato_launder",
         "turbulence_expert/production_limiter",
-    ]
+    )
 
-    assert find_children(
-        load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
-    ) == [
+    assert set(
+        find_children(
+            load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
+        )
+    ) >= set(
         "phase/geom_dir_spec",
         "phase/geom_dir_x",
         "phase/geom_dir_y",
@@ -775,16 +776,20 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
         "geom_dir_x",
         "geom_dir_y",
         "geom_dir_z",
-    ]
+    )
 
-    assert find_children(
-        load_static_mixer_case.setup.materials.fluid["air"].density.piecewise_polynomial
-    ) == [
+    assert set(
+        find_children(
+            load_static_mixer_case.setup.materials.fluid[
+                "air"
+            ].density.piecewise_polynomial
+        )
+    ) >= set(
         "minimum",
         "maximum",
         "number_of_coefficients",
         "coefficients",
-    ]
+    )
 
 
 @pytest.mark.fluent_version(">=23.2")

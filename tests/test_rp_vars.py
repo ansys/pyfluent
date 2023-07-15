@@ -1,6 +1,7 @@
 import pytest
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.filereader.casereader import CaseReader
 
@@ -26,8 +27,13 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+def test_get_all_rp_vars(
+    new_solver_session_no_transcript, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("PYFLUENT_CONTAINER_MOUNT_PATH", pyfluent.EXAMPLES_PATH)
+    case_path = download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", return_only_filename=False
+    )
     solver = new_solver_session_no_transcript
     solver.file.read(file_type="case", file_name=case_path)
     rp_vars = solver.rp_vars

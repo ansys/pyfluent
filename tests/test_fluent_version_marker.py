@@ -6,22 +6,22 @@ def test_dev_fluent_any():
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_dev_fluent_gt_241():
+def test_dev_fluent_ge_241():
     pass
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_dev_fluent_gt_232():
+def test_dev_fluent_ge_232():
     pass
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_dev_fluent_gt_231():
+def test_dev_fluent_ge_231():
     pass
 
 
 @pytest.mark.fluent_version(">=22.2")
-def test_dev_fluent_gt_222():
+def test_dev_fluent_ge_222():
     pass
 
 
@@ -32,23 +32,23 @@ def test_nightly_fluent_any():
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.1")
-def test_nightly_fluent_gt_241():
+def test_nightly_fluent_ge_241():
     pass
 
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
-def test_nightly_fluent_gt_232():
+def test_nightly_fluent_ge_232():
     pass
 
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
-def test_nightly_fluent_gt_231():
+def test_nightly_fluent_ge_231():
     pass
 
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=22.2")
-def test_nightly_fluent_gt_222():
+def test_nightly_fluent_ge_222():
     pass
