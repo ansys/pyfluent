@@ -185,8 +185,7 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_command_args_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
@@ -198,8 +197,7 @@ def test_command_args_datamodel_se(new_mesh_session):
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
@@ -212,8 +210,7 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_attribute_query_list_types(new_mesh_session):
     session_new = new_mesh_session
@@ -223,8 +220,7 @@ def test_attribute_query_list_types(new_mesh_session):
     assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_mesh_session):
     session_new = new_mesh_session
@@ -293,8 +289,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     )
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     session_new = new_mesh_session
@@ -314,8 +309,7 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     assert "set_state" in dir(m.ImportGeometry.create_instance().NumParts)
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
@@ -358,8 +352,7 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.skip
 def test_meshing_workflow_structure(new_mesh_session):
     """
@@ -578,9 +571,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
+@pytest.mark.fluent_version(">=23.2")
 def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     watertight = new_mesh_session.watertight()
     import_geometry = watertight.import_geometry
@@ -631,9 +622,7 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
     assert tasks[0].name() == "Import Geometry"
 
 
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
-@pytest.mark.dev
+@pytest.mark.fluent_version(">=23.2")
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
         geometry_filepath=mixing_elbow_geometry, session=new_mesh_session
@@ -650,9 +639,7 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
+@pytest.mark.fluent_version(">=23.2")
 def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
         geometry_filepath=mixing_elbow_geometry, session=new_mesh_session
@@ -686,9 +673,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
-@pytest.mark.dev
+@pytest.mark.fluent_version(">=23.2")
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
         geometry_filepath=mixing_elbow_geometry, session=new_mesh_session
@@ -720,9 +705,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     assert watertight.create_volume_mesh is None
 
 
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
-@pytest.mark.dev
+@pytest.mark.fluent_version(">=23.2")
 def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
     part_management = fault_tolerant.part_management
