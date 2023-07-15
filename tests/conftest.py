@@ -1,4 +1,33 @@
+import functools
+import operator
+
+from packaging.specifiers import SpecifierSet
+from packaging.version import Version
 import pytest
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--fluent-version",
+        action="store",
+        metavar="VERSION",
+        help="only run tests supported by Fluent version VERSION.",
+    )
+
+
+def pytest_runtest_setup(item):
+    version_specs = [
+        SpecifierSet(mark.args[0]) for mark in item.iter_markers(name="fluent_version")
+    ]
+    print(version_specs)
+    if version_specs:
+        combined_spec = functools.reduce(operator.and_, version_specs)
+        print(combined_spec)
+        version = Version(item.config.getoption("--fluent-version"))
+        print(version)
+        if version not in combined_spec:
+            pytest.skip()
+
 
 pytest_plugins = [
     "util.fixture_fluent",

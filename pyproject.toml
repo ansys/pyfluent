@@ -23,6 +23,7 @@ markers = [
     "dev: Tests that must be successful before PR merge, includes unmarked tests",
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
+    "fluent_version(version): Tests that runs with specified Fluent version",
     "fluent_222: Tests that run with Fluent 22.2",
     "fluent_231: Tests that run with Fluent 23.1",
     "fluent_232: Tests that run with Fluent 23.2",
