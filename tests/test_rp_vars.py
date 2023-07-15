@@ -28,7 +28,7 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
 
 @pytest.mark.fluent_version(">=23.1")
 def test_get_all_rp_vars(
-    new_solver_session_no_transcript, monkeypatch: pytest.MonkeyPatch
+    monkeypatch: pytest.MonkeyPatch, new_solver_session_no_transcript
 ) -> None:
     monkeypatch.setenv("PYFLUENT_CONTAINER_MOUNT_PATH", pyfluent.EXAMPLES_PATH)
     case_path = download_file(
