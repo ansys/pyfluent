@@ -728,7 +728,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 @pytest.mark.fluent_version("==23.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root(load_static_mixer_case):
+def test_find_children_from_settings_root_231(load_static_mixer_case):
     setup_cls = load_static_mixer_case.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
@@ -753,7 +753,7 @@ def test_find_children_from_settings_root(load_static_mixer_case):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root(load_static_mixer_case):
+def test_find_children_from_settings_root_232(load_static_mixer_case):
     setup_cls = load_static_mixer_case.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
