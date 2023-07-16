@@ -22,9 +22,8 @@ def pytest_runtest_setup(item):
     if version_specs:
         combined_spec = functools.reduce(operator.and_, version_specs)
         version = item.config.getoption("--fluent-version")
-        if version:
-            if Version(version) not in combined_spec:
-                pytest.skip()
+        if version and Version(version) not in combined_spec:
+            pytest.skip()
 
 
 pytest_plugins = [
