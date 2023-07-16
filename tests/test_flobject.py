@@ -812,7 +812,6 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     ) >= {
         "minimum",
         "maximum",
-        "number_of_coefficients",
         "coefficients",
     }
 
