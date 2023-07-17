@@ -359,6 +359,36 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
+def _command_query_name_filter(self, command: bool = True, prefix: str = "") -> list:
+    """Auto completer info of commands and queries."""
+    ret = []
+    if command:
+        command_or_query_names = self.command_names
+    else:
+        command_or_query_names = self.query_names
+    for command_or_query_name in command_or_query_names:
+        if command_or_query_name.startswith(prefix):
+            command_or_query_name = getattr(self, command_or_query_name)
+            if command_or_query_name.is_active():
+                if command:
+                    ret.append(
+                        [
+                            command_or_query_name,
+                            Command.__name__,
+                            command_or_query_name.__doc__,
+                        ]
+                    )
+                else:
+                    ret.append(
+                        [
+                            command_or_query_name,
+                            Query.__name__,
+                            command_or_query_name.__doc__,
+                        ]
+                    )
+    return ret
+
+
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -474,16 +504,10 @@ class Group(SettingsBase[DictStateType]):
                             child.__doc__,
                         ]
                     )
-        for command_name in self.command_names:
-            if command_name.startswith(prefix):
-                command = getattr(self, command_name)
-                if command.is_active():
-                    ret.append([command_name, Command.__name__, command.__doc__])
-        for query_name in self.query_names:
-            if query_name.startswith(prefix):
-                query = getattr(self, query_name)
-                if query.is_active():
-                    ret.append([query_name, Query.__name__, query.__doc__])
+        command_info = _command_query_name_filter(self, prefix=prefix)
+        query_info = _command_query_name_filter(self, command=False, prefix=prefix)
+        for items in [command_info, query_info]:
+            ret.extend(items)
         return ret
 
     def _get_parent_of_active_child_names(self, name):
@@ -752,16 +776,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             Name, type and docstring of all children.
         """
         ret = []
-        for command_name in self.command_names:
-            if command_name.startswith(prefix):
-                command = getattr(self, command_name)
-                if command.is_active():
-                    ret.append([command_name, Command.__name__, command.__doc__])
-        for query_name in self.query_names:
-            if query_name.startswith(prefix):
-                query = getattr(self, query_name)
-                if query.is_active():
-                    ret.append([query_name, Query.__name__, query.__doc__])
+        command_info = _command_query_name_filter(self, prefix=prefix)
+        query_info = _command_query_name_filter(self, command=False, prefix=prefix)
+        for items in [command_info, query_info]:
+            ret.extend(items)
         return ret
 
     def __getitem__(self, name: str) -> ChildTypeT:
@@ -921,7 +939,7 @@ class Action(Base):
                 argument = getattr(self, argument_name)
                 ret.append(
                     [
-                        argument_name + "=",
+                        argument_name,
                         argument.__class__.__bases__[0].__name__,
                         argument.__doc__,
                     ]
