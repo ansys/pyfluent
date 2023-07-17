@@ -225,7 +225,7 @@ def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):
             if val is not None and out:
                 print(to_string(val), file=out)
         except Exception as e:
-            print("%s: %s" % (type(e).__name__, e))
+            print(f"{type(e).__name__}: {e}")
 
 
 ################ Environment class
@@ -242,7 +242,7 @@ class Env(dict):
         else:
             if len(args) != len(params):
                 raise TypeError(
-                    "expected %s, given %s, " % (to_string(params), to_string(args))
+                    f"expected {to_string(params)}, given {to_string(args)}"
                 )
             self.update(zip(params, args))
 
@@ -432,15 +432,16 @@ def expand(x, toplevel=False):
             return [expand(xi, toplevel) for xi in x]
     elif x[0] is _lambda:  # (lambda (x) e1 e2)
         require(x, len(x) >= 3)  #  => (lambda (x) (begin e1 e2))
-        vars, body = x[1], x[2:]
+        # variables was vars in oss lispy but that shadows a builtin
+        variables, body = x[1], x[2:]
         require(
             x,
-            (isa(vars, list) and all(isa(v, Symbol) for v in vars))
-            or isa(vars, Symbol),
+            (isa(variables, list) and all(isa(v, Symbol) for v in variables))
+            or isa(variables, Symbol),
             "illegal lambda argument list",
         )
         exp = body[0] if len(body) == 1 else [_begin] + body
-        return [_lambda, vars, expand(exp)]
+        return [_lambda, variables, expand(exp)]
     elif x[0] is _quasiquote:  # `x => expand_quasiquote(x)
         require(x, len(x) == 2)
         return expand_quasiquote(x[1])
@@ -484,8 +485,11 @@ def let(*args):
         all(isa(b, list) and len(b) == 2 and isa(b[0], Symbol) for b in bindings),
         "illegal binding list",
     )
-    vars, vals = zip(*bindings)
-    return [[_lambda, list(vars)] + list(map(expand, body))] + list(map(expand, vals))
+    # variables was vars in oss lispy but that shadows a builtin
+    variables, vals = zip(*bindings)
+    return [[_lambda, list(variables)] + list(map(expand, body))] + list(
+        map(expand, vals)
+    )
 
 
 macro_table = {_let: let}  ## More macros can go here

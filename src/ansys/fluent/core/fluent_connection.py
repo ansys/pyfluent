@@ -84,7 +84,7 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     except docker.errors.NotFound:  # NotFound is a child from DockerException
         return False
     except docker.errors.DockerException as exc:
-        logger.info("%s: %s" % (type(exc).__name__, exc))
+        logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
 
@@ -255,8 +255,8 @@ class FluentConnection:
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
-                "Cortex properties unobtainable, force exit "
-                " methods are not going to work, proceeding..."
+                "Fluent Cortex properties unobtainable, force exit and other"
+                "methods are not going to work properly, proceeding..."
             )
             cortex_host = None
             cortex_pid = None
@@ -332,7 +332,7 @@ class FluentConnection:
         pwd = self.connection_properties.cortex_pwd
         pid = self.connection_properties.fluent_host_pid
         host = self.connection_properties.cortex_host
-        if not host == socket.gethostname():
+        if host != socket.gethostname():
             logger.error(
                 "Fluent host is not the current host, cancelling forced exit..."
             )
@@ -396,7 +396,7 @@ class FluentConnection:
             try:
                 container.exec_run(["bash", cleanup_filename], detach=True)
             except docker.errors.APIError as e:
-                logger.debug("%s: %s" % (type(e).__name__, e))
+                logger.info(f"{type(e).__name__}: {e}")
                 logger.debug(
                     "Caught Docker APIError, Docker container probably not running anymore."
                 )
