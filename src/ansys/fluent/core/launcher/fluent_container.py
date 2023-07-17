@@ -128,6 +128,13 @@ def configure_container_dict(
 
     if not host_mount_path:
         host_mount_path = pyfluent.EXAMPLES_PATH
+    elif "volumes" in container_dict:
+        logger.warning(
+            "'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by specified 'host_mount_path'."
+        )
+        container_dict.pop("volumes")
+
     if not os.path.exists(host_mount_path):
         os.makedirs(host_mount_path)
 
@@ -135,9 +142,19 @@ def configure_container_dict(
         container_mount_path = os.getenv(
             "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
         )
+    elif "volumes" in container_dict:
+        logger.warning(
+            "'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by specified 'container_mount_path'."
+        )
+        container_dict.pop("volumes")
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
+    else:
+        host_mount_path, container_mount_path = container_dict["volumes"].split(":")
+        logger.debug(f"host_mount_path: {host_mount_path}")
+        logger.debug(f"container_mount_path: {container_mount_path}")
 
     if "ports" not in container_dict:
         if not port:

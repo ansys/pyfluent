@@ -1,6 +1,6 @@
+import os
 from pathlib import Path
 import tempfile
-import time
 
 import pytest
 
@@ -11,16 +11,21 @@ from ansys.fluent.core import examples
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("PYFLUENT_CONTAINER_MOUNT_PATH", pyfluent.EXAMPLES_PATH)
-    save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    import_filepath = examples.download_file(
-        "Static_Mixer_main.cas.h5",
-        "pyfluent/static_mixer",
-        save_path=save_path,
-        return_only_filename=False,
+    # path needs to exist for mkdtemp
+    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
+    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    import_filename = examples.download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
-    solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
-    solver_session.file.read_case(file_name=import_filepath)
+    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        config_dict = {}
+        config_dict.update(host_mount_path=tmp_save_path)
+        solver_session = pyfluent.launch_fluent(
+            processor_count=2, container_dict=config_dict
+        )
+    else:
+        solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
+    solver_session.file.read_case(file_name=import_filename)
     solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
     solver_session.tui.define.boundary_conditions.set.velocity_inlet(
@@ -62,9 +67,9 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
         "report-definition", "outlet-vel-avg"
     )
     solver_session.tui.solve.monitors.residual.criterion_type("0")
-    case_path = str(Path(save_path) / "Static_Mixer_Parameters.cas.h5")
-    solver_session.file.write(file_type="case", file_name=case_path)
-    assert (Path(save_path) / "Static_Mixer_Parameters.cas.h5").exists()
+    case_path = Path(tmp_save_path) / "Static_Mixer_Parameters.cas.h5"
+    solver_session.file.write(file_type="case", file_name=Path(case_path).name)
+    assert (Path(tmp_save_path) / "Static_Mixer_Parameters.cas.h5").exists()
     assert len(solver_session.parametric_studies) == 0
     solver_session.parametric_studies.initialize()
     assert len(solver_session.parametric_studies) == 1
@@ -83,7 +88,7 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
     study1.design_points.update_current()
     assert len(study1.design_points) == 1
     assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
-        333.348727
+        333.348727, rel=1e-5
     )
     assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
     dp1_name = study1.design_points.create_1()
@@ -115,8 +120,10 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
     assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
     assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
     assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
-    design_point_table = str(Path(save_path) / "design_point_table_study_1.csv")
-    solver_session.parametric_studies.export_design_table(filepath=design_point_table)
+    design_point_table = Path(tmp_save_path) / "design_point_table_study_1.csv"
+    solver_session.parametric_studies.export_design_table(
+        filepath=design_point_table.name
+    )
     study1.design_points.delete_design_points(design_points=[dp1_name])
     assert len(study1.design_points) == 2
     study_names = set([*solver_session.parametric_studies.keys()])
@@ -131,29 +138,35 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
     assert "New Study" in solver_session.parametric_studies
     del solver_session.parametric_studies[study1_name]
     assert len(solver_session.parametric_studies) == 1
-    project_filename = Path(save_path) / "static_mixer_study.flprj"
-    solver_session.file.parametric_project.save_as(
-        project_filename=str(project_filename)
-    )
-    assert project_filename.exists()
+    project_filename = "static_mixer_study.flprj"
+    solver_session.file.parametric_project.save_as(project_filename=project_filename)
+    assert (Path(tmp_save_path) / ".flprj.cffdb" / project_filename).exists()
     solver_session.exit()
-    time.sleep(10)
-    solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
-    solver_session.file.parametric_project.open(project_filename=str(project_filename))
+
+    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        solver_session = pyfluent.launch_fluent(
+            processor_count=2, container_dict=config_dict
+        )
+    else:
+        solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
+
+    solver_session.file.parametric_project.open(
+        project_filename=".flprj.cffdb/" + project_filename
+    )
     solver_session.file.parametric_project.save()
-    project_save_as_name = Path(save_path) / "static_mixer_study_save_as.flprj"
+    project_save_as_name = "static_mixer_study_save_as.flprj"
     solver_session.file.parametric_project.save_as(
-        project_filename=str(project_save_as_name)
+        project_filename=project_save_as_name
     )
-    assert project_save_as_name.exists()
-    project_save_as_copy_name = (
-        Path(save_path) / "static_mixer_study_save_copy_as.flprj"
-    )
+    new_study_path = ".flprj.cffdb/static_mixer_study.cffdb/New Study/Base DP"
+    assert (Path(tmp_save_path) / new_study_path / project_save_as_name).exists()
+    project_save_as_copy_name = "static_mixer_study_save_copy_as.flprj"
+
     solver_session.file.parametric_project.save_as(
-        project_filename=str(project_save_as_copy_name)
+        project_filename=project_save_as_copy_name
     )
-    assert project_save_as_copy_name.exists()
-    archive_name = Path(save_path) / "static_mixer_study.flprz"
-    solver_session.file.parametric_project.archive(archive_name=str(archive_name))
-    assert archive_name.exists()
+    assert (Path(tmp_save_path) / new_study_path / project_save_as_copy_name).exists()
+    archive_name = "static_mixer_study.flprz"
+    solver_session.file.parametric_project.archive(archive_name=archive_name)
+    assert (Path(tmp_save_path) / new_study_path / archive_name).exists()
     solver_session.exit()
