@@ -362,18 +362,18 @@ class BooleanList(SettingsBase[BoolListType], Property):
 def _command_query_name_filter(self, is_command: bool = True, prefix: str = "") -> list:
     """Auto completer info of commands and queries."""
     ret = []
-    if is_command:
-        names = self.command_names
-    else:
-        names = self.query_names
+    names = self.command_names if is_command else self.query_names
     for name in names:
         if name.startswith(prefix):
-            name = getattr(self, name)
-            if name.is_active():
-                if is_command:
-                    ret.append([name, Command.__name__, name.__doc__])
-                else:
-                    ret.append([name, Query.__name__, name.__doc__])
+            name_attr = getattr(self, name)
+            if name_attr.is_active():
+                ret.append(
+                    [
+                        name,
+                        (Command if is_command else Query).__name__,
+                        name_attr.__doc__,
+                    ]
+                )
     return ret
 
 
