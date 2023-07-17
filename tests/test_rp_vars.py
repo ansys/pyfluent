@@ -1,5 +1,8 @@
 import pytest
-from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
+from util.solver_workflow import (  # noqa: F401
+    new_solver_session_no_transcript,
+    new_solver_session_no_transcript_examples_path,
+)
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.filereader.casereader import CaseReader
@@ -25,10 +28,12 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
     assert before_init_mod_2[1][1][1] == ("value", True)
 
 
-@pytest.mark.fluent_231
-def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver = new_solver_session_no_transcript
+@pytest.mark.fluent_version(">=23.1")
+def test_get_all_rp_vars(new_solver_session_no_transcript_examples_path) -> None:
+    case_path = download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", return_only_filename=False
+    )
+    solver = new_solver_session_no_transcript_examples_path
     solver.file.read(file_type="case", file_name=case_path)
     rp_vars = solver.rp_vars
     # all vars
@@ -49,8 +54,7 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     assert len(case_vars) == pytest.approx(9000, 450)
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_allowed_values(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
     rp_vars = solver.rp_vars

@@ -26,3 +26,11 @@ def new_solver_session_no_transcript():
     solver = create_solver_session(start_transcript=False, mode="solver")
     yield solver
     solver.exit(timeout=5, timeout_force=True)
+
+
+@pytest.fixture
+def new_solver_session_no_transcript_examples_path(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("PYFLUENT_CONTAINER_MOUNT_PATH", pyfluent.EXAMPLES_PATH)
+    solver = create_solver_session(start_transcript=False)
+    yield solver
+    solver.exit(timeout=5, timeout_force=True)
