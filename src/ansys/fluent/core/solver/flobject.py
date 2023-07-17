@@ -493,7 +493,7 @@ class Group(SettingsBase[DictStateType]):
                         ]
                     )
         command_info = _command_query_name_filter(self, prefix=prefix)
-        query_info = _command_query_name_filter(self, command=False, prefix=prefix)
+        query_info = _command_query_name_filter(self, is_command=False, prefix=prefix)
         for items in [command_info, query_info]:
             ret.extend(items)
         return ret
@@ -765,7 +765,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         """
         ret = []
         command_info = _command_query_name_filter(self, prefix=prefix)
-        query_info = _command_query_name_filter(self, command=False, prefix=prefix)
+        query_info = _command_query_name_filter(self, is_command=False, prefix=prefix)
         for items in [command_info, query_info]:
             ret.extend(items)
         return ret
