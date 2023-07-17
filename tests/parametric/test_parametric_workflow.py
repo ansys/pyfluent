@@ -1,6 +1,5 @@
 from pathlib import Path
 import tempfile
-import time
 
 import pytest
 
@@ -137,7 +136,6 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
     )
     assert project_filename.exists()
     solver_session.exit()
-    time.sleep(10)
     solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
     solver_session.file.parametric_project.open(project_filename=str(project_filename))
     solver_session.file.parametric_project.save()
