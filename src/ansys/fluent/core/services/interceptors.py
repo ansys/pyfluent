@@ -25,15 +25,12 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ):
         network_logger.debug(
-            "GRPC_TRACE: rpc = %s, request = %s",
-            client_call_details.method,
-            MessageToDict(request),
+            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {MessageToDict(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():
             network_logger.debug(
-                "GRPC_TRACE: response = %s",
-                MessageToDict(response.result()),
+                f"GRPC_TRACE: response = {MessageToDict(response.result())}"
             )
         return response
 
