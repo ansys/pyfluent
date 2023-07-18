@@ -1,6 +1,5 @@
 from pathlib import Path
 import tempfile
-import time
 
 import pytest
 
@@ -10,13 +9,17 @@ from ansys.fluent.core import examples
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
-def test_parametric_workflow():
+def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("PYFLUENT_CONTAINER_MOUNT_PATH", pyfluent.EXAMPLES_PATH)
     save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    import_filename = examples.download_file(
-        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=save_path
+    import_filepath = examples.download_file(
+        "Static_Mixer_main.cas.h5",
+        "pyfluent/static_mixer",
+        save_path=save_path,
+        return_only_filename=False,
     )
     solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
-    solver_session.file.read_case(file_name=import_filename)
+    solver_session.file.read_case(file_name=import_filepath)
     solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
     solver_session.tui.define.boundary_conditions.set.velocity_inlet(
@@ -133,7 +136,6 @@ def test_parametric_workflow():
     )
     assert project_filename.exists()
     solver_session.exit()
-    time.sleep(10)
     solver_session = pyfluent.launch_fluent(processor_count=2, cwd=save_path)
     solver_session.file.parametric_project.open(project_filename=str(project_filename))
     solver_session.file.parametric_project.save()
