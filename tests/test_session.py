@@ -322,4 +322,4 @@ def test_read_case_using_lightweight_mode():
 
 
 def test_help_does_not_throw(new_solver_session):
-    help(new_solver_session.file.read_case)
+    help(new_solver_session.file.read)
