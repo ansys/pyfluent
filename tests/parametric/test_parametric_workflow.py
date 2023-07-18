@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import shutil
 import tempfile
 
 import pytest
@@ -11,7 +12,7 @@ from ansys.fluent.core import examples
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
-    # path needs to exist for mkdtemp
+    # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     import_filename = examples.download_file(
@@ -171,3 +172,5 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
     solver_session.file.parametric_project.archive(archive_name=archive_name)
     assert (Path(tmp_save_path) / new_study_path / archive_name).exists()
     solver_session.exit()
+
+    shutil.rmtree(tmp_save_path)
