@@ -1,3 +1,4 @@
+import os
 import sys
 
 import pytest
@@ -9,7 +10,10 @@ from ansys.fluent.core import examples
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.skipif(
-    sys.platform.startswith("linux"), reason="Linux specific issue in server"
+    os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+    or os.getenv("PYFLUENT_LAUNCH_CONTAINER") != "1"
+    and sys.platform.startswith("linux"),
+    reason="Linux Fluent server issues, see #1490",
 )
 def test_batch_ops_create_mesh(new_solver_session):
     solver = new_solver_session
@@ -26,9 +30,6 @@ def test_batch_ops_create_mesh(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.skipif(
-    sys.platform.startswith("linux"), reason="Linux specific issue in server"
-)
 def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     solver = new_solver_session
     case_filename = examples.download_file(
