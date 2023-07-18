@@ -10,7 +10,7 @@ def docother(self, object, name=None, mod=None, parent=None, maxlen=None, doc=No
         rep = pprint.pformat(object, width=maxlen, compact=True, indent=indent_len)
         rep = "[" + rep[1:].lstrip()
     else:
-        rep = self.rep(object)
+        rep = self.repr(object)
         if maxlen:
             line = (name and name + " = " or "") + rep
             chop = maxlen - len(line)
