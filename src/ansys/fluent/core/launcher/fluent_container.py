@@ -32,15 +32,15 @@ Docker container run configuration information:
 
 config_dict =
 {'auto_remove': True,
- 'command': ['-gu', '-sifile=/tmpdir/serverinfo-lpqsdldw.txt', '3ddp'],
+ 'command': ['-gu', '-sifile=/mnt/pyfluent/serverinfo-lpqsdldw.txt', '3ddp'],
  'detach': True,
  'environment': {'ANSYSLMD_LICENSE_FILE': '2048@licenseserver.com',
                  'REMOTING_PORTS': '54000/portspan=2'},
  'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
  'labels': {'test_name': 'none'},
  'ports': {'54000': 54000},
- 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/tmpdir'],
- 'working_dir': '/tmpdir'}
+ 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/mnt/pyfluent'],
+ 'working_dir': '/mnt/pyfluent'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 
@@ -58,7 +58,7 @@ from ansys.fluent.core.utils.networking import get_free_port
 import docker
 
 logger = logging.getLogger("pyfluent.launcher")
-DEFAULT_CONTAINER_MOUNT_PATH = "/tmpdir"
+DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
 def configure_container_dict(
