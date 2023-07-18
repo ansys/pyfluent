@@ -153,6 +153,7 @@ def test_parametric_workflow(monkeypatch: pytest.MonkeyPatch):
     solver_session.file.parametric_project.open(
         project_filename=".flprj.cffdb/" + project_filename
     )
+
     solver_session.file.parametric_project.save()
     project_save_as_name = "static_mixer_study_save_as.flprj"
     solver_session.file.parametric_project.save_as(
