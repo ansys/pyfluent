@@ -627,7 +627,8 @@ def launch_fluent(
             "supported when starting containers."
         )
 
-    argvals = locals()
+    argvals = locals().copy()
+    argvals.pop("fluent_launch_mode")
 
     if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
