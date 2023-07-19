@@ -50,7 +50,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
         "turb_intensity": 0.05,
         "turb_hydraulic_diam": "4 [in]",
     } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
-        
+
     assign_dict_val(
         solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag, 1.2
     )
@@ -74,7 +74,6 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
         "turb_intensity": 0.05,
         "turb_hydraulic_diam": "1 [in]",
     } == solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]()
-        
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"

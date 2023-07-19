@@ -118,7 +118,9 @@ TUI commands example
     :template: flobject-module-template.rst
     :recursive:
 
-    meshing
+    faulttolerant
+    meshing_workflow
+    watertight
 
 .. toctree::
    :maxdepth: 2
@@ -126,4 +128,3 @@ TUI commands example
 
    tui/index
    datamodel/index
-   

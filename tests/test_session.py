@@ -319,3 +319,7 @@ def test_read_case_using_lightweight_mode():
     time.sleep(5)
     assert solver.setup.models.energy.enabled() == False
     solver.exit()
+
+
+def test_help_does_not_throw(new_solver_session):
+    help(new_solver_session.file.read)

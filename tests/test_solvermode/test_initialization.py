@@ -15,7 +15,10 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver.setup.materials.database.copy_by_name(type="fluid", name="air")
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
     solver.setup.models.multiphase.models = "vof"
-    solver.setup.general.operating_conditions.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
+    solver.setup.general.operating_conditions.gravity = {
+        "enable": True,
+        "components": [0.0, 0.0, -9.81],
+    }
     solver.setup.general.solver.time = "steady"
 
     solver.tui.define.models.multiphase.vof_sub_models("yes", "no")
