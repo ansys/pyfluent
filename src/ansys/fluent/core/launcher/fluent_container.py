@@ -152,13 +152,13 @@ def configure_container_dict(
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
     else:
+        logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
         if len(container_dict["volumes"]) != 1:
             logger.warning(
                 "Multiple volumes being mounted in the Docker container, "
                 "using the first mount as the working directory for Fluent."
             )
         volumes_string = container_dict["volumes"][0]
-        logger.debug(f"container_dict['volumes']: {volumes_string}")
         container_mount_path = ""
         for c in reversed(volumes_string):
             if c == ":":
