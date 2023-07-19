@@ -75,6 +75,7 @@ class StreamingService:
                 )
                 self._stream_thread.start()
                 started_evt.wait()
+                self._streaming = True
 
     def stop(self) -> None:
         """Stop streaming of Fluent transcript."""
