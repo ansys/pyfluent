@@ -105,8 +105,8 @@ def download_file(
         Relevant when using Fluent Docker container images, as the full path for the imported file from
         the host side is not necessarily going to be the same as the one for Fluent inside the container.
         Assuming the Fluent inside the container has its working directory set to the path that was mounted from
-        the host, and that the example files are being downloaded by the host to this same path, only the filename is
-        required for Fluent to find and open the file.
+        the host, and that the example files are being made available by the host through this same path,
+        only the filename is required for Fluent to find and open the file.
 
     Returns
     -------
