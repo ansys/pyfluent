@@ -8,7 +8,7 @@ import pytest
 def test_methods(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"
-    solver.setup.general.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
+    solver.setup.general.operating_conditions.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
     solver.setup.general.solver.time = "steady"
     solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
     solver.solution.methods.p_v_coupling.coupled_form = False
