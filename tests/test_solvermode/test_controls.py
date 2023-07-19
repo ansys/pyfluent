@@ -9,8 +9,15 @@ def test_controls(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"
     assert solver.setup.models.multiphase.models() == "vof"
-    solver.setup.general.operating_conditions.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
-    assert solver.setup.general.operating_conditions.gravity.components() == [0, 0, -9.81]
+    solver.setup.general.operating_conditions.gravity = {
+        "enable": True,
+        "components": [0.0, 0.0, -9.81],
+    }
+    assert solver.setup.general.operating_conditions.gravity.components() == [
+        0,
+        0,
+        -9.81,
+    ]
     solver.setup.general.solver.time = "steady"
     assert solver.setup.general.solver.time() == "steady"
     solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
