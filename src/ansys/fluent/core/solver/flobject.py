@@ -359,21 +359,15 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _command_query_name_filter(self, is_command: bool = True, prefix: str = "") -> list:
+def _command_query_name_filter(parent, list_attr: str, prefix: str) -> list:
     """Auto completer info of commands and queries."""
     ret = []
-    names = self.command_names if is_command else self.query_names
+    names = getattr(parent, list_attr)
     for name in names:
         if name.startswith(prefix):
-            name_attr = getattr(self, name)
-            if name_attr.is_active():
-                ret.append(
-                    [
-                        name,
-                        (Command if is_command else Query).__name__,
-                        name_attr.__doc__,
-                    ]
-                )
+            child = getattr(parent, name)
+            if child.is_active():
+                ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
     return ret
 
 
@@ -492,8 +486,8 @@ class Group(SettingsBase[DictStateType]):
                             child.__doc__,
                         ]
                     )
-        command_info = _command_query_name_filter(self, prefix=prefix)
-        query_info = _command_query_name_filter(self, is_command=False, prefix=prefix)
+        command_info = _command_query_name_filter(self, "command_names", prefix)
+        query_info = _command_query_name_filter(self, "query_names", prefix)
         for items in [command_info, query_info]:
             ret.extend(items)
         return ret
@@ -764,8 +758,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             Name, type and docstring of all children.
         """
         ret = []
-        command_info = _command_query_name_filter(self, prefix=prefix)
-        query_info = _command_query_name_filter(self, is_command=False, prefix=prefix)
+        command_info = _command_query_name_filter(self, "command_names", prefix)
+        query_info = _command_query_name_filter(self, "query_names", prefix)
         for items in [command_info, query_info]:
             ret.extend(items)
         return ret
