@@ -10,7 +10,7 @@ import grpc
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger = logging.getLogger("pyfluent.networking")
-log_bytes_limit = int(int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000)))
+log_bytes_limit = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
