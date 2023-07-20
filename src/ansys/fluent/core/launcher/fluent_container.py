@@ -260,9 +260,6 @@ def configure_container_dict(
         auto_remove=True,
     )
 
-    if fluent_image.split(":")[1] == "v24.1.0":
-        container_dict_default.update(tty=True)
-
     for k, v in container_dict_default.items():
         if k not in container_dict:
             container_dict[k] = v
