@@ -232,9 +232,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
-@pytest.mark.dev
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
+@pytest.mark.fluent_version(">=23.2")
 def test_journal_creation(file_format, new_mesh_session):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
@@ -272,9 +270,7 @@ def test_old_style_session():
     session.exit()
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
-@pytest.mark.fluent_241
+@pytest.mark.fluent_version(">=23.2")
 def test_start_transcript_file_write(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
@@ -299,7 +295,7 @@ def test_start_transcript_file_write(new_mesh_session):
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
 
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_solverworkflow_in_solver_session(new_solver_session):
     solver = new_solver_session
     solver_dir = dir(solver)
@@ -307,8 +303,7 @@ def test_solverworkflow_in_solver_session(new_solver_session):
         assert attr in solver_dir
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.skip("Failing in github")
 def test_read_case_using_lightweight_mode():
     import_filename = examples.download_file(
@@ -324,3 +319,7 @@ def test_read_case_using_lightweight_mode():
     time.sleep(5)
     assert solver.setup.models.energy.enabled() == False
     solver.exit()
+
+
+def test_help_does_not_throw(new_solver_session):
+    help(new_solver_session.file.read)

@@ -1,6 +1,7 @@
 import pytest
 
 
+@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
 def test_solver_calculation(load_mixing_elbow_mesh):
