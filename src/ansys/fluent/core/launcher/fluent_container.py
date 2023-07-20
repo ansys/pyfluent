@@ -267,8 +267,6 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    logger.debug(f"container_dict after processing: {container_dict}")
-
     host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
     return (
