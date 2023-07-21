@@ -15,6 +15,7 @@ def test_fluent_error_interrupt(new_solver_session):
             "(events/transmit 'error-event "
             '(cons (format #f "fatal error: ~a~%" "testing") 1))'
         )
-        time.sleep(10)
-        # due to Python limitations, interrupt will only be recognized when it reaches here
+        for _ in range(100):
+            time.sleep(0.1)
+        # due to Python limitations, interrupt is scheduled in a queue and not instant
     assert exc.type == PyFluentInterrupted
