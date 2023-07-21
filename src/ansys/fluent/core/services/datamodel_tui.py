@@ -192,7 +192,8 @@ class PyMenu:
         if self._path.startswith("/query/"):
             return self._execute_query(request)
         else:
-            logger.debug(f"TUI Command: {request}")
+            request_str = " ".join(str(request).split())
+            logger.debug(f"TUI Command: {request_str}")
             return self._execute_command(request)
 
     def get_doc_string(self, include_unavailable: bool = False) -> str:

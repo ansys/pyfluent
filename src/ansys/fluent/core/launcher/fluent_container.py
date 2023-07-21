@@ -260,14 +260,9 @@ def configure_container_dict(
         auto_remove=True,
     )
 
-    if fluent_image.split(":")[1] == "v24.1.0":
-        container_dict_default.update(tty=True)
-
     for k, v in container_dict_default.items():
         if k not in container_dict:
             container_dict[k] = v
-
-    logger.debug(f"container_dict after processing: {container_dict}")
 
     host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
