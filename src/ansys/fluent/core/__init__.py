@@ -2,6 +2,7 @@
 
 import os
 import pydoc
+import signal
 
 import platformdirs
 
@@ -71,3 +72,14 @@ DATAMODEL_USE_ATTR_CACHE = True
 
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+
+class PyFluentInterrupted(KeyboardInterrupt):
+    pass
+
+
+def _interrupt_handler(signum, frame):
+    raise PyFluentInterrupted("Interrupt signal or Ctrl+C received.")
+
+
+signal.signal(signal.SIGINT, _interrupt_handler)

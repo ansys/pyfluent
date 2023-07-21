@@ -1,9 +1,13 @@
 """Module for events management."""
+import _thread
 from functools import partial
+import logging
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+
+network_logger = logging.getLogger("pyfluent.networking")
 
 
 class EventsManager(StreamingService):
@@ -47,6 +51,13 @@ class EventsManager(StreamingService):
                 event_name = response.WhichOneof("as")
                 with self._lock:
                     self._streaming = True
+                    if event_name == "errorevent":
+                        network_logger.error(
+                            f"gRPC {response.errorevent.message.rstrip()}, "
+                            f"errorCode {response.errorevent.errorCode}"
+                        )
+                        _thread.interrupt_main()  # sends 'signal.SIGINT' to main thread
+                        continue
                     callbacks_map = self._service_callbacks.get(event_name, {})
                     for call_back in callbacks_map.values():
                         call_back(
