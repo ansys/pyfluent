@@ -23,7 +23,7 @@ unittest-custom:
 	@echo "Running custom unittest"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v --no-cov --capture=no -k test_transcript  # Update custom testlist
+	@python -m pytest -v --no-cov --capture=no -k test_fluent_error_interrupt  # Update custom testlist
 
 unittest-dev-222:
 	@echo "Running unittests"
