@@ -660,6 +660,9 @@ def launch_fluent(
 
         _raise_exception_g_gu_in_windows_os(additional_arguments)
 
+        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+            argvals["fluent_debug"] = True
+
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
