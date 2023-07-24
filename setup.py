@@ -22,7 +22,7 @@ _DOCS_FILE = os.path.join(
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
 install_requires = [
-    "ansys-api-fluent==0.3.12",
+    "ansys-api-fluent>=0.3.14",
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
