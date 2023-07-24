@@ -124,7 +124,17 @@ def configure_container_dict(
     ``container_dict``, see `Docker run documentation`_.
     """
 
-    logger.debug(f"container_dict before processing: {container_dict}")
+    if (
+        container_dict
+        and "environment" in container_dict
+        and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1"
+    ):
+        container_dict_h = container_dict.copy()
+        container_dict_h.pop("environment")
+        logger.debug(f"container_dict before processing: {container_dict_h}")
+        del container_dict_h
+    else:
+        logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
         host_mount_path = pyfluent.EXAMPLES_PATH
@@ -302,8 +312,6 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
 
     container_vars = configure_container_dict(args, **container_dict)
 
-    logger.debug(f"container_vars:{container_vars}")
-
     (
         config_dict,
         timeout,
@@ -311,6 +319,21 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
+
+    if not os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+        logger.debug(f"container_vars: {container_vars}")
+    else:
+        config_dict_h = config_dict.copy()
+        config_dict_h.pop("environment")
+        container_vars_tmp = (
+            config_dict_h,
+            timeout,
+            port,
+            host_server_info_file,
+            remove_server_info_file,
+        )
+        logger.debug(f"container_vars: {container_vars_tmp}")
+        del container_vars_tmp
 
     try:
         if not host_server_info_file.exists():

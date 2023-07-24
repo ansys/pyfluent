@@ -33,9 +33,10 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         if not response.exception():
             response_bytes = response.result().ByteSize()
             if not log_bytes_limit or response_bytes < log_bytes_limit:
-                network_logger.debug(
-                    f"GRPC_TRACE: response = {MessageToDict(response.result())}"
-                )
+                if not os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+                    network_logger.debug(
+                        f"GRPC_TRACE: response = {MessageToDict(response.result())}"
+                    )
             else:
                 network_logger.debug(
                     f"GRPC_TRACE: response hidden, {response_bytes} bytes > "
