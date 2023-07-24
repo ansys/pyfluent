@@ -10,12 +10,11 @@ from ansys.fluent.core import PyFluentInterrupted
 def test_fluent_error_interrupt(new_solver_session):
     session = new_solver_session
     with pytest.raises(BaseException) as exc:
-        # (events/transmit 'error-event (cons (format #f "fatal error: ~a~%" "testing") 1))
         session.scheme_eval.scheme_eval(
             "(events/transmit 'error-event "
             '(cons (format #f "fatal error: ~a~%" "testing") 1))'
         )
-        # due to Python limitations, interrupt is scheduled in a queue and not exactly instant
         for _ in range(100):
-            time.sleep(0.1)  # exception should be raised on the first time.sleep() call
+            # exception should usually be raised on or before the first time.sleep() call
+            time.sleep(0.1)
     assert exc.type == PyFluentInterrupted

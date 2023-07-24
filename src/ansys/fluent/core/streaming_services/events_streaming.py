@@ -1,7 +1,9 @@
 """Module for events management."""
-import _thread
 from functools import partial
 import logging
+import os
+import platform
+import signal
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -53,10 +55,15 @@ class EventsManager(StreamingService):
                     self._streaming = True
                     if event_name == "errorevent":
                         network_logger.error(
-                            f"gRPC {response.errorevent.message.rstrip()}, "
+                            f"gRPC - {response.errorevent.message.rstrip()}, "
                             f"errorCode {response.errorevent.errorCode}"
                         )
-                        _thread.interrupt_main()  # sends 'signal.SIGINT' to main thread
+                        if platform.system() == "Linux":
+                            # immediately interrupting the main thread
+                            os.kill(os.getpid(), signal.SIGINT)
+                        else:
+                            # on Windows interrupt is scheduled in queue and not necessarily instant
+                            signal.raise_signal(signal.SIGINT)
                         continue
                     callbacks_map = self._service_callbacks.get(event_name, {})
                     for call_back in callbacks_map.values():
