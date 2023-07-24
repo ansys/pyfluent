@@ -2,9 +2,9 @@ import ansys.fluent.core.quantity as q
 
 
 class Quantity(float):
-    """Quantity instantiates physical quantities using their real values and units. All
-    instances of this class are converted to base SI units to have consistency in
-    arithmetic operations.
+    """Quantity instantiates physical quantities using their real values and
+    units. All the instances of this class are converted to base SI units system to have
+    consistency in arithmetic operations.
 
     Parameters
     ----------
