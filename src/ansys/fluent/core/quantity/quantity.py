@@ -2,9 +2,9 @@ import ansys.fluent.core.quantity as q
 
 
 class Quantity(float):
-    """Quantity instantiates physical quantities using their real values and
-    units. All the instances of this class are converted to base SI units system to have
-    consistency in arithmetic operations.
+    """Quantity instantiates physical quantities using their real values and units. All
+    instances of this class are converted to base SI units to have consistency in
+    arithmetic operations.
 
     Parameters
     ----------
@@ -82,7 +82,7 @@ class Quantity(float):
 
         si_units, si_multiplier, si_offset = self._units_table.si_data(units=self._unit)
 
-        self._si_units = si_units[:-1]
+        self._si_units = si_units
         self._si_value = (self.value + si_offset) * si_multiplier
 
     def _arithmetic_precheck(self, __value, caller=None) -> str:
@@ -100,14 +100,17 @@ class Quantity(float):
             SI unit string of new quantity.
         """
         # Cannot perform operations between quantities with incompatible dimensions
-        if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
+        if (
+            isinstance(__value, Quantity)
+            and caller not in ["__mul__", "__truediv__"]
+            and (self.dimensions != __value.dimensions)
+        ):
             raise QuantityError.INCOMPATIBLE_DIMENSIONS(self.units, __value.units)
         # Cannot perform operations on a non-dimensionless quantity
         if (
-            caller not in ["__mul__", "__truediv__"]
+            not isinstance(__value, Quantity)
+            and caller not in ["__mul__", "__truediv__"]
             and (not self.is_dimensionless)
-            and (not isinstance(__value, Quantity))
-            and isinstance(__value, (float, int))
         ):
             raise QuantityError.INCOMPATIBLE_VALUE(__value)
 

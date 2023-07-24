@@ -2,7 +2,8 @@ import ansys.fluent.core.quantity as q
 
 
 class UnitSystem:
-    """Initializes a unit system based on user-defined units or a pre-definned unit system.
+    """Initializes a unit system based on user-defined units or a pre-definned unit
+    system.
 
     Parameters
     ----------
@@ -77,7 +78,10 @@ class UnitSystem:
             dimensions=quantity.dimensions, unit_sys=self._base_units
         )
 
-        return q.Quantity(value=quantity.value, units=new_dim.units)
+        _, si_multiplier, si_offset = self._units_table.si_data(new_dim.units)
+        new_value = (quantity.si_value / si_multiplier) - si_offset
+
+        return q.Quantity(value=new_value, units=new_dim.units)
 
     @property
     def name(self):

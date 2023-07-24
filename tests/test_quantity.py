@@ -21,7 +21,7 @@ def test_properties_2():
     assert v.value == 1
     assert v.units == "ft s^-1"
     assert v.si_value == pytest.approx(0.30479999, DELTA)
-    assert v.si_units == "m s^-1.0"
+    assert v.si_units == "m s^-1"
     assert v.type == "Composite"
 
 
@@ -30,7 +30,7 @@ def test_properties_3():
     assert v.value == 1.0
     assert v.units == "farad"
     assert v.si_value == 1.0
-    assert v.si_units == "kg^-1.0 m^-2.0 s^4.0 A^2.0"
+    assert v.si_units == "kg^-1 m^-2 s^4 A^2"
     assert v.type == "Derived"
 
 
@@ -281,23 +281,23 @@ def test_convert_1():
     newSys = q.UnitSystem(unit_sys="SI")
     v = q.Quantity(2.0, "ft^-2")
     convert = newSys.convert(v)
-    assert convert.value == 2.0
-    assert convert.units == "m^-2.0"
+    assert convert.value == 21.52782083341945
+    assert convert.units == "m^-2"
 
 
 def test_convert_2():
     newSys = q.UnitSystem(unit_sys="CGS")
     v = q.Quantity(1.0, "mm^3")
     convert = newSys.convert(v)
-    assert convert.value == 1.0
-    assert convert.units == "cm^3.0"
+    assert convert.value == pytest.approx(0.0009999999999999998, DELTA)
+    assert convert.units == "cm^3"
 
 
 def test_convert_3():
     newSys = q.UnitSystem(unit_sys="BT")
     v = q.Quantity(7.0, "K mol")
     convert = newSys.convert(v)
-    assert convert.value == 7.0
+    assert convert.value == pytest.approx(0.0008633744235691625, DELTA)
     assert convert.units == "R slugmol"
 
 
@@ -341,7 +341,7 @@ def test_pow():
     q2 = q.Quantity(5.0, "m s^-1")
 
     q1_sq = q1**2
-    assert q1_sq.units == "m^2.0 s^-2.0"
+    assert q1_sq.units == "m^2 s^-2"
 
     assert float(q1) ** 2 == 100.0
     assert float(q2) ** 2 == 25.0
@@ -399,9 +399,28 @@ def test_eq_2():
         assert 5.0 == x
 
 
-def test_rdiv():
+def test_mul():
+    q1 = q.Quantity(200, "kg")
+    q2 = q.Quantity(20.2, "m s^-1")
+    q3 = q1 * q2
+
+    assert q3.value == 4040.0
+    assert q3.units == "kg m s^-1"
+
+    assert float(q1) * float(q2) == 4040.0
+    assert float(q2) * float(q1) == 4040.0
+    assert float(q1) * 2 == 400
+    assert 2.0 * float(q2) == 40.4
+
+
+def test_div():
     q1 = q.Quantity(10.0, "m s^-1")
     q2 = q.Quantity(5.0, "m s^-1")
+
+    q3 = q1 / q2
+
+    assert q3.value == 2.0
+    assert q3.units == ""
 
     assert float(q1) / float(q2) == 2.0
     assert float(q2) / float(q1) == 0.5
@@ -826,7 +845,7 @@ def test_quantity_map_1():
 
     api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
     assert api_test.value == 10.5
-    assert api_test.units == "kg^3.0 m^-1.5 s^-6.5 A^3.0 cd"
+    assert api_test.units == "kg^3 m^-1.5 s^-6.5 A^3 cd"
 
 
 def test_quantity_map_2():
@@ -853,12 +872,12 @@ def test_quantity_map_3():
 
     api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
     assert api_test.value == 10.5
-    assert api_test.units == "K Pa m^3.0"
+    assert api_test.units == "K Pa m^3"
 
 
 def test_unit_from_dimensions_1():
     p = q.Quantity(10.5, dimensions=[1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    assert p.units == "kg m^-1.0 s^-2.0"
+    assert p.units == "kg m^-1 s^-2"
 
 
 def test_unit_from_dimensions_2():
@@ -873,13 +892,13 @@ def test_unit_from_dimensions_3():
 
 def test_unit_from_dimensions_4():
     test = q.Quantity(10.5, dimensions=[0, 1, -1])
-    assert test.units == "m s^-1.0"
+    assert test.units == "m s^-1"
     assert test.dimensions == [0.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
 def test_unit_from_dimensions_5():
     test = q.Quantity(10.5, dimensions=[0, 1.0, -2.0])
-    assert test.units == "m s^-2.0"
+    assert test.units == "m s^-2"
     assert test.dimensions == [0.0, 1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
@@ -940,24 +959,24 @@ def testing_multipliers():
 def testing_arithmetic_operators():
     print(f"{'*' * 25} {testing_arithmetic_operators.__name__} {'*' * 25}")
 
-    qt1 = q.Quantity(10, "m s^-1.0")
-    qt2 = q.Quantity(5, "m s^-1.0")
+    qt1 = q.Quantity(10, "m s^-1")
+    qt2 = q.Quantity(5, "m s^-1")
 
     qt3 = qt1 * qt2
 
     print(f"{qt1} * {qt2} =  {qt3}")
     assert qt3.value == 50
-    assert qt3.units == "m^2.0 s^-2.0"
+    assert qt3.units == "m^2 s^-2"
 
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
     assert result.value == 20
-    assert result.units == "m s^-1.0"
+    assert result.units == "m s^-1"
 
     result1 = 2 * qt1
     print(f"{2} * {qt1} =  {result1}")
     assert result1.value == 20
-    assert result1.units == "m s^-1.0"
+    assert result1.units == "m s^-1"
 
     q3 = qt1 / qt2
 
@@ -968,13 +987,13 @@ def testing_arithmetic_operators():
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
     assert result3.value == 5
-    assert result3.units == "m s^-1.0"
+    assert result3.units == "m s^-1"
 
     qa3 = qt1 + qt2
 
     print(f"{qt1} + {qt2} =  {qa3}")
     assert qa3.value == 15
-    assert qa3.units == "m s^-1.0"
+    assert qa3.units == "m s^-1"
 
     with pytest.raises(q.QuantityError) as e:
         result5 = qt1 + 2
@@ -988,7 +1007,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} - {qt2} =  {qs3}")
     assert qs3.value == 5
-    assert qs3.units == "m s^-1.0"
+    assert qs3.units == "m s^-1"
 
     with pytest.raises(q.QuantityError) as e:
         result7 = qt1 - 2
@@ -1030,8 +1049,8 @@ def test_unit_system():
         "sr",
     ]
 
-    assert v2.value == 10
-    assert v2.units == "slug ft s^2.0"
+    assert v2.value == 2.2480894309971045
+    assert v2.units == "slug ft s^2"
 
     si = q.UnitSystem(unit_sys="SI")
     v3 = q.Quantity(10, "ft^-2")
@@ -1040,5 +1059,5 @@ def test_unit_system():
     assert si.name == "SI"
     assert si.base_units == ["kg", "m", "s", "K", "radian", "mol", "cd", "A", "sr"]
 
-    assert v4.value == 10
-    assert v4.units == "m^-2.0"
+    assert v4.value == 107.63910416709726
+    assert v4.units == "m^-2"
