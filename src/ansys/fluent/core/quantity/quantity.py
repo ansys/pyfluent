@@ -105,7 +105,13 @@ class Quantity(float):
             raise QuantityError.INCOMPATIBLE_VALUE(__value)
 
     def _temp_precheck(self):
-        """ """
+        """Validate units for temperature differences.
+
+        Returns
+        -------
+        str | None
+            Units of temperature difference.
+        """
         if self.type in ["Temperature", "Temperature Difference"]:
             return "delta_K"
 
