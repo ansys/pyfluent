@@ -13,8 +13,7 @@ from ansys.fluent.core.services.field_data import (
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
@@ -189,8 +188,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert expected_allowed_args == allowed_args
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
@@ -261,8 +259,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert all(path_lines_data["lines"][100].node_indices == [100, 101])
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_2d(load_disk_mesh) -> None:
     solver = load_disk_mesh
 

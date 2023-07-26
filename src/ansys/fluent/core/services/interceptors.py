@@ -1,6 +1,7 @@
 """Interceptor classes to use with gRPC services."""
 
 import logging
+import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
@@ -9,6 +10,7 @@ import grpc
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger = logging.getLogger("pyfluent.networking")
+log_bytes_limit = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
@@ -25,16 +27,20 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ):
         network_logger.debug(
-            "GRPC_TRACE: rpc = %s, request = %s",
-            client_call_details.method,
-            MessageToDict(request),
+            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {MessageToDict(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():
-            network_logger.debug(
-                "GRPC_TRACE: response = %s",
-                MessageToDict(response.result()),
-            )
+            response_bytes = response.result().ByteSize()
+            if not log_bytes_limit or response_bytes < log_bytes_limit:
+                network_logger.debug(
+                    f"GRPC_TRACE: response = {MessageToDict(response.result())}"
+                )
+            else:
+                network_logger.debug(
+                    f"GRPC_TRACE: response hidden, {response_bytes} bytes > "
+                    f"{log_bytes_limit} bytes limit. To see the response, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
+                )
         return response
 
     def intercept_unary_unary(

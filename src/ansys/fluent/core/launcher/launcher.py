@@ -15,7 +15,10 @@ import time
 from typing import Any, Dict, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.fluent_container import start_fluent_container
+from ansys.fluent.core.launcher.fluent_container import (
+    configure_container_dict,
+    start_fluent_container,
+)
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import _parse_server_info_file
@@ -44,6 +47,17 @@ class LaunchMode(Enum):
     CONTAINER = 3
 
 
+def check_docker_support():
+    """Checks whether Python Docker SDK is supported by the current system."""
+    import docker
+
+    try:
+        _ = docker.from_env()
+    except docker.errors.DockerException:
+        return False
+    return True
+
+
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions."""
 
@@ -62,7 +76,7 @@ class FluentVersion(Enum):
             else:
                 raise RuntimeError(
                     f"The specified version '{version[:-2]}' is not supported."
-                    + f" Supported versions are: "
+                    + " Supported versions are: "
                     + ", ".join([ver.value for ver in FluentVersion][::-1])
                 )
 
@@ -193,19 +207,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     old_argval = argval
                     argval = default
                     logger.warning(
-                        "Default value %s is chosen for %s as the passed "
-                        "value  %s is outside allowed values %s.",
-                        argval,
-                        k,
-                        old_argval,
-                        allowed_values,
+                        f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values}), default value '{argval}' is going to be used instead."
                     )
                 else:
                     logger.warning(
-                        "%s = %s is discarded as it is outside " "allowed values %s.",
-                        k,
-                        argval,
-                        allowed_values,
+                        f"{k} = {argval} is discarded as it is not an allowed value. Allowed values: {allowed_values}"
                     )
                     continue
             fluent_map = v.get("fluent_map")
@@ -344,16 +350,13 @@ def _await_fluent_launch(
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
-            logger.info("Fluent process is successfully launched.")
+            logger.info("Fluent has been successfully launched.")
             break
         if start_timeout == 0:
             raise RuntimeError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
-        logger.info(
-            "Waiting for Fluent to launch...%02d seconds remaining",
-            start_timeout,
-        )
+        logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
 
 
 def _get_server_info(
@@ -447,23 +450,25 @@ def launch_fluent(
     processor_count: int = None,
     journal_filepath: str = None,
     start_timeout: int = 100,
-    additional_arguments: str = "",
+    additional_arguments: str = None,
     env: Dict[str, Any] = None,
+    start_container: bool = None,
+    container_dict: dict = None,
+    dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
     case_data_filepath: str = None,
-    lightweight_mode: bool = False,
+    lightweight_mode: bool = None,
     mode: Union[FluentMode, str, None] = None,
-    server_info_filepath: str = None,
     py: bool = None,
     gpu: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
     start_watchdog: bool = None,
     **kwargs,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -492,10 +497,21 @@ def launch_fluent(
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
-        The default is``""``.
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
+    start_container : bool, optional
+        Specifies whether to launch a Fluent Docker container image. For more details about containers, see
+        :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    container_dict : dict, optional
+        Dictionary for Fluent Docker container configuration. If specified,
+        setting ``start_container = True`` as well is redundant.
+        Will launch Fluent inside a Docker container using the configuration changes specified.
+        See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    dry_run : bool, optional
+        Defaults to False. If True, will not launch Fluent, and will instead print configuration information
+        that would be used as if Fluent was being launched. If dry running a container start,
+        ``launch_fluent()`` will return the configured ``container_dict``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
@@ -514,7 +530,7 @@ def launch_fluent(
         If provided, the case file at ``case_filepath`` is read into the Fluent session.
     case_data_filepath : str, optional
         If provided, the case and data files at ``case_data_filepath`` are read into the Fluent session.
-    lightweight_mode: bool, optional
+    lightweight_mode : bool, optional
         Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
         current Fluent solver session. The mesh is read into a background Fluent solver session which will
         replace the current Fluent solver session once the mesh read is complete and the lightweight settings
@@ -529,14 +545,14 @@ def launch_fluent(
         If True, Fluent will run in Python mode. Default is None.
     gpu : bool, optional
         If True, Fluent will start with GPU Solver.
-    cwd: str, Optional
-        Path to specify current working directory to launch fluent from the defined directory as
-        current working directory.
-    topy: str or list, optional
+    cwd : str, Optional
+        Working directory for the Fluent client.
+    topy : str or list, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s) and write the equivalent Python journal(s).
-    start_watchdog: bool, optional
-        When show_gui is False, defaults to True, which means an independent watchdog process is run to ensure
+    start_watchdog : bool, optional
+        When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
+        which means an independent watchdog process is run to ensure
         that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
         when the current Python process ends.
 
@@ -545,8 +561,8 @@ def launch_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
-        Session object.
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
+        Session object or configuration dictionary if ``dry_run = True``.
 
     Notes
     -----
@@ -564,31 +580,96 @@ def launch_fluent(
             raise TypeError(
                 f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
             )
-
     del kwargs
-    argvals = locals()
-
-    if start_watchdog is None and not show_gui:
-        start_watchdog = True
-
-    new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
-    _raise_exception_g_gu_in_windows_os(additional_arguments)
 
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM
-    elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        fluent_launch_mode = LaunchMode.CONTAINER
+    elif start_container is True or (
+        start_container is None
+        and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
+    ):
+        if check_docker_support():
+            fluent_launch_mode = LaunchMode.CONTAINER
+        else:
+            raise SystemError(
+                "Docker is not working correctly in this system, "
+                "yet a Fluent Docker container launch was specified."
+            )
     else:
         fluent_launch_mode = LaunchMode.STANDALONE
 
+    del start_container
+
+    if additional_arguments is None:
+        additional_arguments = ""
+    elif fluent_launch_mode == LaunchMode.PIM:
+        logger.warning(
+            "'additional_arguments' option for 'launch_fluent' is currently not supported "
+            "when starting a remote Fluent PyPIM client."
+        )
+
+    if fluent_launch_mode == LaunchMode.PIM and start_watchdog:
+        logger.warning(
+            "'start_watchdog' argument for 'launch_fluent' is currently not supported "
+            "when starting a remote Fluent PyPIM client."
+        )
+
+    if (
+        start_watchdog is None
+        and cleanup_on_exit
+        and (fluent_launch_mode in (LaunchMode.CONTAINER, LaunchMode.STANDALONE))
+    ):
+        start_watchdog = True
+
+    if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
+        logger.warning(
+            "'dry_run' argument for 'launch_fluent' currently is only "
+            "supported when starting containers."
+        )
+
+    argvals = locals().copy()
+    argvals.pop("fluent_launch_mode")
+
+    if fluent_launch_mode != LaunchMode.STANDALONE:
+        arg_names = [
+            "env",
+            "cwd",
+            "topy",
+            "case_filepath",
+            "lightweight_mode",
+            "journal_filepath",
+            "case_data_filepath",
+        ]
+        invalid_arg_names = list(
+            filter(lambda arg_name: argvals[arg_name] is not None, arg_names)
+        )
+        if len(invalid_arg_names) != 0:
+            invalid_str_names = ", ".join(invalid_arg_names)
+            logger.warning(
+                f"These specified arguments are only supported when starting "
+                f"local standalone Fluent clients: {invalid_str_names}."
+            )
+
+    new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
+
     if fluent_launch_mode == LaunchMode.STANDALONE:
+        if lightweight_mode is None:
+            # note argvals is no longer locals() here due to _get_session_info() pass
+            argvals.pop("lightweight_mode")
+            lightweight_mode = False
+
+        _raise_exception_g_gu_in_windows_os(additional_arguments)
+
+        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+            argvals["fluent_debug"] = True
+
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
 
         try:
-            logger.info("Launching Fluent with cmd: %s", launch_string)
+            logger.debug(f"Launching Fluent with cmd: {launch_string}")
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
@@ -615,7 +696,7 @@ def launch_fluent(
                 inside_container=False,
             )
             if start_watchdog:
-                logger.debug("Launching Watchdog for local Fluent client...")
+                logger.info("Launching Watchdog for local Fluent client...")
                 ip, port, password = _get_server_info(server_info_filepath)
                 watchdog.launch(os.getpid(), port, password, ip)
             if case_filepath:
@@ -671,19 +752,18 @@ def launch_fluent(
         if meshing_mode:
             args.append(" -meshing")
 
-        import ansys.fluent.core as pyfluent
+        if dry_run:
+            if container_dict is None:
+                container_dict = {}
+            config_dict, *_ = configure_container_dict(args, **container_dict)
+            from pprint import pprint
 
-        host_mount_path = pyfluent.EXAMPLES_PATH
-        if not os.path.exists(host_mount_path):
-            os.makedirs(host_mount_path)
+            print("\nDocker container run configuration:\n")
+            print("config_dict = ")
+            pprint(config_dict)
+            return config_dict
 
-        container_mount_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
-        )
-
-        port, password = start_fluent_container(
-            host_mount_path, container_mount_path, args
-        )
+        port, password = start_fluent_container(args, container_dict)
 
         session = new_session(
             fluent_connection=FluentConnection(
@@ -711,8 +791,9 @@ def connect_to_fluent(
     start_transcript: bool = True,
     server_info_filepath: str = None,
     password: str = None,
+    start_watchdog: bool = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
-    """Connect to a running Fluent server instance.
+    """Connect to an existing Fluent server instance.
 
     Parameters
     ----------
@@ -739,6 +820,10 @@ def connect_to_fluent(
         connect to a running Fluent session.
     password : str, optional
         Password to connect to existing Fluent instance.
+    start_watchdog: bool, optional
+        When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
+        which means an independent watchdog process is run to ensure
+        that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
 
     Returns
     -------
@@ -758,4 +843,13 @@ def connect_to_fluent(
         start_transcript=start_transcript,
     )
     new_session = _get_running_session_mode(fluent_connection)
+
+    if start_watchdog is None and cleanup_on_exit:
+        start_watchdog = True
+
+    if start_watchdog:
+        logger.info("Launching Watchdog for existing Fluent connection...")
+        ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
+        watchdog.launch(os.getpid(), port, password, ip)
+
     return new_session(fluent_connection=fluent_connection)

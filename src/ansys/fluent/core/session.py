@@ -40,6 +40,7 @@ except Exception:
     root = Any
 
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
+logger = logging.getLogger("pyfluent.general")
 
 
 def _parse_server_info_file(filename: str):
@@ -58,7 +59,7 @@ def _get_datamodel_attributes(session, attribute: str):
             f"ansys.fluent.core.datamodel_{session.version}." + attribute
         )
         return preferences_module.Root(session._se_service, attribute, [])
-    except (ImportError, ModuleNotFoundError):
+    except ImportError:
         datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 
@@ -235,14 +236,24 @@ class BaseSession:
         return self.scheme_eval.version
 
     def exit(self, **kwargs) -> None:
-        "Exit session."
+        """Exit session."""
+        logger.debug("session.exit() called")
         self.fluent_connection.exit(**kwargs)
+
+    def force_exit(self) -> None:
+        """Terminate session."""
+        self.fluent_connection.force_exit()
+
+    def force_exit_container(self) -> None:
+        """Terminate Docker container session."""
+        self.fluent_connection.force_exit_container()
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
+        logger.debug("session.__exit__() called")
         self.exit()
 
     def upload(self, file_path: str, remote_file_name: str = None):

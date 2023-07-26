@@ -150,5 +150,5 @@ class PostAPIHelper:
 
     def _scheme_str_to_py_list(self, scheme_eval_str):
         session = self.obj.get_root().session
-        str = session.scheme_eval.string_eval(scheme_eval_str)
-        return list(filter(None, re.split(r'[\s()"\']', str)))
+        str_val = session.scheme_eval.string_eval(scheme_eval_str)
+        return list(filter(None, re.split(r'[\s()"\']', str_val)))

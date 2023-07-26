@@ -1,17 +1,17 @@
 import pytest
-from util.solver_workflow import new_solver_session  # noqa: F401
+from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 
-@pytest.mark.fluent_231
-def test_creatable(new_solver_session) -> None:
+@pytest.mark.fluent_version(">=23.1")
+def test_creatable(load_static_mixer_case) -> None:
     has_not = (
-        new_solver_session.setup.boundary_conditions.velocity_inlet,
-        new_solver_session.setup.cell_zone_conditions.fluid,
+        load_static_mixer_case.setup.boundary_conditions.velocity_inlet,
+        load_static_mixer_case.setup.cell_zone_conditions.fluid,
     )
 
     has = (
-        new_solver_session.results.graphics.contour,
-        new_solver_session.results.graphics.vector,
+        load_static_mixer_case.results.graphics.contour,
+        load_static_mixer_case.results.graphics.vector,
     )
 
     for obj in has_not:

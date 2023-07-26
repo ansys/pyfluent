@@ -8,7 +8,16 @@ requires = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore-glob=tests/test_pro/* --ignore-glob=tests/test_datamodel_server/*"
+addopts = """
+-v
+--cov=ansys.fluent
+--cov-report=xml:cov_xml.xml
+--cov-report=html
+--durations=0
+--show-capture=all
+--ignore-glob=tests/test_pro/*
+--ignore-glob=tests/test_datamodel_server/*
+"""
 markers = [
     "integration: Short-running tests which read a simple input file and check the exposure and values of various setting objects",
     "quick: Run the quick tests",
@@ -16,13 +25,9 @@ markers = [
     "solve: Long-running tests that continue until convergence",
     "mesh: Tests covering meshing scenarios",
     "optislang: Test Optislang integration scenarios",
-    "dev: Tests that must be successful before PR merge, includes unmarked tests",
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
-    "fluent_222: Tests that run with Fluent 22.2",
-    "fluent_231: Tests that run with Fluent 23.1",
-    "fluent_232: Tests that run with Fluent 23.2",
-    "fluent_241: Tests that run with Fluent 24.1",
+    "fluent_version(version): Tests that runs with specified Fluent version",
 ]
 
 

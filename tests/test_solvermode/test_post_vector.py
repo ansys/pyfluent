@@ -1,6 +1,7 @@
 import pytest
 
 
+@pytest.mark.nightly
 @pytest.mark.setup
 def test_post_elbow(load_mixing_elbow_case_dat):
     pyflu = load_mixing_elbow_case_dat

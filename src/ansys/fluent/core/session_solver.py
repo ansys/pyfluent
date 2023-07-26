@@ -18,7 +18,7 @@ from ansys.fluent.core.session import (
 )
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.utils.async_execution import asynchronous
+from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
@@ -43,7 +43,6 @@ class Solver(BaseSession):
         self._build_from_fluent_connection(fluent_connection)
 
     def _build_from_fluent_connection(self, fluent_connection):
-        super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._tui_service = self.datamodel_service_tui
         self._se_service = self.datamodel_service_se
         self._settings_service = self.settings_service
@@ -103,7 +102,7 @@ class Solver(BaseSession):
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, ModuleNotFoundError):
+        except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se

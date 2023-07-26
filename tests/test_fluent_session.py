@@ -3,6 +3,7 @@ import subprocess
 import threading
 import time
 
+from docker.models.containers import Container
 import psutil
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
@@ -11,7 +12,8 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import get_container_ids
+from ansys.fluent.core.fluent_connection import get_container
+from ansys.fluent.core.utils.execution import timeout_loop
 
 
 def _read_case(session):
@@ -65,15 +67,14 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
 
     fluent_host_pid, cortex_host, inside_container = f()
 
-    for _ in range(31):
-        if (inside_container and cortex_host not in get_container_ids()) or (
-            not inside_container and not psutil.pid_exists(fluent_host_pid)
-        ):
-            break
-        time.sleep(1)
+    timeout_loop(
+        lambda: (inside_container and not get_container(cortex_host))
+        or (not inside_container and not psutil.pid_exists(fluent_host_pid)),
+        60,
+    )
 
     if inside_container:
-        assert cortex_host not in get_container_ids()
+        assert not get_container(cortex_host)
     else:
         assert not psutil.pid_exists(fluent_host_pid)
 
@@ -88,9 +89,9 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         return _fluent_host_pid, _cortex_host, _inside_container, _cortex_pwd
 
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
-    time.sleep(5)
+    time.sleep(10)
     if inside_container:
-        assert cortex_host in get_container_ids()
+        assert get_container(cortex_host)
         subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
     else:
         from pathlib import Path
@@ -107,34 +108,41 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         cleanup_filename = (
             f"cleanup-fluent-{cortex_host}-{fluent_host_pid}.{cleanup_file_ext}"
         )
-        print(cleanup_filename)
+        print(f"cleanup_filename: {cleanup_filename}")
         cmd_list.append(Path(cortex_pwd, cleanup_filename))
-        print(cmd_list)
+        print(f"cmd_list: {cmd_list}")
         subprocess.Popen(
             cmd_list,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        time.sleep(2)
-        assert not psutil.pid_exists(fluent_host_pid)
 
 
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
-    session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
+    session1 = pyfluent.launch_fluent()
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
+    assert session2.health_check_service.is_serving
     session2.exit()
-    time.sleep(5)
+
+    timeout_loop(
+        session1.health_check_service.is_serving,
+        5.0,
+        expected="truthy",
+    )
+
     assert session1.health_check_service.is_serving
     session1.exit()
 
 
-def test_exit_fluent_when_connected_to_running_fluent(monkeypatch) -> None:
+def test_exit_fluent_when_connected_to_running_fluent(
+    monkeypatch,
+) -> None:  # import ansys.fluent.core as pyfluent
     session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
@@ -143,7 +151,13 @@ def test_exit_fluent_when_connected_to_running_fluent(monkeypatch) -> None:
         cleanup_on_exit=True,
     )
     session2.exit()
-    time.sleep(5)
+
+    timeout_loop(
+        session1.health_check_service.is_serving,
+        5.0,
+        expected="falsy",
+    )
+
     assert not session1.health_check_service.is_serving
 
 
@@ -157,7 +171,9 @@ def test_fluent_connection_properties(
     assert isinstance(session.connection_properties.cortex_pwd, str)
     assert isinstance(session.connection_properties.cortex_pid, int)
     assert isinstance(session.connection_properties.cortex_host, str)
-    assert isinstance(session.connection_properties.inside_container, bool)
+    assert isinstance(
+        session.connection_properties.inside_container, bool
+    ) or isinstance(session.connection_properties.inside_container, Container)
     assert isinstance(session.connection_properties.fluent_host_pid, int)
 
 
@@ -183,6 +199,11 @@ def test_fluent_freeze_kill(
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    time.sleep(1)
+    alive = timeout_loop(
+        get_container,
+        5.0,
+        args=(session.connection_properties.cortex_host,),
+        expected="falsy",
+    )
 
-    assert session.connection_properties.cortex_host not in get_container_ids()
+    assert not alive

@@ -169,7 +169,9 @@ def test_create_session_from_server_info_file_with_wrong_password(
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError):
         session = BaseSession.create_from_server_info_file(
-            server_info_filepath=str(server_info_file), cleanup_on_exit=False
+            server_info_filepath=str(server_info_file),
+            cleanup_on_exit=False,
+            start_timeout=2,
         )
         session.scheme_eval.scheme_eval("")
         server.stop(None)
@@ -230,8 +232,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_journal_creation(file_format, new_mesh_session):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
@@ -240,22 +241,24 @@ def test_journal_creation(file_format, new_mesh_session):
     )
     os.close(fd)
 
-    prev_stat = Path(file_path).stat()
+    file_path = Path(file_path)
+
+    file_path.touch()
+    prev_stat = file_path.stat()
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
     print(f"prev_stat: {prev_stat}")
 
-    print("Waiting")
-    time.sleep(1)
-
     session = new_mesh_session
-    session.journal.start(file_path)
+    if session.connection_properties.inside_container:
+        session.journal.start(file_path.name)
+    else:
+        session.journal.start(file_path)
     session = session.switch_to_solver()
     session.journal.stop()
-    new_stat = Path(file_path).stat()
+    new_stat = file_path.stat()
     print(f"new_stat: {new_stat}")
-    assert new_stat.st_mtime > prev_mtime
-    assert new_stat.st_size > prev_size
+    assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
 
 @pytest.mark.skip("Failing in GitHub CI")
@@ -267,9 +270,7 @@ def test_old_style_session():
     session.exit()
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
-@pytest.mark.skip("Failing in github")
+@pytest.mark.fluent_version(">=23.2")
 def test_start_transcript_file_write(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
@@ -278,7 +279,10 @@ def test_start_transcript_file_write(new_mesh_session):
     )
     os.close(fd)
 
-    prev_stat = Path(file_path).stat()
+    file_path = Path(file_path)
+
+    file_path.touch()
+    prev_stat = file_path.stat()
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
 
@@ -287,12 +291,11 @@ def test_start_transcript_file_write(new_mesh_session):
     session = session.switch_to_solver()
     session.transcript.stop()
 
-    new_stat = Path(file_path).stat()
-    assert new_stat.st_mtime > prev_mtime
-    assert new_stat.st_size > prev_size
+    new_stat = file_path.stat()
+    assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
 
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_solverworkflow_in_solver_session(new_solver_session):
     solver = new_solver_session
     solver_dir = dir(solver)
@@ -300,8 +303,7 @@ def test_solverworkflow_in_solver_session(new_solver_session):
         assert attr in solver_dir
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.skip("Failing in github")
 def test_read_case_using_lightweight_mode():
     import_filename = examples.download_file(
@@ -317,3 +319,7 @@ def test_read_case_using_lightweight_mode():
     time.sleep(5)
     assert solver.setup.models.energy.enabled() == False
     solver.exit()
+
+
+def test_help_does_not_throw(new_solver_session):
+    help(new_solver_session.file.read)

@@ -349,7 +349,7 @@ def generate():
     _populate_xml_helpstrings()
     TUIGenerator("meshing", version).generate()
     TUIGenerator("solver", version).generate()
-    logger.warning(
+    logger.info(
         "XML help is available but not picked for the following %i paths:",
         len(_XML_HELPSTRINGS),
     )

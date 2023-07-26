@@ -89,8 +89,8 @@ class Command:
                                     f"{arg} value {arg_value} is not number."
                                 )
 
-                            min, max = attr_value(_self.obj)
-                            if arg_value < min or arg_value > max:
+                            minimum, maximum = attr_value(_self.obj)
+                            if arg_value < minimum or arg_value > maximum:
                                 raise RuntimeError(
                                     f"{arg} value {arg_value} is not within range."
                                 )
