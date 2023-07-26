@@ -19,6 +19,7 @@ available (for example, by reading case and data files):
   >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode="solver")
   >>> solver.file.read(file_type="case", file_name=import_filename)
+  >>> solver.solution.initialization.hybrid_initialize()
 
 
 The field data object is an attribute of the solver object:
