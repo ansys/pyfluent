@@ -10,8 +10,8 @@ Accessing field data objects
 ----------------------------
 
 In order to access field data, launch the fluent solver, and make field data
-available (for example, either by reading a case file and then initializing as in the following code,
-or by reading case and data files)".
+available (for example, either by reading a case file and then initializing as in the following code, or
+by reading case and data files).
 
 1. Reading case file and initializing
 
@@ -23,18 +23,6 @@ or by reading case and data files)".
   >>> solver = pyfluent.launch_fluent(mode="solver")
   >>> solver.file.read(file_type="case", file_name=import_filename)
   >>> solver.solution.initialization.hybrid_initialize()
-
-2. Reading case and data files
-
-.. code-block:: python
-
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core import examples
-  >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> data_filename = examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent(mode="solver")
-  >>> solver.file.read(file_type="case", file_name=import_filename)
-  >>> solver.file.read(file_type="data", file_name=data_filename)
 
 The field data object is an attribute of the solver object:
 
