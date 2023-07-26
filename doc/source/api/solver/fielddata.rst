@@ -13,8 +13,6 @@ In order to access field data, launch the fluent solver, and make field data
 available (for example, either by reading a case file and then initializing as in the following code, or
 by reading case and data files).
 
-1. Reading case file and initializing
-
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
