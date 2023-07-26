@@ -85,40 +85,29 @@ class Quantity(float):
         self._si_units = si_units
         self._si_value = (self.value + si_offset) * si_multiplier
 
-    def _arithmetic_precheck(self, __value, caller=None) -> str:
+    def _arithmetic_precheck(self, __value) -> str:
         """Validate dimensions of quantities.
 
         Parameters
         ----------
         __value : Quantity | int | float
             Value modifying current quantity object.
-        caller : str
-            Name of caller function.
         Returns
         -------
         str
             SI unit string of new quantity.
         """
         # Cannot perform operations between quantities with incompatible dimensions
-        if (
-            isinstance(__value, Quantity)
-            and caller not in ["__mul__", "__truediv__"]
-            and (self.dimensions != __value.dimensions)
-        ):
+        if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
             raise QuantityError.INCOMPATIBLE_DIMENSIONS(self.units, __value.units)
         # Cannot perform operations on a non-dimensionless quantity
-        if (
-            not isinstance(__value, Quantity)
-            and caller not in ["__mul__", "__truediv__"]
-            and (not self.is_dimensionless)
-        ):
+        if not isinstance(__value, Quantity) and (not self.is_dimensionless):
             raise QuantityError.INCOMPATIBLE_VALUE(__value)
 
-        return (
-            "delta_K"
-            if self.type in ["Temperature", "Temperature Difference"]
-            else self.si_units
-        )
+    def _temp_precheck(self):
+        """ """
+        if self.type in ["Temperature", "Temperature Difference"]:
+            return "delta_K"
 
     @property
     def value(self):
@@ -200,41 +189,42 @@ class Quantity(float):
         return Quantity(value=new_si_value, units=new_dimensions.units)
 
     def __mul__(self, __value):
-        new_units = self._arithmetic_precheck(__value, caller="__mul__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim + __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
             ]
             new_si_value = self.si_value * __value.si_value
             new_dimensions = q.Dimensions(dimensions=temp_dimensions)
-            new_units = new_units if new_units == "delta_K" else new_dimensions.units
+            new_units = self._temp_precheck() or new_dimensions.units
             return Quantity(value=new_si_value, units=new_units)
 
         if isinstance(__value, (float, int)):
+            new_units = self._temp_precheck() or self.si_units
             return Quantity(value=self.si_value * __value, units=new_units)
 
     def __rmul__(self, __value):
         return self.__mul__(__value)
 
     def __truediv__(self, __value):
-        new_units = self._arithmetic_precheck(__value, caller="__truediv__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim - __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
             ]
             new_si_value = self.si_value / __value.si_value
             new_dimensions = q.Dimensions(dimensions=temp_dimensions)
-            new_units = new_units if new_units == "delta_K" else new_dimensions.units
+            new_units = self._temp_precheck() or new_dimensions.units
             return Quantity(value=new_si_value, units=new_units)
 
         if isinstance(__value, (float, int)):
+            new_units = self._temp_precheck() or self.si_units
             return Quantity(value=self.si_value / __value, units=new_units)
 
     def __rtruediv__(self, __value):
         return self.__truediv__(__value)
 
     def __add__(self, __value):
-        new_units = self._arithmetic_precheck(__value)
+        self._arithmetic_precheck(__value)
+        new_units = self._temp_precheck() or self.si_units
         new_value = float(self) + float(__value)
         return Quantity(value=new_value, units=new_units)
 
@@ -242,7 +232,8 @@ class Quantity(float):
         return self.__add__(__value)
 
     def __sub__(self, __value):
-        new_units = self._arithmetic_precheck(__value)
+        self._arithmetic_precheck(__value)
+        new_units = self._temp_precheck() or self.si_units
         new_value = float(self) - float(__value)
         return Quantity(value=new_value, units=new_units)
 
