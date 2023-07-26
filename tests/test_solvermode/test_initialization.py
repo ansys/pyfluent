@@ -2,9 +2,10 @@ import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/wigley_hull", "wigley.msh")
@@ -14,7 +15,10 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver.setup.materials.database.copy_by_name(type="fluid", name="air")
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
     solver.setup.models.multiphase.models = "vof"
-    solver.setup.general.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
+    solver.setup.general.operating_conditions.gravity = {
+        "enable": True,
+        "components": [0.0, 0.0, -9.81],
+    }
     solver.setup.general.solver.time = "steady"
 
     solver.tui.define.models.multiphase.vof_sub_models("yes", "no")
@@ -54,9 +58,10 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     # solver.exit()
 
 
+@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version(">=23.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(
@@ -65,7 +70,7 @@ def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver.file.read(file_type=input_type, file_name=input_name)
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()
-    solver.solution.initialization.fmg_initialize = True
+    solver.solution.initialization.fmg_initialize()
     # assert solver.solution.initialization.fmg_initialize() == True
     solver.tui.solve.iterate(2)
     # solver.solution.initialization.hybrid_initialize()

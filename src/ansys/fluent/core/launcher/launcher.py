@@ -627,7 +627,8 @@ def launch_fluent(
             "supported when starting containers."
         )
 
-    argvals = locals()
+    argvals = locals().copy()
+    argvals.pop("fluent_launch_mode")
 
     if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
@@ -658,6 +659,9 @@ def launch_fluent(
             lightweight_mode = False
 
         _raise_exception_g_gu_in_windows_os(additional_arguments)
+
+        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+            argvals["fluent_debug"] = True
 
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
