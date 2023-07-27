@@ -6,6 +6,7 @@ import pytest
 from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
 
 
 @pytest.mark.nightly
@@ -34,7 +35,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = load_mixing_elbow_param_case_dat
     assert solver_session.health_check_service.is_serving
-    case_path = str(Path(pyfluent.EXAMPLES_PATH) / "elbow_param.cas.h5")
+    case_path = examples.path("elbow_param.cas.h5")
     solver_session.tui.file.read_case_data(case_path)
 
     # Step 3: Get input and output parameters and create a dictionary
