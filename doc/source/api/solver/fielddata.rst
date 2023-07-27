@@ -177,7 +177,7 @@ Following code demonstrate adding multiple requests to a single transaction.
 >>> transaction.add_scalar_fields_request(surface_ids=[1,2], field_name="temperature",
                                             node_value=True, boundary_value=True
                                             )                                            
->>> transaction.add_vector_fields_request(surface_ids=[1,2])
+>>> transaction.add_vector_fields_request(surface_ids=[1,2], field_name="velocity")
 >>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature"                                           
                                             )                                            
 
