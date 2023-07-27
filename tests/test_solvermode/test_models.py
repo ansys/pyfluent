@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.2")
 def test_solver_models(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert not solver_session.setup.models.energy.enabled()

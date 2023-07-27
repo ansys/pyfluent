@@ -9,7 +9,7 @@ from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=22.2")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.integration
 @pytest.mark.setup
 @pytest.mark.codegen_required
