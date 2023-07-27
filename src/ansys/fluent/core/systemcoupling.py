@@ -15,8 +15,8 @@ class SystemCoupling:
     get_variables
     get_regions
     get_analysis_type
-    syc_connect
-    syc_solve
+    connect
+    solve
     """
 
     @dataclass
@@ -50,31 +50,21 @@ class SystemCoupling:
         return self.__get_syc_setup()["regions"]
 
     def get_analysis_type(self):
-        if self._solver.setup.general.get_state()["solver"]["time"] == "steady":
-            return "Steady"
-        else:
-            return "Transient"
+        return self.__get_syc_setup()["analysis-type"]
 
-    def syc_connect(self, host : str, port : int, name : str):
-        connect_command = f'(%sysc-connect-parallel "{host}" {port} "{name}")'
-        self.scheme_eval.exec((connect_command,))
+    def connect(self, host : str, port : int, name : str):
+        self._solver.setup.models.system_coupling.connect_parallel(host = host, port = port, name = name)
 
-    def syc_solve(self):
-        split_version = self._solver.get_fluent_version().split(".")
-        major_version = int(split_version[0])
-        minor_version = int(split_version[1])
-        if major_version >= 24 or (major_version == 23 and minor_version == 2):
-            self._solver.scheme_eval.exec(("(sc-init-solve)",))
-        else:
-            self._solver.scheme_eval.exec(('(ti-menu-load-string "/solve/initialize/initialize-flow")',))
-            self._solver.scheme_eval.exec(("(sc-solve)",))
+    def solve(self):
+        self._solver.setup.models.system_coupling.init_and_solve()
 
     def __get_syc_setup(self):
         setup_info = dict()
 
         scp_file_name = "fluent.scp"
-        self.session.file.export.sc_def_file_settings.write_sc_file(
-            file_name = scp_file_name, overwrite = False)
+
+        self._solver.setup.models.system_coupling.write_scp_file(file_name = scp_file_name)
+
         assert os.path.exists(scp_file_name), "ERROR: could not create System Coupling .scp file"
         xmlRoot = xml.etree.ElementTree.parse(scp_file_name)
         coSimControl = xmlRoot.find("./CosimulationControl")
