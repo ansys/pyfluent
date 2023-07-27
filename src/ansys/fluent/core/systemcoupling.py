@@ -40,9 +40,6 @@ class SystemCoupling:
         self._solver = solver
         self.participant_type = "FLUENT"
 
-    #def __getattr__(self, attr):
-    #    return getattr(self.solver, attr)
-
     def get_variables(self):
         return self.__get_syc_setup()["variables"]
 
