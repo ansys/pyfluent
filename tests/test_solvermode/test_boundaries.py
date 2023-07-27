@@ -9,7 +9,7 @@ from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("dev")
 @pytest.mark.integration
 @pytest.mark.setup
 @pytest.mark.codegen_required
@@ -90,7 +90,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 @pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.setup
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("dev")
 @pytest.mark.skip
 def test_boundaries_periodic(load_periodic_rot_cas):
     solver_session = load_periodic_rot_cas
