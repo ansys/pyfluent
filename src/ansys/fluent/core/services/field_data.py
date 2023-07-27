@@ -69,6 +69,83 @@ class FieldDataService(StreamingService):
         return chunk_iterator
 
 
+def unavailable_field_error_message(context: str, field_name: str) -> str:
+    """Error message for unavailable fields."""
+    return f"{field_name} is not a currently available {context}."
+
+
+class FieldNameError(ValueError):
+    """Exception class for errors in field name."""
+
+    pass
+
+
+class ScalarFieldNameError(FieldNameError):
+    """Exception class for errors in scalar field name."""
+
+    def __init__(self, field_name: str, allowed_values: List[str]):
+        """__init__ method of ScalarFieldNameError class."""
+        self.field_name = field_name
+        super().__init__(
+            allowed_name_error_message("scalar field", field_name, allowed_values)
+        )
+
+
+class VectorFieldNameError(FieldNameError):
+    """Exception class for errors in vector field name."""
+
+    def __init__(self, field_name: str, allowed_values: List[str]):
+        """__init__ method of VectorFieldNameError class."""
+        self.field_name = field_name
+        super().__init__(
+            allowed_name_error_message("vector field", field_name, allowed_values)
+        )
+
+
+class FieldUnavailable(RuntimeError):
+    """Exception class for when field is unavailable."""
+
+    pass
+
+
+class ScalarFieldUnavailable(FieldUnavailable):
+    """Exception class for when scalar field is unavailable."""
+
+    def __init__(self, field_name: str):
+        """__init__ method of ScalarFieldUnavailable class."""
+        self.field_name = field_name
+        super().__init__(unavailable_field_error_message("scalar field", field_name))
+
+
+class VectorFieldUnavailable(FieldUnavailable):
+    """Exception class for when vector field is unavailable."""
+
+    def __init__(self, field_name: str):
+        """__init__ method of VectorFieldUnavailable class."""
+        self.field_name = field_name
+        super().__init__(unavailable_field_error_message("vector field", field_name))
+
+
+class SurfaceNameError(ValueError):
+    """Exception class for errors in surface name."""
+
+    def __init__(self, surface_name: str, allowed_values: List[str]):
+        """__init__ method of SurfaceNameError class."""
+        self.surface_name = surface_name
+        super().__init__(
+            allowed_name_error_message("surface", surface_name, allowed_values)
+        )
+
+
+class SurfaceDataType(IntEnum):
+    """Provides surface data types."""
+
+    Vertices = 1
+    FacesConnectivity = 2
+    FacesNormal = 3
+    FacesCentroid = 4
+
+
 class FieldInfo:
     """Provides access to Fluent field information.
 
@@ -176,82 +253,20 @@ class FieldInfo:
         }
         return info
 
-
-def unavailable_field_error_message(context: str, field_name: str) -> str:
-    """Error message for unavailable fields."""
-    return f"{field_name} is not a currently available {context}."
-
-
-class FieldNameError(ValueError):
-    """Exception class for errors in field name."""
-
-    pass
-
-
-class ScalarFieldNameError(FieldNameError):
-    """Exception class for errors in scalar field name."""
-
-    def __init__(self, field_name: str, allowed_values: List[str]):
-        """__init__ method of ScalarFieldNameError class."""
-        self.field_name = field_name
-        super().__init__(
-            allowed_name_error_message("scalar field", field_name, allowed_values)
+    def validate_fields(self, field_name: str):
+        allowed_fields = list(self.get_scalar_fields_info().keys()) + list(
+            self.get_vector_fields_info().keys()
         )
+        if field_name not in allowed_fields:
+            raise FieldNameError(
+                allowed_name_error_message("field", field_name, allowed_fields)
+            )
 
-
-class VectorFieldNameError(FieldNameError):
-    """Exception class for errors in vector field name."""
-
-    def __init__(self, field_name: str, allowed_values: List[str]):
-        """__init__ method of VectorFieldNameError class."""
-        self.field_name = field_name
-        super().__init__(
-            allowed_name_error_message("vector field", field_name, allowed_values)
-        )
-
-
-class FieldUnavailable(RuntimeError):
-    """Exception class for when field is unavailable."""
-
-    pass
-
-
-class ScalarFieldUnavailable(FieldUnavailable):
-    """Exception class for when scalar field is unavailable."""
-
-    def __init__(self, field_name: str):
-        """__init__ method of ScalarFieldUnavailable class."""
-        self.field_name = field_name
-        super().__init__(unavailable_field_error_message("scalar field", field_name))
-
-
-class VectorFieldUnavailable(FieldUnavailable):
-    """Exception class for when vector field is unavailable."""
-
-    def __init__(self, field_name: str):
-        """__init__ method of VectorFieldUnavailable class."""
-        self.field_name = field_name
-        super().__init__(unavailable_field_error_message("vector field", field_name))
-
-
-class SurfaceNameError(ValueError):
-    """Exception class for errors in surface name."""
-
-    def __init__(self, surface_name: str, allowed_values: List[str]):
-        """__init__ method of SurfaceNameError class."""
-        self.surface_name = surface_name
-        super().__init__(
-            allowed_name_error_message("surface", surface_name, allowed_values)
-        )
-
-
-class SurfaceDataType(IntEnum):
-    """Provides surface data types."""
-
-    Vertices = 1
-    FacesConnectivity = 2
-    FacesNormal = 3
-    FacesCentroid = 4
+    def validate_surfaces(self, surfaces: List[str]):
+        allowed_surfaces = list(self.get_surfaces_info().keys())
+        for surface in surfaces:
+            if surface not in allowed_surfaces:
+                raise SurfaceNameError(surface, allowed_surfaces)
 
 
 class _AllowedNames:
@@ -1486,3 +1501,22 @@ class FieldData:
                     ),
                 }
             return path_lines_dict
+
+
+class FieldDataValidators:
+    def _error_check(self, solver):
+        allowed_fields = (
+            solver.field_data.get_scalar_field_data.field_name.allowed_values()
+        )
+        allowed_surfaces = (
+            solver.field_data.get_scalar_field_data.surface_name.allowed_values()
+        )
+        if self.field not in allowed_fields:
+            raise ValueError(
+                f"{self.field} is not valid field. Valid fields are {allowed_fields}"
+            )
+        for surface in self.surfaces:
+            if surface not in allowed_surfaces:
+                raise ValueError(
+                    f"{surface} is not valid surface. Valid surfaces are {allowed_surfaces}"  # noqa: E501
+                )
