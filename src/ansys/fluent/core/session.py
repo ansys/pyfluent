@@ -159,7 +159,10 @@ class BaseSession:
         )
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(
-            self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
+            self._field_data_service,
+            self.field_info,
+            _IsDataValid(self.scheme_eval),
+            self.scheme_eval,
         )
         self.field_data_streaming = FieldDataStreaming(
             self.fluent_connection._id, self._field_data_service
