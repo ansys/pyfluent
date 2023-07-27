@@ -1,5 +1,6 @@
 """Functions to download sample datasets from the Ansys example data repository."""
 import os
+from pathlib import Path
 import re
 import shutil
 from typing import Optional
@@ -131,3 +132,11 @@ def download_file(
 
     url = _get_file_url(filename, directory)
     return _retrieve_file(url, filename, save_path, return_only_filename)
+
+
+def path(filename: str):
+    file_path = str(Path(pyfluent.EXAMPLES_PATH) / filename)
+    if os.path.isfile(file_path):
+        return file_path
+    else:
+        raise FileNotFoundError(f"{filename} does not exist.")
