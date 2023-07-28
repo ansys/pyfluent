@@ -11,6 +11,20 @@ from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger = logging.getLogger("pyfluent.networking")
 log_bytes_limit = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
+truncate_len = log_bytes_limit // 5
+
+
+def _truncate_grpc_str(message):
+    message_bytes = message.ByteSize()
+    message_str = str(MessageToDict(message))
+    if not log_bytes_limit or message_bytes < log_bytes_limit:
+        return message_str
+    else:
+        network_logger.debug(
+            f"GRPC_TRACE: message partially hidden, {message_bytes} bytes > "
+            f"{log_bytes_limit} bytes limit. To see the full message, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
+        )
+        return f"{message_str[:truncate_len]} < ... > {message_str[-truncate_len:]}"
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
@@ -27,20 +41,14 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ):
         network_logger.debug(
-            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {MessageToDict(request)}"
+            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():
-            response_bytes = response.result().ByteSize()
-            if not log_bytes_limit or response_bytes < log_bytes_limit:
-                network_logger.debug(
-                    f"GRPC_TRACE: response = {MessageToDict(response.result())}"
-                )
-            else:
-                network_logger.debug(
-                    f"GRPC_TRACE: response hidden, {response_bytes} bytes > "
-                    f"{log_bytes_limit} bytes limit. To see the response, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
-                )
+            # call _truncate_grpc_str early to get the size warning even when hiding secrets
+            response_str = _truncate_grpc_str(response.result())
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                network_logger.debug(f"GRPC_TRACE: response = {response_str}")
         return response
 
     def intercept_unary_unary(
