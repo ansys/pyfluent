@@ -47,7 +47,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         if not response.exception():
             # call _truncate_grpc_str early to get the size warning even when hiding secrets
             response_str = _truncate_grpc_str(response.result())
-            if not os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
                 network_logger.debug(f"GRPC_TRACE: response = {response_str}")
         return response
 

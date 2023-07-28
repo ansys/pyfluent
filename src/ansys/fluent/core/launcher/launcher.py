@@ -760,7 +760,7 @@ def launch_fluent(
 
             print("\nDocker container run configuration:\n")
             print("config_dict = ")
-            if not os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
                 pprint(config_dict)
             else:
                 config_dict_h = config_dict.copy()

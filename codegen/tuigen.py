@@ -349,12 +349,12 @@ def generate():
     _populate_xml_helpstrings()
     TUIGenerator("meshing", version).generate()
     TUIGenerator("solver", version).generate()
-    if not os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
             len(_XML_HELPSTRINGS),
         )
-        for k, _ in _XML_HELPSTRINGS.items():
+        for k in _XML_HELPSTRINGS:
             logger.info(k)
 
 
