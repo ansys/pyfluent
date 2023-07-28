@@ -10,7 +10,8 @@ Accessing field data objects
 ----------------------------
 
 In order to access field data, launch the fluent solver, and make field data
-available (for example, by reading case and data files):
+available (for example, either by reading a case file and then initializing as in the following code, or
+by reading case and data files).
 
 .. code-block:: python
 
@@ -19,7 +20,7 @@ available (for example, by reading case and data files):
   >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode="solver")
   >>> solver.file.read(file_type="case", file_name=import_filename)
-
+  >>> solver.solution.initialization.hybrid_initialize()
 
 The field data object is an attribute of the solver object:
 
@@ -135,8 +136,8 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
   76152
   >>> path_lines_data["lines"][100].node_count
   2
-  >>> path_lines_data["lines"][100].node_data
-  [100, 101]
+  >>> path_lines_data["lines"][100].node_indices
+  array([100, 101])
 
 Dictionary containing a map of surface IDs to the path-line data is returned.
 or example, pathlines connectivity, vertices, and field.
@@ -177,7 +178,7 @@ Following code demonstrate adding multiple requests to a single transaction.
 >>> transaction.add_scalar_fields_request(surface_ids=[1,2], field_name="temperature",
                                             node_value=True, boundary_value=True
                                             )                                            
->>> transaction.add_vector_fields_request(surface_ids=[1,2])
+>>> transaction.add_vector_fields_request(surface_ids=[1,2], field_name="velocity")
 >>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature"                                           
                                             )                                            
 

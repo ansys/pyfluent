@@ -65,11 +65,12 @@ class Dimensions(object):
         # Define unit term and associated value from dimension with dimensions list
         for idx, dim in enumerate(dimensions):
             if dim == 1.0:
-                units += f"{unit_sys[idx]} "
+                units += f" {unit_sys[idx]}"
             elif dim != 0.0:
-                units += f"{unit_sys[idx]}^{dim} "
+                dim = int(dim) if dim % 1 == 0 else dim
+                units += f" {unit_sys[idx]}^{dim}"
 
-        return dimensions, units[:-1]
+        return dimensions, self._units_table.condense(units=units)
 
     def _units_to_dim(
         self, units: str, power: float = None, dimensions: list = None

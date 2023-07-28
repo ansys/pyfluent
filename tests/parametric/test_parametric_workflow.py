@@ -10,7 +10,7 @@ from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("dev")
 def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)

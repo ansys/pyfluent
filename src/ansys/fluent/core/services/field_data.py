@@ -1062,11 +1062,13 @@ class FieldData:
         service: FieldDataService,
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
+        scheme_eval: Optional = None,
     ):
         """__init__ method of FieldData class."""
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
+        self.scheme_eval = scheme_eval
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 
@@ -1330,6 +1332,13 @@ class FieldData:
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
         """
+        if surface_name:
+            self.scheme_eval.string_eval(
+                f"(surface? (thread-name->id '{surface_name}))"
+            )
+        elif surface_ids:
+            for surface_id in surface_ids:
+                self.scheme_eval.string_eval(f"(surface? {surface_id})")
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
