@@ -191,6 +191,10 @@ class FieldInfo:
             self._is_data_valid, info=self.get_vector_fields_info()
         ).valid_name(field_name)
 
+    def validate_surfaces(self, surfaces: List[str]):
+        for surface in surfaces:
+            _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
+
 
 def unavailable_field_error_message(context: str, field_name: str) -> str:
     """Error message for unavailable fields."""
@@ -307,7 +311,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._field_info.get_surfaces_info()
+        return self._info if self._info else self._field_info.get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names."""
