@@ -181,14 +181,14 @@ class FieldInfo:
         }
         return info
 
-    def validate_scalar_field_names(self, field_name: str):
+    def validate_scalar_fields(self, field_name: str):
         _AllowedScalarFieldNames(
-            self._is_data_valid, field_dict=self.get_scalar_fields_info()
+            self._is_data_valid, info=self.get_scalar_fields_info()
         ).valid_name(field_name)
 
-    def validate_vector_field_names(self, field_name: str):
+    def validate_vector_fields(self, field_name: str):
         _AllowedVectorFieldNames(
-            self._is_data_valid, field_dict=self.get_vector_fields_info()
+            self._is_data_valid, info=self.get_vector_fields_info()
         ).valid_name(field_name)
 
 
@@ -271,10 +271,10 @@ class SurfaceDataType(IntEnum):
 
 class _AllowedNames:
     def __init__(
-        self, field_info: Optional[FieldInfo] = None, field_dict: Optional[Dict] = None
+        self, field_info: Optional[FieldInfo] = None, info: Optional[Dict] = None
     ):
         self._field_info = field_info
-        self._field_dict = field_dict
+        self._info = info
 
     def is_valid(self, name, respect_data_valid=True):
         """Checks validity."""
@@ -286,9 +286,9 @@ class _AllowedFieldNames(_AllowedNames):
         self,
         is_data_valid: Callable[[], bool],
         field_info: Optional[FieldInfo] = None,
-        field_dict: Optional[Dict] = None,
+        info: Optional[Dict] = None,
     ):
-        super().__init__(field_info=field_info, field_dict=field_dict)
+        super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
 
     def valid_name(self, field_name):
@@ -336,9 +336,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         field_dict = (
-            self._field_dict
-            if self._field_dict
-            else self._field_info.get_scalar_fields_info()
+            self._info if self._info else self._field_info.get_scalar_fields_info()
         )
         return (
             field_dict
@@ -357,8 +355,8 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return (
-            self._field_dict
-            if self._field_dict
+            self._info
+            if self._info
             else self._field_info.get_vector_fields_info()
             if (not respect_data_valid or self._is_data_valid())
             else []
