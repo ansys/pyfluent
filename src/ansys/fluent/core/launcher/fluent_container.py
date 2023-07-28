@@ -320,7 +320,7 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
         remove_server_info_file,
     ) = container_vars
 
-    if not os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.debug(f"container_vars: {container_vars}")
     else:
         config_dict_h = config_dict.copy()
