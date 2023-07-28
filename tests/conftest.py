@@ -5,6 +5,10 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
+from ansys.fluent.core.launcher.launcher import FluentVersion
+
+_fluent_dev_version = next(iter(FluentVersion))
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -16,9 +20,12 @@ def pytest_addoption(parser):
 
 
 def pytest_runtest_setup(item):
-    version_specs = [
-        SpecifierSet(mark.args[0]) for mark in item.iter_markers(name="fluent_version")
-    ]
+    version_specs = []
+    for mark in item.iter_markers(name="fluent_version"):
+        spec = mark.args[0]
+        if spec == "dev":
+            spec = f"=={_fluent_dev_version}"
+        version_specs.append(SpecifierSet(spec))
     if version_specs:
         combined_spec = functools.reduce(operator.and_, version_specs)
         version = item.config.getoption("--fluent-version")

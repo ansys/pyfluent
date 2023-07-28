@@ -6,7 +6,7 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.nightly
 @pytest.mark.mesh
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("dev")
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
