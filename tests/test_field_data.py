@@ -396,5 +396,5 @@ def test_field_info_validators(new_solver_session) -> None:
     assert surface is None
 
     with pytest.raises(SurfaceNameError) as surface_error:
-        solver.field_info.validate_surfaces("out")
-    assert surface_error.value.field_name == "out"
+        solver.field_info.validate_surfaces(["out"])
+    assert surface_error.value.surface_name == "out"
