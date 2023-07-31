@@ -681,13 +681,32 @@ def launch_fluent(
                 launch_string += scm_to_py(topy)
 
             if _is_windows():
-                launch_string = 'start "" ' + launch_string
+                # Using 'start.exe' is better, otherwise Fluent is started as a child of the interpreter on Windows
+                launch_cmd = 'start "" ' + launch_string
+            else:
+                launch_cmd = launch_string
 
-            logger.debug(f"Launching Fluent with cmd: {launch_string}")
+            logger.debug(f"Launching Fluent with cmd: {launch_cmd}")
 
-            subprocess.Popen(launch_string, **kwargs)
+            subprocess.Popen(launch_cmd, **kwargs)
 
-            _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
+            if _is_windows():
+                try:
+                    _await_fluent_launch(
+                        server_info_filepath, start_timeout, sifile_last_mtime
+                    )
+                except RuntimeError as ex:
+                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
+                    launch_cmd = launch_string
+                    logger.warning(f"Retrying Fluent launch with cmd: {launch_cmd}")
+                    subprocess.Popen(launch_string, **kwargs)
+                    _await_fluent_launch(
+                        server_info_filepath, start_timeout, sifile_last_mtime
+                    )
+            else:
+                _await_fluent_launch(
+                    server_info_filepath, start_timeout, sifile_last_mtime
+                )
 
             session = new_session.create_from_server_info_file(
                 server_info_filepath=server_info_filepath,
@@ -723,10 +742,11 @@ def launch_fluent(
             return session
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
-            raise LaunchFluentError(launch_string) from ex
+            raise LaunchFluentError(launch_cmd) from ex
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
+                logger.debug("Server information file found, cleaning it up...")
                 server_info_file.unlink()
     elif fluent_launch_mode == LaunchMode.PIM:
         logger.info(
