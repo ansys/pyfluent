@@ -668,45 +668,42 @@ def launch_fluent(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
 
+        sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
+        if env is None:
+            env = {}
+        if mode != FluentMode.SOLVER_ICING:
+            env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
+        kwargs = _get_subprocess_kwargs_for_fluent(env)
+        if cwd:
+            kwargs.update(cwd=cwd)
+        if topy:
+            launch_string += scm_to_py(topy)
+
+        if _is_windows():
+            # Using 'start.exe' is better, otherwise Fluent is started as a child of the interpreter on Windows
+            launch_cmd = 'start "" ' + launch_string
+        else:
+            launch_cmd = launch_string
+
         try:
-            sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
-            if env is None:
-                env = {}
-            if mode != FluentMode.SOLVER_ICING:
-                env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
-            kwargs = _get_subprocess_kwargs_for_fluent(env)
-            if cwd:
-                kwargs.update(cwd=cwd)
-            if topy:
-                launch_string += scm_to_py(topy)
-
-            if _is_windows():
-                # Using 'start.exe' is better, otherwise Fluent is started as a child of the interpreter on Windows
-                launch_cmd = 'start "" ' + launch_string
-            else:
-                launch_cmd = launch_string
-
             logger.debug(f"Launching Fluent with cmd: {launch_cmd}")
 
             subprocess.Popen(launch_cmd, **kwargs)
 
-            if _is_windows():
-                try:
-                    _await_fluent_launch(
-                        server_info_filepath, start_timeout, sifile_last_mtime
-                    )
-                except RuntimeError as ex:
+            try:
+                _await_fluent_launch(
+                    server_info_filepath, start_timeout, sifile_last_mtime
+                )
+            except RuntimeError as ex:
+                if _is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = launch_string
-                    logger.warning(f"Retrying Fluent launch with cmd: {launch_cmd}")
+                    logger.warning(f"Retrying Fluent launch with cmd: {launch_string}")
                     subprocess.Popen(launch_string, **kwargs)
                     _await_fluent_launch(
                         server_info_filepath, start_timeout, sifile_last_mtime
                     )
-            else:
-                _await_fluent_launch(
-                    server_info_filepath, start_timeout, sifile_last_mtime
-                )
+                else:
+                    raise ex
 
             session = new_session.create_from_server_info_file(
                 server_info_filepath=server_info_filepath,
