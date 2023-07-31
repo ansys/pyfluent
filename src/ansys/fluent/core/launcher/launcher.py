@@ -669,7 +669,6 @@ def launch_fluent(
         )
 
         try:
-            logger.debug(f"Launching Fluent with cmd: {launch_string}")
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
@@ -683,6 +682,8 @@ def launch_fluent(
 
             if _is_windows():
                 launch_string = 'start "" ' + launch_string
+
+            logger.debug(f"Launching Fluent with cmd: {launch_string}")
 
             subprocess.Popen(launch_string, **kwargs)
 
@@ -721,6 +722,7 @@ def launch_fluent(
 
             return session
         except Exception as ex:
+            logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
             raise LaunchFluentError(launch_string) from ex
         finally:
             server_info_file = Path(server_info_filepath)
