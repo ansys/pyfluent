@@ -135,8 +135,10 @@ def download_file(
 
 
 def path(filename: str):
-    file_path = str(Path(pyfluent.EXAMPLES_PATH) / filename)
-    if os.path.isfile(file_path):
-        return file_path
+    if os.path.isabs(filename):
+        return filename
+    file_path = Path(pyfluent.EXAMPLES_PATH) / filename
+    if file_path.is_file():
+        return str(file_path)
     else:
         raise FileNotFoundError(f"{filename} does not exist.")
