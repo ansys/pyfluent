@@ -572,6 +572,7 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
 def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     watertight = new_mesh_session.watertight()
     import_geometry = watertight.import_geometry
@@ -623,6 +624,7 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
         geometry_filepath=mixing_elbow_geometry, session=new_mesh_session
@@ -640,6 +642,7 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
 def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
         geometry_filepath=mixing_elbow_geometry, session=new_mesh_session
@@ -674,6 +677,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
         geometry_filepath=mixing_elbow_geometry, session=new_mesh_session
@@ -706,6 +710,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
 
 
 @pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
 def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
     part_management = fault_tolerant.part_management
