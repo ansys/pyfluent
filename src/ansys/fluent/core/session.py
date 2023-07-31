@@ -157,7 +157,9 @@ class BaseSession:
         self._field_data_service = self.fluent_connection.create_service(
             FieldDataService
         )
-        self.field_info = FieldInfo(self._field_data_service)
+        self.field_info = FieldInfo(
+            self._field_data_service, _IsDataValid(self.scheme_eval)
+        )
         self.field_data = FieldData(
             self._field_data_service,
             self.field_info,
