@@ -36,6 +36,8 @@ def test_results_graphics_mesh_settings(new_solver_session) -> None:
     assert "mesh-a" not in session.solver.results.graphics.mesh.get_object_names()
 
 
+@pytest.mark.skip("Fluent bug")
+@pytest.mark.nigthly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
@@ -84,6 +86,8 @@ def test_wildcard(new_solver_session):
     }
 
 
+@pytest.mark.skip("Fluent bug")
+@pytest.mark.nigthly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
@@ -111,6 +115,7 @@ def test_wildcard_fnmatch(new_solver_session):
     )
 
 
+@pytest.mark.nigthly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
