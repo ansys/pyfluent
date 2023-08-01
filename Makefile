@@ -19,12 +19,6 @@ test-import:
 
 unittest: unittest-dev-232
 
-unittest-custom:
-	@echo "Running custom unittest"
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v --no-cov --capture=no -k test_transcript  # Update custom testlist
-
 unittest-dev-222:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples

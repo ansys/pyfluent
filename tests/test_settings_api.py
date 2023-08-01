@@ -4,6 +4,7 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core.examples import download_file
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session

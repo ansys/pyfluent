@@ -2,6 +2,7 @@ import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
 def test_creatable(load_static_mixer_case) -> None:
     has_not = (

@@ -18,7 +18,7 @@ from ansys.fluent.core.utils.execution import timeout_loop
 
 def _read_case(session):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.file.read(file_type="case", file_name=case_path)
+    session.tui.file.read_case(case_path)
 
 
 def test_session_starts_transcript_by_default(new_solver_session) -> None:
