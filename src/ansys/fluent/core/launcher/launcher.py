@@ -449,7 +449,7 @@ def launch_fluent(
     precision: str = None,
     processor_count: int = None,
     journal_filepath: str = None,
-    start_timeout: int = 100,
+    start_timeout: int = 60,
     additional_arguments: str = None,
     env: Dict[str, Any] = None,
     start_container: bool = None,
@@ -493,7 +493,7 @@ def launch_fluent(
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``100``.
+        server. The default is ``60``.
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
@@ -680,13 +680,13 @@ def launch_fluent(
             launch_string += scm_to_py(topy)
 
         if _is_windows():
-            # Using 'start.exe' is better, otherwise Fluent is started as a child of the interpreter on Windows
+            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
             launch_cmd = launch_string
 
         try:
-            logger.debug(f"Launching Fluent with cmd: {launch_cmd}")
+            logger.debug(f"Launching Fluent with command: {launch_cmd}")
 
             subprocess.Popen(launch_cmd, **kwargs)
 
@@ -697,8 +697,12 @@ def launch_fluent(
             except RuntimeError as ex:
                 if _is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    logger.warning(f"Retrying Fluent launch with cmd: {launch_string}")
-                    subprocess.Popen(launch_string, **kwargs)
+                    launch_cmd = launch_string.replace('"', "", 2)
+                    kwargs.update(shell=False)
+                    logger.warning(
+                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
+                    )
+                    subprocess.Popen(launch_cmd, **kwargs)
                     _await_fluent_launch(
                         server_info_filepath, start_timeout, sifile_last_mtime
                     )
@@ -743,7 +747,6 @@ def launch_fluent(
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
-                logger.debug("Server information file found, cleaning it up...")
                 server_info_file.unlink()
     elif fluent_launch_mode == LaunchMode.PIM:
         logger.info(
