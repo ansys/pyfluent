@@ -108,7 +108,7 @@ def test_wildcard_fnmatch(new_solver_session):
 
     assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
 
-    assert sorted(list(solver.results.graphics.mesh["mesh-[!2-5]"]().keys())) == sorted(
+    assert sorted(solver.results.graphics.mesh["mesh-[!2-5]"]()) == sorted(
         ["mesh-1", "mesh-a"]
     )
 
