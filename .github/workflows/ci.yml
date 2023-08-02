@@ -3,6 +3,8 @@ name: GitHub Actions
 
 on:
   pull_request:
+      paths-ignore:
+      - '.github/workflows/run-custom-tests.yml'
   workflow_dispatch:
   push:
     tags:
