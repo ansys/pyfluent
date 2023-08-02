@@ -100,18 +100,16 @@ def test_wildcard_fnmatch(new_solver_session):
     solver.results.graphics.mesh.create("mesh-a")
     solver.results.graphics.mesh.create("mesh-bc")
 
-    assert (
-        list(solver.results.graphics.mesh["mesh-*"]().keys()).sort()
-        == ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"].sort()
+    assert sorted(solver.results.graphics.mesh["mesh-*"]()) == sorted(
+        ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"]
     )
 
     assert list(solver.results.graphics.mesh["mesh-?c"]().keys()) == ["mesh-bc"]
 
     assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
 
-    assert (
-        list(solver.results.graphics.mesh["mesh-[!2-5]"]().keys()).sort()
-        == ["mesh-1", "mesh-a"].sort()
+    assert sorted(solver.results.graphics.mesh["mesh-[!2-5]"]()) == sorted(
+        ["mesh-1", "mesh-a"]
     )
 
 
