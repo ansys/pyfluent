@@ -100,7 +100,7 @@ def test_wildcard_fnmatch(new_solver_session):
     solver.results.graphics.mesh.create("mesh-a")
     solver.results.graphics.mesh.create("mesh-bc")
 
-    assert sorted(list(solver.results.graphics.mesh["mesh-*"]().keys())) == sorted(
+    assert sorted(solver.results.graphics.mesh["mesh-*"]()) == sorted(
         ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"]
     )
 
