@@ -13,7 +13,7 @@ from ansys.fluent.core import examples
 @pytest.mark.optislang
 @pytest.mark.integration
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("dev")
+@pytest.mark.fluent_version("latest")
 def test_simple_solve(load_mixing_elbow_param_case_dat):
     """Use case 1: This optiSLang integration test performs these steps.
 
@@ -106,7 +106,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 @pytest.mark.optislang
 @pytest.mark.integration
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("dev")
+@pytest.mark.fluent_version("latest")
 def test_generate_read_mesh(mixing_elbow_geometry):
     """Use case 2: This optiSLang integration test performs these steps.
 
