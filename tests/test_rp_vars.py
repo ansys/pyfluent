@@ -36,7 +36,7 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     assert len(all_vars) == pytest.approx(9000, 10)
 
     # refresh
-    solver.tui.file.write_case(case_path)
+    solver.file.write(file_type="case", file_name=case_path)
     solver.tui.file.read_case(case_path)
 
     # all vars again
