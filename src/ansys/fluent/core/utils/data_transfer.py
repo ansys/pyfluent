@@ -147,7 +147,7 @@ def transfer_case(
             if clean_up_temp_file:
                 try:
                     os.remove(full_file_name)
-                except BaseException as ex:
+                except Exception as ex:
                     network_logger.warning(
                         f"Encountered exception while cleaning up during case transfer {ex}"
                     )

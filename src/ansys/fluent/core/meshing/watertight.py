@@ -15,7 +15,7 @@ def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
         args.update(launch_args)
         try:
             session = launch_fluent(**args)
-        except BaseException:
+        except Exception:
             args["mode"] = FluentMode.MESHING_MODE
             session = launch_fluent(**args)
     meshing_workflow = session.workflow
