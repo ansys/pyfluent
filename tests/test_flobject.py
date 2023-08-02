@@ -865,9 +865,7 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
 
     get_child_nodes(root, nodes, type_list)
 
-    assert type_list.sort() == expected_type_list.sort()
-
-    for type_data in type_list:
+    for type_data in expected_type_list:
         if type_data == "Boolean":
             assert {
                 "is_active",
