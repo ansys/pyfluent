@@ -25,15 +25,15 @@ class EventsManager(StreamingService):
         List of supported events.
     """
 
-    def __init__(self, session):
+    def __init__(self, session_events_service, session_error_state, session_id):
         """__init__ method of EventsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=EventsManager._process_streaming,
-            streaming_service=session.events_service,
+            streaming_service=session_events_service,
         )
-        self._session_error_state = session.error_state
-        self._session_id: str = session.fluent_connection._id
+        self._session_error_state = session_error_state
+        self._session_id: str = session_id
         self._events_list: List[str] = [
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]

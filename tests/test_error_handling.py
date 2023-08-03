@@ -12,9 +12,9 @@ def test_fluent_fatal_error(new_solver_session):
             "(events/transmit 'error-event "
             '(cons (format #f "fatal error: ~a~%" "testing") 1))'
         )
-        for _ in range(100):
-            # exception should usually be raised on the first session attribute call
+        for _ in range(10):
+            # as these are instant, exception should usually be raised on the second session attribute call
             session.version
             time.sleep(0.1)
 
-    assert str(exc.value).startswith("Not executing action. Fatal error has occurred")
+    assert str(exc.value).startswith("Fatal error identified")

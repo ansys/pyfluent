@@ -92,20 +92,28 @@ class _IsDataValid:
 
 
 class ErrorState:
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def details(self):
+        return self._details
+
     def __init__(self, name: str = "", details: str = ""):
-        self.name = name
-        self.details = details
+        self._name = name
+        self._details = details
 
     def __eq__(self, other):
-        return self.name == other
+        return self._name == other
 
     def set(self, name: str, details: str):
-        self.name = name
-        self.details = details
+        self._name = name
+        self._details = details
 
     def clear(self):
-        self.name = ""
-        self.details = ""
+        self._name = ""
+        self._details = ""
 
 
 class BaseSession:
@@ -163,7 +171,9 @@ class BaseSession:
 
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
         self.events_service = self.fluent_connection.create_service(EventsService)
-        self.events_manager = EventsManager(self)
+        self.events_manager = EventsManager(
+            self.events_service, self.error_state, self.fluent_connection._id
+        )
 
         self._monitors_service = self.fluent_connection.create_service(MonitorsService)
         self.monitors_manager = MonitorsManager(
@@ -305,9 +315,7 @@ class BaseSession:
             details = self.error_state.details
             self.error_state.clear()
             raise RuntimeError(
-                "Not executing action. Fatal error has occurred "
-                f"on the Fluent server: {details}. "
-                f"Allowed actions: {allowed_on_fatal_error}"
+                "Fatal error identified " f"on the Fluent server: {details}. "
             )
         return super().__getattribute__(attr_name)
 
