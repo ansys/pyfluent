@@ -299,7 +299,6 @@ class BaseSession:
         return self._uploader.download(file_name, local_file_path)
 
     def __getattribute__(self, attr_name):
-        logger.debug(f"BaseSession __getattribute__: {attr_name}")
         if attr_name.startswith("_") or attr_name in allowed_on_fatal_error:
             return super().__getattribute__(attr_name)
         if self.error_state == "fatal":
