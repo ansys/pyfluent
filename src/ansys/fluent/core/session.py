@@ -42,6 +42,15 @@ except Exception:
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 logger = logging.getLogger("pyfluent.general")
 
+# BaseSession attributes that can be accessed while Fluent is in a fatal error state
+allowed_on_fatal_error = [
+    "allowed_on_fatal_error",
+    "exit",
+    "force_exit",
+    "force_exit_container",
+    "error_state",
+]
+
 
 def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
@@ -82,6 +91,23 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
+class ErrorState:
+    def __init__(self, name: str = "", details: str = ""):
+        self.name = name
+        self.details = details
+
+    def __eq__(self, other):
+        return self.name == other
+
+    def set(self, name: str, details: str):
+        self.name = name
+        self.details = details
+
+    def clear(self):
+        self.name = ""
+        self.details = ""
+
+
 class BaseSession:
     """Instantiates a Fluent connection.
 
@@ -108,6 +134,7 @@ class BaseSession:
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
+        self.error_state = ErrorState()
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
@@ -135,10 +162,8 @@ class BaseSession:
         self.datamodel_events.start()
 
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
-        self._events_service = self.fluent_connection.create_service(EventsService)
-        self.events_manager = EventsManager(
-            self.fluent_connection._id, self._events_service
-        )
+        self.events_service = self.fluent_connection.create_service(EventsService)
+        self.events_manager = EventsManager(self)
 
         self._monitors_service = self.fluent_connection.create_service(MonitorsService)
         self.monitors_manager = MonitorsManager(
@@ -272,6 +297,20 @@ class BaseSession:
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.download(file_name, local_file_path)
+
+    def __getattribute__(self, attr_name):
+        logger.debug(f"BaseSession __getattribute__: {attr_name}")
+        if attr_name.startswith("_") or attr_name in allowed_on_fatal_error:
+            return super().__getattribute__(attr_name)
+        if self.error_state == "fatal":
+            details = self.error_state.details
+            self.error_state.clear()
+            raise RuntimeError(
+                "Not executing action. Fatal error has occurred "
+                f"on the Fluent server: {details}. "
+                f"Allowed actions: {allowed_on_fatal_error}"
+            )
+        return super().__getattribute__(attr_name)
 
 
 class _Uploader:
