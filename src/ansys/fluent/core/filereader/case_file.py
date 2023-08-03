@@ -224,7 +224,7 @@ class CaseFile:
         except OSError as e:
             raise OSError(f"Error while reading case file {case_filepath}") from e
 
-        except BaseException as e:
+        except Exception as e:
             raise RuntimeError(f"Could not read case file {case_filepath}") from e
 
         self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}

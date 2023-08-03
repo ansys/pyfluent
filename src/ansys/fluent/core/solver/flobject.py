@@ -533,7 +533,7 @@ class Group(SettingsBase[DictStateType]):
             ) from ex
         try:
             return attr.set_state(value)
-        except BaseException as ex:
+        except Exception as ex:
             allowed = attr.allowed_values()
             if allowed and value not in allowed:
                 raise allowed_values_error(name, value, allowed) from ex
@@ -1093,7 +1093,7 @@ class _HasAllowedValuesMixin:
         """Get the allowed values of the object."""
         try:
             return self.get_attr("allowed-values", (list, str))
-        except BaseException as ex:
+        except Exception:
             return []
 
 

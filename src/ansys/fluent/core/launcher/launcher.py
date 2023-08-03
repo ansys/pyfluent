@@ -393,8 +393,8 @@ def _get_running_session_mode(
                 if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
                 else "meshing"
             )
-        except BaseException:
-            raise RuntimeError("Fluent session password mismatch")
+        except Exception as ex:
+            raise RuntimeError("Fluent session password mismatch") from ex
     return session_mode.value[1]
 
 
