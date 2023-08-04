@@ -42,15 +42,6 @@ except Exception:
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 logger = logging.getLogger("pyfluent.general")
 
-# BaseSession attributes that can be accessed while Fluent is in a fatal error state
-allowed_on_fatal_error = [
-    "allowed_on_fatal_error",
-    "exit",
-    "force_exit",
-    "force_exit_container",
-    "error_state",
-]
-
 
 def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
