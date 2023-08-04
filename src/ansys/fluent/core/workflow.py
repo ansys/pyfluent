@@ -170,7 +170,7 @@ class BaseTask:
                         return mappings[task_id]
                     try:
                         return self._command_source._task_by_id(task_id)
-                    except BaseException:
+                    except Exception:
                         pass
 
                 return _task_by_id
@@ -226,7 +226,7 @@ class BaseTask:
                 this_command = self._command()
                 # temp reuse helpString
                 self._python_name = this_command.get_attr("helpString")
-            except BaseException:
+            except Exception:
                 pass
         return self._python_name
 
@@ -242,7 +242,7 @@ class BaseTask:
             pass
         try:
             return ArgumentWrapper(self, attr)
-        except BaseException as ex:
+        except Exception as ex:
             logger.debug(str(ex))
         self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
@@ -601,7 +601,7 @@ class WorkflowWrapper:
                         return mappings[task_id]
                     try:
                         return self._task_by_id_impl(task_id, workflow_state)
-                    except BaseException:
+                    except Exception:
                         pass
 
                 return _task_by_id

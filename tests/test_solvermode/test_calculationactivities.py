@@ -4,7 +4,7 @@ import pytest
 @pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
-@pytest.mark.fluent_version("dev")
+@pytest.mark.fluent_version("latest")
 def test_solver_calculation(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert (

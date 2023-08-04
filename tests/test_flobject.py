@@ -653,6 +653,7 @@ class root(Group):
     )  # noqa: W293
 
 
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object(load_static_mixer_case):
     solver = load_static_mixer_case
 
@@ -700,7 +701,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     )
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
     solver = load_static_mixer_case
 
@@ -751,7 +752,7 @@ def test_find_children_from_settings_root_231(load_static_mixer_case):
     }
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
 def test_find_children_from_settings_root_232(load_static_mixer_case):
     setup_cls = load_static_mixer_case.setup.__class__
@@ -776,7 +777,7 @@ def test_find_children_from_settings_root_232(load_static_mixer_case):
     }
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
 
@@ -816,7 +817,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     }
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
@@ -846,7 +847,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     root = solver._root
@@ -865,9 +866,7 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
 
     get_child_nodes(root, nodes, type_list)
 
-    assert type_list.sort() == expected_type_list.sort()
-
-    for type_data in type_list:
+    for type_data in expected_type_list:
         if type_data == "Boolean":
             assert {
                 "is_active",
@@ -928,7 +927,7 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_strings_with_allowed_values(load_static_mixer_case):
     solver = load_static_mixer_case
 
