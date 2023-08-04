@@ -145,7 +145,7 @@ or example, pathlines connectivity, vertices, and field.
 
 .. note::
    In Fluent, a surface name can be associated with multiple surface IDs.
-   Thus, a response contain a surface ID as a key of the returned dictionary.
+   Thus, a response contains a surface ID as a key of the returned dictionary.
 
 
 Making multiple requests in a single transaction
