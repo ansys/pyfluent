@@ -61,6 +61,38 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         return self._intercept_call(continuation, client_call_details, request)
 
 
+class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
+    """Interceptor class to trace gRPC calls."""
+
+    def __init__(self, fluent_error_state):
+        """__init__ method of ErrorStateInterceptor class."""
+        super().__init__()
+        self._fluent_error_state = fluent_error_state
+
+    def _intercept_call(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ):
+        if self._fluent_error_state == "fatal":
+            details = self._fluent_error_state.details
+            self._fluent_error_state.clear()
+            raise RuntimeError(
+                "Fatal error identified on the Fluent server: {details}."
+            )
+        return continuation(client_call_details, request)
+
+    def intercept_unary_unary(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ) -> Any:
+        """Intercept unary-unary call for error state checking."""
+        return self._intercept_call(continuation, client_call_details, request)
+
+
 class BatchedFuture(grpc.Future):
     """Class implementing gRPC.Future interface.
 

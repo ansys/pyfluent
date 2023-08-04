@@ -13,8 +13,8 @@ def test_fluent_fatal_error(new_solver_session):
             '(cons (format #f "fatal error: ~a~%" "testing") 1))'
         )
         for _ in range(10):
-            # as these are instant, exception should usually be raised on the second session attribute call
-            session.version
+            # as these are mostly instant, exception should usually be raised on the second gRPC call
+            session.scheme_eval.scheme_eval("(pp 'fatal_error_testing)")
             time.sleep(0.1)
 
     assert str(exc.value).startswith("Fatal error identified")

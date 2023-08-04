@@ -25,14 +25,14 @@ class EventsManager(StreamingService):
         List of supported events.
     """
 
-    def __init__(self, session_events_service, session_error_state, session_id):
+    def __init__(self, session_events_service, fluent_error_state, session_id):
         """__init__ method of EventsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=EventsManager._process_streaming,
             streaming_service=session_events_service,
         )
-        self._session_error_state = session_error_state
+        self._fluent_error_state = fluent_error_state
         self._session_id: str = session_id
         self._events_list: List[str] = [
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
@@ -55,7 +55,7 @@ class EventsManager(StreamingService):
                             f"gRPC - {error_message}, "
                             f"errorCode {response.errorevent.errorCode}"
                         )
-                        self._session_error_state.set("fatal", error_message)
+                        self._fluent_error_state.set("fatal", error_message)
                         continue
                     callbacks_map = self._service_callbacks.get(event_name, {})
                     for call_back in callbacks_map.values():

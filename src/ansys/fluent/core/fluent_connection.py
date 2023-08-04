@@ -246,7 +246,9 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check_service = HealthCheckService(self._channel, self._metadata)
+        self.health_check_service = HealthCheckService(
+            self._channel, self._metadata, self.error_state
+        )
 
         counter = 0
         while not self.health_check_service.is_serving:
@@ -265,7 +267,9 @@ class FluentConnection:
 
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
+        self._scheme_eval_service = SchemeEvalService(
+            self._channel, self._metadata, self.error_state
+        )
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
@@ -433,24 +437,22 @@ class FluentConnection:
         """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
-    def create_service(self, service, add_arg=None):
+    def create_service(self, service, args=()):
         """Create a gRPC service.
 
         Parameters
         ----------
         service : Any
             service class
-        add_arg : Any, optional
-            additional arguments, by default None
+        args : Any, optional
+            additional arguments, by default empty
 
         Returns
         -------
         Any
             service object
         """
-        if add_arg:
-            return service(self._channel, self._metadata, add_arg)
-        return service(self._channel, self._metadata)
+        return service(self._channel, self._metadata, *args)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""

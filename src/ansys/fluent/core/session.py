@@ -122,6 +122,7 @@ class BaseSession:
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
+        self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
@@ -134,23 +135,24 @@ class BaseSession:
             self.transcript.start()
 
         self.datamodel_service_tui = self.fluent_connection.create_service(
-            DatamodelService_TUI
+            DatamodelService_TUI, (self.error_state,)
         )
 
         self.datamodel_service_se = self.fluent_connection.create_service(
-            DatamodelService_SE
+            DatamodelService_SE, (self.error_state,)
         )
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
         self.events_service = self.fluent_connection.create_service(EventsService)
-        self.error_state = self.fluent_connection.error_state
         self.events_manager = EventsManager(
             self.events_service, self.error_state, self.fluent_connection._id
         )
 
-        self._monitors_service = self.fluent_connection.create_service(MonitorsService)
+        self._monitors_service = self.fluent_connection.create_service(
+            MonitorsService, (self.error_state,)
+        )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service
         )
@@ -165,7 +167,7 @@ class BaseSession:
         self.events_manager.start()
 
         self._field_data_service = self.fluent_connection.create_service(
-            FieldDataService
+            FieldDataService, (self.error_state,)
         )
         self.field_info = FieldInfo(
             self._field_data_service, _IsDataValid(self.scheme_eval)
@@ -181,7 +183,7 @@ class BaseSession:
         )
 
         self.settings_service = self.fluent_connection.create_service(
-            SettingsService, add_arg=self.scheme_eval
+            SettingsService, (self.scheme_eval, self.error_state)
         )
 
         self.health_check_service = fluent_connection.health_check_service
@@ -282,17 +284,6 @@ class BaseSession:
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.download(file_name, local_file_path)
-
-    def __getattribute__(self, attr_name):
-        if attr_name.startswith("_") or attr_name in allowed_on_fatal_error:
-            return super().__getattribute__(attr_name)
-        if self.error_state == "fatal":
-            details = self.error_state.details
-            self.error_state.clear()
-            raise RuntimeError(
-                "Fatal error identified " f"on the Fluent server: {details}. "
-            )
-        return super().__getattribute__(attr_name)
 
 
 class _Uploader:
