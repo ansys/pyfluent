@@ -169,18 +169,17 @@ Following code demonstrate adding multiple requests to a single transaction.
 
 .. code-block::
 
-  >>> transaction.add_surfaces_request(surface_ids=[1], provide_vertices=True,
-                                          provide_faces=False, provide_faces_centroid=True
-                                        )
-  >>> transaction.add_surfaces_request(surface_ids=[2], provide_vertices=True,
-                                        provide_faces=True
-                                        )
-  >>> transaction.add_scalar_fields_request(surface_ids=[1,2], field_name="temperature",
-                                              node_value=True, boundary_value=True
-                                              )
+  >>> transaction.add_surfaces_request(
+  >>>     surface_ids=[1], provide_vertices=True, provide_faces=False, provide_faces_centroid=True
+  >>> )
+  >>> transaction.add_surfaces_request(
+  >>>     surface_ids=[2], provide_vertices=True, provide_faces=True
+  >>> )
+  >>> transaction.add_scalar_fields_request(
+  >>>     surface_ids=[1,2], field_name="temperature", node_value=True, boundary_value=True
+  >>> )
   >>> transaction.add_vector_fields_request(surface_ids=[1,2], field_name="velocity")
-  >>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature"
-                                              )
+  >>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature")
 
 
 You can call the ``get_fields`` method to get the data for all these requests. This call also
