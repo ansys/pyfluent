@@ -91,31 +91,6 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-class ErrorState:
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def details(self):
-        return self._details
-
-    def __init__(self, name: str = "", details: str = ""):
-        self._name = name
-        self._details = details
-
-    def __eq__(self, other):
-        return self._name == other
-
-    def set(self, name: str, details: str):
-        self._name = name
-        self._details = details
-
-    def clear(self):
-        self._name = ""
-        self._details = ""
-
-
 class BaseSession:
     """Instantiates a Fluent connection.
 
@@ -142,7 +117,6 @@ class BaseSession:
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
-        self.error_state = ErrorState()
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
@@ -171,6 +145,7 @@ class BaseSession:
 
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
         self.events_service = self.fluent_connection.create_service(EventsService)
+        self.error_state = self.fluent_connection.error_state
         self.events_manager = EventsManager(
             self.events_service, self.error_state, self.fluent_connection._id
         )

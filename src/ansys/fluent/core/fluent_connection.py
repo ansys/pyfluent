@@ -89,6 +89,31 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     return container
 
 
+class ErrorState:
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def details(self):
+        return self._details
+
+    def __init__(self, name: str = "", details: str = ""):
+        self._name = name
+        self._details = details
+
+    def __eq__(self, other):
+        return self._name == other
+
+    def set(self, name: str, details: str):
+        self._name = name
+        self._details = details
+
+    def clear(self):
+        self._name = ""
+        self._details = ""
+
+
 @dataclass(frozen=True)
 class FluentConnectionProperties:
     """Stores Fluent connection properties, including connection IP, port and password;
@@ -192,6 +217,7 @@ class FluentConnection:
             Whether the Fluent session that is being connected to
             is running inside a docker container.
         """
+        self.error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
         self.finalizer_cbs = []
