@@ -209,7 +209,7 @@ of supported tags and their values:
 *  BOUNDARY_VALUES: 8,
 
 For example, if you request the scalar field data for element location[2], in the
-dictionary,  ``tag`` is ``2``. Similarly, if you request the boundary values[8] for
+dictionary, ``tag`` is ``2``. Similarly, if you request the boundary values[8] for
 node location[4], ``tag`` is ``(4|8)`` or 12.
 
 Fluent versions 2023 R1 and later
@@ -217,7 +217,7 @@ Fluent versions 2023 R1 and later
 A tag is tuple of input, value pairs for which field data is generated.
 
 For example, if you request the scalar field data for element location, in the
-dictionary,  ``tag`` is ``(('type','scalar-field'), ('dataLocation', 1), ('boundaryValues',False))``.
+dictionary, ``tag`` is ``(('type','scalar-field'), ('dataLocation', 1), ('boundaryValues',False))``.
 Similarly, if you request the boundary values for node location, ``tag`` is
 ``(('type','scalar-field'), ('dataLocation', 0), ('boundaryValues',True)``.
 
@@ -251,7 +251,7 @@ Vector field request
 The response to a vector field request contains two fields:
 
 - ``vector field``, with the same name as the vector field name that is passed
-  in the request
+ in the request
 - ``vector-scale``, a float value indicating the vector scale.
 
 Pathlines field request
@@ -263,8 +263,8 @@ The response to a pathlines field request contains the following fields:
 - ``vertices``, which contain node coordinates.
 - ``field name``, which contains pathlines field. field name is the same name as
   the scalar field name passed in the request.
-- ``particle-time``, which contains  particle time, if requested.
-- ``additional field name``, which contains  additional field, if requested.
+- ``particle-time``, which contains particle time, if requested.
+- ``additional field name``, which contains additional field, if requested.
   additional field name is the same name as the additional field name passed in
   the request.
 
