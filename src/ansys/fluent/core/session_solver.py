@@ -55,7 +55,7 @@ class Solver(BaseSession):
         self.svar_service = self.fluent_connection.create_service(SVARService)
         self.svar_info = SVARInfo(self.svar_service)
         self._reduction_service = self.fluent_connection.create_service(
-            ReductionService, (self.error_state,)
+            ReductionService, self.error_state
         )
         self.reduction = Reduction(self._reduction_service)
 
