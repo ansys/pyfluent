@@ -102,9 +102,6 @@ class ErrorState:
         self._name = name
         self._details = details
 
-    def __eq__(self, other):
-        return self._name == other
-
     def set(self, name: str, details: str):
         self._name = name
         self._details = details
@@ -437,7 +434,7 @@ class FluentConnection:
         """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
-    def create_service(self, service, args=()):
+    def create_service(self, service, *args):
         """Create a gRPC service.
 
         Parameters

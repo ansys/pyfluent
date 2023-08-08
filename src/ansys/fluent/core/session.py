@@ -126,11 +126,11 @@ class BaseSession:
             self.transcript.start()
 
         self.datamodel_service_tui = self.fluent_connection.create_service(
-            DatamodelService_TUI, (self.error_state,)
+            DatamodelService_TUI, self.error_state
         )
 
         self.datamodel_service_se = self.fluent_connection.create_service(
-            DatamodelService_SE, (self.error_state,)
+            DatamodelService_SE, self.error_state
         )
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
@@ -142,7 +142,7 @@ class BaseSession:
         )
 
         self._monitors_service = self.fluent_connection.create_service(
-            MonitorsService, (self.error_state,)
+            MonitorsService, self.error_state
         )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service
@@ -158,7 +158,7 @@ class BaseSession:
         self.events_manager.start()
 
         self._field_data_service = self.fluent_connection.create_service(
-            FieldDataService, (self.error_state,)
+            FieldDataService, self.error_state
         )
         self.field_info = FieldInfo(
             self._field_data_service, _IsDataValid(self.scheme_eval)
@@ -174,7 +174,7 @@ class BaseSession:
         )
 
         self.settings_service = self.fluent_connection.create_service(
-            SettingsService, (self.scheme_eval, self.error_state)
+            SettingsService, self.scheme_eval, self.error_state
         )
 
         self.health_check_service = fluent_connection.health_check_service

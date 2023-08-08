@@ -75,11 +75,10 @@ class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
         client_call_details: grpc.ClientCallDetails,
         request: Any,
     ):
-        if self._fluent_error_state == "fatal":
+        if self._fluent_error_state.name == "fatal":
             details = self._fluent_error_state.details
-            self._fluent_error_state.clear()
             raise RuntimeError(
-                "Fatal error identified on the Fluent server: {details}."
+                f"Fatal error identified on the Fluent server: {details}."
             )
         return continuation(client_call_details, request)
 

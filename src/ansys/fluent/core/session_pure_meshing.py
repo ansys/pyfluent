@@ -44,7 +44,7 @@ class PureMeshing(BaseSession):
         )
 
         self.meshing_queries_service = fluent_connection.create_service(
-            MeshingQueriesService, (self.error_state,)
+            MeshingQueriesService, self.error_state
         )
         self.meshing_queries = MeshingQueries(self.meshing_queries_service)
 
