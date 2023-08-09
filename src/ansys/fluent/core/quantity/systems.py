@@ -2,7 +2,8 @@ import ansys.fluent.core.quantity as q
 
 
 class UnitSystem:
-    """Initializes a unit system based on user-defined units or a pre-defined unit system.
+    """Initializes a unit system based on user-defined units or a pre-definned unit
+    system.
 
     Parameters
     ----------

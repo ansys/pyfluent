@@ -39,7 +39,7 @@ class Dimensions(object):
                 dimensions=dimensions, unit_sys=unit_sys
             )
 
-    def _dim_to_units(self, dimensions: list, unit_sys: list) -> tuple:
+    def _dim_to_units(self, dimensions: list, unit_sys: list) -> str:
         """Convert a dimensions list into a unit string.
 
         Parameters
@@ -52,8 +52,8 @@ class Dimensions(object):
 
         Returns
         -------
-        tuple
-            Dimensions list and unit string.
+        str
+            Unit string representation of dimensions.
         """
         # Ensure dimensions list contains 9 terms
         dimensions = [
