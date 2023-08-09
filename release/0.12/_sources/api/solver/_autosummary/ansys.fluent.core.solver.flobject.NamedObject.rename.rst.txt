@@ -1,6 +1,0 @@
-rename
-======
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: NamedObject.rename

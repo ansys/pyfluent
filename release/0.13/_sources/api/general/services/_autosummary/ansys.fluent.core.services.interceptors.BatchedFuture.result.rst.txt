@@ -1,6 +1,0 @@
-result
-======
-
-.. currentmodule:: ansys.fluent.core.services.interceptors
-
-.. automethod:: BatchedFuture.result

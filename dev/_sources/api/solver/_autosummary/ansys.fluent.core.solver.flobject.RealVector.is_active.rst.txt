@@ -1,6 +1,0 @@
-is\_active
-==========
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: RealVector.is_active

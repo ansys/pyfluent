@@ -1,6 +1,0 @@
-\_\_init\_\_
-============
-
-.. currentmodule:: ansys.fluent.core.services.streaming
-
-.. automethod:: StreamingService.__init__

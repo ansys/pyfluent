@@ -1,6 +1,0 @@
-end\_streaming
-==============
-
-.. currentmodule:: ansys.fluent.core.services.streaming
-
-.. automethod:: StreamingService.end_streaming

@@ -1,6 +1,0 @@
-min
-===
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: RealVector.min

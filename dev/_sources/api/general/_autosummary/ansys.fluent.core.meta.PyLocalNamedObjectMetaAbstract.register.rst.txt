@@ -1,6 +1,0 @@
-register
-========
-
-.. currentmodule:: ansys.fluent.core.meta
-
-.. automethod:: PyLocalNamedObjectMetaAbstract.register

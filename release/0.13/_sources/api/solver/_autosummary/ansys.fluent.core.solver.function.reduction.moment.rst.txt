@@ -1,6 +1,0 @@
-moment
-======
-
-.. currentmodule:: ansys.fluent.core.solver.function.reduction
-
-.. autofunction:: moment

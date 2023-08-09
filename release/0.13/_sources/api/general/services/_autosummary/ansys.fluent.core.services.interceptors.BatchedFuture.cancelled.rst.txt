@@ -1,6 +1,0 @@
-cancelled
-=========
-
-.. currentmodule:: ansys.fluent.core.services.interceptors
-
-.. automethod:: BatchedFuture.cancelled

@@ -1,6 +1,0 @@
-execute
-=======
-
-.. currentmodule:: ansys.fluent.core.services.batch_ops
-
-.. automethod:: BatchOpsService.execute

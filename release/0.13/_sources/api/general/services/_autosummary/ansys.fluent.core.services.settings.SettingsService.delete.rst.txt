@@ -1,6 +1,0 @@
-delete
-======
-
-.. currentmodule:: ansys.fluent.core.services.settings
-
-.. automethod:: SettingsService.delete

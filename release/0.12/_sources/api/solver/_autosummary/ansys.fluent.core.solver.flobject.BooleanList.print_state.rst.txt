@@ -1,6 +1,0 @@
-print\_state
-============
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: BooleanList.print_state

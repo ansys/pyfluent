@@ -1,6 +1,0 @@
-set\_flproxy
-============
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: Query.set_flproxy

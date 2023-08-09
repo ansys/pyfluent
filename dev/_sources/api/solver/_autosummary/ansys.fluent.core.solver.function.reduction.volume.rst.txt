@@ -1,6 +1,0 @@
-volume
-======
-
-.. currentmodule:: ansys.fluent.core.solver.function.reduction
-
-.. autofunction:: volume
