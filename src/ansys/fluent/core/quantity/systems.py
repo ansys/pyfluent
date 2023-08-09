@@ -115,7 +115,7 @@ class UnitSystemError(ValueError):
     @classmethod
     def UNIT_UNDEFINED(cls, unit):
         return cls(
-            f"`{unit}` is an undefined unit. To use `{unit}` add it to the `fundamental_units` table within quantity_config.yaml."
+            f"`{unit}` is an undefined unit. To use `{unit}` add it to the `fundamental_units` table within cfg.yaml."
         )
 
     @classmethod
