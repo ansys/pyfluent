@@ -16,7 +16,7 @@ env:
   PYFLUENT_HIDE_LOG_SECRETS: 1
 
 jobs:
-  nightly_docs_build:
+  build_dev_docs:
     runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
@@ -75,8 +75,11 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
+  deploy_dev_docs:
+    runs-on: ubuntu-latest
+    needs: [build_dev_docs]
+    steps:
       - name: "Deploy development documentation"
-        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
         uses: ansys/actions/doc-deploy-dev@v4
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
