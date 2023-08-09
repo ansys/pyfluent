@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_mesh_domains:
+
+meshing.tui.mesh.domains
+========================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.domains
+   :members: create_by_point, draw, create, print, create_by_cell_zone, delete, activate
+

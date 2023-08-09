@@ -1,0 +1,17 @@
+.. _ref_solver_tui_solve_animate_pulse_video:
+
+solver.tui.solve.animate.pulse.video
+====================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.video
+   :members: set_standard_resolution, name, format, fps, width, height, quality, scale, use_original_resolution
+
+.. toctree::
+   :hidden:
+
+   advance_quality/index

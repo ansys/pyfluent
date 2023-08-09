@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_preferences_turbo_workflow_face_zone_settings:
+
+meshing.tui.preferences.turbo\_workflow.face\_zone\_settings
+============================================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.turbo_workflow.face_zone_settings
+   :members: inlet_region, periodic2_region, fzsearch_order, tip1_region, blade_region, interior_region, symmetry_region, outlet_region, hub_region, periodic1_region, shroud_region, tip2_region
+

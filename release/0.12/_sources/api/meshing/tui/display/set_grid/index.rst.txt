@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_display_set_grid:
+
+meshing.tui.display.set\_grid
+=============================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set_grid
+   :members: label_alignment, marked, normal_scale, list, label_scale, all_nodes, face_quality, node_symbol, y_range, multi, cell_quality, all_faces, all_cells, unmeshed, x_range, unused, label_font, refine, neighborhood, left_handed, labels, tagged, default, z_range, normals, free, node_size
+

@@ -1,0 +1,13 @@
+.. _ref_solver_tui_display_set_colors_by_type_type_name:
+
+solver.tui.display.set.colors.by\_type.type\_name
+=================================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.colors.by_type.type_name
+   :members: axis, rans_les_interface, periodic, inlet, traction, internal, outlet, interior, surface, overset, free_surface, interface, far_field, wall, symmetry
+

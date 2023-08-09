@@ -1,0 +1,17 @@
+.. _ref_meshing_tui_file_import:
+
+meshing.tui.file.import\_
+=========================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.import_
+   :members: ideas_vol_mesh, patran_vol_mesh, stl, nastran_surf_mesh, cad, cgns_vol_mesh, nastran_vol_mesh, fidap_vol_mesh, fluent_3d_mesh, gambit_vol_mesh, hypermesh_surf_mesh, gambit_surf_mesh, fidap_surf_mesh, hypermesh_vol_mesh, ideas_surf_mesh, patran_surf_mesh, reimport_last_with_cfd_surface_mesh, fluent_2d_mesh, ansys_vol_mesh, cgns_surf_mesh, cad_geometry, fl_uns2_mesh, ansys_surf_mesh
+
+.. toctree::
+   :hidden:
+
+   cad_options/index

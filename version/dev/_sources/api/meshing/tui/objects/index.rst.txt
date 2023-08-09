@@ -1,0 +1,27 @@
+.. _ref_meshing_tui_objects:
+
+objects
+=======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_232.main_menu.objects
+   :noindex:
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
+
+.. toctree::
+   :hidden:
+
+   set/index
+   labels/index
+   join_intersect/index
+   cad_association/index
+   wrap/index
+   fix_holes/index
+   volumetric_regions/index
+   create_new_mesh_object/index
+   deprecated/index
+   remove_gaps/index

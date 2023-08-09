@@ -1,0 +1,30 @@
+.. _ref_solver_tui_display:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
+
+.. toctree::
+   :hidden:
+
+   set/index
+   display_states/index
+   particle_tracks/index
+   views/index
+   embedded_windows/index
+   update_scene/index
+   objects/index
+   pdf_data/index
+   surface/index
+   view_sync/index
+   flamelet_data/index
+   define/index
+   inverse_dft/index
+   path_lines/index

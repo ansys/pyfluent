@@ -1,0 +1,38 @@
+.. _ref_solver_tui_define:
+
+define
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
+
+.. toctree::
+   :hidden:
+
+   custom_field_functions/index
+   operating_conditions/index
+   periodic_conditions/index
+   mesh_interfaces/index
+   parameters/index
+   mixing_planes/index
+   reference_frames/index
+   dynamic_mesh/index
+   curvilinear_coordinate_system/index
+   user_defined/index
+   virtual_boundary/index
+   profiles/index
+   models/index
+   turbo_model/index
+   gap_model/index
+   materials/index
+   boundary_conditions/index
+   solution_strategy/index
+   overset_interfaces/index
+   spectral/index
+   named_expressions/index
+   phases/index

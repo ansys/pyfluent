@@ -1,0 +1,13 @@
+.. _ref_solver_tui_views_camera:
+
+solver.tui.views.camera
+=======================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views.camera
+   :members: dolly_camera, orbit_camera, zoom_camera, target, projection, field, position, up_vector, roll_camera, pan_camera
+

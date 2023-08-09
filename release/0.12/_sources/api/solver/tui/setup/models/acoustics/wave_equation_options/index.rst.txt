@@ -1,0 +1,18 @@
+.. _ref_solver_tui_setup_models_acoustics_wave_equation_options:
+
+solver.tui.setup.models.acoustics.wave\_equation\_options
+=========================================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.acoustics.wave_equation_options
+   :members: sponge_layer_factor, time_filter_source, source_mask_udf, sponge_layer_base_level, remote_receivers, sponge_layer_udf
+
+.. toctree::
+   :hidden:
+
+   basic_shapes/index
+   remote_receivers_options/index

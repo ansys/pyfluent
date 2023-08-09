@@ -1,0 +1,13 @@
+.. _ref_solver_tui_results_graphics_expert_set_particle_tracks_vector_settings:
+
+solver.tui.results.graphics.expert.set.particle\_tracks.vector\_settings
+========================================================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.particle_tracks.vector_settings
+   :members: constant_color, vector_variable, vector_length, length_to_head_ratio, scale_factor, color_variable, length_variable, vector_length_variable, style
+

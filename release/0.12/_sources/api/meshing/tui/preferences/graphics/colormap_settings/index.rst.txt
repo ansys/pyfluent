@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_preferences_graphics_colormap_settings:
+
+meshing.tui.preferences.graphics.colormap\_settings
+===================================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.colormap_settings
+   :members: text_font_automatic_horizontal_size, show_colormap, text_truncation_limit_for_horizontal_colormaps, number_format_type, use_no_sub_windows, skip_value, text_font_automatic_size, text_font_fixed_size, type, text_behavior, colormap, border_style, preserve_aspect_ratio_for_hardcopy, aspect_ratio_when_horizontal, max_size_scale_factor, isolines_position_offset, aspect_ratio_when_vertical, alignment, automatic_resize, major_length_to_screen_ratio_when_vertical, text_font_fixed_vertical_size, text_font_automatic_vertical_size, major_length_to_screen_ratio_when_horizontal, text_font_fixed_units, labels, levels, text_truncation_limit_for_vertical_colormaps, text_font_name, min_size_scale_factor, number_format_precision, margin_from_edge_to_screen_ratio, auto_refit_on_resize, text_font_fixed_horizontal_size, text_font_automatic_units, log_scale
+

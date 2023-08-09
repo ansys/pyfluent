@@ -1,0 +1,28 @@
+.. _ref_solver_tui_setup:
+
+solver.tui.setup
+================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup
+.. toctree::
+   :hidden:
+
+   reference_frames/index
+   boundary_conditions/index
+   gap_model/index
+   reference_values/index
+   dynamic_mesh/index
+   mesh_interfaces/index
+   expert/index
+   models/index
+   overset_interfaces/index
+   operating_conditions/index
+   mixing_planes/index
+   turbo_model/index
+   materials/index
+   named_expressions/index

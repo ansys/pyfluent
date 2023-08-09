@@ -1,0 +1,18 @@
+.. _ref_solver_tui_solution_controls_advanced:
+
+solver.tui.solution.controls.advanced
+=====================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.advanced
+   :members: multi_grid_fas, multi_stage, multi_grid_controls, slope_limiter_set, relaxation_method, multi_grid_amg, correction_tolerance
+
+.. toctree::
+   :hidden:
+
+   fast_transient_settings/index
+   amg_options/index

@@ -1,0 +1,30 @@
+.. _ref_meshing_tui_preferences_graphics:
+
+graphics
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_232.main_menu.preferences.graphics
+   :noindex:
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
+
+.. toctree::
+   :hidden:
+
+   boundary_markers/index
+   performance/index
+   lighting/index
+   meshing_mode/index
+   transparency/index
+   material_effects/index
+   export_video_settings/index
+   vector_settings/index
+   manage_hoops_memory/index
+   graphics_effects/index
+   colormap_settings/index
+   embedded_windows/index
+   hardcopy_settings/index

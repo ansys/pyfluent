@@ -1,0 +1,18 @@
+.. _ref_meshing_tui_preferences_appearance_charts:
+
+meshing.tui.preferences.appearance.charts
+=========================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance.charts
+   :members: legend_alignment, modern_plots_points_threshold, legend_visibility, curve_colors, plots_behavior, print_plot_data, modern_plots_enabled, enable_open_glfor_modern_plots, tooltip_interpolation, threshold, print_residuals_data
+
+.. toctree::
+   :hidden:
+
+   text_color/index
+   font/index

@@ -1,0 +1,31 @@
+.. _ref_meshing_tui:
+
+meshing.tui
+===========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_232.main_menu
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
+
+.. toctree::
+   :hidden:
+
+   report/index
+   objects/index
+   preferences/index
+   cad_assemblies/index
+   parallel/index
+   material_point/index
+   openmp_controls/index
+   size_functions/index
+   scoped_sizing/index
+   mesh/index
+   display/index
+   reference_frames/index
+   boundary/index
+   file/index
+   diagnostics/index

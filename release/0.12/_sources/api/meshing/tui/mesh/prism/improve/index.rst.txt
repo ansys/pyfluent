@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_mesh_prism_improve:
+
+meshing.tui.mesh.prism.improve
+==============================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.improve
+   :members: smooth_sliver_skew, smooth_brute_force, improve_prism_cells, smooth_improve_prism_cells, smooth_prism_cells, smooth_cell_rings
+

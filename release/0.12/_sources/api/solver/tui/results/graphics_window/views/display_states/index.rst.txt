@@ -1,0 +1,13 @@
+.. _ref_solver_tui_results_graphics_window_views_display_states:
+
+solver.tui.results.graphics\_window.views.display\_states
+=========================================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.views.display_states
+   :members: rename, delete, edit, copy, restore_state, read, new, use_active, list, write
+

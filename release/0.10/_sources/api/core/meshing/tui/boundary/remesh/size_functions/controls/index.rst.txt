@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_boundary_remesh_size_functions_controls:
+
+meshing.tui.boundary.remesh.size\_functions.controls
+====================================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui::main_menu.boundary.remesh.size_functions.controls
+   :members: meshed_sf_behavior, curvature_method
+
