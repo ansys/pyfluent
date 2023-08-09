@@ -1,9 +1,12 @@
 """Module for events management."""
 from functools import partial
+import logging
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+
+network_logger = logging.getLogger("pyfluent.networking")
 
 
 class EventsManager(StreamingService):
@@ -13,10 +16,8 @@ class EventsManager(StreamingService):
 
     Parameters
     ----------
-    session_id : str
-        Session ID.
-    service :
-        Event streaming service.
+    session : BaseSession
+        Fluent session object
 
     Attributes
     ----------
@@ -24,13 +25,14 @@ class EventsManager(StreamingService):
         List of supported events.
     """
 
-    def __init__(self, session_id: str, service):
+    def __init__(self, session_events_service, fluent_error_state, session_id):
         """__init__ method of EventsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=EventsManager._process_streaming,
-            streaming_service=service,
+            streaming_service=session_events_service,
         )
+        self._fluent_error_state = fluent_error_state
         self._session_id: str = session_id
         self._events_list: List[str] = [
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
@@ -47,6 +49,14 @@ class EventsManager(StreamingService):
                 event_name = response.WhichOneof("as")
                 with self._lock:
                     self._streaming = True
+                    if event_name == "errorevent":
+                        error_message = response.errorevent.message.rstrip()
+                        network_logger.error(
+                            f"gRPC - {error_message}, "
+                            f"errorCode {response.errorevent.errorCode}"
+                        )
+                        self._fluent_error_state.set("fatal", error_message)
+                        continue
                     callbacks_map = self._service_callbacks.get(event_name, {})
                     for call_back in callbacks_map.values():
                         call_back(
