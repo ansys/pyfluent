@@ -105,7 +105,7 @@ def test_error_messages():
     e3 = q.UnitSystemError.UNIT_UNDEFINED("pizza")
     assert (
         e3.__str__()
-        == "`pizza` is an undefined unit. To use `pizza` add it to the `fundamental_units` table within quantity_config.yaml."
+        == "`pizza` is an undefined unit. To use `pizza` add it to the `fundamental_units` table within cfg.yaml."
     )
 
     e4 = q.UnitSystemError.UNIT_ORDER("Mass", 1, "Light", 7)
