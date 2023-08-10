@@ -54,7 +54,7 @@ PyFluent cheat sheet. This one-page reference provides syntax rules and commands
 for using PyFluent. 
 
 On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
-issues to report bugs and request new features. On the `PyMFluent Discussions
+issues to report bugs and request new features. On the `PyFluent Discussions
 <https://github.com/ansys/pyfluent/discussions>`_ page or the `Discussions <https://discuss.ansys.com/>`_
 page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback. 
 
