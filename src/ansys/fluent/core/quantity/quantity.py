@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Optional, Tuple
 
 import ansys.fluent.core.quantity as q
 from ansys.fluent.core.quantity._constants import _QuantityType
@@ -122,7 +122,7 @@ class Quantity(float):
         if not isinstance(__value, Quantity) and (not self.is_dimensionless):
             raise QuantityError.INCOMPATIBLE_VALUE(__value)
 
-    def _temp_precheck(self) -> str | None:
+    def _temp_precheck(self) -> Optional[str]:
         """Validate units for temperature differences.
 
         Returns
