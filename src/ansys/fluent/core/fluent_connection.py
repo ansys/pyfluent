@@ -176,7 +176,7 @@ class FluentConnection:
         launcher_args: Dict[str, Any] = None,
         inside_container: bool = None,
     ):
-        """Instantiate a Session.
+        """Initialize a Session.
 
         Parameters
         ----------
