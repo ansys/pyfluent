@@ -31,7 +31,9 @@ class Quantity(float):
     Quantity instance.
     """
 
-    def __new__(cls, value, units=None, quantity_map=None, dimensions=None, _type=None):
+    def __new__(
+        cls, value, units=None, quantity_map=None, dimensions=None, _type_hint=None
+    ):
         if (
             (units and quantity_map)
             or (units and dimensions)
@@ -59,7 +61,7 @@ class Quantity(float):
         return float.__new__(cls, _si_value)
 
     def __init__(
-        self, value, units=None, quantity_map=None, dimensions=None, _type=None
+        self, value, units=None, quantity_map=None, dimensions=None, _type_hint=None
     ):
         if (
             (units and quantity_map)
@@ -84,7 +86,12 @@ class Quantity(float):
             self._dimensions = q.Dimensions(dimensions=dimensions)
             self._unit = self._dimensions.units
 
-        self._type = _type or self._units_table.get_type(self._unit)
+        self._type = self._units_table.get_type(self._unit)
+        if (
+            self._type == _QuantityType.temperature
+            and _type_hint == _QuantityType.temperature_difference
+        ):
+            self._type = _QuantityType.temperature_difference
 
         si_units, si_multiplier, si_offset = self._units_table.si_data(units=self._unit)
 
@@ -197,7 +204,7 @@ class Quantity(float):
         _, si_multiplier, si_offset = self._units_table.si_data(to_units)
         new_value = (self.si_value / si_multiplier) - si_offset
 
-        new_obj = Quantity(value=new_value, units=to_units, _type=new_type)
+        new_obj = Quantity(value=new_value, units=to_units, _type_hint=new_type)
 
         # Confirm conversion compatibility
         self._arithmetic_precheck(new_obj)
@@ -227,7 +234,7 @@ class Quantity(float):
             return Quantity(
                 value=new_si_value,
                 units=new_units,
-                _type=self._determine_new_type(__value),
+                _type_hint=self._determine_new_type(__value),
             )
 
         if isinstance(__value, (float, int)):
