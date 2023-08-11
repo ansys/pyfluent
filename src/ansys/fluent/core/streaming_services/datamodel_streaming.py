@@ -6,7 +6,7 @@ class DatamodelStream(StreamingService):
     """Encapsulates a datamodel streaming service."""
 
     def __init__(self, service):
-        """Instantiate DatamodelStream."""
+        """Initialize DatamodelStream."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=DatamodelStream._process_streaming,

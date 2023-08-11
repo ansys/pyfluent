@@ -1,7 +1,11 @@
+"""Workflow module that wraps and extends the core functionality."""
+
+from __future__ import annotations
+
 import logging
 import threading
 from time import sleep, time
-from typing import Any, Iterator, Tuple
+from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
@@ -12,7 +16,7 @@ logger = logging.getLogger("pyfluent.datamodel")
 def _new_command_for_task(task, session):
     class NewCommandError(Exception):
         def __init__(self, task_name):
-            super().__init__(f"Could not create command for meshing task {task_name}")
+            super().__init__(f"Could not create command for task {task_name}")
 
     task_cmd_name = task.CommandName()
     cmd_creator = getattr(session, task_cmd_name)
@@ -23,9 +27,9 @@ def _new_command_for_task(task, session):
     raise NewCommandError(task._name_())
 
 
-def init_task_accessors(obj):
-    logger.debug("init_task_accessors")
-    logger.debug(f"thread id in init_task_accessors {threading.get_ident()}")
+def _init_task_accessors(obj):
+    logger.debug("_init_task_accessors")
+    logger.debug(f"thread id in _init_task_accessors {threading.get_ident()}")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
@@ -37,13 +41,13 @@ def init_task_accessors(obj):
             logger.debug(
                 f"Could not add task {py_name} {type(getattr(obj, py_name, None))}"
             )
-        init_task_accessors(task)
+        _init_task_accessors(task)
 
 
-def refresh_task_accessors(obj):
-    logger.debug(f"thread id in refresh_task_accessors {threading.get_ident()}")
+def _refresh_task_accessors(obj):
+    logger.debug(f"thread id in _refresh_task_accessors {threading.get_ident()}")
     old_task_names = set(obj._python_task_names)
-    logger.debug(f"refresh_task_accessors old_task_names: {old_task_names}")
+    logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
     logger.debug(f"current_task_names: {current_task_names}")
@@ -67,7 +71,7 @@ def refresh_task_accessors(obj):
     logger.debug(f"updated_task_names: {obj._python_task_names}")
     for task in tasks:
         logger.debug(f"next task {task.python_name()} {id(task)}")
-        refresh_task_accessors(task)
+        _refresh_task_accessors(task)
 
 
 class BaseTask:
@@ -87,7 +91,16 @@ class BaseTask:
     __call__()
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize BaseTask.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         self.__dict__.update(
             dict(
                 _command_source=command_source,
@@ -170,7 +183,7 @@ class BaseTask:
                         return mappings[task_id]
                     try:
                         return self._command_source._task_by_id(task_id)
-                    except BaseException:
+                    except Exception:
                         pass
 
                 return _task_by_id
@@ -187,14 +200,28 @@ class BaseTask:
         return self._ordered_children
 
     def inactive_ordered_children(self) -> list:
+        """Get the inactive ordered child list
+
+        Returns
+        -------
+        list
+            Inactive ordered children.
+        """
         return []
 
-    def child_task_python_names(self):
+    def child_task_python_names(self) -> List[str]:
+        """Get the Pythonic names of the child tasks.
+
+        Returns
+        -------
+        List[str]
+            Pythonic names of the child tasks.
+        """
         return self._python_task_names
 
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the
-        meshing application.
+        application.
 
         Returns
         -------
@@ -210,7 +237,7 @@ class BaseTask:
                         return id_
 
     def get_idx(self) -> int:
-        """Get the unique integer index of this task, as it is in the meshing
+        """Get the unique integer index of this task, as it is in the
         application.
 
         Returns
@@ -220,17 +247,26 @@ class BaseTask:
         """
         return int(self.get_id()[len("TaskObject") :])
 
-    def python_name(self):
+    def python_name(self) -> str:
+        """Get the Pythonic name of this task, as it is in the underlying
+        application.
+
+        Returns
+        -------
+        str
+            The Pythonic name of this task.
+        """
         if not self._python_name:
             try:
                 this_command = self._command()
                 # temp reuse helpString
                 self._python_name = this_command.get_attr("helpString")
-            except BaseException:
+            except Exception:
                 pass
         return self._python_name
 
-    def delete(self):
+    def delete(self) -> None:
+        """Delete this task from the workflow."""
         self._command_source.DeleteTasks(ListOfTasks=[self.name()])
 
     def __getattr__(self, attr):
@@ -242,7 +278,7 @@ class BaseTask:
             pass
         try:
             return ArgumentWrapper(self, attr)
-        except BaseException as ex:
+        except Exception as ex:
             logger.debug(str(ex))
         self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
@@ -295,7 +331,14 @@ class TaskContainer(PyCallableStateObject):
     __dir__()
     """
 
-    def __init__(self, command_source):
+    def __init__(self, command_source: WorkflowWrapper) -> None:
+        """Initialize TaskContainer.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        """
         self._container = command_source
         self._task_container = command_source._workflow.TaskObject
 
@@ -311,7 +354,7 @@ class TaskContainer(PyCallableStateObject):
 
     def __getitem__(self, name):
         logger.debug(f"TaskContainer.__getitem__({name})")
-        return makeTask(self._container, name)
+        return _makeTask(self._container, name)
 
     def __getattr__(self, attr):
         return getattr(self._task_container, attr)
@@ -325,16 +368,50 @@ class TaskContainer(PyCallableStateObject):
 
 
 class ArgumentsWrapper(PyCallableStateObject):
-    def __init__(self, task):
+    """Wrapper for a dictionary of task arguments."""
+
+    def __init__(self, task: BaseTask) -> None:
+        """Initialize ArgumentsWrapper.
+
+        Parameters
+        ----------
+        task : BaseTask
+            The task holding these arguments.
+        """
         self._task = task
 
-    def set_state(self, args):
+    def set_state(self, args: dict) -> None:
+        """
+        Overwrite arguments.
+
+        Parameters
+        ----------
+        args : dict
+            New argument state.
+        """
         self._task.Arguments.set_state(args)
 
-    def update_dict(self, args):
+    def update_dict(self, args: dict) -> None:
+        """
+        Merge with arguments.
+
+        Parameters
+        ----------
+        args : dict
+            new arguments state
+        """
         self._task.Arguments.update_dict(args)
 
-    def get_state(self, explicit_only=False):
+    def get_state(self, explicit_only=False) -> dict:
+        """
+        Get arguments state.
+
+        Parameters
+        ----------
+        explicit_only : bool
+            Whether to only include explicitly set values,
+            otherwise all values are included.
+        """
         return (
             self._task.Arguments() if explicit_only else self._task._command_arguments()
         )
@@ -347,17 +424,45 @@ class ArgumentsWrapper(PyCallableStateObject):
 
 
 class ArgumentWrapper(PyCallableStateObject):
-    def __init__(self, task, arg):
+    """Wrapper for a single task argument"""
+
+    def __init__(self, task: BaseTask, arg: str) -> None:
+        """Initialize ArgumentWrapper.
+
+        Parameters
+        ----------
+        task : BaseTask
+            The task holding these arguments.
+        arg: str
+            Argument name.
+        """
         self._task = task
         self._arg_name = arg
         self._arg = getattr(task._command_arguments, arg)
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument")
 
-    def set_state(self, value):
+    def set_state(self, value: Any) -> None:
+        """
+        Set the state of this argument.
+
+        Parameters
+        ----------
+        value : Any
+            New argument value.
+        """
         self._task.Arguments.update_dict({self._arg_name: value})
 
-    def get_state(self, explicit_only=False):
+    def get_state(self, explicit_only: bool = False) -> Any:
+        """
+        Get argument state.
+
+        Parameters
+        ----------
+        explicit_only : bool
+            Whether to return the explicitly set value or the
+            full derived value.
+        """
         return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
 
     def __getattr__(self, attr):
@@ -369,34 +474,57 @@ class CommandTask(BaseTask):
     adding attributes related to commanding. Classes without these attributes cannot be commanded.
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize CommandTask.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         super().__init__(command_source, task)
 
     @property
-    def CommandArguments(self):
+    def CommandArguments(self) -> ReadOnlyObject:
+        """Get the task's arguments in read-only form (deprecated).
+
+        Returns
+        -------
+        ReadOnlyObject
+            The task's arguments.
+        """
         warnings.warn("CommandArguments", DeprecationWarning)
         return self._refreshed_command()
 
     @property
-    def _command_arguments(self):
+    def _command_arguments(self) -> ReadOnlyObject:
         return self._refreshed_command()
 
     @property
-    def arguments(self):
+    def arguments(self) -> ArgumentsWrapper:
+        """Get the task's arguments.
+
+        Returns
+        -------
+        ArgumentsWrapper
+            The task's arguments.
+        """
         return ArgumentsWrapper(self)
 
-    def _refreshed_command(self):
+    def _refreshed_command(self) -> ReadOnlyObject:
         task_arg_state = self._task.Arguments.get_state()
         cmd = self._command()
         if task_arg_state:
             cmd.set_state(task_arg_state)
-        return _MakeReadOnly(self._cmd_sub_items_read_only(cmd))
+        return ReadOnlyObject(self._cmd_sub_items_read_only(cmd))
 
     def _cmd_sub_items_read_only(self, cmd):
         for item in cmd():
             if type(getattr(cmd, item).get_state()) == dict:
                 setattr(cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item)))
-            setattr(cmd, item, _MakeReadOnly(getattr(cmd, item)))
+            setattr(cmd, item, ReadOnlyObject(getattr(cmd, item)))
         return cmd
 
     def _command(self):
@@ -410,7 +538,16 @@ class SimpleTask(CommandTask):
     instance of TaskType Simple.
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize SimpleTask.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         super().__init__(command_source, task)
 
     def ordered_children(self, recompute=True) -> list:
@@ -423,10 +560,27 @@ class CompoundChild(SimpleTask):
     instance of TaskType Compound Child.
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize CompoundChild.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         super().__init__(command_source, task)
 
-    def python_name(self):
+    def python_name(self) -> str:
+        """Get the Pythonic name of this task, as it is in the underlying
+        application.
+
+        Returns
+        -------
+        str
+            The Pythonic name of this task.
+        """
         pass
 
 
@@ -435,20 +589,43 @@ class CompositeTask(BaseTask):
     instance of TaskType Composite.
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize CompositeTask.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         super().__init__(command_source, task)
 
     @property
-    def CommandArguments(self):
+    def CommandArguments(self) -> ReadOnlyObject:
+        """Get the task's arguments in read-only form (deprecated).
+
+        Returns
+        -------
+        ReadOnlyObject
+            The task's arguments.
+        """
         warnings.warn("CommandArguments", DeprecationWarning)
         return {}
 
     @property
-    def _command_arguments(self):
+    def _command_arguments(self) -> ReadOnlyObject:
         return {}
 
     @property
-    def arguments(self):
+    def arguments(self) -> dict:
+        """Get the task's arguments (empty for CompositeTask).
+
+        Returns
+        -------
+        dict
+            The task's arguments (empty).
+        """
         return {}
 
 
@@ -457,7 +634,16 @@ class ConditionalTask(CommandTask):
     instance of TaskType Conditional.
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize ConditionalTask.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         super().__init__(command_source, task)
 
     def inactive_ordered_children(self) -> list:
@@ -479,32 +665,74 @@ class CompoundTask(CommandTask):
     instance of TaskType Compound.
     """
 
-    def __init__(self, command_source, task) -> None:
+    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+        """Initialize CompoundTask.
+
+        Parameters
+        ----------
+        command_source : WorkflowWrapper
+            The set of workflow commands.
+        task : str
+            The name of this task.
+        """
         super().__init__(command_source, task)
 
-    def add_child(self, state=None):
+    def add_child(self, state: Optional[dict] = None) -> None:
+        """Add a child to this CompoundTask.
+
+        Parameters
+        ----------
+        state : Optional[dict]
+            Optional state.
+        """
         state = state or {}
         state.update({"AddChild": "yes"})
         self._task.Arguments.set_state(state)
 
     def add_child_and_update(self, state=None):
+        """Add a child to this CompoundTask and update.
+
+        Parameters
+        ----------
+        state : Optional[dict]
+            Optional state.
+        """
         self.add_child(state)
         self._task.AddChildAndUpdate()
         return self.last_child()
 
-    def last_child(self):
+    def last_child(self) -> BaseTask:
+        """Get the last child of this CompoundTask.
+
+        Returns
+        ----------
+        BaseTask
+            the last child of this CompoundTask
+        """
         children = self.ordered_children()
         if children:
             return children[-1]
 
-    def compound_child(self, name):
+    def compound_child(self, name: str):
+        """Get the compound child task of this CompoundTask by name.
+
+        Parameters
+        ----------
+        name : str
+            name
+
+        Returns
+        ----------
+        BaseTask
+            the named child of this CompoundTask
+        """
         try:
             return next(filter(lambda t: t.name() == name, self.ordered_children()))
         except StopIteration:
             pass
 
 
-def makeTask(command_source, name: str) -> BaseTask:
+def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
     task_type = task.TaskType()
     kinds = {
@@ -538,7 +766,16 @@ class WorkflowWrapper:
     __call__()
     """
 
-    def __init__(self, workflow, command_source):
+    def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
+        """Initialize WorkflowWrapper.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The workflow object.
+        command_source : PyMenuGeneric
+            The application root for commanding.
+        """
         self._workflow = workflow
         self._command_source = command_source
         self._python_task_names = []
@@ -564,7 +801,7 @@ class WorkflowWrapper:
         task : BaseTask
             wrapped task object.
         """
-        return makeTask(self, name)
+        return _makeTask(self, name)
 
     @property
     def TaskObject(self) -> TaskContainer:
@@ -601,7 +838,7 @@ class WorkflowWrapper:
                         return mappings[task_id]
                     try:
                         return self._task_by_id_impl(task_id, workflow_state)
-                    except BaseException:
+                    except Exception:
                         pass
 
                 return _task_by_id
@@ -616,7 +853,14 @@ class WorkflowWrapper:
                 self._task_list = task_list
         return self._ordered_children
 
-    def child_task_python_names(self):
+    def child_task_python_names(self) -> List[str]:
+        """Get the Pythonic names of the child tasks.
+
+        Returns
+        -------
+        List[str]
+            Pythonic names of the child tasks.
+        """
         return self._python_task_names
 
     def inactive_ordered_children(self) -> list:
@@ -700,7 +944,7 @@ class WorkflowWrapper:
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _initialize_methods(self, dynamic_interface: bool):
-        init_task_accessors(self)
+        _init_task_accessors(self)
         if dynamic_interface:
             self._main_thread_ident = threading.get_ident()
             logger.debug(f"setting main thread to {self._main_thread_ident}")
@@ -710,15 +954,15 @@ class WorkflowWrapper:
                     logger.debug("Already _refreshing, ...")
                     sleep(0.1)
                 self._refreshing = True
-                logger.debug("Call refresh_task_accessors")
-                refresh_task_accessors(self)
+                logger.debug("Call _refresh_task_accessors")
+                _refresh_task_accessors(self)
                 self._refresh_count += 1
                 self._refreshing = False
 
             self.add_on_affected(refresh_after_sleep)
 
 
-class _MakeReadOnly:
+class ReadOnlyObject:
     """Removes 'set_state()' attribute to implement read-only behaviour."""
 
     _unwanted_attr = ["set_state", "setState"]
@@ -730,7 +974,7 @@ class _MakeReadOnly:
         return True
 
     def __getattr__(self, attr):
-        if attr in _MakeReadOnly._unwanted_attr:
+        if attr in ReadOnlyObject._unwanted_attr:
             raise AttributeError("Command Arguments are read-only.")
         return getattr(self._cmd, attr)
 
@@ -738,7 +982,7 @@ class _MakeReadOnly:
         returned_list = sorted(
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
         )
-        for attr in _MakeReadOnly._unwanted_attr:
+        for attr in ReadOnlyObject._unwanted_attr:
             if attr in returned_list:
                 returned_list.remove(attr)
         return returned_list

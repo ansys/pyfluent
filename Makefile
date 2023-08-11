@@ -19,83 +19,77 @@ test-import:
 
 unittest: unittest-dev-232
 
-unittest-custom:
-	@echo "Running custom unittest"
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v --no-cov --capture=no -k test_transcript  # Update custom testlist
-
 unittest-dev-222:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=22.2 -m "not nightly"
+	@python -m pytest --fluent-version=22.2
 
 unittest-dev-231:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=23.1 -m "not nightly"
+	@python -m pytest --fluent-version=23.1
 
 unittest-dev-232:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=23.2 -m "not nightly"
+	@python -m pytest --fluent-version=23.2
 
 unittest-dev-241:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=24.1 -m "not nightly"
+	@python -m pytest --fluent-version=24.1
 
 unittest-all-222:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=22.2
+	@python -m pytest --nightly --fluent-version=22.2
 
 unittest-all-222-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=22.2 -m "not codegen_required"
+	@python -m pytest --nightly --fluent-version=22.2 -m "not codegen_required"
 
 unittest-all-231:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=23.1
+	@python -m pytest --nightly --fluent-version=23.1
 
 unittest-all-231-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=23.1 -m "not codegen_required"
+	@python -m pytest --nightly --fluent-version=23.1 -m "not codegen_required"
 
 unittest-all-232:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=23.2
+	@python -m pytest --nightly --fluent-version=23.2
 
 unittest-all-232-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=23.2 -m "not codegen_required"
+	@python -m pytest --nightly --fluent-version=23.2 -m "not codegen_required"
 
 unittest-all-241:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=24.1
+	@python -m pytest --nightly --fluent-version=24.1
 
 unittest-all-241-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=24.1 -m "not codegen_required"
+	@python -m pytest --nightly --fluent-version=24.1 -m "not codegen_required"
 
 api-codegen:
 	@echo "Running API codegen"

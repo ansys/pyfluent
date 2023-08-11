@@ -4,6 +4,7 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core.examples import download_file
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
@@ -36,6 +37,8 @@ def test_results_graphics_mesh_settings(new_solver_session) -> None:
     assert "mesh-a" not in session.solver.results.graphics.mesh.get_object_names()
 
 
+@pytest.mark.skip("Fluent bug")
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
@@ -84,6 +87,8 @@ def test_wildcard(new_solver_session):
     }
 
 
+@pytest.mark.skip("Fluent bug")
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
@@ -96,21 +101,20 @@ def test_wildcard_fnmatch(new_solver_session):
     solver.results.graphics.mesh.create("mesh-a")
     solver.results.graphics.mesh.create("mesh-bc")
 
-    assert (
-        list(solver.results.graphics.mesh["mesh-*"]().keys()).sort()
-        == ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"].sort()
+    assert sorted(solver.results.graphics.mesh["mesh-*"]()) == sorted(
+        ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"]
     )
 
     assert list(solver.results.graphics.mesh["mesh-?c"]().keys()) == ["mesh-bc"]
 
     assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
 
-    assert (
-        list(solver.results.graphics.mesh["mesh-[!2-5]"]().keys()).sort()
-        == ["mesh-1", "mesh-a"].sort()
+    assert sorted(solver.results.graphics.mesh["mesh-[!2-5]"]()) == sorted(
+        ["mesh-1", "mesh-a"]
     )
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session

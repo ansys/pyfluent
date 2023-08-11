@@ -2,7 +2,7 @@ import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_creatable(load_static_mixer_case) -> None:
     has_not = (
         load_static_mixer_case.setup.boundary_conditions.velocity_inlet,

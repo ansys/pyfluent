@@ -296,6 +296,7 @@ def _test_moment(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case

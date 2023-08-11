@@ -13,7 +13,11 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
@@ -62,10 +66,15 @@ class DatamodelService(StreamingService):
     Using the methods from the ``PyMenu`` class is recommended.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of DatamodelService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
@@ -1143,7 +1152,7 @@ class PyCommandArguments(PyStateContainer):
         request.commandid = self.path[-1][1]
         try:
             self.service.delete_command_arguments(request)
-        except BaseException as exc:
+        except Exception as exc:
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
     def __getattr__(self, attr):
