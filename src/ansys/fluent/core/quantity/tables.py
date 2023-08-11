@@ -2,6 +2,7 @@ import os
 
 import yaml
 
+from ansys.fluent.core.quantity._constants import _QuantityType
 from ansys.fluent.core.quantity.quantity import Quantity, QuantityError  # noqa: F401
 from ansys.fluent.core.quantity.units import parse_temperature_units
 
@@ -286,13 +287,13 @@ class UnitsTable(object):
         """
 
         if units == "":
-            return "No Type"
+            return _QuantityType.no_type
 
         if units in self.fundamental_units:
             return self.fundamental_units[units]["type"]
 
         if units in self.derived_units:
-            return "Derived"
+            return _QuantityType.derived
 
         # HACK
         temperature_units_to_search = ("K", "C", "F", "R")
@@ -303,7 +304,7 @@ class UnitsTable(object):
                 units_to_search=temperature_units_to_search,
             )
             if any(is_diff for (_, is_diff) in terms):
-                return "Temperature Difference"
-            return "Temperature"
+                return _QuantityType.temperature_difference
+            return _QuantityType.temperature
 
-        return "Composite"
+        return _QuantityType.composite
