@@ -10,7 +10,7 @@ class DatamodelEvents(StreamingService):
     """Encapsulates a datamodel events streaming service."""
 
     def __init__(self, service):
-        """Instantiate DatamodelEvents."""
+        """Initialize DatamodelEvents."""
         super().__init__(
             stream_begin_method="BeginEventStreaming",
             target=DatamodelEvents._process_streaming,

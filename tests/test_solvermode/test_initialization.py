@@ -5,7 +5,7 @@ from util.fixture_fluent import download_input_file
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/wigley_hull", "wigley.msh")
@@ -61,7 +61,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(

@@ -9,7 +9,11 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
@@ -29,10 +33,15 @@ validate_inputs = True
 class FieldDataService(StreamingService):
     """FieldData service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of FieldDataService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         super().__init__(
             stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
@@ -88,9 +97,14 @@ class FieldInfo:
         Get surfaces information (surface name, ID, and type).
     """
 
-    def __init__(self, service: FieldDataService):
+    def __init__(
+        self,
+        service: FieldDataService,
+        is_data_valid: Optional[Callable[[], bool]],
+    ):
         """__init__ method of FieldInfo class."""
         self._service = service
+        self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
@@ -176,6 +190,20 @@ class FieldInfo:
         }
         return info
 
+    def validate_scalar_fields(self, field_name: str):
+        _AllowedScalarFieldNames(
+            self._is_data_valid, info=self.get_scalar_fields_info()
+        ).valid_name(field_name)
+
+    def validate_vector_fields(self, field_name: str):
+        _AllowedVectorFieldNames(
+            self._is_data_valid, info=self.get_vector_fields_info()
+        ).valid_name(field_name)
+
+    def validate_surfaces(self, surfaces: List[str]):
+        for surface in surfaces:
+            _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
+
 
 def unavailable_field_error_message(context: str, field_name: str) -> str:
     """Error message for unavailable fields."""
@@ -255,8 +283,11 @@ class SurfaceDataType(IntEnum):
 
 
 class _AllowedNames:
-    def __init__(self, field_info: FieldInfo):
+    def __init__(
+        self, field_info: Optional[FieldInfo] = None, info: Optional[Dict] = None
+    ):
         self._field_info = field_info
+        self._info = info
 
     def is_valid(self, name, respect_data_valid=True):
         """Checks validity."""
@@ -264,8 +295,13 @@ class _AllowedNames:
 
 
 class _AllowedFieldNames(_AllowedNames):
-    def __init__(self, field_info: FieldInfo, is_data_valid: Callable[[], bool]):
-        super().__init__(field_info=field_info)
+    def __init__(
+        self,
+        is_data_valid: Callable[[], bool],
+        field_info: Optional[FieldInfo] = None,
+        info: Optional[Dict] = None,
+    ):
+        super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
 
     def valid_name(self, field_name):
@@ -284,7 +320,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._field_info.get_surfaces_info()
+        return self._info if self._info else self._field_info.get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names."""
@@ -312,7 +348,9 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_unavailable_error = ScalarFieldUnavailable
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        field_dict = self._field_info.get_scalar_fields_info()
+        field_dict = (
+            self._info if self._info else self._field_info.get_scalar_fields_info()
+        )
         return (
             field_dict
             if (not respect_data_valid or self._is_data_valid())
@@ -330,7 +368,9 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return (
-            self._field_info.get_vector_fields_info()
+            self._info
+            if self._info
+            else self._field_info.get_vector_fields_info()
             if (not respect_data_valid or self._is_data_valid())
             else []
         )
@@ -1075,11 +1115,11 @@ class FieldData:
         self._allowed_surface_ids = _AllowedSurfaceIDs(field_info)
 
         self._allowed_scalar_field_names = _AllowedScalarFieldNames(
-            field_info, is_data_valid
+            is_data_valid, field_info
         )
 
         self._allowed_vector_field_names = _AllowedVectorFieldNames(
-            field_info, is_data_valid
+            is_data_valid, field_info
         )
 
         surface_args = dict(

@@ -8,6 +8,7 @@ from ansys.fluent.core.services.field_data import (
     ScalarFieldUnavailable,
     SurfaceDataType,
     SurfaceNameError,
+    VectorFieldNameError,
 )
 
 HOT_INLET_TEMPERATURE = 313.15
@@ -366,3 +367,34 @@ def test_field_data_errors(new_solver_session) -> None:
     with pytest.raises(ScalarFieldNameError) as fne:
         solver.field_data.get_scalar_field_data(field_name="xdensity", surface_ids=[0])
     assert fne.value.field_name == "xdensity"
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_field_info_validators(new_solver_session) -> None:
+    solver = new_solver_session
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_filename)
+    solver.solution.initialization.hybrid_initialize()
+
+    vector_field_1 = solver.field_info.validate_vector_fields("velocity")
+    assert vector_field_1 is None
+
+    with pytest.raises(VectorFieldNameError) as vector_field_error:
+        solver.field_info.validate_vector_fields("relative-vel")
+    assert vector_field_error.value.field_name == "relative-vel"
+
+    scalar_field_1 = solver.field_info.validate_scalar_fields("z-velocity")
+    assert scalar_field_1 is None
+
+    with pytest.raises(ScalarFieldNameError) as scalar_field_error:
+        solver.field_info.validate_scalar_fields("z-vel")
+    assert scalar_field_error.value.field_name == "z-vel"
+
+    surface = solver.field_info.validate_surfaces(["cold-inlet"])
+    assert surface is None
+
+    with pytest.raises(SurfaceNameError) as surface_error:
+        solver.field_info.validate_surfaces(["out"])
+    assert surface_error.value.surface_name == "out"
