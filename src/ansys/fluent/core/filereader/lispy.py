@@ -64,7 +64,7 @@ def parse(in_port):
 eof_object = Symbol("#<eof-object>")  # Note: uninterned; can't be read
 
 
-def count_unescaped_qoutes(line):
+def count_unescaped_quotes(line):
     count = 0
     escaped = False
     for c in line:
@@ -97,11 +97,11 @@ class InputPort:
                 self.line = self.file.readline()
                 # Capture multiline string and replace newline characters with
                 # "<newline>" before passing to tokenizer
-                if count_unescaped_qoutes(self.line) % 2:
+                if count_unescaped_quotes(self.line) % 2:
                     while True:
                         next_line = self.file.readline()
                         self.line = self.line.rstrip() + "<newline>" + next_line
-                        if count_unescaped_qoutes(next_line) > 0:
+                        if count_unescaped_quotes(next_line) > 0:
                             break
             if self.line == "":
                 return eof_object
