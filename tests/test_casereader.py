@@ -249,3 +249,13 @@ def test_case_reader_input_parameter():
 
 def test_lispy_for_multiline_string():
     assert lispy.parse('(define x "abc\ndef")') == ["define", "x", '"abc\ndef"']
+
+
+def test_lispy_for_quotes():
+    lispy.parse(
+        '(define x "\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")")'
+    ) == [
+        "define",
+        "x",
+        '"\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")"',
+    ]
