@@ -139,7 +139,7 @@ def search(
         Whether to match case, by default False
     version : str, optional
         Fluent version to search in, by default None in which case
-        it will search in the latest released version.
+        it will search in the latest version for which codegen was run.
     root : Any, optional
         The root object within which the search will be performed,
         can be a session object or any API object within a session,
