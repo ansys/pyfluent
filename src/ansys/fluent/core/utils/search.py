@@ -10,10 +10,6 @@ def get_api_tree_filepath(version: str):
         os.path.join(
             this_dirname,
             "..",
-            "..",
-            "..",
-            "..",
-            "..",
             "data",
             f"api_tree_{version}.pickle",
         )

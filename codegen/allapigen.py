@@ -1,14 +1,11 @@
 import argparse
 import os
 from pathlib import Path
-
-# import pickle
-from pprint import pprint
+import pickle
 
 import datamodelgen
 import print_fluent_version
-
-# import settingsgen
+import settingsgen
 import tuigen
 
 from ansys.fluent.core.launcher.launcher import FluentVersion, get_ansys_version
@@ -51,9 +48,8 @@ if __name__ == "__main__":
     print_fluent_version.generate(version)
     _update_first_level(api_tree, tuigen.generate(version))
     _update_first_level(api_tree, datamodelgen.generate(version))
-    # settingsgen.generate()
+    _update_first_level(api_tree, settingsgen.generate(version))
     api_tree_file = get_api_tree_filepath(version)
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
-    with open(api_tree_file, "w") as f:
-        # pickle.dump(api_tree, f)
-        pprint(api_tree, f)
+    with open(api_tree_file, "wb") as f:
+        pickle.dump(api_tree, f)
