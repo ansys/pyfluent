@@ -62,7 +62,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
 
 
 class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
-    """Interceptor class to trace gRPC calls."""
+    """Interceptor class to check Fluent server error state before gRPC calls are made."""
 
     def __init__(self, fluent_error_state):
         """__init__ method of ErrorStateInterceptor class."""
