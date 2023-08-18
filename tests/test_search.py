@@ -174,13 +174,11 @@ def test_search_settings_from_root(capsys, load_static_mixer_case):
     assert (
         '<root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)' in lines
     )
-    pyfluent.search(
-        "conduction", root=solver.setup.boundary_conditions.wall["wall-inlet"]
-    )
+    pyfluent.search("conduction", root=solver.setup.boundary_conditions.wall["wall"])
     lines = capsys.readouterr().out.splitlines()
     assert '<root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
     pyfluent.search(
-        "conduction", root=solver.setup.boundary_conditions.wall["wall-inlet"].phase
+        "conduction", root=solver.setup.boundary_conditions.wall["wall"].phase
     )
     lines = capsys.readouterr().out.splitlines()
     assert '<root>["<name>"].shell_conduction["<name>"] (Object)' in lines
