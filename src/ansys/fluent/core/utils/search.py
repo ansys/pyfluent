@@ -123,9 +123,9 @@ def search(
     word : str
         The word to search for.
     match_whole_word : bool, optional
-        _description_, by default False
+        Whether to match whole word, by default False
     match_case : bool, optional
-        _description_, by default False
+        Whether to match case, by default False
     version : str, optional
         Fluent version to search in, by default None in which case
         it will search in the latest released version.
