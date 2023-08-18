@@ -7,7 +7,7 @@ _THIS_DIR = os.path.dirname(__file__)
 
 
 def print_fluent_version(version):
-    session = pyfluent.launch_fluent(mode="solver")
+    session = pyfluent.launch_fluent()
     eval = session.scheme_eval.scheme_eval
     version_file = os.path.join(
         _THIS_DIR,

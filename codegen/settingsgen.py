@@ -442,7 +442,7 @@ def _populate_init(parent_dir, sinfo):
 def generate():
     from ansys.fluent.core.launcher.launcher import launch_fluent
 
-    session = launch_fluent(mode="solver")
+    session = launch_fluent()
     version = get_version_for_filepath(session=session)
     dirname = os.path.dirname(__file__)
     parent_dir = os.path.normpath(
