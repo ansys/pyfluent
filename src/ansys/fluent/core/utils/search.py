@@ -29,6 +29,15 @@ def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
         return word in source
 
 
+def _remove_suffix(input: str, suffix):
+    if hasattr(input, "removesuffix"):
+        return input.removesuffix(suffix)
+    else:
+        if suffix and input.endswith(suffix):
+            return input[: -len(suffix)]
+        return input
+
+
 _meshing_rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
 
 
@@ -58,14 +67,14 @@ def _get_version_path_prefix_from_obj(obj: Any):
     elif isinstance(obj, WorkflowWrapper):
         path = ["<meshing_session>", obj.rules]
         module = obj._workflow.__class__.__module__
-        module = module.removesuffix(".workflow")
+        module = _remove_suffix(module, ".workflow")
         version = module.rsplit("_", 1)[-1]
         prefix = "<root>"
     elif isinstance(obj, BaseTask):
         path = ["<meshing_session>", obj.rules]
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         module = obj._workflow.__class__.__module__
-        module = module.removesuffix(".workflow")
+        module = _remove_suffix(module, ".workflow")
         version = module.rsplit("_", 1)[-1]
         prefix = "<root>"
     elif isinstance(obj, TaskContainer):
@@ -73,7 +82,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         path[-1] = f"{path[-1]}:<name>"
         module = obj._container._workflow.__class__.__module__
-        module = module.removesuffix(".workflow")
+        module = _remove_suffix(module, ".workflow")
         version = module.rsplit("_", 1)[-1]
         prefix = '<root>["<name>"]'
     elif isinstance(obj, PyMenu):
@@ -82,7 +91,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.append(rules)
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         module = obj.__class__.__module__
-        module = module.removesuffix(f".{rules}")
+        module = _remove_suffix(module, f".{rules}")
         version = module.rsplit("_", 1)[-1]
         prefix = "<root>"
     elif isinstance(obj, PyNamedObjectContainer):
@@ -92,7 +101,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         path[-1] = f"{path[-1]}:<name>"
         module = obj.__class__.__module__
-        module = module.removesuffix(f".{rules}")
+        module = _remove_suffix(module, f".{rules}")
         version = module.rsplit("_", 1)[-1]
         prefix = '<root>["<name>"]'
     elif isinstance(obj, flobject.Group):
@@ -182,7 +191,7 @@ def search(
                 next_path = k
             else:
                 if k.endswith(":<name>"):
-                    k = k.removesuffix(":<name>")
+                    k = _remove_suffix(k, ":<name>")
                     next_path = f'{path}.{k}["<name>"]'
                 else:
                     next_path = f"{path}.{k}"
