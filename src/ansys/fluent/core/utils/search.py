@@ -14,7 +14,9 @@ from ansys.fluent.core.workflow import BaseTask, TaskContainer, WorkflowWrapper
 
 
 def get_api_tree_filepath(version: str) -> Path:
-    return Path(__file__) / ".." / ".." / "data" / f"api_tree_{version}.pickle"
+    return (
+        Path(__file__) / ".." / ".." / "data" / f"api_tree_{version}.pickle"
+    ).resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
