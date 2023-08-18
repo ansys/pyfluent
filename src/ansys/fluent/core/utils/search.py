@@ -164,7 +164,6 @@ def search(
                     path.pop(0)
             else:
                 return
-    print(root_path)
 
     def inner(tree, path, root_path):
         if root_path:
