@@ -35,36 +35,16 @@ class DataFile:
 
     Methods
     -------
-    input_parameters
-        Get a list of input parameter objects
-    output_parameters
-        Get a list of output parameter objects
-    num_dimensions
-        Get the dimensionality of the case (2 or 3)
-    precision
-        Get the precision (1 or 2 for 1D of 2D)
-    iter_count
-        Get the number of iterations
-    rp_vars
-        Get dictionary of all RP vars
-    rp_var
-        Get specific RP var by name, either by providing
-        the Scheme name:
-            `reader.rp_var("rad/enable-netm?")`
-        or a pythonic version:
-            `reader.rp_var.rad.enable_netm__q()`
-    has_rp_var
-        Whether case has particular RP var
-    config_vars
-        Get dictionary of all RP vars
-    config_var
-        Get specific config var by name, either by providing
-        the Scheme name:
-            `reader.config_var("rp-3d?")`
-        or a pythonic version:
-            `reader.config_var.rp_3d__q()`
-    has_config_var
-        Whether case has particular config var
+    case_file
+        Get the name of case file.
+    get_face_variables
+        Get the variables list available at face.
+    get_phases
+        Get the list of phases.
+    get_cell_variables
+        Get the variables list available at cell.
+    get_face_data
+        Get the field data for face.    
     """
 
     def __init__(self, data_filepath: str = None, project_filepath: str = None, case_file_handle = None):
@@ -114,6 +94,7 @@ class DataFile:
         except BaseException as e:
             raise RuntimeError(f"Could not read case file {data_filepath}") from e
 
+    @property
     def case_file(self) -> str:
         return self._settings["Case File"][0].decode()       
 
@@ -133,6 +114,5 @@ class DataFile:
     def get_face_data(self, phase_name, field_name, surface_id) -> int:
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
         field_data = self._field_data[phase_name]["faces"][field_name] 
-        keys = list(field_data.keys())   
-        print('length is', len(field_data["1"]))        
+        keys = list(field_data.keys())                
         return field_data["1"][min_id: max_id +1]          

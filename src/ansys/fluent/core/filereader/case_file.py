@@ -138,6 +138,21 @@ class _CaseVariable:
             return _CaseVariable(self._variables, name + "/")
 
 class Mesh:
+    """Class to provide mesh data.
+
+    Methods
+    -------
+    get_surface_ids
+        Get a list of surface ids.
+    get_surface_names
+        Get a list of surface names.
+    get_surface_locs
+        Get the min and max location index of surface.
+    get_connectivity
+        Get the surface connectivity.
+    get_vertices
+        Get list of vertices of the surface.
+    """
 
     def __init__(self, file_handle):
         self._file_handle = file_handle
