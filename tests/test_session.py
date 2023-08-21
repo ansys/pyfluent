@@ -5,16 +5,12 @@ import tempfile
 import time
 
 import grpc
+from grpc_health.v1 import health_pb2, health_pb2_grpc
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.api.fluent.v0 import (
-    health_pb2,
-    health_pb2_grpc,
-    scheme_eval_pb2,
-    scheme_eval_pb2_grpc,
-)
+from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples
