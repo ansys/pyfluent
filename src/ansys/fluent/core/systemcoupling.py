@@ -5,6 +5,7 @@ import os
 from typing import List
 import xml.etree.ElementTree as XmlET
 
+
 @dataclass
 class Variable:
     name: str
@@ -14,6 +15,7 @@ class Variable:
     location: str
     quantity_type: str
 
+
 @dataclass
 class Region:
     name: str
@@ -21,6 +23,7 @@ class Region:
     topology: str
     input_variables: List[str]
     output_variables: List[str]
+
 
 class SystemCoupling:
     """Wrap a System Coupling object, adding methods to discover more about the
@@ -62,11 +65,12 @@ class SystemCoupling:
         self._solver.setup.models.system_coupling.init_and_solve()
 
     def __get_syc_setup(self) -> dict:
-
         def get_scp_string() -> str:
-            """ Get SCP file contents in the form of the XML string. """
+            """Get SCP file contents in the form of the XML string."""
             scp_file_name = "fluent.scp"
-            self._solver.setup.models.system_coupling.write_scp_file(file_name=scp_file_name)
+            self._solver.setup.models.system_coupling.write_scp_file(
+                file_name=scp_file_name
+            )
             assert os.path.exists(
                 scp_file_name
             ), "ERROR: could not create System Coupling .scp file"
@@ -100,10 +104,16 @@ class SystemCoupling:
         def get_is_extensive(variable) -> bool:
             is_extensive_elem = variable.find("IsExtensive")
             if is_extensive_elem is not None:
-                is_ext_map = {"True" : True, "False" : False}
+                is_ext_map = {"True": True, "False": False}
                 return is_ext_map[is_extensive_elem.text]
 
-            ext_vars = {"force", "lortentz-force", "heatrate", "heatflow", "mass-flow-rate"}
+            ext_vars = {
+                "force",
+                "lortentz-force",
+                "heatrate",
+                "heatflow",
+                "mass-flow-rate",
+            }
             if get_name(variable) in ext_vars:
                 return True
             else:
@@ -139,22 +149,22 @@ class SystemCoupling:
             setup_info["variables"].append(
                 Variable(
                     name=get_name(variable),
-                    display_name = get_display_name(variable),
-                    tensor_type = get_tensor_type(variable),
-                    is_extensive= get_is_extensive(variable),
-                    location= get_location(variable),
-                    quantity_type = get_quantity_type(variable),
+                    display_name=get_display_name(variable),
+                    tensor_type=get_tensor_type(variable),
+                    is_extensive=get_is_extensive(variable),
+                    location=get_location(variable),
+                    quantity_type=get_quantity_type(variable),
                 )
             )
 
         regions = cosim_control.find("Regions").findall("Region")
         setup_info["regions"] = [
             Region(
-                name = get_name(region),
-                display_name = get_display_name(region),
-                topology = region.find("Topology").text,
-                input_variables = [var.text for var in region.find("InputVariables")],
-                output_variables = [var.text for var in region.find("OutputVariables")],
+                name=get_name(region),
+                display_name=get_display_name(region),
+                topology=region.find("Topology").text,
+                input_variables=[var.text for var in region.find("InputVariables")],
+                output_variables=[var.text for var in region.find("OutputVariables")],
             )
             for region in regions
         ]
