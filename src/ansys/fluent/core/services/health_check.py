@@ -5,9 +5,9 @@ import sys
 from typing import List, Tuple
 
 import grpc
+from grpc_health.v1 import health_pb2 as HealthCheckModule
+from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
-from ansys.api.fluent.v0 import health_pb2 as HealthCheckModule
-from ansys.api.fluent.v0 import health_pb2_grpc as HealthCheckGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
