@@ -2,9 +2,14 @@ import os
 
 import yaml
 
+from ansys.fluent.core.quantity._constants import _QuantityType
+from ansys.fluent.core.quantity.quantity import Quantity, QuantityError  # noqa: F401
+from ansys.fluent.core.quantity.units import parse_temperature_units
+
 
 class UnitsTable(object):
-    """Initializes a UnitsTable object with all table values and unit string manipulation methods.
+    """Initializes a UnitsTable object with all table values and unit string
+    manipulation methods.
 
     Methods
     -------
@@ -27,7 +32,7 @@ class UnitsTable(object):
     def __init__(self):
         file_path = os.path.relpath(__file__)
         file_dir = os.path.dirname(file_path)
-        qc_path = os.path.join(file_dir, "quantity_config.yaml")
+        qc_path = os.path.join(file_dir, "cfg.yaml")
 
         with open(qc_path, "r") as qc_yaml:
             qc_data = yaml.safe_load(qc_yaml)
@@ -53,7 +58,7 @@ class UnitsTable(object):
             Boolean of multiplier within unit_term.
         """
         # Check if the unit term is not an existing fundamental or derived unit.
-        return not (
+        return unit_term and not (
             (unit_term in self._fundamental_units) or (unit_term in self._derived_units)
         )
 
@@ -85,7 +90,9 @@ class UnitsTable(object):
 
     @property
     def fundamental_units(self):
-        """Fundamental units and properties representing Mass, Length, Time, Current, Chemical Amount, Light, Solid Angle, Angle, Temperature and Temperature Difference."""
+        """Fundamental units and properties representing Mass, Length, Time, Current,
+        Chemical Amount, Light, Solid Angle, Angle, Temperature and Temperature
+        Difference."""
         return self._fundamental_units
 
     @property
@@ -132,7 +139,8 @@ class UnitsTable(object):
         base = unit_term
 
         # strip multiplier and base from unit term
-        if self._has_multiplier(unit_term):
+        has_multiplier = self._has_multiplier(unit_term)
+        if has_multiplier:
             for mult in self._multipliers:
                 if unit_term.startswith(mult):
                     if not self._has_multiplier(unit_term[len(mult) :]):
@@ -140,6 +148,11 @@ class UnitsTable(object):
                         base = unit_term[len(mult) :]
                         break
 
+        # if we thought it had a multiplier, that's just because the string wasn't
+        # a known unit on its own. So if we can't actually find its multiplier then
+        # this string is an invalid unit string
+        if has_multiplier and not multiplier:
+            raise QuantityError.UNKNOWN_UNITS(unit_term)
         return multiplier, base, power
 
     def si_data(
@@ -148,7 +161,6 @@ class UnitsTable(object):
         power: float = None,
         si_units: str = None,
         si_multiplier: float = None,
-        si_offset: float = None,
     ) -> tuple:
         """Compute the SI unit string, SI multiplier, and SI offset.
 
@@ -197,9 +209,9 @@ class UnitsTable(object):
             # Retrieve data associated with fundamental unit
             if unit_term in self._fundamental_units:
                 if unit_term_power == 1.0:
-                    si_units += f"{self._si_map(unit_term)} "
+                    si_units += f" {self._si_map(unit_term)}"
                 elif unit_term_power != 0.0:
-                    si_units += f"{self._si_map(unit_term)}^{unit_term_power} "
+                    si_units += f" {self._si_map(unit_term)}^{unit_term_power}"
 
                 si_multiplier *= (
                     self._fundamental_units[unit_term]["factor"] ** unit_term_power
@@ -212,12 +224,11 @@ class UnitsTable(object):
                 )
 
                 # Recursively parse composition unit string
-                si_units, si_multiplier, si_offset = self.si_data(
+                si_units, si_multiplier, _ = self.si_data(
                     units=self._derived_units[unit_term]["composition"],
                     power=unit_term_power,
                     si_units=si_units,
                     si_multiplier=si_multiplier,
-                    si_offset=si_offset,
                 )
 
         return self.condense(si_units), si_multiplier, si_offset
@@ -236,9 +247,10 @@ class UnitsTable(object):
             Simplified unit string.
         """
         terms_and_powers = {}
+        units = units.strip()
 
         # Split unit string into terms and parse data associated with individual terms
-        for term in units[:-1].split(" "):
+        for term in units.split(" "):
             _, unit_term, unit_term_power = self.filter_unit_term(term)
 
             if unit_term in terms_and_powers:
@@ -250,12 +262,15 @@ class UnitsTable(object):
 
         # Concatenate unit string
         for term, power in terms_and_powers.items():
+            if not (power):
+                continue
             if power == 1.0:
                 units += f"{term} "
             else:
+                power = int(power) if power % 1 == 0 else power
                 units += f"{term}^{power} "
 
-        return units
+        return units.rstrip()
 
     def get_type(self, units: str) -> str:
         """Returns the type associated with a unit string.
@@ -272,15 +287,24 @@ class UnitsTable(object):
         """
 
         if units == "":
-            return "No Type"
+            return _QuantityType.no_type
 
         if units in self.fundamental_units:
             return self.fundamental_units[units]["type"]
 
         if units in self.derived_units:
-            return "Derived"
+            return _QuantityType.derived
 
-        if any([temp in units for temp in ["K", "C", "F", "R"]]):
-            return "Temperature Difference"
+        # HACK
+        temperature_units_to_search = ("K", "C", "F", "R")
+        if any([temp in units for temp in temperature_units_to_search]):
+            terms = parse_temperature_units(
+                units,
+                ignore_exponent=False,
+                units_to_search=temperature_units_to_search,
+            )
+            if any(is_diff for (_, is_diff) in terms):
+                return _QuantityType.temperature_difference
+            return _QuantityType.temperature
 
-        return "Composite"
+        return _QuantityType.composite

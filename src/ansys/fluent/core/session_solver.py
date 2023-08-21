@@ -43,7 +43,6 @@ class Solver(BaseSession):
         self._build_from_fluent_connection(fluent_connection)
 
     def _build_from_fluent_connection(self, fluent_connection):
-        super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._tui_service = self.datamodel_service_tui
         self._se_service = self.datamodel_service_se
         self._settings_service = self.settings_service
@@ -56,7 +55,7 @@ class Solver(BaseSession):
         self.svar_service = self.fluent_connection.create_service(SVARService)
         self.svar_info = SVARInfo(self.svar_service)
         self._reduction_service = self.fluent_connection.create_service(
-            ReductionService
+            ReductionService, self.error_state
         )
         self.reduction = Reduction(self._reduction_service)
 

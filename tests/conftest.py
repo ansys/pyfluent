@@ -5,6 +5,11 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
+from ansys.fluent.core.launcher.launcher import FluentVersion
+
+_fluent_versions = list(FluentVersion)
+_fluent_release_version = _fluent_versions[1]
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -13,12 +18,29 @@ def pytest_addoption(parser):
         metavar="VERSION",
         help="only run tests supported by Fluent version VERSION.",
     )
+    parser.addoption(
+        "--nightly", action="store_true", default=False, help="run nightly tests"
+    )
 
 
 def pytest_runtest_setup(item):
-    version_specs = [
-        SpecifierSet(mark.args[0]) for mark in item.iter_markers(name="fluent_version")
-    ]
+    is_nightly = item.config.getoption("--nightly")
+    if not is_nightly and any(mark.name == "nightly" for mark in item.iter_markers()):
+        pytest.skip()
+
+    version_specs = []
+    for mark in item.iter_markers(name="fluent_version"):
+        spec = mark.args[0]
+        # if a test is marked as fluent_version("latest")
+        # run with dev and release Fluent versions in nightly
+        # run with release Fluent versions in PRs
+        if spec == "latest":
+            spec = (
+                f">={_fluent_release_version}"
+                if is_nightly
+                else f"=={_fluent_release_version}"
+            )
+        version_specs.append(SpecifierSet(spec))
     if version_specs:
         combined_spec = functools.reduce(operator.and_, version_specs)
         version = item.config.getoption("--fluent-version")

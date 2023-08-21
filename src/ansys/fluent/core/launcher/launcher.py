@@ -393,8 +393,8 @@ def _get_running_session_mode(
                 if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
                 else "meshing"
             )
-        except BaseException:
-            raise RuntimeError("Fluent session password mismatch")
+        except Exception as ex:
+            raise RuntimeError("Fluent session password mismatch") from ex
     return session_mode.value[1]
 
 
@@ -449,7 +449,7 @@ def launch_fluent(
     precision: str = None,
     processor_count: int = None,
     journal_filepath: str = None,
-    start_timeout: int = 100,
+    start_timeout: int = 60,
     additional_arguments: str = None,
     env: Dict[str, Any] = None,
     start_container: bool = None,
@@ -493,7 +493,7 @@ def launch_fluent(
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``100``.
+        server. The default is ``60``.
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
@@ -627,7 +627,8 @@ def launch_fluent(
             "supported when starting containers."
         )
 
-    argvals = locals()
+    argvals = locals().copy()
+    argvals.pop("fluent_launch_mode")
 
     if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
@@ -659,30 +660,54 @@ def launch_fluent(
 
         _raise_exception_g_gu_in_windows_os(additional_arguments)
 
+        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+            argvals["fluent_debug"] = True
+
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
 
+        sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
+        if env is None:
+            env = {}
+        if mode != FluentMode.SOLVER_ICING:
+            env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
+        kwargs = _get_subprocess_kwargs_for_fluent(env)
+        if cwd:
+            kwargs.update(cwd=cwd)
+        if topy:
+            launch_string += scm_to_py(topy)
+
+        if _is_windows():
+            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
+            launch_cmd = 'start "" ' + launch_string
+        else:
+            launch_cmd = launch_string
+
         try:
-            logger.debug(f"Launching Fluent with cmd: {launch_string}")
-            sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
-            if env is None:
-                env = {}
-            if mode != FluentMode.SOLVER_ICING:
-                env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
-            kwargs = _get_subprocess_kwargs_for_fluent(env)
-            if cwd:
-                kwargs.update(cwd=cwd)
-            if topy:
-                launch_string += scm_to_py(topy)
+            logger.debug(f"Launching Fluent with command: {launch_cmd}")
 
-            if _is_windows():
-                launch_string = 'start "" ' + launch_string
+            subprocess.Popen(launch_cmd, **kwargs)
 
-            subprocess.Popen(launch_string, **kwargs)
-
-            _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
+            try:
+                _await_fluent_launch(
+                    server_info_filepath, start_timeout, sifile_last_mtime
+                )
+            except RuntimeError as ex:
+                if _is_windows():
+                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
+                    launch_cmd = launch_string.replace('"', "", 2)
+                    kwargs.update(shell=False)
+                    logger.warning(
+                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
+                    )
+                    subprocess.Popen(launch_cmd, **kwargs)
+                    _await_fluent_launch(
+                        server_info_filepath, start_timeout, sifile_last_mtime
+                    )
+                else:
+                    raise ex
 
             session = new_session.create_from_server_info_file(
                 server_info_filepath=server_info_filepath,
@@ -717,7 +742,8 @@ def launch_fluent(
 
             return session
         except Exception as ex:
-            raise LaunchFluentError(launch_string) from ex
+            logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
+            raise LaunchFluentError(launch_cmd) from ex
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
@@ -756,7 +782,13 @@ def launch_fluent(
 
             print("\nDocker container run configuration:\n")
             print("config_dict = ")
-            pprint(config_dict)
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                pprint(config_dict)
+            else:
+                config_dict_h = config_dict.copy()
+                config_dict_h.pop("environment")
+                pprint(config_dict_h)
+                del config_dict_h
             return config_dict
 
         port, password = start_fluent_container(args, container_dict)

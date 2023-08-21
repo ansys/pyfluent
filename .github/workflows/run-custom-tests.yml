@@ -11,8 +11,11 @@ concurrency:
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  PYFLUENT_TIMEOUT_FORCE_EXIT: 5
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
+  PYFLUENT_LOGGING: 'DEBUG'
+  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_HIDE_LOG_SECRETS: 1
 
 jobs:
 
@@ -87,6 +90,10 @@ jobs:
           make install > /dev/null
 
       - name: Unit Testing
-        run: make unittest-custom
+        run: |
+            echo "Running custom unittest"
+            sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+            pip install -r requirements/requirements_tests.txt
+            python -m pytest -v --no-cov --capture=no -k test_fluent_fatal_error
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}

@@ -113,6 +113,7 @@ class BaseSession:
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
+        self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
@@ -125,22 +126,24 @@ class BaseSession:
             self.transcript.start()
 
         self.datamodel_service_tui = self.fluent_connection.create_service(
-            DatamodelService_TUI
+            DatamodelService_TUI, self.error_state
         )
 
         self.datamodel_service_se = self.fluent_connection.create_service(
-            DatamodelService_SE
+            DatamodelService_SE, self.error_state
         )
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
-        self._events_service = self.fluent_connection.create_service(EventsService)
+        self.events_service = self.fluent_connection.create_service(EventsService)
         self.events_manager = EventsManager(
-            self.fluent_connection._id, self._events_service
+            self.events_service, self.error_state, self.fluent_connection._id
         )
 
-        self._monitors_service = self.fluent_connection.create_service(MonitorsService)
+        self._monitors_service = self.fluent_connection.create_service(
+            MonitorsService, self.error_state
+        )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service
         )
@@ -155,18 +158,23 @@ class BaseSession:
         self.events_manager.start()
 
         self._field_data_service = self.fluent_connection.create_service(
-            FieldDataService
+            FieldDataService, self.error_state
         )
-        self.field_info = FieldInfo(self._field_data_service)
+        self.field_info = FieldInfo(
+            self._field_data_service, _IsDataValid(self.scheme_eval)
+        )
         self.field_data = FieldData(
-            self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
+            self._field_data_service,
+            self.field_info,
+            _IsDataValid(self.scheme_eval),
+            self.scheme_eval,
         )
         self.field_data_streaming = FieldDataStreaming(
             self.fluent_connection._id, self._field_data_service
         )
 
         self.settings_service = self.fluent_connection.create_service(
-            SettingsService, add_arg=self.scheme_eval
+            SettingsService, self.scheme_eval, self.error_state
         )
 
         self.health_check_service = fluent_connection.health_check_service

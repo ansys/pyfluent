@@ -14,8 +14,9 @@ class Attribute:
         "allowed_values",
         "help_str",
         "is_valid",
+        "is_active",
         "help_context",
-        "show_as_separate_object",
+        "show_border",
         "display_text",
         "layout",
         "previous",
@@ -140,46 +141,58 @@ def CommandArgs(command_object, argument_name):
 
 class PyLocalBaseMeta(type):
     @classmethod
-    def __create_get_parent_by_type(cls):
+    def __create_get_ancestors_by_type(cls):
         def wrapper(self, obj_type, obj=None):
             obj = self if obj is None else obj
             parent = None
             if getattr(obj, "_parent", None):
                 if isinstance(obj._parent, obj_type):
                     return obj._parent
-                parent = self._get_parent_by_type(obj_type, obj._parent)
+                parent = self._get_ancestors_by_type(obj_type, obj._parent)
             return parent
 
         return wrapper
 
     @classmethod
-    def __create_get_parent_by_name(cls):
+    def __create_get_ancestors_by_name(cls):
         def wrapper(self, obj_type, obj=None):
             obj = self if obj is None else obj
             parent = None
             if getattr(obj, "_parent", None):
                 if obj._parent.__class__.__name__ == obj_type:
                     return obj._parent
-                parent = self._get_parent_by_name(obj_type, obj._parent)
+                parent = self._get_ancestors_by_name(obj_type, obj._parent)
             return parent
 
         return wrapper
 
     @classmethod
-    def __create_get_top_most_parent(cls):
+    def __create_get_root(cls):
         def wrapper(self, obj=None):
             obj = self if obj is None else obj
             parent = obj
             if getattr(obj, "_parent", None):
-                parent = self._get_top_most_parent(obj._parent)
+                parent = self.get_root(obj._parent)
             return parent
 
         return wrapper
 
+    @classmethod
+    def __create_get_session(cls):
+        def wrapper(self, obj=None):
+            obj = self if obj is None else obj
+            parent = obj
+            if getattr(obj, "_parent", None):
+                parent = self.get_root(obj._parent)
+            return parent.session
+
+        return wrapper
+
     def __new__(cls, name, bases, attrs):
-        attrs["_get_parent_by_type"] = cls.__create_get_parent_by_type()
-        attrs["_get_parent_by_name"] = cls.__create_get_parent_by_name()
-        attrs["_get_top_most_parent"] = cls.__create_get_top_most_parent()
+        attrs["_get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
+        attrs["_get_ancestors_by_name"] = cls.__create_get_ancestors_by_name()
+        attrs["get_root"] = cls.__create_get_root()
+        attrs["get_session"] = cls.__create_get_session()
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
 
 
@@ -337,8 +350,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     def __create_getattr(cls):
         def wrapper(self, item):
             if item == "_object":
-                # import pdb; pdb.set_trace()
-                top_most_parent = self._get_top_most_parent(self)
+                top_most_parent = self.get_root(self)
 
                 if self.session_id is None:
                     self.session_id = top_most_parent.session.id

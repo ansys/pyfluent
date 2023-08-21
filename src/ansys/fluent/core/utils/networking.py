@@ -19,9 +19,10 @@ def get_free_port() -> int:
     int
         port number
     """
-    sock = socket.socket()
-    sock.bind(("", 0))
-    return sock.getsockname()[1]
+    with socket.socket() as s:
+        s.bind(("localhost", 0))
+        free_port = s.getsockname()[1]
+    return free_port
 
 
 class _HealthServicer(health_pb2_grpc.HealthServicer):
