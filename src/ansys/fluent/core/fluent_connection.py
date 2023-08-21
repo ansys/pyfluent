@@ -90,6 +90,22 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
 
 
 class ErrorState:
+    """Object to indicate the error state of the connected Fluent client.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> session = pyfluent.launch_fluent()
+    >>> session.fluent_connection.error_state.set("test", "test details")
+    >>> session.fluent_connection.error_state.name
+    'test'
+    >>> session.fluent_connection.error_state.details
+    'test details'
+    >>> session.fluent_connection.error_state.clear()
+    >>> session.fluent_connection.error_state.name
+    ''
+    """
+
     @property
     def name(self):
         return self._name
@@ -99,14 +115,25 @@ class ErrorState:
         return self._details
 
     def __init__(self, name: str = "", details: str = ""):
+        """Initializes the error state object.
+
+        Parameters
+        ----------
+            name : str
+                The name of the error state, by default an empty string, indicating no errors.
+            details : str
+                Additional details of the error, by default an empty string.
+        """
         self._name = name
         self._details = details
 
     def set(self, name: str, details: str):
+        """Method to set the error state name and details to new values."""
         self._name = name
         self._details = details
 
     def clear(self):
+        """Method to clear the current error state, emptying the error name and details properties."""
         self._name = ""
         self._details = ""
 
