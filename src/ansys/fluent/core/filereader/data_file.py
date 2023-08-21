@@ -15,20 +15,14 @@ Example
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 
 """
-import codecs
-import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import List
-import xml.etree.ElementTree as ET
 
 import h5py
-from lxml import etree
-
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+
 
 class DataFile:
     """Class to read a Fluent case file.
@@ -44,10 +38,15 @@ class DataFile:
     get_cell_variables
         Get the variables list available at cell.
     get_face_data
-        Get the field data for face.    
+        Get the field data for face.
     """
 
-    def __init__(self, data_filepath: str = None, project_filepath: str = None, case_file_handle = None):
+    def __init__(
+        self,
+        data_filepath: str = None,
+        project_filepath: str = None,
+        case_file_handle=None,
+    ):
         """__init__ method of CaseFile class."""
         self._case_file_handle = case_file_handle
         if data_filepath and project_filepath:
@@ -74,8 +73,8 @@ class DataFile:
                 results = file["results"]
                 self._settings = file["settings"]
                 self._field_data = results["1"]
-                #self._residuals = results["residuals"]
-                self._case_file =   self._settings["Case File"][0]               
+                # self._residuals = results["residuals"]
+                self._case_file = self._settings["Case File"][0]
             else:
                 error_message = (
                     "Could not read case file. "
@@ -91,28 +90,28 @@ class DataFile:
         except OSError as e:
             raise OSError(f"Error while reading case file {data_filepath}") from e
 
-        except BaseException as e:
+        except Exception as e:
             raise RuntimeError(f"Could not read case file {data_filepath}") from e
 
     @property
     def case_file(self) -> str:
-        return self._settings["Case File"][0].decode()       
+        return self._settings["Case File"][0].decode()
 
     def variables(self) -> int:
-        data_vars_str = self._settings["Data Variables"][0].decode()  
+        data_vars_str = self._settings["Data Variables"][0].decode()
         return {v[0]: v[1] for v in lispy.parse(data_vars_str)[1]}
-        
+
     def get_phases(self):
         return list(self._field_data.keys())
-        
+
     def get_face_variables(self, phase_name) -> int:
-        return self._field_data[phase_name]["faces"]["fields"][0].decode().split(";")    
-         
+        return self._field_data[phase_name]["faces"]["fields"][0].decode().split(";")
+
     def get_cell_variables(self, phase_name) -> int:
-        return self._field_data[phase_name]["cells"]["fields"][0].decode().split(";") 
+        return self._field_data[phase_name]["cells"]["fields"][0].decode().split(";")
 
     def get_face_data(self, phase_name, field_name, surface_id) -> int:
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
-        field_data = self._field_data[phase_name]["faces"][field_name] 
-        keys = list(field_data.keys())                
-        return field_data["1"][min_id: max_id +1]          
+        field_data = self._field_data[phase_name]["faces"][field_name]
+        keys = list(field_data.keys())
+        return field_data["1"][min_id : max_id + 1]

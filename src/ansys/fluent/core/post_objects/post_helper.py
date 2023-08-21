@@ -156,4 +156,4 @@ class PostAPIHelper:
             str_val = session.scheme_eval.string_eval(scheme_eval_str)
             return list(filter(None, re.split(r'[\s()"\']', str_val)))
         else:
-            return ["*null*"]        
+            return ["*null*"]
