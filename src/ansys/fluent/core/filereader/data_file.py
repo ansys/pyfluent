@@ -18,8 +18,10 @@ Example
 import os
 from os.path import dirname
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 import h5py
+from lxml import etree
 
 from . import lispy
 
@@ -60,7 +62,7 @@ class DataFile:
                     Path(project_filepath).name.split(".")[0] + ".cffdb",
                 )
                 data_filepath = Path(
-                    project_dir + _get_case_filepath_from_flprj(project_filepath)
+                    project_dir + _get_data_filepath_from_flprj(project_filepath)
                 )
             else:
                 raise FileNotFoundError(
@@ -69,29 +71,29 @@ class DataFile:
 
         try:
             if Path(data_filepath).match("*.dat.h5"):
-                file = h5py.File(data_filepath)
-                results = file["results"]
-                self._settings = file["settings"]
+                _file = h5py.File(data_filepath)
+                results = _file["results"]
+                self._settings = _file["settings"]
                 self._field_data = results["1"]
                 # self._residuals = results["residuals"]
                 self._case_file = self._settings["Case File"][0]
             else:
                 error_message = (
                     "Could not read case file. "
-                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
+                    "Only valid data files (.h5, .cas, .cas.gz) can be read. "
                 )
                 raise RuntimeError(error_message)
 
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                f"The case file {data_filepath} cannot be found."
+                f"The data file {data_filepath} cannot be found."
             ) from e
 
         except OSError as e:
-            raise OSError(f"Error while reading case file {data_filepath}") from e
+            raise OSError(f"Error while reading data file {data_filepath}") from e
 
         except Exception as e:
-            raise RuntimeError(f"Could not read case file {data_filepath}") from e
+            raise RuntimeError(f"Could not read data file {data_filepath}") from e
 
     @property
     def case_file(self) -> str:
@@ -115,3 +117,11 @@ class DataFile:
         field_data = self._field_data[phase_name]["faces"][field_name]
         keys = list(field_data.keys())
         return field_data["1"][min_id : max_id + 1]
+
+
+def _get_data_filepath_from_flprj(flprj_file):
+    parser = etree.XMLParser(recover=True)
+    tree = ET.parse(flprj_file, parser)
+    root = tree.getroot()
+    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
