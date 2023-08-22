@@ -4,8 +4,7 @@ import socket
 from typing import Any
 
 import grpc
-
-from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
+from grpc_health.v1 import health_pb2, health_pb2_grpc
 
 network_logger = logging.getLogger("pyfluent.networking")
 
