@@ -85,14 +85,57 @@ class Transaction:
 
 
 class FileFieldData:
-    def __init__(self, file_session):
+    def __init__(self, file_session, field_info):
         self._file_session = file_session
+        self._field_info = field_info
+
+        # self._allowed_surface_names = self._file_session._case_file.get_mesh().get_surface_names()
+        # self._allowed_surface_ids = self._file_session._case_file.get_mesh().get_surface_ids()
 
     def new_transaction(self):
         """Create a new field transaction."""
         return Transaction(
             self._file_session,
         )
+
+    def get_scalar_field_data(
+        self,
+        field_name: str,
+        surface_ids: Optional[List[int]] = None,
+        surface_name: Optional[str] = None,
+        node_value: Optional[bool] = True,
+        boundary_value: Optional[bool] = False,
+    ):
+        if surface_ids and surface_name:
+            raise RuntimeError("Please provide either surface name or surface ids.")
+
+        if surface_name:
+            surface_ids = self._field_info.get_surfaces_info()[surface_name][
+                "surface_id"
+            ]
+            if len(self._file_session.get_phases()) > 1:
+                return self._file_session._data_file.get_face_data(
+                    field_name.split(":")[0], field_name.split(":")[1], surface_ids[0]
+                )
+            else:
+                return self._file_session._data_file.get_face_data(
+                    "phase-1", field_name, surface_ids[0]
+                )
+        else:
+            if len(self._file_session.get_phases()) > 1:
+                return {
+                    surface_id: self._file_session._data_file.get_face_data(
+                        field_name.split(":")[0], field_name.split(":")[1], surface_id
+                    )
+                    for surface_id in surface_ids
+                }
+            else:
+                return {
+                    surface_id: self._file_session._data_file.get_face_data(
+                        "phase-1", field_name, surface_id
+                    )
+                    for surface_id in surface_ids
+                }
 
 
 class FileFieldInfo:
@@ -177,7 +220,7 @@ class FileSession:
         self._case_file = None
         self._data_file = None
         self.field_info = FileFieldInfo(self)
-        self.field_data = FileFieldData(self)
+        self.field_data = FileFieldData(self, self.field_info)
         self.monitors_manager = lambda: None
         self.session_id = 1
 
