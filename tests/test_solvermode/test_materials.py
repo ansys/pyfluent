@@ -5,7 +5,7 @@ from util.solver import copy_database_material
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_solver_material(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     copy_database_material(

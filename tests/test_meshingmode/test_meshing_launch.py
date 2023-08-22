@@ -3,17 +3,15 @@ import os
 import pytest
 from util.fixture_fluent import download_input_file
 
-import ansys.fluent.core as pyfluent
-
 
 @pytest.mark.nightly
 @pytest.mark.mesh
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     assert pure_meshing_session.health_check_service.is_serving
-    file_path = os.path.join(pyfluent.EXAMPLES_PATH, "launch_pure_meshing_journal.py")
+    file_path = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_path)
     session_dir = dir(pure_meshing_session)
     for attr in ("field_data", "field_info", "meshing", "workflow"):

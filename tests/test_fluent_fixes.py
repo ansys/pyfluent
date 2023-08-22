@@ -4,6 +4,7 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core import examples
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.1")
 def test_1364(new_solver_session):
     solver = new_solver_session

@@ -23,6 +23,14 @@
         },
         "fluent_format": "{}"
     },
+    "fluent_debug": {
+        "type": "bool",
+        "fluent_map": {
+            "true": "_debug",
+            "false": ""
+        },
+        "fluent_format": "{}"
+    },
     "fluent_icing": {
         "type": "bool",
         "fluent_map": {

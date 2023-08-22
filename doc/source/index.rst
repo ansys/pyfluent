@@ -79,31 +79,37 @@ Some of the many features in this primary PyFluent package,
 
 Documentation and issues
 ------------------------
-In addition to installation and usage information, the PyFluent documentation
-provides :ref:`ref_index_api`, :ref:`ref_example_gallery`, and
-:ref:`ref_contributing` sections.
+Documentation for the latest stable release of PyFluent is hosted at
+`PyFluent documentation <https://fluent.docs.pyansys.com/version/stable/>`_.
 
-In the upper right corner of the documentation's title bar, there is an option
-for switching from viewing the documentation for the latest stable release
-to viewing the documentation for the development version or previously
-released versions.
+In the upper right corner of the documentation's title bar, there is an option for switching from
+viewing the documentation for the latest stable release to viewing the documentation for the
+development version or previously released versions.
 
-On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you
-can create issues to submit questions, report bugs, and request new features. To
-reach the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
+You can also `view <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.png>`_ or
+`download <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.pdf>`_ the
+PyFluent cheat sheet. This one-page reference provides syntax rules and commands
+for using PyFluent. 
 
-License
--------
+On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
+issues to report bugs and request new features. On the `PyFluent Discussions
+<https://github.com/ansys/pyfluent/discussions>`_ page or the `Discussions <https://discuss.ansys.com/>`_
+page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback. 
+
+To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
+
+License and acknowledgments
+---------------------------
 PyFluent is licensed under the MIT license.
 
-PyFluent makes no commercial claim over Ansys whatsoever. This library extends
-the functionality of Ansys Fluent by adding a Python interface to Fluent without
-changing the core behavior or license of the original software. The use of the
-interactive control of Fluent control of PyFluent requires a legally licensed
-copy of Fluent.
+PyFluent makes no commercial claim over Ansys whatsoever. This library
+extends the functionality of Ansys Fluent by adding a Python interface
+to Fluent without changing the core behavior or license of the original
+software. The use of the interactive Fluent control of PyFluent requires a
+legally licensed local copy of Fluent.
 
-For more information on Fluent, see the `Ansys Fluent page
-<https://www.ansys.com/products/fluids/ansys-fluent>`_ on the Ansys website.
+For more information on Fluent, see the `Ansys Fluent <https://www.ansys.com/products/fluids/ansys-fluent>`_
+page on the Ansys website.
 
 Project index
 -------------

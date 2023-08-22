@@ -7,7 +7,11 @@ import grpc
 from ansys.api.fluent.v0 import meshing_queries_pb2 as MeshingQueriesProtoModule
 from ansys.api.fluent.v0 import meshing_queries_pb2_grpc as MeshingQueriesGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 Path = List[Tuple[str, str]]
 
@@ -17,10 +21,15 @@ class MeshingQueriesService:
     Meshing Queries Service.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of MeshingQueriesService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self._stub = MeshingQueriesGrpcModule.MeshingQueriesStub(intercept_channel)
         self._metadata = metadata

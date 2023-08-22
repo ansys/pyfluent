@@ -1,20 +1,29 @@
 """Wrapper to settings gRPC service of Fluent."""
 import collections.abc
 from functools import wraps
-from typing import Any, List
+from typing import Any, List, Tuple
 
 import grpc
 
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 
 class _SettingsServiceImpl:
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
@@ -105,9 +114,9 @@ def _get_request_instance_for_path(request_class, path):
 class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
-    def __init__(self, channel, metadata, scheme_eval):
+    def __init__(self, channel, metadata, scheme_eval, fluent_error_state):
         """__init__ method of SettingsService class."""
-        self._service_impl = _SettingsServiceImpl(channel, metadata)
+        self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
         self._scheme_eval = scheme_eval
 
     @_trace

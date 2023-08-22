@@ -4,13 +4,20 @@ import pytest
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version("latest")
 def test_controls(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"
     assert solver.setup.models.multiphase.models() == "vof"
-    solver.setup.general.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
-    assert solver.setup.general.gravity.components() == [0, 0, -9.81]
+    solver.setup.general.operating_conditions.gravity = {
+        "enable": True,
+        "components": [0.0, 0.0, -9.81],
+    }
+    assert solver.setup.general.operating_conditions.gravity.components() == [
+        0,
+        0,
+        -9.81,
+    ]
     solver.setup.general.solver.time = "steady"
     assert solver.setup.general.solver.time() == "steady"
     solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
@@ -75,11 +82,11 @@ def test_controls(load_mixing_elbow_mesh):
     solver.solution.methods.p_v_coupling.coupled_form = True
     assert solver.solution.methods.p_v_coupling.coupled_form() == True
     solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type = (
-        "gauss-seidel"
+        "Gauss-Seidel"
     )
     assert (
         solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type()
-        == "gauss-seidel"
+        == "Gauss-Seidel"
     )
     assert solver.solution.controls.pseudo_time_explicit_relaxation_factor() == {
         "global_dt_pseudo_relax": {

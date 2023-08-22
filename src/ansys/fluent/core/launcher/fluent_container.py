@@ -32,15 +32,15 @@ Docker container run configuration information:
 
 config_dict =
 {'auto_remove': True,
- 'command': ['-gu', '-sifile=/tmpdir/serverinfo-lpqsdldw.txt', '3ddp'],
+ 'command': ['-gu', '-sifile=/mnt/pyfluent/serverinfo-lpqsdldw.txt', '3ddp'],
  'detach': True,
  'environment': {'ANSYSLMD_LICENSE_FILE': '2048@licenseserver.com',
                  'REMOTING_PORTS': '54000/portspan=2'},
  'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
  'labels': {'test_name': 'none'},
  'ports': {'54000': 54000},
- 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/tmpdir'],
- 'working_dir': '/tmpdir'}
+ 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/mnt/pyfluent'],
+ 'working_dir': '/mnt/pyfluent'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 
@@ -58,7 +58,7 @@ from ansys.fluent.core.utils.networking import get_free_port
 import docker
 
 logger = logging.getLogger("pyfluent.launcher")
-DEFAULT_CONTAINER_MOUNT_PATH = "/tmpdir"
+DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
 def configure_container_dict(
@@ -124,10 +124,27 @@ def configure_container_dict(
     ``container_dict``, see `Docker run documentation`_.
     """
 
-    logger.debug(f"container_dict before processing: {container_dict}")
+    if (
+        container_dict
+        and "environment" in container_dict
+        and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1"
+    ):
+        container_dict_h = container_dict.copy()
+        container_dict_h.pop("environment")
+        logger.debug(f"container_dict before processing: {container_dict_h}")
+        del container_dict_h
+    else:
+        logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
         host_mount_path = pyfluent.EXAMPLES_PATH
+    elif "volumes" in container_dict:
+        logger.warning(
+            "'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by specified 'host_mount_path'."
+        )
+        container_dict.pop("volumes")
+
     if not os.path.exists(host_mount_path):
         os.makedirs(host_mount_path)
 
@@ -135,9 +152,33 @@ def configure_container_dict(
         container_mount_path = os.getenv(
             "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
         )
+    elif "volumes" in container_dict:
+        logger.warning(
+            "'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by specified 'container_mount_path'."
+        )
+        container_dict.pop("volumes")
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
+    else:
+        logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
+        if len(container_dict["volumes"]) != 1:
+            logger.warning(
+                "Multiple volumes being mounted in the Docker container, "
+                "using the first mount as the working directory for Fluent."
+            )
+        volumes_string = container_dict["volumes"][0]
+        container_mount_path = ""
+        for c in reversed(volumes_string):
+            if c == ":":
+                break
+            else:
+                container_mount_path += c
+        container_mount_path = container_mount_path[::-1]
+        host_mount_path = volumes_string.replace(":" + container_mount_path, "")
+        logger.debug(f"host_mount_path: {host_mount_path}")
+        logger.debug(f"container_mount_path: {container_mount_path}")
 
     if "ports" not in container_dict:
         if not port:
@@ -229,14 +270,9 @@ def configure_container_dict(
         auto_remove=True,
     )
 
-    if fluent_image.split(":")[1] == "v24.1.0":
-        container_dict_default.update(tty=True)
-
     for k, v in container_dict_default.items():
         if k not in container_dict:
             container_dict[k] = v
-
-    logger.debug(f"container_dict after processing: {container_dict}")
 
     host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
@@ -276,8 +312,6 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
 
     container_vars = configure_container_dict(args, **container_dict)
 
-    logger.debug(f"container_vars:{container_vars}")
-
     (
         config_dict,
         timeout,
@@ -285,6 +319,21 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
+
+    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+        logger.debug(f"container_vars: {container_vars}")
+    else:
+        config_dict_h = config_dict.copy()
+        config_dict_h.pop("environment")
+        container_vars_tmp = (
+            config_dict_h,
+            timeout,
+            port,
+            host_server_info_file,
+            remove_server_info_file,
+        )
+        logger.debug(f"container_vars: {container_vars_tmp}")
+        del container_vars_tmp
 
     try:
         if not host_server_info_file.exists():
