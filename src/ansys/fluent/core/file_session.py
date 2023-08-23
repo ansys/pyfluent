@@ -3,6 +3,7 @@ from typing import List, Optional
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
+from ansys.fluent.core.services.field_data import SurfaceDataType
 
 
 class Transaction:
@@ -59,7 +60,7 @@ class Transaction:
         )
 
         for transaction in self._scalar_field_transactions:
-            if (scalar_field_tag) not in field_data:
+            if scalar_field_tag not in field_data:
                 field_data[scalar_field_tag] = {}
             field_data_surface = field_data[scalar_field_tag]
             for surface_id in transaction.surface_ids:
@@ -98,6 +99,52 @@ class FileFieldData:
             self._file_session,
         )
 
+    def get_surface_data(
+        self,
+        data_type: SurfaceDataType,
+        surface_ids: Optional[List[int]] = None,
+        surface_name: Optional[str] = None,
+        overset_mesh: Optional[bool] = False,
+    ):
+        enum_to_field_name = {
+            SurfaceDataType.FacesConnectivity: "faces",
+            SurfaceDataType.Vertices: "vertices",
+            SurfaceDataType.FacesCentroid: "centroid",
+            SurfaceDataType.FacesNormal: "face-normal",
+        }
+
+        if data_type == SurfaceDataType.FacesConnectivity:
+            if surface_name:
+                surface_ids = self._field_info.get_surfaces_info()[surface_name][
+                    "surface_id"
+                ]
+                return self._file_session._case_file.get_mesh().get_connectivity(
+                    surface_ids[0]
+                )
+            else:
+                return {
+                    surface_id: self._file_session._case_file.get_mesh().get_connectivity(
+                        surface_id
+                    )
+                    for surface_id in surface_ids
+                }
+
+        if data_type == SurfaceDataType.Vertices:
+            if surface_name:
+                surface_ids = self._field_info.get_surfaces_info()[surface_name][
+                    "surface_id"
+                ]
+                return self._file_session._case_file.get_mesh().get_vertices(
+                    surface_ids[0]
+                )
+            else:
+                return {
+                    surface_id: self._file_session._case_file.get_mesh().get_vertices(
+                        surface_id
+                    )
+                    for surface_id in surface_ids
+                }
+
     def get_scalar_field_data(
         self,
         field_name: str,
@@ -113,7 +160,7 @@ class FileFieldData:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
                 "surface_id"
             ]
-            if len(self._file_session.get_phases()) > 1:
+            if len(self._file_session._data_file.get_phases()) > 1:
                 return self._file_session._data_file.get_face_data(
                     field_name.split(":")[0], field_name.split(":")[1], surface_ids[0]
                 )
@@ -122,7 +169,7 @@ class FileFieldData:
                     "phase-1", field_name, surface_ids[0]
                 )
         else:
-            if len(self._file_session.get_phases()) > 1:
+            if len(self._file_session._data_file.get_phases()) > 1:
                 return {
                     surface_id: self._file_session._data_file.get_face_data(
                         field_name.split(":")[0], field_name.split(":")[1], surface_id
