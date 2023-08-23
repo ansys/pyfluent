@@ -1,3 +1,4 @@
+from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 from ansys.fluent.core.services.field_data import SurfaceDataType
 
@@ -10,13 +11,15 @@ def round_off_list_elements(input_list):
 
 
 def test_field_info_data_multi_phase():
+    case_filename = examples.download_file(
+        "mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session"
+    )
+    data_filename = examples.download_file(
+        "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
+    )
     file_session = FileSession()
-    file_session.read_case(
-        r"C:\ANSYSDev\PyFluent_Dev_01\filesession\mixing_elbow_mul_ph.cas.h5"
-    )
-    file_session.read_data(
-        r"C:\ANSYSDev\PyFluent_Dev_01\filesession\mixing_elbow_mul_ph.dat.h5"
-    )
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
 
     assert (
         file_session.field_data.get_scalar_field_data("phase-2:SV_DENSITY", [33])[
@@ -42,9 +45,11 @@ def test_field_info_data_multi_phase():
 
 
 def test_field_info_data_single_phase():
+    case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+    data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
     file_session = FileSession()
-    file_session.read_case(r"C:\ANSYSDev\PyFluent_Dev_01\filesession\elbow1.cas.h5")
-    file_session.read_data(r"C:\ANSYSDev\PyFluent_Dev_01\filesession\elbow1.dat.h5")
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
 
     assert round_off_list_elements(
         file_session.field_info.get_scalar_field_range("SV_D")
@@ -127,9 +132,11 @@ def test_field_info_data_single_phase():
 
 
 def test_data_reader_single_phase():
+    case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+    data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
     file_session = FileSession()
-    file_session.read_case(r"C:\ANSYSDev\PyFluent_Dev_01\filesession\elbow1.cas.h5")
-    file_session.read_data(r"C:\ANSYSDev\PyFluent_Dev_01\filesession\elbow1.dat.h5")
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
 
     assert file_session._data_file.case_file == "elbow1.cas.h5"
     assert file_session._data_file.get_phases() == ["phase-1"]
@@ -159,13 +166,15 @@ def test_data_reader_single_phase():
 
 
 def test_data_reader_multi_phase():
+    case_filename = examples.download_file(
+        "mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session"
+    )
+    data_filename = examples.download_file(
+        "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
+    )
     file_session = FileSession()
-    file_session.read_case(
-        r"C:\ANSYSDev\PyFluent_Dev_01\filesession\mixing_elbow_mul_ph.cas.h5"
-    )
-    file_session.read_data(
-        r"C:\ANSYSDev\PyFluent_Dev_01\filesession\mixing_elbow_mul_ph.dat.h5"
-    )
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
 
     assert file_session._data_file.case_file == "mixing_elbow_mul_ph.cas.h5"
     assert file_session._data_file.get_phases() == [
