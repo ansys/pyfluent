@@ -62,9 +62,8 @@ class SystemCoupling:
         return self.__get_syc_setup()["analysis-type"]
 
     def connect(self, host: str, port: int, name: str) -> None:
-        print(f"Host = {host}, port = {port}, name = {name}", flush=True)
         self._solver.setup.models.system_coupling.connect_parallel(
-            host=host, port=port, name=name
+            schost=host, scport=port, scname=name
         )
 
     def solve(self) -> None:
