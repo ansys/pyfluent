@@ -167,6 +167,11 @@ class Solver(BaseSession):
         return self._root.current_parametric_study
 
     @property
+    def parameters(self):
+        """Settings for parameters."""
+        return self._root.parameters
+
+    @property
     def parallel(self):
         """Settings for parallel."""
         return self._root.parallel

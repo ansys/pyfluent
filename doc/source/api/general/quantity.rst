@@ -70,7 +70,7 @@ Quantity
    :special-members: __init__
    :autosummary:
 
-.. automodule:: ansys.fluent.core.quantity.quantity_map
+.. automodule:: ansys.fluent.core.quantity.map
    :members:
    :show-inheritance:
    :undoc-members:
@@ -78,7 +78,7 @@ Quantity
    :special-members: __init__
    :autosummary:
 
-.. automodule:: ansys.fluent.core.quantity.units_table
+.. automodule:: ansys.fluent.core.quantity.tables
    :members:
    :show-inheritance:
    :undoc-members:

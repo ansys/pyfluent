@@ -4,7 +4,7 @@
 User guide
 ==========
 Anyone who wants to use PyFluent can import its Python modules and develop
-Python code to control and monitor Ansys Fluent. 
+Python code to control and monitor Ansys Fluent.
 
 ..
    This toctree must be a top level index to get it to show up in
@@ -38,7 +38,7 @@ You can launch Fluent in solution mode with this code:
 
     solver = launch_fluent(mode="solver")
 
-You can launch Fluent in meshing mode with this code: 
+You can launch Fluent in meshing mode with this code:
 
 .. code:: python
 
@@ -47,7 +47,7 @@ You can launch Fluent in meshing mode with this code:
     meshing = launch_fluent(mode="meshing")
 
 
-For more information, see :ref:`ref_user_guide_launch` 
+For more information, see :ref:`ref_user_guide_launch`
 and :ref:`ref_launcher`.
 
 You can use PyFluent to create and initialize multiple, independent session
@@ -81,7 +81,7 @@ existing Fluent users:
     tui.define.models.energy("yes")
 
 For the full hierarchy under the solver ``tui`` object, see :ref:`ref_solver_tui_commands`.
-For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_commands`. 
+For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_commands`.
 
 Solver ``root`` object
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -123,10 +123,10 @@ familiar to existing Fluent users:
     tui.mesh.prepare_for_solve("yes")
 
     tui.file.write_case("pipe.cas.h5")
-    
+
 For the full hierarchy under the meshing ``tui`` object, see
 :ref:`ref_meshing_tui`. For general guidance on using TUI commands, see
-:ref:`ref_user_guide_tui_commands`. 
+:ref:`ref_user_guide_tui_commands`.
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,6 +152,31 @@ the Python meshing workflow interface that Fluent meshing exposes directly:
 
 For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
 For information on the full interface, see :ref:`ref_meshing_datamodel`.
+
+Search for Fluent settings or commands
+--------------------------------------
+A global search method is available for Fluent settings or commands:
+
+.. code:: python
+
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.search("geometry")
+    <meshing_session>.tui.file.import_.cad_geometry (Command)
+    <meshing_session>.tui.display.update_scene.select_geometry (Command)
+    <meshing_session>.meshing.ImportGeometry (Command)
+    <meshing_session>.meshing.LoadCADGeometry (Command)
+    <solver_session>.tui.solve.initialize.compute_defaults.geometry (Command)
+    <solver_session>.tui.report.reference_values.compute.geometry (Command)
+    <solver_session>.tui.define.geometry (Command)
+    <solver_session>.tui.mesh.geometry (Object)
+    <solver_session>.setup.boundary_conditions.geometry["<name>"] (Object)
+    <solver_session>.setup.geometry (Object)
+    <solver_session>.solution.report_definitions.surface["<name>"].geometry (Parameter)
+    <solver_session>.solution.report_definitions.volume["<name>"].geometry (Parameter)
+    <solver_session>.results.graphics.mesh["<name>"].geometry (Parameter)
+    <solver_session>.results.graphics.contour["<name>"].geometry (Parameter)
+
+See :ref:`ref_search` for full documentation of the search method.
 
 Session object
 --------------
@@ -186,7 +211,7 @@ Streaming
 ---------
 Streaming of a Fluent transcript is automatically started by default. You can
 stop and start the streaming of a transcript manually with:
- 
+
 .. code:: python
 
     solver.transcript.stop()

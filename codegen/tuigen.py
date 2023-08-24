@@ -204,6 +204,7 @@ class TUIGenerator:
         self.__writer.write(" " * _INDENT_STEP * indent + code)
 
     def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int = 0):
+        api_tree = {}
         self._write_code_to_tui_file("\n")
         self._write_code_to_tui_file(f"class {menu.name}(TUIMenu):\n", indent)
         indent += 1
@@ -249,9 +250,13 @@ class TUIGenerator:
                     indent,
                 )
                 indent -= 1
-        for _, v in menu.children.items():
-            if not v.is_command:
-                self._write_menu_to_tui_file(v, indent)
+        for k, v in menu.children.items():
+            if v.is_command:
+                api_tree[k] = "Command"
+                pass
+            else:
+                api_tree[k] = self._write_menu_to_tui_file(v, indent)
+        return api_tree
 
     def _write_doc_for_menu(
         self, menu, doc_dir: Path, heading, class_name, noindex=True
@@ -302,6 +307,7 @@ class TUIGenerator:
                         )
 
     def generate(self) -> None:
+        api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             if self._version == "222":
@@ -331,7 +337,7 @@ class TUIGenerator:
                 "import PyMenu, TUIMenu\n\n\n"
             )
             self._main_menu.name = "main_menu"
-            self._write_menu_to_tui_file(self._main_menu)
+            api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
             self._write_doc_for_menu(
                 self._main_menu,
                 Path(self._tui_doc_dir),
@@ -339,16 +345,17 @@ class TUIGenerator:
                 self._main_menu.name,
                 False,
             )
+        return api_tree
 
 
-def generate():
+def generate(version):
     # pyfluent.set_log_level("WARNING")
-    version = get_version_for_filepath()
+    api_tree = {}
     if version > "222":
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    TUIGenerator("meshing", version).generate()
-    TUIGenerator("solver", version).generate()
+    api_tree["<meshing_session>"] = TUIGenerator("meshing", version).generate()
+    api_tree["<solver_session>"] = TUIGenerator("solver", version).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
@@ -356,7 +363,9 @@ def generate():
         )
         for k in _XML_HELPSTRINGS:
             logger.info(k)
+    return api_tree
 
 
 if __name__ == "__main__":
-    generate()
+    version = get_version_for_filepath()
+    generate(version)

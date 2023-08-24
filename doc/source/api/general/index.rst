@@ -66,7 +66,12 @@ Post objects
 Asynchronous execution
 ######################
 
-:ref:`ref_utils` documents tools for asynchronous function execution.
+:ref:`ref_execution_utils` documents tools for asynchronous function execution.
+
+Search
+######
+
+:ref:`ref_search` documents tools for searching Fluent settings or commands.
 
 Meta
 ####
@@ -88,7 +93,8 @@ Logging
     :hidden:
 
     launcher/index
-    utils/index
+    execution_utils
+    search
     sessions/index
     services/index
     streaming_services/index
