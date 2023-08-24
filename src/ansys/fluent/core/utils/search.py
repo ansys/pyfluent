@@ -127,7 +127,7 @@ def search(
     root: Any = None,
 ):
     """
-    Search for a word through the API object hierarchy.
+    Search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
@@ -144,6 +144,25 @@ def search(
         The root object within which the search will be performed,
         can be a session object or any API object within a session,
         by default None in which case it will search everything.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.search("geometry")
+    <meshing_session>.tui.file.import_.cad_geometry (Command)
+    <meshing_session>.tui.display.update_scene.select_geometry (Command)
+    <meshing_session>.meshing.ImportGeometry (Command)
+    <meshing_session>.meshing.LoadCADGeometry (Command)
+    <solver_session>.tui.solve.initialize.compute_defaults.geometry (Command)
+    <solver_session>.tui.report.reference_values.compute.geometry (Command)
+    <solver_session>.tui.define.geometry (Command)
+    <solver_session>.tui.mesh.geometry (Object)
+    <solver_session>.setup.boundary_conditions.geometry["<name>"] (Object)
+    <solver_session>.setup.geometry (Object)
+    <solver_session>.solution.report_definitions.surface["<name>"].geometry (Parameter)
+    <solver_session>.solution.report_definitions.volume["<name>"].geometry (Parameter)
+    <solver_session>.results.graphics.mesh["<name>"].geometry (Parameter)
+    <solver_session>.results.graphics.contour["<name>"].geometry (Parameter)
     """
     if version:
         version = get_version_for_filepath(version)
