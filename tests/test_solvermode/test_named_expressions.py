@@ -30,17 +30,15 @@ def test_expression(load_mixing_elbow_mesh):
         solver_session.setup.named_expressions["vel_cold"].definition()
         == "1.264 * 1.43 [m s^-1] * max(0,v1)"
     )
-    solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"] = {
-        "vmag": "vel_cold",
-        "turb_intensity": 0.0999999,
-        "turb_hydraulic_diam": 1.0,
+    solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].momentum = {
+        "velocity": "vel_cold",
     }
-    solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"] = {
-        "vmag": "max(vel_cold, 1.5 [m/s])"
+    solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum = {
+        "velocity": "max(vel_cold, 1.5 [m/s])"
     }
     assert solver_session.setup.boundary_conditions.velocity_inlet[
         "cold-inlet"
-    ].vmag() == {"option": "value", "value": "vel_cold"}
+    ].momentum.velocity() == {"option": "value", "value": "vel_cold"}
     assert solver_session.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].vmag() == {"option": "value", "value": "max(vel_cold, 1.5 [m/s])"}
+    ].momentum.velocity() == {"option": "value", "value": "max(vel_cold, 1.5 [m/s])"}
