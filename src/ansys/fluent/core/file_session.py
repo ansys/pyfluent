@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+import numpy as np
+
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
@@ -7,6 +9,7 @@ from ansys.fluent.core.services.field_data import (
     FacesConnectivity,
     ScalarFieldData,
     SurfaceDataType,
+    VectorFieldData,
     Vertices,
 )
 
@@ -90,13 +93,22 @@ class Transaction:
         return field_data
 
 
+def _form_vector_array_from_data(data, surface_id, phase="phase-1"):
+    x_comp = data.get_face_data(phase, "SV_U", surface_id)
+    y_comp = data.get_face_data(phase, "SV_V", surface_id)
+    z_comp = data.get_face_data(phase, "SV_W", surface_id)
+
+    vector_data = np.array([])
+    for a, b, c in zip(x_comp, y_comp, z_comp):
+        vector_data = np.append(vector_data, [a, b, c])
+
+    return vector_data
+
+
 class FileFieldData:
     def __init__(self, file_session, field_info):
         self._file_session = file_session
         self._field_info = field_info
-
-        # self._allowed_surface_names = self._file_session._case_file.get_mesh().get_surface_names()
-        # self._allowed_surface_ids = self._file_session._case_file.get_mesh().get_surface_ids()
 
     def new_transaction(self):
         """Create a new field transaction."""
@@ -212,6 +224,69 @@ class FileFieldData:
                     )
                     for surface_id in surface_ids
                 }
+
+    def get_vector_field_data(
+        self,
+        field_name: str,
+        surface_ids: Optional[List[int]] = None,
+        surface_name: Optional[str] = None,
+    ):
+        if surface_ids and surface_name:
+            raise RuntimeError("Please provide either surface name or surface ids.")
+
+        if surface_name:
+            surface_ids = self._field_info.get_surfaces_info()[surface_name][
+                "surface_id"
+            ]
+            if len(self._file_session._data_file.get_phases()) > 1:
+                if field_name.split(":")[1] == "velocity":
+                    vector_data = _form_vector_array_from_data(
+                        self._file_session._data_file,
+                        surface_ids[0],
+                        field_name.split(":")[0],
+                    )
+                else:
+                    raise RuntimeError("Only 'velocity' is allowed field.")
+
+                return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
+            else:
+                if field_name == "velocity":
+                    vector_data = _form_vector_array_from_data(
+                        self._file_session._data_file, surface_ids[0]
+                    )
+                else:
+                    raise RuntimeError("Only 'velocity' is allowed field.")
+
+                return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
+        else:
+            vector_dict = {}
+            if len(self._file_session._data_file.get_phases()) > 1:
+                for surface_id in surface_ids:
+                    if field_name.split(":")[1] == "velocity":
+                        vector_data = _form_vector_array_from_data(
+                            self._file_session._data_file,
+                            surface_id,
+                            field_name.split(":")[0],
+                        )
+                    else:
+                        raise RuntimeError("Only 'velocity' is allowed field.")
+
+                    vector_dict[surface_id] = VectorFieldData(
+                        surface_id, vector_data, scale=1.0
+                    )
+            else:
+                for surface_id in surface_ids:
+                    if field_name == "velocity":
+                        vector_data = _form_vector_array_from_data(
+                            self._file_session._data_file, surface_id
+                        )
+                    else:
+                        raise RuntimeError("Only 'velocity' is allowed field.")
+
+                    vector_dict[surface_id] = VectorFieldData(
+                        surface_id, vector_data, scale=1.0
+                    )
+            return vector_dict
 
 
 class FileFieldInfo:
