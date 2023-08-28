@@ -234,59 +234,53 @@ class FileFieldData:
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
 
+        if (
+            field_name.lower() != "velocity"
+            and field_name.split(":")[1].lower() != "velocity"
+        ):
+            raise RuntimeError("Only 'velocity' is allowed field.")
+
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
                 "surface_id"
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
-                if field_name.split(":")[1] == "velocity":
-                    vector_data = _form_vector_array_from_data(
-                        self._file_session._data_file,
-                        surface_ids[0],
-                        field_name.split(":")[0],
-                    )
-                else:
-                    raise RuntimeError("Only 'velocity' is allowed field.")
-
-                return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
+                vector_data = _form_vector_array_from_data(
+                    self._file_session._data_file,
+                    surface_ids[0],
+                    field_name.split(":")[0],
+                )
             else:
-                if field_name == "velocity":
-                    vector_data = _form_vector_array_from_data(
-                        self._file_session._data_file, surface_ids[0]
-                    )
-                else:
-                    raise RuntimeError("Only 'velocity' is allowed field.")
+                vector_data = _form_vector_array_from_data(
+                    self._file_session._data_file, surface_ids[0]
+                )
 
-                return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
+            return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
         else:
-            vector_dict = {}
             if len(self._file_session._data_file.get_phases()) > 1:
-                for surface_id in surface_ids:
-                    if field_name.split(":")[1] == "velocity":
-                        vector_data = _form_vector_array_from_data(
+                return {
+                    surface_id: VectorFieldData(
+                        surface_id,
+                        _form_vector_array_from_data(
                             self._file_session._data_file,
                             surface_id,
                             field_name.split(":")[0],
-                        )
-                    else:
-                        raise RuntimeError("Only 'velocity' is allowed field.")
-
-                    vector_dict[surface_id] = VectorFieldData(
-                        surface_id, vector_data, scale=1.0
+                        ),
+                        scale=1.0,
                     )
+                    for surface_id in surface_ids
+                }
             else:
-                for surface_id in surface_ids:
-                    if field_name == "velocity":
-                        vector_data = _form_vector_array_from_data(
+                return {
+                    surface_id: VectorFieldData(
+                        surface_id,
+                        _form_vector_array_from_data(
                             self._file_session._data_file, surface_id
-                        )
-                    else:
-                        raise RuntimeError("Only 'velocity' is allowed field.")
-
-                    vector_dict[surface_id] = VectorFieldData(
-                        surface_id, vector_data, scale=1.0
+                        ),
+                        scale=1.0,
                     )
-            return vector_dict
+                    for surface_id in surface_ids
+                }
 
 
 class FileFieldInfo:
