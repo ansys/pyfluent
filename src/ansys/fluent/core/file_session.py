@@ -70,6 +70,10 @@ class Transaction:
                 )
 
         if len(self._file_session._data_file.get_phases()) > 1:
+            if not field_name.startswith("phase-"):
+                raise RuntimeError(
+                    "For multi-phase cases field name should have a prefix of phase name."
+                )
             self._scalar_field_transactions.append(
                 Transaction._ScalarFieldTransaction(
                     field_name.split(":")[1], surface_ids, field_name.split(":")[0]
@@ -98,6 +102,10 @@ class Transaction:
                 )
 
         if len(self._file_session._data_file.get_phases()) > 1:
+            if not field_name.startswith("phase-"):
+                raise RuntimeError(
+                    "For multi-phase cases field name should have a prefix of phase name."
+                )
             self._vector_field_transactions.append(
                 Transaction._VectorFieldTransaction(
                     field_name.split(":")[1], surface_ids, field_name.split(":")[0]
@@ -262,6 +270,10 @@ class FileFieldData:
                 "surface_id"
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
+                if not field_name.startswith("phase-"):
+                    raise RuntimeError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 return ScalarFieldData(
                     surface_ids[0],
                     self._file_session._data_file.get_face_data(
@@ -279,6 +291,10 @@ class FileFieldData:
                 )
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
+                if not field_name.startswith("phase-"):
+                    raise RuntimeError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 return {
                     surface_id: ScalarFieldData(
                         surface_id,
@@ -321,6 +337,10 @@ class FileFieldData:
                 "surface_id"
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
+                if not field_name.startswith("phase-"):
+                    raise RuntimeError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 vector_data = _form_vector_array_from_data(
                     self._file_session._data_file,
                     surface_ids[0],
@@ -334,6 +354,10 @@ class FileFieldData:
             return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
+                if not field_name.startswith("phase-"):
+                    raise RuntimeError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 return {
                     surface_id: VectorFieldData(
                         surface_id,

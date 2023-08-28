@@ -345,7 +345,7 @@ def test_transaction_request_multi_phase():
     assert len(data[(("type", "vector-field"),)][31]["velocity"]) == 456
 
 
-def test_error_handling():
+def test_error_handling_single_phase():
     case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
     data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
     file_session = FileSession()
@@ -363,3 +363,33 @@ def test_error_handling():
     with pytest.raises(RuntimeError) as msg:
         field_data.get_pathlines_field_data("SV_T", [3, 5])
     assert msg.value.args[0] == r"Path-lines not supported."
+
+
+def test_error_handling_multi_phase():
+    case_filename = examples.download_file(
+        "mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session"
+    )
+    data_filename = examples.download_file(
+        "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
+    )
+    file_session = FileSession()
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
+
+    field_data = file_session.field_data
+
+    transaction_1 = field_data.new_transaction()
+
+    with pytest.raises(RuntimeError) as msg:
+        transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", [29, 30])
+    assert (
+        msg.value.args[0]
+        == r"For multi-phase cases field name should have a prefix of phase name."
+    )
+
+    with pytest.raises(RuntimeError) as msg:
+        d_size = field_data.get_vector_field_data("velocity", surface_ids=[34])[34].size
+    assert (
+        msg.value.args[0]
+        == r"For multi-phase cases field name should have a prefix of phase name."
+    )
