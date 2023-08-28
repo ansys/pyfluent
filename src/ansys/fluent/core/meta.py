@@ -180,11 +180,8 @@ class PyLocalBaseMeta(type):
     @classmethod
     def __create_get_session(cls):
         def wrapper(self, obj=None):
-            obj = self if obj is None else obj
-            parent = obj
-            if getattr(obj, "_parent", None):
-                parent = self.get_root(obj._parent)
-            return parent.session
+            root = self.get_root(obj)
+            return root.session
 
         return wrapper
 
@@ -425,17 +422,8 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_getattribute(cls):
         def wrapper(self, name):
-            if name == "_availability":
-                return object.__getattribute__(self, "_availability")
-            availability = (
-                getattr(self, "_availability")(name)
-                if hasattr(self, "_availability")
-                else True
-            )
-            if availability:
-                return object.__getattribute__(self, name)
-            else:
-                return None
+            obj = object.__getattribute__(self, name)
+            return obj
 
         return wrapper
 
@@ -459,13 +447,8 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
-                    availability = (
-                        getattr(self, "_availability")(name)
-                        if hasattr(self, "_availability")
-                        else True
-                    )
-                    if availability:
-                        o = getattr(self, name)
+                    o = getattr(self, name)
+                    if getattr(o, "is_active", True):
                         if cls.__class__.__name__ == "PyLocalObjectMeta":
                             state[name] = o(show_attributes)
 
