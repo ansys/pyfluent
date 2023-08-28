@@ -26,9 +26,15 @@ class Transaction:
             self.field_name = field_name
             self.surface_ids = surface_ids
 
+    class _VectorFieldTransaction:
+        def __init__(self, field_name, surface_ids):
+            self.field_name = field_name
+            self.surface_ids = surface_ids
+
     def __init__(self, file_session):
         self._surface_transactions = []
         self._scalar_field_transactions = []
+        self._vector_field_transactions = []
         self._file_session = file_session
 
     def add_surfaces_request(
@@ -54,6 +60,17 @@ class Transaction:
                 Transaction._ScalarFieldTransaction(field_name, surface_ids)
             )
 
+    def add_vector_fields_request(
+        self,
+        field_name: str,
+        surface_ids: Optional[List[int]] = None,
+        surface_names: Optional[List[str]] = None,
+    ) -> None:
+        for surface_id in surface_ids:
+            self._vector_field_transactions.append(
+                Transaction._VectorFieldTransaction(field_name, surface_ids)
+            )
+
     def get_fields(self):
         mesh = self._file_session._case_file.get_mesh()
         field_data = {}
@@ -77,6 +94,22 @@ class Transaction:
                     transaction.field_name
                 ] = self._file_session._data_file.get_face_data(
                     "phase-1", transaction.field_name, surface_id
+                )
+
+        vector_field_tag = (("type", "vector-field"),)
+
+        for transaction in self._vector_field_transactions:
+            if transaction.field_name != "velocity":
+                raise RuntimeError("Only 'velocity' is allowed field.")
+            if vector_field_tag not in field_data:
+                field_data[vector_field_tag] = {}
+            field_data_surface = field_data[vector_field_tag]
+            for surface_id in transaction.surface_ids:
+                field_data_surface[surface_id] = {}
+                field_data_surface[surface_id][
+                    transaction.field_name
+                ] = _form_vector_array_from_data(
+                    self._file_session._data_file, surface_id
                 )
 
         for transaction in self._surface_transactions:
