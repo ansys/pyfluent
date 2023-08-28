@@ -8,6 +8,10 @@ configuration options that can also be specified through the
 ``container_dict`` argument for :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`,
 see `Docker run documentation`_.
 
+For the Fluent Docker container to be able to find license information, the license file or server needs to be specified
+through the ``ANSYSLMD_LICENSE_FILE`` environment variable,
+or the ``license_server`` argument for the ``container_dict`` (see :func:`configure_container_dict`).
+
 .. _Docker run documentation: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run
 
 Examples
@@ -17,7 +21,7 @@ Launching a Fluent Docker container with system default configuration:
 >>> import ansys.fluent.core as pyfluent
 >>> session = pyfluent.launch_fluent(start_container=True)
 
-Launching with custom configuration:
+Launching with custom configuration (notice ``host_mount_path`` is an argument for :func:`configure_container_dict`):
 
 >>> import ansys.fluent.core as pyfluent
 >>> custom_config = {}
@@ -28,6 +32,7 @@ Getting default Fluent Docker container configuration, then launching with custo
 
 >>> import ansys.fluent.core as pyfluent
 >>> config_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+
 Docker container run configuration information:
 
 config_dict =
@@ -41,6 +46,7 @@ config_dict =
  'ports': {'54000': 54000},
  'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/mnt/pyfluent'],
  'working_dir': '/mnt/pyfluent'}
+
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 
@@ -117,11 +123,13 @@ def configure_container_dict(
 
     Notes
     -----
-    This function should usually not be called directly, it will be automatically used by
-    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` instead.
+    This function should usually not be called directly, it is automatically used by
+    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
 
     For a list of additional Docker container run configuration options that can also be specified using
     ``container_dict``, see `Docker run documentation`_.
+
+    See also :func:`start_fluent_container`.
     """
 
     if (
@@ -304,7 +312,10 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
 
     Notes
     -----
-    See also :func:`configure_container_dict`.
+    Uses :func:`configure_container_dict` to parse the optional ``container_dict`` configuration.
+
+    This function should usually not be called directly, it is automatically used by
+    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
     """
 
     if container_dict is None:
