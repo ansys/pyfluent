@@ -31,11 +31,12 @@ class Transaction:
             self.field_name = field_name
             self.surface_ids = surface_ids
 
-    def __init__(self, file_session):
+    def __init__(self, file_session, field_info):
         self._surface_transactions = []
         self._scalar_field_transactions = []
         self._vector_field_transactions = []
         self._file_session = file_session
+        self._field_info = field_info
 
     def add_surfaces_request(
         self, surface_ids, provide_vertices=True, provide_faces=True
@@ -55,10 +56,20 @@ class Transaction:
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
     ) -> None:
-        for surface_id in surface_ids:
-            self._scalar_field_transactions.append(
-                Transaction._ScalarFieldTransaction(field_name, surface_ids)
-            )
+        if surface_ids is None:
+            surface_ids = []
+        if surface_ids and surface_names:
+            raise RuntimeError("Please provide either surface names or surface ids.")
+
+        if surface_names:
+            for surface_name in surface_names:
+                surface_ids.append(
+                    self._field_info.get_surfaces_info()[surface_name]["surface_id"][0]
+                )
+
+        self._scalar_field_transactions.append(
+            Transaction._ScalarFieldTransaction(field_name, surface_ids)
+        )
 
     def add_vector_fields_request(
         self,
@@ -66,10 +77,20 @@ class Transaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
     ) -> None:
-        for surface_id in surface_ids:
-            self._vector_field_transactions.append(
-                Transaction._VectorFieldTransaction(field_name, surface_ids)
-            )
+        if surface_ids is None:
+            surface_ids = []
+        if surface_ids and surface_names:
+            raise RuntimeError("Please provide either surface names or surface ids.")
+
+        if surface_names:
+            for surface_name in surface_names:
+                surface_ids.append(
+                    self._field_info.get_surfaces_info()[surface_name]["surface_id"][0]
+                )
+
+        self._vector_field_transactions.append(
+            Transaction._VectorFieldTransaction(field_name, surface_ids)
+        )
 
     def get_fields(self):
         mesh = self._file_session._case_file.get_mesh()
@@ -145,9 +166,7 @@ class FileFieldData:
 
     def new_transaction(self):
         """Create a new field transaction."""
-        return Transaction(
-            self._file_session,
-        )
+        return Transaction(self._file_session, self._field_info)
 
     def get_surface_data(
         self,
