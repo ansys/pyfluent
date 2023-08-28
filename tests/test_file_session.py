@@ -1,3 +1,5 @@
+import pytest
+
 from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 from ansys.fluent.core.services.field_data import SurfaceDataType
@@ -8,27 +10,6 @@ def round_off_list_elements(input_list):
         input_list[index] = round(value, 6)
 
     return input_list
-
-
-case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
-data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
-file_session = FileSession()
-file_session.read_case(case_filename)
-file_session.read_data(data_filename)
-
-assert (
-    file_session.field_data.get_vector_field_data("SV_U", surface_name="wall").size
-    == 3630
-)
-assert (
-    round(
-        file_session.field_data.get_scalar_field_data("SV_T", surface_name="wall")[
-            1800
-        ].scalar_data,
-        4,
-    )
-    == 313.15
-)
 
 
 def test_field_info_data_multi_phase():
@@ -62,6 +43,20 @@ def test_field_info_data_multi_phase():
             5,
         )
         == 0.00103
+    )
+
+    assert (
+        file_session.field_data.get_vector_field_data(
+            "phase-2:velocity", surface_ids=[33]
+        )[33].size
+        == 268
+    )
+
+    assert (
+        file_session.field_data.get_vector_field_data(
+            "phase-1:velocity", surface_ids=[34]
+        )[34].size
+        == 2168
     )
 
 
@@ -151,6 +146,37 @@ def test_field_info_data_single_phase():
         )[1000].node_indices
     ) == [1259, 1260, 1227, 1226]
 
+    assert (
+        file_session.field_data.get_vector_field_data(
+            "velocity", surface_name="wall"
+        ).size
+        == 3630
+    )
+    assert (
+        file_session.field_data.get_vector_field_data(
+            "velocity", surface_name="symmetry"
+        ).size
+        == 2018
+    )
+    assert (
+        round(
+            file_session.field_data.get_vector_field_data(
+                "velocity", surface_name="symmetry"
+            )[1009].x,
+            5,
+        )
+        == 0.0023
+    )
+    assert (
+        round(
+            file_session.field_data.get_vector_field_data(
+                "velocity", surface_name="symmetry"
+            )[1009].y,
+            5,
+        )
+        == 1.22311
+    )
+
 
 def test_data_reader_single_phase():
     case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
@@ -228,3 +254,73 @@ def test_data_reader_multi_phase():
     assert (
         len(file_session._data_file.get_face_data("phase-1", "SV_DENSITY", 33)) == 268
     )
+
+
+def test_transaction_request_single_phase():
+    case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+    data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+    file_session = FileSession()
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
+
+    field_data = file_session.field_data
+
+    transaction_1 = field_data.new_transaction()
+
+    transaction_1.add_surfaces_request([3, 5])
+
+    transaction_1.add_scalar_fields_request("SV_T", [3, 5])
+    transaction_1.add_scalar_fields_request("SV_T", surface_names=["wall", "symmetry"])
+
+    transaction_1.add_vector_fields_request("velocity", [3, 5])
+
+    data = transaction_1.get_fields()
+
+    assert data
+
+    assert len(data) == 3
+
+    # Surfaces Data
+    assert len(data[(("type", "surface-data"),)]) == 2
+    assert list(data[(("type", "surface-data"),)][3].keys()) == ["faces", "vertices"]
+
+    # Scalar Field Data
+    scalar_field_tag = (
+        ("type", "scalar-field"),
+        ("dataLocation", 1),
+        ("boundaryValues", False),
+    )
+
+    assert len(data[scalar_field_tag]) == 3
+    assert len(data[scalar_field_tag][5]["SV_T"]) == 100
+    assert round(data[scalar_field_tag][5]["SV_T"][50], 2) == 295.43
+
+    surf_id = file_session.field_info.get_surfaces_info()["symmetry"]["surface_id"][0]
+    assert round(data[scalar_field_tag][surf_id]["SV_T"][50], 2) == 293.15
+
+    # Vector Field Data
+    assert len(data[(("type", "vector-field"),)]) == 2
+    assert len(data[(("type", "vector-field"),)][5]["velocity"]) == 300
+    assert round(data[(("type", "vector-field"),)][5]["velocity"][150], 5) == 0.03035
+    assert round(data[(("type", "vector-field"),)][5]["velocity"][151], 5) == 0.49224
+    assert round(data[(("type", "vector-field"),)][5]["velocity"][152], 5) == 0.00468
+
+
+def test_error_handling():
+    case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+    data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+    file_session = FileSession()
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
+
+    field_data = file_session.field_data
+
+    transaction_1 = field_data.new_transaction()
+
+    with pytest.raises(RuntimeError) as msg:
+        transaction_1.add_pathlines_fields_request("SV_T", [3, 5])
+    assert msg.value.args[0] == r"Path-lines not supported."
+
+    with pytest.raises(RuntimeError) as msg:
+        field_data.get_pathlines_field_data("SV_T", [3, 5])
+    assert msg.value.args[0] == r"Path-lines not supported."

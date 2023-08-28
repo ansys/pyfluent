@@ -92,6 +92,14 @@ class Transaction:
             Transaction._VectorFieldTransaction(field_name, surface_ids)
         )
 
+    def add_pathlines_fields_request(
+        self,
+        field_name: str,
+        surface_ids: Optional[List[int]] = None,
+        surface_names: Optional[List[str]] = None,
+    ):
+        raise RuntimeError("Path-lines not supported.")
+
     def get_fields(self):
         mesh = self._file_session._case_file.get_mesh()
         field_data = {}
@@ -333,6 +341,14 @@ class FileFieldData:
                     )
                     for surface_id in surface_ids
                 }
+
+    def get_pathlines_field_data(
+        self,
+        field_name: str,
+        surface_ids: Optional[List[int]] = None,
+        surface_name: Optional[str] = None,
+    ):
+        raise RuntimeError("Path-lines not supported.")
 
 
 class FileFieldInfo:
