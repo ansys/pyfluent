@@ -306,6 +306,45 @@ def test_transaction_request_single_phase():
     assert round(data[(("type", "vector-field"),)][5]["velocity"][152], 5) == 0.00468
 
 
+def test_transaction_request_multi_phase():
+    case_filename = examples.download_file(
+        "mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session"
+    )
+    data_filename = examples.download_file(
+        "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
+    )
+    file_session = FileSession()
+    file_session.read_case(case_filename)
+    file_session.read_data(data_filename)
+
+    field_data = file_session.field_data
+
+    transaction_1 = field_data.new_transaction()
+
+    transaction_1.add_scalar_fields_request("phase-2:SV_WALL_YPLUS", [29, 30])
+
+    transaction_1.add_vector_fields_request("phase-3:velocity", [31])
+
+    data = transaction_1.get_fields()
+
+    assert data
+
+    assert len(data) == 2
+
+    # Scalar Field Data
+    scalar_field_tag = (
+        ("type", "scalar-field"),
+        ("dataLocation", 1),
+        ("boundaryValues", False),
+    )
+
+    assert len(data[scalar_field_tag]) == 2
+
+    # Vector Field Data
+    assert len(data[(("type", "vector-field"),)]) == 1
+    assert len(data[(("type", "vector-field"),)][31]["velocity"]) == 456
+
+
 def test_error_handling():
     case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
     data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")

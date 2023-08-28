@@ -22,12 +22,14 @@ class Transaction:
             self.provide_faces = provide_faces
 
     class _ScalarFieldTransaction:
-        def __init__(self, field_name, surface_ids):
+        def __init__(self, field_name, surface_ids, phase="phase-1"):
+            self.phase_name = phase
             self.field_name = field_name
             self.surface_ids = surface_ids
 
     class _VectorFieldTransaction:
-        def __init__(self, field_name, surface_ids):
+        def __init__(self, field_name, surface_ids, phase="phase-1"):
+            self.phase_name = phase
             self.field_name = field_name
             self.surface_ids = surface_ids
 
@@ -67,9 +69,16 @@ class Transaction:
                     self._field_info.get_surfaces_info()[surface_name]["surface_id"][0]
                 )
 
-        self._scalar_field_transactions.append(
-            Transaction._ScalarFieldTransaction(field_name, surface_ids)
-        )
+        if len(self._file_session._data_file.get_phases()) > 1:
+            self._scalar_field_transactions.append(
+                Transaction._ScalarFieldTransaction(
+                    field_name.split(":")[1], surface_ids, field_name.split(":")[0]
+                )
+            )
+        else:
+            self._scalar_field_transactions.append(
+                Transaction._ScalarFieldTransaction(field_name, surface_ids)
+            )
 
     def add_vector_fields_request(
         self,
@@ -88,9 +97,16 @@ class Transaction:
                     self._field_info.get_surfaces_info()[surface_name]["surface_id"][0]
                 )
 
-        self._vector_field_transactions.append(
-            Transaction._VectorFieldTransaction(field_name, surface_ids)
-        )
+        if len(self._file_session._data_file.get_phases()) > 1:
+            self._vector_field_transactions.append(
+                Transaction._VectorFieldTransaction(
+                    field_name.split(":")[1], surface_ids, field_name.split(":")[0]
+                )
+            )
+        else:
+            self._vector_field_transactions.append(
+                Transaction._VectorFieldTransaction(field_name, surface_ids)
+            )
 
     def add_pathlines_fields_request(
         self,
@@ -122,7 +138,7 @@ class Transaction:
                 field_data_surface[surface_id][
                     transaction.field_name
                 ] = self._file_session._data_file.get_face_data(
-                    "phase-1", transaction.field_name, surface_id
+                    transaction.phase_name, transaction.field_name, surface_id
                 )
 
         vector_field_tag = (("type", "vector-field"),)
@@ -138,7 +154,7 @@ class Transaction:
                 field_data_surface[surface_id][
                     transaction.field_name
                 ] = _form_vector_array_from_data(
-                    self._file_session._data_file, surface_id
+                    self._file_session._data_file, surface_id, transaction.phase_name
                 )
 
         for transaction in self._surface_transactions:
