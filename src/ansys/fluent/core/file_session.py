@@ -15,6 +15,8 @@ from ansys.fluent.core.services.field_data import (
 
 
 class Transaction:
+    """Populates field data on surfaces."""
+
     class _SurfaceTransaction:
         def __init__(self, surface_id, provide_vertices, provide_faces):
             self.surface_id = surface_id
@@ -34,6 +36,7 @@ class Transaction:
             self.surface_ids = surface_ids
 
     def __init__(self, file_session, field_info):
+        """__init__ method of Transaction class."""
         self._surface_transactions = []
         self._scalar_field_transactions = []
         self._vector_field_transactions = []
@@ -43,6 +46,30 @@ class Transaction:
     def add_surfaces_request(
         self, surface_ids, provide_vertices=True, provide_faces=True
     ) -> None:
+        """Add request to get surface data (vertices, face connectivity,
+        centroids, and normals).
+
+        Parameters
+        ----------
+        surface_ids : List[int], optional
+            List of surface IDS for the surface data.
+        surface_names: List[str], optional
+            List of surface names for the surface data.
+        overset_mesh : bool, optional
+            Whether to get the overset met. The default is ``False``.
+        provide_vertices : bool, optional
+            Whether to get node coordinates. The default is ``True``.
+        provide_faces : bool, optional
+            Whether to get face connectivity. The default is ``True``.
+        provide_faces_centroid : bool, optional
+            Whether to get face centroids. The default is ``False``.
+        provide_faces_normal : bool, optional
+            Whether to get faces normal. The default is ``False``
+
+        Returns
+        -------
+        None
+        """
         for surface_id in surface_ids:
             self._surface_transactions.append(
                 Transaction._SurfaceTransaction(
@@ -58,6 +85,27 @@ class Transaction:
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
     ) -> None:
+        """Add request to get scalar field data on surfaces.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the scalar field.
+        surface_ids : List[int], optional
+            List of surface IDs for scalar field data.
+        surface_names: List[str], optional
+            List of surface names for scalar field data.
+        node_value : bool, optional
+            Whether to provide the nodal location. The default is ``True``. If
+            ``False``, the element location is provided.
+        boundary_value : bool, optional
+            Whether to provide the slip velocity at the wall boundaries. The default
+            is ``False``. When ``True``, no slip velocity is provided.
+
+        Returns
+        -------
+        None
+        """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
@@ -90,6 +138,21 @@ class Transaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
     ) -> None:
+        """Add request to get vector field data on surfaces.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the vector field.
+        surface_ids : List[int], optional
+            List of surface IDs for vector field data.
+        surface_names: List[str], optional
+            List of surface names for vector field data.
+
+        Returns
+        -------
+        None
+        """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
@@ -122,9 +185,32 @@ class Transaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
     ):
+        """Add request to get pathlines field on surfaces.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the scalar field to color pathlines.
+        surface_ids : List[int], optional
+            List of surface IDs for pathlines field data.
+        surface_names : List[str], optional
+            List of surface names for pathlines field data.
+
+        Returns
+        -------
+        None
+        """
         raise RuntimeError("Path-lines not supported.")
 
     def get_fields(self):
+        """Get data for previously added requests and then clear all requests.
+
+        Returns
+        -------
+        Dict[int, Dict[int, Dict[str, np.array]]]
+            Data is returned as dictionary of dictionaries in the following structure:
+            tag Union[int, Tuple]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+        """
         mesh = self._file_session._case_file.get_mesh()
         field_data = {}
 
@@ -207,6 +293,27 @@ class FileFieldData:
         surface_name: Optional[str] = None,
         overset_mesh: Optional[bool] = False,
     ):
+        """Get surface data (vertices, faces connectivity, centroids, and
+        normals).
+
+        Parameters
+        ----------
+        data_type : SurfaceDataType
+            SurfaceDataType Enum member.
+        surface_ids : List[int], optional
+            List of surface IDs for the surface data.
+        surface_name : str, optional
+            Surface name for the surface data.
+        overset_mesh : bool, optional
+            Whether to provide the overset method. The default is ``False``.
+
+        Returns
+        -------
+        Union[Vertices, FacesConnectivity, Dict[int, Union[Vertices, FacesConnectivity]]]
+             If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
+             If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
+             vertices, connectivity data, and normal or centroid data is returned.
+        """
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
 
@@ -262,6 +369,30 @@ class FileFieldData:
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
     ):
+        """Get scalar field data on a surface.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the scalar field.
+        surface_ids : List[int], optional
+            List of surface IDs for scalar field data.
+        surface_name: str, optional
+            Surface Name for scalar field data.
+        node_value : bool, optional
+            Whether to provide data for the nodal location. The default is ``True``.
+            When ``False``, data is provided for the element location.
+        boundary_value : bool, optional
+            Whether to provide slip velocity at the wall boundaries. The default is
+            ``False``. When ``True``, no slip velocity is provided.
+
+        Returns
+        -------
+        Union[ScalarFieldData, Dict[int, ScalarFieldData]]
+            If a surface name is provided as input, scalar field data is returned. If surface
+            IDs are provided as input, a dictionary containing a map of surface IDs to scalar
+            field data.
+        """
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
 
@@ -323,6 +454,24 @@ class FileFieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
     ):
+        """Get vector field data on a surface.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the vector field.
+        surface_ids : List[int], optional
+            List of surface IDs for vector field data.
+        surface_name: str, optional
+            Surface Name for vector field data.
+
+        Returns
+        -------
+        Union[VectorFieldData, Dict[int, VectorFieldData]]
+            If a surface name is provided as input, vector field data is returned.
+            If surface IDs are provided as input, a dictionary containing a map of
+            surface IDs to vector field data is returned.
+        """
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
 
@@ -388,6 +537,23 @@ class FileFieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
     ):
+        """Get the pathlines field data on a surface.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the scalar field to color pathlines.
+        surface_ids : List[int], optional
+            List of surface IDs for pathlines field data.
+        surface_name : str, optional
+            Surface name for pathlines field data.
+
+        Returns
+        -------
+        Dict
+            Dictionary containing a map of surface IDs to the pathline data.
+            For example, pathlines connectivity, vertices, and field.
+        """
         raise RuntimeError("Path-lines not supported.")
 
 
@@ -470,6 +636,7 @@ class FileFieldInfo:
 
 class FileSession:
     def __init__(self):
+        """__init__ method of FileSession class"""
         self._case_file = None
         self._data_file = None
         self.field_info = FileFieldInfo(self)
@@ -478,7 +645,9 @@ class FileSession:
         self.session_id = 1
 
     def read_case(self, case_filepath):
+        """Read Case file."""
         self._case_file = CaseFile(case_filepath)
 
     def read_data(self, data_filepath):
+        """Read Data file"""
         self._data_file = DataFile(data_filepath, case_file_handle=self._case_file)
