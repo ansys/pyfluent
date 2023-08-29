@@ -24,20 +24,24 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver.tui.define.models.multiphase.vof_sub_models("yes", "no")
     solver.tui.define.phases.set_domain_properties.change_phases_names("water", "air")
     solver.setup.boundary_conditions.pressure_inlet["inflow"].phase["mixture"] = {
-        "open_channel": True,
-        "direction_spec": "Direction Vector",
-        "vmag": 1.452,
-        "ht_bottom": -0.941875,
-        "turb_intensity": 0.01,
-        "turb_viscosity_ratio": 1,
+        "multiphase": {
+            "open_channel": True,
+            "vmag": 1.452,
+            "ht_bottom": -0.941875,
+        },
+        "momentum": {"direction_specification_method": "Direction Vector"},
+        "turbulence": {
+            "turbulent_intensity": 0.01,
+            "turbulent_viscosity_ratio_real": 1,
+        },
     }
     solver.setup.boundary_conditions.pressure_outlet["outflow"].phase["mixture"] = {
         "open_channel": True,
         "ht_bottom": -0.941875,
         "den_spec": "From Free Surface Level",
         "direction_spec": "Normal to Boundary",
-        "turb_intensity": 0.01,
-        "turb_viscosity_ratio": 1,
+        "turbulent_intensity": 0.01,
+        "turbulent_viscosity_ratio_real": 1,
         "p_backflow_spec_gen": "Static Pressure",
     }
 
