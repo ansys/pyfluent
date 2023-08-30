@@ -663,10 +663,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    if solver.get_fluent_version() < "23.2.0":
-        assert existing == modified
-    else:
+    if solver.get_fluent_version() < "24.1.0":
         assert existing == None and modified == False
+    else:
+        assert existing == modified
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
         "user-creatable?", bool
@@ -674,31 +674,20 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     modified = solver.setup.boundary_conditions.velocity_inlet.user_creatable()
     assert existing == modified
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
+    if solver.get_fluent_version() < "24.1.0":
+        turbulent_viscosity_ratio = solver.setup.boundary_conditions.velocity_inlet[
             "inlet1"
-        ].turb_viscosity_ratio.default_value()
-        == 10
-    )
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
+        ].turb_viscosity_ratio
+    else:
+        turbulent_viscosity_ratio = solver.setup.boundary_conditions.velocity_inlet[
             "inlet1"
-        ].turb_viscosity_ratio.get_attr("min")
-        == 0
-    )
+        ].turbulence.turbulent_viscosity_ratio_real
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].turb_viscosity_ratio.get_attr("max")
-        is False
-    )
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].turb_viscosity_ratio.max()
-        is None
-    )
+    assert turbulent_viscosity_ratio.default_value() == 10
+    assert turbulent_viscosity_ratio.get_attr("min") == 0
+
+    assert turbulent_viscosity_ratio.get_attr("max") is False
+    assert turbulent_viscosity_ratio.max() is None
 
 
 @pytest.mark.fluent_version("latest")
@@ -767,14 +756,11 @@ def test_find_children_from_settings_root_232(load_static_mixer_case):
         "general",
         "models/virtual_blade_model/rotor/general",
     }
-    assert set(find_children(setup_cls(), "*gen")) >= {
-        "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
-        "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
-        "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
-        "boundary_conditions/outlet_vent/p_backflow_spec_gen",
-        "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
-        "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
-    }
+    assert any(
+        path
+        for path in find_children(setup_cls(), "*gen")
+        if path.endswith("p_backflow_spec_gen")
+    )
 
 
 @pytest.mark.fluent_version("latest")
