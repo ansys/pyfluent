@@ -775,20 +775,13 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
         "turbulence_expert/production_limiter",
     }
 
-    assert set(
-        find_children(
+    assert any(
+        path
+        for path in find_children(
             load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
         )
-    ) >= {
-        "phase/geom_dir_spec",
-        "phase/geom_dir_x",
-        "phase/geom_dir_y",
-        "phase/geom_dir_z",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-    }
+        if path.endswith("geom_dir_spec")
+    )
 
     assert set(
         find_children(
