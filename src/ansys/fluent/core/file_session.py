@@ -231,7 +231,7 @@ class Transaction:
                 field_data_surface[surface_id] = {}
                 field_data_surface[surface_id][
                     transaction.field_name
-                ] = self._file_session._data_file.get_face_data(
+                ] = self._file_session._data_file.get_face_scalar_field_data(
                     transaction.phase_name, transaction.field_name, surface_id
                 )
 
@@ -247,9 +247,10 @@ class Transaction:
                 field_data_surface[surface_id] = {}
                 field_data_surface[surface_id][
                     transaction.field_name
-                ] = _form_vector_array_from_data(
-                    self._file_session._data_file, surface_id, transaction.phase_name
+                ] = self._file_session._data_file.get_face_vector_field_data(
+                    transaction.phase_name, surface_id
                 )
+                field_data_surface[surface_id]["vector-scale"] = np.array([0.1])
 
         for transaction in self._surface_transactions:
             if (("type", "surface-data"),) not in field_data:
@@ -263,18 +264,6 @@ class Transaction:
                 transaction.surface_id
             )
         return field_data
-
-
-def _form_vector_array_from_data(data, surface_id, phase="phase-1"):
-    x_comp = data.get_face_data(phase, "SV_U", surface_id)
-    y_comp = data.get_face_data(phase, "SV_V", surface_id)
-    z_comp = data.get_face_data(phase, "SV_W", surface_id)
-
-    vector_data = np.array([])
-    for a, b, c in zip(x_comp, y_comp, z_comp):
-        vector_data = np.append(vector_data, [a, b, c])
-
-    return vector_data
 
 
 class FileFieldData:
@@ -407,7 +396,7 @@ class FileFieldData:
                     )
                 return ScalarFieldData(
                     surface_ids[0],
-                    self._file_session._data_file.get_face_data(
+                    self._file_session._data_file.get_face_scalar_field_data(
                         field_name.split(":")[0],
                         field_name.split(":")[1],
                         surface_ids[0],
@@ -416,7 +405,7 @@ class FileFieldData:
             else:
                 return ScalarFieldData(
                     surface_ids[0],
-                    self._file_session._data_file.get_face_data(
+                    self._file_session._data_file.get_face_scalar_field_data(
                         "phase-1", field_name, surface_ids[0]
                     ),
                 )
@@ -429,7 +418,7 @@ class FileFieldData:
                 return {
                     surface_id: ScalarFieldData(
                         surface_id,
-                        self._file_session._data_file.get_face_data(
+                        self._file_session._data_file.get_face_scalar_field_data(
                             field_name.split(":")[0],
                             field_name.split(":")[1],
                             surface_id,
@@ -441,7 +430,7 @@ class FileFieldData:
                 return {
                     surface_id: ScalarFieldData(
                         surface_id,
-                        self._file_session._data_file.get_face_data(
+                        self._file_session._data_file.get_face_scalar_field_data(
                             "phase-1", field_name, surface_id
                         ),
                     )
@@ -490,14 +479,12 @@ class FileFieldData:
                     raise RuntimeError(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
-                vector_data = _form_vector_array_from_data(
-                    self._file_session._data_file,
-                    surface_ids[0],
-                    field_name.split(":")[0],
+                vector_data = self._file_session._data_file.get_face_vector_field_data(
+                    field_name.split(":")[0], surface_ids[0]
                 )
             else:
-                vector_data = _form_vector_array_from_data(
-                    self._file_session._data_file, surface_ids[0]
+                vector_data = self._file_session._data_file.get_face_vector_field_data(
+                    "phase-1", surface_ids[0]
                 )
 
             return VectorFieldData(surface_ids[0], vector_data, scale=1.0)
@@ -510,10 +497,8 @@ class FileFieldData:
                 return {
                     surface_id: VectorFieldData(
                         surface_id,
-                        _form_vector_array_from_data(
-                            self._file_session._data_file,
-                            surface_id,
-                            field_name.split(":")[0],
+                        self._file_session._data_file.get_face_vector_field_data(
+                            field_name.split(":")[0], surface_id
                         ),
                         scale=1.0,
                     )
@@ -523,8 +508,8 @@ class FileFieldData:
                 return {
                     surface_id: VectorFieldData(
                         surface_id,
-                        _form_vector_array_from_data(
-                            self._file_session._data_file, surface_id
+                        self._file_session._data_file.get_face_vector_field_data(
+                            "phase-1", surface_id
                         ),
                         scale=1.0,
                     )
@@ -583,7 +568,7 @@ class FileFieldInfo:
         if not surface_ids:
             surface_ids = self._file_session._case_file.get_mesh().get_surface_ids()
         for surface_id in surface_ids:
-            data = self._file_session._data_file.get_face_data(
+            data = self._file_session._data_file.get_face_scalar_field_data(
                 "phase-1", field, surface_id
             )
             if len(data) == 0:
@@ -603,13 +588,33 @@ class FileFieldInfo:
         phases = self._file_session._data_file.get_phases()
 
         return {
-            face_variable: {
+            phase
+            + ":"
+            + face_variable: {
                 "display_name": face_variable,
                 "section": "field-data",
                 "domain": phase,
             }
             for phase in phases
             for face_variable in self._file_session._data_file.get_face_variables(phase)
+        }
+
+    def get_vector_fields_info(self):
+        """Get vector fields information (vector components).
+
+        Returns
+        -------
+        Dict
+        """
+        phases = self._file_session._data_file.get_phases()
+
+        return {
+            "velocity": {
+                "x-component": f"{phase}: SV_U",
+                "y-component": f"{phase}: SV_V",
+                "z-component": f"{phase}: SV_W",
+            }
+            for phase in phases
         }
 
     def get_surfaces_info(self):

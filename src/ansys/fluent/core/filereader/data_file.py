@@ -22,6 +22,7 @@ import xml.etree.ElementTree as ET
 
 import h5py
 from lxml import etree
+import numpy as np
 
 from . import lispy
 
@@ -39,8 +40,10 @@ class DataFile:
         Get the list of phases.
     get_cell_variables
         Get the variables list available at cell.
-    get_face_data
-        Get the field data for face.
+    get_face_scalar_field_data
+        Get the scalar field data for face.
+    get_face_vector_field_data
+        Get the vector field data for face.
     """
 
     def __init__(
@@ -112,11 +115,22 @@ class DataFile:
     def get_cell_variables(self, phase_name) -> int:
         return self._field_data[phase_name]["cells"]["fields"][0].decode().split(";")
 
-    def get_face_data(self, phase_name, field_name, surface_id) -> int:
+    def get_face_scalar_field_data(self, phase_name, field_name, surface_id) -> int:
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
         field_data = self._field_data[phase_name]["faces"][field_name]
         keys = list(field_data.keys())
         return field_data["1"][min_id : max_id + 1]
+
+    def get_face_vector_field_data(self, phase_name, surface_id):
+        x_comp = self.get_face_scalar_field_data(phase_name, "SV_U", surface_id)
+        y_comp = self.get_face_scalar_field_data(phase_name, "SV_V", surface_id)
+        z_comp = self.get_face_scalar_field_data(phase_name, "SV_W", surface_id)
+
+        vector_data = np.array([])
+        for a, b, c in zip(x_comp, y_comp, z_comp):
+            vector_data = np.append(vector_data, [a, b, c])
+
+        return vector_data
 
 
 def _get_data_filepath_from_flprj(flprj_file):

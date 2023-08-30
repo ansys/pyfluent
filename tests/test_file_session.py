@@ -208,7 +208,12 @@ def test_data_reader_single_phase():
     ]
 
     assert (
-        len(file_session._data_file.get_face_data("phase-1", "SV_DENSITY", 3)) == 3630
+        len(
+            file_session._data_file.get_face_scalar_field_data(
+                "phase-1", "SV_DENSITY", 3
+            )
+        )
+        == 3630
     )
 
 
@@ -252,7 +257,12 @@ def test_data_reader_multi_phase():
     ]
 
     assert (
-        len(file_session._data_file.get_face_data("phase-1", "SV_DENSITY", 33)) == 268
+        len(
+            file_session._data_file.get_face_scalar_field_data(
+                "phase-1", "SV_DENSITY", 33
+            )
+        )
+        == 268
     )
 
 

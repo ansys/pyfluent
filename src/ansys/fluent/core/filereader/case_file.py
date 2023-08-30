@@ -233,7 +233,8 @@ class Mesh:
         nodes = np.unique(nodes)
         nodes = np.sort(nodes)
         nodes -= 1
-        vertices = self._file_handle["meshes"]["1"]["nodes"]["coords"]["1"]
+        vertices_dict = self._file_handle["meshes"]["1"]["nodes"]["coords"]
+        vertices = vertices_dict[str(list(vertices_dict.keys())[0])]
         return vertices[:][nodes].flatten()
 
 
