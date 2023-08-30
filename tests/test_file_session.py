@@ -352,7 +352,7 @@ def test_transaction_request_multi_phase():
 
     # Vector Field Data
     assert len(data[(("type", "vector-field"),)]) == 1
-    assert len(data[(("type", "vector-field"),)][31]["velocity"]) == 456
+    assert len(data[(("type", "vector-field"),)][31]["phase-3:velocity"]) == 456
 
 
 def test_error_handling_single_phase():

@@ -124,7 +124,7 @@ class Transaction:
                 )
             self._scalar_field_transactions.append(
                 Transaction._ScalarFieldTransaction(
-                    field_name.split(":")[1], surface_ids, field_name.split(":")[0]
+                    field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
@@ -171,7 +171,7 @@ class Transaction:
                 )
             self._vector_field_transactions.append(
                 Transaction._VectorFieldTransaction(
-                    field_name.split(":")[1], surface_ids, field_name.split(":")[0]
+                    field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
@@ -238,7 +238,7 @@ class Transaction:
         vector_field_tag = (("type", "vector-field"),)
 
         for transaction in self._vector_field_transactions:
-            if transaction.field_name != "velocity":
+            if "velocity" not in transaction.field_name:
                 raise RuntimeError("Only 'velocity' is allowed field.")
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
@@ -587,17 +587,31 @@ class FileFieldInfo:
         """
         phases = self._file_session._data_file.get_phases()
 
-        return {
-            phase
-            + ":"
-            + face_variable: {
-                "display_name": face_variable,
-                "section": "field-data",
-                "domain": phase,
+        if len(phases) > 1:
+            return {
+                phase
+                + ":"
+                + face_variable: {
+                    "display_name": face_variable,
+                    "section": "field-data",
+                    "domain": phase,
+                }
+                for phase in phases
+                for face_variable in self._file_session._data_file.get_face_variables(
+                    phase
+                )
             }
-            for phase in phases
-            for face_variable in self._file_session._data_file.get_face_variables(phase)
-        }
+        else:
+            return {
+                face_variable: {
+                    "display_name": face_variable,
+                    "section": "field-data",
+                    "domain": phases[0],
+                }
+                for face_variable in self._file_session._data_file.get_face_variables(
+                    phases[0]
+                )
+            }
 
     def get_vector_fields_info(self):
         """Get vector fields information (vector components).
@@ -608,14 +622,25 @@ class FileFieldInfo:
         """
         phases = self._file_session._data_file.get_phases()
 
-        return {
-            "velocity": {
-                "x-component": f"{phase}: SV_U",
-                "y-component": f"{phase}: SV_V",
-                "z-component": f"{phase}: SV_W",
+        if len(phases) > 1:
+            return {
+                phase
+                + ":"
+                + "velocity": {
+                    "x-component": f"{phase}: SV_U",
+                    "y-component": f"{phase}: SV_V",
+                    "z-component": f"{phase}: SV_W",
+                }
+                for phase in phases
             }
-            for phase in phases
-        }
+        else:
+            return {
+                "velocity": {
+                    "x-component": "SV_U",
+                    "y-component": "SV_V",
+                    "z-component": "SV_W",
+                }
+            }
 
     def get_surfaces_info(self):
         """Get surfaces information (surface name, ID, and type).
