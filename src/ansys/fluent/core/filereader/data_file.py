@@ -116,6 +116,8 @@ class DataFile:
         return self._field_data[phase_name]["cells"]["fields"][0].decode().split(";")
 
     def get_face_scalar_field_data(self, phase_name, field_name, surface_id) -> int:
+        if ":" in field_name:
+            field_name = field_name.split(":")[1]
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
         field_data = self._field_data[phase_name]["faces"][field_name]
         keys = list(field_data.keys())
