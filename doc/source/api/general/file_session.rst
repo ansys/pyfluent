@@ -13,7 +13,7 @@ You can use the FileSession by passing the case and data file information by usi
 the CaseReader (:ref:`ref_case_reader`) and DataReader (:ref:`ref_data_reader`).
 This example shows adding case and data file information to FileSession. Then,
 field info is extracted followed by adding a transaction request and extracting
-field data. One ca either run a single or multi-phase case. In that respect, the example
+field data. One can either run a single or multi-phase case. In that respect, the example
 covers both single and multi-phase cases.
 
 Single Phase
