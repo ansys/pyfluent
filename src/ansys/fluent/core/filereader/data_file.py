@@ -100,22 +100,73 @@ class DataFile:
 
     @property
     def case_file(self) -> str:
+        """
+        Returns the name of the associated case file in string format.
+        """
         return self._settings["Case File"][0].decode()
 
-    def variables(self) -> int:
+    def variables(self) -> dict:
+        """Returns all associated data variables in form of a dictionary."""
         data_vars_str = self._settings["Data Variables"][0].decode()
         return {v[0]: v[1] for v in lispy.parse(data_vars_str)[1]}
 
-    def get_phases(self):
+    def get_phases(self) -> list:
+        """
+        Returns list of phases available.
+        """
         return list(self._field_data.keys())
 
-    def get_face_variables(self, phase_name) -> int:
+    def get_face_variables(self, phase_name) -> list:
+        """
+        Extracts face variables available for a particular phase.
+
+        Parameters
+        ----------
+        phase_name : str
+            Name of the phase.
+
+        Returns
+        -------
+            List of face variables.
+        """
         return self._field_data[phase_name]["faces"]["fields"][0].decode().split(";")
 
-    def get_cell_variables(self, phase_name) -> int:
+    def get_cell_variables(self, phase_name) -> list:
+        """
+        Extracts cell variables available for a particular phase.
+
+        Parameters
+        ----------
+        phase_name : str
+            Name of the phase.
+
+        Returns
+        -------
+            List of cell variables.
+        """
         return self._field_data[phase_name]["cells"]["fields"][0].decode().split(";")
 
-    def get_face_scalar_field_data(self, phase_name, field_name, surface_id) -> int:
+    def get_face_scalar_field_data(
+        self, phase_name: str, field_name: str, surface_id: list
+    ) -> np.array:
+        """
+        Gets scalar field data for face.
+
+        Parameters
+        ----------
+        phase_name : str
+            Name of the phase.
+
+        field_name: str
+            Name of the field
+
+        surface_id : List[int]
+            List of surface IDs for scalar field data.
+
+        Returns
+        -------
+            Numpy array containing scalar field data for a particular phase, field and surface.
+        """
         if ":" in field_name:
             field_name = field_name.split(":")[1]
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
@@ -123,7 +174,22 @@ class DataFile:
         keys = list(field_data.keys())
         return field_data["1"][min_id : max_id + 1]
 
-    def get_face_vector_field_data(self, phase_name, surface_id):
+    def get_face_vector_field_data(self, phase_name: str, surface_id: list) -> np.array:
+        """
+        Gets vector field data for face.
+
+        Parameters
+        ----------
+        phase_name : str
+            Name of the phase.
+
+        surface_id : List[int]
+            List of surface IDs for vector field data.
+
+        Returns
+        -------
+            Numpy array containing scalar field data for a particular phase, field and surface.
+        """
         x_comp = self.get_face_scalar_field_data(phase_name, "SV_U", surface_id)
         y_comp = self.get_face_scalar_field_data(phase_name, "SV_V", surface_id)
         z_comp = self.get_face_scalar_field_data(phase_name, "SV_W", surface_id)

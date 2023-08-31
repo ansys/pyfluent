@@ -182,18 +182,21 @@ class Mesh:
     def __init__(self, file_handle):
         self._file_handle = file_handle
 
-    def get_surface_ids(self):
+    def get_surface_ids(self) -> list:
+        """Returns list of ids of all available surfaces."""
         id_data = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["id"]
         return [id_data[i] for i in range(id_data.size)]
 
-    def get_surface_names(self):
+    def get_surface_names(self) -> list:
+        """Returns list of names of all available surfaces."""
         return (
             self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["name"][0]
             .decode()
             .split(";")
         )
 
-    def get_surface_locs(self, surface_id):
+    def get_surface_locs(self, surface_id) -> list:
+        """Returns range of surface locations for a particular surface."""
         ids = self.get_surface_ids()
         index = ids.index(surface_id)
         min_id = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["minId"][
@@ -213,7 +216,8 @@ class Mesh:
         nodes = nodes[previous : previous + sum(nnodes)]
         return [nodes, nnodes]
 
-    def get_connectivity(self, surface_id):
+    def get_connectivity(self, surface_id) -> np.array:
+        """Returns numpy array of face connectivity data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         key = nodes.copy()
         key.sort()
@@ -228,7 +232,8 @@ class Mesh:
         nodes = np.insert(nodes, obj, nnodes)
         return nodes
 
-    def get_vertices(self, surface_id):
+    def get_vertices(self, surface_id) -> np.array:
+        """Returns numpy array of vertices data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         nodes = np.unique(nodes)
         nodes = np.sort(nodes)
