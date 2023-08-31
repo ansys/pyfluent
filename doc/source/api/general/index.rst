@@ -33,6 +33,16 @@ Case
 
 :ref:`ref_case_reader` documents a class for parsing Fluent case files in pure Python code.
 
+Data
+####
+
+:ref:`ref_data_reader` documents a class for parsing Fluent data files in pure Python code.
+
+File session
+############
+
+:ref:`ref_file_session` expose field info and data for Fluent case and data files.
+
 Data transfer
 #############
 

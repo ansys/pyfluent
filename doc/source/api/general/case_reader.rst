@@ -50,6 +50,35 @@ Along with basic functionality, the CaseFile class provides many additional feat
     >>> reader.rp_vars()
     >>> reader.config_vars()
 
+- **Extracts mesh data**
+  The CaseReader can be used to extract mesh data. This example shows how to
+  have the CaseFile class read a case file (.cas.h5) from the ``examples``
+  repository and extract and use mesh data:
+
+  .. code-block:: python
+
+      >>> from ansys.fluent.core import examples
+      >>> from ansys.fluent.core.filereader.casereader import CaseReader
+
+      >>> case_filepath = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+      >>> reader = CaseReader(case_filepath=case_filepath)
+      >>> reader._mesh.get_surface_ids()
+      [3, 4, 5, 6, 7, 9]
+      >>> reader._mesh.get_surface_names()
+      ['wall',
+       'symmetry',
+       'pressure-outlet-7',
+       'velocity-inlet-6',
+       'velocity-inlet-5',
+       'default-interior']
+      >>> reader._mesh.get_surface_locs(3)
+      [0, 3629]
+      >>> reader._mesh.get_connectivity(3)
+      array([   4,    3,    2, ...,  727,  694, 3809], dtype=uint32)
+      >>> reader._mesh.get_vertices(3)
+      array([ 0.        , -0.1016    ,  0.        , ...,  0.00620755,
+       -0.19304685,  0.03033731])
+
 
 .. automodule:: ansys.fluent.core.filereader.case_file
    :members:
