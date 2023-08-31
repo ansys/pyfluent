@@ -282,8 +282,7 @@ class FileFieldData:
         surface_name: Optional[str] = None,
         overset_mesh: Optional[bool] = False,
     ):
-        """Get surface data (vertices, faces connectivity, centroids, and
-        normals).
+        """Get surface data (vertices and faces connectivity).
 
         Parameters
         ----------

@@ -147,7 +147,7 @@ class DataFile:
         return self._field_data[phase_name]["cells"]["fields"][0].decode().split(";")
 
     def get_face_scalar_field_data(
-        self, phase_name: str, field_name: str, surface_id: list
+        self, phase_name: str, field_name: str, surface_id: int
     ) -> np.array:
         """
         Gets scalar field data for face.
@@ -174,7 +174,7 @@ class DataFile:
         keys = list(field_data.keys())
         return field_data["1"][min_id : max_id + 1]
 
-    def get_face_vector_field_data(self, phase_name: str, surface_id: list) -> np.array:
+    def get_face_vector_field_data(self, phase_name: str, surface_id: int) -> np.array:
         """
         Gets vector field data for face.
 
