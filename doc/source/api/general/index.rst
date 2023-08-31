@@ -63,10 +63,10 @@ Post objects
 
 :ref:`ref_post_objects` documents visualization objects for interfacing to Matplotlib and pyvista.
 
-Asynchronous execution
-######################
+Execution utilities
+###################
 
-:ref:`ref_execution_utils` documents tools for asynchronous function execution.
+:ref:`ref_execution_utils` documents execution utilities, including an asynchronous option, for command execution.
 
 Search
 ######
@@ -80,8 +80,8 @@ Meta
 
 Logging
 #######
-.. automodule:: ansys.fluent.core.logging
-    :members:
+
+:ref:`ref_logging` documents the PyFluent debug logging module.
 
 .. currentmodule:: ansys.fluent.core
 
@@ -93,17 +93,18 @@ Logging
     :hidden:
 
     launcher/index
-    execution_utils
-    search
     sessions/index
     services/index
     streaming_services/index
-    post_objects/index
     scheduler/index
     case_reader
     data_transfer
     journaling
-    meta
-    quantity
-    rpvars
     workflow
+    rpvars
+    quantity
+    post_objects/index
+    execution_utils
+    search
+    meta
+    logging

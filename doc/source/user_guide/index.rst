@@ -227,6 +227,8 @@ event types via the ``events_manager`` attribute of a solution mode session:
 
 For more information, see :ref:`ref_events`.
 
+.. _ref_logging_user_guide:
+
 Logging to file and debugging
 -----------------------------
 PyFluent logging to file is by default disabled. Logging can be enabled with:
@@ -237,8 +239,12 @@ PyFluent logging to file is by default disabled. Logging can be enabled with:
     pyfluent.logging.enable()
 
 the last command being equivalent to ``pyfluent.logging.enable('DEBUG')``,
-using the default PyFluent logging level. See the possible logging level values in
+using the default PyFluent logging level.
+See the possible logging level values in
 `<https://docs.python.org/3/library/logging.html#logging-levels>`_.
+
+PyFluent by default creates and logs to a file named ``pyfluent.log`` in the
+current working directory (see :func:`ansys.fluent.core.logging.enable` for more details).
 
 The global logging level of PyFluent, after logging has been enabled,
 can also be controlled with:
@@ -255,6 +261,9 @@ See also :func:`ansys.fluent.core.logging.enable`,
 
 PyFluent loggers use the standard Python logging library, for more details see
 `<https://docs.python.org/3/library/logging.html>`_.
+
+Additional documentation about the PyFluent logging module is available
+in the :ref:`logging module documentation <ref_logging>`.
 
 .. _ref_logging_env_var:
 
