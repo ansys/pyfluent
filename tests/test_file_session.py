@@ -82,7 +82,7 @@ def test_field_info_data_single_phase():
     assert round_off_list_elements(
         file_session.field_info.get_scalar_field_range("SV_P")
     ) == [-339.203452, 339.417934]
-    assert len(file_session.field_info.get_scalar_fields_info()) == 30
+    assert len(file_session.field_info.get_scalar_fields_info()) == 29
     assert list(file_session.field_info.get_surfaces_info().keys()) == [
         "wall",
         "symmetry",
