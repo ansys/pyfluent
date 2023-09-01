@@ -9,8 +9,8 @@ Sample usage
 ------------
 
 You can use the DataFile class by importing it and passing a data file path.
-For some case file dependent features we need to pass the case file handle from
-the CaseFile class as shown in the following code snippet.
+For some case file dependent features, the case file handle from
+the CaseFile class needs to be passed as shown in the following code snippet.
 This example shows how to have the DataFile class read a data file (.cas.h5)
 from the ``examples`` repository:
 

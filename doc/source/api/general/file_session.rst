@@ -16,7 +16,7 @@ field info is extracted followed by adding a transaction request and extracting
 field data. One can either run a single or multi-phase case. In that respect, the example
 covers both single and multi-phase cases.
 
-Single Phase
+Single phase
 ------------
 
 .. code-block:: python
@@ -98,7 +98,7 @@ Single Phase
    0.001690600193527586
 
 
-Multi Phase
+Multi phase
 -----------
 
 .. code-block:: python
