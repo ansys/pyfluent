@@ -1,4 +1,4 @@
-"""Reader for Fluent case files.
+"""Reader for Fluent data files.
 
 Example
 -------
@@ -6,14 +6,11 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.casereader import CaseReader
+    >>> from ansys.fluent.core.filereader.datareader import DataReader
 
-    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
+    >>> data_filepath = examples.download_file("Static_Mixer_Parameters.dat.h5", "pyfluent/static_mixer")
 
-    >>> reader = CaseReader(case_filepath=case_filepath) # Instantiate a CaseFile class
-    >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
-    >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
-
+    >>> reader = DataReader(data_filepath=data_filepath) # Instantiate a DataFile class
 """
 import os
 from os.path import dirname
