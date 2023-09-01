@@ -586,31 +586,31 @@ class FileFieldInfo:
         """
         phases = self._file_session._data_file.get_phases()
 
+        scalar_field_info = {}
+
         if len(phases) > 1:
-            return {
-                phase
-                + ":"
-                + face_variable: {
-                    "display_name": face_variable,
-                    "section": "field-data",
-                    "domain": phase,
-                }
-                for phase in phases
+            for phase in phases:
                 for face_variable in self._file_session._data_file.get_face_variables(
                     phase
-                )
-            }
+                ):
+                    if face_variable:
+                        scalar_field_info[phase + ":" + face_variable] = {
+                            "display_name": face_variable,
+                            "section": "field-data",
+                            "domain": phase,
+                        }
         else:
-            return {
-                face_variable: {
-                    "display_name": face_variable,
-                    "section": "field-data",
-                    "domain": phases[0],
-                }
-                for face_variable in self._file_session._data_file.get_face_variables(
-                    phases[0]
-                )
-            }
+            for face_variable in self._file_session._data_file.get_face_variables(
+                phases[0]
+            ):
+                if face_variable:
+                    scalar_field_info[face_variable] = {
+                        "display_name": face_variable,
+                        "section": "field-data",
+                        "domain": phases[0],
+                    }
+
+        return scalar_field_info
 
     def get_vector_fields_info(self):
         """Get vector fields information (vector components).

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from ansys.fluent.core import examples
@@ -20,6 +22,8 @@ def test_field_info_data_multi_phase():
         "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
     )
     file_session = FileSession()
+    assert Path(case_filename).exists()
+    assert Path(data_filename).exists()
     file_session.read_case(case_filename)
     file_session.read_data(data_filename)
 
@@ -68,8 +72,8 @@ def test_field_info_data_single_phase():
     file_session.read_data(data_filename)
 
     assert round_off_list_elements(
-        file_session.field_info.get_scalar_field_range("SV_D")
-    ) == [0.000236, 1.64046]
+        file_session.field_info.get_scalar_field_range("SV_P")
+    ) == [-339.203452, 339.417934]
     assert len(file_session.field_info.get_scalar_fields_info()) == 30
     assert list(file_session.field_info.get_surfaces_info().keys()) == [
         "wall",
