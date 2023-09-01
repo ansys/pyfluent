@@ -308,23 +308,6 @@ class TUICommand(TUIMenu):
         return PyMenu(self.service, self.path).execute(*args, **kwargs)
 
 
-def convert_func_name_to_tui_menu(func_name: str) -> str:
-    """Convert a Python function name to a TUI menu string.
-
-    Parameters
-    ----------
-    func_name : str
-       Name of the Python function.
-
-    Returns
-    -------
-    str
-    """
-    if func_name.endswith("_") and keyword.iskeyword(func_name[:-1]):
-        return func_name[:-1]
-    return func_name
-
-
 def convert_tui_menu_to_func_name(menu: str) -> str:
     """Convert a TUI menu string to a Python function name.
 
@@ -359,4 +342,4 @@ def convert_path_to_grpc_path(path: Path) -> str:
     str
         gRPC path.
     """
-    return "/" + "/".join(convert_func_name_to_tui_menu(x) for x in path)
+    return "/" + "/".join(x for x in path)
