@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from ansys.fluent.core import examples
@@ -20,6 +22,8 @@ def test_field_info_data_multi_phase():
         "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
     )
     file_session = FileSession()
+    assert Path(case_filename).exists()
+    assert Path(data_filename).exists()
     file_session.read_case(case_filename)
     file_session.read_data(data_filename)
 
