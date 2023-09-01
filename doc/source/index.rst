@@ -36,7 +36,7 @@ solution mode, including:
 - Defining fluid properties
 - Executing the solution
 - Refining the mesh
-- Running a parametric study 
+- Running a parametric study
 - Postprocessing and viewing results
 
 What is PyFluent?
@@ -67,7 +67,7 @@ Some of the many features in this primary PyFluent package,
 - Script using all of Fluent's TUI  (text user interface) commands. For more
   information, see :ref:`ref_user_guide_tui_commands`.
 - Run more than one Fluent session asynchronously. For more information, see
-  :ref:`ref_utils`.
+  :ref:`ref_execution_utils`.
 - Retrieve Fluent field data as numpy arrays for custom postprocessing using
   standard Python packages such as `matplotlib <https://matplotlib.org/>`_. For
   more information, see :ref:`ref_field_data`.
@@ -89,12 +89,12 @@ development version or previously released versions.
 You can also `view <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.png>`_ or
 `download <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.pdf>`_ the
 PyFluent cheat sheet. This one-page reference provides syntax rules and commands
-for using PyFluent. 
+for using PyFluent.
 
 On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
 issues to report bugs and request new features. On the `PyFluent Discussions
 <https://github.com/ansys/pyfluent/discussions>`_ page or the `Discussions <https://discuss.ansys.com/>`_
-page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback. 
+page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback.
 
 To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
