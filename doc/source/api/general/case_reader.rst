@@ -62,20 +62,20 @@ Along with basic functionality, the CaseFile class provides many additional feat
 
       >>> case_filepath = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
       >>> reader = CaseReader(case_filepath=case_filepath)
-      >>> reader._mesh.get_surface_ids()
+      >>> reader.get_mesh().get_surface_ids()
       [3, 4, 5, 6, 7, 9]
-      >>> reader._mesh.get_surface_names()
+      >>> reader.get_mesh().get_surface_names()
       ['wall',
        'symmetry',
        'pressure-outlet-7',
        'velocity-inlet-6',
        'velocity-inlet-5',
        'default-interior']
-      >>> reader._mesh.get_surface_locs(3)
+      >>> reader.get_mesh().get_surface_locs(3)
       [0, 3629]
-      >>> reader._mesh.get_connectivity(3)
+      >>> reader.get_mesh().get_connectivity(3)
       array([   4,    3,    2, ...,  727,  694, 3809], dtype=uint32)
-      >>> reader._mesh.get_vertices(3)
+      >>> reader.get_mesh().get_vertices(3)
       array([ 0.        , -0.1016    ,  0.        , ...,  0.00620755,
        -0.19304685,  0.03033731])
 
