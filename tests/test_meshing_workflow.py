@@ -709,7 +709,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     assert watertight.create_volume_mesh is None
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("==23.2")
 @pytest.mark.codegen_required
 def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)

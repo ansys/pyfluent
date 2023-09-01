@@ -237,7 +237,7 @@ class BaseSession:
 
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
-        self.scheme_eval.scheme_eval(f'(tui-menu-execute {json.dumps(command)} "")')
+        self.scheme_eval.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""

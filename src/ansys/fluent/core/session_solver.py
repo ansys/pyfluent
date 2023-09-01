@@ -18,6 +18,7 @@ from ansys.fluent.core.session import (
 )
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
@@ -48,6 +49,7 @@ class Solver(BaseSession):
         self._settings_service = self.settings_service
         self._tui = None
         self._workflow = None
+        self._system_coupling = None
         self._settings_root = None
         self._version = None
         self._solverworkflow = None
@@ -124,6 +126,12 @@ class Solver(BaseSession):
         return self._settings_root
 
     @property
+    def system_coupling(self):
+        if self._system_coupling is None:
+            self._system_coupling = SystemCoupling(self)
+        return self._system_coupling
+
+    @property
     def file(self):
         """Settings for file."""
         return self._root.file
@@ -157,6 +165,11 @@ class Solver(BaseSession):
     def current_parametric_study(self):
         """Settings for current_parametric_study."""
         return self._root.current_parametric_study
+
+    @property
+    def parameters(self):
+        """Settings for parameters."""
+        return self._root.parameters
 
     @property
     def parallel(self):
