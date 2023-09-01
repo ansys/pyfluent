@@ -177,6 +177,7 @@ class DataFile:
             array_max_id=int(field_array.attrs['maxId'][0]-1)
             if min_id>=array_min_id and max_id<=array_max_id:                       
                 return field_array[min_id-array_min_id : max_id + 1-array_min_id]
+        return np.zeros(max_id + 1-min_id)    
 
 
     def get_face_vector_field_data(self, phase_name: str, surface_id: int) -> np.array:
