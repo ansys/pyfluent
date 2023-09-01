@@ -17,6 +17,7 @@ class Attribute:
         "is_active",
         "on_create",
         "on_change",
+        "help_context",
         "show_as_separate_object",
         "display_text",
         "layout",
