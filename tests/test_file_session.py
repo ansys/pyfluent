@@ -16,10 +16,14 @@ def round_off_list_elements(input_list):
 
 def test_field_info_data_multi_phase():
     case_filename = examples.download_file(
-        "mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session"
+        "mixing_elbow_mul_ph.cas.h5",
+        "pyfluent/file_session",
+        return_only_filename=False,
     )
     data_filename = examples.download_file(
-        "mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session"
+        "mixing_elbow_mul_ph.dat.h5",
+        "pyfluent/file_session",
+        return_only_filename=False,
     )
     file_session = FileSession()
     assert Path(case_filename).exists()
@@ -65,8 +69,12 @@ def test_field_info_data_multi_phase():
 
 
 def test_field_info_data_single_phase():
-    case_filename = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
-    data_filename = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+    case_filename = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_only_filename=False
+    )
+    data_filename = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False
+    )
     file_session = FileSession()
     file_session.read_case(case_filename)
     file_session.read_data(data_filename)
