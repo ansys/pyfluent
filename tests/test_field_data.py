@@ -14,7 +14,7 @@ from ansys.fluent.core.services.field_data import (
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
