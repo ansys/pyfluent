@@ -41,7 +41,7 @@ def test_field_data(new_solver_session) -> None:
         "cold-inlet"
     ].turbulence.hydraulic_diameter = "4 [in]"
 
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].thermal.t = 293.15
 
     solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = 1.2
     solver.setup.boundary_conditions.velocity_inlet[
@@ -53,7 +53,7 @@ def test_field_data(new_solver_session) -> None:
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].t = HOT_INLET_TEMPERATURE
+    ].thermal.t = HOT_INLET_TEMPERATURE
 
     solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
