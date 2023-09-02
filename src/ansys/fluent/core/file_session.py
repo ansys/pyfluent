@@ -24,6 +24,7 @@ class Transaction:
             self.provide_faces = provide_faces
 
     class _ScalarFieldTransaction:
+
         def __init__(self, field_name, surface_ids, phase="phase-1"):
             self.phase_name = phase
             self.field_name = field_name
