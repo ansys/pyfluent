@@ -12,6 +12,9 @@ from ansys.fluent.core.services.field_data import (
 )
 
 HOT_INLET_TEMPERATURE = 313.15
+import os
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 @pytest.mark.fluent_version(">=24.1")
@@ -54,8 +57,6 @@ def test_field_data(new_solver_session) -> None:
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
     ].thermal.t = HOT_INLET_TEMPERATURE
-
-    solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
     solver.tui.solve.monitors.residual.plot("no")
 
