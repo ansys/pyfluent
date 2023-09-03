@@ -208,6 +208,14 @@ class PyLocalBaseMeta(type):
 
 
         return wrapper
+        
+    @classmethod
+    def __create_get_session_handle(cls):
+        def wrapper(self, obj=None):
+            root = self.get_root(obj)
+            return root.session_handle
+
+        return wrapper        
 
     def __new__(cls, name, bases, attrs):
         attrs["get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
@@ -215,8 +223,11 @@ class PyLocalBaseMeta(type):
         attrs["get_root"] = cls.__create_get_root()
         attrs["get_session"] = cls.__create_get_session()
         attrs["get_session_handle"] = cls.__create_get_session_handle()
+<<<<<<< HEAD
         attrs["get_path"] = cls.__create_get_path()
         attrs["path"] = property(lambda self: self.get_path())
+=======
+>>>>>>> 8865127a (DM Improvements)
         attrs["session"] = property(lambda self: self.get_session())
         attrs["session_handle"] = property(lambda self: self.get_session_handle())
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
@@ -677,6 +688,29 @@ class PyLocalContainer(MutableMapping):
         """Returns the session-handle object."""
         return self.get_session_handle()
 
+    def get_root(self, obj=None):
+        obj = self if obj is None else obj
+        parent = obj
+        if getattr(obj, "_parent", None):
+            parent = self.get_root(obj._parent)
+        return parent
+
+    def get_session(self, obj=None):
+        root = self.get_root(obj)
+        return root.session
+        
+    @property    
+    def session(self):
+        return self.get_session()        
+        
+    def get_session_handle(self, obj=None):
+        root = self.get_root(obj)
+        return root.session_handle
+        
+    @property    
+    def session_handle(self):
+        return self.get_session_handle()         
+        
     def __iter__(self):
         return iter(self.__collection)
 
@@ -689,8 +723,10 @@ class PyLocalContainer(MutableMapping):
             o = self.__collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
-            on_create = getattr(self._PyLocalContainer__object_class, "on_create", None)
-            if on_create:
+            on_create = getattr(
+                self._PyLocalContainer__object_class, "on_create", None
+            )
+            if on_create:                
                 on_create(self, name)
         return o
 
