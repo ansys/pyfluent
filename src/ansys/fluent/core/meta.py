@@ -15,6 +15,8 @@ class Attribute:
         "help_str",
         "is_valid",
         "is_active",
+        "on_create",
+        "on_change",
         "help_context",
         "show_as_separate_object",
         "display_text",
@@ -148,7 +150,7 @@ class PyLocalBaseMeta(type):
             if getattr(obj, "_parent", None):
                 if isinstance(obj._parent, obj_type):
                     return obj._parent
-                parent = self._get_ancestors_by_type(obj_type, obj._parent)
+                parent = self.get_ancestors_by_type(obj_type, obj._parent)
             return parent
 
         return wrapper
@@ -161,7 +163,7 @@ class PyLocalBaseMeta(type):
             if getattr(obj, "_parent", None):
                 if obj._parent.__class__.__name__ == obj_type:
                     return obj._parent
-                parent = self._get_ancestors_by_name(obj_type, obj._parent)
+                parent = self.get_ancestors_by_name(obj_type, obj._parent)
             return parent
 
         return wrapper
@@ -184,12 +186,23 @@ class PyLocalBaseMeta(type):
             return root.session
 
         return wrapper
+        
+    @classmethod
+    def __create_get_session_handle(cls):
+        def wrapper(self, obj=None):
+            root = self.get_root(obj)
+            return root.session_handle
+
+        return wrapper        
 
     def __new__(cls, name, bases, attrs):
-        attrs["_get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
-        attrs["_get_ancestors_by_name"] = cls.__create_get_ancestors_by_name()
+        attrs["get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
+        attrs["get_ancestors_by_name"] = cls.__create_get_ancestors_by_name()
         attrs["get_root"] = cls.__create_get_root()
         attrs["get_session"] = cls.__create_get_session()
+        attrs["get_session_handle"] = cls.__create_get_session_handle()
+        attrs["session"] = property(lambda self: self.get_session())
+        attrs["session_handle"] = property(lambda self: self.get_session_handle())
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
 
 
@@ -247,7 +260,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 and getattr(self, "_reset_on_change")()
             )
 
-            on_change = getattr(self, "_on_change", None)
+            on_change = getattr(self, "on_change", None)
             if on_change is not None:
                 self._register_on_change_cb(on_change)
             if reset_on_change:
@@ -571,6 +584,29 @@ class PyLocalContainer(MutableMapping):
         if hasattr(object_class, "LAYOUT"):
             self.layout = object_class.LAYOUT
 
+    def get_root(self, obj=None):
+        obj = self if obj is None else obj
+        parent = obj
+        if getattr(obj, "_parent", None):
+            parent = self.get_root(obj._parent)
+        return parent
+
+    def get_session(self, obj=None):
+        root = self.get_root(obj)
+        return root.session
+        
+    @property    
+    def session(self):
+        return self.get_session()        
+        
+    def get_session_handle(self, obj=None):
+        root = self.get_root(obj)
+        return root.session_handle
+        
+    @property    
+    def session_handle(self):
+        return self.get_session_handle()         
+        
     def __iter__(self):
         return iter(self.__collection)
 
@@ -584,9 +620,9 @@ class PyLocalContainer(MutableMapping):
                 name, self, self.__api_helper
             )
             on_create = getattr(
-                self._PyLocalContainer__object_class, "_on_create", None
+                self._PyLocalContainer__object_class, "on_create", None
             )
-            if on_create:
+            if on_create:                
                 on_create(self, name)
         return o
 
@@ -596,7 +632,7 @@ class PyLocalContainer(MutableMapping):
 
     def __delitem__(self, name):
         del self.__collection[name]
-        on_delete = getattr(self._PyLocalContainer__object_class, "_on_delete", None)
+        on_delete = getattr(self._PyLocalContainer__object_class, "on_delete", None)
         if on_delete:
             on_delete(self, name)
 

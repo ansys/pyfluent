@@ -395,8 +395,8 @@ class ContourDefn(GraphicsDefn):
         @property
         def value(self):
             """Node value property setter."""
-            filled = self._get_ancestors_by_type(ContourDefn).filled()
-            auto_range_off = self._get_ancestors_by_type(
+            filled = self.get_ancestors_by_type(ContourDefn).filled()
+            auto_range_off = self.get_ancestors_by_type(
                 ContourDefn
             ).range.auto_range_off
             if not filled or (auto_range_off and auto_range_off.clip_to_range()):
@@ -469,20 +469,20 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self._get_ancestors_by_type(ContourDefn).field,
-                        self._get_ancestors_by_type(ContourDefn).node_values,
+                        self.get_ancestors_by_type(ContourDefn).field,
+                        self.get_ancestors_by_type(ContourDefn).node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self._get_ancestors_by_type(ContourDefn).field()
+                        field = self.get_ancestors_by_type(ContourDefn).field()
                         if field:
                             field_info = self._api_helper.field_info()
                             field_range = field_info.get_scalar_field_range(
                                 field,
-                                self._get_ancestors_by_type(ContourDefn).node_values(),
+                                self.get_ancestors_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[0]
                     return self._value
@@ -498,20 +498,20 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self._get_ancestors_by_type(ContourDefn).field,
-                        self._get_ancestors_by_type(ContourDefn).node_values,
+                        self.get_ancestors_by_type(ContourDefn).field,
+                        self.get_ancestors_by_type(ContourDefn).node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self._get_ancestors_by_type(ContourDefn).field()
+                        field = self.get_ancestors_by_type(ContourDefn).field()
                         if field:
                             field_info = self._api_helper.field_info()
                             field_range = field_info.get_scalar_field_range(
                                 field,
-                                self._get_ancestors_by_type(ContourDefn).node_values(),
+                                self.get_ancestors_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[1]
 
