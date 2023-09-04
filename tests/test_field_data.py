@@ -12,18 +12,58 @@ from ansys.fluent.core.services.field_data import (
 )
 
 HOT_INLET_TEMPERATURE = 313.15
+import os
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
-        "mixing_elbow_for_field_data.cas.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
     solver.file.read(file_type="case", file_name=import_filename)
+    solver.tui.mesh.check()
+
+    solver.setup.models.energy.enabled = True
+    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+
+    # Set up boundary conditions for CFD analysis
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].momentum.velocity = 0.4
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.turbulent_intensity = 0.05
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.hydraulic_diameter = "4 [in]"
+
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].thermal.t = 293.15
+
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = 1.2
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].turbulence.hydraulic_diameter = "1 [in]"
+
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].thermal.t = HOT_INLET_TEMPERATURE
+
+    solver.tui.solve.monitors.residual.plot("no")
 
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
+
+    solver.solution.run_calculation.iterate.get_attr("arguments")
     solver.solution.run_calculation.iterate(iter_count=10)
 
     # Get field data object

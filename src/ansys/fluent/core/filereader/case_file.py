@@ -25,6 +25,7 @@ import xml.etree.ElementTree as ET
 
 import h5py
 from lxml import etree
+import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
@@ -161,6 +162,87 @@ class CaseVariable:
             return CaseVariable(self._variables, name + "/")
 
 
+class Mesh:
+    """Class to provide mesh data.
+
+    Methods
+    -------
+    get_surface_ids
+        Get a list of surface ids.
+    get_surface_names
+        Get a list of surface names.
+    get_surface_locs
+        Get the min and max location index of surface.
+    get_connectivity
+        Get the surface connectivity.
+    get_vertices
+        Get list of vertices of the surface.
+    """
+
+    def __init__(self, file_handle):
+        self._file_handle = file_handle
+
+    def get_surface_ids(self) -> list:
+        """Returns list of ids of all available surfaces."""
+        id_data = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["id"]
+        return [id_data[i] for i in range(id_data.size)]
+
+    def get_surface_names(self) -> list:
+        """Returns list of names of all available surfaces."""
+        return (
+            self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["name"][0]
+            .decode()
+            .split(";")
+        )
+
+    def get_surface_locs(self, surface_id) -> list:
+        """Returns range of surface locations for a particular surface."""
+        ids = self.get_surface_ids()
+        index = ids.index(surface_id)
+        min_id = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["minId"][
+            index
+        ]
+        max_id = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["maxId"][
+            index
+        ]
+        return [int(min_id - 1), int(max_id - 1)]
+
+    def _get_nodes(self, surface_id):
+        min_id, max_id = self.get_surface_locs(surface_id)
+        nnodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nnodes"]
+        nodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nodes"]
+        previous = sum(nnodes[0:min_id])
+        nnodes = nnodes[min_id : max_id + 1]
+        nodes = nodes[previous : previous + sum(nnodes)]
+        return [nodes, nnodes]
+
+    def get_connectivity(self, surface_id) -> np.array:
+        """Returns numpy array of face connectivity data for a particular surface."""
+        nodes, nnodes = self._get_nodes(surface_id)
+        key = nodes.copy()
+        key.sort()
+        key = np.unique(key)
+        value = np.arange(0, len(key))
+        replace = np.array([key, value])
+        mask = np.in1d(nodes, key)
+        nodes[mask] = replace[1, np.searchsorted(replace[0, :], nodes[mask])]
+        obj = np.cumsum(nnodes)
+        obj = np.insert(obj, 0, 0)
+        obj = np.delete(obj, len(obj) - 1)
+        nodes = np.insert(nodes, obj, nnodes)
+        return nodes
+
+    def get_vertices(self, surface_id) -> np.array:
+        """Returns numpy array of vertices data for a particular surface."""
+        nodes, nnodes = self._get_nodes(surface_id)
+        nodes = np.unique(nodes)
+        nodes = np.sort(nodes)
+        nodes -= 1
+        vertices_dict = self._file_handle["meshes"]["1"]["nodes"]["coords"]
+        vertices = vertices_dict[str(list(vertices_dict.keys())[0])]
+        return vertices[:][nodes].flatten()
+
+
 class CaseFile:
     """Class to read a Fluent case file.
 
@@ -265,6 +347,7 @@ class CaseFile:
         self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
+        self._mesh = Mesh(file)
 
     def input_parameters(self) -> List[InputParameter]:
         """
@@ -409,6 +492,9 @@ class CaseFile:
 
     def _find_rp_var(self, name: str):
         return self._rp_vars[name]
+
+    def get_mesh(self):
+        return self._mesh
 
 
 def _get_processed_string(input_string: bytes) -> str:
