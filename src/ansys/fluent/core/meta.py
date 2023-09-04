@@ -17,7 +17,6 @@ class Attribute:
         "is_active",
         "on_create",
         "on_change",
-        "help_context",
         "show_as_separate_object",
         "display_text",
         "layout",
@@ -214,7 +213,14 @@ class PyLocalBaseMeta(type):
         def wrapper(self, obj=None):
             root = self.get_root(obj)
             return root.session_handle
+        return wrapper  
 
+    @classmethod
+    def __create_get_path(cls):
+        def wrapper(self):                       
+            if getattr(self, "_parent", None):
+                return self._parent.get_path()+"/"+self._name
+            return self._name
         return wrapper        
 
     def __new__(cls, name, bases, attrs):
@@ -223,11 +229,8 @@ class PyLocalBaseMeta(type):
         attrs["get_root"] = cls.__create_get_root()
         attrs["get_session"] = cls.__create_get_session()
         attrs["get_session_handle"] = cls.__create_get_session_handle()
-<<<<<<< HEAD
         attrs["get_path"] = cls.__create_get_path()
         attrs["path"] = property(lambda self: self.get_path())
-=======
->>>>>>> 8865127a (DM Improvements)
         attrs["session"] = property(lambda self: self.get_session())
         attrs["session_handle"] = property(lambda self: self.get_session_handle())
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
@@ -698,6 +701,16 @@ class PyLocalContainer(MutableMapping):
     def get_session(self, obj=None):
         root = self.get_root(obj)
         return root.session
+        
+
+    def get_path(self):                       
+        if getattr(self, "_parent", None):
+            return self._parent.get_path()+"/"+self._name
+        return self._name
+       
+    @property    
+    def path(self):
+        return self.get_path()        
         
     @property    
     def session(self):
