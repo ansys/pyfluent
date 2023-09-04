@@ -25,7 +25,8 @@ class Attribute:
         "include",
         "exclude",
         "sort_by",
-        "style"
+        "style",
+        "icon"
     ]
 
     def __init__(self, function):
@@ -587,14 +588,14 @@ class PyLocalContainer(MutableMapping):
         self.__api_helper = api_helper
         self.type = "named-object"
 
-        if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):
-            self.show_as_separate_object = object_class.SHOW_AS_SEPARATE_OBJECT
+        if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):            
+            PyLocalContainer.show_as_separate_object = property(lambda self: self.__object_class.SHOW_AS_SEPARATE_OBJECT())              
         if hasattr(object_class, "EXCLUDE"):
-            self.exclude = object_class.EXCLUDE
+            PyLocalContainer.exclude = property(lambda self: self.__object_class.EXCLUDE())            
         if hasattr(object_class, "INCLUDE"):
-            self.include = object_class.INCLUDE
+            PyLocalContainer.include = property(lambda self: self.__object_class.INCLUDE()) 
         if hasattr(object_class, "LAYOUT"):
-            self.layout = object_class.LAYOUT
+            PyLocalContainer.layout = property(lambda self: self.__object_class.LAYOUT())             
 
     def get_root(self, obj=None):
         obj = self if obj is None else obj
