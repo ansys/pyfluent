@@ -17,7 +17,6 @@ class Attribute:
         "is_active",
         "on_create",
         "on_change",
-        "help_context",
         "show_as_separate_object",
         "display_text",
         "layout",
@@ -26,6 +25,7 @@ class Attribute:
         "include",
         "exclude",
         "sort_by",
+        "style"
     ]
 
     def __init__(self, function):
@@ -192,7 +192,14 @@ class PyLocalBaseMeta(type):
         def wrapper(self, obj=None):
             root = self.get_root(obj)
             return root.session_handle
+        return wrapper  
 
+    @classmethod
+    def __create_get_path(cls):
+        def wrapper(self):                       
+            if getattr(self, "_parent", None):
+                return self._parent.get_path()+"/"+self._name
+            return self._name
         return wrapper        
 
     def __new__(cls, name, bases, attrs):
@@ -201,6 +208,8 @@ class PyLocalBaseMeta(type):
         attrs["get_root"] = cls.__create_get_root()
         attrs["get_session"] = cls.__create_get_session()
         attrs["get_session_handle"] = cls.__create_get_session_handle()
+        attrs["get_path"] = cls.__create_get_path()
+        attrs["path"] = property(lambda self: self.get_path())
         attrs["session"] = property(lambda self: self.get_session())
         attrs["session_handle"] = property(lambda self: self.get_session_handle())
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
@@ -245,7 +254,8 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, api_helper):
+        def wrapper(self, parent, api_helper, name=""):
+            self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
             self._on_change_cbs = []
@@ -391,8 +401,9 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, api_helper):
+        def wrapper(self, parent, api_helper, name=""):
             self._parent = parent
+            self._name = name
             self._api_helper = api_helper(self)
             self.type = "object"
             commands = getattr(self.__class__, "commands", None)
@@ -410,7 +421,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                         setattr(
                             self,
                             name,
-                            cls(self, api_helper),
+                            cls(self, api_helper, name),
                         )
                     if (
                         cls.__class__.__name__ == "PyLocalNamedObjectMeta"
@@ -419,7 +430,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                         setattr(
                             self,
                             cls.PLURAL,
-                            PyLocalContainer(self, cls, api_helper),
+                            PyLocalContainer(self, cls, api_helper, cls.PLURAL),
                         )
                     if cls.__class__.__name__ == "PyReferenceObjectMeta":
                         setattr(
@@ -534,7 +545,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                         setattr(
                             self,
                             name,
-                            cls(self, api_helper),
+                            cls(self, api_helper, name),
                         )
                     elif (
                         cls.__class__.__name__ == "PyLocalNamedObjectMeta"
@@ -543,7 +554,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                         setattr(
                             self,
                             cls.PLURAL,
-                            PyLocalContainer(self, cls, api_helper),
+                            PyLocalContainer(self, cls, api_helper, cls.PLURAL),
                         )
                     elif cls.__class__.__name__ == "PyReferenceObjectMeta":
                         setattr(
@@ -568,8 +579,9 @@ class PyLocalNamedObjectMetaAbstract(ABCMeta, PyLocalNamedObjectMeta):
 class PyLocalContainer(MutableMapping):
     """Local container for named objects."""
 
-    def __init__(self, parent, object_class, api_helper):
+    def __init__(self, parent, object_class, api_helper, name=""):
         self._parent = parent
+        self._name = name 
         self.__object_class = object_class
         self.__collection: dict = {}
         self.__api_helper = api_helper
@@ -594,6 +606,16 @@ class PyLocalContainer(MutableMapping):
     def get_session(self, obj=None):
         root = self.get_root(obj)
         return root.session
+        
+
+    def get_path(self):                       
+        if getattr(self, "_parent", None):
+            return self._parent.get_path()+"/"+self._name
+        return self._name
+       
+    @property    
+    def path(self):
+        return self.get_path()        
         
     @property    
     def session(self):
