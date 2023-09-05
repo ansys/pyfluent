@@ -729,7 +729,7 @@ def launch_fluent(
                 if meshing_mode:
                     session.tui.file.read_journal(journal_filepath)
                 else:
-                    session.file.read_journal(journal_filepath)
+                    session.file.read_journal(file_name_list=[str(journal_filepath)])
             if case_data_filepath:
                 if not meshing_mode:
                     session.file.read(
