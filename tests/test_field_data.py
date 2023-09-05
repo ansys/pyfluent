@@ -12,9 +12,6 @@ from ansys.fluent.core.services.field_data import (
 )
 
 HOT_INLET_TEMPERATURE = 313.15
-import os
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 @pytest.mark.fluent_version(">=24.1")
