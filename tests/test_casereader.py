@@ -6,11 +6,8 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader import lispy
-from ansys.fluent.core.filereader.casereader import (
-    CaseReader,
-    InputParameter,
-    _get_processed_string,
-)
+from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
+from ansys.fluent.core.filereader.case_file import InputParameter, _get_processed_string
 
 
 def call_casereader(

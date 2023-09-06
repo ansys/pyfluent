@@ -1,7 +1,7 @@
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.casereader import SettingsReader
+from ansys.fluent.core.filereader.case_file import SettingsFile as SettingsReader
 
 
 def call_settings_reader(settings_filepath: str = None, expected: dict = None):
