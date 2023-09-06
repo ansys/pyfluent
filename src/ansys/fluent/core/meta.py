@@ -601,8 +601,9 @@ class PyLocalContainer(MutableMapping):
             PyLocalContainer.style = property(lambda self: self.__object_class.STYLE()) 
         if hasattr(object_class, "ICON"):
             PyLocalContainer.icon = property(lambda self: self.__object_class.ICON())
-        if hasattr(object_class, "IS_ACTIVE"):
-            PyLocalContainer.is_active = property(lambda self: self.__object_class.IS_ACTIVE())  
+        #import pdb; pdb.set_trace()    
+        if hasattr(object_class, "IS_ACTIVE"):            
+            PyLocalContainer.is_active = property(lambda self: self.__object_class.IS_ACTIVE(self))  
 
     @classmethod
     def get_root(self, obj=None):
