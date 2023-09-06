@@ -691,6 +691,16 @@ class PyLocalContainer(MutableMapping):
         """Returns the session-handle object."""
         return self.get_session_handle()
 
+
+    @classmethod
+    def get_root(self, obj=None):
+        obj = self if obj is None else obj
+        parent = obj
+        if getattr(obj, "_parent", None):
+            parent = self.get_root(obj._parent)
+        return parent
+        
+            
     def get_root(self, obj=None):
         obj = self if obj is None else obj
         parent = obj
