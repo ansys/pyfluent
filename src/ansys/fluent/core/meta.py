@@ -26,7 +26,8 @@ class Attribute:
         "exclude",
         "sort_by",
         "style",
-        "icon"
+        "icon",
+        "show_text"
     ]
 
     def __init__(self, function):
@@ -596,7 +597,22 @@ class PyLocalContainer(MutableMapping):
             PyLocalContainer.include = property(lambda self: self.__object_class.INCLUDE()) 
         if hasattr(object_class, "LAYOUT"):
             PyLocalContainer.layout = property(lambda self: self.__object_class.LAYOUT())             
+        if hasattr(object_class, "STYLE"):
+            PyLocalContainer.style = property(lambda self: self.__object_class.STYLE()) 
+        if hasattr(object_class, "ICON"):
+            PyLocalContainer.icon = property(lambda self: self.__object_class.ICON())
+        if hasattr(object_class, "IS_ACTIVE"):
+            PyLocalContainer.is_active = property(lambda self: self.__object_class.IS_ACTIVE())  
 
+    @classmethod
+    def get_root(self, obj=None):
+        obj = self if obj is None else obj
+        parent = obj
+        if getattr(obj, "_parent", None):
+            parent = self.get_root(obj._parent)
+        return parent
+        
+            
     def get_root(self, obj=None):
         obj = self if obj is None else obj
         parent = obj

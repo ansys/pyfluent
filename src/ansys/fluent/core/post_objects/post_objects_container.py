@@ -152,7 +152,7 @@ class Graphics(Container):
         """
         meshes = getattr(self, "Meshes", None)
         if meshes is not None:
-            outline_mesh_id = "Mesh-outline"
+            outline_mesh_id = "mesh-outline"
             outline_mesh = meshes[outline_mesh_id]
             outline_mesh.surfaces_list = [
                 k
