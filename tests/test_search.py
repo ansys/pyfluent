@@ -160,25 +160,26 @@ def test_search_settings_from_root(capsys, load_static_mixer_case):
     lines = capsys.readouterr().out.splitlines()
     assert "<root>.tui.define.models.shell_conduction (Object)" in lines
     assert (
-        '<root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        '<root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
         in lines
     )
     pyfluent.search("conduction", root=solver.setup.boundary_conditions)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        '<root>.wall["<name>"].phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
         in lines
     )
     pyfluent.search("conduction", root=solver.setup.boundary_conditions.wall)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)' in lines
+        '<root>["<name>"].phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
+        in lines
     )
     pyfluent.search("conduction", root=solver.setup.boundary_conditions.wall["wall"])
     lines = capsys.readouterr().out.splitlines()
-    assert '<root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
+    assert '<root>.phase["<name>"].thermal.shell_conduction["<name>"] (Object)' in lines
     pyfluent.search(
         "conduction", root=solver.setup.boundary_conditions.wall["wall"].phase
     )
     lines = capsys.readouterr().out.splitlines()
-    assert '<root>["<name>"].shell_conduction["<name>"] (Object)' in lines
+    assert '<root>["<name>"].thermal.shell_conduction["<name>"] (Object)' in lines

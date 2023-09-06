@@ -700,20 +700,18 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
         "density-based-explicit",
     ]
 
-    assert (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.min()
-        == 0
-    )
-    assert (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.max()
-        == 1000000
-    )
-    assert (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.get_attr(
-            "max"
+    if solver.get_fluent_version() < "24.1.0":
+        max_refinements = (
+            solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements
         )
-        == 1000000
-    )
+    else:
+        max_refinements = (
+            solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_num_refinements
+        )
+
+    assert max_refinements.min() == 0
+    assert max_refinements.max() == 1000000
+    assert max_refinements.get_attr("max") == 1000000
 
 
 @pytest.mark.fluent_version("==23.1")
