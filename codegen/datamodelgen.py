@@ -413,7 +413,7 @@ class DataModelGenerator:
                 f.write("    PyNumerical,\n")
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
-                f.write("    PyCommand\n")
+                f.write("    PyCommand,\n")
                 f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {

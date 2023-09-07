@@ -96,14 +96,14 @@ class BaseMeshing:
         """Datamodel root of meshing_queries."""
         try:
             meshing_queries_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self.version}.meshing_queries"
+                f"ansys.fluent.core.datamodel_{self.version}.meshing-queries"
             )
             meshing_queries_root = meshing_queries_module.Root(
-                self._se_service, "meshing_queries", []
+                self._se_service, "meshing-queries", []
             )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            meshing_queries_root = PyMenuGeneric(self._se_service, "meshing")
+            meshing_queries_root = PyMenuGeneric(self._se_service, "meshing_queries")
         return meshing_queries_root
 
     @property
