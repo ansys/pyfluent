@@ -329,7 +329,7 @@ class RPVarProcessor:
         self,
         rp_vars_str: str,
     ) -> None:
-        """Initialize a _BaseSettingsFile object.
+        """Initialize a RPVarProcessor object.
 
         Parameters
         ----------
@@ -343,13 +343,13 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> Union[list[InputParameter], list[InputParameterOld]]:
+    def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
         """
         Get the input parameters.
 
         Returns
         -------
-        List[InputParameter]
+        Union[List[InputParameter], List[InputParameterOld]]
             The list of input parameters.
         """
         exprs = self._named_expressions()
