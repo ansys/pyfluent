@@ -1394,13 +1394,13 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-                # query_names = [x.name for x in struct_field.queries]
-        # return singleton_names, creatable_type_names, command_names, query_names
+                query_names = [x.name for x in struct_field.queries]
         return singleton_names, creatable_type_names, command_names, query_names
+        # return singleton_names, creatable_type_names, command_names, query_names
 
     def _get_child(self, name: str):
-        singletons, creatable_types, commands = self._get_child_names()
-        # singletons, creatable_types, commands, queries = self._get_child_names()
+        # singletons, creatable_types, commands = self._get_child_names()
+        singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
             return PyMenuGeneric(self.service, self.rules, child_path)
@@ -1409,8 +1409,8 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
-        # elif name in queries:
-        #     return PyQuery(self.service, self.rules, name, self.path)
+        elif name in queries:
+            return PyQuery(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
                 f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"
