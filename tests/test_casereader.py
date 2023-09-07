@@ -6,8 +6,12 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader import lispy
+from ansys.fluent.core.filereader.case_file import (
+    InputParameter,
+    InputParameterOld,
+    _get_processed_string,
+)
 from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
-from ansys.fluent.core.filereader.case_file import InputParameter, _get_processed_string
 
 
 def call_casereader(
@@ -242,6 +246,35 @@ def test_case_reader_input_parameter():
     assert velocity.units == "m/s"
     assert velocity.numeric_value == 2
     assert velocity.value == "2 [m/s]"
+
+    vel_data = [
+        "real-1",
+        [
+            ("type", "real"),
+            ["name", ("value", '"inlet_velocity"'), ("type", "string-class")],
+            [
+                "parameter-value",
+                ("type", "real-class"),
+                ("value", 20.0),
+                ("min", False),
+                ("max", False),
+                ("units-quantity", "velocity"),
+            ],
+        ],
+    ]
+    velocity = InputParameterOld(raw_data=vel_data)
+
+    assert velocity.name == "inlet_velocity"
+    assert velocity.value == [
+        "parameter-value",
+        ("type", "real-class"),
+        ("value", 20.0),
+        ("min", False),
+        ("max", False),
+        ("units-quantity", "velocity"),
+    ]
+    assert velocity.units == "velocity"
+    assert velocity.numeric_value == 20.0
 
 
 def test_lispy_for_multiline_string():

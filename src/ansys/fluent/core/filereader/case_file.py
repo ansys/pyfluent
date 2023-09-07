@@ -20,7 +20,7 @@ import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 import xml.etree.ElementTree as ET
 
 import h5py
@@ -30,6 +30,51 @@ import numpy as np
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+
+
+class InputParameterOld:
+    """Represents an input parameter (old format).
+
+    Attributes
+    ----------
+    name : str
+    value
+        The value of this input parameter, usually
+        a string, qualified by units
+    """
+
+    def __init__(self, raw_data: List) -> None:
+        """Initialize InputParameter.
+
+        Parameters
+        ----------
+        raw_data : List
+            Input parameter data as a list.
+        """
+        self.name = raw_data[1][1][1][1].strip('"')
+        self.value = raw_data[1][2]
+
+    @property
+    def units(self) -> str:
+        """Get the unit label of a Fluent input parameter.
+
+        Returns
+        -------
+        str
+            Unit label of the Fluent input parameter.
+        """
+        return str(self.value[-1][-1])
+
+    @property
+    def numeric_value(self) -> float:
+        """Get the numeric value of a Fluent input parameter.
+
+        Returns
+        -------
+        float
+            Numeric value of the Fluent input parameter.
+        """
+        return float(self.value[2][1])
 
 
 class InputParameter:
@@ -298,7 +343,7 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> List[InputParameter]:
+    def input_parameters(self) -> Union[list[InputParameter], list[InputParameterOld]]:
         """
         Get the input parameters.
 
@@ -315,9 +360,12 @@ class RPVarProcessor:
                     if attr[0] in ["parameter", "input-parameter"] and attr[1] is True:
                         input_params.append(InputParameter(expr))
             return input_params
-        else:
-            parameters = self._find_rp_var("parameters/input-parameters")
-            return [InputParameter(param) for param in parameters]
+
+        rp_var_params = self._find_rp_var("parameters/input-parameters") or []
+        try:
+            return [InputParameter(param) for param in rp_var_params]
+        except ValueError:
+            return [InputParameterOld(param) for param in rp_var_params]
 
     def output_parameters(self) -> List[OutputParameter]:
         """
@@ -440,7 +488,7 @@ class RPVarProcessor:
         return self._find_rp_var("case-config")
 
     def _find_rp_var(self, name: str):
-        return self._rp_vars[name]
+        return self._rp_vars.get(name)
 
 
 class SettingsFile(RPVarProcessor):
