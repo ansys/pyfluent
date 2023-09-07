@@ -36,6 +36,7 @@ class BaseMeshing:
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
+        self._meshing_queries = None
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
@@ -89,6 +90,27 @@ class BaseMeshing:
         if self._meshing is None:
             self._meshing = self._meshing_root
         return self._meshing
+
+    @property
+    def _meshing_queries_root(self):
+        """Datamodel root of meshing_queries."""
+        try:
+            meshing_queries_module = importlib.import_module(
+                f"ansys.fluent.core.datamodel_{self.version}.meshing_queries"
+            )
+            meshing_queries_root = meshing_queries_module.Root(
+                self._se_service, "meshing_queries", []
+            )
+        except ImportError:
+            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
+            meshing_queries_root = PyMenuGeneric(self._se_service, "meshing")
+        return meshing_queries_root
+
+    @property
+    def meshing_queries(self):
+        if self._meshing_queries is None:
+            self._meshing_queries = self._meshing_queries_root
+        return self._meshing_queries
 
     @property
     def _workflow_se(self):

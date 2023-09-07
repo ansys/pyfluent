@@ -45,6 +45,11 @@ class Meshing(PureMeshing):
         return super(Meshing, self).meshing if not self.switched else None
 
     @property
+    def meshing_queries(self):
+        """Datamodel root of meshing_queries."""
+        return super(Meshing, self).meshing_queries if not self.switched else None
+
+    @property
     def workflow(self):
         """Datamodel root of workflow."""
         return super(Meshing, self).workflow if not self.switched else None

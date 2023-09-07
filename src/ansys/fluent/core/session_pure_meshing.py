@@ -7,10 +7,11 @@ import functools
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.meshing_queries import (
-    MeshingQueries,
-    MeshingQueriesService,
-)
+
+# from ansys.fluent.core.services.meshing_queries import (
+#     MeshingQueries,
+#     MeshingQueriesService,
+# )
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -24,7 +25,13 @@ class PureMeshing(BaseSession):
     exposed here. No ``switch_to_solver`` method is available
     in this mode."""
 
-    rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
+    rules = [
+        "workflow",
+        "meshing",
+        "meshing-queries",
+        "PartManagement",
+        "PMFileManagement",
+    ]
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
@@ -43,10 +50,10 @@ class PureMeshing(BaseSession):
             self.datamodel_service_se,
         )
 
-        self.meshing_queries_service = fluent_connection.create_service(
-            MeshingQueriesService, self.error_state
-        )
-        self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+        # self.meshing_queries_service = fluent_connection.create_service(
+        #     MeshingQueriesService, self.error_state
+        # )
+        # self.meshing_queries = MeshingQueries(self.meshing_queries_service)
 
         datamodel_service_se = self.datamodel_service_se
         self.datamodel_streams = {}
@@ -73,6 +80,11 @@ class PureMeshing(BaseSession):
     def meshing(self):
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
+
+    @property
+    def meshing_queries(self):
+        """Datamodel root of meshing_queries."""
+        return self._base_meshing.meshing_queries
 
     @property
     def workflow(self):

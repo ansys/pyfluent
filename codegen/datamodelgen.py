@@ -79,6 +79,19 @@ def _build_command_docstring(name: str, info: Any, indent: str):
     return doc
 
 
+def _build_query_docstring(name: str, info: Any, indent: str):
+    doc = f"{indent}Query {name}.\n\n"
+    if info.args:
+        doc += f"{indent}Parameters\n"
+        doc += f"{indent}{'-' * len('Parameters')}\n"
+        for arg in info.args:
+            doc += f"{indent}{arg.name} : {_PY_TYPE_BY_DM_TYPE[arg.type]}\n"
+    doc += f"\n{indent}Returns\n"
+    doc += f"{indent}{'-' * len('Returns')}\n"
+    doc += f"{indent}{_PY_TYPE_BY_DM_TYPE[info.returntype]}\n"
+    return doc
+
+
 class DataModelStaticInfo:
     _noindices = []
 
@@ -119,6 +132,9 @@ class DataModelGenerator:
                 self.version,
             ),
             "meshing": DataModelStaticInfo("meshing", ("meshing",), self.version),
+            "meshing_queries": DataModelStaticInfo(
+                "meshing-queries", ("meshing",), self.version
+            ),
             "PartManagement": DataModelStaticInfo(
                 "PartManagement", ("meshing",), self.version
             ),
@@ -214,6 +230,7 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
+        # queries = sorted(info.queries)
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
@@ -236,6 +253,11 @@ class DataModelGenerator:
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
+        # for k in queries:
+        #     f.write(
+        #         f"{indent}        self.{k} = "
+        #         f'self.__class__.{k}(service, rules, "{k}", path)\n'
+        #     )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
@@ -286,6 +308,17 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
+        # for k in queries:
+        #     f.write(f"{indent}    class {k}(PyQuery):\n")
+        #     f.write(f'{indent}        """\n')
+        #     f.write(
+        #         _build_query_docstring(
+        #             k, info.queries[k].queryinfo, f"{indent}        "
+        #         )
+        #     )
+        #     f.write(f'{indent}        """\n')
+        #     f.write(f"{indent}        pass\n\n")
+        #     api_tree[k] = "Query"
         return api_tree
 
     def _write_doc_for_model_object(
@@ -308,6 +341,7 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
+            # queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
             if noindex:
@@ -380,6 +414,7 @@ class DataModelGenerator:
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand\n")
+                f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
