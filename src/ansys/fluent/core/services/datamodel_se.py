@@ -1396,10 +1396,8 @@ class PyMenuGeneric(PyMenu):
                 command_names = [x.name for x in struct_field.commands]
                 query_names = [x.name for x in struct_field.queries]
         return singleton_names, creatable_type_names, command_names, query_names
-        # return singleton_names, creatable_type_names, command_names, query_names
 
     def _get_child(self, name: str):
-        # singletons, creatable_types, commands = self._get_child_names()
         singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
