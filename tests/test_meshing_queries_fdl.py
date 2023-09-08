@@ -52,7 +52,10 @@ def test_meshing_queries(new_mesh_session):
         33,
         34,
     ]
-    # assert meshing_session.meshing_queries.get_face_zones(xyz_coordinates=[1.4, 1.4, 1.4]) == 34 # assert None == 34
+    assert (
+        meshing_session.meshing_queries.get_face_zones(xyz_coordinates=[1.4, 1.4, 1.4])
+        == 34
+    )
     assert (
         meshing_session.meshing_queries.get_face_zones(
             maximum_entity_count=20, only_boundary=True
@@ -143,7 +146,7 @@ def test_meshing_queries(new_mesh_session):
     )
     assert (
         meshing_session.meshing_queries.get_cell_zones(xyz_coordinates=[1.4, 1.4, 1.4])
-        is None
+        is False
     )
 
     assert meshing_session.meshing_queries.get_unreferenced_cell_zones() is None
@@ -199,23 +202,43 @@ def test_meshing_queries(new_mesh_session):
         is None
     )
 
-    # assert meshing_session.meshing_queries.get_maxsize_cell_zone_by_count(zone_id_list=[87]) == 87 # assert None == 87
+    assert (
+        meshing_session.meshing_queries.get_maxsize_cell_zone_by_count(
+            zone_id_list=[87]
+        )
+        == 87
+    )
     assert (
         meshing_session.meshing_queries.get_maxsize_cell_zone_by_count(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
-    # assert meshing_session.meshing_queries.get_maxsize_cell_zone_by_count(zone_name_pattern="*") == 87 # assert None == 87
+    assert (
+        meshing_session.meshing_queries.get_maxsize_cell_zone_by_count(
+            zone_name_pattern="*"
+        )
+        == 87
+    )
 
-    # assert meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume(zone_id_list=[87]) == 87 # assert None == 87
+    assert (
+        meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume(
+            zone_id_list=[87]
+        )
+        == 87
+    )
     assert (
         meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
-    # assert meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume(zone_name_pattern="*") == 87 # assert None == 87
+    assert (
+        meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume(
+            zone_name_pattern="*"
+        )
+        == 87
+    )
 
     assert meshing_session.meshing_queries.get_zones(type_name="velocity-inlet") == [
         30,
