@@ -9,7 +9,6 @@ def catch_grpc_error(f: Callable) -> Callable:
 
     @functools.wraps(f)
     def func(*args, **kwargs) -> Callable:
-        # return f(*args, **kwargs)
         try:
             return f(*args, **kwargs)
         except grpc.RpcError as ex:

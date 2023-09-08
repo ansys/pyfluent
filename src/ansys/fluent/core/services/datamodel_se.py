@@ -3,10 +3,8 @@ from enum import Enum
 import functools
 import itertools
 import logging
-from pprint import pprint
 from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
 
-from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
@@ -1028,9 +1026,7 @@ class PyQuery:
         request.path = convert_path_to_se_path(self.path)
         request.query = self.query
         _convert_value_to_variant(kwds, request.args)
-        pprint(MessageToDict(request))
         response = self.service.execute_query(request)
-        pprint(MessageToDict(response))
         return _convert_variant_to_value(response.result)
 
     def help(self) -> None:
