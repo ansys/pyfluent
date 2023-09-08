@@ -291,25 +291,41 @@ def test_meshing_queries(new_mesh_session):
         is None
     )
 
-    # assert meshing_session.meshing_queries.get_all_objects() == ['elbow-fluid'] # assert None == ['elbow-fluid']
-    # assert meshing_session.meshing_queries.get_objects(type_name="mesh") == ['elbow-fluid'] # assert None == ['elbow-fluid']
-    # assert meshing_session.meshing_queries.get_objects(filter="*") == ['elbow-fluid'] # assert None == ['elbow-fluid']
+    assert meshing_session.meshing_queries.get_all_objects() == ["elbow-fluid"]
+    assert meshing_session.meshing_queries.get_objects(type_name="mesh") == [
+        "elbow-fluid"
+    ]
+    assert meshing_session.meshing_queries.get_objects(filter="*") == ["elbow-fluid"]
 
-    # assert meshing_session.meshing_queries.get_regions(object_name="elbow-fluid", region_name_pattern="*") == [
-    #     'elbow-fluid'] # assert None == ['elbow-fluid']
-    # assert meshing_session.meshing_queries.get_regions(object_name="elbow-fluid", filter="*") == ['elbow-fluid'] # assert None == ['elbow-fluid']
-    # assert meshing_session.meshing_queries.get_regions(object_name="elbow-fluid") == ['elbow-fluid'] # assert None == ['elbow-fluid']
+    assert meshing_session.meshing_queries.get_regions(
+        object_name="elbow-fluid", region_name_pattern="*"
+    ) == ["elbow-fluid"]
+    assert meshing_session.meshing_queries.get_regions(
+        object_name="elbow-fluid", filter="*"
+    ) == ["elbow-fluid"]
+    assert meshing_session.meshing_queries.get_regions(object_name="elbow-fluid") == [
+        "elbow-fluid"
+    ]
 
-    # assert meshing_session.meshing_queries.get_regions_of_face_zones(face_zone_id_list=[29, 30, 31, 32, 33]) == [
-    #     'elbow-fluid'] # assert None == ['elbow-fluid']
-    # assert meshing_session.meshing_queries.get_regions_of_face_zones(
-    #     face_zone_name_list=["outlet", "inlet", "wall", "internal"]) == ['elbow-fluid'] # assert None == ['elbow-fluid']
-    # assert meshing_session.meshing_queries.get_regions_of_face_zones(face_zone_name_pattern="*") == ['elbow-fluid'] # assert None == ['elbow-fluid']
+    assert meshing_session.meshing_queries.get_regions_of_face_zones(
+        face_zone_id_list=[29, 30, 31, 32, 33]
+    ) == ["elbow-fluid"]
+    assert meshing_session.meshing_queries.get_regions_of_face_zones(
+        face_zone_name_list=["outlet", "inlet", "wall", "internal"]
+    ) == ["elbow-fluid"]
+    assert meshing_session.meshing_queries.get_regions_of_face_zones(
+        face_zone_name_pattern="*"
+    ) == ["elbow-fluid"]
 
-    # assert meshing_session.meshing_queries.get_region_volume(object_name="elbow-fluid", sorting_order="ascending") == [
-    #     [152.59942809266, 'elbow-fluid']] # assert None != [[152.59942809266, 'elbow-fluid']]
-    # assert meshing_session.meshing_queries.get_region_volume(object_name="elbow-fluid",
-    #                                                          region_name="elbow-fluid") == 152.59942809266 # assert None != 152.59942809266
+    assert meshing_session.meshing_queries.get_region_volume(
+        object_name="elbow-fluid", sorting_order="ascending"
+    ) == [[152.59942809266, "elbow-fluid"]]
+    assert (
+        meshing_session.meshing_queries.get_region_volume(
+            object_name="elbow-fluid", region_name="elbow-fluid"
+        )
+        == 152.59942809266
+    )
 
     assert (
         meshing_session.meshing_queries.get_pairs_of_overlapping_face_zones(
@@ -345,3 +361,85 @@ def test_meshing_queries(new_mesh_session):
         )
         is None
     )
+
+    assert (
+        meshing_session.meshing_queries.get_minsize_face_zone_by_count(
+            zone_id_list=[29, 30, 31, 32, 33]
+        )
+        == 30
+    )
+    assert (
+        meshing_session.meshing_queries.get_minsize_face_zone_by_count(
+            zone_name_list=["outlet", "inlet", "wall", "internal"]
+        )
+        == 32
+    )
+    assert (
+        meshing_session.meshing_queries.get_minsize_face_zone_by_count(
+            zone_name_pattern="*"
+        )
+        == 30
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_minsize_face_zone_by_area(
+            zone_id_list=[29, 30, 31, 32, 33]
+        )
+        == 30
+    )
+    assert (
+        meshing_session.meshing_queries.get_minsize_face_zone_by_area(
+            zone_name_list=["outlet", "inlet", "wall", "internal"]
+        )
+        == 32
+    )
+    assert (
+        meshing_session.meshing_queries.get_minsize_face_zone_by_area(
+            zone_name_pattern="*"
+        )
+        == 30
+    )
+
+    assert meshing_session.meshing_queries.get_adjacent_face_zones_for_given_cell_zones(
+        cell_zone_id_list=[87]
+    ) == [29, 30, 31, 32, 33, 34]
+    assert meshing_session.meshing_queries.get_adjacent_face_zones_for_given_cell_zones(
+        cell_zone_name_pattern="*"
+    ) == [29, 30, 31, 32, 33, 34]
+    assert meshing_session.meshing_queries.get_adjacent_face_zones_for_given_cell_zones(
+        cell_zone_name_list=["elbow-fluid"]
+    ) == [29, 30, 31, 32, 33, 34]
+
+    assert meshing_session.meshing_queries.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
+        cell_zone_id_list=[87]
+    ) == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        89,
+    ]
+    assert meshing_session.meshing_queries.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
+        cell_zone_name_pattern="*"
+    ) == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        89,
+    ]
+    assert meshing_session.meshing_queries.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
+        cell_zone_name_list=["elbow-fluid"]
+    ) == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        89,
+    ]
