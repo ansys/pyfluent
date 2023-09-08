@@ -20,7 +20,7 @@ import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 import xml.etree.ElementTree as ET
 
 import h5py
@@ -30,6 +30,51 @@ import numpy as np
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+
+
+class InputParameterOld:
+    """Represents an input parameter (old format).
+
+    Attributes
+    ----------
+    name : str
+    value
+        The value of this input parameter, usually
+        a string, qualified by units
+    """
+
+    def __init__(self, raw_data: List) -> None:
+        """Initialize InputParameter.
+
+        Parameters
+        ----------
+        raw_data : List
+            Input parameter data as a list.
+        """
+        self.name = raw_data[1][1][1][1].strip('"')
+        self.value = raw_data[1][2]
+
+    @property
+    def units(self) -> str:
+        """Get the unit label of a Fluent input parameter.
+
+        Returns
+        -------
+        str
+            Unit label of the Fluent input parameter.
+        """
+        return str(self.value[-1][-1])
+
+    @property
+    def numeric_value(self) -> float:
+        """Get the numeric value of a Fluent input parameter.
+
+        Returns
+        -------
+        float
+            Numeric value of the Fluent input parameter.
+        """
+        return float(self.value[2][1])
 
 
 class InputParameter:
@@ -243,8 +288,8 @@ class Mesh:
         return vertices[:][nodes].flatten()
 
 
-class CaseFile:
-    """Class to read a Fluent case file.
+class RPVarProcessor:
+    """Class to process RP Vars string to expose required outputs.
 
     Methods
     -------
@@ -282,80 +327,29 @@ class CaseFile:
 
     def __init__(
         self,
-        case_filepath: Optional[str] = None,
-        project_filepath: Optional[str] = None,
+        rp_vars_str: str,
     ) -> None:
-        """Initialize a CaseFile object. Exactly one file path argument must be specified.
+        """Initialize a RPVarProcessor object.
 
         Parameters
         ----------
-        case_filepath : Optional[str]
-            The path of a case file.
-        project_filepath : Optional[str]
-            The path of a project file from which the case file is selected.
+        rp_vars_str :str
+            RP Vars string.
         """
-        if (not case_filepath) == (not project_filepath):
-            raise RuntimeError(
-                "Please enter either the case file path or the project file path"
-            )
-        if project_filepath:
-            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
-                project_dir = os.path.join(
-                    dirname(project_filepath),
-                    Path(project_filepath).name.split(".")[0] + ".cffdb",
-                )
-                case_filepath = Path(
-                    project_dir + _get_case_filepath_from_flprj(project_filepath)
-                )
-            else:
-                raise FileNotFoundError(
-                    "Please provide a valid fluent project file path"
-                )
 
-        try:
-            if Path(case_filepath).match("*.cas.h5"):
-                file = h5py.File(case_filepath)
-                settings = file["settings"]
-                rpvars = settings["Rampant Variables"][0]
-                rp_vars_str = rpvars.decode()
-            elif Path(case_filepath).match("*.cas"):
-                with open(case_filepath, "rb") as file:
-                    rp_vars_str = file.read()
-                rp_vars_str = _get_processed_string(rp_vars_str)
-            elif Path(case_filepath).match("*.cas.gz"):
-                with gzip.open(case_filepath, "rb") as file:
-                    rp_vars_str = file.read()
-                rp_vars_str = _get_processed_string(rp_vars_str)
-            else:
-                error_message = (
-                    "Could not read case file. "
-                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
-                )
-                raise RuntimeError(error_message)
-
-        except FileNotFoundError as e:
-            raise FileNotFoundError(
-                f"The case file {case_filepath} cannot be found."
-            ) from e
-
-        except OSError as e:
-            raise OSError(f"Error while reading case file {case_filepath}") from e
-
-        except Exception as e:
-            raise RuntimeError(f"Could not read case file {case_filepath}") from e
+        self.rp_vars_str = rp_vars_str
 
         self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
-        self._mesh = Mesh(file)
 
-    def input_parameters(self) -> List[InputParameter]:
+    def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
         """
-        Get the input parameters for this case.
+        Get the input parameters.
 
         Returns
         -------
-        List[InputParameter]
+        Union[List[InputParameter], List[InputParameterOld]]
             The list of input parameters.
         """
         exprs = self._named_expressions()
@@ -366,13 +360,16 @@ class CaseFile:
                     if attr[0] in ["parameter", "input-parameter"] and attr[1] is True:
                         input_params.append(InputParameter(expr))
             return input_params
-        else:
-            parameters = self._find_rp_var("parameters/input-parameters")
-            return [InputParameter(param) for param in parameters]
+
+        rp_var_params = self._find_rp_var("parameters/input-parameters") or []
+        try:
+            return [InputParameter(param) for param in rp_var_params]
+        except ValueError:
+            return [InputParameterOld(param) for param in rp_var_params]
 
     def output_parameters(self) -> List[OutputParameter]:
         """
-        Get the output parameters for this case.
+        Get the output parameters.
 
         Returns
         -------
@@ -491,7 +488,121 @@ class CaseFile:
         return self._find_rp_var("case-config")
 
     def _find_rp_var(self, name: str):
-        return self._rp_vars[name]
+        return self._rp_vars.get(name)
+
+
+class SettingsFile(RPVarProcessor):
+    """Class to read a Fluent Settings file."""
+
+    def __init__(self, settings_filepath: Optional[str] = None) -> None:
+        """Initialize a SettingsFile object. Exactly one file path argument must be specified.
+
+        Parameters
+        ----------
+        settings_filepath : Optional[str]
+            The path of a settings file.
+        """
+        if settings_filepath:
+            try:
+                with open(settings_filepath, "r") as file:
+                    rp_vars_str = file.read()
+                if not rp_vars_str.startswith("(rp ("):
+                    raise RuntimeError("Not a valid settings file.")
+
+            except FileNotFoundError as e:
+                raise FileNotFoundError(
+                    f"The settings file {settings_filepath} cannot be found."
+                ) from e
+
+            except OSError as e:
+                raise OSError(
+                    f"Error while reading settings file {settings_filepath}"
+                ) from e
+
+            except Exception as e:
+                raise RuntimeError(
+                    f"Could not read settings file {settings_filepath}"
+                ) from e
+
+        super().__init__(rp_vars_str)
+
+
+class CaseFile(RPVarProcessor):
+    """Class to read a Fluent case file.
+
+    Methods
+    -------
+    get_mesh
+        Get the mesh data.
+    """
+
+    def __init__(
+        self,
+        case_filepath: Optional[str] = None,
+        project_filepath: Optional[str] = None,
+    ) -> None:
+        """Initialize a CaseFile object. Exactly one file path argument must be specified.
+
+        Parameters
+        ----------
+        case_filepath : Optional[str]
+            The path of a case file.
+        project_filepath : Optional[str]
+            The path of a project file from which the case file is selected.
+        """
+
+        if (not case_filepath) == (not project_filepath):
+            raise RuntimeError(
+                "Please enter either the case file path or the project file path"
+            )
+        if project_filepath:
+            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
+                project_dir = os.path.join(
+                    dirname(project_filepath),
+                    Path(project_filepath).name.split(".")[0] + ".cffdb",
+                )
+                case_filepath = Path(
+                    project_dir + _get_case_filepath_from_flprj(project_filepath)
+                )
+            else:
+                raise FileNotFoundError(
+                    "Please provide a valid fluent project file path"
+                )
+
+        try:
+            if Path(case_filepath).match("*.cas.h5"):
+                _file = h5py.File(case_filepath)
+                settings = _file["settings"]
+                rpvars = settings["Rampant Variables"][0]
+                rp_vars_str = rpvars.decode()
+            elif Path(case_filepath).match("*.cas"):
+                with open(case_filepath, "rb") as _file:
+                    rp_vars_str = _file.read()
+                rp_vars_str = _get_processed_string(rp_vars_str)
+            elif Path(case_filepath).match("*.cas.gz"):
+                with gzip.open(case_filepath, "rb") as _file:
+                    rp_vars_str = _file.read()
+                rp_vars_str = _get_processed_string(rp_vars_str)
+            else:
+                error_message = (
+                    "Could not read case file. "
+                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
+                )
+                raise RuntimeError(error_message)
+
+        except FileNotFoundError as e:
+            raise FileNotFoundError(
+                f"The case file {case_filepath} cannot be found."
+            ) from e
+
+        except OSError as e:
+            raise OSError(f"Error while reading case file {case_filepath}") from e
+
+        except Exception as e:
+            raise RuntimeError(f"Could not read case file {case_filepath}") from e
+
+        super().__init__(rp_vars_str=rp_vars_str)
+        self._mesh = Mesh(_file)
 
     def get_mesh(self):
         return self._mesh

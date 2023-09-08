@@ -34,6 +34,7 @@ class Container:
     ):
         """__init__ method of Container class."""
         session_state = container_type._sessions_state.get(session)
+        self._path = container_type.__name__
         if not session_state:
             session_state = self.__dict__
             container_type._sessions_state[session] = session_state
@@ -44,6 +45,9 @@ class Container:
         self._local_surfaces_provider = lambda: local_surfaces_provider or getattr(
             self, "Surfaces", []
         )
+
+    def get_path(self):
+        return self._path
 
     @property
     def type(self):
@@ -58,7 +62,7 @@ class Container:
                 setattr(
                     obj,
                     cls.PLURAL,
-                    PyLocalContainer(self, cls, post_api_helper),
+                    PyLocalContainer(self, cls, post_api_helper, cls.PLURAL),
                 )
 
 

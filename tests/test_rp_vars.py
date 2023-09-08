@@ -58,9 +58,5 @@ def test_rp_vars_allowed_values(new_solver_session_no_transcript) -> None:
 
     with pytest.raises(RuntimeError) as msg:
         rp_vars("number-of-iterat")
-        assert (
-            "number-of-iterat is not an allowed rp-vars name.\n"
-            "The most similar names are" in msg.value.args[0]
-        )
 
     assert "number-of-iterations" in rp_vars.allowed_values()

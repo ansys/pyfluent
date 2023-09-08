@@ -214,13 +214,6 @@ class SurfaceDefn(GraphicsDefn):
     class definition(metaclass=PyLocalObjectMeta):
         """Specify surface definition type."""
 
-        def _availability(self, name):
-            if name == "plane_surface":
-                return self.type() == "plane-surface"
-            if name == "iso_surface":
-                return self.type() == "iso-surface"
-            return True
-
         class type(metaclass=PyLocalPropertyMeta):
             """Surface type."""
 
@@ -234,14 +227,9 @@ class SurfaceDefn(GraphicsDefn):
         class plane_surface(metaclass=PyLocalObjectMeta):
             """Plane surface definition."""
 
-            def _availability(self, name):
-                if name == "xy_plane":
-                    return self.creation_method() == "xy-plane"
-                if name == "yz_plane":
-                    return self.creation_method() == "yz-plane"
-                if name == "zx_plane":
-                    return self.creation_method() == "zx-plane"
-                return True
+            @Attribute
+            def is_active(self):
+                return self._parent.type() == "plane-surface"
 
             class creation_method(metaclass=PyLocalPropertyMeta):
                 """Creation Method."""
@@ -255,6 +243,10 @@ class SurfaceDefn(GraphicsDefn):
 
             class xy_plane(metaclass=PyLocalObjectMeta):
                 """XY Plane definition."""
+
+                @Attribute
+                def is_active(self):
+                    return self._parent.creation_method() == "xy-plane"
 
                 class z(metaclass=PyLocalPropertyMeta):
                     """Z value."""
@@ -271,6 +263,10 @@ class SurfaceDefn(GraphicsDefn):
             class yz_plane(metaclass=PyLocalObjectMeta):
                 """YZ Plane definition."""
 
+                @Attribute
+                def is_active(self):
+                    return self._parent.creation_method() == "yz-plane"
+
                 class x(metaclass=PyLocalPropertyMeta):
                     """X value."""
 
@@ -286,6 +282,10 @@ class SurfaceDefn(GraphicsDefn):
             class zx_plane(metaclass=PyLocalObjectMeta):
                 """ZX Plane definition."""
 
+                @Attribute
+                def is_active(self):
+                    return self._parent.creation_method() == "zx-plane"
+
                 class y(metaclass=PyLocalPropertyMeta):
                     """Y value."""
 
@@ -300,6 +300,10 @@ class SurfaceDefn(GraphicsDefn):
 
         class iso_surface(metaclass=PyLocalObjectMeta):
             """Iso surface definition."""
+
+            @Attribute
+            def is_active(self):
+                return self._parent.type() == "iso-surface"
 
             class field(metaclass=PyLocalPropertyMeta):
                 """Iso surface field."""
@@ -391,8 +395,8 @@ class ContourDefn(GraphicsDefn):
         @property
         def value(self):
             """Node value property setter."""
-            filled = self._get_ancestors_by_type(ContourDefn).filled()
-            auto_range_off = self._get_ancestors_by_type(
+            filled = self.get_ancestors_by_type(ContourDefn).filled()
+            auto_range_off = self.get_ancestors_by_type(
                 ContourDefn
             ).range.auto_range_off
             if not filled or (auto_range_off and auto_range_off.clip_to_range()):
@@ -424,13 +428,6 @@ class ContourDefn(GraphicsDefn):
     class range(metaclass=PyLocalObjectMeta):
         """Range definition."""
 
-        def _availability(self, name):
-            if name == "auto_range_on":
-                return self.option() == "auto-range-on"
-            if name == "auto_range_off":
-                return self.option() == "auto-range-off"
-            return True
-
         class option(metaclass=PyLocalPropertyMeta):
             """Range option."""
 
@@ -444,6 +441,10 @@ class ContourDefn(GraphicsDefn):
         class auto_range_on(metaclass=PyLocalObjectMeta):
             """Auto range on definition."""
 
+            @Attribute
+            def is_active(self):
+                return self._parent.option() == "auto-range-on"
+
             class global_range(metaclass=PyLocalPropertyMeta):
                 """Show global range."""
 
@@ -451,6 +452,10 @@ class ContourDefn(GraphicsDefn):
 
         class auto_range_off(metaclass=PyLocalObjectMeta):
             """Auto range off definition."""
+
+            @Attribute
+            def is_active(self):
+                return self._parent.option() == "auto-range-off"
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """Clip contour within range."""
@@ -464,20 +469,20 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self._get_ancestors_by_type(ContourDefn).field,
-                        self._get_ancestors_by_type(ContourDefn).node_values,
+                        self.get_ancestors_by_type(ContourDefn).field,
+                        self.get_ancestors_by_type(ContourDefn).node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self._get_ancestors_by_type(ContourDefn).field()
+                        field = self.get_ancestors_by_type(ContourDefn).field()
                         if field:
                             field_info = self._api_helper.field_info()
                             field_range = field_info.get_scalar_field_range(
                                 field,
-                                self._get_ancestors_by_type(ContourDefn).node_values(),
+                                self.get_ancestors_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[0]
                     return self._value
@@ -493,20 +498,20 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self._get_ancestors_by_type(ContourDefn).field,
-                        self._get_ancestors_by_type(ContourDefn).node_values,
+                        self.get_ancestors_by_type(ContourDefn).field,
+                        self.get_ancestors_by_type(ContourDefn).node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self._get_ancestors_by_type(ContourDefn).field()
+                        field = self.get_ancestors_by_type(ContourDefn).field()
                         if field:
                             field_info = self._api_helper.field_info()
                             field_range = field_info.get_scalar_field_range(
                                 field,
-                                self._get_ancestors_by_type(ContourDefn).node_values(),
+                                self.get_ancestors_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[1]
 
@@ -574,13 +579,6 @@ class VectorDefn(GraphicsDefn):
     class range(metaclass=PyLocalObjectMeta):
         """Range definition."""
 
-        def _availability(self, name):
-            if name == "auto_range_on":
-                return self.option() == "auto-range-on"
-            if name == "auto_range_off":
-                return self.option() == "auto-range-off"
-            return True
-
         class option(metaclass=PyLocalPropertyMeta):
             """Range option."""
 
@@ -594,6 +592,10 @@ class VectorDefn(GraphicsDefn):
         class auto_range_on(metaclass=PyLocalObjectMeta):
             """Auto range on definition."""
 
+            @Attribute
+            def is_active(self):
+                return self._parent.option() == "auto-range-on"
+
             class global_range(metaclass=PyLocalPropertyMeta):
                 """Show global range."""
 
@@ -601,6 +603,10 @@ class VectorDefn(GraphicsDefn):
 
         class auto_range_off(metaclass=PyLocalObjectMeta):
             """Auto range off definition."""
+
+            @Attribute
+            def is_active(self):
+                return self._parent.option() == "auto-range-off"
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """Clip vector within range."""
