@@ -154,8 +154,16 @@ def _expr_to_expr_str(expr):
     return getattr(expr, "definition", expr) if expr is not None else expr
 
 
-def _eval_reduction(solver, reduction, locations, expr=None):
+def _eval_reduction(
+    solver, reduction, locations, expr=None, weight=None, condition=None
+):
+    if weight:
+        weight = "Weight=" + str(weight)
+        locations = str(locations) + ", " + weight
+
     expr_str = _expr_to_expr_str(expr)
+    if condition:
+        expr_str = expr_str + ", " + condition
     return _eval_expr(
         solver,
         (
@@ -166,14 +174,24 @@ def _eval_reduction(solver, reduction, locations, expr=None):
     )
 
 
-def _extent_expression(f_string, extent_name, expr, locations, ctxt):
+def _extent_expression(
+    f_string, extent_name, expr, locations, ctxt, weight=None, condition=None
+):
     locns = _locns(locations, ctxt)
     numerator = 0.0
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        val = _eval_reduction(solver, f_string, names, expr)
-        extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
+        val = _eval_reduction(
+            solver, f_string, names, expr, weight=weight, condition=condition
+        )
+        extent = (
+            _eval_reduction(
+                solver, extent_name, names, weight=weight, condition=condition
+            )
+            if len(locns) > 1
+            else 1
+        )
         try:
             numerator += val * extent
             denominator += extent
@@ -531,3 +549,40 @@ def mass_flow(locations, ctxt=None):
     float
     """
     return _extent("MassFlow", locations, ctxt)
+
+
+def sum(expr, locations, weight, ctxt=None):
+    """Compute the sum of the specified expression over the
+    specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    weight: str
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_expression("Sum", "Sum", expr, locations, ctxt, weight=weight)
+
+
+def sum_if(expr, condition, locations, weight, ctxt=None):
+    """Compute the sum of the specified expression over the
+    specified locations if a condition is satisfied.
+
+    Parameters
+    ----------
+    expr : Any
+    condition: str
+    locations : Any
+    weight: str
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_expression(
+        "SumIf", "SumIf", expr, locations, ctxt, weight=weight, condition=condition
+    )

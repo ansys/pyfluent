@@ -174,6 +174,20 @@ class ReductionService:
         """Moment rpc of Reduction service."""
         return self._stub.Moment(request, metadata=self._metadata)
 
+    @catch_grpc_error
+    def sum(
+        self, request: ReductionProtoModule.SumRequest
+    ) -> ReductionProtoModule.SumResponse:
+        """Sum rpc of Reduction service."""
+        return self._stub.Sum(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def sum_if(
+        self, request: ReductionProtoModule.SumIfRequest
+    ) -> ReductionProtoModule.SumIfResponse:
+        """Sum rpc of Reduction service."""
+        return self._stub.SumIf(request, metadata=self._metadata)
+
 
 class BadReductionRequest(Exception):
     def __init__(self, err):
@@ -414,9 +428,28 @@ class Reduction:
         return response.value
 
     def moment(self, expression, locations, ctxt=None) -> Any:
-        """Get volume integral."""
+        """Get moment."""
         request = ReductionProtoModule.MomentRequest()
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.moment(request)
+        return response.value
+
+    def sum(self, expression, locations, weight, ctxt=None) -> Any:
+        """Get sum."""
+        request = ReductionProtoModule.SumRequest()
+        request.expression = expression
+        request.locations.extend(self._get_location_string(locations, ctxt))
+        request.weight = weight
+        response = self.service.sum(request)
+        return response.value
+
+    def sum_if(self, expression, condition, locations, weight, ctxt=None) -> Any:
+        """Get sum if a particular condition satisfies."""
+        request = ReductionProtoModule.SumIfRequest()
+        request.expression = expression
+        request.condition = condition
+        request.locations.extend(self._get_location_string(locations, ctxt))
+        request.weight = weight
+        response = self.service.sum_if(request)
         return response.value
