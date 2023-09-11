@@ -589,20 +589,19 @@ class PyLocalContainer(MutableMapping):
         self.__api_helper = api_helper
         self.type = "named-object"
 
-        if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):            
-            PyLocalContainer.show_as_separate_object = property(lambda self: self.__object_class.SHOW_AS_SEPARATE_OBJECT())              
+        if hasattr(object_class, "SHOW_AS_SEPRATE_OBJECT"):            
+            PyLocalContainer.show_as_separate_object = property(lambda self: self.__object_class.SHOW_AS_SEPRATE_OBJECT(self))              
         if hasattr(object_class, "EXCLUDE"):
-            PyLocalContainer.exclude = property(lambda self: self.__object_class.EXCLUDE())            
+            PyLocalContainer.exclude = property(lambda self: self.__object_class.EXCLUDE(self))            
         if hasattr(object_class, "INCLUDE"):
-            PyLocalContainer.include = property(lambda self: self.__object_class.INCLUDE()) 
+            PyLocalContainer.include = property(lambda self: self.__object_class.INCLUDE(self)) 
         if hasattr(object_class, "LAYOUT"):
-            PyLocalContainer.layout = property(lambda self: self.__object_class.LAYOUT())             
+            PyLocalContainer.layout = property(lambda self: self.__object_class.LAYOUT(self))             
         if hasattr(object_class, "STYLE"):
-            PyLocalContainer.style = property(lambda self: self.__object_class.STYLE()) 
+            PyLocalContainer.style = property(lambda self: self.__object_class.STYLE(self)) 
         if hasattr(object_class, "ICON"):
-            PyLocalContainer.icon = property(lambda self: self.__object_class.ICON())
-        #import pdb; pdb.set_trace()    
-        if hasattr(object_class, "IS_ACTIVE"):            
+            PyLocalContainer.icon = property(lambda self: self.__object_class.ICON(self))  
+        if hasattr(object_class, "IS_ACTIVE"):           
             PyLocalContainer.is_active = property(lambda self: self.__object_class.IS_ACTIVE(self))  
 
     @classmethod
