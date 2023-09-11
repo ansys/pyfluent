@@ -34,6 +34,11 @@ if __name__ == "__main__":
             dest="fluent_path",
             help="Specify the fluent folder to use, with full path.  Such as /apps/ansys_inc/v232/fluent",
         )
+        parser.add_argument(
+            "--pyfluent-path",
+            dest="pyfluent_path",
+            help="Specify the pyfluent installation folder to patch, with full path.  Such as /my-venv/Lib/site-packages",
+        )
         args = parser.parse_args()
 
         if args.ansys_version:
@@ -45,11 +50,11 @@ if __name__ == "__main__":
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
     version = get_version_for_filepath()
-    print_fluent_version.generate(version)
-    _update_first_level(api_tree, tuigen.generate(version))
-    _update_first_level(api_tree, datamodelgen.generate(version))
-    _update_first_level(api_tree, settingsgen.generate(version))
-    api_tree_file = get_api_tree_filepath(version)
+    print_fluent_version.generate(version, args.pyfluent_path)
+    _update_first_level(api_tree, tuigen.generate(version, args.pyfluent_path))
+    _update_first_level(api_tree, datamodelgen.generate(version, args.pyfluent_path))
+    _update_first_level(api_tree, settingsgen.generate(version, args.pyfluent_path))
+    api_tree_file = get_api_tree_filepath(version, args.pyfluent_path)
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)

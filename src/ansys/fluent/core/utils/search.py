@@ -13,9 +13,15 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import BaseTask, TaskContainer, WorkflowWrapper
 
 
-def get_api_tree_filepath(version: str) -> Path:
+def get_api_tree_filepath(version: str, pyfluent_path: str) -> Path:
     return (
-        Path(__file__) / ".." / ".." / "data" / f"api_tree_{version}.pickle"
+        (
+            (Path(pyfluent_path) / "ansys" / "fluent" / "core")
+            if pyfluent_path
+            else (Path(__file__) / ".." / "..")
+        )
+        / "data"
+        / f"api_tree_{version}.pickle"
     ).resolve()
 
 
