@@ -5,7 +5,7 @@ from ansys.fluent.core import examples
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=23.2")
 def test_meshing_queries(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)
