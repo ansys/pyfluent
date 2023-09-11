@@ -20,10 +20,15 @@ def _update_first_level(d, u):
 
 if __name__ == "__main__":
     api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
+    parser = argparse.ArgumentParser(
+        description="Generate python code from Fluent APIs"
+    )
+    parser.add_argument(
+        "--pyfluent-path",
+        dest="pyfluent_path",
+        help="Specify the pyfluent installation folder to patch, with full path.  Such as /my-venv/Lib/site-packages",
+    )
     if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
-        parser = argparse.ArgumentParser(
-            description="Generate python code from Fluent APIs"
-        )
         parser.add_argument(
             "--ansys-version",
             dest="ansys_version",
@@ -34,13 +39,9 @@ if __name__ == "__main__":
             dest="fluent_path",
             help="Specify the fluent folder to use, with full path.  Such as /apps/ansys_inc/v232/fluent",
         )
-        parser.add_argument(
-            "--pyfluent-path",
-            dest="pyfluent_path",
-            help="Specify the pyfluent installation folder to patch, with full path.  Such as /my-venv/Lib/site-packages",
-        )
-        args = parser.parse_args()
 
+    args = parser.parse_args()
+    if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
         if args.ansys_version:
             awp_root = os.environ[
                 "AWP_ROOT"
