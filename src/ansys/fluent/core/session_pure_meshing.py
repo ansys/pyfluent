@@ -7,11 +7,13 @@ import functools
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 
-# from ansys.fluent.core.services.meshing_queries import (
-#     MeshingQueries,
-#     MeshingQueriesService,
-# )
+if get_ansys_version() == "23.2.0":
+    from ansys.fluent.core.services.meshing_queries import (
+        MeshingQueries,
+        MeshingQueriesService,
+    )
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -28,10 +30,11 @@ class PureMeshing(BaseSession):
     rules = [
         "workflow",
         "meshing",
-        "meshing-queries",
         "PartManagement",
         "PMFileManagement",
     ]
+    if get_ansys_version() >= "24.1.0":
+        rules.append("meshing-queries")
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
@@ -50,10 +53,11 @@ class PureMeshing(BaseSession):
             self.datamodel_service_se,
         )
 
-        # self.meshing_queries_service = fluent_connection.create_service(
-        #     MeshingQueriesService, self.error_state
-        # )
-        # self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+        if get_ansys_version() == "23.2.0":
+            self.meshing_queries_service = fluent_connection.create_service(
+                MeshingQueriesService, self.error_state
+            )
+            self.meshing_queries = MeshingQueries(self.meshing_queries_service)
 
         datamodel_service_se = self.datamodel_service_se
         self.datamodel_streams = {}
@@ -81,10 +85,12 @@ class PureMeshing(BaseSession):
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
 
-    @property
-    def meshing_queries(self):
-        """Datamodel root of meshing_queries."""
-        return self._base_meshing.meshing_queries
+    if get_ansys_version() >= "24.1.0":
+
+        @property
+        def meshing_queries(self):
+            """Datamodel root of meshing_queries."""
+            return self._base_meshing.meshing_queries
 
     @property
     def workflow(self):

@@ -12,6 +12,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -135,13 +136,15 @@ class DatamodelService(StreamingService):
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
-    @catch_grpc_error
-    def execute_query(
-        self, request: DataModelProtoModule.ExecuteQueryRequest
-    ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """executeQuery rpc of DataModel service."""
-        logger.debug(f"Query: {request.query}")
-        return self._stub.executeQuery(request, metadata=self._metadata)
+    if get_ansys_version() == "24.1.0":
+
+        @catch_grpc_error
+        def execute_query(
+            self, request: DataModelProtoModule.ExecuteQueryRequest
+        ) -> DataModelProtoModule.ExecuteQueryResponse:
+            """executeQuery rpc of DataModel service."""
+            logger.debug(f"Query: {request.query}")
+            return self._stub.executeQuery(request, metadata=self._metadata)
 
     @catch_grpc_error
     def create_command_arguments(
@@ -1385,7 +1388,8 @@ class PyMenuGeneric(PyMenu):
         singleton_names = []
         creatable_type_names = []
         command_names = []
-        query_names = []
+        if get_ansys_version() == "24.1.0":
+            query_names = []
         for struct_type in ("singleton", "namedobject"):
             if response.member.HasField(struct_type):
                 struct_field = getattr(response.member, struct_type)
@@ -1394,11 +1398,16 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-                query_names = [x.name for x in struct_field.queries]
-        return singleton_names, creatable_type_names, command_names, query_names
+                if get_ansys_version() == "24.1.0":
+                    query_names = [x.name for x in struct_field.queries]
+        if get_ansys_version() == "24.1.0":
+            return singleton_names, creatable_type_names, command_names, query_names
+        return singleton_names, creatable_type_names, command_names
 
     def _get_child(self, name: str):
-        singletons, creatable_types, commands, queries = self._get_child_names()
+        if get_ansys_version() == "24.1.0":
+            singletons, creatable_types, commands, queries = self._get_child_names()
+        singletons, creatable_types, commands = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
             return PyMenuGeneric(self.service, self.rules, child_path)
@@ -1407,8 +1416,9 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
-        elif name in queries:
-            return PyQuery(self.service, self.rules, name, self.path)
+        elif get_ansys_version() == "24.1.0":
+            if name in queries:
+                return PyQuery(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
                 f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"

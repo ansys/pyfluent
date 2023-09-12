@@ -2,6 +2,7 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.meshing.meshing_workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -36,7 +37,8 @@ class BaseMeshing:
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
-        self._meshing_queries = None
+        if get_ansys_version() == "24.1.0":
+            self._meshing_queries = None
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
@@ -91,26 +93,30 @@ class BaseMeshing:
             self._meshing = self._meshing_root
         return self._meshing
 
-    @property
-    def _meshing_queries_root(self):
-        """Datamodel root of meshing_queries."""
-        try:
-            meshing_queries_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self.version}.meshing-queries"
-            )
-            meshing_queries_root = meshing_queries_module.Root(
-                self._se_service, "meshing-queries", []
-            )
-        except ImportError:
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            meshing_queries_root = PyMenuGeneric(self._se_service, "meshing_queries")
-        return meshing_queries_root
+    if get_ansys_version() == "24.1.0":
 
-    @property
-    def meshing_queries(self):
-        if self._meshing_queries is None:
-            self._meshing_queries = self._meshing_queries_root
-        return self._meshing_queries
+        @property
+        def _meshing_queries_root(self):
+            """Datamodel root of meshing_queries."""
+            try:
+                meshing_queries_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.meshing-queries"
+                )
+                meshing_queries_root = meshing_queries_module.Root(
+                    self._se_service, "meshing-queries", []
+                )
+            except ImportError:
+                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
+                meshing_queries_root = PyMenuGeneric(
+                    self._se_service, "meshing_queries"
+                )
+            return meshing_queries_root
+
+        @property
+        def meshing_queries(self):
+            if self._meshing_queries is None:
+                self._meshing_queries = self._meshing_queries_root
+            return self._meshing_queries
 
     @property
     def _workflow_se(self):

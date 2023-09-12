@@ -5,10 +5,22 @@ from ansys.fluent.core import examples
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_meshing_queries(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)
+
+    assert meshing_session.meshing_queries.convert_zone_name_strings_to_ids(
+        zone_name_list=["outlet", "cold-inlet"]
+    ) == [32, 31]
+
+    assert meshing_session.meshing_queries.convert_zone_ids_to_name_strings(
+        zone_id_list=[32, 31]
+    ) == ["outlet", "cold-inlet"]
+
+    assert meshing_session.meshing_queries.convert_zone_ids_to_name_symbols(
+        zone_id_list=[32, 31]
+    ) == ["outlet", "cold-inlet"]
 
     assert meshing_session.meshing_queries.get_edge_zones(filter="*") == [
         28,

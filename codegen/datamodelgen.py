@@ -5,6 +5,7 @@ import shutil
 from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.session import BaseSession as Session
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
@@ -136,9 +137,6 @@ class DataModelGenerator:
                 self.version,
             ),
             "meshing": DataModelStaticInfo("meshing", ("meshing",), self.version),
-            "meshing_queries": DataModelStaticInfo(
-                "meshing-queries", ("meshing",), self.version
-            ),
             "PartManagement": DataModelStaticInfo(
                 pyfluent_path, "PartManagement", ("meshing",), self.version
             ),
@@ -160,6 +158,10 @@ class DataModelGenerator:
             if int(self.version) >= 231
             else None,
         }
+        if int(self.version) >= 241:
+            self._static_info["meshing_queries"] = DataModelStaticInfo(
+                "meshing-queries", ("meshing",), self.version
+            )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
         self._delete_generated_files()
@@ -237,7 +239,8 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
-        queries = sorted(info.queries)
+        if get_ansys_version() == "24.1.0":
+            queries = sorted(info.queries)
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
@@ -260,11 +263,12 @@ class DataModelGenerator:
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
-        for k in queries:
-            f.write(
-                f"{indent}        self.{k} = "
-                f'self.__class__.{k}(service, rules, "{k}", path)\n'
-            )
+        if get_ansys_version() == "24.1.0":
+            for k in queries:
+                f.write(
+                    f"{indent}        self.{k} = "
+                    f'self.__class__.{k}(service, rules, "{k}", path)\n'
+                )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
@@ -315,17 +319,18 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
-        for k in queries:
-            f.write(f"{indent}    class {k}(PyQuery):\n")
-            f.write(f'{indent}        """\n')
-            f.write(
-                _build_query_docstring(
-                    k, info.queries[k].queryinfo, f"{indent}        "
+        if get_ansys_version() == "24.1.0":
+            for k in queries:
+                f.write(f"{indent}    class {k}(PyQuery):\n")
+                f.write(f'{indent}        """\n')
+                f.write(
+                    _build_query_docstring(
+                        k, info.queries[k].queryinfo, f"{indent}        "
+                    )
                 )
-            )
-            f.write(f'{indent}        """\n')
-            f.write(f"{indent}        pass\n\n")
-            api_tree[k] = "Query"
+                f.write(f'{indent}        """\n')
+                f.write(f"{indent}        pass\n\n")
+                api_tree[k] = "Query"
         return api_tree
 
     def _write_doc_for_model_object(
@@ -348,7 +353,8 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
-            queries = sorted(info.queries)
+            if get_ansys_version() == "24.1.0":
+                queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
             if noindex:
@@ -421,7 +427,8 @@ class DataModelGenerator:
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
-                f.write("    PyQuery\n")
+                if get_ansys_version() == "24.1.0":
+                    f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
