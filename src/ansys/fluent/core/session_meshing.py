@@ -46,7 +46,7 @@ class Meshing(PureMeshing):
 
     from ansys.fluent.core.launcher.launcher import get_ansys_version
 
-    if get_ansys_version() == "24.1.0":
+    if get_ansys_version() >= "24.1.0":
 
         @property
         def meshing_queries(self):

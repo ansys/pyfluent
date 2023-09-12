@@ -36,9 +36,7 @@ class BaseMeshing:
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
-        from ansys.fluent.core.launcher.launcher import get_ansys_version
-
-        if get_ansys_version() == "24.1.0":
+        if get_ansys_version() >= "24.1.0":
             self._meshing_queries = None
         self._workflow = None
         self._part_management = None
@@ -94,9 +92,7 @@ class BaseMeshing:
             self._meshing = self._meshing_root
         return self._meshing
 
-    from ansys.fluent.core.launcher.launcher import get_ansys_version
-
-    if get_ansys_version() == "24.1.0":
+    if get_ansys_version() >= "24.1.0":
 
         @property
         def _meshing_queries_root(self):
