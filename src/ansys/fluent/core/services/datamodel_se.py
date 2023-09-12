@@ -12,6 +12,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -19,6 +20,8 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
+
+ansys_version = get_ansys_version()
 
 Path = List[Tuple[str, str]]
 
@@ -135,7 +138,7 @@ class DatamodelService(StreamingService):
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
-    if pyfluent.get_ansys_version() == "24.1.0":
+    if ansys_version == "24.1.0":
 
         @catch_grpc_error
         def execute_query(
@@ -1387,7 +1390,7 @@ class PyMenuGeneric(PyMenu):
         singleton_names = []
         creatable_type_names = []
         command_names = []
-        if pyfluent.get_ansys_version() == "24.1.0":
+        if ansys_version == "24.1.0":
             query_names = []
         for struct_type in ("singleton", "namedobject"):
             if response.member.HasField(struct_type):
@@ -1397,14 +1400,14 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-                if pyfluent.get_ansys_version() == "24.1.0":
+                if ansys_version == "24.1.0":
                     query_names = [x.name for x in struct_field.queries]
-        if pyfluent.get_ansys_version() == "24.1.0":
+        if ansys_version == "24.1.0":
             return singleton_names, creatable_type_names, command_names, query_names
         return singleton_names, creatable_type_names, command_names
 
     def _get_child(self, name: str):
-        if pyfluent.get_ansys_version() == "24.1.0":
+        if ansys_version == "24.1.0":
             singletons, creatable_types, commands, queries = self._get_child_names()
         singletons, creatable_types, commands = self._get_child_names()
         if name in singletons:
@@ -1415,7 +1418,7 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
-        elif pyfluent.get_ansys_version() == "24.1.0":
+        elif ansys_version == "24.1.0":
             if name in queries:
                 return PyQuery(self.service, self.rules, name, self.path)
         else:
