@@ -92,7 +92,7 @@ class BaseMeshing:
             self._meshing = self._meshing_root
         return self._meshing
 
-    if self.get_fluent_version() >= "24.1.0":
+    if int(get_version_for_filepath()) >= 241:
 
         @property
         def _meshing_queries_root(self):
