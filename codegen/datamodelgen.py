@@ -96,7 +96,12 @@ class DataModelStaticInfo:
     _noindices = []
 
     def __init__(
-        self, rules: str, modes: tuple, version: str, rules_save_name: str = ""
+        self,
+        pyfluent_path: str,
+        rules: str,
+        modes: tuple,
+        version: str,
+        rules_save_name: str = "",
     ):
         self.rules = rules
         self.modes = modes
@@ -104,14 +109,12 @@ class DataModelStaticInfo:
         if rules_save_name == "":
             rules_save_name = rules
         datamodel_dir = (
-            _THIS_DIR
-            / ".."
-            / "src"
+            (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIR) / ".." / "src"))
             / "ansys"
             / "fluent"
             / "core"
             / f"datamodel_{version}"
-        )
+        ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
@@ -120,10 +123,11 @@ class DataModelStaticInfo:
 
 
 class DataModelGenerator:
-    def __init__(self, version):
+    def __init__(self, version, pyfluent_path):
         self.version = version
         self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo(
+                pyfluent_path,
                 "workflow",
                 (
                     "meshing",
@@ -136,19 +140,22 @@ class DataModelGenerator:
                 "meshing-queries", ("meshing",), self.version
             ),
             "PartManagement": DataModelStaticInfo(
-                "PartManagement", ("meshing",), self.version
+                pyfluent_path, "PartManagement", ("meshing",), self.version
             ),
             "PMFileManagement": DataModelStaticInfo(
-                "PMFileManagement", ("meshing",), self.version
+                pyfluent_path, "PMFileManagement", ("meshing",), self.version
             ),
             "flicing": DataModelStaticInfo(
-                "flserver", ("flicing",), self.version, "flicing"
+                pyfluent_path, "flserver", ("flicing",), self.version, "flicing"
             ),
             "preferences": DataModelStaticInfo(
-                "preferences", ("meshing", "solver", "flicing,"), self.version
+                pyfluent_path,
+                "preferences",
+                ("meshing", "solver", "flicing,"),
+                self.version,
             ),
             "solverworkflow": DataModelStaticInfo(
-                "solverworkflow", ("solver",), self.version
+                pyfluent_path, "solverworkflow", ("solver",), self.version
             )
             if int(self.version) >= 231
             else None,
@@ -455,10 +462,10 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version):
-    return DataModelGenerator(version).write_static_info()
+def generate(version, pyfluent_path):
+    return DataModelGenerator(version, pyfluent_path).write_static_info()
 
 
 if __name__ == "__main__":
     version = get_version_for_filepath()
-    generate(version)
+    generate(version, None)

@@ -41,19 +41,15 @@ logger = logging.getLogger("pyfluent.tui")
 _THIS_DIRNAME = os.path.dirname(__file__)
 
 
-def _get_tui_filepath(mode: str, version: str):
-    return os.path.normpath(
-        os.path.join(
-            _THIS_DIRNAME,
-            "..",
-            "src",
-            "ansys",
-            "fluent",
-            "core",
-            mode,
-            f"tui_{version}.py",
-        )
-    )
+def _get_tui_filepath(mode: str, version: str, pyfluent_path: str):
+    return (
+        (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIRNAME) / ".." / "src"))
+        / "ansys"
+        / "fluent"
+        / "core"
+        / mode
+        / f"tui_{version}.py"
+    ).resolve()
 
 
 _INDENT_STEP = 4
@@ -170,10 +166,10 @@ class _TUIMenu:
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str):
+    def __init__(self, mode: str, version: str, pyfluent_path: str):
         self._mode = mode
         self._version = version
-        self._tui_file = _get_tui_filepath(mode, version)
+        self._tui_file = _get_tui_filepath(mode, version, pyfluent_path)
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
@@ -348,14 +344,18 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version):
+def generate(version, pyfluent_path):
     # pyfluent.set_log_level("WARNING")
     api_tree = {}
     if version > "222":
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    api_tree["<meshing_session>"] = TUIGenerator("meshing", version).generate()
-    api_tree["<solver_session>"] = TUIGenerator("solver", version).generate()
+    api_tree["<meshing_session>"] = TUIGenerator(
+        "meshing", version, pyfluent_path
+    ).generate()
+    api_tree["<solver_session>"] = TUIGenerator(
+        "solver", version, pyfluent_path
+    ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
@@ -368,4 +368,4 @@ def generate(version):
 
 if __name__ == "__main__":
     version = get_version_for_filepath()
-    generate(version)
+    generate(version, None)
