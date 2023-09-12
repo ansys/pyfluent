@@ -53,9 +53,34 @@ Use settings objects
 --------------------
 This example shows how you use :ref:`ref_settings` to define materials.
 
+Copy material from database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 **Python code**
 
 .. code:: python
 
     solver.setup.materials.copy_database_material_by_name(type="fluid", name="water-liquid")
     solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+
+Create new material
+~~~~~~~~~~~~~~~~~~~
+
+**Python code**
+
+.. code:: python
+
+    solver.setup.materials.solid["mysolid"] = {}
+    solver.setup.materials.solid["mysolid"].chemical_formula = "SiO2"
+    solver.setup.materials.solid["mysolid"].density.value = 2650
+    solver.setup.materials.solid["mysolid"].specific_heat.value = 1887
+    solver.setup.materials.solid["mysolid"].thermal_conductivity.value = 7.6
+
+.. code:: python
+
+    solver.setup.materials.fluid["myfluid"] = {}
+    solver.setup.materials.fluid["myfluid"].chemical_formula = "H2O"
+    solver.setup.materials.fluid["myfluid"].density.value = 1000
+    solver.setup.materials.fluid["myfluid"].specific_heat.value = 4186
+    solver.setup.materials.fluid["myfluid"].thermal_conductivity.value = 0.6
+    solver.setup.materials.fluid["myfluid"].viscosity.value = 1.0e-3
