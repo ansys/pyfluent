@@ -5,7 +5,6 @@ import shutil
 from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.session import BaseSession as Session
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
@@ -239,6 +238,8 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
+        from ansys.fluent.core.launcher.launcher import get_ansys_version
+
         if get_ansys_version() == "24.1.0":
             queries = sorted(info.queries)
         for k in named_objects:
@@ -353,6 +354,8 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
+            from ansys.fluent.core.launcher.launcher import get_ansys_version
+
             if get_ansys_version() == "24.1.0":
                 queries = sorted(info.queries)
 
@@ -410,6 +413,7 @@ class DataModelGenerator:
                 f.write("   :toctree: _autosummary\n\n")
                 f.write(".. toctree::\n")
                 f.write("   :hidden:\n\n")
+        from ansys.fluent.core.launcher.launcher import get_ansys_version
 
         for name, info in self._static_info.items():
             if info.static_info == None:
