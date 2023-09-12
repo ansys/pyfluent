@@ -2,7 +2,6 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.meshing.meshing_workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -37,6 +36,8 @@ class BaseMeshing:
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
+        from ansys.fluent.core.launcher.launcher import get_ansys_version
+
         if get_ansys_version() == "24.1.0":
             self._meshing_queries = None
         self._workflow = None
@@ -92,6 +93,8 @@ class BaseMeshing:
         if self._meshing is None:
             self._meshing = self._meshing_root
         return self._meshing
+
+    from ansys.fluent.core.launcher.launcher import get_ansys_version
 
     if get_ansys_version() == "24.1.0":
 
