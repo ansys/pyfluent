@@ -12,6 +12,8 @@ pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 tui_logger = logging.getLogger("pyfluent.tui")
 
+ANSYS_VERSION = get_version_for_filepath()
+
 
 class BaseMeshing:
     """Encapsulates base methods of a meshing session."""
@@ -36,7 +38,7 @@ class BaseMeshing:
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
-        if get_ansys_version() >= "24.1.0":
+        if ANSYS_VERSION >= "24.1.0":
             self._meshing_queries = None
         self._workflow = None
         self._part_management = None
@@ -92,7 +94,7 @@ class BaseMeshing:
             self._meshing = self._meshing_root
         return self._meshing
 
-    if get_ansys_version() >= "24.1.0":
+    if ANSYS_VERSION >= "24.1.0":
 
         @property
         def _meshing_queries_root(self):

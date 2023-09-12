@@ -10,6 +10,7 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 _THIS_DIR = Path(__file__).parent
 
+ANSYS_VERSION = get_version_for_filepath()
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
@@ -238,9 +239,8 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
-        from ansys.fluent.core.launcher.launcher import get_ansys_version
 
-        if get_ansys_version() >= "24.1.0":
+        if ANSYS_VERSION >= "24.1.0":
             queries = sorted(info.queries)
         for k in named_objects:
             f.write(
@@ -264,7 +264,7 @@ class DataModelGenerator:
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
-        if get_ansys_version() >= "24.1.0":
+        if ANSYS_VERSION >= "24.1.0":
             for k in queries:
                 f.write(
                     f"{indent}        self.{k} = "
@@ -320,7 +320,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
-        if get_ansys_version() >= "24.1.0":
+        if ANSYS_VERSION >= "24.1.0":
             for k in queries:
                 f.write(f"{indent}    class {k}(PyQuery):\n")
                 f.write(f'{indent}        """\n')
@@ -354,9 +354,8 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
-            from ansys.fluent.core.launcher.launcher import get_ansys_version
 
-            if get_ansys_version() >= "24.1.0":
+            if ANSYS_VERSION >= "24.1.0":
                 queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
@@ -413,7 +412,6 @@ class DataModelGenerator:
                 f.write("   :toctree: _autosummary\n\n")
                 f.write(".. toctree::\n")
                 f.write("   :hidden:\n\n")
-        from ansys.fluent.core.launcher.launcher import get_ansys_version
 
         for name, info in self._static_info.items():
             if info.static_info == None:
@@ -431,7 +429,7 @@ class DataModelGenerator:
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
-                if get_ansys_version() >= "24.1.0":
+                if ANSYS_VERSION >= "24.1.0":
                     f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {

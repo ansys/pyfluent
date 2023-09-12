@@ -4,6 +4,9 @@ from typing import Any
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+
+ANSYS_VERSION = get_version_for_filepath()
 
 
 class Meshing(PureMeshing):
@@ -44,9 +47,7 @@ class Meshing(PureMeshing):
         """Datamodel root of meshing."""
         return super(Meshing, self).meshing if not self.switched else None
 
-    from ansys.fluent.core.launcher.launcher import get_ansys_version
-
-    if get_ansys_version() >= "24.1.0":
+    if ANSYS_VERSION >= "24.1.0":
 
         @property
         def meshing_queries(self):
