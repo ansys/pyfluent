@@ -25,7 +25,7 @@ Path = List[Tuple[str, str]]
 
 logger = logging.getLogger("pyfluent.datamodel")
 
-ANSYS_VERSION = get_version_for_filepath()
+ANSYS_VERSION = int(get_version_for_filepath())
 
 
 class Attribute(Enum):
@@ -138,7 +138,7 @@ class DatamodelService(StreamingService):
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
-    if ANSYS_VERSION >= "24.1.0":
+    if ANSYS_VERSION >= 241:
 
         @catch_grpc_error
         def execute_query(
@@ -1390,7 +1390,7 @@ class PyMenuGeneric(PyMenu):
         singleton_names = []
         creatable_type_names = []
         command_names = []
-        if ANSYS_VERSION >= "24.1.0":
+        if ANSYS_VERSION >= 241:
             query_names = []
         for struct_type in ("singleton", "namedobject"):
             if response.member.HasField(struct_type):
@@ -1400,14 +1400,14 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-                if ANSYS_VERSION >= "24.1.0":
+                if ANSYS_VERSION >= 241:
                     query_names = [x.name for x in struct_field.queries]
-        if ANSYS_VERSION >= "24.1.0":
+        if ANSYS_VERSION >= 241:
             return singleton_names, creatable_type_names, command_names, query_names
         return singleton_names, creatable_type_names, command_names
 
     def _get_child(self, name: str):
-        if ANSYS_VERSION >= "24.1.0":
+        if ANSYS_VERSION >= 241:
             singletons, creatable_types, commands, queries = self._get_child_names()
         singletons, creatable_types, commands = self._get_child_names()
         if name in singletons:
@@ -1418,7 +1418,7 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
-        elif ANSYS_VERSION >= "24.1.0":
+        elif ANSYS_VERSION >= 241:
             if name in queries:
                 return PyQuery(self.service, self.rules, name, self.path)
         else:

@@ -10,7 +10,7 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 _THIS_DIR = Path(__file__).parent
 
-ANSYS_VERSION = get_version_for_filepath()
+ANSYS_VERSION = int(get_version_for_filepath())
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
@@ -242,7 +242,7 @@ class DataModelGenerator:
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
 
-        if ANSYS_VERSION >= "24.1.0":
+        if ANSYS_VERSION >= 241:
             queries = sorted(info.queries)
         for k in named_objects:
             f.write(
@@ -266,7 +266,7 @@ class DataModelGenerator:
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
-        if ANSYS_VERSION >= "24.1.0":
+        if ANSYS_VERSION >= 241:
             for k in queries:
                 f.write(
                     f"{indent}        self.{k} = "
@@ -322,7 +322,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
-        if ANSYS_VERSION >= "24.1.0":
+        if ANSYS_VERSION >= 241:
             for k in queries:
                 f.write(f"{indent}    class {k}(PyQuery):\n")
                 f.write(f'{indent}        """\n')
@@ -357,7 +357,7 @@ class DataModelGenerator:
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
 
-            if ANSYS_VERSION >= "24.1.0":
+            if ANSYS_VERSION >= 241:
                 queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
@@ -431,7 +431,7 @@ class DataModelGenerator:
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
-                if ANSYS_VERSION >= "24.1.0":
+                if ANSYS_VERSION >= 241:
                     f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {

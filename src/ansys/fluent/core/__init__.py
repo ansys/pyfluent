@@ -16,7 +16,6 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentMode,
     FluentVersion,
     connect_to_fluent,
-    get_ansys_version,
     launch_fluent,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
@@ -50,8 +49,6 @@ def version_info() -> str:
     """
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
-
-ANSYS_VERSION = get_ansys_version()
 
 # Setup data directory
 USER_DATA_PATH = platformdirs.user_data_dir(

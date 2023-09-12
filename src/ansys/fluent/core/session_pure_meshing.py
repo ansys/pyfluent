@@ -17,7 +17,7 @@ from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelSt
 from ansys.fluent.core.utils.data_transfer import transfer_case
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
-ANSYS_VERSION = get_version_for_filepath()
+ANSYS_VERSION = int(get_version_for_filepath())
 
 
 class PureMeshing(BaseSession):
@@ -34,7 +34,7 @@ class PureMeshing(BaseSession):
         "PMFileManagement",
     ]
 
-    if ANSYS_VERSION >= "24.1.0":
+    if ANSYS_VERSION >= 241:
         rules.append("meshing-queries")
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
@@ -86,7 +86,7 @@ class PureMeshing(BaseSession):
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
 
-    if ANSYS_VERSION >= "24.1.0":
+    if ANSYS_VERSION >= 241:
 
         @property
         def meshing_queries(self):
