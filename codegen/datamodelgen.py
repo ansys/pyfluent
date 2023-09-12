@@ -10,8 +10,6 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 _THIS_DIR = Path(__file__).parent
 
-ANSYS_VERSION = int(get_version_for_filepath())
-
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
     **dict.fromkeys(["Logical List", "ListBool"], "List[bool]"),
