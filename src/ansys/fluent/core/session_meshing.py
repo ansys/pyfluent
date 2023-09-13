@@ -4,9 +4,6 @@ from typing import Any
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
-
-ANSYS_VERSION = int(get_version_for_filepath())
 
 
 class Meshing(PureMeshing):
@@ -15,6 +12,8 @@ class Meshing(PureMeshing):
     objects for access to task-based meshing workflows are all
     exposed here. A ``switch_to_solver`` method is available
     in this mode."""
+
+    FLUENT_VERSION = ""
 
     def __init__(
         self,
@@ -28,6 +27,8 @@ class Meshing(PureMeshing):
         super(Meshing, self).__init__(fluent_connection=fluent_connection)
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
+        version = fluent_connection.scheme_eval.string_eval("(cx-version)")
+        Meshing.FLUENT_VERSION = ".".join(version.strip("()").split())
 
     def _switch_to_solver(self) -> Any:
         self.tui.switch_to_solution_mode("yes")
@@ -47,7 +48,7 @@ class Meshing(PureMeshing):
         """Datamodel root of meshing."""
         return super(Meshing, self).meshing if not self.switched else None
 
-    if ANSYS_VERSION >= 241:
+    if FLUENT_VERSION == "24.1.0":
 
         @property
         def meshing_queries(self):

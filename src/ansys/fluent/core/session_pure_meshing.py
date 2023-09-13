@@ -35,7 +35,7 @@ class PureMeshing(BaseSession):
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
-    FLUENT_VERSION = None
+    FLUENT_VERSION = ""
 
     def __init__(self, fluent_connection: FluentConnection):
         """PureMeshing session.
