@@ -19,13 +19,10 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 Path = List[Tuple[str, str]]
 
 logger = logging.getLogger("pyfluent.datamodel")
-
-ANSYS_VERSION = int(get_version_for_filepath())
 
 
 class Attribute(Enum):
@@ -138,15 +135,13 @@ class DatamodelService(StreamingService):
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
-    if ANSYS_VERSION >= 241:
-
-        @catch_grpc_error
-        def execute_query(
-            self, request: DataModelProtoModule.ExecuteQueryRequest
-        ) -> DataModelProtoModule.ExecuteQueryResponse:
-            """executeQuery rpc of DataModel service."""
-            logger.debug(f"Query: {request.query}")
-            return self._stub.executeQuery(request, metadata=self._metadata)
+    @catch_grpc_error
+    def execute_query(
+        self, request: DataModelProtoModule.ExecuteQueryRequest
+    ) -> DataModelProtoModule.ExecuteQueryResponse:
+        """executeQuery rpc of DataModel service."""
+        logger.debug(f"Query: {request.query}")
+        return self._stub.executeQuery(request, metadata=self._metadata)
 
     @catch_grpc_error
     def create_command_arguments(
@@ -1390,8 +1385,7 @@ class PyMenuGeneric(PyMenu):
         singleton_names = []
         creatable_type_names = []
         command_names = []
-        if ANSYS_VERSION >= 241:
-            query_names = []
+        query_names = []
         for struct_type in ("singleton", "namedobject"):
             if response.member.HasField(struct_type):
                 struct_field = getattr(response.member, struct_type)
@@ -1400,14 +1394,14 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-                if ANSYS_VERSION >= 241:
+                if hasattr(struct_field, "queries"):
                     query_names = [x.name for x in struct_field.queries]
-        if ANSYS_VERSION >= 241:
+        if hasattr(struct_field, "queries"):
             return singleton_names, creatable_type_names, command_names, query_names
         return singleton_names, creatable_type_names, command_names
 
     def _get_child(self, name: str):
-        if ANSYS_VERSION >= 241:
+        if len(self._get_child_names()) == 4:
             singletons, creatable_types, commands, queries = self._get_child_names()
         singletons, creatable_types, commands = self._get_child_names()
         if name in singletons:
@@ -1418,7 +1412,7 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
-        elif ANSYS_VERSION >= 241:
+        elif len(self._get_child_names()) == 4:
             if name in queries:
                 return PyQuery(self.service, self.rules, name, self.path)
         else:
