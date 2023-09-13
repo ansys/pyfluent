@@ -35,8 +35,6 @@ class PureMeshing(BaseSession):
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
-    FLUENT_VERSION = ""
-
     def __init__(self, fluent_connection: FluentConnection):
         """PureMeshing session.
 
@@ -52,13 +50,9 @@ class PureMeshing(BaseSession):
             self.datamodel_service_se,
         )
 
-        PureMeshing.FLUENT_VERSION = self.get_fluent_version()
-
-        if self.get_fluent_version() == "23.2.0":
-            self.meshing_queries_service = fluent_connection.create_service(
-                MeshingQueriesService, self.error_state
-            )
-            self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+        self.meshing_queries_service = fluent_connection.create_service(
+            MeshingQueriesService, self.error_state
+        )
 
         datamodel_service_se = self.datamodel_service_se
         self.datamodel_streams = {}
@@ -86,12 +80,14 @@ class PureMeshing(BaseSession):
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
 
-    if FLUENT_VERSION == "24.1.0":
-
-        @property
-        def meshing_queries(self):
-            """Datamodel root of meshing_queries."""
-            return self._base_meshing.meshing_queries
+    @property
+    def meshing_queries(self):
+        """Datamodel root of meshing_queries."""
+        return (
+            MeshingQueries(self.meshing_queries_service)
+            if self.get_fluent_version() == "23.2.0"
+            else self._base_meshing.meshing_queries
+        )
 
     @property
     def workflow(self):

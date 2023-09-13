@@ -13,8 +13,6 @@ class Meshing(PureMeshing):
     exposed here. A ``switch_to_solver`` method is available
     in this mode."""
 
-    FLUENT_VERSION = ""
-
     def __init__(
         self,
         fluent_connection: FluentConnection,
@@ -27,8 +25,6 @@ class Meshing(PureMeshing):
         super(Meshing, self).__init__(fluent_connection=fluent_connection)
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
-        version = fluent_connection.scheme_eval.string_eval("(cx-version)")
-        Meshing.FLUENT_VERSION = ".".join(version.strip("()").split())
 
     def _switch_to_solver(self) -> Any:
         self.tui.switch_to_solution_mode("yes")
@@ -48,12 +44,10 @@ class Meshing(PureMeshing):
         """Datamodel root of meshing."""
         return super(Meshing, self).meshing if not self.switched else None
 
-    if FLUENT_VERSION == "24.1.0":
-
-        @property
-        def meshing_queries(self):
-            """Datamodel root of meshing_queries."""
-            return super(Meshing, self).meshing_queries if not self.switched else None
+    @property
+    def meshing_queries(self):
+        """Datamodel root of meshing_queries."""
+        return super(Meshing, self).meshing_queries if not self.switched else None
 
     @property
     def workflow(self):
