@@ -314,7 +314,7 @@ def _test_sum(solver):
     assert type(expr_val) == float and expr_val != 0.0
 
     val = reduction.sum(
-        expr="AbsolutePressure",
+        expression="AbsolutePressure",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
     )
@@ -336,7 +336,7 @@ def _test_sum_if(solver):
     assert type(expr_val) == float and expr_val != 0.0
 
     val = reduction.sum_if(
-        expr="AbsolutePressure",
+        expression="AbsolutePressure",
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
@@ -398,7 +398,7 @@ def test_sum_and_sum_if(load_static_mixer_case) -> None:
     assert type(expr_val) == float and expr_val != 0.0
 
     val = solver.reduction.sum_if(
-        expr="AbsolutePressure",
+        expression="AbsolutePressure",
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
