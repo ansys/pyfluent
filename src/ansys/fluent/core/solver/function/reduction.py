@@ -196,6 +196,8 @@ def _extent_expression(
             numerator += val * extent
             denominator += extent
         except TypeError:
+            if type(val) == list:
+                return val
             raise RuntimeError(val)
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
@@ -277,7 +279,7 @@ def area_average(expression, locations, ctxt=None):
     return _extent_average("Area", expression, locations, ctxt)
 
 
-def area_integrated_average(expression, locations, ctxt=None):
+def area_integral(expression, locations, ctxt=None):
     """Compute the area integrated averaged of the specified expression over
     the specified locations.
 
@@ -309,7 +311,7 @@ def volume_average(expression, locations, ctxt=None):
     return _extent_average("Volume", expression, locations, ctxt)
 
 
-def volume_integrated_average(expression, locations, ctxt=None):
+def volume_integral(expression, locations, ctxt=None):
     """Compute the volume-weighted total of the specified expression over the
     specified locations.
 
@@ -490,7 +492,7 @@ def mass_average(expression, locations, ctxt=None):
     return _extent_average("Mass", expression, locations, ctxt)
 
 
-def mass_integrated_average(expression, locations, ctxt=None):
+def mass_integral(expression, locations, ctxt=None):
     """Compute the total mass-weighted value of the specified expression over
     the specified locations.
 
@@ -522,7 +524,7 @@ def mass_flow_average(expression, locations, ctxt=None):
     return _extent_average("MassFlow", expression, locations, ctxt)
 
 
-def mass_flow_integrated_average(expression, locations, ctxt=None):
+def mass_flow_integral(expression, locations, ctxt=None):
     """Compute the total mass flow over the specified locations.
 
     Parameters
