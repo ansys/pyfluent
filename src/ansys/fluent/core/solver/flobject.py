@@ -1083,7 +1083,7 @@ class _HasAllowedValuesMixin:
         """Get the allowed values of the object."""
         try:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
-        except BaseException as ex:
+        except Exception as ex:
             return []
 
 
