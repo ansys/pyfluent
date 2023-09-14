@@ -70,17 +70,17 @@ Create new material
 
 .. code:: python
 
-    solver.setup.materials.solid["mysolid"] = {}
-    solver.setup.materials.solid["mysolid"].chemical_formula = "SiO2"
-    solver.setup.materials.solid["mysolid"].density.value = 2650
-    solver.setup.materials.solid["mysolid"].specific_heat.value = 1887
-    solver.setup.materials.solid["mysolid"].thermal_conductivity.value = 7.6
+    mysolid = solver.setup.materials.solid.create("mysolid")
+    mysolid.chemical_formula = "SiO2"
+    mysolid.density.value = 2650
+    mysolid.specific_heat.value = 1887
+    mysolid.thermal_conductivity.value = 7.6
 
 .. code:: python
 
-    solver.setup.materials.fluid["myfluid"] = {}
-    solver.setup.materials.fluid["myfluid"].chemical_formula = "H2O"
-    solver.setup.materials.fluid["myfluid"].density.value = 1000
-    solver.setup.materials.fluid["myfluid"].specific_heat.value = 4186
-    solver.setup.materials.fluid["myfluid"].thermal_conductivity.value = 0.6
-    solver.setup.materials.fluid["myfluid"].viscosity.value = 1.0e-3
+    myfluid = solver.setup.materials.fluid.create("myfluid")
+    myfluid.chemical_formula = "H2O"
+    myfluid.density.value = 1000
+    myfluid.specific_heat.value = 4186
+    myfluid.thermal_conductivity.value = 0.6
+    myfluid.viscosity.value = 1.03e-3
