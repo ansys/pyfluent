@@ -239,8 +239,8 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
-
-        if int(self.version) >= 241:
+        queries = []
+        if hasattr(info, "queries"):
             queries = sorted(info.queries)
         for k in named_objects:
             f.write(
@@ -264,12 +264,11 @@ class DataModelGenerator:
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
-        if int(self.version) >= 241:
-            for k in queries:
-                f.write(
-                    f"{indent}        self.{k} = "
-                    f'self.__class__.{k}(service, rules, "{k}", path)\n'
-                )
+        for k in queries:
+            f.write(
+                f"{indent}        self.{k} = "
+                f'self.__class__.{k}(service, rules, "{k}", path)\n'
+            )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
@@ -320,18 +319,17 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
-        if int(self.version) >= 241:
-            for k in queries:
-                f.write(f"{indent}    class {k}(PyQuery):\n")
-                f.write(f'{indent}        """\n')
-                f.write(
-                    _build_query_docstring(
-                        k, info.queries[k].queryinfo, f"{indent}        "
-                    )
+        for k in queries:
+            f.write(f"{indent}    class {k}(PyQuery):\n")
+            f.write(f'{indent}        """\n')
+            f.write(
+                _build_query_docstring(
+                    k, info.queries[k].queryinfo, f"{indent}        "
                 )
-                f.write(f'{indent}        """\n')
-                f.write(f"{indent}        pass\n\n")
-                api_tree[k] = "Query"
+            )
+            f.write(f'{indent}        """\n')
+            f.write(f"{indent}        pass\n\n")
+            api_tree[k] = "Query"
         return api_tree
 
     def _write_doc_for_model_object(
@@ -354,8 +352,8 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
-
-            if int(self.version) >= 241:
+            queries = []
+            if hasattr(info, "queries"):
                 queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
@@ -429,8 +427,7 @@ class DataModelGenerator:
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
-                if int(self.version) >= 241:
-                    f.write("    PyQuery\n")
+                f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
