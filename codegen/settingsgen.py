@@ -28,6 +28,7 @@ import contextlib
 import hashlib
 import io
 import os
+from pathlib import Path
 import pickle
 import pprint
 import shutil
@@ -458,20 +459,16 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-def generate(version):
+def generate(version, pyfluent_path):
     dirname = os.path.dirname(__file__)
-    parent_dir = os.path.normpath(
-        os.path.join(
-            dirname,
-            "..",
-            "src",
-            "ansys",
-            "fluent",
-            "core",
-            "solver",
-            f"settings_{version}",
-        )
-    )
+    parent_dir = (
+        (Path(pyfluent_path) if pyfluent_path else (Path(dirname) / ".." / "src"))
+        / "ansys"
+        / "fluent"
+        / "core"
+        / "solver"
+        / f"settings_{version}"
+    ).resolve()
 
     # Clear previously generated data
     if os.path.exists(parent_dir):
@@ -494,4 +491,4 @@ def generate(version):
 
 if __name__ == "__main__":
     version = get_version_for_filepath()
-    generate(version)
+    generate(version, None)
