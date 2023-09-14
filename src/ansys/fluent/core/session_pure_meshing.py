@@ -27,7 +27,7 @@ class PureMeshing(BaseSession):
     rules = [
         "workflow",
         "meshing",
-        "meshing-queries",
+        "MeshingQueries",
         "PartManagement",
         "PMFileManagement",
     ]

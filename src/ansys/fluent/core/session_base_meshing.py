@@ -97,10 +97,10 @@ class BaseMeshing:
         try:
             if self.get_fluent_version() >= "24.1.0":
                 meshing_queries_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self.version}.meshing-queries"
+                    f"ansys.fluent.core.datamodel_{self.version}.MeshingQueries"
                 )
                 meshing_queries_root = meshing_queries_module.Root(
-                    self._se_service, "meshing-queries", []
+                    self._se_service, "MeshingQueries", []
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)

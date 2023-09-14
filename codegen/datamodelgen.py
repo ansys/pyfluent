@@ -160,7 +160,7 @@ class DataModelGenerator:
         }
         if int(self.version) >= 241:
             self._static_info["meshing_queries"] = DataModelStaticInfo(
-                pyfluent_path, "meshing-queries", ("meshing",), self.version
+                pyfluent_path, "MeshingQueries", ("meshing",), self.version
             )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
