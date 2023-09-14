@@ -1,4 +1,6 @@
-"""Module controlling PyFluent's logging functionality."""
+"""Module controlling PyFluent's logging functionality.
+
+For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`."""
 import logging.config
 import os
 from typing import Union
@@ -26,6 +28,36 @@ def is_active() -> bool:
 
 
 def get_default_config() -> dict:
+    """Returns the default configuration dictionary obtained from parsing from the PyFluent ``logging_config.yaml`` file.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.logging.get_default_config()
+    {'disable_existing_loggers': False,
+     'formatters': {'logfile_fmt': {'format': '%(asctime)s %(name)-21s '
+                                              '%(levelname)-8s %(message)s'}},
+     'handlers': {'pyfluent_file': {'backupCount': 9,
+                                    'class': 'logging.handlers.RotatingFileHandler',
+                                    'filename': 'pyfluent.log',
+                                    'formatter': 'logfile_fmt',
+                                    'level': 'NOTSET',
+                                    'maxBytes': 10485760}},
+     'loggers': {'pyfluent.datamodel': {'handlers': ['pyfluent_file'],
+                                        'level': 'DEBUG'},
+                 'pyfluent.general': {'handlers': ['pyfluent_file'],
+                                      'level': 'DEBUG'},
+                 'pyfluent.launcher': {'handlers': ['pyfluent_file'],
+                                       'level': 'DEBUG'},
+                 'pyfluent.networking': {'handlers': ['pyfluent_file'],
+                                         'level': 'DEBUG'},
+                 'pyfluent.post_objects': {'handlers': ['pyfluent_file'],
+                                           'level': 'DEBUG'},
+                 'pyfluent.settings_api': {'handlers': ['pyfluent_file'],
+                                           'level': 'DEBUG'},
+                 'pyfluent.tui': {'handlers': ['pyfluent_file'], 'level': 'DEBUG'}},
+     'version': 1}
+    """
     file_path = os.path.abspath(__file__)
     file_dir = os.path.dirname(file_path)
     yaml_path = os.path.join(file_dir, "logging_config.yaml")
@@ -42,7 +74,8 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: dict = None):
     level : str or int, optional
         Specified logging level to set PyFluent loggers to. If omitted, level is set to DEBUG.
     custom_config : dict, optional
-        Used to provide a customized logging config file.
+        Used to provide a customized logging configuration file that will be used instead
+        of the ``logging_config.yaml`` file (see also :func:`get_default_config`).
 
     Notes
     -----
@@ -50,8 +83,17 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: dict = None):
 
     Examples
     --------
+    Using the default logging setup:
+
     >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.logging.enable()
+
+    Customizing logging configuration (see also :func:`get_default_config`):
+
+    >>> import ansys.fluent.core as pyfluent
+    >>> config_dict = pyfluent.logging.get_default_config()
+    >>> config_dict['handlers']['pyfluent_file']['filename'] = 'test.log'
+    >>> pyfluent.logging.enable(custom_config=config_dict)
     """
     global _logging_file_enabled
 
@@ -153,16 +195,16 @@ def list_loggers():
 
 
 def configure_env_var() -> None:
-    """Verifies whether PYFLUENT_LOGGING environment variable was defined in the system.
+    """Verifies whether ``PYFLUENT_LOGGING`` environment variable was defined in the system.
     Executed once automatically on PyFluent initialization.
 
     Notes
     -----
     The usual way to enable PyFluent logging to file is through :func:`enable()`.
     ``PYFLUENT_LOGGING`` set to ``0`` or ``OFF`` is the same as if no environment variable was set.
-    If logging debug output to file is desired, without having to use :func:`enable()`,
-    set ``PYFLUENT_LOGGING`` to ``DEBUG`` instead.
-    See also the :ref:`logging user guide <ref_logging_env_var>`.
+    If logging debug output to file by default is desired, without having to use :func:`enable()` every time,
+    set environment variable ``PYFLUENT_LOGGING`` to ``DEBUG``.
+    See also the :ref:`user guide environment variable subsection <ref_logging_env_var>`.
     """
     env_logging_level = os.getenv("PYFLUENT_LOGGING")
     if env_logging_level:

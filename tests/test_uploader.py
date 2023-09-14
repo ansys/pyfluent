@@ -2,13 +2,14 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
 
 
 def test_base_session_upload(new_mesh_session):
     base_session = new_mesh_session
     with pytest.raises(AttributeError) as e_info:
         base_session._upload(
-            pyfluent.EXAMPLES_PATH + "/mixing_elbow.py", "test_upload_download.py"
+            examples.path("mixing_elbow.py"), "test_upload_download.py"
         )
     base_session.exit()
 
@@ -23,9 +24,7 @@ def test_base_session_download(new_mesh_session):
 def test_session_upload(new_mesh_session):
     session = new_mesh_session
     with pytest.raises(AttributeError) as e_info:
-        session._upload(
-            pyfluent.EXAMPLES_PATH + "/mixing_elbow.py", "test_upload_download.py"
-        )
+        session._upload(examples.path("mixing_elbow.py"), "test_upload_download.py")
     session.exit()
 
 

@@ -64,6 +64,19 @@ def parse(in_port):
 eof_object = Symbol("#<eof-object>")  # Note: uninterned; can't be read
 
 
+def count_unescaped_quotes(line):
+    count = 0
+    escaped = False
+    for c in line:
+        if c == "\\":
+            escaped = True
+        else:
+            if c == '"' and not escaped:
+                count += 1
+            escaped = False
+    return count
+
+
 class InputPort:
     """An input port.
 
@@ -84,11 +97,11 @@ class InputPort:
                 self.line = self.file.readline()
                 # Capture multiline string and replace newline characters with
                 # "<newline>" before passing to tokenizer
-                if self.line.count('"') % 2:
+                if count_unescaped_quotes(self.line) % 2:
                     while True:
                         next_line = self.file.readline()
                         self.line = self.line.rstrip() + "<newline>" + next_line
-                        if '"' in next_line:
+                        if count_unescaped_quotes(next_line) > 0:
                             break
             if self.line == "":
                 return eof_object
@@ -225,7 +238,7 @@ def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):
             if val is not None and out:
                 print(to_string(val), file=out)
         except Exception as e:
-            print("%s: %s" % (type(e).__name__, e))
+            print(f"{type(e).__name__}: {e}")
 
 
 ################ Environment class
@@ -242,7 +255,7 @@ class Env(dict):
         else:
             if len(args) != len(params):
                 raise TypeError(
-                    "expected %s, given %s, " % (to_string(params), to_string(args))
+                    f"expected {to_string(params)}, given {to_string(args)}"
                 )
             self.update(zip(params, args))
 

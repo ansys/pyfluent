@@ -12,7 +12,11 @@ from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 Path = List[str]
 
@@ -25,10 +29,15 @@ class DatamodelService:
     Using the methods from PyMenu class is recommended.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of DatamodelService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
@@ -192,7 +201,8 @@ class PyMenu:
         if self._path.startswith("/query/"):
             return self._execute_query(request)
         else:
-            logger.debug(f"TUI Command: {request}")
+            request_str = " ".join(str(request).split())
+            logger.debug(f"TUI Command: {request_str}")
             return self._execute_command(request)
 
     def get_doc_string(self, include_unavailable: bool = False) -> str:
@@ -298,23 +308,6 @@ class TUICommand(TUIMenu):
         return PyMenu(self.service, self.path).execute(*args, **kwargs)
 
 
-def convert_func_name_to_tui_menu(func_name: str) -> str:
-    """Convert a Python function name to a TUI menu string.
-
-    Parameters
-    ----------
-    func_name : str
-       Name of the Python function.
-
-    Returns
-    -------
-    str
-    """
-    if func_name.endswith("_") and keyword.iskeyword(func_name[:-1]):
-        return func_name[:-1]
-    return func_name
-
-
 def convert_tui_menu_to_func_name(menu: str) -> str:
     """Convert a TUI menu string to a Python function name.
 
@@ -349,4 +342,4 @@ def convert_path_to_grpc_path(path: Path) -> str:
     str
         gRPC path.
     """
-    return "/" + "/".join(convert_func_name_to_tui_menu(x) for x in path)
+    return "/" + "/".join(x for x in path)

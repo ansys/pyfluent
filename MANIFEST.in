@@ -1,5 +1,6 @@
 include src/ansys/fluent/core/launcher/fluent_launcher_options.json
 include src/ansys/fluent/core/docs/README.rst
 include src/ansys/fluent/core/logging_config.yaml
-include src/ansys/fluent/core/quantity/quantity_config.yaml
-recursive-include src *pyi
+include src/ansys/fluent/core/quantity/cfg.yaml
+recursive-include src/ansys/fluent/core *pyi
+recursive-include src/ansys/fluent/core/data api_tree_*.pickle

@@ -1,10 +1,11 @@
 import pytest
 
 
+@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version("latest")
 def test_solver_models(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert not solver_session.setup.models.energy.enabled()
@@ -16,68 +17,70 @@ def test_solver_models(load_mixing_elbow_mesh):
     assert solver_session.setup.models.viscous.model() == "laminar"
     solver_session.setup.models.viscous.model = "k-epsilon"
     assert solver_session.setup.models.viscous.model() == "k-epsilon"
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
+    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "enhanced-wall-treatment"
     )
     solver_session.setup.models.multiphase.models = "eulerian"
     assert solver_session.setup.models.multiphase.models() == "eulerian"
 
 
+@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version("latest")
 def test_disk_2d_models(load_disk_mesh):
     solver_session = load_disk_mesh
     solver_session.setup.general.solver.two_dim_space = "axisymmetric"
     solver_session.setup.general.solver.two_dim_space = "swirl"
     solver_session.setup.models.viscous.model = "k-epsilon"
     assert solver_session.setup.models.viscous.model() == "k-epsilon"
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
+    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "enhanced-wall-treatment"
     )
     assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_function()
+        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
         == "enhanced-wall-treatment"
     )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function.get_attr(
-        "allowed-values"
+    assert (
+        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment.get_attr(
+            "allowed-values"
+        )
+        == [
+            "standard-wall-fn",
+            "non-equilibrium-wall-fn",
+            "enhanced-wall-treatment",
+            "menter-lechner",
+            "scalable-wall-functions",
+        ]
     )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
+    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "standard-wall-fn"
     )
     assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_function()
+        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
         == "standard-wall-fn"
     )
 
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
+    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "non-equilibrium-wall-fn"
     )
     assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_function()
+        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
         == "non-equilibrium-wall-fn"
     )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
+    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "menter-lechner"
     )
     assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_function()
+        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
         == "menter-lechner"
     )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
+    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "scalable-wall-functions"
     )
     assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_function()
+        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
         == "scalable-wall-functions"
-    )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
-        "user-defined-wall-functions"
-    )
-    # As udf is not available, so it will change automatically to standard wall function
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_function()
-        == "standard-wall-fn"
     )
 
     solver_session.setup.models.viscous.model = "k-omega"

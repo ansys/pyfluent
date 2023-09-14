@@ -5,11 +5,15 @@ import sys
 from typing import List, Tuple
 
 import grpc
+from grpc_health.v1 import health_pb2 as HealthCheckModule
+from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
-from ansys.api.fluent.v0 import health_pb2 as HealthCheckModule
-from ansys.api.fluent.v0 import health_pb2_grpc as HealthCheckGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -31,10 +35,15 @@ class HealthCheckService:
         NOT_SERVING = 2
         SERVICE_UNKNOWN = 3
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of HealthCheckService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self._stub = HealthCheckGrpcModule.HealthStub(intercept_channel)
         self._metadata = metadata

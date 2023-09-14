@@ -84,9 +84,58 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     except docker.errors.NotFound:  # NotFound is a child from DockerException
         return False
     except docker.errors.DockerException as exc:
-        logger.info("%s: %s" % (type(exc).__name__, exc))
+        logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
+
+
+class ErrorState:
+    """Object to indicate the error state of the connected Fluent client.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> session = pyfluent.launch_fluent()
+    >>> session.fluent_connection.error_state.set("test", "test details")
+    >>> session.fluent_connection.error_state.name
+    'test'
+    >>> session.fluent_connection.error_state.details
+    'test details'
+    >>> session.fluent_connection.error_state.clear()
+    >>> session.fluent_connection.error_state.name
+    ''
+    """
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def details(self):
+        return self._details
+
+    def __init__(self, name: str = "", details: str = ""):
+        """Initializes the error state object.
+
+        Parameters
+        ----------
+            name : str
+                The name of the error state, by default an empty string, indicating no errors.
+            details : str
+                Additional details of the error, by default an empty string.
+        """
+        self._name = name
+        self._details = details
+
+    def set(self, name: str, details: str):
+        """Method to set the error state name and details to new values."""
+        self._name = name
+        self._details = details
+
+    def clear(self):
+        """Method to clear the current error state, emptying the error name and details properties."""
+        self._name = ""
+        self._details = ""
 
 
 @dataclass(frozen=True)
@@ -143,7 +192,7 @@ class FluentConnection:
 
     def __init__(
         self,
-        start_timeout: int = 100,
+        start_timeout: int = 60,
         ip: str = None,
         port: int = None,
         password: str = None,
@@ -154,13 +203,13 @@ class FluentConnection:
         launcher_args: Dict[str, Any] = None,
         inside_container: bool = None,
     ):
-        """Instantiate a Session.
+        """Initialize a Session.
 
         Parameters
         ----------
         start_timeout: int, optional
             Maximum allowable time in seconds for connecting to the Fluent
-            server. The default is ``100``.
+            server. The default is ``60``.
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
@@ -192,6 +241,7 @@ class FluentConnection:
             Whether the Fluent session that is being connected to
             is running inside a docker container.
         """
+        self.error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
         self.finalizer_cbs = []
@@ -220,7 +270,9 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check_service = HealthCheckService(self._channel, self._metadata)
+        self.health_check_service = HealthCheckService(
+            self._channel, self._metadata, self.error_state
+        )
 
         counter = 0
         while not self.health_check_service.is_serving:
@@ -239,7 +291,9 @@ class FluentConnection:
 
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
+        self._scheme_eval_service = SchemeEvalService(
+            self._channel, self._metadata, self.error_state
+        )
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
@@ -396,7 +450,7 @@ class FluentConnection:
             try:
                 container.exec_run(["bash", cleanup_filename], detach=True)
             except docker.errors.APIError as e:
-                logger.debug("%s: %s" % (type(e).__name__, e))
+                logger.info(f"{type(e).__name__}: {e}")
                 logger.debug(
                     "Caught Docker APIError, Docker container probably not running anymore."
                 )
@@ -407,24 +461,22 @@ class FluentConnection:
         """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
-    def create_service(self, service, add_arg=None):
+    def create_service(self, service, *args):
         """Create a gRPC service.
 
         Parameters
         ----------
         service : Any
             service class
-        add_arg : Any, optional
-            additional arguments, by default None
+        args : Any, optional
+            additional arguments, by default empty
 
         Returns
         -------
         Any
             service object
         """
-        if add_arg:
-            return service(self._channel, self._metadata, add_arg)
-        return service(self._channel, self._metadata)
+        return service(self._channel, self._metadata, *args)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""

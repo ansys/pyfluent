@@ -5,17 +5,24 @@ import grpc
 
 from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.api.fluent.v0 import monitor_pb2_grpc as MonitorGrpcModule
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 from ansys.fluent.core.services.streaming import StreamingService
 
 
 class MonitorsService(StreamingService):
     """Class wrapping the monitor gRPC service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
         """__init__ method of MonitorsService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self._stub = MonitorGrpcModule.MonitorStub(intercept_channel)
         self._metadata = metadata

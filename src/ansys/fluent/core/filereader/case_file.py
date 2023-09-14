@@ -20,19 +20,20 @@ import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import List
+from typing import Dict, List, Optional, Union
 import xml.etree.ElementTree as ET
 
 import h5py
 from lxml import etree
+import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
 
 
-class InputParameter:
-    """Class to represent an input parameter.
+class InputParameterOld:
+    """Represents an input parameter (old format).
 
     Attributes
     ----------
@@ -42,8 +43,59 @@ class InputParameter:
         a string, qualified by units
     """
 
-    def __init__(self, raw_data):
-        """__init__ method of InputParameter class."""
+    def __init__(self, raw_data: List) -> None:
+        """Initialize InputParameter.
+
+        Parameters
+        ----------
+        raw_data : List
+            Input parameter data as a list.
+        """
+        self.name = raw_data[1][1][1][1].strip('"')
+        self.value = raw_data[1][2]
+
+    @property
+    def units(self) -> str:
+        """Get the unit label of a Fluent input parameter.
+
+        Returns
+        -------
+        str
+            Unit label of the Fluent input parameter.
+        """
+        return str(self.value[-1][-1])
+
+    @property
+    def numeric_value(self) -> float:
+        """Get the numeric value of a Fluent input parameter.
+
+        Returns
+        -------
+        float
+            Numeric value of the Fluent input parameter.
+        """
+        return float(self.value[2][1])
+
+
+class InputParameter:
+    """Represents an input parameter.
+
+    Attributes
+    ----------
+    name : str
+    value
+        The value of this input parameter, usually
+        a string, qualified by units
+    """
+
+    def __init__(self, raw_data: Dict[str, str]) -> None:
+        """Initialize InputParameter.
+
+        Parameters
+        ----------
+        raw_data : Dict[str, str]
+            Input parameter data as a nested dictionary.
+        """
         self.name, self.value = None, None
         for k, v in raw_data:
             if k == "name":
@@ -69,7 +121,7 @@ class InputParameter:
         return self._component(1).lstrip("[").rstrip("]")
 
     @property
-    def numeric_value(self):
+    def numeric_value(self) -> float:
         """Get the numeric value of a Fluent input parameter.
 
         Returns
@@ -87,15 +139,21 @@ class InputParameter:
 
 
 class OutputParameter:
-    """Class to represent an output parameter.
+    """Represents an output parameter.
 
     Attributes
     ----------
     name : str
     """
 
-    def __init__(self, raw_data):
-        """__init__ method of OutputParameter class."""
+    def __init__(self, raw_data: list) -> None:
+        """Initialize OutputParameter.
+
+        Parameters
+        ----------
+        raw_data : list
+            Output parameter as a nested list.
+        """
         parameter = raw_data[1]
         for elem in parameter:
             if len(elem) and elem[0] == "name":
@@ -104,8 +162,19 @@ class OutputParameter:
                 self.units = elem[1].strip('"').strip()
 
 
-class _CaseVariable:
-    def __init__(self, variables: dict, path: str = ""):
+class CaseVariable:
+    """Provides access to variables defined in the case"""
+
+    def __init__(self, variables: dict, path: Optional[str] = ""):
+        """Initialize CaseVariable.
+
+        Parameters
+        ----------
+        variables : dict
+            The variables dictionary.
+        path : Optional[str]
+            The path to the variables.
+        """
         self._variables = variables
         self._path = path
 
@@ -135,11 +204,92 @@ class _CaseVariable:
             result = self._variables[name]
             return lambda: result
         except KeyError:
-            return _CaseVariable(self._variables, name + "/")
+            return CaseVariable(self._variables, name + "/")
 
 
-class CaseFile:
-    """Class to read a Fluent case file.
+class Mesh:
+    """Class to provide mesh data.
+
+    Methods
+    -------
+    get_surface_ids
+        Get a list of surface ids.
+    get_surface_names
+        Get a list of surface names.
+    get_surface_locs
+        Get the min and max location index of surface.
+    get_connectivity
+        Get the surface connectivity.
+    get_vertices
+        Get list of vertices of the surface.
+    """
+
+    def __init__(self, file_handle):
+        self._file_handle = file_handle
+
+    def get_surface_ids(self) -> list:
+        """Returns list of ids of all available surfaces."""
+        id_data = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["id"]
+        return [id_data[i] for i in range(id_data.size)]
+
+    def get_surface_names(self) -> list:
+        """Returns list of names of all available surfaces."""
+        return (
+            self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["name"][0]
+            .decode()
+            .split(";")
+        )
+
+    def get_surface_locs(self, surface_id) -> list:
+        """Returns range of surface locations for a particular surface."""
+        ids = self.get_surface_ids()
+        index = ids.index(surface_id)
+        min_id = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["minId"][
+            index
+        ]
+        max_id = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["maxId"][
+            index
+        ]
+        return [int(min_id - 1), int(max_id - 1)]
+
+    def _get_nodes(self, surface_id):
+        min_id, max_id = self.get_surface_locs(surface_id)
+        nnodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nnodes"]
+        nodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nodes"]
+        previous = sum(nnodes[0:min_id])
+        nnodes = nnodes[min_id : max_id + 1]
+        nodes = nodes[previous : previous + sum(nnodes)]
+        return [nodes, nnodes]
+
+    def get_connectivity(self, surface_id) -> np.array:
+        """Returns numpy array of face connectivity data for a particular surface."""
+        nodes, nnodes = self._get_nodes(surface_id)
+        key = nodes.copy()
+        key.sort()
+        key = np.unique(key)
+        value = np.arange(0, len(key))
+        replace = np.array([key, value])
+        mask = np.in1d(nodes, key)
+        nodes[mask] = replace[1, np.searchsorted(replace[0, :], nodes[mask])]
+        obj = np.cumsum(nnodes)
+        obj = np.insert(obj, 0, 0)
+        obj = np.delete(obj, len(obj) - 1)
+        nodes = np.insert(nodes, obj, nnodes)
+        return nodes
+
+    def get_vertices(self, surface_id) -> np.array:
+        """Returns numpy array of vertices data for a particular surface."""
+        nodes, nnodes = self._get_nodes(surface_id)
+        nodes = np.unique(nodes)
+        nodes = np.sort(nodes)
+        nodes -= 1
+        vertices_dict = self._file_handle["meshes"]["1"]["nodes"]["coords"]
+        vertices = vertices_dict[str(list(vertices_dict.keys())[0])]
+        return vertices[:][nodes].flatten()
+
+
+class RPVarProcessor:
+    """Class to process RP Vars string to expose required outputs.
 
     Methods
     -------
@@ -175,9 +325,233 @@ class CaseFile:
         Whether case has particular config var
     """
 
-    def __init__(self, case_filepath: str = None, project_filepath: str = None):
-        """__init__ method of CaseFile class."""
-        if case_filepath and project_filepath:
+    def __init__(
+        self,
+        rp_vars_str: str,
+    ) -> None:
+        """Initialize a RPVarProcessor object.
+
+        Parameters
+        ----------
+        rp_vars_str :str
+            RP Vars string.
+        """
+
+        self.rp_vars_str = rp_vars_str
+
+        self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
+
+        self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
+
+    def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
+        """
+        Get the input parameters.
+
+        Returns
+        -------
+        Union[List[InputParameter], List[InputParameterOld]]
+            The list of input parameters.
+        """
+        exprs = self._named_expressions()
+        if exprs:
+            input_params = []
+            for expr in exprs:
+                for attr in expr:
+                    if attr[0] in ["parameter", "input-parameter"] and attr[1] is True:
+                        input_params.append(InputParameter(expr))
+            return input_params
+
+        rp_var_params = self._find_rp_var("parameters/input-parameters") or []
+        try:
+            return [InputParameter(param) for param in rp_var_params]
+        except ValueError:
+            return [InputParameterOld(param) for param in rp_var_params]
+
+    def output_parameters(self) -> List[OutputParameter]:
+        """
+        Get the output parameters.
+
+        Returns
+        -------
+        List[OutputParameter]
+            The list of output parameters.
+        """
+        parameters = self._find_rp_var("parameters/output-parameters")
+        return [OutputParameter(param) for param in parameters]
+
+    def num_dimensions(self) -> int:
+        """
+        Get the dimensionality associated with this case.
+
+        Returns
+        -------
+        int
+            The number of dimensions.
+        """
+        for attr in self._case_config():
+            if attr[0] == "rp-3d?":
+                return 3 if attr[1] is True else 2
+
+    def precision(self) -> int:
+        """
+        Get the precision associated with this case (single or double).
+
+        Returns
+        -------
+        int
+            Either 1 or 2 to indicate single or double precision respectively.
+        """
+        for attr in self._case_config():
+            if attr[0] == "rp-double?":
+                return 2 if attr[1] is True else 1
+
+    def iter_count(self) -> int:
+        """
+        Get the number of iterations associated with this case.
+
+        Returns
+        -------
+        int
+            The number of iterations associated with this case.
+        """
+        return self._find_rp_var("number-of-iterations")
+
+    def rp_vars(self) -> dict:
+        """
+        Get the rpvars associated with this case.
+
+        Returns
+        -------
+        dict
+            The rpvars associated with this case.
+        """
+        return self._rp_vars
+
+    @property
+    def rp_var(self) -> CaseVariable:
+        """
+        Access the rpvars associated with this case.
+
+        Returns
+        -------
+        CaseVariable
+            The rpvars associated with this case.
+        """
+        return CaseVariable(self._rp_vars)
+
+    def has_rp_var(self, name: str) -> bool:
+        """
+        Find if this case has the given rpvar.
+
+        Parameters
+        ----------
+        name : str
+            Name of the rpvar.
+
+        Returns
+        -------
+        bool
+            Whether this case has the given rpvar.
+        """
+        return name in self._rp_vars
+
+    def config_vars(self) -> dict:
+        """
+        Get the config variables associated with this case.
+
+        Returns
+        -------
+        dict
+            The config variables associated with this case.
+        """
+        return self._config_vars
+
+    @property
+    def config_var(self) -> CaseVariable:
+        """
+        Access the config variables associated with this case.
+
+        Returns
+        -------
+        CaseVariable
+            The config variables associated with this case.
+        """
+        return CaseVariable(self._config_vars)
+
+    def has_config_var(self, name):
+        return name in self._config_vars
+
+    def _named_expressions(self):
+        return self._find_rp_var("named-expressions")
+
+    def _case_config(self):
+        return self._find_rp_var("case-config")
+
+    def _find_rp_var(self, name: str):
+        return self._rp_vars.get(name)
+
+
+class SettingsFile(RPVarProcessor):
+    """Class to read a Fluent Settings file."""
+
+    def __init__(self, settings_filepath: Optional[str] = None) -> None:
+        """Initialize a SettingsFile object. Exactly one file path argument must be specified.
+
+        Parameters
+        ----------
+        settings_filepath : Optional[str]
+            The path of a settings file.
+        """
+        if settings_filepath:
+            try:
+                with open(settings_filepath, "r") as file:
+                    rp_vars_str = file.read()
+                if not rp_vars_str.startswith("(rp ("):
+                    raise RuntimeError("Not a valid settings file.")
+
+            except FileNotFoundError as e:
+                raise FileNotFoundError(
+                    f"The settings file {settings_filepath} cannot be found."
+                ) from e
+
+            except OSError as e:
+                raise OSError(
+                    f"Error while reading settings file {settings_filepath}"
+                ) from e
+
+            except Exception as e:
+                raise RuntimeError(
+                    f"Could not read settings file {settings_filepath}"
+                ) from e
+
+        super().__init__(rp_vars_str)
+
+
+class CaseFile(RPVarProcessor):
+    """Class to read a Fluent case file.
+
+    Methods
+    -------
+    get_mesh
+        Get the mesh data.
+    """
+
+    def __init__(
+        self,
+        case_filepath: Optional[str] = None,
+        project_filepath: Optional[str] = None,
+    ) -> None:
+        """Initialize a CaseFile object. Exactly one file path argument must be specified.
+
+        Parameters
+        ----------
+        case_filepath : Optional[str]
+            The path of a case file.
+        project_filepath : Optional[str]
+            The path of a project file from which the case file is selected.
+        """
+
+        if (not case_filepath) == (not project_filepath):
             raise RuntimeError(
                 "Please enter either the case file path or the project file path"
             )
@@ -197,17 +571,17 @@ class CaseFile:
 
         try:
             if Path(case_filepath).match("*.cas.h5"):
-                file = h5py.File(case_filepath)
-                settings = file["settings"]
+                _file = h5py.File(case_filepath)
+                settings = _file["settings"]
                 rpvars = settings["Rampant Variables"][0]
                 rp_vars_str = rpvars.decode()
             elif Path(case_filepath).match("*.cas"):
-                with open(case_filepath, "rb") as file:
-                    rp_vars_str = file.read()
+                with open(case_filepath, "rb") as _file:
+                    rp_vars_str = _file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
             elif Path(case_filepath).match("*.cas.gz"):
-                with gzip.open(case_filepath, "rb") as file:
-                    rp_vars_str = file.read()
+                with gzip.open(case_filepath, "rb") as _file:
+                    rp_vars_str = _file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
             else:
                 error_message = (
@@ -224,71 +598,14 @@ class CaseFile:
         except OSError as e:
             raise OSError(f"Error while reading case file {case_filepath}") from e
 
-        except BaseException as e:
+        except Exception as e:
             raise RuntimeError(f"Could not read case file {case_filepath}") from e
 
-        self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
+        super().__init__(rp_vars_str=rp_vars_str)
+        self._mesh = Mesh(_file)
 
-        self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
-
-    def input_parameters(self) -> List[InputParameter]:
-        exprs = self._named_expressions()
-        if exprs:
-            input_params = []
-            for expr in exprs:
-                for attr in expr:
-                    if attr[0] in ["parameter", "input-parameter"] and attr[1] is True:
-                        input_params.append(InputParameter(expr))
-            return input_params
-        else:
-            parameters = self._find_rp_var("parameters/input-parameters")
-            return [InputParameter(param) for param in parameters]
-
-    def output_parameters(self) -> List[OutputParameter]:
-        parameters = self._find_rp_var("parameters/output-parameters")
-        return [OutputParameter(param) for param in parameters]
-
-    def num_dimensions(self) -> int:
-        for attr in self._case_config():
-            if attr[0] == "rp-3d?":
-                return 3 if attr[1] is True else 2
-
-    def precision(self) -> int:
-        for attr in self._case_config():
-            if attr[0] == "rp-double?":
-                return 2 if attr[1] is True else 1
-
-    def iter_count(self) -> int:
-        return self._find_rp_var("number-of-iterations")
-
-    def rp_vars(self) -> dict:
-        return self._rp_vars
-
-    @property
-    def rp_var(self):
-        return _CaseVariable(self._rp_vars)
-
-    def has_rp_var(self, name):
-        return name in self._rp_vars
-
-    def config_vars(self):
-        return self._config_vars
-
-    @property
-    def config_var(self):
-        return _CaseVariable(self._config_vars)
-
-    def has_config_var(self, name):
-        return name in self._config_vars
-
-    def _named_expressions(self):
-        return self._find_rp_var("named-expressions")
-
-    def _case_config(self):
-        return self._find_rp_var("case-config")
-
-    def _find_rp_var(self, name: str):
-        return self._rp_vars[name]
+    def get_mesh(self):
+        return self._mesh
 
 
 def _get_processed_string(input_string: bytes) -> str:
