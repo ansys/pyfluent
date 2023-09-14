@@ -68,9 +68,15 @@ def _test_area_average(solver):
 
 
 def _test_min(solver1, solver2):
-    vmag = solver1.setup.boundary_conditions["inlet1"].vmag.value()
-    solver1.setup.boundary_conditions["inlet1"].vmag = 0.9 * vmag
-    solver2.setup.boundary_conditions["inlet1"].vmag = 1.1 * vmag
+    if solver1.get_fluent_version() < "24.1.0":
+        solver1_vmag = solver1.setup.boundary_conditions["inlet1"].vmag
+        solver2_vmag = solver2.setup.boundary_conditions["inlet1"].vmag
+    else:
+        solver1_vmag = solver1.setup.boundary_conditions["inlet1"].momentum.velocity
+        solver2_vmag = solver2.setup.boundary_conditions["inlet1"].momentum.velocity
+    vmag = solver1_vmag.value()
+    solver1_vmag = 0.9 * vmag
+    solver2_vmag = 1.1 * vmag
     solver1.solution.initialization.hybrid_initialize()
     solver2.solution.initialization.hybrid_initialize()
     solver1.setup.named_expressions["test_expr_1"] = {}
@@ -296,8 +302,8 @@ def _test_moment(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.nightly
+@pytest.mark.fluent_version(">=23.2")
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2

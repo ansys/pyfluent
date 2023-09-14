@@ -370,6 +370,18 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
+def _command_query_name_filter(parent, list_attr: str, prefix: str) -> list:
+    """Auto completer info of commands and queries."""
+    ret = []
+    names = getattr(parent, list_attr)
+    for name in names:
+        if name.startswith(prefix):
+            child = getattr(parent, name)
+            if child.is_active():
+                ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
+    return ret
+
+
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -485,16 +497,10 @@ class Group(SettingsBase[DictStateType]):
                             child.__doc__,
                         ]
                     )
-        for command_name in self.command_names:
-            if command_name.startswith(prefix):
-                command = getattr(self, command_name)
-                if command.is_active():
-                    ret.append([command_name, Command.__name__, command.__doc__])
-        for query_name in self.query_names:
-            if query_name.startswith(prefix):
-                query = getattr(self, query_name)
-                if query.is_active():
-                    ret.append([query_name, Query.__name__, query.__doc__])
+        command_info = _command_query_name_filter(self, "command_names", prefix)
+        query_info = _command_query_name_filter(self, "query_names", prefix)
+        for items in [command_info, query_info]:
+            ret.extend(items)
         return ret
 
     def _get_parent_of_active_child_names(self, name):
@@ -538,7 +544,7 @@ class Group(SettingsBase[DictStateType]):
             ) from ex
         try:
             return attr.set_state(value)
-        except BaseException as ex:
+        except Exception as ex:
             allowed = attr.allowed_values()
             if allowed and value not in allowed:
                 raise allowed_values_error(name, value, allowed) from ex
@@ -754,6 +760,21 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
+    def get_completer_info(self, prefix="") -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        ret = []
+        command_info = _command_query_name_filter(self, "command_names", prefix)
+        query_info = _command_query_name_filter(self, "query_names", prefix)
+        for items in [command_info, query_info]:
+            ret.extend(items)
+        return ret
+
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
@@ -911,7 +932,7 @@ class Action(Base):
                 argument = getattr(self, argument_name)
                 ret.append(
                     [
-                        argument_name + "=",
+                        argument_name,
                         argument.__class__.__bases__[0].__name__,
                         argument.__doc__,
                     ]

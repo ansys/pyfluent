@@ -8,13 +8,13 @@ from ansys.fluent.core.services.field_data import (
     ScalarFieldUnavailable,
     SurfaceDataType,
     SurfaceNameError,
+    VectorFieldNameError,
 )
 
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
@@ -28,30 +28,32 @@ def test_field_data(new_solver_session) -> None:
     solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 
     # Set up boundary conditions for CFD analysis
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = 0.4
     solver.setup.boundary_conditions.velocity_inlet[
         "cold-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 0.05
+    ].momentum.velocity = 0.4
     solver.setup.boundary_conditions.velocity_inlet[
         "cold-inlet"
-    ].turb_hydraulic_diam = "4 [in]"
+    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.turbulent_intensity = 0.05
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.hydraulic_diameter = "4 [in]"
 
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].thermal.t = 293.15
 
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = 1.2
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = 1.2
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
+    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].turb_hydraulic_diam = "1 [in]"
+    ].turbulence.hydraulic_diameter = "1 [in]"
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].t = HOT_INLET_TEMPERATURE
-
-    solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
+    ].thermal.t = HOT_INLET_TEMPERATURE
 
     solver.tui.solve.monitors.residual.plot("no")
 
@@ -189,8 +191,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert expected_allowed_args == allowed_args
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
@@ -261,8 +262,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert all(path_lines_data["lines"][100].node_indices == [100, 101])
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_2d(load_disk_mesh) -> None:
     solver = load_disk_mesh
 
@@ -369,3 +369,34 @@ def test_field_data_errors(new_solver_session) -> None:
     with pytest.raises(ScalarFieldNameError) as fne:
         solver.field_data.get_scalar_field_data(field_name="xdensity", surface_ids=[0])
     assert fne.value.field_name == "xdensity"
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_field_info_validators(new_solver_session) -> None:
+    solver = new_solver_session
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_filename)
+    solver.solution.initialization.hybrid_initialize()
+
+    vector_field_1 = solver.field_info.validate_vector_fields("velocity")
+    assert vector_field_1 is None
+
+    with pytest.raises(VectorFieldNameError) as vector_field_error:
+        solver.field_info.validate_vector_fields("relative-vel")
+    assert vector_field_error.value.field_name == "relative-vel"
+
+    scalar_field_1 = solver.field_info.validate_scalar_fields("z-velocity")
+    assert scalar_field_1 is None
+
+    with pytest.raises(ScalarFieldNameError) as scalar_field_error:
+        solver.field_info.validate_scalar_fields("z-vel")
+    assert scalar_field_error.value.field_name == "z-vel"
+
+    surface = solver.field_info.validate_surfaces(["cold-inlet"])
+    assert surface is None
+
+    with pytest.raises(SurfaceNameError) as surface_error:
+        solver.field_info.validate_surfaces(["out"])
+    assert surface_error.value.surface_name == "out"

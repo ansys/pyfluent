@@ -28,6 +28,7 @@ import contextlib
 import hashlib
 import io
 import os
+from pathlib import Path
 import pickle
 import pprint
 import shutil
@@ -51,7 +52,7 @@ def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 
-def _populate_hash_dict(name, info, cls):
+def _populate_hash_dict(name, info, cls, api_tree):
     children = info.get("children")
     if children:
         children_hash = []
@@ -59,7 +60,17 @@ def _populate_hash_dict(name, info, cls):
             for child in getattr(cls, "child_names", None):
                 child_cls = getattr(cls, child)
                 if cname == child_cls.fluent_name:
-                    children_hash.append(_populate_hash_dict(cname, cinfo, child_cls))
+                    api_tree[child] = {}
+                    children_hash.append(
+                        _populate_hash_dict(cname, cinfo, child_cls, api_tree[child])
+                    )
+                    okey = f"{child}:<name>"
+                    if okey in api_tree[child]:
+                        api_tree[child].update(api_tree[child][okey])
+                        del api_tree[child][okey]
+                        api_tree[okey] = api_tree.pop(child)
+                    else:
+                        api_tree[child] = api_tree[child] or "Parameter"
                     break
     else:
         children_hash = None
@@ -71,7 +82,10 @@ def _populate_hash_dict(name, info, cls):
             for command in getattr(cls, "command_names", None):
                 command_cls = getattr(cls, command)
                 if cname == command_cls.fluent_name:
-                    commands_hash.append(_populate_hash_dict(cname, cinfo, command_cls))
+                    api_tree[command] = "Command"
+                    commands_hash.append(
+                        _populate_hash_dict(cname, cinfo, command_cls, {})
+                    )
                     break
     else:
         commands_hash = None
@@ -83,7 +97,10 @@ def _populate_hash_dict(name, info, cls):
             for query in getattr(cls, "query_names", None):
                 query_cls = getattr(cls, query)
                 if qname == query_cls.fluent_name:
-                    queries_hash.append(_populate_hash_dict(qname, qinfo, query_cls))
+                    api_tree[query] = "Query"
+                    queries_hash.append(
+                        _populate_hash_dict(qname, qinfo, query_cls, {})
+                    )
                     break
     else:
         queries_hash = None
@@ -96,7 +113,7 @@ def _populate_hash_dict(name, info, cls):
                 argument_cls = getattr(cls, argument)
                 if aname == argument_cls.fluent_name:
                     arguments_hash.append(
-                        _populate_hash_dict(aname, ainfo, argument_cls)
+                        _populate_hash_dict(aname, ainfo, argument_cls, {})
                     )
                     break
     else:
@@ -104,10 +121,13 @@ def _populate_hash_dict(name, info, cls):
 
     object_type = info.get("object-type")
     if object_type:
+        key = f"{cls.__name__}:<name>"
+        api_tree[key] = {}
         object_hash = _populate_hash_dict(
             "child-object-type",
             object_type,
             getattr(cls, "child_object_type", None),
+            api_tree[key],
         )
     else:
         object_hash = None
@@ -439,38 +459,36 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-def generate():
-    from ansys.fluent.core.launcher.launcher import launch_fluent
-
-    session = launch_fluent(mode="solver")
-    version = get_version_for_filepath(session=session)
+def generate(version, pyfluent_path):
     dirname = os.path.dirname(__file__)
-    parent_dir = os.path.normpath(
-        os.path.join(
-            dirname,
-            "..",
-            "src",
-            "ansys",
-            "fluent",
-            "core",
-            "solver",
-            f"settings_{version}",
-        )
-    )
+    parent_dir = (
+        (Path(pyfluent_path) if pyfluent_path else (Path(dirname) / ".." / "src"))
+        / "ansys"
+        / "fluent"
+        / "core"
+        / "solver"
+        / f"settings_{version}"
+    ).resolve()
 
     # Clear previously generated data
     if os.path.exists(parent_dir):
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
+    from ansys.fluent.core.launcher.launcher import launch_fluent
+
+    session = launch_fluent()
     sinfo = session._settings_service.get_static_info()
     session.exit()
     cls = flobject.get_cls("", sinfo, version=version)
 
-    _populate_hash_dict("", sinfo, cls)
+    api_tree = {}
+    _populate_hash_dict("", sinfo, cls, api_tree)
     _populate_classes(parent_dir)
     _populate_init(parent_dir, sinfo)
+    return {"<solver_session>": api_tree}
 
 
 if __name__ == "__main__":
-    generate()
+    version = get_version_for_filepath()
+    generate(version, None)

@@ -1,3 +1,6 @@
+"""Session to session data transfer, supporting Fluent in all modes."""
+
+
 from functools import partial
 import logging
 import os
@@ -13,7 +16,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 @asynchronous
-def read_case_into(solver, file_type, file_name, full_file_name_container=None):
+def _read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Trying to read case: {file_name}")
     solver.upload(file_name)
     if full_file_name_container:
@@ -23,11 +26,11 @@ def read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Have read case: {file_name}")
 
 
-def read_case_into_each(solvers, file_type, file_name, full_file_name_container=None):
+def _read_case_into_each(solvers, file_type, file_name, full_file_name_container=None):
     reads = []
     for solver in solvers:
         reads.append(
-            read_case_into(solver, file_type, file_name, full_file_name_container)
+            _read_case_into(solver, file_type, file_name, full_file_name_container)
         )
     for r in reads:
         r.result()
@@ -136,18 +139,18 @@ def transfer_case(
             source_instance.download(full_file_name, ".")
             network_logger.info(f"Saved mesh from meshing session: {full_file_name}")
             if inside_container:
-                read_case_into_each(
+                _read_case_into_each(
                     solvers,
                     file_type,
                     str(full_file_name),
                     str(full_file_name_container),
                 )
             else:
-                read_case_into_each(solvers, file_type, str(full_file_name))
+                _read_case_into_each(solvers, file_type, str(full_file_name))
             if clean_up_temp_file:
                 try:
                     os.remove(full_file_name)
-                except BaseException as ex:
+                except Exception as ex:
                     network_logger.warning(
                         f"Encountered exception while cleaning up during case transfer {ex}"
                     )

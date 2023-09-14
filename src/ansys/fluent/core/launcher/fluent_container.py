@@ -6,9 +6,13 @@ Notes
 For configuration details, see :func:`configure_container_dict`, and for a list of additional Docker container run
 configuration options that can also be specified through the
 ``container_dict`` argument for :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`,
-see `Docker run documentation`_.
+see documentation for `Docker run`_.
 
-.. _Docker run documentation: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run
+For the Fluent Docker container to be able to find license information, the license file or server needs to be specified
+through the ``ANSYSLMD_LICENSE_FILE`` environment variable,
+or the ``license_server`` argument for the ``container_dict`` (see :func:`configure_container_dict`).
+
+.. _Docker run: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run
 
 Examples
 --------
@@ -17,7 +21,8 @@ Launching a Fluent Docker container with system default configuration:
 >>> import ansys.fluent.core as pyfluent
 >>> session = pyfluent.launch_fluent(start_container=True)
 
-Launching with custom configuration:
+Launching with custom configuration, using ``host_mount_path`` and ``fluent_image``
+which are arguments for :func:`configure_container_dict`, and ``auto_remove`` which is an argument for `Docker run`_:
 
 >>> import ansys.fluent.core as pyfluent
 >>> custom_config = {}
@@ -29,18 +34,17 @@ Getting default Fluent Docker container configuration, then launching with custo
 >>> import ansys.fluent.core as pyfluent
 >>> config_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
 Docker container run configuration information:
-
 config_dict =
 {'auto_remove': True,
- 'command': ['-gu', '-sifile=/tmpdir/serverinfo-lpqsdldw.txt', '3ddp'],
+ 'command': ['-gu', '-sifile=/mnt/pyfluent/serverinfo-lpqsdldw.txt', '3ddp'],
  'detach': True,
  'environment': {'ANSYSLMD_LICENSE_FILE': '2048@licenseserver.com',
                  'REMOTING_PORTS': '54000/portspan=2'},
  'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
  'labels': {'test_name': 'none'},
  'ports': {'54000': 54000},
- 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/tmpdir'],
- 'working_dir': '/tmpdir'}
+ 'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/mnt/pyfluent'],
+ 'working_dir': '/mnt/pyfluent'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 
@@ -58,7 +62,7 @@ from ansys.fluent.core.utils.networking import get_free_port
 import docker
 
 logger = logging.getLogger("pyfluent.launcher")
-DEFAULT_CONTAINER_MOUNT_PATH = "/tmpdir"
+DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
 def configure_container_dict(
@@ -104,7 +108,7 @@ def configure_container_dict(
         Ignored if ``fluent_image`` has been specified.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
-        to be passed directly to the Docker run execution. See examples below and `Docker run documentation`_.
+        to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
 
     Returns
     -------
@@ -117,17 +121,36 @@ def configure_container_dict(
 
     Notes
     -----
-    This function should usually not be called directly, it will be automatically used by
-    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` instead.
+    This function should usually not be called directly, it is automatically used by
+    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
 
     For a list of additional Docker container run configuration options that can also be specified using
-    ``container_dict``, see `Docker run documentation`_.
+    ``container_dict``, see `Docker run`_ documentation.
+
+    See also :func:`start_fluent_container`.
     """
 
-    logger.debug(f"container_dict before processing: {container_dict}")
+    if (
+        container_dict
+        and "environment" in container_dict
+        and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1"
+    ):
+        container_dict_h = container_dict.copy()
+        container_dict_h.pop("environment")
+        logger.debug(f"container_dict before processing: {container_dict_h}")
+        del container_dict_h
+    else:
+        logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
         host_mount_path = pyfluent.EXAMPLES_PATH
+    elif "volumes" in container_dict:
+        logger.warning(
+            "'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by specified 'host_mount_path'."
+        )
+        container_dict.pop("volumes")
+
     if not os.path.exists(host_mount_path):
         os.makedirs(host_mount_path)
 
@@ -135,9 +158,33 @@ def configure_container_dict(
         container_mount_path = os.getenv(
             "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
         )
+    elif "volumes" in container_dict:
+        logger.warning(
+            "'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by specified 'container_mount_path'."
+        )
+        container_dict.pop("volumes")
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
+    else:
+        logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
+        if len(container_dict["volumes"]) != 1:
+            logger.warning(
+                "Multiple volumes being mounted in the Docker container, "
+                "using the first mount as the working directory for Fluent."
+            )
+        volumes_string = container_dict["volumes"][0]
+        container_mount_path = ""
+        for c in reversed(volumes_string):
+            if c == ":":
+                break
+            else:
+                container_mount_path += c
+        container_mount_path = container_mount_path[::-1]
+        host_mount_path = volumes_string.replace(":" + container_mount_path, "")
+        logger.debug(f"host_mount_path: {host_mount_path}")
+        logger.debug(f"container_mount_path: {container_mount_path}")
 
     if "ports" not in container_dict:
         if not port:
@@ -229,14 +276,9 @@ def configure_container_dict(
         auto_remove=True,
     )
 
-    if fluent_image.split(":")[1] == "v24.1.0":
-        container_dict_default.update(tty=True)
-
     for k, v in container_dict_default.items():
         if k not in container_dict:
             container_dict[k] = v
-
-    logger.debug(f"container_dict after processing: {container_dict}")
 
     host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
@@ -268,15 +310,16 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
 
     Notes
     -----
-    See also :func:`configure_container_dict`.
+    Uses :func:`configure_container_dict` to parse the optional ``container_dict`` configuration.
+
+    This function should usually not be called directly, it is automatically used by
+    :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
     """
 
     if container_dict is None:
         container_dict = {}
 
     container_vars = configure_container_dict(args, **container_dict)
-
-    logger.debug(f"container_vars:{container_vars}")
 
     (
         config_dict,
@@ -285,6 +328,21 @@ def start_fluent_container(args: List[str], container_dict: dict = None) -> (int
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
+
+    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+        logger.debug(f"container_vars: {container_vars}")
+    else:
+        config_dict_h = config_dict.copy()
+        config_dict_h.pop("environment")
+        container_vars_tmp = (
+            config_dict_h,
+            timeout,
+            port,
+            host_server_info_file,
+            remove_server_info_file,
+        )
+        logger.debug(f"container_vars: {container_vars_tmp}")
+        del container_vars_tmp
 
     try:
         if not host_server_info_file.exists():

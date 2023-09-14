@@ -318,7 +318,7 @@ if __name__ == "__main__":
 
         logger.info("Done.")
 
-    except BaseException as exc:
+    except Exception as exc:
         with open("pyfluent_watchdog.err", "w") as file:
-            file.write("%s: %s" % (type(exc).__name__, exc))
+            file.write(f"{type(exc).__name__}: {exc}")
         raise

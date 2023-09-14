@@ -6,11 +6,12 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader import lispy
-from ansys.fluent.core.filereader.casereader import (
-    CaseReader,
+from ansys.fluent.core.filereader.case_file import (
     InputParameter,
+    InputParameterOld,
     _get_processed_string,
 )
+from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 
 
 def call_casereader(
@@ -202,12 +203,13 @@ def test_case_reader_get_rp_and_config_vars():
     assert reader.rp_var.pressure.output_dpdt__q() is True
     assert len(reader.rp_var.context.map_r17__plus()) == 53
     assert reader.rp_var.defaults.pre_r19__dot0_early__q() is False
-    with pytest.raises(BaseException):
+
+    with pytest.raises(RuntimeError) as msg:
         reader.rp_var.defaults.pre_r19__dot0_early()
+    assert msg.value.args[0] == r"Invalid variable defaults/pre-r19.0-early"
 
     with pytest.raises(ValueError) as msg:
         reader.config_var("rp-3d")
-
     assert (
         msg.value.args[0] == "rp-3d is not an allowed config-vars name.\n"
         "The most similar names are: rp-3d?, rp-des?."
@@ -245,6 +247,45 @@ def test_case_reader_input_parameter():
     assert velocity.numeric_value == 2
     assert velocity.value == "2 [m/s]"
 
+    vel_data = [
+        "real-1",
+        [
+            ("type", "real"),
+            ["name", ("value", '"inlet_velocity"'), ("type", "string-class")],
+            [
+                "parameter-value",
+                ("type", "real-class"),
+                ("value", 20.0),
+                ("min", False),
+                ("max", False),
+                ("units-quantity", "velocity"),
+            ],
+        ],
+    ]
+    velocity = InputParameterOld(raw_data=vel_data)
+
+    assert velocity.name == "inlet_velocity"
+    assert velocity.value == [
+        "parameter-value",
+        ("type", "real-class"),
+        ("value", 20.0),
+        ("min", False),
+        ("max", False),
+        ("units-quantity", "velocity"),
+    ]
+    assert velocity.units == "velocity"
+    assert velocity.numeric_value == 20.0
+
 
 def test_lispy_for_multiline_string():
     assert lispy.parse('(define x "abc\ndef")') == ["define", "x", '"abc\ndef"']
+
+
+def test_lispy_for_quotes():
+    lispy.parse(
+        '(define x "\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")")'
+    ) == [
+        "define",
+        "x",
+        '"\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")"',
+    ]

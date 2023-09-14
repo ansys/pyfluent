@@ -10,7 +10,8 @@ Accessing field data objects
 ----------------------------
 
 In order to access field data, launch the fluent solver, and make field data
-available (for example, by reading case and data files):
+available (for example, either by reading a case file and then initializing as in the following code, or
+by reading case and data files).
 
 .. code-block:: python
 
@@ -19,7 +20,7 @@ available (for example, by reading case and data files):
   >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode="solver")
   >>> solver.file.read(file_type="case", file_name=import_filename)
-
+  >>> solver.solution.initialization.hybrid_initialize()
 
 The field data object is an attribute of the solver object:
 
@@ -101,13 +102,13 @@ You can call the ``get_scalar_field_data`` method to get scalar field data, such
   241
   >>> abs_press_data[120].scalar_data
   101325.0
-         
+
 If a surface name is provided as input, scalar field data is returned.
 If surface IDs are provided as input, a dictionary containing a map of surface IDs to scalar field data is returned.
 
 Get vector field data
 ~~~~~~~~~~~~~~~~~~~~~
-You can call the ``get_vector_field_data`` method to get vector field data. 
+You can call the ``get_vector_field_data`` method to get vector field data.
 
 .. code-block:: python
 
@@ -121,8 +122,8 @@ If a surface name is provided as input, vector field data is returned.
 If surface IDs are provided as input, a dictionary containing a map of surface IDs to vector field data is returned.
 
 Get pathlines field data
-~~~~~~~~~~~~~~~~~~~~~~~~  
-You can call the ``get_pathlines_field_data`` method to get pathlines field data. 
+~~~~~~~~~~~~~~~~~~~~~~~~
+You can call the ``get_pathlines_field_data`` method to get pathlines field data.
 
 .. code-block:: python
 
@@ -135,16 +136,16 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
   76152
   >>> path_lines_data["lines"][100].node_count
   2
-  >>> path_lines_data["lines"][100].node_data
-  [100, 101]
+  >>> path_lines_data["lines"][100].node_indices
+  array([100, 101])
 
 Dictionary containing a map of surface IDs to the path-line data is returned.
 or example, pathlines connectivity, vertices, and field.
 
 
-.. note:: 
+.. note::
    In Fluent, a surface name can be associated with multiple surface IDs.
-   Thus, a response contain a surface ID as a key of the returned dictionary. 
+   Thus, a response contains a surface ID as a key of the returned dictionary.
 
 
 Making multiple requests in a single transaction
@@ -157,59 +158,58 @@ First create transaction object for field data.
 
   >>> transaction = solver.field_data.new_transaction()
 
-Then combine requests for multiple fields using ``add_<items>_request`` methods in a single transaction: 
+Then combine requests for multiple fields using ``add_<items>_request`` methods in a single transaction:
 
 - ``add_surfaces_request`` adds a surfaces request.
 - ``add_scalar_fields_request`` adds a scalar fields request.
-- ``add_vector_fields_request`` adds a vector fields request. 
+- ``add_vector_fields_request`` adds a vector fields request.
 - ``add_pathlines_fields_request`` adds a pathlines fields request.
 
 Following code demonstrate adding multiple requests to a single transaction.
 
 .. code-block::
 
->>> transaction.add_surfaces_request(surface_ids=[1], provide_vertices=True, 
-                                        provide_faces=False, provide_faces_centroid=True
-                                       )
->>> transaction.add_surfaces_request(surface_ids=[2], provide_vertices=True, 
-                                       provide_faces=True
-                                       )
->>> transaction.add_scalar_fields_request(surface_ids=[1,2], field_name="temperature",
-                                            node_value=True, boundary_value=True
-                                            )                                            
->>> transaction.add_vector_fields_request(surface_ids=[1,2])
->>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature"                                           
-                                            )                                            
+  >>> transaction.add_surfaces_request(
+  >>>     surface_ids=[1], provide_vertices=True, provide_faces=False, provide_faces_centroid=True
+  >>> )
+  >>> transaction.add_surfaces_request(
+  >>>     surface_ids=[2], provide_vertices=True, provide_faces=True
+  >>> )
+  >>> transaction.add_scalar_fields_request(
+  >>>     surface_ids=[1,2], field_name="temperature", node_value=True, boundary_value=True
+  >>> )
+  >>> transaction.add_vector_fields_request(surface_ids=[1,2], field_name="velocity")
+  >>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature")
 
-                                            
+
 You can call the ``get_fields`` method to get the data for all these requests. This call also
 clears all requests, so that subsequent calls to the ``get_fields`` method yield nothing until
 more requests are added.
 
 .. code-block::
 
->>> payload_data = transaction.get_fields()
+  >>> payload_data = transaction.get_fields()
 
 ``payload_data`` is a dictionary containing the requested fields as a numpy array in the following order:
 
 ``tag -> surface_id [int] -> field_name [str] -> field_data[np.array]``
 
-  
+
 Tag
---- 
+---
 
 Fluent versions earlier than 2023 R1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A tag is int, generated by applying ``bitwise or`` on all tags for a request. Here is a list
-of supported tags and their values:   
- 
+of supported tags and their values:
+
 *  OVERSET_MESH: 1,
 *  ELEMENT_LOCATION: 2,
 *  NODE_LOCATION: 4,
 *  BOUNDARY_VALUES: 8,
 
 For example, if you request the scalar field data for element location[2], in the
-dictionary,  ``tag`` is ``2``. Similarly, if you request the boundary values[8] for 
+dictionary, ``tag`` is ``2``. Similarly, if you request the boundary values[8] for
 node location[4], ``tag`` is ``(4|8)`` or 12.
 
 Fluent versions 2023 R1 and later
@@ -217,8 +217,8 @@ Fluent versions 2023 R1 and later
 A tag is tuple of input, value pairs for which field data is generated.
 
 For example, if you request the scalar field data for element location, in the
-dictionary,  ``tag`` is ``(('type','scalar-field'), ('dataLocation', 1), ('boundaryValues',False))``. 
-Similarly, if you request the boundary values for node location, ``tag`` is 
+dictionary, ``tag`` is ``(('type','scalar-field'), ('dataLocation', 1), ('boundaryValues',False))``.
+Similarly, if you request the boundary values for node location, ``tag`` is
 ``(('type','scalar-field'), ('dataLocation', 0), ('boundaryValues',True)``.
 
 Surface ID
@@ -251,9 +251,9 @@ Vector field request
 The response to a vector field request contains two fields:
 
 - ``vector field``, with the same name as the vector field name that is passed
-  in the request 
+ in the request
 - ``vector-scale``, a float value indicating the vector scale.
- 
+
 Pathlines field request
 ~~~~~~~~~~~~~~~~~~~~~~~
 The response to a pathlines field request contains the following fields:
@@ -263,8 +263,8 @@ The response to a pathlines field request contains the following fields:
 - ``vertices``, which contain node coordinates.
 - ``field name``, which contains pathlines field. field name is the same name as
   the scalar field name passed in the request.
-- ``particle-time``, which contains  particle time, if requested. 
-- ``additional field name``, which contains  additional field, if requested.
+- ``particle-time``, which contains particle time, if requested.
+- ``additional field name``, which contains additional field, if requested.
   additional field name is the same name as the additional field name passed in
   the request.
 
