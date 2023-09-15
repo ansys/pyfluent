@@ -41,18 +41,13 @@ def test_disk_2d_models(load_disk_mesh):
         solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
         == "enhanced-wall-treatment"
     )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment.get_attr(
-            "allowed-values"
-        )
-        == [
-            "standard-wall-fn",
-            "non-equilibrium-wall-fn",
-            "enhanced-wall-treatment",
-            "menter-lechner",
-            "scalable-wall-functions",
-        ]
-    )
+    assert solver_session.setup.models.viscous.near_wall_treatment.wall_treatment.allowed_values() == [
+        "standard-wall-fn",
+        "non-equilibrium-wall-fn",
+        "enhanced-wall-treatment",
+        "menter-lechner",
+        "scalable-wall-functions",
+    ]
     solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
         "standard-wall-fn"
     )
@@ -85,9 +80,7 @@ def test_disk_2d_models(load_disk_mesh):
 
     solver_session.setup.models.viscous.model = "k-omega"
     assert solver_session.setup.models.viscous.model() == "k-omega"
-    assert solver_session.setup.models.viscous.k_omega_model.get_attr(
-        "allowed-values"
-    ) == [
+    assert solver_session.setup.models.viscous.k_omega_model.allowed_values() == [
         "standard",
         "geko",
         "bsl",
@@ -100,7 +93,7 @@ def test_disk_2d_models(load_disk_mesh):
     assert solver_session.setup.models.viscous.k_omega_model() == "bsl"
     solver_session.setup.models.viscous.k_omega_model = "sst"
     assert solver_session.setup.models.viscous.k_omega_model() == "sst"
-    assert solver_session.setup.models.viscous.model.get_attr("allowed-values") == [
+    assert solver_session.setup.models.viscous.model.allowed_values() == [
         "inviscid",
         "laminar",
         "k-epsilon",
