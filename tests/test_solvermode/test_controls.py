@@ -20,59 +20,43 @@ def test_controls(load_mixing_elbow_mesh):
     ]
     solver.setup.general.solver.time = "steady"
     assert solver.setup.general.solver.time() == "steady"
-    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
-        True
+    param_coarsening = (
+        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters
     )
-    assert solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters() == {
+    param_coarsening.laplace_coarsening = True
+    assert param_coarsening() == {
         "max_coarse_levels": 40,
         "coarsen_by_interval": 8,
         "conservative_coarsening": False,
         "aggressive_coarsening": False,
         "laplace_coarsening": True,
     }
-    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels = (
-        45
-    )
-    assert (
-        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels()
-        == 45
-    )
-    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters = {
+    param_coarsening.max_coarse_levels = 45
+    assert param_coarsening.max_coarse_levels() == 45
+
+    param_coarsening = {
         "max_coarse_levels": 48,
         "coarsen_by_interval": 9,
         "conservative_coarsening": True,
         "aggressive_coarsening": True,
         "laplace_coarsening": True,
     }
-    assert (
-        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels()
-        == 48
+    assert param_coarsening.max_coarse_levels() == 48
+    assert param_coarsening.coarsen_by_interval() == 9
+    assert param_coarsening.conservative_coarsening() == True
+    assert param_coarsening.aggressive_coarsening() == True
+
+    param_fixed_cycle = (
+        solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters
     )
-    assert (
-        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.coarsen_by_interval()
-        == 9
-    )
-    assert (
-        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.conservative_coarsening()
-        == True
-    )
-    assert (
-        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.aggressive_coarsening()
-        == True
-    )
-    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters.max_cycle = (
-        300
-    )
-    assert (
-        solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters.max_cycle()
-        == 300
-    )
-    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters = {
+    param_fixed_cycle.max_cycle = 300
+    assert param_fixed_cycle.max_cycle() == 300
+    param_fixed_cycle = {
         "pre_sweeps": 1,
         "post_sweeps": 2,
         "max_cycle": 350,
     }
-    assert solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters() == {
+    assert param_fixed_cycle() == {
         "pre_sweeps": 1,
         "post_sweeps": 2,
         "max_cycle": 350,

@@ -16,37 +16,17 @@ from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 def test_boundaries_elbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     solver_session.setup.models.energy.enabled = True
-    assert (
-        D(0)
-        == solver_session.setup.boundary_conditions.velocity_inlet[
-            "cold-inlet"
-        ].momentum.velocity()
-    )
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet[
-            "cold-inlet"
-        ].momentum.velocity,
-        0.4,
-    )
-    assert (
-        D(0.4)
-        == solver_session.setup.boundary_conditions.velocity_inlet[
-            "cold-inlet"
-        ].momentum.velocity()
-    )
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turbulence.turbulent_intensity = 0.05
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turbulence.hydraulic_diameter = "4 [in]"
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].thermal.t,
-        293.15,
-    )
+
+    cold_inlet = solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    assert D(0) == cold_inlet.momentum.velocity()
+    assign_dict_val(cold_inlet.momentum.velocity, 0.4)
+    assert D(0.4) == cold_inlet.momentum.velocity()
+
+    cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    cold_inlet.turbulence.turbulent_intensity = 0.05
+    cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+    assign_dict_val(cold_inlet.thermal.t, 293.15)
+
     assert {
         "name": "cold-inlet",
         "momentum": {
@@ -61,24 +41,14 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
             "hydraulic_diameter": "4 [in]",
         },
         "thermal": {"t": {"option": "value", "value": 293.15}},
-    } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
+    } == cold_inlet()
 
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet[
-            "hot-inlet"
-        ].momentum.velocity,
-        1.2,
-    )
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].turbulence.hydraulic_diameter = "1 [in]"
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].thermal.t,
-        313.15,
-    )
+    hot_inlet = solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    assign_dict_val(hot_inlet.momentum.velocity, 1.2)
+    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+    assign_dict_val(hot_inlet.thermal.t, 313.15)
+
     assert {
         "name": "hot-inlet",
         "momentum": {
@@ -93,7 +63,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
             "hydraulic_diameter": "1 [in]",
         },
         "thermal": {"t": {"option": "value", "value": 313.15}},
-    } == solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]()
+    } == hot_inlet()
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
@@ -144,8 +114,10 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
     # commented new method due to bug 753
     # solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
-    solver_session.setup.boundary_conditions.wall.rename("pipe2_wall", "pipe_2_wall")
-    solver_session.setup.boundary_conditions.wall.rename("out", "outlet")
+    rename_wall = solver_session.setup.boundary_conditions.wall.rename
+    rename_wall("pipe2_wall", "pipe_2_wall")
+    rename_wall("out", "outlet")
+
     solver_session.setup.boundary_conditions.velocity_inlet[
         "inlet"
     ].momentum.velocity = 5.0
