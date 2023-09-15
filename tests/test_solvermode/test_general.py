@@ -41,6 +41,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
 
     # solver.setup.general.gravity = {"gravity": True, "y_component": -9.81}
     # solver.mesh.scale(x_scale=0.001, y_scale=0.001, z_scale=0.001)
+    
     assert general_solver.type.get_attr("allowed-values") == [
         "pressure-based",
         "density-based-implicit",
@@ -87,12 +88,13 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
 @pytest.mark.fluent_version("latest")
 def test_disk_2d_setup(load_disk_mesh):
     session = load_disk_mesh
-    assert session._root.get_attr("active?")
+    assert session._root.is_active()
     assert session.health_check_service.is_serving
     ###
     assert not session.setup.models.energy.enabled()
     assert session.scheme_eval.scheme_eval("(case-valid?)")
     session.tui.mesh.check()
+
     session_solver = session.setup.general.solver
     assert session_solver.two_dim_space.get_attr("allowed-values") == [
         "swirl",

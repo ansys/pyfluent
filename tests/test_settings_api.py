@@ -12,9 +12,7 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session.file.read_case(file_name=case_path)
     solver_session.solution.initialization.hybrid_initialize()
     assert solver_session.setup.models.viscous.model() == "k-epsilon"
-    assert "inviscid" in solver_session.setup.models.viscous.model.get_attr(
-        "allowed-values"
-    )
+    assert "inviscid" in solver_session.setup.models.viscous.model.allowed_values()
     solver_session.setup.models.viscous.model = "inviscid"
     assert solver_session.setup.models.viscous.model() == "inviscid"
 

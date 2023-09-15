@@ -24,7 +24,7 @@ def test_1364(new_solver_session):
             "field": "temperature",
             "average_over": 1,
             "per_zone": False,
-            "zone_names": ["fluid"],
+            "cell_zones": ["fluid"],
             "expr_list": None,
         }
     )

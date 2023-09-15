@@ -66,7 +66,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(
@@ -75,7 +75,5 @@ def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver.file.read(file_type=input_type, file_name=input_name)
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()
-    solver.solution.initialization.fmg_initialize()
-    # assert solver.solution.initialization.fmg_initialize() == True
+    solver.solution.initialization.fmg.fmg_initialize()
     solver.tui.solve.iterate(2)
-    # solver.solution.initialization.hybrid_initialize()
