@@ -10,6 +10,147 @@ def test_meshing_queries(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)
 
+    assert meshing_session.meshing_queries.get_labels(object_name="elbow-fluid") == [
+        "elbow-fluid",
+        "wall-elbow",
+        "wall-inlet",
+        "outlet",
+        "cold-inlet",
+        "hot-inlet",
+        "symmetry-xyplane",
+    ]
+
+    assert meshing_session.meshing_queries.get_labels(
+        object_name="elbow-fluid", filter="*"
+    ) == [
+        "elbow-fluid",
+        "wall-elbow",
+        "wall-inlet",
+        "outlet",
+        "cold-inlet",
+        "hot-inlet",
+        "symmetry-xyplane",
+    ]
+
+    assert meshing_session.meshing_queries.get_labels(
+        object_name="elbow-fluid", label_name_pattern="*"
+    ) == [
+        "elbow-fluid",
+        "wall-elbow",
+        "wall-inlet",
+        "outlet",
+        "cold-inlet",
+        "hot-inlet",
+        "symmetry-xyplane",
+    ]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_face_zones(
+            face_zone_name_list=["wall-inlet", "wall-elbow"],
+            label_name_list=["wall-inlet-1", "wall-elbow-1"],
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_face_zones(
+        face_zone_name_list=["wall-inlet", "wall-elbow"]
+    ) == ["elbow-fluid", "wall-elbow", "wall-inlet-1", "wall-elbow-1", "wall-inlet"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_face_zones(
+            face_zone_id_list=[30, 31], label_name_list=["hot-inlet-1", "cold-inlet-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_face_zones(
+        face_zone_id_list=[30, 31]
+    ) == ["elbow-fluid", "cold-inlet", "hot-inlet-1", "cold-inlet-1", "hot-inlet"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_face_zones(
+            face_zone_name_pattern="out*", label_name_list=["outlet-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_face_zones(
+        face_zone_name_pattern="out*"
+    ) == ["elbow-fluid", "outlet", "outlet-1"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_cell_zones(
+            cell_zone_name_list=["elbow-fluid"], label_name_list=["elbow-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_cell_zones(
+        cell_zone_name_list=["elbow-fluid"]
+    ) == ["elbow-1"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_cell_zones(
+            cell_zone_id_list=[87], label_name_list=["87-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_cell_zones(
+        cell_zone_id_list=[87]
+    ) == ["elbow-1", "87-1"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_cell_zones(
+            cell_zone_name_pattern="*", label_name_list=["cell-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_cell_zones(
+        cell_zone_name_pattern="*"
+    ) == ["87-1", "elbow-1", "cell-1"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_edge_zones(
+            edge_zone_name_list=[
+                "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
+                "hot-inlet:wall-inlet:elbow-fluid:feature.21",
+            ],
+            label_name_list=["20-1", "21-1"],
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_edge_zones(
+        edge_zone_name_list=[
+            "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
+            "hot-inlet:wall-inlet:elbow-fluid:feature.21",
+        ]
+    ) == ["20-1", "21-1"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_edge_zones(
+            edge_zone_id_list=[22, 23], label_name_list=["22-1", "23-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_edge_zones(
+        edge_zone_id_list=[22, 23]
+    ) == ["22-1", "23-1"]
+
+    assert (
+        meshing_session.meshing_queries.add_labels_on_edge_zones(
+            edge_zone_name_pattern="cold-inlet*", label_name_list=["26-1"]
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.get_labels_on_edge_zones(
+        edge_zone_name_pattern="cold-inlet*"
+    ) == ["26-1"]
+
     assert meshing_session.meshing_queries.convert_zone_name_strings_to_ids(
         zone_name_list=["outlet", "cold-inlet"]
     ) == [32, 31]
