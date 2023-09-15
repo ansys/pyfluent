@@ -60,9 +60,9 @@ def test_session_starts_no_transcript_if_disabled(
 def test_server_exits_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent()
-        _fluent_host_pid = session.connection_properties.fluent_host_pid
-        _cortex_host = session.connection_properties.cortex_host
-        _inside_container = session.connection_properties.inside_container
+        _fluent_host_pid = session.fluent_host_pid
+        _cortex_host = session.cortex_host
+        _inside_container = session.inside_container
         return _fluent_host_pid, _cortex_host, _inside_container
 
     fluent_host_pid, cortex_host, inside_container = f()
@@ -82,10 +82,10 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
-        _fluent_host_pid = session.connection_properties.fluent_host_pid
-        _cortex_host = session.connection_properties.cortex_host
-        _inside_container = session.connection_properties.inside_container
-        _cortex_pwd = session.connection_properties.cortex_pwd
+        _fluent_host_pid = session.fluent_host_pid
+        _cortex_host = session.cortex_host
+        _inside_container = session.inside_container
+        _cortex_pwd = session.cortex_pwd
         return _fluent_host_pid, _cortex_host, _inside_container, _cortex_pwd
 
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
@@ -164,17 +164,15 @@ def test_exit_fluent_when_connected_to_running_fluent(
 def test_fluent_connection_properties(
     new_solver_session,
 ) -> None:
-    session = new_solver_session
-    assert isinstance(session.connection_properties.ip, str)
-    assert isinstance(session.connection_properties.port, int)
-    assert isinstance(session.connection_properties.password, str)
-    assert isinstance(session.connection_properties.cortex_pwd, str)
-    assert isinstance(session.connection_properties.cortex_pid, int)
-    assert isinstance(session.connection_properties.cortex_host, str)
-    assert isinstance(
-        session.connection_properties.inside_container, bool
-    ) or isinstance(session.connection_properties.inside_container, Container)
-    assert isinstance(session.connection_properties.fluent_host_pid, int)
+    session = new_solver_session.connection_properties
+    assert isinstance(session.ip, str)
+    assert isinstance(session.port, int)
+    assert isinstance(session.password, str)
+    assert isinstance(session.cortex_pwd, str)
+    assert isinstance(session.cortex_pid, int)
+    assert isinstance(session.cortex_host, str)
+    assert isinstance(session.inside_container, (bool, Container))
+    assert isinstance(session.fluent_host_pid, int)
 
 
 def test_fluent_freeze_kill(
@@ -202,7 +200,7 @@ def test_fluent_freeze_kill(
     alive = timeout_loop(
         get_container,
         5.0,
-        args=(session.connection_properties.cortex_host,),
+        args=(session.cortex_host,),
         expected="falsy",
     )
 
