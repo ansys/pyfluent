@@ -4,14 +4,15 @@ from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 @pytest.mark.fluent_version("latest")
 def test_creatable(load_static_mixer_case) -> None:
+    setup = load_static_mixer_case.setup
     has_not = (
-        load_static_mixer_case.setup.boundary_conditions.velocity_inlet,
-        load_static_mixer_case.setup.cell_zone_conditions.fluid,
+        setup.boundary_conditions.velocity_inlet,
+        setup.cell_zone_conditions.fluid,
     )
-
+    results = load_static_mixer_case.results
     has = (
-        load_static_mixer_case.results.graphics.contour,
-        load_static_mixer_case.results.graphics.vector,
+        results.graphics.contour,
+        results.graphics.vector,
     )
 
     for obj in has_not:

@@ -82,9 +82,6 @@ def launch_fluent_solver_2ddp_t2():
     solver_session.exit()
 
 
-_exhaust_system_geometry_filename = None
-
-
 @pytest.fixture
 def exhaust_system_geometry():
     global _exhaust_system_geometry_filename
@@ -93,6 +90,9 @@ def exhaust_system_geometry():
             filename="exhaust_system.fmd", directory="pyfluent/exhaust_system"
         )
     return _exhaust_system_geometry_filename
+
+
+_exhaust_system_geometry_filename = None
 
 
 @pytest.fixture
