@@ -197,11 +197,19 @@ def _extent_expression(
             denominator += extent
         except TypeError:
             if type(val) == list:
-                return val
+                return _process_weighted_vector(val, extent, numerator, denominator)
             raise RuntimeError(val)
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
+
+
+def _process_weighted_vector(value, extent, numerator, denominator):
+    for _index, val in enumerate(value):
+        numerator += val * extent
+        denominator += extent
+        value[_index] = numerator / denominator
+    return value
 
 
 def _extent_moment_vector(f_string, expr, locations, ctxt):
