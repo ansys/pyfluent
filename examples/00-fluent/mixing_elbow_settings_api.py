@@ -151,6 +151,7 @@ solver.solution.run_calculation.iterate(iter_count=150)
 # Create velocity vectors
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display velocity vectors on the ``symmetry-xyplane`` plane
+solver.results.graphics.vector["velocity_vector_symmetry"] = {}
 velocity_symmetry = solver.results.graphics.vector["velocity_vector_symmetry"]
 velocity_symmetry.print_state()
 velocity_symmetry.field = "temperature"
@@ -169,8 +170,8 @@ velocity_symmetry.style = "arrow"
 # Compute mass flow rate
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Compute the mass flow rate.
+solver.solution.report_definitions.flux["mass_flow_rate"] = {}
 mass_flow_rate = solver.solution.report_definitions.flux["mass_flow_rate"]
-
 mass_flow_rate.zone_names.get_attr("allowed-values")
 mass_flow_rate.zone_names = [
     "cold-inlet",
