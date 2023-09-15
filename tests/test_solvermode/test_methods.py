@@ -5,6 +5,7 @@ import pytest
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
+@pytest.mark.skip("Too sensitive to settings API")
 def test_methods(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"

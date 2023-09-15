@@ -4,7 +4,7 @@ import pytest
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version("==24.1")
+@pytest.mark.fluent_version(">=24.1")
 def test_expression(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     solver_session.setup.models.energy.enabled = True

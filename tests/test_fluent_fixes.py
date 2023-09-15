@@ -23,14 +23,14 @@ def test_1364(new_solver_session):
             "field": "temperature",
             "average_over": 1,
             "per_zone": False,
-            "zone_names": ["fluid"],
+            "cell_zones": ["fluid"],
             "expr_list": None,
         }
     )
 
     assert solver.solution.report_definitions.volume[
         "xxx"
-    ].zone_names.allowed_values() == ["fluid"]
+    ].cell_zones.allowed_values() == ["fluid"]
 
     assert (
         solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
