@@ -31,6 +31,17 @@ from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
+
+class _InlineConstants:
+    is_active = "active?"
+    is_read_only = "read-only"
+    default_value = "default"
+    min = "min"
+    max = "max"
+    user_creatable = "user-creatable?"
+    allowed_values = "allowed-values"
+
+
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
 RealListType = List[RealType]
@@ -170,12 +181,12 @@ class Base:
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        attr = self.get_attr("active?")
+        attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
-        attr = self.get_attr("read-only?")
+        attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
 
     def __setattr__(self, name, value):
@@ -195,7 +206,7 @@ class Property(Base):
 
     def default_value(self):
         """Gets the default value of the object."""
-        return self.get_attr("default")
+        return self.get_attr(_InlineConstants.default_value)
 
 
 class Numerical(Property):
@@ -203,12 +214,12 @@ class Numerical(Property):
 
     def min(self):
         """Get the minimum value of the object."""
-        val = self.get_attr("min", (float, int))
+        val = self.get_attr(_InlineConstants.min, (float, int))
         return None if isinstance(val, bool) else val
 
     def max(self):
         """Get the maximum value of the object."""
-        val = self.get_attr("max", (float, int))
+        val = self.get_attr(_InlineConstants.max, (float, int))
         return None if isinstance(val, bool) else val
 
 
@@ -741,7 +752,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def user_creatable(self) -> bool:
         """Whether the object is user-creatable."""
-        return self.get_attr("user-creatable?", bool)
+        return self.get_attr(_InlineConstants.user_creatable, bool)
 
     def get_object_names(self):
         """Object names."""
@@ -1092,7 +1103,7 @@ class _HasAllowedValuesMixin:
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
-            return self.get_attr("allowed-values", (list, str))
+            return self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
 
