@@ -1113,7 +1113,7 @@ class _HasAllowedValuesMixin:
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
-            self.get_attr(_InlineConstants.allowed_values, (list, str))
+            return self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
 
