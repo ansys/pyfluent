@@ -14,7 +14,6 @@ Then, make boundary conditions data, etc. available (for example, by reading cas
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.solver.function import reduction
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
   >>> solver = pyfluent.launch_fluent(mode="solver")
@@ -93,13 +92,13 @@ Compute the area averaged value of the specified expression over the specified l
 
   >>> reduction.area_average(expression, locations)
 
-Area integrated average
-~~~~~~~~~~~~~~~~~~~~~~~
+Area integral
+~~~~~~~~~~~~~
 Compute the area integrated averaged of the specified expression over the specified locations.
 
 .. code-block:: python
 
-  >>> reduction.area_integrated_average(expression, locations)
+  >>> reduction.area_integral(expression, locations)
 
 Volume
 ~~~~~~
@@ -120,13 +119,13 @@ Compute the volume averaged value of the specified expression over the specified
 
   >>> reduction.volume_average(expression, locations)
 
-Volume integrated average
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Volume integral
+~~~~~~~~~~~~~~~
 Compute the volume integrated averaged of the specified expression over the specified locations.
 
 .. code-block:: python
 
-  >>> reduction.volume_integrated_average(expression, locations)
+  >>> reduction.volume_integral(expression, locations)
 
 Centroid
 ~~~~~~~~
@@ -204,13 +203,13 @@ Compute the mass-weighted average value of the specified expression over the spe
 .. note::
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
-Mass integrated average
-~~~~~~~~~~~~~~~~~~~~~~~
+Mass integral
+~~~~~~~~~~~~~
 Compute the total mass-weighted value of the specified expression over the specified locations.
 
 .. code-block:: python
 
-  >>> reduction.mass_integrated_average(expression, locations)
+  >>> reduction.mass_integral(expression, locations)
 
 .. note::
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
@@ -234,14 +233,29 @@ Compute the mass-flow-weighted average value of the specified expression over th
 
   >>> reduction.mass_flow_average(expression, locations)
 
-Mass flow integrated average
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Mass flow integral
+~~~~~~~~~~~~~~~~~~
 Compute the total mass-flow-weighted value of the specified expression over the specified locations.
 
 .. code-block:: python
 
-  >>> reduction.mass_flow_integrated_average(expression, locations)
+  >>> reduction.mass_flow_integral(expression, locations)
 
+Sum
+~~~
+Compute the sum of the specified expression over the specified locations.
+
+.. code-block:: python
+
+  >>> reduction.sum(expression, locations, weight)
+
+Sum if
+~~~~~~
+Compute the sum of the specified expression over the specified locations if a condition is satisfied.
+
+.. code-block:: python
+
+  >>> reduction.sum_if(expression, condition, locations, weight)
 
 Example use cases
 -----------------
@@ -276,7 +290,7 @@ as shown:
 
 .. code-block:: python
 
-  >>> solver.reduction.area_integrated_average(
+  >>> solver.reduction.area_integral(
   >>>   expression="AbsolutePressure",
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
@@ -289,7 +303,9 @@ You can calculate the geometric centroid of the velocity inlet 2 as shown:
   >>> solver.reduction.centroid(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
-  [-0.001000006193379666, -0.002999999999999999, 0.001500047988232209]
+  x: -0.001000006193379666
+  y: -0.002999999999999999
+  z: 0.001500047988232209
 
 You can calculate the moment vector about a single-valued expression
 for the specified locations as shown:
@@ -312,6 +328,30 @@ specified locations as shown:
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
+
+One can calculate sum of Absolute Pressure over all nodes of velocity inlet with area as weight.
+
+.. code-block:: python
+
+  >>> solver.reduction.sum(
+  >>>   expression="AbsolutePressure",
+  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
+  >>>   weight="Area"
+  >>> )
+  20670300.0
+
+You can also calculate the sum with a condition:
+
+.. code-block:: python
+
+  >>> solver.reduction.sum_if(
+  >>>   expression="AbsolutePressure",
+  >>>   condition="AbsolutePressure > 0[Pa]",
+  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
+  >>>   weight="Area"
+  >>> )
+  20670300.0
+
 
 .. currentmodule:: ansys.fluent.core.solver.function
 
