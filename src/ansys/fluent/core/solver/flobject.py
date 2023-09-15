@@ -370,12 +370,14 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _command_query_name_filter(parent, list_attr: str, prefix: str) -> list:
+def _command_query_name_filter(
+    parent, list_attr: str, prefix: str, excluded: List[str]
+) -> List:
     """Auto completer info of commands and queries."""
     ret = []
     names = getattr(parent, list_attr)
     for name in names:
-        if name.startswith(prefix):
+        if name not in excluded and name.startswith(prefix):
             child = getattr(parent, name)
             if child.is_active():
                 ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
@@ -477,7 +479,7 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
-    def get_completer_info(self, prefix="") -> List[List[str]]:
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.
 
         Returns
@@ -485,9 +487,10 @@ class Group(SettingsBase[DictStateType]):
         List[List[str]]
             Name, type and docstring of all children.
         """
+        excluded = excluded or []
         ret = []
         for child_name in self.child_names:
-            if child_name.startswith(prefix):
+            if child_name not in excluded and child_name.startswith(prefix):
                 child = getattr(self, child_name)
                 if child.is_active():
                     ret.append(
@@ -497,8 +500,10 @@ class Group(SettingsBase[DictStateType]):
                             child.__doc__,
                         ]
                     )
-        command_info = _command_query_name_filter(self, "command_names", prefix)
-        query_info = _command_query_name_filter(self, "query_names", prefix)
+        command_info = _command_query_name_filter(
+            self, "command_names", prefix, excluded
+        )
+        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
         for items in [command_info, query_info]:
             ret.extend(items)
         return ret
@@ -526,22 +531,23 @@ class Group(SettingsBase[DictStateType]):
             return super().__getattribute__(name)
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
-            raise AttributeError(
-                allowed_name_error_message(
-                    "Settings objects", name, super().__getattribute__("child_names")
-                )
-            ) from ex
+            error_msg = allowed_name_error_message(
+                "Settings objects", name, super().__getattribute__("child_names")
+            )
+            ex.args = (error_msg,)
+            raise
 
     def __setattr__(self, name: str, value):
         attr = None
         try:
             attr = getattr(self, name)
         except AttributeError as ex:
-            raise AttributeError(
-                allowed_name_error_message(
-                    "Settings objects", name, super().__getattribute__("child_names")
-                )
-            ) from ex
+            error_msg = allowed_name_error_message(
+                "Settings objects", name, super().__getattribute__("child_names")
+            )
+            ex.args = (error_msg,)
+            raise
+
         try:
             return attr.set_state(value)
         except Exception as ex:
@@ -760,7 +766,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def get_completer_info(self, prefix="") -> List[List[str]]:
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.
 
         Returns
@@ -768,9 +774,12 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         List[List[str]]
             Name, type and docstring of all children.
         """
+        excluded = excluded or []
         ret = []
-        command_info = _command_query_name_filter(self, "command_names", prefix)
-        query_info = _command_query_name_filter(self, "query_names", prefix)
+        command_info = _command_query_name_filter(
+            self, "command_names", prefix, excluded
+        )
+        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
         for items in [command_info, query_info]:
             ret.extend(items)
         return ret
@@ -930,13 +939,14 @@ class Action(Base):
         for argument_name in self.argument_names:
             if argument_name not in excluded and argument_name.startswith(prefix):
                 argument = getattr(self, argument_name)
-                ret.append(
-                    [
-                        argument_name,
-                        argument.__class__.__bases__[0].__name__,
-                        argument.__doc__,
-                    ]
-                )
+                if argument.is_active():
+                    ret.append(
+                        [
+                            argument_name,
+                            argument.__class__.__bases__[0].__name__,
+                            argument.__doc__,
+                        ]
+                    )
         return ret
 
 
@@ -1103,7 +1113,7 @@ class _HasAllowedValuesMixin:
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
-            return self.get_attr(_InlineConstants.allowed_values, (list, str))
+            self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
 
