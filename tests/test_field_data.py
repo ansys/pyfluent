@@ -60,7 +60,6 @@ def test_field_data(new_solver_session) -> None:
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
 
-    solver.solution.run_calculation.iterate.get_attr("arguments")
     solver.solution.run_calculation.iterate(iter_count=10)
 
     # Get field data object
