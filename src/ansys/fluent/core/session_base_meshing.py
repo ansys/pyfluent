@@ -104,7 +104,10 @@ class BaseMeshing:
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            meshing_queries_root = PyMenuGeneric(self._se_service, "meshing_queries")
+            if self.get_fluent_version() >= "24.1.0":
+                meshing_queries_root = PyMenuGeneric(
+                    self._se_service, "meshing_queries"
+                )
         return meshing_queries_root
 
     @property
