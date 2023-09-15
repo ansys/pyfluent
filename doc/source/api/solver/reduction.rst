@@ -34,8 +34,8 @@ an area-average of absolute pressure over the velocity inlet.
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> reduction.area_average(
-  >>>   expr="AbsolutePressure",
+  >>> solver.reduction.area_average(
+  >>>   expression="AbsolutePressure",
   >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
   >>> )
   101325.0000000001
@@ -59,7 +59,7 @@ For example, to calculate area of a location one has to do:
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> reduction.area(
+  >>> solver.reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]]
   >>> )
   7.565427133371293e-07
@@ -69,7 +69,7 @@ Instead, one can use the context argument:
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> reduction.area(locations=["inlet1"], ctxt=solver)
+  >>> solver.reduction.area(locations=["inlet1"], ctxt=solver)
   7.565427133371293e-07
 
 
@@ -250,12 +250,12 @@ the velocity inlets with the below examples:
 
 .. code-block:: python
 
-  >>> area_inlet_1 = reduction.area(
+  >>> area_inlet_1 = solver.reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
   7.565427133371293e-07
 
-  >>> area_inlet = reduction.area(
+  >>> area_inlet = solver.reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
   >>> )
   1.513085401926681e-06
@@ -265,8 +265,8 @@ inlets as shown:
 
 .. code-block:: python
 
-  >>> reduction.area_average(
-  >>>   expr="AbsolutePressure",
+  >>> solver.reduction.area_average(
+  >>>   expression="AbsolutePressure",
   >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
   >>> )
   101325.0000000001
@@ -276,8 +276,8 @@ as shown:
 
 .. code-block:: python
 
-  >>> reduction.area_integrated_average(
-  >>>   expr="AbsolutePressure",
+  >>> solver.reduction.area_integrated_average(
+  >>>   expression="AbsolutePressure",
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
   0.07665669042888468
@@ -286,7 +286,7 @@ You can calculate the geometric centroid of the velocity inlet 2 as shown:
 
 .. code-block:: python
 
-  >>> reduction.centroid(
+  >>> solver.reduction.centroid(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [-0.001000006193379666, -0.002999999999999999, 0.001500047988232209]
@@ -296,8 +296,8 @@ for the specified locations as shown:
 
 .. code-block:: python
 
-  >>> reduction.moment(
-  >>>   expr="Force(['wall'])",
+  >>> solver.reduction.moment(
+  >>>   expression="Force(['wall'])",
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
@@ -307,8 +307,8 @@ specified locations as shown:
 
 .. code-block:: python
 
-  >>> reduction.moment(
-  >>>   expr="['inlet1']",
+  >>> solver.reduction.moment(
+  >>>   expression="['inlet1']",
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
