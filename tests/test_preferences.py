@@ -6,32 +6,32 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 @pytest.mark.codegen_required
 def test_solver_preferences(new_solver_session):
     solver = new_solver_session
+    prefered_meshing = solver.preferences.MeshingWorkflow
+    prefered_meshing.Verbosity = "off"
+    assert prefered_meshing.Verbosity() == "off"
 
-    solver.preferences.MeshingWorkflow.Verbosity = "off"
-    assert solver.preferences.MeshingWorkflow.Verbosity() == "off"
+    prefered_meshing.CheckpointingOption = "Write into memory"
+    assert prefered_meshing.CheckpointingOption() == "Write into memory"
 
-    solver.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"
-    assert (
-        solver.preferences.MeshingWorkflow.CheckpointingOption() == "Write into memory"
-    )
+    prefered_drawing = prefered_drawing
+    prefered_drawing.FacetLimit = 6000000
+    assert prefered_drawing.FacetLimit() == 6000000
+    prefered_drawing.FaceZoneLimit = 15000
+    prefered_drawing.FaceZoneLimit() == 15000
 
-    solver.preferences.MeshingWorkflow.DrawSettings.FacetLimit = 6000000
-    assert solver.preferences.MeshingWorkflow.DrawSettings.FacetLimit() == 6000000
+    ansys_logo = solver.preferences.Appearance.AnsysLogo
+    ansys_logo.Color = "white"
+    assert ansys_logo.Color() == "white"
 
-    solver.preferences.MeshingWorkflow.DrawSettings.FaceZoneLimit = 15000
-    solver.preferences.MeshingWorkflow.DrawSettings.FaceZoneLimit() == 15000
+    ansys_logo.Color = "black"
+    assert ansys_logo.Color() == "black"
 
-    solver.preferences.Appearance.AnsysLogo.Color = "white"
-    assert solver.preferences.Appearance.AnsysLogo.Color() == "white"
+    ansys_logo.Visible = True
+    assert ansys_logo.Visible() is True
 
-    solver.preferences.Appearance.AnsysLogo.Color = "black"
-    assert solver.preferences.Appearance.AnsysLogo.Color() == "black"
-
-    solver.preferences.Appearance.AnsysLogo.Visible = True
-    assert solver.preferences.Appearance.AnsysLogo.Visible() is True
-
-    solver.preferences.Graphics.AnimationOption = "wireframe"
-    assert solver.preferences.Graphics.AnimationOption() == "wireframe"
+    perfered_graphics = solver.preferences.Graphics
+    perfered_graphics.AnimationOption = "wireframe"
+    assert perfered_graphics.AnimationOption() == "wireframe"
 
     solver.exit()
 
@@ -39,31 +39,32 @@ def test_solver_preferences(new_solver_session):
 @pytest.mark.codegen_required
 def test_meshing_preferences(new_mesh_session):
     meshing = new_mesh_session
+    prefered_meshing = meshing.preferences.MeshingWorkflow
+    prefered_meshing.Verbosity = "off"
+    assert prefered_meshing.Verbosity() == "off"
 
-    meshing.preferences.MeshingWorkflow.Verbosity = "off"
-    assert meshing.preferences.MeshingWorkflow.Verbosity() == "off"
+    prefered_meshing.CheckpointingOption = "Write into memory"
+    assert prefered_meshing.CheckpointingOption() == "Write into memory"
 
-    meshing.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"
-    assert (
-        meshing.preferences.MeshingWorkflow.CheckpointingOption() == "Write into memory"
-    )
+    prefered_drawing = prefered_meshing.DrawSettings
+    prefered_drawing.FacetLimit = 6000000
+    assert prefered_drawing.FacetLimit() == 6000000
 
-    meshing.preferences.MeshingWorkflow.DrawSettings.FacetLimit = 6000000
-    assert meshing.preferences.MeshingWorkflow.DrawSettings.FacetLimit() == 6000000
+    prefered_drawing.FaceZoneLimit = 15000
+    prefered_drawing.FaceZoneLimit() == 15000
 
-    meshing.preferences.MeshingWorkflow.DrawSettings.FaceZoneLimit = 15000
-    meshing.preferences.MeshingWorkflow.DrawSettings.FaceZoneLimit() == 15000
+    ansys_logo = meshing.preferences.Appearance.AnsysLogo
+    ansys_logo.Color = "white"
+    assert ansys_logo.Color() == "white"
 
-    meshing.preferences.Appearance.AnsysLogo.Color = "white"
-    assert meshing.preferences.Appearance.AnsysLogo.Color() == "white"
+    ansys_logo.Color = "black"
+    assert ansys_logo.Color() == "black"
 
-    meshing.preferences.Appearance.AnsysLogo.Color = "black"
-    assert meshing.preferences.Appearance.AnsysLogo.Color() == "black"
+    ansys_logo.Visible = True
+    assert ansys_logo.Visible() is True
 
-    meshing.preferences.Appearance.AnsysLogo.Visible = True
-    assert meshing.preferences.Appearance.AnsysLogo.Visible() is True
-
-    meshing.preferences.Graphics.AnimationOption = "wireframe"
-    assert meshing.preferences.Graphics.AnimationOption() == "wireframe"
+    prefered_graphics = meshing.preferences.Graphics
+    prefered_graphics.AnimationOption = "wireframe"
+    assert prefered_graphics.AnimationOption() == "wireframe"
 
     meshing.exit()
