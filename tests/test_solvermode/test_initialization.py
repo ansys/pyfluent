@@ -12,8 +12,9 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver.file.read(file_type=input_type, file_name=input_name)
     solver.parallel.partition.set.laplace_smoothing.enabled = True
     solver.parallel.partition.method(partition_method="metis", count=2)
-    solver.setup.materials.database.copy_by_name(type="fluid", name="air")
-    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+    copy_by_name = solver.setup.materials.database.copy_by_name
+    copy_by_name(type="fluid", name="air")
+    copy_by_name(type="fluid", name="water-liquid")
     solver.setup.models.multiphase.models = "vof"
     solver.setup.general.operating_conditions.gravity = {
         "enable": True,
