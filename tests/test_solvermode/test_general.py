@@ -41,7 +41,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
 
     # solver.setup.general.gravity = {"gravity": True, "y_component": -9.81}
     # solver.mesh.scale(x_scale=0.001, y_scale=0.001, z_scale=0.001)
-    
+
     assert general_solver.type.get_attr("allowed-values") == [
         "pressure-based",
         "density-based-implicit",
