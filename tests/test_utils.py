@@ -46,3 +46,13 @@ def test_timeout_loop():
     waiter = Waiter(ExpectedAfterFive, expected=True)
     ret = timeout_loop(waiter, timeout=0.2, expected="truthy", idle_period=0.1)
     assert ret is False
+
+
+def count_key_recursive(dictionary, key):
+    count = 0
+    for k, v in dictionary.items():
+        if k == key:
+            count += 1
+        elif isinstance(v, dict):
+            count += count_key_recursive(v, key)
+    return count
