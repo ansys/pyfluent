@@ -18,10 +18,6 @@ env:
 jobs:
   build_dev_docs:
     runs-on: [self-hosted, pyfluent]
-    strategy:
-      fail-fast: false
-      matrix:
-        image-tag: [v23.2.0, v24.1.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -49,17 +45,17 @@ jobs:
       - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build All Documentation
         run: make build-all-docs
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Zip HTML Documentation before upload
         run: |
