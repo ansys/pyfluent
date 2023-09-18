@@ -13,7 +13,7 @@ def test_solver_preferences(new_solver_session):
     preferred_meshing.CheckpointingOption = "Write into memory"
     assert preferred_meshing.CheckpointingOption() == "Write into memory"
 
-    preferred_drawing = preferred_drawing
+    preferred_drawing = preferred_meshing.DrawSettings
     preferred_drawing.FacetLimit = 6000000
     assert preferred_drawing.FacetLimit() == 6000000
     preferred_drawing.FaceZoneLimit = 15000

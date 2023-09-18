@@ -304,9 +304,8 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
 def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom_length = w.task("Import Geometry").arguments.LengthUnit
 
-    assert import_geom_length.allowed_values() == [
+    assert w.task("Import Geometry").arguments.LengthUnit.allowed_values() == [
         "m",
         "cm",
         "mm",
@@ -315,9 +314,9 @@ def test_sample_use_of_command_arguments(new_mesh_session):
         "um",
         "nm",
     ]
-    assert import_geom_length.default_value() == "mm"
+    assert w.task("Import Geometry").arguments.LengthUnit.default_value() == "mm"
     w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
-    assert import_geom_length() == "in"
+    assert w.task("Import Geometry").arguments.LengthUnit() == "in"
 
 
 @pytest.mark.codegen_required
