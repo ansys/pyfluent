@@ -140,9 +140,9 @@ def test_generate_read_mesh(mixing_elbow_geometry):
     if float(meshing.get_fluent_version()[:-2]) < 23.0:
         # Step 3 Generate mesh from geometry with default workflow settings
         meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-        Geo_import = meshing.workflow.TaskObject["Import Geometry"]
-        Geo_import.Arguments = dict(FileName=mixing_elbow_geometry)
-        Geo_import.Execute()
+        geo_import = meshing.workflow.TaskObject["Import Geometry"]
+        geo_import.Arguments = dict(FileName=mixing_elbow_geometry)
+        geo_import.Execute()
         meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
         meshing.tui.mesh.check_mesh()
         gz_path = str(Path(temporary_resource_path) / "default_mesh.msh.gz")
