@@ -320,29 +320,6 @@ class SettingsService:
                 child.name: self._parse_attrs(child.value)
                 for child in response.group_children
             }
-        if response.named_object_children:
-            ret["named_object_children"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.named_object_children
-            }
-        if response.list_object_children:
-            ret["list_object_children"] = [
-                self._parse_attrs(child) for child in response.list_object_children
-            ]
-        if response.commands:
-            ret["commands"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.commands
-            }
-        if response.queries:
-            ret["queries"] = {
-                child.name: self._parse_attrs(child.value) for child in response.queries
-            }
-        if response.arguments:
-            ret["arguments"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.arguments
-            }
         return ret
 
     @_trace

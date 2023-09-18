@@ -5,6 +5,7 @@ import io
 import weakref
 
 import pytest
+from test_utils import count_key_recursive
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
@@ -688,6 +689,11 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     assert turbulent_viscosity_ratio.get_attr("max") is False
     assert turbulent_viscosity_ratio.max() is None
+
+    default_attrs = solver.setup.boundary_conditions.velocity_inlet["inlet1"].get_attrs(
+        ["default"], recursive=True
+    )
+    assert count_key_recursive(default_attrs, "default") > 5
 
 
 @pytest.mark.fluent_version("latest")
