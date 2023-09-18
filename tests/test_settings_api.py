@@ -11,12 +11,13 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver_session.file.read_case(file_name=case_path)
     solver_session.solution.initialization.hybrid_initialize()
-    assert solver_session.setup.models.viscous.model() == "k-epsilon"
-    assert "inviscid" in solver_session.setup.models.viscous.model.get_attr(
-        "allowed-values"
-    )
-    solver_session.setup.models.viscous.model = "inviscid"
-    assert solver_session.setup.models.viscous.model() == "inviscid"
+    viscous_model = solver_session.setup.models.viscous
+
+    assert viscous_model.model() == "k-epsilon"
+    assert "inviscid" in viscous_model.model.get_attr("allowed-values")
+    viscous_model.model = "inviscid"
+
+    assert viscous_model.model() == "inviscid"
 
 
 @pytest.mark.skip(reason="failing if run with other tests")
@@ -24,17 +25,18 @@ def test_results_graphics_mesh_settings(new_solver_session) -> None:
     session = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     session.solver.file.read(file_type="case", file_name=case_path)
-    assert "mesh-1" not in session.solver.results.graphics.mesh.get_object_names()
-    session.solver.results.graphics.mesh["mesh-1"] = {}
-    assert "mesh-1" in session.solver.results.graphics.mesh.get_object_names()
-    assert not session.solver.results.graphics.mesh["mesh-1"].options.nodes()
-    session.solver.results.graphics.mesh["mesh-1"].options.nodes = True
-    assert session.solver.results.graphics.mesh["mesh-1"].options.nodes()
-    session.solver.results.graphics.mesh.rename("mesh-a", "mesh-1")
-    assert "mesh-a" in session.solver.results.graphics.mesh.get_object_names()
-    assert "mesh-1" not in session.solver.results.graphics.mesh.get_object_names()
-    del session.solver.results.graphics.mesh["mesh-a"]
-    assert "mesh-a" not in session.solver.results.graphics.mesh.get_object_names()
+    get_names = session.mesh.get_object_names
+    assert "mesh-1" not in get_names()
+    session.mesh["mesh-1"] = {}
+    assert "mesh-1" in get_names()
+    assert not session.mesh["mesh-1"].options.nodes()
+    session.mesh["mesh-1"].options.nodes = True
+    assert session.mesh["mesh-1"].options.nodes()
+    session.mesh.rename("mesh-a", "mesh-1")
+    assert "mesh-a" in get_names()
+    assert "mesh-1" not in get_names()
+    del session.mesh["mesh-a"]
+    assert "mesh-a" not in get_names()
 
 
 @pytest.mark.skip("Fluent bug")
@@ -44,27 +46,28 @@ def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
-    assert solver.setup.boundary_conditions.velocity_inlet["inl*"].vmag() == {
+    boundary_conditions = solver.setup.boundary_conditions
+    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
         "inlet2": {"vmag": {"option": "value", "value": 15}},
         "inlet1": {"vmag": {"option": "value", "value": 5}},
     }
-    assert solver.setup.boundary_conditions.velocity_inlet["inl*"].vmag.value() == {
+    assert boundary_conditions.velocity_inlet["inl*"].vmag.value() == {
         "inlet2": {"vmag": {"value": 15}},
         "inlet1": {"vmag": {"value": 5}},
     }
-    solver.setup.boundary_conditions.velocity_inlet["inl*"].vmag = 10
-    assert solver.setup.boundary_conditions.velocity_inlet["inl*"].vmag() == {
+    boundary_conditions.velocity_inlet["inl*"].vmag = 10
+    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
         "inlet2": {"vmag": {"option": "value", "value": 10}},
         "inlet1": {"vmag": {"option": "value", "value": 10}},
     }
-    solver.setup.boundary_conditions.velocity_inlet = (
-        solver.setup.boundary_conditions.velocity_inlet["inl*"].vmag()
-    )
-    assert solver.setup.boundary_conditions.velocity_inlet["inl*"].vmag() == {
+    boundary_conditions.velocity_inlet = boundary_conditions.velocity_inlet[
+        "inl*"
+    ].vmag()
+    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
         "inlet2": {"vmag": {"option": "value", "value": 10}},
         "inlet1": {"vmag": {"option": "value", "value": 10}},
     }
-    assert solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]() == {
+    assert boundary_conditions.fluid["*"].source_terms["*mom*"]() == {
         "fluid": {
             "source_terms": {
                 "y-momentum": [{"option": "value", "value": 2}],
@@ -73,7 +76,7 @@ def test_wildcard(new_solver_session):
             }
         }
     }
-    solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"] = [
+    boundary_conditions.fluid["*"].source_terms["*mom*"] = [
         {"option": "value", "value": 2}
     ]
     assert solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]() == {
@@ -97,21 +100,18 @@ def test_wildcard_fnmatch(new_solver_session):
 
     solver.solution.initialization.hybrid_initialize()
 
-    solver.results.graphics.mesh.create("mesh-2")
-    solver.results.graphics.mesh.create("mesh-a")
-    solver.results.graphics.mesh.create("mesh-bc")
+    mesh = solver.results.graphics.mesh
+    mesh.create("mesh-2")
+    mesh.create("mesh-a")
+    mesh.create("mesh-bc")
 
-    assert sorted(solver.results.graphics.mesh["mesh-*"]()) == sorted(
-        ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"]
-    )
+    assert sorted(mesh["mesh-*"]()) == sorted(["mesh-1", "mesh-2", "mesh-a", "mesh-bc"])
 
-    assert list(solver.results.graphics.mesh["mesh-?c"]().keys()) == ["mesh-bc"]
+    assert list(mesh["mesh-?c"]().keys()) == ["mesh-bc"]
 
-    assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
+    assert list(mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
 
-    assert sorted(solver.results.graphics.mesh["mesh-[!2-5]"]()) == sorted(
-        ["mesh-1", "mesh-a"]
-    )
+    assert sorted(mesh["mesh-[!2-5]"]()) == sorted(["mesh-1", "mesh-a"])
 
 
 @pytest.mark.nightly
@@ -121,22 +121,13 @@ def test_wildcard_path_is_iterable(new_solver_session):
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
 
-    assert [x for x in solver.setup.boundary_conditions.velocity_inlet] == [
-        "inlet2",
-        "inlet1",
-    ]
-
-    assert [x for x in solver.setup.boundary_conditions.velocity_inlet["*let*"]] == [
-        "inlet2",
-        "inlet1",
-    ]
-
-    assert [x for x in solver.setup.boundary_conditions.velocity_inlet["*1*"]] == [
-        "inlet1"
-    ]
+    velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
+    assert [x for x in velocity_inlet] == ["inlet2", "inlet1"]
+    assert [x for x in velocity_inlet["*let*"]] == ["inlet2", "inlet1"]
+    assert [x for x in velocity_inlet["*1*"]] == ["inlet1"]
 
     test_data = []
-    for k, v in solver.setup.boundary_conditions.velocity_inlet.items():
+    for k, v in velocity_inlet.items():
         test_data.append((k, v))
 
     assert test_data[0][0] == "inlet2"
@@ -145,7 +136,7 @@ def test_wildcard_path_is_iterable(new_solver_session):
     assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
 
     test_data = []
-    for k, v in solver.setup.boundary_conditions.velocity_inlet["*let*"].items():
+    for k, v in velocity_inlet["*let*"].items():
         test_data.append((k, v))
 
     assert test_data[0][0] == "inlet2"
