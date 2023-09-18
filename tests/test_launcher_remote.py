@@ -11,7 +11,7 @@ import ansys.platform.instancemanagement as pypim
 
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
-    fluent_connection = new_solver_session.fluent_connection
+    fluent = new_solver_session
     # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
         definition_name="definitions/fake-fluent",
@@ -19,11 +19,11 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         ready=True,
         status_message=None,
         services={
-            "grpc": pypim.Service(uri=fluent_connection._channel_str, headers={})
+            "grpc": pypim.Service(uri=fluent.fluent_connection._channel_str, headers={})
         },
     )
     pim_channel = grpc.insecure_channel(
-        fluent_connection._channel_str,
+        fluent.fluent_connection._channel_str,
     )
     mock_instance.wait_for_ready = create_autospec(mock_instance.wait_for_ready)
     mock_instance.build_grpc_channel = create_autospec(
@@ -60,7 +60,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     mock_instance.build_grpc_channel.assert_called_with()
 
     # And it connected using the channel created by PyPIM
-    assert fluent_connection._channel == pim_channel
+    assert fluent.fluent_connection._channel == pim_channel
 
     # and it kept track of the instance to be able to delete it
-    assert fluent_connection._remote_instance == mock_instance
+    assert fluent.fluent_connection._remote_instance == mock_instance
