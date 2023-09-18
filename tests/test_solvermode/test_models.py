@@ -33,6 +33,7 @@ def test_disk_2d_models(load_disk_mesh):
     models = solver_session.setup.models
     solver_session.setup.general.solver.two_dim_space = "axisymmetric"
     solver_session.setup.general.solver.two_dim_space = "swirl"
+
     models.viscous.model = "k-epsilon"
     near_wall = models.viscous.near_wall_treatment
     assert models.viscous.model() == "k-epsilon"
@@ -45,6 +46,7 @@ def test_disk_2d_models(load_disk_mesh):
         "menter-lechner",
         "scalable-wall-functions",
     ]
+
     near_wall.wall_treatment = "standard-wall-fn"
     assert near_wall.wall_treatment() == "standard-wall-fn"
     near_wall.wall_treatment = "non-equilibrium-wall-fn"
@@ -62,6 +64,7 @@ def test_disk_2d_models(load_disk_mesh):
         "bsl",
         "sst",
     ]
+
     assert models.viscous.k_omega_model() == "standard"
     models.viscous.k_omega_model = "geko"
     assert models.viscous.k_omega_model() == "geko"

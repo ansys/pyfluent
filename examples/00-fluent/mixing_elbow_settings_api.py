@@ -144,7 +144,7 @@ solver.solution.initialization.hybrid_initialize()
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 150 iterations.
 
-solver.solution.run_calculation.iterate.get_attr("arguments")
+solver.solution.run_calculation.iterate.argument_names
 solver.solution.run_calculation.iterate(iter_count=150)
 
 ###############################################################################
@@ -171,6 +171,7 @@ velocity_symmetry.style = "arrow"
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Compute the mass flow rate.
 solver.solution.report_definitions.flux["mass_flow_rate"] = {}
+
 mass_flow_rate = solver.solution.report_definitions.flux["mass_flow_rate"]
 mass_flow_rate.zone_names.get_attr("allowed-values")
 mass_flow_rate.zone_names = [

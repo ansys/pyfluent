@@ -11,6 +11,7 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver_session.file.read_case(file_name=case_path)
     solver_session.solution.initialization.hybrid_initialize()
+
     viscous_model = solver_session.setup.models.viscous
 
     assert viscous_model.model() == "k-epsilon"
