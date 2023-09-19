@@ -69,15 +69,15 @@ def new_watertight_workflow(new_watertight_workflow_session):
     yield new_watertight_workflow_session.workflow
 
 
+_mesher = None
+
+
 @pytest.fixture
 def shared_mesh_session():
     global _mesher
     if not _mesher:
         _mesher = create_mesh_session()
     return _mesher
-
-
-_mesher = None
 
 
 @pytest.fixture
@@ -92,6 +92,9 @@ def shared_watertight_workflow(shared_watertight_workflow_session):
     yield shared_watertight_workflow_session.workflow
 
 
+_mixing_elbow_geometry_filename = None
+
+
 @pytest.fixture
 def mixing_elbow_geometry():
     global _mixing_elbow_geometry_filename
@@ -100,9 +103,6 @@ def mixing_elbow_geometry():
             filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
         )
     return _mixing_elbow_geometry_filename
-
-
-_mixing_elbow_geometry_filename = None
 
 
 def initialize_fault_tolerant(mesh_session):
@@ -132,6 +132,9 @@ def shared_fault_tolerant_workflow(shared_fault_tolerant_workflow_session):
     yield shared_fault_tolerant_workflow_session.workflow
 
 
+_exhaust_system_geometry_filename = None
+
+
 @pytest.fixture
 def exhaust_system_geometry():
     global _exhaust_system_geometry_filename
@@ -141,8 +144,6 @@ def exhaust_system_geometry():
         )
     return _exhaust_system_geometry_filename
 
-
-_exhaust_system_geometry_filename = None
 
 """
 @pytest.fixture
