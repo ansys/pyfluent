@@ -8,37 +8,29 @@ import pytest
 def test_expression(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     solver_session.setup.models.energy.enabled = True
-    solver_session.setup.named_expressions["r"] = {}
-    solver_session.setup.named_expressions["r"] = {
-        "definition": "(Position.z**2.0 +Position.x**2.0)**0.5"
+    expressions = solver_session.setup.named_expressions
+    expressions["r"] = {}
+    expressions["r"] = {"definition": "(Position.z**2.0 +Position.x**2.0)**0.5"}
+    expressions["r1"] = {}
+    expressions["r1"] = {"definition": "1-(r/0.014[m])"}
+    expressions["v1"] = {}
+    expressions["v1"] = {"definition": "r1**(1.0/6.0)"}
+    expressions["vel_cold"] = {}
+    expressions["vel_cold"] = {"definition": "1.264 * 1.43 [m s^-1] * max(0,v1)"}
+
+    assert expressions["r"].definition() == "(Position.z**2.0 +Position.x**2.0)**0.5"
+    assert expressions["r1"].definition() == "1-(r/0.014[m])"
+    assert expressions["v1"].definition() == "r1**(1.0/6.0)"
+    assert expressions["vel_cold"].definition() == "1.264 * 1.43 [m s^-1] * max(0,v1)"
+
+    velocity_inlet = solver_session.setup.boundary_conditions.velocity_inlet
+    velocity_inlet["cold-inlet"].momentum = {"velocity": "vel_cold"}
+    velocity_inlet["hot-inlet"].momentum = {"velocity": "max(vel_cold, 1.5 [m/s])"}
+    assert velocity_inlet["cold-inlet"].momentum.velocity() == {
+        "option": "value",
+        "value": "vel_cold",
     }
-    solver_session.setup.named_expressions["r1"] = {}
-    solver_session.setup.named_expressions["r1"] = {"definition": "1-(r/0.014[m])"}
-    solver_session.setup.named_expressions["v1"] = {}
-    solver_session.setup.named_expressions["v1"] = {"definition": "r1**(1.0/6.0)"}
-    solver_session.setup.named_expressions["vel_cold"] = {}
-    solver_session.setup.named_expressions["vel_cold"] = {
-        "definition": "1.264 * 1.43 [m s^-1] * max(0,v1)"
+    assert velocity_inlet["hot-inlet"].momentum.velocity() == {
+        "option": "value",
+        "value": "max(vel_cold, 1.5 [m/s])",
     }
-    assert (
-        solver_session.setup.named_expressions["r"].definition()
-        == "(Position.z**2.0 +Position.x**2.0)**0.5"
-    )
-    assert solver_session.setup.named_expressions["r1"].definition() == "1-(r/0.014[m])"
-    assert solver_session.setup.named_expressions["v1"].definition() == "r1**(1.0/6.0)"
-    assert (
-        solver_session.setup.named_expressions["vel_cold"].definition()
-        == "1.264 * 1.43 [m s^-1] * max(0,v1)"
-    )
-    solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].momentum = {
-        "velocity": "vel_cold",
-    }
-    solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum = {
-        "velocity": "max(vel_cold, 1.5 [m/s])"
-    }
-    assert solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].momentum.velocity() == {"option": "value", "value": "vel_cold"}
-    assert solver_session.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].momentum.velocity() == {"option": "value", "value": "max(vel_cold, 1.5 [m/s])"}

@@ -85,21 +85,21 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # Import CAD and set length units
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry and set the length units to inches.
-
-meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+geo_import = meshing.workflow.TaskObject["Import Geometry"]
+geo_import.Arguments.set_state(
     {
         "FileName": wing_intermediary_file,
     }
 )
 
-meshing.workflow.TaskObject["Import Geometry"].Execute()
+geo_import.Execute()
 
 ###############################################################################
 # Add local sizing
 # ~~~~~~~~~~~~~~~~
 # Add local sizing controls to the faceted geometry.
-
-meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+local_sizing = meshing.workflow.TaskObject["Add Local Sizing"]
+local_sizing.Arguments.set_state(
     {
         "AddChild": "yes",
         "BOIControlName": "wing-facesize",
@@ -108,9 +108,9 @@ meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+local_sizing.AddChildAndUpdate()
 
-meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+local_sizing.Arguments.set_state(
     {
         "AddChild": "yes",
         "BOIControlName": "wing-ege-facesize",
@@ -119,9 +119,9 @@ meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+local_sizing.AddChildAndUpdate()
 
-meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+local_sizing.Arguments.set_state(
     {
         "AddChild": "yes",
         "BOIControlName": "boi_1",
@@ -131,35 +131,33 @@ meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+local_sizing.AddChildAndUpdate()
 
 ###############################################################################
 # Generate surface mesh
 # ~~~~~~~~~~~~~~~~~~~~~
 # Generate the surface mash.
-
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+surface_mesh_gen = meshing.workflow.TaskObject["Generate the Surface Mesh"]
+surface_mesh_gen.Arguments.set_state(
     {"CFDSurfaceMeshControls": {"MaxSize": 1000, "MinSize": 2}}
 )
 
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+surface_mesh_gen.Execute()
 
 ###############################################################################
 # Describe geometry
 # ~~~~~~~~~~~~~~~~~
 # Describe geometry and define the fluid region.
+describe_geo = meshing.workflow.TaskObject["Describe Geometry"]
+describe_geo.UpdateChildTasks(SetupTypeChanged=False)
 
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=False
-)
-
-meshing.workflow.TaskObject["Describe Geometry"].Arguments.set_state(
+describe_geo.Arguments.set_state(
     {"SetupType": "The geometry consists of only fluid regions with no voids"}
 )
 
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
+describe_geo.UpdateChildTasks(SetupTypeChanged=True)
 
-meshing.workflow.TaskObject["Describe Geometry"].Execute()
+describe_geo.Execute()
 
 ###############################################################################
 # Update boundaries
@@ -180,20 +178,18 @@ meshing.workflow.TaskObject["Update Regions"].Execute()
 # ~~~~~~~~~~~~~~~~~~~
 # Add boundary layers, which consist of setting properties for the
 # boundary layer mesh.
+add_boundary_layer = meshing.workflow.TaskObject["Add Boundary Layers"]
+add_boundary_layer.Arguments.set_state({"NumberOfLayers": 12})
 
-meshing.workflow.TaskObject["Add Boundary Layers"].Arguments.set_state(
-    {"NumberOfLayers": 12}
-)
-
-meshing.workflow.TaskObject["Add Boundary Layers"].AddChildAndUpdate()
+add_boundary_layer.AddChildAndUpdate()
 
 ###############################################################################
 # Generate volume mesh
 # ~~~~~~~~~~~~~~~~~~~~
 # Generate the volume mesh, which consists of setting properties for the
 # volume mesh.
-
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
+volume_mesh_gen = meshing.workflow.TaskObject["Generate the Volume Mesh"]
+volume_mesh_gen.Arguments.set_state(
     {
         "VolumeFill": "poly-hexcore",
         "VolumeFillControls": {"HexMaxCellLength": 512},
@@ -204,7 +200,7 @@ meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+volume_mesh_gen.Execute()
 
 ###############################################################################
 # Check mesh in meshing mode

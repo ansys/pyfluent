@@ -140,10 +140,9 @@ def test_generate_read_mesh(mixing_elbow_geometry):
     if float(meshing.get_fluent_version()[:-2]) < 23.0:
         # Step 3 Generate mesh from geometry with default workflow settings
         meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-        meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-            FileName=mixing_elbow_geometry
-        )
-        meshing.workflow.TaskObject["Import Geometry"].Execute()
+        geo_import = meshing.workflow.TaskObject["Import Geometry"]
+        geo_import.Arguments = dict(FileName=mixing_elbow_geometry)
+        geo_import.Execute()
         meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
         meshing.tui.mesh.check_mesh()
         gz_path = str(Path(temporary_resource_path) / "default_mesh.msh.gz")
@@ -162,8 +161,9 @@ def test_generate_read_mesh(mixing_elbow_geometry):
         solver.tui.solve.initialize.hyb_initialization()
         gz_path = str(Path(temporary_resource_path) / "default_case.cas.gz")
         h5_path = str(Path(temporary_resource_path) / "default_case.cas.h5")
-        solver.tui.file.write_case(gz_path)
-        solver.tui.file.write_case(h5_path)
+        write_case = solver.tui.file.write_case
+        write_case(gz_path)
+        write_case(h5_path)
         assert (Path(temporary_resource_path) / "default_case.cas.gz").exists() == True
         assert (Path(temporary_resource_path) / "default_case.cas.h5").exists() == True
         solver.exit()
