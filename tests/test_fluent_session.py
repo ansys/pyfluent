@@ -164,17 +164,15 @@ def test_exit_fluent_when_connected_to_running_fluent(
 def test_fluent_connection_properties(
     new_solver_session,
 ) -> None:
-    session = new_solver_session
-    assert isinstance(session.connection_properties.ip, str)
-    assert isinstance(session.connection_properties.port, int)
-    assert isinstance(session.connection_properties.password, str)
-    assert isinstance(session.connection_properties.cortex_pwd, str)
-    assert isinstance(session.connection_properties.cortex_pid, int)
-    assert isinstance(session.connection_properties.cortex_host, str)
-    assert isinstance(
-        session.connection_properties.inside_container, bool
-    ) or isinstance(session.connection_properties.inside_container, Container)
-    assert isinstance(session.connection_properties.fluent_host_pid, int)
+    connection_properties = new_solver_session.connection_properties
+    assert isinstance(connection_properties.ip, str)
+    assert isinstance(connection_properties.port, int)
+    assert isinstance(connection_properties.password, str)
+    assert isinstance(connection_properties.cortex_pwd, str)
+    assert isinstance(connection_properties.cortex_pid, int)
+    assert isinstance(connection_properties.cortex_host, str)
+    assert isinstance(connection_properties.inside_container, (bool, Container))
+    assert isinstance(connection_properties.fluent_host_pid, int)
 
 
 def test_fluent_freeze_kill(

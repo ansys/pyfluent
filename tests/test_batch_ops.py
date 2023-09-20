@@ -18,28 +18,30 @@ from ansys.fluent.core import examples
 )
 def test_batch_ops_create_mesh(new_solver_session):
     solver = new_solver_session
+    mesh = solver.results.graphics.mesh
     case_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     with pyfluent.BatchOps(solver):
         solver.file.read_case(file_name=case_filename)
-        solver.results.graphics.mesh["mesh-1"] = {}
+        mesh["mesh-1"] = {}
         assert not solver.scheme_eval.scheme_eval("(case-valid?)")
-        assert "mesh-1" not in solver.results.graphics.mesh.get_object_names()
+        assert "mesh-1" not in mesh.get_object_names()
     assert solver.scheme_eval.scheme_eval("(case-valid?)")
-    assert "mesh-1" in solver.results.graphics.mesh.get_object_names()
+    assert "mesh-1" in mesh.get_object_names()
 
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     solver = new_solver_session
+    mesh = solver.results.graphics.mesh
     case_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     with pytest.raises(KeyError):
         with pyfluent.BatchOps(solver):
             solver.file.read_case(file_name=case_filename)
-            solver.results.graphics.mesh["mesh-1"] = {}
-            solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+            mesh["mesh-1"] = {}
+            mesh["mesh-1"].surfaces_list = ["wall-elbow"]
     assert not solver.scheme_eval.scheme_eval("(case-valid?)")

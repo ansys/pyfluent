@@ -32,44 +32,33 @@ def test_parametric_workflow():
     solver_session.file.read_case(file_name=import_filename)
     solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit"
-    )
+
+    velocity_inlet = solver_session.tui.define.boundary_conditions.set.velocity_inlet
+    velocity_inlet("inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit")
+    velocity_inlet("inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit")
+    velocity_inlet("inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit")
+    velocity_inlet("inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit")
+
     solver_session.solution.report_definitions.surface["outlet-temp-avg"] = {}
-    solver_session.solution.report_definitions.surface[
+    outlet_temp_avg = solver_session.solution.report_definitions.surface[
         "outlet-temp-avg"
-    ].report_type = "surface-areaavg"
-    solver_session.solution.report_definitions.surface[
-        "outlet-temp-avg"
-    ].field = "temperature"
-    solver_session.solution.report_definitions.surface[
-        "outlet-temp-avg"
-    ].surface_names = ["outlet"]
+    ]
+    outlet_temp_avg.report_type = "surface-areaavg"
+    outlet_temp_avg.field = "temperature"
+    outlet_temp_avg.surface_names = ["outlet"]
+
     solver_session.solution.report_definitions.surface["outlet-vel-avg"] = {}
-    solver_session.solution.report_definitions.surface[
+    outlet_vel_avg = solver_session.solution.report_definitions.surface[
         "outlet-vel-avg"
-    ].report_type = "surface-areaavg"
-    solver_session.solution.report_definitions.surface[
-        "outlet-vel-avg"
-    ].field = "velocity-magnitude"
-    solver_session.solution.report_definitions.surface[
-        "outlet-vel-avg"
-    ].surface_names = ["outlet"]
-    solver_session.tui.define.parameters.output_parameters.create(
-        "report-definition", "outlet-temp-avg"
-    )
-    solver_session.tui.define.parameters.output_parameters.create(
-        "report-definition", "outlet-vel-avg"
-    )
+    ]
+    outlet_vel_avg.report_type = "surface-areaavg"
+    outlet_vel_avg.field = "velocity-magnitude"
+    outlet_vel_avg.surface_names = ["outlet"]
+
+    create_output_param = solver_session.tui.define.parameters.output_parameters.create
+    create_output_param("report-definition", "outlet-temp-avg")
+    create_output_param("report-definition", "outlet-vel-avg")
+
     solver_session.tui.solve.monitors.residual.criterion_type("0")
 
     case_path = Path(tmp_save_path) / "Static_Mixer_Parameters.cas.h5"
@@ -149,9 +138,8 @@ def test_parametric_workflow():
     )
     study2 = solver_session.parametric_studies[study2_name]
     assert len(study2.design_points) == 2
-    # Issue pyfluent-parametric#227
-    # solver_session.parametric_studies.rename("New Study", study2_name)
-    # assert "New Study" in solver_session.parametric_studies
+    solver_session.parametric_studies.rename("New Study", study2_name)
+    assert "New Study" in solver_session.parametric_studies
     del solver_session.parametric_studies[study1_name]
     assert len(solver_session.parametric_studies) == 1
 

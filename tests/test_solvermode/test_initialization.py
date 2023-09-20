@@ -12,8 +12,9 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver.file.read(file_type=input_type, file_name=input_name)
     solver.parallel.partition.set.laplace_smoothing.enabled = True
     solver.parallel.partition.method(partition_method="metis", count=2)
-    solver.setup.materials.database.copy_by_name(type="fluid", name="air")
-    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+    copy_by_name = solver.setup.materials.database.copy_by_name
+    copy_by_name(type="fluid", name="air")
+    copy_by_name(type="fluid", name="water-liquid")
     solver.setup.models.multiphase.models = "vof"
     solver.setup.general.operating_conditions.gravity = {
         "enable": True,
@@ -65,7 +66,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
 @pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(
@@ -74,7 +75,5 @@ def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver.file.read(file_type=input_type, file_name=input_name)
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()
-    solver.solution.initialization.fmg_initialize()
-    # assert solver.solution.initialization.fmg_initialize() == True
+    solver.solution.initialization.fmg.fmg_initialize()
     solver.tui.solve.iterate(2)
-    # solver.solution.initialization.hybrid_initialize()
