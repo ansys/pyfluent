@@ -736,3 +736,228 @@ def test_meshing_queries(new_mesh_session):
         34,
         89,
     ]
+
+    assert (
+        meshing_session.meshing_queries.count_marked_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.count_marked_faces(face_zone_name_pattern="*")
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_multi_faces_count(
+            face_zone_id_list=[30, 31, 32]
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_multi_faces_count(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_multi_faces_count(
+            face_zone_name_pattern="*"
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_free_faces_count(
+            face_zone_id_list=[30, 31, 32]
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_free_faces_count(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_free_faces_count(face_zone_name_pattern="*")
+        == 0
+    )
+
+    assert meshing_session.meshing_queries.get_edge_size_limits(
+        face_zone_id_list=[30, 31, 32]
+    ) == [0.02167507486136073, 0.3016698360443115, 0.1515733801031084]
+
+    assert meshing_session.meshing_queries.get_edge_size_limits(
+        face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+    ) == [0.02167507486136073, 0.3016698360443115, 0.1515733801031084]
+
+    assert meshing_session.meshing_queries.get_edge_size_limits(
+        face_zone_name_pattern="*"
+    ) == [0.002393084222530175, 0.3613402218724294, 0.1225859010936682]
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_shape(cell_zone_id=87) == "mixed"
+    )
+
+    assert meshing_session.meshing_queries.get_cell_quality_limits(
+        cell_zone_id_list=[87], measure="Orthogonal Quality"
+    ) == [17822, 0.2453637718621773, 0.9999993965264717, 0.9546058175066768, 0.0, 0]
+
+    assert meshing_session.meshing_queries.get_cell_quality_limits(
+        cell_zone_name_list=["elbow-fluid"], measure="Orthogonal Quality"
+    ) == [17822, 0.2453637718621773, 0.9999993965264717, 0.9546058175066768, 0.0, 0]
+
+    assert meshing_session.meshing_queries.get_cell_quality_limits(
+        cell_zone_name_pattern="*", measure="Orthogonal Quality"
+    ) == [17822, 0.2453637718621773, 0.9999993965264717, 0.9546058175066768, 0.0, 0]
+
+    assert meshing_session.meshing_queries.get_face_quality_limits(
+        face_zone_id_list=[30, 31, 32], measure="Orthogonal Quality"
+    )[1:] == [0.7348979098719086, 0.9999899933604034, 0.9840275981092989, 362]
+
+    assert meshing_session.meshing_queries.get_face_quality_limits(
+        face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+        measure="Orthogonal Quality",
+    )[1:] == [0.7348979098719086, 0.9999899933604034, 0.9840275981092989, 362]
+
+    assert meshing_session.meshing_queries.get_face_quality_limits(
+        face_zone_name_pattern="*", measure="Orthogonal Quality"
+    )[1:] == [0.03215596355473505, 1.0, 0.9484456798568045, 91581]
+
+    assert meshing_session.meshing_queries.get_face_mesh_distribution(
+        face_zone_id_list=[30, 31, 32],
+        measure="Orthogonal Quality",
+        partitions=2,
+        range=[0.9, 1],
+    ) == [356, [323, 33], [0, 6]]
+
+    assert meshing_session.meshing_queries.get_face_mesh_distribution(
+        face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+        measure="Orthogonal Quality",
+        partitions=2,
+        range=[0.9, 1],
+    ) == [356, [323, 33], [0, 6]]
+
+    assert meshing_session.meshing_queries.get_face_mesh_distribution(
+        face_zone_name_pattern="*",
+        measure="Orthogonal Quality",
+        partitions=2,
+        range=[0.9, 1],
+    ) == [83001, [71792, 11209], [0, 8580]]
+
+    assert meshing_session.meshing_queries.get_cell_mesh_distribution(
+        cell_zone_id_list=[87],
+        measure="Orthogonal Quality",
+        partitions=2,
+        range=[0.9, 1],
+    ) == [16016, [11740, 4276], [0, 1806]]
+
+    assert meshing_session.meshing_queries.get_cell_mesh_distribution(
+        cell_zone_name_list=["elbow-fluid"],
+        measure="Orthogonal Quality",
+        partitions=2,
+        range=[0.9, 1],
+    ) == [16016, [11740, 4276], [0, 1806]]
+
+    assert meshing_session.meshing_queries.get_cell_mesh_distribution(
+        cell_zone_name_pattern="*",
+        measure="Orthogonal Quality",
+        partitions=2,
+        range=[0.9, 1],
+    ) == [16016, [11740, 4276], [0, 1806]]
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_volume(cell_zone_id_list=[87])
+        == 152.5994280926617
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_volume(
+            cell_zone_name_list=["elbow-fluid"]
+        )
+        == 152.5994280926617
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_volume(cell_zone_name_pattern="*")
+        == 152.5994280926617
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_area(
+            face_zone_id_list=[30, 31, 32]
+        )
+        == 12.429615960819163
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_area(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 12.429615960819163
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_area(face_zone_name_pattern="*")
+        == 2282.142530887569
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_count(
+            face_zone_id_list=[30, 31, 32]
+        )
+        == 362
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_count(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 362
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_count(face_zone_name_pattern="*")
+        == 91581
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_count(cell_zone_id_list=[87])
+        == 17822
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_count(
+            cell_zone_name_list=["elbow-fluid"]
+        )
+        == 17822
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_cell_zone_count(cell_zone_name_pattern="*")
+        == 17822
+    )
+
+    assert meshing_session.meshing_queries.get_zone_type(zone_id=87) == "fluid"
+
+    assert (
+        meshing_session.meshing_queries.get_zone_type(zone_name="elbow-fluid")
+        == "fluid"
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_node_count(face_zone_id=32) == 246
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zone_node_count(
+            face_zone_name="outlet"
+        )
+        == 246
+    )
