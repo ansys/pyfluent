@@ -27,7 +27,7 @@ class Attribute:
         "sort_by",
         "style",
         "icon",
-        "show_text"
+        "show_text",
     ]
 
     def __init__(self, function):
@@ -188,21 +188,23 @@ class PyLocalBaseMeta(type):
             return root.session
 
         return wrapper
-        
+
     @classmethod
     def __create_get_session_handle(cls):
         def wrapper(self, obj=None):
             root = self.get_root(obj)
             return root.session_handle
-        return wrapper  
+
+        return wrapper
 
     @classmethod
     def __create_get_path(cls):
-        def wrapper(self):                       
+        def wrapper(self):
             if getattr(self, "_parent", None):
-                return self._parent.get_path()+"/"+self._name
+                return self._parent.get_path() + "/" + self._name
             return self._name
-        return wrapper        
+
+        return wrapper
 
     def __new__(cls, name, bases, attrs):
         attrs["get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
@@ -583,26 +585,40 @@ class PyLocalContainer(MutableMapping):
 
     def __init__(self, parent, object_class, api_helper, name=""):
         self._parent = parent
-        self._name = name 
+        self._name = name
         self.__object_class = object_class
         self.__collection: dict = {}
         self.__api_helper = api_helper
         self.type = "named-object"
 
-        if hasattr(object_class, "SHOW_AS_SEPRATE_OBJECT"):            
-            PyLocalContainer.show_as_separate_object = property(lambda self: self.__object_class.SHOW_AS_SEPRATE_OBJECT(self))              
+        if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):
+            PyLocalContainer.show_as_separate_object = property(
+                lambda self: self.__object_class.SHOW_AS_SEPARATE_OBJECT(self)
+            )
         if hasattr(object_class, "EXCLUDE"):
-            PyLocalContainer.exclude = property(lambda self: self.__object_class.EXCLUDE(self))            
+            PyLocalContainer.exclude = property(
+                lambda self: self.__object_class.EXCLUDE(self)
+            )
         if hasattr(object_class, "INCLUDE"):
-            PyLocalContainer.include = property(lambda self: self.__object_class.INCLUDE(self)) 
+            PyLocalContainer.include = property(
+                lambda self: self.__object_class.INCLUDE(self)
+            )
         if hasattr(object_class, "LAYOUT"):
-            PyLocalContainer.layout = property(lambda self: self.__object_class.LAYOUT(self))             
+            PyLocalContainer.layout = property(
+                lambda self: self.__object_class.LAYOUT(self)
+            )
         if hasattr(object_class, "STYLE"):
-            PyLocalContainer.style = property(lambda self: self.__object_class.STYLE(self)) 
+            PyLocalContainer.style = property(
+                lambda self: self.__object_class.STYLE(self)
+            )
         if hasattr(object_class, "ICON"):
-            PyLocalContainer.icon = property(lambda self: self.__object_class.ICON(self))  
-        if hasattr(object_class, "IS_ACTIVE"):           
-            PyLocalContainer.is_active = property(lambda self: self.__object_class.IS_ACTIVE(self))  
+            PyLocalContainer.icon = property(
+                lambda self: self.__object_class.ICON(self)
+            )
+        if hasattr(object_class, "IS_ACTIVE"):
+            PyLocalContainer.is_active = property(
+                lambda self: self.__object_class.IS_ACTIVE(self)
+            )
 
     @classmethod
     def get_root(self, obj=None):
@@ -611,8 +627,7 @@ class PyLocalContainer(MutableMapping):
         if getattr(obj, "_parent", None):
             parent = self.get_root(obj._parent)
         return parent
-        
-            
+
     def get_root(self, obj=None):
         obj = self if obj is None else obj
         parent = obj
@@ -623,29 +638,28 @@ class PyLocalContainer(MutableMapping):
     def get_session(self, obj=None):
         root = self.get_root(obj)
         return root.session
-        
 
-    def get_path(self):                       
+    def get_path(self):
         if getattr(self, "_parent", None):
-            return self._parent.get_path()+"/"+self._name
+            return self._parent.get_path() + "/" + self._name
         return self._name
-       
-    @property    
+
+    @property
     def path(self):
-        return self.get_path()        
-        
-    @property    
+        return self.get_path()
+
+    @property
     def session(self):
-        return self.get_session()        
-        
+        return self.get_session()
+
     def get_session_handle(self, obj=None):
         root = self.get_root(obj)
         return root.session_handle
-        
-    @property    
+
+    @property
     def session_handle(self):
-        return self.get_session_handle()         
-        
+        return self.get_session_handle()
+
     def __iter__(self):
         return iter(self.__collection)
 
@@ -658,10 +672,8 @@ class PyLocalContainer(MutableMapping):
             o = self.__collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
-            on_create = getattr(
-                self._PyLocalContainer__object_class, "on_create", None
-            )
-            if on_create:                
+            on_create = getattr(self._PyLocalContainer__object_class, "on_create", None)
+            if on_create:
                 on_create(self, name)
         return o
 
