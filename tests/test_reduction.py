@@ -68,12 +68,6 @@ def _test_area_average(solver):
 
 
 def _test_min(solver1, solver2):
-    if solver1.get_fluent_version() < "24.1.0":
-        solver1_vmag = solver1.setup.boundary_conditions["inlet1"].vmag
-        solver2_vmag = solver2.setup.boundary_conditions["inlet1"].vmag
-    else:
-        solver1_vmag = solver1.setup.boundary_conditions["inlet1"].momentum.velocity
-        solver2_vmag = solver2.setup.boundary_conditions["inlet1"].momentum.velocity
     solver1.solution.initialization.hybrid_initialize()
     solver2.solution.initialization.hybrid_initialize()
     solver1.setup.named_expressions["test_expr_1"] = {}
@@ -90,7 +84,7 @@ def _test_min(solver1, solver2):
             solver2.setup.boundary_conditions["outlet"],
         ],
     )
-    # assert result == expected_result
+    assert result == expected_result
     solver1.setup.named_expressions.pop(key="test_expr_1")
     solver1.setup.named_expressions.pop(key="test_expr_2")
 
