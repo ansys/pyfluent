@@ -85,8 +85,8 @@ def _test_min(solver1, solver2):
     result = solver1.reduction.minimum(
         expression=test_expr1.definition(),
         locations=[
-            solver1_boundary_conditions["outlet"],
-            solver2_boundary_conditions["outlet"],
+            solver1.setup.boundary_conditions["outlet"],
+            solver2.setup.boundary_conditions["outlet"],
         ],
     )
 
