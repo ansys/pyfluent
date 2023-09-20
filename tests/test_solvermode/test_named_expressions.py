@@ -1,7 +1,6 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version(">=24.1")
