@@ -2,7 +2,6 @@ import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-from ansys.fluent.core.solver.function import reduction
 
 load_static_mixer_case_2 = load_static_mixer_case
 
@@ -313,7 +312,7 @@ def _test_sum(solver):
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert type(expr_val) == float and expr_val != 0.0
 
-    val = reduction.sum(
+    val = solver.reduction.sum(
         expression="AbsolutePressure",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
@@ -335,7 +334,7 @@ def _test_sum_if(solver):
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert type(expr_val) == float and expr_val != 0.0
 
-    val = reduction.sum_if(
+    val = solver.reduction.sum_if(
         expression="AbsolutePressure",
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
@@ -346,8 +345,6 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
-@pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.2")
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2

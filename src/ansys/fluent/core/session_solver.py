@@ -60,7 +60,7 @@ class Solver(BaseSession):
         self._reduction_service = self.fluent_connection.create_service(
             ReductionService, self.error_state
         )
-        if int(self.version) > 231:
+        if int(self.version) >= 241:
             self.reduction = Reduction(self._reduction_service)
         else:
             self.reduction = reduction_old
