@@ -6,6 +6,7 @@ import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -287,7 +288,7 @@ class Reduction:
         request = ReductionProtoModule.AreaRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.area(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def area_average(self, expression, locations, ctxt=None) -> Any:
         """Get area average."""
@@ -295,7 +296,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.area_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def area_integral(self, expression, locations, ctxt=None) -> Any:
         """Get area integral."""
@@ -303,7 +304,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.area_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def centroid(self, locations, ctxt=None) -> Any:
         """Get centroid."""
@@ -317,7 +318,7 @@ class Reduction:
         request = ReductionProtoModule.CountRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.count(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def count_if(self, expression, locations, ctxt=None) -> Any:
         """Get count if."""
@@ -325,7 +326,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.count_if(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def force(self, locations, ctxt=None) -> Any:
         """Get force."""
@@ -340,7 +341,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_average(self, expression, locations, ctxt=None) -> Any:
         """Get mass flow average."""
@@ -348,7 +349,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_flow_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_average_absolute(self, expression, locations, ctxt=None) -> Any:
         """Get absolute mass flow average."""
@@ -356,7 +357,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_flow_average_absolute(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_integral(self, expression, locations, ctxt=None) -> Any:
         """Get mass flow integral."""
@@ -364,7 +365,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_flow_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_integral(self, expression, locations, ctxt=None) -> Any:
         """Get mass integral."""
@@ -372,7 +373,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def maximum(self, expression, locations, ctxt=None) -> Any:
         """Get maximum."""
@@ -380,7 +381,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.maximum(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def minimum(self, expression, locations, ctxt=None) -> Any:
         """Get minimum."""
@@ -388,7 +389,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.minimum(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def pressure_force(self, locations, ctxt=None) -> Any:
         """Get pressure force."""
@@ -409,7 +410,7 @@ class Reduction:
         request = ReductionProtoModule.VolumeRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.volume(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def volume_average(self, expression, locations, ctxt=None) -> Any:
         """Get volume average."""
@@ -417,7 +418,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.volume_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def volume_integral(self, expression, locations, ctxt=None) -> Any:
         """Get volume integral."""
@@ -425,7 +426,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.volume_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def moment(self, expression, locations, ctxt=None) -> Any:
         """Get moment."""
@@ -442,7 +443,7 @@ class Reduction:
         request.locations.extend(self._get_location_string(locations, ctxt))
         request.weight = weight
         response = self.service.sum(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def sum_if(self, expression, condition, locations, weight, ctxt=None) -> Any:
         """Get sum if a particular condition satisfies."""
@@ -452,4 +453,4 @@ class Reduction:
         request.locations.extend(self._get_location_string(locations, ctxt))
         request.weight = weight
         response = self.service.sum_if(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
