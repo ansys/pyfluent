@@ -74,9 +74,6 @@ def _test_min(solver1, solver2):
     else:
         solver1_vmag = solver1.setup.boundary_conditions["inlet1"].momentum.velocity
         solver2_vmag = solver2.setup.boundary_conditions["inlet1"].momentum.velocity
-    vmag = solver1_vmag.value()
-    solver1_vmag = 0.9 * vmag
-    solver2_vmag = 1.1 * vmag
     solver1.solution.initialization.hybrid_initialize()
     solver2.solution.initialization.hybrid_initialize()
     solver1.setup.named_expressions["test_expr_1"] = {}
