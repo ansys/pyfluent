@@ -12,6 +12,7 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  FLUENT_IMAGE_TAG: v24.1.0
 
 jobs:
   test:
@@ -55,13 +56,9 @@ jobs:
 
       - name: Pull 24.1 Fluent docker image
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
 
       - name: Run 24.1 API codegen
         run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
 
       - name: Print 24.1 Fluent version info
         run: |
@@ -75,5 +72,3 @@ jobs:
 
       - name: 24.1 Unit Testing
         run: make unittest-solvermode-241
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
