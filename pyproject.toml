@@ -15,7 +15,6 @@ addopts = """
 --cov-report=html
 --durations=0
 --show-capture=all
---ignore=tests/test_solvermode
 """
 markers = [
     "integration: Short-running tests which read a simple input file and check the exposure and values of various setting objects",
