@@ -14,7 +14,7 @@ from ansys.fluent.core.services.field_data import (
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
@@ -28,30 +28,32 @@ def test_field_data(new_solver_session) -> None:
     solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 
     # Set up boundary conditions for CFD analysis
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = 0.4
     solver.setup.boundary_conditions.velocity_inlet[
         "cold-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 0.05
+    ].momentum.velocity = 0.4
     solver.setup.boundary_conditions.velocity_inlet[
         "cold-inlet"
-    ].turb_hydraulic_diam = "4 [in]"
+    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.turbulent_intensity = 0.05
+    solver.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ].turbulence.hydraulic_diameter = "4 [in]"
 
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].thermal.t = 293.15
 
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = 1.2
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = 1.2
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
+    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].turb_hydraulic_diam = "1 [in]"
+    ].turbulence.hydraulic_diameter = "1 [in]"
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].t = HOT_INLET_TEMPERATURE
-
-    solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
+    ].thermal.t = HOT_INLET_TEMPERATURE
 
     solver.tui.solve.monitors.residual.plot("no")
 

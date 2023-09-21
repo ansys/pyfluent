@@ -705,7 +705,7 @@ class CompoundTask(CommandTask):
         """Get the last child of this CompoundTask.
 
         Returns
-        ----------
+        -------
         BaseTask
             the last child of this CompoundTask
         """
@@ -722,7 +722,7 @@ class CompoundTask(CommandTask):
             name
 
         Returns
-        ----------
+        -------
         BaseTask
             the named child of this CompoundTask
         """

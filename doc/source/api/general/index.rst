@@ -33,6 +33,16 @@ Case
 
 :ref:`ref_case_reader` documents a class for parsing Fluent case files in pure Python code.
 
+Data
+####
+
+:ref:`ref_data_reader` documents a class for parsing Fluent data files in pure Python code.
+
+File session
+############
+
+:ref:`ref_file_session` expose field info and data for Fluent case and data files.
+
 Data transfer
 #############
 
@@ -58,10 +68,15 @@ Post objects
 
 :ref:`ref_post_objects` documents visualization objects for interfacing to Matplotlib and pyvista.
 
-Asynchronous execution
-######################
+Execution utilities
+###################
 
-:ref:`ref_utils` documents tools for asynchronous function execution.
+:ref:`ref_execution_utils` documents execution utilities, including an asynchronous option, for command execution.
+
+Search
+######
+
+:ref:`ref_search` documents tools for searching Fluent settings or commands.
 
 Meta
 ####
@@ -70,8 +85,8 @@ Meta
 
 Logging
 #######
-.. automodule:: ansys.fluent.core.logging
-    :members:
+
+:ref:`ref_logging` documents the PyFluent debug logging module.
 
 .. currentmodule:: ansys.fluent.core
 
@@ -83,15 +98,17 @@ Logging
     :hidden:
 
     launcher/index
-    utils/index
     sessions/index
     services/index
     streaming_services/index
-    post_objects/index
     scheduler/index
     case_reader
     data_transfer
     journaling
-    meta
-    rpvars
     workflow
+    rpvars
+    post_objects/index
+    execution_utils
+    search
+    meta
+    logging
