@@ -2,7 +2,6 @@ import pytest
 from util.solver import copy_database_material
 
 
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")

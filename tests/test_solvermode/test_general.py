@@ -7,7 +7,6 @@ import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.skip("Fluent side bug")
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
@@ -82,7 +81,6 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
         os.remove(file_path)
 
 
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
