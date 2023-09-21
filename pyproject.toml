@@ -48,7 +48,7 @@ skip_glob = [
     "src/ansys/fluent/core/solver/settings_222",
     "src/ansys/fluent/core/solver/settings_231",
     "src/ansys/fluent/core/solver/settings_232",
-    "src/ansys/fluent/core/solver/settings_241"     
+    "src/ansys/fluent/core/solver/settings_241"
 ]
 filter_files = "true"
 known_first_party = ["ansys"]
@@ -78,7 +78,7 @@ exclude = [
     "src/ansys/fluent/core/meshing/tui_241.py",
     "src/ansys/fluent/core/solver/tui_241.py",
     "src/ansys/fluent/core/solver/settings_241/",
-    "src/ansys/fluent/core/datamodel_241/"    
+    "src/ansys/fluent/core/datamodel_241/"
 ]
 pre-summary-space = true
 wrap-descriptions = 88
