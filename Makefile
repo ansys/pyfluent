@@ -85,6 +85,12 @@ unittest-all-241:
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest --nightly --fluent-version=24.1
 
+unittest-solvermode-241:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest --fluent-version=24.1 --solvermode
+
 unittest-all-241-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples

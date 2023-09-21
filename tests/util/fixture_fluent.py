@@ -126,6 +126,9 @@ def load_static_mixer_case(sample_solver_session):
     solver.exit()
 
 
+_mixing_elbow_geom_filename = None
+
+
 @pytest.fixture
 def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
     solver_session = launch_fluent_solver_3ddp_t2
@@ -135,9 +138,6 @@ def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
     solver_session.file.read(file_type=input_type, file_name=input_name)
     yield solver_session
     solver_session.exit()
-
-
-_mixing_elbow_geom_filename = None
 
 
 @pytest.fixture

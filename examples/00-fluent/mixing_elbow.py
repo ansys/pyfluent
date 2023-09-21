@@ -74,8 +74,8 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # Import CAD and set length units
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry and set the length units to inches.
-
-meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+geo_import = meshing.workflow.TaskObject["Import Geometry"]
+geo_import.Arguments = {
     "FileName": import_filename,
     "LengthUnit": "in",
 }
@@ -84,27 +84,25 @@ meshing.workflow.TaskObject["Import Geometry"].Arguments = {
 # ~~~~~~~~~~~~~~~
 # Import the geometry.
 
-meshing.workflow.TaskObject["Import Geometry"].Execute()
+geo_import.Execute()
 
 ###############################################################################
 # Add local sizing
 # ~~~~~~~~~~~~~~~~
 # Add local sizing. This task asks whether you want to add local sizing controls
 # to the faceted geometry. You can keep the default settings and execute the task.
-
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-meshing.workflow.TaskObject["Add Local Sizing"].Execute()
+add_local_sizing = meshing.workflow.TaskObject["Add Local Sizing"]
+add_local_sizing.AddChildToTask()
+add_local_sizing.Execute()
 
 ###############################################################################
 # Generate surface mesh
 # ~~~~~~~~~~~~~~~~~~~~~
 # Generate the surface mash. In this task, you can set various properties of the
 # surface mesh for the faceted geometry. For ``"MaxSize"``, set ``0.3``.
-
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
-    "CFDSurfaceMeshControls": {"MaxSize": 0.3}
-}
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+surface_mesh_gen = meshing.workflow.TaskObject["Generate the Surface Mesh"]
+surface_mesh_gen.Arguments = {"CFDSurfaceMeshControls": {"MaxSize": 0.3}}
+surface_mesh_gen.Execute()
 
 ###############################################################################
 # Describe geometry
@@ -112,29 +110,27 @@ meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 # Describe the geometry. In this task, you are prompted with questions
 # relating to the nature of the imported geometry, which defines
 # the fluid region. The geometry consists of only fluid regions.
-
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=False
-)
-meshing.workflow.TaskObject["Describe Geometry"].Arguments = {
+describe_geo = meshing.workflow.TaskObject["Describe Geometry"]
+describe_geo.UpdateChildTasks(SetupTypeChanged=False)
+describe_geo.Arguments = {
     "SetupType": "The geometry consists of only fluid regions with no voids"
 }
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
-meshing.workflow.TaskObject["Describe Geometry"].Execute()
+describe_geo.UpdateChildTasks(SetupTypeChanged=True)
+describe_geo.Execute()
 
 ###############################################################################
 # Update boundaries
 # ~~~~~~~~~~~~~~~~~
 # Update the boundaries. Set ``"BoundaryLabelTypeList"`` to ``"wall"`` and
 # update the boundaries.
-
-meshing.workflow.TaskObject["Update Boundaries"].Arguments = {
+update_boundaries = meshing.workflow.TaskObject["Update Boundaries"]
+update_boundaries.Arguments = {
     "BoundaryLabelList": ["wall-inlet"],
     "BoundaryLabelTypeList": ["wall"],
     "OldBoundaryLabelList": ["wall-inlet"],
     "OldBoundaryLabelTypeList": ["velocity-inlet"],
 }
-meshing.workflow.TaskObject["Update Boundaries"].Execute()
+update_boundaries.Execute()
 
 ###############################################################################
 # Update regions
@@ -150,28 +146,29 @@ meshing.workflow.TaskObject["Update Regions"].Execute()
 # ~~~~~~~~~~~~~~~~~~~
 # Add boundary layers, which consist of setting properties for the
 # boundary layer mesh. You can keep the default settings.
-
-meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-meshing.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["smooth-transition_1"].Arguments = {
+add_boundary_layers = meshing.workflow.TaskObject["Add Boundary Layers"]
+add_boundary_layers.AddChildToTask()
+add_boundary_layers.InsertCompoundChildTask()
+smooth_transition_1 = meshing.workflow.TaskObject["smooth-transition_1"]
+smooth_transition_1.Arguments = {
     "BLControlName": "smooth-transition_1",
 }
-meshing.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
-meshing.workflow.TaskObject["smooth-transition_1"].Execute()
+add_boundary_layers.Arguments = {}
+smooth_transition_1.Execute()
 
 ###############################################################################
 # Generate volume mesh
 # ~~~~~~~~~~~~~~~~~~~~
 # Generate the volume mesh, which consists of setting properties for the
 # volume mesh. Set ``"VolumeFill"`` to ``"poly-hexcore"``.
-
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
+volume_mesh_gen = meshing.workflow.TaskObject["Generate the Volume Mesh"]
+volume_mesh_gen.Arguments = {
     "VolumeFill": "poly-hexcore",
     "VolumeFillControls": {
         "HexMaxCellLength": 0.3,
     },
 }
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+volume_mesh_gen.Execute()
 
 ###############################################################################
 # .. image:: /_static/mixing_elbow_011.png
@@ -282,52 +279,28 @@ solver.tui.define.boundary_conditions.fluid(
 
 # cold inlet (cold-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
-
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "cold-inlet", [], "vmag", "no", 0.4, "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "cold-inlet", [], "turb-intensity", 5, "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "cold-inlet", [], "turb-hydraulic-diam", 4, "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "cold-inlet", [], "temperature", "no", 293.15, "quit"
-)
+velocity_inlet = solver.tui.define.boundary_conditions.set.velocity_inlet
+velocity_inlet("cold-inlet", [], "vmag", "no", 0.4, "quit")
+velocity_inlet("cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit")
+velocity_inlet("cold-inlet", [], "turb-intensity", 5, "quit")
+velocity_inlet("cold-inlet", [], "turb-hydraulic-diam", 4, "quit")
+velocity_inlet("cold-inlet", [], "temperature", "no", 293.15, "quit")
 
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
 
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "hot-inlet", [], "vmag", "no", 1.2, "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "hot-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "hot-inlet", [], "turb-intensity", 5, "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "hot-inlet", [], "turb-hydraulic-diam", 1, "quit"
-)
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "hot-inlet", [], "temperature", "no", 313.15, "quit"
-)
+velocity_inlet("hot-inlet", [], "vmag", "no", 1.2, "quit")
+velocity_inlet("hot-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit")
+velocity_inlet("hot-inlet", [], "turb-intensity", 5, "quit")
+velocity_inlet("hot-inlet", [], "turb-hydraulic-diam", 1, "quit")
+velocity_inlet("hot-inlet", [], "temperature", "no", 313.15, "quit")
 
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
 # Backflow Turbulent Viscosity Ratio: 4
-
-solver.tui.define.boundary_conditions.set.pressure_outlet(
-    "outlet", [], "turb-intensity", 5, "quit"
-)
-solver.tui.define.boundary_conditions.set.pressure_outlet(
-    "outlet", [], "turb-viscosity-ratio", 4, "quit"
-)
+pressure_outlet = solver.tui.define.boundary_conditions.set.pressure_outlet
+pressure_outlet("outlet", [], "turb-intensity", 5, "quit")
+pressure_outlet("outlet", [], "turb-viscosity-ratio", 4, "quit")
 
 ###############################################################################
 # Enable plotting of residuals during calculation

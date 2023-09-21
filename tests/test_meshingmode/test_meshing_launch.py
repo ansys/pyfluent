@@ -18,40 +18,52 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
         assert attr in session_dir
     workflow = pure_meshing_session.workflow
     workflow.TaskObject["Import Geometry"].Execute()
-    workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-    workflow.TaskObject["Add Local Sizing"].Execute()
-    workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
-        "CFDSurfaceMeshControls": {"MaxSize": 0.3}
-    }
-    workflow.TaskObject["Generate the Surface Mesh"].Execute()
-    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-    workflow.TaskObject["Describe Geometry"].Arguments = dict(
+
+    add_local_sizing = workflow.TaskObject["Add Local Sizing"]
+    add_local_sizing.AddChildToTask()
+    add_local_sizing.Execute()
+
+    surface_mesh_gen = workflow.TaskObject["Generate the Surface Mesh"]
+    surface_mesh_gen.Arguments = {"CFDSurfaceMeshControls": {"MaxSize": 0.3}}
+    surface_mesh_gen.Execute()
+
+    describe_geo = workflow.TaskObject["Describe Geometry"]
+    describe_geo.UpdateChildTasks(SetupTypeChanged=False)
+    describe_geo.Arguments = dict(
         SetupType="The geometry consists of only fluid regions with no voids"
     )
-    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
-    workflow.TaskObject["Describe Geometry"].Execute()
-    workflow.TaskObject["Update Boundaries"].Arguments = {
+    describe_geo.UpdateChildTasks(SetupTypeChanged=True)
+    describe_geo.Execute()
+
+    boundary_update = workflow.TaskObject["Update Boundaries"]
+    boundary_update.Arguments = {
         "BoundaryLabelList": ["wall-inlet"],
         "BoundaryLabelTypeList": ["wall"],
         "OldBoundaryLabelList": ["wall-inlet"],
         "OldBoundaryLabelTypeList": ["velocity-inlet"],
     }
-    workflow.TaskObject["Update Boundaries"].Execute()
+    boundary_update.Execute()
+
     workflow.TaskObject["Update Regions"].Execute()
-    workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-    workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-    workflow.TaskObject["smooth-transition_1"].Arguments = {
+
+    add_boundary_layers = workflow.TaskObject["Add Boundary Layers"]
+    add_boundary_layers.AddChildToTask()
+    add_boundary_layers.InsertCompoundChildTask()
+    smooth_transition_1 = workflow.TaskObject["smooth-transition_1"]
+    smooth_transition_1.Arguments = {
         "BLControlName": "smooth-transition_1",
     }
-    workflow.TaskObject["Add Boundary Layers"].Arguments = {}
-    workflow.TaskObject["smooth-transition_1"].Execute()
-    workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
+    add_boundary_layers.Arguments = {}
+    smooth_transition_1.Execute()
+    volume_mesh_gen = workflow.TaskObject["Generate the Volume Mesh"]
+    volume_mesh_gen.Arguments = {
         "VolumeFill": "poly-hexcore",
         "VolumeFillControls": {
             "HexMaxCellLength": 0.3,
         },
     }
-    workflow.TaskObject["Generate the Volume Mesh"].Execute()
+    volume_mesh_gen.Execute()
+
     pure_meshing_session.journal.stop()
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()

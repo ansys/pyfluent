@@ -28,40 +28,27 @@ def test_field_data(new_solver_session) -> None:
     solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 
     # Set up boundary conditions for CFD analysis
-    solver.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].momentum.velocity = 0.4
-    solver.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    solver.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turbulence.turbulent_intensity = 0.05
-    solver.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turbulence.hydraulic_diameter = "4 [in]"
+    cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    cold_inlet.momentum.velocity = 0.4
+    cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    cold_inlet.turbulence.turbulent_intensity = 0.05
+    cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+    cold_inlet.thermal.t = 293.15
 
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].thermal.t = 293.15
-
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = 1.2
-    solver.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    solver.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].turbulence.hydraulic_diameter = "1 [in]"
-
-    solver.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].thermal.t = HOT_INLET_TEMPERATURE
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet.momentum.velocity = 1.2
+    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+    hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
     solver.tui.solve.monitors.residual.plot("no")
 
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
 
-    solver.solution.run_calculation.iterate.get_attr("arguments")
-    solver.solution.run_calculation.iterate(iter_count=10)
+    iterate = solver.solution.run_calculation.iterate
+    iterate.get_attr("arguments")
+    iterate(iter_count=10)
 
     # Get field data object
     field_data = solver.field_data
@@ -104,17 +91,12 @@ def test_field_data(new_solver_session) -> None:
         "centroid",
     ]
     assert list(data[scalar_field_tag][hot_inlet_surf_id].keys()) == ["temperature"]
+    temp_inlet_data = data[scalar_field_tag][hot_inlet_surf_id]["temperature"]
     assert (
-        len(data[scalar_field_tag][hot_inlet_surf_id]["temperature"])
+        len(temp_inlet_data)
         == len(data[surface_data_tag][hot_inlet_surf_id]["vertices"]) / 3
     )
-    assert (
-        round(
-            float(np.average(data[scalar_field_tag][hot_inlet_surf_id]["temperature"])),
-            2,
-        )
-        == HOT_INLET_TEMPERATURE
-    )
+    assert round(float(np.average(temp_inlet_data)), 2) == HOT_INLET_TEMPERATURE
     assert sorted(list(data[pathline_tag][hot_inlet_surf_id].keys())) == sorted(
         [
             "vertices",
@@ -127,12 +109,9 @@ def test_field_data(new_solver_session) -> None:
 
     # multiple surface *names* transaction
     transaction2 = field_data.new_transaction()
-    surface_names = (
-        transaction2.add_scalar_fields_request.surface_names.allowed_values()
-    )
-    transaction2.add_scalar_fields_request(
-        surface_names=surface_names, field_name="temperature"
-    )
+    fields_request = transaction2.add_scalar_fields_request
+    surface_names = fields_request.surface_names.allowed_values()
+    fields_request(surface_names=surface_names, field_name="temperature")
     data2 = transaction2.get_fields()
     assert data2
 
@@ -146,6 +125,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     field_data = solver.field_data
     field_info = solver.field_info
     transaction = field_data.new_transaction()
+    fields_request = transaction.add_scalar_fields_request
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
@@ -164,24 +144,24 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     allowed_args = field_data.get_scalar_field_data.field_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
     assert len(allowed_args) > len(allowed_args_no_init)
-    allowed_args = transaction.add_scalar_fields_request.field_name.allowed_values()
+    allowed_args = fields_request.field_name.allowed_values()
     assert expected_allowed_args == allowed_args
 
     expected_allowed_args = sorted(field_info.get_surfaces_info())
     allowed_args = field_data.get_scalar_field_data.surface_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
-    allowed_args = transaction.add_scalar_fields_request.surface_names.allowed_values()
+    allowed_args = fields_request.surface_names.allowed_values()
     assert expected_allowed_args == allowed_args
 
     expected_allowed_args = sorted(field_info.get_surfaces_info())
     allowed_args = field_data.get_surface_data.surface_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
-    allowed_args = transaction.add_scalar_fields_request.surface_names.allowed_values()
+    allowed_args = fields_request.surface_names.allowed_values()
     assert expected_allowed_args == allowed_args
 
     allowed_args = field_data.get_surface_data.surface_ids.allowed_values()
     assert len(expected_allowed_args) == len(allowed_args)
-    allowed_args = transaction.add_scalar_fields_request.surface_ids.allowed_values()
+    allowed_args = fields_request.surface_ids.allowed_values()
     assert len(expected_allowed_args) == len(allowed_args)
 
     expected_allowed_args = sorted(field_info.get_vector_fields_info())
@@ -297,9 +277,9 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
     faces_connectivity_data = field_data.get_surface_data(
         data_type=SurfaceDataType.FacesConnectivity, surface_name="velocity-inlet-2"
-    )
-    assert faces_connectivity_data[5].node_count == 2
-    assert (faces_connectivity_data[5].node_indices == [5, 6]).all()
+    )[5]
+    assert faces_connectivity_data.node_count == 2
+    assert (faces_connectivity_data.node_indices == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surface_name="velocity-inlet-2"

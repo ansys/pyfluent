@@ -1,19 +1,18 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
 def test_post_elbow(load_mixing_elbow_case_dat):
-    pyflu = load_mixing_elbow_case_dat
-    pyflu.results.graphics.vector["velocity_vector_symmetry"] = {}
-    pyflu.results.graphics.vector["velocity_vector_symmetry"].field = "temperature"
-    pyflu.results.graphics.vector["velocity_vector_symmetry"].surfaces_list = [
-        "symmetry-xyplane",
+    load_mixing_elbow_case_dat.results.graphics.vector["velocity_vector_symmetry"] = {}
+    vector_graphics = load_mixing_elbow_case_dat.results.graphics.vector[
+        "velocity_vector_symmetry"
     ]
-    pyflu.results.graphics.vector["velocity_vector_symmetry"].scale.scale_f = 4
-    pyflu.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
-    vel_vector = pyflu.results.graphics.vector["velocity_vector_symmetry"]()
+    vector_graphics.field = "temperature"
+    vector_graphics.surfaces_list = ["symmetry-xyplane"]
+    vector_graphics.scale.scale_f = 4
+    vector_graphics.style = "arrow"
+    vel_vector = vector_graphics()
     assert vel_vector.get("name") == "velocity_vector_symmetry"
     assert vel_vector.get("field") == "temperature"
     assert vel_vector.get("surfaces_list") == ["symmetry-xyplane"]
