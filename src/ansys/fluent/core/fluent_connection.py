@@ -348,6 +348,13 @@ class FluentConnection:
         self.launcher_args = launcher_args
 
         self._exit_evt = threading.Event()
+
+        # session.exit() is handled in the daemon thread (MonitorThread) which ensures
+        # shutdown of non-daemon threads. A daemon thread is terminated abruptly
+        # during interpreter exit (after all non-daemon threads are exited).
+        # self._waiting_thread is a long-running thread which is exited
+        # at the end of session.exit() to ensure everything within session.exit()
+        # gets executed during exit.
         self._waiting_thread = threading.Thread(target=self._exit_evt.wait)
         self._waiting_thread.start()
 
