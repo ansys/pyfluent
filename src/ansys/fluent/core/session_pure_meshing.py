@@ -80,10 +80,12 @@ class PureMeshing(BaseSession):
         return self._base_meshing.workflow
 
     def watertight(self, dynamic_interface=True):
+        """Get a new watertight workflow."""
         self.workflow.watertight(dynamic_interface)
         return self.workflow
 
     def fault_tolerant(self, dynamic_interface=True):
+        """Get a new fault-tolerant workflow."""
         self.workflow.fault_tolerant(dynamic_interface)
         return self.workflow
 
