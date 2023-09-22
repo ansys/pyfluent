@@ -67,10 +67,6 @@ def _get_preferences(session):
     return _get_datamodel_attributes(session, "preferences")
 
 
-def _get_solverworkflow(session):
-    return _get_datamodel_attributes(session, "solverworkflow")
-
-
 class _IsDataValid:
     def __init__(self, scheme_eval):
         self._scheme_eval = scheme_eval
@@ -118,7 +114,6 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
         self._preferences = None
-        self._solverworkflow = None
         self.journal = Journal(self.scheme_eval)
 
         self.transcript = self.fluent_connection.create_service(Transcript)
