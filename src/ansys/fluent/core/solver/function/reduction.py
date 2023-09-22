@@ -216,7 +216,7 @@ def _extent_moment_vector(f_string, expr, locations, ctxt):
             total += array(extent)
         except TypeError:
             raise RuntimeError(extent)
-    return total
+    return _Vector(total)
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
@@ -250,7 +250,24 @@ def _extent_vectors(extent_name, locations, ctxt):
             total += array(extent)
         except TypeError:
             raise RuntimeError(extent)
-    return total
+    return _Vector(total)
+
+
+class _Vector:
+    def __init__(self, np_arr):
+        self.array = np_arr
+
+    @property
+    def x(self):
+        return self.array[0]
+
+    @property
+    def y(self):
+        return self.array[1]
+
+    @property
+    def z(self):
+        return self.array[2]
 
 
 def _limit(limit, expr, locations, ctxt):
