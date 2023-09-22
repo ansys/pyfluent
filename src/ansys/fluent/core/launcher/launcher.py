@@ -548,6 +548,8 @@ def launch_fluent(
     cwd : str, Optional
         Working directory for the Fluent client.
     topy : bool or str, optional
+        A boolean flag to convert journal to python (can also take the file name of the new python
+        journal file).
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s) and write the equivalent Python journal(s).
     start_watchdog : bool, optional
