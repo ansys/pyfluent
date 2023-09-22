@@ -1248,3 +1248,130 @@ def test_meshing_queries(new_mesh_session):
         )
         == 0
     )
+
+    assert meshing_session.meshing_queries.get_average_bounding_box_center(
+        face_zone_id_list=[30, 31, 32]
+    ) == [1.1482939720153809, -2.2965879440307617, 0.7345014897547645]
+
+    assert meshing_session.meshing_queries.get_bounding_box_of_zone_list(
+        zone_id_list=[26]
+    ) == [
+        [-7.874015808105469, -7.874015808105469, 0.0],
+        [-7.874015808105469, -3.937007904052734, 1.963911771774292],
+    ]
+
+    assert (
+        meshing_session.meshing_queries.unpreserve_cell_zones(cell_zone_id_list=[87])
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.unpreserve_cell_zones(
+            cell_zone_name_list=["elbow-fluid"]
+        )
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.unpreserve_cell_zones(
+            cell_zone_name_pattern="*"
+        )
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.create_boi_and_size_functions_from_refinement_regions(
+            region_type="hexcore", boi_prefix_string="wall", create_size_function=True
+        )
+        == "*the-non-printing-object*"
+    )
+
+    assert (
+        meshing_session.meshing_queries.scale_face_zones_around_pivot(
+            face_zone_id_list=[30, 31, 32],
+            scale=[1.1, 1.2, 1.3],
+            pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645],
+            use_bbox_center=True,
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.scale_face_zones_around_pivot(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+            scale=[1.1, 1.2, 1.3],
+            pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645],
+            use_bbox_center=True,
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.scale_face_zones_around_pivot(
+            face_zone_name_pattern="*",
+            scale=[1.1, 1.2, 1.3],
+            pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645],
+            use_bbox_center=True,
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.scale_cell_zones_around_pivot(
+            cell_zone_id_list=[87],
+            scale=[1.1, 1.2, 1.3],
+            pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645],
+            use_bbox_center=True,
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.scale_cell_zones_around_pivot(
+            cell_zone_name_list=["elbow-fluid"],
+            scale=[1.1, 1.2, 1.3],
+            pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645],
+            use_bbox_center=True,
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.scale_cell_zones_around_pivot(
+            cell_zone_name_pattern="*",
+            scale=[1.1, 1.2, 1.3],
+            pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645],
+            use_bbox_center=True,
+        )
+        is None
+    )
+
+    assert meshing_session.meshing_queries.dump_face_zone_orientation_in_region(
+        file_name="facezonetest.txt"
+    ) == [
+        [29, "elbow-fluid"],
+        [30, "elbow-fluid"],
+        [31, "elbow-fluid"],
+        [32, "elbow-fluid"],
+        [33, "elbow-fluid"],
+        [34, "elbow-fluid"],
+    ]
+
+    assert (
+        meshing_session.meshing_queries.set_quality_measure(measure="Aspect Ratio")
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.set_object_cell_zone_type(
+            object_name="elbow-fluid", cell_zone_type="mixed"
+        )
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.set_number_of_parallel_compute_threads(
+            nthreads=2
+        )
+        is None
+    )
