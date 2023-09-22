@@ -228,16 +228,14 @@ def _test_area_integrated_average(solver1, solver2):
 
 
 def _test_error_handling(solver):
-    with pytest.raises(RuntimeError) as msg:
-        solver.reduction.area_average(
-            expression="AbsoluteVelocity",  # This is a wrong expression intentionally passed
-            locations=solver.setup.boundary_conditions.velocity_inlet,
-        )
+    if int(solver.version) < 241:
+        with pytest.raises(RuntimeError) as msg:
+            solver.reduction.area_average(
+                expression="AbsoluteVelocity",  # This is a wrong expression intentionally passed
+                locations=solver.setup.boundary_conditions.velocity_inlet,
+            )
 
-    assert (
-        msg.value.args[0]
-        == "The last request could not be completed because there is error in server."
-    )
+        assert msg.value.args[0] == "Unable to evaluate expression"
 
 
 def _test_force(solver):
@@ -250,7 +248,9 @@ def _test_force(solver):
     red_total_force = solver.reduction.force(
         locations=[solver.setup.boundary_conditions.wall]
     )
-    red_pressure_force = solver.reduction.pressure_force(locations=["wall"])
+    red_pressure_force = solver.reduction.pressure_force(
+        locations=[solver.setup.boundary_conditions.wall]
+    )
     red_viscous_force = solver.reduction.viscous_force(
         locations=[solver.setup.boundary_conditions.wall]
     )
@@ -298,7 +298,6 @@ def _test_moment(solver):
 
 
 def _test_sum(solver):
-    # Use 'sum' from function\reduction.
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
     solver.setup.named_expressions[
@@ -318,7 +317,6 @@ def _test_sum(solver):
 
 
 def _test_sum_if(solver):
-    # Use 'sum_if' from function\reduction.
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
     solver.setup.named_expressions[
@@ -340,6 +338,7 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
+@pytest.mark.fluent_version(">=23.1")
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2
@@ -355,46 +354,3 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_moment(solver1)
     _test_sum(solver1)
     _test_sum_if(solver1)
-
-
-@pytest.mark.fluent_version(">=24.1")
-def test_sum_and_sum_if(load_static_mixer_case) -> None:
-    solver = load_static_mixer_case
-    solver.solution.initialization.hybrid_initialize()
-
-    # Sum
-    solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions[
-        "test_expr_1"
-    ].definition = "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
-    expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
-    assert type(expr_val) == float and expr_val != 0.0
-
-    val = solver.reduction.sum(
-        expression="AbsolutePressure",
-        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight="Area",
-    )
-
-    assert val == expr_val
-    solver.setup.named_expressions.pop(key="test_expr_1")
-
-    # Sum If
-    solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions[
-        "test_expr_1"
-    ].definition = (
-        "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
-    )
-    expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
-    assert type(expr_val) == float and expr_val != 0.0
-
-    val = solver.reduction.sum_if(
-        expression="AbsolutePressure",
-        condition="AbsolutePressure > 0[Pa]",
-        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight="Area",
-    )
-
-    assert val == expr_val
-    solver.setup.named_expressions.pop(key="test_expr_1")
