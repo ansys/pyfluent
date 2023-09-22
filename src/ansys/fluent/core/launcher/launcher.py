@@ -671,8 +671,6 @@ def launch_fluent(
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         if env is None:
             env = {}
-        if mode != FluentMode.SOLVER_ICING:
-            env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
         kwargs = _get_subprocess_kwargs_for_fluent(env)
         if cwd:
             kwargs.update(cwd=cwd)
