@@ -1,7 +1,6 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
@@ -24,7 +23,6 @@ def test_solver_models(load_mixing_elbow_mesh):
     assert models.multiphase.models() == "eulerian"
 
 
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")

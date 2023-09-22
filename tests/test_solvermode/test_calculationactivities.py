@@ -1,7 +1,6 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.fluent_version("latest")

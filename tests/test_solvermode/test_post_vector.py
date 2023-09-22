@@ -1,7 +1,6 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
 def test_post_elbow(load_mixing_elbow_case_dat):
