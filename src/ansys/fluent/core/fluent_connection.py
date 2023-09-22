@@ -351,7 +351,7 @@ class FluentConnection:
 
         # session.exit() is handled in the daemon thread (MonitorThread) which ensures
         # shutdown of non-daemon threads. A daemon thread is terminated abruptly
-        # during interpreter exit (after all non-daemon threads are exited).
+        # during interpreter exit, after all non-daemon threads are exited.
         # self._waiting_thread is a long-running thread which is exited
         # at the end of session.exit() to ensure everything within session.exit()
         # gets executed during exit.
