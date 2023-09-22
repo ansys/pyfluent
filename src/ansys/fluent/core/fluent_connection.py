@@ -347,6 +347,10 @@ class FluentConnection:
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
 
+        self._exit_evt = threading.Event()
+        self._waiting_thread = threading.Thread(target=self._exit_evt.wait)
+        self._waiting_thread.start()
+
         self._finalizer = weakref.finalize(
             self,
             FluentConnection._exit,
@@ -355,6 +359,7 @@ class FluentConnection:
             self.scheme_eval,
             self.finalizer_cbs,
             self._remote_instance,
+            self._exit_evt,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
@@ -559,11 +564,7 @@ class FluentConnection:
 
     @staticmethod
     def _exit(
-        channel,
-        cleanup_on_exit,
-        scheme_eval,
-        finalizer_cbs,
-        remote_instance,
+        channel, cleanup_on_exit, scheme_eval, finalizer_cbs, remote_instance, exit_evt
     ) -> None:
         logger.debug("FluentConnection exit method called.")
         if channel:
@@ -579,3 +580,5 @@ class FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+        exit_evt.set()
