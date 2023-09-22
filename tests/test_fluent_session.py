@@ -5,6 +5,7 @@ import time
 
 from docker.models.containers import Container
 import psutil
+import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
