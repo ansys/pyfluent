@@ -10,12 +10,7 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
-from ansys.fluent.core.session import (
-    _CODEGEN_MSG_TUI,
-    BaseSession,
-    _get_preferences,
-    _get_solverworkflow,
-)
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.systemcoupling import SystemCoupling
@@ -52,7 +47,6 @@ class Solver(BaseSession):
         self._system_coupling = None
         self._settings_root = None
         self._version = None
-        self._solverworkflow = None
         self._lck = threading.Lock()
         self.svar_service = self.fluent_connection.create_service(SVARService)
         self.svar_info = SVARInfo(self.svar_service)
@@ -187,13 +181,6 @@ class Solver(BaseSession):
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
-
-    @property
-    def solverworkflow(self):
-        """Datamodel root of solverworkflow."""
-        if self._solverworkflow is None:
-            self._solverworkflow = _get_solverworkflow(self)
-        return self._solverworkflow
 
     def _sync_from_future(self, fut: Future):
         with self._lck:
