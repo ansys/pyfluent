@@ -961,3 +961,290 @@ def test_meshing_queries(new_mesh_session):
         )
         == 246
     )
+
+    assert (
+        meshing_session.meshing_queries.mark_free_faces(face_zone_id_list=[30, 31, 32])
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_free_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_free_faces(face_zone_name_pattern="*") == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_multi_faces(
+            face_zone_id_list=[30, 31, 32], fringe_length=5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_multi_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], fringe_length=5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_multi_faces(
+            face_zone_name_pattern="*", fringe_length=5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_self_intersecting_faces(
+            face_zone_id_list=[87], mark_folded=True
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_self_intersecting_faces(
+            face_zone_name_list=["elbow-fluid"], mark_folded=True
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_self_intersecting_faces(
+            face_zone_name_pattern="elbow*", mark_folded=True
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_duplicate_faces(
+            face_zone_id_list=[30, 31, 32]
+        )
+        == 0
+    )
+    assert (
+        meshing_session.meshing_queries.mark_duplicate_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 0
+    )
+    assert (
+        meshing_session.meshing_queries.mark_duplicate_faces(face_zone_name_pattern="*")
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_invalid_normals(
+            face_zone_id_list=[30, 31, 32]
+        )
+        == 0
+    )
+    assert (
+        meshing_session.meshing_queries.mark_invalid_normals(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
+        )
+        == 0
+    )
+    assert (
+        meshing_session.meshing_queries.mark_invalid_normals(face_zone_name_pattern="*")
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_island_faces(
+            face_zone_id_list=[30, 31, 32], island_face_count=5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_island_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+            island_face_count=5,
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_island_faces(
+            face_zone_name_pattern="cold*", island_face_count=5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_spikes(
+            face_zone_id_list=[30, 31, 32], spike_angle=40.5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_spikes(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], spike_angle=40.5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_spikes(
+            face_zone_name_pattern="*", spike_angle=40.5
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_steps(
+            face_zone_id_list=[30, 31, 32], step_angle=40.5, step_width=3.3
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_steps(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+            step_angle=40.5,
+            step_width=3.3,
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_steps(
+            face_zone_name_pattern="*", step_angle=40.5, step_width=3.3
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_sliver_faces(
+            face_zone_id_list=[30, 31, 32], max_height=2, skew_limit=0.2
+        )
+        == 2
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_sliver_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+            max_height=2,
+            skew_limit=0.2,
+        )
+        == 2
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_sliver_faces(
+            face_zone_name_pattern="*", max_height=2.2, skew_limit=0.5
+        )
+        == 3453
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_bad_quality_faces(
+            face_zone_id_list=[30, 31, 32], quality_limit=0.5, number_of_rings=2
+        )
+        == 362
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_bad_quality_faces(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+            quality_limit=0.5,
+            number_of_rings=2,
+        )
+        == 362
+    )
+
+    # assert meshing_session.meshing_queries.mark_bad_quality_faces(face_zone_name_pattern="*", quality_limit=0.5,
+    #                                                        number_of_rings=2) == 4799
+
+    assert (
+        meshing_session.meshing_queries.mark_face_strips_by_height_and_quality(
+            face_zone_id_list=[30, 31, 32],
+            strip_type=2,
+            strip_height=2,
+            quality_measure="Size Change",
+            quality_limit=0.5,
+            feature_angle=40,
+        )
+        == -125
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_face_strips_by_height_and_quality(
+            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+            strip_type=2,
+            strip_height=2,
+            quality_measure="Size Change",
+            quality_limit=0.5,
+            feature_angle=40.5,
+        )
+        == -125
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_face_strips_by_height_and_quality(
+            face_zone_name_pattern="cold*",
+            strip_type=1,
+            strip_height=2,
+            quality_measure="Size Change",
+            quality_limit=0.5,
+            feature_angle=40.5,
+        )
+        == -51
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_faces_deviating_from_size_field(
+            face_zone_id_list=[87],
+            min_size_factor=0.5,
+            max_size_factor=1.1,
+            size_factor_type_to_compare="geodesic",
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_faces_deviating_from_size_field(
+            face_zone_name_list=["elbow-fluid"],
+            min_size_factor=0.5,
+            max_size_factor=1.1,
+            size_factor_type_to_compare="geodesic",
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_faces_deviating_from_size_field(
+            face_zone_name_pattern="elbow*",
+            min_size_factor=0.5,
+            max_size_factor=1.1,
+            size_factor_type_to_compare="geodesic",
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_faces_using_node_degree(
+            face_zone_id_list=[87], node_degree_threshold=2
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_faces_using_node_degree(
+            face_zone_name_list=["elbow-fluid"], node_degree_threshold=2
+        )
+        == 0
+    )
+
+    assert (
+        meshing_session.meshing_queries.mark_faces_using_node_degree(
+            face_zone_name_pattern="elbow*", node_degree_threshold=2
+        )
+        == 0
+    )
