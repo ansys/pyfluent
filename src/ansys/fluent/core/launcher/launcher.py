@@ -12,7 +12,8 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Union
+import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -423,13 +424,11 @@ def _generate_launch_string(
     return launch_string
 
 
-def scm_to_py(topy):
+def scm_to_py(topy, journal_filepaths):
     """Convert journal filenames to Python filename."""
-    if not isinstance(topy, (str, list)):
-        raise TypeError("Journal name should be of str or list type.")
+    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in journal_filepaths])
     if isinstance(topy, str):
-        topy = [topy]
-    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in topy])
+        return f" {fluent_jou_arg} -topy={topy}"
     return f" {fluent_jou_arg} -topy"
 
 
@@ -448,7 +447,7 @@ def launch_fluent(
     version: str = None,
     precision: str = None,
     processor_count: int = None,
-    journal_filepath: str = None,
+    journal_filepaths: List[str] = None,
     start_timeout: int = 60,
     additional_arguments: str = None,
     env: Dict[str, Any] = None,
@@ -465,7 +464,7 @@ def launch_fluent(
     py: bool = None,
     gpu: bool = None,
     cwd: str = None,
-    topy: Union[str, list] = None,
+    topy: Union[str, bool] = False,
     start_watchdog: bool = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
@@ -489,8 +488,9 @@ def launch_fluent(
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
         allocated cores is clamped to this value.
-    journal_filepath : str, optional
-        Name of the journal file to read. The default is ``None``.
+    journal_filepaths : list[str], optional
+        The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
+        journal(s). The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``60``.
@@ -548,10 +548,8 @@ def launch_fluent(
     cwd : str, Optional
         Working directory for the Fluent client.
     topy : bool or str, optional
-        A boolean flag to convert journal to python (can also take the file name of the new python
-        journal file).
-        The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
-        journal(s) and write the equivalent Python journal(s).
+        A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
+        Can optionally take the file name of the new python journal file.
     start_watchdog : bool, optional
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
@@ -639,7 +637,7 @@ def launch_fluent(
             "topy",
             "case_filepath",
             "lightweight_mode",
-            "journal_filepath",
+            "journal_filepaths",
             "case_data_filepath",
         ]
         invalid_arg_names = list(
@@ -678,8 +676,18 @@ def launch_fluent(
         kwargs = _get_subprocess_kwargs_for_fluent(env)
         if cwd:
             kwargs.update(cwd=cwd)
+        if journal_filepaths:
+            if not isinstance(journal_filepaths, (str, list)):
+                raise TypeError("Journal name should be a list of strings.")
+            if isinstance(journal_filepaths, str):
+                warnings.warn("Journal name should be a list of strings.")
+                journal_filepaths = [journal_filepaths]
         if topy:
-            launch_string += scm_to_py(topy)
+            if not journal_filepaths:
+                raise RuntimeError(
+                    "Please provide the journal files to be converted as 'journal_filepaths' argument."
+                )
+            launch_string += scm_to_py(topy, journal_filepaths)
 
         if _is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
@@ -727,11 +735,11 @@ def launch_fluent(
                     session.tui.file.read_case(case_filepath)
                 else:
                     session.read_case(case_filepath, lightweight_mode)
-            if journal_filepath:
+            if journal_filepaths:
                 if meshing_mode:
-                    session.tui.file.read_journal(journal_filepath)
+                    session.tui.file.read_journal(*journal_filepaths)
                 else:
-                    session.file.read_journal(file_name_list=[str(journal_filepath)])
+                    session.file.read_journal(file_name_list=journal_filepaths)
             if case_data_filepath:
                 if not meshing_mode:
                     session.file.read(
