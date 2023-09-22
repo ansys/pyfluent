@@ -72,13 +72,6 @@ Install the latest release from `PyPI
 
    pip install ansys-fluent-core
 
-Alternatively, install the latest from
-`PyFluent GitHub <https://github.com/ansys/pyfluent>`_ via:
-
-.. code:: console
-
-   pip install git+https://github.com/ansys/pyfluent.git
-
 For developers
 --------------
 If you plan on doing local *development* of PyFluent with Git, install
