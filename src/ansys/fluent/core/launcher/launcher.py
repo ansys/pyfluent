@@ -547,7 +547,7 @@ def launch_fluent(
         If True, Fluent will start with GPU Solver.
     cwd : str, Optional
         Working directory for the Fluent client.
-    topy : str or list, optional
+    topy : bool or str, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s) and write the equivalent Python journal(s).
     start_watchdog : bool, optional
