@@ -149,10 +149,10 @@ class PyLocalBaseMeta(type):
         def wrapper(self, obj_type, obj=None):
             obj = self if obj is None else obj
             parent = None
-            if getattr(obj, "_parent", None):
-                if isinstance(obj._parent, obj_type):
-                    return obj._parent
-                parent = self.get_ancestors_by_type(obj_type, obj._parent)
+            if getattr(obj, "parent", None):
+                if isinstance(obj.parent, obj_type):
+                    return obj.parent
+                parent = self.get_ancestors_by_type(obj_type, obj.parent)
             return parent
 
         return wrapper
@@ -162,10 +162,10 @@ class PyLocalBaseMeta(type):
         def wrapper(self, obj_type, obj=None):
             obj = self if obj is None else obj
             parent = None
-            if getattr(obj, "_parent", None):
-                if obj._parent.__class__.__name__ == obj_type:
-                    return obj._parent
-                parent = self.get_ancestors_by_name(obj_type, obj._parent)
+            if getattr(obj, "parent", None):
+                if obj.parent.__class__.__name__ == obj_type:
+                    return obj.parent
+                parent = self.get_ancestors_by_name(obj_type, obj.parent)
             return parent
 
         return wrapper
@@ -175,8 +175,8 @@ class PyLocalBaseMeta(type):
         def wrapper(self, obj=None):
             obj = self if obj is None else obj
             parent = obj
-            if getattr(obj, "_parent", None):
-                parent = self.get_root(obj._parent)
+            if getattr(obj, "parent", None):
+                parent = self.get_root(obj.parent)
             return parent
 
         return wrapper
@@ -200,8 +200,8 @@ class PyLocalBaseMeta(type):
     @classmethod
     def __create_get_path(cls):
         def wrapper(self):
-            if getattr(self, "_parent", None):
-                return self._parent.get_path() + "/" + self._name
+            if getattr(self, "parent", None):
+                return self.parent.get_path() + "/" + self._name
             return self._name
 
         return wrapper
@@ -261,7 +261,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
         def wrapper(self, parent, api_helper, name=""):
             self._name = name
             self._api_helper = api_helper(self)
-            self._parent = parent
+            self.parent = parent
             self._on_change_cbs = []
             annotations = self.__class__.__dict__.get("__annotations__")
             if isinstance(getattr(self.__class__, "value", None), property):
@@ -350,7 +350,6 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, path, location, session_id):
-            self._parent = parent
             self.type = "object"
             self.parent = parent
             self.path = path
@@ -406,7 +405,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, api_helper, name=""):
-            self._parent = parent
+            self.parent = parent
             self._name = name
             self._api_helper = api_helper(self)
             self.type = "object"
@@ -531,7 +530,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
         def wrapper(self, name, parent, api_helper):
             self._name = name
             self._api_helper = api_helper(self)
-            self._parent = parent
+            self.parent = parent
             self.type = "object"
 
             commands = getattr(self.__class__, "commands", None)
@@ -584,7 +583,7 @@ class PyLocalContainer(MutableMapping):
     """Local container for named objects."""
 
     def __init__(self, parent, object_class, api_helper, name=""):
-        self._parent = parent
+        self.parent = parent
         self._name = name
         self.__object_class = object_class
         self.__collection: dict = {}
@@ -624,15 +623,15 @@ class PyLocalContainer(MutableMapping):
     def get_root(self, obj=None):
         obj = self if obj is None else obj
         parent = obj
-        if getattr(obj, "_parent", None):
-            parent = self.get_root(obj._parent)
+        if getattr(obj, "parent", None):
+            parent = self.get_root(obj.parent)
         return parent
 
     def get_root(self, obj=None):
         obj = self if obj is None else obj
         parent = obj
-        if getattr(obj, "_parent", None):
-            parent = self.get_root(obj._parent)
+        if getattr(obj, "parent", None):
+            parent = self.get_root(obj.parent)
         return parent
 
     def get_session(self, obj=None):
@@ -640,8 +639,8 @@ class PyLocalContainer(MutableMapping):
         return root.session
 
     def get_path(self):
-        if getattr(self, "_parent", None):
-            return self._parent.get_path() + "/" + self._name
+        if getattr(self, "parent", None):
+            return self.parent.get_path() + "/" + self._name
         return self._name
 
     @property
