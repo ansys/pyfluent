@@ -220,3 +220,22 @@ def test_interrupt(load_static_mixer_case):
     time.sleep(5)
     solver.solution.run_calculation.interrupt()
     assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100
+
+
+def test_fluent_exit():
+    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
+    script = (
+        "import ansys.fluent.core as pyfluent;"
+        "solver = pyfluent.launch_fluent(start_watchdog=False);"
+        f'{"print(solver.connection_properties.cortex_host);" if inside_container else "print(solver.connection_properties.cortex_pid);"}'
+        "exit()"
+    )
+    output = subprocess.check_output(f'python -c "{script}"')
+    cortex = output.decode().strip()
+    cortex = cortex if inside_container else int(cortex)
+    assert timeout_loop(
+        lambda: (inside_container and not get_container(cortex))
+        or (not inside_container and not psutil.pid_exists(cortex)),
+        timeout=60,
+        idle_period=1,
+    )
