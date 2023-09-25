@@ -46,7 +46,7 @@ class Container:
             self, "Surfaces", []
         )
 
-    def get_path(self):                              
+    def get_path(self):
         return self._path
 
     @property
