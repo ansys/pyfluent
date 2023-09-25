@@ -571,7 +571,12 @@ class FluentConnection:
 
     @staticmethod
     def _exit(
-        channel, cleanup_on_exit, scheme_eval, finalizer_cbs, remote_instance, exit_evt
+        channel,
+        cleanup_on_exit,
+        scheme_eval,
+        finalizer_cbs,
+        remote_instance,
+        exit_event,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
         if channel:
@@ -588,4 +593,4 @@ class FluentConnection:
         if remote_instance:
             remote_instance.delete()
 
-        exit_evt.set()
+        exit_event.set()
