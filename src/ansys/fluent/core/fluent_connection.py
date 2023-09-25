@@ -347,6 +347,17 @@ class FluentConnection:
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
 
+        self._exit_event = threading.Event()
+
+        # session.exit() is handled in the daemon thread (MonitorThread) which ensures
+        # shutdown of non-daemon threads. A daemon thread is terminated abruptly
+        # during interpreter exit, after all non-daemon threads are exited.
+        # self._waiting_thread is a long-running thread which is exited
+        # at the end of session.exit() to ensure everything within session.exit()
+        # gets executed during exit.
+        self._waiting_thread = threading.Thread(target=self._exit_event.wait)
+        self._waiting_thread.start()
+
         self._finalizer = weakref.finalize(
             self,
             FluentConnection._exit,
@@ -355,6 +366,7 @@ class FluentConnection:
             self.scheme_eval,
             self.finalizer_cbs,
             self._remote_instance,
+            self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
@@ -564,6 +576,7 @@ class FluentConnection:
         scheme_eval,
         finalizer_cbs,
         remote_instance,
+        exit_event,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
         if channel:
@@ -579,3 +592,5 @@ class FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+        exit_event.set()
