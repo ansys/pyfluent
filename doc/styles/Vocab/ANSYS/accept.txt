@@ -3,6 +3,7 @@ Ansys
 ansys
 batch_ops
 CaseFile
+DataFile
 CommandArguments
 error_handler
 events

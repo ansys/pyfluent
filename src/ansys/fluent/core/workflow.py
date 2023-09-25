@@ -8,7 +8,7 @@ from time import sleep, time
 from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
-from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
+from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
 
 logger = logging.getLogger("pyfluent.datamodel")
 
@@ -77,6 +77,7 @@ def _refresh_task_accessors(obj):
 class BaseTask:
     """Base class Task representation for wrapping a Workflow TaskObject instance,
     adding methods to discover more about the relationships between TaskObjects.
+
     Methods
     -------
     get_direct_upstream_tasks()
@@ -134,7 +135,7 @@ class BaseTask:
 
         Returns
         -------
-        upstreams : list
+        list
             Upstream task list.
         """
         return self._tasks_with_matching_attributes(
@@ -200,7 +201,7 @@ class BaseTask:
         return self._ordered_children
 
     def inactive_ordered_children(self) -> list:
-        """Get the inactive ordered child list
+        """Get the inactive ordered child list.
 
         Returns
         -------
@@ -424,7 +425,7 @@ class ArgumentsWrapper(PyCallableStateObject):
 
 
 class ArgumentWrapper(PyCallableStateObject):
-    """Wrapper for a single task argument"""
+    """Wrapper for a single task argument."""
 
     def __init__(self, task: BaseTask, arg: str) -> None:
         """Initialize ArgumentWrapper.
@@ -551,7 +552,7 @@ class SimpleTask(CommandTask):
         super().__init__(command_source, task)
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow. SimpleTasks have no TaskList"""
+        """Get the ordered task list held by the workflow. SimpleTasks have no TaskList."""
         return []
 
 
@@ -651,7 +652,7 @@ class ConditionalTask(CommandTask):
 
         Returns
         -------
-        children : list
+        list
             Inactive ordered children.
         """
         return [
@@ -798,7 +799,7 @@ class WorkflowWrapper:
 
         Returns
         -------
-        task : BaseTask
+        BaseTask
             wrapped task object.
         """
         return _makeTask(self, name)
@@ -868,7 +869,7 @@ class WorkflowWrapper:
 
         Returns
         -------
-        children : list
+        list
             Inactive ordered children.
         """
         return []
@@ -963,14 +964,16 @@ class WorkflowWrapper:
 
 
 class ReadOnlyObject:
-    """Removes 'set_state()' attribute to implement read-only behaviour."""
+    """Removes set_state() to implement read-only behaviour."""
 
     _unwanted_attr = ["set_state", "setState"]
 
     def __init__(self, cmd):
+        """Initialize this object."""
         self._cmd = cmd
 
     def is_read_only(self):
+        """Get the read-only status of this object."""
         return True
 
     def __getattr__(self, attr):

@@ -64,12 +64,13 @@ def test_mixing_elbow_meshing_workflow(
     ###############################################################################
     # Describe the geometry
     # Query the task state before and after task execution
-    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
+    describe_geo = workflow.TaskObject["Describe Geometry"]
+    describe_geo.UpdateChildTasks(SetupTypeChanged=False)
     assign_task_args(
         task_name="Describe Geometry",
         SetupType="The geometry consists of only fluid regions with no voids",
     )
-    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
+    describe_geo.UpdateChildTasks(SetupTypeChanged=True)
 
     execute_task_with_pre_and_postconditions(task_name="Describe Geometry")
 
@@ -95,12 +96,13 @@ def test_mixing_elbow_meshing_workflow(
     ###############################################################################
     # Add Boundary Layers
     # Query the task state before and after task execution
-    workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-    workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+    add_boundary_layer = workflow.TaskObject["Add Boundary Layers"]
+    add_boundary_layer.AddChildToTask()
+    add_boundary_layer.InsertCompoundChildTask()
     assign_task_args(
         task_name="smooth-transition_1", BLControlName="smooth-transition_1"
     )
-    workflow.TaskObject["Add Boundary Layers"].Arguments = {}
+    add_boundary_layer.Arguments = {}
 
     execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
 
@@ -228,45 +230,32 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w = session_new.workflow
 
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_geom = w.task("Import Geometry")
+    assert import_geom.arguments.LengthUnit.default_value() == "mm"
+    assert import_geom.arguments.MeshUnit.is_read_only()
+    assert import_geom.arguments.LengthUnit.is_active()
+    assert import_geom.arguments.FileName.is_read_only()
+    assert import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
 
-    assert w.task("Import Geometry").arguments.LengthUnit.default_value() == "mm"
-    assert w.task("Import Geometry").arguments.MeshUnit.is_read_only()
-    assert w.task("Import Geometry").arguments.LengthUnit.is_active()
-    assert w.task("Import Geometry").arguments.FileName.is_read_only()
-    assert w.task(
-        "Import Geometry"
-    ).arguments.CadImportOptions.OneZonePer.is_read_only()
+    volume_mesh_gen = w.task("Generate the Volume Mesh")
     assert (
-        w.task(
-            "Generate the Volume Mesh"
-        ).arguments.VolumeFillControls.Type.default_value()
-        == "Cartesian"
+        volume_mesh_gen.arguments.VolumeFillControls.Type.default_value() == "Cartesian"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
-    assert w.task(
-        "Generate the Volume Mesh"
-    ).arguments.VolumeFillControls.Type.allowed_values() == [
+    assert volume_mesh_gen.arguments.VolumeFillControls.Type.allowed_values() == [
         "Octree",
         "Cartesian",
     ]
-    assert (
-        w.task(
-            "Import Geometry"
-        ).arguments.CadImportOptions.FeatureAngle.default_value()
-        == 40.0
-    )
+    feat_angle = import_geom.arguments.CadImportOptions.FeatureAngle
+    assert feat_angle.default_value() == 40.0
 
     # Test particular to numerical type (min() only available in numerical types)
-    assert (
-        w.task("Import Geometry").arguments.CadImportOptions.FeatureAngle.min() == 0.0
-    )
+    assert feat_angle.min() == 0.0
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
-        assert w.task(
-            "Import Geometry"
-        ).arguments.CadImportOptions.FeatureAngle.allowed_values()
+        assert feat_angle.allowed_values()
     assert (
         msg.value.args[0]
         == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
@@ -274,7 +263,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
-        assert w.task("Import Geometry").arguments.NumParts.allowed_values()
+        assert import_geom.arguments.NumParts.allowed_values()
     assert (
         msg.value.args[0]
         == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
@@ -282,7 +271,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
     # Test intended to fail in string type (min() only available in numerical types)
     with pytest.raises(AttributeError) as msg:
-        assert w.task("Import Geometry").arguments.LengthUnit.min()
+        assert import_geom.arguments.LengthUnit.min()
     assert (
         msg.value.args[0]
         == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
@@ -294,26 +283,26 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
-    m = session_new.meshing
+    m = session_new.meshing.ImportGeometry.create_instance
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_geom = w.task("Import Geometry")
 
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").arguments.MeshUnit.set_state("in")
+        import_geom.arguments.MeshUnit.set_state("in")
     assert msg.value.args[0] == "Command Arguments are read-only."
 
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").arguments.CadImportOptions.OneZonePer.set_state(None)
+        import_geom.arguments.CadImportOptions.OneZonePer.set_state(None)
     assert msg.value.args[0] == "Command Arguments are read-only."
 
-    assert "set_state" in dir(m.ImportGeometry.create_instance())
-    assert "set_state" in dir(m.ImportGeometry.create_instance().NumParts)
+    assert "set_state" in dir(m())
+    assert "set_state" in dir(m().NumParts)
 
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
-
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert w.task("Import Geometry").arguments.LengthUnit.allowed_values() == [
@@ -333,22 +322,21 @@ def test_sample_use_of_command_arguments(new_mesh_session):
 @pytest.mark.codegen_required
 def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
-
     w = session_new.workflow
-
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_geom = w.task("Import Geometry")
 
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").delete_child()
+        import_geom.delete_child()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").delete_child_objects()
+        import_geom.delete_child_objects()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").delete_all_child_objects()
+        import_geom.delete_all_child_objects()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").fix_state()
+        import_geom.fix_state()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
 
 
@@ -607,10 +595,10 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
     # restart
     watertight = new_mesh_session.watertight()
-    assert watertight.import_geometry.State() == "Out-of-date"
-    watertight.import_geometry(FileName=mixing_elbow_geometry, AppendMesh=False)
-    assert watertight.import_geometry.State() == "Up-to-date"
-    import_geometry_state = watertight.import_geometry.arguments()
+    assert import_geometry.State() == "Out-of-date"
+    import_geometry(FileName=mixing_elbow_geometry, AppendMesh=False)
+    assert import_geometry.State() == "Up-to-date"
+    import_geometry_state = import_geometry.arguments()
     assert len(import_geometry_state) > 2
 
 
@@ -696,20 +684,19 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
-    assert (
-        watertight.describe_geometry.create_regions.arguments()["NumberOfFlowVolumes"]
-        == 1
-    )
+
+    watertight_geom = watertight.describe_geometry
+    assert watertight_geom.create_regions.arguments()["NumberOfFlowVolumes"] == 1
     watertight.DeleteTasks(ListOfTasks=["Create Regions"])
-    assert watertight.describe_geometry.create_regions is None
-    assert watertight.describe_geometry.enclose_fluid_regions
-    watertight.describe_geometry.enclose_fluid_regions.delete()
-    assert watertight.describe_geometry.enclose_fluid_regions is None
+    assert watertight_geom.create_regions is None
+    assert watertight_geom.enclose_fluid_regions
+    watertight_geom.enclose_fluid_regions.delete()
+    assert watertight_geom.enclose_fluid_regions is None
     watertight.create_volume_mesh.delete()
     assert watertight.create_volume_mesh is None
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version("==23.2")
 @pytest.mark.codegen_required
 def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
@@ -720,7 +707,8 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
         Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
     )
     part_management.Node["Object"].Rename(NewName=r"Engine")
-    fault_tolerant.TaskObject["Import CAD and Part Management"].Arguments.setState(
+    import_cad = fault_tolerant.TaskObject["Import CAD and Part Management"]
+    import_cad.Arguments.setState(
         {
             r"CreateObjectPer": r"Custom",
             r"FMDFileName": filename,
@@ -728,4 +716,4 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
             r"ObjectSetting": r"DefaultObjectSetting",
         }
     )
-    fault_tolerant.TaskObject["Import CAD and Part Management"].Execute()
+    import_cad.Execute()

@@ -671,8 +671,6 @@ def launch_fluent(
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         if env is None:
             env = {}
-        if mode != FluentMode.SOLVER_ICING:
-            env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
         kwargs = _get_subprocess_kwargs_for_fluent(env)
         if cwd:
             kwargs.update(cwd=cwd)
@@ -729,7 +727,7 @@ def launch_fluent(
                 if meshing_mode:
                     session.tui.file.read_journal(journal_filepath)
                 else:
-                    session.file.read_journal(journal_filepath)
+                    session.file.read_journal(file_name_list=[str(journal_filepath)])
             if case_data_filepath:
                 if not meshing_mode:
                     session.file.read(

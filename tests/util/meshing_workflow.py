@@ -120,17 +120,6 @@ def new_fault_tolerant_workflow(new_fault_tolerant_workflow_session):
     yield new_fault_tolerant_workflow_session.workflow
 
 
-_mesher = None
-
-
-@pytest.fixture
-def shared_mesh_session():
-    global _mesher
-    if not _mesher:
-        _mesher = create_mesh_session()
-    return _mesher
-
-
 @pytest.fixture
 def shared_fault_tolerant_workflow_session(shared_mesh_session):
     initialize_fault_tolerant(shared_mesh_session)

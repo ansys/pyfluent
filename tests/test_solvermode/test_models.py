@@ -1,106 +1,76 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
 def test_solver_models(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
-    assert not solver_session.setup.models.energy.enabled()
-    solver_session.setup.models.energy.enabled = True
-    assert solver_session.setup.models.energy.enabled()
-    solver_session.setup.models.multiphase.models = "vof"
-    assert solver_session.setup.models.multiphase.models() == "vof"
-    solver_session.setup.models.viscous.model = "laminar"
-    assert solver_session.setup.models.viscous.model() == "laminar"
-    solver_session.setup.models.viscous.model = "k-epsilon"
-    assert solver_session.setup.models.viscous.model() == "k-epsilon"
-    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
-        "enhanced-wall-treatment"
-    )
-    solver_session.setup.models.multiphase.models = "eulerian"
-    assert solver_session.setup.models.multiphase.models() == "eulerian"
+    models = solver_session.setup.models
+    assert not models.energy.enabled()
+    models.energy.enabled = True
+    assert models.energy.enabled()
+    models.multiphase.models = "vof"
+    assert models.multiphase.models() == "vof"
+    models.viscous.model = "laminar"
+    assert models.viscous.model() == "laminar"
+    models.viscous.model = "k-epsilon"
+    assert models.viscous.model() == "k-epsilon"
+
+    models.viscous.near_wall_treatment.wall_treatment = "enhanced-wall-treatment"
+    models.multiphase.models = "eulerian"
+    assert models.multiphase.models() == "eulerian"
 
 
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
 def test_disk_2d_models(load_disk_mesh):
     solver_session = load_disk_mesh
+    models = solver_session.setup.models
     solver_session.setup.general.solver.two_dim_space = "axisymmetric"
     solver_session.setup.general.solver.two_dim_space = "swirl"
-    solver_session.setup.models.viscous.model = "k-epsilon"
-    assert solver_session.setup.models.viscous.model() == "k-epsilon"
-    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
-        "enhanced-wall-treatment"
-    )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
-        == "enhanced-wall-treatment"
-    )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment.get_attr(
-            "allowed-values"
-        )
-        == [
-            "standard-wall-fn",
-            "non-equilibrium-wall-fn",
-            "enhanced-wall-treatment",
-            "menter-lechner",
-            "scalable-wall-functions",
-        ]
-    )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
-        "standard-wall-fn"
-    )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
-        == "standard-wall-fn"
-    )
 
-    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
-        "non-equilibrium-wall-fn"
-    )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
-        == "non-equilibrium-wall-fn"
-    )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
-        "menter-lechner"
-    )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
-        == "menter-lechner"
-    )
-    solver_session.setup.models.viscous.near_wall_treatment.wall_treatment = (
-        "scalable-wall-functions"
-    )
-    assert (
-        solver_session.setup.models.viscous.near_wall_treatment.wall_treatment()
-        == "scalable-wall-functions"
-    )
+    models.viscous.model = "k-epsilon"
+    near_wall = models.viscous.near_wall_treatment
+    assert models.viscous.model() == "k-epsilon"
+    near_wall.wall_treatment = "enhanced-wall-treatment"
+    assert near_wall.wall_treatment() == "enhanced-wall-treatment"
+    assert near_wall.wall_treatment.get_attr("allowed-values") == [
+        "standard-wall-fn",
+        "non-equilibrium-wall-fn",
+        "enhanced-wall-treatment",
+        "menter-lechner",
+        "scalable-wall-functions",
+    ]
 
-    solver_session.setup.models.viscous.model = "k-omega"
-    assert solver_session.setup.models.viscous.model() == "k-omega"
-    assert solver_session.setup.models.viscous.k_omega_model.get_attr(
-        "allowed-values"
-    ) == [
+    near_wall.wall_treatment = "standard-wall-fn"
+    assert near_wall.wall_treatment() == "standard-wall-fn"
+    near_wall.wall_treatment = "non-equilibrium-wall-fn"
+    assert near_wall.wall_treatment() == "non-equilibrium-wall-fn"
+    near_wall.wall_treatment = "menter-lechner"
+    assert near_wall.wall_treatment() == "menter-lechner"
+    near_wall.wall_treatment = "scalable-wall-functions"
+    assert near_wall.wall_treatment() == "scalable-wall-functions"
+
+    models.viscous.model = "k-omega"
+    assert models.viscous.model() == "k-omega"
+    assert models.viscous.k_omega_model.get_attr("allowed-values") == [
         "standard",
         "geko",
         "bsl",
         "sst",
     ]
-    assert solver_session.setup.models.viscous.k_omega_model() == "standard"
-    solver_session.setup.models.viscous.k_omega_model = "geko"
-    assert solver_session.setup.models.viscous.k_omega_model() == "geko"
-    solver_session.setup.models.viscous.k_omega_model = "bsl"
-    assert solver_session.setup.models.viscous.k_omega_model() == "bsl"
-    solver_session.setup.models.viscous.k_omega_model = "sst"
-    assert solver_session.setup.models.viscous.k_omega_model() == "sst"
-    assert solver_session.setup.models.viscous.model.get_attr("allowed-values") == [
+
+    assert models.viscous.k_omega_model() == "standard"
+    models.viscous.k_omega_model = "geko"
+    assert models.viscous.k_omega_model() == "geko"
+    models.viscous.k_omega_model = "bsl"
+    assert models.viscous.k_omega_model() == "bsl"
+    models.viscous.k_omega_model = "sst"
+    assert models.viscous.k_omega_model() == "sst"
+    assert models.viscous.model.get_attr("allowed-values") == [
         "inviscid",
         "laminar",
         "k-epsilon",
@@ -113,30 +83,19 @@ def test_disk_2d_models(load_disk_mesh):
         "scale-adaptive-simulation",
         "detached-eddy-simulation",
     ]
-    solver_session.setup.models.viscous.k_omega_options.kw_low_re_correction = True
-    assert (
-        solver_session.setup.models.viscous.k_omega_options.kw_low_re_correction()
-        == True
-    )
-    solver_session.setup.models.viscous.turbulence_expert.kato_launder_model = True
-    assert (
-        solver_session.setup.models.viscous.turbulence_expert.kato_launder_model()
-        == True
-    )
+    k_omega_options = models.viscous.k_omega_options
+    k_omega_options.kw_low_re_correction = True
+    assert k_omega_options.kw_low_re_correction() == True
 
-    solver_session.setup.models.viscous.turbulence_expert.production_limiter.clip_factor = (
-        9
-    )
-    assert (
-        solver_session.setup.models.viscous.turbulence_expert.production_limiter.clip_factor()
-        == 9
-    )
-    solver_session.setup.models.viscous.turbulence_expert.turb_non_newtonian = True
-    assert (
-        solver_session.setup.models.viscous.turbulence_expert.turb_non_newtonian()
-        == True
-    )
-    solver_session.setup.models.viscous.model = "laminar"
-    assert solver_session.setup.models.viscous.model() == "laminar"
-    solver_session.setup.models.viscous.model = "spalart-allmaras"
-    assert solver_session.setup.models.viscous.model() == "spalart-allmaras"
+    turb_expert = models.viscous.turbulence_expert
+    turb_expert.kato_launder_model = True
+    assert turb_expert.kato_launder_model() == True
+    turb_expert.production_limiter.clip_factor = 9
+    assert turb_expert.production_limiter.clip_factor() == 9
+    turb_expert.turb_non_newtonian = True
+    assert turb_expert.turb_non_newtonian() == True
+
+    models.viscous.model = "laminar"
+    assert models.viscous.model() == "laminar"
+    models.viscous.model = "spalart-allmaras"
+    assert models.viscous.model() == "spalart-allmaras"

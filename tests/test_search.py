@@ -62,17 +62,17 @@ def test_get_version_path_prefix_from_obj(
     assert _get_version_path_prefix_from_obj(meshing) == (
         version,
         ["<meshing_session>"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(solver) == (
         version,
         ["<solver_session>"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.tui.file.import_) == (
         version,
         ["<meshing_session>", "tui", "file", "import_"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.tui.file.read_case) == (
         None,
@@ -82,35 +82,39 @@ def test_get_version_path_prefix_from_obj(
     assert _get_version_path_prefix_from_obj(meshing.meshing) == (
         version,
         ["<meshing_session>", "meshing"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.workflow) == (
         version,
         ["<meshing_session>", "workflow"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(solver.workflow) == (
         version,
         ["<meshing_session>", "workflow"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.workflow.TaskObject) == (
         version,
         ["<meshing_session>", "workflow", "TaskObject:<name>"],
-        '<root>["<name>"]',
+        '<search_root>["<name>"]',
     )
     assert _get_version_path_prefix_from_obj(
         meshing.workflow.TaskObject["Import Geometry"]
-    ) == (version, ["<meshing_session>", "workflow", "TaskObject:<name>"], "<root>")
+    ) == (
+        version,
+        ["<meshing_session>", "workflow", "TaskObject:<name>"],
+        "<search_root>",
+    )
     assert _get_version_path_prefix_from_obj(meshing.preferences.Appearance.Charts) == (
         version,
         ["<solver_session>", "preferences", "Appearance", "Charts"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(solver.setup.models) == (
         version,
         ["<solver_session>"],
-        "<root>",
+        "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(solver.file.cff_files) == (
         None,
@@ -122,63 +126,66 @@ def test_get_version_path_prefix_from_obj(
 @pytest.mark.fluent_version("latest")
 def test_search_from_root(capsys, new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
-    pyfluent.search("display", root=meshing)
+    pyfluent.search("display", search_root=meshing)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.tui.display (Object)" in lines
-    pyfluent.search("display", root=meshing.tui)
+    assert "<search_root>.tui.display (Object)" in lines
+    pyfluent.search("display", search_root=meshing.tui)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.display (Object)" in lines
-    pyfluent.search("display", root=meshing.tui.display)
+    assert "<search_root>.display (Object)" in lines
+    pyfluent.search("display", search_root=meshing.tui.display)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.update_scene.display (Command)" in lines
-    assert "<root>.display_states (Object)" in lines
-    pyfluent.search("cad", root=meshing.meshing)
+    assert "<search_root>.update_scene.display (Command)" in lines
+    assert "<search_root>.display_states (Object)" in lines
+    pyfluent.search("cad", search_root=meshing.meshing)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
-    assert "<root>.LoadCADGeometry (Command)" in lines
-    pyfluent.search("next", root=meshing.workflow)
+    assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
+    assert "<search_root>.LoadCADGeometry (Command)" in lines
+    pyfluent.search("next", search_root=meshing.workflow)
     lines = capsys.readouterr().out.splitlines()
-    assert '<root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
-    pyfluent.search("next", root=meshing.workflow.TaskObject)
+    assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
+    pyfluent.search("next", search_root=meshing.workflow.TaskObject)
     lines = capsys.readouterr().out.splitlines()
-    assert '<root>["<name>"].InsertNextTask (Command)' in lines
-    pyfluent.search("next", root=meshing.workflow.TaskObject["Import Geometry"])
+    assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
+    pyfluent.search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.InsertNextTask (Command)" in lines
-    pyfluent.search("timeout", root=meshing.preferences)
+    assert "<search_root>.InsertNextTask (Command)" in lines
+    pyfluent.search("timeout", search_root=meshing.preferences)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.General.IdleTimeout (Parameter)" in lines
-    pyfluent.search("timeout", root=meshing.preferences.General)
+    assert "<search_root>.General.IdleTimeout (Parameter)" in lines
+    pyfluent.search("timeout", search_root=meshing.preferences.General)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.IdleTimeout (Parameter)" in lines
+    assert "<search_root>.IdleTimeout (Parameter)" in lines
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("==23.2")
 def test_search_settings_from_root(capsys, load_static_mixer_case):
     solver = load_static_mixer_case
-    pyfluent.search("conduction", root=solver)
+    pyfluent.search("conduction", search_root=solver)
     lines = capsys.readouterr().out.splitlines()
-    assert "<root>.tui.define.models.shell_conduction (Object)" in lines
+    assert "<search_root>.tui.define.models.shell_conduction (Object)" in lines
     assert (
-        '<root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        '<search_root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
-    pyfluent.search("conduction", root=solver.setup.boundary_conditions)
+    pyfluent.search("conduction", search_root=solver.setup.boundary_conditions)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        '<search_root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
-    pyfluent.search("conduction", root=solver.setup.boundary_conditions.wall)
+    pyfluent.search("conduction", search_root=solver.setup.boundary_conditions.wall)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)' in lines
+        '<search_root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        in lines
     )
-    pyfluent.search("conduction", root=solver.setup.boundary_conditions.wall["wall"])
-    lines = capsys.readouterr().out.splitlines()
-    assert '<root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
     pyfluent.search(
-        "conduction", root=solver.setup.boundary_conditions.wall["wall"].phase
+        "conduction", search_root=solver.setup.boundary_conditions.wall["wall"]
     )
     lines = capsys.readouterr().out.splitlines()
-    assert '<root>["<name>"].shell_conduction["<name>"] (Object)' in lines
+    assert '<search_root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
+    pyfluent.search(
+        "conduction", search_root=solver.setup.boundary_conditions.wall["wall"].phase
+    )
+    lines = capsys.readouterr().out.splitlines()
+    assert '<search_root>["<name>"].shell_conduction["<name>"] (Object)' in lines

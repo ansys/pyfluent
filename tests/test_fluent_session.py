@@ -5,6 +5,8 @@ import time
 
 from docker.models.containers import Container
 import psutil
+import pytest
+from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
     new_solver_session_no_transcript,
@@ -13,7 +15,7 @@ from util.solver_workflow import (  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import get_container
-from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 
 def _read_case(session):
@@ -164,17 +166,15 @@ def test_exit_fluent_when_connected_to_running_fluent(
 def test_fluent_connection_properties(
     new_solver_session,
 ) -> None:
-    session = new_solver_session
-    assert isinstance(session.connection_properties.ip, str)
-    assert isinstance(session.connection_properties.port, int)
-    assert isinstance(session.connection_properties.password, str)
-    assert isinstance(session.connection_properties.cortex_pwd, str)
-    assert isinstance(session.connection_properties.cortex_pid, int)
-    assert isinstance(session.connection_properties.cortex_host, str)
-    assert isinstance(
-        session.connection_properties.inside_container, bool
-    ) or isinstance(session.connection_properties.inside_container, Container)
-    assert isinstance(session.connection_properties.fluent_host_pid, int)
+    connection_properties = new_solver_session.connection_properties
+    assert isinstance(connection_properties.ip, str)
+    assert isinstance(connection_properties.port, int)
+    assert isinstance(connection_properties.password, str)
+    assert isinstance(connection_properties.cortex_pwd, str)
+    assert isinstance(connection_properties.cortex_pid, int)
+    assert isinstance(connection_properties.cortex_host, str)
+    assert isinstance(connection_properties.inside_container, (bool, Container))
+    assert isinstance(connection_properties.fluent_host_pid, int)
 
 
 def test_fluent_freeze_kill(
@@ -207,3 +207,16 @@ def test_fluent_freeze_kill(
     )
 
     assert not alive
+
+
+@pytest.mark.fluent_version(">=23.1")
+def test_interrupt(load_static_mixer_case):
+    solver = load_static_mixer_case
+    solver.setup.general.solver.time = "unsteady-2nd-order"
+    solver.solution.initialization.standard_initialize()
+    asynchronous(solver.solution.run_calculation.dual_time_iterate)(
+        time_step_count=100, max_iter_per_step=20
+    )
+    time.sleep(5)
+    solver.solution.run_calculation.interrupt()
+    assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100

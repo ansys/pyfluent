@@ -535,6 +535,8 @@ class VectorDefn(GraphicsDefn):
         @Attribute
         def allowed_values(self):
             """Vectors of allowed values."""
+            if hasattr(self._api_helper.field_info(), "get_vector_fields_info"):
+                return list(self._api_helper.field_info().get_vector_fields_info())
             return list(self._api_helper.get_vector_fields())
 
     class field(metaclass=PyLocalPropertyMeta):

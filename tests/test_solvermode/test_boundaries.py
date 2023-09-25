@@ -8,86 +8,74 @@ from util.solver import SettingsValDict as D
 from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
 
-@pytest.mark.nightly
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.integration
 @pytest.mark.setup
 @pytest.mark.codegen_required
 def test_boundaries_elbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     solver_session.setup.models.energy.enabled = True
-    assert (
-        D(0)
-        == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag()
-    )
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag, 0.4
-    )
-    assert (
-        D(0.4)
-        == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag()
-    )
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turb_intensity = 0.05
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turb_hydraulic_diam = "4 [in]"
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].t, 293.15
-    )
+
+    cold_inlet = solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    assert D(0) == cold_inlet.momentum.velocity()
+    assign_dict_val(cold_inlet.momentum.velocity, 0.4)
+    assert D(0.4) == cold_inlet.momentum.velocity()
+
+    cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    cold_inlet.turbulence.turbulent_intensity = 0.05
+    cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+    assign_dict_val(cold_inlet.thermal.t, 293.15)
+
     assert {
         "name": "cold-inlet",
-        "velocity_spec": "Magnitude, Normal to Boundary",
-        "frame_of_reference": "Absolute",
-        "vmag": {"option": "value", "value": 0.4},
-        "initial_gauge_pressure": {"option": "value", "value": 0},
-        "t": {"option": "value", "value": 293.15},
-        "ke_spec": "Intensity and Hydraulic Diameter",
-        "turb_intensity": 0.05,
-        "turb_hydraulic_diam": "4 [in]",
-    } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": 0},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": 0.4},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "turbulence": {
+            "turbulent_specification": "Intensity and Hydraulic Diameter",
+            "turbulent_intensity": 0.05,
+            "hydraulic_diameter": "4 [in]",
+        },
+        "thermal": {"t": {"option": "value", "value": 293.15}},
+    } == cold_inlet()
 
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag, 1.2
-    )
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    solver_session.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].turb_hydraulic_diam = "1 [in]"
-    assign_dict_val(
-        solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].t, 313.15
-    )
+    hot_inlet = solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    assign_dict_val(hot_inlet.momentum.velocity, 1.2)
+    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+    assign_dict_val(hot_inlet.thermal.t, 313.15)
+
     assert {
         "name": "hot-inlet",
-        "velocity_spec": "Magnitude, Normal to Boundary",
-        "frame_of_reference": "Absolute",
-        "vmag": {"option": "value", "value": 1.2},
-        "initial_gauge_pressure": {"option": "value", "value": 0},
-        "t": {"option": "value", "value": 313.15},
-        "ke_spec": "Intensity and Hydraulic Diameter",
-        "turb_intensity": 0.05,
-        "turb_hydraulic_diam": "1 [in]",
-    } == solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]()
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": 0},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": 1.2},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "turbulence": {
+            "turbulent_specification": "Intensity and Hydraulic Diameter",
+            "turbulent_intensity": 0.05,
+            "hydraulic_diameter": "1 [in]",
+        },
+        "thermal": {"t": {"option": "value", "value": 313.15}},
+    } == hot_inlet()
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
-    ].turb_viscosity_ratio = 4
+    ].turbulence.turbulent_viscosity_ratio_real = 4
     assert (
         solver_session.setup.boundary_conditions.pressure_outlet[
             "outlet"
-        ].turb_viscosity_ratio()
+        ].turbulence.turbulent_viscosity_ratio_real()
         == 4
     )
 
 
 # TODO: Skipped for the nightly test run to be successful. Later decide what to do with this test (discard?).
-@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
@@ -124,10 +112,14 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
     # commented new method due to bug 753
     # solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
-    solver_session.setup.boundary_conditions.wall.rename("pipe2_wall", "pipe_2_wall")
-    solver_session.setup.boundary_conditions.wall.rename("out", "outlet")
-    solver_session.setup.boundary_conditions.velocity_inlet["inlet"].vmag = 5.0
-    solver_session.setup.boundary_conditions["inlet"].vmag = 10.0
+    rename_wall = solver_session.setup.boundary_conditions.wall.rename
+    rename_wall("pipe2_wall", "pipe_2_wall")
+    rename_wall("out", "outlet")
+
+    solver_session.setup.boundary_conditions.velocity_inlet[
+        "inlet"
+    ].momentum.velocity = 5.0
+    solver_session.setup.boundary_conditions["inlet"].momentum.velocity = 10.0
     boundaries_check = ["inlet", "out", "pipe2_wall"]
     boundary_test = dict()
     for name, boundary in solver_session.setup.boundary_conditions.items():

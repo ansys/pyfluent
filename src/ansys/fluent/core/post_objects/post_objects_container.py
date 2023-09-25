@@ -48,7 +48,7 @@ class Container:
 
     def get_path(self):                              
         return self._path
-        
+
     @property
     def type(self):
         """Type."""
