@@ -198,8 +198,8 @@ For distributed parallel processing, you usually pass both parameters:
 Using the PYFLUENT_ADDITIONAL_ARGUMENTS environment variable
 ------------------------------------------------------------
 You can set additional arguments also using this environment variable.
-This can be useful for running on multiple platforms and allows you to keep
-a the same python script to use on the platforms.
+This can be useful when running on multiple platforms, avoiding the need to change the
+Python scripts being run.
 
 .. code:: bash
 
