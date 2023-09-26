@@ -95,7 +95,7 @@ jobs:
       - name: "Install Git and clone project"
         uses: actions/checkout@v4
 
-      - name: "get version of library"
+      - name: "Get version of library"
         shell: bash
         run: |
           echo "FULL_VERSION=$(cat VERSION)" >> $GITHUB_ENV
