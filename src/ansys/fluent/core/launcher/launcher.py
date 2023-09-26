@@ -606,13 +606,12 @@ def launch_fluent(
     # Check if user set PYFLUENT_ADDITIONAL_ARGUMENTS var
     if os.getenv("PYFLUENT_ADDITIONAL_ARGUMENTS") is not None:
         # Now check if user used the additional_arguments option
-        if additional_arguments is None:
-            additional_arguments = os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS")
-        else:
+        if additional_arguments is not None:
             logger.warning(
                 "Both the 'PYFLUENT_ADDITIONAL_ARGUMENTS' variable and 'additional_arguments' "
-                "options cannot be used together. Using the 'additional_arguments' option."
+                "options cannot be used together. Using the 'PYFLUENT_ADDITIONAL_ARGUMENTS' option."
             )
+        additional_arguments = os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS")
 
     if additional_arguments is None:
         additional_arguments = ""
