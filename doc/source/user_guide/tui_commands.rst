@@ -82,6 +82,15 @@ The corresponding Python command recorded in the Python journal is:
 Note, the string ``"Pa"`` is wrapped in single quotation marks
 to preserve the double quotation marks around the TUI argument.
 
+A command line flag ``-topy`` is also available in Fluent to convert an existing
+Fluent journal to Python journal. The following command will write a Python journal
+file my_journal.py in the working directory.
+
+.. code:: console
+
+   fluent.exe 3ddp -i my_journal.jou -topy
+
+
 In Fluent 2023 R1, the TUI commands for which settings API exist are recorded
 as settings API commands in the Python journal. All other TUI commands are recorded
 in a manner which is not Pythonic. You need to manually convert those TUI commands
