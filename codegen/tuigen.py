@@ -345,7 +345,6 @@ class TUIGenerator:
 
 
 def generate(version, pyfluent_path):
-    # pyfluent.set_log_level("WARNING")
     api_tree = {}
     if version > "222":
         _copy_tui_help_xml_file(version)
