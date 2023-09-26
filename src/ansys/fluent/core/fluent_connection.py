@@ -610,8 +610,7 @@ class FluentConnection:
                 success = timeout_exec(self._finalizer, timeout)
                 if success:
                     if wait is not None and not self._remote_instance:
-                        finished = self.wait_process_finished(limit=wait)
-                        if finished:
+                        if self.wait_process_finished(limit=wait):
                             return
                     else:
                         return
