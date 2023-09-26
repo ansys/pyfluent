@@ -253,7 +253,7 @@ if __name__ == "__main__":
 
         logger.info(", ".join(down) + " not running anymore")
 
-        if not fluent.wait_process_finished(timeout=IDLE_PERIOD * 5):
+        if not fluent.wait_process_finished(limit=IDLE_PERIOD * 5):
             logger.info(
                 "Fluent processes remain. Checking if Fluent gRPC service is healthy..."
             )
@@ -264,7 +264,7 @@ if __name__ == "__main__":
             if is_serving:
                 logger.info("Fluent client healthy, trying soft exit with timeout...")
                 fluent.exit(timeout=IDLE_PERIOD * 2, timeout_force=False)
-                if not fluent.wait_process_finished(timeout=IDLE_PERIOD * 5):
+                if not fluent.wait_process_finished(limit=IDLE_PERIOD * 5):
                     logger.info("Fluent client or container remains...")
                 else:
                     logger.info("Exit call succeeded.")
