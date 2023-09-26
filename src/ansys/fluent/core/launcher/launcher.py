@@ -600,6 +600,17 @@ def launch_fluent(
 
     del start_container
 
+    # Check if user set PYFLUENT_ADDITIONAL_ARGUMENTS var
+    if os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS",None) is not None:
+        # Now check if user used the additional_arguments option
+        if additional_arguments is None:
+            additional_arguments = os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS")
+        else:
+            logger.warning(
+                "Both the 'PYFLUENT_ADDITIONAL_ARGUMENTS' variable and 'additional_arguments' "
+                "options cannot be used together. Using the 'additional_arguments' option."
+            )
+
     if additional_arguments is None:
         additional_arguments = ""
     elif fluent_launch_mode == LaunchMode.PIM:

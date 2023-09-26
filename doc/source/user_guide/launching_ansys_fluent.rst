@@ -111,7 +111,7 @@ scheduler environments are Univa Grid Engine (UGE), Load Sharing Facility (LSF),
 Portable Batch System (PBS), and Slurm.
 
 This example shows a bash shell script that can be submitted to a Slurm
-scheduler using the ```sbatch``` command:  
+scheduler using the ```sbatch``` command:
 
 .. code:: bash
 
@@ -194,3 +194,29 @@ For distributed parallel processing, you usually pass both parameters:
       mode="solver",
       additional_arguments="-t16 -cnf=m1:8,m2:8",
    )
+
+Using the PYFLUENT_ADDITIONAL_ARGUMENTS environment variable
+------------------------------------------------------------
+You can set additional arguments also using this environment variable.
+This can be useful for running on multiple platforms and allows you to keep
+a the same python script to use on the platforms.
+
+.. code:: bash
+
+   #!/bin/bash
+   #
+   # Activate your favorite Python environment
+   #
+   export AWP_ROOT232=/apps/ansys_inc/v232
+   . ./venv/bin/activate
+   #
+   # Set additional arguments
+   #
+   export PYFLUENT_ADDITIONAL_ARGUMENTS="-cnf=m1:8,m2:8 -t16 -peth.efa"
+   #
+   # Run a PyFluent script
+   #
+   python run.py
+
+Note: You should omit the additional_arguments option in the launch_fluent function as
+that variable is taken over the environmental variable.
