@@ -197,7 +197,7 @@ For distributed parallel processing, you usually pass both parameters:
 
 Using the PYFLUENT_ADDITIONAL_ARGUMENTS environment variable
 ------------------------------------------------------------
-You can set additional arguments also using this environment variable.
+You can also set additional arguments using this environment variable.
 This can be useful when running on multiple platforms, avoiding the need to change the
 Python scripts being run.
 
@@ -217,6 +217,3 @@ Python scripts being run.
    # Run a PyFluent script
    #
    python run.py
-
-Note: You should omit the additional_arguments option in the launch_fluent function as
-that variable is ignored when using the environmental variable.
