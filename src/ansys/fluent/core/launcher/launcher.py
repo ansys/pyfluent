@@ -497,6 +497,9 @@ def launch_fluent(
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
+        As an alternative, a user may set the PYFLUENT_ADDITIONAL_ARGUMENTS environment
+        variable instead of setting this option. If both the environment variable is set,
+        and the user uses this option, the environment variable is ignored.
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
@@ -601,7 +604,7 @@ def launch_fluent(
     del start_container
 
     # Check if user set PYFLUENT_ADDITIONAL_ARGUMENTS var
-    if os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS",None) is not None:
+    if os.getenv("PYFLUENT_ADDITIONAL_ARGUMENTS") is not None:
         # Now check if user used the additional_arguments option
         if additional_arguments is None:
             additional_arguments = os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS")
