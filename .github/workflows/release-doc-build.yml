@@ -16,6 +16,8 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  MEILISEARCH_API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
+  MEILISEARCH_PUBLIC_API_KEY: ${{ secrets.MEILISEARCH_PUBLIC_API_KEY }}
 
 jobs:
   build_release_docs:
@@ -84,3 +86,33 @@ jobs:
             decompress-artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-index-stable:
+    name: "Deploy stable docs index"
+    runs-on: ubuntu-latest
+    needs: deploy_release_docs
+    steps:
+      - name: "Install Git and clone project"
+        uses: actions/checkout@v4
+
+      - name: "Get version of library"
+        shell: bash
+        run: |
+          echo "FULL_VERSION=$(cat VERSION)" >> $GITHUB_ENV
+
+      - name: "Scrape the stable documentation to PyMeilisearch"
+        run: |
+          VERSION=$(python -c "import os; version=os.environ['FULL_VERSION']; print('.'.join(version.split('.')[:2]))")
+          VERSION_MEILI=$(python -c "import os; version=os.environ['FULL_VERSION']; print('-'.join(version.split('.')[:2]))")
+          echo "Calculated VERSION: $VERSION"
+          echo "Calculated VERSION_MEILI: $VERSION_MEILI"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION_MEILI=$VERSION_MEILI" >> $GITHUB_ENV
+
+      - name: "Deploy the latest documentation index"
+        uses: ansys/actions/doc-deploy-index@v4
+        with:
+          cname: ${{ env.DOCUMENTATION_CNAME }}/version/${{ env.VERSION }}
+          index-name: pyfluent-v${{ env.VERSION_MEILI }}
+          host-url: ${{ vars.MEILISEARCH_HOST_URL }}
+          api-key: ${{ env.MEILISEARCH_API_KEY }}
