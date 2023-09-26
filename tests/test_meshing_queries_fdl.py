@@ -5,7 +5,7 @@ from ansys.fluent.core import examples
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2")
 def test_meshing_queries(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)
@@ -1374,4 +1374,435 @@ def test_meshing_queries(new_mesh_session):
             nthreads=2
         )
         is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.rename_face_zone(
+            zone_id=32, new_name="outlet-32"
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.rename_face_zone(
+            zone_name="outlet-32", new_name="outlet"
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.rename_edge_zone(
+            zone_id=20, new_name="symmetry:xyplane:hot-inlet:elbow-fluid:feature.20-new"
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.rename_face_zone(
+            zone_name="symmetry:xyplane:hot-inlet:elbow-fluid:feature.20-new",
+            new_name="symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.remove_id_suffix_from_face_zones()
+        == "*the-non-printing-object*"
+    )
+    assert (
+        meshing_session.meshing_queries.clean_face_zone_names()
+        == "*the-non-printing-object*"
+    )
+    assert (
+        meshing_session.meshing_queries.remove_ids_from_zone_names(
+            zone_id_list=[30, 31, 32]
+        )
+        is True
+    )
+
+    assert (
+        meshing_session.meshing_queries.renumber_zone_ids(
+            zone_id_list=[30, 31, 32], start_number=1
+        )
+        == "*the-non-printing-object*"
+    )
+
+    assert meshing_session.meshing_queries.rename_object(
+        old_object_name="elbow-fluid", new_object_name="elbow-fluid-1"
+    ) == [
+        "elbow-fluid-1",
+        "solid",
+        10,
+        [29, 33, 34, 1, 2, 3],
+        [20, 21, 22, 23, 24, 25, 26, 27, 28],
+        "mesh",
+        [
+            [
+                "elbow-fluid",
+                "fluid",
+                [3.981021240569742, 7.614496699403261, 0.02968953016527287],
+                [3, 2, 1, 34, 33, 29],
+                [[87], None],
+            ]
+        ],
+        [
+            ["outlet-1", "fluid", 1, [3], None, "geom", False, None],
+            ["hot-inlet-1", "fluid", 1, [2], None, "geom", False, None],
+            ["cold-inlet-1", "fluid", 1, [2, 1], None, "geom", False, None],
+            ["wall-inlet-1", "fluid", 1, [34], None, "geom", False, None],
+            [
+                "elbow-fluid",
+                "solid",
+                10,
+                [3, 2, 1, 34, 33, 29],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "body",
+            ],
+            [
+                "wall-elbow",
+                "solid",
+                10,
+                [34],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "wall-inlet",
+                "solid",
+                10,
+                [33],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            ["outlet", "solid", 10, [3], None, "geom", None, None, None, "facelabel"],
+            [
+                "cold-inlet",
+                "solid",
+                10,
+                [2],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "hot-inlet",
+                "solid",
+                10,
+                [1],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "symmetry-xyplane",
+                "solid",
+                10,
+                [29],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+        ],
+        [[87], None],
+        [None],
+        None,
+    ]
+
+    assert (
+        meshing_session.meshing_queries.replace_object_suffix(
+            object_name_list=["elbow-fluid"], separator="-", new_suffix="fluid-new"
+        )
+        == "*the-non-printing-object*"
+    )
+
+    assert (
+        meshing_session.meshing_queries.rename_face_zone_label(
+            object_name="elbow-fluid-1",
+            old_label_name="outlet",
+            new_label_name="outlet-new",
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.replace_label_suffix(
+            object_name_list=["elbow-fluid-1"], separator="-", new_suffix="fluid-new"
+        )
+        == "*the-non-printing-object*"
+    )
+
+    assert (
+        meshing_session.meshing_queries.copy_face_zone_labels(
+            from_face_zone_id=33, to_face_zone_id=34
+        )
+        == "*the-non-printing-object*"
+    )
+
+    assert (
+        meshing_session.meshing_queries.merge_face_zones(face_zone_id_list=[30, 31, 32])
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.merge_face_zones(face_zone_name_pattern="wall*")
+        == 34
+    )
+
+    assert (
+        meshing_session.meshing_queries.merge_face_zones_of_type(
+            face_zone_type="velocity-inlet", face_zone_name_pattern="*"
+        )
+        == 1
+    )
+
+    assert (
+        meshing_session.meshing_queries.merge_face_zones_with_same_prefix(
+            prefix="elbow"
+        )
+        is True
+    )
+
+    assert (
+        meshing_session.meshing_queries.merge_cell_zones(cell_zone_id_list=[87])
+        is False
+    )
+    assert (
+        meshing_session.meshing_queries.merge_cell_zones(
+            cell_zone_name_list=["elbow-fluid"]
+        )
+        is False
+    )
+    assert (
+        meshing_session.meshing_queries.merge_cell_zones(cell_zone_name_pattern="*")
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.merge_cell_zones_with_same_prefix(
+            prefix="elbow"
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.merge_cell_zones_with_same_suffix(
+            suffix="fluid"
+        )
+        is True
+    )
+
+    assert (
+        meshing_session.meshing_queries.separate_face_zones_by_cell_neighbor(
+            face_zone_id_list=[30, 31, 32]
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.separate_face_zones_by_cell_neighbor(
+            face_zone_name_list=["wall-inlet", "wallfluid-new"]
+        )
+        is True
+    )
+    assert (
+        meshing_session.meshing_queries.separate_face_zones_by_cell_neighbor(
+            face_zone_name_pattern="*"
+        )
+        is True
+    )
+
+    assert (
+        meshing_session.meshing_queries.refine_marked_faces_in_zones(
+            face_zone_id_list=[30, 31, 32]
+        )
+        is None
+    )
+    assert (
+        meshing_session.meshing_queries.refine_marked_faces_in_zones(
+            face_zone_name_list=["wall-inlet", "wallfluid-new"]
+        )
+        is None
+    )
+    assert meshing_session.meshing_queries.refine_marked_faces_in_zones(
+        face_zone_name_pattern="*"
+    ) == [0, 0, 0, 0, 0]
+
+    assert (
+        meshing_session.meshing_queries.fill_holes_in_face_zone_list(
+            face_zone_id_list=[30, 31, 32], max_hole_edges=2
+        )
+        is False
+    )
+    assert (
+        meshing_session.meshing_queries.fill_holes_in_face_zone_list(
+            face_zone_name_list=["wall-inlet", "wallfluid-new"], max_hole_edges=2
+        )
+        is False
+    )
+    assert (
+        meshing_session.meshing_queries.fill_holes_in_face_zone_list(
+            face_zone_name_pattern="wall*", max_hole_edges=2
+        )
+        is False
+    )
+
+    assert (
+        meshing_session.meshing_queries.project_zone_on_plane(
+            zone_id=87, plane=[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.delete_all_sub_domains()
+        == "*the-non-printing-object*"
+    )
+
+    assert (
+        meshing_session.meshing_queries.delete_marked_faces_in_zones(
+            face_zone_id_list=[30, 31, 32]
+        )
+        is None
+    )
+    assert (
+        meshing_session.meshing_queries.delete_marked_faces_in_zones(
+            face_zone_name_list=["wall-inlet", "wallfluid-new"]
+        )
+        is None
+    )
+    assert meshing_session.meshing_queries.delete_marked_faces_in_zones(
+        face_zone_name_pattern="*"
+    ) == [0, 0, 0, 0, 3446]
+
+    assert (
+        meshing_session.meshing_queries.delete_empty_face_zones(
+            face_zone_id_list=[30, 31, 32]
+        )
+        is None
+    )
+    assert (
+        meshing_session.meshing_queries.delete_empty_face_zones(
+            face_zone_name_list=["wall-inlet", "wallfluid-new"]
+        )
+        is None
+    )
+    assert meshing_session.meshing_queries.delete_empty_face_zones(
+        face_zone_name_pattern="*"
+    ) == [29, 1, 3, 34, 89]
+
+    assert meshing_session.meshing_queries.delete_empty_cell_zones(
+        cell_zone_id_list=[87]
+    ) == [87]
+    assert meshing_session.meshing_queries.delete_empty_cell_zones(
+        cell_zone_name_list=["elbow.87"]
+    ) == [87]
+    assert meshing_session.meshing_queries.delete_empty_cell_zones(
+        cell_zone_name_pattern="*"
+    ) == [87]
+
+    assert meshing_session.meshing_queries.delete_empty_edge_zones(
+        edge_zone_id_list=[20, 25, 26]
+    ) == [26, 25, 20]
+    assert meshing_session.meshing_queries.delete_empty_edge_zones(
+        edge_zone_name_list=[
+            "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
+            "hot-inlet:wall-inlet:elbow-fluid:feature.21",
+        ]
+    ) == [21]
+    assert meshing_session.meshing_queries.delete_empty_edge_zones(
+        edge_zone_name_pattern="*"
+    ) == [28, 27, 26, 25, 24, 23, 22, 21, 20]
+
+    assert meshing_session.meshing_queries.delete_empty_zones(
+        zone_id_list=[20, 32, 87]
+    ) == [20, 87]
+    assert meshing_session.meshing_queries.delete_empty_zones(
+        zone_name_list=["hotfluid-new", "elbow.87"]
+    ) == [87]
+    assert meshing_session.meshing_queries.delete_empty_zones(
+        zone_name_pattern="*"
+    ) == [169, 163, 19, 28, 27, 26, 25, 24, 23, 22, 21, 20, 29, 1, 3, 34, 89, 87]
+
+    assert meshing_session.meshing_queries.is_boundary_zone_exists(zone_id=31) is False
+    assert (
+        meshing_session.meshing_queries.is_boundary_zone_exists(zone_name="wall-inlet")
+        is False
+    )
+    assert meshing_session.meshing_queries.is_interior_zone_exists(zone_id=31) is False
+    assert (
+        meshing_session.meshing_queries.is_interior_zone_exists(zone_name="wall-inlet")
+        is False
+    )
+    assert meshing_session.meshing_queries.is_cell_zone_exists(zone_id=87) is True
+    assert (
+        meshing_session.meshing_queries.is_cell_zone_exists(zone_name="elbow.87")
+        is True
+    )
+
+    assert meshing_session.meshing_queries.is_mesh_exists() is True
+
+    assert (
+        meshing_session.meshing_queries.replace_face_zone_suffix(
+            face_zone_id_list=[30, 31, 32],
+            separator="-suffix-",
+            replace_with="-with-",
+            merge=False,
+        )
+        is False
+    )
+    assert (
+        meshing_session.meshing_queries.replace_face_zone_suffix(
+            face_zone_name_list=["cold-inlet", "hot-inlet"],
+            separator="-suffix-",
+            replace_with="-with-",
+            merge=False,
+        )
+        is False
+    )
+
+    assert meshing_session.meshing_queries.replace_cell_zone_suffix(
+        cell_zone_id_list=[87], old_suffix="fluid", new_suffix="fluid-new", merge=True
+    ) == ["*the-non-printing-object*"]
+    assert (
+        meshing_session.meshing_queries.replace_cell_zone_suffix(
+            cell_zone_name_list=["elbow-fluid-new"],
+            old_suffix="fluid",
+            new_suffix="fluid-new",
+            merge=True,
+        )
+        is None
+    )
+
+    assert (
+        meshing_session.meshing_queries.replace_edge_zone_suffix(
+            edge_zone_id_list=[20],
+            old_suffix="fluid",
+            new_suffix="fluid-new",
+            merge=True,
+        )
+        == "*the-non-printing-object*"
+    )
+    assert (
+        meshing_session.meshing_queries.replace_edge_zone_suffix(
+            edge_zone_name_list=["hot-inlet:wall-inlet:elbow-fluid:feature.21"],
+            old_suffix="fluid",
+            new_suffix="fluid-new",
+            merge=True,
+        )
+        == "*the-non-printing-object*"
     )
