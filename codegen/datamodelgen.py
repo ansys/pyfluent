@@ -65,21 +65,8 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_docstring(name: str, info: Any, indent: str):
-    doc = f"{indent}Command {name}.\n\n"
-    if info.args:
-        doc += f"{indent}Parameters\n"
-        doc += f"{indent}{'-' * len('Parameters')}\n"
-        for arg in info.args:
-            doc += f"{indent}{arg.name} : {_PY_TYPE_BY_DM_TYPE[arg.type]}\n"
-    doc += f"\n{indent}Returns\n"
-    doc += f"{indent}{'-' * len('Returns')}\n"
-    doc += f"{indent}{_PY_TYPE_BY_DM_TYPE[info.returntype]}\n"
-    return doc
-
-
-def _build_query_docstring(name: str, info: Any, indent: str):
-    doc = f"{indent}Query {name}.\n\n"
+def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
+    doc = f"{indent}Command {name}.\n\n" if is_command else f"{indent}Query {name}.\n\n"
     if info.args:
         doc += f"{indent}Parameters\n"
         doc += f"{indent}{'-' * len('Parameters')}\n"
@@ -312,8 +299,8 @@ class DataModelGenerator:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
             f.write(
-                _build_command_docstring(
-                    k, info.commands[k].commandinfo, f"{indent}        "
+                _build_command_query_docstring(
+                    k, info.commands[k].commandinfo, f"{indent}        ", True
                 )
             )
             f.write(f'{indent}        """\n')
@@ -323,8 +310,8 @@ class DataModelGenerator:
             f.write(f"{indent}    class {k}(PyQuery):\n")
             f.write(f'{indent}        """\n')
             f.write(
-                _build_query_docstring(
-                    k, info.queries[k].queryinfo, f"{indent}        "
+                _build_command_query_docstring(
+                    k, info.queries[k].queryinfo, f"{indent}        ", False
                 )
             )
             f.write(f'{indent}        """\n')
