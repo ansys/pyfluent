@@ -601,7 +601,7 @@ def launch_fluent(
     del start_container
 
     # Check if user set PYFLUENT_ADDITIONAL_ARGUMENTS var
-    if os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS",None) is not None:
+    if os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS", None) is not None:
         # Now check if user used the additional_arguments option
         if additional_arguments is None:
             additional_arguments = os.environ.get("PYFLUENT_ADDITIONAL_ARGUMENTS")
