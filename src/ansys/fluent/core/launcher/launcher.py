@@ -499,7 +499,7 @@ def launch_fluent(
         format they are normally passed to Fluent on the command line.
         As an alternative, a user may set the PYFLUENT_ADDITIONAL_ARGUMENTS environment
         variable instead of setting this option. If both the environment variable is set,
-        and the user uses this option, the environment variable is ignored.
+        and the user uses this option, the environment variable is used.
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.

@@ -219,4 +219,4 @@ a the same python script to use on the platforms.
    python run.py
 
 Note: You should omit the additional_arguments option in the launch_fluent function as
-that variable is taken over the environmental variable.
+that variable is ignored when using the environmental variable.
