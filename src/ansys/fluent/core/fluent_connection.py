@@ -14,10 +14,11 @@ import weakref
 
 from docker.models.containers import Container
 import grpc
+import psutil
 
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
-from ansys.fluent.core.utils.execution import timeout_exec
+from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.platform.instancemanagement import Instance
 import docker
 
@@ -495,11 +496,52 @@ class FluentConnection:
         warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
         return self.health_check_service.status()
 
-    def exit(self, timeout: float = None, timeout_force: bool = True) -> None:
+    def wait_process_finished(self, timeout: float = 60):
+        """Returns ``True`` if local Fluent processes have finished,
+        ``False`` if they are still running when timeout (default 60 seconds) is reached.
+
+        Parameters
+        ----------
+        timeout : float, optional
+            How long to wait for processes to finish before returning, by default 60 seconds.
+
+        Raises
+        ------
+        ValueError
+            If current Fluent instance is running remotely.
+        """
+        if self._remote_instance:
+            raise ValueError(
+                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
+            )
+        logger.info(f"Waiting {timeout} seconds for the Fluent processes to finish...")
+        if self.connection_properties.inside_container:
+            _response = timeout_loop(
+                get_container,
+                timeout,
+                args=(self.connection_properties.cortex_host,),
+                expected="falsy",
+            )
+        else:
+            _response = timeout_loop(
+                lambda connection: psutil.pid_exists(connection.fluent_host_pid)
+                or psutil.pid_exists(connection.cortex_pid),
+                timeout,
+                args=(self.connection_properties,),
+                expected="falsy",
+            )
+        return not _response
+
+    def exit(
+        self, wait: bool = False, timeout: float = None, timeout_force: bool = True
+    ) -> None:
         """Close the Fluent connection and exit Fluent.
 
         Parameters
         ----------
+        wait : bool, optional
+            Specifies whether to wait for local Fluent processes to finish completely before proceeding.
+            By default, ``False``. Does not work for remote Fluent processes.
         timeout : float, optional
             Time in seconds before considering that the exit request has timed out.
             If omitted or specified as None, then request will not time out and will lock up the interpreter
@@ -540,6 +582,8 @@ class FluentConnection:
         if timeout is None:
             logger.info("Finalizing Fluent connection...")
             self._finalizer()
+            if wait and not self._remote_instance:
+                self.wait_process_finished()
         else:
             if not self.health_check_service.is_serving:
                 logger.debug("gRPC service not working, cancelling soft exit call.")
@@ -548,6 +592,8 @@ class FluentConnection:
 
                 success = timeout_exec(self._finalizer, timeout)
                 if success:
+                    if wait and not self._remote_instance:
+                        self.wait_process_finished()
                     return
 
             logger.debug("Continuing...")
