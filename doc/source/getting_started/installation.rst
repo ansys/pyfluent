@@ -80,12 +80,13 @@ to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent
 
   session = pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True, mode="solver")
 
-If you want to print the debug information for development, set the following
-environment variable:
+If you want to look at PyFluent's debug logging, use the following command:
 
 .. code:: python
 
-  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
+   pyfluent.logging.enable()
+
+For more details, see :ref:`ref_logging_user_guide`.
 
 
 Additional PyFluent packages
