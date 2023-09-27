@@ -1,7 +1,7 @@
 """Module for monitors management."""
 
 import threading
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd

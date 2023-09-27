@@ -7,7 +7,7 @@ from ansys.fluent.core.filereader.case_file import SettingsFile as SettingsReade
 
 
 def call_settings_reader(
-    settings_filepath: Optional[str] = None, expected: Optional[str] = None
+    settings_filepath: Optional[str] = None, expected: Optional[dict] = None
 ):
     reader = SettingsReader(settings_filepath=settings_filepath)
     if expected is not None:

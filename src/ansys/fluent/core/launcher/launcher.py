@@ -468,7 +468,7 @@ def launch_fluent(
     py: Optional[bool] = None,
     gpu: Optional[bool] = None,
     cwd: Optional[str] = None,
-    topy: Union[str, list] = None,
+    topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:

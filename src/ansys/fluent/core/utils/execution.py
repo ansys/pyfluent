@@ -4,7 +4,7 @@ import functools
 from multiprocessing.context import TimeoutError
 import multiprocessing.pool
 import time
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 
 def asynchronous(f: Callable) -> Callable:

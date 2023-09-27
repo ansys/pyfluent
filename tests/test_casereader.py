@@ -18,7 +18,7 @@ from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 def call_casereader(
     case_filepath: Optional[str] = None,
     project_filepath: Optional[str] = None,
-    expected: Optional[str] = None,
+    expected: Optional[dict] = None,
 ):
     reader = CaseReader(case_filepath=case_filepath, project_filepath=project_filepath)
     if expected is not None:

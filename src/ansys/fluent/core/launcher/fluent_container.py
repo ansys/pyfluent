@@ -292,7 +292,7 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str], container_dict: Optional[str] = None
+    args: List[str], container_dict: Optional[dict] = None
 ) -> (int, str):
     """Start a Fluent container.
 
