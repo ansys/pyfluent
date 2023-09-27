@@ -31,11 +31,11 @@ construct the TUI commands for PyFluent in different Fluent versions.
 TUI command construction
 ------------------------
 
-In Fluent 2023 R2, the recorded Python journal from Fluent contains the Python
-commands corresponding to the TUI commands executed in Fluent. The TUI commands for
-which settings API exist are converted to the corresponding settings API commands.
-If you start the Python journaling in the solution mode and type the following
-in the Fluent console to set velocity inlet properties:
+From the 2023 R2 release onward, a Fluent Python journal contains Python calls
+corresponding to the TUI commands executed in Fluent. Python journaling generates
+a call to a corresponding settings API command if one exists. For instance, with Fluent
+running in solution mode and Python journaling started, you can type the following in
+the Fluent console to set velocity inlet properties:
 
 .. code:: scheme
 
