@@ -87,7 +87,7 @@ class MonitorsManager(StreamingService):
             return None if df.empty else df.plot(*args, **kwargs)
 
     def get_monitor_set_data(
-        self, monitor_set_name, start_index: int = 0, end_index: int = None
+        self, monitor_set_name, start_index: int = 0, end_index: Optional[int] = None
     ) -> Tuple[np.array, Dict[str, np.array]]:
         """Get monitor set data.
 

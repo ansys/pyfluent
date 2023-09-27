@@ -5,6 +5,7 @@ import string
 import subprocess
 import sys
 import time
+from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -13,7 +14,7 @@ IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
-def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
+def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None):
     watchdog_id = "".join(
         random.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6

@@ -90,8 +90,8 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
 def timeout_loop(
     obj: Any,
     timeout: float,
-    args: Any = None,
-    kwargs: Any = None,
+    args: Optional[Any] = None,
+    kwargs: Optional[Any] = None,
     idle_period: float = 0.2,
     expected: str = "truthy",
 ) -> Any:
