@@ -817,8 +817,8 @@ class WorkflowWrapper:
     def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow. Sorting is in terms
         of the workflow order and only includes the top-level tasks, while other tasks
-        can be obtained by calling ordered_children() on a parent task. Given the
-        workflow:
+        can be obtained by calling ordered_children() on a parent task. Consider the
+        following workflow.
 
             Workflow
             ├── A
@@ -827,7 +827,7 @@ class WorkflowWrapper:
             │   └── D
             └── E
 
-        the ordered children of the workflow are A, B, E, while B has ordered children
+        The ordered children of the workflow are A, B, E, while B has ordered children
         C and D.
         """
         if recompute:
