@@ -14,18 +14,22 @@ def asynchronous(f: Callable) -> Callable:
 
     Examples
     --------
-    >>> # asynchronous execution using @asynchronous decorator
+
+    asynchronous execution using @asynchronous decorator
+
     >>> @asynchronous
-    ... def asynchronous_solve(session, number_of_iterations):
-    ...     session.solver.tui.solve.iterate(number_of_iterations)
-    >>> asynchronous_solve(session1, 100)
+    ... def asynchronous_solve(solver_session, number_of_iterations):
+    ...     solver_session.tui.solve.iterate(number_of_iterations)
+    >>> asynchronous_solve(solver_session_1, 100)
 
-    >>> # using the asynchronous function directly
-    >>> asynchronous(session2.solver.tui.solve.iterate)(100)
+    using the asynchronous function directly
 
-    >>> # synchronous execution of above 2 calls
-    >>> asynchronous_solve(session1, 100).result()
-    >>> asynchronous(session2.solver.tui.solve.iterate)(100).result()
+    >>> asynchronous(solver_session_2.tui.solve.iterate)(100)
+
+    synchronous execution of above 2 calls
+
+    >>> asynchronous_solve(solver_session_1, 100).result()
+    >>> asynchronous(solver_session_2.tui.solve.iterate)(100).result()
 
     .. _Future: https://docs.python.org/3/library/asyncio-future.html#future-object  # noqa: E501
     .. _result(): https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result  # noqa: E501
