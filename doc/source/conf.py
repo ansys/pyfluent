@@ -31,6 +31,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
+    "sphinx_toggleprompt",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "sphinxemoji.sphinxemoji",
