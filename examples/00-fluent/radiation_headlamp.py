@@ -272,9 +272,10 @@ models.viscous.model = "laminar"
 # million in order to reduce computation time, but this may need to be
 # increased to obtain accurate results.
 
-solver.setup.models.radiation.model = "monte-carlo"
-solver.setup.models.radiation.monte_carlo.number_of_histories = 1e7
-solver.setup.models.radiation.solve_frequency.iteration_interval = 20
+radiation = models.radiation
+radiation.model = "monte-carlo"
+radiation.monte_carlo.number_of_histories = 1e7
+radiation.solve_frequency.iteration_interval = 20
 
 ###############################################################################
 # Define materials
