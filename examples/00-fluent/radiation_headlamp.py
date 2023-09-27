@@ -261,9 +261,9 @@ solver = meshing.switch_to_solver()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set up the energy and viscosity models.
 
-solver.setup.models.energy.enabled = True
-
-solver.setup.models.viscous.model = "laminar"
+models = solver.setup.models
+models.energy.enabled = True
+models.viscous.model = "laminar"
 
 ###############################################################################
 # Set up radiation model
