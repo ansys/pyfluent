@@ -84,7 +84,7 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 #
 # Import CAD and set length units
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Import the CAD geometry and set the length units to inches.
+# Import the CAD geometry and set the length units to millimeters.
 
 geo_import = meshing.workflow.TaskObject["Import Geometry"]
 geo_import.Arguments.set_state(
@@ -99,7 +99,7 @@ geo_import.Execute()
 ###############################################################################
 # Add local sizing
 # ~~~~~~~~~~~~~~~~
-# Add local sizing controls to the faceted geometry.
+# Add local sizing controls to the geometry.
 
 local_sizing = meshing.workflow.TaskObject["Add Local Sizing"]
 local_sizing.Arguments.set_state(
@@ -177,7 +177,10 @@ describe_geo.Execute()
 
 update_bc = meshing.workflow.TaskObject["Update Boundaries"]
 update_bc.Arguments.set_state(
-    {"BoundaryLabelList": ["rad-input"], "BoundaryLabelTypeList": ["wall"]}
+    {
+        "BoundaryLabelList": ["rad-input"],
+        "BoundaryLabelTypeList": ["wall"],
+    }
 )
 
 update_bc.Execute()
@@ -360,6 +363,7 @@ lens_cellzone_conds.radiating = True
 # BC type: opaque
 # Internal emissivity: 1
 # Diffuse fraction: 1
+
 bezel_enc_bc = solver.setup.boundary_conditions.wall["bezel-enclosure"]
 bezel_enc_bc.material = "plastic"
 bezel_enc_bc.radiation_bc = "Opaque"
@@ -379,6 +383,7 @@ solver.setup.boundary_conditions.copy(
 # Material: glass
 # BC type: semi-transparent
 # Diffuse fraction: 1
+
 enc_lens_bc = solver.setup.boundary_conditions.wall["enclosure-lens"]
 enc_lens_bc.material = "glass"
 enc_lens_bc.radiation_bc = "Semi Transparent"
@@ -395,6 +400,7 @@ solver.setup.boundary_conditions.copy(
 # BC type: opaque
 # Internal emissivity: 0.16
 # Diffuse fraction: 0.1
+
 enc_rim_bezel_bc = solver.setup.boundary_conditions.wall["enclosure-rim-bezel"]
 enc_rim_bezel_bc.material = "plastic"
 enc_rim_bezel_bc.radiation_bc = "Opaque"
@@ -416,6 +422,7 @@ solver.setup.boundary_conditions.copy(
 # --- Set up enclosure:1 (domain boundaries) BC ---
 # BC type: temperature
 # Temperature: 298.15 [K]
+
 enc1_bc = solver.setup.boundary_conditions.wall["enclosure:1"]
 enc1_bc.thermal_bc = "Temperature"
 enc1_bc.t = 298.15
@@ -426,6 +433,7 @@ enc1_bc.t = 298.15
 # Boundary source: yes
 # Direct irradiation: 1200 [W/m^2]
 # Radiation direction: (-0.848, 0, -0.53)
+
 rad_inp_bc = solver.setup.boundary_conditions.wall["rad-input"]
 rad_inp_bc.thermal_bc = "Temperature"
 rad_inp_bc.t = 298.15
@@ -449,13 +457,15 @@ solver.tui.solve.monitors.residual.criterion_type("3")
 ###############################################################################
 # Define surface reports
 # ~~~~~~~~~~~~~~~~~~~~~~
-# Define a surface report to find the maximum temperature of the inner bezel.
+# Define a surface report to find the maximum temperature of the inner bezel,
+# then print the state of the report object.
 
 solver.solution.report_definitions.surface["max-temp"] = {}
 max_temp_surf_report = solver.solution.report_definitions.surface["max-temp"]
 max_temp_surf_report.surface_names = ["enclosure-inner-bezel"]
 max_temp_surf_report.report_type = "surface-facetmax"
 max_temp_surf_report.field = "temperature"
+
 max_temp_surf_report.print_state()
 
 ###############################################################################
@@ -485,8 +495,8 @@ solver.solution.initialization.initialize()
 ###############################################################################
 # Solve for 39 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Solve for 39 iterations (99 iterations is recommended by the tutorial, but is
-# reduced to 39 for this case for demonstration purposes).
+# Solve for 39 iterations. 99 iterations is recommended by the tutorial, but is
+# reduced to 39 for this example for demonstration purposes.
 
 solver.solution.run_calculation.iterate(iter_count=39)
 
