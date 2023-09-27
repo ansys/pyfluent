@@ -493,12 +493,12 @@ solver.file.write(file_name="headlamp.cas.h5", file_type="case")
 solver.solution.initialization.initialize()
 
 ###############################################################################
-# Solve for 39 iterations
+# Solve for 19 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Solve for 39 iterations. 99 iterations is recommended by the tutorial, but is
-# reduced to 39 for this example for demonstration purposes.
+# Solve for 19 iterations. 99 iterations is recommended by the tutorial, but is
+# reduced to 19 for this example for demonstration purposes.
 
-solver.solution.run_calculation.iterate(iter_count=39)
+solver.solution.run_calculation.iterate(iter_count=19)
 
 ###############################################################################
 # Write final case file and data
