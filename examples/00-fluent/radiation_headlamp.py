@@ -89,7 +89,7 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 geo_import = meshing.workflow.TaskObject["Import Geometry"]
 geo_import.Arguments.set_state(
     {
-        "FileName": headlamp_spaceclaim_file,
+        "FileName": headlamp_pmdb_file,
         "LengthUnit": "mm",
     }
 )
