@@ -21,8 +21,6 @@ and field data (surface, scalar, and vector).
    tuicommands
    datamodel/index
    schemeeval
-   fielddata
-   fieldinfo
    events
    monitors
    reduction
