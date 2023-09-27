@@ -491,7 +491,7 @@ def launch_fluent(
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
-        allocated cores is clamped to this value.
+        allocated cores is clamped to value of ``processor_count``.
     journal_filepath : str, optional
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
@@ -569,8 +569,8 @@ def launch_fluent(
 
     Notes
     -----
-    In job scheduler environments such as SLURM, LSF, PBS, etc... the allocated
-    machines and core counts are queried from the scheduler environment and
+    Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
+    The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
     if kwargs:

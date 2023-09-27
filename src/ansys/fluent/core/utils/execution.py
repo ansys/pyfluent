@@ -14,6 +14,7 @@ def asynchronous(f: Callable) -> Callable:
 
     Examples
     --------
+
     asynchronous execution using @asynchronous decorator
 
     >>> @asynchronous
