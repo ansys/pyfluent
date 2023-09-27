@@ -121,7 +121,7 @@ def test_meshing_queries(new_mesh_session):
         meshing_session.meshing_queries.add_labels_on_cell_zones(
             cell_zone_name_list=["elbow-fluid"], label_name_list=["elbow-1"]
         )
-        is None
+        == "*the-non-printing-object*"
     )
 
     assert meshing_session.meshing_queries.get_cell_zone_id_list_with_labels(
@@ -147,7 +147,7 @@ def test_meshing_queries(new_mesh_session):
         meshing_session.meshing_queries.add_labels_on_cell_zones(
             cell_zone_id_list=[87], label_name_list=["87-1"]
         )
-        is None
+        == "*the-non-printing-object*"
     )
 
     assert meshing_session.meshing_queries.get_labels_on_cell_zones(
@@ -158,7 +158,7 @@ def test_meshing_queries(new_mesh_session):
         meshing_session.meshing_queries.add_labels_on_cell_zones(
             cell_zone_name_pattern="*", label_name_list=["cell-1"]
         )
-        is None
+        == "*the-non-printing-object*"
     )
 
     assert meshing_session.meshing_queries.get_labels_on_cell_zones(
@@ -203,7 +203,7 @@ def test_meshing_queries(new_mesh_session):
             ],
             label_name_list=["20-1", "21-1"],
         )
-        is None
+        == "*the-non-printing-object*"
     )
 
     assert meshing_session.meshing_queries.get_edge_zone_id_list_with_labels(
@@ -235,7 +235,7 @@ def test_meshing_queries(new_mesh_session):
         meshing_session.meshing_queries.add_labels_on_edge_zones(
             edge_zone_id_list=[22, 23], label_name_list=["22-1", "23-1"]
         )
-        is None
+        == "*the-non-printing-object*"
     )
 
     assert meshing_session.meshing_queries.get_labels_on_edge_zones(
@@ -246,7 +246,7 @@ def test_meshing_queries(new_mesh_session):
         meshing_session.meshing_queries.add_labels_on_edge_zones(
             edge_zone_name_pattern="cold-inlet*", label_name_list=["26-1"]
         )
-        is None
+        == "*the-non-printing-object*"
     )
 
     assert meshing_session.meshing_queries.get_labels_on_edge_zones(
@@ -273,10 +273,6 @@ def test_meshing_queries(new_mesh_session):
     ) == [32, 31]
 
     assert meshing_session.meshing_queries.convert_zone_ids_to_name_strings(
-        zone_id_list=[32, 31]
-    ) == ["outlet", "cold-inlet"]
-
-    assert meshing_session.meshing_queries.convert_zone_ids_to_name_symbols(
         zone_id_list=[32, 31]
     ) == ["outlet", "cold-inlet"]
 
@@ -1738,23 +1734,22 @@ def test_meshing_queries(new_mesh_session):
         zone_name_pattern="*"
     ) == [169, 163, 19, 28, 27, 26, 25, 24, 23, 22, 21, 20, 29, 1, 3, 34, 89, 87]
 
-    assert meshing_session.meshing_queries.is_boundary_zone_exists(zone_id=31) is False
+    assert meshing_session.meshing_queries.boundary_zone_exists(zone_id=31) is False
     assert (
-        meshing_session.meshing_queries.is_boundary_zone_exists(zone_name="wall-inlet")
+        meshing_session.meshing_queries.boundary_zone_exists(zone_name="wall-inlet")
         is False
     )
-    assert meshing_session.meshing_queries.is_interior_zone_exists(zone_id=31) is False
+    assert meshing_session.meshing_queries.interior_zone_exists(zone_id=31) is False
     assert (
-        meshing_session.meshing_queries.is_interior_zone_exists(zone_name="wall-inlet")
+        meshing_session.meshing_queries.interior_zone_exists(zone_name="wall-inlet")
         is False
     )
-    assert meshing_session.meshing_queries.is_cell_zone_exists(zone_id=87) is True
+    assert meshing_session.meshing_queries.cell_zone_exists(zone_id=87) is True
     assert (
-        meshing_session.meshing_queries.is_cell_zone_exists(zone_name="elbow.87")
-        is True
+        meshing_session.meshing_queries.cell_zone_exists(zone_name="elbow.87") is True
     )
 
-    assert meshing_session.meshing_queries.is_mesh_exists() is True
+    assert meshing_session.meshing_queries.mesh_exists() is True
 
     assert (
         meshing_session.meshing_queries.replace_face_zone_suffix(
