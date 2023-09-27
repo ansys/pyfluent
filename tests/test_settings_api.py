@@ -144,3 +144,11 @@ def test_wildcard_path_is_iterable(new_solver_session):
     assert test_data[0][1].path == r"setup/boundary-conditions/velocity-inlet/inlet2"
     assert test_data[1][0] == "inlet1"
     assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
+
+
+@pytest.mark.fluent_version(">=23.1")
+def test_api_upgrade(new_solver_session, capsys):
+    solver = new_solver_session
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.tui.file.read_case(case_path)
+    "<solver_session>.file.read_case" in capsys.readouterr().out
