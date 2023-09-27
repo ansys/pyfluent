@@ -382,7 +382,7 @@ solver.setup.boundary_conditions.copy(
 # --- Set up enclosure-lens BC ---
 # Material: glass
 # BC type: semi-transparent
-# Diffuse fraction: 1
+# Diffuse fraction: 0
 
 enc_lens_bc = solver.setup.boundary_conditions.wall["enclosure-lens"]
 enc_lens_bc.material = "glass"
