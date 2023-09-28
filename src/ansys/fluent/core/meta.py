@@ -259,6 +259,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, api_helper, name=""):
+            """Create the initialization method for 'PyLocalPropertyMeta'."""
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
@@ -350,6 +351,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, path, location, session_id):
+            """Create the initialization method for 'PyReferenceObjectMeta'."""
             self._parent = parent
             self.type = "object"
             self.parent = parent
@@ -406,6 +408,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, api_helper, name=""):
+            """Create the initialization method for 'PyLocalObjectMeta'."""
             self._parent = parent
             self._name = name
             self._api_helper = api_helper(self)
@@ -529,6 +532,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, name, parent, api_helper):
+            """Create the initialization method for 'PyLocalNamedObjectMeta'."""
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
@@ -584,6 +588,7 @@ class PyLocalContainer(MutableMapping):
     """Local container for named objects."""
 
     def __init__(self, parent, object_class, api_helper, name=""):
+        """Initialize the 'PyLocalContainer' object."""
         self._parent = parent
         self._name = name
         self.__object_class = object_class
@@ -622,6 +627,7 @@ class PyLocalContainer(MutableMapping):
 
     @classmethod
     def get_root(self, obj=None):
+        """Returns the top-most parent object."""
         obj = self if obj is None else obj
         parent = obj
         if getattr(obj, "_parent", None):
@@ -629,6 +635,7 @@ class PyLocalContainer(MutableMapping):
         return parent
 
     def get_root(self, obj=None):
+        """Returns the top-most parent object."""
         obj = self if obj is None else obj
         parent = obj
         if getattr(obj, "_parent", None):
@@ -636,28 +643,34 @@ class PyLocalContainer(MutableMapping):
         return parent
 
     def get_session(self, obj=None):
+        """Returns the session object."""
         root = self.get_root(obj)
         return root.session
 
     def get_path(self):
+        """Path to the current object."""
         if getattr(self, "_parent", None):
             return self._parent.get_path() + "/" + self._name
         return self._name
 
     @property
     def path(self):
+        """Path to the current object."""
         return self.get_path()
 
     @property
     def session(self):
+        """Returns the session object."""
         return self.get_session()
 
     def get_session_handle(self, obj=None):
+        """Returns the session-handle object."""
         root = self.get_root(obj)
         return root.session_handle
 
     @property
     def session_handle(self):
+        """Returns the session-handle object."""
         return self.get_session_handle()
 
     def __iter__(self):
