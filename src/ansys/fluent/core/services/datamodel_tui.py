@@ -319,7 +319,7 @@ class TUIMenu:
                 ).get_child_names():
                     return TUIMenu(self._service, self._version, self._mode, path)
                 else:
-                    return TUICommand(path, self._service)
+                    return TUICommand(self._service, self._version, self._mode, path)
             else:
                 raise ex
 
