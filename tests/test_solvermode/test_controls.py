@@ -33,13 +33,15 @@ def test_controls(load_mixing_elbow_mesh):
     param_coarsening.max_coarse_levels = 45
     assert param_coarsening.max_coarse_levels() == 45
 
-    param_coarsening = {
-        "max_coarse_levels": 48,
-        "coarsen_by_interval": 9,
-        "conservative_coarsening": True,
-        "aggressive_coarsening": True,
-        "laplace_coarsening": True,
-    }
+    param_coarsening.set_state(
+        {
+            "max_coarse_levels": 48,
+            "coarsen_by_interval": 9,
+            "conservative_coarsening": True,
+            "aggressive_coarsening": True,
+            "laplace_coarsening": True,
+        }
+    )
     assert param_coarsening.max_coarse_levels() == 48
     assert param_coarsening.coarsen_by_interval() == 9
     assert param_coarsening.conservative_coarsening() == True
@@ -50,11 +52,13 @@ def test_controls(load_mixing_elbow_mesh):
     )
     param_fixed_cycle.max_cycle = 300
     assert param_fixed_cycle.max_cycle() == 300
-    param_fixed_cycle = {
-        "pre_sweeps": 1,
-        "post_sweeps": 2,
-        "max_cycle": 350,
-    }
+    param_fixed_cycle.set_state(
+        {
+            "pre_sweeps": 1,
+            "post_sweeps": 2,
+            "max_cycle": 350,
+        }
+    )
     assert param_fixed_cycle() == {
         "pre_sweeps": 1,
         "post_sweeps": 2,
