@@ -67,7 +67,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
             else "<solver_session>",
             "tui",
         ]
-        path.extend(obj.path)
+        path.extend(obj._path)
         version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, WorkflowWrapper):
