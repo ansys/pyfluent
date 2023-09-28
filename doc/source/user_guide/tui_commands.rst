@@ -22,79 +22,82 @@ you can use the Python built-in `help <https://docs.python.org/3/library/functio
 and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 
 The arguments to a TUI command are those that would be passed in direct
-interaction in the Fluent console, but they are in a Pythonic style. The most
-productive way to write Python commands is with reference to existing TUI
-commands. The following examples show how the Python usage mirrors the existing
-TUI usage.
+interaction in the Fluent console, but they are in a Pythonic style. In the recent
+Fluent versions, in both meshing and solution mode,
+you can use Python journaling, which is a beta feature,
+to construct the TUI commands for PyFluent. The following section describes how to
+construct the TUI commands for PyFluent in different Fluent versions.
 
 TUI command construction
--------------------------
-Assume that you are in the solution mode and type the following in the Fluent
-console to set velocity inlet properties:
+------------------------
+
+From the 2023 R2 release onward, a Fluent Python journal contains Python calls
+corresponding to the TUI commands executed in Fluent. Python journaling generates
+a call to a corresponding settings API command if one exists. For instance, with Fluent
+running in solution mode and Python journaling started, you can type the following in
+the Fluent console to set velocity inlet properties:
 
 .. code:: scheme
 
-    /define/boundary_conditions/set/velocity-inlet
+   /define/boundary_conditions/set/velocity-inlet
 
 This command instigates a sequence of prompts in the console. Assume that your responses
 to each prompt are as follows:
 
 .. code:: scheme
 
-    velocity-inlet-5 
-    
-    () 
-    
-    temperature 
-    
-    no 
-    
-    293.15 
-    
-    quit
+   velocity-inlet-5
+   ()
+   temperature
+   no
+   293.15
+   quit
 
 The following code yields the same result but specifies all arguments in one call:
 
 .. code:: scheme
 
-    /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
+   /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
-You can see how using the interactive TUI provides a reliable approach for
-constructing TUI calls that include full sequences of arguments.
-
-With the full TUI call in hand, you can transform it to a Python call. This
-code launches Fluent and makes the call to set velocity inlet properties:
+The recorded Python journal will contain the following line which can be executed in
+PyFluent, assuming ``solver`` is the session instance returned by ``launch_fluent``.
 
 .. code:: python
 
-    from ansys.fluent.core import launch_fluent
+   solver.setup.boundary_conditions.velocity_inlet['inlet1'] = {"t" : 293.15}
 
-    solver = launch_fluent(mode="solver")
-
-    tui = solver.solver.tui
-
-    tui.define.boundary_conditions.set.velocity_inlet(
-        "velocity-inlet-5", [], "temperature", "no", 293.15, "quit"
-    )
-
-Here is another Fluent console interaction:
+In the above example, the settings API command is recorded as that exists for the TUI
+command. An example where settings API doesn't exist is setting the pressure unit:
 
 .. code:: scheme
 
-    /define/units
+    /define/units pressure "Pa"
 
-    pressure
-
-    "Pa"
-
-The corresponding Python call is:
+The corresponding Python command recorded in the Python journal is:
 
 .. code:: python
 
-    tui.define.units("pressure", '"Pa"')
+   solver.tui.define.units('pressure', '"Pa"')
 
-To preserve the double quotation marks around the TUI argument, you must wrap
-the string ``"Pa"`` in single quotation marks.
+Note, the string ``"Pa"`` is wrapped in single quotation marks
+to preserve the double quotation marks around the TUI argument.
+
+A command line flag ``-topy`` is also available in Fluent to convert an existing
+Fluent journal to Python journal. The following command will write a Python journal
+file my_journal.py in the working directory.
+
+.. code:: console
+
+   fluent.exe 3ddp -i my_journal.jou -topy
+
+
+In Fluent 2023 R1, the TUI commands for which settings API exist are recorded
+as settings API commands in the Python journal. All other TUI commands are recorded
+in a manner which is not Pythonic. You need to manually convert those TUI commands
+using the transformation rules described in the next section.
+
+In Fluent 2022 R2, Python journaling feature is not available. You need to manually
+convert the TUI commands using the transformation rules described in the next section.
 
 TUI command transformation rules
 --------------------------------
@@ -104,12 +107,12 @@ The following rules are implied in the preceding examples:
   Python dot notation.
 - Some characters in path elements are either removed or replaced because they
   are illegal inside Python names. For example:
-  
+
   - Each hyphen in a path element is transformed to an underscore.
   - Each question mark in a path element is removed.
 
 - Here are some rules about strings:
-  
+
   - String-type arguments must be surrounded by quotation marks in Python.
   - A target Fluent TUI argument that is surrounded by quotation marks (like
     ``"Pa"`` in the preceding example) must be wrapped in single quotation marks
