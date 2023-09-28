@@ -11,15 +11,15 @@ class ApiUpgradeAdvisor:
 
     def __enter__(self):
         if self._version >= "23.1" and self._mode == "solver":
-            self._scheme_eval("(define journal-str-port (open-output-string))")
-            self._scheme_eval("(api-echo-python-port journal-str-port)")
+            self._scheme_eval("(define pyfluent-journal-str-port (open-output-string))")
+            self._scheme_eval("(api-echo-python-port pyfluent-journal-str-port)")
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         if self._version >= "23.1" and self._mode == "solver":
-            self._scheme_eval("(api-unecho-python-port journal-str-port)")
+            self._scheme_eval("(api-unecho-python-port pyfluent-journal-str-port)")
             journal_str = self._scheme_eval(
-                "(close-output-port journal-str-port)"
+                "(close-output-port pyfluent-journal-str-port)"
             ).strip()
             if (
                 journal_str.startswith("solver.")
