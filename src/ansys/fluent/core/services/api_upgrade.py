@@ -1,3 +1,5 @@
+import os
+
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 
 
@@ -9,14 +11,21 @@ class ApiUpgradeAdvisor:
         self._version = version
         self._mode = mode
 
+    def _can_advise(self):
+        return (
+            not os.getenv("PYFLUENT_SKIP_API_UPGRADE_ADVICE")
+            and self._version >= "23.1"
+            and self._mode == "solver"
+        )
+
     def __enter__(self):
-        if self._version >= "23.1" and self._mode == "solver":
+        if self._can_advise():
             self._scheme_eval("(define pyfluent-journal-str-port (open-output-string))")
             self._scheme_eval("(api-echo-python-port pyfluent-journal-str-port)")
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        if self._version >= "23.1" and self._mode == "solver":
+        if self._can_advise():
             self._scheme_eval("(api-unecho-python-port pyfluent-journal-str-port)")
             journal_str = self._scheme_eval(
                 "(close-output-port pyfluent-journal-str-port)"
