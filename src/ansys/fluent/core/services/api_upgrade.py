@@ -36,6 +36,6 @@ class ApiUpgradeAdvisor:
                 and not journal_str.startswith("solver.execute_tui")
             ):
                 print(
-                    "The following settings API could also be used to execute the above command:"
+                    "The following solver settings object method could also be used to execute the above command:"
                 )
                 print(f"<solver_session>.{journal_str.removeprefix('solver.')}")
