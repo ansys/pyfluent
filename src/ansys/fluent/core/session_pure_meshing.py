@@ -3,6 +3,7 @@
 
 
 import functools
+from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
@@ -108,7 +109,7 @@ class PureMeshing(BaseSession):
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: str = None,
+        file_name_stem: Optional[str] = None,
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,

@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from pathlib import Path
 import pickle
-from typing import Any
+from typing import Any, Optional
 
 from ansys.fluent.core.launcher.launcher import FluentVersion
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
@@ -129,8 +129,8 @@ def search(
     word: str,
     match_whole_word: bool = False,
     match_case: bool = False,
-    version: str = None,
-    search_root: Any = None,
+    version: Optional[str] = None,
+    search_root: Optional[Any] = None,
 ):
     """
     Search for a word through the Fluent's object hierarchy.

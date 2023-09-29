@@ -15,6 +15,7 @@ Example
 import os
 from os.path import dirname
 from pathlib import Path
+from typing import Optional
 import xml.etree.ElementTree as ET
 
 import h5py
@@ -45,8 +46,8 @@ class DataFile:
 
     def __init__(
         self,
-        data_filepath: str = None,
-        project_filepath: str = None,
+        data_filepath: Optional[str] = None,
+        project_filepath: Optional[str] = None,
         case_file_handle=None,
     ):
         """__init__ method of CaseFile class."""
