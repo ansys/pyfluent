@@ -612,7 +612,7 @@ class FluentConnection:
         if timeout is None:
             logger.info("Finalizing Fluent connection...")
             self._finalizer()
-            if wait is not False and not self._remote_instance:
+            if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
             if not self.health_check_service.is_serving:
@@ -621,7 +621,7 @@ class FluentConnection:
                 logger.info("Attempting to send exit request to Fluent...")
                 success = timeout_exec(self._finalizer, timeout)
                 if success:
-                    if wait is not False and not self._remote_instance:
+                    if wait is not False:
                         if self.wait_process_finished(wait=wait):
                             return
                     else:
