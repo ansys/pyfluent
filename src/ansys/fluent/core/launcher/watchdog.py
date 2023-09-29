@@ -254,27 +254,7 @@ if __name__ == "__main__":
 
         logger.info(", ".join(down) + " not running anymore")
 
-        def check_fluent_processes():
-            logger.info("Checking if Fluent processes are still alive...")
-            if fluent.connection_properties.inside_container:
-                _response = timeout_loop(
-                    get_container,
-                    IDLE_PERIOD * 5,
-                    args=(cortex_host,),
-                    expected="falsy",
-                )
-            else:
-                _response = timeout_loop(
-                    lambda: psutil.pid_exists(fluent_host_pid)
-                    or psutil.pid_exists(cortex_pid),
-                    IDLE_PERIOD * 5,
-                    expected="falsy",
-                )
-            return _response
-
-        alive = check_fluent_processes()
-
-        if alive:
+        if not fluent.wait_process_finished(wait=IDLE_PERIOD * 5):
             logger.info(
                 "Fluent processes remain. Checking if Fluent gRPC service is healthy..."
             )
@@ -285,8 +265,7 @@ if __name__ == "__main__":
             if is_serving:
                 logger.info("Fluent client healthy, trying soft exit with timeout...")
                 fluent.exit(timeout=IDLE_PERIOD * 2, timeout_force=False)
-                response = check_fluent_processes()
-                if response:
+                if not fluent.wait_process_finished(wait=IDLE_PERIOD * 5):
                     logger.info("Fluent client or container remains...")
                 else:
                     logger.info("Exit call succeeded.")
