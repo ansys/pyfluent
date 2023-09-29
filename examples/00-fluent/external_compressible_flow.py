@@ -28,8 +28,6 @@ on the upper (suction) side. The wing has a mean aerodynamic chord length of 0.6
 an aspect ratio of 3.8, and a taper ratio of 0.562.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
-
 ###############################################################################
 # .. image:: /_static/external_compressible_flow_011.png
 #   :width: 500pt
@@ -46,6 +44,7 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 # Perform required imports, which includes downloading and importing
 # the geometry files.
 
+# sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 

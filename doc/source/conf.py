@@ -156,6 +156,9 @@ sphinx_gallery_conf = {
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
     "reset_modules": (_stop_fluent_container),
+    "capture_repr": (),
+    "remove_config_comments": True,
+    "abort_on_example_error": True,
 }
 
 
