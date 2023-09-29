@@ -12,5 +12,4 @@ sphinx-gallery==0.13.0
 sphinx-notfound-page==0.8.3
 sphinxcontrib-websupport==1.2.5
 sphinxemoji==0.2.0
-sphinx-toggleprompt==0.4.0
 autodocsumm==0.2.11
