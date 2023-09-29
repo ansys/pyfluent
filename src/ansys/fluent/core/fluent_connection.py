@@ -157,14 +157,14 @@ class FluentConnectionProperties:
     '127.0.0.1'
     """
 
-    ip: str = None
-    port: int = None
-    password: str = None
-    cortex_pwd: str = None
-    cortex_pid: int = None
-    cortex_host: str = None
-    fluent_host_pid: int = None
-    inside_container: Union[bool, Container, None] = None
+    ip: Optional[str] = None
+    port: Optional[int] = None
+    password: Optional[str] = None
+    cortex_pwd: Optional[str] = None
+    cortex_pid: Optional[int] = None
+    cortex_host: Optional[str] = None
+    fluent_host_pid: Optional[int] = None
+    inside_container: Optional[Union[bool, Container, None]] = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
@@ -194,15 +194,15 @@ class FluentConnection:
     def __init__(
         self,
         start_timeout: int = 60,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        channel: grpc.Channel = None,
+        ip: Optional[str] = None,
+        port: Optional[int] = None,
+        password: Optional[str] = None,
+        channel: Optional[grpc.Channel] = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        remote_instance: Instance = None,
-        launcher_args: Dict[str, Any] = None,
-        inside_container: bool = None,
+        remote_instance: Optional[Instance] = None,
+        launcher_args: Optional[Dict[str, Any]] = None,
+        inside_container: Optional[bool] = None,
     ):
         """Initialize a Session.
 

@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Optional
 
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.fluent.core.services.transcript import TranscriptService
@@ -35,7 +36,9 @@ class Transcript(StreamingService):
         )
         self.callback_ids = []
 
-    def start(self, file_path: str = None, write_to_stdout: bool = False) -> None:
+    def start(
+        self, file_path: Optional[str] = None, write_to_stdout: bool = False
+    ) -> None:
         """Start streaming of Fluent transcript.
 
          Parameters

@@ -4,7 +4,7 @@ import importlib
 import json
 import logging
 import os
-from typing import Any
+from typing import Any, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -259,13 +259,13 @@ class BaseSession:
         logger.debug("session.__exit__() called")
         self.exit()
 
-    def upload(self, file_path: str, remote_file_name: str = None):
+    def upload(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.upload(file_path, remote_file_name)
 
-    def download(self, file_name: str, local_file_path: str = None):
+    def download(self, file_name: str, local_file_path: Optional[str] = None):
         """Downloads a file from the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
@@ -314,14 +314,14 @@ class _Uploader:
                 token="token", url=upload_server.uri, headers=upload_server.headers
             )
 
-    def upload(self, file_path: str, remote_file_name: str = None):
+    def upload(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server."""
         if self.file_service:
             expanded_file_path = os.path.expandvars(file_path)
             upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
             self.file_service.upload_file(expanded_file_path, upload_file_name)
 
-    def download(self, file_name: str, local_file_path: str = None):
+    def download(self, file_name: str, local_file_path: Optional[str] = None):
         """Downloads a file from the server."""
         if self.file_service:
             if self.file_service.file_exist(file_name):

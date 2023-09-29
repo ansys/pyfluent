@@ -84,10 +84,12 @@ class Solver(BaseSession):
                 tui_module = importlib.import_module(
                     f"ansys.fluent.core.solver.tui_{self.version}"
                 )
-                self._tui = tui_module.main_menu([], self._tui_service)
+                self._tui = tui_module.main_menu(
+                    self._tui_service, self._version, "solver", []
+                )
             except ImportError:
                 tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu([], self._tui_service)
+                self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
         return self._tui
 
     @property

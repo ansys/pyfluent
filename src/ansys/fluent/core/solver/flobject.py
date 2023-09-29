@@ -24,7 +24,7 @@ import logging
 import pickle
 import string
 import sys
-from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
+from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
@@ -97,7 +97,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -265,7 +265,7 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT = None, **kwargs):
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         if kwargs:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
@@ -400,7 +400,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -658,7 +658,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -917,7 +917,7 @@ def _get_new_keywords(obj, kwds):
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):

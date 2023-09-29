@@ -3,7 +3,7 @@ from enum import Enum
 import functools
 import itertools
 import logging
-from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
+from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple, Type
 
 import grpc
 
@@ -336,7 +336,9 @@ class PyStateContainer(PyCallableStateObject):
         Set the state of the current object if state is provided else get its state.
     """
 
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+    def __init__(
+        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+    ):
         """__init__ method of PyStateContainer class."""
         super().__init__()
         self.service = service
@@ -365,7 +367,7 @@ class PyStateContainer(PyCallableStateObject):
 
     getState = get_state
 
-    def set_state(self, state: Any = None, **kwargs) -> None:
+    def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
@@ -514,7 +516,9 @@ class PyMenu(PyStateContainer):
     create_command_arguments(command)
     """
 
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+    def __init__(
+        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+    ):
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
@@ -847,7 +851,9 @@ class PyNamedObjectContainer:
         Delete the child object by name.
     """
 
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+    def __init__(
+        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+    ):
         """__init__ method of PyNamedObjectContainer class."""
         self.service = service
         self.rules = rules
@@ -994,7 +1000,11 @@ class PyCommand:
     _stored_static_info = {}
 
     def __init__(
-        self, service: DatamodelService, rules: str, command: str, path: Path = None
+        self,
+        service: DatamodelService,
+        rules: str,
+        command: str,
+        path: Optional[Path] = None,
     ):
         """__init__ method of PyCommand class."""
         self.service = service

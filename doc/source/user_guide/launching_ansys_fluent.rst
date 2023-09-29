@@ -96,11 +96,9 @@ This command enables logging:
 
 .. code:: python
 
-   pyfluent.set_log_level("ERROR")
+   pyfluent.logging.enable()
 
-When enabling logging, you must pass the log level. PyFluent supports any of the
-Python logging levels (``"CRITICAL"``, ``"ERROR"``, ``"WARNING"``, ``"INFO"``, and ``"DEBUG"``)
-in string or ``enum`` format.
+For more details, see :ref:`ref_logging_user_guide`.
 
 Scheduler support
 -----------------
