@@ -37,7 +37,7 @@ class BaseMeshing:
         self._tui = None
         self._meshing = None
         self._fluent_version = fluent_version
-        self._meshing_utilities = None
+        self._meshing_queries = None
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
@@ -92,29 +92,29 @@ class BaseMeshing:
         return self._meshing
 
     @property
-    def _meshing_utilities_root(self):
-        """Datamodel root of meshing_utilities."""
+    def _meshing_queries_root(self):
+        """Datamodel root of meshing_queries."""
         try:
             if self.get_fluent_version() >= "24.1.0":
-                meshing_utilities_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self.version}.MeshingUtilities"
+                meshing_queries_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.MeshingQueries"
                 )
-                meshing_utilities_root = meshing_utilities_module.Root(
-                    self._se_service, "meshing_utilities", []
+                meshing_queries_root = meshing_queries_module.Root(
+                    self._se_service, "MeshingQueries", []
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             if self.get_fluent_version() >= "24.1.0":
-                meshing_utilities_root = PyMenuGeneric(
-                    self._se_service, "meshing_utilities"
+                meshing_queries_root = PyMenuGeneric(
+                    self._se_service, "meshing_queries"
                 )
-        return meshing_utilities_root
+        return meshing_queries_root
 
     @property
     def meshing_queries(self):
-        if self._meshing_utilities is None:
-            self._meshing_utilities = self._meshing_utilities_root
-        return self._meshing_utilities
+        if self._meshing_queries is None:
+            self._meshing_queries = self._meshing_queries_root
+        return self._meshing_queries
 
     @property
     def _workflow_se(self):

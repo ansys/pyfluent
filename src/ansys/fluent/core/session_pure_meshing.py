@@ -27,7 +27,7 @@ class PureMeshing(BaseSession):
     rules = [
         "workflow",
         "meshing",
-        "MeshingUtilities",
+        "MeshingQueries",
         "PartManagement",
         "PMFileManagement",
     ]
@@ -83,14 +83,11 @@ class PureMeshing(BaseSession):
     @property
     def meshing_queries(self):
         """Datamodel root of meshing_queries."""
-        if self.get_fluent_version() == ("23.2.0" or "24.1.0"):
-            return MeshingQueries(self.meshing_queries_service)
-
-    @property
-    def meshing_utilities(self):
-        """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version() >= "24.1.0":
-            return self._base_meshing.meshing_utilities
+        return (
+            MeshingQueries(self.meshing_queries_service)
+            if self.get_fluent_version() == "23.2.0"
+            else self._base_meshing.meshing_queries
+        )
 
     @property
     def workflow(self):
