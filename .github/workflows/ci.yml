@@ -54,7 +54,6 @@ jobs:
           level: error
           filter_mode: nofilter
           fail_on_error: true
-          vale_flags: "--config=doc/.vale.ini"
 
   test-import:
     name: Build and Smoke tests
