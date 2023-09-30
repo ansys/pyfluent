@@ -14,8 +14,7 @@ PyFluent session objects, which connect to Fluent sessions, are documented. Fund
 streaming services, upon which PyFluent depends (and are directly usable) are outlined. Other features include a
 Scheduler module for facilitating use of external job scheduling systems, a purely Python-based reader for Fluent
 project and case files, Python-based journaling, task-based workflow objects, full Pythonic access to Fluent rp-vars,
-powerful quantity objects that expose real values and units of API (and other) objects, visualization objects for
-interfacing to Matplotlib and pyvista, and tools for asynchronous and batched command execution.
+visualization objects for interfacing to Matplotlib and pyvista, and tools for asynchronous and batched command execution.
 
 Meshing
 #######

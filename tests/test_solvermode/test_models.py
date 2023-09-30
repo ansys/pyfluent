@@ -1,7 +1,6 @@
 import pytest
 
 
-@pytest.mark.nightly
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
@@ -24,7 +23,6 @@ def test_solver_models(load_mixing_elbow_mesh):
     assert models.multiphase.models() == "eulerian"
 
 
-@pytest.mark.nightly
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
@@ -89,11 +87,12 @@ def test_disk_2d_models(load_disk_mesh):
     k_omega_options.kw_low_re_correction = True
     assert k_omega_options.kw_low_re_correction() == True
 
+    turb_options = models.viscous.options
+    turb_options.production_kato_launder_enabled = True
+    assert turb_options.production_kato_launder_enabled() == True
+    turb_options.production_limiter.clip_factor = 9
+    assert turb_options.production_limiter.clip_factor() == 9
     turb_expert = models.viscous.turbulence_expert
-    turb_expert.kato_launder_model = True
-    assert turb_expert.kato_launder_model() == True
-    turb_expert.production_limiter.clip_factor = 9
-    assert turb_expert.production_limiter.clip_factor() == 9
     turb_expert.turb_non_newtonian = True
     assert turb_expert.turb_non_newtonian() == True
 

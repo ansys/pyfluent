@@ -63,11 +63,6 @@ rpvars
 
 :ref:`ref_rpvars` shows how you can access and modify live Fluent rpvars via PyFluent.
 
-Quantity
-########
-
-:ref:`ref_quantity` reveals a powerful quantity class that exposes real values and units of API (and other) objects.
-
 Post objects
 ############
 
@@ -107,12 +102,13 @@ Logging
     services/index
     streaming_services/index
     scheduler/index
+    fielddata
+    fieldinfo
     case_reader
     data_transfer
     journaling
     workflow
     rpvars
-    quantity
     post_objects/index
     execution_utils
     search

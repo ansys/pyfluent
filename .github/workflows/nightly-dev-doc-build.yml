@@ -14,6 +14,9 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  MEILISEARCH_API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
+  MEILISEARCH_PUBLIC_API_KEY: ${{ secrets.MEILISEARCH_PUBLIC_API_KEY }}
+  PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
 
 jobs:
   build_dev_docs:
@@ -36,11 +39,11 @@ jobs:
         run: make install
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
@@ -82,3 +85,16 @@ jobs:
             decompress-artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-index-dev:
+    name: "Deploy dev index docs"
+    runs-on: ubuntu-latest
+    needs: deploy_dev_docs
+    steps:
+      - name: "Deploy the latest documentation index"
+        uses: ansys/actions/doc-deploy-index@v4
+        with:
+          cname: ${{ env.DOCUMENTATION_CNAME }}/version/dev
+          index-name: pyfluent-vdev
+          host-url: ${{ vars.MEILISEARCH_HOST_URL }}
+          api-key: ${{ env.MEILISEARCH_API_KEY }}

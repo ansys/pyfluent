@@ -5,6 +5,8 @@ import time
 
 from docker.models.containers import Container
 import psutil
+import pytest
+from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
     new_solver_session_no_transcript,
@@ -13,7 +15,7 @@ from util.solver_workflow import (  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import get_container
-from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 
 def _read_case(session):
@@ -197,11 +199,52 @@ def test_fluent_freeze_kill(
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    alive = timeout_loop(
-        get_container,
-        5.0,
-        args=(session.connection_properties.cortex_host,),
-        expected="falsy",
+    assert session.fluent_connection.wait_process_finished(wait=5)
+
+
+@pytest.mark.fluent_version(">=23.1")
+def test_interrupt(load_static_mixer_case):
+    solver = load_static_mixer_case
+    solver.setup.general.solver.time = "unsteady-2nd-order"
+    solver.solution.initialization.standard_initialize()
+    asynchronous(solver.solution.run_calculation.dual_time_iterate)(
+        time_step_count=100, max_iter_per_step=20
+    )
+    time.sleep(5)
+    solver.solution.run_calculation.interrupt()
+    assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100
+
+
+def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.delenv("PYFLUENT_LOGGING")
+    monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
+    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
+    script = (
+        "import ansys.fluent.core as pyfluent;"
+        "solver = pyfluent.launch_fluent(start_watchdog=False);"
+        f'{"print(solver.connection_properties.cortex_host);" if inside_container else "print(solver.connection_properties.cortex_pid);"}'
+        "exit()"
+    )
+    output = subprocess.check_output(f'python -c "{script}"', shell=True)
+    cortex = output.decode().strip()
+    cortex = cortex if inside_container else int(cortex)
+    assert timeout_loop(
+        lambda: (inside_container and not get_container(cortex))
+        or (not inside_container and not psutil.pid_exists(cortex)),
+        timeout=60,
+        idle_period=1,
     )
 
-    assert not alive
+
+def test_fluent_exit_wait():
+    session1 = pyfluent.launch_fluent()
+    session1.exit()
+    assert not session1.fluent_connection.wait_process_finished(wait=0)
+
+    session2 = pyfluent.launch_fluent()
+    session2.exit(wait=60)
+    assert session2.fluent_connection.wait_process_finished(wait=0)
+
+    session3 = pyfluent.launch_fluent()
+    session3.exit(wait=True)
+    assert session3.fluent_connection.wait_process_finished(wait=0)

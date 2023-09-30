@@ -21,11 +21,19 @@ def pytest_addoption(parser):
     parser.addoption(
         "--nightly", action="store_true", default=False, help="run nightly tests"
     )
+    parser.addoption(
+        "--solvermode", action="store_true", default=False, help="run solvermode tests"
+    )
 
 
 def pytest_runtest_setup(item):
     is_nightly = item.config.getoption("--nightly")
     if not is_nightly and any(mark.name == "nightly" for mark in item.iter_markers()):
+        pytest.skip()
+
+    is_solvermode_option = item.config.getoption("--solvermode")
+    is_solvermode_path = "test_solvermode" in item.path.parts
+    if is_solvermode_option ^ is_solvermode_path:
         pytest.skip()
 
     version_specs = []
@@ -37,7 +45,7 @@ def pytest_runtest_setup(item):
         if spec == "latest":
             spec = (
                 f">={_fluent_release_version}"
-                if is_nightly
+                if is_nightly or is_solvermode_option
                 else f"=={_fluent_release_version}"
             )
         version_specs.append(SpecifierSet(spec))

@@ -1,8 +1,8 @@
-name: Nightly Test Run (No Codegen)
+name: Weekly solvermodel test run
 
 on:
-  schedule:  # UTC at 0400 on Monday and Thursday
-    - cron:  '0 4 * * MON,THU'
+  schedule:  # UTC at 0400 on Monday
+    - cron:  '0 4 * * MON'
   workflow_dispatch:
 
 env:
@@ -12,6 +12,7 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  FLUENT_IMAGE_TAG: v24.1.0
 
 jobs:
   test:
@@ -53,42 +54,21 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 22.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v22.2.0
-
-      - name: Pull 23.1 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: Pull 23.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
       - name: Pull 24.1 Fluent docker image
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: Run 24.1 API codegen
+        run: make api-codegen
+
+      - name: Print 24.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_241.py
+          python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
 
       - name: 24.1 Unit Testing
-        run: make unittest-all-241-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
-
-      - name: 23.2 Unit Testing
-        run: make unittest-all-232-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
-      - name: 23.1 Unit Testing
-        run: make unittest-all-231-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: 22.2 Unit Testing
-        run: make unittest-all-222-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v22.2.0
+        run: make unittest-solvermode-241

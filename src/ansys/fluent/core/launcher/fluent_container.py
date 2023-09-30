@@ -53,7 +53,7 @@ import logging
 import os
 from pathlib import Path, PurePosixPath
 import tempfile
-from typing import List, Union
+from typing import List, Optional, Union
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.session import _parse_server_info_file
@@ -67,16 +67,16 @@ DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 def configure_container_dict(
     args: List[str],
-    host_mount_path: Union[str, Path] = None,
-    container_mount_path: Union[str, Path] = None,
+    host_mount_path: Optional[Union[str, Path]] = None,
+    container_mount_path: Optional[Union[str, Path]] = None,
     timeout: int = 60,
-    port: int = None,
-    license_server: str = None,
-    container_server_info_file: Union[str, Path] = None,
+    port: Optional[int] = None,
+    license_server: Optional[str] = None,
+    container_server_info_file: Optional[Union[str, Path]] = None,
     remove_server_info_file: bool = True,
-    fluent_image: str = None,
-    image_name: str = None,
-    image_tag: str = None,
+    fluent_image: Optional[str] = None,
+    image_name: Optional[str] = None,
+    image_tag: Optional[str] = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -291,7 +291,9 @@ def configure_container_dict(
     )
 
 
-def start_fluent_container(args: List[str], container_dict: dict = None) -> (int, str):
+def start_fluent_container(
+    args: List[str], container_dict: Optional[dict] = None
+) -> (int, str):
     """Start a Fluent container.
 
     Parameters

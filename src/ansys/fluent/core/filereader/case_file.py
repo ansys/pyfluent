@@ -163,7 +163,7 @@ class OutputParameter:
 
 
 class CaseVariable:
-    """Provides access to variables defined in the case"""
+    """Provides access to variables defined in the case."""
 
     def __init__(self, variables: dict, path: Optional[str] = ""):
         """Initialize CaseVariable.
@@ -225,6 +225,7 @@ class Mesh:
     """
 
     def __init__(self, file_handle):
+        """Initialize the object."""
         self._file_handle = file_handle
 
     def get_surface_ids(self) -> list:
@@ -479,6 +480,7 @@ class RPVarProcessor:
         return CaseVariable(self._config_vars)
 
     def has_config_var(self, name):
+        """Get whether the case has a given variable."""
         return name in self._config_vars
 
     def _named_expressions(self):
@@ -605,12 +607,13 @@ class CaseFile(RPVarProcessor):
         self._mesh = Mesh(_file)
 
     def get_mesh(self):
+        """Get the mesh data."""
         return self._mesh
 
 
 def _get_processed_string(input_string: bytes) -> str:
     """Processes the input string (binary) with help of an identifier to return
-    it in a format which can be parsed by lispy.parse()
+    it in a format which can be parsed by lispy.parse().
 
     Parameters
     ----------

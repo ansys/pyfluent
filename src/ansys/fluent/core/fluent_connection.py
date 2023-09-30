@@ -14,10 +14,11 @@ import weakref
 
 from docker.models.containers import Container
 import grpc
+import psutil
 
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
-from ansys.fluent.core.utils.execution import timeout_exec
+from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.platform.instancemanagement import Instance
 import docker
 
@@ -156,14 +157,14 @@ class FluentConnectionProperties:
     '127.0.0.1'
     """
 
-    ip: str = None
-    port: int = None
-    password: str = None
-    cortex_pwd: str = None
-    cortex_pid: int = None
-    cortex_host: str = None
-    fluent_host_pid: int = None
-    inside_container: Union[bool, Container, None] = None
+    ip: Optional[str] = None
+    port: Optional[int] = None
+    password: Optional[str] = None
+    cortex_pwd: Optional[str] = None
+    cortex_pid: Optional[int] = None
+    cortex_host: Optional[str] = None
+    fluent_host_pid: Optional[int] = None
+    inside_container: Optional[Union[bool, Container, None]] = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
@@ -193,15 +194,15 @@ class FluentConnection:
     def __init__(
         self,
         start_timeout: int = 60,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        channel: grpc.Channel = None,
+        ip: Optional[str] = None,
+        port: Optional[int] = None,
+        password: Optional[str] = None,
+        channel: Optional[grpc.Channel] = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        remote_instance: Instance = None,
-        launcher_args: Dict[str, Any] = None,
-        inside_container: bool = None,
+        remote_instance: Optional[Instance] = None,
+        launcher_args: Optional[Dict[str, Any]] = None,
+        inside_container: Optional[bool] = None,
     ):
         """Initialize a Session.
 
@@ -347,6 +348,17 @@ class FluentConnection:
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
 
+        self._exit_event = threading.Event()
+
+        # session.exit() is handled in the daemon thread (MonitorThread) which ensures
+        # shutdown of non-daemon threads. A daemon thread is terminated abruptly
+        # during interpreter exit, after all non-daemon threads are exited.
+        # self._waiting_thread is a long-running thread which is exited
+        # at the end of session.exit() to ensure everything within session.exit()
+        # gets executed during exit.
+        self._waiting_thread = threading.Thread(target=self._exit_event.wait)
+        self._waiting_thread.start()
+
         self._finalizer = weakref.finalize(
             self,
             FluentConnection._exit,
@@ -355,6 +367,7 @@ class FluentConnection:
             self.scheme_eval,
             self.finalizer_cbs,
             self._remote_instance,
+            self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
@@ -483,19 +496,85 @@ class FluentConnection:
         warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
         return self.health_check_service.status()
 
-    def exit(self, timeout: float = None, timeout_force: bool = True) -> None:
+    def wait_process_finished(self, wait: Union[float, int, bool] = 60):
+        """Returns ``True`` if local Fluent processes have finished,
+        ``False`` if they are still running when wait limit (default 60 seconds) is reached.
+        Immediately cancels and returns ``None`` if ``wait`` is set to ``False``.
+
+        Parameters
+        ----------
+        wait : float, int or bool, optional
+            How long to wait for processes to finish before returning, by default 60 seconds.
+            Can also be set to ``True``, which will result in waiting indefinitely.
+
+        Raises
+        ------
+        ValueError
+            If current Fluent instance is running remotely.
+        TypeError
+            If ``wait`` is specified improperly.
+        """
+        if self._remote_instance:
+            raise ValueError(
+                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
+            )
+        if isinstance(wait, bool):
+            if wait:
+                wait = 60
+            else:
+                logger.debug("Wait limit set to 'False', cancelling process wait.")
+                return
+        if isinstance(wait, (float, int)):
+            logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
+        else:
+            raise TypeError("Invalid 'limit' type.")
+        if self.connection_properties.inside_container:
+            _response = timeout_loop(
+                get_container,
+                wait,
+                args=(self.connection_properties.cortex_host,),
+                idle_period=0.5,
+                expected="falsy",
+            )
+        else:
+            _response = timeout_loop(
+                lambda connection: psutil.pid_exists(connection.fluent_host_pid)
+                or psutil.pid_exists(connection.cortex_pid),
+                wait,
+                args=(self.connection_properties,),
+                idle_period=0.5,
+                expected="falsy",
+            )
+        return not _response
+
+    def exit(
+        self,
+        timeout: Optional[float] = None,
+        timeout_force: bool = True,
+        wait: Optional[Union[float, int, bool]] = False,
+    ) -> None:
         """Close the Fluent connection and exit Fluent.
 
         Parameters
         ----------
         timeout : float, optional
             Time in seconds before considering that the exit request has timed out.
-            If omitted or specified as None, then request will not time out and will lock up the interpreter
-            while waiting for a response.
+            If omitted or specified as None, then the request will not time out and will lock up the interpreter
+            while waiting for a response. Will return earlier if request succeeds earlier.
         timeout_force : bool, optional
-            If not specified, defaults to True. If True, attempts to terminate the Fluent process if
-            exit request reached timeout. Executes :func:`force_exit()` or :func:`force_exit_container()`,
+            If not specified, defaults to ``True``. If ``True``, attempts to terminate the Fluent process if
+            exit request reached timeout. If no timeout is set, this option is ignored.
+            Executes :func:`force_exit()` or :func:`force_exit_container()`,
             depending on how Fluent was launched.
+        wait : float, int or bool, optional
+            Specifies whether to wait for local Fluent processes to finish completely before proceeding.
+            If omitted or specified as ``False``, will proceed as usual without
+            waiting for the Fluent processes to finish.
+            Can be set to ``True`` which will wait for up to 60 seconds,
+            or set to a float or int value to specify the wait limit.
+            If wait limit is reached, will forcefully terminate the Fluent process.
+            If set to wait, will return as soon as processes completely finish.
+            Does not work for remote Fluent processes.
 
         Notes
         -----
@@ -511,6 +590,11 @@ class FluentConnection:
         >>> session = pyfluent.launch_fluent()
         >>> session.exit()
         """
+
+        if wait is not False and self._remote_instance:
+            logger.warning(
+                "Session exit 'wait' option is ignored when working with remote Fluent sessions."
+            )
 
         if timeout is None:
             env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
@@ -528,18 +612,25 @@ class FluentConnection:
         if timeout is None:
             logger.info("Finalizing Fluent connection...")
             self._finalizer()
+            if wait is not False:
+                self.wait_process_finished(wait=wait)
         else:
             if not self.health_check_service.is_serving:
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
-                logger.info("Attempting to finalize Fluent connection...")
-
+                logger.info("Attempting to send exit request to Fluent...")
                 success = timeout_exec(self._finalizer, timeout)
                 if success:
-                    return
+                    if wait is not False:
+                        if self.wait_process_finished(wait=wait):
+                            return
+                    else:
+                        return
 
             logger.debug("Continuing...")
-            if timeout_force:
+            if (timeout is not None and timeout_force) or isinstance(
+                wait, (float, int)
+            ):
                 if self._remote_instance:
                     logger.warning("Cannot force exit from Fluent remote instance.")
                     return
@@ -555,7 +646,7 @@ class FluentConnection:
                     self.force_exit()
                 logger.debug("Done.")
             else:
-                logger.debug("Timeout force exit disabled, returning...")
+                logger.debug("Timeout and wait force exit disabled, returning...")
 
     @staticmethod
     def _exit(
@@ -564,6 +655,7 @@ class FluentConnection:
         scheme_eval,
         finalizer_cbs,
         remote_instance,
+        exit_event,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
         if channel:
@@ -579,3 +671,5 @@ class FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+        exit_event.set()

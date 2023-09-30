@@ -15,10 +15,9 @@ def test_1364(new_solver_session):
 
     solver.file.read_case(file_name=import_filename)
 
-    report_def = solver.solution.report_definitions
-    report_def.volume.create("xxx")
+    report_def = solver.solution.report_definitions.volume.create("xxx")
 
-    report_def["xxx"].set_state(
+    report_def.set_state(
         {
             "report_type": "volume-max",
             "field": "temperature",
@@ -29,6 +28,6 @@ def test_1364(new_solver_session):
         }
     )
 
-    assert report_def.volume["xxx"].zone_names.allowed_values() == ["fluid"]
+    assert report_def.cell_zones.allowed_values() == ["fluid"]
 
-    assert report_def.volume["xxx"].expr_list.allowed_values() == None
+    assert report_def.expr_list.allowed_values() == None

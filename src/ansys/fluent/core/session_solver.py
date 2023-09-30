@@ -10,12 +10,7 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
-from ansys.fluent.core.session import (
-    _CODEGEN_MSG_TUI,
-    BaseSession,
-    _get_preferences,
-    _get_solverworkflow,
-)
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
@@ -53,7 +48,6 @@ class Solver(BaseSession):
         self._system_coupling = None
         self._settings_root = None
         self._version = None
-        self._solverworkflow = None
         self._lck = threading.Lock()
         self.svar_service = self.fluent_connection.create_service(SVARService)
         self.svar_info = SVARInfo(self.svar_service)
@@ -94,10 +88,12 @@ class Solver(BaseSession):
                 tui_module = importlib.import_module(
                     f"ansys.fluent.core.solver.tui_{self.version}"
                 )
-                self._tui = tui_module.main_menu([], self._tui_service)
+                self._tui = tui_module.main_menu(
+                    self._tui_service, self._version, "solver", []
+                )
             except ImportError:
                 tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu([], self._tui_service)
+                self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
         return self._tui
 
     @property
@@ -191,13 +187,6 @@ class Solver(BaseSession):
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
-
-    @property
-    def solverworkflow(self):
-        """Datamodel root of solverworkflow."""
-        if self._solverworkflow is None:
-            self._solverworkflow = _get_solverworkflow(self)
-        return self._solverworkflow
 
     def _sync_from_future(self, fut: Future):
         with self._lck:
