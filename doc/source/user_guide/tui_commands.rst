@@ -59,7 +59,7 @@ The following code yields the same result but specifies all arguments in one cal
 
    /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
-The recorded Python journal will contain the following line which can be executed in
+The recorded Python journal contains the following line which can be executed in
 PyFluent, assuming ``solver`` is the session instance returned by ``launch_fluent``.
 
 .. code:: python
