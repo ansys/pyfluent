@@ -83,7 +83,7 @@ Note, the string ``"Pa"`` is wrapped in single quotation marks
 to preserve the double quotation marks around the TUI argument.
 
 A command line flag ``-topy`` is also available in Fluent to convert an existing
-Fluent journal to Python journal. The following command will write a Python journal
+Fluent journal to Python journal. The following command writes a Python journal
 file my_journal.py in the working directory.
 
 .. code:: console
