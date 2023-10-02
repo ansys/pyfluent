@@ -59,7 +59,7 @@ The following code yields the same result but specifies all arguments in one cal
 
    /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
-The recorded Python journal will contain the following line which can be executed in
+The recorded Python journal contains the following line which can be executed in
 PyFluent, assuming ``solver`` is the session instance returned by ``launch_fluent``.
 
 .. code:: python
@@ -83,7 +83,7 @@ Note, the string ``"Pa"`` is wrapped in single quotation marks
 to preserve the double quotation marks around the TUI argument.
 
 A command line flag ``-topy`` is also available in Fluent to convert an existing
-Fluent journal to Python journal. The following command will write a Python journal
+Fluent journal to Python journal. The following command writes a Python journal
 file my_journal.py in the working directory.
 
 .. code:: console

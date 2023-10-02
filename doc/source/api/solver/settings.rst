@@ -28,6 +28,9 @@ of this settings hierarchy has been designed in close alignment with this GUI hi
 
 Types of settings objects
 -------------------------
+
+.. vale Google.Spacing = NO
+
 A settings object can be one of the primitive types: :obj:`~ansys.fluent.core.solver.flobject.Integer`,
 :obj:`~ansys.fluent.core.solver.flobject.Real`,
 :obj:`~ansys.fluent.core.solver.flobject.String`, and
@@ -62,10 +65,12 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
   named ``fluid-1``. The current number of child objects can be accessed with the
   ``get_size()`` method.
 
+.. vale Google.Spacing = YES
+
 
 Object state
 ------------
-You can access the state of any object by "calling" it. This returns the state of the children 
+You can access the state of any object by "calling" it. This returns the state of the children
 as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListObject`` types:
 
 .. code-block::
@@ -111,7 +116,7 @@ You can print the current state in a simple text format with the
 
 
 The following output is returned:
-  
+
 .. code-block::
 
   viscous :
@@ -204,7 +209,7 @@ These examples accesses the list of zone surfaces:
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
 
-The following table contains metadata names, corresponding methods to access this metadata, whether the method can return None, applicable object types, and returned data types: 
+The following table contains metadata names, corresponding methods to access this metadata, whether the method can return None, applicable object types, and returned data types:
 
 ==================  ==================  =================  =====================  ====================
 Metadata name       Method              Can return None    Type applicability     Metadata type
