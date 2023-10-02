@@ -100,7 +100,7 @@ class BaseMeshing:
                     f"ansys.fluent.core.datamodel_{self.version}.MeshingUtilities"
                 )
                 meshing_utilities_root = meshing_utilities_module.Root(
-                    self._se_service, "meshing_utilities", []
+                    self._se_service, "MeshingUtilities", []
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
@@ -111,7 +111,7 @@ class BaseMeshing:
         return meshing_utilities_root
 
     @property
-    def meshing_queries(self):
+    def meshing_utilities(self):
         if self._meshing_utilities is None:
             self._meshing_utilities = self._meshing_utilities_root
         return self._meshing_utilities
