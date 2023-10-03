@@ -42,7 +42,7 @@ jobs:
     name: Documentation Style Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Running Vale
         uses: errata-ai/vale-action@reviewdog
@@ -84,7 +84,7 @@ jobs:
       DOC_DEPLOYMENT_IMAGE_TAG: v23.2.0
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -188,7 +188,7 @@ jobs:
     runs-on: [self-hosted, pyfluent]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -360,7 +360,7 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -427,7 +427,7 @@ jobs:
             version: 241
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
