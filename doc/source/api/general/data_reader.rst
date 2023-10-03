@@ -17,11 +17,11 @@ from the ``examples`` repository:
 .. code-block:: python
 
   >>> from ansys.fluent.core import examples
-  >>> from ansys.fluent.core.filereader.datareader import DataReader
+  >>> from ansys.fluent.core.filereader.data_file import DataFile
   >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
   >>> data_filepath = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
-  >>> reader = DataReader(data_filepath=data_filepath, case_file_handle=CaseFile(case_filepath))
+  >>> reader = DataFile(data_filepath=data_filepath, case_file_handle=CaseFile(case_filepath))
   >>> reader.case_file
   'elbow1.cas.h5'
   >>> reader.variables()

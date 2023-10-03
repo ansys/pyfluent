@@ -6,11 +6,11 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.casereader import CaseReader
+    >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
+    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_only_filename=False)
 
-    >>> reader = CaseReader(case_filepath=case_filepath) # Instantiate a CaseFile class
+    >>> reader = CaseFile(case_filepath=case_filepath) # Instantiate a CaseFile class
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 

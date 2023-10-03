@@ -6,11 +6,11 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.datareader import DataReader
+    >>> from ansys.fluent.core.filereader.data_file import DataFile
 
-    >>> data_filepath = examples.download_file("Static_Mixer_Parameters.dat.h5", "pyfluent/static_mixer")
+    >>> data_filepath = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False)
 
-    >>> reader = DataReader(data_filepath=data_filepath) # Instantiate a DataFile class
+    >>> reader = DataFile(data_filepath=data_filepath) # Instantiate a DataFile class
 """
 import os
 from os.path import dirname
