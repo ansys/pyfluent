@@ -113,6 +113,7 @@ jobs:
       - name: "Deploy the latest documentation index"
         uses: ansys/actions/doc-deploy-index@v4
         with:
+          doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
           cname: ${{ env.DOCUMENTATION_CNAME }}/version/${{ env.VERSION }}
           index-name: pyfluent-v${{ env.VERSION_MEILI }}
           host-url: ${{ vars.MEILISEARCH_HOST_URL }}
