@@ -28,8 +28,6 @@ material degradation.
 
 """
 
-# sphinx_gallery_thumbnail_path = '_static/radiation_headlamp_thumbnail.png'
-
 ###############################################################################
 # .. image:: /_static/radiation_headlamp_geom.png
 #   :width: 500pt
@@ -46,6 +44,7 @@ material degradation.
 # Perform required imports, which includes downloading and importing the
 # geometry files.
 
+# sphinx_gallery_thumbnail_path = '_static/radiation_headlamp_thumbnail.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
