@@ -1,5 +1,4 @@
-"""A module used to provide abstract machine objects for queue system
-interfaces.
+""" A module used to provide abstract machine objects for queue system interfaces.
 
 This module provides two objects that help with interfacing Python
 scripts with job scheduler environments:
@@ -21,11 +20,10 @@ import copy
 
 
 class Machine(object):
-    """Provides an interface for a single machine allocated by a queue
-    system."""
+    """ Provides an interface for a single machine allocated by a queue system."""
 
     def __init__(self, hostName, numberOfCores, queueName=None, coreList=None):
-        """Constructs a machine from the information provided.
+        """ Constructs a machine from the information provided.
 
         Parameters
         ----------
@@ -44,7 +42,7 @@ class Machine(object):
         self._coreList = coreList
 
     def __repr__(self):
-        """Returns a string representation for the machine."""
+        """ Returns a string representation for the machine."""
         return (
             "Hostname:"
             + self._hostName
@@ -56,12 +54,12 @@ class Machine(object):
 
     @property
     def host_name(self):
-        """Returns the hostname listed in the machine file."""
+        """ Returns the hostname listed in the machine file."""
         return self._hostName
 
     @property
     def number_of_cores(self):
-        """Returns the number of cores allocated on the machine."""
+        """ Returns the number of cores allocated on the machine."""
         return self._numberOfCores
 
     @number_of_cores.setter
@@ -70,21 +68,20 @@ class Machine(object):
 
     @property
     def queue_name(self):
-        """Returns the name of the queue the machine is allocated in."""
+        """ Returns the name of the queue the machine is allocated in."""
         return self._queueName
 
     @property
     def core_list(self):
-        """Returns a list of core IDs allocated on the machine."""
+        """ Returns a list of core IDs allocated on the machine."""
         return self._coreList
 
 
 class MachineList(object):
-    """Provides an interface to list of machines allocated by a queue
-    system."""
+    """ Provides an interface to list of machines allocated by a queue system."""
 
     def __init__(self, machinesIn=[]):
-        """Constructs and initializes an empty machine file object."""
+        """ Constructs and initializes an empty machine file object."""
         self._machines = []
         for machine in machinesIn:
             self._machines.append(machine)
@@ -105,32 +102,32 @@ class MachineList(object):
         return MachineList(copy.deepcopy(machineList, memo))
 
     def reset(self):
-        """Resets the machine file data to the initial values."""
+        """ Resets the machine file data to the initial values."""
         self._machines = []
 
     def add(self, m):
-        """Add to machine list."""
+        """ Add to machine list."""
         self._machines.append(m)
 
     def remove(self, m):
-        """Remove from machine list."""
+        """ Remove from machine list."""
         self._machines.remove(m)
 
     def sort_by_core_count(self):
-        """Sorts the machines by core count, reordering the existing data."""
+        """ Sorts the machines by core count, reordering the existing data."""
         self._machines.sort(key=lambda machine: machine.number_of_cores, reverse=True)
 
     def sort_by_core_count_ascending(self):
-        """Sorts the machines by core count, reordering the existing data."""
+        """ Sorts the machines by core count, reordering the existing data."""
         self._machines.sort(key=lambda machine: machine.number_of_cores)
 
     def remove_empty_machines(self):
-        """Removes all machines with 0 cores."""
+        """ Removes all machines with 0 cores."""
         self._machines = [m for m in self._machines if m.number_of_cores > 0]
 
     def move_local_host_to_front(self):
-        """Moves the local host machine to the front of the machine list,
-        creating it if it does not exist."""
+        """ Moves the local host machine to the front of the machine list, creating it
+        if it does not exist."""
         import socket
 
         localHostName = socket.gethostname()
@@ -150,25 +147,25 @@ class MachineList(object):
 
     @property
     def machines(self):
-        """Returns the entire list of machines."""
+        """ Returns the entire list of machines."""
         return self._machines
 
     @property
     def num_machines(self):
-        """Returns the total number of machines."""
+        """ Returns the total number of machines."""
         return len(self._machines)
 
     @property
     def number_of_cores(self):
-        """Returns the total number of cores."""
+        """ Returns the total number of cores."""
         return sum([m.number_of_cores for m in self._machines])
 
     @property
     def max_cores(self):
-        """Returns the maximum number of cores."""
+        """ Returns the maximum number of cores."""
         return max([m.number_of_cores for m in self._machines])
 
     @property
     def min_cores(self):
-        """Returns the minimum number of cores."""
+        """ Returns the minimum number of cores."""
         return min([m.number_of_cores for m in self._machines])

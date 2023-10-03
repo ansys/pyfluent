@@ -1,6 +1,6 @@
-"""Provide a module to generate the documentation classes for Fluent settings
-tree.
-Running this module generates a .rst files for the Fluent
+""" Provide a module to generate the documentation classes for Fluent settings tree.
+Running this module generates a .rst files for the Fluent.
+
 settings classes. The out is placed at:
 - doc/source/api/solver/_autosummary/settings
 Process

@@ -132,8 +132,7 @@ def search(
     version: Optional[str] = None,
     search_root: Optional[Any] = None,
 ):
-    """
-    Search for a word through the Fluent's object hierarchy.
+    """ Search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------

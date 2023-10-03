@@ -1,4 +1,4 @@
-""".. _ref_radiation_headlamp:
+""" .. _ref_radiation_headlamp:
 
 Modeling Radiation in a Headlamp Using the Monte Carlo Method
 -------------------------------------------------------------
@@ -25,7 +25,6 @@ The problem considers the headlamp of a parked car exposed to sunlight. The
 lens focuses incoming radiation onto the internal components of the headlamp,
 producing thermal hotspots that could cause damage due to thermal stresses or
 material degradation.
-
 """
 
 # sphinx_gallery_thumbnail_path = '_static/radiation_headlamp_thumbnail.png'

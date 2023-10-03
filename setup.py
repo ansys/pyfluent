@@ -1,4 +1,4 @@
-"""Setup file for ansys-fluent-core."""
+""" Setup file for ansys-fluent-core."""
 import os
 import shutil
 

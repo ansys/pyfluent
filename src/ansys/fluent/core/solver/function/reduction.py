@@ -1,5 +1,5 @@
-"""Module providing reductions functions that can be applied to Fluent data
-from one or across multiple remote Fluent sessions.
+""" Module providing reductions functions that can be applied to Fluent data from one or
+across multiple remote Fluent sessions.
 
 The following parameters are relevant for the reduction functions. The
 expr parameter is not relevant to all reductions functions.
@@ -64,7 +64,7 @@ from numpy import array
 
 class BadReductionRequest(Exception):
     def __init__(self, err):
-        """__init__ method of BadReductionRequest class."""
+        """ __init__ method of BadReductionRequest class."""
         super().__init__(f"Could not complete reduction function request: {err}")
 
 
@@ -283,8 +283,8 @@ def _limit(limit, expr, locations, ctxt):
 
 
 def area_average(expression, locations, ctxt=None):
-    """Compute the area averaged value of the specified expression over the
-    specified locations.
+    """ Compute the area averaged value of the specified expression over the specified
+    locations.
 
     Parameters
     ----------
@@ -299,8 +299,8 @@ def area_average(expression, locations, ctxt=None):
 
 
 def area_integral(expression, locations, ctxt=None):
-    """Compute the area integrated averaged of the specified expression over
-    the specified locations.
+    """ Compute the area integrated averaged of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -315,8 +315,8 @@ def area_integral(expression, locations, ctxt=None):
 
 
 def volume_average(expression, locations, ctxt=None):
-    """Compute the volume-weighted average value of the specified expression
-    over the specified locations.
+    """ Compute the volume-weighted average value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -331,8 +331,8 @@ def volume_average(expression, locations, ctxt=None):
 
 
 def volume_integral(expression, locations, ctxt=None):
-    """Compute the volume-weighted total of the specified expression over the
-    specified locations.
+    """ Compute the volume-weighted total of the specified expression over the specified
+    locations.
 
     Parameters
     ----------
@@ -347,7 +347,7 @@ def volume_integral(expression, locations, ctxt=None):
 
 
 def area(locations, ctxt=None):
-    """Compute the total area of the specified locations.
+    """ Compute the total area of the specified locations.
 
     Parameters
     ----------
@@ -361,7 +361,7 @@ def area(locations, ctxt=None):
 
 
 def volume(locations, ctxt=None):
-    """Compute the total volume of the specified locations.
+    """ Compute the total volume of the specified locations.
 
     Parameters
     ----------
@@ -375,7 +375,7 @@ def volume(locations, ctxt=None):
 
 
 def count(locations, ctxt=None):
-    """Compute the total number of cells included in the specified locations.
+    """ Compute the total number of cells included in the specified locations.
 
     Parameters
     ----------
@@ -389,7 +389,7 @@ def count(locations, ctxt=None):
 
 
 def centroid(locations, ctxt=None):
-    """Compute the geometric centroid of the specified location(s) as a vector.
+    """ Compute the geometric centroid of the specified location(s) as a vector.
 
     Parameters
     ----------
@@ -403,8 +403,8 @@ def centroid(locations, ctxt=None):
 
 
 def force(locations, ctxt=None):
-    """Compute the force acting on the location(s) specified (should be walls)
-    as a vector.
+    """ Compute the force acting on the location(s) specified (should be walls) as a
+    vector.
 
     Parameters
     ----------
@@ -418,8 +418,8 @@ def force(locations, ctxt=None):
 
 
 def pressure_force(locations, ctxt=None):
-    """Compute the pressure force acting on the location(s) specified (should
-    be walls) as a vector.
+    """ Compute the pressure force acting on the location(s) specified (should be walls)
+    as a vector.
 
     Parameters
     ----------
@@ -433,8 +433,8 @@ def pressure_force(locations, ctxt=None):
 
 
 def viscous_force(locations, ctxt=None):
-    """Compute the viscous force acting on the location(s) specified (should be
-    walls) as a vector.
+    """ Compute the viscous force acting on the location(s) specified (should be walls)
+    as a vector.
 
     Parameters
     ----------
@@ -448,8 +448,8 @@ def viscous_force(locations, ctxt=None):
 
 
 def moment(expression, locations, ctxt=None):
-    """Compute  the moment vector about the specified point (which can be
-    single-valued expression) for the specified location(s).
+    """ Compute  the moment vector about the specified point (which can be single-valued
+    expression) for the specified location(s).
 
     Parameters
     ----------
@@ -464,8 +464,7 @@ def moment(expression, locations, ctxt=None):
 
 
 def minimum(expression, locations, ctxt=None):
-    """Compute the minimum of the specified expression over the specified
-    locations.
+    """ Compute the minimum of the specified expression over the specified locations.
 
     Parameters
     ----------
@@ -480,8 +479,7 @@ def minimum(expression, locations, ctxt=None):
 
 
 def maximum(expression, locations, ctxt=None):
-    """Compute the maximum of the specified expression over the specified
-    locations.
+    """ Compute the maximum of the specified expression over the specified locations.
 
     Parameters
     ----------
@@ -496,8 +494,8 @@ def maximum(expression, locations, ctxt=None):
 
 
 def mass_average(expression, locations, ctxt=None):
-    """Compute the mass-weighted average value of the specified expression over
-    the specified locations.
+    """ Compute the mass-weighted average value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -512,8 +510,8 @@ def mass_average(expression, locations, ctxt=None):
 
 
 def mass_integral(expression, locations, ctxt=None):
-    """Compute the total mass-weighted value of the specified expression over
-    the specified locations.
+    """ Compute the total mass-weighted value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -528,8 +526,8 @@ def mass_integral(expression, locations, ctxt=None):
 
 
 def mass_flow_average(expression, locations, ctxt=None):
-    """Compute the mass-flow-weighted average value of the specified expression
-    over the specified locations.
+    """ Compute the mass-flow-weighted average value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -544,7 +542,7 @@ def mass_flow_average(expression, locations, ctxt=None):
 
 
 def mass_flow_integral(expression, locations, ctxt=None):
-    """Compute the total mass flow over the specified locations.
+    """ Compute the total mass flow over the specified locations.
 
     Parameters
     ----------
@@ -559,7 +557,7 @@ def mass_flow_integral(expression, locations, ctxt=None):
 
 
 def mass_flow(locations, ctxt=None):
-    """Compute the total mass flow rate of the specified locations.
+    """ Compute the total mass flow rate of the specified locations.
 
     Parameters
     ----------
@@ -573,8 +571,7 @@ def mass_flow(locations, ctxt=None):
 
 
 def sum(expression, locations, weight, ctxt=None):
-    """Compute the sum of the specified expression over the
-    specified locations.
+    """ Compute the sum of the specified expression over the specified locations.
 
     Parameters
     ----------
@@ -590,8 +587,8 @@ def sum(expression, locations, weight, ctxt=None):
 
 
 def sum_if(expression, condition, locations, weight, ctxt=None):
-    """Compute the sum of the specified expression over the
-    specified locations if a condition is satisfied.
+    """ Compute the sum of the specified expression over the specified locations if a
+    condition is satisfied.
 
     Parameters
     ----------

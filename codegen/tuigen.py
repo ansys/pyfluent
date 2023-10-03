@@ -1,4 +1,4 @@
-"""Provide a module to generate explicit Fluent TUI menu classes.
+""" Provide a module to generate explicit Fluent TUI menu classes.
 
 This module starts up Fluent and calls the underlying gRPC APIs to generate the
 following TUI Python modules:
@@ -139,7 +139,7 @@ def _is_valid_tui_menu_name(name):
 
 
 class _TUIMenu:
-    """Class representing Fluent's TUI menu."""
+    """ Class representing Fluent's TUI menu."""
 
     def __init__(self, path: str, doc: str, is_command: bool = False):
         self.path = path
@@ -164,7 +164,7 @@ class _TUIMenu:
 
 
 class TUIGenerator:
-    """Class to generate explicit TUI menu classes."""
+    """ Class to generate explicit TUI menu classes."""
 
     def __init__(self, mode: str, version: str, pyfluent_path: str):
         self._mode = mode

@@ -8,10 +8,10 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class AppendToFile:
-    """Class representing append to file action."""
+    """ Class representing append to file action."""
 
     def __init__(self, file_path: str):
-        """__init__ method of AppendToFile class."""
+        """ __init__ method of AppendToFile class."""
         self.f = open(file_path, "a")
 
     def __call__(self, transcript):
@@ -23,12 +23,12 @@ class AppendToFile:
 
 
 class Transcript(StreamingService):
-    """Encapsulates a Fluent Transcript streaming service."""
+    """ Encapsulates a Fluent Transcript streaming service."""
 
     _writing_transcript_to_interpreter = False
 
     def __init__(self, channel, metadata):
-        """__init__ method of Transcript class."""
+        """ __init__ method of Transcript class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=Transcript._process_streaming,
@@ -39,7 +39,7 @@ class Transcript(StreamingService):
     def start(
         self, file_path: Optional[str] = None, write_to_stdout: bool = False
     ) -> None:
-        """Start streaming of Fluent transcript.
+        """ Start streaming of Fluent transcript.
 
          Parameters
         ----------
@@ -62,20 +62,19 @@ class Transcript(StreamingService):
         super().start()
 
     def _write_to_stdout(self):
-        """Write transcript to stdout."""
+        """ Write transcript to stdout."""
         if not Transcript._writing_transcript_to_interpreter:
             self.callback_ids.append(self.register_callback(print))
             Transcript._writing_transcript_to_interpreter = True
 
     def stop(self) -> None:
-        """Stop streaming of Fluent transcript."""
+        """ Stop streaming of Fluent transcript."""
         for callback_id in self.callback_ids:
             self.unregister_callback(callback_id)
         super().stop()
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Performs processes on transcript depending on the callback
-        functions."""
+        """ Performs processes on transcript depending on the callback functions."""
         request = TranscriptModule.TranscriptRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method

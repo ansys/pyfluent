@@ -1,4 +1,4 @@
-"""Session to session data transfer, supporting Fluent in all modes."""
+""" Session to session data transfer, supporting Fluent in all modes."""
 
 
 from functools import partial
@@ -47,7 +47,7 @@ def transfer_case(
     workdir: Optional[str] = None,
     container_workdir: Optional[str] = None,
 ):
-    """Transfer case between instances.
+    """ Transfer case between instances.
 
     Parameters
     ----------

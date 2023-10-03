@@ -4,12 +4,12 @@ from typing import Callable, Optional
 
 
 class StreamingService:
-    """Encapsulates a Fluent streaming service."""
+    """ Encapsulates a Fluent streaming service."""
 
     _service_id = itertools.count()
 
     def __init__(self, stream_begin_method, target, streaming_service):
-        """__init__ method of StreamingService class."""
+        """ __init__ method of StreamingService class."""
         self._lock: threading.RLock = threading.RLock()
         self._streaming: bool = False
         self._id = f"stream-{next(StreamingService._service_id)}"
@@ -22,12 +22,12 @@ class StreamingService:
 
     @property
     def is_streaming(self):
-        """Checks whether it is streaming."""
+        """ Checks whether it is streaming."""
         with self._lock:
             return self._streaming
 
     def register_callback(self, call_back: Callable, *args, **kwargs) -> str:
-        """Register the callback.
+        """ Register the callback.
 
         Parameters
         ----------
@@ -45,7 +45,7 @@ class StreamingService:
             return callback_id
 
     def unregister_callback(self, callback_id: str):
-        """Unregister the callback.
+        """ Unregister the callback.
 
         Parameters
         ----------
@@ -57,7 +57,7 @@ class StreamingService:
                 del self._service_callbacks[callback_id]
 
     def start(self, *args, **kwargs) -> None:
-        """Start streaming of Fluent transcript."""
+        """ Start streaming of Fluent transcript."""
         with self._lock:
             if not self.is_streaming:
                 self._prepare()
@@ -78,7 +78,7 @@ class StreamingService:
                 self._streaming = True
 
     def stop(self) -> None:
-        """Stop streaming of Fluent transcript."""
+        """ Stop streaming of Fluent transcript."""
         if self.is_streaming:
             self._streaming_service.end_streaming(self._id, self._stream_begin_method)
             self._stream_thread.join()
@@ -86,7 +86,7 @@ class StreamingService:
             self._stream_thread = None
 
     def refresh(self, session_id, event_info) -> None:
-        """Refresh stream.
+        """ Refresh stream.
 
         Parameters
         ----------

@@ -1,4 +1,4 @@
-""".. _ref_exhaust_system_tui_api:
+""" .. _ref_exhaust_system_tui_api:
 
 Fault-tolerant meshing workflow
 -------------------------------

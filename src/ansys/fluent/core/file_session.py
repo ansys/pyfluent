@@ -15,7 +15,7 @@ from ansys.fluent.core.services.field_data import (
 
 
 class Transaction:
-    """Populates field data on surfaces."""
+    """ Populates field data on surfaces."""
 
     class _SurfaceTransaction:
         def __init__(self, surface_id, provide_vertices, provide_faces):
@@ -36,7 +36,7 @@ class Transaction:
             self.surface_ids = surface_ids
 
     def __init__(self, file_session, field_info):
-        """__init__ method of Transaction class."""
+        """ __init__ method of Transaction class."""
         self._surface_transactions = []
         self._scalar_field_transactions = []
         self._vector_field_transactions = []
@@ -46,8 +46,8 @@ class Transaction:
     def add_surfaces_request(
         self, surface_ids, provide_vertices=True, provide_faces=True
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity,
-        centroids, and normals).
+        """ Add request to get surface data (vertices, face connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -85,7 +85,7 @@ class Transaction:
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
     ) -> None:
-        """Add request to get scalar field data on surfaces.
+        """ Add request to get scalar field data on surfaces.
 
         Parameters
         ----------
@@ -138,7 +138,7 @@ class Transaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
     ) -> None:
-        """Add request to get vector field data on surfaces.
+        """ Add request to get vector field data on surfaces.
 
         Parameters
         ----------
@@ -185,7 +185,7 @@ class Transaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
     ):
-        """Add request to get pathlines field on surfaces.
+        """ Add request to get pathlines field on surfaces.
 
         Parameters
         ----------
@@ -203,7 +203,7 @@ class Transaction:
         raise RuntimeError("Path-lines not supported.")
 
     def get_fields(self):
-        """Get data for previously added requests and then clear all requests.
+        """ Get data for previously added requests and then clear all requests.
 
         Returns
         -------
@@ -272,7 +272,7 @@ class FileFieldData:
         self._field_info = field_info
 
     def new_transaction(self):
-        """Create a new field transaction."""
+        """ Create a new field transaction."""
         return Transaction(self._file_session, self._field_info)
 
     def get_surface_data(
@@ -282,7 +282,7 @@ class FileFieldData:
         surface_name: Optional[str] = None,
         overset_mesh: Optional[bool] = False,
     ):
-        """Get surface data (vertices and faces connectivity).
+        """ Get surface data (vertices and faces connectivity).
 
         Parameters
         ----------
@@ -357,7 +357,7 @@ class FileFieldData:
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
     ):
-        """Get scalar field data on a surface.
+        """ Get scalar field data on a surface.
 
         Parameters
         ----------
@@ -442,7 +442,7 @@ class FileFieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
     ):
-        """Get vector field data on a surface.
+        """ Get vector field data on a surface.
 
         Parameters
         ----------
@@ -521,7 +521,7 @@ class FileFieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
     ):
-        """Get the pathlines field data on a surface.
+        """ Get the pathlines field data on a surface.
 
         Parameters
         ----------
@@ -548,7 +548,7 @@ class FileFieldInfo:
     def get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
-        """Get the range (minimum and maximum values) of the field.
+        """ Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
@@ -578,7 +578,7 @@ class FileFieldInfo:
         return [minimum, maximum]
 
     def get_scalar_fields_info(self):
-        """Get fields information (field name, domain, and section).
+        """ Get fields information (field name, domain, and section).
 
         Returns
         -------
@@ -613,7 +613,7 @@ class FileFieldInfo:
         return scalar_field_info
 
     def get_vector_fields_info(self):
-        """Get vector fields information (vector components).
+        """ Get vector fields information (vector components).
 
         Returns
         -------
@@ -642,7 +642,7 @@ class FileFieldInfo:
             }
 
     def get_surfaces_info(self):
-        """Get surfaces information (surface name, ID, and type).
+        """ Get surfaces information (surface name, ID, and type).
 
         Returns
         -------
@@ -665,7 +665,7 @@ class FileFieldInfo:
 
 class FileSession:
     def __init__(self):
-        """__init__ method of FileSession class"""
+        """ __init__ method of FileSession class."""
         self._case_file = None
         self._data_file = None
         self.field_info = FileFieldInfo(self)
@@ -674,9 +674,9 @@ class FileSession:
         self.session_id = 1
 
     def read_case(self, case_filepath):
-        """Read Case file."""
+        """ Read Case file."""
         self._case_file = CaseFile(case_filepath)
 
     def read_data(self, data_filepath):
-        """Read Data file"""
+        """ Read Data file."""
         self._data_file = DataFile(data_filepath, case_file_handle=self._case_file)

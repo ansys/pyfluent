@@ -1,4 +1,4 @@
-"""Batch rpc service."""
+""" Batch rpc service."""
 
 import inspect
 import logging
@@ -15,21 +15,21 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService:
-    """Class wrapping methods in batch rpc service."""
+    """ Class wrapping methods in batch rpc service."""
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        """__init__ method of BatchOpsService class."""
+        """ __init__ method of BatchOpsService class."""
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(channel)
         self._metadata = metadata
 
     @catch_grpc_error
     def execute(self, request):
-        """Execute rpc of BatchOps service."""
+        """ Execute rpc of BatchOps service."""
         return self._stub.Execute(request, metadata=self._metadata)
 
 
 class BatchOps:
-    """Class to execute operations in batch in Fluent.
+    """ Class to execute operations in batch in Fluent.
 
     Examples
     --------
@@ -62,7 +62,7 @@ class BatchOps:
 
     @classmethod
     def instance(cls) -> "BatchOps":
-        """Get the BatchOps instance.
+        """ Get the BatchOps instance.
 
         Returns
         -------
@@ -72,12 +72,12 @@ class BatchOps:
         return cls._instance()
 
     class Op:
-        """Class to create a single batch operation."""
+        """ Class to create a single batch operation."""
 
         def __init__(
             self, package: str, service: str, method: str, request_body: bytes
         ):
-            """__init__ method of Op class."""
+            """ __init__ method of Op class."""
             self._request = batch_ops_pb2.ExecuteRequest(
                 package=package,
                 service=service,
@@ -124,7 +124,7 @@ class BatchOps:
             self.queued = False
 
         def update_result(self, status, data):
-            """Update results after the batch operation is executed."""
+            """ Update results after the batch operation is executed."""
             obj = self.response_cls()
             try:
                 obj.ParseFromString(data)
@@ -143,13 +143,13 @@ class BatchOps:
         return cls.instance()
 
     def __enter__(self):
-        """Entering the with block."""
+        """ Entering the with block."""
         self.clear_ops()
         self.batching = True
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        """Exiting from the with block."""
+        """ Exiting from the with block."""
         network_logger.debug("Executing batch operations")
         self.batching = False
         if not exc_type:
@@ -159,8 +159,8 @@ class BatchOps:
                 self._ops[i].update_result(response.status, response.response_body)
 
     def add_op(self, package: str, service: str, method: str, request):
-        """Queue a single batch operation. Only the non-getter operations will
-        be queued.
+        """ Queue a single batch operation. Only the non-getter operations will be
+        queued.
 
         Parameters
         ----------
@@ -189,5 +189,5 @@ class BatchOps:
         return op
 
     def clear_ops(self):
-        """Clear all queued batch operations."""
+        """ Clear all queued batch operations."""
         self._ops.clear()

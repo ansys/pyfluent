@@ -1,4 +1,4 @@
-"""Utility to write YAML file for the current settings hierarchy.
+""" Utility to write YAML file for the current settings hierarchy.
 
 Usage:
      write_settings_yaml.py [outfile]

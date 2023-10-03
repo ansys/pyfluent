@@ -1,4 +1,4 @@
-"""Module containing System Coupling-related functionality."""
+""" Module containing System Coupling-related functionality."""
 
 from dataclasses import dataclass
 import os
@@ -26,8 +26,8 @@ class Region:
 
 
 class SystemCoupling:
-    """Wrap a System Coupling object, adding methods to discover more about the
-    System Coupling related setup and to help solving a System Coupling analysis.
+    """ Wrap a System Coupling object, adding methods to discover more about the System
+    Coupling related setup and to help solving a System Coupling analysis.
 
     Methods
     -------
@@ -71,7 +71,7 @@ class SystemCoupling:
 
     def __get_syc_setup(self) -> dict:
         def get_scp_string() -> str:
-            """Get SCP file contents in the form of the XML string."""
+            """ Get SCP file contents in the form of the XML string."""
             scp_file_name = "fluent.scp"
             self._solver.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name

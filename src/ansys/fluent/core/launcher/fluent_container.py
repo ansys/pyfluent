@@ -1,4 +1,4 @@
-"""Provides a module for launching and configuring local Fluent Docker container runs.
+""" Provides a module for launching and configuring local Fluent Docker container runs.
 
 Notes
 -----
@@ -47,7 +47,6 @@ config_dict =
  'working_dir': '/mnt/pyfluent'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
-
 """
 import logging
 import os
@@ -79,7 +78,7 @@ def configure_container_dict(
     image_tag: Optional[str] = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
-    """Parses the parameters listed below, and sets up the container configuration file.
+    """ Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
     ----------
@@ -294,7 +293,7 @@ def configure_container_dict(
 def start_fluent_container(
     args: List[str], container_dict: Optional[dict] = None
 ) -> (int, str):
-    """Start a Fluent container.
+    """ Start a Fluent container.
 
     Parameters
     ----------

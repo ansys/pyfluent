@@ -1,4 +1,4 @@
-"""Wrappers over Meshing queries gRPC service of Fluent."""
+""" Wrappers over Meshing queries gRPC service of Fluent."""
 
 from typing import Any, List, Tuple
 
@@ -17,14 +17,12 @@ Path = List[Tuple[str, str]]
 
 
 class MeshingQueriesService:
-    """
-    Meshing Queries Service.
-    """
+    """ Meshing Queries Service."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
     ):
-        """__init__ method of MeshingQueriesService class."""
+        """ __init__ method of MeshingQueriesService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
             ErrorStateInterceptor(fluent_error_state),
@@ -38,84 +36,84 @@ class MeshingQueriesService:
     def get_face_zone_at_location(
         self, request: MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetFaceZoneAtLocationResponse:
-        """get_face_zone_at_location rpc of MeshingQueriesService."""
+        """ get_face_zone_at_location rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_cell_zone_at_location(
         self, request: MeshingQueriesProtoModule.GetCellZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetCellZoneAtLocationResponse:
-        """get_cell_zone_at_location rpc of MeshingQueriesService."""
+        """ get_cell_zone_at_location rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_zones_of_type(
         self, request: MeshingQueriesProtoModule.GetZonesOfTypeRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfTypeResponse:
-        """get_zones_of_type rpc of MeshingQueriesService."""
+        """ get_zones_of_type rpc of MeshingQueriesService."""
         return self._stub.GetZonesOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_zones_of_group(
         self, request: MeshingQueriesProtoModule.GetZonesOfGroupRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfGroupResponse:
-        """get_zones_of_group rpc of MeshingQueriesService."""
+        """ get_zones_of_group rpc of MeshingQueriesService."""
         return self._stub.GetZonesOfGroup(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfFilterResponse:
-        """get_face_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_face_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_cell_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetCellZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetCellZonesOfFilterResponse:
-        """get_cell_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_cell_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetCellZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_edge_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZonesOfFilterResponse:
-        """get_edge_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_edge_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_node_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetNodeZonesOfFilterResponse:
-        """get_node_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_node_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetNodeZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_objects_of_type(
         self, request: MeshingQueriesProtoModule.GetObjectsOfTypeRequest
     ) -> MeshingQueriesProtoModule.GetObjectsOfTypeResponse:
-        """get_objects_of_type rpc of MeshingQueriesService."""
+        """ get_objects_of_type rpc of MeshingQueriesService."""
         return self._stub.GetObjectsOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zone_id_list_of_object(
         self, request: MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest
     ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectResponse:
-        """get_face_zone_id_list_of_object rpc of MeshingQueriesService."""
+        """ get_face_zone_id_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_edge_zone_id_list_of_object(
         self, request: MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectResponse:
-        """get_edge_zone_id_list_of_object rpc of MeshingQueriesService."""
+        """ get_edge_zone_id_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZoneIdListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_cell_zone_id_list_of_object(
         self, request: MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest
     ) -> MeshingQueriesProtoModule.GetCellZoneIdListOfObjectResponse:
-        """get_cell_zone_id_list_of_object rpc of MeshingQueriesService."""
+        """ get_cell_zone_id_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneIdListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -123,7 +121,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeResponse:
-        """get_face_zones_shared_by_regions_of_type rpc of MeshingQueriesService."""
+        """ get_face_zones_shared_by_regions_of_type rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesSharedByRegionsOfType(
             request, metadata=self._metadata
         )
@@ -132,14 +130,14 @@ class MeshingQueriesService:
     def get_face_zones_of_regions(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfRegionsResponse:
-        """get_face_zones_of_regions rpc of MeshingQueriesService."""
+        """ get_face_zones_of_regions rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfRegions(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zones_of_labels(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfLabelsResponse:
-        """get_face_zones_of_labels rpc of MeshingQueriesService."""
+        """ get_face_zones_of_labels rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfLabels(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -147,21 +145,21 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsResponse:
-        """get_face_zone_id_list_of_labels rpc of MeshingQueriesService."""
+        """ get_face_zone_id_list_of_labels rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfLabels(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zones_of_objects(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfObjectsResponse:
-        """get_face_zones_of_objects rpc of MeshingQueriesService."""
+        """ get_face_zones_of_objects rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfObjects(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_edge_zones_of_objects(
         self, request: MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZonesOfObjectsResponse:
-        """get_edge_zones_of_objects rpc of MeshingQueriesService."""
+        """ get_edge_zones_of_objects rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZonesOfObjects(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -169,7 +167,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsResponse:
-        """get_face_zone_id_list_of_regions rpc of MeshingQueriesService."""
+        """ get_face_zone_id_list_of_regions rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfRegions(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -177,7 +175,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetPrismCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetPrismCellZonesResponse:
-        """get_prism_cell_zones rpc of MeshingQueriesService."""
+        """ get_prism_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetPrismCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -185,7 +183,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetTetCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetTetCellZonesResponse:
-        """get_tet_cell_zones rpc of MeshingQueriesService."""
+        """ get_tet_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetTetCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -193,7 +191,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentCellZonesResponse:
-        """get_adjacent_cell_zones rpc of MeshingQueriesService."""
+        """ get_adjacent_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -201,7 +199,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentFaceZonesResponse:
-        """get_adjacent_face_zones rpc of MeshingQueriesService."""
+        """ get_adjacent_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -209,7 +207,8 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesResponse:
-        """get_adjacent_interior_and_boundary_face_zones rpc of MeshingQueriesService."""
+        """ get_adjacent_interior_and_boundary_face_zones rpc of
+        MeshingQueriesService."""
         return self._stub.GetAdjacentInteriorAndBoundaryFaceZones(
             request, metadata=self._metadata
         )
@@ -219,7 +218,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityResponse:
-        """get_adjacent_zones_by_edge_connectivity rpc of MeshingQueriesService."""
+        """ get_adjacent_zones_by_edge_connectivity rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentZonesByEdgeConnectivity(
             request, metadata=self._metadata
         )
@@ -229,7 +228,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityResponse:
-        """get_adjacent_zones_by_node_connectivity rpc of MeshingQueriesService."""
+        """ get_adjacent_zones_by_node_connectivity rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentZonesByNodeConnectivity(
             request, metadata=self._metadata
         )
@@ -239,7 +238,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest,
     ) -> MeshingQueriesProtoModule.GetSharedBoundaryZonesResponse:
-        """get_shared_boundary_zones rpc of MeshingQueriesService."""
+        """ get_shared_boundary_zones rpc of MeshingQueriesService."""
         return self._stub.GetSharedBoundaryZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -247,7 +246,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesResponse:
-        """get_interior_zones_connected_to_cell_zones rpc of MeshingQueriesService."""
+        """ get_interior_zones_connected_to_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetInteriorZonesConnectedToCellZones(
             request, metadata=self._metadata
         )
@@ -257,7 +256,8 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetFaceZonesWithZoneSpecificPrismsAppliedResponse:
-        """get_face_zones_with_zone_specific_prisms_applied rpc of MeshingQueriesService."""
+        """ get_face_zones_with_zone_specific_prisms_applied rpc of
+        MeshingQueriesService."""
         return self._stub.GetFaceZonesWithZoneSpecificPrismsApplied(
             request, metadata=self._metadata
         )
@@ -267,7 +267,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsResponse:
-        """get_face_zones_of_prism_controls rpc of MeshingQueriesService."""
+        """ get_face_zones_of_prism_controls rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfPrismControls(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -275,7 +275,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetBafflesRequest,
     ) -> MeshingQueriesProtoModule.GetBafflesResponse:
-        """get_baffles rpc of MeshingQueriesService."""
+        """ get_baffles rpc of MeshingQueriesService."""
         return self._stub.GetBaffles(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -283,7 +283,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetEmbeddedBafflesResponse:
-        """get_embedded_baffles rpc of MeshingQueriesService."""
+        """ get_embedded_baffles rpc of MeshingQueriesService."""
         return self._stub.GetEmbeddedBaffles(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -291,7 +291,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetWrappedZonesResponse:
-        """get_wrapped_zones rpc of MeshingQueriesService."""
+        """ get_wrapped_zones rpc of MeshingQueriesService."""
         return self._stub.GetWrappedZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -299,7 +299,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZonesResponse:
-        """get_unreferenced_edge_zones rpc of MeshingQueriesService."""
+        """ get_unreferenced_edge_zones rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedEdgeZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -307,7 +307,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZonesResponse:
-        """get_unreferenced_face_zones rpc of MeshingQueriesService."""
+        """ get_unreferenced_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -315,7 +315,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetUnreferencedCellZonesResponse:
-        """get_unreferenced_cell_zones rpc of MeshingQueriesService."""
+        """ get_unreferenced_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -323,7 +323,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterResponse:
-        """get_unreferenced_edge_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_unreferenced_edge_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedEdgeZonesOfFilter(
             request, metadata=self._metadata
         )
@@ -333,7 +333,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterResponse:
-        """get_unreferenced_face_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_unreferenced_face_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedFaceZonesOfFilter(
             request, metadata=self._metadata
         )
@@ -343,7 +343,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterResponse:
-        """get_unreferenced_cell_zones_of_filter rpc of MeshingQueriesService."""
+        """ get_unreferenced_cell_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedCellZonesOfFilter(
             request, metadata=self._metadata
         )
@@ -353,7 +353,8 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternResponse:
-        """get_unreferenced_edge_zone_id_list_of_pattern rpc of MeshingQueriesService."""
+        """ get_unreferenced_edge_zone_id_list_of_pattern rpc of
+        MeshingQueriesService."""
         return self._stub.GetUnreferencedEdgeZoneIdListOfPattern(
             request, metadata=self._metadata
         )
@@ -363,7 +364,8 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternResponse:
-        """get_unreferenced_face_zone_id_list_of_pattern rpc of MeshingQueriesService."""
+        """ get_unreferenced_face_zone_id_list_of_pattern rpc of
+        MeshingQueriesService."""
         return self._stub.GetUnreferencedFaceZoneIdListOfPattern(
             request, metadata=self._metadata
         )
@@ -373,7 +375,8 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternResponse:
-        """get_unreferenced_cell_zone_id_list_of_pattern rpc of MeshingQueriesService."""
+        """ get_unreferenced_cell_zone_id_list_of_pattern rpc of
+        MeshingQueriesService."""
         return self._stub.GetUnreferencedCellZoneIdListOfPattern(
             request, metadata=self._metadata
         )
@@ -383,7 +386,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeRequest,
     ) -> MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeResponse:
-        """get_maxsize_cell_zone_by_volume rpc of MeshingQueriesService."""
+        """ get_maxsize_cell_zone_by_volume rpc of MeshingQueriesService."""
         return self._stub.GetMaxsizeCellZoneByVolume(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -391,7 +394,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest,
     ) -> MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountResponse:
-        """get_maxsize_cell_zone_by_count rpc of MeshingQueriesService."""
+        """ get_maxsize_cell_zone_by_count rpc of MeshingQueriesService."""
         return self._stub.GetMaxsizeCellZoneByCount(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -399,7 +402,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaRequest,
     ) -> MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaResponse:
-        """get_minsize_face_zone_by_area rpc of MeshingQueriesService."""
+        """ get_minsize_face_zone_by_area rpc of MeshingQueriesService."""
         return self._stub.GetMinsizeFaceZoneByArea(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -407,7 +410,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountRequest,
     ) -> MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountResponse:
-        """get_minsize_face_zone_by_count rpc of MeshingQueriesService."""
+        """ get_minsize_face_zone_by_count rpc of MeshingQueriesService."""
         return self._stub.GetMinsizeFaceZoneByCount(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -415,7 +418,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountResponse:
-        """get_face_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
+        """ get_face_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneListByMaximumEntityCount(
             request, metadata=self._metadata
         )
@@ -425,7 +428,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountRequest,
     ) -> MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountResponse:
-        """get_edge_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
+        """ get_edge_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZoneListByMaximumEntityCount(
             request, metadata=self._metadata
         )
@@ -435,7 +438,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountRequest,
     ) -> MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountResponse:
-        """get_cell_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
+        """ get_cell_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneListByMaximumEntityCount(
             request, metadata=self._metadata
         )
@@ -445,7 +448,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaResponse:
-        """get_face_zone_list_by_maximum_zone_area rpc of MeshingQueriesService."""
+        """ get_face_zone_list_by_maximum_zone_area rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneListByMaximumZoneArea(
             request, metadata=self._metadata
         )
@@ -455,7 +458,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaResponse:
-        """get_face_zone_list_by_minimum_zone_area rpc of MeshingQueriesService."""
+        """ get_face_zone_list_by_minimum_zone_area rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneListByMinimumZoneArea(
             request, metadata=self._metadata
         )
@@ -465,7 +468,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithFreeFacesResponse:
-        """get_zones_with_free_faces rpc of MeshingQueriesService."""
+        """ get_zones_with_free_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithFreeFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -473,7 +476,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithFreeFacesResponse:
-        """get_zones_with_free_faces rpc of MeshingQueriesService."""
+        """ get_zones_with_free_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithFreeFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -481,7 +484,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithMultiFacesResponse:
-        """get_zones_with_multi_faces rpc of MeshingQueriesService."""
+        """ get_zones_with_multi_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithMultiFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -489,7 +492,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetOverlappingFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetOverlappingFaceZonesResponse:
-        """get_overlapping_face_zones rpc of MeshingQueriesService."""
+        """ get_overlapping_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetOverlappingFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -497,7 +500,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithMultiFacesResponse:
-        """get_zones_with_multi_faces rpc of MeshingQueriesService."""
+        """ get_zones_with_multi_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithMultiFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -505,7 +508,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithMarkedFacesResponse:
-        """get_zones_with_marked_faces rpc of MeshingQueriesService."""
+        """ get_zones_with_marked_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithMarkedFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -513,7 +516,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetAllObjectNameListResponse:
-        """get_all_object_name_list rpc of MeshingQueriesService."""
+        """ get_all_object_name_list rpc of MeshingQueriesService."""
         return self._stub.GetAllObjectNameList(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -521,7 +524,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetObjectNameListOfTypeRequest,
     ) -> MeshingQueriesProtoModule.GetObjectNameListOfTypeResponse:
-        """get_object_name_list_of_type rpc of MeshingQueriesService."""
+        """ get_object_name_list_of_type rpc of MeshingQueriesService."""
         return self._stub.GetObjectNameListOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -529,7 +532,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetObjectsOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetObjectsOfFilterResponse:
-        """get_objects_of_filter rpc of MeshingQueriesService."""
+        """ get_objects_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetObjectsOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -537,7 +540,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionsOfObjectRequest,
     ) -> MeshingQueriesProtoModule.GetRegionsOfObjectResponse:
-        """get_regions_of_object rpc of MeshingQueriesService."""
+        """ get_regions_of_object rpc of MeshingQueriesService."""
         return self._stub.GetRegionsOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -545,7 +548,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest,
     ) -> MeshingQueriesProtoModule.GetRegionNameListOfObjectResponse:
-        """get_region_name_list_of_object rpc of MeshingQueriesService."""
+        """ get_region_name_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -553,7 +556,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.SortRegionsByVolumeRequest,
     ) -> MeshingQueriesProtoModule.SortRegionsByVolumeResponse:
-        """sort_regions_by_volume rpc of MeshingQueriesService."""
+        """ sort_regions_by_volume rpc of MeshingQueriesService."""
         return self._stub.SortRegionsByVolume(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -561,7 +564,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionVolumeRequest,
     ) -> MeshingQueriesProtoModule.GetRegionVolumeResponse:
-        """get_region_volume rpc of MeshingQueriesService."""
+        """ get_region_volume rpc of MeshingQueriesService."""
         return self._stub.GetRegionVolume(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -569,7 +572,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionsOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetRegionsOfFilterResponse:
-        """get_regions_of_filter rpc of MeshingQueriesService."""
+        """ get_regions_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetRegionsOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -577,7 +580,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetRegionNameListOfPatternResponse:
-        """get_region_name_list_of_pattern rpc of MeshingQueriesService."""
+        """ get_region_name_list_of_pattern rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfPattern(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -585,7 +588,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionsOfFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetRegionsOfFaceZonesResponse:
-        """get_regions_of_face_zones rpc of MeshingQueriesService."""
+        """ get_regions_of_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetRegionsOfFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -593,7 +596,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.FindJoinPairsRequest,
     ) -> MeshingQueriesProtoModule.FindJoinPairsResponse:
-        """find_join_pairs rpc of MeshingQueriesService."""
+        """ find_join_pairs rpc of MeshingQueriesService."""
         return self._stub.FindJoinPairs(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -601,17 +604,15 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesResponse:
-        """get_region_name_list_of_face_zones rpc of MeshingQueriesService."""
+        """ get_region_name_list_of_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfFaceZones(request, metadata=self._metadata)
 
 
 class MeshingQueries:
-    """
-    Meshing Queries.
-    """
+    """ Meshing Queries."""
 
     def __init__(self, service: MeshingQueriesService):
-        """__init__ method of MeshingQueries class."""
+        """ __init__ method of MeshingQueries class."""
         self.service = service
         self.region_types = ["fluid-fluid", "solid-solid", "fluid-solid"]
         self.orders = ["ascending", "descending"]
@@ -619,36 +620,28 @@ class MeshingQueries:
     docstring = None
 
     def __get_allowed_region_type(self, region_type):
-        """
-        Check region_type in available regions.
-        """
+        """ Check region_type in available regions."""
         if region_type not in self.region_types:
             raise ValueError(f"Allowed region types - {self.region_types}\n")
 
     def _get_allowed_orders(self, order):
-        """
-        Check order in available orders.
-        """
+        """ Check order in available orders."""
         if order not in self.orders:
             raise ValueError(f"Allowed orders - {self.orders}\n")
 
     def get_all_object_name_list(self) -> Any:
-        """
-        Return a list of all objects.
+        """ Return a list of all objects.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_all_object_name_list()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_all_object_name_list(request)
         return response.objects
 
     def _get_allowed_object(self, object):
-        """
-        Check object in available objects.
-        """
+        """ Check object in available objects."""
         allowed_args = [args for args in self.get_all_object_name_list()]
         if isinstance(object, list):
             for obj in object:
@@ -658,13 +651,11 @@ class MeshingQueries:
             raise ValueError(f"Allowed objects - {allowed_args}\n")
 
     def get_region_name_list_of_object(self, object) -> Any:
-        """
-        Return a list of regions in the specified object.
+        """ Return a list of regions in the specified object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_region_name_list_of_object("elbow-fluid")
-
         """
         self._get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest()
@@ -673,9 +664,7 @@ class MeshingQueries:
         return response.regions
 
     def _get_allowed_region(self, region):
-        """
-        Check region in available regions.
-        """
+        """ Check region in available regions."""
         objects = [objs for objs in self.get_all_object_name_list()]
         regions = []
         for obj in objects:
@@ -688,15 +677,13 @@ class MeshingQueries:
             raise ValueError(f"Allowed regions - {regions}\n")
 
     def get_face_zone_at_location(self, location) -> Any:
-        """
-        Return face zone at or closest to a specified location.
+        """ Return face zone at or closest to a specified location.
 
         Note:  This function is not applicable to polyhedral meshes.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_at_location([1.4, 1.4, 1.4])
-
         """
         request = MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest()
         request.location.x = location[0]
@@ -706,13 +693,11 @@ class MeshingQueries:
         return response.face_zone_id
 
     def get_cell_zone_at_location(self, location) -> Any:
-        """
-        Return cell zone at or closest to a specified location.
+        """ Return cell zone at or closest to a specified location.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_cell_zone_at_location([1.4, 1.4, 1.4])
-
         """
         request = MeshingQueriesProtoModule.GetCellZoneAtLocationRequest()
         request.location.x = location[0]
@@ -722,13 +707,11 @@ class MeshingQueries:
         return response.cell_zone_id
 
     def get_zones_of_type(self, type) -> Any:
-        """
-        Return a list of zones of the specified default zone type.
+        """ Return a list of zones of the specified default zone type.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_zones_of_type("velocity-inlet")
-
         """
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
         request.type = type
@@ -736,13 +719,12 @@ class MeshingQueries:
         return response.zone_ids
 
     def get_zones_of_group(self, group) -> Any:
-        """
-        Return a list of zones of the specified default zone group or user-defined group.
+        """ Return a list of zones of the specified default zone group or user-defined
+        group.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_zones_of_group("inlet")
-
         """
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
         request.group = group
@@ -750,13 +732,11 @@ class MeshingQueries:
         return response.zone_ids
 
     def get_face_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of face zones whose names contain the specified filter string.
+        """ Return a list of face zones whose names contain the specified filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
         request.filter = filter
@@ -764,13 +744,11 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_cell_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of cell zones whose names contain the specified filter string.
+        """ Return a list of cell zones whose names contain the specified filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_cell_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
         request.filter = filter
@@ -778,13 +756,11 @@ class MeshingQueries:
         return response.cell_zone_ids
 
     def get_edge_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of edge zones whose names contain the specified filter string.
+        """ Return a list of edge zones whose names contain the specified filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_edge_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
         request.filter = filter
@@ -792,13 +768,11 @@ class MeshingQueries:
         return response.edge_zone_ids
 
     def get_node_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of node zones whose names contain the specified filter string.
+        """ Return a list of node zones whose names contain the specified filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_node_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
         request.filter = filter
@@ -806,13 +780,11 @@ class MeshingQueries:
         return response.node_zone_ids
 
     def get_objects_of_type(self, type) -> Any:
-        """
-        Return a list of objects of the specified type.
+        """ Return a list of objects of the specified type.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_objects_of_type("mesh")
-
         """
         request = MeshingQueriesProtoModule.GetObjectsOfTypeRequest()
         request.type = type
@@ -820,13 +792,12 @@ class MeshingQueries:
         return response.objects
 
     def get_face_zone_id_list_of_object(self, object) -> Any:
-        """
-        Return a list of face zones by ID in the specified face zone labels of an object.
+        """ Return a list of face zones by ID in the specified face zone labels of an
+        object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_id_list_of_object("elbow-fluid")
-
         """
         self._get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest()
@@ -835,13 +806,12 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_edge_zone_id_list_of_object(self, object) -> Any:
-        """
-        Return a list of edge zones by ID in the specified face zone labels of an object.
+        """ Return a list of edge zones by ID in the specified face zone labels of an
+        object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_edge_zone_id_list_of_object("elbow-fluid")
-
         """
         self._get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest()
@@ -850,13 +820,12 @@ class MeshingQueries:
         return response.edge_zone_ids
 
     def get_cell_zone_id_list_of_object(self, object) -> Any:
-        """
-        Return a list of cell zones by ID in the specified face zone labels of an object.
+        """ Return a list of cell zones by ID in the specified face zone labels of an
+        object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_cell_zone_id_list_of_object("elbow-fluid")
-
         """
         self._get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest()
@@ -865,14 +834,12 @@ class MeshingQueries:
         return response.cell_zone_ids
 
     def get_face_zones_shared_by_regions_of_type(self, mesh_object, region_type) -> Any:
-        """
-        Return a list of face zones shared by regions of specified types in the mesh object specified,
-        where region-type is fluid-fluid, solid-solid, or fluid-solid.
+        """ Return a list of face zones shared by regions of specified types in the mesh
+        object specified, where region-type is fluid-fluid, solid-solid, or fluid-solid.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_shared_by_regions_of_type("elbow-fluid", "fluid-fluid")
-
         """
         self._get_allowed_object(mesh_object)
         self.__get_allowed_region_type(region_type)
@@ -883,13 +850,11 @@ class MeshingQueries:
         return response.shared_face_zone_ids
 
     def get_face_zones_of_regions(self, object, region_name_list) -> Any:
-        """
-        Return a list of face zones in the specified regions.
+        """ Return a list of face zones in the specified regions.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_of_regions("elbow-fluid", ["fluid"])
-
         """
         self._get_allowed_object(object)
         self._get_allowed_region(region_name_list)
@@ -901,13 +866,12 @@ class MeshingQueries:
         return response.zone_ids
 
     def get_face_zones_of_labels(self, object, label_name_list) -> Any:
-        """
-        Return a list of face zones in the specified face zone labels of the object specified.
+        """ Return a list of face zones in the specified face zone labels of the object
+        specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_of_labels("elbow-fluid", ["inlet", "outlet", "wall", "internal"])
-
         """
         request = MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest()
         request.object = object
@@ -917,13 +881,12 @@ class MeshingQueries:
         return response.zone_ids
 
     def get_face_zone_id_list_of_labels(self, object, zone_label_list) -> Any:
-        """
-        Return a list of face zones by ID in the specified face zone labels of an object.
+        """ Return a list of face zones by ID in the specified face zone labels of an
+        object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_id_list_of_labels("elbow-fluid", ["outlet"])
-
         """
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest()
         request.object = object
@@ -933,13 +896,11 @@ class MeshingQueries:
         return response.zone_ids
 
     def get_face_zones_of_objects(self, object_list) -> Any:
-        """
-        Return a list of face zones in the specified objects.
+        """ Return a list of face zones in the specified objects.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_of_objects(["elbow-fluid"])
-
         """
         self._get_allowed_object(object_list)
         request = MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest()
@@ -949,13 +910,11 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_edge_zones_of_objects(self, object_list) -> Any:
-        """
-        Return a list of edge zones in the specified objects.
+        """ Return a list of edge zones in the specified objects.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_edge_zones_of_objects(["elbow-fluid"])
-
         """
         self._get_allowed_object(object_list)
         request = MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest()
@@ -965,13 +924,11 @@ class MeshingQueries:
         return response.edge_zone_ids
 
     def get_face_zone_id_list_of_regions(self, object, region_list) -> Any:
-        """
-        Return a list of face zones by ID in the specified regions of an object.
+        """ Return a list of face zones by ID in the specified regions of an object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_id_list_of_regions("elbow-fluid", ["fluid"])
-
         """
         self._get_allowed_object(object)
         self._get_allowed_region(region_list)
@@ -983,15 +940,13 @@ class MeshingQueries:
         return response.zone_ids
 
     def get_prism_cell_zones(self, list_or_pattern) -> Any:
-        """
-        Return a list of prism cell zones.
+        """ Return a list of prism cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_prism_cell_zones(["inlet", "outlet"])
 
             >>> meshing_session.meshing_queries.get_prism_cell_zones("*")
-
         """
         request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
         if isinstance(list_or_pattern, str):
@@ -1003,15 +958,13 @@ class MeshingQueries:
         return response.prism_cell_zones
 
     def get_tet_cell_zones(self, list_or_pattern) -> Any:
-        """
-        Return a list of tet cell zones.
+        """ Return a list of tet cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_tet_cell_zones(["inlet", "outlet"])
 
             >>> meshing_session.meshing_queries.get_tet_cell_zones("*")
-
         """
         request = MeshingQueriesProtoModule.GetTetCellZonesRequest()
         if isinstance(list_or_pattern, str):
@@ -1023,15 +976,13 @@ class MeshingQueries:
         return response.tet_cell_zones
 
     def get_adjacent_cell_zones(self, list_or_name_or_pattern) -> Any:
-        """
-        Return adjacent cell zones for given face zone.
+        """ Return adjacent cell zones for given face zone.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_adjacent_cell_zones([30])
 
             >>> meshing_session.meshing_queries.get_adjacent_cell_zones("*")
-
         """
         request = MeshingQueriesProtoModule.GetAdjacentCellZonesRequest()
         if isinstance(list_or_name_or_pattern, str):
@@ -1043,15 +994,13 @@ class MeshingQueries:
         return response.adjacent_cell_zones
 
     def get_adjacent_face_zones(self, list_or_name_or_pattern) -> Any:
-        """
-        Return adjacent boundary face zones for given cell zones.
+        """ Return adjacent boundary face zones for given cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_adjacent_face_zones([3460])
 
             >>> meshing_session.meshing_queries.get_adjacent_face_zones("*")
-
         """
         request = MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest()
         if isinstance(list_or_name_or_pattern, str):
@@ -1065,8 +1014,7 @@ class MeshingQueries:
     def get_adjacent_interior_and_boundary_face_zones(
         self, list_or_name_or_pattern
     ) -> Any:
-        """
-        Return adjacent interior and boundary face zones for given cell zones.
+        """ Return adjacent interior and boundary face zones for given cell zones.
 
         .. code-block:: python
 
@@ -1075,7 +1023,6 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.get_adjacent_interior_and_boundary_face_zones("fluid")
 
             >>> meshing_session.meshing_queries.get_adjacent_interior_and_boundary_face_zones("*")
-
         """
         request = (
             MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesRequest()
@@ -1089,15 +1036,13 @@ class MeshingQueries:
         return response.adjacent_interior_and_boundary_face_zones
 
     def get_adjacent_zones_by_edge_connectivity(self, list_or_name_or_pattern) -> Any:
-        """
-        Return adjacent zones based on edge connectivity.
+        """ Return adjacent zones based on edge connectivity.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_adjacent_zones_by_edge_connectivity([30])
 
             >>> meshing_session.meshing_queries.get_adjacent_zones_by_edge_connectivity("*")
-
         """
         request = MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest()
         if isinstance(list_or_name_or_pattern, str):
@@ -1109,15 +1054,13 @@ class MeshingQueries:
         return response.adjacent_zone_ids
 
     def get_adjacent_zones_by_node_connectivity(self, list_or_name_or_pattern) -> Any:
-        """
-        Return adjacent zones based on node connectivity.
+        """ Return adjacent zones based on node connectivity.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_adjacent_zones_by_node_connectivity([30])
 
             >>> meshing_session.meshing_queries.get_adjacent_zones_by_node_connectivity("*")
-
         """
         request = MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest()
         if isinstance(list_or_name_or_pattern, str):
@@ -1129,15 +1072,14 @@ class MeshingQueries:
         return response.adjacent_zone_ids
 
     def get_shared_boundary_zones(self, list_or_name_or_pattern) -> Any:
-        """
-        Returns the number of faces and the boundary face zones that are shared with the specified cell zones.
+        """ Returns the number of faces and the boundary face zones that are shared with
+        the specified cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_shared_boundary_zones("*")
 
             >>> meshing_session.meshing_queries.get_shared_boundary_zones([3460])
-
         """
         request = MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest()
         if isinstance(list_or_name_or_pattern, str):
@@ -1151,15 +1093,13 @@ class MeshingQueries:
     def get_interior_zones_connected_to_cell_zones(
         self, list_or_name_or_pattern
     ) -> Any:
-        """
-        Returns interior face zones connected to given cell zones.
+        """ Returns interior face zones connected to given cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_interior_zones_connected_to_cell_zones([3460])
 
             >>> meshing_session.meshing_queries.get_interior_zones_connected_to_cell_zones("*")
-
         """
         request = (
             MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesRequest()
@@ -1173,13 +1113,11 @@ class MeshingQueries:
         return response.interior_zone_ids
 
     def get_face_zones_with_zone_specific_prisms_applied(self) -> Any:
-        """
-        Return a list of face zones with zone-specific prism settings applied.
+        """ Return a list of face zones with zone-specific prism settings applied.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_with_zone_specific_prisms_applied()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_face_zones_with_zone_specific_prisms_applied(
@@ -1188,13 +1126,11 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_face_zones_of_prism_controls(self, control_name) -> Any:
-        """
-        Return a list of face zones to which the specified prism controls apply.
+        """ Return a list of face zones to which the specified prism controls apply.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zones_of_prism_controls("*")
-
         """
         request = MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest()
         request.control_name = control_name
@@ -1202,13 +1138,11 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_baffles(self, face_zone_list) -> Any:
-        """
-        Return the baffle zones based on the face zone list specified.
+        """ Return the baffle zones based on the face zone list specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_baffles([29, 30])
-
         """
         request = MeshingQueriesProtoModule.GetBafflesRequest()
         for items in face_zone_list:
@@ -1217,78 +1151,67 @@ class MeshingQueries:
         return response.baffle_zone_ids
 
     def get_embedded_baffles(self) -> Any:
-        """
-        Return the embedded baffle zones.
+        """ Return the embedded baffle zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_embedded_baffles()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_embedded_baffles(request)
         return response.embedded_baffles_zone_ids
 
     def get_wrapped_zones(self) -> Any:
-        """
-        Return a list of wrapped face zones.
+        """ Return a list of wrapped face zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_wrapped_zones()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_wrapped_zones(request)
         return response.wrapped_face_zone_ids
 
     def get_unreferenced_edge_zones(self) -> Any:
-        """
-        Return a list of unreferenced edge zones.
+        """ Return a list of unreferenced edge zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_edge_zones()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_unreferenced_edge_zones(request)
         return response.unreferenced_edge_zone_ids
 
     def get_unreferenced_face_zones(self) -> Any:
-        """
-        Return a list of unreferenced face zones.
+        """ Return a list of unreferenced face zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_face_zones()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_unreferenced_face_zones(request)
         return response.unreferenced_face_zone_ids
 
     def get_unreferenced_cell_zones(self) -> Any:
-        """
-        Return a list of unreferenced cell zones.
+        """ Return a list of unreferenced cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_cell_zones()
-
         """
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.get_unreferenced_cell_zones(request)
         return response.unreferenced_cell_zone_ids
 
     def get_unreferenced_edge_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of unreferenced edge zones whose names contain the specified filter string.
+        """ Return a list of unreferenced edge zones whose names contain the specified
+        filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_edge_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterRequest()
         request.filter = filter
@@ -1296,13 +1219,12 @@ class MeshingQueries:
         return response.unreferenced_edge_zone_ids
 
     def get_unreferenced_face_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of unreferenced face zones whose names contain the specified filter string.
+        """ Return a list of unreferenced face zones whose names contain the specified
+        filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_face_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterRequest()
         request.filter = filter
@@ -1310,13 +1232,12 @@ class MeshingQueries:
         return response.unreferenced_face_zone_ids
 
     def get_unreferenced_cell_zones_of_filter(self, filter) -> Any:
-        """
-        Return a list of unreferenced cell zones whose names contain the specified filter string.
+        """ Return a list of unreferenced cell zones whose names contain the specified
+        filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_cell_zones_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterRequest()
         request.filter = filter
@@ -1324,13 +1245,12 @@ class MeshingQueries:
         return response.unreferenced_cell_zone_ids
 
     def get_unreferenced_edge_zone_id_list_of_pattern(self, pattern) -> Any:
-        """
-        Return a list of unreferenced edge zones by ID, whose names contain the specified pattern.
+        """ Return a list of unreferenced edge zones by ID, whose names contain the
+        specified pattern.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_edge_zone_id_list_of_pattern("*")
-
         """
         request = (
             MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternRequest()
@@ -1340,13 +1260,12 @@ class MeshingQueries:
         return response.unreferenced_edge_zone_ids
 
     def get_unreferenced_face_zone_id_list_of_pattern(self, pattern) -> Any:
-        """
-        Return a list of unreferenced face zones by ID, whose names contain the specified pattern.
+        """ Return a list of unreferenced face zones by ID, whose names contain the
+        specified pattern.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_face_zone_id_list_of_pattern("*")
-
         """
         request = (
             MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternRequest()
@@ -1356,13 +1275,12 @@ class MeshingQueries:
         return response.unreferenced_face_zone_ids
 
     def get_unreferenced_cell_zone_id_list_of_pattern(self, pattern) -> Any:
-        """
-        Return a list of unreferenced cell zones by ID, whose names contain the specified pattern.
+        """ Return a list of unreferenced cell zones by ID, whose names contain the
+        specified pattern.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_unreferenced_cell_zone_id_list_of_pattern("*")
-
         """
         request = (
             MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternRequest()
@@ -1372,15 +1290,13 @@ class MeshingQueries:
         return response.unreferenced_cell_zone_ids
 
     def get_maxsize_cell_zone_by_volume(self, list_or_pattern) -> Any:
-        """
-        Return cell zone with maximum volume for given list or pattern of cell zones.
+        """ Return cell zone with maximum volume for given list or pattern of cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume("*")
 
             >>> meshing_session.meshing_queries.get_maxsize_cell_zone_by_volume([3460])
-
         """
         request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeRequest()
         if isinstance(list_or_pattern, str):
@@ -1396,15 +1312,14 @@ class MeshingQueries:
         return response.cell_zone_id
 
     def get_maxsize_cell_zone_by_count(self, list_or_pattern) -> Any:
-        """
-        Return cell zone with maximum count of elements for given list or pattern of cell zones.
+        """ Return cell zone with maximum count of elements for given list or pattern of
+        cell zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_maxsize_cell_zone_by_count("*")
 
             >>> meshing_session.meshing_queries.get_maxsize_cell_zone_by_count([3460])
-
         """
         request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest()
         if isinstance(list_or_pattern, str):
@@ -1420,15 +1335,13 @@ class MeshingQueries:
         return response.cell_zone_id
 
     def get_minsize_face_zone_by_area(self, list_or_pattern) -> Any:
-        """
-        Return face zone with minimum area for given list or pattern of face zones.
+        """ Return face zone with minimum area for given list or pattern of face zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_minsize_face_zone_by_area("*")
 
             >>> meshing_session.meshing_queries.get_minsize_face_zone_by_area([29, 30, 31, 32, 33, 34])
-
         """
         request = MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaRequest()
         if isinstance(list_or_pattern, str):
@@ -1444,15 +1357,14 @@ class MeshingQueries:
         return response.face_zone_id
 
     def get_minsize_face_zone_by_count(self, list_or_pattern) -> Any:
-        """
-        Return face zone with minimum count of elements for given list or pattern of face zones.
+        """ Return face zone with minimum count of elements for given list or pattern of
+        face zones.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_minsize_face_zone_by_count("*")
 
             >>> meshing_session.meshing_queries.get_minsize_face_zone_by_count([29, 30, 31, 32, 33, 34])
-
         """
         request = MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountRequest()
         if isinstance(list_or_pattern, str):
@@ -1470,14 +1382,13 @@ class MeshingQueries:
     def get_face_zone_list_by_maximum_entity_count(
         self, max_entity_count, only_boundary
     ) -> Any:
-        """
-        Return a list of face zones with a count below the maximum entity count (maximum-entity-count) specified.
-        You can choose to restrict the report to only boundary edge zones, if required (only-boundary? set to True or False).
+        """ Return a list of face zones with a count below the maximum entity count
+        (maximum-entity-count) specified. You can choose to restrict the report to only
+        boundary edge zones, if required (only-boundary? set to True or False).
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_list_by_maximum_entity_count(20, True)
-
         """
         request = MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountRequest()
         request.maximum_entity_count = max_entity_count
@@ -1488,14 +1399,13 @@ class MeshingQueries:
     def get_edge_zone_list_by_maximum_entity_count(
         self, max_entity_count, only_boundary
     ) -> Any:
-        """
-        Return a list of edge zones with a count below the maximum entity count (maximum-entity-count) specified.
-        You can choose to restrict the report to only boundary edge zones, if required (only-boundary? set to True or False).
+        """ Return a list of edge zones with a count below the maximum entity count
+        (maximum-entity-count) specified. You can choose to restrict the report to only
+        boundary edge zones, if required (only-boundary? set to True or False).
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_edge_zone_list_by_maximum_entity_count(20, False)
-
         """
         request = MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountRequest()
         request.maximum_entity_count = max_entity_count
@@ -1504,13 +1414,12 @@ class MeshingQueries:
         return response.edge_zone_ids
 
     def get_cell_zone_list_by_maximum_entity_count(self, maximum_entity_count) -> Any:
-        """
-        Return a list of cell zones with a count below the maximum entity count (maximum-entity-count) specified.
+        """ Return a list of cell zones with a count below the maximum entity count
+        (maximum-entity-count) specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_cell_zone_list_by_maximum_entity_count(1)
-
         """
         request = MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountRequest()
         request.maximum_entity_count = maximum_entity_count
@@ -1518,13 +1427,12 @@ class MeshingQueries:
         return response.cell_zone_ids
 
     def get_face_zone_list_by_maximum_zone_area(self, maximum_zone_area) -> Any:
-        """
-        Return a list of face zones with a maximum zone area below the maximum-zone-area specified.
+        """ Return a list of face zones with a maximum zone area below the maximum-zone-
+        area specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_list_by_maximum_zone_area(100)
-
         """
         request = MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaRequest()
         request.maximum_zone_area = maximum_zone_area
@@ -1532,13 +1440,12 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_face_zone_list_by_minimum_zone_area(self, minimum_zone_area) -> Any:
-        """
-        Return a list of face zones with a minimum zone area above the minimum-zone-area specified.
+        """ Return a list of face zones with a minimum zone area above the minimum-zone-
+        area specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_face_zone_list_by_minimum_zone_area(10)
-
         """
         request = MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaRequest()
         request.minimum_zone_area = minimum_zone_area
@@ -1546,8 +1453,7 @@ class MeshingQueries:
         return response.face_zone_ids
 
     def get_zones_with_free_faces(self, list_or_pattern) -> Any:
-        """
-        Return a list of zones with free faces for the face zones specified.
+        """ Return a list of zones with free faces for the face zones specified.
 
         .. code-block:: python
 
@@ -1556,7 +1462,6 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.get_zones_with_free_faces([29, 30, 31, 32])
 
             >>> meshing_session.meshing_queries.get_zones_with_free_faces(["inlet", "outlet"])
-
         """
         request = MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest()
         if isinstance(list_or_pattern, str):
@@ -1572,8 +1477,8 @@ class MeshingQueries:
         return response.zones_with_free_faces
 
     def get_zones_with_multi_faces(self, list_or_pattern) -> Any:
-        """
-        Return a list of zones with multi-connected faces for the face zones specified.
+        """ Return a list of zones with multi-connected faces for the face zones
+        specified.
 
         .. code-block:: python
 
@@ -1582,7 +1487,6 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.get_zones_with_multi_faces([29, 30, 31, 32])
 
             >>> meshing_session.meshing_queries.get_zones_with_multi_faces(["inlet", "outlet"])
-
         """
         request = MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest()
         if isinstance(list_or_pattern, str):
@@ -1600,13 +1504,12 @@ class MeshingQueries:
     def get_overlapping_face_zones(
         self, zone_name_pattern, area_tolerance, distance_tolerance
     ) -> Any:
-        """
-        Return a list of overlapping face zones based on the area-tolerance and distance-tolerance specified.
+        """ Return a list of overlapping face zones based on the area-tolerance and
+        distance-tolerance specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.GetOverlappingFaceZones("*", 0.1, 0.1)
-
         """
         request = MeshingQueriesProtoModule.GetOverlappingFaceZonesRequest()
         request.face_zone_name_or_pattern = zone_name_pattern
@@ -1616,8 +1519,7 @@ class MeshingQueries:
         return response.overlapping_face_zone_ids
 
     def get_zones_with_marked_faces(self, list_or_pattern) -> Any:
-        """
-        Return a list of zones with marked faces for the face zones specified.
+        """ Return a list of zones with marked faces for the face zones specified.
 
         .. code-block:: python
 
@@ -1626,7 +1528,6 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.get_zones_with_marked_faces([29, 30, 31, 32])
 
             >>> meshing_session.meshing_queries.get_zones_with_marked_faces(["inlet", "outlet"])
-
         """
         request = MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest()
         if isinstance(list_or_pattern, str):
@@ -1642,13 +1543,11 @@ class MeshingQueries:
         return response.zones_with_marked_faces
 
     def get_object_name_list_of_type(self, type) -> Any:
-        """
-        Return a list of objects of the specified type.
+        """ Return a list of objects of the specified type.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_object_name_list_of_type("mesh")
-
         """
         request = MeshingQueriesProtoModule.GetObjectNameListOfTypeRequest()
         request.type = type
@@ -1656,13 +1555,11 @@ class MeshingQueries:
         return response.objects
 
     def get_objects_of_filter(self, filter) -> Any:
-        """
-        Return a list of objects whose names contain the specified filter string.
+        """ Return a list of objects whose names contain the specified filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_objects_of_filter("*")
-
         """
         request = MeshingQueriesProtoModule.GetObjectsOfFilterRequest()
         request.filter = filter
@@ -1670,13 +1567,11 @@ class MeshingQueries:
         return response.objects
 
     def get_regions_of_object(self, object) -> Any:
-        """
-        Return a list of regions in the specified object.
+        """ Return a list of regions in the specified object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_regions_of_object("elbow-fluid")
-
         """
         self._get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetRegionsOfObjectRequest()
@@ -1685,14 +1580,12 @@ class MeshingQueries:
         return response.regions
 
     def sort_regions_by_volume(self, object_name, order) -> Any:
-        """
-        Returns a sorted list of volumetric regions by volume for the object specified.
-        Specify the order (ascending or descending).
+        """ Returns a sorted list of volumetric regions by volume for the object
+        specified. Specify the order (ascending or descending).
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.sort_regions_by_volume("elbow-fluid", "ascending")
-
         """
         self._get_allowed_object(object_name)
         self._get_allowed_orders(order)
@@ -1703,13 +1596,11 @@ class MeshingQueries:
         return response.regions
 
     def get_region_volume(self, object_name, region_name) -> Any:
-        """
-        Return the region volume for the specified region of an object.
+        """ Return the region volume for the specified region of an object.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_region_volume("elbow-fluid", "fluid")
-
         """
         self._get_allowed_object(object_name)
         self._get_allowed_region(region_name)
@@ -1720,13 +1611,12 @@ class MeshingQueries:
         return response.region_volume
 
     def get_regions_of_filter(self, object, filter) -> Any:
-        """
-        Return a list of regions in the specified object, whose names contain the specified filter string.
+        """ Return a list of regions in the specified object, whose names contain the
+        specified filter string.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_regions_of_filter("elbow-fluid", "*")
-
         """
         request = MeshingQueriesProtoModule.GetRegionsOfFilterRequest()
         request.object = object
@@ -1735,13 +1625,12 @@ class MeshingQueries:
         return response.regions
 
     def get_region_name_list_of_pattern(self, object, region_name_or_pattern) -> Any:
-        """
-        Return a list of regions in the specified object, whose names contain the specified name pattern.
+        """ Return a list of regions in the specified object, whose names contain the
+        specified name pattern.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_region_name_list_of_pattern("elbow-fluid", "*")
-
         """
         request = MeshingQueriesProtoModule.GetRegionNameListOfPatternRequest()
         request.object = object
@@ -1750,13 +1639,11 @@ class MeshingQueries:
         return response.regions
 
     def get_regions_of_face_zones(self, list_of_face_zone_ids) -> Any:
-        """
-        Return a list of regions containing the face zones specified.
+        """ Return a list of regions containing the face zones specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_regions_of_face_zones([29, 30, 31, 32, 33, 34])
-
         """
         request = MeshingQueriesProtoModule.GetRegionsOfFaceZonesRequest()
         for id in list_of_face_zone_ids:
@@ -1767,8 +1654,8 @@ class MeshingQueries:
     def find_join_pairs(
         self, face_zone_list_or_pattern, join_tolerance, absolute_tolerance, join_angle
     ) -> Any:
-        """
-        Return the pairs of overlapping face zones based on the join tolerance and feature angle.
+        """ Return the pairs of overlapping face zones based on the join tolerance and
+        feature angle.
 
         .. code-block:: python
 
@@ -1777,7 +1664,6 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.find_join_pairs([32], 0.1, True, 40))
 
             >>> meshing_session.meshing_queries.find_join_pairs(["outlet"], 0.1, True, 40)
-
         """
         request = MeshingQueriesProtoModule.FindJoinPairsRequest()
         if isinstance(face_zone_list_or_pattern, str):
@@ -1796,13 +1682,11 @@ class MeshingQueries:
         return response.pairs
 
     def get_region_name_list_of_face_zones(self, list_or_pattern) -> Any:
-        """
-        Return a list of regions containing the face zones specified.
+        """ Return a list of regions containing the face zones specified.
 
         .. code-block:: python
 
             >>> meshing_session.meshing_queries.get_region_name_list_of_face_zones([29, 30, 31, 32, 33, 34])
-
         """
         request = MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest()
         if isinstance(list_or_pattern, str):

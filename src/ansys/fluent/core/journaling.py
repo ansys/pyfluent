@@ -1,17 +1,17 @@
-"""A module for controlling the writing of Fluent Python journals."""
+""" A module for controlling the writing of Fluent Python journals."""
 
 
 class Journal:
-    """Control the writing of Fluent Python journals."""
+    """ Control the writing of Fluent Python journals."""
 
     def __init__(self, scheme_eval):
-        """__init__ method of Journal class."""
+        """ __init__ method of Journal class."""
         self.scheme_eval = scheme_eval
 
     def start(self, file_path: str):
-        """Start writing a Fluent Python journal at the specified file_path."""
+        """ Start writing a Fluent Python journal at the specified file_path."""
         self.scheme_eval.exec([f'(api-start-python-journal "{file_path}")'])
 
     def stop(self):
-        """Stop writing the Fluent Python journal."""
+        """ Stop writing the Fluent Python journal."""
         self.scheme_eval.exec([f"(api-stop-python-journal)"])

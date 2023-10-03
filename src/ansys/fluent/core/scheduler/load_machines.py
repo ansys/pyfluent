@@ -1,9 +1,8 @@
-"""A module that provides machine list construction for distributed parallel
+""" A module that provides machine list construction for distributed parallel
 environments, including queueing systems.
 
-Currently supports UGE, LSF, PBS and SLURM by parsing the contents of
-the PE_HOSTFILE, LSB_MCPU_HOSTS, PBS_NODEFILE and SLURM_JOB_NODELIST
-variables, respectively.
+Currently supports UGE, LSF, PBS and SLURM by parsing the contents of the PE_HOSTFILE,
+LSB_MCPU_HOSTS, PBS_NODEFILE and SLURM_JOB_NODELIST variables, respectively.
 """
 import csv
 import os
@@ -19,7 +18,7 @@ def load_machines(
     host_info: Optional[str] = None,
     ncores: Optional[int] = None,
 ) -> MachineList:
-    """Provide a function to construct a machine list from allocated machines.
+    """ Provide a function to construct a machine list from allocated machines.
 
     Parameters
     ----------
@@ -113,7 +112,7 @@ def load_machines(
 
 
 def _parse_host_info(host_info):
-    """Parse the host machine information from command-line arguments.
+    """ Parse the host machine information from command-line arguments.
 
     Returns
     -------
@@ -135,7 +134,7 @@ def _parse_host_info(host_info):
 
 
 def _parse_machine_data(machine_data):
-    """Parse the host machine data provided as a list of strings.
+    """ Parse the host machine data provided as a list of strings.
 
     Parameters
     ----------
@@ -181,8 +180,8 @@ def _parse_machine_data(machine_data):
 
 
 def _get_local_machine(ncores):
-    """Provide private module function to convert a core count into a machine
-    list for a local job."""
+    """ Provide private module function to convert a core count into a machine list for
+    a local job."""
 
     import socket
 
@@ -194,8 +193,8 @@ def _get_local_machine(ncores):
 
 
 def _restrict_machines_to_core_count(old_machine_list, ncores):
-    """Provide private module function to adjust the number of cores used per
-    machine based on a user-supplied core count.
+    """ Provide private module function to adjust the number of cores used per machine
+    based on a user-supplied core count.
 
     Parameters
     ----------
@@ -250,7 +249,7 @@ def _restrict_machines_to_core_count(old_machine_list, ncores):
 
 
 def _construct_machine_list_uge(host_filename):
-    """Provide private module function to parse the UGE host file."""
+    """ Provide private module function to parse the UGE host file."""
     csv.register_dialect("pemachines", delimiter=" ", skipinitialspace=True)
     machineList = MachineList()
     with open(host_filename, "r") as peFile:
@@ -267,7 +266,7 @@ def _construct_machine_list_uge(host_filename):
 
 
 def _construct_machine_list_lsf(host_list):
-    """Provide private module function to parse the LSF host list."""
+    """ Provide private module function to parse the LSF host list."""
     machineList = MachineList()
     splitHostList = host_list.split()
     im = 0
@@ -278,7 +277,7 @@ def _construct_machine_list_lsf(host_list):
 
 
 def _construct_machine_list_pbs(host_filename):
-    """Provide private module function to parse the PBS host file."""
+    """ Provide private module function to parse the PBS host file."""
     # PBS_NODE file has one machine name per line per core allocated on the machine.
     # It's identical to a Fluent host file format.  This code accumulates the total
     # core count on each machine.
@@ -302,8 +301,7 @@ def _construct_machine_list_pbs(host_filename):
 
 
 def _construct_machine_list_slurm(host_list):
-    """Provide a private module function to parse the SLURM host and task
-    lists.
+    """ Provide a private module function to parse the SLURM host and task lists.
 
     The SLURM system provides a comma separated list of host names.  The host
     names may be listed individually or consecutive host names may have IDs that
@@ -446,7 +444,7 @@ def _construct_machine_list_slurm(host_list):
 
 
 def _construct_machine_list_ccs(host_list):
-    """Provide private module function to parse the Windows HPC/CCS host list.
+    """ Provide private module function to parse the Windows HPC/CCS host list.
 
     Parameters
     ----------
@@ -466,8 +464,8 @@ def _construct_machine_list_ccs(host_list):
 
 
 def _construct_machine_list_manual(machine_info):
-    """Provide a private module function to convert a machine information list
-    into a list of machine objects."""
+    """ Provide a private module function to convert a machine information list into a
+    list of machine objects."""
     machineList = MachineList()
     for m in machine_info:
         machineList.add(Machine(m["machine-name"], m["core-count"]))

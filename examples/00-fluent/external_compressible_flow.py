@@ -1,4 +1,4 @@
-""".. _ref_external_compressible_flow_settings_api:
+""" .. _ref_external_compressible_flow_settings_api:
 
 Modeling External Compressible Flow
 -----------------------------------

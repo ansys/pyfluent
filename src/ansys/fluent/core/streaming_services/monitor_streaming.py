@@ -1,4 +1,4 @@
-"""Module for monitors management."""
+""" Module for monitors management."""
 
 import threading
 from typing import Dict, List, Optional, Tuple, Union
@@ -11,7 +11,7 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class MonitorsManager(StreamingService):
-    """Manages monitors (Fluent residuals and report definitions monitors).
+    """ Manages monitors (Fluent residuals and report definitions monitors).
 
     Parameters
     ----------
@@ -22,7 +22,7 @@ class MonitorsManager(StreamingService):
     """
 
     def __init__(self, session_id: str, service):
-        """__init__ method of MonitorsManager class."""
+        """ __init__ method of MonitorsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=MonitorsManager._process_streaming,
@@ -34,7 +34,7 @@ class MonitorsManager(StreamingService):
         self._data_frames = {}
 
     def get_monitor_set_names(self) -> List[str]:
-        """Get monitor set names.
+        """ Get monitor set names.
 
         Parameters
         ----------
@@ -49,7 +49,7 @@ class MonitorsManager(StreamingService):
             return list(self._data_frames)
 
     def get_monitor_set_prop(self, monitor_set_name: str, property: str) -> str:
-        """Get monitor set property.
+        """ Get monitor set property.
 
         Parameters
         ----------
@@ -69,7 +69,7 @@ class MonitorsManager(StreamingService):
     def get_monitor_set_plot(
         self, monitor_set_name, *args, **kwargs
     ) -> Union[None, object]:
-        """Get monitor set plot.
+        """ Get monitor set plot.
 
         Parameters
         ----------
@@ -89,7 +89,7 @@ class MonitorsManager(StreamingService):
     def get_monitor_set_data(
         self, monitor_set_name, start_index: int = 0, end_index: Optional[int] = None
     ) -> Tuple[np.array, Dict[str, np.array]]:
-        """Get monitor set data.
+        """ Get monitor set data.
 
         Parameters
         ----------
@@ -122,7 +122,7 @@ class MonitorsManager(StreamingService):
             )
 
     def refresh(self, session_id, event_info) -> None:
-        """Refresh plots on-initialized and data-read events.
+        """ Refresh plots on-initialized and data-read events.
 
         This method is registered with the EventsManager and is called
         to refresh plots whenever on-initialized and data-read events occur.
@@ -146,7 +146,7 @@ class MonitorsManager(StreamingService):
         self._update_dataframe()
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Begin monitors streaming."""
+        """ Begin monitors streaming."""
         request = MonitorModule.StreamingRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method

@@ -26,7 +26,7 @@ logger = logging.getLogger("pyfluent.general")
 
 
 def _get_max_c_int_limit() -> int:
-    """Get the maximum limit of a C int.
+    """ Get the maximum limit of a C int.
 
     Returns
     -------
@@ -37,7 +37,7 @@ def _get_max_c_int_limit() -> int:
 
 
 class MonitorThread(threading.Thread):
-    """A class used for monitoring a Fluent session.
+    """ A class used for monitoring a Fluent session.
 
     Daemon thread which will ensure cleanup of session objects, shutdown of
     non-deamon threads etc.
@@ -53,7 +53,7 @@ class MonitorThread(threading.Thread):
         self.cbs: List[Callable] = []
 
     def run(self) -> None:
-        """Run monitor thread."""
+        """ Run monitor thread."""
         main_thread = threading.main_thread()
         main_thread.join()
         for cb in self.cbs:
@@ -61,7 +61,7 @@ class MonitorThread(threading.Thread):
 
 
 def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
-    """Get the Docker container object.
+    """ Get the Docker container object.
 
     Returns
     -------
@@ -75,7 +75,6 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     See `Docker container`_ for more information.
 
     .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
-
     """
     if not isinstance(container_id_or_name, str):
         container_id_or_name = str(container_id_or_name)
@@ -91,7 +90,7 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
 
 
 class ErrorState:
-    """Object to indicate the error state of the connected Fluent client.
+    """ Object to indicate the error state of the connected Fluent client.
 
     Examples
     --------
@@ -116,7 +115,7 @@ class ErrorState:
         return self._details
 
     def __init__(self, name: str = "", details: str = ""):
-        """Initializes the error state object.
+        """ Initializes the error state object.
 
         Parameters
         ----------
@@ -129,21 +128,22 @@ class ErrorState:
         self._details = details
 
     def set(self, name: str, details: str):
-        """Method to set the error state name and details to new values."""
+        """ Method to set the error state name and details to new values."""
         self._name = name
         self._details = details
 
     def clear(self):
-        """Method to clear the current error state, emptying the error name and details properties."""
+        """ Method to clear the current error state, emptying the error name and details
+        properties."""
         self._name = ""
         self._details = ""
 
 
 @dataclass(frozen=True)
 class FluentConnectionProperties:
-    """Stores Fluent connection properties, including connection IP, port and password;
-    Fluent Cortex working directory, process ID and hostname;
-    and whether Fluent was launched in a docker container.
+    """ Stores Fluent connection properties, including connection IP, port and password;
+    Fluent Cortex working directory, process ID and hostname; and whether Fluent was
+    launched in a docker container.
 
     Examples
     --------
@@ -167,16 +167,16 @@ class FluentConnectionProperties:
     inside_container: Optional[Union[bool, Container, None]] = None
 
     def list_names(self) -> list:
-        """Returns list with all property names."""
+        """ Returns list with all property names."""
         return [k for k, _ in vars(self).items()]
 
     def list_values(self) -> dict:
-        """Returns dictionary with all property names and values."""
+        """ Returns dictionary with all property names and values."""
         return vars(self)
 
 
 class FluentConnection:
-    """Encapsulates a Fluent connection.
+    """ Encapsulates a Fluent connection.
 
     Methods
     -------
@@ -204,7 +204,7 @@ class FluentConnection:
         launcher_args: Optional[Dict[str, Any]] = None,
         inside_container: Optional[bool] = None,
     ):
-        """Initialize a Session.
+        """ Initialize a Session.
 
         Parameters
         ----------
@@ -372,9 +372,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def force_exit(self):
-        """
-        Immediately terminates the Fluent client,
-        losing unsaved progress and data.
+        """ Immediately terminates the Fluent client, losing unsaved progress and data.
 
         Notes
         -----
@@ -433,9 +431,8 @@ class FluentConnection:
             logger.error("Could not find cleanup file.")
 
     def force_exit_container(self):
-        """
-        Immediately terminates the Fluent client running inside a container,
-        losing unsaved progress and data.
+        """ Immediately terminates the Fluent client running inside a container, losing
+        unsaved progress and data.
 
         Notes
         -----
@@ -471,11 +468,11 @@ class FluentConnection:
             logger.debug("Container not found, cancelling cleanup script execution.")
 
     def register_finalizer_cb(self, cb):
-        """Register a callback to run with the finalizer."""
+        """ Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
     def create_service(self, service, *args):
-        """Create a gRPC service.
+        """ Create a gRPC service.
 
         Parameters
         ----------
@@ -492,14 +489,14 @@ class FluentConnection:
         return service(self._channel, self._metadata, *args)
 
     def check_health(self) -> str:
-        """Check health of Fluent connection."""
+        """ Check health of Fluent connection."""
         warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
         return self.health_check_service.status()
 
     def wait_process_finished(self, wait: Union[float, int, bool] = 60):
-        """Returns ``True`` if local Fluent processes have finished,
-        ``False`` if they are still running when wait limit (default 60 seconds) is reached.
-        Immediately cancels and returns ``None`` if ``wait`` is set to ``False``.
+        """ Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
@@ -553,7 +550,7 @@ class FluentConnection:
         timeout_force: bool = True,
         wait: Optional[Union[float, int, bool]] = False,
     ) -> None:
-        """Close the Fluent connection and exit Fluent.
+        """ Close the Fluent connection and exit Fluent.
 
         Parameters
         ----------

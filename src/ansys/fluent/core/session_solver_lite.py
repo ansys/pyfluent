@@ -1,4 +1,4 @@
-"""Module containing class encapsulating Fluent connection.
+""" Module containing class encapsulating Fluent connection.
 
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
@@ -14,7 +14,7 @@ class SolverLite(Solver):
         self,
         fluent_connection=None,
     ):
-        """SolverLite session.
+        """ SolverLite session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
@@ -30,6 +30,6 @@ class SolverLite(Solver):
     # One can inherit methods from 'Solver' and re-define it here to make it unavailable in solver-Lite
 
     def switch_to_full_solver(self):
-        """A switch to move to the full-solver session from solver-lite."""
+        """ A switch to move to the full-solver session from solver-lite."""
         solver_session = Solver(fluent_connection=self.fluent_connection)
         return solver_session

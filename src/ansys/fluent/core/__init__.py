@@ -1,4 +1,4 @@
-"""A package providing Fluent's Solver and Meshing capabilities in Python."""
+""" A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
 import pydoc
@@ -36,7 +36,7 @@ if os.path.exists(_README_FILE):
 
 
 def version_info() -> str:
-    """Method returning the version of PyFluent being used.
+    """ Method returning the version of PyFluent being used.
 
     Returns
     -------

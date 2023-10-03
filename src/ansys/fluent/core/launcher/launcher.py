@@ -1,7 +1,7 @@
-"""Provides a module for launching Fluent.
+""" Provides a module for launching Fluent.
 
-This module supports both starting Fluent locally and connecting to a
-remote instance with gRPC.
+This module supports both starting Fluent locally and connecting to a remote instance
+with gRPC.
 """
 from enum import Enum
 import json
@@ -35,12 +35,12 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 def _is_windows():
-    """Check if the current operating system is windows."""
+    """ Check if the current operating system is windows."""
     return platform.system() == "Windows"
 
 
 class LaunchMode(Enum):
-    """An enumeration over supported Fluent launch modes."""
+    """ An enumeration over supported Fluent launch modes."""
 
     STANDALONE = 1
     PIM = 2
@@ -48,7 +48,7 @@ class LaunchMode(Enum):
 
 
 def check_docker_support():
-    """Checks whether Python Docker SDK is supported by the current system."""
+    """ Checks whether Python Docker SDK is supported by the current system."""
     import docker
 
     try:
@@ -59,7 +59,7 @@ def check_docker_support():
 
 
 class FluentVersion(Enum):
-    """An enumeration over supported Fluent versions."""
+    """ An enumeration over supported Fluent versions."""
 
     version_24R1 = "24.1.0"
     version_23R2 = "23.2.0"
@@ -85,9 +85,11 @@ class FluentVersion(Enum):
 
 
 def get_ansys_version() -> str:
-    """Return the version string corresponding to the most recent, available ANSYS
-    installation. The returned value is the string component of one of the members
-    of the FluentVersion class.
+    """ Return the version string corresponding to the most recent, available ANSYS
+    installation.
+
+    The returned value is the string component of one of the members of the
+    FluentVersion class.
     """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
@@ -97,7 +99,7 @@ def get_ansys_version() -> str:
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
-    """Get Fluent executable path. The path is searched in the following order.
+    """ Get Fluent executable path. The path is searched in the following order.
 
     1. ``product_version`` parameter passed with ``launch_fluent``.
     2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
@@ -135,7 +137,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
 
 
 class FluentMode(Enum):
-    """An enumeration over supported Fluent modes."""
+    """ An enumeration over supported Fluent modes."""
 
     # Tuple: Name, Solver object type, Meshing flag, Launcher options
     MESHING_MODE = ("meshing", Meshing, True, [])
@@ -145,7 +147,7 @@ class FluentMode(Enum):
 
     @staticmethod
     def get_mode(mode: str):
-        """Returns the FluentMode based on the provided mode string."""
+        """ Returns the FluentMode based on the provided mode string."""
         for m in FluentMode:
             if mode == m.value[0]:
                 return m
@@ -184,7 +186,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
-    """Build Fluent's launch arguments string from keyword arguments.
+    """ Build Fluent's launch arguments string from keyword arguments.
 
     Returns
     -------
@@ -305,7 +307,7 @@ def launch_remote_fluent(
 
 
 def _get_session_info(argvals, mode: Optional[Union[FluentMode, str, None]] = None):
-    """Updates the session information."""
+    """ Updates the session information."""
     if mode is None:
         mode = FluentMode.SOLVER
 
@@ -320,7 +322,7 @@ def _get_session_info(argvals, mode: Optional[Union[FluentMode, str, None]] = No
 
 
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
-    """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    """ If -g or -gu is passed in Windows OS, the exception should be raised."""
     additional_arg_list = additional_arguments.split()
     if _is_windows() and (
         ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
@@ -331,8 +333,8 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
 def _update_launch_string_wrt_gui_options(
     launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
 ) -> str:
-    """Checks for all gui options in additional arguments and updates the
-    launch string with hidden, if none of the options are met."""
+    """ Checks for all gui options in additional arguments and updates the launch string
+    with hidden, if none of the options are met."""
 
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
@@ -346,7 +348,7 @@ def _update_launch_string_wrt_gui_options(
 def _await_fluent_launch(
     server_info_filepath: str, start_timeout: int, sifile_last_mtime: float
 ):
-    """Wait for successful fluent launch or raise an error."""
+    """ Wait for successful fluent launch or raise an error."""
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
@@ -365,7 +367,7 @@ def _get_server_info(
     port: Optional[int] = None,
     password: Optional[str] = None,
 ):
-    """Get server connection information of an already running session."""
+    """ Get server connection information of an already running session."""
     if ip and port:
         logger.debug(
             "The server-info file was not parsed because ip and port were provided explicitly."
@@ -385,7 +387,7 @@ def _get_server_info(
 def _get_running_session_mode(
     fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
 ):
-    """Get the mode of the running session if the mode has not been mentioned
+    """ Get the mode of the running session if the mode has not been mentioned
     explicitly."""
     if mode:
         session_mode = mode
@@ -408,7 +410,7 @@ def _generate_launch_string(
     additional_arguments: str,
     server_info_filepath: str,
 ):
-    """Generates the launch string to launch fluent."""
+    """ Generates the launch string to launch fluent."""
     if _is_windows():
         exe_path = '"' + str(get_fluent_exe_path(**argvals)) + '"'
     else:
@@ -427,7 +429,7 @@ def _generate_launch_string(
 
 
 def scm_to_py(topy):
-    """Convert journal filenames to Python filename."""
+    """ Convert journal filenames to Python filename."""
     if not isinstance(topy, (str, list)):
         raise TypeError("Journal name should be of str or list type.")
     if isinstance(topy, str):
@@ -437,10 +439,10 @@ def scm_to_py(topy):
 
 
 class LaunchFluentError(Exception):
-    """Exception class representing launch errors."""
+    """ Exception class representing launch errors."""
 
     def __init__(self, launch_string):
-        """__init__ method of LaunchFluentError class."""
+        """ __init__ method of LaunchFluentError class."""
         details = "\n" + "Fluent Launch string: " + launch_string
         super().__init__(details)
 
@@ -472,8 +474,8 @@ def launch_fluent(
     start_watchdog: Optional[bool] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
-    """Launch Fluent locally in server mode or connect to a running Fluent
-    server instance.
+    """ Launch Fluent locally in server mode or connect to a running Fluent server
+    instance.
 
     Parameters
     ----------
@@ -822,7 +824,7 @@ def connect_to_fluent(
     password: Optional[str] = None,
     start_watchdog: Optional[bool] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
-    """Connect to an existing Fluent server instance.
+    """ Connect to an existing Fluent server instance.
 
     Parameters
     ----------
@@ -861,7 +863,6 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
-
     """
     ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
     fluent_connection = FluentConnection(

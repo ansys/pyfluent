@@ -1,4 +1,4 @@
-"""Module providing dump session data functionality."""
+""" Module providing dump session data functionality."""
 from pathlib import Path
 import pickle
 from typing import Optional, Union
@@ -14,7 +14,7 @@ def dump_session_data(
     fields: Optional[list] = None,
     surfaces: Optional[list] = None,
 ):
-    """Dump session data.
+    """ Dump session data.
 
     Parameters
     ----------

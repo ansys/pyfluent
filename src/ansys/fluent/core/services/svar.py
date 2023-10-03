@@ -1,4 +1,4 @@
-"""Wrappers over SVAR gRPC service of Fluent."""
+""" Wrappers over SVAR gRPC service of Fluent."""
 
 import math
 from typing import Dict, List, Optional
@@ -19,10 +19,10 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class SVARService:
-    """SVAR service of Fluent."""
+    """ SVAR service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
-        """__init__ method of SVAR service class."""
+        """ __init__ method of SVAR service class."""
         tracing_interceptor = TracingInterceptor()
         intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
         self.__stub = SvarGrpcModule.svarStub(intercept_channel)
@@ -30,27 +30,27 @@ class SVARService:
 
     @catch_grpc_error
     def get_svar_data(self, request):
-        """GetSvarData rpc of SVAR service."""
+        """ GetSvarData rpc of SVAR service."""
         return self.__stub.GetSvarData(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def set_svar_data(self, request):
-        """SetSvarData rpc of SVAR service."""
+        """ SetSvarData rpc of SVAR service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_svars_info(self, request):
-        """GetSvarsInfo rpc of SVAR service."""
+        """ GetSvarsInfo rpc of SVAR service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_zones_info(self, request):
-        """GetZonesInfo rpc of SVAR service."""
+        """ GetZonesInfo rpc of SVAR service."""
         return self.__stub.GetZonesInfo(request, metadata=self.__metadata)
 
 
 class SVARInfo:
-    """Provide access to Fluent SVARs and Zones information.
+    """ Provide access to Fluent SVARs and Zones information.
 
     Example
     -------
@@ -72,14 +72,13 @@ class SVARInfo:
         >>> zone_info = zones_info['wall']
         >>> zone_info
         >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
-
     """
 
     class SVARS:
-        """Class containing information for multiple SVARs."""
+        """ Class containing information for multiple SVARs."""
 
         class SVAR:
-            """Class containing information for single SVAR."""
+            """ Class containing information for single SVAR."""
 
             def __init__(self, svar_info):
                 self.name = svar_info.name
@@ -111,13 +110,13 @@ class SVARInfo:
             return list(self._svars_info.keys())
 
     class ZonesInfo:
-        """Class containing information for multiple zones."""
+        """ Class containing information for multiple zones."""
 
         class ZoneInfo:
-            """Class containing information for single zone."""
+            """ Class containing information for single zone."""
 
             class PartitionsInfo:
-                """Class containing information for partitions."""
+                """ Class containing information for partitions."""
 
                 def __init__(self, partition_info):
                     self.count = partition_info.count
@@ -179,7 +178,7 @@ class SVARInfo:
     def get_svars_info(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SVARS:
-        """Get SVARs info for zones in the domain.
+        """ Get SVARs info for zones in the domain.
 
         Parameters
         ----------
@@ -210,7 +209,7 @@ class SVARInfo:
         return svars_info
 
     def get_zones_info(self) -> ZonesInfo:
-        """Get Zones info.
+        """ Get Zones info.
 
         Parameters
         ----------
@@ -227,7 +226,7 @@ class SVARInfo:
 
 
 class SvarError(ValueError):
-    """Exception class for errors in SVAR name."""
+    """ Exception class for errors in SVAR name."""
 
     def __init__(self, svar_name: str, allowed_values: List[str]):
         self.svar_name = svar_name
@@ -235,7 +234,7 @@ class SvarError(ValueError):
 
 
 class ZoneError(ValueError):
-    """Exception class for errors in Zone name."""
+    """ Exception class for errors in Zone name."""
 
     def __init__(self, zone_name: str, allowed_values: List[str]):
         self.zone_name = zone_name
@@ -322,7 +321,7 @@ class _SvarMethod:
 
 
 def extract_svars(svars_data):
-    """Extracts SVAR data via a server call."""
+    """ Extracts SVAR data via a server call."""
 
     def _extract_svar(field_datatype, field_size, svars_data):
         field_arr = np.empty(field_size, dtype=field_datatype)
@@ -373,7 +372,7 @@ def extract_svars(svars_data):
 
 
 class SVARData:
-    """Provides access to Fluent SVAR data on zones.
+    """ Provides access to Fluent SVAR data on zones.
 
     Example
     -------
@@ -456,7 +455,7 @@ class SVARData:
     def get_array(
         self, svar_name: str, zone_name: str, domain_name: str = "mixture"
     ) -> np.zeros:
-        """Get numpy zeros array for the SVAR on a zone.
+        """ Get numpy zeros array for the SVAR on a zone.
 
         This array can be populated  with values to set SVAR data.
         """
@@ -478,7 +477,7 @@ class SVARData:
         zone_names: List[str],
         domain_name: Optional[str] = "mixture",
     ) -> Data:
-        """Get SVAR data on zones.
+        """ Get SVAR data on zones.
 
         Parameters
         ----------
@@ -520,7 +519,7 @@ class SVARData:
         zone_names_to_svar_data: Dict[str, np.array],
         domain_name: str = "mixture",
     ) -> None:
-        """Set SVAR data on zones.
+        """ Set SVAR data on zones.
 
         Parameters
         ----------

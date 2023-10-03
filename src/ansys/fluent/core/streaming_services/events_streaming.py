@@ -1,4 +1,4 @@
-"""Module for events management."""
+""" Module for events management."""
 from functools import partial
 import logging
 from typing import Callable, List, Optional
@@ -10,7 +10,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 class EventsManager(StreamingService):
-    """Manages server-side events.
+    """ Manages server-side events.
 
     This class allows the client to register and unregister callbacks with server events.
 
@@ -26,7 +26,7 @@ class EventsManager(StreamingService):
     """
 
     def __init__(self, session_events_service, fluent_error_state, session_id):
-        """__init__ method of EventsManager class."""
+        """ __init__ method of EventsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=EventsManager._process_streaming,
@@ -73,7 +73,7 @@ class EventsManager(StreamingService):
         *args,
         **kwargs,
     ):
-        """Register the callback.
+        """ Register the callback.
 
         Parameters
         ----------
@@ -112,7 +112,7 @@ class EventsManager(StreamingService):
                 }
 
     def unregister_callback(self, callback_id: str):
-        """Unregister the callback.
+        """ Unregister the callback.
 
         Parameters
         ----------
@@ -126,7 +126,7 @@ class EventsManager(StreamingService):
 
     @property
     def events_list(self) -> List[str]:
-        """Get a list of supported events.
+        """ Get a list of supported events.
 
         Parameters
         ----------

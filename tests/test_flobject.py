@@ -1,4 +1,4 @@
-"""Unit tests for flobject module."""
+""" Unit tests for flobject module."""
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
@@ -14,7 +14,7 @@ from ansys.fluent.core.solver.flobject import find_children
 
 
 class Setting:
-    """Base class for setting objects."""
+    """ Base class for setting objects."""
 
     def __init__(self, parent):
         self.parent = None if parent is None else weakref.proxy(parent)
@@ -39,7 +39,7 @@ class Setting:
 
 
 class PrimitiveSetting(Setting):
-    """Primitive setting objects."""
+    """ Primitive setting objects."""
 
     value = None
 
@@ -90,7 +90,7 @@ class StringList(PrimitiveSetting):
 
 
 class Group(Setting):
-    """Group objects."""
+    """ Group objects."""
 
     objtype = "group"
     children = {}
@@ -133,7 +133,7 @@ class Group(Setting):
 
 
 class NamedObject(Setting, MutableMapping):
-    """NamedObject class."""
+    """ NamedObject class."""
 
     objtype = "named-object"
     commands = {}
@@ -197,7 +197,7 @@ class NamedObject(Setting, MutableMapping):
 
 
 class ListObject(Setting):
-    """ListObject class."""
+    """ ListObject class."""
 
     objtype = "list-object"
     commands = {}
@@ -257,7 +257,7 @@ class ListObject(Setting):
 
 
 class Command(Setting):
-    """Command class."""
+    """ Command class."""
 
     objtype = "command"
     # To be overridden by child classes
@@ -284,7 +284,7 @@ class Command(Setting):
 
 
 class Root(Group):
-    """Root class."""
+    """ Root class."""
 
     class G1(Group):
         class S1(String):
@@ -319,7 +319,7 @@ class Root(Group):
         child_object_type = LC
 
     class Command1(Command):
-        """Command1 class."""
+        """ Command1 class."""
 
         class A1(Real):
             value = 2.3
@@ -350,7 +350,7 @@ class Root(Group):
 
 
 class Proxy:
-    """Proxy class."""
+    """ Proxy class."""
 
     root = Root
 

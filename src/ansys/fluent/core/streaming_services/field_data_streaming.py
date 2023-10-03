@@ -1,4 +1,4 @@
-"""Module for Field data streaming."""
+""" Module for Field data streaming."""
 
 import threading
 from typing import Callable, Dict, List, Union
@@ -9,7 +9,7 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class FieldDataStreaming(StreamingService):
-    """Class wrapping the Field gRPC streaming service of Fluent.
+    """ Class wrapping the Field gRPC streaming service of Fluent.
 
     Parameters
     ----------
@@ -29,7 +29,7 @@ class FieldDataStreaming(StreamingService):
         self._lock_refresh: threading.Lock = threading.Lock()
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Processes field data streaming."""
+        """ Processes field data streaming."""
         request = FieldDataProtoModule.BeginFieldsStreamingRequest(*args, **kwargs)
         ChunkParser(self).extract_fields(
             self._streaming_service.begin_streaming(
@@ -38,5 +38,5 @@ class FieldDataStreaming(StreamingService):
         )
 
     def callbacks(self) -> List[List[Union[Callable, List, Dict]]]:
-        """Get list of callbacks along with arguments and keyword arguments"""
+        """ Get list of callbacks along with arguments and keyword arguments."""
         return self._service_callbacks.values()

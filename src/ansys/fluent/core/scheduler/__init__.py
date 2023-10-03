@@ -1,4 +1,4 @@
-"""A package providing job scheduler support."""
+""" A package providing job scheduler support."""
 
 import os
 import socket
@@ -14,7 +14,7 @@ _machineSep = ","
 
 
 def build_parallel_options(machine_list: MachineList) -> str:
-    """Constructs Fluent's parallel arguments given a list of machines.
+    """ Constructs Fluent's parallel arguments given a list of machines.
 
     Parameters
     ----------

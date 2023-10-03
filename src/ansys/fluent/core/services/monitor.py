@@ -1,4 +1,4 @@
-"""Wrapper over the monitor grpc service of Fluent."""
+""" Wrapper over the monitor grpc service of Fluent."""
 
 from google.protobuf.json_format import MessageToDict
 import grpc
@@ -14,10 +14,10 @@ from ansys.fluent.core.services.streaming import StreamingService
 
 
 class MonitorsService(StreamingService):
-    """Class wrapping the monitor gRPC service of Fluent."""
+    """ Class wrapping the monitor gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):
-        """__init__ method of MonitorsService class."""
+        """ __init__ method of MonitorsService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
             ErrorStateInterceptor(fluent_error_state),
@@ -32,7 +32,7 @@ class MonitorsService(StreamingService):
         )
 
     def get_monitors_info(self) -> dict:
-        """Get monitors information.
+        """ Get monitors information.
 
         Parameters
         ----------

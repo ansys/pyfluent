@@ -1,4 +1,4 @@
-"""Wrapper over the transcript grpc service of Fluent."""
+""" Wrapper over the transcript grpc service of Fluent."""
 
 from typing import List, Tuple
 
@@ -9,10 +9,10 @@ from ansys.fluent.core.services.streaming import StreamingService
 
 
 class TranscriptService(StreamingService):
-    """Class wrapping the transcript gRPC service of Fluent."""
+    """ Class wrapping the transcript gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        """__init__ method of TranscriptService class."""
+        """ __init__ method of TranscriptService class."""
         super().__init__(
             stub=TranscriptGrpcModule.TranscriptStub(channel),
             metadata=metadata,

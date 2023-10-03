@@ -1,4 +1,4 @@
-"""Sphinx documentation configuration file."""
+""" Sphinx documentation configuration file."""
 from datetime import datetime
 import os
 import platform

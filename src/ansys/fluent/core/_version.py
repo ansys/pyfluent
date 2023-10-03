@@ -1,4 +1,4 @@
-"""Version of ansys-fluent-core module.
+""" Version of ansys-fluent-core module.
 
 On the ``main`` branch, use 'dev0' to denote a development version.
 For example:

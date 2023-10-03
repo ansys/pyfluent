@@ -3,10 +3,10 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class DatamodelStream(StreamingService):
-    """Encapsulates a datamodel streaming service."""
+    """ Encapsulates a datamodel streaming service."""
 
     def __init__(self, service):
-        """Initialize DatamodelStream."""
+        """ Initialize DatamodelStream."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=DatamodelStream._process_streaming,
@@ -23,7 +23,7 @@ class DatamodelStream(StreamingService):
         *args,
         **kwargs
     ):
-        """Processes datamodel events."""
+        """ Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
         data_model_request.rules = rules
         if no_commands_diff_state:

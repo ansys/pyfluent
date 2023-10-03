@@ -19,7 +19,7 @@ class Symbol(str):
 
 
 def Sym(s, symbol_table={}):
-    """Find or create unique Symbol entry for str s in symbol table."""
+    """ Find or create unique Symbol entry for str s in symbol table."""
     if s not in symbol_table:
         symbol_table[s] = Symbol(s)
     return symbol_table[s]
@@ -41,7 +41,7 @@ _quasiquote, _unquote, _unquotesplicing = map(
 
 
 class Procedure:
-    """A user-defined Scheme procedure."""
+    """ A user-defined Scheme procedure."""
 
     def __init__(self, params, exp, env):
         self.params, self.exp, self.env = params, exp, env
@@ -78,7 +78,7 @@ def count_unescaped_quotes(line):
 
 
 class InputPort:
-    """An input port.
+    """ An input port.
 
     Retains a line of chars.
     """
@@ -90,8 +90,7 @@ class InputPort:
         self.line = ""
 
     def next_token(self):
-        """Return the next token, reading new text into line buffer if
-        needed."""
+        """ Return the next token, reading new text into line buffer if needed."""
         while True:
             if self.line == "":
                 self.line = self.file.readline()
@@ -113,7 +112,7 @@ class InputPort:
 
 
 def readchar(in_port):
-    """Read the next character from an input port."""
+    """ Read the next character from an input port."""
     if in_port.line != "":
         ch, in_port.line = in_port.line[0], in_port.line[1:]
         return ch
@@ -122,7 +121,7 @@ def readchar(in_port):
 
 
 def read(in_port):
-    """Read a Scheme expression from an input port."""
+    """ Read a Scheme expression from an input port."""
 
     def read_ahead(token):
         if "(" == token:
@@ -175,7 +174,7 @@ quotes = {"'": _quote, "`": _quasiquote, ",": _unquote, ",@": _unquotesplicing}
 
 
 def atom(token):
-    """Numbers become numbers; #t and #f are booleans; "..." string; otherwise
+    """ Numbers become numbers; #t and #f are booleans; "..." string; otherwise
     Symbol."""
     if token == "#t":
         return True
@@ -196,7 +195,7 @@ def atom(token):
 
 
 def to_string(x):
-    """Convert a Python object back into a Lisp-readable string."""
+    """ Convert a Python object back into a Lisp-readable string."""
 
     def sequence(sep):
         return "(" + sep.join(map(to_string, x)) + ")"
@@ -220,12 +219,12 @@ def to_string(x):
 
 
 def load(filename):
-    """Eval every expression from a file."""
+    """ Eval every expression from a file."""
     repl(None, InputPort(open(filename)), None)
 
 
 def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):
-    """A prompt-read-eval-print loop."""
+    """ A prompt-read-eval-print loop."""
     sys.stderr.write("Lispy version 2.0\n")
     while True:
         try:
@@ -260,7 +259,7 @@ class Env(dict):
             self.update(zip(params, args))
 
     def find(self, var):
-        """Find the innermost Env where var appears."""
+        """ Find the innermost Env where var appears."""
         if var in self:
             return self
         elif self.outer is None:
@@ -278,7 +277,7 @@ def cons(x, y):
 
 
 def callcc(proc):
-    """Call proc with current continuation; escape only."""
+    """ Call proc with current continuation; escape only."""
     ball = RuntimeWarning("Sorry, can't continue this continuation any longer.")
 
     def throw(retval):
@@ -295,7 +294,7 @@ def callcc(proc):
 
 
 def add_globals(self):
-    """Add some Scheme standard procedures."""
+    """ Add some Scheme standard procedures."""
     import cmath
     import math
     import operator as op
@@ -356,7 +355,7 @@ global_env = add_globals(Env())
 
 
 def eval(x, env=global_env):
-    """Evaluate an expression in an environment."""
+    """ Evaluate an expression in an environment."""
     while True:
         if isa(x, Symbol):  # variable reference
             return env.find(x)[x]
@@ -400,8 +399,7 @@ def eval(x, env=global_env):
 
 
 def expand(x, toplevel=False):
-    """Walk tree of x, making optimizations/fixes, and signaling
-    SyntaxError."""
+    """ Walk tree of x, making optimizations/fixes, and signaling SyntaxError."""
     # require(x, x!=[])                    # () => Error
     if x == []:
         return x
@@ -465,7 +463,7 @@ def expand(x, toplevel=False):
 
 
 def require(x, predicate, msg="wrong length"):
-    """Signal a syntax error if predicate is false."""
+    """ Signal a syntax error if predicate is false."""
     if not predicate:
         raise SyntaxError(to_string(x) + ": " + msg)
 
@@ -474,7 +472,7 @@ _append, _cons, _let = map(Sym, "append cons let".split())
 
 
 def expand_quasiquote(x):
-    """Expand `x => 'x; `,x => x; `(,@x y) => (append x y)"""
+    """ Expand `x => 'x; `,x => x; `(,@x y) => (append x y)"""
     if not is_pair(x):
         return [_quote, x]
     require(x, x[0] is not _unquotesplicing, "can't splice here")

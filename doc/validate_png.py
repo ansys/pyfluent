@@ -1,4 +1,4 @@
-"""Validate the PNG images in the build/latex/ directory.
+""" Validate the PNG images in the build/latex/ directory.
 
 Removes invalid PNGs (probably GIF)
 """

@@ -1,4 +1,4 @@
-"""Client side implementation of the stand-alone datamodel server."""
+""" Client side implementation of the stand-alone datamodel server."""
 from pathlib import Path
 from typing import Union
 

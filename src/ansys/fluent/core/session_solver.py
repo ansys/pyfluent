@@ -1,4 +1,4 @@
-"""Module containing class encapsulating Fluent connection."""
+""" Module containing class encapsulating Fluent connection."""
 
 from asyncio import Future
 import functools
@@ -24,14 +24,17 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Solver(BaseSession):
-    """Encapsulates a Fluent solver session. A ``tui`` object for solver TUI
-    commanding, and solver settings objects are all exposed here."""
+    """ Encapsulates a Fluent solver session.
+
+    A ``tui`` object for solver TUI
+    commanding, and solver settings objects are all exposed here.
+    """
 
     def __init__(
         self,
         fluent_connection,
     ):
-        """Solver session.
+        """ Solver session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
@@ -60,13 +63,13 @@ class Solver(BaseSession):
             self.reduction = reduction_old
 
     def build_from_fluent_connection(self, fluent_connection):
-        """Build a solver session object from fluent_connection object."""
+        """ Build a solver session object from fluent_connection object."""
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
     @property
     def svar_data(self) -> SVARData:
-        """Return the SVARData handle."""
+        """ Return the SVARData handle."""
         try:
             return SVARData(self.svar_service, self.svar_info)
         except RuntimeError:
@@ -74,14 +77,14 @@ class Solver(BaseSession):
 
     @property
     def version(self):
-        """Fluent's product version."""
+        """ Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_filepath(session=self)
         return self._version
 
     @property
     def tui(self):
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
+        """ Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
             try:
@@ -98,7 +101,7 @@ class Solver(BaseSession):
 
     @property
     def _workflow_se(self):
-        """Datamodel root for workflow."""
+        """ Datamodel root for workflow."""
         try:
             workflow_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
@@ -111,14 +114,14 @@ class Solver(BaseSession):
 
     @property
     def workflow(self):
-        """Datamodel root for workflow."""
+        """ Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = WorkflowWrapper(self._workflow_se, Solver)
         return self._workflow
 
     @property
     def _root(self):
-        """Root settings object."""
+        """ Root settings object."""
         if self._settings_root is None:
             self._settings_root = settings_get_root(
                 flproxy=self._settings_service, version=self.version
@@ -133,57 +136,57 @@ class Solver(BaseSession):
 
     @property
     def file(self):
-        """Settings for file."""
+        """ Settings for file."""
         return self._root.file
 
     @property
     def mesh(self):
-        """Settings for mesh."""
+        """ Settings for mesh."""
         return self._root.mesh
 
     @property
     def setup(self):
-        """Settings for setup."""
+        """ Settings for setup."""
         return self._root.setup
 
     @property
     def solution(self):
-        """Settings for solution."""
+        """ Settings for solution."""
         return self._root.solution
 
     @property
     def results(self):
-        """Settings for results."""
+        """ Settings for results."""
         return self._root.results
 
     @property
     def parametric_studies(self):
-        """Settings for parametric_studies."""
+        """ Settings for parametric_studies."""
         return self._root.parametric_studies
 
     @property
     def current_parametric_study(self):
-        """Settings for current_parametric_study."""
+        """ Settings for current_parametric_study."""
         return self._root.current_parametric_study
 
     @property
     def parameters(self):
-        """Settings for parameters."""
+        """ Settings for parameters."""
         return self._root.parameters
 
     @property
     def parallel(self):
-        """Settings for parallel."""
+        """ Settings for parallel."""
         return self._root.parallel
 
     @property
     def report(self):
-        """Settings for report."""
+        """ Settings for report."""
         return self._root.report
 
     @property
     def preferences(self):
-        """Datamodel root of preferences."""
+        """ Datamodel root of preferences."""
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
@@ -202,8 +205,8 @@ class Solver(BaseSession):
                 fut_session.exit()
 
     def read_case(self, file_name: str, lightweight_mode: bool = False):
-        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is
-        set to ``True``.
+        """ Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
+        ``True``.
 
         Parameters
         ----------

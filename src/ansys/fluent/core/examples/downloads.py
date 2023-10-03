@@ -1,4 +1,4 @@
-"""Functions to download sample datasets from the Ansys example data repository."""
+""" Functions to download sample datasets from the Ansys example data repository."""
 import os
 from pathlib import Path
 import re
@@ -11,24 +11,26 @@ import ansys.fluent.core as pyfluent
 
 
 def delete_downloads():
-    """Delete all downloaded examples from the default examples folder to free space or update the files.
+    """ Delete all downloaded examples from the default examples folder to free space or
+    update the files.
 
     Notes
     -----
-    The default examples path is given by ``pyfluent.EXAMPLES_PATH``."""
+    The default examples path is given by ``pyfluent.EXAMPLES_PATH``.
+    """
     shutil.rmtree(pyfluent.EXAMPLES_PATH)
     os.makedirs(pyfluent.EXAMPLES_PATH)
 
 
 def _decompress(filename: str) -> None:
-    """Decompress zipped file."""
+    """ Decompress zipped file."""
     zip_ref = zipfile.ZipFile(filename, "r")
     zip_ref.extractall(pyfluent.EXAMPLES_PATH)
     return zip_ref.close()
 
 
 def _get_file_url(filename: str, directory: Optional[str] = None) -> str:
-    """Get file URL."""
+    """ Get file URL."""
     if directory:
         return (
             "https://github.com/ansys/example-data/raw/master/"
@@ -43,7 +45,7 @@ def _retrieve_file(
     save_path: Optional[str] = None,
     return_only_filename: Optional[bool] = False,
 ) -> str:
-    """Download specified file from specified URL."""
+    """ Download specified file from specified URL."""
     filename = os.path.basename(filename)
     if save_path is None:
         save_path = pyfluent.EXAMPLES_PATH
@@ -89,7 +91,7 @@ def download_file(
     save_path: Optional[str] = None,
     return_only_filename: Optional[bool] = None,
 ) -> str:
-    """Download specified example file from the Ansys example data repository.
+    """ Download specified example file from the Ansys example data repository.
 
     Parameters
     ----------

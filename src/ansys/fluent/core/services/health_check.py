@@ -1,4 +1,4 @@
-"""Wrapper over the health check grpc service of Fluent."""
+""" Wrapper over the health check grpc service of Fluent."""
 from enum import Enum
 import logging
 import sys
@@ -19,7 +19,7 @@ logger = logging.getLogger("pyfluent.general")
 
 
 class HealthCheckService:
-    """Class wrapping the health check gRPC service of Fluent.
+    """ Class wrapping the health check gRPC service of Fluent.
 
     Methods
     -------
@@ -28,7 +28,7 @@ class HealthCheckService:
     """
 
     class Status(Enum):
-        """Health check status."""
+        """ Health check status."""
 
         UNKNOWN = 0
         SERVING = 1
@@ -38,7 +38,7 @@ class HealthCheckService:
     def __init__(
         self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
     ):
-        """__init__ method of HealthCheckService class."""
+        """ __init__ method of HealthCheckService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
             ErrorStateInterceptor(fluent_error_state),
@@ -51,7 +51,7 @@ class HealthCheckService:
 
     @catch_grpc_error
     def check_health(self) -> str:
-        """Check the health of the Fluent connection.
+        """ Check the health of the Fluent connection.
 
         Returns
         -------
@@ -64,7 +64,7 @@ class HealthCheckService:
 
     @catch_grpc_error
     def wait_for_server(self, timeout) -> None:
-        """Keeps a watch on the health of the Fluent connection.
+        """ Keeps a watch on the health of the Fluent connection.
 
         Response changes only when the service's serving status changes.
         """
@@ -88,7 +88,7 @@ class HealthCheckService:
                 raise
 
     def status(self) -> str:
-        """Check health of Fluent connection."""
+        """ Check health of Fluent connection."""
         if self._channel:
             try:
                 return self.check_health()
@@ -103,5 +103,5 @@ class HealthCheckService:
 
     @property
     def is_serving(self) -> bool:
-        """Checks whether Fluent is serving."""
+        """ Checks whether Fluent is serving."""
         return True if self.status() == "SERVING" else False

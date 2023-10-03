@@ -1,4 +1,4 @@
-"""Fault-tolerant workflow module."""
+""" Fault-tolerant workflow module."""
 
 from ansys.fluent.core.launcher.launcher import FluentMode, launch_fluent
 
@@ -6,7 +6,7 @@ from .meshing_workflow import MeshingWorkflow
 
 
 def fault_tolerant_workflow(**launch_args) -> MeshingWorkflow:
-    """A meshing workflow wrapper, initialized as fault-tolerant.
+    """ A meshing workflow wrapper, initialized as fault-tolerant.
 
     Parameters
     ----------

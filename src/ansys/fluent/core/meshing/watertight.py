@@ -1,4 +1,4 @@
-"""Watertight workflow module."""
+""" Watertight workflow module."""
 
 from ansys.fluent.core.launcher.launcher import FluentMode, launch_fluent
 
@@ -6,7 +6,7 @@ from .meshing_workflow import MeshingWorkflow
 
 
 def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
-    """A meshing workflow wrapper, initialized as watertight.
+    """ A meshing workflow wrapper, initialized as watertight.
 
     Parameters
     ----------

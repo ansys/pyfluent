@@ -4,7 +4,7 @@ import sys
 
 
 def docother(self, object, name=None, mod=None, parent=None, maxlen=None, doc=None):
-    """Produce text documentation for a data object."""
+    """ Produce text documentation for a data object."""
     if isinstance(object, list):
         indent_len = len(name and name + " = " or "") + 1
         rep = pprint.pformat(object, width=maxlen, compact=True, indent=indent_len)

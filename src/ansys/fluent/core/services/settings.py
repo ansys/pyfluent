@@ -1,4 +1,4 @@
-"""Wrapper to settings gRPC service of Fluent."""
+""" Wrapper to settings gRPC service of Fluent."""
 import collections.abc
 from functools import wraps
 from typing import Any, List, Tuple
@@ -112,10 +112,10 @@ def _get_request_instance_for_path(request_class, path):
 
 
 class SettingsService:
-    """Service for accessing and modifying Fluent settings."""
+    """ Service for accessing and modifying Fluent settings."""
 
     def __init__(self, channel, metadata, scheme_eval, fluent_error_state):
-        """__init__ method of SettingsService class."""
+        """ __init__ method of SettingsService class."""
         self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
         self._scheme_eval = scheme_eval
 
@@ -162,21 +162,21 @@ class SettingsService:
 
     @_trace
     def set_var(self, path: str, value: Any):
-        """Set the value for the given path."""
+        """ Set the value for the given path."""
         request = _get_request_instance_for_path(SettingsModule.SetVarRequest, path)
         self._set_state_from_value(request.value, value)
         self._service_impl.set_var(request)
 
     @_trace
     def get_var(self, path: str) -> Any:
-        """Get the value for the given path."""
+        """ Get the value for the given path."""
         request = _get_request_instance_for_path(SettingsModule.GetVarRequest, path)
         response = self._service_impl.get_var(request)
         return self._get_state_from_value(response.value)
 
     @_trace
     def rename(self, path: str, new: str, old: str):
-        """Rename the object at the given path."""
+        """ Rename the object at the given path."""
         request = _get_request_instance_for_path(SettingsModule.RenameRequest, path)
         request.old_name = old
         request.new_name = new
@@ -185,7 +185,7 @@ class SettingsService:
 
     @_trace
     def create(self, path: str, name: str):
-        """Create a named object child for the given path."""
+        """ Create a named object child for the given path."""
         request = _get_request_instance_for_path(SettingsModule.CreateRequest, path)
         request.name = name
 
@@ -193,7 +193,7 @@ class SettingsService:
 
     @_trace
     def delete(self, path: str, name: str):
-        """Delete the object with the given name at the given path."""
+        """ Delete the object with the given name at the given path."""
         request = _get_request_instance_for_path(SettingsModule.DeleteRequest, path)
         request.name = name
 
@@ -201,7 +201,7 @@ class SettingsService:
 
     @_trace
     def get_object_names(self, path: str) -> List[int]:
-        """Get a list of named objects."""
+        """ Get a list of named objects."""
         request = _get_request_instance_for_path(
             SettingsModule.GetObjectNamesRequest, path
         )
@@ -209,7 +209,7 @@ class SettingsService:
 
     @_trace
     def get_list_size(self, path: str) -> int:
-        """Get the number of elements in a list object."""
+        """ Get the number of elements in a list object."""
         request = _get_request_instance_for_path(
             SettingsModule.GetListSizeRequest, path
         )
@@ -217,7 +217,7 @@ class SettingsService:
 
     @_trace
     def resize_list_object(self, path: str, size: int):
-        """Resize a list object."""
+        """ Resize a list object."""
         request = _get_request_instance_for_path(
             SettingsModule.ResizeListObjectRequest, path
         )
@@ -277,7 +277,7 @@ class SettingsService:
 
     @_trace
     def get_static_info(self):
-        """Get static-info for settings."""
+        """ Get static-info for settings."""
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)
@@ -289,7 +289,7 @@ class SettingsService:
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute a given command with the provided keyword arguments."""
+        """ Execute a given command with the provided keyword arguments."""
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteCommandRequest, path
         )
@@ -301,7 +301,7 @@ class SettingsService:
 
     @_trace
     def execute_query(self, path: str, query: str, **kwds) -> Any:
-        """Execute a given query with the provided keyword arguments."""
+        """ Execute a given query with the provided keyword arguments."""
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteQueryRequest, path
         )
@@ -324,7 +324,7 @@ class SettingsService:
 
     @_trace
     def get_attrs(self, path: str, attrs: List[str], recursive=False) -> Any:
-        """Return values of given attributes."""
+        """ Return values of given attributes."""
         request = _get_request_instance_for_path(SettingsModule.GetAttrsRequest, path)
         request.attrs[:] = attrs
         request.recursive = recursive
@@ -336,10 +336,10 @@ class SettingsService:
 
     @_trace
     def has_wildcard(self, name: str) -> bool:
-        """Checks whether a name has a wildcard pattern."""
+        """ Checks whether a name has a wildcard pattern."""
         return self._scheme_eval.scheme_eval(f'(has-fnmatch-wild-card? "{name}")')
 
     @_trace
     def is_interactive_mode(self) -> bool:
-        """Checks whether commands can be executed interactively."""
+        """ Checks whether commands can be executed interactively."""
         return False

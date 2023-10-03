@@ -1,4 +1,4 @@
-"""Module to manage datamodel cache."""
+""" Module to manage datamodel cache."""
 
 
 from collections import defaultdict
@@ -21,14 +21,14 @@ StateType = Union[
 
 
 class DataModelCache:
-    """Class to manage datamodel cache."""
+    """ Class to manage datamodel cache."""
 
     class Empty:
-        """Class representing unassigned cached state."""
+        """ Class representing unassigned cached state."""
 
     @staticmethod
     def is_unassigned(state: Any) -> bool:
-        """Check whether a cached state is unassigned.
+        """ Check whether a cached state is unassigned.
 
         Parameters
         ----------
@@ -47,7 +47,7 @@ class DataModelCache:
 
     @staticmethod
     def get_config(rules: str, name: str) -> Any:
-        """Get datamodel cache configuration value.
+        """ Get datamodel cache configuration value.
 
         Parameters
         ----------
@@ -65,7 +65,7 @@ class DataModelCache:
 
     @staticmethod
     def set_config(rules: str, name: str, value: Any):
-        """Set datamodel cache configuration value.
+        """ Set datamodel cache configuration value.
 
         Parameters
         ----------
@@ -138,7 +138,7 @@ class DataModelCache:
 
     @staticmethod
     def update_cache(rules: str, state: Variant, deleted_paths: List[str]):
-        """Update datamodel cache from streamed state.
+        """ Update datamodel cache from streamed state.
 
         Parameters
         ----------
@@ -195,7 +195,7 @@ class DataModelCache:
 
     @staticmethod
     def get_state(rules: str, obj: object) -> Any:
-        """Retrieve state from datamodel cache
+        """ Retrieve state from datamodel cache.
 
         Parameters
         ----------
@@ -234,7 +234,7 @@ class DataModelCache:
 
     @staticmethod
     def set_state(rules: str, obj: object, value: Any):
-        """Set datamodel cache state
+        """ Set datamodel cache state.
 
         Parameters
         ----------

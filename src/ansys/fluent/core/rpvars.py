@@ -1,4 +1,4 @@
-"""Client-side service allowing access and modification of rpvars.
+""" Client-side service allowing access and modification of rpvars.
 
 The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
@@ -11,7 +11,7 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class RPVars:
-    """Access to rpvars in a specific session."""
+    """ Access to rpvars in a specific session."""
 
     _allowed_values = None
 
@@ -19,7 +19,7 @@ class RPVars:
         self._eval_fn = eval_fn
 
     def __call__(self, var: Optional[str] = None, val: Optional[Any] = None) -> Any:
-        """Set or get a specific rpvar, or get the full rpvar state.
+        """ Set or get a specific rpvar, or get the full rpvar state.
 
         Parameters
         ----------
@@ -60,8 +60,7 @@ class RPVars:
         )
 
     def allowed_values(self) -> List[str]:
-        """
-        Returns list with the allowed rpvars names.
+        """ Returns list with the allowed rpvars names.
 
         Returns
         -------

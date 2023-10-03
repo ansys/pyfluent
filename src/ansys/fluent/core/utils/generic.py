@@ -1,4 +1,4 @@
-"""Module providing generic functionality."""
+""" Module providing generic functionality."""
 
 from abc import ABCMeta
 import asyncio
@@ -9,7 +9,7 @@ loop = asyncio.get_event_loop()
 
 
 class SingletonMeta(type):
-    """Meta class for singleton type."""
+    """ Meta class for singleton type."""
 
     _single_instance = None
 
@@ -20,13 +20,13 @@ class SingletonMeta(type):
 
 
 class AbstractSingletonMeta(ABCMeta, SingletonMeta):
-    """Meta class for abstract singleton type."""
+    """ Meta class for abstract singleton type."""
 
     pass
 
 
 def execute_in_event_loop_threadsafe(f):
-    """Decorator to execute function in an event loop from another thread."""
+    """ Decorator to execute function in an event loop from another thread."""
 
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
@@ -36,7 +36,7 @@ def execute_in_event_loop_threadsafe(f):
 
 
 def execute_in_event_loop(f):
-    """Decorator to execute function in an event loop."""
+    """ Decorator to execute function in an event loop."""
 
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
@@ -46,7 +46,7 @@ def execute_in_event_loop(f):
 
 
 def in_notebook():
-    """Function to check if application is running in notebook."""
+    """ Function to check if application is running in notebook."""
     try:
         from IPython import get_ipython
 
@@ -58,7 +58,7 @@ def in_notebook():
 
 
 def timing(func):
-    """Timing function decorator."""
+    """ Timing function decorator."""
 
     def wrapper(*args, **kwargs):
         t1 = time.time()

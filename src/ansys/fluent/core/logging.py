@@ -1,6 +1,7 @@
-"""Module controlling PyFluent's logging functionality.
+""" Module controlling PyFluent's logging functionality.
 
-For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`."""
+For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`.
+"""
 import logging.config
 import os
 from typing import Optional, Union
@@ -11,7 +12,8 @@ _logging_file_enabled = False
 
 
 def root_config():
-    """Sets up the root PyFluent logger that outputs messages to stdout, but not to files."""
+    """ Sets up the root PyFluent logger that outputs messages to stdout, but not to
+    files."""
     logger = logging.getLogger("pyfluent")
     logger.setLevel("WARNING")
     formatter = logging.Formatter("%(name)s %(levelname)s: %(message)s")
@@ -23,12 +25,13 @@ def root_config():
 
 
 def is_active() -> bool:
-    """Returns whether PyFluent logging to file is active."""
+    """ Returns whether PyFluent logging to file is active."""
     return _logging_file_enabled
 
 
 def get_default_config() -> dict:
-    """Returns the default configuration dictionary obtained from parsing from the PyFluent ``logging_config.yaml`` file.
+    """ Returns the default configuration dictionary obtained from parsing from the
+    PyFluent ``logging_config.yaml`` file.
 
     Examples
     --------
@@ -67,7 +70,7 @@ def get_default_config() -> dict:
 
 
 def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = None):
-    """Enables PyFluent logging to file.
+    """ Enables PyFluent logging to file.
 
     Parameters
     ----------
@@ -119,12 +122,15 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = Non
 
 
 def get_logger(*args, **kwargs):
-    """Retrieves logger. Convenience wrapper for Python's :func:`logging.getLogger` function."""
+    """ Retrieves logger.
+
+    Convenience wrapper for Python's :func:`logging.getLogger` function.
+    """
     return logging.getLogger(*args, **kwargs)
 
 
 def set_global_level(level: Union[str, int]):
-    """Changes the levels of all PyFluent loggers that write to log file.
+    """ Changes the levels of all PyFluent loggers that write to log file.
 
     Parameters
     ----------
@@ -160,7 +166,7 @@ def set_global_level(level: Union[str, int]):
 
 
 def list_loggers():
-    """List all PyFluent loggers.
+    """ List all PyFluent loggers.
 
     Returns
     -------
@@ -195,8 +201,8 @@ def list_loggers():
 
 
 def configure_env_var() -> None:
-    """Verifies whether ``PYFLUENT_LOGGING`` environment variable was defined in the system.
-    Executed once automatically on PyFluent initialization.
+    """ Verifies whether ``PYFLUENT_LOGGING`` environment variable was defined in the
+    system. Executed once automatically on PyFluent initialization.
 
     Notes
     -----

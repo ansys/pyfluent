@@ -14,7 +14,7 @@ tui_logger = logging.getLogger("pyfluent.tui")
 
 
 class BaseMeshing:
-    """Encapsulates base methods of a meshing session."""
+    """ Encapsulates base methods of a meshing session."""
 
     def __init__(
         self,
@@ -24,7 +24,7 @@ class BaseMeshing:
         datamodel_service_tui,
         datamodel_service_se,
     ):
-        """BaseMeshing session.
+        """ BaseMeshing session.
 
         Args:
             session_execute_tui (_type_): Executes Fluent’s SolverTUI methods.
@@ -45,20 +45,20 @@ class BaseMeshing:
         self._fluent_version = fluent_version
 
     def get_fluent_version(self):
-        """Gets and returns the fluent version."""
+        """ Gets and returns the fluent version."""
         pyfluent_logger.debug("Fluent version = " + str(self._fluent_version))
         return self._fluent_version
 
     @property
     def version(self):
-        """Fluent's product version."""
+        """ Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_filepath(session=self)
         return self._version
 
     @property
     def tui(self):
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
+        """ Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
             try:
@@ -75,7 +75,7 @@ class BaseMeshing:
 
     @property
     def _meshing_root(self):
-        """Datamodel root of meshing."""
+        """ Datamodel root of meshing."""
         try:
             meshing_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.meshing"
@@ -94,7 +94,7 @@ class BaseMeshing:
 
     @property
     def _workflow_se(self):
-        """Datamodel root of workflow."""
+        """ Datamodel root of workflow."""
         try:
             workflow_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
@@ -107,7 +107,7 @@ class BaseMeshing:
 
     @property
     def workflow(self):
-        """Datamodel root of workflow."""
+        """ Datamodel root of workflow."""
         if not self._workflow:
             self._workflow = MeshingWorkflow(
                 self._workflow_se,
@@ -119,7 +119,7 @@ class BaseMeshing:
 
     @property
     def PartManagement(self):
-        """Datamdoel root of PartManagement."""
+        """ Datamdoel root of PartManagement."""
         if self._part_management is None:
             try:
                 pm_module = importlib.import_module(
@@ -137,7 +137,7 @@ class BaseMeshing:
 
     @property
     def PMFileManagement(self):
-        """Datamodel root of PMFileManagement."""
+        """ Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
             try:
                 pmfm_module = importlib.import_module(
@@ -155,7 +155,7 @@ class BaseMeshing:
 
     @property
     def preferences(self):
-        """Datamodel root of preferences."""
+        """ Datamodel root of preferences."""
         if self._preferences is None:
             from ansys.fluent.core.session import _get_preferences
 

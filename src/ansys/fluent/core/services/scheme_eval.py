@@ -1,4 +1,4 @@
-"""Wrappers over SchemeEval gRPC service of Fluent.
+""" Wrappers over SchemeEval gRPC service of Fluent.
 
 Example
 -------
@@ -34,7 +34,7 @@ from ansys.fluent.core.services.interceptors import (
 
 
 class SchemeEvalService:
-    """Class wrapping the SchemeEval gRPC service of Fluent.
+    """ Class wrapping the SchemeEval gRPC service of Fluent.
 
     Using the methods from the SchemeEval class is recommended.
     """
@@ -42,7 +42,7 @@ class SchemeEvalService:
     def __init__(
         self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
     ):
-        """__init__ method of SchemeEvalService class."""
+        """ __init__ method of SchemeEvalService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
             ErrorStateInterceptor(fluent_error_state),
@@ -53,30 +53,30 @@ class SchemeEvalService:
         self.__metadata = metadata
 
     def eval(self, request: SchemePointer) -> SchemePointer:
-        """Eval rpc of SchemeEval service."""
+        """ Eval rpc of SchemeEval service."""
         return self.__stub.Eval(request, metadata=self.__metadata)
 
     def exec(
         self, request: SchemeEvalProtoModule.ExecRequest
     ) -> SchemeEvalProtoModule.ExecResponse:
-        """Exec rpc of SchemeEval service."""
+        """ Exec rpc of SchemeEval service."""
         return self.__stub.Exec(request, metadata=self.__metadata)
 
     def string_eval(
         self, request: SchemeEvalProtoModule.StringEvalRequest
     ) -> SchemeEvalProtoModule.StringEvalResponse:
-        """StringEval rpc of SchemeEval service."""
+        """ StringEval rpc of SchemeEval service."""
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
         self, request: SchemeEvalProtoModule.SchemeEvalRequest
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
-        """SchemeEval rpc of SchemeEval service."""
+        """ SchemeEval rpc of SchemeEval service."""
         return self.__stub.SchemeEval(request, metadata=self.__metadata)
 
 
 class Symbol:
-    """Class representing the symbol datatype in Fluent.
+    """ Class representing the symbol datatype in Fluent.
 
     Attributes
     ----------
@@ -85,7 +85,7 @@ class Symbol:
     """
 
     def __init__(self, str: str):
-        """__init__ method of Symbol class."""
+        """ __init__ method of Symbol class."""
         self.str = str
 
     def __repr__(self) -> str:
@@ -106,7 +106,7 @@ def _convert_list_of_pairs_to_scheme_pointer(
 
 
 def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
-    """Convert Python datatype to Scheme pointer."""
+    """ Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
         p.b = val
     elif isinstance(val, int):
@@ -170,7 +170,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer, version):
 
 
 def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
-    """Convert Scheme pointer to Python datatype."""
+    """ Convert Scheme pointer to Python datatype."""
     if p.HasField("b"):
         return p.b
     elif p.HasField("fixednum"):
@@ -219,7 +219,7 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
 
 
 class SchemeEval:
-    """Class on which Fluent's scheme code can be executed.
+    """ Class on which Fluent's scheme code can be executed.
 
     Methods
     -------
@@ -236,7 +236,7 @@ class SchemeEval:
     """
 
     def __init__(self, service: SchemeEvalService):
-        """__init__ method of SchemeEval class."""
+        """ __init__ method of SchemeEval class."""
         self.service = service
         try:
             version = self.string_eval("(cx-version)")
@@ -245,7 +245,7 @@ class SchemeEval:
             self.version = "23.1.0"
 
     def eval(self, val: Any) -> Any:
-        """Evaluates a scheme expression.
+        """ Evaluates a scheme expression.
 
         Parameters
         ----------
@@ -271,7 +271,7 @@ class SchemeEval:
     def exec(
         self, commands: Sequence[str], wait: bool = True, silent: bool = True
     ) -> str:
-        """Executes a sequence of scheme commands.
+        """ Executes a sequence of scheme commands.
 
         Parameters
         ----------
@@ -296,7 +296,7 @@ class SchemeEval:
         return response.output
 
     def string_eval(self, input: str) -> str:
-        """Evaluates a scheme expression in string format.
+        """ Evaluates a scheme expression in string format.
 
         Parameters
         ----------
@@ -314,7 +314,7 @@ class SchemeEval:
         return response.output
 
     def scheme_eval(self, input: str) -> Any:
-        """Evaluates a scheme expression in string format.
+        """ Evaluates a scheme expression in string format.
 
         Parameters
         ----------

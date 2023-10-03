@@ -1,5 +1,4 @@
-"""Module containing class encapsulating Fluent connection.
-"""
+""" Module containing class encapsulating Fluent connection."""
 
 
 import functools
@@ -19,18 +18,21 @@ from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
 class PureMeshing(BaseSession):
-    """Encapsulates a Fluent meshing session. A ``tui`` object
+    """ Encapsulates a Fluent meshing session.
+
+    A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all
     exposed here. No ``switch_to_solver`` method is available
-    in this mode."""
+    in this mode.
+    """
 
     rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
     def __init__(self, fluent_connection: FluentConnection):
-        """PureMeshing session.
+        """ PureMeshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
@@ -66,43 +68,43 @@ class PureMeshing(BaseSession):
 
     @property
     def tui(self):
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
+        """ Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         return self._base_meshing.tui
 
     @property
     def meshing(self):
-        """Datamodel root of meshing."""
+        """ Datamodel root of meshing."""
         return self._base_meshing.meshing
 
     @property
     def workflow(self):
-        """Datamodel root of workflow."""
+        """ Datamodel root of workflow."""
         return self._base_meshing.workflow
 
     def watertight(self, dynamic_interface=True):
-        """Get a new watertight workflow."""
+        """ Get a new watertight workflow."""
         self.workflow.watertight(dynamic_interface)
         return self.workflow
 
     def fault_tolerant(self, dynamic_interface=True):
-        """Get a new fault-tolerant workflow."""
+        """ Get a new fault-tolerant workflow."""
         self.workflow.fault_tolerant(dynamic_interface)
         return self.workflow
 
     @property
     def PartManagement(self):
-        """Datamodel root of PartManagement."""
+        """ Datamodel root of PartManagement."""
         return self._base_meshing.PartManagement
 
     @property
     def PMFileManagement(self):
-        """Datamodel root of PMFileManagement."""
+        """ Datamodel root of PMFileManagement."""
         return self._base_meshing.PMFileManagement
 
     @property
     def preferences(self):
-        """Datamodel root of preferences."""
+        """ Datamodel root of preferences."""
         return self._base_meshing.preferences
 
     def transfer_mesh_to_solvers(
@@ -114,7 +116,7 @@ class PureMeshing(BaseSession):
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,
     ):
-        """Transfer mesh to Fluent solver instances.
+        """ Transfer mesh to Fluent solver instances.
 
         Parameters
         ----------

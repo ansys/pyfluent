@@ -1,5 +1,5 @@
-"""Provide a module to test the algorithms which parse job scheduler
-environments for machines to run on."""
+""" Provide a module to test the algorithms which parse job scheduler environments for
+machines to run on."""
 from builtins import range
 import os
 import socket
@@ -18,7 +18,7 @@ from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
 class TestMachine(unittest.TestCase):
-    """A basic test that checks Machine object behavior."""
+    """ A basic test that checks Machine object behavior."""
 
     def setUp(self):
         pass
@@ -27,7 +27,7 @@ class TestMachine(unittest.TestCase):
         pass
 
     def test_initialize_host(self):
-        """Test that a Machine initializes as expected."""
+        """ Test that a Machine initializes as expected."""
         machine = Machine("machine", 20)
         self.assertEqual(machine.host_name, "machine")
         self.assertEqual(machine.number_of_cores, 20)
@@ -35,7 +35,7 @@ class TestMachine(unittest.TestCase):
         self.assertEqual(machine.core_list, None)
 
     def test_modify_host(self):
-        """Test that a Machine can be modified."""
+        """ Test that a Machine can be modified."""
         machine = Machine("machine", 20, "allq", "0:0")
         machine.number_of_cores = 12
         self.assertEqual(machine.number_of_cores, 12)
@@ -47,7 +47,7 @@ class TestMachine(unittest.TestCase):
 
 
 class TestMachineList(unittest.TestCase):
-    """Provide a test suite that checks that the MachineList object behaves
+    """ Provide a test suite that checks that the MachineList object behaves
     properly."""
 
     def setUp(self):
@@ -57,14 +57,14 @@ class TestMachineList(unittest.TestCase):
         self._machineList.reset()
 
     def test_initialize_machinelist(self):
-        """Tests that a host file object initializes properly."""
+        """ Tests that a host file object initializes properly."""
         newMachineFile = MachineList()
         self.assertIsInstance(newMachineFile, MachineList)
         self.assertEqual(newMachineFile.machines, [])
         self.assertEqual(newMachineFile.num_machines, 0)
 
     def test_copy_machinelist(self):
-        """Tests that the internal copy function works properly."""
+        """ Tests that the internal copy function works properly."""
         import copy
 
         newMachineList = copy.deepcopy(self._machineList)
@@ -73,14 +73,13 @@ class TestMachineList(unittest.TestCase):
             self.assertEqual(m1.number_of_cores, m2.number_of_cores)
 
     def test_add_to_machinelist(self):
-        """Tests that a machines can be added to a machine list."""
+        """ Tests that a machines can be added to a machine list."""
         self._machineList.add(Machine("machine1", 20, "allq", "0:0"))
         self._machineList.add(Machine("machine2", 20, "allq", "0:0"))
         self.assertEqual(self._machineList.num_machines, 2)
 
     def test_number_of_cores_and_machines(self):
-        """Test that the total and max number of cores and machines is
-        working."""
+        """ Test that the total and max number of cores and machines is working."""
         self._machineList.add(Machine("machine1", 20, "allq", "0:0"))
         self._machineList.add(Machine("machine2", 25, "allq", "0:0"))
         self._machineList.add(Machine("machine3", 15, "allq", "0:0"))
@@ -90,8 +89,7 @@ class TestMachineList(unittest.TestCase):
         self.assertEqual(self._machineList.min_cores, 15)
 
     def test_sort_machine_list(self):
-        """Test that the machines are sorted in order of decreasing core
-        count."""
+        """ Test that the machines are sorted in order of decreasing core count."""
         self._machineList.add(Machine("machine1", 15, "allq", "0:0"))
         self._machineList.add(Machine("machine2", 10, "allq", "0:0"))
         self._machineList.add(Machine("machine3", 5, "allq", "0:0"))
@@ -151,7 +149,7 @@ class TestMachineList(unittest.TestCase):
 
 
 class TestLoadMachines(unittest.TestCase):
-    """Provide a test suite that checks that loadMachines behaves properly."""
+    """ Provide a test suite that checks that loadMachines behaves properly."""
 
     def setUp(self):
         self._machineList = MachineList()
@@ -415,7 +413,7 @@ class TestLoadMachines(unittest.TestCase):
 
 
 class TestMachineListCmdLine(unittest.TestCase):
-    """Provide a test suite that checks the machine list parser."""
+    """ Provide a test suite that checks the machine list parser."""
 
     def setUp(self):
         self._expectedValues = {"M0": 2, "M1": 4}
