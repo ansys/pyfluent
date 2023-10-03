@@ -65,4 +65,9 @@ setup(
     url="https://github.com/ansys/pyfluent",
     python_requires=">=3.8",
     install_requires=install_requires,
+    project_urls={
+        "Documentation": "https://fluent.docs.pyansys.com/",
+        "Source": "https://github.com/ansys/pyfluent",
+        "Tracker": "https://github.com/ansys/pyfluent/issues",
+    },
 )
