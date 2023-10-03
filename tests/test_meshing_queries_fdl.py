@@ -1860,3 +1860,81 @@ def test_meshing_utilities(new_mesh_session):
         )
         == "*the-non-printing-object*"
     )
+
+    assert meshing_session.meshing_utilities._cell_zones_labels_fdl() == ["elbow-fluid"]
+    assert meshing_session.meshing_utilities._cell_zones_str_fdl() == [" 87 "]
+    assert meshing_session.meshing_utilities._edge_zones_labels_fdl() == [
+        "wall-elbow:wall-inlet:elbow-fluid:feature.28",
+        "outlet:wall-elbow:elbow-fluid:feature.27",
+        "cold-inlet:wall-elbow:elbow-fluid:feature.26",
+        "symmetry:xyplane:wall-elbow:elbow-fluid:feature.25",
+        "symmetry:xyplane:wall-inlet:elbow-fluid:feature.24",
+        "symmetry:xyplane:outlet:elbow-fluid:feature.23",
+        "symmetry:xyplane:cold-inlet:elbow-fluid:feature.22",
+        "hot-inlet:wall-inlet:elbow-fluid:feature.21",
+        "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
+    ]
+    assert meshing_session.meshing_utilities._edge_zones_str_fdl() == [
+        " 28 ",
+        " 27 ",
+        " 26 ",
+        " 25 ",
+        " 24 ",
+        " 23 ",
+        " 22 ",
+        " 21 ",
+        " 20 ",
+    ]
+    assert meshing_session.meshing_utilities._face_zones_labels_fdl() == [
+        "wall-elbow",
+        "wall-inlet",
+        "outlet",
+        "cold-inlet",
+        "hot-inlet",
+        "symmetry-xyplane",
+    ]
+    assert meshing_session.meshing_utilities._face_zones_str_fdl() == [
+        " 89 ",
+        " 34 ",
+        " 33 ",
+        " 32 ",
+        " 31 ",
+        " 30 ",
+        " 29 ",
+    ]
+    assert meshing_session.meshing_utilities._node_zones_labels_fdl() == [
+        "boundary-node-163",
+        "node-91",
+        "boundary-node-19",
+    ]
+    assert meshing_session.meshing_utilities._node_zones_str_fdl() == [
+        " 163 ",
+        " 91 ",
+        " 19 ",
+    ]
+    assert meshing_session.meshing_utilities._prism_cell_zones_labels_fdl() is None
+    assert meshing_session.meshing_utilities._prism_cell_zones_str_fdl() is None
+    assert meshing_session.meshing_utilities._object_names_str_fdl() == ["elbow-fluid"]
+    assert meshing_session.meshing_utilities._regions_str_fdl() == [" elbow-fluid "]
+    assert meshing_session.meshing_utilities._zone_types_fdl() == [
+        "interior",
+        "wall",
+        "wall",
+        "pressure-outlet",
+        "velocity-inlet",
+        "velocity-inlet",
+        "symmetry",
+        "boundary-node",
+        "node",
+        "boundary-node",
+        "fluid",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+    ]
