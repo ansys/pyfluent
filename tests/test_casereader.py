@@ -1,6 +1,7 @@
 from os.path import dirname, join
 import pathlib
 import shutil
+from typing import Optional
 
 import pytest
 
@@ -15,7 +16,9 @@ from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 
 
 def call_casereader(
-    case_filepath: str = None, project_filepath: str = None, expected: dict = None
+    case_filepath: Optional[str] = None,
+    project_filepath: Optional[str] = None,
+    expected: Optional[dict] = None,
 ):
     reader = CaseReader(case_filepath=case_filepath, project_filepath=project_filepath)
     if expected is not None:
@@ -31,7 +34,7 @@ def call_casereader(
 
 
 def call_casereader_static_mixer(
-    case_filepath: str = None, project_filepath: str = None
+    case_filepath: Optional[str] = None, project_filepath: Optional[str] = None
 ):
     call_casereader(
         case_filepath=case_filepath,

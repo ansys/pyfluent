@@ -292,11 +292,15 @@ def test_start_transcript_file_write(new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_solverworkflow_in_solver_session(new_solver_session):
-    solver = new_solver_session
-    solver_dir = dir(solver)
-    for attr in ("preferences", "solverworkflow", "tui", "workflow"):
-        assert attr in solver_dir
+def test_expected_interfaces_in_solver_session(new_solver_session):
+    assert all(
+        intf in dir(new_solver_session) for intf in ("preferences", "tui", "workflow")
+    )
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_solverworkflow_not_in_solver_session(new_solver_session):
+    assert "solverworkflow" not in dir(new_solver_session)
 
 
 @pytest.mark.fluent_version(">=23.2")

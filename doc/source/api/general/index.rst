@@ -102,6 +102,8 @@ Logging
     services/index
     streaming_services/index
     scheduler/index
+    fielddata
+    fieldinfo
     case_reader
     data_transfer
     journaling

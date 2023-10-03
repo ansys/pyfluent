@@ -45,7 +45,7 @@ def pytest_runtest_setup(item):
         if spec == "latest":
             spec = (
                 f">={_fluent_release_version}"
-                if is_nightly
+                if is_nightly or is_solvermode_option
                 else f"=={_fluent_release_version}"
             )
         version_specs.append(SpecifierSet(spec))

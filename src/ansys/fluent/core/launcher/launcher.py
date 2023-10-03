@@ -12,8 +12,8 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, List, Union
 import warnings
+from typing import Any, Dict, Optional, List, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -234,11 +234,11 @@ def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
     start_timeout: int = 100,
-    product_version: str = None,
+    product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
-    dimensionality: str = None,
-    launcher_args: Dict[str, Any] = None,
+    dimensionality: Optional[str] = None,
+    launcher_args: Optional[Dict[str, Any]] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
@@ -305,7 +305,7 @@ def launch_remote_fluent(
     )
 
 
-def _get_session_info(argvals, mode: Union[FluentMode, str, None] = None):
+def _get_session_info(argvals, mode: Optional[Union[FluentMode, str, None]] = None):
     """Updates the session information."""
     if mode is None:
         mode = FluentMode.SOLVER
@@ -330,7 +330,7 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
 
 
 def _update_launch_string_wrt_gui_options(
-    launch_string: str, show_gui: bool = None, additional_arguments: str = ""
+    launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
 ) -> str:
     """Checks for all gui options in additional arguments and updates the
     launch string with hidden, if none of the options are met."""
@@ -361,7 +361,10 @@ def _await_fluent_launch(
 
 
 def _get_server_info(
-    server_info_filepath: str, ip: str = None, port: int = None, password: str = None
+    server_info_filepath: str,
+    ip: Optional[str] = None,
+    port: Optional[int] = None,
+    password: Optional[str] = None,
 ):
     """Get server connection information of an already running session."""
     if ip and port:
@@ -381,7 +384,7 @@ def _get_server_info(
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: FluentMode = None
+    fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
 ):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
@@ -443,29 +446,29 @@ class LaunchFluentError(Exception):
 
 #   pylint: disable=unused-argument
 def launch_fluent(
-    product_version: str = None,
-    version: str = None,
-    precision: str = None,
-    processor_count: int = None,
-    journal_filepaths: List[str] = None,
+    product_version: Optional[str] = None,
+    version: Optional[str] = None,
+    precision: Optional[str] = None,
+    processor_count: Optional[int] = None,
+    journal_filepaths: Optional[List[str]] = None,
     start_timeout: int = 60,
-    additional_arguments: str = None,
-    env: Dict[str, Any] = None,
-    start_container: bool = None,
-    container_dict: dict = None,
+    additional_arguments: Optional[str] = None,
+    env: Optional[Dict[str, Any]] = None,
+    start_container: Optional[bool] = None,
+    container_dict: Optional[dict] = None,
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    show_gui: bool = None,
-    case_filepath: str = None,
-    case_data_filepath: str = None,
-    lightweight_mode: bool = None,
-    mode: Union[FluentMode, str, None] = None,
-    py: bool = None,
-    gpu: bool = None,
-    cwd: str = None,
-    topy: Union[str, bool] = False,
-    start_watchdog: bool = None,
+    show_gui: Optional[bool] = None,
+    case_filepath: Optional[str] = None,
+    case_data_filepath: Optional[str] = None,
+    lightweight_mode: Optional[bool] = None,
+    mode: Optional[Union[FluentMode, str, None]] = None,
+    py: Optional[bool] = None,
+    gpu: Optional[bool] = None,
+    cwd: Optional[str] = None,
+    topy: Optional[Union[str, list]] = None,
+    start_watchdog: Optional[bool] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent
@@ -487,8 +490,8 @@ def launch_fluent(
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
-        allocated cores is clamped to this value.
-    journal_filepaths : list[str], optional
+        allocated cores is clamped to value of ``processor_count``.
+    journal_filepaths : str, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s). The default is ``None``.
     start_timeout : int, optional
@@ -566,8 +569,8 @@ def launch_fluent(
 
     Notes
     -----
-    In job scheduler environments such as SLURM, LSF, PBS, etc... the allocated
-    machines and core counts are queried from the scheduler environment and
+    Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
+    The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
     if kwargs:
@@ -671,8 +674,6 @@ def launch_fluent(
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         if env is None:
             env = {}
-        if mode != FluentMode.SOLVER_ICING:
-            env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
         kwargs = _get_subprocess_kwargs_for_fluent(env)
         if cwd:
             kwargs.update(cwd=cwd)
@@ -823,13 +824,13 @@ def launch_fluent(
 
 
 def connect_to_fluent(
-    ip: str = None,
-    port: int = None,
+    ip: Optional[str] = None,
+    port: Optional[int] = None,
     cleanup_on_exit: bool = False,
     start_transcript: bool = True,
-    server_info_filepath: str = None,
-    password: str = None,
-    start_watchdog: bool = None,
+    server_info_filepath: Optional[str] = None,
+    password: Optional[str] = None,
+    start_watchdog: Optional[bool] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Connect to an existing Fluent server instance.
 

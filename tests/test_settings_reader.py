@@ -1,10 +1,14 @@
+from typing import Optional
+
 import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.case_file import SettingsFile as SettingsReader
 
 
-def call_settings_reader(settings_filepath: str = None, expected: dict = None):
+def call_settings_reader(
+    settings_filepath: Optional[str] = None, expected: Optional[dict] = None
+):
     reader = SettingsReader(settings_filepath=settings_filepath)
     if expected is not None:
         assert reader.precision() == expected["precision"]
@@ -19,7 +23,7 @@ def call_settings_reader(settings_filepath: str = None, expected: dict = None):
 
 
 def call_settings_reader_static_mixer(
-    settings_filepath: str = None,
+    settings_filepath: Optional[str] = None,
 ):
     call_settings_reader(
         settings_filepath=settings_filepath,

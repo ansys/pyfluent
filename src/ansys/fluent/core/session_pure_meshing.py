@@ -3,6 +3,7 @@
 
 
 import functools
+from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
@@ -80,10 +81,12 @@ class PureMeshing(BaseSession):
         return self._base_meshing.workflow
 
     def watertight(self, dynamic_interface=True):
+        """Get a new watertight workflow."""
         self.workflow.watertight(dynamic_interface)
         return self.workflow
 
     def fault_tolerant(self, dynamic_interface=True):
+        """Get a new fault-tolerant workflow."""
         self.workflow.fault_tolerant(dynamic_interface)
         return self.workflow
 
@@ -106,7 +109,7 @@ class PureMeshing(BaseSession):
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: str = None,
+        file_name_stem: Optional[str] = None,
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,

@@ -3,7 +3,7 @@
 For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`."""
 import logging.config
 import os
-from typing import Union
+from typing import Optional, Union
 
 import yaml
 
@@ -66,7 +66,7 @@ def get_default_config() -> dict:
     return config
 
 
-def enable(level: Union[str, int] = "DEBUG", custom_config: dict = None):
+def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = None):
     """Enables PyFluent logging to file.
 
     Parameters

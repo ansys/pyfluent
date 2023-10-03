@@ -34,6 +34,7 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
 
 jobs:
 
@@ -42,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-  
+
       - name: Running Vale
         uses: errata-ai/vale-action@reviewdog
         env:
@@ -53,7 +54,6 @@ jobs:
           level: error
           filter_mode: nofilter
           fail_on_error: true
-          vale_flags: "--config=doc/.vale.ini"
 
   test-import:
     name: Build and Smoke tests
@@ -132,11 +132,11 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -233,11 +233,11 @@ jobs:
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull 22.2 Fluent docker image
         if: steps.cache-222-api-code.outputs.cache-hit != 'true'
@@ -383,11 +383,11 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
@@ -455,11 +455,11 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
