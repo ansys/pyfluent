@@ -13,7 +13,6 @@ import subprocess
 import tempfile
 import time
 from typing import Any, Dict, List, Optional, Union
-import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -681,7 +680,6 @@ def launch_fluent(
             if not isinstance(journal_filepaths, (str, list)):
                 raise TypeError("Journal name should be a list of strings.")
             if isinstance(journal_filepaths, str):
-                warnings.warn("Journal name should be a list of strings.")
                 journal_filepaths = [journal_filepaths]
         if topy:
             if not journal_filepaths:
