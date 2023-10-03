@@ -53,10 +53,12 @@ def test_data_reader_for_multi_phase():
     case_filename = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
+        return_only_filename=False,
     )
     data_filename = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
+        return_only_filename=False,
     )
 
     reader = DataFile(
