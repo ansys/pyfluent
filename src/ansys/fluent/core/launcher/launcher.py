@@ -12,8 +12,8 @@ import platform
 import subprocess
 import tempfile
 import time
+from typing import Any, Dict, List, Optional, Union
 import warnings
-from typing import Any, Dict, Optional, List, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
