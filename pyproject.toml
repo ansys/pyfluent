@@ -29,6 +29,12 @@ markers = [
 ]
 
 
+[project.urls]
+Documentation = "https://github.com/ansys/pyfluent/#readme"
+Source = "https://github.com/ansys/pyfluent"
+Tracker = "https://github.com/ansys/pyfluent/issues"
+
+
 [tool.black]
 extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
 
