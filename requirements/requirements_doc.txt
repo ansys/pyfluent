@@ -10,6 +10,6 @@ sphinx-autodoc-typehints==1.24.0
 sphinx-copybutton==0.5.2
 sphinx-gallery==0.13.0
 sphinx-notfound-page==1.0.0
-sphinxcontrib-websupport==1.2.5
+sphinxcontrib-websupport==1.2.6
 sphinxemoji==0.2.0
 autodocsumm==0.2.11
