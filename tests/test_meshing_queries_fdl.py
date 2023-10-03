@@ -10,6 +10,96 @@ def test_meshing_utilities(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)
 
+    assert meshing_session.meshing_utilities._cell_zones_labels_fdl() == ["elbow-fluid"]
+
+    assert meshing_session.meshing_utilities._cell_zones_str_fdl() == [" 87 "]
+
+    assert meshing_session.meshing_utilities._edge_zones_labels_fdl() == [
+        "wall-elbow:wall-inlet:elbow-fluid:feature.28",
+        "outlet:wall-elbow:elbow-fluid:feature.27",
+        "cold-inlet:wall-elbow:elbow-fluid:feature.26",
+        "symmetry:xyplane:wall-elbow:elbow-fluid:feature.25",
+        "symmetry:xyplane:wall-inlet:elbow-fluid:feature.24",
+        "symmetry:xyplane:outlet:elbow-fluid:feature.23",
+        "symmetry:xyplane:cold-inlet:elbow-fluid:feature.22",
+        "hot-inlet:wall-inlet:elbow-fluid:feature.21",
+        "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
+    ]
+
+    assert meshing_session.meshing_utilities._edge_zones_str_fdl() == [
+        " 28 ",
+        " 27 ",
+        " 26 ",
+        " 25 ",
+        " 24 ",
+        " 23 ",
+        " 22 ",
+        " 21 ",
+        " 20 ",
+    ]
+
+    assert meshing_session.meshing_utilities._face_zones_labels_fdl() == [
+        "wall-elbow",
+        "wall-inlet",
+        "outlet",
+        "cold-inlet",
+        "hot-inlet",
+        "symmetry-xyplane",
+    ]
+
+    assert meshing_session.meshing_utilities._face_zones_str_fdl() == [
+        " 89 ",
+        " 34 ",
+        " 33 ",
+        " 32 ",
+        " 31 ",
+        " 30 ",
+        " 29 ",
+    ]
+
+    assert meshing_session.meshing_utilities._node_zones_labels_fdl() == [
+        "boundary-node-163",
+        "node-91",
+        "boundary-node-19",
+    ]
+
+    assert meshing_session.meshing_utilities._node_zones_str_fdl() == [
+        " 163 ",
+        " 91 ",
+        " 19 ",
+    ]
+
+    assert meshing_session.meshing_utilities._prism_cell_zones_labels_fdl() is None
+
+    assert meshing_session.meshing_utilities._prism_cell_zones_str_fdl() is None
+
+    assert meshing_session.meshing_utilities._object_names_str_fdl() == ["elbow-fluid"]
+
+    assert meshing_session.meshing_utilities._regions_str_fdl() == [" elbow-fluid "]
+
+    assert meshing_session.meshing_utilities._zone_types_fdl() == [
+        "interior",
+        "wall",
+        "wall",
+        "pressure-outlet",
+        "velocity-inlet",
+        "velocity-inlet",
+        "symmetry",
+        "boundary-node",
+        "node",
+        "boundary-node",
+        "fluid",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+        "boundary-edge",
+    ]
+
     assert meshing_session.meshing_utilities.get_labels(object_name="elbow-fluid") == [
         "elbow-fluid",
         "wall-elbow",
@@ -287,18 +377,22 @@ def test_meshing_utilities(new_mesh_session):
         21,
         20,
     ]
+
     assert meshing_session.meshing_utilities.get_edge_zones(
         maximum_entity_count=20, only_boundary=False
     ) == [20, 21, 22, 23, 28]
+
     assert meshing_session.meshing_utilities.get_edge_zones(
         maximum_entity_count=20, only_boundary=True
     ) == [20, 21, 22, 23, 28]
 
     assert meshing_session.meshing_utilities.get_unreferenced_edge_zones() is None
+
     assert (
         meshing_session.meshing_utilities.get_unreferenced_edge_zones(filter="*")
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_unreferenced_edge_zones(
             zone_name_pattern="*"
@@ -315,16 +409,19 @@ def test_meshing_utilities(new_mesh_session):
         30,
         29,
     ]
+
     assert meshing_session.meshing_utilities.get_face_zones(prism_control_name="*") == [
         33,
         34,
     ]
+
     assert (
         meshing_session.meshing_utilities.get_face_zones(
             xyz_coordinates=[1.4, 1.4, 1.4]
         )
         == 34
     )
+
     assert (
         meshing_session.meshing_utilities.get_face_zones(
             maximum_entity_count=20, only_boundary=True
@@ -335,6 +432,7 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.get_face_zones_by_zone_area(
         maximum_zone_area=100
     ) == [33, 32, 31, 30]
+
     assert meshing_session.meshing_utilities.get_face_zones_by_zone_area(
         minimum_zone_area=10
     ) == [34, 29]
@@ -342,18 +440,22 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.get_face_zones_of_object(
         object_name="elbow-fluid", regions=["elbow-fluid"]
     ) == [34, 33, 32, 31, 30, 29]
+
     assert meshing_session.meshing_utilities.get_face_zones_of_object(
         object_name="elbow-fluid", labels=["outlet"]
     ) == [32]
+
     assert (
         meshing_session.meshing_utilities.get_face_zones_of_object(
             object_name="elbow-fluid", region_type="elbow-fluid"
         )
         is None
     )
+
     assert meshing_session.meshing_utilities.get_face_zones_of_object(
         object_name="elbow-fluid"
     ) == [29, 30, 31, 32, 33, 34]
+
     assert meshing_session.meshing_utilities.get_face_zones_of_object(
         objects=["elbow-fluid"]
     ) == [29, 30, 31, 32, 33, 34]
@@ -361,10 +463,12 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.get_wrapped_face_zones() is None
 
     assert meshing_session.meshing_utilities.get_unreferenced_face_zones() is None
+
     assert (
         meshing_session.meshing_utilities.get_unreferenced_face_zones(filter="*")
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_unreferenced_face_zones(
             zone_name_pattern="*"
@@ -378,12 +482,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == [89]
     )
+
     assert (
         meshing_session.meshing_utilities.get_interior_face_zones_for_given_cell_zones(
             cell_zone_name_pattern="*"
         )
         == [89]
     )
+
     assert (
         meshing_session.meshing_utilities.get_interior_face_zones_for_given_cell_zones(
             cell_zone_name_list=["elbow-fluid"]
@@ -409,9 +515,11 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.get_adjacent_zones_by_node_connectivity(
         zone_id_list=[29, 30, 31, 32, 33]
     ) == [34]
+
     assert meshing_session.meshing_utilities.get_adjacent_zones_by_node_connectivity(
         zone_name_list=["outlet", "inlet", "wall", "internal"]
     ) == [29, 34]
+
     assert (
         meshing_session.meshing_utilities.get_adjacent_zones_by_node_connectivity(
             zone_name_pattern="*"
@@ -420,10 +528,12 @@ def test_meshing_utilities(new_mesh_session):
     )
 
     assert meshing_session.meshing_utilities.get_cell_zones(filter="*") == [87]
+
     assert (
         meshing_session.meshing_utilities.get_cell_zones(maximum_entity_count=100)
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_cell_zones(
             xyz_coordinates=[1.4, 1.4, 1.4]
@@ -432,10 +542,12 @@ def test_meshing_utilities(new_mesh_session):
     )
 
     assert meshing_session.meshing_utilities.get_unreferenced_cell_zones() is None
+
     assert (
         meshing_session.meshing_utilities.get_unreferenced_cell_zones(filter="*")
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_unreferenced_cell_zones(
             zone_name_pattern="*"
@@ -449,12 +561,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == [87]
     )
+
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
             cell_zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         == [87]
     )
+
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
             cell_zone_name_pattern="*"
@@ -468,15 +582,18 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_tet_cell_zones(zone_id_list=[87]) is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_tet_cell_zones(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_tet_cell_zones(zone_name_pattern="*")
         is None
@@ -486,12 +603,14 @@ def test_meshing_utilities(new_mesh_session):
         meshing_session.meshing_utilities.get_prism_cell_zones(zone_id_list=[87])
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_prism_cell_zones(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_prism_cell_zones(zone_name_pattern="*")
         is None
@@ -503,12 +622,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == 87
     )
+
     assert (
         meshing_session.meshing_utilities.get_maxsize_cell_zone_by_count(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_maxsize_cell_zone_by_count(
             zone_name_pattern="*"
@@ -522,12 +643,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == 87
     )
+
     assert (
         meshing_session.meshing_utilities.get_maxsize_cell_zone_by_volume(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_maxsize_cell_zone_by_volume(
             zone_name_pattern="*"
@@ -539,9 +662,11 @@ def test_meshing_utilities(new_mesh_session):
         30,
         31,
     ]
+
     assert meshing_session.meshing_utilities.get_zones(group_name="inlet") == [31, 30]
 
     assert meshing_session.meshing_utilities.get_embedded_baffles() is None
+
     assert meshing_session.meshing_utilities.get_baffles_for_face_zones(
         face_zone_id_list=[29, 30, 31, 32, 33]
     ) == [33, 32, 31, 30, 29]
@@ -552,12 +677,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_marked_faces_for_given_face_zones(
             face_zone_id_list=[29, 30, 31, 32, 33]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_marked_faces_for_given_face_zones(
             face_zone_name_list=["outlet", "inlet", "wall", "internal"]
@@ -571,12 +698,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_multi_faces_for_given_face_zones(
             face_zone_id_list=[29, 30, 31, 32, 33]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_multi_faces_for_given_face_zones(
             face_zone_name_list=["outlet", "inlet", "wall", "internal"]
@@ -590,18 +719,21 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_free_faces_for_given_face_zones(
             face_zone_id_list=[29, 30, 31, 32, 33]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_free_faces_for_given_face_zones(
             face_zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_zones_with_free_faces_for_given_face_zones(
             face_zone_name_pattern="*"
@@ -610,17 +742,21 @@ def test_meshing_utilities(new_mesh_session):
     )
 
     assert meshing_session.meshing_utilities.get_all_objects() == ["elbow-fluid"]
+
     assert meshing_session.meshing_utilities.get_objects(type_name="mesh") == [
         "elbow-fluid"
     ]
+
     assert meshing_session.meshing_utilities.get_objects(filter="*") == ["elbow-fluid"]
 
     assert meshing_session.meshing_utilities.get_regions(
         object_name="elbow-fluid", region_name_pattern="*"
     ) == ["elbow-fluid"]
+
     assert meshing_session.meshing_utilities.get_regions(
         object_name="elbow-fluid", filter="*"
     ) == ["elbow-fluid"]
+
     assert meshing_session.meshing_utilities.get_regions(object_name="elbow-fluid") == [
         "elbow-fluid"
     ]
@@ -628,9 +764,11 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.get_regions_of_face_zones(
         face_zone_id_list=[29, 30, 31, 32, 33]
     ) == ["elbow-fluid"]
+
     assert meshing_session.meshing_utilities.get_regions_of_face_zones(
         face_zone_name_list=["outlet", "inlet", "wall", "internal"]
     ) == ["elbow-fluid"]
+
     assert meshing_session.meshing_utilities.get_regions_of_face_zones(
         face_zone_name_pattern="*"
     ) == ["elbow-fluid"]
@@ -638,6 +776,7 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.get_region_volume(
         object_name="elbow-fluid", sorting_order="ascending"
     ) == [[152.59942809266, "elbow-fluid"]]
+
     assert (
         meshing_session.meshing_utilities.get_region_volume(
             object_name="elbow-fluid", region_name="elbow-fluid"
@@ -654,6 +793,7 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_pairs_of_overlapping_face_zones(
             face_zone_name_list=["outlet", "inlet", "wall", "internal"],
@@ -663,6 +803,7 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.get_pairs_of_overlapping_face_zones(
             face_zone_name_pattern="*",
@@ -686,12 +827,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == 30
     )
+
     assert (
         meshing_session.meshing_utilities.get_minsize_face_zone_by_count(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         == 32
     )
+
     assert (
         meshing_session.meshing_utilities.get_minsize_face_zone_by_count(
             zone_name_pattern="*"
@@ -705,12 +848,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == 30
     )
+
     assert (
         meshing_session.meshing_utilities.get_minsize_face_zone_by_area(
             zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         == 32
     )
+
     assert (
         meshing_session.meshing_utilities.get_minsize_face_zone_by_area(
             zone_name_pattern="*"
@@ -724,12 +869,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == [29, 30, 31, 32, 33, 34]
     )
+
     assert (
         meshing_session.meshing_utilities.get_adjacent_face_zones_for_given_cell_zones(
             cell_zone_name_pattern="*"
         )
         == [29, 30, 31, 32, 33, 34]
     )
+
     assert (
         meshing_session.meshing_utilities.get_adjacent_face_zones_for_given_cell_zones(
             cell_zone_name_list=["elbow-fluid"]
@@ -748,6 +895,7 @@ def test_meshing_utilities(new_mesh_session):
         34,
         89,
     ]
+
     assert meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
         cell_zone_name_pattern="*"
     ) == [
@@ -759,6 +907,7 @@ def test_meshing_utilities(new_mesh_session):
         34,
         89,
     ]
+
     assert meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
         cell_zone_name_list=["elbow-fluid"]
     ) == [
@@ -1073,12 +1222,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == 0
     )
+
     assert (
         meshing_session.meshing_utilities.mark_duplicate_faces(
             face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
         )
         == 0
     )
+
     assert (
         meshing_session.meshing_utilities.mark_duplicate_faces(
             face_zone_name_pattern="*"
@@ -1092,12 +1243,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         == 0
     )
+
     assert (
         meshing_session.meshing_utilities.mark_invalid_normals(
             face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]
         )
         == 0
     )
+
     assert (
         meshing_session.meshing_utilities.mark_invalid_normals(
             face_zone_name_pattern="*"
@@ -1433,18 +1586,21 @@ def test_meshing_utilities(new_mesh_session):
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.rename_face_zone(
             zone_name="outlet-32", new_name="outlet"
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.rename_edge_zone(
             zone_id=20, new_name="symmetry:xyplane:hot-inlet:elbow-fluid:feature.20-new"
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.rename_face_zone(
             zone_name="symmetry:xyplane:hot-inlet:elbow-fluid:feature.20-new",
@@ -1452,14 +1608,17 @@ def test_meshing_utilities(new_mesh_session):
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.remove_id_suffix_from_face_zones()
         == "*the-non-printing-object*"
     )
+
     assert (
         meshing_session.meshing_utilities.clean_face_zone_names()
         == "*the-non-printing-object*"
     )
+
     assert (
         meshing_session.meshing_utilities.remove_ids_from_zone_names(
             zone_id_list=[30, 31, 32]
@@ -1638,12 +1797,14 @@ def test_meshing_utilities(new_mesh_session):
         meshing_session.meshing_utilities.merge_cell_zones(cell_zone_id_list=[87])
         is False
     )
+
     assert (
         meshing_session.meshing_utilities.merge_cell_zones(
             cell_zone_name_list=["elbow-fluid"]
         )
         is False
     )
+
     assert (
         meshing_session.meshing_utilities.merge_cell_zones(cell_zone_name_pattern="*")
         is False
@@ -1655,6 +1816,7 @@ def test_meshing_utilities(new_mesh_session):
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.merge_cell_zones_with_same_suffix(
             suffix="fluid"
@@ -1668,12 +1830,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.separate_face_zones_by_cell_neighbor(
             face_zone_name_list=["wall-inlet", "wallfluid-new"]
         )
         is True
     )
+
     assert (
         meshing_session.meshing_utilities.separate_face_zones_by_cell_neighbor(
             face_zone_name_pattern="*"
@@ -1687,12 +1851,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.refine_marked_faces_in_zones(
             face_zone_name_list=["wall-inlet", "wallfluid-new"]
         )
         is None
     )
+
     assert meshing_session.meshing_utilities.refine_marked_faces_in_zones(
         face_zone_name_pattern="*"
     ) == [0, 0, 0, 0, 0]
@@ -1703,12 +1869,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is False
     )
+
     assert (
         meshing_session.meshing_utilities.fill_holes_in_face_zone_list(
             face_zone_name_list=["wall-inlet", "wallfluid-new"], max_hole_edges=2
         )
         is False
     )
+
     assert (
         meshing_session.meshing_utilities.fill_holes_in_face_zone_list(
             face_zone_name_pattern="wall*", max_hole_edges=2
@@ -1734,12 +1902,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.delete_marked_faces_in_zones(
             face_zone_name_list=["wall-inlet", "wallfluid-new"]
         )
         is None
     )
+
     assert meshing_session.meshing_utilities.delete_marked_faces_in_zones(
         face_zone_name_pattern="*"
     ) == [0, 0, 0, 0, 3446]
@@ -1750,12 +1920,14 @@ def test_meshing_utilities(new_mesh_session):
         )
         is None
     )
+
     assert (
         meshing_session.meshing_utilities.delete_empty_face_zones(
             face_zone_name_list=["wall-inlet", "wallfluid-new"]
         )
         is None
     )
+
     assert meshing_session.meshing_utilities.delete_empty_face_zones(
         face_zone_name_pattern="*"
     ) == [29, 1, 3, 34, 89]
@@ -1763,9 +1935,11 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.delete_empty_cell_zones(
         cell_zone_id_list=[87]
     ) == [87]
+
     assert meshing_session.meshing_utilities.delete_empty_cell_zones(
         cell_zone_name_list=["elbow.87"]
     ) == [87]
+
     assert meshing_session.meshing_utilities.delete_empty_cell_zones(
         cell_zone_name_pattern="*"
     ) == [87]
@@ -1773,12 +1947,14 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.delete_empty_edge_zones(
         edge_zone_id_list=[20, 25, 26]
     ) == [26, 25, 20]
+
     assert meshing_session.meshing_utilities.delete_empty_edge_zones(
         edge_zone_name_list=[
             "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
             "hot-inlet:wall-inlet:elbow-fluid:feature.21",
         ]
     ) == [21]
+
     assert meshing_session.meshing_utilities.delete_empty_edge_zones(
         edge_zone_name_pattern="*"
     ) == [28, 27, 26, 25, 24, 23, 22, 21, 20]
@@ -1786,24 +1962,31 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.delete_empty_zones(
         zone_id_list=[20, 32, 87]
     ) == [20, 87]
+
     assert meshing_session.meshing_utilities.delete_empty_zones(
         zone_name_list=["hotfluid-new", "elbow.87"]
     ) == [87]
+
     assert meshing_session.meshing_utilities.delete_empty_zones(
         zone_name_pattern="*"
     ) == [169, 163, 19, 28, 27, 26, 25, 24, 23, 22, 21, 20, 29, 1, 3, 34, 89, 87]
 
     assert meshing_session.meshing_utilities.boundary_zone_exists(zone_id=31) is False
+
     assert (
         meshing_session.meshing_utilities.boundary_zone_exists(zone_name="wall-inlet")
         is False
     )
+
     assert meshing_session.meshing_utilities.interior_zone_exists(zone_id=31) is False
+
     assert (
         meshing_session.meshing_utilities.interior_zone_exists(zone_name="wall-inlet")
         is False
     )
+
     assert meshing_session.meshing_utilities.cell_zone_exists(zone_id=87) is True
+
     assert (
         meshing_session.meshing_utilities.cell_zone_exists(zone_name="elbow.87") is True
     )
@@ -1819,6 +2002,7 @@ def test_meshing_utilities(new_mesh_session):
         )
         is False
     )
+
     assert (
         meshing_session.meshing_utilities.replace_face_zone_suffix(
             face_zone_name_list=["cold-inlet", "hot-inlet"],
@@ -1832,6 +2016,7 @@ def test_meshing_utilities(new_mesh_session):
     assert meshing_session.meshing_utilities.replace_cell_zone_suffix(
         cell_zone_id_list=[87], old_suffix="fluid", new_suffix="fluid-new", merge=True
     ) == ["*the-non-printing-object*"]
+
     assert (
         meshing_session.meshing_utilities.replace_cell_zone_suffix(
             cell_zone_name_list=["elbow-fluid-new"],
@@ -1851,6 +2036,7 @@ def test_meshing_utilities(new_mesh_session):
         )
         == "*the-non-printing-object*"
     )
+
     assert (
         meshing_session.meshing_utilities.replace_edge_zone_suffix(
             edge_zone_name_list=["hot-inlet:wall-inlet:elbow-fluid:feature.21"],
@@ -1860,81 +2046,3 @@ def test_meshing_utilities(new_mesh_session):
         )
         == "*the-non-printing-object*"
     )
-
-    assert meshing_session.meshing_utilities._cell_zones_labels_fdl() == ["elbow-fluid"]
-    assert meshing_session.meshing_utilities._cell_zones_str_fdl() == [" 87 "]
-    assert meshing_session.meshing_utilities._edge_zones_labels_fdl() == [
-        "wall-elbow:wall-inlet:elbow-fluid:feature.28",
-        "outlet:wall-elbow:elbow-fluid:feature.27",
-        "cold-inlet:wall-elbow:elbow-fluid:feature.26",
-        "symmetry:xyplane:wall-elbow:elbow-fluid:feature.25",
-        "symmetry:xyplane:wall-inlet:elbow-fluid:feature.24",
-        "symmetry:xyplane:outlet:elbow-fluid:feature.23",
-        "symmetry:xyplane:cold-inlet:elbow-fluid:feature.22",
-        "hot-inlet:wall-inlet:elbow-fluid:feature.21",
-        "symmetry:xyplane:hot-inlet:elbow-fluid:feature.20",
-    ]
-    assert meshing_session.meshing_utilities._edge_zones_str_fdl() == [
-        " 28 ",
-        " 27 ",
-        " 26 ",
-        " 25 ",
-        " 24 ",
-        " 23 ",
-        " 22 ",
-        " 21 ",
-        " 20 ",
-    ]
-    assert meshing_session.meshing_utilities._face_zones_labels_fdl() == [
-        "wall-elbow",
-        "wall-inlet",
-        "outlet",
-        "cold-inlet",
-        "hot-inlet",
-        "symmetry-xyplane",
-    ]
-    assert meshing_session.meshing_utilities._face_zones_str_fdl() == [
-        " 89 ",
-        " 34 ",
-        " 33 ",
-        " 32 ",
-        " 31 ",
-        " 30 ",
-        " 29 ",
-    ]
-    assert meshing_session.meshing_utilities._node_zones_labels_fdl() == [
-        "boundary-node-163",
-        "node-91",
-        "boundary-node-19",
-    ]
-    assert meshing_session.meshing_utilities._node_zones_str_fdl() == [
-        " 163 ",
-        " 91 ",
-        " 19 ",
-    ]
-    assert meshing_session.meshing_utilities._prism_cell_zones_labels_fdl() is None
-    assert meshing_session.meshing_utilities._prism_cell_zones_str_fdl() is None
-    assert meshing_session.meshing_utilities._object_names_str_fdl() == ["elbow-fluid"]
-    assert meshing_session.meshing_utilities._regions_str_fdl() == [" elbow-fluid "]
-    assert meshing_session.meshing_utilities._zone_types_fdl() == [
-        "interior",
-        "wall",
-        "wall",
-        "pressure-outlet",
-        "velocity-inlet",
-        "velocity-inlet",
-        "symmetry",
-        "boundary-node",
-        "node",
-        "boundary-node",
-        "fluid",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-        "boundary-edge",
-    ]
