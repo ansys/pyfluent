@@ -130,7 +130,7 @@ class XYPlotDefn(PlotDefn):
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """List of surfaces for plotting."""
 
-        value: List[str]
+        value: List[str] = []
 
         @Attribute
         def allowed_values(self):
@@ -148,7 +148,7 @@ class MeshDefn(GraphicsDefn):
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """List of surfaces for mesh graphics."""
 
-        value: List[str]
+        value: List[str] = []
 
         @Attribute
         def allowed_values(self):
@@ -191,7 +191,7 @@ class PathlinesDefn(GraphicsDefn):
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """List of surfaces for pathlines."""
 
-        value: List[str]
+        value: List[str] = []
 
         @Attribute
         def allowed_values(self):
@@ -373,7 +373,7 @@ class ContourDefn(GraphicsDefn):
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """Contour surfaces."""
 
-        value: List[str]
+        value: List[str] = []
 
         @Attribute
         def allowed_values(self):
@@ -552,7 +552,7 @@ class VectorDefn(GraphicsDefn):
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """List of surfaces for vector graphics."""
 
-        value: List[str]
+        value: List[str] = []
 
         @Attribute
         def allowed_values(self):

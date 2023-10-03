@@ -53,6 +53,7 @@ class Attribute:
 class Command:
     def __init__(self, method):
         self.arguments_attrs = {}
+        self.attrs = {}
         cmd_args = inspect.signature(method).parameters
         for arg_name in cmd_args:
             if arg_name != "self":
@@ -113,6 +114,12 @@ class Command:
                 ](
                     _self.obj
                 ),
+                "attribute": lambda _self, attr_name: self.attrs[
+                    attr_name
+                ](
+                    _self.obj
+                ),    
+                "attributes": lambda _self: list(self.attrs.keys()),                
                 "arguments": lambda _self: list(self.arguments_attrs.keys()),
             },
         )
@@ -141,6 +148,13 @@ def CommandArgs(command_object, argument_name):
         return attribute
 
     return wrapper
+    
+    
+def CommandAttributes(command_object):
+    def wrapper(attribute):    
+        command_object.attrs.update({attribute.__name__: attribute})                  
+        return attribute
+    return wrapper    
 
 
 class PyLocalBaseMeta(type):
@@ -232,6 +246,7 @@ class PyLocalBaseMeta(type):
         attrs["get_session"] = cls.__create_get_session()
         attrs["get_session_handle"] = cls.__create_get_session_handle()
         attrs["get_path"] = cls.__create_get_path()
+        attrs["root"] = property(lambda self: self.get_root())
         attrs["path"] = property(lambda self: self.get_path())
         attrs["session"] = property(lambda self: self.get_session())
         attrs["session_handle"] = property(lambda self: self.get_session_handle())
