@@ -33,8 +33,6 @@ extraction is considered. The example also includes a known small leakage
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
-
 ###############################################################################
 # Example Setup
 # -------------
@@ -46,6 +44,7 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
+# sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
