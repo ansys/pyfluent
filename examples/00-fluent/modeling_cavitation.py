@@ -23,9 +23,9 @@ This example demonstrates how to do the following:
 **Problem description**
 
 The problem considers the cavitation caused by the flow separation
-after a sharp-edged orifice. The flow is pressure driven, with an 
+after a sharp-edged orifice. The flow is pressure driven, with an
 inlet pressure of 5 x 10^5 Pa and an outlet pressure of 9.5 x 10^4 Pa.
-The orifice diameter is 4 x 10^-3 m, and the geometrical parameters 
+The orifice diameter is 4 x 10^-3 m, and the geometrical parameters
 of the orifice are D/d = 2.88 and L/d = 4, where D, d, and L are the
 inlet diameter, orifice diameter, and orifice length respectively.
 """
@@ -61,9 +61,8 @@ solver = pyfluent.launch_fluent(
     mode="solver",
     version="2d",
     cwd=pyfluent.EXAMPLES_PATH,
-    show_gui=True
-    )
-
+    show_gui=True,
+)
 
 ###############################################################################
 # Reading and Checking the Mesh
@@ -99,7 +98,7 @@ solver.tui.define.models.multiphase.mixture_parameters(False)
 # model : k-omega
 # k-omega model : sst
 
-solver.setup.models.viscous = {'model': "k-omega", 'k_omega_model': "sst"}
+solver.setup.models.viscous = {"model": "k-omega", "k_omega_model": "sst"}
 
 ###############################################################################
 # Define materials
@@ -113,7 +112,11 @@ solver.setup.models.viscous = {'model': "k-omega", 'k_omega_model': "sst"}
 # viscosity method : constant
 # reference viscosity : 0.001 [kg/(m s)]
 
-water = {'density': {'option': 'constant','value': 1000},'name': 'water','viscosity': {'option': 'constant','value': 0.001}}
+water = {
+    "density": {"option": "constant", "value": 1000},
+    "name": "water",
+    "viscosity": {"option": "constant", "value": 0.001},
+}
 
 solver.setup.materials.fluid["water"] = water
 
@@ -123,7 +126,7 @@ solver.setup.materials.database.copy_by_name(type="fluid", name="water-vapor")
 
 # Set 0.02558 kg/m3 for Density and 1.26e-06 kg/m–s for Viscosity.
 
-water_vapor = {'density': {'value': 0.02558},'viscosity': {'value': 1.26e-06}}
+water_vapor = {"density": {"value": 0.02558}, "viscosity": {"value": 1.26e-06}}
 
 solver.setup.materials.fluid["water-vapor"] = water_vapor
 
@@ -132,15 +135,19 @@ solver.setup.materials.fluid["water-vapor"] = water_vapor
 # ~~~~~~
 # Change phase names to "liquid" and "water-vapor".
 
-solver.tui.define.phases.set_domain_properties.change_phases_names("vapor","liquid")
+solver.tui.define.phases.set_domain_properties.change_phases_names("vapor", "liquid")
 
 # Specify liquid water as the primary phase.
 
-solver.tui.define.phases.set_domain_properties.phase_domains.liquid.material("yes", "water")
+solver.tui.define.phases.set_domain_properties.phase_domains.liquid.material(
+    "yes", "water"
+)
 
 # Specify water vapor as the secondary phase.
 
-solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material("yes", "water-vapor")
+solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material(
+    "yes", "water-vapor"
+)
 
 ###############################################################################
 # Enable the cavitation model.
@@ -148,13 +155,11 @@ solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material("yes
 # Set the number of mass transfer mechanisms to 1, set liquid as the from phase,
 # set vapor as the to phase and cavitation as the mechanism.
 
-solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.mass_transfer(1, "liquid", "vapor", "cavitation")
+solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.mass_transfer(
+    1, "liquid", "vapor", "cavitation"
+)
 
 # Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11
-
-solver.setup.models.multiphase.vaporization_pressure = 3540
-
-solver.setup.models.multiphase.bubble_number_density = 1e+11
 
 ###############################################################################
 # Set velocity and turbulence boundary conditions for first inlet
