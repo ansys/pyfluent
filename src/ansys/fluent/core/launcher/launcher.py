@@ -838,10 +838,12 @@ def connect_to_fluent(
         IP address for connecting to an existing Fluent instance. The
         IP address defaults to ``"127.0.0.1"``. You can also use the environment
         variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
+        The explicit value of ``ip`` takes precedence over ``PYFLUENT_FLUENT_IP=<ip>``.
     port : int, optional
         Port to listen on for an existing Fluent instance. You can use the
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
-        value.
+        value. The explicit value of ``port`` takes precedence over
+        ``PYFLUENT_FLUENT_PORT=<port>``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
