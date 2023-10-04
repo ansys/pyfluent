@@ -60,7 +60,7 @@ solver = pyfluent.launch_fluent(
     processor_count=1,
     mode="solver",
     version="2d",
-    cwd="C:/Users/aboutin/OneDrive - ANSYS, Inc/Documents/cavitation",
+    cwd=pyfluent.EXAMPLES_PATH,
     show_gui=True
     )
 
@@ -145,9 +145,17 @@ solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material("yes
 ###############################################################################
 # Enable the cavitation model.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-solver.setup.models.multiphase
-solver.tui.define.models.multiphase
-solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.cavitation()
+# Set the number of mass transfer mechanisms to 1, set liquid as the from phase,
+# set vapor as the to phase and cavitation as the mechanism.
+
+solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.mass_transfer(1, "liquid", "vapor", "cavitation")
+
+# Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11
+
+solver.setup.models.multiphase.vaporization_pressure = 3540
+
+solver.setup.models.multiphase.bubble_number_density = 1e+11
+
 ###############################################################################
 # Set velocity and turbulence boundary conditions for first inlet
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
