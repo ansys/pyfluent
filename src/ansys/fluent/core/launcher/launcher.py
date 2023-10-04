@@ -368,7 +368,7 @@ def _get_server_info(
     """Get server connection information of an already running session."""
     if ip and port:
         logger.warning(
-            "Could not parsed server-info file because ip and port were provided explicitly."
+            "Could not parse server-info file because ip and port were provided explicitly."
         )
     elif server_info_filepath:
         ip, port, password = _parse_server_info_file(server_info_filepath)
