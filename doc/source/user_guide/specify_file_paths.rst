@@ -1,6 +1,6 @@
 .. _ref_specify_file_paths:
 
-Specify File Paths
+Specify file paths
 ==================
 
 .. automodule:: ansys.fluent.core.examples.downloads
