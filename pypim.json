@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "pim": {
+        "uri": "dns:pim.svc.com:80",
+        "headers": {
+            "metadata-info": "value"
+        },
+        "tls": false
+    }
+}
