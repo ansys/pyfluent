@@ -1,6 +1,3 @@
-import os
-import sys
-
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
@@ -8,14 +5,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
-@pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.skipif(
-    os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
-    or os.getenv("PYFLUENT_LAUNCH_CONTAINER") != "1"
-    and sys.platform.startswith("linux"),
-    reason="Linux Fluent server issues, see #1490",
-)
+@pytest.mark.fluent_version(">=24.1")
 def test_batch_ops_create_mesh(new_solver_session):
     solver = new_solver_session
     mesh = solver.results.graphics.mesh
@@ -31,8 +21,7 @@ def test_batch_ops_create_mesh(new_solver_session):
     assert "mesh-1" in mesh.get_object_names()
 
 
-@pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     solver = new_solver_session
     mesh = solver.results.graphics.mesh
