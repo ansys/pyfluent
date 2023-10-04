@@ -1,4 +1,4 @@
-Sphinx==7.1.2
+Sphinx==7.2.6
 jupyter_sphinx==0.4.0
 numpydoc==1.5.0
 matplotlib==3.7.2
