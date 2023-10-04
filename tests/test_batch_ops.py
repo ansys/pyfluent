@@ -1,4 +1,5 @@
 import pytest
+from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
