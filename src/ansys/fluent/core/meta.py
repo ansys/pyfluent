@@ -193,7 +193,7 @@ class PyLocalBaseMeta(type):
     def __create_get_session_handle(cls):
         def wrapper(self, obj=None):
             root = self.get_root(obj)
-            return root.session_handle
+            return getattr(root, "session_handle", None)
 
         return wrapper
 
