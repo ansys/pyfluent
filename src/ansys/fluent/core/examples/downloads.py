@@ -123,7 +123,17 @@ def download_file(
     >>> filename = examples.download_file("bracket.iges", "geometry", return_only_filename=True)
     >>> filename
     'bracket.iges'
-    """
+    >>> filepath = examples.download_file("bracket.iges", "geometry", save_path='.')
+    '/home/<current_folder_path>/bracket.iges'
+    >>> filename = examples.download_file("bracket.iges", "geometry", save_path='.', return_only_filename=True)
+    >>> filename
+    'bracket.iges'
+    >>> filepath = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
+    '/home/<user_specified_path>/bracket.iges'
+    >>> filename = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>', return_only_filename=True)
+    >>> filename
+    'bracket.iges'
+    """  # noqa: E501
     if return_only_filename is None:
         if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             return_only_filename = True
