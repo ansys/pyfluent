@@ -301,7 +301,7 @@ class EventSubscription:
         Raises
         ------
         RuntimeError
-            If server fails to unsubscribe event.
+            If server fails to unsubscribe from event.
         """
         if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
             self._service.event_streaming.unregister_callback(self.tag)
