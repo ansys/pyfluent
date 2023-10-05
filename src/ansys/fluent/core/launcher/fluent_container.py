@@ -123,7 +123,7 @@ def configure_container_dict(
     KeyError
         If license server is not specified through environment variable or ``container_dict``.
     ValueError
-        If server info file is specified through both command-line argument and ``container_server_info_file``.
+        If server info file is specified through both a command-line argument inside ``container_dict`` and the  ``container_server_info_file`` parameter.
     ValueError
         If ``fluent_image`` or ``image_tag`` and ``image_name`` are not specified.
 
