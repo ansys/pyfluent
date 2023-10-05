@@ -320,7 +320,7 @@ class _Uploader:
         ----------
         file_path : str
             filepath
-        remote_file_name : Optional[str], optional
+        remote_file_name : str, optional
             remote filename, by default None
         """
         if self.file_service:
