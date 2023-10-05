@@ -1,4 +1,4 @@
-from ansys.fluent.core.filereader import lispy
+from ansys.fluent.core import lispy
 
 scm_pys = (
     ("()", []),

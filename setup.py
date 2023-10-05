@@ -29,7 +29,6 @@ install_requires = [
     "numpy>=1.21.5",
     "platformdirs>=3.5.1",
     "pandas>=1.1.5",
-    "h5py>=3.8.0",
     "lxml>=4.9.2",
     "pyyaml>=6.0",
     "docker>=6.1.3",
