@@ -104,7 +104,6 @@ Logging
     scheduler/index
     fielddata
     fieldinfo
-    case_reader
     data_transfer
     journaling
     workflow

@@ -1,8 +1,7 @@
 import pytest
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
-from ansys.fluent.core.examples import download_file, path
-from ansys.fluent.core.filereader.casereader import CaseReader
+from ansys.fluent.core.examples import download_file
 
 
 def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
@@ -44,9 +43,10 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     assert len(all_vars) == pytest.approx(9000, 20)
 
     # CaseFile comparison, note that the PyFluent work dir is not necessarily the same as the Fluent work dir
-    case = CaseReader(case_filepath=path(case_path))
-    case_vars = case.rp_vars()
-    assert len(case_vars) == pytest.approx(9000, 450)
+    # To be moved to reader repo
+    # case = CaseReader(case_filepath=path(case_path))
+    # case_vars = case.rp_vars()
+    # assert len(case_vars) == pytest.approx(9000, 450)
 
 
 @pytest.mark.fluent_version(">=23.2")
