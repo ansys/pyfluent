@@ -229,7 +229,7 @@ class SurfaceDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
-                return self is not None and self._parent.type() == "plane-surface"
+                return self._parent.type() == "plane-surface"
 
             class creation_method(metaclass=PyLocalPropertyMeta):
                 """Creation Method."""
@@ -246,10 +246,7 @@ class SurfaceDefn(GraphicsDefn):
 
                 @Attribute
                 def is_active(self):
-                    return (
-                        self is not None
-                        and self._parent.creation_method() == "xy-plane"
-                    )
+                    return self._parent.creation_method() == "xy-plane"
 
                 class z(metaclass=PyLocalPropertyMeta):
                     """Z value."""
@@ -268,10 +265,7 @@ class SurfaceDefn(GraphicsDefn):
 
                 @Attribute
                 def is_active(self):
-                    return (
-                        self is not None
-                        and self._parent.creation_method() == "yz-plane"
-                    )
+                    return self._parent.creation_method() == "yz-plane"
 
                 class x(metaclass=PyLocalPropertyMeta):
                     """X value."""
@@ -290,10 +284,7 @@ class SurfaceDefn(GraphicsDefn):
 
                 @Attribute
                 def is_active(self):
-                    return (
-                        self is not None
-                        and self._parent.creation_method() == "zx-plane"
-                    )
+                    return self._parent.creation_method() == "zx-plane"
 
                 class y(metaclass=PyLocalPropertyMeta):
                     """Y value."""
@@ -312,7 +303,7 @@ class SurfaceDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
-                return self is not None and self._parent.type() == "iso-surface"
+                return self._parent.type() == "iso-surface"
 
             class field(metaclass=PyLocalPropertyMeta):
                 """Iso surface field."""
@@ -452,7 +443,7 @@ class ContourDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
-                return self is not None and self._parent.option() == "auto-range-on"
+                return self._parent.option() == "auto-range-on"
 
             class global_range(metaclass=PyLocalPropertyMeta):
                 """Show global range."""
@@ -464,7 +455,7 @@ class ContourDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
-                return self is not None and self._parent.option() == "auto-range-off"
+                return self._parent.option() == "auto-range-off"
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """Clip contour within range."""
@@ -603,7 +594,7 @@ class VectorDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
-                return self is not None and self._parent.option() == "auto-range-on"
+                return self._parent.option() == "auto-range-on"
 
             class global_range(metaclass=PyLocalPropertyMeta):
                 """Show global range."""
@@ -615,7 +606,7 @@ class VectorDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
-                return self is not None and self._parent.option() == "auto-range-off"
+                return self._parent.option() == "auto-range-off"
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """Clip vector within range."""

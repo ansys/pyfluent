@@ -454,8 +454,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __create_getattribute(cls):
         def wrapper(self, name):
             obj = object.__getattribute__(self, name)
-            is_active = getattr(obj, "is_active", True)
-            return obj if is_active else None
+            return obj
 
         return wrapper
 
@@ -476,6 +475,9 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __create_get_state(cls):
         def wrapper(self, show_attributes=False):
             state = {}
+
+            if not getattr(self, "is_active", True):
+                return
 
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
