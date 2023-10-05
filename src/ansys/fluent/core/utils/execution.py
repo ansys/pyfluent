@@ -123,7 +123,7 @@ def timeout_loop(
     Raises
     ------
     RuntimeError
-        If an unrecognized value is passed with ``expected``.
+        If an unrecognized value is passed for ``expected``.
 
     Examples
     --------
