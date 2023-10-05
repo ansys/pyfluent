@@ -19,12 +19,17 @@ class FileManager(AbstractContextManager):
     upload(
         file_path, remote_file_name
         )
-        Upload a file to the server.
+        Upload a file on the server.
 
-    file_exist(
+    _is_file(
         file_name
         )
-        Check that a file exists on the server.
+        Check if a file available on the server.
+
+    _get_file_contents(
+        file_name, is_unicode_text
+        )
+        Get file contents.
 
     download(
         file_name, local_file_path
@@ -36,9 +41,8 @@ class FileManager(AbstractContextManager):
         self.session = requests.Session()
         self.url = url
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self):
         self.session.close()
-        return False
 
     def upload(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server.
@@ -46,22 +50,22 @@ class FileManager(AbstractContextManager):
         Parameters
         ----------
         file_path: local file path
-
+        remote_file_name: file name on server
         Returns
         -------
         Status code
         """
         path = os.path.expandvars(file_path)
         filename = remote_file_name or os.path.basename(path)
-        request_url = f"{self.url}/{filename}?token={'temp_token'}"
+        temp_url = f"{self.url}/{filename}?token={'temp_token'}"
         with open(path, "rb") as file:
-            file_dict = {"file": file}
-            result = self.session.put(request_url, files=file_dict)
-            return str(result.status_code)
+            file_data = {"file": file}
+            upload = self.session.put(temp_url, files=file_data)
+            return str(upload.status_code)
         return "0"
 
-    def file_exist(self, file_name):
-        """Check that a file exists on the server.
+    def _is_file(self, file_name: str):
+        """Check if the file exists on the server.
 
         Parameters
         ----------
@@ -71,9 +75,29 @@ class FileManager(AbstractContextManager):
         -------
         True if the file exists, False otherwise.
         """
-        request_url = f"{self.url}/{file_name}?token={'temp_token'}"
-        result = self.session.head(request_url)
-        return result.ok
+        temp_url = f"{self.url}/{file_name}?token={'temp_token'}"
+        file_status = self.session.head(temp_url)
+        return file_status.ok
+
+    def _get_file_contents(self, file_name: str, is_unicode_text):
+        """Gets the file contents.
+
+        Parameters
+        ----------
+        file_name: File name
+        is_unicode_text: Returns unicode text if True, else returns raw bytes
+
+        Returns
+        -------
+        File contents.
+        """
+        temp_url = f"{self.url}/{file_name}?token={'temp_token'}"
+        contents = self.session.get(temp_url)
+
+        if is_unicode_text:
+            return str(contents.text)
+        else:
+            return contents.content
 
     def download(self, file_name: str, local_file_path: Optional[str] = None):
         """Downloads a file from the server.
@@ -90,6 +114,6 @@ class FileManager(AbstractContextManager):
         local_path = os.path.join(local_file_path, file_name)
         os.makedirs(local_file_path, exist_ok=True)
         with open(local_path, "wb") as file:
-            file.write(self.get_file(file_name, text=False))
+            file.write(self._get_file_contents(file_name, False))
 
         return local_path
