@@ -120,6 +120,11 @@ def timeout_loop(
         Possible values are ``"truthy"`` or ``"falsy"``, indicating what type of return is expected.
         By default, expects a ``"truthy"`` return from the specified object.
 
+    Raises
+    ------
+    RuntimeError
+        If an unrecognized value is passed with ``expected``.
+
     Examples
     --------
     Waiting 5 seconds to see if ``func("test")`` returns True:

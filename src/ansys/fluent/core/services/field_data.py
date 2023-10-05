@@ -67,6 +67,7 @@ class FieldDataService(StreamingService):
         """GetSurfacesInfo rpc of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
+    # pylint: disable=missing-raises-doc
     @catch_grpc_error
     def get_fields(self, request):
         """GetFields rpc of FieldData service."""
@@ -322,6 +323,7 @@ class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return self._info if self._info else self._field_info.get_surfaces_info()
 
+    # pylint: disable=missing-raises-doc
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names."""
         if validate_inputs and not self.is_valid(surface_name):

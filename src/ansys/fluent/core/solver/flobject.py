@@ -156,8 +156,28 @@ class Base:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
-    def get_attr(self, attr, attr_type_or_types=None) -> Any:
-        """Get the requested attribute for the object."""
+    def get_attr(
+        self, attr: str, attr_type_or_types: Optional[Union[str, List[str]]] = None
+    ) -> Any:
+        """Get the requested attribute for the object.
+
+        Parameters
+        ----------
+        attr : str
+            attribute name
+        attr_type_or_types : Optional[Union[str, List[str]]], optional
+            attribute type, by default None
+
+        Returns
+        -------
+        Any
+            attribute value
+
+        Raises
+        ------
+        RuntimeError
+            If any attribute other than ``"active?`` is queried when the object is not active.
+        """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
@@ -421,6 +441,7 @@ class Group(SettingsBase[DictStateType]):
         else:
             return self.get_state()
 
+    # pylint: disable=missing-raises-doc
     @classmethod
     def to_scheme_keys(cls, value):
         """Convert value to have keys with scheme names."""
@@ -1113,6 +1134,7 @@ class _HasAllowedValuesMixin:
             return []
 
 
+# pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -1249,6 +1271,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
+# pylint: disable=missing-raises-doc
 def get_root(flproxy, version: str = "") -> Group:
     """Get the root settings object.
 

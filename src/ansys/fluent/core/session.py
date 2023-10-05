@@ -314,14 +314,35 @@ class _Uploader:
             )
 
     def upload(self, file_path: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server."""
+        """Uploads a file on the server.
+
+        Parameters
+        ----------
+        file_path : str
+            filepath
+        remote_file_name : Optional[str], optional
+            remote filename, by default None
+        """
         if self.file_service:
             expanded_file_path = os.path.expandvars(file_path)
             upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
             self.file_service.upload_file(expanded_file_path, upload_file_name)
 
     def download(self, file_name: str, local_file_path: Optional[str] = None):
-        """Downloads a file from the server."""
+        """Downloads a file from the server.
+
+        Parameters
+        ----------
+        file_name : str
+            filename
+        local_file_path : Optional[str], optional
+            local filepath, by default None
+
+        Raises
+        ------
+        FileNotFoundError
+            If the remote file does not exist.
+        """
         if self.file_service:
             if self.file_service.file_exist(file_name):
                 self.file_service.download_file(file_name, local_file_path)

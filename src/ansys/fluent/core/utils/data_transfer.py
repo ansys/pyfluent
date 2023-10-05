@@ -77,6 +77,11 @@ def transfer_case(
     Returns
     -------
     None
+
+    Raises
+    ------
+    RuntimeError
+        If mesh cannot be written from ``source_instance``.
     """
     inside_container = source_instance.connection_properties.inside_container
     if not workdir:
