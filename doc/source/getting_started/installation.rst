@@ -4,7 +4,7 @@
 Installation
 ============
 
-The ``ansys-fluent-core`` package supports Python 3.8 through
+The ``ansys-fluent-core`` package supports Python 3.9 through
 Python 3.11 on Windows and Linux.
 
 .. note::
@@ -51,7 +51,7 @@ method:
 
 To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
 environment variable, where ``<ver>`` is the three-digit format for the release.
-For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release. 
+For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release.
 
 On a Windows system, this environment variable is configured when a release is installed.
 
