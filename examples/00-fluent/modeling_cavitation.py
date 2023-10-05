@@ -29,6 +29,7 @@ The orifice diameter is 4 x 10^-3 m, and the geometrical parameters
 of the orifice are D/d = 2.88 and L/d = 4, where D, d, and L are the
 inlet diameter, orifice diameter, and orifice length respectively.
 """
+# sphinx_gallery_thumbnail_path = '_static\cavitation_model.png'
 
 ###############################################################################
 # Example Setup
@@ -251,6 +252,10 @@ discretization_scheme = {
 
 methods.discretization_scheme = discretization_scheme
 
+# Set pressure-velocity coupling to 'Coupled'.
+
+methods.p_v_coupling.flow_scheme = "Coupled"
+
 # Set global time step from pseudo time method.
 
 methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
@@ -332,6 +337,11 @@ solver.results.graphics.contour["contour_static_pressure"] = contour_static_pres
 
 solver.tui.display.set.mirror_zones(["symm_2", "symm_1"])
 
+###############################################################################
+# .. image:: _static\cavitation_model_012.png
+#   :width: 500pt
+#   :align: center
+
 # Create and plot a contour definition of the turbulent kinetic energy.
 
 solver.results.graphics.contour.create("contour_tke")
@@ -347,9 +357,19 @@ contour_tke = {
 
 solver.results.graphics.contour["contour_tke"] = contour_tke
 
+###############################################################################
+# .. image:: _static\cavitation_model_011.png
+#   :width: 500pt
+#   :align: center
+
 # Create and plot a contour definition of the volume fraction of water vapor.
 
 solver.results.graphics.contour.create("contour_vf_vapor")
+
+###############################################################################
+# .. image:: _static\cavitation_model.png
+#   :width: 500pt
+#   :align: center
 
 # Set filled to True, coloring to 'banded' and field to 'static pressure'.
 
