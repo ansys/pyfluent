@@ -1,7 +1,7 @@
 """Provides a module for launching Fluent.
 
-This module supports both starting Fluent locally and connecting to a
-remote instance with gRPC.
+This module supports both starting Fluent locally and connecting to a remote instance
+with gRPC.
 """
 from enum import Enum
 import json
@@ -86,8 +86,10 @@ class FluentVersion(Enum):
 
 def get_ansys_version() -> str:
     """Return the version string corresponding to the most recent, available ANSYS
-    installation. The returned value is the string component of one of the members
-    of the FluentVersion class.
+    installation.
+
+    The returned value is the string component of one of the members of the
+    FluentVersion class.
     """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
@@ -331,8 +333,8 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
 def _update_launch_string_wrt_gui_options(
     launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
 ) -> str:
-    """Checks for all gui options in additional arguments and updates the
-    launch string with hidden, if none of the options are met."""
+    """Checks for all gui options in additional arguments and updates the launch string
+    with hidden, if none of the options are met."""
 
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
@@ -470,8 +472,8 @@ def launch_fluent(
     start_watchdog: Optional[bool] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
-    """Launch Fluent locally in server mode or connect to a running Fluent
-    server instance.
+    """Launch Fluent locally in server mode or connect to a running Fluent server
+    instance.
 
     Parameters
     ----------
@@ -871,7 +873,6 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
-
     """
     ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
     fluent_connection = FluentConnection(

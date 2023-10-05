@@ -1,6 +1,7 @@
 """Module controlling PyFluent's logging functionality.
 
-For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`."""
+For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`.
+"""
 import logging.config
 import os
 from typing import Optional, Union
@@ -11,7 +12,8 @@ _logging_file_enabled = False
 
 
 def root_config():
-    """Sets up the root PyFluent logger that outputs messages to stdout, but not to files."""
+    """Sets up the root PyFluent logger that outputs messages to stdout, but not to
+    files."""
     logger = logging.getLogger("pyfluent")
     logger.setLevel("WARNING")
     formatter = logging.Formatter("%(name)s %(levelname)s: %(message)s")
@@ -28,7 +30,8 @@ def is_active() -> bool:
 
 
 def get_default_config() -> dict:
-    """Returns the default configuration dictionary obtained from parsing from the PyFluent ``logging_config.yaml`` file.
+    """Returns the default configuration dictionary obtained from parsing from the
+    PyFluent ``logging_config.yaml`` file.
 
     Examples
     --------
@@ -119,7 +122,10 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = Non
 
 
 def get_logger(*args, **kwargs):
-    """Retrieves logger. Convenience wrapper for Python's :func:`logging.getLogger` function."""
+    """Retrieves logger.
+
+    Convenience wrapper for Python's :func:`logging.getLogger` function.
+    """
     return logging.getLogger(*args, **kwargs)
 
 
@@ -195,8 +201,8 @@ def list_loggers():
 
 
 def configure_env_var() -> None:
-    """Verifies whether ``PYFLUENT_LOGGING`` environment variable was defined in the system.
-    Executed once automatically on PyFluent initialization.
+    """Verifies whether ``PYFLUENT_LOGGING`` environment variable was defined in the
+    system. Executed once automatically on PyFluent initialization.
 
     Notes
     -----

@@ -11,11 +11,13 @@ import ansys.fluent.core as pyfluent
 
 
 def delete_downloads():
-    """Delete all downloaded examples from the default examples folder to free space or update the files.
+    """Delete all downloaded examples from the default examples folder to free space or
+    update the files.
 
     Notes
     -----
-    The default examples path is given by ``pyfluent.EXAMPLES_PATH``."""
+    The default examples path is given by ``pyfluent.EXAMPLES_PATH``.
+    """
     shutil.rmtree(pyfluent.EXAMPLES_PATH)
     os.makedirs(pyfluent.EXAMPLES_PATH)
 

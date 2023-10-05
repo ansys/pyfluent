@@ -18,9 +18,7 @@ Path = List[Tuple[str, str]]
 
 
 class ReductionService:
-    """
-    Reduction Service.
-    """
+    """Reduction Service."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
@@ -266,9 +264,7 @@ def _locns(locns, ctxt=None):
 
 
 class Reduction:
-    """
-    Reduction.
-    """
+    """Reduction."""
 
     def __init__(self, service: ReductionService):
         """__init__ method of Reduction class."""

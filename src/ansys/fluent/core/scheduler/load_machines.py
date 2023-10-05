@@ -1,9 +1,8 @@
 """A module that provides machine list construction for distributed parallel
 environments, including queueing systems.
 
-Currently supports UGE, LSF, PBS and SLURM by parsing the contents of
-the PE_HOSTFILE, LSB_MCPU_HOSTS, PBS_NODEFILE and SLURM_JOB_NODELIST
-variables, respectively.
+Currently supports UGE, LSF, PBS and SLURM by parsing the contents of the PE_HOSTFILE,
+LSB_MCPU_HOSTS, PBS_NODEFILE and SLURM_JOB_NODELIST variables, respectively.
 """
 import csv
 import os
@@ -181,8 +180,8 @@ def _parse_machine_data(machine_data):
 
 
 def _get_local_machine(ncores):
-    """Provide private module function to convert a core count into a machine
-    list for a local job."""
+    """Provide private module function to convert a core count into a machine list for a
+    local job."""
 
     import socket
 
@@ -194,8 +193,8 @@ def _get_local_machine(ncores):
 
 
 def _restrict_machines_to_core_count(old_machine_list, ncores):
-    """Provide private module function to adjust the number of cores used per
-    machine based on a user-supplied core count.
+    """Provide private module function to adjust the number of cores used per machine
+    based on a user-supplied core count.
 
     Parameters
     ----------
@@ -302,8 +301,7 @@ def _construct_machine_list_pbs(host_filename):
 
 
 def _construct_machine_list_slurm(host_list):
-    """Provide a private module function to parse the SLURM host and task
-    lists.
+    """Provide a private module function to parse the SLURM host and task lists.
 
     The SLURM system provides a comma separated list of host names.  The host
     names may be listed individually or consecutive host names may have IDs that
@@ -466,8 +464,8 @@ def _construct_machine_list_ccs(host_list):
 
 
 def _construct_machine_list_manual(machine_info):
-    """Provide a private module function to convert a machine information list
-    into a list of machine objects."""
+    """Provide a private module function to convert a machine information list into a
+    list of machine objects."""
     machineList = MachineList()
     for m in machine_info:
         machineList.add(Machine(m["machine-name"], m["core-count"]))

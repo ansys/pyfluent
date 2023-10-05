@@ -25,7 +25,6 @@ The problem considers the headlamp of a parked car exposed to sunlight. The
 lens focuses incoming radiation onto the internal components of the headlamp,
 producing thermal hotspots that could cause damage due to thermal stresses or
 material degradation.
-
 """
 
 ###############################################################################

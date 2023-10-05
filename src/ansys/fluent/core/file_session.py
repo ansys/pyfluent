@@ -46,8 +46,8 @@ class Transaction:
     def add_surfaces_request(
         self, surface_ids, provide_vertices=True, provide_faces=True
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity,
-        centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -665,7 +665,7 @@ class FileFieldInfo:
 
 class FileSession:
     def __init__(self):
-        """__init__ method of FileSession class"""
+        """__init__ method of FileSession class."""
         self._case_file = None
         self._data_file = None
         self.field_info = FileFieldInfo(self)
@@ -678,5 +678,5 @@ class FileSession:
         self._case_file = CaseFile(case_filepath)
 
     def read_data(self, data_filepath):
-        """Read Data file"""
+        """Read Data file."""
         self._data_file = DataFile(data_filepath, case_file_handle=self._case_file)

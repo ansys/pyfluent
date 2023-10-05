@@ -72,7 +72,6 @@ class SVARInfo:
         >>> zone_info = zones_info['wall']
         >>> zone_info
         >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
-
     """
 
     class SVARS:

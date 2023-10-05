@@ -492,18 +492,15 @@ def test_meshing_workflow_structure(new_mesh_session):
     # ordering test
     idxs = [int(id[len("TaskObject") :]) for id in task_ids]
     assert sorted(idxs) == idxs
-    """
-    o Workflow
-    |
-    |--o Import Geometry
-    |
-    |--o Add Local Sizing
-    |
-    |--o Generate the Surface Mesh --
-                                     /Insert Next Task>
-                                                        |-- Add Boundary Type
-                                                        |-- Update Boundaries
-                                                        |-- ...
+    """Given the workflow::
+
+            Workflow
+            ├── Import Geometry
+            ├── Add Local Sizing
+            ├── Generate the Surface Mesh ── Insert Next Task
+                                            ├── Add Boundary Type
+                                            ├── Update Boundaries
+                                            ├── ...
     """
     assert set(gen_surf_mesh.GetNextPossibleTasks()) == {
         "AddBoundaryType",
