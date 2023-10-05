@@ -87,8 +87,7 @@ class DatamodelService:
 
 
 def _convert_value_to_gvalue(val: Any, gval: Variant):
-    """Convert Python datatype to Value type of
-    google/protobuf/struct.proto."""
+    """Convert Python datatype to Value type of google/protobuf/struct.proto."""
     if isinstance(val, bool):
         gval.bool_value = val
     elif isinstance(val, int) or isinstance(val, float):
@@ -108,8 +107,7 @@ def _convert_value_to_gvalue(val: Any, gval: Variant):
 
 
 def _convert_gvalue_to_value(gval: Variant):
-    """Convert Value type of google/protobuf/struct.proto to Python
-    datatype."""
+    """Convert Value type of google/protobuf/struct.proto to Python datatype."""
     if gval.HasField("bool_value"):
         return gval.bool_value
     elif gval.HasField("number_value"):
@@ -129,8 +127,8 @@ def _convert_gvalue_to_value(gval: Variant):
 
 
 class PyMenu:
-    """Pythonic wrapper of TUI-based DatamodelService class. Use this class
-    instead of directly calling the DatamodelService's method.
+    """Pythonic wrapper of TUI-based DatamodelService class. Use this class instead of
+    directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -193,8 +191,7 @@ class PyMenu:
         return _convert_gvalue_to_value(ret.result)
 
     def execute(self, *args, **kwargs) -> Any:
-        """Execute a command or query at a path with positional or keyword
-        arguments.
+        """Execute a command or query at a path with positional or keyword arguments.
 
         Parameters
         ----------
@@ -325,8 +322,7 @@ class TUIMenu:
 
 
 class TUICommand(TUIMenu):
-    """Generic command class for when the explicit menu classes aren't
-    available."""
+    """Generic command class for when the explicit menu classes aren't available."""
 
     def __call__(self, *args, **kwargs):
         return PyMenu(self._service, self._version, self._mode, self._path).execute(
@@ -355,8 +351,8 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
 
 
 def convert_path_to_grpc_path(path: Path) -> str:
-    """Convert a path structure to a string that can be passed to the data
-    model gRPC service.
+    """Convert a path structure to a string that can be passed to the data model gRPC
+    service.
 
     Parameters
     ----------

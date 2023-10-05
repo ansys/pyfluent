@@ -26,8 +26,8 @@ logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Attribute(Enum):
-    """Contains the standard names of data model attributes associated with the
-    data model service."""
+    """Contains the standard names of data model attributes associated with the data
+    model service."""
 
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
@@ -313,8 +313,8 @@ class EventSubscription:
 
 
 class PyStateContainer(PyCallableStateObject):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using StateEngine based DatamodelService as backend. Use this class
+    instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -452,7 +452,7 @@ class PyStateContainer(PyCallableStateObject):
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
+        """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
@@ -477,7 +477,7 @@ class PyStateContainer(PyCallableStateObject):
     def add_on_command_attribute_changed(
         self, command: str, attribute: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
+        """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
@@ -504,8 +504,8 @@ class PyStateContainer(PyCallableStateObject):
 
 
 class PyMenu(PyStateContainer):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using StateEngine based DatamodelService as backend. Use this class
+    instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -682,7 +682,7 @@ class PyMenu(PyStateContainer):
     def add_on_affected_at_type_path(
         self, child_type: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when the object is affected at child type
+        """Register a callback for when the object is affected at child type.
 
         Parameters
         ----------
@@ -705,7 +705,7 @@ class PyMenu(PyStateContainer):
         return subscription
 
     def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
-        """Register a callback for when a command is executed
+        """Register a callback for when a command is executed.
 
         Parameters
         ----------
@@ -731,8 +731,7 @@ class PyMenu(PyStateContainer):
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
-    Use this class instead of directly calling DatamodelService's
-    method.
+    Use this class instead of directly calling DatamodelService's method.
     """
 
     def default_value(self):
@@ -813,10 +812,9 @@ class PyDictionary(PyParameter):
     """
 
     def update_dict(self, dict_state: Dict[str, Any]) -> None:
-        """Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics.
+        """Update the state of the current object if the current object is a Dict in the
+        data model, else throws RuntimeError (currently not showing up in Python).
+        Update is executed according to dict.update semantics.
 
         Parameters
         ----------
@@ -833,9 +831,8 @@ class PyDictionary(PyParameter):
 
 
 class PyNamedObjectContainer:
-    """Container class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Container class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -984,9 +981,8 @@ class PyNamedObjectContainer:
 
 
 class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Command class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -1369,8 +1365,8 @@ class PyMenuGeneric(PyMenu):
 class PySimpleMenuGeneric(PyMenu, PyDictionary):
     """A simple implementation of PyMenuGeneric applicable only for SINGLETONS.
 
-    This is required for the stand-alone datamodel server to avoid the
-    usage of 'service.get_specs'
+    This is required for the stand-alone datamodel server to avoid the usage of
+    'service.get_specs'
     """
 
     attrs = ("service", "rules", "path")
@@ -1387,7 +1383,8 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
 
 
 class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
-    """Generic PyNamedObjectContainer class for when generated API code is not available."""
+    """Generic PyNamedObjectContainer class for when generated API code is not
+    available."""
 
     def __iter__(self):
         for name in self._get_child_object_display_names():

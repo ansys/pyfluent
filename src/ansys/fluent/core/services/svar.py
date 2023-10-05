@@ -72,7 +72,6 @@ class SVARInfo:
         >>> zone_info = zones_info['wall']
         >>> zone_info
         >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
-
     """
 
     class SVARS:
@@ -146,7 +145,7 @@ class SVARInfo:
                 partition_str = ""
                 for i, partition_info in enumerate(self.partitions_info):
                     partition_str += f"\n\t{i}. {partition_info.count}[{partition_info.start_index}:{partition_info.end_index}]"
-                return f"name:{self.name} count: {self.count} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type==SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"
+                return f"name:{self.name} count: {self.count} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type == SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"
 
         def __init__(self, zones_info, domains_info):
             self._zones_info = {}

@@ -159,8 +159,8 @@ class BatchOps:
                 self._ops[i].update_result(response.status, response.response_body)
 
     def add_op(self, package: str, service: str, method: str, request):
-        """Queue a single batch operation. Only the non-getter operations will
-        be queued.
+        """Queue a single batch operation. Only the non-getter operations will be
+        queued.
 
         Parameters
         ----------

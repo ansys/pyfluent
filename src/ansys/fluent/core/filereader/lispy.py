@@ -90,8 +90,7 @@ class InputPort:
         self.line = ""
 
     def next_token(self):
-        """Return the next token, reading new text into line buffer if
-        needed."""
+        """Return the next token, reading new text into line buffer if needed."""
         while True:
             if self.line == "":
                 self.line = self.file.readline()
@@ -400,8 +399,7 @@ def eval(x, env=global_env):
 
 
 def expand(x, toplevel=False):
-    """Walk tree of x, making optimizations/fixes, and signaling
-    SyntaxError."""
+    """Walk tree of x, making optimizations/fixes, and signaling SyntaxError."""
     # require(x, x!=[])                    # () => Error
     if x == []:
         return x

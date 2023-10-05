@@ -1,5 +1,4 @@
-"""Module containing class encapsulating Fluent connection and the Base
-Session."""
+"""Module containing class encapsulating Fluent connection and the Base Session."""
 import importlib
 import json
 import logging
@@ -273,11 +272,11 @@ class BaseSession:
 
 
 class _Uploader:
-    """Instantiates a file uploader and downloader to have a seamless file
-    reading / writing in the cloud particularly in Ansys lab . Here we are
-    exposing upload and download methods on session objects. These would be no-
-    ops if PyPIM is not configured or not authorized with the appropriate
-    service. This will be used for internal purpose only.
+    """Instantiates a file uploader and downloader to have a seamless file reading /
+    writing in the cloud particularly in Ansys lab . Here we are exposing upload and
+    download methods on session objects. These would be no- ops if PyPIM is not
+    configured or not authorized with the appropriate service. This will be used for
+    internal purpose only.
 
     Attributes
     ----------

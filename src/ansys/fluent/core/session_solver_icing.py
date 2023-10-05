@@ -12,8 +12,8 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 class SolverIcing(Solver):
     """Encapsulates a Fluent server for Icing session connection.
 
-    SolverIcing(Session) holds the top-level objects for solver TUI,
-    settings and icing datamodel objects calls.
+    SolverIcing(Session) holds the top-level objects for solver TUI, settings and icing
+    datamodel objects calls.
     """
 
     def __init__(
