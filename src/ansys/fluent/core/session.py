@@ -335,7 +335,7 @@ class _Uploader:
         ----------
         file_name : str
             filename
-        local_file_path : Optional[str], optional
+        local_file_path : str, optional
             local filepath, by default None
 
         Raises
