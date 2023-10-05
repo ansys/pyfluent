@@ -445,6 +445,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             """Create the initialization method for 'PyLocalObjectMeta'."""
             self._parent = parent
             self._name = name
+            import pdb; pdb.set_trace
             self._api_helper = api_helper(self)
             self.type = "object"
             commands = getattr(self.__class__, "commands", None)
@@ -781,7 +782,7 @@ class PyLocalContainer(MutableMapping):
         children = list(self)
         index = 0
         while True:
-            unique_name = f"{self._PyLocalContainer__object_class.__name__}-{index}"
+            unique_name = f"{self._PyLocalContainer__object_class.__name__.lower()}-{index}"
             if unique_name not in children:
                 break
             index += 1
