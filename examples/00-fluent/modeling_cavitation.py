@@ -89,7 +89,7 @@ solver.setup.general.solver.two_dim_space = "axisymmetric"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 solver.setup.models.multiphase.models = "mixture"
-solver.tui.define.models.multiphase.mixture_parameters(False)
+solver.tui.define.models.multiphase.mixture_parameters("no", "implicit")
 
 ###############################################################################
 # Select turbulence model
@@ -156,164 +156,168 @@ solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material(
 # set vapor as the to phase and cavitation as the mechanism.
 
 solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.mass_transfer(
-    1, "liquid", "vapor", "cavitation"
+    1, "liquid", "vapor", "cavitation", "1", "no", "no", "no"
 )
 
 # Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11
 
+solver.setup.models.multiphase.vaporization_pressure = 3540
+
+solver.setup.models.multiphase.bubble_number_density = 1e11
+
 ###############################################################################
-# Set velocity and turbulence boundary conditions for first inlet
+# Set momentum and turbulence boundary conditions for first inlet
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the velocity and turbulence boundary conditions for the first inlet
-# (``inlet-1``).
 
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet-1", [], "vmag", "no", 1, "quit"
-)
+inlet_1 = solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase
 
-###############################################################################
-# Set same boundary conditions for other velocity inlets
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the same boundary conditions for the other velocity inlets (``inlet_2``
-# and ``inlet_3``).
+# Set direction specification method to ``Normal to Boundary``.
+# Set gauge total pressure as 500000 Pa.
+# Set supersonic or initial gauge pressure as 449000 Pa.
 
-solver.tui.define.boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
+momentum = {
+    "direction_specification_method": "Normal to Boundary",
+    "gauge_total_pressure": {"value": 500000},
+    "supersonic_or_initial_gauge_pressure": {"value": 449000},
+}
+inlet_1["mixture"].momentum = momentum
+
+# Set turbulent intensity as 0.05.
+# Set turbulent specification to ``Intensity and Viscosity Ratio``.
+# Set turbulent viscosity ratio as 10.
+
+in_turbulence = {
+    "turbulent_intensity": 0.05,
+    "turbulent_specification": "Intensity and Viscosity Ratio",
+    "turbulent_viscosity_ratio_real": 10,
+}
+inlet_1["mixture"].turbulence = in_turbulence
+
+# Set the vapor phase volume fraction as 0.
+
+inlet_1["vapor"].multiphase.volume_fraction.value = 0
+
+# Copy ``inlet_1`` conditions to ``inlet_2``.
+
+solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 
 ###############################################################################
 # Set boundary conditions at outlet
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the boundary conditions at the outlet (``outlet-1``).
+# Set the boundary conditions at the outlet (``outlet``).
 
-solver.tui.define.boundary_conditions.set.pressure_outlet(
-    "outlet-1", [], "turb-intensity", 5, "quit"
-)
-solver.tui.solve.monitors.residual.plot("yes")
+outlet = solver.setup.boundary_conditions.pressure_outlet["outlet"].phase
 
-###############################################################################
-# Initialize flow field
-# ~~~~~~~~~~~~~~~~~~~~~
-# Initialize the flow field using hybrid initialization.
+# Set the gauge pressure as 95000
 
-solver.tui.solve.initialize.hyb_initialization()
+outlet["mixture"].momentum.gauge_pressure.value = 95000
 
-###############################################################################
-# Start calculation
-# ~~~~~~~~~~~~~~~~~
-# Start the calculation by requesting 100 iterations.
+# Set turbulent intensity as 0.05.
+# Set turbulent specification to ``Intensity and Viscosity Ratio``.
+# Set turbulent viscosity ratio as 10.
 
-###############################################################################
-# .. image:: /_static/exhaust_system_015.png
-#   :width: 500pt
-#   :align: center
+out_turbulence = {
+    "turbulent_intensity": 0.05,
+    "turbulent_specification": "Intensity and Viscosity Ratio",
+    "turbulent_viscosity_ratio_real": 10,
+}
 
-solver.tui.solve.set.number_of_iterations(100)
-solver.tui.solve.iterate()
+outlet["mixture"].turbulence = out_turbulence
 
-# solver.tui.report.volume_integrals.volume("fluid-region-1","()","yes","volume.vrp")
+# Set the vapor phase volume fraction as 0.
+
+outlet["vapor"].multiphase.volume_fraction.value = 0
 
 ###############################################################################
-# Create path lines
-# ~~~~~~~~~~~~~~~~~
-# Create path lines highlighting the flow field.
+# Operating Conditions
+# ~~~~~~~~~~~~~~~~~~~~
+# Set the operating pressure as 0
+
+solver.setup.general.operating_conditions.operating_pressure = 0
 
 ###############################################################################
-# .. image:: /_static/exhaust_system_016.png
-#   :width: 500pt
-#   :align: center
+# Solution
+# ~~~~~~~~
+# Set the methods parameters.
 
-solver.tui.display.objects.create(
-    "pathlines",
-    "pathlines-1",
-    "field",
-    "time",
-    "accuracy-control",
-    "tolerance",
-    "0.001",
-    "skip",
-    "5",
-    "surfaces-list",
-    "inlet-1",
-    "inlet-2",
-    "inlet-3",
-    "()",
-    "quit",
-)
+methods = solver.solution.methods
 
-###############################################################################
-# Create iso-surface
-# ~~~~~~~~~~~~~~~~~~
-# Create an iso-surface through the manifold geometry.
+# Set Coupled from pressure-velocity coupling.
 
-solver.tui.surface.iso_surface(
-    "x-coordinate",
-    "surf-x-coordinate",
-    "()",
-    "fluid-region-1",
-    "()",
-    "380",
-    "()",
-)
+methods.p_v_coupling.flow_scheme = "Coupled"
 
-###############################################################################
-# Create contours of velocity magnitude
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Create contours of the velocity magnitude throughout the manifold
-# along with the mesh.
+# Set of presto! for spatial discretization.
 
-###############################################################################
-# .. image:: /_static/exhaust_system_017.png
-#   :width: 500pt
-#   :align: center
+methods.discretization_scheme["pressure"] = "presto!"
 
-solver.tui.display.objects.create(
-    "contour",
-    "contour-velocity",
-    "field",
-    "velocity-magnitude",
-    "surfaces-list",
-    "surf-x-coordinate",
-    "()",
-    "node-values?",
-    "no",
-    "range-option",
-    "auto-range-on",
-    "global-range?",
-    "no",
-    "quit",
-    "quit",
+# Set quick for momentum and volume fraction.
+
+methods.discretization_scheme["mom"] = "quick"
+methods.discretization_scheme["mp"] = "quick"
+
+# Set first order upwind for turbulent kinetic energy and turbulent dissipation rate.
+
+methods.discretization_scheme["k"] = "first-order-upwind"
+methods.discretization_scheme["omega"] = "first-order-upwind"
+
+# Set global time step from pseudo time method.
+
+methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
+
+# Enable High Order Term Relaxation.
+
+methods.high_order_term_relaxation.enable = True
+
+# Set the methods parameters.
+
+# Set the pseudo time explicit relaxation factor for volume fraction to 0.3.
+
+solver.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo_relax[
+    "mp"
+] = 0.3
+
+# Enable the plotting of residuals during the calculation.
+
+residual = solver.solution.monitor.residual
+
+residual.options.plot = True
+
+# Set the absolute criteria of continuity, x-velocity, y-velocity, k, omega, and vf-vapor to 1e-05
+
+equations = {
+    "continuity": {"convergence_criteria": 1e-05},
+    "x-velocity": {"convergence_criteria": 1e-05},
+    "y-velocity": {"convergence_criteria": 1e-05},
+    "k": {"convergence_criteria": 1e-05},
+    "omega": {"convergence_criteria": 1e-05},
+    "vf-vapor": {"convergence_criteria": 1e-05},
+}
+residual.equations = equations
+
+# Enable use specified initial pressure on inlets.
+
+solver.solution.initialization.hybrid_init_options.general_settings.initial_pressure = (
+    True
 )
 
-solver.tui.display.objects.create("mesh", "mesh-1", "surfaces-list", "*", "()", "quit")
+# Initialize the solution with hybrid initialization.
+
+solver.solution.initialization.hybrid_initialize()
+
+# Save case file
+# ~~~~~~~~~~~~~~
+# Solve the case file (``cavitation_model.cas.h5``).
+
+solver.file.write(file_name="cavitation_model.cas.h5", file_type="case")
+
+# Start the calculation by requesting 500 iterations.
+
+solver.solution.run_calculation.iterate(iter_count=500)
+
+# Write the final case file and the data.
+
+solver.file.write(file_name="cavitation_model.cas.h5", file_type="case")
 
 ###############################################################################
-# Create scene
-# ~~~~~~~~~~~~
-# Create a scene containing the mesh and the contours.
-
-###############################################################################
-# .. image:: /_static/exhaust_system_018.png
-#   :width: 500pt
-#   :align: center
-
-solver.tui.display.objects.create(
-    "scene",
-    "scene-1",
-    "graphics-objects",
-    "add",
-    "mesh-1",
-    "transparency",
-    "90",
-    "quit",
-    "add",
-    "contour-velocity",
-    "quit",
-    "quit",
-    "quit",
-)
-
-#########################################################################
-# Close Fluent
-# ~~~~~~~~~~~~
-# Close Fluent.
-
-solver.exit()
+# Post Processing
+# ~~~~~~~~~~~~~~~
