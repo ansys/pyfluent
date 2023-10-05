@@ -121,7 +121,7 @@ def configure_container_dict(
     Raises
     ------
     KeyError
-        If license server is not specified through environment variable or ``container_dict``.
+        If license server is not specified through an environment variable or in ``container_dict``.
     ValueError
         If server info file is specified through both a command-line argument inside ``container_dict`` and the  ``container_server_info_file`` parameter.
     ValueError
