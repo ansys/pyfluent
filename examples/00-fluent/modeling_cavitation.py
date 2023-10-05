@@ -30,8 +30,6 @@ of the orifice are D/d = 2.88 and L/d = 4, where D, d, and L are the
 inlet diameter, orifice diameter, and orifice length respectively.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/cavitation_model.png'
-
 ###############################################################################
 # Example Setup
 # -------------
@@ -161,9 +159,9 @@ solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reac
 
 # Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11
 
-solver.setup.models.multiphase.vaporization_pressure = 3540
+# solver.setup.models.multiphase.vaporization_pressure = 3540
 
-solver.setup.models.multiphase.bubble_number_density = 1e11
+# solver.setup.models.multiphase.bubble_number_density = 1e11
 
 ###############################################################################
 # Set momentum and turbulence boundary conditions for first inlet
@@ -202,8 +200,8 @@ inlet_1["vapor"].multiphase.volume_fraction.value = 0
 solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 
 ###############################################################################
-# Set boundary conditions at outlet
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Set Boundary Conditions for the Outlet
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set the boundary conditions at the outlet (``outlet``).
 
 outlet = solver.setup.boundary_conditions.pressure_outlet["outlet"].phase
@@ -304,11 +302,11 @@ solver.solution.initialization.hybrid_init_options.general_settings.initial_pres
 
 solver.solution.initialization.hybrid_initialize()
 
-# Save case file
-# ~~~~~~~~~~~~~~
-# Solve the case file (``cavitation_model.cas.h5``).
+# Save the Case File
+# ~~~~~~~~~~~~~~~~~~
+# Solve the case file (``cav.cas.h5``).
 
-solver.file.write(file_name="cavitation_model.cas.h5", file_type="case")
+solver.file.write(file_name="cav", file_type="case")
 
 # Start the calculation by requesting 500 iterations.
 
@@ -316,8 +314,66 @@ solver.solution.run_calculation.iterate(iter_count=500)
 
 # Write the final case file and the data.
 
-solver.file.write(file_name="cavitation_model.cas.h5", file_type="case")
+solver.file.write(file_name="cav", file_type="case-data")
 
 ###############################################################################
 # Post Processing
 # ~~~~~~~~~~~~~~~
+# Create and plot a definition of pressure contours in the orifice.
+
+# Set the contour name to contour_static_pressure.
+
+solver.results.graphics.contour.create("contour_static_pressure")
+
+# Set filled to True, coloring to 'banded' and field to 'static pressure'.
+
+contour_static_pressure = {
+    "coloring": {"option": "banded", "smooth": False},
+    "contour_lines": False,
+    "field": "pressure",
+    "filled": True,
+}
+
+solver.results.graphics.contour["contour_static_pressure"] = contour_static_pressure
+
+# Mirror the display.
+
+solver.tui.display.set.mirror_zones(["symm_2", "symm_1"])
+
+# Create and plot a contour definition of the turbulent kinetic energy.
+
+solver.results.graphics.contour.create("contour_tke")
+
+# Set filled to True, coloring to 'banded' and field to 'static pressure'.
+
+contour_tke = {
+    "coloring": {"option": "banded", "smooth": False},
+    "contour_lines": False,
+    "field": "turb-kinetic-energy",
+    "filled": True,
+}
+
+solver.results.graphics.contour["contour_tke"] = contour_tke
+
+# Create and plot a contour definition of the volume fraction of water vapor.
+
+solver.results.graphics.contour.create("contour_vf_vapor")
+
+# Set filled to True, coloring to 'banded' and field to 'static pressure'.
+
+contour_vf_vapor = {
+    "coloring": {"option": "banded", "smooth": False},
+    "contour_lines": False,
+    "field": "vapor-vof",
+    "filled": True,
+}
+
+solver.results.graphics.contour["contour_vf_vapor"] = contour_vf_vapor
+
+###############################################################################
+# Save and Exit
+# ~~~~~~~~~~~~~
+
+solver.file.write(file_name="cav", file_type="case")
+
+solver.exit()
