@@ -21,7 +21,7 @@ class FileManager(AbstractContextManager):
         )
         Upload a file on the server.
 
-    _is_file(
+    is_file(
         file_name
         )
         Check if a file available on the server.
@@ -64,7 +64,7 @@ class FileManager(AbstractContextManager):
             return str(upload.status_code)
         return "0"
 
-    def _is_file(self, file_name: str):
+    def is_file(self, file_name: str):
         """Check if the file exists on the server.
 
         Parameters

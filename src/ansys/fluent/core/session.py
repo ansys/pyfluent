@@ -316,12 +316,12 @@ class _Uploader:
         if self.file_service:
             expanded_file_path = os.path.expandvars(file_path)
             upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
-            self.file_service.upload_file(expanded_file_path, upload_file_name)
+            self.file_service.upload(expanded_file_path, upload_file_name)
 
     def download(self, file_name: str, local_file_path: Optional[str] = None):
         """Downloads a file from the server."""
         if self.file_service:
-            if self.file_service.file_exist(file_name):
-                self.file_service.download_file(file_name, local_file_path)
+            if self.file_service.is_file(file_name):
+                self.file_service.download(file_name, local_file_path)
             else:
                 raise FileNotFoundError("Remote file does not exist.")
