@@ -125,7 +125,7 @@ def configure_container_dict(
     ValueError
         If server info file is specified through both command-line argument and ``container_server_info_file``.
     ValueError
-        If ``fluent_image`` or ``image_tag`` and ``image_name`` is not specified.
+        If ``fluent_image`` or ``image_tag`` and ``image_name`` are not specified.
 
     Notes
     -----
