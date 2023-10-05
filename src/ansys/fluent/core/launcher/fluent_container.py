@@ -118,6 +118,15 @@ def configure_container_dict(
     host_server_info_file : Path
     remove_server_info_file: bool
 
+    Raises
+    ------
+    KeyError
+        If license server is not specified through environment variable or ``container_dict``.
+    ValueError
+        If server info file is specified through both command-line argument and ``container_server_info_file``.
+    ValueError
+        If ``fluent_image`` or ``image_tag`` and ``image_name`` is not specified.
+
     Notes
     -----
     This function should usually not be called directly, it is automatically used by
@@ -308,6 +317,11 @@ def start_fluent_container(
         Fluent gPRC server port exposed from the container.
     str
         Fluent gPRC server password exposed from the container.
+
+    Raises
+    ------
+    RuntimeError
+        If Fluent container launch reaches timeout.
 
     Notes
     -----
