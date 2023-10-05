@@ -31,6 +31,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.utils.file_manger import FileManager
 
 from .rpvars import RPVars
 
@@ -308,11 +309,7 @@ class _Uploader:
         except (AttributeError, KeyError):
             pass
         else:
-            from simple_upload_server.client import Client
-
-            self.file_service = Client(
-                token="token", url=upload_server.uri, headers=upload_server.headers
-            )
+            self.file_service = FileManager(upload_server.uri)
 
     def upload(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server."""
