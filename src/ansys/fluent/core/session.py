@@ -187,7 +187,7 @@ class BaseSession:
 
     @property
     def id(self) -> str:
-        """Return the session ID."""
+        """Return the session id."""
         return self.fluent_connection._id
 
     def start_journal(self, file_path: str):

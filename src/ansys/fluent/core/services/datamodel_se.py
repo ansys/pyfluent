@@ -89,49 +89,49 @@ class DatamodelService(StreamingService):
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        """InitDatamodel rpc of DataModel service."""
+        """initDatamodel rpc of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """GetAttributeValue rpc of DataModel service."""
+        """getAttributeValue rpc of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """GetState rpc of DataModel service."""
+        """getState rpc of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """SetState rpc of DataModel service."""
+        """setState rpc of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
-        """UpdateDict rpc of DataModel service."""
+        """updateDict rpc of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
-        """DeleteObject rpc of DataModel service."""
+        """deleteObject rpc of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """ExecuteCommand rpc of DataModel service."""
+        """executeCommand rpc of DataModel service."""
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
@@ -139,13 +139,13 @@ class DatamodelService(StreamingService):
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
-        """CreateCommandArguments rpc of DataModel service."""
+        """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """DeleteCommandArguments rpc of DataModel service."""
+        """deleteCommandArguments rpc of DataModel service."""
         try:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
@@ -159,28 +159,28 @@ class DatamodelService(StreamingService):
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
-        """GetSpecs rpc of DataModel service."""
+        """getSpecs rpc of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """GetStaticInfo rpc of DataModel service."""
+        """getStaticInfo rpc of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
-        """SubscribeEvents rpc of DataModel service."""
+        """subscribeEvents rpc of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
     @catch_grpc_error
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
-        """UnsubscribeEvents rpc of DataModel service."""
+        """unsubscribeEvents rpc of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
     def unsubscribe_all_events(self):
@@ -587,7 +587,7 @@ class PyMenu(PyStateContainer):
         Returns
         -------
         str
-            Command ID
+            Command id
         """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
@@ -819,7 +819,7 @@ class PyDictionary(PyParameter):
         Parameters
         ----------
         dict_state : Dict[str, Any]
-           Incoming dict state
+            Incoming dict state
         """
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules

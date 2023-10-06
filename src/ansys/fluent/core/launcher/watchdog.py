@@ -25,7 +25,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] =
     if env_watchdog_debug in ("1", "ON"):
         print(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
-            f"enabling debugging for watchdog ID {watchdog_id}..."
+            f"enabling debugging for watchdog id {watchdog_id}..."
         )
 
     logger = pyfluent.logging.get_logger("pyfluent.launcher")
