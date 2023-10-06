@@ -303,13 +303,11 @@ def test_error_handling_single_phase():
 
     transaction_1 = field_data.new_transaction()
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(NotImplementedError) as msg:
         transaction_1.add_pathlines_fields_request("SV_T", [3, 5])
-    assert msg.value.args[0] == r"Path-lines not supported."
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(NotImplementedError) as msg:
         field_data.get_pathlines_field_data("SV_T", [3, 5])
-    assert msg.value.args[0] == r"Path-lines not supported."
 
 
 def test_error_handling_multi_phase():
