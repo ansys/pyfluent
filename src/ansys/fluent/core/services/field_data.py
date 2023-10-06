@@ -117,7 +117,7 @@ class FieldInfo:
             Field name
         node_value: bool
         surface_ids : List[int], optional
-            List of surface IDS for the surface data.
+            List of surface IDs for the surface data.
 
         Returns
         -------
@@ -469,13 +469,13 @@ class FieldTransaction:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity, centroids, and
-        normals).
+        """Add request to get surface data (vertices, face connectivity,
+        centroids, and normals).
 
         Parameters
         ----------
         surface_ids : List[int], optional
-            List of surface IDS for the surface data.
+            List of surface IDs for the surface data.
         surface_names: List[str], optional
             List of surface names for the surface data.
         overset_mesh : bool, optional
@@ -740,7 +740,7 @@ def _get_surface_ids(
     surface_names: Optional[List[str]] = None,
     surface_name: Optional[str] = None,
 ) -> List[int]:
-    """Get surface ids' based on surface names or ids'.
+    """Get surface IDs' based on surface names or IDs'.
 
     Parameters
     ----------
@@ -756,7 +756,7 @@ def _get_surface_ids(
     List[int]
     """
     if surface_ids and (surface_name or surface_names):
-        raise RuntimeError("Please provide either surface names or surface ids.")
+        raise RuntimeError("Please provide either surface names or surface IDs.")
     if not surface_ids:
         surface_ids = []
         if surface_names:
@@ -769,7 +769,7 @@ def _get_surface_ids(
                 allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise RuntimeError("Please provide either surface names or surface IDs.")
     return surface_ids
 
 
@@ -801,7 +801,8 @@ class ChunkParser:
     def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
         """Extracts field data received from Fluent.
 
-        if callbacks_provider is set then callbacks are triggered with extracted data.
+        if callbacks_provider is set then callbacks are triggered with
+        extracted data.
         """
 
         def _get_tag_for_surface_request():
@@ -939,7 +940,7 @@ class BaseFieldData:
 
     @property
     def surface_id(self):
-        """Returns surface id."""
+        """Returns surface ID."""
         return self._id
 
     @property
@@ -1253,7 +1254,8 @@ class FieldData:
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
     ]:
-        """Get surface data (vertices, faces connectivity, centroids, and normals).
+        """Get surface data (vertices, faces connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
