@@ -154,7 +154,6 @@ solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material(
 solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.mass_transfer(
     1, "liquid", "vapor", "cavitation", "1", "no", "no", "no"
 )
-
 """Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11."""
 
 ###############################################################################
