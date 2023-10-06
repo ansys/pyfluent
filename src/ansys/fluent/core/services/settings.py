@@ -281,7 +281,7 @@ class SettingsService:
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)
-        # The rpc calls no longer raise an exception. Force an exception if
+        # The RPC calls no longer raise an exception. Force an exception if
         # type is empty
         if not response.info.type:
             raise RuntimeError

@@ -49,40 +49,40 @@ class DatamodelService:
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """GetAttributeValue rpc of DataModel service."""
+        """GetAttributeValue RPC of DataModel service."""
         return self._stub.GetAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """GetState rpc of DataModel service."""
+        """GetState RPC of DataModel service."""
         return self._stub.GetState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """SetState rpc of DataModel service."""
+        """SetState RPC of DataModel service."""
         return self._stub.SetState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """ExecuteCommand rpc of DataModel service."""
+        """ExecuteCommand RPC of DataModel service."""
         return self._stub.ExecuteCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """ExecuteQuery rpc of DataModel service."""
+        """ExecuteQuery RPC of DataModel service."""
         return self._stub.ExecuteQuery(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(self, request):
-        """GetStaticInfo rpc of DataModel service."""
+        """GetStaticInfo RPC of DataModel service."""
         return self._stub.GetStaticInfo(request, metadata=self._metadata)
 
 
