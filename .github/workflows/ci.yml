@@ -44,6 +44,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install pre-commit
+        run: python -m pip install pre-commit
+
+      - name: Run pre-commit for docformatter
+        run: pre-commit run --hook-stage manual --all-files docformatter
+
       - name: Running Vale
         uses: errata-ai/vale-action@reviewdog
         env:

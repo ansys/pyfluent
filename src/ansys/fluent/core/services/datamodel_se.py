@@ -89,7 +89,7 @@ class DatamodelService(StreamingService):
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        """initDatamodel rpc of DataModel service"""
+        """initDatamodel rpc of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     @catch_grpc_error
