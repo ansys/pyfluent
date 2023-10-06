@@ -29,7 +29,6 @@ The orifice diameter is 4 x 10^-3 m, and the geometrical parameters
 of the orifice are D/d = 2.88 and L/d = 4, where D, d, and L are the
 inlet diameter, orifice diameter, and orifice length respectively.
 """
-# sphinx_gallery_thumbnail_path = '_static\cavitation_model.png'
 
 ###############################################################################
 # Example Setup
@@ -41,6 +40,7 @@ inlet diameter, orifice diameter, and orifice length respectively.
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
+# sphinx_gallery_thumbnail_path = '_static\cavitation_model.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
