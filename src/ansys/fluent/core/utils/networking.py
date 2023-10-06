@@ -45,7 +45,7 @@ class _GrpcServer:
 
 
 def find_remoting_ip() -> str:
-    """Find an ip address at which a grpc connection can be established by looping over
+    """Find an ip address at which a gRPC connection can be established by looping over
     getaddrinfo output.
 
     Returns

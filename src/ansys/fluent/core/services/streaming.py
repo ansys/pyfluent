@@ -1,4 +1,4 @@
-"""Wrapper over the streaming grpc services of Fluent."""
+"""Wrapper over the streaming gRPC services of Fluent."""
 
 from typing import Generator, List, Tuple
 
