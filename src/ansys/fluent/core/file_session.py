@@ -105,6 +105,13 @@ class Transaction:
         Returns
         -------
         None
+
+        Raises
+        ------
+        RuntimeError
+            If surface names or surface ids are not provided.
+        RuntimeError
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
@@ -152,6 +159,13 @@ class Transaction:
         Returns
         -------
         None
+
+        Raises
+        ------
+        RuntimeError
+            If surface names or surface ids are not provided.
+        RuntimeError
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
@@ -200,7 +214,7 @@ class Transaction:
         -------
         None
         """
-        raise RuntimeError("Path-lines not supported.")
+        raise NotImplementedError("Pathlines are not supported.")
 
     def get_fields(self):
         """Get data for previously added requests and then clear all requests.
@@ -210,6 +224,11 @@ class Transaction:
         Dict[int, Dict[int, Dict[str, np.array]]]
             Data is returned as dictionary of dictionaries in the following structure:
             tag Union[int, Tuple]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+
+        Raises
+        ------
+        RuntimeError
+            If any field other than ``"velocity"`` is provided.
         """
         mesh = self._file_session._case_file.get_mesh()
         field_data = {}
@@ -301,6 +320,11 @@ class FileFieldData:
              If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
+
+        Raises
+        ------
+        RuntimeError
+            If surface names or surface ids are not provided.
         """
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
@@ -380,6 +404,15 @@ class FileFieldData:
             If a surface name is provided as input, scalar field data is returned. If surface
             IDs are provided as input, a dictionary containing a map of surface IDs to scalar
             field data.
+
+        Raises
+        ------
+        RuntimeError
+            If surface names or surface ids are not provided.
+        RuntimeError
+            If field name does not have prefix ``phase-`` for multi-phase cases.
+        RuntimeError
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
@@ -459,6 +492,17 @@ class FileFieldData:
             If a surface name is provided as input, vector field data is returned.
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
+
+        Raises
+        ------
+        RuntimeError
+            If surface names or surface ids are not provided.
+        RuntimeError
+            If any field other than ``"velocity"`` is provided.
+        RuntimeError
+            If field name does not have prefix ``phase-`` for multi-phase cases.
+        RuntimeError
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
             raise RuntimeError("Please provide either surface name or surface ids.")
@@ -538,7 +582,7 @@ class FileFieldData:
             Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
         """
-        raise RuntimeError("Path-lines not supported.")
+        raise NotImplementedError("Pathlines are not supported.")
 
 
 class FileFieldInfo:

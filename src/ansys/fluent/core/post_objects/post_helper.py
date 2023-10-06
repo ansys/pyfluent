@@ -26,7 +26,15 @@ class PostAPIHelper:
                 self.delete_surface_on_server()
 
         def create_surface_on_server(self):
-            """Creates the surface on server."""
+            """Creates the surface on server.
+
+            Raises
+            ------
+            RuntimeError
+                If iso-surface definition is incomplete.
+            RuntimeError
+                If server fails to create surface.
+            """
             if self.obj.definition.type() == "iso-surface":
                 iso_surface = self.obj.definition.iso_surface
                 field = iso_surface.field()

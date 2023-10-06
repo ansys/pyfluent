@@ -142,6 +142,7 @@ class DatamodelService(StreamingService):
         """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
+    # pylint: disable=missing-raises-doc
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
@@ -295,7 +296,13 @@ class EventSubscription:
         self._service.events[self.tag] = self
 
     def unsubscribe(self):
-        """Unsubscribe the datamodel event."""
+        """Unsubscribe the datamodel event.
+
+        Raises
+        ------
+        RuntimeError
+            If server fails to unsubscribe from event.
+        """
         if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
             self._service.event_streaming.unregister_callback(self.tag)
             request = DataModelProtoModule.UnsubscribeEventsRequest()
@@ -544,6 +551,11 @@ class PyMenu(PyStateContainer):
         ----------
         new_name : str
             New name for the object.
+
+        Raises
+        ------
+        RuntimeError
+            If the object is not a named object.
         """
         try:
             self._name_.set_state(new_name)
@@ -552,8 +564,19 @@ class PyMenu(PyStateContainer):
                 f"{self.__class__.__name__} is not a named object class."
             )
 
-    def name(self):
-        """Get the name of the named object."""
+    def name(self) -> str:
+        """Get the name of the named object.
+
+        Returns
+        -------
+        str
+            name
+
+        Raises
+        ------
+        RuntimeError
+            If the object is not a named object.
+        """
         try:
             return self._name_()
         except AttributeError:
@@ -1306,7 +1329,23 @@ class DataModelType(Enum):
 
     @staticmethod
     def get_mode(mode: str) -> Type[PyCommandArgumentsSubItem]:
-        """Returns the datamodel type."""
+        """Returns the datamodel type.
+
+        Parameters
+        ----------
+        mode : str
+            mode
+
+        Returns
+        -------
+        Type[PyCommandArgumentsSubItem]
+            datamodel type
+
+        Raises
+        ------
+        TypeError
+            If an unknown mode is passed.
+        """
         for m in DataModelType:
             if mode in m.value[0]:
                 return m

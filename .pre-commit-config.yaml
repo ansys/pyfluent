@@ -54,7 +54,18 @@ repos:
 #      --count,
 #    ]
 
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-    -   id: check-yaml
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+    - id: check-yaml
+
+- repo: https://github.com/PyCQA/pylint
+  rev: v3.0.0
+  hooks:
+    - id: pylint
+      args:
+        [
+          "--reports", "n",
+          "--score", "n",
+          "--rcfile=pylintrc",
+        ]
