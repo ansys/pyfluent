@@ -4,8 +4,7 @@ from typing import Generator, List, Tuple
 
 
 class _StreamingServiceHelper:
-    """Helper Class providing API to start/stop gRPC streaming services of
-    Fluent.
+    """Helper Class providing API to start/stop gRPC streaming services of Fluent.
 
     Methods
     -------

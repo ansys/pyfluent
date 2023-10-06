@@ -469,8 +469,8 @@ class FieldTransaction:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity,
-        centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -801,8 +801,7 @@ class ChunkParser:
     def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
         """Extracts field data received from Fluent.
 
-        if callbacks_provider is set then callbacks are triggered with
-        extracted data.
+        if callbacks_provider is set then callbacks are triggered with extracted data.
         """
 
         def _get_tag_for_surface_request():
@@ -1254,8 +1253,7 @@ class FieldData:
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
     ]:
-        """Get surface data (vertices, faces connectivity, centroids, and
-        normals).
+        """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
         ----------
