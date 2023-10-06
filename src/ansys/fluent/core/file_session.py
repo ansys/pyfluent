@@ -213,13 +213,8 @@ class Transaction:
         Returns
         -------
         None
-
-        Raises
-        ------
-        RuntimeError
-            Always, as pathlines are not supported.
         """
-        raise RuntimeError("Path-lines not supported.")
+        raise NotImplementedError("Pathlines are not supported.")
 
     def get_fields(self):
         """Get data for previously added requests and then clear all requests.
@@ -586,13 +581,8 @@ class FileFieldData:
         Dict
             Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
-
-        Raises
-        ------
-        RuntimeError
-            Always, as pathlines are not supported.
         """
-        raise RuntimeError("Path-lines not supported.")
+        raise NotImplementedError("Pathlines are not supported.")
 
 
 class FileFieldInfo:
