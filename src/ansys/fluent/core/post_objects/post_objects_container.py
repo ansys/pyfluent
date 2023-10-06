@@ -6,14 +6,14 @@ from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    """Base class for containers, e.g. Plots, Graphics.
+    """Base class for containers, for example Plots, Graphics.
 
     Parameters
         ----------
         session : object
             Session object.
         container_type: object
-            Container type (e.g. Plots, Graphics)
+            Container type (for example Plots, Graphics)
         module: object
             Python module containing post definitions
         post_api_helper: object

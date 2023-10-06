@@ -137,7 +137,7 @@ class SettingsService:
         elif isinstance(value, collections.abc.Iterable):
             for v in value:
                 self._set_state_from_value(state.value_list.lst.add(), v)
-        else:  # fall back to string (e.g. pathlib.Path)
+        else:  # fall back to string (for example pathlib.Path)
             state.string = str(value)
 
     @_trace
