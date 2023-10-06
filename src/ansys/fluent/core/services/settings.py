@@ -275,6 +275,7 @@ class SettingsService:
 
         return ret
 
+    # pylint: disable=missing-raises-doc
     @_trace
     def get_static_info(self):
         """Get static-info for settings."""

@@ -90,12 +90,22 @@ def get_ansys_version() -> str:
 
     The returned value is the string component of one of the members of the
     FluentVersion class.
+
+    Returns
+    -------
+    str
+        Ansys version string
+
+    Raises
+    ------
+    RuntimeError
+        If an Ansys version cannot be found.
     """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
 
-    raise RuntimeError("No ANSYS version can be found.")
+    raise RuntimeError("An Ansys version cannot be found.")
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -146,8 +156,24 @@ class FluentMode(Enum):
     SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
-    def get_mode(mode: str):
-        """Returns the FluentMode based on the provided mode string."""
+    def get_mode(mode: str) -> "FluentMode":
+        """Returns the FluentMode based on the provided mode string.
+
+        Parameters
+        ----------
+        mode : str
+            mode
+
+        Returns
+        -------
+        FluentMode
+            Fluent mode
+
+        Raises
+        ------
+        RuntimeError
+            If an unknown mode is passed.
+        """
         for m in FluentMode:
             if mode == m.value[0]:
                 return m
@@ -436,6 +462,7 @@ def scm_to_py(topy, journal_filepaths):
     return f" {fluent_jou_arg} -topy"
 
 
+# pylint: disable=missing-raises-doc
 class LaunchFluentError(Exception):
     """Exception class representing launch errors."""
 

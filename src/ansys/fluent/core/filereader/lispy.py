@@ -258,6 +258,7 @@ class Env(dict):
                 )
             self.update(zip(params, args))
 
+    # pylint: disable=missing-raises-doc
     def find(self, var):
         """Find the innermost Env where var appears."""
         if var in self:
@@ -276,6 +277,7 @@ def cons(x, y):
     return [x] + y
 
 
+# pylint: disable=missing-raises-doc
 def callcc(proc):
     """Call proc with current continuation; escape only."""
     ball = RuntimeWarning("Sorry, can't continue this continuation any longer.")
@@ -462,6 +464,7 @@ def expand(x, toplevel=False):
         return list(map(expand, x))  # (f arg...) => expand each
 
 
+# pylint: disable=missing-raises-doc
 def require(x, predicate, msg="wrong length"):
     """Signal a syntax error if predicate is false."""
     if not predicate:
