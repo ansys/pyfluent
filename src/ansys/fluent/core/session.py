@@ -31,7 +31,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils.Client import Client
+from ansys.fluent.core.utils.client import Client
 
 from .rpvars import RPVars
 
