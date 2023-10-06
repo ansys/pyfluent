@@ -60,7 +60,6 @@ solver = pyfluent.launch_fluent(
     mode="solver",
     version="2d",
     cwd=pyfluent.EXAMPLES_PATH,
-    show_gui=True,
 )
 
 ###############################################################################
