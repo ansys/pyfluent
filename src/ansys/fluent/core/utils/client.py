@@ -104,22 +104,3 @@ class Client(AbstractContextManager):
         request_url = f"{self._repo_url}/files/{file_name}?token={self._token}"
         result = self._session.head(request_url)
         return result.ok
-
-    def delete_file(self, file_name: str, file_url: str):
-        """Delete a file from the server.
-
-        Parameters
-        ----------
-        file_name: Name of the file to delete
-        file_url: Url of file
-
-        Returns
-        -------
-        File delete information.
-        """
-        if self.file_exist(file_name):
-            self._session.delete(file_url)
-            if not self.file_exist(file_name):
-                return f"{file_name} has been deleted."
-        else:
-            raise FileNotFoundError("Remote file does not exist.")
