@@ -187,6 +187,7 @@ class PyLocalBaseMeta(type):
             root = self.get_root(obj)
             return root.session
 
+
         return wrapper
 
     @classmethod
@@ -203,6 +204,7 @@ class PyLocalBaseMeta(type):
             if getattr(self, "_parent", None):
                 return self._parent.get_path() + "/" + self._name
             return self._name
+
 
         return wrapper
 
@@ -454,9 +456,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __create_getattribute(cls):
         def wrapper(self, name):
             obj = object.__getattribute__(self, name)
-            is_active = getattr(obj, "is_active", True)
-            return obj if is_active else None
-
+            return obj
         return wrapper
 
     @classmethod
