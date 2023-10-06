@@ -2,6 +2,7 @@
 
 from contextlib import AbstractContextManager
 import os
+from typing import Optional
 
 import requests
 
@@ -28,7 +29,7 @@ class Client(AbstractContextManager):
         """Returns the URL."""
         return self._repo_url
 
-    def upload_file(self, file_path, remote_file_name=None):
+    def upload_file(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file.
 
         Parameters
@@ -50,7 +51,7 @@ class Client(AbstractContextManager):
             return str(result.status_code)
         return "500"
 
-    def get_file(self, file_name, text=True):
+    def get_file(self, file_name: str, text=True):
         """Gets a file contents given its name.
 
         Parameters
@@ -70,7 +71,7 @@ class Client(AbstractContextManager):
         else:
             return result.content
 
-    def download_file(self, file_name, local_path):
+    def download_file(self, file_name: str, local_path: str):
         """Downloads a file from a remote repository by its name.
 
         Parameters
@@ -89,7 +90,7 @@ class Client(AbstractContextManager):
 
         return local
 
-    def file_exist(self, file_name):
+    def file_exist(self, file_name: str):
         """Check that a file exists on the server.
 
         Parameters
@@ -103,3 +104,22 @@ class Client(AbstractContextManager):
         request_url = f"{self._repo_url}/files/{file_name}?token={self._token}"
         result = self._session.head(request_url)
         return result.ok
+
+    def delete_file(self, file_name: str, file_url: str):
+        """Delete a file from the server.
+
+        Parameters
+        ----------
+        file_name: Name of the file to delete
+        file_url: Url of file
+
+        Returns
+        -------
+        File delete information.
+        """
+        if self.file_exist(file_name):
+            self._session.delete(file_url)
+            if not self.file_exist(file_name):
+                return f"{file_name} has been deleted."
+        else:
+            raise FileNotFoundError("Remote file does not exist.")
