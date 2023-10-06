@@ -445,7 +445,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             """Create the initialization method for 'PyLocalObjectMeta'."""
             self._parent = parent
             self._name = name
-            import pdb; pdb.set_trace
             self._api_helper = api_helper(self)
             self.type = "object"
             commands = getattr(self.__class__, "commands", None)
