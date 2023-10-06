@@ -8,6 +8,7 @@ import requests
 
 class Client(AbstractContextManager):
     """Client class for the go-simple-upload-server.
+
     https://github.com/mayth/go-simple-upload-server#go-simple-upload-server
     """
 
