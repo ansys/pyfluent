@@ -41,7 +41,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ):
         network_logger.debug(
-            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
+            f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():

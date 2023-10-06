@@ -30,22 +30,22 @@ class SVARService:
 
     @catch_grpc_error
     def get_svar_data(self, request):
-        """GetSvarData rpc of SVAR service."""
+        """GetSvarData RPC of SVAR service."""
         return self.__stub.GetSvarData(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def set_svar_data(self, request):
-        """SetSvarData rpc of SVAR service."""
+        """SetSvarData RPC of SVAR service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_svars_info(self, request):
-        """GetSvarsInfo rpc of SVAR service."""
+        """GetSvarsInfo RPC of SVAR service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_zones_info(self, request):
-        """GetZonesInfo rpc of SVAR service."""
+        """GetZonesInfo RPC of SVAR service."""
         return self.__stub.GetZonesInfo(request, metadata=self.__metadata)
 
 

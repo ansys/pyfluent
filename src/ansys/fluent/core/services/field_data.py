@@ -49,28 +49,28 @@ class FieldDataService(StreamingService):
 
     @catch_grpc_error
     def get_scalar_field_range(self, request):
-        """GetRange rpc of FieldData service."""
+        """GetRange RPC of FieldData service."""
         return self._stub.GetRange(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_scalar_fields_info(self, request):
-        """GetFieldsInfo rpc of FieldData service."""
+        """GetFieldsInfo RPC of FieldData service."""
         return self._stub.GetFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
-        """GetVectorFieldsInfo rpc of FieldData service."""
+        """GetVectorFieldsInfo RPC of FieldData service."""
         return self._stub.GetVectorFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
-        """GetSurfacesInfo rpc of FieldData service."""
+        """GetSurfacesInfo RPC of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
     # pylint: disable=missing-raises-doc
     @catch_grpc_error
     def get_fields(self, request):
-        """GetFields rpc of FieldData service."""
+        """GetFields RPC of FieldData service."""
         chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)
         if not chunk_iterator.is_active():
             raise RuntimeError(
@@ -742,7 +742,7 @@ def _get_surface_ids(
     surface_names: Optional[List[str]] = None,
     surface_name: Optional[str] = None,
 ) -> List[int]:
-    """Get surface ids' based on surface names or ids'.
+    """Get surface IDs based on surface names or IDs.
 
     Parameters
     ----------
@@ -758,7 +758,7 @@ def _get_surface_ids(
     List[int]
     """
     if surface_ids and (surface_name or surface_names):
-        raise RuntimeError("Please provide either surface names or surface ids.")
+        raise RuntimeError("Please provide either surface names or surface IDs.")
     if not surface_ids:
         surface_ids = []
         if surface_names:
@@ -771,7 +771,7 @@ def _get_surface_ids(
                 allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise RuntimeError("Please provide either surface names or surface IDs.")
     return surface_ids
 
 
@@ -941,7 +941,7 @@ class BaseFieldData:
 
     @property
     def surface_id(self):
-        """Returns surface id."""
+        """Returns surface ID."""
         return self._id
 
     @property

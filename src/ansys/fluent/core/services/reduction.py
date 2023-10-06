@@ -37,154 +37,154 @@ class ReductionService:
     def area(
         self, request: ReductionProtoModule.AreaRequest
     ) -> ReductionProtoModule.AreaResponse:
-        """Area rpc of Reduction service."""
+        """Area RPC of Reduction service."""
         return self._stub.Area(request, metadata=self._metadata)
 
     @catch_grpc_error
     def area_average(
         self, request: ReductionProtoModule.AreaAveRequest
     ) -> ReductionProtoModule.AreaAveResponse:
-        """Area average rpc of Reduction service."""
+        """Area average RPC of Reduction service."""
         return self._stub.AreaAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def area_integral(
         self, request: ReductionProtoModule.AreaIntRequest
     ) -> ReductionProtoModule.AreaIntResponse:
-        """Area integral rpc of Reduction service."""
+        """Area integral RPC of Reduction service."""
         return self._stub.AreaInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def centroid(
         self, request: ReductionProtoModule.CentroidRequest
     ) -> ReductionProtoModule.CentroidResponse:
-        """Centroid rpc of Reduction service."""
+        """Centroid RPC of Reduction service."""
         return self._stub.Centroid(request, metadata=self._metadata)
 
     @catch_grpc_error
     def count(
         self, request: ReductionProtoModule.CountRequest
     ) -> ReductionProtoModule.CountResponse:
-        """Count rpc of Reduction service."""
+        """Count RPC of Reduction service."""
         return self._stub.Count(request, metadata=self._metadata)
 
     @catch_grpc_error
     def count_if(
         self, request: ReductionProtoModule.CountIfRequest
     ) -> ReductionProtoModule.CountIfResponse:
-        """Count If rpc of Reduction service."""
+        """Count If RPC of Reduction service."""
         return self._stub.Count(request, metadata=self._metadata)
 
     @catch_grpc_error
     def force(
         self, request: ReductionProtoModule.ForceRequest
     ) -> ReductionProtoModule.ForceResponse:
-        """Force rpc of Reduction service."""
+        """Force RPC of Reduction service."""
         return self._stub.Force(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_average(
         self, request: ReductionProtoModule.MassAveRequest
     ) -> ReductionProtoModule.MassAveResponse:
-        """Mass average rpc of Reduction service."""
+        """Mass average RPC of Reduction service."""
         return self._stub.MassAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_flow_average(
         self, request: ReductionProtoModule.MassFlowAveRequest
     ) -> ReductionProtoModule.MassFlowAveResponse:
-        """Mass flow average rpc of Reduction service."""
+        """Mass flow average RPC of Reduction service."""
         return self._stub.MassFlowAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_flow_average_absolute(
         self, request: ReductionProtoModule.MassFlowAveAbsRequest
     ) -> ReductionProtoModule.MassFlowAveAbsResponse:
-        """Absolute mass flow average rpc of Reduction service."""
+        """Absolute mass flow average RPC of Reduction service."""
         return self._stub.MassFlowAveAbs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_flow_integral(
         self, request: ReductionProtoModule.MassFlowIntRequest
     ) -> ReductionProtoModule.MassFlowIntResponse:
-        """Mass flow integral rpc of Reduction service."""
+        """Mass flow integral RPC of Reduction service."""
         return self._stub.MassFlowInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_integral(
         self, request: ReductionProtoModule.MassIntRequest
     ) -> ReductionProtoModule.MassIntResponse:
-        """Mass integral rpc of Reduction service."""
+        """Mass integral RPC of Reduction service."""
         return self._stub.MassInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def maximum(
         self, request: ReductionProtoModule.MaximumRequest
     ) -> ReductionProtoModule.MaximumResponse:
-        """Maximum rpc of Reduction service."""
+        """Maximum RPC of Reduction service."""
         return self._stub.Maximum(request, metadata=self._metadata)
 
     @catch_grpc_error
     def minimum(
         self, request: ReductionProtoModule.MinimumRequest
     ) -> ReductionProtoModule.MinimumResponse:
-        """Minimum rpc of Reduction service."""
+        """Minimum RPC of Reduction service."""
         return self._stub.Minimum(request, metadata=self._metadata)
 
     @catch_grpc_error
     def pressure_force(
         self, request: ReductionProtoModule.PressureForceRequest
     ) -> ReductionProtoModule.PressureForceResponse:
-        """Pressure force rpc of Reduction service."""
+        """Pressure force RPC of Reduction service."""
         return self._stub.PressureForce(request, metadata=self._metadata)
 
     @catch_grpc_error
     def viscous_force(
         self, request: ReductionProtoModule.ViscousForceRequest
     ) -> ReductionProtoModule.ViscousForceResponse:
-        """Viscous force rpc of Reduction service."""
+        """Viscous force RPC of Reduction service."""
         return self._stub.ViscousForce(request, metadata=self._metadata)
 
     @catch_grpc_error
     def volume(
         self, request: ReductionProtoModule.VolumeRequest
     ) -> ReductionProtoModule.VolumeResponse:
-        """Volume rpc of Reduction service."""
+        """Volume RPC of Reduction service."""
         return self._stub.Volume(request, metadata=self._metadata)
 
     @catch_grpc_error
     def volume_average(
         self, request: ReductionProtoModule.VolumeAveRequest
     ) -> ReductionProtoModule.VolumeAveResponse:
-        """Volume average rpc of Reduction service."""
+        """Volume average RPC of Reduction service."""
         return self._stub.VolumeAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def volume_integral(
         self, request: ReductionProtoModule.VolumeIntRequest
     ) -> ReductionProtoModule.VolumeIntResponse:
-        """Volume integral rpc of Reduction service."""
+        """Volume integral RPC of Reduction service."""
         return self._stub.VolumeInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def moment(
         self, request: ReductionProtoModule.MomentRequest
     ) -> ReductionProtoModule.MomentResponse:
-        """Moment rpc of Reduction service."""
+        """Moment RPC of Reduction service."""
         return self._stub.Moment(request, metadata=self._metadata)
 
     @catch_grpc_error
     def sum(
         self, request: ReductionProtoModule.SumRequest
     ) -> ReductionProtoModule.SumResponse:
-        """Sum rpc of Reduction service."""
+        """Sum RPC of Reduction service."""
         return self._stub.Sum(request, metadata=self._metadata)
 
     @catch_grpc_error
     def sum_if(
         self, request: ReductionProtoModule.SumIfRequest
     ) -> ReductionProtoModule.SumIfResponse:
-        """Sum rpc of Reduction service."""
+        """Sum RPC of Reduction service."""
         return self._stub.SumIf(request, metadata=self._metadata)
 
 

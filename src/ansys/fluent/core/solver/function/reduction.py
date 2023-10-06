@@ -17,12 +17,12 @@ expr : Any
 locations : Any
     A list of location strings, or an API object that can be
     resolved to a list of location strings
-    (e.g., setup.boundary_conditions,
+    (for example, setup.boundary_conditions,
     or results.surfaces.plane_surface),
     or a list of such objects. If location strings are
     included in the list, then only string must be included
 ctxt : Any, optional
-    An optional API object (e.g., the root solver session
+    An optional API object (for example, the root solver session
     object but any solver API object will suffice) to set
     the context of the call's execution. If the location
     objects are strings, then such a context is required

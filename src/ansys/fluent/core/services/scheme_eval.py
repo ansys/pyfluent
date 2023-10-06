@@ -53,25 +53,25 @@ class SchemeEvalService:
         self.__metadata = metadata
 
     def eval(self, request: SchemePointer) -> SchemePointer:
-        """Eval rpc of SchemeEval service."""
+        """Eval RPC of SchemeEval service."""
         return self.__stub.Eval(request, metadata=self.__metadata)
 
     def exec(
         self, request: SchemeEvalProtoModule.ExecRequest
     ) -> SchemeEvalProtoModule.ExecResponse:
-        """Exec rpc of SchemeEval service."""
+        """Exec RPC of SchemeEval service."""
         return self.__stub.Exec(request, metadata=self.__metadata)
 
     def string_eval(
         self, request: SchemeEvalProtoModule.StringEvalRequest
     ) -> SchemeEvalProtoModule.StringEvalResponse:
-        """StringEval rpc of SchemeEval service."""
+        """StringEval RPC of SchemeEval service."""
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
         self, request: SchemeEvalProtoModule.SchemeEvalRequest
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
-        """SchemeEval rpc of SchemeEval service."""
+        """SchemeEval RPC of SchemeEval service."""
         return self.__stub.SchemeEval(request, metadata=self.__metadata)
 
 

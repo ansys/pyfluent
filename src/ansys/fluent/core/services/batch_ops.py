@@ -1,4 +1,4 @@
-"""Batch rpc service."""
+"""Batch RPC service."""
 
 import inspect
 import logging
@@ -15,7 +15,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService:
-    """Class wrapping methods in batch rpc service."""
+    """Class wrapping methods in batch RPC service."""
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         """__init__ method of BatchOpsService class."""
@@ -24,7 +24,7 @@ class BatchOpsService:
 
     @catch_grpc_error
     def execute(self, request):
-        """Execute rpc of BatchOps service."""
+        """Execute RPC of BatchOps service."""
         return self._stub.Execute(request, metadata=self._metadata)
 
 
