@@ -11,7 +11,8 @@ from typing import Any, Optional
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.services.reduction import Reduction, ReductionService
+
+# from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
@@ -22,7 +23,9 @@ from ansys.fluent.core.solver.flobject import (
     SettingsBase,
     StateType,
 )
-import ansys.fluent.core.solver.function.reduction as reduction_old
+
+# import ansys.fluent.core.solver.function.reduction as reduction_old
+
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
@@ -99,13 +102,14 @@ class Solver(BaseSession):
             fluent_connection._channel, fluent_connection._metadata
         )
         self.svar_info = SVARInfo(self.svar_service)
-        self._reduction_service = self.fluent_connection.create_grpc_service(
-            ReductionService, self.error_state
-        )
-        if FluentVersion(self.version) >= FluentVersion.v241:
-            self.reduction = Reduction(self._reduction_service)
-        else:
-            self.reduction = reduction_old
+
+        #        self._reduction_service = self.fluent_connection.create_grpc_service(
+        #            ReductionService, self.error_state
+        #        )
+        #        if FluentVersion(self.version) >= FluentVersion.v241:
+        #            self.reduction = Reduction(self._reduction_service)
+        #        else:
+        #            self.reduction = reduction_old
         self._settings_api_root = None
 
     def build_from_fluent_connection(self, fluent_connection):

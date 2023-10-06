@@ -5,8 +5,6 @@ import inspect
 from pprint import pformat
 from typing import List
 
-from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
 
@@ -42,7 +40,10 @@ class Attribute:
 
     def __set_name__(self, obj, name):
         if name not in self.VALID_NAMES:
-            raise DisallowedValuesError("attribute", name, self.VALID_NAMES)
+            raise ValueError(
+                f"Attribute {name} is not allowed."
+                f"Expected values are {self.VALID_NAMES}"
+            )
         self.name = name
         if not hasattr(obj, "attributes"):
             obj.attributes = set()
@@ -52,100 +53,13 @@ class Attribute:
         raise AttributeError("Attributes are read only.")
 
     def __get__(self, obj, objtype=None):
-        return self.function(obj)
-
-
-class Command:
-    def __init__(self, method):
-        self.arguments_attrs = {}
-        cmd_args = inspect.signature(method).parameters
-        for arg_name in cmd_args:
-            if arg_name != "self":
-                self.arguments_attrs[arg_name] = {}
-
-        def _init(_self, obj):
-            _self.obj = obj
-
-        def _execute(_self, *args, **kwargs):
-            for arg, attr_data in self.arguments_attrs.items():
-                arg_value = None
-                if arg in kwargs:
-                    arg_value = kwargs[arg]
-                else:
-                    index = list(self.arguments_attrs.keys()).index(arg)
-                    if len(args) > index:
-                        arg_value = args[index]
-                if arg_value is not None:
-                    for attr, attr_value in attr_data.items():
-                        if attr == "allowed_values":
-                            allowed_values = attr_value(_self.obj)
-                            if isinstance(arg_value, list):
-                                if not all(
-                                    elem in allowed_values for elem in arg_value
-                                ):
-                                    raise DisallowedValuesError(
-                                        arg, arg_value, allowed_values
-                                    )
-                            else:
-                                if arg_value not in allowed_values:
-                                    raise DisallowedValuesError(
-                                        arg, arg_value, allowed_values
-                                    )
-
-                        elif attr == "range":
-                            if type(arg_value) != int and type(arg_value) != float:
-                                raise RuntimeError(
-                                    f"{arg} value {arg_value} is not number."
-                                )
-
-                            minimum, maximum = attr_value(_self.obj)
-                            if arg_value < minimum or arg_value > maximum:
-                                raise DisallowedValuesError(
-                                    arg, arg_value, allowed_values
-                                )
-            return method(_self.obj, *args, **kwargs)
-
-        self.command_cls = type(
-            "command",
-            (),
-            {
-                "__init__": _init,
-                "__call__": _execute,
-                "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
-                    argument_name
-                ][
-                    attr_name
-                ](
-                    _self.obj
-                ),
-                "arguments": lambda _self: list(self.arguments_attrs.keys()),
-            },
-        )
-
-    def __set_name__(self, obj, name):
-        self.obj = obj
-        if not hasattr(obj, "commands"):
-            obj.commands = {}
-        obj.commands[name] = {}
-
-    def __get__(self, obj, obj_type=None):
-        if hasattr(self, "command"):
-            return self.command
-        else:
-            return self.command_cls(obj)
-
-
-def CommandArgs(command_object, argument_name):
-    def wrapper(attribute):
-        if argument_name in command_object.arguments_attrs:
-            command_object.arguments_attrs[argument_name].update(
-                {attribute.__name__: attribute}
+        try:
+            return self.function(obj)
+        except Exception as e:
+            raise RuntimeError(
+                f"Property attribute '{self.name}' evaluation failed with error. "
+                + str(e)
             )
-        else:
-            raise InvalidArgument(f"{argument_name} not a valid argument.")
-        return attribute
-
-    return wrapper
 
 
 class PyLocalBaseMeta(type):
@@ -249,19 +163,26 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         if self.range and (
                             value < self.range[0] or value > self.range[1]
                         ):
-                            raise DisallowedValuesError("value", value, self.range)
+                            raise ValueError(
+                                f"Value {value}, is not within valid range"
+                                f" {self.range}."
+                            )
                     elif attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
                                 v is None or v in self.allowed_values for v in value
                             ):
-                                raise DisallowedValuesError(
-                                    "value", value, self.allowed_values
+                                raise ValueError(
+                                    f"Not all values in {value}, are in the "
+                                    "list of allowed values "
+                                    f"{self.allowed_values}."
                                 )
                         elif value is not None and value not in self.allowed_values:
-                            raise DisallowedValuesError(
-                                "value", value, self.allowed_values
+                            raise ValueError(
+                                f"Value {value}, is not in the list of "
+                                f"allowed values {self.allowed_values}."
                             )
+
             return value
 
         return wrapper
@@ -418,7 +339,9 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
                 top_most_parent = self.get_root(self)
 
                 if self.session_id is None:
-                    self.session_id = top_most_parent.session.id
+                    self.session_id = top_most_parent.session_handle._session_id
+                if callable(self.session_id):
+                    self.session_id = self.session_id(self)
                 property_editor_data = top_most_parent.accessor(
                     "AnsysUser", self.session_id
                 )
@@ -536,9 +459,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __create_get_state(cls):
         def wrapper(self, show_attributes=False):
             state = {}
-
-            if not getattr(self, "is_active", True):
-                return
 
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
@@ -880,6 +800,7 @@ class PyLocalContainer(MutableMapping):
             o = self.__collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
+            self.get_root().trigger_callback("on_create", self.get_path(), name)
             on_create = getattr(self._PyLocalContainer__object_class, "on_create", None)
             if on_create:
                 on_create(self, name)
@@ -891,6 +812,7 @@ class PyLocalContainer(MutableMapping):
 
     def __delitem__(self, name):
         del self.__collection[name]
+        self.get_root().trigger_callback("on_delete", self.get_path(), name)
         on_delete = getattr(self._PyLocalContainer__object_class, "on_delete", None)
         if on_delete:
             on_delete(self, name)
@@ -911,6 +833,7 @@ class PyLocalContainer(MutableMapping):
         def _exe_cmd(self, names):
             for item in names:
                 self._parent.__delitem__(item)
+            return {"deleted-paths": [f"{self.path}/{name}" for name in names]}
 
         class names(metaclass=PyLocalPropertyMeta):
             value: List[str] = []

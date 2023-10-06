@@ -63,6 +63,7 @@ class Transcript(StreamingService):
 
     def _write_to_stdout(self):
         """Write transcript to stdout."""
+        return
         if not Transcript._writing_transcript_to_interpreter:
             self.callback_ids.append(self.register_callback(print))
             Transcript._writing_transcript_to_interpreter = True

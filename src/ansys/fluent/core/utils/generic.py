@@ -4,7 +4,7 @@ from abc import ABCMeta
 import asyncio
 from functools import partial
 import time
-
+from pathlib import Path
 loop = asyncio.get_event_loop()
 
 
@@ -56,6 +56,9 @@ def in_notebook():
         return False
     return True
 
+def in_docker():
+    cgroup = Path('/proc/self/cgroup')
+    return Path('/.dockerenv').is_file() or cgroup.is_file() and 'docker' in cgroup.read_text()
 
 def timing(func):
     """Timing function decorator."""

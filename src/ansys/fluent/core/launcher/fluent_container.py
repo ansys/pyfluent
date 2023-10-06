@@ -58,6 +58,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
+from ansys.fluent.core.utils.generic import in_docker
 import docker
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -273,7 +274,7 @@ def configure_container_dict(
         )
     else:
         fd, sifile = tempfile.mkstemp(
-            suffix=".txt", prefix="serverinfo-", dir=host_mount_path
+            suffix=".txt", prefix="serverinfo-", dir="." if in_docker() else host_mount_path
         )
         os.close(fd)
         container_server_info_file = (
@@ -307,8 +308,9 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
+    host_server_info_file = Path("/mnt" if in_docker() else host_mount_path) / container_server_info_file.name
+     
     return (
         container_dict,
         timeout,
@@ -352,9 +354,9 @@ def start_fluent_container(
 
     if container_dict is None:
         container_dict = {}
-
+    print('container_dict', container_dict)
     container_vars = configure_container_dict(args, **container_dict)
-
+    print('container_dict', container_vars)
     (
         config_dict,
         timeout,
@@ -388,21 +390,22 @@ def start_fluent_container(
         docker_client = docker.from_env()
 
         logger.debug("Starting Fluent docker container...")
-
+        
+           
         docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
 
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
-
+        
         if not success:
             raise TimeoutError(
                 "Fluent container launch has timed out, stop container manually."
             )
         else:
-            _, _, password = _parse_server_info_file(str(host_server_info_file))
-
-            return port, password
+            host, _, password = _parse_server_info_file(str(host_server_info_file))
+            print("host, port, password", host, port, password)
+            return host, port, password
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()

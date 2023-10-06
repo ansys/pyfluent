@@ -106,7 +106,8 @@ class Base:
 
     def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Base class."""
-        self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
+        # self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
+        self._setattr("_parent", parent if parent is not None else None)
         self._setattr("_flproxy", None)
         if name is not None:
             self._setattr("_name", name)
@@ -1326,6 +1327,7 @@ def get_root(flproxy, version: str = "") -> Group:
     """
     obj_info = flproxy.get_static_info()
     try:
+        # raise RuntimeError("Mismatch in hash values")
         settings = importlib.import_module(
             f"ansys.fluent.core.solver.settings_{version}"
         )

@@ -34,6 +34,7 @@ class Container:
         """__init__ method of Container class."""
         session_state = container_type._sessions_state.get(session)
         self._path = container_type.__name__
+        self._callbacks = {}
         if not session_state:
             session_state = self.__dict__
             container_type._sessions_state[session] = session_state
@@ -45,6 +46,23 @@ class Container:
             self, "Surfaces", []
         )
 
+    def register_callback(self, event_name, container_path, cb):
+        if event_name not in self._callbacks:
+            self._callbacks[event_name] = {}
+        if container_path not in self._callbacks[event_name]:
+            self._callbacks[event_name][container_path] = []
+        self._callbacks[event_name][container_path].append(cb)
+
+    def trigger_callback(self, event_name, container_path, obj_name):
+        print("trigger_callback", event_name, container_path, obj_name)
+        if event_name in self._callbacks:
+            if container_path in self._callbacks[event_name]:
+                for cb in self._callbacks[event_name][container_path]:
+                    cb(container_path, obj_name)
+            if "/" in self._callbacks[event_name]:
+                for cb in self._callbacks[event_name]["/"]:
+                    cb(container_path, obj_name)
+
     def get_path(self):
         return self._path
 
@@ -52,6 +70,29 @@ class Container:
     def type(self):
         """Type."""
         return "object"
+
+    def update(self, value):
+        for name, val in value.items():
+            o = getattr(self, name)
+            o.update(val)
+
+    def __call__(self, show_attributes=False):
+        state = {}
+        for name, cls in self.__dict__.items():
+            o = getattr(self, name)
+            if o is None or name.startswith("_") or name.startswith("__"):
+                continue
+
+            if cls.__class__.__name__ == "PyLocalContainer":
+                container = o
+                if getattr(container, "is_active", True):
+                    state[name] = {}
+                    for child_name in container:
+                        o = container[child_name]
+                        if getattr(o, "is_active", True):
+                            state[name][child_name] = o()
+
+        return state
 
     def update(self, value):
         for name, val in value.items():
