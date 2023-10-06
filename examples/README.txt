@@ -11,4 +11,4 @@ you can download these examples as Python files or Jupyter notebooks and run the
    :hidden:
 
    00-fluent/README.txt
-   Miscellaneous Examples <https://examples.fluent.docs.pyansys.com/version/dev/examples/index.html>    
+   Miscellaneous Examples <https://examples.fluent.docs.pyansys.com/version/dev/index.html>    
