@@ -740,7 +740,7 @@ def _get_surface_ids(
     surface_names: Optional[List[str]] = None,
     surface_name: Optional[str] = None,
 ) -> List[int]:
-    """Get surface ids' based on surface names or ids'.
+    """Get surface IDs based on surface names or IDs.
 
     Parameters
     ----------
@@ -756,7 +756,7 @@ def _get_surface_ids(
     List[int]
     """
     if surface_ids and (surface_name or surface_names):
-        raise RuntimeError("Please provide either surface names or surface ids.")
+        raise RuntimeError("Please provide either surface names or surface IDs.")
     if not surface_ids:
         surface_ids = []
         if surface_names:
@@ -769,7 +769,7 @@ def _get_surface_ids(
                 allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise RuntimeError("Please provide either surface names or surface IDs.")
     return surface_ids
 
 
@@ -939,7 +939,7 @@ class BaseFieldData:
 
     @property
     def surface_id(self):
-        """Returns surface id."""
+        """Returns surface ID."""
         return self._id
 
     @property

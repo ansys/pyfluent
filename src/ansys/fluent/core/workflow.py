@@ -29,7 +29,7 @@ def _new_command_for_task(task, session):
 
 def _init_task_accessors(obj):
     logger.debug("_init_task_accessors")
-    logger.debug(f"thread id in _init_task_accessors {threading.get_ident()}")
+    logger.debug(f"thread ID in _init_task_accessors {threading.get_ident()}")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
@@ -45,7 +45,7 @@ def _init_task_accessors(obj):
 
 
 def _refresh_task_accessors(obj):
-    logger.debug(f"thread id in _refresh_task_accessors {threading.get_ident()}")
+    logger.debug(f"thread ID in _refresh_task_accessors {threading.get_ident()}")
     old_task_names = set(obj._python_task_names)
     logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)

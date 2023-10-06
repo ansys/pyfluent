@@ -587,7 +587,7 @@ class PyMenu(PyStateContainer):
         Returns
         -------
         str
-            Command id
+            Command ID
         """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
