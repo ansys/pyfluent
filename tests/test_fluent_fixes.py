@@ -5,7 +5,7 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version("==23.2")
 def test_1364(new_solver_session):
     solver = new_solver_session
 
@@ -23,11 +23,11 @@ def test_1364(new_solver_session):
             "field": "temperature",
             "average_over": 1,
             "per_zone": False,
-            "cell_zones": ["fluid"],
+            "zone_names": ["fluid"],
             "expr_list": None,
         }
     )
 
-    assert report_def.cell_zones.allowed_values() == ["fluid"]
+    assert report_def.zone_names.allowed_values() == ["fluid"]
 
     assert report_def.expr_list.allowed_values() == None
