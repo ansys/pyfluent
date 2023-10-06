@@ -44,7 +44,7 @@ inlet diameter, orifice diameter, and orifice length respectively.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file(
+cav_file = examples.download_file(
     "cav.msh", "pyfluent/cavitation", save_path=pyfluent.EXAMPLES_PATH
 )
 
@@ -165,28 +165,23 @@ inlet_1 = solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase
 # Set direction specification method to ``Normal to Boundary``.
 # Set gauge total pressure as 500000 Pa.
 # Set supersonic or initial gauge pressure as 449000 Pa.
-
-momentum = {
-    "direction_specification_method": "Normal to Boundary",
-    "gauge_total_pressure": {"value": 500000},
-    "supersonic_or_initial_gauge_pressure": {"value": 449000},
-}
-inlet_1["mixture"].momentum = momentum
-
 # Set turbulent intensity as 0.05.
 # Set turbulent specification to ``Intensity and Viscosity Ratio``.
 # Set turbulent viscosity ratio as 10.
 
-in_turbulence = {
-    "turbulent_intensity": 0.05,
-    "turbulent_specification": "Intensity and Viscosity Ratio",
-    "turbulent_viscosity_ratio_real": 10,
+in_mixture = {
+    "direction_spec": "Normal to Boundary",
+    "gauge_total_pressure": {"value": 500000},
+    "gauge_pressure": {"value": 449000},
+    "turb_intensity": 0.05,
+    "ke_spec": "Intensity and Viscosity Ratio",
+    "turb_viscosity_ratio": 10,
 }
-inlet_1["mixture"].turbulence = in_turbulence
+inlet_1["mixture"] = in_mixture
 
 # Set the vapor phase volume fraction as 0.
 
-inlet_1["vapor"].multiphase.volume_fraction.value = 0
+inlet_1["vapor"] = {"volume_fraction": {"value": 0}}
 
 # Copy ``inlet_1`` conditions to ``inlet_2``.
 
@@ -197,24 +192,22 @@ solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 outlet = solver.setup.boundary_conditions.pressure_outlet["outlet"].phase
 
 # Set the gauge pressure as 95000.
-
-outlet["mixture"].momentum.gauge_pressure.value = 95000
-
 # Set turbulent intensity as 0.05.
 # Set turbulent specification to ``Intensity and Viscosity Ratio``.
 # Set turbulent viscosity ratio as 10.
 
-out_turbulence = {
-    "turbulent_intensity": 0.05,
-    "turbulent_specification": "Intensity and Viscosity Ratio",
-    "turbulent_viscosity_ratio_real": 10,
+out_mixture = {
+    "gauge_pressure": {"value": 95000},
+    "turb_intensity": 0.05,
+    "ke_spec": "Intensity and Viscosity Ratio",
+    "turb_viscosity_ratio": 10,
 }
 
-outlet["mixture"].turbulence = out_turbulence
+outlet["mixture"] = out_mixture
 
 # Set the vapor phase volume fraction as 0.
 
-outlet["vapor"].multiphase.volume_fraction.value = 0
+outlet["vapor"] = {"volume_fraction": {"value": 0}}
 
 ###############################################################################
 # Operating Conditions
