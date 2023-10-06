@@ -43,7 +43,7 @@ class GraphicsDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract)
         Parameters
         ----------
         window_id : str, optional
-            Window ID.If not specified unique ID is used.
+            Window ID. If not specified unique ID is used.
         """
         pass
 
@@ -58,7 +58,7 @@ class PlotDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
         Parameters
         ----------
         window_id : str, optional
-            Window ID.If not specified unique ID is used.
+            Window ID. If not specified unique ID is used.
         """
         pass
 
