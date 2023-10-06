@@ -146,7 +146,6 @@ solver.tui.define.phases.set_domain_properties.phase_domains.vapor.material(
     "yes", "water-vapor"
 )
 
-
 # Enable the cavitation model
 
 # Set the number of mass transfer mechanisms to 1, set liquid as the from phase,
@@ -156,11 +155,7 @@ solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reac
     1, "liquid", "vapor", "cavitation", "1", "no", "no", "no"
 )
 
-# Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11.
-
-# solver.setup.models.multiphase.vaporization_pressure = 3540
-
-# solver.setup.models.multiphase.bubble_number_density = 1e11
+"""Set the vaporization pressure to 3540 Pa and bubble number density to 1e+11."""
 
 ###############################################################################
 # Boundary Conditions
