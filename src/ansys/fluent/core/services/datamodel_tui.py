@@ -3,7 +3,7 @@
 import keyword
 import logging
 import types
-from typing import Any, Dict, Iterable, List, Tuple, Union
+from typing import Any, Union
 
 from google.protobuf.json_format import MessageToDict
 import grpc
@@ -19,7 +19,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 
-Path = List[str]
+Path = list[str]
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -31,8 +31,8 @@ class DatamodelService:
     """
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
-    ):
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ) -> None:
         """__init__ method of DatamodelService class."""
         self._channel = channel
         self._fluent_error_state = fluent_error_state
@@ -86,7 +86,7 @@ class DatamodelService:
         return self._stub.GetStaticInfo(request, metadata=self._metadata)
 
 
-def _convert_value_to_gvalue(val: Any, gval: Variant):
+def _convert_value_to_gvalue(val: Any, gval: Variant) -> None:
     """Convert Python datatype to Value type of google/protobuf/struct.proto."""
     if isinstance(val, bool):
         gval.bool_value = val
@@ -106,7 +106,7 @@ def _convert_value_to_gvalue(val: Any, gval: Variant):
             _convert_value_to_gvalue(v, gval.struct_value.fields[k])
 
 
-def _convert_gvalue_to_value(gval: Variant):
+def _convert_gvalue_to_value(gval: Variant) -> Any:
     """Convert Value type of google/protobuf/struct.proto to Python datatype."""
     if gval.HasField("bool_value"):
         return gval.bool_value
@@ -143,14 +143,14 @@ class PyMenu:
 
     def __init__(
         self, service: DatamodelService, version, mode, path: Union[Path, str]
-    ):
+    ) -> None:
         """__init__ method of PyMenu class."""
         self._service = service
         self._version = version
         self._mode = mode
         self._path = path if isinstance(path, str) else convert_path_to_grpc_path(path)
 
-    def get_child_names(self, include_unavailable: bool = False) -> List[str]:
+    def get_child_names(self, include_unavailable: bool = False) -> list[str]:
         """Get the names of child menus.
 
         Parameters
@@ -236,7 +236,7 @@ class PyMenu:
         response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def get_static_info(self) -> Dict[str, Any]:
+    def get_static_info(self) -> dict[str, Any]:
         """Get static info at menu level.
 
         Returns
@@ -253,7 +253,7 @@ class PyMenu:
             return _get_static_info_at_level(self)
 
 
-def _get_static_info_at_level(menu: PyMenu) -> Dict[str, Any]:
+def _get_static_info_at_level(menu: PyMenu) -> dict[str, Any]:
     info = {}
     info["help"] = menu.get_doc_string(include_unavailable=True)
     info["menus"] = {}
@@ -281,14 +281,14 @@ def _get_static_info_at_level(menu: PyMenu) -> Dict[str, Any]:
 class TUIMenu:
     """Base class for the generated menu classes."""
 
-    def __init__(self, service, version, mode, path):
+    def __init__(self, service, version, mode, path) -> None:
         """__init__ method of TUIMenu class."""
         self._service = service
         self._version = version
         self._mode = mode
         self._path = path
 
-    def __dir__(self) -> Iterable[str]:
+    def __dir__(self) -> list[str]:
         return [
             convert_tui_menu_to_func_name(x)
             for x in PyMenu(
@@ -296,7 +296,7 @@ class TUIMenu:
             ).get_child_names()
         ]
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name) -> Any:
         try:
             attr = super().__getattribute__(name)
             if type(attr) == types.MethodType:
@@ -324,7 +324,7 @@ class TUIMenu:
 class TUICommand(TUIMenu):
     """Generic command class for when the explicit menu classes aren't available."""
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> Any:
         return PyMenu(self._service, self._version, self._mode, self._path).execute(
             *args, **kwargs
         )
