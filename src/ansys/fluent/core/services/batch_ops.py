@@ -3,7 +3,7 @@
 import inspect
 import logging
 from types import ModuleType
-from typing import List, Optional, Tuple, TypeVar
+from typing import Optional, TypeVar
 import weakref
 
 from google.protobuf.message import Message
@@ -21,7 +21,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 class BatchOpsService:
     """Class wrapping methods in batch RPC service."""
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]) -> None:
+    def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of BatchOpsService class."""
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(channel)
         self._metadata = metadata
@@ -143,7 +143,7 @@ class BatchOps:
         if cls.instance() is None:
             instance = super(BatchOps, cls).__new__(cls)
             instance._service: BatchOpsService = session._batch_ops_service
-            instance._ops: List[BatchOps.Op] = []
+            instance._ops: list[BatchOps.Op] = []
             instance.batching = False
             cls._instance = weakref.ref(instance)
         return cls.instance()
