@@ -15,7 +15,7 @@ from ansys.fluent.core.services.error_handler import catch_grpc_error
 
 _TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
 
-network_logger = logging.getLogger("pyfluent.networking")
+network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService:

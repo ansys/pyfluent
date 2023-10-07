@@ -21,7 +21,7 @@ from ansys.fluent.core.services.interceptors import (
 
 Path = list[str]
 
-logger = logging.getLogger("pyfluent.tui")
+logger: logging.Logger = logging.getLogger("pyfluent.tui")
 
 
 class DatamodelService:

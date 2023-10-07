@@ -14,7 +14,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 
-logger = logging.getLogger("pyfluent.general")
+logger: logging.Logger = logging.getLogger("pyfluent.general")
 
 
 class HealthCheckService:

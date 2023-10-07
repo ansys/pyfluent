@@ -22,7 +22,7 @@ from ansys.fluent.core.services.streaming import StreamingService
 
 Path = list[tuple[str, str]]
 
-logger = logging.getLogger("pyfluent.datamodel")
+logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Attribute(Enum):
