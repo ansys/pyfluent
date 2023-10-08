@@ -114,6 +114,10 @@ class Command:
                 ](
                     _self.obj
                 ),
+            "update_argument_value": lambda _self, argument_name, value: self.arguments_attrs[
+                    argument_name
+                ].update({"command_arg_value":lambda obj: value})
+                ,                
                 "attribute": lambda _self, attr_name: self.attrs[
                     attr_name
                 ](
@@ -230,14 +234,6 @@ class PyLocalBaseMeta(type):
 
         return wrapper
 
-    @classmethod
-    def __create_get_path(cls):
-        def wrapper(self):
-            if getattr(self, "_parent", None):
-                return self._parent.get_path() + "/" + self._name
-            return self._name
-
-        return wrapper
 
     def __new__(cls, name, bases, attrs):
         attrs["get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
@@ -245,7 +241,8 @@ class PyLocalBaseMeta(type):
         attrs["get_root"] = cls.__create_get_root()
         attrs["get_session"] = cls.__create_get_session()
         attrs["get_session_handle"] = cls.__create_get_session_handle()
-        attrs["get_path"] = cls.__create_get_path()
+        if "get_path" not in attrs:
+            attrs["get_path"] = cls.__create_get_path()
         attrs["root"] = property(lambda self: self.get_root())
         attrs["path"] = property(lambda self: self.get_path())
         attrs["session"] = property(lambda self: self.get_session())
@@ -384,21 +381,52 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, path, location, session_id):
+        def wrapper(self, parent, path, location, session_id, name=""):
             """Create the initialization method for 'PyReferenceObjectMeta'."""
             self._parent = parent
             self.type = "object"
             self.parent = parent
-            self.path = path
+            self._path = path
             self.location = location
             self.session_id = session_id
-
+            
+            def update(clss):
+                for name, cls in clss.__dict__.items():
+                    print(name)
+                    if cls.__class__.__name__ in (
+                        "PyLocalPropertyMeta",
+                        "PyLocalObjectMeta",
+                    ):
+                        setattr(
+                            self,
+                            name,
+                            cls(self, lambda arg:None, name),
+                        )
+                    if (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
+                        setattr(
+                            self,
+                            cls.PLURAL,
+                            PyLocalContainer(self, cls, lambda arg:None, cls.PLURAL),
+                        )                    
+                for base_class in clss.__bases__:
+                    update(base_class)
+     
+            update(self.__class__)            
         return wrapper
+        
+    @classmethod
+    def __create_get_path(cls):
+        def wrapper(self):            
+            return self._path 
+        return wrapper            
 
     @classmethod
     def __create_reset(cls):
         def wrapper(self, path, location, session_id):
-            self.path = path
+            self._path = path
             self.location = location
             self.session_id = session_id
             if hasattr(self, "_object"):
@@ -409,7 +437,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_getattr(cls):
         def wrapper(self, item):
-            if item == "_object":
+            if item == "_object":                
                 top_most_parent = self.get_root(self)
 
                 if self.session_id is None:
@@ -433,6 +461,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
         attrs["__getattr__"] = attrs.get("__getattr__", cls.__create_getattr())
         attrs["reset"] = cls.__create_reset()
+        attrs["get_path"] = cls.__create_get_path()
         return super(PyReferenceObjectMeta, cls).__new__(cls, name, bases, attrs)
 
 
@@ -473,9 +502,9 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                             cls.PLURAL,
                             PyLocalContainer(self, cls, api_helper, cls.PLURAL),
                         )
-                    if cls.__class__.__name__ == "PyReferenceObjectMeta":
+                    if cls.__class__.__name__ == "PyReferenceObjectMeta":                        
                         setattr(
-                            self, name, cls(self, cls.PATH, cls.LOCATION, cls.SESSION)
+                            self, name, cls(self, cls.PATH, cls.LOCATION, cls.SESSION, name)
                         )
                 for base_class in clss.__bases__:
                     update(base_class)

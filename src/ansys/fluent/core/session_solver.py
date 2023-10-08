@@ -8,12 +8,12 @@ import threading
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.services.reduction import Reduction, ReductionService
+#from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-import ansys.fluent.core.solver.function.reduction as reduction_old
+#import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
@@ -51,13 +51,13 @@ class Solver(BaseSession):
         self._lck = threading.Lock()
         self.svar_service = self.fluent_connection.create_service(SVARService)
         self.svar_info = SVARInfo(self.svar_service)
-        self._reduction_service = self.fluent_connection.create_service(
-            ReductionService, self.error_state
-        )
-        if int(self.version) >= 241:
-            self.reduction = Reduction(self._reduction_service)
-        else:
-            self.reduction = reduction_old
+        #self._reduction_service = self.fluent_connection.create_service(
+        #    ReductionService, self.error_state
+        #)
+        #if int(self.version) >= 241:
+        #    self.reduction = Reduction(self._reduction_service)
+        #else:
+        #    self.reduction = reduction_old
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
