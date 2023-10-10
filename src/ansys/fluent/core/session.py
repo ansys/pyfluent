@@ -313,6 +313,9 @@ class _Uploader:
                 token="token", url=upload_server.uri, headers=upload_server.headers
             )
 
+    def _file_exist(self, file_name):
+        return self.file_service.file_exist(file_name)
+
     def upload(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server."""
         if self.file_service:

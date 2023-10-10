@@ -4,7 +4,10 @@ from asyncio import Future
 import functools
 import importlib
 import logging
+import os
+from pathlib import Path
 import threading
+from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -38,6 +41,8 @@ class Solver(BaseSession):
         """
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
+        self._fluent_connection = fluent_connection
+        self._server_file_manager = None
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -201,7 +206,7 @@ class Solver(BaseSession):
             except Exception:
                 fut_session.exit()
 
-    def read_case(self, file_name: str, lightweight_mode: bool = False):
+    def read_case_lightweight(self, file_name: str, lightweight_mode: bool = False):
         """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is
         set to ``True``.
 
@@ -225,3 +230,137 @@ class Solver(BaseSession):
             fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
         else:
             self.file.read(file_type="case", file_name=file_name)
+
+    def read_case(
+        self,
+        file_name,
+        upload_file_path: Optional[str] = None,
+        remote_file_name: Optional[str] = None,
+    ):
+        """Reads and uploads a file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        upload_file_path : str, optional, default None
+            Case file path to upload a case file
+        remote_file_name : str, optional, default False
+            Remote case file name
+        """
+        if not self._server_file_manager:
+            self._server_file_manager = _ServerFileManager(self._fluent_connection)
+        return self._server_file_manager.read_case(
+            file_name, upload_file_path, remote_file_name
+        )
+
+    def write_case(
+        self,
+        file_name: str,
+        download_file_name: Optional[str] = None,
+        download_file_path: Optional[str] = None,
+    ):
+        """Writes and downloads a file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        download_file_name : str, optional, default None
+            Remote file name to download a case file
+        download_file_path : str, optional, default False
+            File path to download a case file
+        """
+        if not self._server_file_manager:
+            self._server_file_manager = _ServerFileManager(self._fluent_connection)
+        return self._server_file_manager.write_case(
+            file_name, download_file_name, download_file_path
+        )
+
+
+class _ServerFileManager(Solver):
+    """Supports file upload and download for every existing file read,
+    write methods respectively in the cloud particularly in Ansys lab.
+    Here we are supporting upload and download methods in existing session
+    methods. These would be no-ops if PyPIM is not configured or not authorized
+    with the appropriate service. This will be used for internal purpose only.
+
+    Methods
+    -------
+    read_case(
+        file_name, upload_file_path, remote_file_name
+        )
+        Read and upload a case file.
+
+    write_case(
+        file_name, upload_file_path, remote_file_name
+        )
+        Write and download a case file.
+    """
+
+    def __init__(self, fluent_connection):
+        super(_ServerFileManager, self).__init__(fluent_connection)
+
+    def read_case(
+        self,
+        file_name,
+        upload_file_path: Optional[str] = None,
+        remote_file_name: Optional[str] = None,
+    ):
+        """Reads and uploads a file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        upload_file_path : str, optional, default None
+            Case file path to upload a case file
+        remote_file_name : str, optional, default False
+            Remote case file name
+        """
+        try:
+            self.file.read_case(file_name)
+        except BaseException:
+            if os.path.isfile(upload_file_path):
+                print("Uploading file on the server...")
+            elif not os.path.isfile(upload_file_path):
+                raise FileNotFoundError(f"{upload_file_path} does not exist.")
+            self.upload(upload_file_path, remote_file_name)
+            if self._file_exist(remote_file_name):
+                self.tui.file.read_case(remote_file_name)
+            else:
+                raise FileNotFoundError(f"{file_name} does not exist.")
+
+    def write_case(
+        self,
+        file_name: str,
+        download_file_name: Optional[str] = None,
+        download_file_path: Optional[str] = None,
+    ):
+        """Writes and downloads a file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        download_file_name : str, optional, default None
+            Remote file name to download a case file
+        download_file_path : str, optional, default False
+            File path to download a case file
+        """
+        self.file.write_case(file_name)
+        if download_file_name and download_file_path:
+            print("Checking if specified file already exists...")
+            file_path = Path(download_file_path) / download_file_name
+            if os.path.isfile(file_path):
+                print(f"File already exists. File path:\n{file_path}")
+            else:
+                print("File does not exist. Downloading specified file...")
+                if self._file_exist(download_file_name):
+                    if not os.path.exists(download_file_path):
+                        os.makedirs(download_file_path)
+                    self.download(download_file_name, download_file_path)
+                else:
+                    raise FileNotFoundError(
+                        f"{download_file_name} does not exist on the server."
+                    )
