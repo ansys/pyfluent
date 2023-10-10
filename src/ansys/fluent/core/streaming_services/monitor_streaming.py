@@ -176,7 +176,7 @@ class MonitorsManager(StreamingService):
                         if monitor_data:
                             new_df = pd.DataFrame([monitor_data], columns=monitors)
                             new_df.set_index("xvalues", inplace=True)
-                            df_data["df"] = pd.concat([df, new_df])
+                            df_data["df"] = new_df
                             for callback_map in self._service_callbacks.values():
                                 callback, args, kwargs = callback_map
                                 callback(*args, **kwargs)
