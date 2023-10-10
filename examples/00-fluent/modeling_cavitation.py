@@ -45,9 +45,7 @@ length respectively.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-cav_file = examples.download_file(
-    "cav.msh", "pyfluent/cavitation", save_path=pyfluent.EXAMPLES_PATH
-)
+cav_file = examples.download_file("cav.msh", "pyfluent/cavitation")
 
 ###############################################################################
 # Launch Fluent
@@ -60,8 +58,6 @@ solver = pyfluent.launch_fluent(
     processor_count=4,
     mode="solver",
     version="2d",
-    product_version="23.2.0",
-    cwd=pyfluent.EXAMPLES_PATH,
 )
 
 ###############################################################################
