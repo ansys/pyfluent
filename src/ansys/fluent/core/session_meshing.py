@@ -1,11 +1,13 @@
 """Module containing class encapsulating Fluent connection."""
 import os
 from pathlib import Path
+import time
 from typing import Any, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.utils.client import Client
 
 
 class Meshing(PureMeshing):
@@ -137,6 +139,16 @@ class _ServerFileManager(Meshing):
 
     def __init__(self, fluent_connection):
         super(_ServerFileManager, self).__init__(fluent_connection)
+        self.pim_instance = fluent_connection._remote_instance
+        self.file_service = None
+        try:
+            upload_server = self.pim_instance.services["http-simple-upload-server"]
+        except (AttributeError, KeyError):
+            pass
+        else:
+            self.file_service = Client(
+                token="token", url=upload_server.uri, headers=upload_server.headers
+            )
 
     def read_case(
         self,
@@ -155,18 +167,21 @@ class _ServerFileManager(Meshing):
         remote_file_name : str, optional, default False
             Remote case file name
         """
-        try:
-            self.tui.file.read_case(file_name)
-        except BaseException:
+        if upload_file_path:
             if os.path.isfile(upload_file_path):
                 print("Uploading file on the server...")
             else:
                 raise FileNotFoundError(f"{upload_file_path} does not exist.")
             self.upload(upload_file_path, remote_file_name)
-            if self._file_exist(remote_file_name):
+            time.sleep(5)
+            if self.file_service.file_exist(file_name):
+                self.tui.file.read_case(file_name)
+            elif self.file_service.file_exist(remote_file_name):
                 self.tui.file.read_case(remote_file_name)
             else:
-                raise FileNotFoundError(f"{file_name} does not exist.")
+                raise FileNotFoundError("File does not exist.")
+        else:
+            self.tui.file.read_case(file_name)
 
     def write_case(
         self,
@@ -186,14 +201,15 @@ class _ServerFileManager(Meshing):
             File path to download a case file
         """
         self.tui.file.write_case(file_name)
-        if download_file_name and download_file_path:
+        time.sleep(5)
+        if download_file_path:
             print("Checking if specified file already exists...")
             file_path = Path(download_file_path) / download_file_name
             if os.path.isfile(file_path):
                 print(f"File already exists. File path:\n{file_path}")
             else:
                 print("File does not exist. Downloading specified file...")
-                if self._file_exist(download_file_name):
+                if self.file_service.file_exist(download_file_name):
                     if not os.path.exists(download_file_path):
                         os.makedirs(download_file_path)
                     self.download(download_file_name, download_file_path)
