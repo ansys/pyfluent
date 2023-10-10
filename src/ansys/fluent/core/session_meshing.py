@@ -169,17 +169,18 @@ class _ServerFileManager(Meshing):
         """
         if upload_file_path:
             if os.path.isfile(upload_file_path):
-                print("Uploading file on the server...")
+                print("\nUploading file on the server...\n")
             else:
                 raise FileNotFoundError(f"{upload_file_path} does not exist.")
             self.upload(upload_file_path, remote_file_name)
             time.sleep(5)
+            print("\nFile is uploaded.\n")
             if self.file_service.file_exist(file_name):
                 self.tui.file.read_case(file_name)
-            elif self.file_service.file_exist(remote_file_name):
+            elif remote_file_name and self.file_service.file_exist(remote_file_name):
                 self.tui.file.read_case(remote_file_name)
             else:
-                raise FileNotFoundError("File does not exist.")
+                raise FileNotFoundError("\nFile does not exist.\n")
         else:
             self.tui.file.read_case(file_name)
 
@@ -203,17 +204,22 @@ class _ServerFileManager(Meshing):
         self.tui.file.write_case(file_name)
         time.sleep(5)
         if download_file_path:
-            print("Checking if specified file already exists...")
+            print("\nChecking if specified file already exists...\n")
             file_path = Path(download_file_path) / download_file_name
             if os.path.isfile(file_path):
-                print(f"File already exists. File path:\n{file_path}")
+                print(f"\nFile already exists. File path:\n{file_path}\n")
             else:
-                print("File does not exist. Downloading specified file...")
-                if self.file_service.file_exist(download_file_name):
+                print("\nFile does not exist. Downloading specified file...\n")
+                if self.file_service.file_exist(file_name):
+                    if not os.path.exists(download_file_path):
+                        os.makedirs(download_file_path)
+                    self.download(file_name, download_file_path)
+                elif download_file_name and self.file_service.file_exist(
+                    download_file_name
+                ):
                     if not os.path.exists(download_file_path):
                         os.makedirs(download_file_path)
                     self.download(download_file_name, download_file_path)
                 else:
-                    raise FileNotFoundError(
-                        f"{download_file_name} does not exist on the server."
-                    )
+                    raise FileNotFoundError("\nFile does not exist on the server.\n")
+                print("File is downloaded.")
