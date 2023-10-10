@@ -625,4 +625,14 @@ def _get_case_filepath_from_flprj(flprj_file):
     tree = ET.parse(flprj_file, parser)
     root = tree.getroot()
     folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
+    # If the project file name begins with a digit then the node to find will be prepended
+    # with "_". Rather than making any assumptions that this is a hard rule, or what
+    # the scope of the rule is, simply retry with the name prepended:
+    find_folder = lambda retry=False: root.find(("_" if retry else "") + folder_name)
+    return (
+        (find_folder() or find_folder(retry=True))
+        .find("Input")
+        .find("Case")
+        .find("Target")
+        .get("value")
+    )
