@@ -264,7 +264,7 @@ solver.solution.initialization.hybrid_initialize()
 ###############################################################################
 # Save and Run
 # ~~~~~~~~~~~~
-# Save the case file (``cav.cas.h5``).
+# Save the case file ``cav.cas.h5``.
 
 solver.file.write(file_name="cav", file_type="case")
 
