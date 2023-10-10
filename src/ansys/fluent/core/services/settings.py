@@ -137,7 +137,7 @@ class SettingsService:
         elif isinstance(value, collections.abc.Iterable):
             for v in value:
                 self._set_state_from_value(state.value_list.lst.add(), v)
-        else:  # fall back to string (e.g. pathlib.Path)
+        else:  # fall back to string (for example, pathlib.Path)
             state.string = str(value)
 
     @_trace
@@ -275,13 +275,14 @@ class SettingsService:
 
         return ret
 
+    # pylint: disable=missing-raises-doc
     @_trace
     def get_static_info(self):
         """Get static-info for settings."""
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)
-        # The rpc calls no longer raise an exception. Force an exception if
+        # The RPC calls no longer raise an exception. Force an exception if
         # type is empty
         if not response.info.type:
             raise RuntimeError

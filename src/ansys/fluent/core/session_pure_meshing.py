@@ -1,8 +1,8 @@
-"""Module containing class encapsulating Fluent connection.
-"""
+"""Module containing class encapsulating Fluent connection."""
 
 
 import functools
+from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
@@ -18,11 +18,14 @@ from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
 class PureMeshing(BaseSession):
-    """Encapsulates a Fluent meshing session. A ``tui`` object
+    """Encapsulates a Fluent meshing session.
+
+    A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all
     exposed here. No ``switch_to_solver`` method is available
-    in this mode."""
+    in this mode.
+    """
 
     rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
     for r in rules:
@@ -108,7 +111,7 @@ class PureMeshing(BaseSession):
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: str = None,
+        file_name_stem: Optional[str] = None,
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,

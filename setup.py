@@ -22,7 +22,7 @@ _DOCS_FILE = os.path.join(
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
 install_requires = [
-    "ansys-api-fluent>=0.3.17",
+    "ansys-api-fluent>=0.3.18",
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "grpcio-health-checking>=1.30.0",
@@ -63,6 +63,11 @@ setup(
         "Operating System :: OS Independent",
     ],
     url="https://github.com/ansys/pyfluent",
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     install_requires=install_requires,
+    project_urls={
+        "Documentation": "https://fluent.docs.pyansys.com/",
+        "Source": "https://github.com/ansys/pyfluent",
+        "Tracker": "https://github.com/ansys/pyfluent/issues",
+    },
 )

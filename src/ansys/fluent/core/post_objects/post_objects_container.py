@@ -1,20 +1,19 @@
-"""Module providing visualization objects to facilitate
-   integration with libraries like Matplotlib and pyvista."""
+"""Module providing visualization objects to facilitate integration with libraries like
+Matplotlib and pyvista."""
 import inspect
 
 from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    """
-    Base class for containers, e.g. Plots, Graphics.
+    """Base class for containers, for example, Plots, Graphics.
 
     Parameters
         ----------
         session : object
             Session object.
         container_type: object
-            Container type (e.g. Plots, Graphics)
+            Container type (for example, Plots, Graphics)
         module: object
             Python module containing post definitions
         post_api_helper: object
@@ -152,7 +151,7 @@ class Graphics(Container):
         """
         meshes = getattr(self, "Meshes", None)
         if meshes is not None:
-            outline_mesh_id = "Mesh-outline"
+            outline_mesh_id = "mesh-outline"
             outline_mesh = meshes[outline_mesh_id]
             outline_mesh.surfaces_list = [
                 k

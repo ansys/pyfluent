@@ -1,4 +1,5 @@
-"""Meshing workflow specialization of the Workflow module that wraps and extends the core functionality."""
+"""Meshing workflow specialization of the Workflow module that wraps and extends the
+core functionality."""
 
 
 from __future__ import annotations
@@ -10,7 +11,8 @@ from ansys.fluent.core.workflow import WorkflowWrapper
 
 
 class MeshingWorkflow(WorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper that extends the core functionality."""
+    """Meshing specialization of the WorkflowWrapper that extends the core
+    functionality."""
 
     def __init__(
         self,

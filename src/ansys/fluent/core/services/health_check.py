@@ -1,4 +1,4 @@
-"""Wrapper over the health check grpc service of Fluent."""
+"""Wrapper over the health check gRPC service of Fluent."""
 from enum import Enum
 import logging
 import sys
@@ -62,11 +62,22 @@ class HealthCheckService:
         response = self._stub.Check(request, metadata=self._metadata)
         return HealthCheckService.Status(response.status).name
 
+    # pylint: disable=missing-raises-doc
     @catch_grpc_error
-    def wait_for_server(self, timeout) -> None:
+    def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
 
         Response changes only when the service's serving status changes.
+
+        Parameters
+        ----------
+        timeout : int
+            timeout in seconds
+
+        Raises
+        ------
+        TimeoutError
+            If the connection to the Fluent server could not be established within the timeout.
         """
         request = HealthCheckModule.HealthCheckRequest()
         responses = self._stub.Watch(request, metadata=self._metadata, timeout=timeout)

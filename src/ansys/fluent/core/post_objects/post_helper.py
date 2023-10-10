@@ -13,7 +13,7 @@ class PostAPIHelper:
 
         @staticmethod
         def surface_name_on_server(local_surface_name):
-            """Returns the surface name on server"""
+            """Returns the surface name on server."""
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
@@ -26,7 +26,15 @@ class PostAPIHelper:
                 self.delete_surface_on_server()
 
         def create_surface_on_server(self):
-            """Creates the surface on server"""
+            """Creates the surface on server.
+
+            Raises
+            ------
+            RuntimeError
+                If iso-surface definition is incomplete.
+            RuntimeError
+                If server fails to create surface.
+            """
             if self.obj.definition.type() == "iso-surface":
                 iso_surface = self.obj.definition.iso_surface
                 field = iso_surface.field()
@@ -86,7 +94,7 @@ class PostAPIHelper:
                 raise RuntimeError("Surface creation failed.")
 
         def delete_surface_on_server(self):
-            """Deletes the surface on server"""
+            """Deletes the surface on server."""
             self._get_api_handle().delete_surface(self._surface_name_on_server)
 
     def __init__(self, obj):

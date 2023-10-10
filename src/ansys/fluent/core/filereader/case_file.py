@@ -6,14 +6,13 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.casereader import CaseReader
+    >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
+    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_only_filename=False)
 
-    >>> reader = CaseReader(case_filepath=case_filepath) # Instantiate a CaseFile class
+    >>> reader = CaseFile(case_filepath=case_filepath) # Instantiate a CaseFile class
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
-
 """
 import codecs
 import gzip
@@ -345,8 +344,7 @@ class RPVarProcessor:
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
     def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
-        """
-        Get the input parameters.
+        """Get the input parameters.
 
         Returns
         -------
@@ -369,8 +367,7 @@ class RPVarProcessor:
             return [InputParameterOld(param) for param in rp_var_params]
 
     def output_parameters(self) -> List[OutputParameter]:
-        """
-        Get the output parameters.
+        """Get the output parameters.
 
         Returns
         -------
@@ -381,8 +378,7 @@ class RPVarProcessor:
         return [OutputParameter(param) for param in parameters]
 
     def num_dimensions(self) -> int:
-        """
-        Get the dimensionality associated with this case.
+        """Get the dimensionality associated with this case.
 
         Returns
         -------
@@ -394,8 +390,7 @@ class RPVarProcessor:
                 return 3 if attr[1] is True else 2
 
     def precision(self) -> int:
-        """
-        Get the precision associated with this case (single or double).
+        """Get the precision associated with this case (single or double).
 
         Returns
         -------
@@ -407,8 +402,7 @@ class RPVarProcessor:
                 return 2 if attr[1] is True else 1
 
     def iter_count(self) -> int:
-        """
-        Get the number of iterations associated with this case.
+        """Get the number of iterations associated with this case.
 
         Returns
         -------
@@ -418,8 +412,7 @@ class RPVarProcessor:
         return self._find_rp_var("number-of-iterations")
 
     def rp_vars(self) -> dict:
-        """
-        Get the rpvars associated with this case.
+        """Get the rpvars associated with this case.
 
         Returns
         -------
@@ -430,8 +423,7 @@ class RPVarProcessor:
 
     @property
     def rp_var(self) -> CaseVariable:
-        """
-        Access the rpvars associated with this case.
+        """Access the rpvars associated with this case.
 
         Returns
         -------
@@ -441,8 +433,7 @@ class RPVarProcessor:
         return CaseVariable(self._rp_vars)
 
     def has_rp_var(self, name: str) -> bool:
-        """
-        Find if this case has the given rpvar.
+        """Find if this case has the given rpvar.
 
         Parameters
         ----------
@@ -457,8 +448,7 @@ class RPVarProcessor:
         return name in self._rp_vars
 
     def config_vars(self) -> dict:
-        """
-        Get the config variables associated with this case.
+        """Get the config variables associated with this case.
 
         Returns
         -------
@@ -469,8 +459,7 @@ class RPVarProcessor:
 
     @property
     def config_var(self) -> CaseVariable:
-        """
-        Access the config variables associated with this case.
+        """Access the config variables associated with this case.
 
         Returns
         -------
@@ -497,7 +486,8 @@ class SettingsFile(RPVarProcessor):
     """Class to read a Fluent Settings file."""
 
     def __init__(self, settings_filepath: Optional[str] = None) -> None:
-        """Initialize a SettingsFile object. Exactly one file path argument must be specified.
+        """Initialize a SettingsFile object. Exactly one file path argument must be
+        specified.
 
         Parameters
         ----------
@@ -543,7 +533,8 @@ class CaseFile(RPVarProcessor):
         case_filepath: Optional[str] = None,
         project_filepath: Optional[str] = None,
     ) -> None:
-        """Initialize a CaseFile object. Exactly one file path argument must be specified.
+        """Initialize a CaseFile object. Exactly one file path argument must be
+        specified.
 
         Parameters
         ----------
@@ -612,8 +603,8 @@ class CaseFile(RPVarProcessor):
 
 
 def _get_processed_string(input_string: bytes) -> str:
-    """Processes the input string (binary) with help of an identifier to return
-    it in a format which can be parsed by lispy.parse().
+    """Processes the input string (binary) with help of an identifier to return it in a
+    format which can be parsed by lispy.parse().
 
     Parameters
     ----------
@@ -634,4 +625,14 @@ def _get_case_filepath_from_flprj(flprj_file):
     tree = ET.parse(flprj_file, parser)
     root = tree.getroot()
     folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
+    # If the project file name begins with a digit then the node to find will be prepended
+    # with "_". Rather than making any assumptions that this is a hard rule, or what
+    # the scope of the rule is, simply retry with the name prepended:
+    find_folder = lambda retry=False: root.find(("_" if retry else "") + folder_name)
+    return (
+        (find_folder() or find_folder(retry=True))
+        .find("Input")
+        .find("Case")
+        .find("Target")
+        .get("value")
+    )

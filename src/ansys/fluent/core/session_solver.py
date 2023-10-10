@@ -13,6 +13,7 @@ from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
@@ -23,8 +24,11 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Solver(BaseSession):
-    """Encapsulates a Fluent solver session. A ``tui`` object for solver TUI
-    commanding, and solver settings objects are all exposed here."""
+    """Encapsulates a Fluent solver session.
+
+    A ``tui`` object for solver TUI
+    commanding, and solver settings objects are all exposed here.
+    """
 
     def __init__(
         self,
@@ -53,7 +57,10 @@ class Solver(BaseSession):
         self._reduction_service = self.fluent_connection.create_service(
             ReductionService, self.error_state
         )
-        self.reduction = Reduction(self._reduction_service)
+        if int(self.version) >= 241:
+            self.reduction = Reduction(self._reduction_service)
+        else:
+            self.reduction = reduction_old
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
@@ -84,10 +91,12 @@ class Solver(BaseSession):
                 tui_module = importlib.import_module(
                     f"ansys.fluent.core.solver.tui_{self.version}"
                 )
-                self._tui = tui_module.main_menu([], self._tui_service)
+                self._tui = tui_module.main_menu(
+                    self._tui_service, self._version, "solver", []
+                )
             except ImportError:
                 tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu([], self._tui_service)
+                self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
         return self._tui
 
     @property
@@ -196,8 +205,8 @@ class Solver(BaseSession):
                 fut_session.exit()
 
     def read_case(self, file_name: str, lightweight_mode: bool = False):
-        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is
-        set to ``True``.
+        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
+        ``True``.
 
         Parameters
         ----------

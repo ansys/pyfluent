@@ -29,11 +29,13 @@ env:
   PACKAGE_NAME: 'ansys-fluent-core'
   PACKAGE_NAMESPACE: 'ansys.fluent.core'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  MAIN_PYTHON_VERSION: '3.9'
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
 
 jobs:
 
@@ -41,8 +43,19 @@ jobs:
     name: Documentation Style Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-  
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install pre-commit
+        run: python -m pip install pre-commit
+
+      - name: Run pre-commit for docformatter
+        run: pre-commit run --hook-stage manual --all-files docformatter
+
       - name: Running Vale
         uses: errata-ai/vale-action@reviewdog
         env:
@@ -53,7 +66,6 @@ jobs:
           level: error
           filter_mode: nofilter
           fail_on_error: true
-          vale_flags: "--config=doc/.vale.ini"
 
   test-import:
     name: Build and Smoke tests
@@ -62,7 +74,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11']
         should-release:
           - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
         exclude:
@@ -84,7 +96,7 @@ jobs:
       DOC_DEPLOYMENT_IMAGE_TAG: v23.2.0
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -132,11 +144,11 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -188,12 +200,12 @@ jobs:
     runs-on: [self-hosted, pyfluent]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -233,11 +245,11 @@ jobs:
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull 22.2 Fluent docker image
         if: steps.cache-222-api-code.outputs.cache-hit != 'true'
@@ -360,12 +372,12 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Download package
         uses: actions/download-artifact@v3
@@ -383,11 +395,11 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
@@ -427,12 +439,12 @@ jobs:
             version: 241
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -455,11 +467,11 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
@@ -494,7 +506,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - uses: actions/download-artifact@v3
 

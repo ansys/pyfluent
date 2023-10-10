@@ -195,7 +195,7 @@ class DataModelCache:
 
     @staticmethod
     def get_state(rules: str, obj: object) -> Any:
-        """Retrieve state from datamodel cache
+        """Retrieve state from datamodel cache.
 
         Parameters
         ----------
@@ -234,7 +234,7 @@ class DataModelCache:
 
     @staticmethod
     def set_state(rules: str, obj: object, value: Any):
-        """Set datamodel cache state
+        """Set datamodel cache state.
 
         Parameters
         ----------

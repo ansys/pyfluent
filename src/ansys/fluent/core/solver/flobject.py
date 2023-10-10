@@ -24,7 +24,7 @@ import logging
 import pickle
 import string
 import sys
-from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
+from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
@@ -97,7 +97,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -112,8 +112,8 @@ class Base:
     def flproxy(self):
         """Proxy object.
 
-        The proxy object is set at the root level and accessed via the
-        parent for the child classes.
+        The proxy object is set at the root level and accessed via the parent for the
+        child classes.
         """
         if self._flproxy is None:
             return self._parent.flproxy
@@ -131,8 +131,8 @@ class Base:
     def obj_name(self) -> str:
         """Name of the scheme of this object.
 
-        By default, this returns the object's static name. If the object
-        is a child of a named object, the object's name is returned.
+        By default, this returns the object's static name. If the object is a child of a
+        named object, the object's name is returned.
         """
         if self._name is None:
             return self.fluent_name
@@ -156,8 +156,28 @@ class Base:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
-    def get_attr(self, attr, attr_type_or_types=None) -> Any:
-        """Get the requested attribute for the object."""
+    def get_attr(
+        self, attr: str, attr_type_or_types: Optional[Union[str, List[str]]] = None
+    ) -> Any:
+        """Get the requested attribute for the object.
+
+        Parameters
+        ----------
+        attr : str
+            attribute name
+        attr_type_or_types : str or list of str, optional
+            attribute type, by default None
+
+        Returns
+        -------
+        Any
+            attribute value
+
+        Raises
+        ------
+        RuntimeError
+            If any attribute other than ``"active?`` is queried when the object is not active.
+        """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
@@ -265,7 +285,7 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT = None, **kwargs):
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         if kwargs:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
@@ -400,7 +420,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -421,6 +441,7 @@ class Group(SettingsBase[DictStateType]):
         else:
             return self.get_state()
 
+    # pylint: disable=missing-raises-doc
     @classmethod
     def to_scheme_keys(cls, value):
         """Convert value to have keys with scheme names."""
@@ -556,8 +577,7 @@ class Group(SettingsBase[DictStateType]):
 
 
 class WildcardPath(Group):
-    """Class wrapping a wildcard path to perform get_var and set_var on
-    flproxy."""
+    """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
     def __init__(self, flproxy, path: str, state_cls, settings_cls, parent):
         """__init__ of WildcardPath class."""
@@ -626,8 +646,7 @@ class WildcardPath(Group):
 
 
 class NamedObjectWildcardPath(WildcardPath):
-    """WildcardPath at a NamedObject path, so it can be looked up by wildcard
-    again."""
+    """WildcardPath at a NamedObject path, so it can be looked up by wildcard again."""
 
     def __getitem__(self, name: str):
         return WildcardPath(
@@ -646,9 +665,8 @@ ChildTypeT = TypeVar("ChildTypeT")
 
 
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
-    """A ``NamedObject`` container is a container object similar to a Python
-    dictionary object. Generally, many such objects can be created with
-    different names.
+    """A ``NamedObject`` container is a container object similar to a Python dictionary
+    object. Generally, many such objects can be created with different names.
 
     Attributes
     ----------
@@ -658,7 +676,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -807,8 +825,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
 
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
-    """A ``ListObject`` container is a container object, similar to a Python
-    list object. Generally, many such objects can be created.
+    """A ``ListObject`` container is a container object, similar to a Python list
+    object. Generally, many such objects can be created.
 
     Attributes
     ----------
@@ -917,7 +935,7 @@ def _get_new_keywords(obj, kwds):
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
@@ -1013,10 +1031,9 @@ def _clean_helpinfo(helpinfo):
 
 
 class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
-    """A mixin class to provide a dictionary interface at a Group class level
-    if the Group has multiple named objects of a similar type. For example,
-    boundary conditions are grouped by type but quite often we want to access
-    them without the type context.
+    """A mixin class to provide a dictionary interface at a Group class level if the
+    Group has multiple named objects of a similar type. For example, boundary conditions
+    are grouped by type but quite often we want to access them without the type context.
 
     The following can be used:
     for name, boundary in setup.boundary_conditions.items():
@@ -1117,6 +1134,7 @@ class _HasAllowedValuesMixin:
             return []
 
 
+# pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -1253,6 +1271,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
+# pylint: disable=missing-raises-doc
 def get_root(flproxy, version: str = "") -> Group:
     """Get the root settings object.
 

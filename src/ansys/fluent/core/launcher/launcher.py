@@ -1,7 +1,7 @@
 """Provides a module for launching Fluent.
 
-This module supports both starting Fluent locally and connecting to a
-remote instance with gRPC.
+This module supports both starting Fluent locally and connecting to a remote instance
+with gRPC.
 """
 from enum import Enum
 import json
@@ -12,7 +12,7 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -86,14 +86,26 @@ class FluentVersion(Enum):
 
 def get_ansys_version() -> str:
     """Return the version string corresponding to the most recent, available ANSYS
-    installation. The returned value is the string component of one of the members
-    of the FluentVersion class.
+    installation.
+
+    The returned value is the string component of one of the members of the
+    FluentVersion class.
+
+    Returns
+    -------
+    str
+        Ansys version string
+
+    Raises
+    ------
+    RuntimeError
+        If an Ansys version cannot be found.
     """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
 
-    raise RuntimeError("No ANSYS version can be found.")
+    raise RuntimeError("An Ansys version cannot be found.")
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -144,8 +156,24 @@ class FluentMode(Enum):
     SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
-    def get_mode(mode: str):
-        """Returns the FluentMode based on the provided mode string."""
+    def get_mode(mode: str) -> "FluentMode":
+        """Returns the FluentMode based on the provided mode string.
+
+        Parameters
+        ----------
+        mode : str
+            mode
+
+        Returns
+        -------
+        FluentMode
+            Fluent mode
+
+        Raises
+        ------
+        RuntimeError
+            If an unknown mode is passed.
+        """
         for m in FluentMode:
             if mode == m.value[0]:
                 return m
@@ -233,11 +261,11 @@ def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
     start_timeout: int = 100,
-    product_version: str = None,
+    product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
-    dimensionality: str = None,
-    launcher_args: Dict[str, Any] = None,
+    dimensionality: Optional[str] = None,
+    launcher_args: Optional[Dict[str, Any]] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
@@ -304,7 +332,7 @@ def launch_remote_fluent(
     )
 
 
-def _get_session_info(argvals, mode: Union[FluentMode, str, None] = None):
+def _get_session_info(argvals, mode: Optional[Union[FluentMode, str, None]] = None):
     """Updates the session information."""
     if mode is None:
         mode = FluentMode.SOLVER
@@ -329,10 +357,10 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
 
 
 def _update_launch_string_wrt_gui_options(
-    launch_string: str, show_gui: bool = None, additional_arguments: str = ""
+    launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
 ) -> str:
-    """Checks for all gui options in additional arguments and updates the
-    launch string with hidden, if none of the options are met."""
+    """Checks for all gui options in additional arguments and updates the launch string
+    with hidden, if none of the options are met."""
 
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
@@ -360,12 +388,15 @@ def _await_fluent_launch(
 
 
 def _get_server_info(
-    server_info_filepath: str, ip: str = None, port: int = None, password: str = None
+    server_info_filepath: str,
+    ip: Optional[str] = None,
+    port: Optional[int] = None,
+    password: Optional[str] = None,
 ):
     """Get server connection information of an already running session."""
     if ip and port:
-        logger.debug(
-            "The server-info file was not parsed because ip and port were provided explicitly."
+        logger.warning(
+            "Could not parse server-info file because ip and port were provided explicitly."
         )
     elif server_info_filepath:
         ip, port, password = _parse_server_info_file(server_info_filepath)
@@ -380,7 +411,7 @@ def _get_server_info(
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: FluentMode = None
+    fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
 ):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
@@ -423,16 +454,15 @@ def _generate_launch_string(
     return launch_string
 
 
-def scm_to_py(topy):
+def scm_to_py(topy, journal_filepaths):
     """Convert journal filenames to Python filename."""
-    if not isinstance(topy, (str, list)):
-        raise TypeError("Journal name should be of str or list type.")
+    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in journal_filepaths])
     if isinstance(topy, str):
-        topy = [topy]
-    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in topy])
+        return f" {fluent_jou_arg} -topy={topy}"
     return f" {fluent_jou_arg} -topy"
 
 
+# pylint: disable=missing-raises-doc
 class LaunchFluentError(Exception):
     """Exception class representing launch errors."""
 
@@ -444,33 +474,33 @@ class LaunchFluentError(Exception):
 
 #   pylint: disable=unused-argument
 def launch_fluent(
-    product_version: str = None,
-    version: str = None,
-    precision: str = None,
-    processor_count: int = None,
-    journal_filepath: str = None,
+    product_version: Optional[str] = None,
+    version: Optional[str] = None,
+    precision: Optional[str] = None,
+    processor_count: Optional[int] = None,
+    journal_filepaths: Optional[List[str]] = None,
     start_timeout: int = 60,
-    additional_arguments: str = None,
-    env: Dict[str, Any] = None,
-    start_container: bool = None,
-    container_dict: dict = None,
+    additional_arguments: Optional[str] = None,
+    env: Optional[Dict[str, Any]] = None,
+    start_container: Optional[bool] = None,
+    container_dict: Optional[dict] = None,
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    show_gui: bool = None,
-    case_filepath: str = None,
-    case_data_filepath: str = None,
-    lightweight_mode: bool = None,
-    mode: Union[FluentMode, str, None] = None,
-    py: bool = None,
-    gpu: bool = None,
-    cwd: str = None,
-    topy: Union[str, list] = None,
-    start_watchdog: bool = None,
+    show_gui: Optional[bool] = None,
+    case_filepath: Optional[str] = None,
+    case_data_filepath: Optional[str] = None,
+    lightweight_mode: Optional[bool] = None,
+    mode: Optional[Union[FluentMode, str, None]] = None,
+    py: Optional[bool] = None,
+    gpu: Optional[bool] = None,
+    cwd: Optional[str] = None,
+    topy: Optional[Union[str, list]] = None,
+    start_watchdog: Optional[bool] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
-    """Launch Fluent locally in server mode or connect to a running Fluent
-    server instance.
+    """Launch Fluent locally in server mode or connect to a running Fluent server
+    instance.
 
     Parameters
     ----------
@@ -488,9 +518,10 @@ def launch_fluent(
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
-        allocated cores is clamped to this value.
-    journal_filepath : str, optional
-        Name of the journal file to read. The default is ``None``.
+        allocated cores is clamped to value of ``processor_count``.
+    journal_filepaths : str, optional
+        The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
+        journal(s). The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``60``.
@@ -547,9 +578,9 @@ def launch_fluent(
         If True, Fluent will start with GPU Solver.
     cwd : str, Optional
         Working directory for the Fluent client.
-    topy : str or list, optional
-        The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
-        journal(s) and write the equivalent Python journal(s).
+    topy : bool or str, optional
+        A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
+        Can optionally take the file name of the new python journal file.
     start_watchdog : bool, optional
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
@@ -566,8 +597,8 @@ def launch_fluent(
 
     Notes
     -----
-    In job scheduler environments such as SLURM, LSF, PBS, etc... the allocated
-    machines and core counts are queried from the scheduler environment and
+    Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
+    The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
     if kwargs:
@@ -637,7 +668,7 @@ def launch_fluent(
             "topy",
             "case_filepath",
             "lightweight_mode",
-            "journal_filepath",
+            "journal_filepaths",
             "case_data_filepath",
         ]
         invalid_arg_names = list(
@@ -674,8 +705,17 @@ def launch_fluent(
         kwargs = _get_subprocess_kwargs_for_fluent(env)
         if cwd:
             kwargs.update(cwd=cwd)
+        if journal_filepaths:
+            if not isinstance(journal_filepaths, (str, list)):
+                raise TypeError("Journal name should be a list of strings.")
+            if isinstance(journal_filepaths, str):
+                journal_filepaths = [journal_filepaths]
         if topy:
-            launch_string += scm_to_py(topy)
+            if not journal_filepaths:
+                raise RuntimeError(
+                    "Please provide the journal files to be converted as 'journal_filepaths' argument."
+                )
+            launch_string += scm_to_py(topy, journal_filepaths)
 
         if _is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
@@ -723,11 +763,11 @@ def launch_fluent(
                     session.tui.file.read_case(case_filepath)
                 else:
                     session.read_case(case_filepath, lightweight_mode)
-            if journal_filepath:
+            if journal_filepaths:
                 if meshing_mode:
-                    session.tui.file.read_journal(journal_filepath)
+                    session.tui.file.read_journal(*journal_filepaths)
                 else:
-                    session.file.read_journal(file_name_list=[str(journal_filepath)])
+                    session.file.read_journal(file_name_list=journal_filepaths)
             if case_data_filepath:
                 if not meshing_mode:
                     session.file.read(
@@ -811,13 +851,13 @@ def launch_fluent(
 
 
 def connect_to_fluent(
-    ip: str = None,
-    port: int = None,
+    ip: Optional[str] = None,
+    port: Optional[int] = None,
     cleanup_on_exit: bool = False,
     start_transcript: bool = True,
-    server_info_filepath: str = None,
-    password: str = None,
-    start_watchdog: bool = None,
+    server_info_filepath: Optional[str] = None,
+    password: Optional[str] = None,
+    start_watchdog: Optional[bool] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Connect to an existing Fluent server instance.
 
@@ -827,10 +867,12 @@ def connect_to_fluent(
         IP address for connecting to an existing Fluent instance. The
         IP address defaults to ``"127.0.0.1"``. You can also use the environment
         variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
+        The explicit value of ``ip`` takes precedence over ``PYFLUENT_FLUENT_IP=<ip>``.
     port : int, optional
         Port to listen on for an existing Fluent instance. You can use the
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
-        value.
+        value. The explicit value of ``port`` takes precedence over
+        ``PYFLUENT_FLUENT_PORT=<port>``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
@@ -858,7 +900,6 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
-
     """
     ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
     fluent_connection = FluentConnection(

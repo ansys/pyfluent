@@ -27,6 +27,7 @@ class Attribute:
         "sort_by",
         "style",
         "icon",
+        "show_text",
     ]
 
     def __init__(self, function):
@@ -192,7 +193,7 @@ class PyLocalBaseMeta(type):
     def __create_get_session_handle(cls):
         def wrapper(self, obj=None):
             root = self.get_root(obj)
-            return root.session_handle
+            return getattr(root, "session_handle", None)
 
         return wrapper
 
@@ -258,6 +259,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, api_helper, name=""):
+            """Create the initialization method for 'PyLocalPropertyMeta'."""
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
@@ -349,6 +351,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, path, location, session_id):
+            """Create the initialization method for 'PyReferenceObjectMeta'."""
             self._parent = parent
             self.type = "object"
             self.parent = parent
@@ -405,6 +408,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, api_helper, name=""):
+            """Create the initialization method for 'PyLocalObjectMeta'."""
             self._parent = parent
             self._name = name
             self._api_helper = api_helper(self)
@@ -472,9 +476,14 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         def wrapper(self, show_attributes=False):
             state = {}
 
+            if not getattr(self, "is_active", True):
+                return
+
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
                     o = getattr(self, name)
+                    if o is None:
+                        continue
                     if getattr(o, "is_active", True):
                         if cls.__class__.__name__ == "PyLocalObjectMeta":
                             state[name] = o(show_attributes)
@@ -528,6 +537,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
     @classmethod
     def __create_init(cls):
         def wrapper(self, name, parent, api_helper):
+            """Create the initialization method for 'PyLocalNamedObjectMeta'."""
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
@@ -583,6 +593,7 @@ class PyLocalContainer(MutableMapping):
     """Local container for named objects."""
 
     def __init__(self, parent, object_class, api_helper, name=""):
+        """Initialize the 'PyLocalContainer' object."""
         self._parent = parent
         self._name = name
         self.__object_class = object_class
@@ -592,22 +603,44 @@ class PyLocalContainer(MutableMapping):
 
         if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):
             PyLocalContainer.show_as_separate_object = property(
-                lambda self: self.__object_class.SHOW_AS_SEPARATE_OBJECT()
+                lambda self: self.__object_class.SHOW_AS_SEPARATE_OBJECT(self)
             )
         if hasattr(object_class, "EXCLUDE"):
             PyLocalContainer.exclude = property(
-                lambda self: self.__object_class.EXCLUDE()
+                lambda self: self.__object_class.EXCLUDE(self)
             )
         if hasattr(object_class, "INCLUDE"):
             PyLocalContainer.include = property(
-                lambda self: self.__object_class.INCLUDE()
+                lambda self: self.__object_class.INCLUDE(self)
             )
         if hasattr(object_class, "LAYOUT"):
             PyLocalContainer.layout = property(
-                lambda self: self.__object_class.LAYOUT()
+                lambda self: self.__object_class.LAYOUT(self)
+            )
+        if hasattr(object_class, "STYLE"):
+            PyLocalContainer.style = property(
+                lambda self: self.__object_class.STYLE(self)
+            )
+        if hasattr(object_class, "ICON"):
+            PyLocalContainer.icon = property(
+                lambda self: self.__object_class.ICON(self)
+            )
+        if hasattr(object_class, "IS_ACTIVE"):
+            PyLocalContainer.is_active = property(
+                lambda self: self.__object_class.IS_ACTIVE(self)
             )
 
+    @classmethod
     def get_root(self, obj=None):
+        """Returns the top-most parent object."""
+        obj = self if obj is None else obj
+        parent = obj
+        if getattr(obj, "_parent", None):
+            parent = self.get_root(obj._parent)
+        return parent
+
+    def get_root(self, obj=None):
+        """Returns the top-most parent object."""
         obj = self if obj is None else obj
         parent = obj
         if getattr(obj, "_parent", None):
@@ -615,28 +648,34 @@ class PyLocalContainer(MutableMapping):
         return parent
 
     def get_session(self, obj=None):
+        """Returns the session object."""
         root = self.get_root(obj)
         return root.session
 
     def get_path(self):
+        """Path to the current object."""
         if getattr(self, "_parent", None):
             return self._parent.get_path() + "/" + self._name
         return self._name
 
     @property
     def path(self):
+        """Path to the current object."""
         return self.get_path()
 
     @property
     def session(self):
+        """Returns the session object."""
         return self.get_session()
 
     def get_session_handle(self, obj=None):
+        """Returns the session-handle object."""
         root = self.get_root(obj)
         return root.session_handle
 
     @property
     def session_handle(self):
+        """Returns the session-handle object."""
         return self.get_session_handle()
 
     def __iter__(self):

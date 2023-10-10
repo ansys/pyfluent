@@ -211,18 +211,24 @@ class TUIGenerator:
             if line:
                 self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
-        self._write_code_to_tui_file("def __init__(self, path, service):\n", indent)
+        self._write_code_to_tui_file(
+            "def __init__(self, service, version, mode, path):\n", indent
+        )
         indent += 1
-        self._write_code_to_tui_file("self.path = path\n", indent)
-        self._write_code_to_tui_file("self.service = service\n", indent)
+        self._write_code_to_tui_file("self._service = service\n", indent)
+        self._write_code_to_tui_file("self._version = version\n", indent)
+        self._write_code_to_tui_file("self._mode = mode\n", indent)
+        self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
             if not v.is_command:
                 self._write_code_to_tui_file(
                     f"self.{k} = self.__class__.{k}"
-                    f'(path + ["{v.tui_name}"], service)\n',
+                    f'(service, version, mode, path + ["{v.tui_name}"])\n',
                     indent,
                 )
-        self._write_code_to_tui_file("super().__init__(path, service)\n", indent)
+        self._write_code_to_tui_file(
+            "super().__init__(service, version, mode, path)\n", indent
+        )
         indent -= 1
 
         command_names = [v.name for _, v in menu.children.items() if v.is_command]
@@ -240,7 +246,7 @@ class TUIGenerator:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
-                    f"return PyMenu(self.service, "
+                    f"return PyMenu(self._service, self._version, self._mode, "
                     f'"{menu.get_command_path(command)}").execute('
                     f"*args, **kwargs)\n",
                     indent,
@@ -317,7 +323,9 @@ class TUIGenerator:
                 ) as f:
                     self._main_menu = pickle.load(f)
             else:
-                info = PyMenu(self._service, self._main_menu.path).get_static_info()
+                info = PyMenu(
+                    self._service, self._version, self._mode, self._main_menu.path
+                ).get_static_info()
                 self._populate_menu(self._main_menu, info)
             self.session.exit()
             self._write_code_to_tui_file(
@@ -345,7 +353,6 @@ class TUIGenerator:
 
 
 def generate(version, pyfluent_path):
-    # pyfluent.set_log_level("WARNING")
     api_tree = {}
     if version > "222":
         _copy_tui_help_xml_file(version)

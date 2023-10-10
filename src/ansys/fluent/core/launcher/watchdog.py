@@ -5,6 +5,7 @@ import string
 import subprocess
 import sys
 import time
+from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -13,7 +14,7 @@ IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
-def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
+def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None):
     watchdog_id = "".join(
         random.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
@@ -24,7 +25,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     if env_watchdog_debug in ("1", "ON"):
         print(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
-            f"enabling debugging for watchdog id {watchdog_id}..."
+            f"enabling debugging for watchdog ID {watchdog_id}..."
         )
 
     logger = pyfluent.logging.get_logger("pyfluent.launcher")
@@ -253,27 +254,7 @@ if __name__ == "__main__":
 
         logger.info(", ".join(down) + " not running anymore")
 
-        def check_fluent_processes():
-            logger.info("Checking if Fluent processes are still alive...")
-            if fluent.connection_properties.inside_container:
-                _response = timeout_loop(
-                    get_container,
-                    IDLE_PERIOD * 5,
-                    args=(cortex_host,),
-                    expected="falsy",
-                )
-            else:
-                _response = timeout_loop(
-                    lambda: psutil.pid_exists(fluent_host_pid)
-                    or psutil.pid_exists(cortex_pid),
-                    IDLE_PERIOD * 5,
-                    expected="falsy",
-                )
-            return _response
-
-        alive = check_fluent_processes()
-
-        if alive:
+        if not fluent.wait_process_finished(wait=IDLE_PERIOD * 5):
             logger.info(
                 "Fluent processes remain. Checking if Fluent gRPC service is healthy..."
             )
@@ -284,8 +265,7 @@ if __name__ == "__main__":
             if is_serving:
                 logger.info("Fluent client healthy, trying soft exit with timeout...")
                 fluent.exit(timeout=IDLE_PERIOD * 2, timeout_force=False)
-                response = check_fluent_processes()
-                if response:
+                if not fluent.wait_process_finished(wait=IDLE_PERIOD * 5):
                     logger.info("Fluent client or container remains...")
                 else:
                     logger.info("Exit call succeeded.")

@@ -3,7 +3,7 @@ from enum import Enum
 import functools
 import itertools
 import logging
-from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
+from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple, Type
 
 import grpc
 
@@ -26,8 +26,8 @@ logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Attribute(Enum):
-    """Contains the standard names of data model attributes associated with the
-    data model service."""
+    """Contains the standard names of data model attributes associated with the data
+    model service."""
 
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
@@ -89,49 +89,49 @@ class DatamodelService(StreamingService):
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        """initDatamodel rpc of DataModel service."""
+        """initDatamodel RPC of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """getAttributeValue rpc of DataModel service."""
+        """getAttributeValue RPC of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """getState rpc of DataModel service."""
+        """getState RPC of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """setState rpc of DataModel service."""
+        """setState RPC of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
-        """updateDict rpc of DataModel service."""
+        """updateDict RPC of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
-        """deleteObject rpc of DataModel service."""
+        """deleteObject RPC of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """executeCommand rpc of DataModel service."""
+        """executeCommand RPC of DataModel service."""
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
@@ -139,13 +139,14 @@ class DatamodelService(StreamingService):
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
-        """createCommandArguments rpc of DataModel service."""
+        """createCommandArguments RPC of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
+    # pylint: disable=missing-raises-doc
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments rpc of DataModel service."""
+        """deleteCommandArguments RPC of DataModel service."""
         try:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
@@ -159,28 +160,28 @@ class DatamodelService(StreamingService):
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
-        """getSpecs rpc of DataModel service."""
+        """getSpecs RPC of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """getStaticInfo rpc of DataModel service."""
+        """getStaticInfo RPC of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
-        """subscribeEvents rpc of DataModel service."""
+        """subscribeEvents RPC of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
     @catch_grpc_error
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
-        """unsubscribeEvents rpc of DataModel service."""
+        """unsubscribeEvents RPC of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
     def unsubscribe_all_events(self):
@@ -295,7 +296,13 @@ class EventSubscription:
         self._service.events[self.tag] = self
 
     def unsubscribe(self):
-        """Unsubscribe the datamodel event."""
+        """Unsubscribe the datamodel event.
+
+        Raises
+        ------
+        RuntimeError
+            If server fails to unsubscribe from event.
+        """
         if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
             self._service.event_streaming.unregister_callback(self.tag)
             request = DataModelProtoModule.UnsubscribeEventsRequest()
@@ -313,8 +320,8 @@ class EventSubscription:
 
 
 class PyStateContainer(PyCallableStateObject):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using StateEngine based DatamodelService as backend. Use this class
+    instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -336,7 +343,9 @@ class PyStateContainer(PyCallableStateObject):
         Set the state of the current object if state is provided else get its state.
     """
 
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+    def __init__(
+        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+    ):
         """__init__ method of PyStateContainer class."""
         super().__init__()
         self.service = service
@@ -365,7 +374,7 @@ class PyStateContainer(PyCallableStateObject):
 
     getState = get_state
 
-    def set_state(self, state: Any = None, **kwargs) -> None:
+    def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
@@ -450,7 +459,7 @@ class PyStateContainer(PyCallableStateObject):
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
+        """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
@@ -475,7 +484,7 @@ class PyStateContainer(PyCallableStateObject):
     def add_on_command_attribute_changed(
         self, command: str, attribute: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
+        """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
@@ -502,8 +511,8 @@ class PyStateContainer(PyCallableStateObject):
 
 
 class PyMenu(PyStateContainer):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using StateEngine based DatamodelService as backend. Use this class
+    instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -514,7 +523,9 @@ class PyMenu(PyStateContainer):
     create_command_arguments(command)
     """
 
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+    def __init__(
+        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+    ):
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
@@ -540,6 +551,11 @@ class PyMenu(PyStateContainer):
         ----------
         new_name : str
             New name for the object.
+
+        Raises
+        ------
+        RuntimeError
+            If the object is not a named object.
         """
         try:
             self._name_.set_state(new_name)
@@ -548,8 +564,19 @@ class PyMenu(PyStateContainer):
                 f"{self.__class__.__name__} is not a named object class."
             )
 
-    def name(self):
-        """Get the name of the named object."""
+    def name(self) -> str:
+        """Get the name of the named object.
+
+        Returns
+        -------
+        str
+            name
+
+        Raises
+        ------
+        RuntimeError
+            If the object is not a named object.
+        """
         try:
             return self._name_()
         except AttributeError:
@@ -583,7 +610,7 @@ class PyMenu(PyStateContainer):
         Returns
         -------
         str
-            Command id
+            Command ID
         """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
@@ -678,7 +705,7 @@ class PyMenu(PyStateContainer):
     def add_on_affected_at_type_path(
         self, child_type: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when the object is affected at child type
+        """Register a callback for when the object is affected at child type.
 
         Parameters
         ----------
@@ -701,7 +728,7 @@ class PyMenu(PyStateContainer):
         return subscription
 
     def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
-        """Register a callback for when a command is executed
+        """Register a callback for when a command is executed.
 
         Parameters
         ----------
@@ -727,8 +754,7 @@ class PyMenu(PyStateContainer):
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
-    Use this class instead of directly calling DatamodelService's
-    method.
+    Use this class instead of directly calling DatamodelService's method.
     """
 
     def default_value(self):
@@ -809,10 +835,9 @@ class PyDictionary(PyParameter):
     """
 
     def update_dict(self, dict_state: Dict[str, Any]) -> None:
-        """Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics.
+        """Update the state of the current object if the current object is a Dict in the
+        data model, else throws RuntimeError (currently not showing up in Python).
+        Update is executed according to dict.update semantics.
 
         Parameters
         ----------
@@ -829,9 +854,8 @@ class PyDictionary(PyParameter):
 
 
 class PyNamedObjectContainer:
-    """Container class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Container class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -847,7 +871,9 @@ class PyNamedObjectContainer:
         Delete the child object by name.
     """
 
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+    def __init__(
+        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+    ):
         """__init__ method of PyNamedObjectContainer class."""
         self.service = service
         self.rules = rules
@@ -978,9 +1004,8 @@ class PyNamedObjectContainer:
 
 
 class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Command class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -994,7 +1019,11 @@ class PyCommand:
     _stored_static_info = {}
 
     def __init__(
-        self, service: DatamodelService, rules: str, command: str, path: Path = None
+        self,
+        service: DatamodelService,
+        rules: str,
+        command: str,
+        path: Optional[Path] = None,
     ):
         """__init__ method of PyCommand class."""
         self.service = service
@@ -1300,7 +1329,23 @@ class DataModelType(Enum):
 
     @staticmethod
     def get_mode(mode: str) -> Type[PyCommandArgumentsSubItem]:
-        """Returns the datamodel type."""
+        """Returns the datamodel type.
+
+        Parameters
+        ----------
+        mode : str
+            mode
+
+        Returns
+        -------
+        Type[PyCommandArgumentsSubItem]
+            datamodel type
+
+        Raises
+        ------
+        TypeError
+            If an unknown mode is passed.
+        """
         for m in DataModelType:
             if mode in m.value[0]:
                 return m
@@ -1359,8 +1404,8 @@ class PyMenuGeneric(PyMenu):
 class PySimpleMenuGeneric(PyMenu, PyDictionary):
     """A simple implementation of PyMenuGeneric applicable only for SINGLETONS.
 
-    This is required for the stand-alone datamodel server to avoid the
-    usage of 'service.get_specs'
+    This is required for the stand-alone datamodel server to avoid the usage of
+    'service.get_specs'
     """
 
     attrs = ("service", "rules", "path")
@@ -1377,7 +1422,8 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
 
 
 class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
-    """Generic PyNamedObjectContainer class for when generated API code is not available."""
+    """Generic PyNamedObjectContainer class for when generated API code is not
+    available."""
 
     def __iter__(self):
         for name in self._get_child_object_display_names():

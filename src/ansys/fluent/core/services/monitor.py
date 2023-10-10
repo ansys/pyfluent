@@ -1,4 +1,4 @@
-"""Wrapper over the monitor grpc service of Fluent."""
+"""Wrapper over the monitor gRPC service of Fluent."""
 
 from google.protobuf.json_format import MessageToDict
 import grpc
