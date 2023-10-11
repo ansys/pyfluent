@@ -23,11 +23,10 @@ This example demonstrates how to do the following:
 **Problem description**
 
 The problem considers the cavitation caused by the flow separation after a
-sharp-edged orifice. The flow is pressure driven, with an inlet pressure of 5 x
-10^5 Pa and an outlet pressure of 9.5 x 10^4 Pa. The orifice diameter is 4 x
-10^-3 m, and the geometrical parameters of the orifice are D/d = 2.88 and L/d =
-4, where D, d, and L are the inlet diameter, orifice diameter, and orifice
-length respectively.
+sharp-edged orifice. The flow is pressure driven, with an inlet pressure of 500
+kPa and an outlet pressure of 95 kPa. The orifice diameter is 4 mm, and the
+geometrical parameters of the orifice are D/d = 2.88 and L/d = 4, where D, d,
+and L are the inlet diameter, orifice diameter, and orifice length respectively.
 """
 
 ###############################################################################
@@ -155,7 +154,7 @@ solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reac
 inlet_1 = solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase
 
 # Set direction specification method to ``Normal to Boundary``. Set gauge total
-# pressure as 500000 Pa. Set supersonic or initial gauge pressure as 449000 Pa.
+# pressure as 500 kPa. Set supersonic or initial gauge pressure as 449 kPa.
 # Set turbulent intensity as 0.05. Set turbulent specification to ``Intensity
 # and Viscosity Ratio``. Set turbulent viscosity ratio as 10.
 
@@ -181,7 +180,7 @@ solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 
 outlet = solver.setup.boundary_conditions.pressure_outlet["outlet"].phase
 
-# Set the gauge pressure as 95000. Set turbulent intensity as 0.05. Set
+# Set the gauge pressure as 95 kPa. Set turbulent intensity as 0.05. Set
 # turbulent specification to ``Intensity and Viscosity Ratio``. Set turbulent
 # viscosity ratio as 10.
 
