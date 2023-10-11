@@ -167,7 +167,6 @@ def test_create_session_from_server_info_file_with_wrong_password(
         session = BaseSession.create_from_server_info_file(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
-            start_timeout=2,
         )
         session.scheme_eval.scheme_eval("")
         server.stop(None)

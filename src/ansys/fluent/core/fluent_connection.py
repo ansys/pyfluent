@@ -7,7 +7,6 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-import time
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import warnings
 import weakref
@@ -193,7 +192,6 @@ class FluentConnection:
 
     def __init__(
         self,
-        start_timeout: int = 60,
         ip: Optional[str] = None,
         port: Optional[int] = None,
         password: Optional[str] = None,
@@ -208,9 +206,6 @@ class FluentConnection:
 
         Parameters
         ----------
-        start_timeout: int, optional
-            Maximum allowable time in seconds for connecting to the Fluent
-            server. The default is ``60``.
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
@@ -274,15 +269,9 @@ class FluentConnection:
         self.health_check_service = HealthCheckService(
             self._channel, self._metadata, self.error_state
         )
-
-        counter = 0
-        while not self.health_check_service.is_serving:
-            time.sleep(1)
-            counter += 1
-            if counter > start_timeout:
-                raise RuntimeError(
-                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
-                )
+        # At this point, the server must be running. If the following check_health()
+        # throws, we should not proceed.
+        self.check_health()
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
