@@ -41,11 +41,14 @@ length respectively.
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
-# sphinx_gallery_thumbnail_path = '_static\cavitation_model.png'
+# sphinx_gallery_thumbnail_path = '_static/cavitation_model.png'
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-cav_file = examples.download_file("cav.msh", "pyfluent/cavitation")
+cav_file = examples.download_file(
+    "cav.msh", "pyfluent/cavitation", save_path=pyfluent.EXAMPLES_PATH
+)
 
 ###############################################################################
 # Launch Fluent
@@ -58,6 +61,8 @@ solver = pyfluent.launch_fluent(
     processor_count=4,
     mode="solver",
     version="2d",
+    product_version="23.2.0",
+    cwd=pyfluent.EXAMPLES_PATH,
 )
 
 ###############################################################################
@@ -301,7 +306,9 @@ solver.results.graphics.contour["contour_static_pressure"] = contour_static_pres
 solver.tui.display.set.mirror_zones(["symm_2", "symm_1"])
 
 ###############################################################################
-# .. image:: _static\cavitation_model_012.png :width: 500pt :align: center
+# .. image:: /_static/cavitation_model_012.png
+#   :width: 500pt
+#   :align: center
 
 # Create and plot a contour definition of the turbulent kinetic energy.
 
@@ -319,14 +326,18 @@ contour_tke = {
 solver.results.graphics.contour["contour_tke"] = contour_tke
 
 ###############################################################################
-# .. image:: _static\cavitation_model_011.png :width: 500pt :align: center
+# .. image:: /_static/cavitation_model_011.png
+#   :width: 500pt
+#   :align: center
 
 # Create and plot a contour definition of the volume fraction of water vapor.
 
 solver.results.graphics.contour.create("contour_vf_vapor")
 
 ###############################################################################
-# .. image:: _static\cavitation_model.png :width: 500pt :align: center
+# .. image:: /_static/cavitation_model.png
+#   :width: 500pt
+#   :align: center
 
 # Set filled to True, coloring to 'banded' and field to 'static pressure'.
 
