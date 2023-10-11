@@ -1,14 +1,13 @@
 """Module containing class encapsulating Fluent connection."""
 
+
 from asyncio import Future
 import functools
 import importlib
 import logging
 import os
-from pathlib import Path
 import threading
 import time
-from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -23,6 +22,7 @@ from ansys.fluent.core.utils.client import Client
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
+import ansys.platform.instancemanagement as pypim
 
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -235,42 +235,35 @@ class Solver(BaseSession):
 
     def read_case(
         self,
-        file_name,
-        upload_file_path: Optional[str] = None,
+        file_name: str,
     ):
-        """Reads and uploads a file.
+        """Reads a case file.
 
         Parameters
         ----------
         file_name : str
             Case file name
-        upload_file_path : str, optional, default None
-            Case file path to upload a case file
         """
         if not self._server_file_manager:
             self._server_file_manager = _ServerFileManager(self._fluent_connection)
         return self._server_file_manager.read_case(
             file_name,
-            upload_file_path,
         )
 
     def write_case(
         self,
         file_name: str,
-        download_file_path: Optional[str] = None,
     ):
-        """Writes and downloads a file.
+        """Writes a case file.
 
         Parameters
         ----------
         file_name : str
             Case file name
-        download_file_path : str, optional, default False
-            File path to download a case file
         """
         if not self._server_file_manager:
             self._server_file_manager = _ServerFileManager(self._fluent_connection)
-        return self._server_file_manager.write_case(file_name, download_file_path)
+        return self._server_file_manager.write_case(file_name)
 
 
 class _ServerFileManager(Solver):
@@ -283,14 +276,14 @@ class _ServerFileManager(Solver):
     Methods
     -------
     read_case(
-        file_name, upload_file_path, remote_file_name
+        file_name
         )
-        Read and upload a case file.
+        Read a case file.
 
     write_case(
-        file_name, upload_file_path, remote_file_name
+        file_name
         )
-        Write and download a case file.
+        Write a case file.
     """
 
     def __init__(self, fluent_connection):
@@ -306,65 +299,53 @@ class _ServerFileManager(Solver):
                 token="token", url=upload_server.uri, headers=upload_server.headers
             )
 
-    def _file_exist(self, file_name):
-        return self.file_service.file_exist(file_name)
+    def _wait_for_file(self, file_name, file_service):
+        start_time = time.time()
+        max_wait_time = 100
+        while (time.time() - start_time) < max_wait_time:
+            if file_service.file_exist(os.path.basename(file_name)):
+                break
+            max_wait_time -= 1
+            time.sleep(3)
+        else:
+            raise FileNotFoundError(f"{file_name} does not exist.")
 
     def read_case(
         self,
-        file_name,
-        upload_file_path: Optional[str] = None,
+        file_name: str,
     ):
-        """Reads and uploads a file.
+        """Reads a case file.
 
         Parameters
         ----------
         file_name : str
             Case file name
-        upload_file_path : str, optional, default None
-            Case file path to upload a case file
         """
-        if upload_file_path:
-            if os.path.isfile(upload_file_path):
-                print("\nUploading file on the server...\n")
+        if pypim.is_configured():
+            if os.path.isfile(file_name):
+                self.upload(os.path.basename(file_name))
             else:
-                raise FileNotFoundError(f"{upload_file_path} does not exist.")
-            self.upload(upload_file_path)
-            time.sleep(5)
-            print("\nFile is uploaded.\n")
-            if self.file_service.file_exist(os.path.basename(file_name)):
-                self.file.read_case(file_name=os.path.basename(file_name))
-            else:
-                raise FileNotFoundError("File does not exist.")
+                raise FileNotFoundError(f"{file_name} does not exist.")
+            self._wait_for_file(file_name, self.file_service)
+            self.file.read_case(file_name=os.path.basename(file_name))
         else:
             self.file.read_case(file_name=file_name)
 
     def write_case(
         self,
         file_name: str,
-        download_file_path: Optional[str] = None,
     ):
-        """Writes and downloads a file.
+        """Writes a case file.
 
         Parameters
         ----------
         file_name : str
             Case file name
-        download_file_path : str, optional, default False
-            File path to download a case file
         """
-        self.file.write_case(file_name=file_name)
-        time.sleep(5)
-        if download_file_path:
-            print("\nChecking if specified file already exists...\n")
-            file_path = Path(download_file_path) / file_name
-            if os.path.isfile(file_path):
-                print(f"\nFile already exists. File path:\n{file_path}\n")
+        self.file.write_case(file_name=os.path.basename(file_name))
+        if pypim.is_configured():
+            self._wait_for_file(file_name, self.file_service)
+            if os.path.isfile(file_name):
+                print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
-                print("\nFile does not exist. Downloading specified file...\n")
-                if self.file_service.file_exist(file_name):
-                    if not os.path.exists(download_file_path):
-                        os.makedirs(download_file_path)
-                    self.download(file_name, download_file_path)
-                else:
-                    raise FileNotFoundError("\nFile does not exist on the server.\n")
-                print("\nFile is downloaded.\n")
+                self.download(os.path.basename(file_name), ".")
