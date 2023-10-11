@@ -34,7 +34,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 class _InlineConstants:
     is_active = "active?"
-    is_read_only = "read-only"
+    is_read_only = "read-only?"
     default_value = "default"
     min = "min"
     max = "max"
