@@ -49,27 +49,28 @@ class FieldDataService(StreamingService):
 
     @catch_grpc_error
     def get_scalar_field_range(self, request):
-        """GetRange rpc of FieldData service."""
+        """GetRange RPC of FieldData service."""
         return self._stub.GetRange(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_scalar_fields_info(self, request):
-        """GetFieldsInfo rpc of FieldData service."""
+        """GetFieldsInfo RPC of FieldData service."""
         return self._stub.GetFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
-        """GetVectorFieldsInfo rpc of FieldData service."""
+        """GetVectorFieldsInfo RPC of FieldData service."""
         return self._stub.GetVectorFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
-        """GetSurfacesInfo rpc of FieldData service."""
+        """GetSurfacesInfo RPC of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
+    # pylint: disable=missing-raises-doc
     @catch_grpc_error
     def get_fields(self, request):
-        """GetFields rpc of FieldData service."""
+        """GetFields RPC of FieldData service."""
         chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)
         if not chunk_iterator.is_active():
             raise RuntimeError(
@@ -322,6 +323,7 @@ class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return self._info if self._info else self._field_info.get_surfaces_info()
 
+    # pylint: disable=missing-raises-doc
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names."""
         if validate_inputs and not self.is_valid(surface_name):
@@ -469,8 +471,8 @@ class FieldTransaction:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity,
-        centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -740,7 +742,7 @@ def _get_surface_ids(
     surface_names: Optional[List[str]] = None,
     surface_name: Optional[str] = None,
 ) -> List[int]:
-    """Get surface ids' based on surface names or ids'.
+    """Get surface IDs based on surface names or IDs.
 
     Parameters
     ----------
@@ -756,7 +758,7 @@ def _get_surface_ids(
     List[int]
     """
     if surface_ids and (surface_name or surface_names):
-        raise RuntimeError("Please provide either surface names or surface ids.")
+        raise RuntimeError("Please provide either surface names or surface IDs.")
     if not surface_ids:
         surface_ids = []
         if surface_names:
@@ -769,7 +771,7 @@ def _get_surface_ids(
                 allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise RuntimeError("Please provide either surface names or surface IDs.")
     return surface_ids
 
 
@@ -792,7 +794,6 @@ class ChunkParser:
         zone_id : int
         field_name : str
         field : numpy array
-
     """
 
     def __init__(self, callbacks_provider: object = None):
@@ -800,8 +801,9 @@ class ChunkParser:
         self._callbacks_provider = callbacks_provider
 
     def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
-        """Extracts field data received from Fluent. if callbacks_provider is set
-        then callbacks are triggered with extracted data.
+        """Extracts field data received from Fluent.
+
+        if callbacks_provider is set then callbacks are triggered with extracted data.
         """
 
         def _get_tag_for_surface_request():
@@ -939,7 +941,7 @@ class BaseFieldData:
 
     @property
     def surface_id(self):
-        """Returns surface id."""
+        """Returns surface ID."""
         return self._id
 
     @property
@@ -1253,8 +1255,7 @@ class FieldData:
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
     ]:
-        """Get surface data (vertices, faces connectivity, centroids, and
-        normals).
+        """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
         ----------

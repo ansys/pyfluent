@@ -29,8 +29,11 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Solver(BaseSession):
-    """Encapsulates a Fluent solver session. A ``tui`` object for solver TUI
-    commanding, and solver settings objects are all exposed here."""
+    """Encapsulates a Fluent solver session.
+
+    A ``tui`` object for solver TUI
+    commanding, and solver settings objects are all exposed here.
+    """
 
     def __init__(
         self,
@@ -209,8 +212,8 @@ class Solver(BaseSession):
                 fut_session.exit()
 
     def read_case_lightweight(self, file_name: str, lightweight_mode: bool = False):
-        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is
-        set to ``True``.
+        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
+        ``True``.
 
         Parameters
         ----------

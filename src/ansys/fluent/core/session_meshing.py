@@ -11,11 +11,14 @@ import ansys.platform.instancemanagement as pypim
 
 
 class Meshing(PureMeshing):
-    """Encapsulates a Fluent meshing session. A ``tui`` object
+    """Encapsulates a Fluent meshing session.
+
+    A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all
     exposed here. A ``switch_to_solver`` method is available
-    in this mode."""
+    in this mode.
+    """
 
     def __init__(
         self,

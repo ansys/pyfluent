@@ -1,7 +1,7 @@
 """Provides a module for launching Fluent.
 
-This module supports both starting Fluent locally and connecting to a
-remote instance with gRPC.
+This module supports both starting Fluent locally and connecting to a remote instance
+with gRPC.
 """
 from enum import Enum
 import json
@@ -86,14 +86,26 @@ class FluentVersion(Enum):
 
 def get_ansys_version() -> str:
     """Return the version string corresponding to the most recent, available ANSYS
-    installation. The returned value is the string component of one of the members
-    of the FluentVersion class.
+    installation.
+
+    The returned value is the string component of one of the members of the
+    FluentVersion class.
+
+    Returns
+    -------
+    str
+        Ansys version string
+
+    Raises
+    ------
+    RuntimeError
+        If an Ansys version cannot be found.
     """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
 
-    raise RuntimeError("No ANSYS version can be found.")
+    raise RuntimeError("An Ansys version cannot be found.")
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -144,8 +156,24 @@ class FluentMode(Enum):
     SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
-    def get_mode(mode: str):
-        """Returns the FluentMode based on the provided mode string."""
+    def get_mode(mode: str) -> "FluentMode":
+        """Returns the FluentMode based on the provided mode string.
+
+        Parameters
+        ----------
+        mode : str
+            mode
+
+        Returns
+        -------
+        FluentMode
+            Fluent mode
+
+        Raises
+        ------
+        RuntimeError
+            If an unknown mode is passed.
+        """
         for m in FluentMode:
             if mode == m.value[0]:
                 return m
@@ -331,8 +359,8 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
 def _update_launch_string_wrt_gui_options(
     launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
 ) -> str:
-    """Checks for all gui options in additional arguments and updates the
-    launch string with hidden, if none of the options are met."""
+    """Checks for all gui options in additional arguments and updates the launch string
+    with hidden, if none of the options are met."""
 
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
@@ -367,8 +395,8 @@ def _get_server_info(
 ):
     """Get server connection information of an already running session."""
     if ip and port:
-        logger.debug(
-            "The server-info file was not parsed because ip and port were provided explicitly."
+        logger.warning(
+            "Could not parse server-info file because ip and port were provided explicitly."
         )
     elif server_info_filepath:
         ip, port, password = _parse_server_info_file(server_info_filepath)
@@ -434,6 +462,7 @@ def scm_to_py(topy, journal_filepaths):
     return f" {fluent_jou_arg} -topy"
 
 
+# pylint: disable=missing-raises-doc
 class LaunchFluentError(Exception):
     """Exception class representing launch errors."""
 
@@ -470,8 +499,8 @@ def launch_fluent(
     start_watchdog: Optional[bool] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
-    """Launch Fluent locally in server mode or connect to a running Fluent
-    server instance.
+    """Launch Fluent locally in server mode or connect to a running Fluent server
+    instance.
 
     Parameters
     ----------
@@ -838,10 +867,12 @@ def connect_to_fluent(
         IP address for connecting to an existing Fluent instance. The
         IP address defaults to ``"127.0.0.1"``. You can also use the environment
         variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
+        The explicit value of ``ip`` takes precedence over ``PYFLUENT_FLUENT_IP=<ip>``.
     port : int, optional
         Port to listen on for an existing Fluent instance. You can use the
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
-        value.
+        value. The explicit value of ``port`` takes precedence over
+        ``PYFLUENT_FLUENT_PORT=<port>``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
@@ -869,7 +900,6 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
-
     """
     ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
     fluent_connection = FluentConnection(

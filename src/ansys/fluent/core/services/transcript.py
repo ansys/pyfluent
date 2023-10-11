@@ -1,4 +1,4 @@
-"""Wrapper over the transcript grpc service of Fluent."""
+"""Wrapper over the transcript gRPC service of Fluent."""
 
 from typing import List, Tuple
 

@@ -98,9 +98,7 @@ class DataFile:
 
     @property
     def case_file(self) -> str:
-        """
-        Returns the name of the associated case file in string format.
-        """
+        """Returns the name of the associated case file in string format."""
         return self._settings["Case File"][0].decode()
 
     def variables(self) -> dict:
@@ -109,14 +107,11 @@ class DataFile:
         return {v[0]: v[1] for v in lispy.parse(data_vars_str)[1]}
 
     def get_phases(self) -> list:
-        """
-        Returns list of phases available.
-        """
+        """Returns list of phases available."""
         return list(self._field_data.keys())
 
     def get_face_variables(self, phase_name) -> list:
-        """
-        Extracts face variables available for a particular phase.
+        """Extracts face variables available for a particular phase.
 
         Parameters
         ----------
@@ -130,8 +125,7 @@ class DataFile:
         return self._field_data[phase_name]["faces"]["fields"][0].decode().split(";")
 
     def get_cell_variables(self, phase_name) -> list:
-        """
-        Extracts cell variables available for a particular phase.
+        """Extracts cell variables available for a particular phase.
 
         Parameters
         ----------
@@ -147,8 +141,7 @@ class DataFile:
     def get_face_scalar_field_data(
         self, phase_name: str, field_name: str, surface_id: int
     ) -> np.array:
-        """
-        Gets scalar field data for face.
+        """Gets scalar field data for face.
 
         Parameters
         ----------
@@ -178,8 +171,7 @@ class DataFile:
         return np.zeros(max_id + 1 - min_id)
 
     def get_face_vector_field_data(self, phase_name: str, surface_id: int) -> np.array:
-        """
-        Gets vector field data for face.
+        """Gets vector field data for face.
 
         Parameters
         ----------

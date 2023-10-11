@@ -4,7 +4,7 @@
 Installation
 ============
 
-The ``ansys-fluent-core`` package supports Python 3.8 through
+The ``ansys-fluent-core`` package supports Python 3.9 through
 Python 3.11 on Windows and Linux.
 
 .. note::

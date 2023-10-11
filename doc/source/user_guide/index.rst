@@ -15,6 +15,7 @@ Python code to control and monitor Ansys Fluent.
    :hidden:
 
    launching_ansys_fluent
+   specify_file_paths
    tui_commands
    meshing_workflows
    general_settings

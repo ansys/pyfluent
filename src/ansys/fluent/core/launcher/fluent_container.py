@@ -47,7 +47,6 @@ config_dict =
  'working_dir': '/mnt/pyfluent'}
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
-
 """
 import logging
 import os
@@ -118,6 +117,15 @@ def configure_container_dict(
     port : int
     host_server_info_file : Path
     remove_server_info_file: bool
+
+    Raises
+    ------
+    KeyError
+        If license server is not specified through an environment variable or in ``container_dict``.
+    ValueError
+        If server info file is specified through both a command-line argument inside ``container_dict`` and the  ``container_server_info_file`` parameter.
+    ValueError
+        If ``fluent_image`` or ``image_tag`` and ``image_name`` are not specified.
 
     Notes
     -----
@@ -309,6 +317,11 @@ def start_fluent_container(
         Fluent gPRC server port exposed from the container.
     str
         Fluent gPRC server password exposed from the container.
+
+    Raises
+    ------
+    RuntimeError
+        If Fluent container launch reaches timeout.
 
     Notes
     -----

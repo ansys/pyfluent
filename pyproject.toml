@@ -80,9 +80,22 @@ exclude = [
     "src/ansys/fluent/core/solver/settings_241/",
     "src/ansys/fluent/core/datamodel_241/"
 ]
-pre-summary-space = true
-wrap-descriptions = 88
-wrap-summaries = 88
+black = "true"
+non-cap = [
+    "initDatamodel",
+    "getAttributeValue",
+    "getState",
+    "setState",
+    "updateDict",
+    "deleteObject",
+    "executeCommand",
+    "createCommandArguments",
+    "deleteCommandArguments",
+    "getSpecs",
+    "getStaticInfo",
+    "subscribeEvents",
+    "unsubscribeEvents"
+]
 
 
 [tool.coverage.run]

@@ -1,4 +1,4 @@
-"""Wrapper over the streaming grpc services of Fluent."""
+"""Wrapper over the streaming gRPC services of Fluent."""
 
 from typing import Generator, List, Tuple
 
@@ -44,9 +44,9 @@ class StreamingService:
 
     Methods
     -------
-    begin_streaming(request, started_evt, id, stream_begin_method)
+    begin_streaming(request, started_evt, ID, stream_begin_method)
         Begin streaming from Fluent.
-    end_streaming(id, stream_begin_method)
+    end_streaming(ID, stream_begin_method)
         End streaming
     """
 

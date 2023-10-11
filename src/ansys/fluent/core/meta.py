@@ -476,9 +476,14 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         def wrapper(self, show_attributes=False):
             state = {}
 
+            if not getattr(self, "is_active", True):
+                return
+
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
                     o = getattr(self, name)
+                    if o is None:
+                        continue
                     if getattr(o, "is_active", True):
                         if cls.__class__.__name__ == "PyLocalObjectMeta":
                             state[name] = o(show_attributes)

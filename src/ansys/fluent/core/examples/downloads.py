@@ -11,11 +11,13 @@ import ansys.fluent.core as pyfluent
 
 
 def delete_downloads():
-    """Delete all downloaded examples from the default examples folder to free space or update the files.
+    """Delete all downloaded examples from the default examples folder to free space or
+    update the files.
 
     Notes
     -----
-    The default examples path is given by ``pyfluent.EXAMPLES_PATH``."""
+    The default examples path is given by ``pyfluent.EXAMPLES_PATH``.
+    """
     shutil.rmtree(pyfluent.EXAMPLES_PATH)
     os.makedirs(pyfluent.EXAMPLES_PATH)
 
@@ -121,6 +123,17 @@ def download_file(
     >>> filepath
     '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
     >>> filename = examples.download_file("bracket.iges", "geometry", return_only_filename=True)
+    >>> filename
+    'bracket.iges'
+    >>> filepath = examples.download_file("bracket.iges", "geometry", save_path='.')
+    '/home/<current_folder_path>/bracket.iges'
+    >>> filename = examples.download_file("bracket.iges", "geometry", save_path='.', return_only_filename=True)
+    >>> filename
+    'bracket.iges'
+    >>> filepath = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
+    '/home/<user_specified_path>/bracket.iges'
+    >>> filename = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>',
+    ...                                   return_only_filename=True)
     >>> filename
     'bracket.iges'
     """

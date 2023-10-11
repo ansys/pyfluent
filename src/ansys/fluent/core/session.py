@@ -1,5 +1,4 @@
-"""Module containing class encapsulating Fluent connection and the Base
-Session."""
+"""Module containing class encapsulating Fluent connection and the Base Session."""
 import importlib
 import json
 import logging
@@ -189,7 +188,7 @@ class BaseSession:
 
     @property
     def id(self) -> str:
-        """Return the session id."""
+        """Return the session ID."""
         return self.fluent_connection._id
 
     def start_journal(self, file_path: str):
@@ -274,11 +273,11 @@ class BaseSession:
 
 
 class _Uploader:
-    """Instantiates a file uploader and downloader to have a seamless file
-    reading / writing in the cloud particularly in Ansys lab . Here we are
-    exposing upload and download methods on session objects. These would be no-
-    ops if PyPIM is not configured or not authorized with the appropriate
-    service. This will be used for internal purpose only.
+    """Instantiates a file uploader and downloader to have a seamless file reading /
+    writing in the cloud particularly in Ansys lab . Here we are exposing upload and
+    download methods on session objects. These would be no- ops if PyPIM is not
+    configured or not authorized with the appropriate service. This will be used for
+    internal purpose only.
 
     Attributes
     ----------
@@ -314,14 +313,35 @@ class _Uploader:
             )
 
     def upload(self, file_path: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server."""
+        """Uploads a file on the server.
+
+        Parameters
+        ----------
+        file_path : str
+            filepath
+        remote_file_name : str, optional
+            remote filename, by default None
+        """
         if self.file_service:
             expanded_file_path = os.path.expandvars(file_path)
             upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
             self.file_service.upload_file(expanded_file_path, upload_file_name)
 
     def download(self, file_name: str, local_file_path: Optional[str] = None):
-        """Downloads a file from the server."""
+        """Downloads a file from the server.
+
+        Parameters
+        ----------
+        file_name : str
+            filename
+        local_file_path : str, optional
+            local filepath, by default None
+
+        Raises
+        ------
+        FileNotFoundError
+            If the remote file does not exist.
+        """
         if self.file_service:
             if self.file_service.file_exist(file_name):
                 self.file_service.download_file(file_name, local_file_path)

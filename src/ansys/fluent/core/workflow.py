@@ -29,7 +29,7 @@ def _new_command_for_task(task, session):
 
 def _init_task_accessors(obj):
     logger.debug("_init_task_accessors")
-    logger.debug(f"thread id in _init_task_accessors {threading.get_ident()}")
+    logger.debug(f"thread ID in _init_task_accessors {threading.get_ident()}")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
@@ -45,7 +45,7 @@ def _init_task_accessors(obj):
 
 
 def _refresh_task_accessors(obj):
-    logger.debug(f"thread id in _refresh_task_accessors {threading.get_ident()}")
+    logger.debug(f"thread ID in _refresh_task_accessors {threading.get_ident()}")
     old_task_names = set(obj._python_task_names)
     logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)
@@ -118,8 +118,8 @@ class BaseTask:
         )
 
     def get_direct_upstream_tasks(self) -> list:
-        """Get the list of tasks upstream of this one and directly connected by
-        a data dependency.
+        """Get the list of tasks upstream of this one and directly connected by a data
+        dependency.
 
         Returns
         -------
@@ -131,7 +131,8 @@ class BaseTask:
         )
 
     def get_direct_upstream_tasks(self) -> list:
-        """Get the list of tasks upstream of this one and directly connected by a data dependency.
+        """Get the list of tasks upstream of this one and directly connected by a data
+        dependency.
 
         Returns
         -------
@@ -143,8 +144,8 @@ class BaseTask:
         )
 
     def get_direct_downstream_tasks(self) -> list:
-        """Get the list of tasks downstream of this one and directly connected
-        by a data dependency.
+        """Get the list of tasks downstream of this one and directly connected by a data
+        dependency.
 
         Returns
         -------
@@ -156,8 +157,8 @@ class BaseTask:
         )
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by this task. Sorting is in terms
-        of the workflow order and only includes this task's top-level tasks, while other tasks
+        """Get the ordered task list held by this task. Sorting is in terms of the
+        workflow order and only includes this task's top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task.
 
         Given the workflow::
@@ -221,8 +222,7 @@ class BaseTask:
         return self._python_task_names
 
     def get_id(self) -> str:
-        """Get the unique string identifier of this task, as it is in the
-        application.
+        """Get the unique string identifier of this task, as it is in the application.
 
         Returns
         -------
@@ -238,8 +238,7 @@ class BaseTask:
                         return id_
 
     def get_idx(self) -> int:
-        """Get the unique integer index of this task, as it is in the
-        application.
+        """Get the unique integer index of this task, as it is in the application.
 
         Returns
         -------
@@ -249,8 +248,7 @@ class BaseTask:
         return int(self.get_id()[len("TaskObject") :])
 
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, as it is in the underlying
-        application.
+        """Get the Pythonic name of this task, as it is in the underlying application.
 
         Returns
         -------
@@ -345,6 +343,7 @@ class TaskContainer(PyCallableStateObject):
 
     def __iter__(self) -> Iterator[BaseTask]:
         """Yield the next child object.
+
         Yields
         ------
         Iterator[BaseTask]
@@ -382,8 +381,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         self._task = task
 
     def set_state(self, args: dict) -> None:
-        """
-        Overwrite arguments.
+        """Overwrite arguments.
 
         Parameters
         ----------
@@ -393,8 +391,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         self._task.Arguments.set_state(args)
 
     def update_dict(self, args: dict) -> None:
-        """
-        Merge with arguments.
+        """Merge with arguments.
 
         Parameters
         ----------
@@ -404,8 +401,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         self._task.Arguments.update_dict(args)
 
     def get_state(self, explicit_only=False) -> dict:
-        """
-        Get arguments state.
+        """Get arguments state.
 
         Parameters
         ----------
@@ -444,8 +440,7 @@ class ArgumentWrapper(PyCallableStateObject):
             raise RuntimeError(f"{arg} is not an argument")
 
     def set_state(self, value: Any) -> None:
-        """
-        Set the state of this argument.
+        """Set the state of this argument.
 
         Parameters
         ----------
@@ -455,8 +450,7 @@ class ArgumentWrapper(PyCallableStateObject):
         self._task.Arguments.update_dict({self._arg_name: value})
 
     def get_state(self, explicit_only: bool = False) -> Any:
-        """
-        Get argument state.
+        """Get argument state.
 
         Parameters
         ----------
@@ -471,8 +465,10 @@ class ArgumentWrapper(PyCallableStateObject):
 
 
 class CommandTask(BaseTask):
-    """Intermediate base class task representation for wrapping a Workflow TaskObject instance,
-    adding attributes related to commanding. Classes without these attributes cannot be commanded.
+    """Intermediate base class task representation for wrapping a Workflow TaskObject
+    instance, adding attributes related to commanding.
+
+    Classes without these attributes cannot be commanded.
     """
 
     def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
@@ -535,9 +531,8 @@ class CommandTask(BaseTask):
 
 
 class SimpleTask(CommandTask):
-    """Simple task representation for wrapping a Workflow TaskObject
-    instance of TaskType Simple.
-    """
+    """Simple task representation for wrapping a Workflow TaskObject instance of
+    TaskType Simple."""
 
     def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
         """Initialize SimpleTask.
@@ -552,14 +547,16 @@ class SimpleTask(CommandTask):
         super().__init__(command_source, task)
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow. SimpleTasks have no TaskList."""
+        """Get the ordered task list held by the workflow.
+
+        SimpleTasks have no TaskList.
+        """
         return []
 
 
 class CompoundChild(SimpleTask):
-    """Compound Child representation for wrapping a Workflow TaskObject
-    instance of TaskType Compound Child.
-    """
+    """Compound Child representation for wrapping a Workflow TaskObject instance of
+    TaskType Compound Child."""
 
     def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
         """Initialize CompoundChild.
@@ -574,8 +571,7 @@ class CompoundChild(SimpleTask):
         super().__init__(command_source, task)
 
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, as it is in the underlying
-        application.
+        """Get the Pythonic name of this task, as it is in the underlying application.
 
         Returns
         -------
@@ -586,9 +582,8 @@ class CompoundChild(SimpleTask):
 
 
 class CompositeTask(BaseTask):
-    """Composite task representation for wrapping a Workflow TaskObject
-    instance of TaskType Composite.
-    """
+    """Composite task representation for wrapping a Workflow TaskObject instance of
+    TaskType Composite."""
 
     def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
         """Initialize CompositeTask.
@@ -631,9 +626,8 @@ class CompositeTask(BaseTask):
 
 
 class ConditionalTask(CommandTask):
-    """Conditional task representation for wrapping a Workflow TaskObject
-    instance of TaskType Conditional.
-    """
+    """Conditional task representation for wrapping a Workflow TaskObject instance of
+    TaskType Conditional."""
 
     def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
         """Initialize ConditionalTask.
@@ -662,9 +656,8 @@ class ConditionalTask(CommandTask):
 
 
 class CompoundTask(CommandTask):
-    """Compound task representation for wrapping a Workflow TaskObject
-    instance of TaskType Compound.
-    """
+    """Compound task representation for wrapping a Workflow TaskObject instance of
+    TaskType Compound."""
 
     def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
         """Initialize CompoundTask.
@@ -755,8 +748,8 @@ def _makeTask(command_source, name: str) -> BaseTask:
 
 
 class WorkflowWrapper:
-    """Wrap a Workflow object, adding methods to discover more about the
-    relationships between TaskObjects.
+    """Wrap a Workflow object, adding methods to discover more about the relationships
+    between TaskObjects.
 
     Methods
     -------
@@ -807,18 +800,19 @@ class WorkflowWrapper:
     @property
     def TaskObject(self) -> TaskContainer:
         # missing from dir
-        """Get a TaskObject container wrapper that 'holds' the underlying
-        TaskObjects.
+        """Get a TaskObject container wrapper that 'holds' the underlying TaskObjects.
 
         The wrapper adds extra functionality.
         """
         return TaskContainer(self)
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow. Sorting is in terms
-        of the workflow order and only includes the top-level tasks, while other tasks
-        can be obtained by calling ordered_children() on a parent task. Consider the
-        following workflow.
+        """Get the ordered task list held by the workflow. Sorting is in terms of the
+        workflow order and only includes the top-level tasks, while other tasks can be
+        obtained by calling ordered_children() on a parent task. Consider the following
+        workflow.
+
+        Given the workflow::
 
             Workflow
             ├── A
@@ -827,8 +821,8 @@ class WorkflowWrapper:
             │   └── D
             └── E
 
-        The ordered children of the workflow are A, B, E, while B has ordered children
-        C and D.
+        The ordered children of the workflow are A, B, E, while B has ordered children C
+        and D.
         """
         if recompute:
             workflow_state, task_list = self._workflow_and_task_list_state()
@@ -875,7 +869,8 @@ class WorkflowWrapper:
         return []
 
     def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object
+        """Delegate attribute lookup to the wrapped workflow object.
+
         Parameters
         ----------
         attr : str
@@ -890,8 +885,8 @@ class WorkflowWrapper:
         return self._task_objects.get(attr, None)
 
     def __dir__(self):
-        """Override the behaviour of dir to include attributes in
-        WorkflowWrapper and the underlying workflow."""
+        """Override the behaviour of dir to include attributes in WorkflowWrapper and
+        the underlying workflow."""
         return sorted(
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
         )

@@ -41,7 +41,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ):
         network_logger.debug(
-            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
+            f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():
@@ -62,7 +62,8 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
 
 
 class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
-    """Interceptor class to check Fluent server error state before gRPC calls are made."""
+    """Interceptor class to check Fluent server error state before gRPC calls are
+    made."""
 
     def __init__(self, fluent_error_state):
         """__init__ method of ErrorStateInterceptor class."""
@@ -95,8 +96,8 @@ class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
 class BatchedFuture(grpc.Future):
     """Class implementing gRPC.Future interface.
 
-    An instance of BatchedFuture is returned if the gRPC method is
-    queued to be executed in batch later.
+    An instance of BatchedFuture is returned if the gRPC method is queued to be executed
+    in batch later.
     """
 
     def __init__(self, result_cls):

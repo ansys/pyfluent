@@ -10,8 +10,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 def get_free_port() -> int:
-    """Identifies a free port to which a new socket connection can be
-    established.
+    """Identifies a free port to which a new socket connection can be established.
 
     Returns
     -------
@@ -46,8 +45,8 @@ class _GrpcServer:
 
 
 def find_remoting_ip() -> str:
-    """Find an ip address at which a grpc connection can be established
-    by looping over getaddrinfo output.
+    """Find an ip address at which a gRPC connection can be established by looping over
+    getaddrinfo output.
 
     Returns
     -------

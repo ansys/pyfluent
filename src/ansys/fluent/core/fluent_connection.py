@@ -75,7 +75,6 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     See `Docker container`_ for more information.
 
     .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
-
     """
     if not isinstance(container_id_or_name, str):
         container_id_or_name = str(container_id_or_name)
@@ -134,7 +133,8 @@ class ErrorState:
         self._details = details
 
     def clear(self):
-        """Method to clear the current error state, emptying the error name and details properties."""
+        """Method to clear the current error state, emptying the error name and details
+        properties."""
         self._name = ""
         self._details = ""
 
@@ -142,8 +142,8 @@ class ErrorState:
 @dataclass(frozen=True)
 class FluentConnectionProperties:
     """Stores Fluent connection properties, including connection IP, port and password;
-    Fluent Cortex working directory, process ID and hostname;
-    and whether Fluent was launched in a docker container.
+    Fluent Cortex working directory, process ID and hostname; and whether Fluent was
+    launched in a docker container.
 
     Examples
     --------
@@ -372,9 +372,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def force_exit(self):
-        """
-        Immediately terminates the Fluent client,
-        losing unsaved progress and data.
+        """Immediately terminates the Fluent client, losing unsaved progress and data.
 
         Notes
         -----
@@ -433,9 +431,8 @@ class FluentConnection:
             logger.error("Could not find cleanup file.")
 
     def force_exit_container(self):
-        """
-        Immediately terminates the Fluent client running inside a container,
-        losing unsaved progress and data.
+        """Immediately terminates the Fluent client running inside a container, losing
+        unsaved progress and data.
 
         Notes
         -----
@@ -497,9 +494,9 @@ class FluentConnection:
         return self.health_check_service.status()
 
     def wait_process_finished(self, wait: Union[float, int, bool] = 60):
-        """Returns ``True`` if local Fluent processes have finished,
-        ``False`` if they are still running when wait limit (default 60 seconds) is reached.
-        Immediately cancels and returns ``None`` if ``wait`` is set to ``False``.
+        """Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------

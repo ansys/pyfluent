@@ -74,8 +74,7 @@ class Transcript(StreamingService):
         super().stop()
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
-        """Performs processes on transcript depending on the callback
-        functions."""
+        """Performs processes on transcript depending on the callback functions."""
         request = TranscriptModule.TranscriptRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
