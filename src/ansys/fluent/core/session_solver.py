@@ -237,7 +237,6 @@ class Solver(BaseSession):
         self,
         file_name,
         upload_file_path: Optional[str] = None,
-        remote_file_name: Optional[str] = None,
     ):
         """Reads and uploads a file.
 
@@ -247,19 +246,17 @@ class Solver(BaseSession):
             Case file name
         upload_file_path : str, optional, default None
             Case file path to upload a case file
-        remote_file_name : str, optional, default False
-            Remote case file name
         """
         if not self._server_file_manager:
             self._server_file_manager = _ServerFileManager(self._fluent_connection)
         return self._server_file_manager.read_case(
-            file_name, upload_file_path, remote_file_name
+            file_name,
+            upload_file_path,
         )
 
     def write_case(
         self,
         file_name: str,
-        download_file_name: Optional[str] = None,
         download_file_path: Optional[str] = None,
     ):
         """Writes and downloads a file.
@@ -268,16 +265,12 @@ class Solver(BaseSession):
         ----------
         file_name : str
             Case file name
-        download_file_name : str, optional, default None
-            Remote file name to download a case file
         download_file_path : str, optional, default False
             File path to download a case file
         """
         if not self._server_file_manager:
             self._server_file_manager = _ServerFileManager(self._fluent_connection)
-        return self._server_file_manager.write_case(
-            file_name, download_file_name, download_file_path
-        )
+        return self._server_file_manager.write_case(file_name, download_file_path)
 
 
 class _ServerFileManager(Solver):
@@ -320,7 +313,6 @@ class _ServerFileManager(Solver):
         self,
         file_name,
         upload_file_path: Optional[str] = None,
-        remote_file_name: Optional[str] = None,
     ):
         """Reads and uploads a file.
 
@@ -330,21 +322,17 @@ class _ServerFileManager(Solver):
             Case file name
         upload_file_path : str, optional, default None
             Case file path to upload a case file
-        remote_file_name : str, optional, default False
-            Remote case file name
         """
         if upload_file_path:
             if os.path.isfile(upload_file_path):
                 print("\nUploading file on the server...\n")
             else:
                 raise FileNotFoundError(f"{upload_file_path} does not exist.")
-            self.upload(upload_file_path, remote_file_name)
+            self.upload(upload_file_path)
             time.sleep(5)
             print("\nFile is uploaded.\n")
-            if self.file_service.file_exist(file_name):
-                self.file.read_case(file_name=file_name)
-            elif remote_file_name and self.file_service.file_exist(remote_file_name):
-                self.file.read_case(file_name=remote_file_name)
+            if self.file_service.file_exist(os.path.basename(file_name)):
+                self.file.read_case(file_name=os.path.basename(file_name))
             else:
                 raise FileNotFoundError("File does not exist.")
         else:
@@ -353,7 +341,6 @@ class _ServerFileManager(Solver):
     def write_case(
         self,
         file_name: str,
-        download_file_name: Optional[str] = None,
         download_file_path: Optional[str] = None,
     ):
         """Writes and downloads a file.
@@ -362,8 +349,6 @@ class _ServerFileManager(Solver):
         ----------
         file_name : str
             Case file name
-        download_file_name : str, optional, default None
-            Remote file name to download a case file
         download_file_path : str, optional, default False
             File path to download a case file
         """
@@ -371,7 +356,7 @@ class _ServerFileManager(Solver):
         time.sleep(5)
         if download_file_path:
             print("\nChecking if specified file already exists...\n")
-            file_path = Path(download_file_path) / download_file_name
+            file_path = Path(download_file_path) / file_name
             if os.path.isfile(file_path):
                 print(f"\nFile already exists. File path:\n{file_path}\n")
             else:
@@ -380,12 +365,6 @@ class _ServerFileManager(Solver):
                     if not os.path.exists(download_file_path):
                         os.makedirs(download_file_path)
                     self.download(file_name, download_file_path)
-                elif download_file_name and self.file_service.file_exist(
-                    download_file_name
-                ):
-                    if not os.path.exists(download_file_path):
-                        os.makedirs(download_file_path)
-                    self.download(download_file_name, download_file_path)
                 else:
                     raise FileNotFoundError("\nFile does not exist on the server.\n")
                 print("\nFile is downloaded.\n")

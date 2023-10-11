@@ -74,7 +74,6 @@ class Meshing(PureMeshing):
         self,
         file_name,
         upload_file_path: Optional[str] = None,
-        remote_file_name: Optional[str] = None,
     ):
         """Reads and uploads a file.
 
@@ -84,19 +83,17 @@ class Meshing(PureMeshing):
             Case file name
         upload_file_path : str, optional, default None
             Case file path to upload a case file
-        remote_file_name : str, optional, default False
-            Remote case file name
         """
         if not self._server_file_manager:
             self._server_file_manager = _ServerFileManager(self._fluent_connection)
         return self._server_file_manager.read_case(
-            file_name, upload_file_path, remote_file_name
+            file_name,
+            upload_file_path,
         )
 
     def write_case(
         self,
         file_name: str,
-        download_file_name: Optional[str] = None,
         download_file_path: Optional[str] = None,
     ):
         """Writes and downloads a file.
@@ -105,16 +102,12 @@ class Meshing(PureMeshing):
         ----------
         file_name : str
             Case file name
-        download_file_name : str, optional, default None
-            Remote file name to download a case file
         download_file_path : str, optional, default False
             File path to download a case file
         """
         if not self._server_file_manager:
             self._server_file_manager = _ServerFileManager(self._fluent_connection)
-        return self._server_file_manager.write_case(
-            file_name, download_file_name, download_file_path
-        )
+        return self._server_file_manager.write_case(file_name, download_file_path)
 
 
 class _ServerFileManager(Meshing):
@@ -154,7 +147,6 @@ class _ServerFileManager(Meshing):
         self,
         file_name,
         upload_file_path: Optional[str] = None,
-        remote_file_name: Optional[str] = None,
     ):
         """Reads and uploads a file.
 
@@ -164,21 +156,17 @@ class _ServerFileManager(Meshing):
             Case file name
         upload_file_path : str, optional, default None
             Case file path to upload a case file
-        remote_file_name : str, optional, default False
-            Remote case file name
         """
         if upload_file_path:
             if os.path.isfile(upload_file_path):
                 print("\nUploading file on the server...\n")
             else:
                 raise FileNotFoundError(f"{upload_file_path} does not exist.")
-            self.upload(upload_file_path, remote_file_name)
+            self.upload(upload_file_path)
             time.sleep(5)
             print("\nFile is uploaded.\n")
             if self.file_service.file_exist(file_name):
                 self.tui.file.read_case(file_name)
-            elif remote_file_name and self.file_service.file_exist(remote_file_name):
-                self.tui.file.read_case(remote_file_name)
             else:
                 raise FileNotFoundError("\nFile does not exist.\n")
         else:
@@ -187,7 +175,6 @@ class _ServerFileManager(Meshing):
     def write_case(
         self,
         file_name: str,
-        download_file_name: Optional[str] = None,
         download_file_path: Optional[str] = None,
     ):
         """Writes and downloads a file.
@@ -196,8 +183,6 @@ class _ServerFileManager(Meshing):
         ----------
         file_name : str
             Case file name
-        download_file_name : str, optional, default None
-            Remote file name to download a case file
         download_file_path : str, optional, default False
             File path to download a case file
         """
@@ -205,7 +190,7 @@ class _ServerFileManager(Meshing):
         time.sleep(5)
         if download_file_path:
             print("\nChecking if specified file already exists...\n")
-            file_path = Path(download_file_path) / download_file_name
+            file_path = Path(download_file_path) / file_name
             if os.path.isfile(file_path):
                 print(f"\nFile already exists. File path:\n{file_path}\n")
             else:
@@ -214,12 +199,6 @@ class _ServerFileManager(Meshing):
                     if not os.path.exists(download_file_path):
                         os.makedirs(download_file_path)
                     self.download(file_name, download_file_path)
-                elif download_file_name and self.file_service.file_exist(
-                    download_file_name
-                ):
-                    if not os.path.exists(download_file_path):
-                        os.makedirs(download_file_path)
-                    self.download(download_file_name, download_file_path)
                 else:
                     raise FileNotFoundError("\nFile does not exist on the server.\n")
                 print("File is downloaded.")
