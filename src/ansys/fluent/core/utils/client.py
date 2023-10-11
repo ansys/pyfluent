@@ -1,5 +1,3 @@
-# ©2023, ANSYS Inc. Unauthorized use, distribution or duplication is prohibited.
-
 from contextlib import AbstractContextManager
 import os
 from typing import Optional
