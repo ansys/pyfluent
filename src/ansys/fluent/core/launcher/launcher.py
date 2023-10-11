@@ -325,7 +325,6 @@ def launch_remote_fluent(
             channel=channel,
             cleanup_on_exit=cleanup_on_exit,
             remote_instance=instance,
-            start_timeout=start_timeout,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
         )
@@ -833,7 +832,6 @@ def launch_fluent(
 
         session = new_session(
             fluent_connection=FluentConnection(
-                start_timeout=start_timeout,
                 port=port,
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
