@@ -73,7 +73,7 @@ def _retrieve_file(
     urlretrieve = urllib.request.urlretrieve
 
     # Perform download
-    urlretrieve(url, file_name=local_path)
+    urlretrieve(url, filename=local_path)
     if local_path.endswith(".zip"):
         _decompress(local_path)
         local_path = local_path_no_zip
@@ -114,23 +114,23 @@ def download_file(
     Returns
     -------
     str
-        Filepath of the downloaded or already existing file, or only the file name if ``return_only_file_name=True``.
+        file path of the downloaded or already existing file, or only the file name if ``return_only_file_name=True``.
 
     Examples
     --------
     >>> from ansys.fluent.core import examples
-    >>> filepath = examples.download_file("bracket.iges", "geometry")
-    >>> filepath
+    >>> file_path = examples.download_file("bracket.iges", "geometry")
+    >>> file_path
     '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
     >>> file_name = examples.download_file("bracket.iges", "geometry", return_only_file_name=True)
     >>> file_name
     'bracket.iges'
-    >>> filepath = examples.download_file("bracket.iges", "geometry", save_path='.')
+    >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='.')
     '/home/<current_folder_path>/bracket.iges'
     >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='.', return_only_file_name=True)
     >>> file_name
     'bracket.iges'
-    >>> filepath = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
+    >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
     '/home/<user_specified_path>/bracket.iges'
     >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>',
     ...                                   return_only_file_name=True)
