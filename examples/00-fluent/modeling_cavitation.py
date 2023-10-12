@@ -92,9 +92,9 @@ solver.setup.models.viscous = {"model": "k-omega", "k_omega_model": "sst"}
 ###############################################################################
 # Define materials
 # ~~~~~~~~~~~~~~~~
-# Create the material named water. Use 1000 kg/m3 for density and 0.001 kg/m–s
-# for viscosity. Copy water vapor from the database and modify the copy. Change
-# the density to 0.02558 kg/m3 and viscosity to 1.26e-06 kg/m–s.
+# Create a material named water, using 1000 kg/m3 for density and 0.001 kg/m–s
+# for viscosity. Then, copy water vapor properties from the database and modify the copy by changing
+# the density to 0.02558 kg/m3 and the viscosity to 1.26e-06 kg/m–s.
 
 water = {
     "density": {"option": "constant", "value": 1000},
