@@ -13,7 +13,7 @@ Process
     - Generate a dictionary of unique classes with their hash as a key and a tuple of cls, children hash, commands hash, arguments hash, child object type hash as value.
     - - This eliminates reduandancy and only unique classes are written.
     - Generate .py files for the classes in hash dictionary. Resolve named conflicts with integer suffix.
-    - - Populate files dictionary with hash as key and file_name as value.
+    - - Populate files dictionary with hash as key and file name as value.
     - - child_object_type handled specially to avoid a lot of files with same name and to provide more insight of the child.
     - Populate the classes.
     - - For writing the import statements, get the hash of the child/command/argument/named object stored in the hash dict tuple value.
@@ -166,13 +166,13 @@ _arg_type_strings = {
     flobject.Integer: "int",
     flobject.Real: "Union[float, str]",
     flobject.String: "str",
-    flobject.file_name: "str",
+    flobject.Filename: "str",
     flobject.BooleanList: "List[bool]",
     flobject.IntegerList: "List[int]",
     flobject.RealVector: "Tuple[Union[float, str], Union[float, str], Union[float, str]",
     flobject.RealList: "List[Union[float, str]]",
     flobject.StringList: "List[str]",
-    flobject.file_nameList: "List[str]",
+    flobject.FilenameList: "List[str]",
 }
 
 
