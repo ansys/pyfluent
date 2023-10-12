@@ -13,7 +13,7 @@ Process
     - Generate a dictionary of unique classes with their hash as a key and a tuple of cls, children hash, commands hash, arguments hash, child object type hash as value.
     - - This eliminates reduandancy and only unique classes are written.
     - Generate .py files for the classes in hash dictionary. Resolve named conflicts with integer suffix.
-    - - Populate files dictionary with hash as key and filename as value.
+    - - Populate files dictionary with hash as key and file_name as value.
     - - child_object_type handled specially to avoid a lot of files with same name and to provide more insight of the child.
     - Populate the classes.
     - - For writing the import statements, get the hash of the child/command/argument/named object stored in the hash dict tuple value.
@@ -35,7 +35,7 @@ import shutil
 
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_path
 
 hash_dict = {}
 files_dict = {}
@@ -166,13 +166,13 @@ _arg_type_strings = {
     flobject.Integer: "int",
     flobject.Real: "Union[float, str]",
     flobject.String: "str",
-    flobject.Filename: "str",
+    flobject.file_name: "str",
     flobject.BooleanList: "List[bool]",
     flobject.IntegerList: "List[int]",
     flobject.RealVector: "Tuple[Union[float, str], Union[float, str], Union[float, str]",
     flobject.RealList: "List[Union[float, str]]",
     flobject.StringList: "List[str]",
-    flobject.FilenameList: "List[str]",
+    flobject.file_nameList: "List[str]",
 }
 
 
@@ -244,8 +244,8 @@ def _populate_classes(parent_dir):
             root_class_path = file_name
 
         file_name += ".py"
-        filepath = os.path.normpath(os.path.join(parent_dir, file_name))
-        with open(filepath, "w") as f:
+        file_path = os.path.normpath(os.path.join(parent_dir, file_name))
+        with open(file_path, "w") as f:
             f.write(f"name: {cls_name}")
 
     # populate files
@@ -259,17 +259,17 @@ def _populate_classes(parent_dir):
     ) in hash_dict.items():
         file_name = files_dict.get(key)
         cls_name = cls.__name__
-        filepath = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
+        file_path = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
         generate_stub = getattr(cls, "command_names", None) or getattr(
             cls, "query_names", None
         )
-        stub_filepath = filepath + "i" if generate_stub else None
+        stub_file_path = file_path + "i" if generate_stub else None
         stub_cm = (
-            open(stub_filepath, "w")
+            open(stub_file_path, "w")
             if generate_stub
-            else contextlib.nullcontext(stub_filepath)
+            else contextlib.nullcontext(stub_file_path)
         )
-        with open(filepath, "w") as f, stub_cm as stubf:
+        with open(file_path, "w") as f, stub_cm as stubf:
             # disclaimer to py file
             f.write("#\n")
             f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
@@ -446,8 +446,8 @@ def _populate_classes(parent_dir):
 
 def _populate_init(parent_dir, sinfo):
     hash = _gethash(sinfo)
-    filepath = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
-    with open(filepath, "w") as f:
+    file_path = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
+    with open(file_path, "w") as f:
         f.write("#\n")
         f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
         f.write("#\n")
@@ -490,5 +490,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_filepath()
+    version = get_version_for_file_path()
     generate(version, None)

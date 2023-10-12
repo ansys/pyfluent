@@ -42,8 +42,8 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 logger = logging.getLogger("pyfluent.general")
 
 
-def _parse_server_info_file(filename: str):
-    with open(filename, encoding="utf-8") as f:
+def _parse_server_info_file(file_name: str):
+    with open(file_name, encoding="utf-8") as f:
         lines = f.readlines()
     ip_and_port = lines[0].strip().split(":")
     ip = ip_and_port[0]
@@ -321,7 +321,7 @@ class _Uploader:
         file_path : str
             filepath
         remote_file_name : str, optional
-            remote filename, by default None
+            remote file name, by default None
         """
         if self.file_service:
             expanded_file_path = os.path.expandvars(file_path)
@@ -334,7 +334,7 @@ class _Uploader:
         Parameters
         ----------
         file_name : str
-            filename
+            file name
         local_file_path : str, optional
             local filepath, by default None
 

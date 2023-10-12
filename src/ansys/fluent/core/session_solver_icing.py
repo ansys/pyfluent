@@ -6,7 +6,7 @@ import importlib
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_path
 
 
 class SolverIcing(Solver):
@@ -34,7 +34,7 @@ class SolverIcing(Solver):
     def version(self):
         """Fluent's product version."""
         if self._version is None:
-            self._version = get_version_for_filepath(session=self)
+            self._version = get_version_for_file_path(session=self)
         return self._version
 
     @property

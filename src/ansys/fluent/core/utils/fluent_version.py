@@ -15,7 +15,7 @@ def get_version(session=None):
     return session.get_fluent_version()
 
 
-def get_version_for_filepath(version: Optional[str] = None, session=None):
+def get_version_for_file_path(version: Optional[str] = None, session=None):
     if version is None:
         version = get_version(session)
 

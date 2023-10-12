@@ -142,7 +142,7 @@ def test_add_on_affected(new_mesh_session):
     calls = []
     subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
     geom = examples.download_file(
-        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
@@ -209,16 +209,16 @@ def test_add_on_command_executed(new_mesh_session):
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert len(data) > 0
     assert data[0] == True
     data.clear()
     subscription.unsubscribe()
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert data == []
 
@@ -246,10 +246,10 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
     stream.register_callback(cb)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
@@ -274,10 +274,10 @@ def test_datamodel_streaming_no_commands_diff_state(
     stream.register_callback(cb)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 

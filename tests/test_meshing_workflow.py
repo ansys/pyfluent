@@ -698,8 +698,8 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
 def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
     part_management = fault_tolerant.part_management
-    filename = exhaust_system_geometry
-    part_management.LoadFmdFile(FilePath=filename)
+    file_name = exhaust_system_geometry
+    part_management.LoadFmdFile(FilePath=file_name)
     part_management.MoveCADComponentsToNewObject(
         Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
     )
@@ -708,7 +708,7 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     import_cad.Arguments.setState(
         {
             r"CreateObjectPer": r"Custom",
-            r"FMDFileName": filename,
+            r"FMDFileName": file_name,
             r"FileLoaded": r"yes",
             r"ObjectSetting": r"DefaultObjectSetting",
         }

@@ -114,9 +114,9 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = Non
         config = get_default_config()
 
     logging.config.dictConfig(config)
-    filename = config["handlers"]["pyfluent_file"]["filename"]
+    file_name = config["handlers"]["pyfluent_file"]["filename"]
 
-    print(f"PyFluent logging file {os.path.join(os.getcwd(), filename)}")
+    print(f"PyFluent logging file {os.path.join(os.getcwd(), file_name)}")
 
     set_global_level(level)
 

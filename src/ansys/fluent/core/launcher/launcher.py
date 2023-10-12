@@ -455,7 +455,7 @@ def _generate_launch_string(
 
 
 def scm_to_py(topy, journal_filepaths):
-    """Convert journal filenames to Python filename."""
+    """Convert journal filen ames to Python file name."""
     fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in journal_filepaths])
     if isinstance(topy, str):
         return f" {fluent_jou_arg} -topy={topy}"
