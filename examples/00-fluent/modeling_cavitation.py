@@ -114,7 +114,7 @@ solver.setup.materials.fluid["water-vapor"] = water_vapor
 # ~~~~~~
 # Change the name of the primary phase to "liquid" and the secondary phase to "water-vapor".
 # Then, enable the cavitation model and set the number of mass
-# transfer mechanisms to 1. Finally, specify cavitation as a mass transfer mechanism 
+# transfer mechanisms to 1. Finally, specify cavitation as a mass transfer mechanism
 # occurring from the liquid to the vapor.
 
 solver.tui.define.phases.set_domain_properties.change_phases_names("vapor", "liquid")
