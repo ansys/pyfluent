@@ -8,7 +8,7 @@ Example
     >>> from ansys.fluent.core import examples
     >>> from ansys.fluent.core.filereader.data_file import DataFile
 
-    >>> data_filepath = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False)
+    >>> data_filepath = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False)
 
     >>> reader = DataFile(data_filepath=data_filepath) # Instantiate a DataFile class
 """
