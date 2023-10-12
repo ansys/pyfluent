@@ -49,8 +49,6 @@ cav_file = examples.download_file(
 )
 
 ###############################################################################
-# Launch Fluent
-# ~~~~~~~~~~~~~
 # Launch Fluent as a service in 2d solution mode with double precision running
 # on one processor.
 
@@ -63,28 +61,24 @@ solver = pyfluent.launch_fluent(
 
 ###############################################################################
 # Read and Check the Mesh
-# ~~~~~~~~~~~~~~~~~~~~~~~
+
 solver.read_case("cav.msh")
 
 solver.mesh.check()
 
 ###############################################################################
 # Specify an axisymmetric model
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 solver.setup.general.solver.two_dim_space = "axisymmetric"
 
 ###############################################################################
 # Enable the multiphase mixture model
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 solver.setup.models.multiphase.models = "mixture"
 
 solver.tui.define.models.multiphase.mixture_parameters("no", "implicit")
 
 ###############################################################################
-# Select turbulence model
-# ~~~~~~~~~~~~~~~~~~~~~~~
 # Enable the k-ω SST turbulence model.
 
 solver.setup.models.viscous = {"model": "k-omega", "k_omega_model": "sst"}
@@ -93,8 +87,9 @@ solver.setup.models.viscous = {"model": "k-omega", "k_omega_model": "sst"}
 # Define materials
 # ~~~~~~~~~~~~~~~~
 # Create a material named water, using 1000 kg/m3 for density and 0.001 kg/m–s
-# for viscosity. Then, copy water vapor properties from the database and modify the copy by changing
-# the density to 0.02558 kg/m3 and the viscosity to 1.26e-06 kg/m–s.
+# for viscosity. Then, copy water vapor properties from the database and modify
+# the copy by changing the density to 0.02558 kg/m3 and the viscosity to
+# 1.26e-06 kg/m–s.
 
 water = {
     "density": {"option": "constant", "value": 1000},
@@ -112,10 +107,10 @@ solver.setup.materials.fluid["water-vapor"] = water_vapor
 ###############################################################################
 # Phases
 # ~~~~~~
-# Change the name of the primary phase to "liquid" and the secondary phase to "water-vapor".
-# Then, enable the cavitation model and set the number of mass
-# transfer mechanisms to 1. Finally, specify cavitation as a mass transfer mechanism
-# occurring from the liquid to the vapor.
+# Change the name of the primary phase to "liquid" and the secondary phase to
+# "water-vapor". Then, enable the cavitation model and set the number of mass
+# transfer mechanisms to 1. Finally, specify cavitation as a mass transfer
+# mechanism occurring from the liquid to the vapor.
 
 solver.tui.define.phases.set_domain_properties.change_phases_names("vapor", "liquid")
 
@@ -134,15 +129,13 @@ solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reac
 ###############################################################################
 # Boundary Conditions
 # ~~~~~~~~~~~~~~~~~~~
-
-# Set momentum and turbulence boundary conditions for the first inlet then copy
-# to the second inlet. Set the direction specification method to 'normal to
-# boundary', gauge total pressure as 500 kPa and supersonic or initial gauge
-# pressure as 449 kPa. Set turbulent intensity as 0.05, turbulent specification
-# to 'Intensity and Viscosity Ratio' and turbulent viscosity ratio as 10. Set
-# the vapor phase volume fraction as 0. Apply the outlet boundary conditions.
-# Set the gauge pressure as 95 kPa. Use the same turbulence and volume fraction
-# settings as the inlets.
+# For the first inlet momentum boundary conditions set the direction
+# specification method to 'normal to boundary', gauge total pressure as 500 kPa
+# and supersonic or initial gauge pressure as 449 kPa.
+#
+# For the turbulence settings choose 'Intensity and Viscosity Ratio' for
+# turbulent specification. Set turbulent intensity and turbulent viscosity
+# ratio to 0.05 and 10 respectively.
 
 inlet_1 = solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase
 
@@ -156,9 +149,17 @@ in_mixture = {
 }
 inlet_1["mixture"] = in_mixture
 
+###############################################################################
+# Before copying inlet_1's boundary conditions to inlet_2 set the vapor fraction
+# to 0.
+
 inlet_1["vapor"] = {"volume_fraction": {"value": 0}}
 
 solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
+
+###############################################################################
+# For the outlet boundary conditions, set the gauge pressure as 95 kPa. Use
+# the same turbulence and volume fraction settings as the inlets.
 
 outlet = solver.setup.boundary_conditions.pressure_outlet["outlet"].phase
 
@@ -185,13 +186,7 @@ solver.setup.general.operating_conditions.operating_pressure = 0
 # ~~~~~~~~
 # Apply the methods parameters. For the discretization scheme, set 'first order
 # upwind' for turbulent kinetic energy and turbulent dissipation rate, 'quick'
-# for the momentum and volume fraction and 'presto!' for pressure. Set the
-# pseudo time method to 'global time step' then Enable 'High Order Term
-# Relaxation'. Set the pseudo time explicit relaxation factor for 'Volume
-# Fraction' to 0.3. Enable plotting of residuals and set the convergence
-# criteria to 1e-05 for x-velocity, y-velocity, k, omega, and vf-vapor. Enable
-# the specified initial pressure and initialize the solution with hybrid
-# initialization.
+# for the momentum and volume fraction and 'presto!' for pressure.
 
 methods = solver.solution.methods
 
@@ -205,6 +200,12 @@ discretization_scheme = {
 
 methods.discretization_scheme = discretization_scheme
 
+###############################################################################
+# For the pressure velocity coupling scheme choose 'Coupled'. Set the pseudo
+# time method to 'global time step' and Enable 'High Order Term Relaxation'.
+# Then, set the pseudo time explicit relaxation factor for 'Volume Fraction' to
+# 0.3.
+
 methods.p_v_coupling.flow_scheme = "Coupled"
 
 methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
@@ -214,6 +215,11 @@ methods.high_order_term_relaxation.enable = True
 solver.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo_relax[
     "mp"
 ] = 0.3
+
+###############################################################################
+# To plot the residuals, enable plotting and set the convergence criteria to
+# 1e-05 for x-velocity, y-velocity, k, omega, and vf-vapor. Enable the specified
+# initial pressure then initialize the solution with hybrid initialization.
 
 solver.tui.solve.monitors.residual.plot("yes")
 
@@ -230,7 +236,7 @@ solver.solution.initialization.hybrid_initialize()
 ###############################################################################
 # Save and Run
 # ~~~~~~~~~~~~
-# Save the case file 'cav.cas.h5'. Then start the calculation by requesting
+# Save the case file 'cav.cas.h5'. Then, start the calculation by requesting
 # 500 iterations. Save the final case file and the data.
 
 solver.file.write(file_name="cav", file_type="case")
@@ -243,8 +249,8 @@ solver.file.write(file_name="cav", file_type="case-data")
 # Post Processing
 # ~~~~~~~~~~~~~~~
 # Create a contour plot for static pressure, turbulent kinetic energy and the
-# volume fraction of water vapor. for each plot enable banded coloring and
-# filled. Mirror the display around the symmetry plane to show the full model.
+# volume fraction of water vapor. For each plot enable banded coloring and
+# filled.
 
 solver.results.graphics.contour.create("contour_static_pressure")
 
@@ -255,6 +261,9 @@ contour_static_pressure = {
 }
 
 solver.results.graphics.contour["contour_static_pressure"] = contour_static_pressure
+
+###############################################################################
+# Mirror the display around the symmetry plane to show the full model.
 
 solver.tui.display.set.mirror_zones(["symm_2", "symm_1"])
 
