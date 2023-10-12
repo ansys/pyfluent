@@ -415,12 +415,12 @@ class FluentConnection:
             return
         cleanup_filename = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
         logger.debug(f"Looking for {cleanup_filename}...")
-        cleanup_filepath = Path(pwd, cleanup_filename)
-        if cleanup_filepath.is_file():
+        cleanup_file_path = Path(pwd, cleanup_filename)
+        if cleanup_file_path.is_file():
             logger.info(
-                f"Executing Fluent cleanup script, filepath: {cleanup_filepath}"
+                f"Executing Fluent cleanup script, file path: {cleanup_file_path}"
             )
-            cmd_list.append(cleanup_filepath)
+            cmd_list.append(cleanup_file_path)
             logger.debug(f"Cleanup command list = {cmd_list}")
             subprocess.Popen(
                 cmd_list,

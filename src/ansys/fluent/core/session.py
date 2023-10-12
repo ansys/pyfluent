@@ -89,7 +89,7 @@ class BaseSession:
     Methods
     -------
     create_from_server_info_file(
-        server_info_filepath, cleanup_on_exit, start_transcript
+        server_info_file_path, cleanup_on_exit, start_transcript
         )
         Create a Session instance from server-info file
 
@@ -202,13 +202,13 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-        cls, server_info_filepath: str, **connection_kwargs
+        cls, server_info_file_path: str, **connection_kwargs
     ):
         """Create a Session instance from server-info file.
 
         Parameters
         ----------
-        server_info_filepath : str
+        server_info_file_path : str
             Path to server-info file written out by Fluent server
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
@@ -221,7 +221,7 @@ class BaseSession:
         Session
             Session instance
         """
-        ip, port, password = _parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_file_path)
         session = cls(
             fluent_connection=FluentConnection(
                 ip=ip, port=port, password=password, **connection_kwargs
@@ -319,7 +319,7 @@ class _Uploader:
         Parameters
         ----------
         file_path : str
-            filepath
+            file path
         remote_file_name : str, optional
             remote file name, by default None
         """
@@ -336,7 +336,7 @@ class _Uploader:
         file_name : str
             file name
         local_file_path : str, optional
-            local filepath, by default None
+            local file path, by default None
 
         Raises
         ------
