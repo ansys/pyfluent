@@ -355,7 +355,7 @@ class BaseSession:
         file_service = self._file_service()
         if os.path.isfile(file_name):
             if not file_service.file_exist(os.path.basename(file_name)):
-                self.upload(os.path.basename(file_name))
+                self.upload(file_name)
                 self._wait_for_file(file_name)
         elif file_service.file_exist(os.path.basename(file_name)):
             pass
