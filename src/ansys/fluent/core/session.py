@@ -289,6 +289,7 @@ class BaseSession:
 
     def _wait_for_file(self, file_name: str):
         """Wait for file to get ready for upload or download.
+
         Parameters
         ----------
         file_name : str
@@ -311,6 +312,7 @@ class BaseSession:
 
     def _pypim_upload_helper(self, file_name, is_meshing, api):
         """Uploads a case file if not available on the server.
+
         Parameters
         ----------
         file_name : str
@@ -340,6 +342,7 @@ class BaseSession:
 
     def _pypim_download_helper(self, file_name):
         """Downloads a case file if pypim is configured.
+
         Parameters
         ----------
         file_name : str
@@ -353,6 +356,7 @@ class BaseSession:
 
     def _no_pypim_helper(self, file_name: str, is_meshing: bool, api):
         """Used if pypim is not configured.
+
         Parameters
         ----------
         file_name : str
