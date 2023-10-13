@@ -134,11 +134,12 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] =
     else:
         if watchdog_err.is_file():
             with open(watchdog_err) as f:
-                err_content = f.read().replace("\n", "")
+                err_content = "Watchdog - %s" % f.read().replace("\n", "")
             watchdog_err.unlink()
-            logger.error("Watchdog - %s" % err_content)
             if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
                 raise RuntimeError(err_content)
+            else:
+                logger.error(err_content)
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
