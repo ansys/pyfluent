@@ -692,6 +692,9 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     )
     assert count_key_recursive(default_attrs, "default") > 5
 
+    mesh = solver.results.graphics.mesh.create("mesh-1")
+    assert mesh.name.is_read_only()
+
 
 @pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
