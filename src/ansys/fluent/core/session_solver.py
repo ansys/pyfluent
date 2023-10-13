@@ -223,7 +223,7 @@ class Solver(BaseSession):
             )
             launcher_args = dict(self.fluent_connection.launcher_args)
             launcher_args.pop("lightweight_mode", None)
-            launcher_args["case_filepath"] = file_name
+            launcher_args["case_file_path"] = file_name
             fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
             fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
         else:

@@ -13,8 +13,8 @@ def test_data_reader_for_single_phase():
     )
 
     reader = DataFile(
-        data_filepath=data_file_name,
-        case_file_handle=CaseFile(case_filepath=case_file_name),
+        data_file_path=data_file_name,
+        case_file_handle=CaseFile(case_file_path=case_file_name),
     )
 
     assert reader.case_file == "elbow1.cas.h5"
@@ -62,8 +62,8 @@ def test_data_reader_for_multi_phase():
     )
 
     reader = DataFile(
-        data_filepath=data_file_name,
-        case_file_handle=CaseFile(case_filepath=case_file_name),
+        data_file_path=data_file_name,
+        case_file_handle=CaseFile(case_file_path=case_file_name),
     )  # Instantiate a DataFile class
 
     assert reader.case_file == "mixing_elbow_mul_ph.cas.h5"

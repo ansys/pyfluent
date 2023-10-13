@@ -24,11 +24,11 @@ Single phase
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.file_session import FileSession
 
-  >>> case_filepath = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
-  >>> data_filepath = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+  >>> case_file_path = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+  >>> data_file_path = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
   >>> file_session = FileSession()
-  >>> file_session.read_case(case_filepath)
-  >>> file_session.read_data(data_filepath)
+  >>> file_session.read_case(case_file_path)
+  >>> file_session.read_data(data_file_path)
 
   >>> file_session.field_info.get_scalar_field_range("SV_T")
   [293.1446694544748, 313.1515948109515]
@@ -106,11 +106,11 @@ Multi phase
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.file_session import FileSession
 
-  >>> case_filepath = examples.download_file("mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session")
-  >>> data_filepath = examples.download_file("mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session")
+  >>> case_file_path = examples.download_file("mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session")
+  >>> data_file_path = examples.download_file("mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session")
   >>> file_session = FileSession()
-  >>> file_session.read_case(case_filepath)
-  >>> file_session.read_data(data_filepath)
+  >>> file_session.read_case(case_file_path)
+  >>> file_session.read_data(data_file_path)
 
   >>> file_session.field_info.get_scalar_field_range("phase-2:SV_P")
   [0.0, 1.5435200335871788e-11]

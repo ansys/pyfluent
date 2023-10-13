@@ -17,8 +17,8 @@ from the ``examples`` repository:
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-  >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
-  >>> reader = CaseFile(case_filepath=case_filepath)
+  >>> case_file_path = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
+  >>> reader = CaseFile(case_file_path=case_file_path)
   >>> reader.precision()
   2
   >>> reader.num_dimensions()
@@ -40,7 +40,7 @@ Along with basic functionality, the CaseFile class provides many additional feat
   
   .. code-block:: python
 
-    >>> reader = CaseFile(project_filepath="Dir1/Dir2/project.flprj")
+    >>> reader = CaseFile(project_file_path="Dir1/Dir2/project.flprj")
 
 - **Reads ``rp_vars`` and ``config_vars`` variables**
   The CaseFile class can provide the ``rp_vars`` and ``config_vars`` variables:
@@ -60,8 +60,8 @@ Along with basic functionality, the CaseFile class provides many additional feat
       >>> from ansys.fluent.core import examples
       >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-      >>> case_filepath = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
-      >>> reader = CaseFile(case_filepath=case_filepath)
+      >>> case_file_path = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+      >>> reader = CaseFile(case_file_path=case_file_path)
       >>> reader.get_mesh().get_surface_ids()
       [3, 4, 5, 6, 7, 9]
       >>> reader.get_mesh().get_surface_names()

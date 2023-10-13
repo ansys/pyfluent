@@ -5,12 +5,12 @@ from ansys.fluent.core.launcher.launcher import FluentMode, launch_fluent
 from .meshing_workflow import MeshingWorkflow
 
 
-def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
+def watertight_workflow(geometry_file_path, **launch_args) -> MeshingWorkflow:
     """A meshing workflow wrapper, initialized as watertight.
 
     Parameters
     ----------
-    geometry_filepath : str
+    geometry_file_path : str
         The path of a valid geometry file to import. Can be unset.
     launch_args
         Additional arguments forwarded to the launch_fluent function.
@@ -36,11 +36,11 @@ def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
             session = launch_fluent(**args)
     meshing_workflow = session.workflow
     meshing_workflow.watertight(dynamic_interface=dynamic_interface)
-    if geometry_filepath:
+    if geometry_file_path:
         import_geometry = meshing_workflow.task("Import Geometry")
         # change it so we can do this:
-        # import_geometry.arguments.FileName = geometry_filepath
-        # or import_geometry.FileName = geometry_filepath
-        import_geometry.arguments.update_dict(dict(FileName=geometry_filepath))
+        # import_geometry.arguments.FileName = geometry_file_path
+        # or import_geometry.FileName = geometry_file_path
+        import_geometry.arguments.update_dict(dict(FileName=geometry_file_path))
         import_geometry.Execute()
     return meshing_workflow
