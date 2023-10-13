@@ -44,9 +44,7 @@ and L are the inlet diameter, orifice diameter, and orifice length respectively.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-cav_file = examples.download_file(
-    "cav.msh", "pyfluent/cavitation", save_path=pyfluent.EXAMPLES_PATH
-)
+cav_file = examples.download_file("cav.msh", "pyfluent/cavitation")
 
 ###############################################################################
 # Launch Fluent as a service in 2d solution mode with double precision running
