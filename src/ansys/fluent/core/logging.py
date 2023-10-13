@@ -42,7 +42,7 @@ def get_default_config() -> dict:
                                               '%(levelname)-8s %(message)s'}},
      'handlers': {'pyfluent_file': {'backupCount': 9,
                                     'class': 'logging.handlers.RotatingFileHandler',
-                                    'file_name': 'pyfluent.log',
+                                    'filename': 'pyfluent.log',
                                     'formatter': 'logfile_fmt',
                                     'level': 'NOTSET',
                                     'maxBytes': 10485760}},
@@ -95,7 +95,7 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = Non
 
     >>> import ansys.fluent.core as pyfluent
     >>> config_dict = pyfluent.logging.get_default_config()
-    >>> config_dict['handlers']['pyfluent_file']['file_name'] = 'test.log'
+    >>> config_dict['handlers']['pyfluent_file']['filename'] = 'test.log'
     >>> pyfluent.logging.enable(custom_config=config_dict)
     """
     global _logging_file_enabled
@@ -114,7 +114,7 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = Non
         config = get_default_config()
 
     logging.config.dictConfig(config)
-    file_name = config["handlers"]["pyfluent_file"]["file_name"]
+    file_name = config["handlers"]["pyfluent_file"]["filename"]
 
     print(f"PyFluent logging file {os.path.join(os.getcwd(), file_name)}")
 
