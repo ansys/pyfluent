@@ -1,6 +1,5 @@
 """Module containing class encapsulating Fluent connection."""
 
-
 import functools
 from typing import Optional
 
@@ -15,6 +14,7 @@ from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.data_transfer import transfer_case
+import ansys.platform.instancemanagement as pypim
 
 
 class PureMeshing(BaseSession):
@@ -38,6 +38,7 @@ class PureMeshing(BaseSession):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
+        self._fluent_connection = fluent_connection
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
@@ -147,3 +148,38 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
+
+    def read_case(
+        self,
+        file_name: str,
+    ):
+        """Reads a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        if pypim.is_configured():
+            self._pypim_upload_helper(
+                file_name, is_meshing=True, api=self.tui.file.read_case
+            )
+        else:
+            self._no_pypim_helper(
+                file_name, is_meshing=True, api=self.tui.file.read_case
+            )
+
+    def write_case(
+        self,
+        file_name: str,
+    ):
+        """Reads a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        self._no_pypim_helper(file_name, is_meshing=True, api=self.tui.file.write_case)
+        if pypim.is_configured():
+            self._pypim_download_helper(file_name)

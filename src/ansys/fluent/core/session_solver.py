@@ -1,5 +1,6 @@
 """Module containing class encapsulating Fluent connection."""
 
+
 from asyncio import Future
 import functools
 import importlib
@@ -18,6 +19,7 @@ from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
+import ansys.platform.instancemanagement as pypim
 
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -41,6 +43,7 @@ class Solver(BaseSession):
         """
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
+        self._fluent_connection = fluent_connection
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -204,7 +207,7 @@ class Solver(BaseSession):
             except Exception:
                 fut_session.exit()
 
-    def read_case(self, file_name: str, lightweight_mode: bool = False):
+    def read_case_lightweight(self, file_name: str, lightweight_mode: bool = False):
         """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
         ``True``.
 
@@ -228,3 +231,36 @@ class Solver(BaseSession):
             fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
         else:
             self.file.read(file_type="case", file_name=file_name)
+
+    def read_case(
+        self,
+        file_name: str,
+    ):
+        """Reads a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        if pypim.is_configured():
+            self._pypim_upload_helper(
+                file_name, is_meshing=False, api=self.file.read_case
+            )
+        else:
+            self._no_pypim_helper(file_name, is_meshing=False, api=self.file.read_case)
+
+    def write_case(
+        self,
+        file_name: str,
+    ):
+        """Reads a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        self._no_pypim_helper(file_name, is_meshing=False, api=self.file.write_case)
+        if pypim.is_configured():
+            self._pypim_download_helper(file_name)
