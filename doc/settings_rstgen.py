@@ -12,7 +12,7 @@ Process
     -- Add properties like members, undoc-memebers, show-inheritence to the autoclass directive.
     -- Generate the tables of children, commands, arguments, and parents.
     --- Get access to the respective properties and members on the class with get_attr.
-    --- Use the filename of the child class to generate the hyperlink to that class.
+    --- Use the file name of the child class to generate the hyperlink to that class.
     --- Use the __doc__ property to generate the short summary for the corresponding child
     --- Use the previously generated perents dict to populate the parents table.
 Usage

@@ -158,7 +158,7 @@ if __name__ == "__main__":
         # Configure logger for Watchdog process
         log_config = pyfluent.logging.get_default_config()
         log_config["handlers"]["pyfluent_file"][
-            "filename"
+            "file_name"
         ] = f"pyfluent_watchdog_{watchdog_id}.log"
 
         logger = pyfluent.logging.get_logger("pyfluent.watchdog")

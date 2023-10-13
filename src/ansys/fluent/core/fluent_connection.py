@@ -413,9 +413,9 @@ class FluentConnection:
                 "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
             )
             return
-        cleanup_filename = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
-        logger.debug(f"Looking for {cleanup_filename}...")
-        cleanup_file_path = Path(pwd, cleanup_filename)
+        cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+        logger.debug(f"Looking for {cleanup_file_name}...")
+        cleanup_file_path = Path(pwd, cleanup_file_name)
         if cleanup_file_path.is_file():
             logger.info(
                 f"Executing Fluent cleanup script, file path: {cleanup_file_path}"
@@ -454,11 +454,11 @@ class FluentConnection:
             return
         container_id = self.connection_properties.cortex_host
         pid = self.connection_properties.fluent_host_pid
-        cleanup_filename = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_filename}")
+        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
         if get_container(container_id):
             try:
-                container.exec_run(["bash", cleanup_filename], detach=True)
+                container.exec_run(["bash", cleanup_file_name], detach=True)
             except docker.errors.APIError as e:
                 logger.info(f"{type(e).__name__}: {e}")
                 logger.debug(

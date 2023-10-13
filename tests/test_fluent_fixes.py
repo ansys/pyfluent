@@ -9,11 +9,11 @@ from ansys.fluent.core import examples
 def test_1364(new_solver_session):
     solver = new_solver_session
 
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
     )
 
-    solver.file.read_case(file_name=import_filename)
+    solver.file.read_case(file_name=import_file_name)
 
     report_def = solver.solution.report_definitions.volume.create("xxx")
 

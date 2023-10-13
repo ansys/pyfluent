@@ -17,7 +17,7 @@ handlers:
     class: logging.handlers.RotatingFileHandler
     level: NOTSET #  no log level filtering on this handler, message log levels are managed by the loggers instead
     formatter: logfile_fmt
-    filename: 'pyfluent.log'
+    file_name: 'pyfluent.log'
     maxBytes: 10485760 # 10 Megabytes
     backupCount: 9 # if .log file size > maxBytes, roll over to another file .log.1, then .log.2, and so on
 

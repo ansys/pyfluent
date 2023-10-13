@@ -17,13 +17,13 @@ Import geometry
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
 
-    import_filename = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
+    import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
     meshing = pyfluent.launch_fluent(
         mode="meshing", precision='double', processor_count=2
     )
     meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
     meshing.workflow.TaskObject['Import Geometry'].Arguments = {
-        'FileName': import_filename, 'LengthUnit': 'in'
+        'FileName': import_file_name, 'LengthUnit': 'in'
     }
     meshing.workflow.TaskObject['Import Geometry'].Execute()
 
@@ -124,13 +124,13 @@ Import CAD and part management
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
 
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
     meshing = pyfluent.launch_fluent(precision="double", processor_count=2, mode="meshing")
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
     meshing.PartManagement.InputFileChanged(
-        FilePath=import_filename, IgnoreSolidNames=False, PartPerBody=False
+        FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
     )
     meshing.PMFileManagement.FileManager.LoadFiles()
     meshing.PartManagement.Node["Meshing Model"].Copy(
@@ -147,7 +147,7 @@ Import CAD and part management
         {
             "Context": 0,
             "CreateObjectPer": "Custom",
-            "FMDFileName": import_filename,
+            "FMDFileName": import_file_name,
             "FileLoaded": "yes",
             "ObjectSetting": "DefaultObjectSetting",
             "Options": {
@@ -580,7 +580,7 @@ attribute access methods in a watertight geometry meshing workflow.
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
 
-    import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
+    import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
     meshing = pyfluent.launch_fluent(mode="meshing", precision="double", processor_count=2)
     w = meshing.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")

@@ -306,11 +306,11 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.skip("Failing in github")
 def test_read_case_using_lightweight_mode():
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     solver = pyfluent.launch_fluent(
-        case_file_path=import_filename, lightweight_mode=True
+        case_file_path=import_file_name, lightweight_mode=True
     )
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver.fluent_connection)
