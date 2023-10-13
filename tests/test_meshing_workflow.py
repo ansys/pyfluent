@@ -612,7 +612,7 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
 @pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
-        geometry_file_path=mixing_elbow_geometry, session=new_mesh_session
+        geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
     )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
@@ -630,7 +630,7 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
 @pytest.mark.codegen_required
 def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
-        geometry_file_path=mixing_elbow_geometry, session=new_mesh_session
+        geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
     )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
@@ -665,7 +665,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
-        geometry_file_path=mixing_elbow_geometry, session=new_mesh_session
+        geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
     )
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None

@@ -8,9 +8,9 @@ Example
     >>> from ansys.fluent.core import examples
     >>> from ansys.fluent.core.filereader.data_file import DataFile
 
-    >>> data_file_path = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False)
+    >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False)
 
-    >>> reader = DataFile(data_file_path=data_file_path) # Instantiate a DataFile class
+    >>> reader = DataFile(data_file_name=data_file_name) # Instantiate a DataFile class
 """
 import os
 from os.path import dirname
@@ -46,24 +46,24 @@ class DataFile:
 
     def __init__(
         self,
-        data_file_path: Optional[str] = None,
-        project_file_path: Optional[str] = None,
+        data_file_name: Optional[str] = None,
+        project_file_name: Optional[str] = None,
         case_file_handle=None,
     ):
         """__init__ method of CaseFile class."""
         self._case_file_handle = case_file_handle
-        if data_file_path and project_file_path:
+        if data_file_name and project_file_name:
             raise RuntimeError(
                 "Please enter either the data file path or the project file path"
             )
-        if project_file_path:
-            if Path(project_file_path).suffix in [".flprj", ".flprz"]:
+        if project_file_name:
+            if Path(project_file_name).suffix in [".flprj", ".flprz"]:
                 project_dir = os.path.join(
-                    dirname(project_file_path),
-                    Path(project_file_path).name.split(".")[0] + ".cffdb",
+                    dirname(project_file_name),
+                    Path(project_file_name).name.split(".")[0] + ".cffdb",
                 )
-                data_file_path = Path(
-                    project_dir + _get_data_file_path_from_flprj(project_file_path)
+                data_file_name = Path(
+                    project_dir + _get_data_file_name_from_flprj(project_file_name)
                 )
             else:
                 raise FileNotFoundError(
@@ -71,8 +71,8 @@ class DataFile:
                 )
 
         try:
-            if Path(data_file_path).match("*.dat.h5"):
-                _file = h5py.File(data_file_path)
+            if Path(data_file_name).match("*.dat.h5"):
+                _file = h5py.File(data_file_name)
                 results = _file["results"]
                 self._settings = _file["settings"]
                 self._field_data = results["1"]
@@ -87,14 +87,14 @@ class DataFile:
 
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                f"The data file {data_file_path} cannot be found."
+                f"The data file {data_file_name} cannot be found."
             ) from e
 
         except OSError as e:
-            raise OSError(f"Error while reading data file {data_file_path}") from e
+            raise OSError(f"Error while reading data file {data_file_name}") from e
 
         except Exception as e:
-            raise RuntimeError(f"Could not read data file {data_file_path}") from e
+            raise RuntimeError(f"Could not read data file {data_file_name}") from e
 
     @property
     def case_file(self) -> str:
@@ -196,7 +196,7 @@ class DataFile:
         return vector_data
 
 
-def _get_data_file_path_from_flprj(flprj_file):
+def _get_data_file_name_from_flprj(flprj_file):
     parser = etree.XMLParser(recover=True)
     tree = ET.parse(flprj_file, parser)
     root = tree.getroot()

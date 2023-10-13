@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_path
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 _THIS_DIR = os.path.dirname(__file__)
 
@@ -31,5 +31,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_file_path()
+    version = get_version_for_file_name()
     generate(version, None)

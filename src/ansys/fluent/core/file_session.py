@@ -717,10 +717,10 @@ class FileSession:
         self.monitors_manager = lambda: None
         self.session_id = 1
 
-    def read_case(self, case_file_path):
+    def read_case(self, case_file_name):
         """Read Case file."""
-        self._case_file = CaseFile(case_file_path)
+        self._case_file = CaseFile(case_file_name)
 
-    def read_data(self, data_file_path):
+    def read_data(self, data_file_name):
         """Read Data file."""
-        self._data_file = DataFile(data_file_path, case_file_handle=self._case_file)
+        self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)

@@ -142,7 +142,7 @@ def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
     session = BaseSession.create_from_server_info_file(
-        server_info_file_path=str(server_info_file), cleanup_on_exit=False
+        server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
     assert session.health_check_service.is_serving
     server.stop(None)
@@ -165,7 +165,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError):
         session = BaseSession.create_from_server_info_file(
-            server_info_file_path=str(server_info_file),
+            server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
             start_timeout=2,
         )
@@ -230,29 +230,29 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 @pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.fluent_version(">=23.2")
 def test_journal_creation(file_format, new_mesh_session):
-    fd, file_path = tempfile.mkstemp(
+    fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
         dir=str(pyfluent.EXAMPLES_PATH),
     )
     os.close(fd)
 
-    file_path = Path(file_path)
+    file_name = Path(file_name)
 
-    file_path.touch()
-    prev_stat = file_path.stat()
+    file_name.touch()
+    prev_stat = file_name.stat()
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
     print(f"prev_stat: {prev_stat}")
 
     session = new_mesh_session
     if session.connection_properties.inside_container:
-        session.journal.start(file_path.name)
+        session.journal.start(file_name.name)
     else:
-        session.journal.start(file_path)
+        session.journal.start(file_name)
     session = session.switch_to_solver()
     session.journal.stop()
-    new_stat = file_path.stat()
+    new_stat = file_name.stat()
     print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
@@ -268,26 +268,26 @@ def test_old_style_session():
 
 @pytest.mark.fluent_version(">=23.2")
 def test_start_transcript_file_write(new_mesh_session):
-    fd, file_path = tempfile.mkstemp(
+    fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
         dir=str(pyfluent.EXAMPLES_PATH),
     )
     os.close(fd)
 
-    file_path = Path(file_path)
+    file_name = Path(file_name)
 
-    file_path.touch()
-    prev_stat = file_path.stat()
+    file_name.touch()
+    prev_stat = file_name.stat()
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
 
     session = new_mesh_session
-    session.transcript.start(file_path)
+    session.transcript.start(file_name)
     session = session.switch_to_solver()
     session.transcript.stop()
 
-    new_stat = file_path.stat()
+    new_stat = file_name.stat()
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
 
@@ -310,7 +310,7 @@ def test_read_case_using_lightweight_mode():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     solver = pyfluent.launch_fluent(
-        case_file_path=import_file_name, lightweight_mode=True
+        case_file_name=import_file_name, lightweight_mode=True
     )
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver.fluent_connection)

@@ -89,7 +89,7 @@ class BaseSession:
     Methods
     -------
     create_from_server_info_file(
-        server_info_file_path, cleanup_on_exit, start_transcript
+        server_info_file_name, cleanup_on_exit, start_transcript
         )
         Create a Session instance from server-info file
 
@@ -190,10 +190,10 @@ class BaseSession:
         """Return the session ID."""
         return self.fluent_connection._id
 
-    def start_journal(self, file_path: str):
+    def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
         warnings.warn("Use -> journal.start()", DeprecationWarning)
-        self.journal.start(file_path)
+        self.journal.start(file_name)
 
     def stop_journal(self):
         """Executes tui command to stop journal."""
@@ -202,13 +202,13 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-        cls, server_info_file_path: str, **connection_kwargs
+        cls, server_info_file_name: str, **connection_kwargs
     ):
         """Create a Session instance from server-info file.
 
         Parameters
         ----------
-        server_info_file_path : str
+        server_info_file_name : str
             Path to server-info file written out by Fluent server
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
@@ -221,7 +221,7 @@ class BaseSession:
         Session
             Session instance
         """
-        ip, port, password = _parse_server_info_file(server_info_file_path)
+        ip, port, password = _parse_server_info_file(server_info_file_name)
         session = cls(
             fluent_connection=FluentConnection(
                 ip=ip, port=port, password=password, **connection_kwargs
@@ -258,17 +258,17 @@ class BaseSession:
         logger.debug("session.__exit__() called")
         self.exit()
 
-    def upload(self, file_path: str, remote_file_name: Optional[str] = None):
+    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
-        return self._uploader.upload(file_path, remote_file_name)
+        return self._uploader.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_file_path: Optional[str] = None):
+    def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Downloads a file from the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
-        return self._uploader.download(file_name, local_file_path)
+        return self._uploader.download(file_name, local_file_name)
 
 
 class _Uploader:
@@ -289,12 +289,12 @@ class _Uploader:
     Methods
     -------
     upload(
-        file_path, remote_file_name
+        file_name, remote_file_name
         )
         Upload a file to the server.
 
     download(
-        file_name, local_file_path
+        file_name, local_file_name
         )
         Download a file from the server.
     """
@@ -313,29 +313,29 @@ class _Uploader:
                 token="token", url=upload_server.uri, headers=upload_server.headers
             )
 
-    def upload(self, file_path: str, remote_file_name: Optional[str] = None):
+    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server.
 
         Parameters
         ----------
-        file_path : str
+        file_name : str
             file path
         remote_file_name : str, optional
             remote file name, by default None
         """
         if self.file_service:
-            expanded_file_path = os.path.expandvars(file_path)
-            upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
-            self.file_service.upload_file(expanded_file_path, upload_file_name)
+            expanded_file_name = os.path.expandvars(file_name)
+            upload_file_name = remote_file_name or os.path.basename(expanded_file_name)
+            self.file_service.upload_file(expanded_file_name, upload_file_name)
 
-    def download(self, file_name: str, local_file_path: Optional[str] = None):
+    def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Downloads a file from the server.
 
         Parameters
         ----------
         file_name : str
             file name
-        local_file_path : str, optional
+        local_file_name : str, optional
             local file path, by default None
 
         Raises
@@ -345,6 +345,6 @@ class _Uploader:
         """
         if self.file_service:
             if self.file_service.file_exist(file_name):
-                self.file_service.download_file(file_name, local_file_path)
+                self.file_service.download_file(file_name, local_file_name)
             else:
                 raise FileNotFoundError("Remote file does not exist.")

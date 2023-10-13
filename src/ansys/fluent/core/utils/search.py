@@ -9,11 +9,11 @@ from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_path
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 from ansys.fluent.core.workflow import BaseTask, TaskContainer, WorkflowWrapper
 
 
-def get_api_tree_file_path(version: str, pyfluent_path: str) -> Path:
+def get_api_tree_file_name(version: str, pyfluent_path: str) -> Path:
     return (
         (
             (Path(pyfluent_path) / "ansys" / "fluent" / "core")
@@ -53,11 +53,11 @@ def _get_version_path_prefix_from_obj(obj: Any):
     prefix = None
     if isinstance(obj, PureMeshing):
         path = ["<meshing_session>"]
-        version = get_version_for_file_path(obj.get_fluent_version())
+        version = get_version_for_file_name(obj.get_fluent_version())
         prefix = "<search_root>"
     elif isinstance(obj, Solver):
         path = ["<solver_session>"]
-        version = get_version_for_file_path(obj.get_fluent_version())
+        version = get_version_for_file_name(obj.get_fluent_version())
         prefix = "<search_root>"
     elif isinstance(obj, TUIMenu):
         module = obj.__class__.__module__
@@ -170,7 +170,7 @@ def search(
     <solver_session>.results.graphics.contour["<name>"].geometry (Parameter)
     """
     if version:
-        version = get_version_for_file_path(version)
+        version = get_version_for_file_name(version)
     root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
     if search_root and not prefix:
         return
@@ -178,10 +178,10 @@ def search(
         version = root_version
     if not version:
         for fluent_version in FluentVersion:
-            version = get_version_for_file_path(str(fluent_version))
-            if get_api_tree_file_path(version, None).exists():
+            version = get_version_for_file_name(str(fluent_version))
+            if get_api_tree_file_name(version, None).exists():
                 break
-    api_tree_file = get_api_tree_file_path(version, None)
+    api_tree_file = get_api_tree_file_name(version, None)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
 

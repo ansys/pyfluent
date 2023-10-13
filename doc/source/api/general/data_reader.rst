@@ -20,8 +20,8 @@ from the ``examples`` repository:
   >>> from ansys.fluent.core.filereader.data_file import DataFile
   >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-  >>> data_file_path = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
-  >>> reader = DataFile(data_file_path=data_file_path, case_file_handle=CaseFile(case_file_path))
+  >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+  >>> reader = DataFile(data_file_name=data_file_name, case_file_handle=CaseFile(case_file_name))
   >>> reader.case_file
   'elbow1.cas.h5'
   >>> reader.variables()

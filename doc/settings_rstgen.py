@@ -23,7 +23,7 @@ python <path to settings_rstgen.py>
 import importlib
 import os
 
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_path
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 parents_dict = {}
 rst_list = []
@@ -214,7 +214,7 @@ if __name__ == "__main__":
         os.makedirs(rst_dir)
 
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
-    version = get_version_for_file_path(image_tag.lstrip("v"))
+    version = get_version_for_file_name(image_tag.lstrip("v"))
     settings = importlib.import_module(f"ansys.fluent.core.solver.settings_{version}")
     _populate_parents_list(settings.root)
     _populate_rst_from_settings(rst_dir, settings.root, version)

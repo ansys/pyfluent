@@ -35,7 +35,7 @@ import shutil
 
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_path
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 hash_dict = {}
 files_dict = {}
@@ -244,8 +244,8 @@ def _populate_classes(parent_dir):
             root_class_path = file_name
 
         file_name += ".py"
-        file_path = os.path.normpath(os.path.join(parent_dir, file_name))
-        with open(file_path, "w") as f:
+        file_name = os.path.normpath(os.path.join(parent_dir, file_name))
+        with open(file_name, "w") as f:
             f.write(f"name: {cls_name}")
 
     # populate files
@@ -259,17 +259,17 @@ def _populate_classes(parent_dir):
     ) in hash_dict.items():
         file_name = files_dict.get(key)
         cls_name = cls.__name__
-        file_path = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
+        file_name = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
         generate_stub = getattr(cls, "command_names", None) or getattr(
             cls, "query_names", None
         )
-        stub_file_path = file_path + "i" if generate_stub else None
+        stub_file_name = file_name + "i" if generate_stub else None
         stub_cm = (
-            open(stub_file_path, "w")
+            open(stub_file_name, "w")
             if generate_stub
-            else contextlib.nullcontext(stub_file_path)
+            else contextlib.nullcontext(stub_file_name)
         )
-        with open(file_path, "w") as f, stub_cm as stubf:
+        with open(file_name, "w") as f, stub_cm as stubf:
             # disclaimer to py file
             f.write("#\n")
             f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
@@ -446,8 +446,8 @@ def _populate_classes(parent_dir):
 
 def _populate_init(parent_dir, sinfo):
     hash = _gethash(sinfo)
-    file_path = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
-    with open(file_path, "w") as f:
+    file_name = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
+    with open(file_name, "w") as f:
         f.write("#\n")
         f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
         f.write("#\n")
@@ -490,5 +490,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_file_path()
+    version = get_version_for_file_name()
     generate(version, None)
