@@ -43,7 +43,7 @@ def _retrieve_file(
     url: str,
     file_name: str,
     save_path: Optional[str] = None,
-    return_only_file_name: Optional[bool] = False,
+    return_without_path: Optional[bool] = False,
 ) -> str:
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
@@ -58,7 +58,7 @@ def _retrieve_file(
     print("Checking if specified file already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
         print(f"File already exists. File path:\n{local_path_no_zip}")
-        if return_only_file_name:
+        if return_without_path:
             return file_name_no_zip
         else:
             return local_path_no_zip
@@ -79,7 +79,7 @@ def _retrieve_file(
         local_path = local_path_no_zip
         file_name = file_name_no_zip
     print(f"Download successful. File path:\n{local_path}")
-    if return_only_file_name:
+    if return_without_path:
         return file_name
     else:
         return local_path
@@ -89,7 +89,7 @@ def download_file(
     file_name: str,
     directory: Optional[str] = None,
     save_path: Optional[str] = None,
-    return_only_file_name: Optional[bool] = None,
+    return_without_path: Optional[bool] = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 
@@ -102,7 +102,7 @@ def download_file(
         in the root directory of the repository.
     save_path : str, optional
         Path to download the specified file to.
-    return_only_file_name : bool, optional
+    return_without_path : bool, optional
         When unspecified, defaults to False, unless the PYFLUENT_LAUNCH_CONTAINER=1 environment variable is specified,
         in which case defaults to True.
         Relevant when using Fluent Docker container images, as the full path for the imported file from
@@ -114,7 +114,7 @@ def download_file(
     Returns
     -------
     str
-        file path of the downloaded or already existing file, or only the file name if ``return_only_file_name=True``.
+        file path of the downloaded or already existing file, or only the file name if ``return_without_path=True``.
 
     Examples
     --------
@@ -122,29 +122,29 @@ def download_file(
     >>> file_path = examples.download_file("bracket.iges", "geometry")
     >>> file_path
     '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
-    >>> file_name = examples.download_file("bracket.iges", "geometry", return_only_file_name=True)
+    >>> file_name = examples.download_file("bracket.iges", "geometry", return_without_path=True)
     >>> file_name
     'bracket.iges'
     >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='.')
     '/home/<current_folder_path>/bracket.iges'
-    >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='.', return_only_file_name=True)
+    >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='.', return_without_path=True)
     >>> file_name
     'bracket.iges'
     >>> file_path = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>')
     '/home/<user_specified_path>/bracket.iges'
     >>> file_name = examples.download_file("bracket.iges", "geometry", save_path='<user_specified_path>',
-    ...                                   return_only_file_name=True)
+    ...                                   return_without_path=True)
     >>> file_name
     'bracket.iges'
     """
-    if return_only_file_name is None:
+    if return_without_path is None:
         if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            return_only_file_name = True
+            return_without_path = True
         else:
-            return_only_file_name = False
+            return_without_path = False
 
     url = _get_file_url(file_name, directory)
-    return _retrieve_file(url, file_name, save_path, return_only_file_name)
+    return _retrieve_file(url, file_name, save_path, return_without_path)
 
 
 def path(file_name: str):

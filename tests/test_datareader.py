@@ -5,11 +5,11 @@ from ansys.fluent.core.filereader.data_file import DataFile
 
 def test_data_reader_for_single_phase():
     case_file_name = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
 
     data_file_name = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
 
     reader = DataFile(
@@ -53,12 +53,12 @@ def test_data_reader_for_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
 
     reader = DataFile(

@@ -18,12 +18,12 @@ def test_field_info_data_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     file_session = FileSession()
     assert Path(case_file_name).exists()
@@ -52,10 +52,10 @@ def test_field_info_data_multi_phase():
 
 def test_field_info_data_single_phase():
     case_file_name = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
     data_file_name = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
@@ -106,10 +106,10 @@ def test_field_info_data_single_phase():
 
 def test_data_reader_single_phase():
     case_file_name = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
     data_file_name = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
@@ -145,12 +145,12 @@ def test_data_reader_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
@@ -190,10 +190,10 @@ def test_data_reader_multi_phase():
 
 def test_transaction_request_single_phase():
     case_file_name = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
     data_file_name = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
@@ -248,12 +248,12 @@ def test_transaction_request_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
@@ -290,10 +290,10 @@ def test_transaction_request_multi_phase():
 
 def test_error_handling_single_phase():
     case_file_name = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
     data_file_name = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_file_name=False
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
@@ -314,12 +314,12 @@ def test_error_handling_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_file_name=False,
+        return_without_path=False,
     )
     file_session = FileSession()
     file_session.read_case(case_file_name)
