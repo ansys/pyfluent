@@ -95,6 +95,7 @@ jobs:
         uses: ansys/actions/doc-deploy-index@v4
         with:
           doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+          decompress-artifact: true
           cname: ${{ env.DOCUMENTATION_CNAME }}/version/dev
           index-name: pyfluent-vdev
           host-url: ${{ vars.MEILISEARCH_HOST_URL }}
