@@ -1,23 +1,22 @@
-"""Watchdog execution script, should not be executed directly or imported as a module.
-PyFluent will handle the Watchdog process, see the ``launch_fluent`` documentation.
+#!/usr/bin/env python
+"""Watchdog execution script, should not be manually executed or imported as a module.
+PyFluent will handle the Watchdog process, see ``launch_fluent`` documentation.
 """
 
 if __name__ == "__main__":
     try:
         import os
+        import signal
         import subprocess
         import sys
         import time
 
-        import ansys.fluent.core as pyfluent
-        from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
+        import psutil
         from watchdog import IDLE_PERIOD, WATCHDOG_INIT_FILE
 
-        import signal
-
-        import psutil
-
+        import ansys.fluent.core as pyfluent
         from ansys.fluent.core.fluent_connection import FluentConnection, get_container
+        from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
         watchdog_id = sys.argv[5]
 
@@ -38,10 +37,8 @@ if __name__ == "__main__":
                 "pyfluent.general"
             ).handlers  # using same handlers as already defined
 
-
         def got_sig(signum, _):
             logger.warning(f"Received {signal.Signals(signum).name}, ignoring it")
-
 
         signals = signal.valid_signals()
         if os.name == "posix":

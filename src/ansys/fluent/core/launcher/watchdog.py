@@ -10,6 +10,8 @@ from typing import Optional
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import timeout_loop
 
+logger = pyfluent.logging.get_logger("pyfluent.launcher")
+
 IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
@@ -23,12 +25,10 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] =
 
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
     if env_watchdog_debug in ("1", "ON"):
-        print(
+        logger.debug(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
             f"enabling debugging for watchdog ID {watchdog_id}..."
         )
-
-    logger = pyfluent.logging.get_logger("pyfluent.launcher")
 
     watchdog_env = os.environ.copy()
 
@@ -59,8 +59,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] =
         else:
             logger.debug("Could not find Windows 'pythonw.exe' executable.")
 
-    watchdog_exec = Path(__file__).parents[0] / "watchdog_exec.pyw"
-    print(watchdog_exec)
+    watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
 
     # Command to be executed by the new process
     command_list = [
