@@ -1125,12 +1125,17 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     def get_state(self) -> Any:
         """Get state of the command argument."""
         parent_state = self.parent.get_state()
-        try:
-            return parent_state[self.name]
-        except KeyError:
-            pass
+        return parent_state[self.name]
 
     getState = get_state
+
+    def set_state(self, state) -> Any:
+        """Set state of the command argument."""
+        parent_state = self.parent.get_state()
+        parent_state[self.name] = state
+        self.parent.set_state(parent_state)
+
+    setState = set_state
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the command argument.
