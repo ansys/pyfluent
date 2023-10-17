@@ -275,6 +275,50 @@ class BaseSession:
             )
         return file_service
 
+    def _upload_download_helper(
+        self,
+        is_upload: bool,
+        file_path: Optional[str] = None,
+        file_name: Optional[str] = None,
+        remote_file_name: Optional[str] = None,
+        local_file_path: Optional[str] = None,
+    ):
+        """Uploads and downloads a file.
+
+        Parameters
+        ----------
+        is_upload : bool
+            True if we want to upload file, False otherwise.
+        file_path : str
+            filepath
+        file_name : str
+            filename
+        remote_file_name : str, optional
+            remote filename, by default None
+        local_file_path : str, optional
+            local filepath, by default None
+        Raises
+        ------
+        FileNotFoundError
+            If the file does not exist.
+        """
+        file_service = self._file_service()
+        if file_service:
+            if is_upload:
+                if os.path.isfile(file_path):
+                    expanded_file_path = os.path.expandvars(file_path)
+                    upload_file_name = remote_file_name or os.path.basename(
+                        expanded_file_path
+                    )
+                    file_service.upload_file(expanded_file_path, upload_file_name)
+                else:
+                    raise FileNotFoundError(f"{file_path} does not exist.")
+            else:
+                if file_service.file_exist(file_name):
+                    file_service.download_file(file_name, local_file_path)
+                else:
+                    raise FileNotFoundError("Remote file does not exist.")
+
     def upload(self, file_path: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server.
 
@@ -284,12 +328,14 @@ class BaseSession:
             filepath
         remote_file_name : str, optional
             remote filename, by default None
+        Raises
+        ------
+        FileNotFoundError
+            If the file does not exist.
         """
-        file_service = self._file_service()
-        if file_service:
-            expanded_file_path = os.path.expandvars(file_path)
-            upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
-            file_service.upload_file(expanded_file_path, upload_file_name)
+        self._upload_download_helper(
+            is_upload=True, file_path=file_path, remote_file_name=remote_file_name
+        )
 
     def download(self, file_name: str, local_file_path: Optional[str] = None):
         """Downloads a file from the server.
@@ -306,12 +352,9 @@ class BaseSession:
         FileNotFoundError
             If the remote file does not exist.
         """
-        file_service = self._file_service()
-        if file_service:
-            if file_service.file_exist(file_name):
-                file_service.download_file(file_name, local_file_path)
-            else:
-                raise FileNotFoundError("Remote file does not exist.")
+        self._upload_download_helper(
+            is_upload=False, file_name=file_name, local_file_path=local_file_path
+        )
 
     def _wait_for_file(self, file_name: str):
         """Wait for file to get ready for upload or download.
@@ -326,13 +369,10 @@ class BaseSession:
             If a case file does not exist.
         """
         file_service = self._file_service()
-        start_time = time.time()
-        max_wait_time = 100
-        while (time.time() - start_time) < max_wait_time:
+        while not file_service.file_exist(os.path.basename(file_name)):
+            time.sleep(3)
             if file_service.file_exist(os.path.basename(file_name)):
                 break
-            max_wait_time -= 1
-            time.sleep(3)
         else:
             raise FileNotFoundError(f"{file_name} does not exist.")
 
