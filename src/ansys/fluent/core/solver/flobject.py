@@ -43,7 +43,7 @@ class _InlineConstants:
 
 
 # Type hints
-AttrType = str
+StringType = str
 RealType = NewType("real", Union[float, str])  # constant or expression
 RealListType = List[RealType]
 RealVectorType = Tuple[RealType, RealType, RealType]
@@ -160,7 +160,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: Optional[Union[AttrType, Tuple[AttrType]]] = None,
+        attr_type_or_types: Optional[Union[StringType, Tuple[StringType]]] = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
