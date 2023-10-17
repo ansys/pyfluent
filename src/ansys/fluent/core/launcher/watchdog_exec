@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Watchdog execution script, should not be manually executed or imported as a module.
+
 PyFluent will handle the Watchdog process, see ``launch_fluent`` documentation.
 """
 
