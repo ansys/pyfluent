@@ -228,3 +228,9 @@ class Solver(BaseSession):
             fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
         else:
             self.file.read(file_type="case", file_name=file_name)
+
+    def __call__(self):
+        return self._root.get_state()
+
+    def __getattr__(self, attr):
+        return getattr(self._root, attr)
