@@ -231,6 +231,3 @@ class Solver(BaseSession):
 
     def __call__(self):
         return self._root.get_state()
-
-    def __getattr__(self, attr):
-        return getattr(self._root, attr)
