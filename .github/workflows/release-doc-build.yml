@@ -90,6 +90,7 @@ jobs:
 
   doc-index-stable:
     name: "Deploy stable docs index"
+    if: false
     runs-on: ubuntu-latest
     needs: deploy_release_docs
     steps:
