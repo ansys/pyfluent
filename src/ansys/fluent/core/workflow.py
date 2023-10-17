@@ -366,6 +366,18 @@ class TaskContainer(PyCallableStateObject):
             )
         )
 
+    def get_state(self):
+        _state = self._task_container.get_state()
+        if "Workflow" in _state:
+            del _state["Workflow"]
+        returned_state = {}
+        for key, value in _state.items():
+            returned_state[str(key).replace("TaskObject:", "")] = value
+        return returned_state
+
+    def __call__(self):
+        return self.get_state()
+
 
 class ArgumentsWrapper(PyCallableStateObject):
     """Wrapper for a dictionary of task arguments."""

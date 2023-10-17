@@ -1002,6 +1002,9 @@ class PyNamedObjectContainer:
         """
         self._del_item(key)
 
+    def get_state(self):
+        return PyMenu(self.service, self.rules).get_state()
+
 
 class PyCommand:
     """Command class using the StateEngine-based DatamodelService as the backend. Use
