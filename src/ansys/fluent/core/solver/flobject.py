@@ -167,7 +167,7 @@ class Base:
         ----------
         attr : str
             attribute name
-        attr_type_or_types : str or list of str, optional
+        attr_type_or_types : type or tuple of type, optional
             attribute type, by default None
 
         Returns
