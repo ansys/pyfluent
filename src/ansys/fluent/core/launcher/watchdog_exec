@@ -99,17 +99,17 @@ if __name__ == "__main__":
         logger.debug(f"cortex_host: {cortex_host}")
 
         down = []
+
+        def check_pid_down(pid, name):
+            if not psutil.pid_exists(pid):
+                logger.debug(name + " down")
+                down.append(name)
+
         while True:
-            if not psutil.pid_exists(launcher_pid):
-                logger.debug("Python launcher down")
-                down.append("Python")
+            check_pid_down(launcher_pid, "Python launcher")
             if not fluent.connection_properties.inside_container:
-                if not psutil.pid_exists(cortex_pid):
-                    logger.debug("Cortex down")
-                    down.append("Cortex")
-                if not psutil.pid_exists(fluent_host_pid):
-                    logger.debug("Fluent down")
-                    down.append("Fluent")
+                check_pid_down(cortex_pid, "Cortex")
+                check_pid_down(fluent_host_pid, "Fluent")
             else:
                 if not get_container(cortex_host):
                     logger.debug("Fluent container down")

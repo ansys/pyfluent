@@ -1,3 +1,8 @@
+"""Module to launch the PyFluent Watchdog to monitor PyFluent and the Fluent server.
+Should not be used manually, PyFluent automatically manages it.
+See :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` `start_watchdog` argument for more details.
+"""
+
 import os
 from pathlib import Path
 import random
@@ -16,7 +21,27 @@ IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
-def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None):
+def launch(
+    main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None
+) -> None:
+    """Function to launch the Watchdog. Automatically used and managed by PyFluent.
+
+    Parameters
+    ----------
+    main_pid : int
+        Process ID of the Python interpreter used to launch PyFluent and the Watchdog.
+    sv_port : int
+        Fluent server port number.
+    sv_password : str
+        Fluent server password.
+    sv_ip : str, optional
+        Fluent server IP.
+
+    Raises
+    ------
+    RuntimeError
+        If Watchdog fails to launch.
+    """
     watchdog_id = "".join(
         random.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
@@ -142,3 +167,5 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] =
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
+        if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
+            raise RuntimeError("PyFluent Watchdog did not initialize correctly.")
