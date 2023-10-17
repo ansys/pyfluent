@@ -60,7 +60,7 @@ solver = pyfluent.launch_fluent(
 ###############################################################################
 # Read and Check the Mesh
 
-solver.read_case("cav.msh")
+solver.read_case(cav_file)
 
 solver.mesh.check()
 
