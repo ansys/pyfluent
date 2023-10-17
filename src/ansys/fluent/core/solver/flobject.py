@@ -24,18 +24,7 @@ import logging
 import pickle
 import string
 import sys
-from typing import (
-    Any,
-    Dict,
-    Generic,
-    List,
-    NewType,
-    Optional,
-    Tuple,
-    TypeAlias,
-    TypeVar,
-    Union,
-)
+from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
@@ -54,6 +43,7 @@ class _InlineConstants:
 
 
 # Type hints
+AttrType = str
 RealType = NewType("real", Union[float, str])  # constant or expression
 RealListType = List[RealType]
 RealVectorType = Tuple[RealType, RealType, RealType]
@@ -89,9 +79,6 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
-
-
-Attr_type: TypeAlias = str
 
 
 class Base:
@@ -173,7 +160,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: Optional[Union[Attr_type, Tuple[Attr_type]]] = None,
+        attr_type_or_types: Optional[Union[AttrType, Tuple[AttrType]]] = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
