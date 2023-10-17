@@ -24,7 +24,18 @@ import logging
 import pickle
 import string
 import sys
-from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    List,
+    NewType,
+    Optional,
+    Tuple,
+    TypeAlias,
+    TypeVar,
+    Union,
+)
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
@@ -78,6 +89,9 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+Attr_type: TypeAlias = str
 
 
 class Base:
@@ -157,7 +171,9 @@ class Base:
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
-        self, attr: str, attr_type_or_types: Optional[Union[str, List[str]]] = None
+        self,
+        attr: str,
+        attr_type_or_types: Optional[Union[Attr_type, Tuple[Attr_type]]] = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
