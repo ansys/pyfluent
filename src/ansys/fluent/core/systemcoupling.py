@@ -101,7 +101,7 @@ class SystemCoupling:
             if tensor_type_elem is not None:
                 return tensor_type_elem.text
 
-            if get_name(variable) in {"force", "lorentz-force"}:
+            if get_name(variable) in {"displacement", "force", "lorentz-force"}:
                 return "Vector"
             else:
                 return "Scalar"
