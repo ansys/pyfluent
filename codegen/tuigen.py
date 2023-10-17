@@ -34,7 +34,7 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -374,5 +374,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_filepath()
+    version = get_version_for_file_name()
     generate(version, None)

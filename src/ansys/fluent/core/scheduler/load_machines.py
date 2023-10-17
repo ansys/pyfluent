@@ -66,14 +66,14 @@ def load_machines(
     elif host_info:
         machine_list = _parse_host_info(host_info)
     elif "PE_HOSTFILE" in os.environ:
-        hostFileName = os.environ.get("PE_HOSTFILE")
-        machine_list = _construct_machine_list_uge(hostFileName)
+        hostfile_name = os.environ.get("PE_HOSTFILE")
+        machine_list = _construct_machine_list_uge(hostfile_name)
     elif "LSB_MCPU_HOSTS" in os.environ:
         hostList = os.environ.get("LSB_MCPU_HOSTS")
         machine_list = _construct_machine_list_lsf(hostList)
     elif "PBS_NODEFILE" in os.environ:
-        hostFileName = os.environ.get("PBS_NODEFILE")
-        machine_list = _construct_machine_list_pbs(hostFileName)
+        hostfile_name = os.environ.get("PBS_NODEFILE")
+        machine_list = _construct_machine_list_pbs(hostfile_name)
     elif "SLURM_JOB_NODELIST" in os.environ:
         hostList = os.environ.get("SLURM_JOB_NODELIST")
         machine_list = _construct_machine_list_slurm(hostList)
@@ -248,11 +248,11 @@ def _restrict_machines_to_core_count(old_machine_list, ncores):
     return newMachineList
 
 
-def _construct_machine_list_uge(host_filename):
+def _construct_machine_list_uge(host_file_name):
     """Provide private module function to parse the UGE host file."""
     csv.register_dialect("pemachines", delimiter=" ", skipinitialspace=True)
     machineList = MachineList()
-    with open(host_filename, "r") as peFile:
+    with open(host_file_name, "r") as peFile:
         peReader = csv.reader(peFile, dialect="pemachines")
         for row in peReader:
             if len(row) == 0:
@@ -276,13 +276,13 @@ def _construct_machine_list_lsf(host_list):
     return machineList
 
 
-def _construct_machine_list_pbs(host_filename):
+def _construct_machine_list_pbs(host_file_name):
     """Provide private module function to parse the PBS host file."""
     # PBS_NODE file has one machine name per line per core allocated on the machine.
     # It's identical to a Fluent host file format.  This code accumulates the total
     # core count on each machine.
     machineDict = {}
-    with open(host_filename, "r") as pbsFile:
+    with open(host_file_name, "r") as pbsFile:
         for hostname in pbsFile:
             hostname = hostname.rstrip("\r\n")
             if len(hostname) == 0:

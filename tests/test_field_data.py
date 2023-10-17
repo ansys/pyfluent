@@ -17,10 +17,10 @@ HOT_INLET_TEMPERATURE = 313.15
 @pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
     solver.tui.mesh.check()
 
     solver.setup.models.energy.enabled = True
@@ -118,7 +118,7 @@ def test_field_data(new_solver_session) -> None:
 
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -129,7 +129,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -174,7 +174,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -182,7 +182,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -302,7 +302,7 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
 def test_field_data_errors(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -318,7 +318,7 @@ def test_field_data_errors(new_solver_session) -> None:
         )
     assert fne.value.field_name == "partition-neighbors"
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     with pytest.raises(ScalarFieldUnavailable) as fnu:
         solver.field_data.get_scalar_field_data(field_name="density", surface_ids=[0])
@@ -354,10 +354,10 @@ def test_field_data_errors(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=23.2")
 def test_field_info_validators(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
     solver.solution.initialization.hybrid_initialize()
 
     vector_field_1 = solver.field_info.validate_vector_fields("velocity")

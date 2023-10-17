@@ -57,7 +57,7 @@ equivalent PyFluent script.
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": import_filename,
+        "FileName": import_file_name,
         "LengthUnit": "in",
     }
     meshing.workflow.TaskObject["Import Geometry"].Execute()
