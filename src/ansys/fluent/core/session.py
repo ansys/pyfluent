@@ -376,7 +376,6 @@ class BaseSession:
 
     def _pypim_upload_download_helper(
         self,
-        is_pypim: bool,
         is_upload: bool,
         file_name: str,
         is_meshing: Optional[bool] = None,
@@ -399,28 +398,39 @@ class BaseSession:
         FileNotFoundError
             If a case file does not exist.
         """
-        if is_pypim:
-            if is_upload:
-                if os.path.isfile(file_name):
-                    if not self.file_service.file_exist(os.path.basename(file_name)):
-                        self.upload(file_name)
-                        self._wait_for_file(file_name)
-                elif self.file_service.file_exist(os.path.basename(file_name)):
-                    pass
-                else:
-                    raise FileNotFoundError(f"{file_name} does not exist.")
-                if is_meshing:
-                    api(os.path.basename(file_name))
-                else:
-                    api(file_name=os.path.basename(file_name))
+        if is_upload:
+            if os.path.isfile(file_name):
+                if not self.file_service.file_exist(os.path.basename(file_name)):
+                    self.upload(file_name)
+                    self._wait_for_file(file_name)
+            elif self.file_service.file_exist(os.path.basename(file_name)):
+                pass
             else:
-                self._wait_for_file(file_name)
-                if os.path.isfile(file_name):
-                    print(f"\nFile already exists. File path:\n{file_name}\n")
-                else:
-                    self.download(os.path.basename(file_name), ".")
-        else:
+                raise FileNotFoundError(f"{file_name} does not exist.")
             if is_meshing:
-                api(file_name)
+                api(os.path.basename(file_name))
             else:
-                api(file_name=file_name)
+                api(file_name=os.path.basename(file_name))
+        else:
+            self._wait_for_file(file_name)
+            if os.path.isfile(file_name):
+                print(f"\nFile already exists. File path:\n{file_name}\n")
+            else:
+                self.download(os.path.basename(file_name), ".")
+
+    def _no_pypim_helper(self, file_name: str, is_meshing: bool, api):
+        """Used if pypim is not configured.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        is_meshing: bool
+            True if mode is meshing, otherwise False
+        api: Session object property
+            either session.tui or session.file
+        """
+        if is_meshing:
+            api(file_name)
+        else:
+            api(file_name=file_name)
