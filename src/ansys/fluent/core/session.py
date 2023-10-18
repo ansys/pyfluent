@@ -355,6 +355,7 @@ class BaseSession:
 
     def _wait_for_file(self, file_name: str):
         """Wait for file to get ready for upload or download.
+
         Parameters
         ----------
         file_name : str
