@@ -27,13 +27,12 @@ def convert_value_to_gvalue(val: Any, gval: Variant):
     elif isinstance(val, str):
         gval.string_value = val
     elif isinstance(val, list) or isinstance(val, tuple):
-        # set the one_of to list_value
-        gval.list_value.values.add()
-        gval.list_value.values.pop()
+        gval.list_value.SetInParent()
         for item in val:
             item_gval = gval.list_value.values.add()
             convert_value_to_gvalue(item, item_gval)
     elif isinstance(val, dict):
+        gval.struct_value.SetInParent()
         for k, v in val.items():
             convert_value_to_gvalue(v, gval.struct_value.fields[k])
 
