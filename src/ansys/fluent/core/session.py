@@ -400,10 +400,10 @@ class BaseSession:
         """
         if is_upload:
             if os.path.isfile(file_name):
-                if not self._file_service.file_exist(os.path.basename(file_name)):
+                if not self.file_service.file_exist(os.path.basename(file_name)):
                     self.upload(file_name)
                     self._wait_for_file(file_name)
-            elif self._file_service.file_exist(os.path.basename(file_name)):
+            elif self.file_service.file_exist(os.path.basename(file_name)):
                 pass
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
@@ -417,36 +417,6 @@ class BaseSession:
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
                 self.download(os.path.basename(file_name), ".")
-
-    def _pypim_upload_helper(self, file_name, is_meshing, api):
-        """Uploads a case file if not available on the server.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        is_meshing: bool
-            True if mode is meshing, otherwise False
-        api: Session object property
-            either session.tui or session.file
-        Raises
-        ------
-        FileNotFoundError
-            If a case file does not exist.
-        """
-        self._pypim_upload_download_helper(
-            is_upload=True, file_name=file_name, is_meshing=is_meshing, api=api
-        )
-
-    def _pypim_download_helper(self, file_name):
-        """Downloads a case file if pypim is configured.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._pypim_upload_download_helper(is_upload=False, file_name=file_name)
 
     def _no_pypim_helper(self, file_name: str, is_meshing: bool, api):
         """Used if pypim is not configured.
