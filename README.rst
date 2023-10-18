@@ -41,16 +41,28 @@ ability to:
 
 Documentation and issues
 ------------------------
-For comprehensive information on PyFluent, see the latest release
-`documentation <https://fluent.docs.pyansys.com>`_.
+Documentation for the latest stable release of PyFluent is hosted at
+`PyFluent documentation <https://fluent.docs.pyansys.com/version/stable/>`_.
+
+In the upper right corner of the documentation's title bar, there is an option for switching from
+viewing the documentation for the latest stable release to viewing the documentation for the
+development version or previously released versions.
+
+You can also `view <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.png>`_ or
+`download <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.pdf>`_ the
+PyFluent cheat sheet. This one-page reference provides syntax rules and commands
+for using PyFluent. 
 
 On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
-issues to submit questions, report bugs, and request new features. To reach
-the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
+issues to report bugs and request new features. On the `PyFluent Discussions
+<https://github.com/ansys/pyfluent/discussions>`_ page or the `Discussions <https://discuss.ansys.com/>`_
+page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback. 
+
+To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
 Installation
 ------------
-The ``ansys-fluent-core`` package supports Python 3.8 through Python
+The ``ansys-fluent-core`` package supports Python 3.9 through Python
 3.11 on Windows and Linux.
 
 Install the latest release from `PyPI
@@ -60,6 +72,8 @@ Install the latest release from `PyPI
 
    pip install ansys-fluent-core
 
+For developers
+--------------
 If you plan on doing local *development* of PyFluent with Git, install
 the latest release with:
 
@@ -76,9 +90,9 @@ Dependencies
 You must have a licensed copy of Ansys Fluent installed locally. PyFluent
 supports Fluent 2022 R2 and later. The Windows installation of Ansys Fluent automatically
 sets the required environment variables so that PyFluent can find the Ansys Fluent
-installation. Using Fluent 2023 R1 (or 23.1) installed in the default directory as an
-example, the installer automatically sets the ``AWP_ROOT231`` environment variable to point
-to ``C:\Program Files\ANSYS Inc\v231``.
+installation. Using Fluent 2023 R2 (or 23.2) installed in the default directory as an
+example, the installer automatically sets the ``AWP_ROOT232`` environment variable to point
+to ``C:\Program Files\ANSYS Inc\v232``.
 
 On Linux, the required environment variable is not set automatically, and can be set for the
 current user in the current shell session, using Fluent 2023 R1 in the default installation
@@ -86,7 +100,7 @@ directory as an example, before running PyFluent, with:
 
 .. code:: console
 
-    export AWP_ROOT231=/usr/ansys_inc/v231
+    export AWP_ROOT232=/usr/ansys_inc/v232
 
 For this setting to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.

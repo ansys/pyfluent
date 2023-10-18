@@ -1,6 +1,7 @@
 """Interceptor classes to use with gRPC services."""
 
 import logging
+import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
@@ -9,6 +10,21 @@ import grpc
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger = logging.getLogger("pyfluent.networking")
+log_bytes_limit = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
+truncate_len = log_bytes_limit // 5
+
+
+def _truncate_grpc_str(message):
+    message_bytes = message.ByteSize()
+    message_str = str(MessageToDict(message))
+    if not log_bytes_limit or message_bytes < log_bytes_limit:
+        return message_str
+    else:
+        network_logger.debug(
+            f"GRPC_TRACE: message partially hidden, {message_bytes} bytes > "
+            f"{log_bytes_limit} bytes limit. To see the full message, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
+        )
+        return f"{message_str[:truncate_len]} < ... > {message_str[-truncate_len:]}"
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
@@ -25,16 +41,14 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ):
         network_logger.debug(
-            "GRPC_TRACE: rpc = %s, request = %s",
-            client_call_details.method,
-            MessageToDict(request),
+            f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():
-            network_logger.debug(
-                "GRPC_TRACE: response = %s",
-                MessageToDict(response.result()),
-            )
+            # call _truncate_grpc_str early to get the size warning even when hiding secrets
+            response_str = _truncate_grpc_str(response.result())
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                network_logger.debug(f"GRPC_TRACE: response = {response_str}")
         return response
 
     def intercept_unary_unary(
@@ -47,11 +61,43 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         return self._intercept_call(continuation, client_call_details, request)
 
 
+class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
+    """Interceptor class to check Fluent server error state before gRPC calls are
+    made."""
+
+    def __init__(self, fluent_error_state):
+        """__init__ method of ErrorStateInterceptor class."""
+        super().__init__()
+        self._fluent_error_state = fluent_error_state
+
+    def _intercept_call(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ):
+        if self._fluent_error_state.name == "fatal":
+            details = self._fluent_error_state.details
+            raise RuntimeError(
+                f"Fatal error identified on the Fluent server: {details}."
+            )
+        return continuation(client_call_details, request)
+
+    def intercept_unary_unary(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ) -> Any:
+        """Intercept unary-unary call for error state checking."""
+        return self._intercept_call(continuation, client_call_details, request)
+
+
 class BatchedFuture(grpc.Future):
     """Class implementing gRPC.Future interface.
 
-    An instance of BatchedFuture is returned if the gRPC method is
-    queued to be executed in batch later.
+    An instance of BatchedFuture is returned if the gRPC method is queued to be executed
+    in batch later.
     """
 
     def __init__(self, result_cls):

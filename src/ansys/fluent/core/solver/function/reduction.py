@@ -1,5 +1,5 @@
-"""Module providing reductions functions that can be applied to Fluent data
-from one or across multiple remote Fluent sessions.
+"""Module providing reductions functions that can be applied to Fluent data from one or
+across multiple remote Fluent sessions.
 
 The following parameters are relevant for the reduction functions. The
 expr parameter is not relevant to all reductions functions.
@@ -17,15 +17,16 @@ expr : Any
 locations : Any
     A list of location strings, or an API object that can be
     resolved to a list of location strings
-    (e.g., setup.boundary_conditions,
+    (for example, setup.boundary_conditions,
     or results.surfaces.plane_surface),
     or a list of such objects. If location strings are
     included in the list, then only string must be included
 ctxt : Any, optional
-    An optional API object (e.g., the root solver session
+    An optional API object (for example, the root solver session
     object but any solver API object will suffice) to set
     the context of the call's execution. If the location
     objects are strings, then such a context is required
+
 Returns
 -------
 float or List[float]
@@ -57,12 +58,13 @@ Examples
 ...     ])
 19.28151
 """
-
+import numpy as np
 from numpy import array
 
 
 class BadReductionRequest(Exception):
     def __init__(self, err):
+        """__init__ method of BadReductionRequest class."""
         super().__init__(f"Could not complete reduction function request: {err}")
 
 
@@ -152,8 +154,16 @@ def _expr_to_expr_str(expr):
     return getattr(expr, "definition", expr) if expr is not None else expr
 
 
-def _eval_reduction(solver, reduction, locations, expr=None):
+def _eval_reduction(
+    solver, reduction, locations, expr=None, weight=None, condition=None
+):
+    if weight:
+        weight = "Weight=" + str(weight)
+        locations = str(locations) + ", " + weight
+
     expr_str = _expr_to_expr_str(expr)
+    if condition:
+        expr_str = expr_str + ", " + condition
     return _eval_expr(
         solver,
         (
@@ -164,19 +174,33 @@ def _eval_reduction(solver, reduction, locations, expr=None):
     )
 
 
-def _extent_expression(f_string, extent_name, expr, locations, ctxt):
+def _extent_expression(
+    f_string, extent_name, expr, locations, ctxt, weight=None, condition=None
+):
     locns = _locns(locations, ctxt)
     numerator = 0.0
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        val = _eval_reduction(solver, f_string, names, expr)
-        extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
+        val = _eval_reduction(
+            solver, f_string, names, expr, weight=weight, condition=condition
+        )
+        extent = (
+            _eval_reduction(
+                solver, extent_name, names, weight=weight, condition=condition
+            )
+            if len(locns) > 1
+            else 1
+        )
         try:
             numerator += val * extent
             denominator += extent
         except TypeError:
-            raise RuntimeError(val)
+            if type(val) == list:
+                numerator += np.multiply(val, extent)
+                denominator += extent
+            else:
+                raise RuntimeError(val)
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
@@ -192,7 +216,7 @@ def _extent_moment_vector(f_string, expr, locations, ctxt):
             total += array(extent)
         except TypeError:
             raise RuntimeError(extent)
-    return total
+    return _Vector(total)
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
@@ -226,7 +250,24 @@ def _extent_vectors(extent_name, locations, ctxt):
             total += array(extent)
         except TypeError:
             raise RuntimeError(extent)
-    return total
+    return _Vector(total)
+
+
+class _Vector:
+    def __init__(self, np_arr):
+        self.array = np_arr
+
+    @property
+    def x(self):
+        return self.array[0]
+
+    @property
+    def y(self):
+        return self.array[1]
+
+    @property
+    def z(self):
+        return self.array[2]
 
 
 def _limit(limit, expr, locations, ctxt):
@@ -241,68 +282,68 @@ def _limit(limit, expr, locations, ctxt):
     return limit_val
 
 
-def area_average(expr, locations, ctxt=None):
-    """Compute the area averaged value of the specified expression over the
+def area_average(expression, locations, ctxt=None):
+    """Compute the area averaged value of the specified expression over the specified
+    locations.
+
+    Parameters
+    ----------
+    expression : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_average("Area", expression, locations, ctxt)
+
+
+def area_integral(expression, locations, ctxt=None):
+    """Compute the area integrated averaged of the specified expression over the
     specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_average("Area", expr, locations, ctxt)
+    return _extent_integrated_average("Area", expression, locations, ctxt)
 
 
-def area_integrated_average(expr, locations, ctxt=None):
-    """Compute the area integrated averaged of the specified expression over
-    the specified locations.
-
-    Parameters
-    ----------
-    expr : Any
-    locations : Any
-    ctxt : Any, optional
-    Returns
-    -------
-    float
-    """
-    return _extent_integrated_average("Area", expr, locations, ctxt)
-
-
-def volume_average(expr, locations, ctxt=None):
-    """Compute the volume-weighted average value of the specified expression
-    over the specified locations.
-
-    Parameters
-    ----------
-    expr : Any
-    locations : Any
-    ctxt : Any, optional
-    Returns
-    -------
-    float
-    """
-    return _extent_average("Volume", expr, locations, ctxt)
-
-
-def volume_integrated_average(expr, locations, ctxt=None):
-    """Compute the volume-weighted total of the specified expression over the
+def volume_average(expression, locations, ctxt=None):
+    """Compute the volume-weighted average value of the specified expression over the
     specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_integrated_average("Volume", expr, locations, ctxt)
+    return _extent_average("Volume", expression, locations, ctxt)
+
+
+def volume_integral(expression, locations, ctxt=None):
+    """Compute the volume-weighted total of the specified expression over the specified
+    locations.
+
+    Parameters
+    ----------
+    expression : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Volume", expression, locations, ctxt)
 
 
 def area(locations, ctxt=None):
@@ -362,8 +403,8 @@ def centroid(locations, ctxt=None):
 
 
 def force(locations, ctxt=None):
-    """Compute the force acting on the location(s) specified (should be walls)
-    as a vector.
+    """Compute the force acting on the location(s) specified (should be walls) as a
+    vector.
 
     Parameters
     ----------
@@ -377,8 +418,8 @@ def force(locations, ctxt=None):
 
 
 def pressure_force(locations, ctxt=None):
-    """Compute the pressure force acting on the location(s) specified (should
-    be walls) as a vector.
+    """Compute the pressure force acting on the location(s) specified (should be walls)
+    as a vector.
 
     Parameters
     ----------
@@ -392,8 +433,8 @@ def pressure_force(locations, ctxt=None):
 
 
 def viscous_force(locations, ctxt=None):
-    """Compute the viscous force acting on the location(s) specified (should be
-    walls) as a vector.
+    """Compute the viscous force acting on the location(s) specified (should be walls)
+    as a vector.
 
     Parameters
     ----------
@@ -406,115 +447,113 @@ def viscous_force(locations, ctxt=None):
     return _extent_vectors("ViscousForce", locations, ctxt)
 
 
-def moment(expr, locations, ctxt=None):
-    """Compute  the moment vector about the specified point (which can be
-    single-valued expression) for the specified location(s).
+def moment(expression, locations, ctxt=None):
+    """Compute  the moment vector about the specified point (which can be single-valued
+    expression) for the specified location(s).
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_moment_vector("Moment", expr, locations, ctxt)
+    return _extent_moment_vector("Moment", expression, locations, ctxt)
 
 
-def minimum(expr, locations, ctxt=None):
-    """Compute the minimum of the specified expression over the specified
-    locations.
+def minimum(expression, locations, ctxt=None):
+    """Compute the minimum of the specified expression over the specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _limit(min, expr, locations, ctxt)
+    return _limit(min, expression, locations, ctxt)
 
 
-def maximum(expr, locations, ctxt=None):
-    """Compute the maximum of the specified expression over the specified
-    locations.
+def maximum(expression, locations, ctxt=None):
+    """Compute the maximum of the specified expression over the specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _limit(max, expr, locations, ctxt)
+    return _limit(max, expression, locations, ctxt)
 
 
-def mass_average(expr, locations, ctxt=None):
-    """Compute the mass-weighted average value of the specified expression over
-    the specified locations.
+def mass_average(expression, locations, ctxt=None):
+    """Compute the mass-weighted average value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_average("Mass", expr, locations, ctxt)
+    return _extent_average("Mass", expression, locations, ctxt)
 
 
-def mass_integrated_average(expr, locations, ctxt=None):
-    """Compute the total mass-weighted value of the specified expression over
-    the specified locations.
+def mass_integral(expression, locations, ctxt=None):
+    """Compute the total mass-weighted value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_integrated_average("Mass", expr, locations, ctxt)
+    return _extent_integrated_average("Mass", expression, locations, ctxt)
 
 
-def mass_flow_average(expr, locations, ctxt=None):
-    """Compute the mass-flow-weighted average value of the specified expression
-    over the specified locations.
+def mass_flow_average(expression, locations, ctxt=None):
+    """Compute the mass-flow-weighted average value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_average("MassFlow", expr, locations, ctxt)
+    return _extent_average("MassFlow", expression, locations, ctxt)
 
 
-def mass_flow_integrated_average(expr, locations, ctxt=None):
+def mass_flow_integral(expression, locations, ctxt=None):
     """Compute the total mass flow over the specified locations.
 
     Parameters
     ----------
-    expr : Any
+    expression : Any
     locations : Any
     ctxt : Any, optional
     Returns
     -------
     float
     """
-    return _extent_integrated_average("MassFlow", expr, locations, ctxt)
+    return _extent_integrated_average("MassFlow", expression, locations, ctxt)
 
 
 def mass_flow(locations, ctxt=None):
@@ -529,3 +568,45 @@ def mass_flow(locations, ctxt=None):
     float
     """
     return _extent("MassFlow", locations, ctxt)
+
+
+def sum(expression, locations, weight, ctxt=None):
+    """Compute the sum of the specified expression over the specified locations.
+
+    Parameters
+    ----------
+    expression : Any
+    locations : Any
+    weight: str
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_expression("Sum", "Sum", expression, locations, ctxt, weight=weight)
+
+
+def sum_if(expression, condition, locations, weight, ctxt=None):
+    """Compute the sum of the specified expression over the specified locations if a
+    condition is satisfied.
+
+    Parameters
+    ----------
+    expression : Any
+    condition: str
+    locations : Any
+    weight: str
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_expression(
+        "SumIf",
+        "SumIf",
+        expression,
+        locations,
+        ctxt,
+        weight=weight,
+        condition=condition,
+    )

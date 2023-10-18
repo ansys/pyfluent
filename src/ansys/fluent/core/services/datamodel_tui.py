@@ -11,8 +11,13 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 Path = List[str]
 
@@ -25,58 +30,64 @@ class DatamodelService:
     Using the methods from PyMenu class is recommended.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of DatamodelService class."""
+        self._channel = channel
+        self._fluent_error_state = fluent_error_state
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            self._channel,
+            ErrorStateInterceptor(self._fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
-        self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
-        self.__metadata = metadata
+        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
+        self._metadata = metadata
 
     @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """GetAttributeValue rpc of DataModel service."""
-        return self.__stub.GetAttributeValue(request, metadata=self.__metadata)
+        """GetAttributeValue RPC of DataModel service."""
+        return self._stub.GetAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """GetState rpc of DataModel service."""
-        return self.__stub.GetState(request, metadata=self.__metadata)
+        """GetState RPC of DataModel service."""
+        return self._stub.GetState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """SetState rpc of DataModel service."""
-        return self.__stub.SetState(request, metadata=self.__metadata)
+        """SetState RPC of DataModel service."""
+        return self._stub.SetState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """ExecuteCommand rpc of DataModel service."""
-        return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
+        """ExecuteCommand RPC of DataModel service."""
+        return self._stub.ExecuteCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """ExecuteQuery rpc of DataModel service."""
-        return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
+        """ExecuteQuery RPC of DataModel service."""
+        return self._stub.ExecuteQuery(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(self, request):
-        """GetStaticInfo rpc of DataModel service."""
-        return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
+        """GetStaticInfo RPC of DataModel service."""
+        return self._stub.GetStaticInfo(request, metadata=self._metadata)
 
 
 def _convert_value_to_gvalue(val: Any, gval: Variant):
-    """Convert Python datatype to Value type of
-    google/protobuf/struct.proto."""
+    """Convert Python datatype to Value type of google/protobuf/struct.proto."""
     if isinstance(val, bool):
         gval.bool_value = val
     elif isinstance(val, int) or isinstance(val, float):
@@ -96,8 +107,7 @@ def _convert_value_to_gvalue(val: Any, gval: Variant):
 
 
 def _convert_gvalue_to_value(gval: Variant):
-    """Convert Value type of google/protobuf/struct.proto to Python
-    datatype."""
+    """Convert Value type of google/protobuf/struct.proto to Python datatype."""
     if gval.HasField("bool_value"):
         return gval.bool_value
     elif gval.HasField("number_value"):
@@ -117,8 +127,8 @@ def _convert_gvalue_to_value(gval: Variant):
 
 
 class PyMenu:
-    """Pythonic wrapper of TUI-based DatamodelService class. Use this class
-    instead of directly calling the DatamodelService's method.
+    """Pythonic wrapper of TUI-based DatamodelService class. Use this class instead of
+    directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -131,9 +141,13 @@ class PyMenu:
         Get docstring for a menu.
     """
 
-    def __init__(self, service: DatamodelService, path: Union[Path, str]):
+    def __init__(
+        self, service: DatamodelService, version, mode, path: Union[Path, str]
+    ):
         """__init__ method of PyMenu class."""
         self._service = service
+        self._version = version
+        self._mode = mode
         self._path = path if isinstance(path, str) else convert_path_to_grpc_path(path)
 
     def get_child_names(self, include_unavailable: bool = False) -> List[str]:
@@ -160,8 +174,15 @@ class PyMenu:
     def _execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> Any:
-        ret = self._service.execute_command(request)
-        return _convert_gvalue_to_value(ret.result)
+        with ApiUpgradeAdvisor(
+            self._service._channel,
+            self._service._metadata,
+            self._service._fluent_error_state,
+            self._version,
+            self._mode,
+        ):
+            ret = self._service.execute_command(request)
+            return _convert_gvalue_to_value(ret.result)
 
     def _execute_query(
         self, request: DataModelProtoModule.ExecuteCommandRequest
@@ -170,8 +191,7 @@ class PyMenu:
         return _convert_gvalue_to_value(ret.result)
 
     def execute(self, *args, **kwargs) -> Any:
-        """Execute a command or query at a path with positional or keyword
-        arguments.
+        """Execute a command or query at a path with positional or keyword arguments.
 
         Parameters
         ----------
@@ -192,7 +212,8 @@ class PyMenu:
         if self._path.startswith("/query/"):
             return self._execute_query(request)
         else:
-            logger.debug(f"TUI Command: {request}")
+            request_str = " ".join(str(request).split())
+            logger.debug(f"TUI Command: {request_str}")
             return self._execute_command(request)
 
     def get_doc_string(self, include_unavailable: bool = False) -> str:
@@ -243,6 +264,8 @@ def _get_static_info_at_level(menu: PyMenu) -> Dict[str, Any]:
             if child_name:
                 child_menu = PyMenu(
                     menu._service,
+                    menu._version,
+                    menu._mode,
                     menu._path + ("" if menu._path.endswith("/") else "/") + child_name,
                 )
                 child_info = _get_static_info_at_level(child_menu)
@@ -258,15 +281,19 @@ def _get_static_info_at_level(menu: PyMenu) -> Dict[str, Any]:
 class TUIMenu:
     """Base class for the generated menu classes."""
 
-    def __init__(self, path, service):
+    def __init__(self, service, version, mode, path):
         """__init__ method of TUIMenu class."""
-        self.path = path
-        self.service = service
+        self._service = service
+        self._version = version
+        self._mode = mode
+        self._path = path
 
     def __dir__(self) -> Iterable[str]:
         return [
             convert_tui_menu_to_func_name(x)
-            for x in PyMenu(self.service, self.path).get_child_names()
+            for x in PyMenu(
+                self._service, self._version, self._mode, self._path
+            ).get_child_names()
         ]
 
     def __getattribute__(self, name):
@@ -274,45 +301,33 @@ class TUIMenu:
             attr = super().__getattribute__(name)
             if type(attr) == types.MethodType:
                 # some runtime submenus are generated as methods during codegen
-                path = self.path + [name]
-                if PyMenu(self.service, path).get_child_names():
-                    return TUIMenu(path, self.service)
+                path = self._path + [name]
+                if PyMenu(
+                    self._service, self._version, self._mode, path
+                ).get_child_names():
+                    return TUIMenu(self._service, self._version, self._mode, path)
             return attr
         except AttributeError as ex:
             if name in dir(self):
                 # for runtime submenus and commands which are not available during codegen
-                path = self.path + [name]
-                if PyMenu(self.service, path).get_child_names():
-                    return TUIMenu(path, self.service)
+                path = self._path + [name]
+                if PyMenu(
+                    self._service, self._version, self._mode, path
+                ).get_child_names():
+                    return TUIMenu(self._service, self._version, self._mode, path)
                 else:
-                    return TUICommand(path, self.service)
+                    return TUICommand(self._service, self._version, self._mode, path)
             else:
                 raise ex
 
 
 class TUICommand(TUIMenu):
-    """Generic command class for when the explicit menu classes aren't
-    available."""
+    """Generic command class for when the explicit menu classes aren't available."""
 
     def __call__(self, *args, **kwargs):
-        return PyMenu(self.service, self.path).execute(*args, **kwargs)
-
-
-def convert_func_name_to_tui_menu(func_name: str) -> str:
-    """Convert a Python function name to a TUI menu string.
-
-    Parameters
-    ----------
-    func_name : str
-       Name of the Python function.
-
-    Returns
-    -------
-    str
-    """
-    if func_name.endswith("_") and keyword.iskeyword(func_name[:-1]):
-        return func_name[:-1]
-    return func_name
+        return PyMenu(self._service, self._version, self._mode, self._path).execute(
+            *args, **kwargs
+        )
 
 
 def convert_tui_menu_to_func_name(menu: str) -> str:
@@ -336,8 +351,8 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
 
 
 def convert_path_to_grpc_path(path: Path) -> str:
-    """Convert a path structure to a string that can be passed to the data
-    model gRPC service.
+    """Convert a path structure to a string that can be passed to the data model gRPC
+    service.
 
     Parameters
     ----------
@@ -349,4 +364,4 @@ def convert_path_to_grpc_path(path: Path) -> str:
     str
         gRPC path.
     """
-    return "/" + "/".join(convert_func_name_to_tui_menu(x) for x in path)
+    return "/" + "/".join(x for x in path)

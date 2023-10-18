@@ -100,12 +100,13 @@ def test_data_model_cache():
 def test_update_cache_display_names_as_keys(
     initial_cache, rules, state, deleted_paths, final_cache
 ):
-    DataModelCache.rules_str_to_cache.clear()
-    DataModelCache.rules_str_to_cache.update(initial_cache)
+    cache_rules = DataModelCache.rules_str_to_cache
+    cache_rules.clear()
+    cache_rules.update(initial_cache)
     var = Variant()
     _convert_value_to_variant(state, var)
     DataModelCache.update_cache(rules, var, deleted_paths)
-    assert DataModelCache.rules_str_to_cache == final_cache
+    assert cache_rules == final_cache
 
 
 @pytest.mark.parametrize(
@@ -190,33 +191,21 @@ def test_update_cache_internal_names_as_keys(
     initial_cache, rules, state, deleted_paths, final_cache
 ):
     DataModelCache.set_config("r1", "internal_names_as_keys", True)
-    DataModelCache.rules_str_to_cache.clear()
-    DataModelCache.rules_str_to_cache.update(initial_cache)
+    cache_rules = DataModelCache.rules_str_to_cache
+    cache_rules.clear()
+    cache_rules.update(initial_cache)
     var = Variant()
     _convert_value_to_variant(state, var)
     DataModelCache.update_cache(rules, var, deleted_paths)
-    assert DataModelCache.rules_str_to_cache == final_cache
+    assert cache_rules == final_cache
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_get_cached_values_in_command_arguments(new_mesh_session):
     new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName="Bob"
-    )
-    new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=None
-    )
-    assert (
-        "FileName"
-        in new_mesh_session.workflow.TaskObject["Import Geometry"].CommandArguments()
-    )
-    assert (
-        new_mesh_session.workflow.TaskObject["Import Geometry"].CommandArguments()[
-            "FileName"
-        ]
-        is None
-    )
+    geo_import = new_mesh_session.workflow.TaskObject["Import Geometry"]
+    geo_import.Arguments = dict(FileName="Bob")
+    geo_import.Arguments = dict(FileName=None)
+    assert "FileName" in geo_import.CommandArguments()
+    assert geo_import.CommandArguments()["FileName"] is None

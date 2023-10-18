@@ -34,26 +34,22 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 logger = logging.getLogger("pyfluent.tui")
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 
 
-def _get_tui_filepath(mode: str, version: str):
-    return os.path.normpath(
-        os.path.join(
-            _THIS_DIRNAME,
-            "..",
-            "src",
-            "ansys",
-            "fluent",
-            "core",
-            mode,
-            f"tui_{version}.py",
-        )
-    )
+def _get_tui_filepath(mode: str, version: str, pyfluent_path: str):
+    return (
+        (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIRNAME) / ".." / "src"))
+        / "ansys"
+        / "fluent"
+        / "core"
+        / mode
+        / f"tui_{version}.py"
+    ).resolve()
 
 
 _INDENT_STEP = 4
@@ -81,7 +77,7 @@ _XML_HELPSTRINGS = {}
 
 def _copy_tui_help_xml_file(version: str):
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
+        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
         image_name = f"ghcr.io/ansys/pyfluent:{image_tag}"
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
@@ -170,10 +166,10 @@ class _TUIMenu:
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str):
+    def __init__(self, mode: str, version: str, pyfluent_path: str):
         self._mode = mode
         self._version = version
-        self._tui_file = _get_tui_filepath(mode, version)
+        self._tui_file = _get_tui_filepath(mode, version, pyfluent_path)
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
@@ -182,7 +178,7 @@ class TUIGenerator:
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         self.session = pyfluent.launch_fluent(mode=mode)
-        self._service = self.session.fluent_connection.datamodel_service_tui
+        self._service = self.session.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
@@ -204,6 +200,7 @@ class TUIGenerator:
         self.__writer.write(" " * _INDENT_STEP * indent + code)
 
     def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int = 0):
+        api_tree = {}
         self._write_code_to_tui_file("\n")
         self._write_code_to_tui_file(f"class {menu.name}(TUIMenu):\n", indent)
         indent += 1
@@ -214,18 +211,24 @@ class TUIGenerator:
             if line:
                 self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
-        self._write_code_to_tui_file("def __init__(self, path, service):\n", indent)
+        self._write_code_to_tui_file(
+            "def __init__(self, service, version, mode, path):\n", indent
+        )
         indent += 1
-        self._write_code_to_tui_file("self.path = path\n", indent)
-        self._write_code_to_tui_file("self.service = service\n", indent)
+        self._write_code_to_tui_file("self._service = service\n", indent)
+        self._write_code_to_tui_file("self._version = version\n", indent)
+        self._write_code_to_tui_file("self._mode = mode\n", indent)
+        self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
             if not v.is_command:
                 self._write_code_to_tui_file(
                     f"self.{k} = self.__class__.{k}"
-                    f'(path + ["{v.tui_name}"], service)\n',
+                    f'(service, version, mode, path + ["{v.tui_name}"])\n',
                     indent,
                 )
-        self._write_code_to_tui_file("super().__init__(path, service)\n", indent)
+        self._write_code_to_tui_file(
+            "super().__init__(service, version, mode, path)\n", indent
+        )
         indent -= 1
 
         command_names = [v.name for _, v in menu.children.items() if v.is_command]
@@ -243,17 +246,23 @@ class TUIGenerator:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
-                    f"return PyMenu(self.service, "
+                    f"return PyMenu(self._service, self._version, self._mode, "
                     f'"{menu.get_command_path(command)}").execute('
                     f"*args, **kwargs)\n",
                     indent,
                 )
                 indent -= 1
-        for _, v in menu.children.items():
-            if not v.is_command:
-                self._write_menu_to_tui_file(v, indent)
+        for k, v in menu.children.items():
+            if v.is_command:
+                api_tree[k] = "Command"
+                pass
+            else:
+                api_tree[k] = self._write_menu_to_tui_file(v, indent)
+        return api_tree
 
-    def _write_doc_for_menu(self, menu, doc_dir: Path, heading, class_name) -> None:
+    def _write_doc_for_menu(
+        self, menu, doc_dir: Path, heading, class_name, noindex=True
+    ) -> None:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
         with open(index_file, "w", encoding="utf8") as f:
@@ -276,6 +285,8 @@ class TUIGenerator:
             ]
 
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
+            if noindex:
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
@@ -298,6 +309,7 @@ class TUIGenerator:
                         )
 
     def generate(self) -> None:
+        api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             if self._version == "222":
@@ -311,7 +323,9 @@ class TUIGenerator:
                 ) as f:
                     self._main_menu = pickle.load(f)
             else:
-                info = PyMenu(self._service, self._main_menu.path).get_static_info()
+                info = PyMenu(
+                    self._service, self._version, self._mode, self._main_menu.path
+                ).get_static_info()
                 self._populate_menu(self._main_menu, info)
             self.session.exit()
             self._write_code_to_tui_file(
@@ -327,30 +341,38 @@ class TUIGenerator:
                 "import PyMenu, TUIMenu\n\n\n"
             )
             self._main_menu.name = "main_menu"
-            self._write_menu_to_tui_file(self._main_menu)
+            api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
             self._write_doc_for_menu(
                 self._main_menu,
                 Path(self._tui_doc_dir),
                 self._tui_heading,
                 self._main_menu.name,
+                False,
             )
+        return api_tree
 
 
-def generate():
-    # pyfluent.set_log_level("WARNING")
-    version = get_version_for_filepath()
+def generate(version, pyfluent_path):
+    api_tree = {}
     if version > "222":
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    TUIGenerator("meshing", version).generate()
-    TUIGenerator("solver", version).generate()
-    logger.warning(
-        "XML help is available but not picked for the following %i paths:",
-        len(_XML_HELPSTRINGS),
-    )
-    for k, _ in _XML_HELPSTRINGS.items():
-        logger.warning(k)
+    api_tree["<meshing_session>"] = TUIGenerator(
+        "meshing", version, pyfluent_path
+    ).generate()
+    api_tree["<solver_session>"] = TUIGenerator(
+        "solver", version, pyfluent_path
+    ).generate()
+    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+        logger.info(
+            "XML help is available but not picked for the following %i paths: ",
+            len(_XML_HELPSTRINGS),
+        )
+        for k in _XML_HELPSTRINGS:
+            logger.info(k)
+    return api_tree
 
 
 if __name__ == "__main__":
-    generate()
+    version = get_version_for_file_name()
+    generate(version, None)

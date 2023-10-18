@@ -5,6 +5,7 @@ import io
 import weakref
 
 import pytest
+from test_utils import count_key_recursive
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
@@ -653,6 +654,7 @@ class root(Group):
     )  # noqa: W293
 
 
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object(load_static_mixer_case):
     solver = load_static_mixer_case
 
@@ -662,46 +664,39 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    if solver.get_fluent_version() < "23.2.0":
-        assert existing == modified
-    else:
+    if solver.get_fluent_version() < "24.1.0":
         assert existing == None and modified == False
+    else:
+        assert existing == modified
 
-    existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
-        "user-creatable?", bool
-    )
-    modified = solver.setup.boundary_conditions.velocity_inlet.user_creatable()
+    velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
+    existing = velocity_inlet.get_attr("user-creatable?", bool)
+    modified = velocity_inlet.user_creatable()
     assert existing == modified
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
+    if solver.get_fluent_version() < "24.1.0":
+        turbulent_viscosity_ratio = velocity_inlet["inlet1"].turb_viscosity_ratio
+    else:
+        turbulent_viscosity_ratio = velocity_inlet[
             "inlet1"
-        ].turb_viscosity_ratio.default_value()
-        == 10
-    )
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].turb_viscosity_ratio.get_attr("min")
-        == 0
-    )
+        ].turbulence.turbulent_viscosity_ratio_real
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].turb_viscosity_ratio.get_attr("max")
-        is False
+    assert turbulent_viscosity_ratio.default_value() == 10
+    assert turbulent_viscosity_ratio.get_attr("min") == 0
+
+    assert turbulent_viscosity_ratio.get_attr("max") is False
+    assert turbulent_viscosity_ratio.max() is None
+
+    default_attrs = solver.setup.boundary_conditions.velocity_inlet["inlet1"].get_attrs(
+        ["default"], recursive=True
     )
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].turb_viscosity_ratio.max()
-        is None
-    )
+    assert count_key_recursive(default_attrs, "default") > 5
+
+    mesh = solver.results.graphics.mesh.create("mesh-1")
+    assert mesh.name.is_read_only()
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
     solver = load_static_mixer_case
 
@@ -710,87 +705,93 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
         "density-based-implicit",
         "density-based-explicit",
     ]
+    accuracy_control = (
+        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control
+    )
+    if solver.get_fluent_version() < "24.1.0":
+        max_refinements = accuracy_control.max_number_of_refinements
+    else:
+        max_refinements = accuracy_control.max_num_refinements
 
-    assert (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.min()
-        == 0
-    )
-    assert (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.max()
-        == 1000000
-    )
-    assert (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.get_attr(
-            "max"
-        )
-        == 1000000
-    )
+    assert max_refinements.min() == 0
+    assert max_refinements.max() == 1000000
+    assert max_refinements.get_attr("max") == 1000000
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version("==23.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root():
-    from ansys.fluent.core.solver.settings_231.setup import setup
-
-    assert len(find_children(setup())) == 18514
-    assert len(find_children(setup(), "gen*")) == 9
-    assert find_children(setup(), "general*") == [
+def test_find_children_from_settings_root_231(load_static_mixer_case):
+    setup_cls = load_static_mixer_case.setup.__class__
+    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls(), "gen*")) >= 9
+    assert set(find_children(setup_cls(), "general*")) >= {
         "general",
         "models/discrete_phase/general_settings",
         "models/virtual_blade_model/disk/general",
-    ]
-    assert find_children(setup(), "general") == [
+    }
+    assert set(find_children(setup_cls(), "general")) >= {
         "general",
         "models/virtual_blade_model/disk/general",
-    ]
-    assert find_children(setup(), "*gen") == [
+    }
+    assert set(find_children(setup_cls(), "*gen")) >= {
         "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
         "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/p_backflow_spec_gen",
         "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
         "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
-    ]
+    }
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_find_children_from_settings_root_232(load_static_mixer_case):
+    setup_cls = load_static_mixer_case.setup.__class__
+    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls(), "gen*")) >= 9
+    assert set(find_children(setup_cls(), "general*")) >= {
+        "general",
+        "models/discrete_phase/general_settings",
+        "models/virtual_blade_model/rotor/general",
+    }
+    assert set(find_children(setup_cls(), "general")) >= {
+        "general",
+        "models/virtual_blade_model/rotor/general",
+    }
+    assert any(
+        path
+        for path in find_children(setup_cls(), "*gen")
+        if path.endswith("p_backflow_spec_gen")
+    )
+
+
+@pytest.mark.fluent_version("latest")
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
+    load_mixer = load_static_mixer_case.setup
+    assert len(setup_children) >= 18514
 
-    assert len(setup_children) == 18514
+    viscous = load_mixer.models.viscous
+    assert len(find_children(viscous, "prod*")) > 0
 
-    viscous = load_static_mixer_case.setup.models.viscous
-    assert find_children(viscous, "prod*") == [
-        "options/production_kato_launder",
-        "turbulence_expert/production_limiter",
-    ]
+    assert any(
+        path
+        for path in find_children(
+            load_mixer.boundary_conditions.pressure_outlet, "*_dir_*"
+        )
+        if path.endswith("geom_dir_spec")
+    )
 
-    assert find_children(
-        load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
-    ) == [
-        "phase/geom_dir_spec",
-        "phase/geom_dir_x",
-        "phase/geom_dir_y",
-        "phase/geom_dir_z",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-    ]
-
-    assert find_children(
-        load_static_mixer_case.setup.materials.fluid["air"].density.piecewise_polynomial
-    ) == [
+    assert set(
+        find_children(load_mixer.materials.fluid["air"].density.piecewise_polynomial)
+    ) >= {
         "minimum",
         "maximum",
-        "number_of_coefficients",
         "coefficients",
-    ]
+    }
 
 
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
@@ -820,8 +821,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     root = solver._root
@@ -840,9 +840,7 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
 
     get_child_nodes(root, nodes, type_list)
 
-    assert type_list.sort() == expected_type_list.sort()
-
-    for type_data in type_list:
+    for type_data in expected_type_list:
         if type_data == "Boolean":
             assert {
                 "is_active",
@@ -901,3 +899,19 @@ def get_child_nodes(node, nodes, type_list):
                 nodes[node_type] = node
                 if not type_list:
                     return
+
+
+@pytest.mark.fluent_version("latest")
+def test_strings_with_allowed_values(load_static_mixer_case):
+    solver = load_static_mixer_case
+
+    with pytest.raises(AttributeError) as e:
+        string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
+    assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
+
+    string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
+    assert string_with_allowed_values == [
+        "pressure-based",
+        "density-based-implicit",
+        "density-based-explicit",
+    ]

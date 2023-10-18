@@ -13,10 +13,11 @@ class PostAPIHelper:
 
         @staticmethod
         def surface_name_on_server(local_surface_name):
+            """Returns the surface name on server."""
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
-            return self.obj._get_top_most_parent().session.tui.surface
+            return self.obj.get_root().session.tui.surface
 
         def _delete_if_exist_on_server(self):
             field_info = self.obj._api_helper.field_info()
@@ -25,6 +26,15 @@ class PostAPIHelper:
                 self.delete_surface_on_server()
 
         def create_surface_on_server(self):
+            """Creates the surface on server.
+
+            Raises
+            ------
+            RuntimeError
+                If iso-surface definition is incomplete.
+            RuntimeError
+                If server fails to create surface.
+            """
             if self.obj.definition.type() == "iso-surface":
                 iso_surface = self.obj.definition.iso_surface
                 field = iso_surface.field()
@@ -84,23 +94,24 @@ class PostAPIHelper:
                 raise RuntimeError("Surface creation failed.")
 
         def delete_surface_on_server(self):
+            """Deletes the surface on server."""
             self._get_api_handle().delete_surface(self._surface_name_on_server)
 
     def __init__(self, obj):
+        """__init__ method of PostAPIHelper class."""
         self.obj = obj
-        self.field_info = lambda: obj._get_top_most_parent().session.field_info
-        self.field_data = lambda: obj._get_top_most_parent().session.field_data
-        self.monitors_manager = (
-            lambda: obj._get_top_most_parent().session.monitors_manager
-        )
-        self.id = lambda: obj._get_top_most_parent().session.id
+        self.field_info = lambda: obj.get_root().session.field_info
+        self.field_data = lambda: obj.get_root().session.field_data
+        self.monitors_manager = lambda: obj.get_root().session.monitors_manager
+        self.id = lambda: obj.get_root().session.id
         if obj.__class__.__name__ == "Surface":
             self.surface_api = PostAPIHelper._SurfaceAPI(obj)
 
     def remote_surface_name(self, local_surface_name):
-        local_surfaces_provider = (
-            self.obj._get_top_most_parent()._local_surfaces_provider()
-        )
+        """Returns the surface name."""
+
+        local_surfaces_provider = self.obj.get_root()._local_surfaces_provider()
+
         if local_surface_name in list(local_surfaces_provider):
             return PostAPIHelper._SurfaceAPI.surface_name_on_server(local_surface_name)
         else:
@@ -108,10 +119,12 @@ class PostAPIHelper:
 
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
+        """Returns vector field."""
         scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"  # noqa: E501
         return self._scheme_str_to_py_list(scheme_eval_str)
 
     def get_field_unit(self, field):
+        """Returns the unit of the field."""
         quantity = self._field_unit_quantity(field)
         if quantity == "*null*":
             return ""
@@ -144,6 +157,9 @@ class PostAPIHelper:
         return unit_info
 
     def _scheme_str_to_py_list(self, scheme_eval_str):
-        session = self.obj._get_top_most_parent().session
-        str = session.scheme_eval.string_eval(scheme_eval_str)
-        return list(filter(None, re.split(r'[\s()"\']', str)))
+        session = self.obj.get_root().session
+        if hasattr(session, "scheme_eval"):
+            str_val = session.scheme_eval.string_eval(scheme_eval_str)
+            return list(filter(None, re.split(r'[\s()"\']', str_val)))
+        else:
+            return ["*null*"]

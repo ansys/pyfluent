@@ -3,11 +3,8 @@
 rpvars
 ======
 
-.. currentmodule:: ansys.fluent.core
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    rpvars
+.. automodule:: ansys.fluent.core.rpvars
+   :members:
+   :show-inheritance:
+   :special-members: __call__
+   :autosummary:

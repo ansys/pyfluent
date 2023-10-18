@@ -1,5 +1,5 @@
-"""Provide a module to test the algorithms which parse job scheduler
-environments for machines to run on."""
+"""Provide a module to test the algorithms which parse job scheduler environments for
+machines to run on."""
 from builtins import range
 import os
 import socket
@@ -47,8 +47,7 @@ class TestMachine(unittest.TestCase):
 
 
 class TestMachineList(unittest.TestCase):
-    """Provide a test suite that checks that the MachineList object behaves
-    properly."""
+    """Provide a test suite that checks that the MachineList object behaves properly."""
 
     def setUp(self):
         self._machineList = MachineList()
@@ -79,8 +78,7 @@ class TestMachineList(unittest.TestCase):
         self.assertEqual(self._machineList.num_machines, 2)
 
     def test_number_of_cores_and_machines(self):
-        """Test that the total and max number of cores and machines is
-        working."""
+        """Test that the total and max number of cores and machines is working."""
         self._machineList.add(Machine("machine1", 20, "allq", "0:0"))
         self._machineList.add(Machine("machine2", 25, "allq", "0:0"))
         self._machineList.add(Machine("machine3", 15, "allq", "0:0"))
@@ -90,8 +88,7 @@ class TestMachineList(unittest.TestCase):
         self.assertEqual(self._machineList.min_cores, 15)
 
     def test_sort_machine_list(self):
-        """Test that the machines are sorted in order of decreasing core
-        count."""
+        """Test that the machines are sorted in order of decreasing core count."""
         self._machineList.add(Machine("machine1", 15, "allq", "0:0"))
         self._machineList.add(Machine("machine2", 10, "allq", "0:0"))
         self._machineList.add(Machine("machine3", 5, "allq", "0:0"))

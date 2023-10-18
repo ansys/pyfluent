@@ -73,12 +73,13 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     ###############################################################################
     # Describe the geometry
     # Query the task state before and after task execution
-    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
+    describe_geo = workflow.TaskObject["Describe Geometry"]
+    describe_geo.UpdateChildTasks(SetupTypeChanged=False)
     assign_task_args(
         task_name="Describe Geometry",
         SetupType="The geometry consists of only fluid regions with no voids",
     )
-    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
+    describe_geo.UpdateChildTasks(SetupTypeChanged=True)
 
     execute_task_with_pre_and_postconditions(task_name="Describe Geometry")
 
@@ -104,12 +105,13 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     ###############################################################################
     # Add Boundary Layers
     # Query the task state before and after task execution
-    workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-    workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+    add_boundary_layers = workflow.TaskObject["Add Boundary Layers"]
+    add_boundary_layers.AddChildToTask()
+    add_boundary_layers.InsertCompoundChildTask()
     assign_task_args(
         task_name="smooth-transition_1", BLControlName="smooth-transition_1"
     )
-    workflow.TaskObject["Add Boundary Layers"].Arguments = {}
+    add_boundary_layers.Arguments = {}
 
     execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
 
@@ -140,22 +142,23 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     ###############################################################################
     # Set the working units for the mesh
-    solver_session.tui.define.units("length", "in")
+    define = solver_session.tui.define
+    define.units("length", "in")
 
     ###############################################################################
     # Enable heat transfer by activating the energy equation.
-    solver_session.tui.define.models.energy("yes", ", ", ", ", ", ", ", ")
+    define.models.energy("yes", ", ", ", ", ", ", ", ")
 
     ###############################################################################
     # Create a new material called water-liquid.
-    solver_session.tui.define.materials.copy("fluid", "water-liquid")
+    define.materials.copy("fluid", "water-liquid")
 
     ###############################################################################
     # Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
     # water-liquid from the Material list.
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
     if float(solver_session.get_fluent_version()[:-2]) < 23.0:
-        solver_session.tui.define.boundary_conditions.fluid(
+        define.boundary_conditions.fluid(
             "elbow-fluid",
             "yes",
             "water-liquid",
@@ -183,44 +186,21 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
         ###############################################################################
         # Set up the boundary conditions
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "cold-inlet", [], "vmag", "no", 0.4, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "cold-inlet", [], "turb-intensity", 5, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "cold-inlet", [], "turb-hydraulic-diam", 4, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "cold-inlet", [], "temperature", "no", 293.15, "quit"
-        )
+        velocity_inlet = define.boundary_conditions.set.velocity_inlet
+        velocity_inlet("cold-inlet", [], "vmag", "no", 0.4, "quit")
+        velocity_inlet("cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit")
+        velocity_inlet("cold-inlet", [], "turb-intensity", 5, "quit")
+        velocity_inlet("cold-inlet", [], "turb-hydraulic-diam", 4, "quit")
+        velocity_inlet("cold-inlet", [], "temperature", "no", 293.15, "quit")
+        velocity_inlet("hot-inlet", [], "vmag", "no", 1.2, "quit")
+        velocity_inlet("hot-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit")
+        velocity_inlet("hot-inlet", [], "turb-intensity", 5, "quit")
+        velocity_inlet("hot-inlet", [], "turb-hydraulic-diam", 1, "quit")
+        velocity_inlet("hot-inlet", [], "temperature", "no", 313.15, "quit")
 
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "hot-inlet", [], "vmag", "no", 1.2, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "hot-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "hot-inlet", [], "turb-intensity", 5, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "hot-inlet", [], "turb-hydraulic-diam", 1, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "hot-inlet", [], "temperature", "no", 313.15, "quit"
-        )
-
-        solver_session.tui.define.boundary_conditions.set.pressure_outlet(
-            "outlet", [], "turb-intensity", 5, "quit"
-        )
-        solver_session.tui.define.boundary_conditions.set.pressure_outlet(
-            "outlet", [], "turb-viscosity-ratio", 4, "quit"
-        )
+        pressure_outlet = define.boundary_conditions.set.pressure_outlet
+        pressure_outlet("outlet", [], "turb-intensity", 5, "quit")
+        pressure_outlet("outlet", [], "turb-viscosity-ratio", 4, "quit")
 
         ###############################################################################
         # Enable the plotting of residuals during the calculation.
@@ -236,8 +216,9 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
         ###############################################################################
         # Assert the returned mass flow rate report definition value
-        solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
-        solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
+        flux = solver_session.solution.report_definitions.flux
+        flux["mass_flow_rate"] = {}
+        flux["mass_flow_rate"].zone_names = [
             "cold-inlet",
             "hot-inlet",
             "outlet",
@@ -256,15 +237,12 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
         ###############################################################################
         # Assert the returned temperature report definition value on the outlet surface
         solver_session.solution.report_definitions.surface["temperature_outlet"] = {}
-        solver_session.solution.report_definitions.surface[
+        temp_outlet = solver_session.solution.report_definitions.surface[
             "temperature_outlet"
-        ].report_type = "surface-massavg"
-        solver_session.solution.report_definitions.surface[
-            "temperature_outlet"
-        ].field = "temperature"
-        solver_session.solution.report_definitions.surface[
-            "temperature_outlet"
-        ].surface_names = ["outlet"]
+        ]
+        temp_outlet.report_type = "surface-massavg"
+        temp_outlet.field = "temperature"
+        temp_outlet.surface_names = ["outlet"]
 
         check_report_definition(
             report_definition_name="temperature_outlet",

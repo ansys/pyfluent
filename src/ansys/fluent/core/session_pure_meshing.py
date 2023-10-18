@@ -1,12 +1,16 @@
-"""Module containing class encapsulating Fluent connection.
-"""
+"""Module containing class encapsulating Fluent connection."""
 
 
 import functools
+from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.services.meshing_queries import (
+    MeshingQueries,
+    MeshingQueriesService,
+)
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -14,11 +18,14 @@ from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
 class PureMeshing(BaseSession):
-    """Encapsulates a Fluent meshing session. A ``tui`` object
+    """Encapsulates a Fluent meshing session.
+
+    A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all
     exposed here. No ``switch_to_solver`` method is available
-    in this mode."""
+    in this mode.
+    """
 
     rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
     for r in rules:
@@ -31,8 +38,20 @@ class PureMeshing(BaseSession):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-        self._base_meshing = BaseMeshing(self.execute_tui, fluent_connection)
-        datamodel_service_se = fluent_connection.datamodel_service_se
+        self._base_meshing = BaseMeshing(
+            self.execute_tui,
+            fluent_connection,
+            self.get_fluent_version(),
+            self.datamodel_service_tui,
+            self.datamodel_service_se,
+        )
+
+        self.meshing_queries_service = fluent_connection.create_service(
+            MeshingQueriesService, self.error_state
+        )
+        self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+
+        datamodel_service_se = self.datamodel_service_se
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:
             for rules in self.__class__.rules:
@@ -45,6 +64,7 @@ class PureMeshing(BaseSession):
                     rules=rules,
                     no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
                 )
+                self.fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
     def tui(self):
@@ -54,34 +74,44 @@ class PureMeshing(BaseSession):
 
     @property
     def meshing(self):
-        """meshing datamodel root."""
+        """Datamodel root of meshing."""
         return self._base_meshing.meshing
 
     @property
     def workflow(self):
-        """workflow datamodel root."""
+        """Datamodel root of workflow."""
         return self._base_meshing.workflow
+
+    def watertight(self, dynamic_interface=True):
+        """Get a new watertight workflow."""
+        self.workflow.watertight(dynamic_interface)
+        return self.workflow
+
+    def fault_tolerant(self, dynamic_interface=True):
+        """Get a new fault-tolerant workflow."""
+        self.workflow.fault_tolerant(dynamic_interface)
+        return self.workflow
 
     @property
     def PartManagement(self):
-        """PartManagement datamodel root."""
+        """Datamodel root of PartManagement."""
         return self._base_meshing.PartManagement
 
     @property
     def PMFileManagement(self):
-        """PMFileManagement datamodel root."""
+        """Datamodel root of PMFileManagement."""
         return self._base_meshing.PMFileManagement
 
     @property
     def preferences(self):
-        """preferences datamodel root."""
+        """Datamodel root of preferences."""
         return self._base_meshing.preferences
 
     def transfer_mesh_to_solvers(
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: str = None,
+        file_name_stem: Optional[str] = None,
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,

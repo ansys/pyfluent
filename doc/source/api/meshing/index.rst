@@ -3,7 +3,8 @@
 Meshing
 =======
 The ``meshing`` module allows you to use Fluent meshing capabilities from Python.
-Meshing workflows and meshing TUI commands are available.
+:ref:`Meshing workflows <ref_meshing_datamodel_workflow>` and :ref:`meshing TUI commands <ref_meshing_tui>`
+are available.
 
 Workflow example
 ----------------
@@ -56,7 +57,7 @@ equivalent PyFluent script.
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": import_filename,
+        "FileName": import_file_name,
         "LengthUnit": "in",
     }
     meshing.workflow.TaskObject["Import Geometry"].Execute()
@@ -117,7 +118,9 @@ TUI commands example
     :template: flobject-module-template.rst
     :recursive:
 
-    meshing
+    faulttolerant
+    meshing_workflow
+    watertight
 
 .. toctree::
    :maxdepth: 2
@@ -125,4 +128,3 @@ TUI commands example
 
    tui/index
    datamodel/index
-   

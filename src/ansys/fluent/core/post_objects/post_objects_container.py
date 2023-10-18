@@ -1,20 +1,19 @@
-"""Module providing visualization objects to facilitate
-   integration with libraries like Matplotlib and pyvista."""
+"""Module providing visualization objects to facilitate integration with libraries like
+Matplotlib and pyvista."""
 import inspect
 
 from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    """
-    Base class for containers, e.g. Plots, Graphics.
+    """Base class for containers, for example, Plots, Graphics.
 
     Parameters
         ----------
         session : object
             Session object.
         container_type: object
-            Container type (e.g. Plots, Graphics)
+            Container type (for example, Plots, Graphics)
         module: object
             Python module containing post definitions
         post_api_helper: object
@@ -32,7 +31,9 @@ class Container:
         post_api_helper,
         local_surfaces_provider=None,
     ):
+        """__init__ method of Container class."""
         session_state = container_type._sessions_state.get(session)
+        self._path = container_type.__name__
         if not session_state:
             session_state = self.__dict__
             container_type._sessions_state[session] = session_state
@@ -44,8 +45,12 @@ class Container:
             self, "Surfaces", []
         )
 
+    def get_path(self):
+        return self._path
+
     @property
     def type(self):
+        """Type."""
         return "object"
 
     def _init_module(self, obj, mod, post_api_helper):
@@ -56,7 +61,7 @@ class Container:
                 setattr(
                     obj,
                     cls.PLURAL,
-                    PyLocalContainer(self, cls, post_api_helper),
+                    PyLocalContainer(self, cls, post_api_helper, cls.PLURAL),
                 )
 
 
@@ -89,6 +94,7 @@ class Plots(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
+        """__init__ method of Plots class."""
         super().__init__(
             session, self.__class__, module, post_api_helper, local_surfaces_provider
         )
@@ -127,6 +133,7 @@ class Graphics(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
+        """__init__ method of Graphics class."""
         super().__init__(
             session, self.__class__, module, post_api_helper, local_surfaces_provider
         )
@@ -144,7 +151,7 @@ class Graphics(Container):
         """
         meshes = getattr(self, "Meshes", None)
         if meshes is not None:
-            outline_mesh_id = "Mesh-outline"
+            outline_mesh_id = "mesh-outline"
             outline_mesh = meshes[outline_mesh_id]
             outline_mesh.surfaces_list = [
                 k

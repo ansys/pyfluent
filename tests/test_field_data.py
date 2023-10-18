@@ -8,19 +8,19 @@ from ansys.fluent.core.services.field_data import (
     ScalarFieldUnavailable,
     SurfaceDataType,
     SurfaceNameError,
+    VectorFieldNameError,
 )
 
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
     solver.tui.mesh.check()
 
     solver.setup.models.energy.enabled = True
@@ -28,38 +28,27 @@ def test_field_data(new_solver_session) -> None:
     solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 
     # Set up boundary conditions for CFD analysis
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = 0.4
-    solver.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 0.05
-    solver.setup.boundary_conditions.velocity_inlet[
-        "cold-inlet"
-    ].turb_hydraulic_diam = "4 [in]"
+    cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    cold_inlet.momentum.velocity = 0.4
+    cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    cold_inlet.turbulence.turbulent_intensity = 0.05
+    cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+    cold_inlet.thermal.t = 293.15
 
-    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
-
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = 1.2
-    solver.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    solver.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].turb_hydraulic_diam = "1 [in]"
-
-    solver.setup.boundary_conditions.velocity_inlet[
-        "hot-inlet"
-    ].t = HOT_INLET_TEMPERATURE
-
-    solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet.momentum.velocity = 1.2
+    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+    hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
     solver.tui.solve.monitors.residual.plot("no")
 
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
 
-    solver.solution.run_calculation.iterate.get_attr("arguments")
-    solver.solution.run_calculation.iterate(iter_count=10)
+    iterate = solver.solution.run_calculation.iterate
+    iterate.get_attr("arguments")
+    iterate(iter_count=10)
 
     # Get field data object
     field_data = solver.field_data
@@ -102,17 +91,12 @@ def test_field_data(new_solver_session) -> None:
         "centroid",
     ]
     assert list(data[scalar_field_tag][hot_inlet_surf_id].keys()) == ["temperature"]
+    temp_inlet_data = data[scalar_field_tag][hot_inlet_surf_id]["temperature"]
     assert (
-        len(data[scalar_field_tag][hot_inlet_surf_id]["temperature"])
+        len(temp_inlet_data)
         == len(data[surface_data_tag][hot_inlet_surf_id]["vertices"]) / 3
     )
-    assert (
-        round(
-            float(np.average(data[scalar_field_tag][hot_inlet_surf_id]["temperature"])),
-            2,
-        )
-        == HOT_INLET_TEMPERATURE
-    )
+    assert round(float(np.average(temp_inlet_data)), 2) == HOT_INLET_TEMPERATURE
     assert sorted(list(data[pathline_tag][hot_inlet_surf_id].keys())) == sorted(
         [
             "vertices",
@@ -125,29 +109,27 @@ def test_field_data(new_solver_session) -> None:
 
     # multiple surface *names* transaction
     transaction2 = field_data.new_transaction()
-    surface_names = (
-        transaction2.add_scalar_fields_request.surface_names.allowed_values()
-    )
-    transaction2.add_scalar_fields_request(
-        surface_names=surface_names, field_name="temperature"
-    )
+    fields_request = transaction2.add_scalar_fields_request
+    surface_names = fields_request.surface_names.allowed_values()
+    fields_request(surface_names=surface_names, field_name="temperature")
     data2 = transaction2.get_fields()
     assert data2
 
 
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
     field_data = solver.field_data
     field_info = solver.field_info
     transaction = field_data.new_transaction()
+    fields_request = transaction.add_scalar_fields_request
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -162,24 +144,24 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     allowed_args = field_data.get_scalar_field_data.field_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
     assert len(allowed_args) > len(allowed_args_no_init)
-    allowed_args = transaction.add_scalar_fields_request.field_name.allowed_values()
+    allowed_args = fields_request.field_name.allowed_values()
     assert expected_allowed_args == allowed_args
 
     expected_allowed_args = sorted(field_info.get_surfaces_info())
     allowed_args = field_data.get_scalar_field_data.surface_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
-    allowed_args = transaction.add_scalar_fields_request.surface_names.allowed_values()
+    allowed_args = fields_request.surface_names.allowed_values()
     assert expected_allowed_args == allowed_args
 
     expected_allowed_args = sorted(field_info.get_surfaces_info())
     allowed_args = field_data.get_surface_data.surface_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
-    allowed_args = transaction.add_scalar_fields_request.surface_names.allowed_values()
+    allowed_args = fields_request.surface_names.allowed_values()
     assert expected_allowed_args == allowed_args
 
     allowed_args = field_data.get_surface_data.surface_ids.allowed_values()
     assert len(expected_allowed_args) == len(allowed_args)
-    allowed_args = transaction.add_scalar_fields_request.surface_ids.allowed_values()
+    allowed_args = fields_request.surface_ids.allowed_values()
     assert len(expected_allowed_args) == len(allowed_args)
 
     expected_allowed_args = sorted(field_info.get_vector_fields_info())
@@ -189,11 +171,10 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert expected_allowed_args == allowed_args
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -201,7 +182,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -261,8 +242,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert all(path_lines_data["lines"][100].node_indices == [100, 101])
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_232
+@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_2d(load_disk_mesh) -> None:
     solver = load_disk_mesh
 
@@ -297,9 +277,9 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
     faces_connectivity_data = field_data.get_surface_data(
         data_type=SurfaceDataType.FacesConnectivity, surface_name="velocity-inlet-2"
-    )
-    assert faces_connectivity_data[5].node_count == 2
-    assert (faces_connectivity_data[5].node_indices == [5, 6]).all()
+    )[5]
+    assert faces_connectivity_data.node_count == 2
+    assert (faces_connectivity_data.node_indices == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surface_name="velocity-inlet-2"
@@ -322,7 +302,7 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
 def test_field_data_errors(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -338,7 +318,7 @@ def test_field_data_errors(new_solver_session) -> None:
         )
     assert fne.value.field_name == "partition-neighbors"
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     with pytest.raises(ScalarFieldUnavailable) as fnu:
         solver.field_data.get_scalar_field_data(field_name="density", surface_ids=[0])
@@ -369,3 +349,34 @@ def test_field_data_errors(new_solver_session) -> None:
     with pytest.raises(ScalarFieldNameError) as fne:
         solver.field_data.get_scalar_field_data(field_name="xdensity", surface_ids=[0])
     assert fne.value.field_name == "xdensity"
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_field_info_validators(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.solution.initialization.hybrid_initialize()
+
+    vector_field_1 = solver.field_info.validate_vector_fields("velocity")
+    assert vector_field_1 is None
+
+    with pytest.raises(VectorFieldNameError) as vector_field_error:
+        solver.field_info.validate_vector_fields("relative-vel")
+    assert vector_field_error.value.field_name == "relative-vel"
+
+    scalar_field_1 = solver.field_info.validate_scalar_fields("z-velocity")
+    assert scalar_field_1 is None
+
+    with pytest.raises(ScalarFieldNameError) as scalar_field_error:
+        solver.field_info.validate_scalar_fields("z-vel")
+    assert scalar_field_error.value.field_name == "z-vel"
+
+    surface = solver.field_info.validate_surfaces(["cold-inlet"])
+    assert surface is None
+
+    with pytest.raises(SurfaceNameError) as surface_error:
+        solver.field_info.validate_surfaces(["out"])
+    assert surface_error.value.surface_name == "out"

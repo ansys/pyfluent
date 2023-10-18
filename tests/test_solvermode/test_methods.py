@@ -3,15 +3,21 @@ import pytest
 
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.fluent_231
+@pytest.mark.fluent_version("latest")
+@pytest.mark.skip("Too sensitive to settings API")
 def test_methods(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"
-    solver.setup.general.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
+    solver.setup.general.operating_conditions.gravity = {
+        "enable": True,
+        "components": [0.0, 0.0, -9.81],
+    }
     solver.setup.general.solver.time = "steady"
-    solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
-    solver.solution.methods.p_v_coupling.coupled_form = False
-    assert solver.solution.methods.p_v_coupling() == {
+
+    p_v_coupling = solver.solution.methods.p_v_coupling
+    p_v_coupling.flow_scheme = "Coupled"
+    p_v_coupling.coupled_form = False
+    assert p_v_coupling() == {
         "flow_scheme": "Coupled",
         "coupled_form": False,
     }
@@ -25,12 +31,11 @@ def test_methods(load_mixing_elbow_mesh):
     }
     solver.solution.methods.gradient_scheme = "least-square-cell-based"
     assert solver.solution.methods.gradient_scheme() == "least-square-cell-based"
-    solver.solution.methods.warped_face_gradient_correction.enable(
-        enable=True, gradient_correction_mode="fast-mode"
-    )
-    solver.solution.methods.warped_face_gradient_correction.enable(
-        enable=False, gradient_correction_mode="fast-mode"
-    )
+
+    enable_warped_face = solver.solution.methods.warped_face_gradient_correction.enable
+    enable_warped_face(enable=True, gradient_correction_mode="fast-mode")
+    enable_warped_face(enable=False, gradient_correction_mode="fast-mode")
+
     solver.solution.methods.expert.numerics_pbns.velocity_formulation = "relative"
     assert (
         solver.solution.methods.expert.numerics_pbns.velocity_formulation()

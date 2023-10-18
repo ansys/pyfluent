@@ -1,5 +1,4 @@
-"""A module used to provide abstract machine objects for queue system
-interfaces.
+"""A module used to provide abstract machine objects for queue system interfaces.
 
 This module provides two objects that help with interfacing Python
 scripts with job scheduler environments:
@@ -21,8 +20,7 @@ import copy
 
 
 class Machine(object):
-    """Provides an interface for a single machine allocated by a queue
-    system."""
+    """Provides an interface for a single machine allocated by a queue system."""
 
     def __init__(self, hostName, numberOfCores, queueName=None, coreList=None):
         """Constructs a machine from the information provided.
@@ -80,8 +78,7 @@ class Machine(object):
 
 
 class MachineList(object):
-    """Provides an interface to list of machines allocated by a queue
-    system."""
+    """Provides an interface to list of machines allocated by a queue system."""
 
     def __init__(self, machinesIn=[]):
         """Constructs and initializes an empty machine file object."""
@@ -109,9 +106,11 @@ class MachineList(object):
         self._machines = []
 
     def add(self, m):
+        """Add to machine list."""
         self._machines.append(m)
 
     def remove(self, m):
+        """Remove from machine list."""
         self._machines.remove(m)
 
     def sort_by_core_count(self):
@@ -127,8 +126,8 @@ class MachineList(object):
         self._machines = [m for m in self._machines if m.number_of_cores > 0]
 
     def move_local_host_to_front(self):
-        """Moves the local host machine to the front of the machine list,
-        creating it if it does not exist."""
+        """Moves the local host machine to the front of the machine list, creating it if
+        it does not exist."""
         import socket
 
         localHostName = socket.gethostname()

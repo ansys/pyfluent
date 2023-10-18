@@ -144,7 +144,7 @@ all PyFluent packages in a Python *virtual environment*:
 
 Which version of Python should you use?
 ---------------------------------------
-PyFluent supports Python 3.8 through Python 3.11 on Windows and Linux. Python
+PyFluent supports Python 3.9 through Python 3.11 on Windows and Linux. Python
 3.10 is shipped with Ansys 2023 R2 and later. For example, in a 2023 R2 Windows
 installation, the executable file Python 3.10 is typically located at:
 ``C:\Program Files\ANSYS Inc\v232\commonfiles\CPython\3_10\winx64\Release\python.exe``.
@@ -203,10 +203,10 @@ increasing order of precedence:
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
    when Fluent is installed, where ``<ver>`` is the Fluent release number such
-   as ``231`` for release 2023 R1.  PyFluent automatically uses this environment
+   as ``232`` for release 2023 R2.  PyFluent automatically uses this environment
    variable to locate the latest Fluent installation. On Linux systems configure
    ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such
-   as ``/apps/ansys_inc/v231``.
+   as ``/apps/ansys_inc/v232``.
 
 #. Value of ``product_version`` parameter passed to :func:`launch_fluent()
    <ansys.fluent.core.launch_fluent>`.

@@ -4,19 +4,20 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core import examples
 
 
-@pytest.mark.fluent_232
+@pytest.mark.nightly
+@pytest.mark.fluent_version("==23.2")
 def test_1364(new_solver_session):
     solver = new_solver_session
 
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
     )
 
-    solver.file.read_case(file_name=import_filename)
+    solver.file.read_case(file_name=import_file_name)
 
-    solver.solution.report_definitions.volume.create("xxx")
+    report_def = solver.solution.report_definitions.volume.create("xxx")
 
-    solver.solution.report_definitions["xxx"].set_state(
+    report_def.set_state(
         {
             "report_type": "volume-max",
             "field": "temperature",
@@ -27,11 +28,6 @@ def test_1364(new_solver_session):
         }
     )
 
-    assert solver.solution.report_definitions.volume[
-        "xxx"
-    ].zone_names.allowed_values() == ["fluid"]
+    assert report_def.zone_names.allowed_values() == ["fluid"]
 
-    assert (
-        solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
-        == None
-    )
+    assert report_def.expr_list.allowed_values() == None

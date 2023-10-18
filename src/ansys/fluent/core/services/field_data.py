@@ -9,7 +9,11 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
@@ -29,38 +33,44 @@ validate_inputs = True
 class FieldDataService(StreamingService):
     """FieldData service of Fluent."""
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of FieldDataService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         super().__init__(
             stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
         )
 
     @catch_grpc_error
-    def get_scalar_fields_range(self, request):
-        """GetRange rpc of FieldData service."""
+    def get_scalar_field_range(self, request):
+        """GetRange RPC of FieldData service."""
         return self._stub.GetRange(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_scalar_fields_info(self, request):
-        """GetFieldsInfo rpc of FieldData service."""
+        """GetFieldsInfo RPC of FieldData service."""
         return self._stub.GetFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
-        """GetVectorFieldsInfo rpc of FieldData service."""
+        """GetVectorFieldsInfo RPC of FieldData service."""
         return self._stub.GetVectorFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
-        """GetSurfacesInfo rpc of FieldData service."""
+        """GetSurfacesInfo RPC of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
+    # pylint: disable=missing-raises-doc
     @catch_grpc_error
     def get_fields(self, request):
-        """GetFields rpc of FieldData service."""
+        """GetFields RPC of FieldData service."""
         chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)
         if not chunk_iterator.is_active():
             raise RuntimeError(
@@ -74,7 +84,7 @@ class FieldInfo:
 
     Methods
     -------
-    get_scalar_fields_range(fields: List[str], node_value: bool, surface_ids: List[int])
+    get_scalar_field_range(field: str, node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
@@ -88,41 +98,42 @@ class FieldInfo:
         Get surfaces information (surface name, ID, and type).
     """
 
-    def __init__(self, service: FieldDataService):
+    def __init__(
+        self,
+        service: FieldDataService,
+        is_data_valid: Optional[Callable[[], bool]],
+    ):
         """__init__ method of FieldInfo class."""
         self._service = service
+        self._is_data_valid = is_data_valid
 
-    def get_scalar_fields_range(
-        self, fields: List[str], node_value: bool = False, surface_ids: List[int] = None
-    ) -> Dict[str, List[float]]:
+    def get_scalar_field_range(
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+    ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
-        fields: List[str]
-            List containing field names
+        field: str
+            Field name
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
 
         Returns
         -------
-        Union[List[float], Dict[str, List[float]]]
+        List[float]
         """
-        range_data = {}
-        for field in fields:
-            if not surface_ids:
-                surface_ids = []
-            request = FieldDataProtoModule.GetRangeRequest()
-            request.fieldName = field
-            request.nodeValue = node_value
-            request.surfaceid.extend(
-                [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
-            )
-            response = self._service.get_scalar_fields_range(request)
-            range_data[field] = [response.minimum, response.maximum]
-
-        return range_data
+        if not surface_ids:
+            surface_ids = []
+        request = FieldDataProtoModule.GetRangeRequest()
+        request.fieldName = field
+        request.nodeValue = node_value
+        request.surfaceid.extend(
+            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+        )
+        response = self._service.get_scalar_field_range(request)
+        return [response.minimum, response.maximum]
 
     def get_scalar_fields_info(self) -> Dict[str, Dict]:
         """Get fields information (field name, domain, and section).
@@ -179,6 +190,20 @@ class FieldInfo:
             for surface_info in response.surfaceInfo
         }
         return info
+
+    def validate_scalar_fields(self, field_name: str):
+        _AllowedScalarFieldNames(
+            self._is_data_valid, info=self.get_scalar_fields_info()
+        ).valid_name(field_name)
+
+    def validate_vector_fields(self, field_name: str):
+        _AllowedVectorFieldNames(
+            self._is_data_valid, info=self.get_vector_fields_info()
+        ).valid_name(field_name)
+
+    def validate_surfaces(self, surfaces: List[str]):
+        for surface in surfaces:
+            _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
 
 
 def unavailable_field_error_message(context: str, field_name: str) -> str:
@@ -259,19 +284,29 @@ class SurfaceDataType(IntEnum):
 
 
 class _AllowedNames:
-    def __init__(self, field_info: FieldInfo):
+    def __init__(
+        self, field_info: Optional[FieldInfo] = None, info: Optional[Dict] = None
+    ):
         self._field_info = field_info
+        self._info = info
 
     def is_valid(self, name, respect_data_valid=True):
+        """Checks validity."""
         return name in self(respect_data_valid)
 
 
 class _AllowedFieldNames(_AllowedNames):
-    def __init__(self, field_info: FieldInfo, is_data_valid: Callable[[], bool]):
-        super().__init__(field_info=field_info)
+    def __init__(
+        self,
+        is_data_valid: Callable[[], bool],
+        field_info: Optional[FieldInfo] = None,
+        info: Optional[Dict] = None,
+    ):
+        super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
 
     def valid_name(self, field_name):
+        """Returns valid names."""
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):
@@ -286,15 +321,16 @@ class _AllowedFieldNames(_AllowedNames):
 
 class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._field_info.get_surfaces_info()
+        return self._info if self._info else self._field_info.get_surfaces_info()
 
+    # pylint: disable=missing-raises-doc
     def valid_name(self, surface_name: str) -> str:
-        if validate_inputs:
-            if not self.is_valid(surface_name):
-                raise SurfaceNameError(
-                    surface_name=surface_name,
-                    allowed_values=self(),
-                )
+        """Returns valid names."""
+        if validate_inputs and not self.is_valid(surface_name):
+            raise SurfaceNameError(
+                surface_name=surface_name,
+                allowed_values=self(),
+            )
         return surface_name
 
 
@@ -314,7 +350,9 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_unavailable_error = ScalarFieldUnavailable
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        field_dict = self._field_info.get_scalar_fields_info()
+        field_dict = (
+            self._info if self._info else self._field_info.get_scalar_fields_info()
+        )
         return (
             field_dict
             if (not respect_data_valid or self._is_data_valid())
@@ -332,12 +370,15 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return (
-            self._field_info.get_vector_fields_info()
+            self._info
+            if self._info
+            else self._field_info.get_vector_fields_info()
             if (not respect_data_valid or self._is_data_valid())
             else []
         )
 
     def is_valid(self, name, respect_data_valid=True):
+        """Checks validity."""
         return name in self(respect_data_valid)
 
 
@@ -347,6 +388,7 @@ class _FieldMethod:
             self._accessor = accessor
 
         def allowed_values(self):
+            """Returns set of allowed values."""
             return sorted(self._accessor())
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):
@@ -429,8 +471,8 @@ class FieldTransaction:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity,
-        centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -700,7 +742,7 @@ def _get_surface_ids(
     surface_names: Optional[List[str]] = None,
     surface_name: Optional[str] = None,
 ) -> List[int]:
-    """Get surface ids' based on surface names or ids'.
+    """Get surface IDs based on surface names or IDs.
 
     Parameters
     ----------
@@ -716,7 +758,7 @@ def _get_surface_ids(
     List[int]
     """
     if surface_ids and (surface_name or surface_names):
-        raise RuntimeError("Please provide either surface names or surface ids.")
+        raise RuntimeError("Please provide either surface names or surface IDs.")
     if not surface_ids:
         surface_ids = []
         if surface_names:
@@ -729,7 +771,7 @@ def _get_surface_ids(
                 allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise RuntimeError("Please provide either surface names or surface IDs.")
     return surface_ids
 
 
@@ -747,26 +789,27 @@ class ChunkParser:
     Parameters
     ----------
     callbacks_provider : object
-        The object which can register and unregister callbacks.
-        It provides callbacks, which are triggered with following arguments:
-            zone_id : int
-            field_name : str
-            field : numpy array
-
+    The object which can register and unregister callbacks.
+    It provides callbacks, which are triggered with following arguments:
+        zone_id : int
+        field_name : str
+        field : numpy array
     """
 
     def __init__(self, callbacks_provider: object = None):
+        """__init__ method of ChunkParser class."""
         self._callbacks_provider = callbacks_provider
 
     def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
-        """Extracts field data received from Fluent. if callbacks_provider is set
-        then callbacks are triggered with extracted data.
+        """Extracts field data received from Fluent.
+
+        if callbacks_provider is set then callbacks are triggered with extracted data.
         """
 
-        def _get_tag_for_surface_request(surface_request):
+        def _get_tag_for_surface_request():
             return (("type", "surface-data"),)
 
-        def _get_tag_for_vector_field_request(vector_field_request):
+        def _get_tag_for_vector_field_request():
             return (("type", "vector-field"),)
 
         def _get_tag_for_scalar_field_request(scalar_field_request):
@@ -821,15 +864,13 @@ class ChunkParser:
             request_type = field_request_info.WhichOneof("request")
             if request_type is not None:
                 payload_tag_id = (
-                    _get_tag_for_surface_request(field_request_info.surfaceRequest)
+                    _get_tag_for_surface_request()
                     if request_type == "surfaceRequest"
                     else _get_tag_for_scalar_field_request(
                         field_request_info.scalarFieldRequest
                     )
                     if request_type == "scalarFieldRequest"
-                    else _get_tag_for_vector_field_request(
-                        field_request_info.vectorFieldRequest
-                    )
+                    else _get_tag_for_vector_field_request()
                     if request_type == "vectorFieldRequest"
                     else _get_tag_for_pathlines_field_request(
                         field_request_info.pathlinesFieldRequest
@@ -889,19 +930,23 @@ class BaseFieldData:
     """Contains common properties required by all field data types."""
 
     def __init__(self, i_d, data):
+        """__init__ method of BaseFieldData class."""
         self._data = data
         self._id = i_d
 
     @property
     def data(self):
+        """Returns data."""
         return self._data
 
     @property
     def surface_id(self):
+        """Returns surface ID."""
         return self._id
 
     @property
     def size(self):
+        """Returns size of data."""
         return len(self._data)
 
     def __getitem__(self, item):
@@ -915,9 +960,11 @@ class ScalarFieldData(BaseFieldData):
         """Stores and provides the data as a scalar."""
 
         def __init__(self, data):
+            """__init__ method of ScalarData class."""
             self.scalar_data = data
 
     def __init__(self, i_d, data):
+        """__init__ method of ScalarFieldData class."""
         super().__init__(i_d, [ScalarFieldData.ScalarData(_data) for _data in data])
 
 
@@ -925,20 +972,24 @@ class Vector:
     """Stores the data as a vector ``(x, y, z)``."""
 
     def __init__(self, x, y, z):
+        """__init__ method of Vector class."""
         self._x = x
         self._y = y
         self._z = z
 
     @property
     def x(self) -> float:
+        """Returns vector point x."""
         return self._x
 
     @property
     def y(self) -> float:
+        """Returns vector point y."""
         return self._y
 
     @property
     def z(self) -> float:
+        """Returns vector point z."""
         return self._z
 
 
@@ -958,15 +1009,18 @@ class VectorFieldData(BaseFieldData):
         """Stores and provides the data as a vector."""
 
         def __init__(self, x, y, z):
+            """__init__ method of VectorData class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data, scale):
+        """__init__ method of VectorFieldData class."""
         _resolve_into_array_of_vectors(data)
         self._scale = scale
         super().__init__(i_d, [VectorFieldData.VectorData(x, y, z) for x, y, z in data])
 
     @property
     def scale(self) -> float:
+        """Returns scale of the vector field."""
         return self._scale
 
 
@@ -977,9 +1031,11 @@ class Vertices(BaseFieldData):
         """Stores and provides the data as a vector of a vertex."""
 
         def __init__(self, x, y, z):
+            """__init__ method of Vertex class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
+        """__init__ method of Vertices class."""
         _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [(Vertices.Vertex(x, y, z)) for x, y, z in data])
 
@@ -991,9 +1047,11 @@ class FacesCentroid(BaseFieldData):
         """Stores and provides the face centroid data as a vector."""
 
         def __init__(self, x, y, z):
+            """__init__ method of Centroid class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
+        """__init__ method of FacesCentroid class."""
         _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [(FacesCentroid.Centroid(x, y, z)) for x, y, z in data])
 
@@ -1005,10 +1063,12 @@ class FacesConnectivity(BaseFieldData):
         """Stores and provides the face connectivity data as an array."""
 
         def __init__(self, node_count, node_indices):
+            """__init__ method of Faces class."""
             self.node_count = node_count
             self.node_indices = node_indices
 
     def __init__(self, i_d, data):
+        """__init__ method of FacesConnectivity class."""
         faces_data = []
         i = 0
 
@@ -1027,9 +1087,11 @@ class FacesNormal(BaseFieldData):
         """Stores and provides the face normal data as a vector."""
 
         def __init__(self, x, y, z):
+            """__init__ method of Normal class."""
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
+        """__init__ method of FacesNormal class."""
         _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [FacesNormal.Normal(x, y, z) for x, y, z in data])
 
@@ -1042,22 +1104,24 @@ class FieldData:
         service: FieldDataService,
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
+        scheme_eval: Optional = None,
     ):
         """__init__ method of FieldData class."""
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
+        self.scheme_eval = scheme_eval
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 
         self._allowed_surface_ids = _AllowedSurfaceIDs(field_info)
 
         self._allowed_scalar_field_names = _AllowedScalarFieldNames(
-            field_info, is_data_valid
+            is_data_valid, field_info
         )
 
         self._allowed_vector_field_names = _AllowedVectorFieldNames(
-            field_info, is_data_valid
+            is_data_valid, field_info
         )
 
         surface_args = dict(
@@ -1191,8 +1255,7 @@ class FieldData:
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
     ]:
-        """Get surface data (vertices, faces connectivity, centroids, and
-        normals).
+        """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
         ----------
@@ -1310,6 +1373,13 @@ class FieldData:
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
         """
+        if surface_name:
+            self.scheme_eval.string_eval(
+                f"(surface? (thread-name->id '{surface_name}))"
+            )
+        elif surface_ids:
+            for surface_id in surface_ids:
+                self.scheme_eval.string_eval(f"(surface? {surface_id})")
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,

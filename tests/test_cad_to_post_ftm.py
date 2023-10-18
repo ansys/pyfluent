@@ -80,17 +80,16 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Provide a description for the geometry and the flow characteristics.
-    workflow.TaskObject["Describe Geometry and Flow"].Arguments.setState(
+    describe_geo = workflow.TaskObject["Describe Geometry and Flow"]
+    describe_geo.Arguments.setState(
         {
             "AddEnclosure": "No",
             "CloseCaps": "Yes",
             "FlowType": "Internal flow through the object",
         }
     )
-    workflow.TaskObject["Describe Geometry and Flow"].UpdateChildTasks(
-        SetupTypeChanged=False
-    )
-    workflow.TaskObject["Describe Geometry and Flow"].Arguments.setState(
+    describe_geo.UpdateChildTasks(SetupTypeChanged=False)
+    describe_geo.Arguments.setState(
         {
             "AddEnclosure": "No",
             "CloseCaps": "Yes",
@@ -101,15 +100,13 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "FlowType": "Internal flow through the object",
         }
     )
-    workflow.TaskObject["Describe Geometry and Flow"].UpdateChildTasks(
-        SetupTypeChanged=False
-    )
+    describe_geo.UpdateChildTasks(SetupTypeChanged=False)
     execute_task_with_pre_and_postconditions(task_name="Describe Geometry and Flow")
 
     ###############################################################################
     # Cover any openings in your geometry.
-
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping = workflow.TaskObject["Enclose Fluid Regions (Capping)"]
+    capping.Arguments.setState(
         {
             "CreatePatchPreferences": {
                 "ShowCreatePatchPreferences": False,
@@ -119,7 +116,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["inlet.1"],
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "CreatePatchPreferences": {
                 "ShowCreatePatchPreferences": False,
@@ -139,18 +136,18 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["inlet.1"],
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+    capping.AddChildToTask()
+    capping.InsertCompoundChildTask()
+    capping.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="inlet-1")
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "PatchName": "inlet-2",
             "SelectionType": "zone",
             "ZoneSelectionList": ["inlet.2"],
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "PatchName": "inlet-2",
             "SelectionType": "zone",
@@ -167,18 +164,18 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["inlet.2"],
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+    capping.AddChildToTask()
+    capping.InsertCompoundChildTask()
+    capping.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="inlet-2")
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "PatchName": "inlet-3",
             "SelectionType": "zone",
             "ZoneSelectionList": ["inlet"],
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "PatchName": "inlet-3",
             "SelectionType": "zone",
@@ -195,11 +192,11 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["inlet"],
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+    capping.AddChildToTask()
+    capping.InsertCompoundChildTask()
+    capping.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="inlet-3")
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "PatchName": "outlet-1",
             "SelectionType": "zone",
@@ -207,7 +204,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneType": "pressure-outlet",
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+    capping.Arguments.setState(
         {
             "PatchName": "outlet-1",
             "SelectionType": "zone",
@@ -225,21 +222,22 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneType": "pressure-outlet",
         }
     )
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-    workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+    capping.AddChildToTask()
+    capping.InsertCompoundChildTask()
+    capping.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="outlet-1")
 
     ###############################################################################
     # Extract edge features.
-    workflow.TaskObject["Extract Edge Features"].Arguments.setState(
+    edge_features = workflow.TaskObject["Extract Edge Features"]
+    edge_features.Arguments.setState(
         {
             "ExtractMethodType": "Intersection Loops",
             "ObjectSelectionList": ["flow_pipe", "main"],
         }
     )
-    workflow.TaskObject["Extract Edge Features"].AddChildToTask()
-    workflow.TaskObject["Extract Edge Features"].InsertCompoundChildTask()
+    edge_features.AddChildToTask()
+    edge_features.InsertCompoundChildTask()
     workflow.TaskObject["edge-group-1"].Arguments.setState(
         {
             "ExtractEdgesName": "edge-group-1",
@@ -247,12 +245,13 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ObjectSelectionList": ["flow_pipe", "main"],
         }
     )
-    workflow.TaskObject["Extract Edge Features"].Arguments.setState({})
+    edge_features.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="edge-group-1")
 
     ###############################################################################
     # Identify regions.
-    workflow.TaskObject["Identify Regions"].Arguments.setState(
+    region_id = workflow.TaskObject["Identify Regions"]
+    region_id.Arguments.setState(
         {
             "SelectionType": "zone",
             "X": 377.322045740589,
@@ -261,7 +260,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["main.1"],
         }
     )
-    workflow.TaskObject["Identify Regions"].Arguments.setState(
+    region_id.Arguments.setState(
         {
             "SelectionType": "zone",
             "X": 377.322045740589,
@@ -280,8 +279,8 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["main.1"],
         }
     )
-    workflow.TaskObject["Identify Regions"].AddChildToTask()
-    workflow.TaskObject["Identify Regions"].InsertCompoundChildTask()
+    region_id.AddChildToTask()
+    region_id.InsertCompoundChildTask()
     workflow.TaskObject["fluid-region-1"].Arguments.setState(
         {
             "MaterialPointsName": "fluid-region-1",
@@ -302,9 +301,9 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "ZoneSelectionList": ["main.1"],
         }
     )
-    workflow.TaskObject["Identify Regions"].Arguments.setState({})
+    region_id.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="fluid-region-1")
-    workflow.TaskObject["Identify Regions"].Arguments.setState(
+    region_id.Arguments.setState(
         {
             "MaterialPointsName": "void-region-1",
             "NewRegionType": "void",
@@ -314,14 +313,15 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "Z": -161.1700719416913,
         }
     )
-    workflow.TaskObject["Identify Regions"].AddChildToTask()
-    workflow.TaskObject["Identify Regions"].InsertCompoundChildTask()
-    workflow.TaskObject["Identify Regions"].Arguments.setState({})
+    region_id.AddChildToTask()
+    region_id.InsertCompoundChildTask()
+    region_id.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="void-region-1")
 
     ###############################################################################
     # Define thresholds for any potential leakages.
-    meshing_session.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
+    leakage_threshold = workflow.TaskObject["Define Leakage Threshold"]
+    leakage_threshold.Arguments.setState(
         {
             "AddChild": "yes",
             "FlipDirection": True,
@@ -329,8 +329,8 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "RegionSelectionSingle": "void-region-1",
         }
     )
-    workflow.TaskObject["Define Leakage Threshold"].AddChildToTask()
-    workflow.TaskObject["Define Leakage Threshold"].InsertCompoundChildTask()
+    leakage_threshold.AddChildToTask()
+    leakage_threshold.InsertCompoundChildTask()
     workflow.TaskObject["leakage-1"].Arguments.setState(
         {
             "AddChild": "yes",
@@ -340,7 +340,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "RegionSelectionSingle": "void-region-1",
         }
     )
-    workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
+    leakage_threshold.Arguments.setState(
         {
             "AddChild": "yes",
         }
@@ -399,14 +399,15 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Add boundary layers.
-    workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-    workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+    add_boundary_layer = workflow.TaskObject["Add Boundary Layers"]
+    add_boundary_layer.AddChildToTask()
+    add_boundary_layer.InsertCompoundChildTask()
     workflow.TaskObject["aspect-ratio_1"].Arguments.setState(
         {
             "BLControlName": "aspect-ratio_1",
         }
     )
-    workflow.TaskObject["Add Boundary Layers"].Arguments.setState({})
+    add_boundary_layer.Arguments.setState({})
     execute_task_with_pre_and_postconditions(task_name="aspect-ratio_1")
 
     ###############################################################################
@@ -438,54 +439,52 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Switch to Solution mode
     solver_session = meshing_session.switch_to_solver()
-
+    tui = solver_session.tui
     ###############################################################################
     # Check the mesh in Solver mode
-    solver_session.tui.mesh.check()
+    tui.mesh.check()
 
     ###############################################################################
     # Set the units for length
-    solver_session.tui.define.units("length", "mm")
+    tui.define.units("length", "mm")
 
     ###############################################################################
     # Select kw sst turbulence model
-    solver_session.tui.define.models.viscous.kw_sst("yes")
+    tui.define.models.viscous.kw_sst("yes")
 
     ###############################################################################
     # Set the velocity and turbulence boundary conditions for the first inlet
     # (inlet-1).
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
     if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
-        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-            "inlet-1", [], "vmag", "no", 1, "quit"
-        )
+        boundary_conditions = tui.define.boundary_conditions
+        boundary_conditions.set.velocity_inlet("inlet-1", [], "vmag", "no", 1, "quit")
         ###############################################################################
         # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
         # and inlet_3).
-        solver_session.tui.define.boundary_conditions.copy_bc(
-            "inlet-1", "inlet-2", "inlet-3", ()
-        )
+        boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
 
         ###############################################################################
         # Set the boundary conditions at the outlet (outlet-1).
-        solver_session.tui.define.boundary_conditions.set.pressure_outlet(
+        boundary_conditions.set.pressure_outlet(
             "outlet-1", [], "turb-intensity", 5, "quit"
         )
-        solver_session.tui.solve.monitors.residual.plot("yes")
+        tui.solve.monitors.residual.plot("yes")
 
         ###############################################################################
         # Initialize the flow field using the Initialization
-        solver_session.tui.solve.initialize.hyb_initialization()
+        tui.solve.initialize.hyb_initialization()
 
         ###############################################################################
         # Start the calculation by requesting 100 iterations
-        solver_session.tui.solve.set.number_of_iterations(100)
-        solver_session.tui.solve.iterate()
+        tui.solve.set.number_of_iterations(100)
+        tui.solve.iterate()
 
         ###############################################################################
         # Assert the returned mass flow rate report definition value
-        solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
-        solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
+        flux = solver_session.solution.report_definitions.flux
+        flux["mass_flow_rate"] = {}
+        flux["mass_flow_rate"].zone_names = [
             "inlet-1",
             "inlet-2",
             "inlet-3",
@@ -508,15 +507,12 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
         solver_session.solution.report_definitions.surface[
             "velocity_magnitude_outlet"
         ] = {}
-        solver_session.solution.report_definitions.surface[
+        vmag_outlet = solver_session.solution.report_definitions.surface[
             "velocity_magnitude_outlet"
-        ].report_type = "surface-areaavg"
-        solver_session.solution.report_definitions.surface[
-            "velocity_magnitude_outlet"
-        ].field = "velocity-magnitude"
-        solver_session.solution.report_definitions.surface[
-            "velocity_magnitude_outlet"
-        ].surface_names = ["outlet-1"]
+        ]
+        vmag_outlet.report_type = "surface-areaavg"
+        vmag_outlet.field = "velocity-magnitude"
+        vmag_outlet.surface_names = ["outlet-1"]
 
         check_report_definition = partial(
             check_report_definition_result,

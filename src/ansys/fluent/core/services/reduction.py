@@ -6,21 +6,29 @@ import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 Path = List[Tuple[str, str]]
 
 
 class ReductionService:
-    """
-    Reduction Service.
-    """
+    """Reduction Service."""
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of Reduction class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self._stub = ReductionGrpcModule.ReductionStub(intercept_channel)
         self._metadata = metadata
@@ -29,141 +37,155 @@ class ReductionService:
     def area(
         self, request: ReductionProtoModule.AreaRequest
     ) -> ReductionProtoModule.AreaResponse:
-        """Area rpc of Reduction service."""
+        """Area RPC of Reduction service."""
         return self._stub.Area(request, metadata=self._metadata)
 
     @catch_grpc_error
     def area_average(
         self, request: ReductionProtoModule.AreaAveRequest
     ) -> ReductionProtoModule.AreaAveResponse:
-        """Area average rpc of Reduction service."""
+        """Area average RPC of Reduction service."""
         return self._stub.AreaAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def area_integral(
         self, request: ReductionProtoModule.AreaIntRequest
     ) -> ReductionProtoModule.AreaIntResponse:
-        """Area integral rpc of Reduction service."""
+        """Area integral RPC of Reduction service."""
         return self._stub.AreaInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def centroid(
         self, request: ReductionProtoModule.CentroidRequest
     ) -> ReductionProtoModule.CentroidResponse:
-        """Centroid rpc of Reduction service."""
+        """Centroid RPC of Reduction service."""
         return self._stub.Centroid(request, metadata=self._metadata)
 
     @catch_grpc_error
     def count(
         self, request: ReductionProtoModule.CountRequest
     ) -> ReductionProtoModule.CountResponse:
-        """Count rpc of Reduction service."""
+        """Count RPC of Reduction service."""
         return self._stub.Count(request, metadata=self._metadata)
 
     @catch_grpc_error
     def count_if(
         self, request: ReductionProtoModule.CountIfRequest
     ) -> ReductionProtoModule.CountIfResponse:
-        """Count If rpc of Reduction service."""
+        """Count If RPC of Reduction service."""
         return self._stub.Count(request, metadata=self._metadata)
 
     @catch_grpc_error
     def force(
         self, request: ReductionProtoModule.ForceRequest
     ) -> ReductionProtoModule.ForceResponse:
-        """Force rpc of Reduction service."""
+        """Force RPC of Reduction service."""
         return self._stub.Force(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_average(
         self, request: ReductionProtoModule.MassAveRequest
     ) -> ReductionProtoModule.MassAveResponse:
-        """Mass average rpc of Reduction service."""
+        """Mass average RPC of Reduction service."""
         return self._stub.MassAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_flow_average(
         self, request: ReductionProtoModule.MassFlowAveRequest
     ) -> ReductionProtoModule.MassFlowAveResponse:
-        """Mass flow average rpc of Reduction service."""
+        """Mass flow average RPC of Reduction service."""
         return self._stub.MassFlowAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_flow_average_absolute(
         self, request: ReductionProtoModule.MassFlowAveAbsRequest
     ) -> ReductionProtoModule.MassFlowAveAbsResponse:
-        """Absolute mass flow average rpc of Reduction service."""
+        """Absolute mass flow average RPC of Reduction service."""
         return self._stub.MassFlowAveAbs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_flow_integral(
         self, request: ReductionProtoModule.MassFlowIntRequest
     ) -> ReductionProtoModule.MassFlowIntResponse:
-        """Mass flow integral rpc of Reduction service."""
+        """Mass flow integral RPC of Reduction service."""
         return self._stub.MassFlowInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def mass_integral(
         self, request: ReductionProtoModule.MassIntRequest
     ) -> ReductionProtoModule.MassIntResponse:
-        """Mass integral rpc of Reduction service."""
+        """Mass integral RPC of Reduction service."""
         return self._stub.MassInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def maximum(
         self, request: ReductionProtoModule.MaximumRequest
     ) -> ReductionProtoModule.MaximumResponse:
-        """Maximum rpc of Reduction service."""
+        """Maximum RPC of Reduction service."""
         return self._stub.Maximum(request, metadata=self._metadata)
 
     @catch_grpc_error
     def minimum(
         self, request: ReductionProtoModule.MinimumRequest
     ) -> ReductionProtoModule.MinimumResponse:
-        """Minimum rpc of Reduction service."""
+        """Minimum RPC of Reduction service."""
         return self._stub.Minimum(request, metadata=self._metadata)
 
     @catch_grpc_error
     def pressure_force(
         self, request: ReductionProtoModule.PressureForceRequest
     ) -> ReductionProtoModule.PressureForceResponse:
-        """Pressure force rpc of Reduction service."""
+        """Pressure force RPC of Reduction service."""
         return self._stub.PressureForce(request, metadata=self._metadata)
 
     @catch_grpc_error
     def viscous_force(
         self, request: ReductionProtoModule.ViscousForceRequest
     ) -> ReductionProtoModule.ViscousForceResponse:
-        """Viscous force rpc of Reduction service."""
+        """Viscous force RPC of Reduction service."""
         return self._stub.ViscousForce(request, metadata=self._metadata)
 
     @catch_grpc_error
     def volume(
         self, request: ReductionProtoModule.VolumeRequest
     ) -> ReductionProtoModule.VolumeResponse:
-        """Volume rpc of Reduction service."""
+        """Volume RPC of Reduction service."""
         return self._stub.Volume(request, metadata=self._metadata)
 
     @catch_grpc_error
     def volume_average(
         self, request: ReductionProtoModule.VolumeAveRequest
     ) -> ReductionProtoModule.VolumeAveResponse:
-        """Volume average rpc of Reduction service."""
+        """Volume average RPC of Reduction service."""
         return self._stub.VolumeAve(request, metadata=self._metadata)
 
     @catch_grpc_error
     def volume_integral(
         self, request: ReductionProtoModule.VolumeIntRequest
     ) -> ReductionProtoModule.VolumeIntResponse:
-        """Volume integral rpc of Reduction service."""
+        """Volume integral RPC of Reduction service."""
         return self._stub.VolumeInt(request, metadata=self._metadata)
 
     @catch_grpc_error
     def moment(
         self, request: ReductionProtoModule.MomentRequest
     ) -> ReductionProtoModule.MomentResponse:
-        """Moment rpc of Reduction service."""
+        """Moment RPC of Reduction service."""
         return self._stub.Moment(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def sum(
+        self, request: ReductionProtoModule.SumRequest
+    ) -> ReductionProtoModule.SumResponse:
+        """Sum RPC of Reduction service."""
+        return self._stub.Sum(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def sum_if(
+        self, request: ReductionProtoModule.SumIfRequest
+    ) -> ReductionProtoModule.SumIfResponse:
+        """Sum RPC of Reduction service."""
+        return self._stub.SumIf(request, metadata=self._metadata)
 
 
 class BadReductionRequest(Exception):
@@ -242,9 +264,7 @@ def _locns(locns, ctxt=None):
 
 
 class Reduction:
-    """
-    Reduction.
-    """
+    """Reduction."""
 
     def __init__(self, service: ReductionService):
         """__init__ method of Reduction class."""
@@ -264,7 +284,7 @@ class Reduction:
         request = ReductionProtoModule.AreaRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.area(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def area_average(self, expression, locations, ctxt=None) -> Any:
         """Get area average."""
@@ -272,7 +292,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.area_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def area_integral(self, expression, locations, ctxt=None) -> Any:
         """Get area integral."""
@@ -280,7 +300,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.area_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def centroid(self, locations, ctxt=None) -> Any:
         """Get centroid."""
@@ -294,7 +314,7 @@ class Reduction:
         request = ReductionProtoModule.CountRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.count(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def count_if(self, expression, locations, ctxt=None) -> Any:
         """Get count if."""
@@ -302,7 +322,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.count_if(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def force(self, locations, ctxt=None) -> Any:
         """Get force."""
@@ -317,7 +337,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_average(self, expression, locations, ctxt=None) -> Any:
         """Get mass flow average."""
@@ -325,7 +345,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_flow_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_average_absolute(self, expression, locations, ctxt=None) -> Any:
         """Get absolute mass flow average."""
@@ -333,7 +353,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_flow_average_absolute(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_flow_integral(self, expression, locations, ctxt=None) -> Any:
         """Get mass flow integral."""
@@ -341,7 +361,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_flow_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def mass_integral(self, expression, locations, ctxt=None) -> Any:
         """Get mass integral."""
@@ -349,7 +369,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.mass_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def maximum(self, expression, locations, ctxt=None) -> Any:
         """Get maximum."""
@@ -357,7 +377,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.maximum(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def minimum(self, expression, locations, ctxt=None) -> Any:
         """Get minimum."""
@@ -365,7 +385,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.minimum(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def pressure_force(self, locations, ctxt=None) -> Any:
         """Get pressure force."""
@@ -386,7 +406,7 @@ class Reduction:
         request = ReductionProtoModule.VolumeRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.volume(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def volume_average(self, expression, locations, ctxt=None) -> Any:
         """Get volume average."""
@@ -394,7 +414,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.volume_average(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def volume_integral(self, expression, locations, ctxt=None) -> Any:
         """Get volume integral."""
@@ -402,12 +422,31 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.volume_integral(request)
-        return response.value
+        return _convert_variant_to_value(response.value)
 
     def moment(self, expression, locations, ctxt=None) -> Any:
-        """Get volume integral."""
+        """Get moment."""
         request = ReductionProtoModule.MomentRequest()
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.moment(request)
         return response.value
+
+    def sum(self, expression, locations, weight, ctxt=None) -> Any:
+        """Get sum."""
+        request = ReductionProtoModule.SumRequest()
+        request.expression = expression
+        request.locations.extend(self._get_location_string(locations, ctxt))
+        request.weight = weight
+        response = self.service.sum(request)
+        return _convert_variant_to_value(response.value)
+
+    def sum_if(self, expression, condition, locations, weight, ctxt=None) -> Any:
+        """Get sum if a particular condition satisfies."""
+        request = ReductionProtoModule.SumIfRequest()
+        request.expression = expression
+        request.condition = condition
+        request.locations.extend(self._get_location_string(locations, ctxt))
+        request.weight = weight
+        response = self.service.sum_if(request)
+        return _convert_variant_to_value(response.value)

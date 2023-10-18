@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import BaseSession as Session
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 _THIS_DIR = Path(__file__).parent
 
@@ -83,7 +83,12 @@ class DataModelStaticInfo:
     _noindices = []
 
     def __init__(
-        self, rules: str, modes: tuple, version: str, rules_save_name: str = ""
+        self,
+        pyfluent_path: str,
+        rules: str,
+        modes: tuple,
+        version: str,
+        rules_save_name: str = "",
     ):
         self.rules = rules
         self.modes = modes
@@ -91,26 +96,25 @@ class DataModelStaticInfo:
         if rules_save_name == "":
             rules_save_name = rules
         datamodel_dir = (
-            _THIS_DIR
-            / ".."
-            / "src"
+            (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIR) / ".." / "src"))
             / "ansys"
             / "fluent"
             / "core"
             / f"datamodel_{version}"
-        )
+        ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
-        self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
 
 
 class DataModelGenerator:
-    def __init__(self):
-        self.version = get_version_for_filepath()
+    def __init__(self, version, pyfluent_path):
+        self.version = version
         self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo(
+                pyfluent_path,
                 "workflow",
                 (
                     "meshing",
@@ -118,21 +122,26 @@ class DataModelGenerator:
                 ),
                 self.version,
             ),
-            "meshing": DataModelStaticInfo("meshing", ("meshing",), self.version),
+            "meshing": DataModelStaticInfo(
+                pyfluent_path, "meshing", ("meshing",), self.version
+            ),
             "PartManagement": DataModelStaticInfo(
-                "PartManagement", ("meshing",), self.version
+                pyfluent_path, "PartManagement", ("meshing",), self.version
             ),
             "PMFileManagement": DataModelStaticInfo(
-                "PMFileManagement", ("meshing",), self.version
+                pyfluent_path, "PMFileManagement", ("meshing",), self.version
             ),
             "flicing": DataModelStaticInfo(
-                "flserver", ("flicing",), self.version, "flicing"
+                pyfluent_path, "flserver", ("flicing",), self.version, "flicing"
             ),
             "preferences": DataModelStaticInfo(
-                "preferences", ("meshing", "solver", "flicing,"), self.version
+                pyfluent_path,
+                "preferences",
+                ("meshing", "solver", "flicing,"),
+                self.version,
             ),
             "solverworkflow": DataModelStaticInfo(
-                "solverworkflow", ("solver",), self.version
+                pyfluent_path, "solverworkflow", ("solver",), self.version
             )
             if int(self.version) >= 231
             else None,
@@ -145,9 +154,7 @@ class DataModelGenerator:
     def _get_static_info(self, rules: str, session: Session):
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.rules = rules
-        response = session.fluent_connection.datamodel_service_se.get_static_info(
-            request
-        )
+        response = session.datamodel_service_se.get_static_info(request)
         return response.info
 
     def _populate_static_info(self):
@@ -200,11 +207,12 @@ class DataModelGenerator:
             session.exit()
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
+        api_tree = {}
         # preferences contains a deprecated object Meshing Workflow (with a space)
         # which migrates to MeshingWorkflow automatically. Simplest thing to do is
         # filter out invalid names.
         if not name.isidentifier():
-            return
+            return api_tree
         indent = " " * level * 4
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
@@ -243,16 +251,21 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        .\n")
             f.write(f'{indent}        """\n')
-            self._write_static_info(f"_{k}", info.namedobjects[k], f, level + 2)
+            api_tree[f"{k}:<name>"] = self._write_static_info(
+                f"_{k}", info.namedobjects[k], f, level + 2
+            )
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
         for k in singletons:
             if k.isidentifier():
-                print("included", k)
-                self._write_static_info(k, info.singletons[k], f, level + 1)
+                # print("included", k)
+                api_tree[k] = self._write_static_info(
+                    k, info.singletons[k], f, level + 1
+                )
             else:
-                print("\t\texcluded", k)
+                # print("\t\texcluded", k)
+                pass
         for k in parameters:
             k_type = _PY_TYPE_BY_DM_TYPE[info.parameters[k].type]
             if k_type in ["str", "List[str]"]:
@@ -270,6 +283,7 @@ class DataModelGenerator:
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
+            api_tree[k] = "Parameter"
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
@@ -280,9 +294,11 @@ class DataModelGenerator:
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
+            api_tree[k] = "Command"
+        return api_tree
 
     def _write_doc_for_model_object(
-        self, info, doc_dir: Path, heading, module_name, class_name
+        self, info, doc_dir: Path, heading, module_name, class_name, noindex=True
     ) -> None:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
@@ -303,6 +319,8 @@ class DataModelGenerator:
             commands = sorted(info.commands)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            if noindex:
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
@@ -336,6 +354,7 @@ class DataModelGenerator:
                     )
 
     def write_static_info(self) -> None:
+        api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
         for mode in ["meshing", "solver"]:
             doc_dir = Path(
                 _MESHING_DM_DOC_DIR if mode == "meshing" else _SOLVER_DM_DOC_DIR
@@ -357,7 +376,7 @@ class DataModelGenerator:
         for name, info in self._static_info.items():
             if info.static_info == None:
                 continue
-            with open(info.filepath, "w", encoding="utf8") as f:
+            with open(info.file_name, "w", encoding="utf8") as f:
                 f.write("#\n")
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
@@ -371,13 +390,18 @@ class DataModelGenerator:
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand\n")
                 f.write(")\n\n\n")
-                self._write_static_info("Root", info.static_info, f)
+                api_tree_val = {
+                    name: self._write_static_info("Root", info.static_info, f)
+                }
                 mode_to_dir = dict(
                     meshing=_MESHING_DM_DOC_DIR,
                     solver=_SOLVER_DM_DOC_DIR,
                     flicing=_SOLVER_DM_DOC_DIR,
                 )
                 for mode in info.modes:
+                    if mode in ("solver", "meshing"):
+                        key = f"<{mode}_session>"
+                        api_tree[key].update(api_tree_val)
                     dir_type = mode_to_dir.get(mode)
                     first_heading = "solver" if mode == "flicing" else mode
                     if dir_type:
@@ -391,21 +415,24 @@ class DataModelGenerator:
                             heading=f"{first_heading}.datamodel.{name}",
                             module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
                             class_name="Root",
+                            noindex=len(info.modes) > 1 and mode != "solver",
                         )
+        return api_tree
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
-            if info.filepath.exists():
-                info.filepath.unlink()
+            if info.file_name.exists():
+                info.file_name.unlink()
         if Path(_MESHING_DM_DOC_DIR).exists():
             shutil.rmtree(Path(_MESHING_DM_DOC_DIR))
         if Path(_SOLVER_DM_DOC_DIR).exists():
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate():
-    DataModelGenerator().write_static_info()
+def generate(version, pyfluent_path):
+    return DataModelGenerator(version, pyfluent_path).write_static_info()
 
 
 if __name__ == "__main__":
-    generate()
+    version = get_version_for_file_name()
+    generate(version, None)

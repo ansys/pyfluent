@@ -10,4 +10,5 @@ you can download these examples as Python files or Jupyter notebooks and run the
    :maxdepth: 1
    :hidden:
 
-.. 00-fluent/README.txt
+   00-fluent/README.txt
+   Miscellaneous Examples <https://examples.fluent.docs.pyansys.com/version/dev/index.html>    

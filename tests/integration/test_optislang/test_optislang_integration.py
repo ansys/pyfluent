@@ -6,11 +6,14 @@ import pytest
 from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
 
 
+@pytest.mark.nightly
 @pytest.mark.optislang
 @pytest.mark.integration
 @pytest.mark.codegen_required
+@pytest.mark.fluent_version("latest")
 def test_simple_solve(load_mixing_elbow_param_case_dat):
     """Use case 1: This optiSLang integration test performs these steps.
 
@@ -33,7 +36,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = load_mixing_elbow_param_case_dat
     assert solver_session.health_check_service.is_serving
-    case_path = str(Path(pyfluent.EXAMPLES_PATH) / "elbow_param.cas.h5")
+    case_path = examples.path("elbow_param.cas.h5")
     solver_session.tui.file.read_case_data(case_path)
 
     # Step 3: Get input and output parameters and create a dictionary
@@ -99,10 +102,12 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
         solver_session.exit()
 
 
+@pytest.mark.nightly
 @pytest.mark.optislang
 @pytest.mark.integration
 @pytest.mark.codegen_required
-def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
+@pytest.mark.fluent_version("latest")
+def test_generate_read_mesh(mixing_elbow_geometry):
     """Use case 2: This optiSLang integration test performs these steps.
 
     - Launch Fluent in Meshing Mode
@@ -135,10 +140,9 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
     if float(meshing.get_fluent_version()[:-2]) < 23.0:
         # Step 3 Generate mesh from geometry with default workflow settings
         meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-        meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-            FileName=mixing_elbow_geometry
-        )
-        meshing.workflow.TaskObject["Import Geometry"].Execute()
+        geo_import = meshing.workflow.TaskObject["Import Geometry"]
+        geo_import.Arguments = dict(FileName=mixing_elbow_geometry)
+        geo_import.Execute()
         meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
         meshing.tui.mesh.check_mesh()
         gz_path = str(Path(temporary_resource_path) / "default_mesh.msh.gz")
@@ -157,8 +161,9 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
         solver.tui.solve.initialize.hyb_initialization()
         gz_path = str(Path(temporary_resource_path) / "default_case.cas.gz")
         h5_path = str(Path(temporary_resource_path) / "default_case.cas.h5")
-        solver.tui.file.write_case(gz_path)
-        solver.tui.file.write_case(h5_path)
+        write_case = solver.tui.file.write_case
+        write_case(gz_path)
+        write_case(h5_path)
         assert (Path(temporary_resource_path) / "default_case.cas.gz").exists() == True
         assert (Path(temporary_resource_path) / "default_case.cas.h5").exists() == True
         solver.exit()

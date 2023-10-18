@@ -1,20 +1,29 @@
 """Wrapper to settings gRPC service of Fluent."""
 import collections.abc
 from functools import wraps
-from typing import Any, List
+from typing import Any, List, Tuple
 
 import grpc
 
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 
 class _SettingsServiceImpl:
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
@@ -105,9 +114,9 @@ def _get_request_instance_for_path(request_class, path):
 class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
-    def __init__(self, channel, metadata, scheme_eval):
+    def __init__(self, channel, metadata, scheme_eval, fluent_error_state):
         """__init__ method of SettingsService class."""
-        self._service_impl = _SettingsServiceImpl(channel, metadata)
+        self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
         self._scheme_eval = scheme_eval
 
     @_trace
@@ -128,7 +137,7 @@ class SettingsService:
         elif isinstance(value, collections.abc.Iterable):
             for v in value:
                 self._set_state_from_value(state.value_list.lst.add(), v)
-        else:  # fall back to string (e.g. pathlib.Path)
+        else:  # fall back to string (for example, pathlib.Path)
             state.string = str(value)
 
     @_trace
@@ -220,7 +229,7 @@ class SettingsService:
         ret = {}
         ret["type"] = info.type
         if info.has_allowed_values:
-            ret["has_allowed_values"] = info.has_allowed_values
+            ret["has-allowed-values"] = info.has_allowed_values
         if info.children:
             ret["children"] = {
                 child.name: self._extract_static_info(child.value)
@@ -266,13 +275,14 @@ class SettingsService:
 
         return ret
 
+    # pylint: disable=missing-raises-doc
     @_trace
     def get_static_info(self):
         """Get static-info for settings."""
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)
-        # The rpc calls no longer raise an exception. Force an exception if
+        # The RPC calls no longer raise an exception. Force an exception if
         # type is empty
         if not response.info.type:
             raise RuntimeError
@@ -310,29 +320,6 @@ class SettingsService:
             ret["group_children"] = {
                 child.name: self._parse_attrs(child.value)
                 for child in response.group_children
-            }
-        if response.named_object_children:
-            ret["named_object_children"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.named_object_children
-            }
-        if response.list_object_children:
-            ret["list_object_children"] = [
-                self._parse_attrs(child) for child in response.list_object_children
-            ]
-        if response.commands:
-            ret["commands"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.commands
-            }
-        if response.queries:
-            ret["queries"] = {
-                child.name: self._parse_attrs(child.value) for child in response.queries
-            }
-        if response.arguments:
-            ret["arguments"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.arguments
             }
         return ret
 

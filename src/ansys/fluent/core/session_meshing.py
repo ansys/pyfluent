@@ -7,11 +7,14 @@ from ansys.fluent.core.session_solver import Solver
 
 
 class Meshing(PureMeshing):
-    """Encapsulates a Fluent meshing session. A ``tui`` object
+    """Encapsulates a Fluent meshing session.
+
+    A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all
     exposed here. A ``switch_to_solver`` method is available
-    in this mode."""
+    in this mode.
+    """
 
     def __init__(
         self,
@@ -41,25 +44,25 @@ class Meshing(PureMeshing):
 
     @property
     def meshing(self):
-        """meshing datamodel root."""
+        """Datamodel root of meshing."""
         return super(Meshing, self).meshing if not self.switched else None
 
     @property
     def workflow(self):
-        """workflow datamodel root."""
+        """Datamodel root of workflow."""
         return super(Meshing, self).workflow if not self.switched else None
 
     @property
     def PartManagement(self):
-        """PartManagement datamodel root."""
+        """Datamodel root of PartManagement."""
         return super(Meshing, self).PartManagement if not self.switched else None
 
     @property
     def PMFileManagement(self):
-        """PMFileManagement datamodel root."""
+        """Datamodel root of PMFileManagement."""
         return super(Meshing, self).PMFileManagement if not self.switched else None
 
     @property
     def preferences(self):
-        """preferences datamodel root."""
+        """Datamodel root of preferences."""
         return super(Meshing, self).preferences if not self.switched else None

@@ -7,10 +7,7 @@ import subprocess
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core import __version__
-
-pyfluent.BUILDING_GALLERY = True
 
 # -- Project information -----------------------------------------------------
 
@@ -36,13 +33,20 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
 ]
 
+skip_examples = int(os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC", 0))
+if skip_examples:
+    pass
+else:
+    extensions.append("sphinx_gallery.gen_gallery")
+
+typehints_document_rtype = False
+
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None),
+    "python": ("https://docs.python.org/", None),
     "numpy": ("https://numpy.org/doc/stable", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
 }
@@ -83,7 +87,7 @@ html_static_path = ["_static"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
-# The suffix(es) of source filenames.
+# The suffix(es) of source file names.
 source_suffix = ".rst"
 
 # The master toctree document.
@@ -152,6 +156,9 @@ sphinx_gallery_conf = {
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
     "reset_modules": (_stop_fluent_container),
+    "capture_repr": (),
+    "remove_config_comments": True,
+    "abort_on_example_error": True,
 }
 
 
@@ -176,6 +183,12 @@ html_theme_options = {
     "switcher": {
         "json_url": f"https://{cname}/versions.json",
         "version_match": get_version_match(__version__),
+    },
+    "use_meilisearch": {
+        "api_key": os.getenv("MEILISEARCH_PUBLIC_API_KEY", ""),
+        "index_uids": {
+            f"pyfluent-v{get_version_match(__version__).replace('.', '-')}": "PyFluent",
+        },
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,

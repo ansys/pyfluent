@@ -1,7 +1,10 @@
-"""Module controlling PyFluent's logging functionality."""
+"""Module controlling PyFluent's logging functionality.
+
+For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`.
+"""
 import logging.config
 import os
-from typing import Union
+from typing import Optional, Union
 
 import yaml
 
@@ -9,7 +12,8 @@ _logging_file_enabled = False
 
 
 def root_config():
-    """Sets up the root PyFluent logger that outputs messages to stdout, but not to files."""
+    """Sets up the root PyFluent logger that outputs messages to stdout, but not to
+    files."""
     logger = logging.getLogger("pyfluent")
     logger.setLevel("WARNING")
     formatter = logging.Formatter("%(name)s %(levelname)s: %(message)s")
@@ -25,47 +29,103 @@ def is_active() -> bool:
     return _logging_file_enabled
 
 
-def enable(level: Union[str, int] = "DEBUG"):
+def get_default_config() -> dict:
+    """Returns the default configuration dictionary obtained from parsing from the
+    PyFluent ``logging_config.yaml`` file.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.logging.get_default_config()
+    {'disable_existing_loggers': False,
+     'formatters': {'logfile_fmt': {'format': '%(asctime)s %(name)-21s '
+                                              '%(levelname)-8s %(message)s'}},
+     'handlers': {'pyfluent_file': {'backupCount': 9,
+                                    'class': 'logging.handlers.RotatingFileHandler',
+                                    'filename': 'pyfluent.log',
+                                    'formatter': 'logfile_fmt',
+                                    'level': 'NOTSET',
+                                    'maxBytes': 10485760}},
+     'loggers': {'pyfluent.datamodel': {'handlers': ['pyfluent_file'],
+                                        'level': 'DEBUG'},
+                 'pyfluent.general': {'handlers': ['pyfluent_file'],
+                                      'level': 'DEBUG'},
+                 'pyfluent.launcher': {'handlers': ['pyfluent_file'],
+                                       'level': 'DEBUG'},
+                 'pyfluent.networking': {'handlers': ['pyfluent_file'],
+                                         'level': 'DEBUG'},
+                 'pyfluent.post_objects': {'handlers': ['pyfluent_file'],
+                                           'level': 'DEBUG'},
+                 'pyfluent.settings_api': {'handlers': ['pyfluent_file'],
+                                           'level': 'DEBUG'},
+                 'pyfluent.tui': {'handlers': ['pyfluent_file'], 'level': 'DEBUG'}},
+     'version': 1}
+    """
+    file_name = os.path.abspath(__file__)
+    file_dir = os.path.dirname(file_name)
+    yaml_path = os.path.join(file_dir, "logging_config.yaml")
+    with open(yaml_path, "rt") as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = None):
     """Enables PyFluent logging to file.
 
     Parameters
     ----------
     level : str or int, optional
         Specified logging level to set PyFluent loggers to. If omitted, level is set to DEBUG.
-
-    Examples
-    --------
-    >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logging.enable()
+    custom_config : dict, optional
+        Used to provide a customized logging configuration file that will be used instead
+        of the ``logging_config.yaml`` file (see also :func:`get_default_config`).
 
     Notes
     -----
     See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+
+    Examples
+    --------
+    Using the default logging setup:
+
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.logging.enable()
+
+    Customizing logging configuration (see also :func:`get_default_config`):
+
+    >>> import ansys.fluent.core as pyfluent
+    >>> config_dict = pyfluent.logging.get_default_config()
+    >>> config_dict['handlers']['pyfluent_file']['filename'] = 'test.log'
+    >>> pyfluent.logging.enable(custom_config=config_dict)
     """
     global _logging_file_enabled
 
     if _logging_file_enabled:
-        print("PyFluent logging to file is already active.")
-        return
+        print(
+            "PyFluent logging to file is already active, overwriting previous configuration..."
+        )
 
     _logging_file_enabled = True
 
     # Configure the logging system
-    file_path = os.path.abspath(__file__)
-    file_dir = os.path.dirname(file_path)
-    yaml_path = os.path.join(file_dir, "logging_config.yaml")
-
-    with open(yaml_path, "rt") as f:
-        config = yaml.safe_load(f)
+    if custom_config is not None:
+        config = custom_config
+    else:
+        config = get_default_config()
 
     logging.config.dictConfig(config)
-    print(f"PyFluent logging file {os.path.join(os.getcwd(),'pyfluent.log')}")
+    file_name = config["handlers"]["pyfluent_file"]["filename"]
+
+    print(f"PyFluent logging file {os.path.join(os.getcwd(), file_name)}")
 
     set_global_level(level)
 
 
 def get_logger(*args, **kwargs):
-    """Retrieves logger. Convenience wrapper for Python's :func:`logging.getLogger` function."""
+    """Retrieves logger.
+
+    Convenience wrapper for Python's :func:`logging.getLogger` function.
+    """
     return logging.getLogger(*args, **kwargs)
 
 
@@ -77,6 +137,10 @@ def set_global_level(level: Union[str, int]):
     level : str or int
         Specified logging level to set PyFluent loggers to.
 
+    Notes
+    -----
+    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
@@ -85,10 +149,6 @@ def set_global_level(level: Union[str, int]):
     or
 
     >>> pyfluent.logging.set_global_level('DEBUG')
-
-    Notes
-    -----
-    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
     """
     if not is_active():
         print("Logging is not active, enable it first.")
@@ -114,6 +174,11 @@ def list_loggers():
         Each list element is a PyFluent logger name that can be individually controlled
         through :func:`ansys.fluent.core.logging.get_logger`.
 
+    Notes
+    -----
+    PyFluent loggers use the standard Python logging library, for more details
+    see https://docs.python.org/3/library/logging.html#logger-objects
+
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
@@ -126,11 +191,6 @@ def list_loggers():
     >>> logger.setLevel('ERROR')
     >>> logger
     <Logger pyfluent.networking (ERROR)>
-
-    Notes
-    -----
-    PyFluent loggers use the standard Python logging library, for more details
-    see https://docs.python.org/3/library/logging.html#logger-objects
     """
     logger_dict = logging.root.manager.loggerDict
     pyfluent_loggers = []
@@ -138,3 +198,28 @@ def list_loggers():
         if name.startswith("pyfluent"):
             pyfluent_loggers.append(name)
     return pyfluent_loggers
+
+
+def configure_env_var() -> None:
+    """Verifies whether ``PYFLUENT_LOGGING`` environment variable was defined in the
+    system. Executed once automatically on PyFluent initialization.
+
+    Notes
+    -----
+    The usual way to enable PyFluent logging to file is through :func:`enable()`.
+    ``PYFLUENT_LOGGING`` set to ``0`` or ``OFF`` is the same as if no environment variable was set.
+    If logging debug output to file by default is desired, without having to use :func:`enable()` every time,
+    set environment variable ``PYFLUENT_LOGGING`` to ``DEBUG``.
+    See also the :ref:`user guide environment variable subsection <ref_logging_env_var>`.
+    """
+    env_logging_level = os.getenv("PYFLUENT_LOGGING")
+    if env_logging_level:
+        if env_logging_level.isdigit():
+            env_logging_level = int(env_logging_level)
+        else:
+            env_logging_level = env_logging_level.upper()
+        if not is_active() and env_logging_level not in [0, "OFF"]:
+            print(
+                "PYFLUENT_LOGGING environment variable specified, enabling logging..."
+            )
+            enable(env_logging_level)

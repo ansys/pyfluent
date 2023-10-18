@@ -1,22 +1,28 @@
 from os.path import dirname, join
 import pathlib
 import shutil
+from typing import Optional
 
 import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader import lispy
-from ansys.fluent.core.filereader.casereader import (
-    CaseReader,
+from ansys.fluent.core.filereader.case_file import (
     InputParameter,
+    InputParameterOld,
     _get_processed_string,
 )
+from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 
 
 def call_casereader(
-    case_filepath: str = None, project_filepath: str = None, expected: dict = None
+    case_file_name: Optional[str] = None,
+    project_file_name: Optional[str] = None,
+    expected: Optional[dict] = None,
 ):
-    reader = CaseReader(case_filepath=case_filepath, project_filepath=project_filepath)
+    reader = CaseReader(
+        case_file_name=case_file_name, project_file_name=project_file_name
+    )
     if expected is not None:
         assert reader.precision() == expected["precision"]
         assert reader.num_dimensions() == expected["num_dimensions"]
@@ -30,11 +36,11 @@ def call_casereader(
 
 
 def call_casereader_static_mixer(
-    case_filepath: str = None, project_filepath: str = None
+    case_file_name: Optional[str] = None, project_file_name: Optional[str] = None
 ):
     call_casereader(
-        case_filepath=case_filepath,
-        project_filepath=project_filepath,
+        case_file_name=case_file_name,
+        project_file_name=project_file_name,
         expected=dict(
             precision=2,
             num_dimensions=3,
@@ -55,42 +61,52 @@ def call_casereader_static_mixer(
 
 def static_mixer_file():
     return examples.download_file(
-        "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
+        "Static_Mixer_Parameters.cas.h5",
+        "pyfluent/static_mixer",
+        return_without_path=False,
     )
 
 
 def test_casereader_static_mixer_h5():
-    call_casereader_static_mixer(case_filepath=static_mixer_file())
+    call_casereader_static_mixer(case_file_name=static_mixer_file())
 
 
 def test_casereader_static_mixer_binary_cas():
     call_casereader_static_mixer(
-        case_filepath=examples.download_file(
-            "Static_Mixer_Parameters_legacy_binary.cas", "pyfluent/static_mixer"
+        case_file_name=examples.download_file(
+            "Static_Mixer_Parameters_legacy_binary.cas",
+            "pyfluent/static_mixer",
+            return_without_path=False,
         )
     )
 
 
 def test_casereader_static_mixer_binary_gz():
     call_casereader_static_mixer(
-        case_filepath=examples.download_file(
-            "Static_Mixer_Parameters_legacy_binary.cas.gz", "pyfluent/static_mixer"
+        case_file_name=examples.download_file(
+            "Static_Mixer_Parameters_legacy_binary.cas.gz",
+            "pyfluent/static_mixer",
+            return_without_path=False,
         )
     )
 
 
 def test_casereader_static_mixer_text_cas():
     call_casereader_static_mixer(
-        case_filepath=examples.download_file(
-            "Static_Mixer_Parameters_legacy_text.cas", "pyfluent/static_mixer"
+        case_file_name=examples.download_file(
+            "Static_Mixer_Parameters_legacy_text.cas",
+            "pyfluent/static_mixer",
+            return_without_path=False,
         )
     )
 
 
 def test_casereader_static_mixer_text_gz():
     call_casereader_static_mixer(
-        case_filepath=examples.download_file(
-            "Static_Mixer_Parameters_legacy_text.cas.gz", "pyfluent/static_mixer"
+        case_file_name=examples.download_file(
+            "Static_Mixer_Parameters_legacy_text.cas.gz",
+            "pyfluent/static_mixer",
+            return_without_path=False,
         )
     )
 
@@ -101,25 +117,29 @@ def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
         "Static_Mixer_Parameter_project_file/"
         "Static_Mixer_Parameters.cffdb/Static_Mixer_Parameters-Solve"
     )
-    case_filepath = examples.download_file(
-        "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer/" + case_file_dir
+    case_file_name = examples.download_file(
+        "Static_Mixer_Parameters.cas.h5",
+        "pyfluent/static_mixer/" + case_file_dir,
+        return_without_path=False,
     )
-    prj_dir = join(dirname(case_filepath), case_file_dir)
+    prj_dir = join(dirname(case_file_name), case_file_dir)
     pathlib.Path(prj_dir).mkdir(parents=True, exist_ok=True)
     if copy_1:
-        shutil.copy2(case_filepath, prj_dir)
+        shutil.copy2(case_file_name, prj_dir)
     if copy_2:
-        case_filepath_2 = examples.download_file(
-            "Static_Mixer_Parameters_legacy_binary.cas.gz", "pyfluent/static_mixer"
+        case_file_name_2 = examples.download_file(
+            "Static_Mixer_Parameters_legacy_binary.cas.gz",
+            "pyfluent/static_mixer",
+            return_without_path=False,
         )
-        shutil.copy2(case_filepath_2, prj_dir)
+        shutil.copy2(case_file_name_2, prj_dir)
     prj_file_dir = "Static_Mixer_Parameter_project_file"
     prj_file = r"Static_Mixer_Parameters.flprj"
-    prj_filepath = examples.download_file(
-        prj_file, "pyfluent/static_mixer/" + prj_file_dir
+    prj_file_name = examples.download_file(
+        prj_file, "pyfluent/static_mixer/" + prj_file_dir, return_without_path=False
     )
-    prj_file_dir = join(dirname(prj_filepath), prj_file_dir)
-    shutil.copy2(prj_filepath, prj_file_dir)
+    prj_file_dir = join(dirname(prj_file_name), prj_file_dir)
+    shutil.copy2(prj_file_name, prj_file_dir)
 
     return join(prj_file_dir, prj_file)
 
@@ -139,19 +159,19 @@ def test_casereader_no_file():
 def test_casereader_with_both_project_and_case_file():
     with pytest.raises(RuntimeError):
         call_casereader(
-            case_filepath="case_file.cas.h5", project_filepath="project.flprj"
+            case_file_name="case_file.cas.h5", project_file_name="project.flprj"
         )
 
 
 def test_casereader_for_project_directory_invalid_project_file():
     with pytest.raises(FileNotFoundError):
-        call_casereader(project_filepath="project.flprx")
+        call_casereader(project_file_name="project.flprx")
 
 
 def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_differently():
     call_casereader(
-        case_filepath=examples.download_file(
-            "mixer-ran_2019r3.cas.gz", "pyfluent/optislang"
+        case_file_name=examples.download_file(
+            "mixer-ran_2019r3.cas.gz", "pyfluent/optislang", return_without_path=False
         ),
         expected=dict(
             precision=1,
@@ -174,7 +194,7 @@ def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_di
 
 
 def test_case_reader_get_rp_and_config_vars():
-    reader = CaseReader(case_filepath=static_mixer_file())
+    reader = CaseReader(case_file_name=static_mixer_file())
     rp_vars = reader.rp_vars()
     assert rp_vars
     assert hasattr(rp_vars, "__getitem__")
@@ -188,12 +208,13 @@ def test_case_reader_get_rp_and_config_vars():
     assert reader.rp_var.pressure.output_dpdt__q() is True
     assert len(reader.rp_var.context.map_r17__plus()) == 53
     assert reader.rp_var.defaults.pre_r19__dot0_early__q() is False
-    with pytest.raises(BaseException):
+
+    with pytest.raises(RuntimeError) as msg:
         reader.rp_var.defaults.pre_r19__dot0_early()
+    assert msg.value.args[0] == r"Invalid variable defaults/pre-r19.0-early"
 
     with pytest.raises(ValueError) as msg:
         reader.config_var("rp-3d")
-
     assert (
         msg.value.args[0] == "rp-3d is not an allowed config-vars name.\n"
         "The most similar names are: rp-3d?, rp-des?."
@@ -231,6 +252,45 @@ def test_case_reader_input_parameter():
     assert velocity.numeric_value == 2
     assert velocity.value == "2 [m/s]"
 
+    vel_data = [
+        "real-1",
+        [
+            ("type", "real"),
+            ["name", ("value", '"inlet_velocity"'), ("type", "string-class")],
+            [
+                "parameter-value",
+                ("type", "real-class"),
+                ("value", 20.0),
+                ("min", False),
+                ("max", False),
+                ("units-quantity", "velocity"),
+            ],
+        ],
+    ]
+    velocity = InputParameterOld(raw_data=vel_data)
+
+    assert velocity.name == "inlet_velocity"
+    assert velocity.value == [
+        "parameter-value",
+        ("type", "real-class"),
+        ("value", 20.0),
+        ("min", False),
+        ("max", False),
+        ("units-quantity", "velocity"),
+    ]
+    assert velocity.units == "velocity"
+    assert velocity.numeric_value == 20.0
+
 
 def test_lispy_for_multiline_string():
     assert lispy.parse('(define x "abc\ndef")') == ["define", "x", '"abc\ndef"']
+
+
+def test_lispy_for_quotes():
+    lispy.parse(
+        '(define x "\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")")'
+    ) == [
+        "define",
+        "x",
+        '"\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")"',
+    ]

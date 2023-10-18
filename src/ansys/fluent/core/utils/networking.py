@@ -4,24 +4,23 @@ import socket
 from typing import Any
 
 import grpc
-
-from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
+from grpc_health.v1 import health_pb2, health_pb2_grpc
 
 network_logger = logging.getLogger("pyfluent.networking")
 
 
 def get_free_port() -> int:
-    """Identifies a free port to which a new socket connection can be
-    established.
+    """Identifies a free port to which a new socket connection can be established.
 
     Returns
     -------
     int
         port number
     """
-    sock = socket.socket()
-    sock.bind(("", 0))
-    return sock.getsockname()[1]
+    with socket.socket() as s:
+        s.bind(("localhost", 0))
+        free_port = s.getsockname()[1]
+    return free_port
 
 
 class _HealthServicer(health_pb2_grpc.HealthServicer):
@@ -46,8 +45,8 @@ class _GrpcServer:
 
 
 def find_remoting_ip() -> str:
-    """Find an ip address at which a grpc connection can be established
-    by looping over getaddrinfo output.
+    """Find an ip address at which a gRPC connection can be established by looping over
+    getaddrinfo output.
 
     Returns
     -------
@@ -81,4 +80,3 @@ def find_remoting_ip() -> str:
                         return ip
                 except Exception:
                     network_logger.debug(f"Cannot use {ip} as remoting ip")
-                    pass

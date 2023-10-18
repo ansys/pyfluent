@@ -7,18 +7,23 @@ on:
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-  DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v23.2.0
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYFLUENT_LAUNCH_CONTAINER: 1
+  PYFLUENT_LOGGING: 'DEBUG'
+  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_HIDE_LOG_SECRETS: 1
+  MEILISEARCH_API_KEY: ${{ secrets.MEILISEARCH_API_KEY }}
+  MEILISEARCH_PUBLIC_API_KEY: ${{ secrets.MEILISEARCH_PUBLIC_API_KEY }}
+  PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
 
 jobs:
-  nightly_docs_build:
+  build_dev_docs:
     runs-on: [self-hosted, pyfluent]
-    strategy:
-      fail-fast: false
-      matrix:
-        image-tag: [v22.2.0, v23.1.0, v23.2.0, v24.1.0]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -34,31 +39,26 @@ jobs:
         run: make install
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Run API codegen
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build All Documentation
         run: make build-all-docs
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Zip HTML Documentation before upload
         run: |
@@ -74,11 +74,29 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
+  deploy_dev_docs:
+    runs-on: ubuntu-latest
+    needs: [build_dev_docs]
+    steps:
       - name: "Deploy development documentation"
-        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
         uses: ansys/actions/doc-deploy-dev@v4
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
             decompress-artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
+
+  doc-index-dev:
+    name: "Deploy dev index docs"
+    runs-on: ubuntu-latest
+    needs: deploy_dev_docs
+    steps:
+      - name: "Deploy the latest documentation index"
+        uses: ansys/actions/doc-deploy-index@v4
+        with:
+          doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+          decompress-artifact: true
+          cname: ${{ env.DOCUMENTATION_CNAME }}/version/dev
+          index-name: pyfluent-vdev
+          host-url: ${{ vars.MEILISEARCH_HOST_URL }}
+          api-key: ${{ env.MEILISEARCH_API_KEY }}

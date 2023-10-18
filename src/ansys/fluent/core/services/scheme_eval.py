@@ -26,7 +26,11 @@ import grpc
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
-from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    BatchInterceptor,
+    ErrorStateInterceptor,
+    TracingInterceptor,
+)
 
 
 class SchemeEvalService:
@@ -35,34 +39,39 @@ class SchemeEvalService:
     Using the methods from the SchemeEval class is recommended.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    ):
         """__init__ method of SchemeEvalService class."""
         intercept_channel = grpc.intercept_channel(
-            channel, TracingInterceptor(), BatchInterceptor()
+            channel,
+            ErrorStateInterceptor(fluent_error_state),
+            TracingInterceptor(),
+            BatchInterceptor(),
         )
         self.__stub = SchemeEvalGrpcModule.SchemeEvalStub(intercept_channel)
         self.__metadata = metadata
 
     def eval(self, request: SchemePointer) -> SchemePointer:
-        """Eval rpc of SchemeEval service."""
+        """Eval RPC of SchemeEval service."""
         return self.__stub.Eval(request, metadata=self.__metadata)
 
     def exec(
         self, request: SchemeEvalProtoModule.ExecRequest
     ) -> SchemeEvalProtoModule.ExecResponse:
-        """Exec rpc of SchemeEval service."""
+        """Exec RPC of SchemeEval service."""
         return self.__stub.Exec(request, metadata=self.__metadata)
 
     def string_eval(
         self, request: SchemeEvalProtoModule.StringEvalRequest
     ) -> SchemeEvalProtoModule.StringEvalResponse:
-        """StringEval rpc of SchemeEval service."""
+        """StringEval RPC of SchemeEval service."""
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
         self, request: SchemeEvalProtoModule.SchemeEvalRequest
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
-        """SchemeEval rpc of SchemeEval service."""
+        """SchemeEval RPC of SchemeEval service."""
         return self.__stub.SchemeEval(request, metadata=self.__metadata)
 
 

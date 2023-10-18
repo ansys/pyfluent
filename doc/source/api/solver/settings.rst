@@ -7,7 +7,8 @@ settings and issue commands to be executed in the Fluent solver.
 
 Accessing solver settings
 -------------------------
-An appropriate call to the ``launch_fluent`` function returns an object (named ``solver`` in
+An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
+function returns an object (named ``solver`` in
 the following code snippets) whose interface directly exposes the
 :ref:`root<settings_root_section>` of the solver settings hierarchy.
 
@@ -17,31 +18,46 @@ the following code snippets) whose interface directly exposes the
   >>> solver = pyfluent.launch_fluent(mode="solver")
 
 
-The ``solver`` object contains attributes such as ``file``, ``setup``, ``solution``, and
-``results``, which are also instances of settings objects. Note that the last three are
+The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.solver.settings_232.file.file`,
+:obj:`~ansys.fluent.core.solver.settings_232.setup.setup`,
+:obj:`~ansys.fluent.core.solver.settings_232.solution.solution`, and
+:obj:`~ansys.fluent.core.solver.settings_232.results.results`,
+which are also instances of settings objects. Note that the last three are
 top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
 of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
 Types of settings objects
 -------------------------
-A settings object can be one of the primitive types: ``Integer``, ``Real``,``String``, and
-``Boolean``. A settings object can also be one of the three types of container objects:
-``Group``, ``NamedObject``, and ``ListObject``.
 
-- The ``Group`` type is a static container with predefined child objects that
-  can be accessed as attributes. For example, in ``setup.models.energy``
-  ``energy`` is a child of ``models``, which itself is a child of ``setup``, and each of those 
-  three objects is a ``Group``. The names of the child objects of a group can be accessed 
+.. vale Google.Spacing = NO
+
+A settings object can be one of the primitive types: :obj:`~ansys.fluent.core.solver.flobject.Integer`,
+:obj:`~ansys.fluent.core.solver.flobject.Real`,
+:obj:`~ansys.fluent.core.solver.flobject.String`, and
+:obj:`~ansys.fluent.core.solver.flobject.Boolean`. A settings object can also be one of the three types
+of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
+:obj:`~ansys.fluent.core.solver.flobject.NamedObject`, and
+:obj:`~ansys.fluent.core.solver.flobject.ListObject`.
+
+- The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
+  can be accessed as attributes. For example, using the expression ``solver.setup.models.energy``,
+  which resolves to :obj:`~ansys.fluent.core.solver.settings_232.energy.energy`,
+  which is a child of :obj:`~ansys.fluent.core.solver.settings_232.models_1.models`,
+  which itself is a child of :obj:`~ansys.fluent.core.solver.settings_232.setup.setup`, and each of those
+  three objects is a ``Group``.
+  The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
 
-- The ``NamedObject`` type is a container holding dynamically created named objects. For
+- The :obj:`~ansys.fluent.core.solver.flobject.NamedObject` type is a container holding dynamically
+  created named objects. For
   a given ``NamedObject`` container, each contained object is of the same
   specific type. A given named object can be accessed using the index operator. For example,
   ``solver.setup.boundary_conditions.velocity_inlet['inlet2']`` yields a ``velocity_inlet``
   object with the name ``inlet2``, assuming it exists. The current list of named object
   children can be accessed via ``<NamedObject>.get_object_names()``.
 
-- The ``ListObject`` type is a container holding dynamically created unnamed objects of
+- The :obj:`~ansys.fluent.core.solver.flobject.ListObject` type is a container holding dynamically
+  created unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
   list. Children of a ``ListObject`` object can be accessed using the index operator.
   For example, ``solver.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
@@ -49,10 +65,12 @@ A settings object can be one of the primitive types: ``Integer``, ``Real``,``Str
   named ``fluid-1``. The current number of child objects can be accessed with the
   ``get_size()`` method.
 
+.. vale Google.Spacing = YES
+
 
 Object state
 ------------
-You can access the state of any object by "calling" it. This returns the state of the children 
+You can access the state of any object by "calling" it. This returns the state of the children
 as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListObject`` types:
 
 .. code-block::
@@ -98,7 +116,7 @@ You can print the current state in a simple text format with the
 
 
 The following output is returned:
-  
+
 .. code-block::
 
   viscous :
@@ -191,7 +209,7 @@ These examples accesses the list of zone surfaces:
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
 
-The following table contains metadata names, corresponding methods to access this metadata, whether the method can return None, applicable object types, and returned data types: 
+The following table contains metadata names, corresponding methods to access this metadata, whether the method can return None, applicable object types, and returned data types:
 
 ==================  ==================  =================  =====================  ====================
 Metadata name       Method              Can return None    Type applicability     Metadata type
@@ -220,9 +238,9 @@ in a single solver session:
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
-  >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+  >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode="solver")
-  >>> solver.file.read(file_type="case", file_name=import_filename)
+  >>> solver.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
   >>> solver.setup.models.viscous.is_active()
@@ -256,27 +274,67 @@ The ``is_active()`` method returns ``True`` if an object or command
 is currently active.
 
 The ``get_active_child_names`` method returns a list of
-active children:
-
-.. code-block::
+active children::
 
   >>> solver.setup.models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
-
 The ``get_active_command_names`` method returns the list of active
-commands:
-
-.. code-block::
+commands::
 
   >>> solver.solution.run_calculation.get_active_command_names()
   ['iterate']
 
+Supporting wildcards
+--------------------
+You can use wildcards when using named objects, list objects, and string list settings.
+For named objects and list objects, for instance::
+
+  >>> solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]()
+  {'fluid': {'source_terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}
+
+Also, when you have one or more velocity inlets with "inlet" in their names::
+
+  >>> solver.setup.boundary_conditions.velocity_inlet["*inlet*"].vmag()
+  {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
+  'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
+
+For string lists with allowed values, for instance::
+
+  >>> solver.results.graphics.contour['contour-1'].surfaces_list = 'in*'
+
+sets ``surfaces_list`` to all matches of surface names starting with ``in``, so when you prompt for the
+list of surfaces::
+
+  >>> solver.results.graphics.contour['contour-1'].surfaces_list()
+  ['in1', 'in2']
+
+The following list summarizes common wildcards:
+
+- ``*`` indicates zero or more occurrences of the preceding element. For example, ``'in*'`` lists
+  only items starting with "in" such as in1 and in2, whereas *in* lists only items that have
+  the string "in" within the name.
+
+- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list "grey" and "gray".
+
+- ``[]`` indicates a range of numbers or characters at the beginning of a string. For example,
+  ``'[to]'`` would match anything starting with "t" and anything starting with "o" in the name. Using
+  ``'[a-z]'`` would match anything starting with a character between "a" and "z" inclusively, or
+  using ``'[0-9]'`` would match the initial character with any number between "0" and "9" inclusively.
+
+- ``^`` indicates a Boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
+  not containing "in".
+
+- ``|`` indicates a Boolean OR function. For example, ``'*part*|*solid*'`` would list anything
+  containing either "part" or "solid" such as "part2-solid-1", "part2-solid-2", "part-3",
+  "solid", and "solid-1".
+
+- ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
+  containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
 
 .. _settings_root_section:
 
 Root object
 -----------
-The ``root`` object (named solver in the preceding examples) is the top-level
+The :obj:`~ansys.fluent.core.solver.settings_232.root.root` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.
-For more information, see :ref:`root`.

@@ -10,7 +10,7 @@ from ansys.fluent.core.services.field_data import SurfaceDataType
 
 def dump_session_data(
     session,
-    file_path: str,
+    file_name: str,
     fields: Optional[list] = None,
     surfaces: Optional[list] = None,
 ):
@@ -20,7 +20,7 @@ def dump_session_data(
     ----------
     session :
         Session object.
-    file_path: str
+    file_name: str
         File path for the session dump.
     fields: list, optional
         List of fields to write. If the list is empty, all fields are written.
@@ -52,10 +52,10 @@ def dump_session_data(
             session_data["range"][field][surface] = {}
             session_data["range"][field][surface][
                 "node_value"
-            ] = session.field_info.get_scalar_fields_range(field, True, [surface])
+            ] = session.field_info.get_scalar_field_range(field, True, [surface])
             session_data["range"][field][surface][
                 "cell_value"
-            ] = session.field_info.get_scalar_fields_range(field, False, [surface])
+            ] = session.field_info.get_scalar_field_range(field, False, [surface])
 
     transaction = session.field_data.new_transaction()
     transaction.add_surfaces_request(
@@ -94,14 +94,14 @@ def dump_session_data(
     )
     session_data["fields"] = transaction.get_fields()
 
-    with open(file_path, "wb") as pickle_obj:
+    with open(file_name, "wb") as pickle_obj:
         pickle.dump(session_data, pickle_obj)
 
 
 class DumpDataReader:
-    def __init__(self, file_path: str):
+    def __init__(self, file_name: str):
         with open(
-            str(Path(file_path).resolve()),
+            str(Path(file_name).resolve()),
             "rb",
         ) as pickle_obj:
             self._session_data = pickle.load(pickle_obj)

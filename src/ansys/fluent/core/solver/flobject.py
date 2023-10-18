@@ -10,10 +10,10 @@ Calling an object will return its current value.
 
 Example
 -------
-r = flobject.get_root(proxy)
-is_energy_on = r.setup.models.energy.enabled()
-r.setup.models.energy.enabled = True
-r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r = flobject.get_root(proxy)
+>>> is_energy_on = r.setup.models.energy.enabled()
+>>> r.setup.models.energy.enabled = True
+>>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 import collections
 import fnmatch
@@ -24,12 +24,23 @@ import logging
 import pickle
 import string
 import sys
-from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
+from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
+
+
+class _InlineConstants:
+    is_active = "active?"
+    is_read_only = "read-only?"
+    default_value = "default"
+    min = "min"
+    max = "max"
+    user_creatable = "user-creatable?"
+    allowed_values = "allowed-values"
+
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -86,7 +97,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -101,8 +112,8 @@ class Base:
     def flproxy(self):
         """Proxy object.
 
-        The proxy object is set at the root level and accessed via the
-        parent for the child classes.
+        The proxy object is set at the root level and accessed via the parent for the
+        child classes.
         """
         if self._flproxy is None:
             return self._parent.flproxy
@@ -120,8 +131,8 @@ class Base:
     def obj_name(self) -> str:
         """Name of the scheme of this object.
 
-        By default, this returns the object's static name. If the object
-        is a child of a named object, the object's name is returned.
+        By default, this returns the object's static name. If the object is a child of a
+        named object, the object's name is returned.
         """
         if self._name is None:
             return self.fluent_name
@@ -145,8 +156,30 @@ class Base:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
-    def get_attr(self, attr, attr_type_or_types=None) -> Any:
-        """Get the requested attribute for the object."""
+    def get_attr(
+        self,
+        attr: str,
+        attr_type_or_types: Optional[Union[type, Tuple[type]]] = None,
+    ) -> Any:
+        """Get the requested attribute for the object.
+
+        Parameters
+        ----------
+        attr : str
+            attribute name
+        attr_type_or_types : type or tuple of type, optional
+            attribute type, by default None
+
+        Returns
+        -------
+        Any
+            attribute value
+
+        Raises
+        ------
+        RuntimeError
+            If any attribute other than ``"active?`` is queried when the object is not active.
+        """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
@@ -170,12 +203,12 @@ class Base:
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        attr = self.get_attr("active?")
+        attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
-        attr = self.get_attr("read-only?")
+        attr = self.get_attr(_InlineConstants.is_read_only)
         return False if attr is None else attr
 
     def __setattr__(self, name, value):
@@ -195,7 +228,7 @@ class Property(Base):
 
     def default_value(self):
         """Gets the default value of the object."""
-        return self.get_attr("default")
+        return self.get_attr(_InlineConstants.default_value)
 
 
 class Numerical(Property):
@@ -203,21 +236,17 @@ class Numerical(Property):
 
     def min(self):
         """Get the minimum value of the object."""
-        val = self.get_attr("min", (float, int))
+        val = self.get_attr(_InlineConstants.min, (float, int))
         return None if isinstance(val, bool) else val
 
     def max(self):
         """Get the maximum value of the object."""
-        val = self.get_attr("max", (float, int))
+        val = self.get_attr(_InlineConstants.max, (float, int))
         return None if isinstance(val, bool) else val
 
 
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
-
-    def allowed_values(self):
-        """Get the allowed values of the object."""
-        return self.get_attr("allowed-values", (list, str))
 
 
 class SettingsBase(Base, Generic[StateT]):
@@ -258,7 +287,7 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT = None, **kwargs):
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         if kwargs:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
@@ -363,6 +392,20 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
+def _command_query_name_filter(
+    parent, list_attr: str, prefix: str, excluded: List[str]
+) -> List:
+    """Auto completer info of commands and queries."""
+    ret = []
+    names = getattr(parent, list_attr)
+    for name in names:
+        if name not in excluded and name.startswith(prefix):
+            child = getattr(parent, name)
+            if child.is_active():
+                ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
+    return ret
+
+
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -379,7 +422,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -400,6 +443,7 @@ class Group(SettingsBase[DictStateType]):
         else:
             return self.get_state()
 
+    # pylint: disable=missing-raises-doc
     @classmethod
     def to_scheme_keys(cls, value):
         """Convert value to have keys with scheme names."""
@@ -458,11 +502,18 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
-    def get_completer_info(self, prefix=""):
-        """Return list of [name, type, doc]"""
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        excluded = excluded or []
         ret = []
         for child_name in self.child_names:
-            if child_name.startswith(prefix):
+            if child_name not in excluded and child_name.startswith(prefix):
                 child = getattr(self, child_name)
                 if child.is_active():
                     ret.append(
@@ -472,16 +523,12 @@ class Group(SettingsBase[DictStateType]):
                             child.__doc__,
                         ]
                     )
-        for command_name in self.command_names:
-            if command_name.startswith(prefix):
-                command = getattr(self, command_name)
-                if command.is_active():
-                    ret.append([command_name, Command.__name__, command.__doc__])
-        for query_name in self.query_names:
-            if query_name.startswith(prefix):
-                query = getattr(self, query_name)
-                if query.is_active():
-                    ret.append([query_name, Query.__name__, query.__doc__])
+        command_info = _command_query_name_filter(
+            self, "command_names", prefix, excluded
+        )
+        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
+        for items in [command_info, query_info]:
+            ret.extend(items)
         return ret
 
     def _get_parent_of_active_child_names(self, name):
@@ -507,33 +554,32 @@ class Group(SettingsBase[DictStateType]):
             return super().__getattribute__(name)
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
-            raise AttributeError(
-                allowed_name_error_message(
-                    "Settings objects", name, super().__getattribute__("child_names")
-                )
-            ) from ex
+            error_msg = allowed_name_error_message(
+                "Settings objects", name, super().__getattribute__("child_names")
+            )
+            ex.args = (error_msg,)
+            raise
 
     def __setattr__(self, name: str, value):
         attr = None
         try:
             attr = getattr(self, name)
         except AttributeError as ex:
-            raise AttributeError(
-                allowed_name_error_message(
-                    "Settings objects", name, super().__getattribute__("child_names")
-                )
-            ) from ex
+            error_msg = allowed_name_error_message(
+                "Settings objects", name, super().__getattribute__("child_names")
+            )
+            ex.args = (error_msg,)
+            raise
         try:
             return attr.set_state(value)
-        except BaseException as ex:
+        except Exception as ex:
             allowed = attr.allowed_values()
             if allowed and value not in allowed:
                 raise allowed_values_error(name, value, allowed) from ex
 
 
 class WildcardPath(Group):
-    """Class wrapping a wildcard path to perform get_var and set_var on
-    flproxy."""
+    """Class wrapping a wildcard path to perform get_var and set_var on flproxy."""
 
     def __init__(self, flproxy, path: str, state_cls, settings_cls, parent):
         """__init__ of WildcardPath class."""
@@ -602,8 +648,7 @@ class WildcardPath(Group):
 
 
 class NamedObjectWildcardPath(WildcardPath):
-    """WildcardPath at a NamedObject path, so it can be looked up by wildcard
-    again."""
+    """WildcardPath at a NamedObject path, so it can be looked up by wildcard again."""
 
     def __getitem__(self, name: str):
         return WildcardPath(
@@ -622,9 +667,8 @@ ChildTypeT = TypeVar("ChildTypeT")
 
 
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
-    """A ``NamedObject`` container is a container object similar to a Python
-    dictionary object. Generally, many such objects can be created with
-    different names.
+    """A ``NamedObject`` container is a container object similar to a Python dictionary
+    object. Generally, many such objects can be created with different names.
 
     Attributes
     ----------
@@ -634,7 +678,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -733,13 +777,31 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def user_creatable(self) -> bool:
         """Whether the object is user-creatable."""
-        return self.get_attr("user-creatable?", bool)
+        return self.get_attr(_InlineConstants.user_creatable, bool)
 
     def get_object_names(self):
         """Object names."""
         obj_names = self.flproxy.get_object_names(self.path)
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
+
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        excluded = excluded or []
+        ret = []
+        command_info = _command_query_name_filter(
+            self, "command_names", prefix, excluded
+        )
+        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
+        for items in [command_info, query_info]:
+            ret.extend(items)
+        return ret
 
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
@@ -765,8 +827,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
 
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
-    """A ``ListObject`` container is a container object, similar to a Python
-    list object. Generally, many such objects can be created.
+    """A ``ListObject`` container is a container object, similar to a Python list
+    object. Generally, many such objects can be created.
 
     Attributes
     ----------
@@ -875,7 +937,7 @@ def _get_new_keywords(obj, kwds):
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 
-    def __init__(self, name: str = None, parent=None):
+    def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
@@ -883,29 +945,27 @@ class Action(Base):
                 cls = getattr(self.__class__, argument)
                 self._setattr(argument, cls(None, self))
 
-    def arguments(self) -> Any:
-        """Get the arguments for the Action."""
-        attrs = self.get_attrs(["arguments"])
-        if attrs:
-            attrs = attrs.get("attrs", attrs)
-        if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError(f"{self.__class__.__name__} is not active")
-        return attrs["arguments"] if attrs else None
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all arguments.
 
-    def get_completer_info(self, prefix="", excluded=None):
-        """Return list of [name, type, doc]"""
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all arguments.
+        """
         excluded = excluded or []
         ret = []
         for argument_name in self.argument_names:
             if argument_name not in excluded and argument_name.startswith(prefix):
                 argument = getattr(self, argument_name)
-                ret.append(
-                    [
-                        argument_name + "=",
-                        argument.__class__.__bases__[0].__name__,
-                        argument.__doc__,
-                    ]
-                )
+                if argument.is_active():
+                    ret.append(
+                        [
+                            argument_name,
+                            argument.__class__.__bases__[0].__name__,
+                            argument.__doc__,
+                        ]
+                    )
         return ret
 
 
@@ -973,10 +1033,9 @@ def _clean_helpinfo(helpinfo):
 
 
 class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
-    """A mixin class to provide a dictionary interface at a Group class level
-    if the Group has multiple named objects of a similar type. For example,
-    boundary conditions are grouped by type but quite often we want to access
-    them without the type context.
+    """A mixin class to provide a dictionary interface at a Group class level if the
+    Group has multiple named objects of a similar type. For example, boundary conditions
+    are grouped by type but quite often we want to access them without the type context.
 
     The following can be used:
     for name, boundary in setup.boundary_conditions.items():
@@ -1068,6 +1127,16 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
+class _HasAllowedValuesMixin:
+    def allowed_values(self):
+        """Get the allowed values of the object."""
+        try:
+            return self.get_attr(_InlineConstants.allowed_values, (list, str))
+        except Exception:
+            return []
+
+
+# pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -1105,6 +1174,7 @@ def get_cls(name, info, parent=None, version=None):
         user_creatable = info.get("user-creatable?", False) or info.get(
             "user_creatable", False
         )
+
         if version == "222":
             user_creatable = True
 
@@ -1115,6 +1185,8 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
+        elif info.get("has-allowed-values"):
+            bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
 
@@ -1201,6 +1273,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
+# pylint: disable=missing-raises-doc
 def get_root(flproxy, version: str = "") -> Group:
     """Get the root settings object.
 
