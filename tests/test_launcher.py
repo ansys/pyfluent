@@ -182,3 +182,8 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
     assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+
+
+def test_watchdog_launch(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
+    pyfluent.launch_fluent(start_watchdog=True)
