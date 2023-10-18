@@ -107,11 +107,11 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
             cmd_list = ["bash"]
         else:
             raise Exception("Unrecognized operating system.")
-        cleanup_filename = (
+        cleanup_file_name = (
             f"cleanup-fluent-{cortex_host}-{fluent_host_pid}.{cleanup_file_ext}"
         )
-        print(f"cleanup_filename: {cleanup_filename}")
-        cmd_list.append(Path(cortex_pwd, cleanup_filename))
+        print(f"cleanup_file_name: {cleanup_file_name}")
+        cmd_list.append(Path(cortex_pwd, cleanup_file_name))
         print(f"cmd_list: {cmd_list}")
         subprocess.Popen(
             cmd_list,

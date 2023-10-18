@@ -13,7 +13,7 @@ so that commands can be sent to Fluent from the Python interpreter:
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
 method to connect to a running Fluent session that has started the gRPC server. The gRPC
-server in Fluent can be started using the ``-sifile=<server_info_filepath>`` command line
+server in Fluent can be started using the ``-sifile=<server_info_file_name>`` command line
 startup option, ``server/start-server`` text command or
 ``File -> Applications -> Server -> Start...`` ribbon menu. Fluent writes out a server-info file on
 starting the gRPC server. This code connects to a running Fluent session
@@ -22,7 +22,7 @@ using a server-info file server.txt in the working directory:
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    solver = pyfluent.connect_to_fluent(server_info_filepath="server.txt")
+    solver = pyfluent.connect_to_fluent(server_info_file_name="server.txt")
 
 Launcher options
 ----------------

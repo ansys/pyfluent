@@ -157,7 +157,9 @@ class Base:
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
-        self, attr: str, attr_type_or_types: Optional[Union[str, List[str]]] = None
+        self,
+        attr: str,
+        attr_type_or_types: Optional[Union[type, Tuple[type]]] = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -165,7 +167,7 @@ class Base:
         ----------
         attr : str
             attribute name
-        attr_type_or_types : str or list of str, optional
+        attr_type_or_types : type or tuple of type, optional
             attribute type, by default None
 
         Returns

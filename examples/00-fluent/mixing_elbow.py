@@ -45,7 +45,7 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
+import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
 ###############################################################################
 # Launch Fluent
@@ -75,7 +75,7 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # Import the CAD geometry and set the length units to inches.
 geo_import = meshing.workflow.TaskObject["Import Geometry"]
 geo_import.Arguments = {
-    "FileName": import_filename,
+    "FileName": import_file_name,
     "LengthUnit": "in",
 }
 

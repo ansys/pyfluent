@@ -8,9 +8,9 @@ Example
     >>> from ansys.fluent.core import examples
     >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_only_filename=False)
+    >>> case_file_name = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_without_path=False)
 
-    >>> reader = CaseFile(case_filepath=case_filepath) # Instantiate a CaseFile class
+    >>> reader = CaseFile(case_file_name=case_file_name) # Instantiate a CaseFile class
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 """
@@ -485,35 +485,35 @@ class RPVarProcessor:
 class SettingsFile(RPVarProcessor):
     """Class to read a Fluent Settings file."""
 
-    def __init__(self, settings_filepath: Optional[str] = None) -> None:
+    def __init__(self, settings_file_name: Optional[str] = None) -> None:
         """Initialize a SettingsFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        settings_filepath : Optional[str]
+        settings_file_name : Optional[str]
             The path of a settings file.
         """
-        if settings_filepath:
+        if settings_file_name:
             try:
-                with open(settings_filepath, "r") as file:
+                with open(settings_file_name, "r") as file:
                     rp_vars_str = file.read()
                 if not rp_vars_str.startswith("(rp ("):
                     raise RuntimeError("Not a valid settings file.")
 
             except FileNotFoundError as e:
                 raise FileNotFoundError(
-                    f"The settings file {settings_filepath} cannot be found."
+                    f"The settings file {settings_file_name} cannot be found."
                 ) from e
 
             except OSError as e:
                 raise OSError(
-                    f"Error while reading settings file {settings_filepath}"
+                    f"Error while reading settings file {settings_file_name}"
                 ) from e
 
             except Exception as e:
                 raise RuntimeError(
-                    f"Could not read settings file {settings_filepath}"
+                    f"Could not read settings file {settings_file_name}"
                 ) from e
 
         super().__init__(rp_vars_str)
@@ -530,32 +530,32 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_filepath: Optional[str] = None,
-        project_filepath: Optional[str] = None,
+        case_file_name: Optional[str] = None,
+        project_file_name: Optional[str] = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        case_filepath : Optional[str]
+        case_file_name : Optional[str]
             The path of a case file.
-        project_filepath : Optional[str]
+        project_file_name : Optional[str]
             The path of a project file from which the case file is selected.
         """
 
-        if (not case_filepath) == (not project_filepath):
+        if (not case_file_name) == (not project_file_name):
             raise RuntimeError(
                 "Please enter either the case file path or the project file path"
             )
-        if project_filepath:
-            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
+        if project_file_name:
+            if Path(project_file_name).suffix in [".flprj", ".flprz"]:
                 project_dir = os.path.join(
-                    dirname(project_filepath),
-                    Path(project_filepath).name.split(".")[0] + ".cffdb",
+                    dirname(project_file_name),
+                    Path(project_file_name).name.split(".")[0] + ".cffdb",
                 )
-                case_filepath = Path(
-                    project_dir + _get_case_filepath_from_flprj(project_filepath)
+                case_file_name = Path(
+                    project_dir + _get_case_file_name_from_flprj(project_file_name)
                 )
             else:
                 raise FileNotFoundError(
@@ -563,17 +563,17 @@ class CaseFile(RPVarProcessor):
                 )
 
         try:
-            if Path(case_filepath).match("*.cas.h5"):
-                _file = h5py.File(case_filepath)
+            if Path(case_file_name).match("*.cas.h5"):
+                _file = h5py.File(case_file_name)
                 settings = _file["settings"]
                 rpvars = settings["Rampant Variables"][0]
                 rp_vars_str = rpvars.decode()
-            elif Path(case_filepath).match("*.cas"):
-                with open(case_filepath, "rb") as _file:
+            elif Path(case_file_name).match("*.cas"):
+                with open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
-            elif Path(case_filepath).match("*.cas.gz"):
-                with gzip.open(case_filepath, "rb") as _file:
+            elif Path(case_file_name).match("*.cas.gz"):
+                with gzip.open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
             else:
@@ -585,14 +585,14 @@ class CaseFile(RPVarProcessor):
 
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                f"The case file {case_filepath} cannot be found."
+                f"The case file {case_file_name} cannot be found."
             ) from e
 
         except OSError as e:
-            raise OSError(f"Error while reading case file {case_filepath}") from e
+            raise OSError(f"Error while reading case file {case_file_name}") from e
 
         except Exception as e:
-            raise RuntimeError(f"Could not read case file {case_filepath}") from e
+            raise RuntimeError(f"Could not read case file {case_file_name}") from e
 
         super().__init__(rp_vars_str=rp_vars_str)
         self._mesh = Mesh(_file)
@@ -620,7 +620,7 @@ def _get_processed_string(input_string: bytes) -> str:
     return string_identifier + rp_vars_str.split(string_identifier)[1]
 
 
-def _get_case_filepath_from_flprj(flprj_file):
+def _get_case_file_name_from_flprj(flprj_file):
     parser = etree.XMLParser(recover=True)
     tree = ET.parse(flprj_file, parser)
     root = tree.getroot()
