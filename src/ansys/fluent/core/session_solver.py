@@ -17,7 +17,7 @@ from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 import ansys.platform.instancemanagement as pypim
 
@@ -82,7 +82,7 @@ class Solver(BaseSession):
     def version(self):
         """Fluent's product version."""
         if self._version is None:
-            self._version = get_version_for_file_name(session=self)
+            self._version = get_version_for_filepath(session=self)
         return self._version
 
     @property
@@ -226,7 +226,7 @@ class Solver(BaseSession):
             )
             launcher_args = dict(self.fluent_connection.launcher_args)
             launcher_args.pop("lightweight_mode", None)
-            launcher_args["case_file_name"] = file_name
+            launcher_args["case_filepath"] = file_name
             fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
             fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
         else:
