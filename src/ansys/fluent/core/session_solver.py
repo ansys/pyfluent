@@ -43,7 +43,6 @@ class Solver(BaseSession):
         """
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
-        self._fluent_connection = fluent_connection
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui

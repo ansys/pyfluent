@@ -38,7 +38,6 @@ class PureMeshing(BaseSession):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-        self._fluent_connection = fluent_connection
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,

@@ -287,11 +287,11 @@ class BaseSession:
         is_upload : bool
             True if we want to upload file, False otherwise.
         file_name : str
-            filename
+            file name
         remote_file_name : str, optional
-            remote filename, by default None
+            remote file name, by default None
         local_file_name : str, optional
-            local file path, by default None
+            local file name, by default None
         Raises
         ------
         FileNotFoundError
@@ -319,9 +319,9 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            file path
+            file name
         remote_file_name : str, optional
-            remote filename, by default None
+            remote file name, by default None
         Raises
         ------
         FileNotFoundError
@@ -356,11 +356,11 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Case file name
+            File name
         Raises
         ------
         FileNotFoundError
-            If a case file does not exist.
+            If a file does not exist.
         """
         start_time = time.time()
         max_wait_time = sys.maxsize
@@ -378,7 +378,7 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Case file name
+            File name
         api: Session object property
             ``session.tui``
         """
@@ -390,7 +390,7 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Case file name
+            File name
         api: Session object property
             `session.file``
         """
@@ -403,14 +403,14 @@ class BaseSession:
         api_mode: Optional[Any] = None,
         api: Optional[Any] = None,
     ):
-        """Uploads a case file if not available on the server.
+        """Uploads a file if not available on the server.
 
         Parameters
         ----------
         is_upload: bool
             True if pypim is configured, False otherwise
         file_name : str
-            Case file name
+            File name
         api_mode: Any
             either ``_meshing_api_helper`` or ``_solver_api_helper``
         api: Session object property
@@ -418,7 +418,7 @@ class BaseSession:
         Raises
         ------
         FileNotFoundError
-            If a case file does not exist.
+            If a file does not exist.
         """
         if is_upload:
             if os.path.isfile(file_name):
@@ -448,7 +448,7 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Case file name
+            File name
         api_mode: Any
             either ``_meshing_api_helper`` or ``_solver_api_helper``
         api: Session object property
