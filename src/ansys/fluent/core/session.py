@@ -374,11 +374,35 @@ class BaseSession:
         else:
             raise FileNotFoundError(f"{file_name} does not exist.")
 
+    def _meshing_api_helper(self, file_name: str, api):
+        """Handles api call based on mode.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        api: Session object property
+            ``session.tui``
+        """
+        api(os.path.basename(file_name))
+
+    def _solver_api_helper(self, file_name: str, api):
+        """Handles api call based on mode.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        api: Session object property
+            `session.file``
+        """
+        api(file_name=os.path.basename(file_name))
+
     def _pypim_upload_download_helper(
         self,
         is_upload: bool,
         file_name: str,
-        is_meshing: Optional[bool] = None,
+        api_mode: Optional[Any] = None,
         api: Optional[Any] = None,
     ):
         """Uploads a case file if not available on the server.
@@ -389,10 +413,10 @@ class BaseSession:
             True if pypim is configured, False otherwise
         file_name : str
             Case file name
-        is_meshing: bool
-            True if mode is meshing, False otherwise
+        api_mode: Any
+            either ``_meshing_api_helper`` or ``_solver_api_helper``
         api: Session object property
-            either session.tui or session.file
+            either ``session.tui`` or ``session.file``
         Raises
         ------
         FileNotFoundError
@@ -407,10 +431,7 @@ class BaseSession:
                 pass
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
-            if is_meshing:
-                api(os.path.basename(file_name))
-            else:
-                api(file_name=os.path.basename(file_name))
+            api_mode(file_name=file_name, api=api)
         else:
             self._wait_for_file(file_name)
             if os.path.isfile(file_name):
@@ -418,19 +439,21 @@ class BaseSession:
             else:
                 self.download(os.path.basename(file_name), ".")
 
-    def _no_pypim_helper(self, file_name: str, is_meshing: bool, api):
+    def _no_pypim_helper(
+        self,
+        file_name: str,
+        api_mode: Optional[Any] = None,
+        api: Optional[Any] = None,
+    ):
         """Used if pypim is not configured.
 
         Parameters
         ----------
         file_name : str
             Case file name
-        is_meshing: bool
-            True if mode is meshing, otherwise False
+        api_mode: Any
+            either ``_meshing_api_helper`` or ``_solver_api_helper``
         api: Session object property
-            either session.tui or session.file
+            either ``session.tui`` or ``session.file``
         """
-        if is_meshing:
-            api(file_name)
-        else:
-            api(file_name=file_name)
+        api_mode(file_name=file_name, api=api)

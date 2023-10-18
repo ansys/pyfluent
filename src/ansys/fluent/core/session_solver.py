@@ -247,11 +247,13 @@ class Solver(BaseSession):
             self._pypim_upload_download_helper(
                 is_upload=True,
                 file_name=file_name,
-                is_meshing=False,
+                api_mode=self._solver_api_helper,
                 api=self.file.read_case,
             )
         else:
-            self._no_pypim_helper(file_name, is_meshing=False, api=self.file.read_case)
+            self._no_pypim_helper(
+                file_name, api_mode=self._solver_api_helper, api=self.file.read_case
+            )
 
     def write_case(
         self,
@@ -264,6 +266,12 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        self._no_pypim_helper(file_name, is_meshing=False, api=self.file.write_case)
+        self._no_pypim_helper(
+            file_name, api_mode=self._solver_api_helper, api=self.file.write_case
+        )
         if pypim.is_configured():
-            self._pypim_upload_download_helper(is_upload=False, file_name=file_name)
+            self._pypim_upload_download_helper(
+                is_upload=False,
+                file_name=file_name,
+                api_mode=self._solver_api_helper,
+            )
