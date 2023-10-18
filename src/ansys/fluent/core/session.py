@@ -3,6 +3,7 @@ import importlib
 import json
 import logging
 import os
+import sys
 import time
 from typing import Any, Optional
 import warnings
@@ -358,7 +359,6 @@ class BaseSession:
 
     def _wait_for_file(self, file_name: str):
         """Wait for file to get ready for upload or download.
-
         Parameters
         ----------
         file_name : str
@@ -369,10 +369,13 @@ class BaseSession:
             If a case file does not exist.
         """
         file_service = self._file_service()
-        while not file_service.file_exist(os.path.basename(file_name)):
-            time.sleep(3)
+        start_time = time.time()
+        max_wait_time = sys.maxsize
+        while (time.time() - start_time) < max_wait_time:
             if file_service.file_exist(os.path.basename(file_name)):
                 break
+            max_wait_time -= 1
+            time.sleep(3)
         else:
             raise FileNotFoundError(f"{file_name} does not exist.")
 
