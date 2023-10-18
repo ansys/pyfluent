@@ -176,6 +176,19 @@ class BaseSession:
         self.health_check_service = fluent_connection.health_check_service
         self.connection_properties = fluent_connection.connection_properties
 
+        self.pim_instance = self.fluent_connection._remote_instance
+        self.file_service = None
+        try:
+            upload_server = self.pim_instance.services["http-simple-upload-server"]
+        except (AttributeError, KeyError):
+            pass
+        else:
+            from simple_upload_server.client import Client
+
+            self.file_service = Client(
+                token="token", url=upload_server.uri, headers=upload_server.headers
+            )
+
         self.fluent_connection.register_finalizer_cb(
             self.datamodel_service_se.unsubscribe_all_events
         )
@@ -260,22 +273,6 @@ class BaseSession:
         logger.debug("session.__exit__() called")
         self.exit()
 
-    def _file_service(self):
-        """File upload and download service."""
-        pim_instance = self.fluent_connection._remote_instance
-        file_service = None
-        try:
-            upload_server = pim_instance.services["http-simple-upload-server"]
-        except (AttributeError, KeyError):
-            pass
-        else:
-            from simple_upload_server.client import Client
-
-            file_service = Client(
-                token="token", url=upload_server.uri, headers=upload_server.headers
-            )
-        return file_service
-
     def _upload_download_helper(
         self,
         is_upload: bool,
@@ -303,20 +300,19 @@ class BaseSession:
         FileNotFoundError
             If the file does not exist.
         """
-        file_service = self._file_service()
-        if file_service:
+        if self.file_service:
             if is_upload:
                 if os.path.isfile(file_path):
                     expanded_file_path = os.path.expandvars(file_path)
                     upload_file_name = remote_file_name or os.path.basename(
                         expanded_file_path
                     )
-                    file_service.upload_file(expanded_file_path, upload_file_name)
+                    self.file_service.upload_file(expanded_file_path, upload_file_name)
                 else:
                     raise FileNotFoundError(f"{file_path} does not exist.")
             else:
-                if file_service.file_exist(file_name):
-                    file_service.download_file(file_name, local_file_path)
+                if self.file_service.file_exist(file_name):
+                    self.file_service.download_file(file_name, local_file_path)
                 else:
                     raise FileNotFoundError("Remote file does not exist.")
 
@@ -368,16 +364,59 @@ class BaseSession:
         FileNotFoundError
             If a case file does not exist.
         """
-        file_service = self._file_service()
         start_time = time.time()
         max_wait_time = sys.maxsize
         while (time.time() - start_time) < max_wait_time:
-            if file_service.file_exist(os.path.basename(file_name)):
+            if self.file_service.file_exist(os.path.basename(file_name)):
                 break
             max_wait_time -= 1
             time.sleep(3)
         else:
             raise FileNotFoundError(f"{file_name} does not exist.")
+
+    def _pypim_upload_download_helper(
+        self,
+        is_upload: bool,
+        file_name: str,
+        is_meshing: Optional[bool] = None,
+        api: Optional[Any] = None,
+    ):
+        """Uploads a case file if not available on the server.
+
+        Parameters
+        ----------
+        is_upload: bool
+            True if pypim is configured, False otherwise
+        file_name : str
+            Case file name
+        is_meshing: bool
+            True if mode is meshing, False otherwise
+        api: Session object property
+            either session.tui or session.file
+        Raises
+        ------
+        FileNotFoundError
+            If a case file does not exist.
+        """
+        if is_upload:
+            if os.path.isfile(file_name):
+                if not self._file_service.file_exist(os.path.basename(file_name)):
+                    self.upload(file_name)
+                    self._wait_for_file(file_name)
+            elif self._file_service.file_exist(os.path.basename(file_name)):
+                pass
+            else:
+                raise FileNotFoundError(f"{file_name} does not exist.")
+            if is_meshing:
+                api(os.path.basename(file_name))
+            else:
+                api(file_name=os.path.basename(file_name))
+        else:
+            self._wait_for_file(file_name)
+            if os.path.isfile(file_name):
+                print(f"\nFile already exists. File path:\n{file_name}\n")
+            else:
+                self.download(os.path.basename(file_name), ".")
 
     def _pypim_upload_helper(self, file_name, is_meshing, api):
         """Uploads a case file if not available on the server.
@@ -395,19 +434,9 @@ class BaseSession:
         FileNotFoundError
             If a case file does not exist.
         """
-        file_service = self._file_service()
-        if os.path.isfile(file_name):
-            if not file_service.file_exist(os.path.basename(file_name)):
-                self.upload(file_name)
-                self._wait_for_file(file_name)
-        elif file_service.file_exist(os.path.basename(file_name)):
-            pass
-        else:
-            raise FileNotFoundError(f"{file_name} does not exist.")
-        if is_meshing:
-            api(os.path.basename(file_name))
-        else:
-            api(file_name=os.path.basename(file_name))
+        self._pypim_upload_download_helper(
+            is_upload=True, file_name=file_name, is_meshing=is_meshing, api=api
+        )
 
     def _pypim_download_helper(self, file_name):
         """Downloads a case file if pypim is configured.
@@ -417,11 +446,7 @@ class BaseSession:
         file_name : str
             Case file name
         """
-        self._wait_for_file(file_name)
-        if os.path.isfile(file_name):
-            print(f"\nFile already exists. File path:\n{file_name}\n")
-        else:
-            self.download(os.path.basename(file_name), ".")
+        self._pypim_upload_download_helper(is_upload=False, file_name=file_name)
 
     def _no_pypim_helper(self, file_name: str, is_meshing: bool, api):
         """Used if pypim is not configured.
