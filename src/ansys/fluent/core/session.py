@@ -276,10 +276,9 @@ class BaseSession:
     def _upload_download_helper(
         self,
         is_upload: bool,
-        file_path: Optional[str] = None,
         file_name: Optional[str] = None,
         remote_file_name: Optional[str] = None,
-        local_file_path: Optional[str] = None,
+        local_file_name: Optional[str] = None,
     ):
         """Uploads and downloads a file.
 
@@ -287,14 +286,12 @@ class BaseSession:
         ----------
         is_upload : bool
             True if we want to upload file, False otherwise.
-        file_path : str
-            filepath
         file_name : str
             filename
         remote_file_name : str, optional
             remote filename, by default None
-        local_file_path : str, optional
-            local filepath, by default None
+        local_file_name : str, optional
+            local file path, by default None
         Raises
         ------
         FileNotFoundError
@@ -302,17 +299,17 @@ class BaseSession:
         """
         if self.file_service:
             if is_upload:
-                if os.path.isfile(file_path):
-                    expanded_file_path = os.path.expandvars(file_path)
+                if os.path.isfile(file_name):
+                    expanded_file_path = os.path.expandvars(file_name)
                     upload_file_name = remote_file_name or os.path.basename(
                         expanded_file_path
                     )
                     self.file_service.upload_file(expanded_file_path, upload_file_name)
                 else:
-                    raise FileNotFoundError(f"{file_path} does not exist.")
+                    raise FileNotFoundError(f"{file_name} does not exist.")
             else:
                 if self.file_service.file_exist(file_name):
-                    self.file_service.download_file(file_name, local_file_path)
+                    self.file_service.download_file(file_name, local_file_name)
                 else:
                     raise FileNotFoundError("Remote file does not exist.")
 
@@ -331,7 +328,7 @@ class BaseSession:
             If the file does not exist.
         """
         self._upload_download_helper(
-            is_upload=True, file_path=file_path, remote_file_name=remote_file_name
+            is_upload=True, file_name=file_name, remote_file_name=remote_file_name
         )
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
@@ -350,7 +347,7 @@ class BaseSession:
             If the remote file does not exist.
         """
         self._upload_download_helper(
-            is_upload=False, file_name=file_name, local_file_path=local_file_path
+            is_upload=False, file_name=file_name, local_file_name=local_file_name
         )
 
     def _wait_for_file(self, file_name: str):
