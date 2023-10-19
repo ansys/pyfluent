@@ -239,6 +239,7 @@ class FluentConnection:
         """
         self.error_state = ErrorState()
         self._data_valid = False
+        self._channel_str = None
         self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
@@ -247,6 +248,7 @@ class FluentConnection:
                 ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
             if not port:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
+            self._channel_str = f"{ip}:{port}"
             if not port:
                 raise ValueError(
                     "The port to connect to Fluent session is not provided."
