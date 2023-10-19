@@ -13,9 +13,10 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import connect_to_fluent, examples
+from ansys.fluent.core import connect_to_fluent, examples, session
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -323,3 +324,20 @@ def test_read_case_using_lightweight_mode():
 
 def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
+
+
+def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
+    def mock_parse_server_info_file(file_name):
+        with open(file_name, encoding="utf-8") as f:
+            lines = f.readlines()
+        ip_and_port = lines[0].strip().split(":")
+        ip = ip_and_port[0]
+        port = int(ip_and_port[1]) - 1  # provide wrong port in client
+        password = lines[1].strip()
+        return ip, port, password
+
+    monkeypatch.setattr(session, "_parse_server_info_file", mock_parse_server_info_file)
+    with pytest.raises(LaunchFluentError) as ex:
+        solver = pyfluent.launch_fluent()
+    # grpc.RpcError -> RuntimeError -> LaunchFluentError
+    assert ex.value.__context__.__context__.code() == grpc.StatusCode.UNAVAILABLE
