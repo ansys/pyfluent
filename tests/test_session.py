@@ -327,14 +327,11 @@ def test_help_does_not_throw(new_solver_session):
 
 
 def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
+    orig_parse_server_info_file = session._parse_server_info_file
+
     def mock_parse_server_info_file(file_name):
-        with open(file_name, encoding="utf-8") as f:
-            lines = f.readlines()
-        ip_and_port = lines[0].strip().split(":")
-        ip = ip_and_port[0]
-        port = int(ip_and_port[1]) - 1  # provide wrong port in client
-        password = lines[1].strip()
-        return ip, port, password
+        ip, port, password = orig_parse_server_info_file(file_name)
+        return ip, port - 1, password  # provide wrong port
 
     monkeypatch.setattr(session, "_parse_server_info_file", mock_parse_server_info_file)
     with pytest.raises(LaunchFluentError) as ex:
