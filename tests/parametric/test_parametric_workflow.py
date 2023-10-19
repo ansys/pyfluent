@@ -150,7 +150,7 @@ def test_parametric_workflow():
         write_project_file_name = str(project_file_name)
 
     solver_session.file.parametric_project.save_as(
-        project_file_name=write_project_file_name
+        project_filename=write_project_file_name
     )
     assert project_file_name.exists()
     solver_session.exit()
@@ -163,7 +163,7 @@ def test_parametric_workflow():
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 
     solver_session.file.parametric_project.open(
-        project_file_name=write_project_file_name
+        project_filename=write_project_file_name
     )
     solver_session.file.parametric_project.save()
     project_save_as_name = Path(tmp_save_path) / "static_mixer_study_save_as.flprj"
@@ -175,7 +175,7 @@ def test_parametric_workflow():
         write_project_save_as_name = str(project_save_as_name)
 
     solver_session.file.parametric_project.save_as(
-        project_file_name=write_project_save_as_name
+        project_filename=write_project_save_as_name
     )
     assert project_save_as_name.exists()
 
@@ -188,8 +188,8 @@ def test_parametric_workflow():
         )
     else:
         write_project_save_as_copy_name = str(project_save_as_copy_name)
-    solver_session.file.parametric_project.save_as(
-        project_file_name=write_project_save_as_copy_name
+    solver_session.file.parametric_project.save_as_copy(
+        project_filename=write_project_save_as_copy_name
     )
     assert project_save_as_copy_name.exists()
 
