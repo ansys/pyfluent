@@ -372,35 +372,10 @@ class BaseSession:
         else:
             raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def _meshing_api_helper(self, file_name: str, api):
-        """Handles api call based on mode.
-
-        Parameters
-        ----------
-        file_name : str
-            File name
-        api: Session object property
-            ``session.tui``
-        """
-        api(os.path.basename(file_name))
-
-    def _solver_api_helper(self, file_name: str, api):
-        """Handles api call based on mode.
-
-        Parameters
-        ----------
-        file_name : str
-            File name
-        api: Session object property
-            `session.file``
-        """
-        api(file_name=os.path.basename(file_name))
-
     def _pypim_upload_download_helper(
         self,
         is_upload: bool,
         file_name: str,
-        api_mode: Optional[Any] = None,
         api: Optional[Any] = None,
     ):
         """Uploads a file if not available on the server.
@@ -411,8 +386,6 @@ class BaseSession:
             True if pypim is configured, False otherwise
         file_name : str
             File name
-        api_mode: Any
-            either ``_meshing_api_helper`` or ``_solver_api_helper``
         api: Session object property
             either ``session.tui`` or ``session.file``
         Raises
@@ -429,7 +402,7 @@ class BaseSession:
                 pass
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
-            api_mode(file_name=file_name, api=api)
+            api(os.path.basename(file_name))
         else:
             self._wait_for_file(file_name)
             if os.path.isfile(file_name):
@@ -440,7 +413,6 @@ class BaseSession:
     def _no_pypim_helper(
         self,
         file_name: str,
-        api_mode: Optional[Any] = None,
         api: Optional[Any] = None,
     ):
         """Used if pypim is not configured.
@@ -449,9 +421,7 @@ class BaseSession:
         ----------
         file_name : str
             File name
-        api_mode: Any
-            either ``_meshing_api_helper`` or ``_solver_api_helper``
         api: Session object property
             either ``session.tui`` or ``session.file``
         """
-        api_mode(file_name=file_name, api=api)
+        api(os.path.basename(file_name))
