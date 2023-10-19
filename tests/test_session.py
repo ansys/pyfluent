@@ -327,6 +327,9 @@ def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
 
 
+@pytest.mark.skipif(
+    os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1", reason="tests Fluent launch scenario"
+)
 def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
     orig_parse_server_info_file = session._parse_server_info_file
 
