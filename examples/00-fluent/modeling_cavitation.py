@@ -35,8 +35,8 @@ and L are the inlet diameter, orifice diameter, and orifice length respectively.
 # Before you can begin, you must set up the example and initialize this
 # workflow.
 #
-# Perform required imports
-# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Launch Fluent
+# ~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
@@ -47,8 +47,8 @@ from ansys.fluent.core import examples
 cav_file = examples.download_file("cav.msh", "pyfluent/cavitation")
 
 ###############################################################################
-# Launch Fluent as a service in 2d solution mode with double precision running
-# on one processor.
+# Launch Fluent session in 2d solution mode with double precision running
+# on four processors.
 
 solver = pyfluent.launch_fluent(
     precision="double",
@@ -57,20 +57,20 @@ solver = pyfluent.launch_fluent(
     version="2d",
 )
 
-###############################################################################
-# Read and Check the Mesh
+# Read the Mesh and Specify Models
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver.read_case(cav_file)
+solver.file.read_mesh(file_name=cav_file)
 
 solver.mesh.check()
 
 ###############################################################################
-# Specify an axisymmetric model
+# Specify an axisymmetric model.
 
 solver.setup.general.solver.two_dim_space = "axisymmetric"
 
 ###############################################################################
-# Enable the multiphase mixture model
+# Enable the multiphase mixture model.
 
 solver.setup.models.multiphase.models = "mixture"
 
@@ -248,7 +248,7 @@ solver.file.write(file_name="cav", file_type="case-data")
 # ~~~~~~~~~~~~~~~
 # Create a contour plot for static pressure, turbulent kinetic energy and the
 # volume fraction of water vapor. For each plot enable banded coloring and
-# filled.
+# filled option.
 
 solver.results.graphics.contour.create("contour_static_pressure")
 
@@ -265,6 +265,10 @@ solver.results.graphics.contour["contour_static_pressure"] = contour_static_pres
 
 solver.tui.display.set.mirror_zones(["symm_2", "symm_1"])
 
+solver.results.graphics.contour["contour_static_pressure"].display()
+
+solver.results.graphics.picture.save_picture(file_name="contour_static_pressure.png")
+
 ###############################################################################
 # .. image:: /_static/cavitation_model_012.png
 #   :width: 500pt
@@ -279,6 +283,10 @@ contour_tke = {
 }
 
 solver.results.graphics.contour["contour_tke"] = contour_tke
+
+solver.results.graphics.contour["contour_tke"].display()
+
+solver.results.graphics.picture.save_picture(file_name="contour_tke.png")
 
 ###############################################################################
 # .. image:: /_static/cavitation_model_011.png
@@ -295,14 +303,16 @@ contour_vf_vapor = {
 
 solver.results.graphics.contour["contour_vf_vapor"] = contour_vf_vapor
 
+solver.results.graphics.contour["contour_vf_vapor"].display()
+
+solver.results.graphics.picture.save_picture(file_name="contour_vf_vapor.png")
+
 ###############################################################################
 # .. image:: /_static/cavitation_model.png
 #   :width: 500pt
 #   :align: center
 
-###############################################################################
-# Save and Exit
-# ~~~~~~~~~~~~~
+# Save case to 'cav.cas.h5' and exit
 
 solver.file.write(file_name="cav", file_type="case")
 
