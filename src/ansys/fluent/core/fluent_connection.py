@@ -239,7 +239,6 @@ class FluentConnection:
         """
         self.error_state = ErrorState()
         self._data_valid = False
-        self._channel_str = None
         self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
@@ -248,7 +247,6 @@ class FluentConnection:
                 ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
             if not port:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
-            self._channel_str = f"{ip}:{port}"
             if not port:
                 raise ValueError(
                     "The port to connect to Fluent session is not provided."
@@ -271,7 +269,7 @@ class FluentConnection:
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
-        self.check_health()
+        self.health_check_service.check_health()
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
