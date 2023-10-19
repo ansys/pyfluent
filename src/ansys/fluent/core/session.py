@@ -424,4 +424,4 @@ class BaseSession:
         api: Session object property
             either ``session.tui`` or ``session.file``
         """
-        api(os.path.basename(file_name))
+        api(file_name)
