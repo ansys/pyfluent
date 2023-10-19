@@ -260,7 +260,6 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
-    start_timeout: int = 100,
     product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
@@ -282,9 +281,6 @@ def launch_remote_fluent(
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via method calls on the session object.
-    start_timeout : int, optional
-        Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``100``.
     product_version : str, optional
         Select an installed version of ANSYS. The string must be in a format like
         ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
@@ -797,7 +793,6 @@ def launch_fluent(
 
         return launch_remote_fluent(
             session_cls=new_session,
-            start_timeout=start_timeout,
             start_transcript=start_transcript,
             product_version=fluent_product_version,
             cleanup_on_exit=cleanup_on_exit,
