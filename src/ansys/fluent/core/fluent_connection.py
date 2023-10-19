@@ -255,9 +255,7 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise ValueError(
-                    "The port to connect to Fluent session is not provided."
-                )
+                raise FluentConnectionError.PORT_NOT_PROVIDED()
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(
@@ -512,9 +510,7 @@ class FluentConnection:
             If ``wait`` is specified improperly.
         """
         if self._remote_instance:
-            raise ValueError(
-                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
-            )
+            raise FluentConnectionError.PROCESS_NOT_FINISHED()
         if isinstance(wait, bool):
             if wait:
                 wait = 60
@@ -670,3 +666,20 @@ class FluentConnection:
             remote_instance.delete()
 
         exit_event.set()
+
+
+class FluentConnectionError(ValueError):
+    """Custom Fluent connection errors."""
+
+    def __init__(self, error):
+        super().__init__(error)
+
+    @classmethod
+    def PORT_NOT_PROVIDED(cls):
+        return cls("The port to connect to Fluent session is not provided.")
+
+    @classmethod
+    def PROCESS_NOT_FINISHED(cls):
+        return cls(
+            "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
+        )
