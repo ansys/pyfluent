@@ -148,7 +148,7 @@ in_mixture = {
 inlet_1["mixture"] = in_mixture
 
 ###############################################################################
-# Before copying inlet_1's boundary conditions to inlet_2 set the vapor fraction
+# Before copying inlet_1's boundary conditions to inlet_2, set the vapor fraction
 # to 0.
 
 inlet_1["vapor"] = {"volume_fraction": {"value": 0}}
