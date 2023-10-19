@@ -397,14 +397,18 @@ class BaseSession:
         if on_uploaded:
             on_uploaded(os.path.basename(file_name))
 
-    def _pypim_download(self, file_name: str):
-        """Uploads a file if not available on the server.
+    def _pypim_download(self, file_name: str, before_download: Optional[Any] = None):
+        """Downloads a file from the server.
 
         Parameters
         ----------
         file_name : str
             File name
+        before_download: Callable[str]
+            Write a file.
         """
+        if before_download:
+            before_download(os.path.basename(file_name))
         self._wait_for_file(file_name)
         if os.path.isfile(file_name):
             print(f"\nFile already exists. File path:\n{file_name}\n")

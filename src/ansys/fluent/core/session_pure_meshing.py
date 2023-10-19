@@ -188,4 +188,5 @@ class PureMeshing(BaseSession):
         if pypim.is_configured():
             self._pypim_download(
                 file_name=file_name,
+                before_download=self.tui.file.write_case,
             )
