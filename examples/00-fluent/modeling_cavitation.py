@@ -200,8 +200,8 @@ methods.discretization_scheme = discretization_scheme
 
 ###############################################################################
 # For the pressure velocity coupling scheme choose 'Coupled'. Set the pseudo
-# time method to 'global time step' and Enable 'High Order Term Relaxation'.
-# Then, set the pseudo time explicit relaxation factor for 'Volume Fraction' to
+# time step method to 'global time step' and enable 'High Order Term Relaxation'.
+# Then, set the explicit relaxation factor for 'Volume Fraction' to
 # 0.3.
 
 methods.p_v_coupling.flow_scheme = "Coupled"
