@@ -243,10 +243,11 @@ class Solver(BaseSession):
             Case file name
         """
         if pypim.is_configured():
-            self._pypim_upload_download_helper(
-                is_upload=True,
+            self._pypim_upload(
                 file_name=file_name,
-                api=(lambda file_names: self.file.read_case(file_name=file_names)),
+                on_uploaded=(
+                    lambda file_names: self.file.read_case(file_name=file_names)
+                ),
             )
         else:
             self._no_pypim_helper(
@@ -258,7 +259,7 @@ class Solver(BaseSession):
         self,
         file_name: str,
     ):
-        """Reads a case file.
+        """Writes a case file.
 
         Parameters
         ----------
@@ -270,8 +271,6 @@ class Solver(BaseSession):
             api=(lambda file_names: self.file.write_case(file_name=file_names)),
         )
         if pypim.is_configured():
-            self._pypim_upload_download_helper(
-                is_upload=False,
+            self._pypim_download(
                 file_name=file_name,
-                api=(lambda file_names: self.file.write_case(file_name=file_names)),
             )

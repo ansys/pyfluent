@@ -160,22 +160,21 @@ class PureMeshing(BaseSession):
             Case file name
         """
         if pypim.is_configured():
-            self._pypim_upload_download_helper(
-                is_upload=True,
+            self._pypim_upload(
                 file_name=file_name,
-                api=(lambda file_names: self.tui.file.read_case(file_names)),
+                on_uploaded=self.tui.file.read_case,
             )
         else:
             self._no_pypim_helper(
                 file_name,
-                api=(lambda file_names: self.tui.file.read_case(file_names)),
+                api=self.tui.file.read_case,
             )
 
     def write_case(
         self,
         file_name: str,
     ):
-        """Reads a case file.
+        """Writes a case file.
 
         Parameters
         ----------
@@ -184,11 +183,9 @@ class PureMeshing(BaseSession):
         """
         self._no_pypim_helper(
             file_name,
-            api=(lambda file_names: self.tui.file.write_case(file_names)),
+            api=self.tui.file.write_case,
         )
         if pypim.is_configured():
-            self._pypim_upload_download_helper(
-                is_upload=False,
+            self._pypim_download(
                 file_name=file_name,
-                api=(lambda file_names: self.tui.file.write_case(file_names)),
             )

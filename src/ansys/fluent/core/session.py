@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import time
-from typing import Any, Optional
+from typing import Any, Callable, Optional  # noqa: F401
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -372,43 +372,44 @@ class BaseSession:
         else:
             raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def _pypim_upload_download_helper(
-        self,
-        is_upload: bool,
-        file_name: str,
-        api: Optional[Any] = None,
-    ):
+    def _pypim_upload(self, file_name: str, on_uploaded: Optional[Any] = None):
         """Uploads a file if not available on the server.
 
         Parameters
         ----------
-        is_upload: bool
-            True if pypim is configured, False otherwise
         file_name : str
             File name
-        api: Session object property
-            either ``session.tui`` or ``session.file``
+        on_uploaded: Callable[str]
+            Read a file.
         Raises
         ------
         FileNotFoundError
             If a file does not exist.
         """
-        if is_upload:
-            if os.path.isfile(file_name):
-                if not self.file_service.file_exist(os.path.basename(file_name)):
-                    self.upload(file_name)
-                    self._wait_for_file(file_name)
-            elif self.file_service.file_exist(os.path.basename(file_name)):
-                pass
-            else:
-                raise FileNotFoundError(f"{file_name} does not exist.")
-            api(os.path.basename(file_name))
+        if os.path.isfile(file_name):
+            if not self.file_service.file_exist(os.path.basename(file_name)):
+                self.upload(file_name)
+                self._wait_for_file(file_name)
+        elif self.file_service.file_exist(os.path.basename(file_name)):
+            pass
         else:
-            self._wait_for_file(file_name)
-            if os.path.isfile(file_name):
-                print(f"\nFile already exists. File path:\n{file_name}\n")
-            else:
-                self.download(os.path.basename(file_name), ".")
+            raise FileNotFoundError(f"{file_name} does not exist.")
+        if on_uploaded:
+            on_uploaded(os.path.basename(file_name))
+
+    def _pypim_download(self, file_name: str):
+        """Uploads a file if not available on the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name
+        """
+        self._wait_for_file(file_name)
+        if os.path.isfile(file_name):
+            print(f"\nFile already exists. File path:\n{file_name}\n")
+        else:
+            self.download(os.path.basename(file_name), ".")
 
     def _no_pypim_helper(
         self,
@@ -421,7 +422,7 @@ class BaseSession:
         ----------
         file_name : str
             File name
-        api: Session object property
-            either ``session.tui`` or ``session.file``
+        api: Callable[str]
+            Read or write a file.
         """
         api(file_name)
