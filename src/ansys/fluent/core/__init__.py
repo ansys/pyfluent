@@ -20,6 +20,7 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
+from ansys.fluent.core.meta import MetaClassError  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc

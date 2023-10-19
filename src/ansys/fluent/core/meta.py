@@ -3,6 +3,7 @@ from abc import ABCMeta
 from collections.abc import MutableMapping
 import inspect
 from pprint import pformat
+from typing import Any, Optional
 
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
@@ -78,13 +79,13 @@ class Command:
                                 if not all(
                                     elem in allowed_values for elem in arg_value
                                 ):
-                                    raise RuntimeError(
-                                        f"All values of {arg} value {arg_value} is not within allowed values."
+                                    raise MetaClassError.DISALLOWED_VALUES(
+                                        arg=arg, arg_value=arg_value
                                     )
                             else:
                                 if arg_value not in allowed_values:
-                                    raise RuntimeError(
-                                        f"{arg} value {arg_value} is not within allowed values."
+                                    raise MetaClassError.DISALLOWED_VALUES(
+                                        arg=arg, arg_value=arg_value
                                     )
 
                         elif attr == "range":
@@ -95,8 +96,8 @@ class Command:
 
                             minimum, maximum = attr_value(_self.obj)
                             if arg_value < minimum or arg_value > maximum:
-                                raise RuntimeError(
-                                    f"{arg} value {arg_value} is not within range."
+                                raise MetaClassError.DISALLOWED_VALUES(
+                                    arg=arg, arg_value=arg_value
                                 )
             return method(_self.obj, *args, **kwargs)
 
@@ -232,24 +233,20 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         if self.range and (
                             value < self.range[0] or value > self.range[1]
                         ):
-                            raise ValueError(
-                                f"Value {value}, is not within valid range"
-                                f" {self.range}."
+                            raise MetaClassError.DISALLOWED_VALUES(
+                                value=value, range_limit=self.range
                             )
                     elif attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
                                 v is None or v in self.allowed_values for v in value
                             ):
-                                raise ValueError(
-                                    f"Not all values in {value}, are in the "
-                                    "list of allowed values "
-                                    f"{self.allowed_values}."
+                                raise MetaClassError.DISALLOWED_VALUES(
+                                    value=value, allowed_values=self.allowed_values
                                 )
                         elif value is not None and value not in self.allowed_values:
-                            raise ValueError(
-                                f"Value {value}, is not in the list of "
-                                f"allowed values {self.allowed_values}."
+                            raise MetaClassError.DISALLOWED_VALUES(
+                                value=value, allowed_values=self.allowed_values
                             )
 
             return value
@@ -738,3 +735,29 @@ class PyLocalContainer(MutableMapping):
     @CommandArgs(Create, "name")
     def type(self):
         return "string"
+
+
+class MetaClassError(ValueError):
+    """Custom meta class errors."""
+
+    def __init__(self, error):
+        super().__init__(error)
+
+    @classmethod
+    def DISALLOWED_VALUES(
+        cls,
+        arg: Optional[Any] = None,
+        arg_value: Optional[Any] = None,
+        value: Optional[Any] = None,
+        allowed_values: Optional[Any] = None,
+        range_limit: Optional[Any] = None,
+    ):
+        if arg and arg_value:
+            return cls(f"{arg} value {arg_value} is not within allowed values.")
+        if value and allowed_values:
+            return cls(
+                f"Value {value}, is not in the list of "
+                f"allowed values {allowed_values}."
+            )
+        if value and range_limit:
+            return cls(f"Value {value}, is not within valid range" f" {range_limit}.")
