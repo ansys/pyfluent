@@ -182,9 +182,9 @@ solver.setup.general.operating_conditions.operating_pressure = 0
 ###############################################################################
 # Solution
 # ~~~~~~~~
-# Apply the methods parameters. For the discretization scheme, set 'first order
-# upwind' for turbulent kinetic energy and turbulent dissipation rate, 'quick'
-# for the momentum and volume fraction and 'presto!' for pressure.
+# To configure the discretization scheme, set 'first order
+# upwind' method for turbulent kinetic energy and turbulent dissipation rate, 'quick'
+# for the momentum and volume fraction, and 'presto!' for pressure.
 
 methods = solver.solution.methods
 
