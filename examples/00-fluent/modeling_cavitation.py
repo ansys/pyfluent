@@ -175,7 +175,7 @@ outlet["vapor"] = {"volume_fraction": {"value": 0}}
 ###############################################################################
 # Operating Conditions
 # ~~~~~~~~~~~~~~~~~~~~
-# Set the operating pressure as 0.
+# Set the operating pressure to 0.
 
 solver.setup.general.operating_conditions.operating_pressure = 0
 
