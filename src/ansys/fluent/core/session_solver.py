@@ -269,9 +269,7 @@ class Solver(BaseSession):
         if pypim.is_configured():
             self._pypim_download(
                 file_name=file_name,
-                before_download=(
-                    lambda file_name: self.file.write_case(file_name=file_name)
-                ),
+                api=(lambda file_name: self.file.write_case(file_name=file_name)),
             )
         else:
             self._no_pypim_helper(
