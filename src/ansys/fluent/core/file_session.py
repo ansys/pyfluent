@@ -12,6 +12,7 @@ from ansys.fluent.core.services.field_data import (
     VectorFieldData,
     Vertices,
 )
+from ansys.fluent.core.solver.error_message import TransactionError
 
 
 class Transaction:
@@ -108,15 +109,17 @@ class Transaction:
 
         Raises
         ------
-        TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED
+        TransactionError.SurfaceNamesIDsNotProvidedError
             If surface names or surface ids are not provided.
-        TransactionError.INVALID_FIELD_NAME_PREFIX
+        TransactionError.InvalidFieldNamePrefixError
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED()
+            raise TransactionError.SurfaceNamesIDsNotProvidedError(
+                "Please provide either surface names or surface ids."
+            )
 
         if surface_names:
             for surface_name in surface_names:
@@ -126,7 +129,9 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise TransactionError.INVALID_FIELD_NAME_PREFIX()
+                raise TransactionError.InvalidFieldNamePrefixError(
+                    "For multi-phase cases field name should have a prefix of phase name."
+                )
             self._scalar_field_transactions.append(
                 Transaction._ScalarFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
@@ -160,15 +165,17 @@ class Transaction:
 
         Raises
         ------
-        TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED
+        TransactionError.SurfaceNamesIDsNotProvidedError
             If surface names or surface ids are not provided.
-        TransactionError.INVALID_FIELD_NAME_PREFIX
+        TransactionError.InvalidFieldNamePrefixError
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED()
+            raise TransactionError.SurfaceNamesIDsNotProvidedError(
+                "Please provide either surface names or surface ids."
+            )
 
         if surface_names:
             for surface_name in surface_names:
@@ -178,7 +185,9 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise TransactionError.INVALID_FIELD_NAME_PREFIX()
+                raise TransactionError.InvalidFieldNamePrefixError(
+                    "For multi-phase cases field name should have a prefix of phase name."
+                )
             self._vector_field_transactions.append(
                 Transaction._VectorFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
@@ -223,7 +232,7 @@ class Transaction:
 
         Raises
         ------
-        TransactionError.INVALID_FIELD_NAME
+        TransactionError.InvalidFieldNameError
             If any field other than ``"velocity"`` is provided.
         """
         mesh = self._file_session._case_file.get_mesh()
@@ -254,7 +263,9 @@ class Transaction:
 
         for transaction in self._vector_field_transactions:
             if "velocity" not in transaction.field_name:
-                raise TransactionError.INVALID_FIELD_NAME()
+                raise TransactionError.InvalidFieldNameError(
+                    "Only 'velocity' is allowed field."
+                )
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
@@ -319,11 +330,13 @@ class FileFieldData:
 
         Raises
         ------
-        TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED
+        TransactionError.SurfaceNamesIDsNotProvidedError
             If surface names or surface ids are not provided.
         """
         if surface_ids and surface_name:
-            raise TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED()
+            raise TransactionError.SurfaceNamesIDsNotProvidedError(
+                "Please provide either surface names or surface ids."
+            )
 
         if data_type == SurfaceDataType.Vertices:
             if surface_name:
@@ -403,13 +416,15 @@ class FileFieldData:
 
         Raises
         ------
-        TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED
+        TransactionError.SurfaceNamesIDsNotProvidedError
             If surface names or surface ids are not provided.
-        TransactionError.INVALID_FIELD_NAME_PREFIX
+        TransactionError.InvalidFieldNamePrefixError
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED()
+            raise TransactionError.SurfaceNamesIDsNotProvidedError(
+                "Please provide either surface names or surface ids."
+            )
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -417,7 +432,9 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise TransactionError.INVALID_FIELD_NAME_PREFIX()
+                    raise TransactionError.InvalidFieldNamePrefixError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 return ScalarFieldData(
                     surface_ids[0],
                     self._file_session._data_file.get_face_scalar_field_data(
@@ -436,7 +453,9 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise TransactionError.INVALID_FIELD_NAME_PREFIX()
+                    raise TransactionError.InvalidFieldNamePrefixError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 return {
                     surface_id: ScalarFieldData(
                         surface_id,
@@ -485,21 +504,25 @@ class FileFieldData:
 
         Raises
         ------
-        TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED
+        TransactionError.SurfaceNamesIDsNotProvidedError
             If surface names or surface ids are not provided.
-        TransactionError.INVALID_FIELD_NAME
+        TransactionError.InvalidFieldNameError
             If any field other than ``"velocity"`` is provided.
-        TransactionError.INVALID_FIELD_NAME_PREFIX
+        TransactionError.InvalidFieldNamePrefixError
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise TransactionError.SURFACE_NAMES_IDs_NOT_PROVIDED()
+            raise TransactionError.SurfaceNamesIDsNotProvidedError(
+                "Please provide either surface names or surface ids."
+            )
 
         if (
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
         ):
-            raise TransactionError.INVALID_FIELD_NAME()
+            raise TransactionError.InvalidFieldNameError(
+                "Only 'velocity' is allowed field."
+            )
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -507,7 +530,9 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise TransactionError.INVALID_FIELD_NAME_PREFIX()
+                    raise TransactionError.InvalidFieldNamePrefixError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 vector_data = self._file_session._data_file.get_face_vector_field_data(
                     field_name.split(":")[0], surface_ids[0]
                 )
@@ -520,7 +545,9 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise TransactionError.INVALID_FIELD_NAME_PREFIX()
+                    raise TransactionError.InvalidFieldNamePrefixError(
+                        "For multi-phase cases field name should have a prefix of phase name."
+                    )
                 return {
                     surface_id: VectorFieldData(
                         surface_id,
@@ -708,24 +735,3 @@ class FileSession:
     def read_data(self, data_file_name):
         """Read Data file."""
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
-
-
-class TransactionError(RuntimeError):
-    """Custom transaction errors."""
-
-    def __init__(self, error):
-        super().__init__(error)
-
-    @classmethod
-    def SURFACE_NAMES_IDs_NOT_PROVIDED(cls):
-        return cls("Please provide either surface names or surface ids.")
-
-    @classmethod
-    def INVALID_FIELD_NAME_PREFIX(cls):
-        return cls(
-            "For multi-phase cases field name should have a prefix of phase name."
-        )
-
-    @classmethod
-    def INVALID_FIELD_NAME(cls):
-        return cls("Only 'velocity' is allowed field.")

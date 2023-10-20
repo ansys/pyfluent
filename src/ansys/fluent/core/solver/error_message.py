@@ -27,6 +27,22 @@ def allowed_values_error(
     return ValueError(allowed_name_error_message(context, trial_name, allowed_values))
 
 
+class TransactionError(RuntimeError):
+    """Custom transaction errors."""
+
+    class SurfaceNamesIDsNotProvidedError(RuntimeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class InvalidFieldNamePrefixError(RuntimeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class InvalidFieldNameError(RuntimeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+
 class LauncherError(RuntimeError):
     """Custom Fluent launch errors."""
 
