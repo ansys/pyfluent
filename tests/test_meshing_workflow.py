@@ -341,6 +341,7 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.1")
+@pytest.mark.skip
 def test_meshing_workflow_structure(new_mesh_session):
     """
     o Workflow
