@@ -40,7 +40,6 @@ def test_results_graphics_mesh_settings(new_solver_session) -> None:
     assert "mesh-a" not in get_names()
 
 
-@pytest.mark.skip("Fluent bug")
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard(new_solver_session):
@@ -48,50 +47,54 @@ def test_wildcard(new_solver_session):
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
     boundary_conditions = solver.setup.boundary_conditions
-    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
-        "inlet2": {"vmag": {"option": "value", "value": 15}},
-        "inlet1": {"vmag": {"option": "value", "value": 5}},
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 15}}},
+        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 5}}},
     }
-    assert boundary_conditions.velocity_inlet["inl*"].vmag.value() == {
-        "inlet2": {"vmag": {"value": 15}},
-        "inlet1": {"vmag": {"value": 5}},
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity.value() == {
+        "inlet2": {"momentum": {"velocity": {"value": 15}}},
+        "inlet1": {"momentum": {"velocity": {"value": 5}}},
     }
-    boundary_conditions.velocity_inlet["inl*"].vmag = 10
-    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
-        "inlet2": {"vmag": {"option": "value", "value": 10}},
-        "inlet1": {"vmag": {"option": "value", "value": 10}},
+    boundary_conditions.velocity_inlet["inl*"].momentum.velocity = 10
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     boundary_conditions.velocity_inlet = boundary_conditions.velocity_inlet[
         "inl*"
-    ].vmag()
-    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
-        "inlet2": {"vmag": {"option": "value", "value": 10}},
-        "inlet1": {"vmag": {"option": "value", "value": 10}},
+    ].momentum.velocity()
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
-    assert boundary_conditions.fluid["*"].source_terms["*mom*"]() == {
+    cell_zone_conditions = solver.setup.cell_zone_conditions
+    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "y-momentum": [{"option": "value", "value": 2}],
-                "x-momentum": [{"option": "value", "value": 1}],
-                "z-momentum": [{"option": "value", "value": 3}],
+                "source_terms": {
+                    "x-momentum": [{"option": "value", "value": 1}],
+                    "y-momentum": [{"option": "value", "value": 2}],
+                    "z-momentum": [{"option": "value", "value": 3}],
+                }
             }
         }
     }
-    boundary_conditions.fluid["*"].source_terms["*mom*"] = [
+    cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"] = [
         {"option": "value", "value": 2}
     ]
-    assert solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]() == {
+    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "x-momentum": [{"option": "value", "value": 2}],
-                "y-momentum": [{"option": "value", "value": 2}],
-                "z-momentum": [{"option": "value", "value": 2}],
+                "source_terms": {
+                    "x-momentum": [{"option": "value", "value": 2}],
+                    "y-momentum": [{"option": "value", "value": 2}],
+                    "z-momentum": [{"option": "value", "value": 2}],
+                }
             }
         }
     }
 
 
-@pytest.mark.skip("Fluent bug")
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
