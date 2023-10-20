@@ -47,7 +47,7 @@ from ansys.fluent.core import examples
 cav_file = examples.download_file("cav.msh", "pyfluent/cavitation")
 
 ###############################################################################
-# Launch Fluent session in 2d solution mode with double precision running
+# Launch a Fluent session in the 2d solution mode with double precision running
 # on four processors.
 
 solver = pyfluent.launch_fluent(
@@ -58,7 +58,7 @@ solver = pyfluent.launch_fluent(
 )
 
 ###############################################################################
-# Read the Mesh and Specify Models
+# Read the mesh that was downloaded.
 
 solver.file.read_mesh(file_name=cav_file)
 
