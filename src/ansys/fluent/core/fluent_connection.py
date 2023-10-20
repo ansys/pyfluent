@@ -23,6 +23,7 @@ from ansys.platform.instancemanagement import Instance
 import docker
 
 logger = logging.getLogger("pyfluent.general")
+from ansys.fluent.core.solver.error_message import FluentConnectionError
 
 
 def _get_max_c_int_limit() -> int:
@@ -241,6 +242,12 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a docker container.
+        Raises
+        ------
+        FluentConnectionError.PortNotProvidedError
+            If port is not provided.
+        FluentConnectionError.StartTimeoutError
+            If time exceeds ``start_timeout``.
         """
         self.error_state = ErrorState()
         self._data_valid = False
@@ -255,7 +262,9 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise FluentConnectionError.PORT_NOT_PROVIDED()
+                raise FluentConnectionError.PortNotProvidedError(
+                    "The port to connect to Fluent session is not provided."
+                )
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(
@@ -278,7 +287,7 @@ class FluentConnection:
             time.sleep(1)
             counter += 1
             if counter > start_timeout:
-                raise RuntimeError(
+                raise FluentConnectionError.StartTimeoutError(
                     f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
                 )
 
@@ -504,13 +513,15 @@ class FluentConnection:
 
         Raises
         ------
-        ValueError
+        FluentConnectionError.RemoteNotSupportedError
             If current Fluent instance is running remotely.
-        TypeError
+        FluentConnectionError.WaitTypeError
             If ``wait`` is specified improperly.
         """
         if self._remote_instance:
-            raise FluentConnectionError.PROCESS_NOT_FINISHED()
+            raise FluentConnectionError.RemoteNotSupportedError(
+                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
+            )
         if isinstance(wait, bool):
             if wait:
                 wait = 60
@@ -520,7 +531,7 @@ class FluentConnection:
         if isinstance(wait, (float, int)):
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
-            raise TypeError("Invalid 'limit' type.")
+            raise FluentConnectionError.WaitTypeError("Invalid 'limit' type.")
         if self.connection_properties.inside_container:
             _response = timeout_loop(
                 get_container,
@@ -666,20 +677,3 @@ class FluentConnection:
             remote_instance.delete()
 
         exit_event.set()
-
-
-class FluentConnectionError(ValueError):
-    """Custom Fluent connection errors."""
-
-    def __init__(self, error):
-        super().__init__(error)
-
-    @classmethod
-    def PORT_NOT_PROVIDED(cls):
-        return cls("The port to connect to Fluent session is not provided.")
-
-    @classmethod
-    def PROCESS_NOT_FINISHED(cls):
-        return cls(
-            "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
-        )

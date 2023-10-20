@@ -27,18 +27,22 @@ def allowed_values_error(
     return ValueError(allowed_name_error_message(context, trial_name, allowed_values))
 
 
-class TransactionError(RuntimeError):
-    """Custom transaction errors."""
+class FluentConnectionError(ValueError):
+    """Custom Fluent connection errors."""
 
-    class SurfaceNamesIDsNotProvidedError(RuntimeError):
+    class PortNotProvidedError(ValueError):
         def __init__(self, error):
             super().__init__(error)
 
-    class InvalidFieldNamePrefixError(RuntimeError):
+    class StartTimeoutError(RuntimeError):
         def __init__(self, error):
             super().__init__(error)
 
-    class InvalidFieldNameError(RuntimeError):
+    class RemoteNotSupportedError(ValueError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class WaitTypeError(TypeError):
         def __init__(self, error):
             super().__init__(error)
 
@@ -55,5 +59,21 @@ class LauncherError(RuntimeError):
             super().__init__(error)
 
     class DockerContainerLaunchNotSupportedError(SystemError):
+        def __init__(self, error):
+            super().__init__(error)
+
+
+class TransactionError(RuntimeError):
+    """Custom transaction errors."""
+
+    class SurfaceNamesIDsNotProvidedError(RuntimeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class InvalidFieldNamePrefixError(RuntimeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class InvalidFieldNameError(RuntimeError):
         def __init__(self, error):
             super().__init__(error)
