@@ -81,11 +81,13 @@ def launch(
     if os.name == "nt":
         pythonw_executable = python_executable.parent / "pythonw.exe"
         if pythonw_executable.exists():
-            python_executable = pythonw_executable
+            python_executable = '"' + str(pythonw_executable) + '"'
         else:
             logger.debug("Could not find Windows 'pythonw.exe' executable.")
-
-    watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
+        watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
+        watchdog_exec = '"' + str(watchdog_exec) + '"'
+    else:
+        watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
 
     # Command to be executed by the new process
     command_list = [
@@ -129,12 +131,11 @@ def launch(
 
     if os.name == "nt":
         # https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
-        os_cmd = ["start"]
+        cmd_send = 'start "" ' + " ".join(command_list)
     else:
-        os_cmd = []
+        cmd_send = command_list
 
-    cmd_send = os_cmd + command_list
-    logger.info(f"Watchdog command list: {cmd_send}")
+    logger.info(f"Watchdog command: {cmd_send}")
 
     init_file = Path(WATCHDOG_INIT_FILE.format(watchdog_id))
     watchdog_err = Path("pyfluent_watchdog.err")
