@@ -3,7 +3,6 @@ import importlib
 import json
 import logging
 import os
-import time
 from typing import Any, Callable, Optional  # noqa: F401
 import warnings
 
@@ -350,19 +349,6 @@ class BaseSession:
             is_upload=False, file_name=file_name, local_file_name=local_file_name
         )
 
-    def _wait_for_file(self, file_name: str):
-        """Wait for file to get ready for upload or download.
-
-        Parameters
-        ----------
-        file_name : str
-            File name
-        """
-        while True:
-            if self.file_service.file_exist(os.path.basename(file_name)):
-                break
-            time.sleep(3)
-
     def _pypim_upload(self, file_name: str, on_uploaded: Optional[Any] = None):
         """Uploads a file if not available on the server.
 
@@ -381,7 +367,6 @@ class BaseSession:
             if os.path.isfile(file_name):
                 if not self.file_service.file_exist(os.path.basename(file_name)):
                     self.upload(file_name)
-                    self._wait_for_file(file_name)
             elif self.file_service.file_exist(os.path.basename(file_name)):
                 pass
             else:
@@ -402,7 +387,6 @@ class BaseSession:
         if on_uploaded:
             on_uploaded(os.path.basename(file_name))
         if pypim.is_configured():
-            self._wait_for_file(file_name)
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
