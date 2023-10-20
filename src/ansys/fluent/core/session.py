@@ -361,8 +361,7 @@ class BaseSession:
         while True:
             if self.file_service.file_exist(os.path.basename(file_name)):
                 break
-            else:
-                time.sleep(3)
+            time.sleep(3)
 
     def _pypim_upload(self, file_name: str, on_uploaded: Optional[Any] = None):
         """Uploads a file if not available on the server.
@@ -402,7 +401,7 @@ class BaseSession:
         """
         if on_uploaded:
             on_uploaded(os.path.basename(file_name))
-        elif pypim.is_configured():
+        if pypim.is_configured():
             self._wait_for_file(file_name)
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
