@@ -14,7 +14,6 @@ from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
-from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
@@ -257,15 +256,6 @@ def test_journal_creation(file_format, new_mesh_session):
     new_stat = file_name.stat()
     print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
-
-
-@pytest.mark.skip("Failing in GitHub CI")
-def test_old_style_session():
-    session = pyfluent.launch_fluent()
-    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    session.solver.root.file.read(file_type="case", file_name=case_path)
-    session.solver.tui.report.system.sys_stats()
-    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.2")
