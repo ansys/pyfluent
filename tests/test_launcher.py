@@ -10,6 +10,7 @@ from ansys.fluent.core.launcher.launcher import (
     get_ansys_version,
     get_fluent_exe_path,
 )
+from ansys.fluent.core.solver.error_message import LauncherError
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
@@ -84,9 +85,9 @@ def test_gpu_launch_arg_additional_arg(monkeypatch):
 
 
 def test_kwargs():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(LauncherError.MeshingModeError):
         pyfluent.launch_fluent(abc=1, meshing_mode=True)
-    with pytest.raises(TypeError):
+    with pytest.raises(LauncherError.UnexpectedKeywordArgumentError):
         pyfluent.launch_fluent(abc=1, xyz=2)
 
 
