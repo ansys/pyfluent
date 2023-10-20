@@ -83,9 +83,10 @@ def launch(
     if os.name == "nt":
         pythonw_executable = python_executable.parent / "pythonw.exe"
         if pythonw_executable.exists():
-            python_executable = '"' + str(pythonw_executable) + '"'
+            python_executable = pythonw_executable
         else:
             logger.debug("Could not find Windows 'pythonw.exe' executable.")
+        python_executable = '"' + str(python_executable) + '"'
         watchdog_exec = '"' + str(watchdog_exec) + '"'
 
     # Command to be executed by the new process
@@ -149,7 +150,7 @@ def launch(
 
     logger.info(f"Waiting for Watchdog to initialize, then proceeding...")
     file_exists = timeout_loop(
-        lambda: init_file.is_file() or watchdog_err.is_file(), 10.0
+        lambda: init_file.is_file() or watchdog_err.is_file(), 30.0
     )
 
     if file_exists and init_file.is_file():
