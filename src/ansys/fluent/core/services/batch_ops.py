@@ -2,28 +2,34 @@
 
 import inspect
 import logging
-from typing import List, Tuple
+from types import ModuleType
+from typing import Optional, TypeVar
 import weakref
 
+from google.protobuf.message import Message
 import grpc
 
 import ansys.api.fluent.v0 as api
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 
-network_logger = logging.getLogger("pyfluent.networking")
+_TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
+
+network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService:
     """Class wrapping methods in batch RPC service."""
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of BatchOpsService class."""
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(channel)
         self._metadata = metadata
 
     @catch_grpc_error
-    def execute(self, request):
+    def execute(
+        self, request: batch_ops_pb2.ExecuteRequest
+    ) -> batch_ops_pb2.ExecuteResponse:
         """Execute RPC of BatchOps service."""
         return self._stub.Execute(request, metadata=self._metadata)
 
@@ -57,11 +63,11 @@ class BatchOps:
     access the ``mesh-1`` mesh object which has not been created yet.
     """
 
-    _proto_files = None
+    _proto_files: Optional[list[ModuleType]] = None
     _instance = lambda: None
 
     @classmethod
-    def instance(cls) -> "BatchOps":
+    def instance(cls) -> Optional[_TBatchOps]:
         """Get the BatchOps instance.
 
         Returns
@@ -76,7 +82,7 @@ class BatchOps:
 
         def __init__(
             self, package: str, service: str, method: str, request_body: bytes
-        ):
+        ) -> None:
             """__init__ method of Op class."""
             self._request = batch_ops_pb2.ExecuteRequest(
                 package=package,
@@ -123,7 +129,7 @@ class BatchOps:
                 self._result = None
             self.queued = False
 
-        def update_result(self, status, data):
+        def update_result(self, status: batch_ops_pb2.ExecuteStatus, data: str) -> None:
             """Update results after the batch operation is executed."""
             obj = self.response_cls()
             try:
@@ -133,22 +139,22 @@ class BatchOps:
             self._status = status
             self._result = obj
 
-    def __new__(cls, session):
+    def __new__(cls, session) -> _TBatchOps:
         if cls.instance() is None:
             instance = super(BatchOps, cls).__new__(cls)
-            instance._service = session._batch_ops_service
-            instance._ops: List[BatchOps.Op] = []
+            instance._service: BatchOpsService = session._batch_ops_service
+            instance._ops: list[BatchOps.Op] = []
             instance.batching = False
             cls._instance = weakref.ref(instance)
         return cls.instance()
 
-    def __enter__(self):
+    def __enter__(self) -> _TBatchOps:
         """Entering the with block."""
         self.clear_ops()
         self.batching = True
         return self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    def __exit__(self, exc_type, exc_value, exc_tb) -> None:
         """Exiting from the with block."""
         network_logger.debug("Executing batch operations")
         self.batching = False
@@ -158,7 +164,7 @@ class BatchOps:
             for i, response in enumerate(responses):
                 self._ops[i].update_result(response.status, response.response_body)
 
-    def add_op(self, package: str, service: str, method: str, request):
+    def add_op(self, package: str, service: str, method: str, request: Message) -> Op:
         """Queue a single batch operation. Only the non-getter operations will be
         queued.
 
@@ -188,6 +194,6 @@ class BatchOps:
             op.queued = True
         return op
 
-    def clear_ops(self):
+    def clear_ops(self) -> None:
         """Clear all queued batch operations."""
         self._ops.clear()
