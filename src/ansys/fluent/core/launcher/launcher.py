@@ -11,7 +11,6 @@ from pathlib import Path
 import platform
 import subprocess
 import tempfile
-import time
 from typing import Any, Dict, List, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -32,6 +31,8 @@ import ansys.platform.instancemanagement as pypim
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
+
+connection_info_command = "(grpcserver/server-info(is-server-running?))"
 
 
 def _is_windows():
@@ -201,6 +202,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
     from ansys.fluent.core import INFER_REMOTING_IP
 
     if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
@@ -371,20 +373,12 @@ def _update_launch_string_wrt_gui_options(
     return launch_string
 
 
-def _await_fluent_launch(
-    server_info_file_name: str, start_timeout: int, sifile_last_mtime: float
-):
-    """Wait for successful fluent launch or raise an error."""
-    while True:
-        if Path(server_info_file_name).stat().st_mtime > sifile_last_mtime:
-            time.sleep(1)
-            logger.info("Fluent has been successfully launched.")
-            break
-        if start_timeout == 0:
-            raise RuntimeError("The launch process has been timed out.")
-        time.sleep(1)
-        start_timeout -= 1
-        logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
+def _get_connection_info(proc: subprocess.Popen):
+    for line in proc.stdout:
+        if line.startswith(connection_info_command.encode()):
+            line = line.decode().removeprefix(connection_info_command).strip()
+            port, host = line.split()
+            return host, int(port)
 
 
 def _get_server_info(
@@ -451,6 +445,7 @@ def _generate_launch_string(
     launch_string = _update_launch_string_wrt_gui_options(
         launch_string, show_gui, additional_arguments
     )
+    launch_string += f" -command={connection_info_command}"
     return launch_string
 
 
@@ -717,21 +712,20 @@ def launch_fluent(
                 )
             launch_string += scm_to_py(topy, journal_file_names)
 
-        if _is_windows():
-            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
-            launch_cmd = 'start "" ' + launch_string
-        else:
-            launch_cmd = launch_string
+        # Disabling to read server's stdout
+        # if _is_windows():
+        #     # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
+        #     launch_cmd = 'start "" ' + launch_string
+        # else:
+        launch_cmd = launch_string
 
         try:
             logger.debug(f"Launching Fluent with command: {launch_cmd}")
 
-            subprocess.Popen(launch_cmd, **kwargs)
+            proc = subprocess.Popen(launch_cmd, **kwargs)
 
             try:
-                _await_fluent_launch(
-                    server_info_file_name, start_timeout, sifile_last_mtime
-                )
+                ip, port = _get_connection_info(proc)
             except RuntimeError as ex:
                 if _is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
@@ -740,19 +734,20 @@ def launch_fluent(
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
-                    subprocess.Popen(launch_cmd, **kwargs)
-                    _await_fluent_launch(
-                        server_info_file_name, start_timeout, sifile_last_mtime
-                    )
+                    proc = subprocess.Popen(launch_cmd, **kwargs)
+                    ip, port = _get_connection_info(proc)
                 else:
                     raise ex
 
-            session = new_session.create_from_server_info_file(
-                server_info_file_name=server_info_file_name,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=argvals,
-                inside_container=False,
+            session = new_session(
+                fluent_connection=FluentConnection(
+                    ip=ip,
+                    port=port,
+                    cleanup_on_exit=cleanup_on_exit,
+                    start_transcript=start_transcript,
+                    launcher_args=argvals,
+                    inside_container=False,
+                )
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
