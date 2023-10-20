@@ -57,8 +57,8 @@ solver = pyfluent.launch_fluent(
     version="2d",
 )
 
+###############################################################################
 # Read the Mesh and Specify Models
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 solver.file.read_mesh(file_name=cav_file)
 
