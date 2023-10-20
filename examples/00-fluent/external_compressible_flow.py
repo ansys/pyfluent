@@ -49,9 +49,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 wing_spaceclaim_file, wing_intermediary_file = [
-    examples.download_file(
-        CAD_file, "pyfluent/external_compressible", save_path=pyfluent.EXAMPLES_PATH
-    )
+    examples.download_file(CAD_file, "pyfluent/external_compressible")
     for CAD_file in ["wing.scdoc", "wing.pmdb"]
 ]
 
@@ -65,7 +63,6 @@ meshing = pyfluent.launch_fluent(
     precision="double",
     processor_count=4,
     mode="meshing",
-    cwd=pyfluent.EXAMPLES_PATH,
 )
 
 ###############################################################################
@@ -327,7 +324,7 @@ solver.solution.initialization.hybrid_initialize()
 ###############################################################################
 # Save case file
 # ~~~~~~~~~~~~~~
-# Solve the case file (``external_compressible1.cas.h5``).
+# Save the case file ``external_compressible1.cas.h5``.
 
 solver.file.write(file_name="external_compressible.cas.h5", file_type="case")
 
