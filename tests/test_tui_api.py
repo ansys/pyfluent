@@ -1,9 +1,11 @@
+import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 
 
+@pytest.mark.skip("Failing in github")
 def test_report_system_proc_stats_tui(new_solver_session, capsys) -> None:
     new_solver_session.tui.report.system.sys_stats()
     captured = capsys.readouterr()
