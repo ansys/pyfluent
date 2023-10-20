@@ -78,16 +78,15 @@ def launch(
 
     python_executable = Path(python_executable)
 
+    watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
+
     if os.name == "nt":
         pythonw_executable = python_executable.parent / "pythonw.exe"
         if pythonw_executable.exists():
             python_executable = '"' + str(pythonw_executable) + '"'
         else:
             logger.debug("Could not find Windows 'pythonw.exe' executable.")
-        watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
         watchdog_exec = '"' + str(watchdog_exec) + '"'
-    else:
-        watchdog_exec = Path(__file__).parents[0] / "watchdog_exec"
 
     # Command to be executed by the new process
     command_list = [
