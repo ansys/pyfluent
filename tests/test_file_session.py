@@ -5,6 +5,7 @@ import pytest
 from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 from ansys.fluent.core.services.field_data import SurfaceDataType
+from ansys.fluent.core.solver.error_message import TransactionError
 
 
 def round_off_list_elements(input_list):
@@ -331,10 +332,10 @@ def test_error_handling_multi_phase():
     error_message = (
         r"For multi-phase cases field name should have a prefix of phase name."
     )
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(TransactionError.InvalidFieldNamePrefixError) as msg:
         transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", [29, 30])
     assert msg.value.args[0] == error_message
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(TransactionError.InvalidFieldNamePrefixError) as msg:
         d_size = field_data.get_vector_field_data("velocity", surface_ids=[34])[34].size
     assert msg.value.args[0] == error_message
