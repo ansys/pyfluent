@@ -12,15 +12,12 @@ logging.root_config()
 logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
-from ansys.fluent.core.file_session import TransactionError  # noqa: F401
-from ansys.fluent.core.fluent_connection import FluentConnectionError  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentMode,
     FluentVersion,
     connect_to_fluent,
     launch_fluent,
 )
-from ansys.fluent.core.meta import MetaClassError  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc

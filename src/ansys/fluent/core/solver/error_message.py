@@ -25,3 +25,19 @@ def allowed_values_error(
     context: str, trial_name: str, allowed_values: List[str]
 ) -> ValueError:
     return ValueError(allowed_name_error_message(context, trial_name, allowed_values))
+
+
+class LauncherError(RuntimeError):
+    """Custom Fluent launch errors."""
+
+    class MeshingModeError(RuntimeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class UnexpectedKeywordArgumentError(TypeError):
+        def __init__(self, error):
+            super().__init__(error)
+
+    class DockerContainerLaunchNotSupportedError(SystemError):
+        def __init__(self, error):
+            super().__init__(error)

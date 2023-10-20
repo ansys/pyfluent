@@ -26,6 +26,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.solver.error_message import LauncherError
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
@@ -595,6 +596,15 @@ def launch_fluent(
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
         Session object or configuration dictionary if ``dry_run = True``.
 
+    Raises
+    ------
+    LauncherError.MeshingModeError
+        If 'meshing_mode' argument is provided.
+    LauncherError.UnexpectedKeywordArgumentError
+        If an unexpected keyword argument is provided.
+    LauncherError.DockerContainerLaunchNotSupportedError
+        If a Fluent Docker container launch is specified.
+
     Notes
     -----
     Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
@@ -603,12 +613,12 @@ def launch_fluent(
     """
     if kwargs:
         if "meshing_mode" in kwargs:
-            raise RuntimeError(
+            raise LauncherError.MeshingModeError(
                 "'meshing_mode' argument is no longer used."
                 " Please use launch_fluent(mode='meshing') to launch in meshing mode."
             )
         else:
-            raise TypeError(
+            raise LauncherError.UnexpectedKeywordArgumentError(
                 f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
             )
     del kwargs
@@ -622,7 +632,7 @@ def launch_fluent(
         if check_docker_support():
             fluent_launch_mode = LaunchMode.CONTAINER
         else:
-            raise SystemError(
+            raise LauncherError.DockerContainerLaunchNotSupportedError(
                 "Docker is not working correctly in this system, "
                 "yet a Fluent Docker container launch was specified."
             )
