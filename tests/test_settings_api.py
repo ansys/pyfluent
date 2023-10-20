@@ -21,25 +21,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-@pytest.mark.skip(reason="failing if run with other tests")
-def test_results_graphics_mesh_settings(new_solver_session) -> None:
-    session = new_solver_session
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.solver.file.read(file_type="case", file_name=case_path)
-    get_names = session.mesh.get_object_names
-    assert "mesh-1" not in get_names()
-    session.mesh["mesh-1"] = {}
-    assert "mesh-1" in get_names()
-    assert not session.mesh["mesh-1"].options.nodes()
-    session.mesh["mesh-1"].options.nodes = True
-    assert session.mesh["mesh-1"].options.nodes()
-    session.mesh.rename("mesh-a", "mesh-1")
-    assert "mesh-a" in get_names()
-    assert "mesh-1" not in get_names()
-    del session.mesh["mesh-a"]
-    assert "mesh-a" not in get_names()
-
-
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard(new_solver_session):

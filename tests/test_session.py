@@ -296,7 +296,7 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.skip("Failing in github")
+@pytest.mark.skip("seems to be broken")
 def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
