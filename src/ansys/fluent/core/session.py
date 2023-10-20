@@ -3,7 +3,6 @@ import importlib
 import json
 import logging
 import os
-import sys
 import time
 from typing import Any, Callable, Optional  # noqa: F401
 import warnings
@@ -32,6 +31,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+import ansys.platform.instancemanagement as pypim
 
 from .rpvars import RPVars
 
@@ -357,20 +357,12 @@ class BaseSession:
         ----------
         file_name : str
             File name
-        Raises
-        ------
-        FileNotFoundError
-            If a file does not exist.
         """
-        start_time = time.time()
-        max_wait_time = sys.maxsize
-        while (time.time() - start_time) < max_wait_time:
+        while True:
             if self.file_service.file_exist(os.path.basename(file_name)):
                 break
-            max_wait_time -= 1
-            time.sleep(3)
-        else:
-            raise FileNotFoundError(f"{file_name} does not exist.")
+            else:
+                time.sleep(3)
 
     def _pypim_upload(self, file_name: str, on_uploaded: Optional[Any] = None):
         """Uploads a file if not available on the server.
@@ -386,47 +378,33 @@ class BaseSession:
         FileNotFoundError
             If a file does not exist.
         """
-        if os.path.isfile(file_name):
-            if not self.file_service.file_exist(os.path.basename(file_name)):
-                self.upload(file_name)
-                self._wait_for_file(file_name)
-        elif self.file_service.file_exist(os.path.basename(file_name)):
-            pass
-        else:
-            raise FileNotFoundError(f"{file_name} does not exist.")
+        if pypim.is_configured():
+            if os.path.isfile(file_name):
+                if not self.file_service.file_exist(os.path.basename(file_name)):
+                    self.upload(file_name)
+                    self._wait_for_file(file_name)
+            elif self.file_service.file_exist(os.path.basename(file_name)):
+                pass
+            else:
+                raise FileNotFoundError(f"{file_name} does not exist.")
         if on_uploaded:
             on_uploaded(os.path.basename(file_name))
 
-    def _pypim_download(self, file_name: str, api: Optional[Any] = None):
+    def _pypim_download(self, file_name: str, on_uploaded: Optional[Any] = None):
         """Downloads a file from the server.
 
         Parameters
         ----------
         file_name : str
             File name
-        api: Callable[str]
+        on_uploaded: Callable[str]
             Write a file.
         """
-        if api:
-            api(os.path.basename(file_name))
-        self._wait_for_file(file_name)
-        if os.path.isfile(file_name):
-            print(f"\nFile already exists. File path:\n{file_name}\n")
-        else:
-            self.download(os.path.basename(file_name), ".")
-
-    def _no_pypim_helper(
-        self,
-        file_name: str,
-        api: Optional[Any] = None,
-    ):
-        """Used if pypim is not configured.
-
-        Parameters
-        ----------
-        file_name : str
-            File name
-        api: Callable[str]
-            Read or write a file.
-        """
-        api(file_name)
+        if on_uploaded:
+            on_uploaded(os.path.basename(file_name))
+        elif pypim.is_configured():
+            self._wait_for_file(file_name)
+            if os.path.isfile(file_name):
+                print(f"\nFile already exists. File path:\n{file_name}\n")
+            else:
+                self.download(os.path.basename(file_name), ".")

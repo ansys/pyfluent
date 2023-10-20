@@ -19,7 +19,6 @@ from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 from ansys.fluent.core.workflow import WorkflowWrapper
-import ansys.platform.instancemanagement as pypim
 
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -242,18 +241,10 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        if pypim.is_configured():
-            self._pypim_upload(
-                file_name=file_name,
-                on_uploaded=(
-                    lambda file_name: self.file.read_case(file_name=file_name)
-                ),
-            )
-        else:
-            self._no_pypim_helper(
-                file_name,
-                api=(lambda file_name: self.file.read_case(file_name=file_name)),
-            )
+        self._pypim_upload(
+            file_name=file_name,
+            on_uploaded=(lambda file_name: self.file.read_case(file_name=file_name)),
+        )
 
     def write_case(
         self,
@@ -266,13 +257,7 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        if pypim.is_configured():
-            self._pypim_download(
-                file_name=file_name,
-                api=(lambda file_name: self.file.write_case(file_name=file_name)),
-            )
-        else:
-            self._no_pypim_helper(
-                file_name,
-                api=(lambda file_name: self.file.write_case(file_name=file_name)),
-            )
+        self._pypim_download(
+            file_name=file_name,
+            on_uploaded=(lambda file_name: self.file.write_case(file_name=file_name)),
+        )

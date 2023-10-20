@@ -14,7 +14,6 @@ from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.data_transfer import transfer_case
-import ansys.platform.instancemanagement as pypim
 
 
 class PureMeshing(BaseSession):
@@ -159,16 +158,11 @@ class PureMeshing(BaseSession):
         file_name : str
             Case file name
         """
-        if pypim.is_configured():
-            self._pypim_upload(
-                file_name=file_name,
-                on_uploaded=self.tui.file.read_case,
-            )
-        else:
-            self._no_pypim_helper(
-                file_name,
-                api=self.tui.file.read_case,
-            )
+
+        self._pypim_upload(
+            file_name=file_name,
+            on_uploaded=self.tui.file.read_case,
+        )
 
     def write_case(
         self,
@@ -181,13 +175,7 @@ class PureMeshing(BaseSession):
         file_name : str
             Case file name
         """
-        if pypim.is_configured():
-            self._pypim_download(
-                file_name=file_name,
-                api=self.tui.file.write_case,
-            )
-        else:
-            self._no_pypim_helper(
-                file_name,
-                api=self.tui.file.write_case,
-            )
+        self._pypim_download(
+            file_name=file_name,
+            on_uploaded=self.tui.file.write_case,
+        )
