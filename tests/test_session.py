@@ -8,7 +8,7 @@ import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
-from util.solver_workflow import new_solver_session  # noqa: F401
+from util.solver_workflow import make_new_session, new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
@@ -322,6 +322,21 @@ def test_read_case_using_lightweight_mode():
 
 def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
+
+
+def test_build_from_fluent_connection(make_new_session):
+    solver1 = make_new_session()
+    solver2 = make_new_session()
+    assert solver1.health_check_service.is_serving
+    assert solver2.health_check_service.is_serving
+    health_check_service1 = solver1.health_check_service
+    cortex_pid2 = solver2.fluent_connection.connection_properties.cortex_pid
+    solver1.build_from_fluent_connection(solver2.fluent_connection)
+    assert solver1.health_check_service.is_serving
+    assert solver2.health_check_service.is_serving
+    assert not health_check_service1.is_serving
+    assert solver1.fluent_connection.connection_properties.cortex_pid == cortex_pid2
+    assert solver2.fluent_connection.connection_properties.cortex_pid == cortex_pid2
 
 
 @pytest.mark.standalone
