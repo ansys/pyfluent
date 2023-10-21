@@ -296,6 +296,7 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
 
 
+@pytest.mark.standalone
 @pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
