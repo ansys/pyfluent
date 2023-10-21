@@ -17,6 +17,7 @@ from ansys.fluent.core import connect_to_fluent, examples, session
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
 
@@ -296,7 +297,6 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-@pytest.mark.skip("failing because set_state at settings root is not working")
 def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -306,10 +306,16 @@ def test_read_case_using_lightweight_mode():
     )
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver.fluent_connection)
-    while id(solver.fluent_connection) == old_fluent_connection_id:
-        time.sleep(1)
-    time.sleep(5)
-    assert solver.setup.models.energy.enabled() == False
+    timeout_loop(
+        id(solver.fluent_connection) != old_fluent_connection_id,
+        timeout=60,
+        idle_period=1,
+    )
+    timeout_loop(
+        solver.setup.models.energy.enabled() == False,
+        timeout=60,
+        idle_period=1,
+    )
     solver.exit()
 
 
