@@ -2,7 +2,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Callable, Optional  # noqa: F401
+from typing import Any, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
