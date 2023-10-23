@@ -268,7 +268,7 @@ class TUIGenerator:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
             if class_name == "main_menu":
-                heading_ = heading.replace("_", "\_")
+                heading_ = heading
             else:
                 heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
