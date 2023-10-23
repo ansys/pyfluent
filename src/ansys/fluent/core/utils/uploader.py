@@ -1,5 +1,5 @@
 import os
-from typing import Any, Optional
+from typing import Any, Callable, Optional  # noqa: F401
 
 import ansys.platform.instancemanagement as pypim
 

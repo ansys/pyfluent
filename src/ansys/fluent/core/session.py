@@ -174,19 +174,6 @@ class BaseSession:
         self.health_check_service = fluent_connection.health_check_service
         self.connection_properties = fluent_connection.connection_properties
 
-        self.pim_instance = self.fluent_connection._remote_instance
-        self.file_service = None
-        try:
-            upload_server = self.pim_instance.services["http-simple-upload-server"]
-        except (AttributeError, KeyError):
-            pass
-        else:
-            from simple_upload_server.client import Client
-
-            self.file_service = Client(
-                token="token", url=upload_server.uri, headers=upload_server.headers
-            )
-
         self.fluent_connection.register_finalizer_cb(
             self.datamodel_service_se.unsubscribe_all_events
         )
