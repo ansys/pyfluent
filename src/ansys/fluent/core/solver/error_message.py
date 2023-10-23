@@ -27,7 +27,7 @@ def allowed_values_error(
     return ValueError(allowed_name_error_message(context, trial_name, allowed_values))
 
 
-class FluentConnectionError(ValueError):
+class FluentConnectionError:
     """Custom Fluent connection errors."""
 
     class PortNotProvidedError(ValueError):
@@ -47,7 +47,7 @@ class FluentConnectionError(ValueError):
             super().__init__(error)
 
 
-class LauncherError(RuntimeError):
+class LauncherError:
     """Custom Fluent launch errors."""
 
     class MeshingModeError(RuntimeError):
@@ -63,7 +63,7 @@ class LauncherError(RuntimeError):
             super().__init__(error)
 
 
-class TransactionError(RuntimeError):
+class TransactionError:
     """Custom transaction errors."""
 
     class SurfaceNamesIDsNotProvidedError(RuntimeError):
