@@ -34,9 +34,11 @@ logger = logging.getLogger("pyfluent.general")
 
 try:
     import h5py
-except ModuleNotFoundError:
-    logger.error("Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install.")
-    raise
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+    ) from exc
+
 
 class InputParameterOld:
     """Represents an input parameter (old format).
