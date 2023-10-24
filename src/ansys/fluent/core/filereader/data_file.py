@@ -12,7 +12,6 @@ Example
 
     >>> reader = DataFile(data_file_name=data_file_name) # Instantiate a DataFile class
 """
-import logging
 import os
 from os.path import dirname
 from pathlib import Path
@@ -23,8 +22,6 @@ from lxml import etree
 import numpy as np
 
 from . import lispy
-
-logger = logging.getLogger("pyfluent.general")
 
 try:
     import h5py

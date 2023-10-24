@@ -16,7 +16,6 @@ Example
 """
 import codecs
 import gzip
-import logging
 import os
 from os.path import dirname
 from pathlib import Path
@@ -29,8 +28,6 @@ import numpy as np
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
-
-logger = logging.getLogger("pyfluent.general")
 
 try:
     import h5py
