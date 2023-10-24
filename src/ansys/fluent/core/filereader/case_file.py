@@ -16,13 +16,13 @@ Example
 """
 import codecs
 import gzip
+import logging
 import os
 from os.path import dirname
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 import xml.etree.ElementTree as ET
 
-import h5py
 from lxml import etree
 import numpy as np
 
@@ -30,6 +30,13 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
 
+logger = logging.getLogger("pyfluent.general")
+
+try:
+    import h5py
+except ModuleNotFoundError:
+    logger.error("Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install.")
+    raise
 
 class InputParameterOld:
     """Represents an input parameter (old format).
