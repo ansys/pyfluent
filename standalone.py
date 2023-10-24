@@ -6,6 +6,8 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_tui_pb2, datamodel_tui_pb2_grpc
 from ansys.api.fluent.v0.variant_pb2 import Variant
 
+fluent_cmd = "C:/Program Files/ANSYS Inc/v231/fluent/ntbin/win64/fluent.exe 3ddp -sifile=server.txt"
+
 
 def parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
