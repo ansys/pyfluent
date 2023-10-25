@@ -5,8 +5,11 @@ def escape_wildcards(doc: str):
     new_doc = StringIO()
     prev_c = None
     for i, c in enumerate(doc):
-        if c == "*" and prev_c != "\\":
-            new_doc.write("\\*")
+        if c == "*":
+            if prev_c == "\\":
+                new_doc.write(r"\*")
+            else:
+                new_doc.write(r"\\*")
         else:
             new_doc.write(c)
         prev_c = c
