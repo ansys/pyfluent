@@ -327,9 +327,7 @@ def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
 
 
-@pytest.mark.skipif(
-    os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1", reason="tests Fluent launch scenario"
-)
+@pytest.mark.standalone
 def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
     orig_parse_server_info_file = session._parse_server_info_file
 
@@ -342,3 +340,9 @@ def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
         solver = pyfluent.launch_fluent()
     # grpc.RpcError -> RuntimeError -> LaunchFluentError
     assert ex.value.__context__.__context__.code() == grpc.StatusCode.UNAVAILABLE
+
+
+def test_recover_grpc_error_from_connection_error():
+    with pytest.raises(RuntimeError) as ex:
+        pyfluent.connect_to_fluent(ip="127.0.0.1", port=50000, password="abcdefg")
+    assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE

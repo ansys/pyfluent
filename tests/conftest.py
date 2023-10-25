@@ -1,5 +1,6 @@
 import functools
 import operator
+import os
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -27,6 +28,12 @@ def pytest_addoption(parser):
 
 
 def pytest_runtest_setup(item):
+    if (
+        any(mark.name == "standalone" for mark in item.iter_markers())
+        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+    ):
+        pytest.skip()
+
     is_nightly = item.config.getoption("--nightly")
     if not is_nightly and any(mark.name == "nightly" for mark in item.iter_markers()):
         pytest.skip()
