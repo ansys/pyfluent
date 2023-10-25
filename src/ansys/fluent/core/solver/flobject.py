@@ -27,7 +27,11 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
-from .exceptions import allowed_name_error_message, allowed_values_error
+from .exceptions import (
+    InactiveObjectError,
+    allowed_name_error_message,
+    allowed_values_error,
+)
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -177,14 +181,14 @@ class Base:
 
         Raises
         ------
-        RuntimeError
+        InactiveObjectError
             If any attribute other than ``"active?`` is queried when the object is not active.
         """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Object is not active")
+            raise InactiveObjectError("Object is not active")
         val = None
         if attrs:
             val = attrs[attr]
