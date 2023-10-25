@@ -70,14 +70,14 @@ class MetaClassError:
 class TransactionError:
     """Custom transaction errors."""
 
-    class SurfaceNamesIDsNotProvidedError(RuntimeError):
+    class SurfaceNamesIDsNotProvidedError(ValueError):
         def __init__(self, error):
             super().__init__(error)
 
-    class InvalidFieldNamePrefixError(RuntimeError):
+    class InvalidFieldNamePrefixError(ValueError):
         def __init__(self, error):
             super().__init__(error)
 
-    class InvalidFieldNameError(RuntimeError):
+    class InvalidFieldNameError(ValueError):
         def __init__(self, error):
             super().__init__(error)
