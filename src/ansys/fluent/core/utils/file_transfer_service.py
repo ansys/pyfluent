@@ -141,9 +141,7 @@ class FileTransferService:
             if os.path.isfile(file_name):
                 if not self.file_service.file_exist(os.path.basename(file_name)):
                     self.upload(file_name)
-            elif self.file_service.file_exist(os.path.basename(file_name)):
-                pass
-            else:
+            elif not self.file_service.file_exist(os.path.basename(file_name)):
                 raise FileNotFoundError(f"{file_name} does not exist.")
         if on_uploaded:
             on_uploaded(os.path.basename(file_name))
