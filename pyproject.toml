@@ -26,6 +26,7 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
+    "standalone: Tests that cannot be run within container"
 ]
 
 

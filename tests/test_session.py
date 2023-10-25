@@ -13,9 +13,10 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import connect_to_fluent, examples
+from ansys.fluent.core import connect_to_fluent, examples, session
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -160,18 +161,19 @@ def test_create_session_from_server_info_file_with_wrong_password(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError) as ex:
         session = BaseSession.create_from_server_info_file(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
-            start_timeout=2,
         )
         session.scheme_eval.scheme_eval("")
         server.stop(None)
         session.exit()
+    assert ex.value.__context__.code() == grpc.StatusCode.UNAUTHENTICATED
 
 
 def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> (
@@ -323,3 +325,24 @@ def test_read_case_using_lightweight_mode():
 
 def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
+
+
+@pytest.mark.standalone
+def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
+    orig_parse_server_info_file = session._parse_server_info_file
+
+    def mock_parse_server_info_file(file_name):
+        ip, port, password = orig_parse_server_info_file(file_name)
+        return ip, port - 1, password  # provide wrong port
+
+    monkeypatch.setattr(session, "_parse_server_info_file", mock_parse_server_info_file)
+    with pytest.raises(LaunchFluentError) as ex:
+        solver = pyfluent.launch_fluent()
+    # grpc.RpcError -> RuntimeError -> LaunchFluentError
+    assert ex.value.__context__.__context__.code() == grpc.StatusCode.UNAVAILABLE
+
+
+def test_recover_grpc_error_from_connection_error():
+    with pytest.raises(RuntimeError) as ex:
+        pyfluent.connect_to_fluent(ip="127.0.0.1", port=50000, password="abcdefg")
+    assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
