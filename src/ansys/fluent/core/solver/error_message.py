@@ -64,6 +64,11 @@ class DisallowedValuesError(ValueError):
         super().__init__(error)
 
 
+class InvalidEventNameError(NameError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
 class TransactionError:
     """Custom transaction errors."""
 

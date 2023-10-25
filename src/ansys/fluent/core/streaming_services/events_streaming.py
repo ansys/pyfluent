@@ -4,6 +4,10 @@ import logging
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
+from ansys.fluent.core.solver.error_message import (
+    DisallowedValuesError,
+    InvalidEventNameError,
+)
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -90,16 +94,18 @@ class EventsManager(StreamingService):
 
         Raises
         ------
-        RuntimeError
+        DisallowedValuesError
+            If ``event_name`` and ``call_back`` are not provided.
+        InvalidEventNameError
             If event name is not valid.
         """
         if event_name is None or call_back is None:
-            raise RuntimeError(
+            raise DisallowedValuesError(
                 "Please provide compulsory arguments : 'event_name' and 'call_back'"
             )
 
         if event_name not in self.events_list:
-            raise RuntimeError(f"{event_name} is not a valid event.")
+            raise InvalidEventNameError(f"{event_name} is not a valid event.")
         with self._lock:
             event_name = event_name.lower()
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
