@@ -4,7 +4,7 @@ from typing import Any, Callable, Optional  # noqa: F401
 import ansys.platform.instancemanagement as pypim
 
 
-class _Uploader:
+class FileTransferService:
     """Instantiates a file uploader and downloader to have a seamless file reading /
     writing in the cloud particularly in Ansys lab . Here we are exposing upload and
     download methods on session objects. These would be no- ops if PyPIM is not

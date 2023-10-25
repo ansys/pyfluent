@@ -29,7 +29,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils.uploader import _Uploader
+from ansys.fluent.core.utils.FileTransferService import FileTransferService
 
 from .rpvars import RPVars
 
@@ -111,7 +111,9 @@ class BaseSession:
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
-        self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        self._file_transfer_service = FileTransferService(
+            self.fluent_connection._remote_instance
+        )
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 
@@ -260,16 +262,16 @@ class BaseSession:
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Uploads a file on the server."""
-        return self._uploader.upload(file_name, remote_file_name)
+        return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Downloads a file from the server."""
-        return self._uploader.download(file_name, local_file_name)
+        return self._file_transfer_service.download(file_name, local_file_name)
 
     def _pypim_upload(self, file_name: str, on_uploaded: Optional[Any] = None):
         """If pypim is configured, uploads a file on the server."""
-        return self._uploader._pypim_upload(file_name, on_uploaded)
+        return self._file_transfer_service._pypim_upload(file_name, on_uploaded)
 
     def _pypim_download(self, file_name: str, on_uploaded: Optional[Any] = None):
         """If pypim is configured, downloads a file from the server."""
-        return self._uploader._pypim_download(file_name, on_uploaded)
+        return self._file_transfer_service._pypim_download(file_name, on_uploaded)
