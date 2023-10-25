@@ -80,12 +80,12 @@ class Command:
                                 if not all(
                                     elem in allowed_values for elem in arg_value
                                 ):
-                                    raise MetaClassError.DISALLOWED_VALUES(
+                                    raise MetaClassError.DisallowedValuesError(
                                         f"{arg} value {arg_value} is not within allowed values."
                                     )
                             else:
                                 if arg_value not in allowed_values:
-                                    raise MetaClassError.DISALLOWED_VALUES(
+                                    raise MetaClassError.DisallowedValuesError(
                                         f"{arg} value {arg_value} is not within allowed values."
                                     )
 
@@ -97,7 +97,7 @@ class Command:
 
                             minimum, maximum = attr_value(_self.obj)
                             if arg_value < minimum or arg_value > maximum:
-                                raise MetaClassError.DISALLOWED_VALUES(
+                                raise MetaClassError.DisallowedValuesError(
                                     f"{arg} value {arg_value} is not within allowed values."
                                 )
             return method(_self.obj, *args, **kwargs)
@@ -234,7 +234,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         if self.range and (
                             value < self.range[0] or value > self.range[1]
                         ):
-                            raise MetaClassError.DISALLOWED_VALUES(
+                            raise MetaClassError.DisallowedValuesError(
                                 f"Value {value}, is not within valid range"
                                 f" {self.range}."
                             )
@@ -243,12 +243,12 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                             if not all(
                                 v is None or v in self.allowed_values for v in value
                             ):
-                                raise MetaClassError.DISALLOWED_VALUES(
+                                raise MetaClassError.DisallowedValuesError(
                                     f"Value {value}, is not in the list of "
                                     f"allowed values {self.allowed_values}."
                                 )
                         elif value is not None and value not in self.allowed_values:
-                            raise MetaClassError.DISALLOWED_VALUES(
+                            raise MetaClassError.DisallowedValuesError(
                                 f"Value {value}, is not in the list of "
                                 f"allowed values {self.allowed_values}."
                             )

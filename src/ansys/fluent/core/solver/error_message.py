@@ -62,7 +62,7 @@ class LauncherError:
 class MetaClassError:
     """Custom meta class errors."""
 
-    class DISALLOWED_VALUES(ValueError):
+    class DisallowedValuesError(ValueError):
         def __init__(self, error):
             super().__init__(error)
 
