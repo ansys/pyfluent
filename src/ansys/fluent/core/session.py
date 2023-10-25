@@ -29,7 +29,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils.FileTransferService import FileTransferService
+from ansys.fluent.core.utils.file_transfer_service import FileTransferService
 
 from .rpvars import RPVars
 
