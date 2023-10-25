@@ -152,7 +152,7 @@ class _TUIMenu:
             del _XML_HELPSTRINGS[tui_path]
         else:
             self.doc = doc
-        self.doc = self.doc.replace("\\*", "*")
+        self.doc = self.doc.replace("*", "\\*")
         self.doc = self.doc.strip()
         if not self.doc.endswith("."):
             self.doc = self.doc + "."

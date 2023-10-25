@@ -18,3 +18,12 @@ For more details please consult the help option of the corresponding menu or TUI
 
 For more details please consult the help option of the corresponding menu or TUI command."""
     )
+
+
+def test_fix_wildcards_in_settings_doc():
+    old_doc = """Read boundary profile data (*.prof, *.csv). Default is *.prof."""
+    new_doc = fix_settings_doc(old_doc)
+    assert (
+        new_doc
+        == r"""Read boundary profile data (\*.prof, \*.csv). Default is \*.prof."""
+    )
