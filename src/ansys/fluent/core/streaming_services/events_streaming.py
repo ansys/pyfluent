@@ -1,7 +1,7 @@
 """Module for events management."""
 from functools import partial
 import logging
-from typing import Callable, List, Optional
+from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
@@ -68,8 +68,8 @@ class EventsManager(StreamingService):
 
     def register_callback(
         self,
-        event_name: Optional[str] = None,
-        call_back: Optional[Callable] = None,
+        event_name: str,
+        call_back: Callable,
         *args,
         **kwargs,
     ):
