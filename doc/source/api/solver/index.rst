@@ -28,3 +28,4 @@ and field data (surface, scalar, and vector).
    events
    monitors
    reduction
+   svar
