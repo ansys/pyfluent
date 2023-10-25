@@ -50,10 +50,6 @@ class FluentConnectionError:
 class LauncherError:
     """Custom Fluent launch errors."""
 
-    class MeshingModeError(RuntimeError):
-        def __init__(self, error):
-            super().__init__(error)
-
     class UnexpectedKeywordArgumentError(TypeError):
         def __init__(self, error):
             super().__init__(error)

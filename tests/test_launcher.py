@@ -85,7 +85,7 @@ def test_gpu_launch_arg_additional_arg(monkeypatch):
 
 
 def test_kwargs():
-    with pytest.raises(LauncherError.MeshingModeError):
+    with pytest.raises(LauncherError.UnexpectedKeywordArgumentError):
         pyfluent.launch_fluent(abc=1, meshing_mode=True)
     with pytest.raises(LauncherError.UnexpectedKeywordArgumentError):
         pyfluent.launch_fluent(abc=1, xyz=2)

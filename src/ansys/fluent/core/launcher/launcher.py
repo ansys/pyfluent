@@ -598,8 +598,6 @@ def launch_fluent(
 
     Raises
     ------
-    LauncherError.MeshingModeError
-        If 'meshing_mode' argument is provided.
     LauncherError.UnexpectedKeywordArgumentError
         If an unexpected keyword argument is provided.
     LauncherError.DockerContainerLaunchNotSupportedError
@@ -613,7 +611,7 @@ def launch_fluent(
     """
     if kwargs:
         if "meshing_mode" in kwargs:
-            raise LauncherError.MeshingModeError(
+            raise LauncherError.UnexpectedKeywordArgumentError(
                 "'meshing_mode' argument is no longer used."
                 " Please use launch_fluent(mode='meshing') to launch in meshing mode."
             )
