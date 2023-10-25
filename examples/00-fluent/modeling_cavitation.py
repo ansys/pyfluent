@@ -55,6 +55,7 @@ solver = pyfluent.launch_fluent(
     processor_count=4,
     mode="solver",
     version="2d",
+    show_gui=True,
 )
 
 ###############################################################################
@@ -147,6 +148,12 @@ in_mixture = {
 }
 inlet_1["mixture"] = in_mixture
 
+solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase[
+    "mixture"
+].turbulence.hydraulic_diameter.get_attr("units-quantity")
+solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase[
+    "mixture"
+].turbulence.hydraulic_diameter.get_state()
 ###############################################################################
 # Before copying inlet_1's boundary conditions to inlet_2, set the vapor fraction
 # to 0.

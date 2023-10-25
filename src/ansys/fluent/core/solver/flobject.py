@@ -27,6 +27,8 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
+import ansys.units as ansunits
+
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
@@ -294,6 +296,18 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
+    def _quantity_map(self, fluent_unit):
+        """Converts Fluent unit type to ansys.units unit type."""
+        quantity_map = {
+            "mass": "Mass",
+            "length": "Length",
+            "time": "Time",
+            "temperature": "Temperature",
+            "temperature difference": "Temperature Difference",
+            "angle": "Angle",
+        }
+        return quantity_map[fluent_unit]
+
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
         if isinstance(state, dict):
@@ -330,6 +344,29 @@ class Real(SettingsBase[RealType], Numerical):
     Some ``Real`` objects also accept string arguments representing
     expression values.
     """
+
+    def get_state(self) -> StateT:
+        """Get the state of the object."""
+        print(self)
+        print(self.reals_with_units)
+        if reals_with_units and self.get_attr("units-quantity"):
+            try:
+                unit = self._quantity_map(self.get_attr("units-quantity"))
+                value = self.to_python_keys(self.flproxy.get_var(self.path))
+                quantity = ansunits.Quantity(value, quantity_map={unit: 1})
+                return quantity
+            except:
+                print(f"Unable to construct 'Quantity'.")
+        return super().get_state()
+
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
+        """Set the state of the object."""
+        if isinstance(state, ansunits.Quantity) and self.get_attr("units-quantity"):
+            return self.flproxy.set_var(
+                self.path, self.to_scheme_keys(state.si_value), **kwargs
+            )
+
+        return super().set_state(state=state, **kwargs)
 
     _state_type = RealType
 

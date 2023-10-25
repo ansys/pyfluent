@@ -103,6 +103,7 @@ class BaseSession:
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
+        self._reals_with_units = False
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
@@ -184,8 +185,6 @@ class BaseSession:
             self.monitors_manager,
         ):
             self.fluent_connection.register_finalizer_cb(obj.stop)
-
-        self._reals_with_units = False
 
     @property
     def id(self) -> str:
