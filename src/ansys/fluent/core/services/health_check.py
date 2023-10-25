@@ -14,6 +14,7 @@ from ansys.fluent.core.services.interceptors import (
     ErrorStateInterceptor,
     TracingInterceptor,
 )
+from ansys.fluent.core.solver.exceptions import FluentConnectionError
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -76,7 +77,7 @@ class HealthCheckService:
 
         Raises
         ------
-        TimeoutError
+        FluentConnectionError.StartTimeoutError
             If the connection to the Fluent server could not be established within the timeout.
         """
         request = HealthCheckModule.HealthCheckRequest()
@@ -93,7 +94,7 @@ class HealthCheckService:
                 if e.code() == grpc.StatusCode.CANCELLED:
                     break
                 if e.code() == grpc.StatusCode.DEADLINE_EXCEEDED:
-                    raise TimeoutError(
+                    raise FluentConnectionError.StartTimeoutError(
                         f"The connection to the Fluent server could not be established within the configurable {timeout} second time limit."
                     )
                 raise
