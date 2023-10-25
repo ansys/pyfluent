@@ -6,7 +6,7 @@ import multiprocessing.pool
 import time
 from typing import Any, Callable, Optional
 
-from ansys.fluent.core.solver.error_message import DisallowedValuesError
+from ansys.fluent.core.solver.exceptions import DisallowedValuesError
 
 
 def asynchronous(f: Callable) -> Callable:

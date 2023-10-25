@@ -15,7 +15,7 @@ from ansys.fluent.core.services.field_data import (
     override_help_text,
 )
 from ansys.fluent.core.services.interceptors import TracingInterceptor
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.solver.exceptions import allowed_name_error_message
 
 
 class SVARService:

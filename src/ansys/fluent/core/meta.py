@@ -4,7 +4,7 @@ from collections.abc import MutableMapping
 import inspect
 from pprint import pformat
 
-from ansys.fluent.core.solver.error_message import DisallowedValuesError
+from ansys.fluent.core.solver.exceptions import DisallowedValuesError
 
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument

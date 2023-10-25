@@ -5,7 +5,7 @@ import pytest
 from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 from ansys.fluent.core.services.field_data import SurfaceDataType
-from ansys.fluent.core.solver.error_message import TransactionError
+from ansys.fluent.core.solver.exceptions import TransactionError
 
 
 def round_off_list_elements(input_list):

@@ -10,7 +10,7 @@ from ansys.fluent.core.launcher.launcher import (
     get_ansys_version,
     get_fluent_exe_path,
 )
-from ansys.fluent.core.solver.error_message import LauncherError
+from ansys.fluent.core.solver.exceptions import LauncherError
 
 
 @pytest.mark.skip(reason="Can be used only locally.")

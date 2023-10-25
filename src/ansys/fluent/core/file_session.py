@@ -12,7 +12,7 @@ from ansys.fluent.core.services.field_data import (
     VectorFieldData,
     Vertices,
 )
-from ansys.fluent.core.solver.error_message import TransactionError
+from ansys.fluent.core.solver.exceptions import TransactionError
 
 
 class Transaction:

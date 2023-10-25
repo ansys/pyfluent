@@ -23,7 +23,7 @@ from ansys.platform.instancemanagement import Instance
 import docker
 
 logger = logging.getLogger("pyfluent.general")
-from ansys.fluent.core.solver.error_message import FluentConnectionError
+from ansys.fluent.core.solver.exceptions import FluentConnectionError
 
 
 def _get_max_c_int_limit() -> int:

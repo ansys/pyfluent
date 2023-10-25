@@ -15,7 +15,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.solver.exceptions import allowed_name_error_message
 
 
 def override_help_text(func, func_to_be_wrapped):

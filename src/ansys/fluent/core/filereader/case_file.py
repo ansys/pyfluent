@@ -26,7 +26,7 @@ import h5py
 from lxml import etree
 import numpy as np
 
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.solver.exceptions import allowed_name_error_message
 
 from . import lispy
 

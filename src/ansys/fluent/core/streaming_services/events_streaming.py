@@ -4,7 +4,7 @@ import logging
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
-from ansys.fluent.core.solver.error_message import (
+from ansys.fluent.core.solver.exceptions import (
     DisallowedValuesError,
     InvalidArgumentError,
 )
