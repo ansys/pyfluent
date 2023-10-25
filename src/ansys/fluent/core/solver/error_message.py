@@ -63,6 +63,14 @@ class LauncherError:
             super().__init__(error)
 
 
+class MetaClassError:
+    """Custom meta class errors."""
+
+    class DISALLOWED_VALUES(ValueError):
+        def __init__(self, error):
+            super().__init__(error)
+
+
 class TransactionError:
     """Custom transaction errors."""
 
