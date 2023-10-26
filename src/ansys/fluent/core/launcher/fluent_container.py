@@ -64,6 +64,18 @@ logger = logging.getLogger("pyfluent.launcher")
 DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
+class FluentImageNameTagNotSpecified(ValueError):
+    pass
+
+
+class ServerInfoFileError(ValueError):
+    pass
+
+
+class LicenseServerNotSpecified(KeyError):
+    pass
+
+
 def configure_container_dict(
     args: List[str],
     host_mount_path: Optional[Union[str, Path]] = None,
@@ -387,15 +399,3 @@ def start_fluent_container(
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
-
-
-class FluentImageNameTagNotSpecified(ValueError):
-    pass
-
-
-class ServerInfoFileError(ValueError):
-    pass
-
-
-class LicenseServerNotSpecified(KeyError):
-    pass

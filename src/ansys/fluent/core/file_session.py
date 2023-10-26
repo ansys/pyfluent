@@ -14,6 +14,18 @@ from ansys.fluent.core.services.field_data import (
 )
 
 
+class SurfaceNamesIDsNotProvided(ValueError):
+    pass
+
+
+class InvalidFieldNamePrefix(ValueError):
+    pass
+
+
+class InvalidFieldName(ValueError):
+    pass
+
+
 class Transaction:
     """Populates field data on surfaces."""
 
@@ -730,15 +742,3 @@ class FileSession:
     def read_data(self, data_file_name):
         """Read Data file."""
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
-
-
-class SurfaceNamesIDsNotProvided(ValueError):
-    pass
-
-
-class InvalidFieldNamePrefix(ValueError):
-    pass
-
-
-class InvalidFieldName(ValueError):
-    pass

@@ -32,6 +32,10 @@ from .error_message import allowed_name_error_message, allowed_values_error
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
+class InactiveObjectError(RuntimeError):
+    pass
+
+
 class _InlineConstants:
     is_active = "active?"
     is_read_only = "read-only?"
@@ -1344,7 +1348,3 @@ def _get_child_path(cls, path, identifier, list_of_children):
                 list_of_children.append(path_to_append)
         _list_children(getattr(cls, name), identifier, path, list_of_children)
         path.pop()
-
-
-class InactiveObjectError(RuntimeError):
-    pass

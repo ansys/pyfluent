@@ -1,6 +1,14 @@
 import re
 
 
+class IncompleteISOSurfaceDefinition(RuntimeError):
+    pass
+
+
+class SurfaceCreationError(RuntimeError):
+    pass
+
+
 class PostAPIHelper:
     """Class providing helper API for post objects."""
 
@@ -165,11 +173,3 @@ class PostAPIHelper:
             return list(filter(None, re.split(r'[\s()"\']', str_val)))
         else:
             return ["*null*"]
-
-
-class IncompleteISOSurfaceDefinition(RuntimeError):
-    pass
-
-
-class SurfaceCreationError(RuntimeError):
-    pass

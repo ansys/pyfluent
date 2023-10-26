@@ -24,6 +24,18 @@ import docker
 logger = logging.getLogger("pyfluent.general")
 
 
+class PortNotProvided(ValueError):
+    pass
+
+
+class RemoteNotSupported(ValueError):
+    pass
+
+
+class WaitTypeError(TypeError):
+    pass
+
+
 def _get_max_c_int_limit() -> int:
     """Get the maximum limit of a C int.
 
@@ -664,15 +676,3 @@ class FluentConnection:
             remote_instance.delete()
 
         exit_event.set()
-
-
-class PortNotProvided(ValueError):
-    pass
-
-
-class RemoteNotSupported(ValueError):
-    pass
-
-
-class WaitTypeError(TypeError):
-    pass

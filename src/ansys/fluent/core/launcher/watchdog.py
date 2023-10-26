@@ -22,6 +22,10 @@ IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
+class WatchdogLaunchFailed(RuntimeError):
+    pass
+
+
 def launch(
     main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None
 ) -> None:
@@ -173,7 +177,3 @@ def launch(
             raise WatchdogLaunchFailed(
                 "PyFluent Watchdog did not initialize correctly."
             )
-
-
-class WatchdogLaunchFailed(RuntimeError):
-    pass

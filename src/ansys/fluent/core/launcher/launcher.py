@@ -37,6 +37,26 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
+class AnsysVersionNotFound(RuntimeError):
+    pass
+
+
+class InvalidPassword(ValueError):
+    pass
+
+
+class IpPortNotProvided(ValueError):
+    pass
+
+
+class UnexpectedKeywordArgument(TypeError):
+    pass
+
+
+class DockerContainerLaunchNotSupported(SystemError):
+    pass
+
+
 def _is_windows():
     """Check if the current operating system is windows."""
     return platform.system() == "Windows"
@@ -925,23 +945,3 @@ def connect_to_fluent(
         watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(fluent_connection=fluent_connection)
-
-
-class AnsysVersionNotFound(RuntimeError):
-    pass
-
-
-class InvalidPassword(ValueError):
-    pass
-
-
-class IpPortNotProvided(ValueError):
-    pass
-
-
-class UnexpectedKeywordArgument(TypeError):
-    pass
-
-
-class DockerContainerLaunchNotSupported(SystemError):
-    pass

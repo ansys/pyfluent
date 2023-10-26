@@ -26,6 +26,18 @@ Path = list[tuple[str, str]]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 
+class InvalidNamedObject(RuntimeError):
+    pass
+
+
+class SubscribeEventError(RuntimeError):
+    pass
+
+
+class UnsubscribeEventError(RuntimeError):
+    pass
+
+
 class Attribute(Enum):
     """Contains the standard names of data model attributes associated with the data
     model service."""
@@ -1449,15 +1461,3 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
             raise LookupError(
                 f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )
-
-
-class InvalidNamedObject(RuntimeError):
-    pass
-
-
-class SubscribeEventError(RuntimeError):
-    pass
-
-
-class UnsubscribeEventError(RuntimeError):
-    pass
