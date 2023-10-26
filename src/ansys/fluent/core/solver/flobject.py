@@ -33,6 +33,8 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
 class InactiveObjectError(RuntimeError):
+    """Raises exception if the object is inactive."""
+
     pass
 
 

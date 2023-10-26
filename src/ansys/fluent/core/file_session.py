@@ -15,14 +15,20 @@ from ansys.fluent.core.services.field_data import (
 
 
 class SurfaceNamesIDsNotProvided(ValueError):
+    """Raises exception for invalid surface names and IDs."""
+
     pass
 
 
 class InvalidFieldNamePrefix(ValueError):
+    """Raises exception for invalid field name prefix."""
+
     pass
 
 
 class InvalidFieldName(ValueError):
+    """Raises exception for invalid field name."""
+
     pass
 
 

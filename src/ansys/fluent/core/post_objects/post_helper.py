@@ -2,10 +2,14 @@ import re
 
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
+    """Raises exception if iso-surface definition is incomplete."""
+
     pass
 
 
 class SurfaceCreationError(RuntimeError):
+    """Raises exception if surface creation is failed."""
+
     pass
 
 

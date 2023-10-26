@@ -37,22 +37,32 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 class AnsysVersionNotFound(RuntimeError):
+    """Raises exception if Ansys version is not found."""
+
     pass
 
 
 class InvalidPassword(ValueError):
+    """Raises exception if password is invalid."""
+
     pass
 
 
 class IpPortNotProvided(ValueError):
+    """Raises exception if ip or port is not specified."""
+
     pass
 
 
 class UnexpectedKeywordArgument(TypeError):
+    """Raises exception if a valid keyword argument is not specified."""
+
     pass
 
 
 class DockerContainerLaunchNotSupported(SystemError):
+    """Raises exception if docker container launch is not supported."""
+
     pass
 
 

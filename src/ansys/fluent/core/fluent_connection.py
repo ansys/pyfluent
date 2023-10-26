@@ -25,14 +25,20 @@ logger = logging.getLogger("pyfluent.general")
 
 
 class PortNotProvided(ValueError):
+    """Raises exception if port is not provided."""
+
     pass
 
 
 class RemoteNotSupported(ValueError):
+    """Raises exception if remote wait process is not supported."""
+
     pass
 
 
 class WaitTypeError(TypeError):
+    """Raises exception if invalid ``wait`` type is provided."""
+
     pass
 
 
