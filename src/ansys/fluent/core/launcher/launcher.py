@@ -22,7 +22,6 @@ from ansys.fluent.core.launcher.fluent_container import (
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.services.health_check import StartTimeoutError
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
