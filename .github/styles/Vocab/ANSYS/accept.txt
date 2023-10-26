@@ -1,9 +1,11 @@
 ANSYS
 Ansys
 ansys
+API
 batch_ops
 CaseFile
 DataFile
+CAD
 CommandArguments
 error_handler
 events
@@ -63,6 +65,7 @@ Streaming
 Session
 Slurm
 transcript
+TUI
 UDFs
 Univa
 venv
@@ -70,3 +73,7 @@ mass_flow
 mass_average
 mass_integrated_average
 caf
+svar_info
+svar_data
+SVAR
+SVARs
