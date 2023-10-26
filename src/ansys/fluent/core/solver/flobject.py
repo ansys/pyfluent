@@ -177,14 +177,14 @@ class Base:
 
         Raises
         ------
-        RuntimeError
+        InactiveObjectError
             If any attribute other than ``"active?`` is queried when the object is not active.
         """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Object is not active")
+            raise InactiveObjectError("Object is not active")
         val = None
         if attrs:
             val = attrs[attr]
@@ -1344,3 +1344,8 @@ def _get_child_path(cls, path, identifier, list_of_children):
                 list_of_children.append(path_to_append)
         _list_children(getattr(cls, name), identifier, path, list_of_children)
         path.pop()
+
+
+class InactiveObjectError(RuntimeError):
+    def __init__(self, error):
+        super().__init__(error)

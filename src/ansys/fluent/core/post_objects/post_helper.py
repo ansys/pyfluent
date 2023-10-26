@@ -30,9 +30,9 @@ class PostAPIHelper:
 
             Raises
             ------
-            RuntimeError
+            IncompleteISOSurfaceDefinition
                 If iso-surface definition is incomplete.
-            RuntimeError
+            SurfaceCreationError
                 If server fails to create surface.
             """
             if self.obj.definition.type() == "iso-surface":
@@ -40,7 +40,9 @@ class PostAPIHelper:
                 field = iso_surface.field()
                 iso_value = iso_surface.iso_value()
                 if not field:
-                    raise RuntimeError("Iso surface definition is incomplete.")
+                    raise IncompleteISOSurfaceDefinition(
+                        "Iso surface definition is incomplete."
+                    )
                 self._delete_if_exist_on_server()
                 phases = self.obj._api_helper._get_phases()
                 unit_quantity = self.obj._api_helper._field_unit_quantity(field)
@@ -91,7 +93,7 @@ class PostAPIHelper:
             field_info = self.obj._api_helper.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())
             if self._surface_name_on_server not in surfaces_list:
-                raise RuntimeError("Surface creation failed.")
+                raise SurfaceCreationError("Surface creation failed.")
 
         def delete_surface_on_server(self):
             """Deletes the surface on server."""
@@ -163,3 +165,13 @@ class PostAPIHelper:
             return list(filter(None, re.split(r'[\s()"\']', str_val)))
         else:
             return ["*null*"]
+
+
+class IncompleteISOSurfaceDefinition(RuntimeError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class SurfaceCreationError(RuntimeError):
+    def __init__(self, error):
+        super().__init__(error)

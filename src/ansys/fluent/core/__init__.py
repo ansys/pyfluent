@@ -12,14 +12,46 @@ logging.root_config()
 logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
+from ansys.fluent.core.file_session import (  # noqa: F401
+    InvalidFieldName,
+    InvalidFieldNamePrefix,
+    SurfaceNamesIDsNotProvided,
+)
+from ansys.fluent.core.filereader.data_file import InvalidFilePath  # noqa: F401
+from ansys.fluent.core.fluent_connection import (  # noqa: F401
+    PortNotProvided,
+    RemoteNotSupported,
+    WaitTypeError,
+)
+from ansys.fluent.core.launcher.fluent_container import (  # noqa: F401
+    FluentImageNameTagNotSpecified,
+    LicenseServerNotSpecified,
+    ServerInfoFileError,
+)
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
+    AnsysVersionNotFound,
+    DockerContainerLaunchNotSupported,
     FluentMode,
     FluentVersion,
+    InvalidPassword,
+    IpPortNotProvided,
+    UnexpectedKeywordArgument,
     connect_to_fluent,
     launch_fluent,
 )
+from ansys.fluent.core.launcher.watchdog import WatchdogLaunchFailed  # noqa: F401
+from ansys.fluent.core.post_objects.post_helper import (  # noqa: F401
+    IncompleteISOSurfaceDefinition,
+    SurfaceCreationError,
+)
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
+from ansys.fluent.core.services.datamodel_se import (  # noqa: F401
+    InvalidNamedObject,
+    SubscribeEventError,
+    UnsubscribeEventError,
+)
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.solver.flobject import InactiveObjectError  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401

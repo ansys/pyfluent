@@ -236,6 +236,11 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a docker container.
+
+        Raises
+        ------
+        PortNotProvided
+            If port is not provided.
         """
         self.error_state = ErrorState()
         self._data_valid = False
@@ -250,7 +255,7 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise ValueError(
+                raise PortNotProvided(
                     "The port to connect to Fluent session is not provided."
                 )
             # Same maximum message length is used in the server
@@ -495,13 +500,13 @@ class FluentConnection:
 
         Raises
         ------
-        ValueError
+        RemoteNotSupported
             If current Fluent instance is running remotely.
-        TypeError
+        WaitTypeError
             If ``wait`` is specified improperly.
         """
         if self._remote_instance:
-            raise ValueError(
+            raise RemoteNotSupported(
                 "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
             )
         if isinstance(wait, bool):
@@ -513,7 +518,7 @@ class FluentConnection:
         if isinstance(wait, (float, int)):
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
-            raise TypeError("Invalid 'limit' type.")
+            raise WaitTypeError("Invalid 'limit' type.")
         if self.connection_properties.inside_container:
             _response = timeout_loop(
                 get_container,
@@ -659,3 +664,18 @@ class FluentConnection:
             remote_instance.delete()
 
         exit_event.set()
+
+
+class PortNotProvided(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class RemoteNotSupported(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class WaitTypeError(TypeError):
+    def __init__(self, error):
+        super().__init__(error)

@@ -7,6 +7,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.launcher.launcher import (
     LaunchFluentError,
+    UnexpectedKeywordArgument,
     get_ansys_version,
     get_fluent_exe_path,
 )
@@ -84,9 +85,9 @@ def test_gpu_launch_arg_additional_arg(monkeypatch):
 
 
 def test_kwargs():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(UnexpectedKeywordArgument):
         pyfluent.launch_fluent(abc=1, meshing_mode=True)
-    with pytest.raises(TypeError):
+    with pytest.raises(UnexpectedKeywordArgument):
         pyfluent.launch_fluent(abc=1, xyz=2)
 
 

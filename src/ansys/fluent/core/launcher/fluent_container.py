@@ -120,11 +120,11 @@ def configure_container_dict(
 
     Raises
     ------
-    KeyError
+    LicenseServerNotSpecified
         If license server is not specified through an environment variable or in ``container_dict``.
-    ValueError
+    ServerInfoFileError
         If server info file is specified through both a command-line argument inside ``container_dict`` and the  ``container_server_info_file`` parameter.
-    ValueError
+    FluentImageNameTagNotSpecified
         If ``fluent_image`` or ``image_tag`` and ``image_name`` are not specified.
 
     Notes
@@ -208,7 +208,7 @@ def configure_container_dict(
             license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
 
         if not license_server:
-            raise KeyError(
+            raise LicenseServerNotSpecified(
                 "License server needs to be specified through an environment variable, "
                 "or in the `container_dict`."
             )
@@ -234,7 +234,7 @@ def configure_container_dict(
         for v in container_dict["command"]:
             if v.startswith("-sifile="):
                 if container_server_info_file:
-                    raise ValueError(
+                    raise ServerInfoFileError(
                         "Specified a server info file command argument as well as "
                         "a container_server_info_file, pick one."
                     )
@@ -269,7 +269,7 @@ def configure_container_dict(
         elif image_tag and image_name:
             fluent_image = f"{image_name}:{image_tag}"
         else:
-            raise ValueError(
+            raise FluentImageNameTagNotSpecified(
                 "Missing 'fluent_image', or 'image_tag' and 'image_name', specification for Docker container launch."
             )
 
@@ -320,7 +320,7 @@ def start_fluent_container(
 
     Raises
     ------
-    RuntimeError
+    TimeoutError
         If Fluent container launch reaches timeout.
 
     Notes
@@ -377,7 +377,7 @@ def start_fluent_container(
         )
 
         if not success:
-            raise RuntimeError(
+            raise TimeoutError(
                 "Fluent container launch timeout, will have to stop container manually."
             )
         else:
@@ -387,3 +387,18 @@ def start_fluent_container(
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
+
+
+class FluentImageNameTagNotSpecified(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class ServerInfoFileError(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class LicenseServerNotSpecified(KeyError):
+    def __init__(self, error):
+        super().__init__(error)

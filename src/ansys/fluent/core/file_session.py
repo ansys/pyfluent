@@ -108,15 +108,17 @@ class Transaction:
 
         Raises
         ------
-        RuntimeError
+        SurfaceNamesIDsNotProvided
             If surface names or surface ids are not provided.
-        RuntimeError
+        InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise SurfaceNamesIDsNotProvided(
+                "Please provide either surface names or surface ids."
+            )
 
         if surface_names:
             for surface_name in surface_names:
@@ -126,7 +128,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise RuntimeError(
+                raise InvalidFieldNamePrefix(
                     "For multi-phase cases field name should have a prefix of phase name."
                 )
             self._scalar_field_transactions.append(
@@ -162,15 +164,17 @@ class Transaction:
 
         Raises
         ------
-        RuntimeError
+        SurfaceNamesIDsNotProvided
             If surface names or surface ids are not provided.
-        RuntimeError
+        InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise SurfaceNamesIDsNotProvided(
+                "Please provide either surface names or surface ids."
+            )
 
         if surface_names:
             for surface_name in surface_names:
@@ -180,7 +184,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise RuntimeError(
+                raise InvalidFieldNamePrefix(
                     "For multi-phase cases field name should have a prefix of phase name."
                 )
             self._vector_field_transactions.append(
@@ -227,7 +231,7 @@ class Transaction:
 
         Raises
         ------
-        RuntimeError
+        InvalidFieldName
             If any field other than ``"velocity"`` is provided.
         """
         mesh = self._file_session._case_file.get_mesh()
@@ -258,7 +262,7 @@ class Transaction:
 
         for transaction in self._vector_field_transactions:
             if "velocity" not in transaction.field_name:
-                raise RuntimeError("Only 'velocity' is allowed field.")
+                raise InvalidFieldName("Only 'velocity' is allowed field.")
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
@@ -323,11 +327,13 @@ class FileFieldData:
 
         Raises
         ------
-        RuntimeError
+        SurfaceNamesIDsNotProvided
             If surface names or surface ids are not provided.
         """
         if surface_ids and surface_name:
-            raise RuntimeError("Please provide either surface name or surface ids.")
+            raise SurfaceNamesIDsNotProvided(
+                "Please provide either surface name or surface ids."
+            )
 
         if data_type == SurfaceDataType.Vertices:
             if surface_name:
@@ -407,15 +413,15 @@ class FileFieldData:
 
         Raises
         ------
-        RuntimeError
+        SurfaceNamesIDsNotProvided
             If surface names or surface ids are not provided.
-        RuntimeError
-            If field name does not have prefix ``phase-`` for multi-phase cases.
-        RuntimeError
+        InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise RuntimeError("Please provide either surface name or surface ids.")
+            raise SurfaceNamesIDsNotProvided(
+                "Please provide either surface name or surface ids."
+            )
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -423,7 +429,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
+                    raise InvalidFieldNamePrefix(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 return ScalarFieldData(
@@ -444,7 +450,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
+                    raise InvalidFieldNamePrefix(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 return {
@@ -495,23 +501,23 @@ class FileFieldData:
 
         Raises
         ------
-        RuntimeError
+        SurfaceNamesIDsNotProvided
             If surface names or surface ids are not provided.
-        RuntimeError
+        InvalidFieldName
             If any field other than ``"velocity"`` is provided.
-        RuntimeError
-            If field name does not have prefix ``phase-`` for multi-phase cases.
-        RuntimeError
+        InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise RuntimeError("Please provide either surface name or surface ids.")
+            raise SurfaceNamesIDsNotProvided(
+                "Please provide either surface name or surface ids."
+            )
 
         if (
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
         ):
-            raise RuntimeError("Only 'velocity' is allowed field.")
+            raise InvalidFieldName("Only 'velocity' is allowed field.")
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -519,7 +525,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
+                    raise InvalidFieldNamePrefix(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 vector_data = self._file_session._data_file.get_face_vector_field_data(
@@ -534,7 +540,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
+                    raise InvalidFieldNamePrefix(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 return {
@@ -724,3 +730,18 @@ class FileSession:
     def read_data(self, data_file_name):
         """Read Data file."""
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
+
+
+class SurfaceNamesIDsNotProvided(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class InvalidFieldNamePrefix(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class InvalidFieldName(ValueError):
+    def __init__(self, error):
+        super().__init__(error)

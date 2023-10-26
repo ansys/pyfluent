@@ -40,7 +40,7 @@ def launch(
 
     Raises
     ------
-    RuntimeError
+    WatchdogLaunchFailed
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
@@ -164,10 +164,17 @@ def launch(
             watchdog_err.unlink()
             logger.error(err_content)
             if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
-                raise RuntimeError(err_content)
+                raise WatchdogLaunchFailed(err_content)
 
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
         if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
-            raise RuntimeError("PyFluent Watchdog did not initialize correctly.")
+            raise WatchdogLaunchFailed(
+                "PyFluent Watchdog did not initialize correctly."
+            )
+
+
+class WatchdogLaunchFailed(RuntimeError):
+    def __init__(self, error):
+        super().__init__(error)

@@ -14,6 +14,7 @@ import tempfile
 import time
 from typing import Any, Dict, List, Optional, Union
 
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
@@ -21,11 +22,13 @@ from ansys.fluent.core.launcher.fluent_container import (
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
+from ansys.fluent.core.services.health_check import StartTimeoutError
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
@@ -98,14 +101,14 @@ def get_ansys_version() -> str:
 
     Raises
     ------
-    RuntimeError
+    AnsysVersionNotFound
         If an Ansys version cannot be found.
     """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
 
-    raise RuntimeError("An Ansys version cannot be found.")
+    raise AnsysVersionNotFound("An Ansys version cannot be found.")
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -178,8 +181,10 @@ class FluentMode(Enum):
             if mode == m.value[0]:
                 return m
         else:
-            raise RuntimeError(
-                f"The passed mode '{mode}' matches none of the allowed modes."
+            raise DisallowedValuesError(
+                allowed_name_error_message(
+                    "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
+                )
             )
 
 
@@ -348,7 +353,7 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     if _is_windows() and (
         ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
-        raise ValueError("'-g' and '-gu' is not supported on windows platform.")
+        raise InvalidArgument("'-g' and '-gu' is not supported on windows platform.")
 
 
 def _update_launch_string_wrt_gui_options(
@@ -376,7 +381,7 @@ def _await_fluent_launch(
             logger.info("Fluent has been successfully launched.")
             break
         if start_timeout == 0:
-            raise RuntimeError("The launch process has been timed out.")
+            raise StartTimeoutError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
         logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
@@ -398,7 +403,7 @@ def _get_server_info(
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
         ip = port = None
     else:
-        raise RuntimeError(
+        raise IpPortNotProvided(
             "Please provide either ip and port data or server-info file."
         )
 
@@ -420,7 +425,7 @@ def _get_running_session_mode(
                 else "meshing"
             )
         except Exception as ex:
-            raise RuntimeError("Fluent session password mismatch") from ex
+            raise InvalidPassword("Fluent session password mismatch") from ex
     return session_mode.value[1]
 
 
@@ -590,6 +595,13 @@ def launch_fluent(
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
         Session object or configuration dictionary if ``dry_run = True``.
 
+    Raises
+    ------
+    UnexpectedKeywordArgument
+        If an unexpected keyword argument is provided.
+    DockerContainerLaunchNotSupported
+        If a Fluent Docker container launch is specified.
+
     Notes
     -----
     Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
@@ -598,12 +610,12 @@ def launch_fluent(
     """
     if kwargs:
         if "meshing_mode" in kwargs:
-            raise RuntimeError(
+            raise UnexpectedKeywordArgument(
                 "'meshing_mode' argument is no longer used."
                 " Please use launch_fluent(mode='meshing') to launch in meshing mode."
             )
         else:
-            raise TypeError(
+            raise UnexpectedKeywordArgument(
                 f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
             )
     del kwargs
@@ -617,7 +629,7 @@ def launch_fluent(
         if check_docker_support():
             fluent_launch_mode = LaunchMode.CONTAINER
         else:
-            raise SystemError(
+            raise DockerContainerLaunchNotSupported(
                 "Docker is not working correctly in this system, "
                 "yet a Fluent Docker container launch was specified."
             )
@@ -702,12 +714,12 @@ def launch_fluent(
             kwargs.update(cwd=cwd)
         if journal_file_names:
             if not isinstance(journal_file_names, (str, list)):
-                raise TypeError("Journal name should be a list of strings.")
+                raise InvalidArgument("Journal name should be a list of strings.")
             if isinstance(journal_file_names, str):
                 journal_file_names = [journal_file_names]
         if topy:
             if not journal_file_names:
-                raise RuntimeError(
+                raise InvalidArgument(
                     "Please provide the journal files to be converted as 'journal_file_names' argument."
                 )
             launch_string += scm_to_py(topy, journal_file_names)
@@ -913,3 +925,28 @@ def connect_to_fluent(
         watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(fluent_connection=fluent_connection)
+
+
+class AnsysVersionNotFound(RuntimeError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class InvalidPassword(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class IpPortNotProvided(ValueError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class UnexpectedKeywordArgument(TypeError):
+    def __init__(self, error):
+        super().__init__(error)
+
+
+class DockerContainerLaunchNotSupported(SystemError):
+    def __init__(self, error):
+        super().__init__(error)

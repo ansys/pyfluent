@@ -4,6 +4,9 @@ from collections.abc import MutableMapping
 import inspect
 from pprint import pformat
 
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
+
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
 
@@ -35,9 +38,8 @@ class Attribute:
 
     def __set_name__(self, obj, name):
         if name not in self.VALID_NAMES:
-            raise ValueError(
-                f"Attribute {name} is not allowed."
-                f"Expected values are {self.VALID_NAMES}"
+            raise DisallowedValuesError(
+                allowed_name_error_message("attribute", name, self.VALID_NAMES)
             )
         if not hasattr(obj, "attributes"):
             obj.attributes = set()
@@ -78,13 +80,17 @@ class Command:
                                 if not all(
                                     elem in allowed_values for elem in arg_value
                                 ):
-                                    raise RuntimeError(
-                                        f"All values of {arg} value {arg_value} is not within allowed values."
+                                    raise DisallowedValuesError(
+                                        allowed_name_error_message(
+                                            arg, arg_value, allowed_values
+                                        )
                                     )
                             else:
                                 if arg_value not in allowed_values:
-                                    raise RuntimeError(
-                                        f"{arg} value {arg_value} is not within allowed values."
+                                    raise DisallowedValuesError(
+                                        allowed_name_error_message(
+                                            arg, arg_value, allowed_values
+                                        )
                                     )
 
                         elif attr == "range":
@@ -95,8 +101,10 @@ class Command:
 
                             minimum, maximum = attr_value(_self.obj)
                             if arg_value < minimum or arg_value > maximum:
-                                raise RuntimeError(
-                                    f"{arg} value {arg_value} is not within range."
+                                raise DisallowedValuesError(
+                                    allowed_name_error_message(
+                                        arg, arg_value, allowed_values
+                                    )
                                 )
             return method(_self.obj, *args, **kwargs)
 
@@ -137,7 +145,7 @@ def CommandArgs(command_object, argument_name):
                 {attribute.__name__: attribute}
             )
         else:
-            raise RuntimeError(f"{argument_name} not a valid argument.")
+            raise InvalidArgument(f"{argument_name} not a valid argument.")
         return attribute
 
     return wrapper
@@ -232,24 +240,24 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         if self.range and (
                             value < self.range[0] or value > self.range[1]
                         ):
-                            raise ValueError(
-                                f"Value {value}, is not within valid range"
-                                f" {self.range}."
+                            raise DisallowedValuesError(
+                                allowed_name_error_message("value", value, self.range)
                             )
                     elif attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
                                 v is None or v in self.allowed_values for v in value
                             ):
-                                raise ValueError(
-                                    f"Not all values in {value}, are in the "
-                                    "list of allowed values "
-                                    f"{self.allowed_values}."
+                                raise DisallowedValuesError(
+                                    allowed_name_error_message(
+                                        "value", value, self.allowed_values
+                                    )
                                 )
                         elif value is not None and value not in self.allowed_values:
-                            raise ValueError(
-                                f"Value {value}, is not in the list of "
-                                f"allowed values {self.allowed_values}."
+                            raise DisallowedValuesError(
+                                allowed_name_error_message(
+                                    "value", value, self.allowed_values
+                                )
                             )
 
             return value
