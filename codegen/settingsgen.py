@@ -340,7 +340,10 @@ def _populate_classes(parent_dir):
             doc = fix_settings_doc(cls.__doc__)
             # Custom doc for child object type
             if cls.fluent_name == "child-object-type":
-                doc = f"'child_object_type' of {file_name[: file_name.find('_child')]}."
+                parent_name = Path(file_name).stem[
+                    0 : Path(file_name).stem.find("_child")
+                ]
+                doc = f"'child_object_type' of {parent_name}."
 
             _write_doc_string(doc, istr1, f)
             f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
