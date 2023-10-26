@@ -733,15 +733,12 @@ class FileSession:
 
 
 class SurfaceNamesIDsNotProvided(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class InvalidFieldNamePrefix(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class InvalidFieldName(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

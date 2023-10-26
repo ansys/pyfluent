@@ -1347,5 +1347,4 @@ def _get_child_path(cls, path, identifier, list_of_children):
 
 
 class InactiveObjectError(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

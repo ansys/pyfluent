@@ -390,15 +390,12 @@ def start_fluent_container(
 
 
 class FluentImageNameTagNotSpecified(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class ServerInfoFileError(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class LicenseServerNotSpecified(KeyError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

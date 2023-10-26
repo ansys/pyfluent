@@ -667,15 +667,12 @@ class FluentConnection:
 
 
 class PortNotProvided(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class RemoteNotSupported(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class WaitTypeError(TypeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

@@ -928,25 +928,20 @@ def connect_to_fluent(
 
 
 class AnsysVersionNotFound(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class InvalidPassword(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class IpPortNotProvided(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class UnexpectedKeywordArgument(TypeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class DockerContainerLaunchNotSupported(SystemError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

@@ -2,10 +2,8 @@
 
 
 class DisallowedValuesError(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class InvalidArgument(ValueError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

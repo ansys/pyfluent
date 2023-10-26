@@ -168,10 +168,8 @@ class PostAPIHelper:
 
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class SurfaceCreationError(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass

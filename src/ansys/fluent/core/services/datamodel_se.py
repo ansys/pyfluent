@@ -1452,15 +1452,12 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
 
 
 class InvalidNamedObject(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class SubscribeEventError(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
 
 
 class UnsubscribeEventError(RuntimeError):
-    def __init__(self, error):
-        super().__init__(error)
+    pass
