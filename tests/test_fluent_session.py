@@ -14,7 +14,8 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import get_container
+from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
+from ansys.fluent.core.launcher.launcher import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 
@@ -124,6 +125,15 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
     session1 = pyfluent.launch_fluent()
+
+    error_message = "Please provide either ip and port data or server-info file."
+    with pytest.raises(IpPortNotProvided) as msg:
+        session2 = pyfluent.connect_to_fluent(
+            ip=session1.connection_properties.ip,
+            password=session1.connection_properties.password,
+        )
+    assert msg.value.args[0] == error_message
+
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
@@ -248,3 +258,9 @@ def test_fluent_exit_wait():
     session3 = pyfluent.launch_fluent()
     session3.exit(wait=True)
     assert session3.fluent_connection.wait_process_finished(wait=0)
+
+    error_message = "Invalid 'limit' type."
+    with pytest.raises(WaitTypeError) as msg:
+        session4 = pyfluent.launch_fluent()
+        session4.exit(wait="wait")
+    assert msg.value.args[0] == error_message

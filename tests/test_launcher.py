@@ -4,15 +4,29 @@ import platform
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.launcher.launcher import (
     AnsysVersionNotFound,
+    DockerContainerLaunchNotSupported,
     LaunchFluentError,
     UnexpectedKeywordArgument,
+    check_docker_support,
     get_ansys_version,
     get_fluent_exe_path,
 )
+
+
+def test_mode():
+    with pytest.raises(DisallowedValuesError) as msg:
+        pyfluent.launch_fluent(
+            mode="meshing-solver",
+            start_container=False,
+        )
+    assert msg.value.args[0] == (
+        "meshing-solver is not an allowed mode name.\n"
+        "The allowed values are: ['meshing', 'pure-meshing', 'solver', 'solver-icing']."
+    )
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
@@ -50,6 +64,18 @@ def test_additional_argument_g_gu():
 
 
 def test_container_launcher():
+    if not check_docker_support():
+        error_message = (
+            "Docker is not working correctly in this system, "
+            "yet a Fluent Docker container launch was specified."
+        )
+        with pytest.raises(DockerContainerLaunchNotSupported) as msg:
+            container_dict_1 = pyfluent.launch_fluent(start_container=True)
+            container_dict_2 = pyfluent.launch_fluent(
+                start_container=True, dry_run=True
+            )
+        assert msg.value.args[0] == error_message
+
     # test dry_run
     container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
     assert isinstance(container_dict, dict)

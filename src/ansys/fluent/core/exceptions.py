@@ -13,7 +13,7 @@ class InvalidArgument(ValueError):
     pass
 
 
-class SurfaceNamesIDsNotProvided(ValueError):
+class SurfaceNameIDsProvided(ValueError):
     """Raises exception for invalid surface names and IDs."""
 
     pass

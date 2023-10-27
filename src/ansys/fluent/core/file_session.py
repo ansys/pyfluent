@@ -3,7 +3,7 @@ from typing import List, Optional
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
-from ansys.fluent.core.exceptions import SurfaceNamesIDsNotProvided
+from ansys.fluent.core.exceptions import SurfaceNameIDsProvided
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.services.field_data import (
@@ -121,7 +121,7 @@ class Transaction:
 
         Raises
         ------
-        SurfaceNamesIDsNotProvided
+        SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
         InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
@@ -129,7 +129,7 @@ class Transaction:
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise SurfaceNamesIDsNotProvided(
+            raise SurfaceNameIDsProvided(
                 "Please provide either surface names or surface ids."
             )
 
@@ -177,7 +177,7 @@ class Transaction:
 
         Raises
         ------
-        SurfaceNamesIDsNotProvided
+        SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
         InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
@@ -185,7 +185,7 @@ class Transaction:
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise SurfaceNamesIDsNotProvided(
+            raise SurfaceNameIDsProvided(
                 "Please provide either surface names or surface ids."
             )
 
@@ -340,11 +340,11 @@ class FileFieldData:
 
         Raises
         ------
-        SurfaceNamesIDsNotProvided
+        SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
         """
         if surface_ids and surface_name:
-            raise SurfaceNamesIDsNotProvided(
+            raise SurfaceNameIDsProvided(
                 "Please provide either surface name or surface ids."
             )
 
@@ -426,13 +426,13 @@ class FileFieldData:
 
         Raises
         ------
-        SurfaceNamesIDsNotProvided
+        SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
         InvalidFieldNamePrefix
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise SurfaceNamesIDsNotProvided(
+            raise SurfaceNameIDsProvided(
                 "Please provide either surface name or surface ids."
             )
 
@@ -514,7 +514,7 @@ class FileFieldData:
 
         Raises
         ------
-        SurfaceNamesIDsNotProvided
+        SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
         InvalidFieldName
             If any field other than ``"velocity"`` is provided.
@@ -522,7 +522,7 @@ class FileFieldData:
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise SurfaceNamesIDsNotProvided(
+            raise SurfaceNameIDsProvided(
                 "Please provide either surface name or surface ids."
             )
 
