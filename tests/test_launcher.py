@@ -4,8 +4,10 @@ import platform
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.launcher.launcher import (
+    AnsysVersionNotFound,
     LaunchFluentError,
     UnexpectedKeywordArgument,
     get_ansys_version,
@@ -16,7 +18,7 @@ from ansys.fluent.core.launcher.launcher import (
 @pytest.mark.skip(reason="Can be used only locally.")
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(TimeoutError) as msg:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
     assert msg.value.args[0] == "The launch process has been timed out."
 
@@ -25,7 +27,7 @@ def test_additional_argument_g_gu():
     default_windows_flag = launcher._is_windows()
     launcher._is_windows = lambda: True
     try:
-        with pytest.raises(ValueError) as msg:
+        with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
                 mode="solver",
                 show_gui=True,
@@ -36,7 +38,7 @@ def test_additional_argument_g_gu():
             msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
         )
 
-        with pytest.raises(ValueError) as msg:
+        with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
                 mode="solver", additional_arguments="-gu", start_container=False
             )
@@ -97,9 +99,9 @@ def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
     monkeypatch.delenv("AWP_ROOT232", raising=False)
     monkeypatch.delenv("AWP_ROOT231", raising=False)
     monkeypatch.delenv("AWP_ROOT222", raising=False)
-    with pytest.raises(RuntimeError):
+    with pytest.raises(AnsysVersionNotFound):
         get_ansys_version()
-    with pytest.raises(RuntimeError):
+    with pytest.raises(AnsysVersionNotFound):
         get_fluent_exe_path()
 
 

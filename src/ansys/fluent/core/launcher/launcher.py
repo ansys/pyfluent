@@ -410,7 +410,7 @@ def _await_fluent_launch(
             logger.info("Fluent has been successfully launched.")
             break
         if start_timeout == 0:
-            raise StartTimeoutError("The launch process has been timed out.")
+            raise TimeoutError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
         logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
