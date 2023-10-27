@@ -1,6 +1,12 @@
 import time
 
-from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
+import pytest
+
+from ansys.fluent.core.utils.execution import (
+    InvalidArgument,
+    timeout_exec,
+    timeout_loop,
+)
 
 
 def test_timeout_exec():
@@ -46,6 +52,13 @@ def test_timeout_loop():
     waiter = Waiter(ExpectedAfterFive, expected=True)
     ret = timeout_loop(waiter, timeout=0.2, expected="truthy", idle_period=0.1)
     assert ret is False
+
+    error_message = (
+        "Unrecognized value for 'expected' variable. Accepted: 'truthy' or 'falsy'."
+    )
+    with pytest.raises(InvalidArgument) as msg:
+        timeout_loop(waiter, timeout=0.2, expected=True, idle_period=0.1)
+    assert msg.value.args[0] == error_message
 
 
 def count_key_recursive(dictionary, key):
