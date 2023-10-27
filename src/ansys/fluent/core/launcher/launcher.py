@@ -203,7 +203,7 @@ class FluentMode(Enum):
 
         Raises
         ------
-        RuntimeError
+        DisallowedValuesError
             If an unknown mode is passed.
         """
         for m in FluentMode:

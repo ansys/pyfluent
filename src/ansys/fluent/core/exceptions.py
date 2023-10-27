@@ -11,3 +11,9 @@ class InvalidArgument(ValueError):
     """Raises exception for invalid argument."""
 
     pass
+
+
+class SurfaceNamesIDsNotProvided(ValueError):
+    """Raises exception for invalid surface names and IDs."""
+
+    pass

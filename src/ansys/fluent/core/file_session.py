@@ -3,6 +3,7 @@ from typing import List, Optional
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
+from ansys.fluent.core.exceptions import SurfaceNamesIDsNotProvided
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.services.field_data import (
@@ -12,12 +13,6 @@ from ansys.fluent.core.services.field_data import (
     VectorFieldData,
     Vertices,
 )
-
-
-class SurfaceNamesIDsNotProvided(ValueError):
-    """Raises exception for invalid surface names and IDs."""
-
-    pass
 
 
 class InvalidFieldNamePrefix(ValueError):
