@@ -768,7 +768,7 @@ def launch_fluent(
                 _await_fluent_launch(
                     server_info_file_name, start_timeout, sifile_last_mtime
                 )
-            except RuntimeError as ex:
+            except TimeoutError as ex:
                 if _is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
                     launch_cmd = launch_string.replace('"', "", 2)
