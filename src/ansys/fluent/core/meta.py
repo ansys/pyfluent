@@ -28,6 +28,8 @@ class Attribute:
         "style",
         "icon",
         "show_text",
+        "widget",
+        "dir_info",
     ]
 
     def __init__(self, function):
@@ -39,6 +41,7 @@ class Attribute:
                 f"Attribute {name} is not allowed."
                 f"Expected values are {self.VALID_NAMES}"
             )
+        self.name = name     
         if not hasattr(obj, "attributes"):
             obj.attributes = set()
         obj.attributes.add(name)
@@ -47,7 +50,10 @@ class Attribute:
         raise AttributeError("Attributes are read only.")
 
     def __get__(self, obj, objtype=None):
-        return self.function(obj)
+        try:
+            return self.function(obj)
+        except Exception as e:
+            raise RuntimeError(f"Property attribute '{self.name}' evaluation failed with error. "+str(e))         
 
 
 class Command:
@@ -392,7 +398,6 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
             
             def update(clss):
                 for name, cls in clss.__dict__.items():
-                    print(name)
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
                         "PyLocalObjectMeta",
@@ -822,11 +827,11 @@ class PyLocalContainer(MutableMapping):
             self.__delitem__(item)
 
     @CommandArgs(Delete, "names")
-    def type(self):
+    def command_arg_type(self):
         return "string-list"
 
     @CommandArgs(Delete, "names")
-    def allowed_values(self):
+    def command_arg_allowed_values(self):
         return list(self)
 
     @Command
@@ -837,5 +842,5 @@ class PyLocalContainer(MutableMapping):
         return new_object._name
 
     @CommandArgs(Create, "name")
-    def type(self):
+    def command_arg_type(self):
         return "string"
