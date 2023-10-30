@@ -12,6 +12,12 @@ from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.solver.flobject import (
+    Group,
+    NamedObject,
+    SettingsBase,
+    StateType,
+)
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
@@ -21,6 +27,20 @@ from ansys.fluent.core.workflow import WorkflowWrapper
 
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
+
+
+def _set_state_safe(obj: SettingsBase, state: StateType):
+    try:
+        obj.set_state(state)
+    except RuntimeError:
+        if isinstance(obj, NamedObject):
+            for k, v in state.items():
+                _set_state_safe(obj[k], v)
+        elif isinstance(obj, Group):
+            for k, v in state.items():
+                _set_state_safe(getattr(obj, k), v)
+        else:
+            datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
 class Solver(BaseSession):
@@ -185,6 +205,11 @@ class Solver(BaseSession):
         return self._root.report
 
     @property
+    def server(self):
+        """Settings for server."""
+        return self._root.server
+
+    @property
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
@@ -197,12 +222,10 @@ class Solver(BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            try:
-                state = self._root.get_state()
-                self.build_from_fluent_connection(fut_session.fluent_connection)
-                self._root.set_state(state)
-            except Exception:
-                fut_session.exit()
+            state = self._root.get_state()
+            self.build_from_fluent_connection(fut_session.fluent_connection)
+            # TODO temporary fix till set_state at settings root is fixed
+            _set_state_safe(self._root, state)
 
     def read_case(self, file_name: str, lightweight_mode: bool = False):
         """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to

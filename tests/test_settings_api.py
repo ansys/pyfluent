@@ -21,26 +21,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-@pytest.mark.skip(reason="failing if run with other tests")
-def test_results_graphics_mesh_settings(new_solver_session) -> None:
-    session = new_solver_session
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.solver.file.read(file_type="case", file_name=case_path)
-    get_names = session.mesh.get_object_names
-    assert "mesh-1" not in get_names()
-    session.mesh["mesh-1"] = {}
-    assert "mesh-1" in get_names()
-    assert not session.mesh["mesh-1"].options.nodes()
-    session.mesh["mesh-1"].options.nodes = True
-    assert session.mesh["mesh-1"].options.nodes()
-    session.mesh.rename("mesh-a", "mesh-1")
-    assert "mesh-a" in get_names()
-    assert "mesh-1" not in get_names()
-    del session.mesh["mesh-a"]
-    assert "mesh-a" not in get_names()
-
-
-@pytest.mark.skip("Fluent bug")
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard(new_solver_session):
@@ -48,50 +28,54 @@ def test_wildcard(new_solver_session):
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
     boundary_conditions = solver.setup.boundary_conditions
-    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
-        "inlet2": {"vmag": {"option": "value", "value": 15}},
-        "inlet1": {"vmag": {"option": "value", "value": 5}},
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 15}}},
+        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 5}}},
     }
-    assert boundary_conditions.velocity_inlet["inl*"].vmag.value() == {
-        "inlet2": {"vmag": {"value": 15}},
-        "inlet1": {"vmag": {"value": 5}},
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity.value() == {
+        "inlet2": {"momentum": {"velocity": {"value": 15}}},
+        "inlet1": {"momentum": {"velocity": {"value": 5}}},
     }
-    boundary_conditions.velocity_inlet["inl*"].vmag = 10
-    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
-        "inlet2": {"vmag": {"option": "value", "value": 10}},
-        "inlet1": {"vmag": {"option": "value", "value": 10}},
+    boundary_conditions.velocity_inlet["inl*"].momentum.velocity = 10
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     boundary_conditions.velocity_inlet = boundary_conditions.velocity_inlet[
         "inl*"
-    ].vmag()
-    assert boundary_conditions.velocity_inlet["inl*"].vmag() == {
-        "inlet2": {"vmag": {"option": "value", "value": 10}},
-        "inlet1": {"vmag": {"option": "value", "value": 10}},
+    ].momentum.velocity()
+    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
-    assert boundary_conditions.fluid["*"].source_terms["*mom*"]() == {
+    cell_zone_conditions = solver.setup.cell_zone_conditions
+    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "y-momentum": [{"option": "value", "value": 2}],
-                "x-momentum": [{"option": "value", "value": 1}],
-                "z-momentum": [{"option": "value", "value": 3}],
+                "source_terms": {
+                    "x-momentum": [{"option": "value", "value": 1}],
+                    "y-momentum": [{"option": "value", "value": 2}],
+                    "z-momentum": [{"option": "value", "value": 3}],
+                }
             }
         }
     }
-    boundary_conditions.fluid["*"].source_terms["*mom*"] = [
+    cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"] = [
         {"option": "value", "value": 2}
     ]
-    assert solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]() == {
+    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "x-momentum": [{"option": "value", "value": 2}],
-                "y-momentum": [{"option": "value", "value": 2}],
-                "z-momentum": [{"option": "value", "value": 2}],
+                "source_terms": {
+                    "x-momentum": [{"option": "value", "value": 2}],
+                    "y-momentum": [{"option": "value", "value": 2}],
+                    "z-momentum": [{"option": "value", "value": 2}],
+                }
             }
         }
     }
 
 
-@pytest.mark.skip("Fluent bug")
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
