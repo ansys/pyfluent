@@ -14,7 +14,6 @@ from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
-from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
