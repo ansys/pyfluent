@@ -123,7 +123,7 @@ class RemoteFileHandler:
     def __init__(self, transfer_service):
         self._transfer_service = transfer_service
 
-    def upload(self, file_name: str, on_uploaded: Optional[Any] = None):
+    def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
         """Upload a file if it's unavailable on the server
         supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
         and performs callback operation.
@@ -154,7 +154,7 @@ class RemoteFileHandler:
                 os.path.basename(file_name) if pypim.is_configured() else file_name
             )
 
-    def download(self, file_name: str, before_downloaded: Optional[Any] = None):
+    def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
         """Perform callback operation and
         downloads a file if it's available on the server supported by
         `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -174,4 +174,6 @@ class RemoteFileHandler:
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
-                self._transfer_service.download(os.path.basename(file_name), ".")
+                self._transfer_service.download(
+                    os.path.basename(file_name), local_file_name="."
+                )
