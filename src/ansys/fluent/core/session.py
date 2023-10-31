@@ -29,10 +29,6 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils.file_transfer_service import (
-    PimFileTransferService,
-    RemoteFileHandler,
-)
 
 from .rpvars import RPVars
 
@@ -100,15 +96,18 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(self, fluent_connection: FluentConnection):
+    def __init__(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports remote file upload and download.
         """
-        remote_file_handler = RemoteFileHandler(
-            transfer_service=PimFileTransferService(fluent_connection._remote_instance)
-        )
+        self._remote_file_handler = remote_file_handler
         BaseSession.build_from_fluent_connection(
             self, fluent_connection, remote_file_handler
         )
@@ -116,11 +115,9 @@ class BaseSession:
     def build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
-        self._remote_file_handler = remote_file_handler
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)

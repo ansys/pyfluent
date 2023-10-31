@@ -14,6 +14,10 @@ from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.data_transfer import transfer_case
+from ansys.fluent.core.utils.file_transfer_service import (
+    PimFileTransferService,
+    RemoteFileHandler,
+)
 
 
 class PureMeshing(BaseSession):
@@ -36,7 +40,14 @@ class PureMeshing(BaseSession):
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
-        super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
+        super(PureMeshing, self).__init__(
+            fluent_connection=fluent_connection,
+            remote_file_handler=RemoteFileHandler(
+                transfer_service=PimFileTransferService(
+                    fluent_connection._remote_instance
+                )
+            ),
+        )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
