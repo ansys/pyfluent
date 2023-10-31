@@ -271,9 +271,9 @@ class BaseSession:
         self.exit()
 
     def upload(self, file_name: str, on_uploaded: Optional[Any] = None):
-        """If pypim is configured, uploads a file on the server."""
+        """Upload a file on the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
         return self._remote_file_handler.upload(file_name, on_uploaded)
 
     def download(self, file_name: str, before_downloaded: Optional[Any] = None):
-        """If pypim is configured, downloads a file from the server."""
+        """Download a file from the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
         return self._remote_file_handler.download(file_name, before_downloaded)
