@@ -107,7 +107,7 @@ class BaseSession:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
         remote_file_handler = RemoteFileHandler(
-            PimFileTransferService(fluent_connection._remote_instance)
+            transfer_service=PimFileTransferService(fluent_connection._remote_instance)
         )
         BaseSession.build_from_fluent_connection(
             self, fluent_connection, remote_file_handler

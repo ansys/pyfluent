@@ -167,7 +167,9 @@ class RemoteFileHandler:
             Write a file.
         """
         if before_downloaded:
-            before_downloaded(os.path.basename(file_name))
+            before_downloaded(
+                os.path.basename(file_name) if pypim.is_configured() else file_name
+            )
         if pypim.is_configured():
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
