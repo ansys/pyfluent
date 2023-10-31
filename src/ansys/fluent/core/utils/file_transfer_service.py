@@ -3,10 +3,6 @@ from typing import Any, Callable, Optional  # noqa: F401
 
 import ansys.platform.instancemanagement as pypim
 
-# class Session:
-#     def __ init__(self, remote_file_handler, ...):
-#     self._remote_file_handler = remote_file_handler
-
 
 class PimFileTransferService:
     """Instantiates a file uploader and downloader to have a seamless file reading /
