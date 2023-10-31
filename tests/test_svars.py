@@ -115,7 +115,6 @@ def test_svars(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.skip("Failing on latest Fluent v241 dev version, see #1902")
 @pytest.mark.fluent_version(">=23.2")
 def test_svars_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
