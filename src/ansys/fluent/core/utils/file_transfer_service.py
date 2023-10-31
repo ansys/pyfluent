@@ -124,7 +124,7 @@ class RemoteFileHandler:
         Download a file from the server after performing callback operation.
     """
 
-    def __init_(self, transfer_service):
+    def __init__(self, transfer_service):
         self._transfer_service = transfer_service
 
     def upload(self, file_name: str, on_uploaded: Optional[Any] = None):
