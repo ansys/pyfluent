@@ -51,7 +51,7 @@ class PimFileTransferService:
             )
 
     @property
-    def file_service(self):
+    def pim_service(self):
         """PIM file transfer service."""
         return self.file_service
 
@@ -145,11 +145,11 @@ class RemoteFileHandler:
         """
         if pypim.is_configured():
             if os.path.isfile(file_name):
-                if not self._transfer_service.file_service.file_exist(
+                if not self._transfer_service.pim_service.file_exist(
                     os.path.basename(file_name)
                 ):
                     self._transfer_service.upload(file_name)
-            elif not self._transfer_service.file_service.file_exist(
+            elif not self._transfer_service.pim_service.file_exist(
                 os.path.basename(file_name)
             ):
                 raise FileNotFoundError(f"{file_name} does not exist.")
