@@ -245,7 +245,7 @@ class Solver(BaseSession):
         launcher_args["case_file_name"] = file_name
         fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
         fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
-        
+
     def __call__(self):
         return self._root.get_state()
 
