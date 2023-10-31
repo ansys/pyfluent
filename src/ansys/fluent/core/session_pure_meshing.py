@@ -151,7 +151,7 @@ class PureMeshing(BaseSession):
         self,
         file_name: str,
     ):
-        """Reads a case file.
+        """Read a case file.
 
         Parameters
         ----------
@@ -168,7 +168,7 @@ class PureMeshing(BaseSession):
         self,
         file_name: str,
     ):
-        """Writes a case file.
+        """Write a case file.
 
         Parameters
         ----------
