@@ -30,6 +30,7 @@ def test_mode():
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
+@pytest.mark.standalone
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(TimeoutError) as msg:

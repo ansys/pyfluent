@@ -507,6 +507,7 @@ def test_meshing_workflow_structure(new_mesh_session):
         "UpdateBoundaries",
         "SetUpPeriodicBoundaries",
         "LinearMeshPattern",
+        "ManageZones",
         "ModifyMeshRefinement",
         "ImproveSurfaceMesh",
         "RunCustomJournal",
