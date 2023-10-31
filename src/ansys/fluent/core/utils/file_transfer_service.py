@@ -149,10 +149,10 @@ class RemoteFileHandler:
                 os.path.basename(file_name)
             ):
                 raise FileNotFoundError(f"{file_name} does not exist.")
-            if on_uploaded:
-                on_uploaded(
-                    os.path.basename(file_name) if pypim.is_configured() else file_name
-                )
+        if on_uploaded:
+            on_uploaded(
+                os.path.basename(file_name) if pypim.is_configured() else file_name
+            )
 
     def download(self, file_name: str, before_downloaded: Optional[Any] = None):
         """Perform callback operation and
