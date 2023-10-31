@@ -3,8 +3,12 @@ from typing import Any, Callable, Optional  # noqa: F401
 
 import ansys.platform.instancemanagement as pypim
 
+# class Session:
+#     def __ init__(self, remote_file_handler, ...):
+#     self._remote_file_handler = remote_file_handler
 
-class FileTransferService:
+
+class PimFileTransferService:
     """Instantiates a file uploader and downloader to have a seamless file reading /
     writing in the cloud particularly in Ansys lab . Here we are exposing upload and
     download methods on session objects. These would be no- ops if PyPIM is not
@@ -46,66 +50,37 @@ class FileTransferService:
                 token="token", url=upload_server.uri, headers=upload_server.headers
             )
 
-    def _upload_download_helper(
-        self,
-        is_upload: bool,
-        file_name: Optional[str] = None,
-        remote_file_name: Optional[str] = None,
-        local_file_name: Optional[str] = None,
-    ):
-        """Uploads and downloads a file.
+    @property
+    def file_service(self):
+        """PIM file transfer service."""
+        return self.file_service
+
+    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
+        """Upload a file on the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
-        is_upload : bool
-            True if we want to upload file, False otherwise.
         file_name : str
             file name
         remote_file_name : str, optional
             remote file name, by default None
-        local_file_name : str, optional
-            local file name, by default None
         Raises
         ------
         FileNotFoundError
             If the file does not exist.
         """
         if self.file_service:
-            if is_upload:
-                if os.path.isfile(file_name):
-                    expanded_file_path = os.path.expandvars(file_name)
-                    upload_file_name = remote_file_name or os.path.basename(
-                        expanded_file_path
-                    )
-                    self.file_service.upload_file(expanded_file_path, upload_file_name)
-                else:
-                    raise FileNotFoundError(f"{file_name} does not exist.")
+            if os.path.isfile(file_name):
+                expanded_file_path = os.path.expandvars(file_name)
+                upload_file_name = remote_file_name or os.path.basename(
+                    expanded_file_path
+                )
+                self.file_service.upload_file(expanded_file_path, upload_file_name)
             else:
-                if self.file_service.file_exist(file_name):
-                    self.file_service.download_file(file_name, local_file_name)
-                else:
-                    raise FileNotFoundError("Remote file does not exist.")
-
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server.
-
-        Parameters
-        ----------
-        file_name : str
-            file name
-        remote_file_name : str, optional
-            remote file name, by default None
-        Raises
-        ------
-        FileNotFoundError
-            If the file does not exist.
-        """
-        self._upload_download_helper(
-            is_upload=True, file_name=file_name, remote_file_name=remote_file_name
-        )
+                raise FileNotFoundError(f"{file_name} does not exist.")
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
-        """Downloads a file from the server.
+        """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
@@ -119,18 +94,49 @@ class FileTransferService:
         FileNotFoundError
             If the remote file does not exist.
         """
-        self._upload_download_helper(
-            is_upload=False, file_name=file_name, local_file_name=local_file_name
-        )
+        if self.file_service:
+            if self.file_service.file_exist(file_name):
+                self.file_service.download_file(file_name, local_file_name)
+            else:
+                raise FileNotFoundError("Remote file does not exist.")
 
-    def _pypim_upload(self, file_name: str, on_uploaded: Optional[Any] = None):
-        """Uploads a file if not available on the server.
+
+class RemoteFileHandler:
+    """Uploads and downloads a file before and after performing callback operation
+    respectively, if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is
+    configured.
+
+    Attributes
+    ----------
+    transfer_service: Client instance
+        Instance of Client which supports upload and download methods.
+
+    Methods
+    -------
+    upload(
+        file_name, on_uploaded
+        )
+        Upload a file on the server before performing callback operation.
+
+    download(
+        file_name, before_downloaded
+        )
+        Download a file from the server after performing callback operation.
+    """
+
+    def __init_(self, transfer_service):
+        self._transfer_service = transfer_service
+
+    def upload(self, file_name: str, on_uploaded: Optional[Any] = None):
+        """Upload a file if it's unavailable on the server
+        supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
+        and performs callback operation.
 
         Parameters
         ----------
         file_name : str
             File name
-        on_uploaded: Callable[str]
+        on_uploaded: Callable
             Read a file.
         Raises
         ------
@@ -139,27 +145,35 @@ class FileTransferService:
         """
         if pypim.is_configured():
             if os.path.isfile(file_name):
-                if not self.file_service.file_exist(os.path.basename(file_name)):
-                    self.upload(file_name)
-            elif not self.file_service.file_exist(os.path.basename(file_name)):
+                if not self._transfer_service.file_service.file_exist(
+                    os.path.basename(file_name)
+                ):
+                    self._transfer_service.upload(file_name)
+            elif not self._transfer_service.file_service.file_exist(
+                os.path.basename(file_name)
+            ):
                 raise FileNotFoundError(f"{file_name} does not exist.")
-        if on_uploaded:
-            on_uploaded(os.path.basename(file_name))
+            if on_uploaded:
+                on_uploaded(
+                    os.path.basename(file_name) if pypim.is_configured() else file_name
+                )
 
-    def _pypim_download(self, file_name: str, on_uploaded: Optional[Any] = None):
-        """Downloads a file from the server.
+    def download(self, file_name: str, before_downloaded: Optional[Any] = None):
+        """Perform callback operation and
+        downloads a file if it's available on the server supported by
+        `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
         file_name : str
             File name
-        on_uploaded: Callable[str]
+        before_downloaded: Callable
             Write a file.
         """
-        if on_uploaded:
-            on_uploaded(os.path.basename(file_name))
+        if before_downloaded:
+            before_downloaded(os.path.basename(file_name))
         if pypim.is_configured():
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
-                self.download(os.path.basename(file_name), ".")
+                self._transfer_service.download(os.path.basename(file_name), ".")

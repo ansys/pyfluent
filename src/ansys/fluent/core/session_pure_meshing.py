@@ -159,7 +159,7 @@ class PureMeshing(BaseSession):
             Case file name
         """
 
-        self._pypim_upload(
+        self.upload(
             file_name=file_name,
             on_uploaded=self.tui.file.read_case,
         )
@@ -175,7 +175,7 @@ class PureMeshing(BaseSession):
         file_name : str
             Case file name
         """
-        self._pypim_download(
+        self.download(
             file_name=file_name,
-            on_uploaded=self.tui.file.write_case,
+            before_downloaded=self.tui.file.write_case,
         )
