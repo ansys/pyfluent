@@ -110,10 +110,7 @@ class BaseSession:
         self._remote_file_handler = remote_file_handler
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
-    def build_from_fluent_connection(
-        self,
-        fluent_connection: FluentConnection,
-    ):
+    def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
         self.error_state = self.fluent_connection.error_state
