@@ -12,6 +12,7 @@ from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+import ansys.fluent.core.solver.flobject as flobject
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
@@ -118,6 +119,14 @@ class Solver(BaseSession):
         if not self._workflow:
             self._workflow = WorkflowWrapper(self._workflow_se, Solver)
         return self._workflow
+
+    @property
+    def reals_with_units(self) -> bool:
+        return flobject.reals_with_units
+
+    @reals_with_units.setter
+    def reals_with_units(self, value):
+        flobject.reals_with_units = bool(value)
 
     @property
     def _root(self):

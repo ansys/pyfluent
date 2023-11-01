@@ -32,6 +32,7 @@ import ansys.units as ansunits
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
+reals_with_units = False
 
 
 class _InlineConstants:
@@ -347,8 +348,6 @@ class Real(SettingsBase[RealType], Numerical):
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
-        print(self)
-        print(self.reals_with_units)
         if reals_with_units and self.get_attr("units-quantity"):
             try:
                 unit = self._quantity_map(self.get_attr("units-quantity"))
@@ -361,7 +360,10 @@ class Real(SettingsBase[RealType], Numerical):
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        if isinstance(state, ansunits.Quantity) and self.get_attr("units-quantity"):
+        if (
+            isinstance(state, ansunits.Quantity)
+            and self.get_attr("units-quantity") == state.si_units
+        ):
             return self.flproxy.set_var(
                 self.path, self.to_scheme_keys(state.si_value), **kwargs
             )

@@ -103,7 +103,6 @@ class BaseSession:
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
-        self._reals_with_units = False
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
@@ -190,15 +189,6 @@ class BaseSession:
     def id(self) -> str:
         """Return the session ID."""
         return self.fluent_connection._id
-
-    @property
-    def reals_with_units(self) -> bool:
-        return self._reals_with_units
-
-    @reals_with_units.setter
-    def reals_with_units(self, value):
-        if isinstance(value, bool):
-            self._reals_with_units = value
 
     def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
