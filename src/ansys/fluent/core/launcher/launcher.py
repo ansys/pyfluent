@@ -27,7 +27,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.solver.error_message import allowed_values_error_message
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
@@ -211,7 +211,7 @@ class FluentMode(Enum):
                 return m
         else:
             raise DisallowedValuesError(
-                allowed_values_error_message(
+                allowed_name_error_message(
                     "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
                 )
             )
@@ -410,7 +410,7 @@ def _await_fluent_launch(
             logger.info("Fluent has been successfully launched.")
             break
         if start_timeout == 0:
-            raise TimeoutError("The launch process has been timed out.")
+            raise TimeoutError("The launch process has timed out.")
         time.sleep(1)
         start_timeout -= 1
         logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")

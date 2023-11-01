@@ -15,7 +15,7 @@ from ansys.fluent.core.services.field_data import (
 )
 
 
-class InvalidFieldNamePrefix(ValueError):
+class InvalidMultiPhaseFieldName(ValueError):
     """Raises exception for invalid field name prefix."""
 
     pass
@@ -123,7 +123,7 @@ class Transaction:
         ------
         SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
-        InvalidFieldNamePrefix
+        InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
@@ -141,7 +141,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise InvalidFieldNamePrefix(
+                raise InvalidMultiPhaseFieldName(
                     "For multi-phase cases field name should have a prefix of phase name."
                 )
             self._scalar_field_transactions.append(
@@ -179,7 +179,7 @@ class Transaction:
         ------
         SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
-        InvalidFieldNamePrefix
+        InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
@@ -197,7 +197,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise InvalidFieldNamePrefix(
+                raise InvalidMultiPhaseFieldName(
                     "For multi-phase cases field name should have a prefix of phase name."
                 )
             self._vector_field_transactions.append(
@@ -275,7 +275,7 @@ class Transaction:
 
         for transaction in self._vector_field_transactions:
             if "velocity" not in transaction.field_name:
-                raise InvalidFieldName("Only 'velocity' is allowed field.")
+                raise InvalidFieldName("The only allowed field is 'velocity'.")
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
@@ -428,7 +428,7 @@ class FileFieldData:
         ------
         SurfaceNameIDsProvided
             If surface names or surface ids are not provided.
-        InvalidFieldNamePrefix
+        InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
@@ -442,7 +442,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidFieldNamePrefix(
+                    raise InvalidMultiPhaseFieldName(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 return ScalarFieldData(
@@ -463,7 +463,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidFieldNamePrefix(
+                    raise InvalidMultiPhaseFieldName(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 return {
@@ -518,7 +518,7 @@ class FileFieldData:
             If surface names or surface ids are not provided.
         InvalidFieldName
             If any field other than ``"velocity"`` is provided.
-        InvalidFieldNamePrefix
+        InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
@@ -538,7 +538,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidFieldNamePrefix(
+                    raise InvalidMultiPhaseFieldName(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 vector_data = self._file_session._data_file.get_face_vector_field_data(
@@ -553,7 +553,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidFieldNamePrefix(
+                    raise InvalidMultiPhaseFieldName(
                         "For multi-phase cases field name should have a prefix of phase name."
                     )
                 return {
