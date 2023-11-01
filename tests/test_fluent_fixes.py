@@ -33,7 +33,7 @@ def test_1364(new_solver_session):
     assert report_def.expr_list.allowed_values() == None
 
 
-def test_974(new_solver_session):
+def test_637_974_1744(new_solver_session):
     solver_session = new_solver_session
 
     import_case = examples.download_file(
@@ -51,7 +51,15 @@ def test_974(new_solver_session):
     solver_session.tui.solve.set.number_of_iterations(15)
     solver_session.tui.solve.iterate()
 
-    solver_session.monitors_manager.get_monitor_set_names()
+    monitors_list = solver_session.monitors_manager.get_monitor_set_names()
+
+    assert monitors_list == [
+        "residual",
+        "mass-bal-rplot",
+        "mass-tot-rplot",
+        "mass-in-rplot",
+        "point-vel-rplot",
+    ]
 
     mp = solver_session.monitors_manager.get_monitor_set_data(
         monitor_set_name="residual"
