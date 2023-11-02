@@ -6,7 +6,7 @@ from ansys.fluent.core import examples
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version("==23.2")
-def test_1364(new_solver_session):
+def test_allowed_values_of_report_definitions_1364(new_solver_session):
     solver = new_solver_session
 
     import_file_name = examples.download_file(
@@ -33,7 +33,7 @@ def test_1364(new_solver_session):
     assert report_def.expr_list.allowed_values() == None
 
 
-def test_637_974_1744(new_solver_session):
+def test_monitors_list_and_monitor_set_data_637_974_1744(new_solver_session):
     solver_session = new_solver_session
 
     import_case = examples.download_file(
