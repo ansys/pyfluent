@@ -934,3 +934,6 @@ def test_ansys_units_intigration(load_mixing_elbow_mesh):
 
     hot_inlet.turbulence.hydraulic_diameter = 1
     assert hot_inlet.turbulence.hydraulic_diameter() == ansunits.Quantity(1, "m")
+
+    hot_inlet.turbulence.hydraulic_diameter = ansunits.Quantity(1, "in")
+    assert hot_inlet.turbulence.hydraulic_diameter() == ansunits.Quantity(0.0254, "m")
