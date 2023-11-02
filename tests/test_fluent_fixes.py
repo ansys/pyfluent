@@ -33,6 +33,7 @@ def test_allowed_values_on_report_definitions_1364(new_solver_session):
     assert report_def.expr_list.allowed_values() == None
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     solver_session = new_solver_session
 
