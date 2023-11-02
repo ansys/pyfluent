@@ -138,12 +138,16 @@ solver.tui.define.phases.set_domain_properties.interaction_domain.heat_mass_reac
 inlet_1 = solver.setup.boundary_conditions.pressure_inlet["inlet_1"].phase
 
 in_mixture = {
-    "direction_spec": "Normal to Boundary",
-    "gauge_total_pressure": {"value": 500000},
-    "gauge_pressure": {"value": 449000},
-    "turb_intensity": 0.05,
-    "ke_spec": "Intensity and Viscosity Ratio",
-    "turb_viscosity_ratio": 10,
+    "momentum": {
+        "gauge_total_pressure": {"value": 500000},
+        "supersonic_or_initial_gauge_pressure": {"value": 449000},
+        "direction_specification_method": "Normal to Boundary",
+    },
+    "turbulence": {
+        "turbulent_specification": "Intensity and Viscosity Ratio",
+        "turbulent_intensity": 0.05,
+        "turbulent_viscosity_ratio_real": 10,
+    },
 }
 inlet_1["mixture"] = in_mixture
 
@@ -151,7 +155,11 @@ inlet_1["mixture"] = in_mixture
 # Before copying inlet_1's boundary conditions to inlet_2, set the vapor fraction
 # to 0.
 
-inlet_1["vapor"] = {"volume_fraction": {"value": 0}}
+inlet_1["vapor"] = {
+    "multiphase": {
+        "volume_fraction": {"value": 0},
+    },
+}
 
 solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 
@@ -162,15 +170,23 @@ solver.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 outlet = solver.setup.boundary_conditions.pressure_outlet["outlet"].phase
 
 out_mixture = {
-    "gauge_pressure": {"value": 95000},
-    "turb_intensity": 0.05,
-    "ke_spec": "Intensity and Viscosity Ratio",
-    "turb_viscosity_ratio": 10,
+    "momentum": {
+        "gauge_pressure": {"value": 95000},
+    },
+    "turbulence": {
+        "turbulent_specification": "Intensity and Viscosity Ratio",
+        "turbulent_intensity": 0.04,
+        "turbulent_viscosity_ratio_real": 10,
+    },
 }
 
 outlet["mixture"] = out_mixture
 
-outlet["vapor"] = {"volume_fraction": {"value": 0}}
+outlet["vapor"] = {
+    "multiphase": {
+        "volume_fraction": {"value": 0},
+    },
+}
 
 ###############################################################################
 # Operating Conditions
@@ -219,12 +235,20 @@ solver.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo
 # 1e-05 for x-velocity, y-velocity, k, omega, and vf-vapor. Enable the specified
 # initial pressure then initialize the solution with hybrid initialization.
 
-solver.tui.solve.monitors.residual.plot("yes")
+solver.solution.monitor.residual.options.plot = True
 
-solver.tui.solve.monitors.residual.convergence_criteria(
-    1e-05, 1e-05, 1e-05, 1e-05, 1e-05, 1e-05
-)
+resid_eqns = solver.solution.monitor.residual.equations
 
+resid_eqns["continuity"].absolute_criteria = 1e-5
+resid_eqns["x-velocity"].absolute_criteria = 1e-5
+resid_eqns["y-velocity"].absolute_criteria = 1e-5
+resid_eqns["k"].absolute_criteria = 1e-5
+resid_eqns["omega"].absolute_criteria = 1e-5
+resid_eqns["vf-vapor"].absolute_criteria = 1e-5
+
+initialization = solver.solution.initialization
+
+initialization.initialization_type = "hybrid"
 solver.solution.initialization.hybrid_init_options.general_settings.initial_pressure = (
     True
 )
