@@ -362,9 +362,7 @@ class Real(SettingsBase[RealType], Numerical):
         """Set the state of the object."""
         if isinstance(state, ansunits.Quantity):
             unit = self._quantity_map(self.get_attr("units-quantity"))
-            print(unit)
             state = state.to(ansunits.QuantityMap({unit: 1}).units)
-            print(state)
             return self.flproxy.set_var(
                 self.path, self.to_scheme_keys(state.si_value), **kwargs
             )
