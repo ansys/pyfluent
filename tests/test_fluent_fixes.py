@@ -73,6 +73,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     sample_report_plot.report_defs = "mass-bal"
 
     solver_session.solution.initialization.hybrid_initialize()
+    solver_session.tui.solve.iterate()
 
     new_monitors_list = solver_session.monitors_manager.get_monitor_set_names()
 
