@@ -34,6 +34,7 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
+from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 logger = logging.getLogger("pyfluent.tui")
@@ -152,8 +153,7 @@ class _TUIMenu:
             del _XML_HELPSTRINGS[tui_path]
         else:
             self.doc = doc
-        self.doc = self.doc.replace("\\*", "*")
-        self.doc = self.doc.replace("*", "\*")
+        self.doc = escape_wildcards(self.doc)
         self.doc = self.doc.strip()
         if not self.doc.endswith("."):
             self.doc = self.doc + "."
@@ -269,7 +269,7 @@ class TUIGenerator:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
             if class_name == "main_menu":
-                heading_ = heading.replace("_", "\_")
+                heading_ = heading
             else:
                 heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
