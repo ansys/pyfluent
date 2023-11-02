@@ -695,6 +695,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     mesh = solver.results.graphics.mesh.create("mesh-1")
     assert mesh.name.is_read_only()
 
+    assert solver.reals_with_units == False
+    solver.reals_with_units = True
+    assert solver.reals_with_units == True
+
 
 @pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_case):

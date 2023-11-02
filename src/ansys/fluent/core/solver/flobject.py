@@ -351,11 +351,11 @@ class Real(SettingsBase[RealType], Numerical):
         if reals_with_units and self.get_attr("units-quantity"):
             try:
                 unit = self._quantity_map(self.get_attr("units-quantity"))
-                value = self.to_python_keys(self.flproxy.get_var(self.path))
+                value = float(self.to_python_keys(self.flproxy.get_var(self.path)))
                 quantity = ansunits.Quantity(value, quantity_map={unit: 1})
                 return quantity
-            except:
-                print(f"Unable to construct 'Quantity'.")
+            except Exception as e:
+                print(f"Unable to construct 'Quantity'.", e)
         return super().get_state()
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
