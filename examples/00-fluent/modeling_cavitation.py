@@ -171,6 +171,7 @@ out_mixture = {
 outlet["mixture"] = out_mixture
 
 outlet["vapor"] = {"volume_fraction": {"value": 0}}
+
 ###############################################################################
 # Operating Conditions
 # ~~~~~~~~~~~~~~~~~~~~
