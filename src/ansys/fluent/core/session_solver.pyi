@@ -10,6 +10,7 @@ from ansys.fluent.core.solver.settings_232.parallel import parallel
 from ansys.fluent.core.solver.settings_232.parametric_studies import parametric_studies
 from ansys.fluent.core.solver.settings_232.report import report
 from ansys.fluent.core.solver.settings_232.results import results
+from ansys.fluent.core.solver.settings_232.server import server
 from ansys.fluent.core.solver.settings_232.setup import setup
 from ansys.fluent.core.solver.settings_232.solution import solution
 from ansys.fluent.core.solver.tui_232 import main_menu
@@ -40,6 +41,8 @@ class Solver:
     def parallel(self) -> parallel: ...
     @property
     def report(self) -> report: ...
+    @property
+    def server(self) -> server: ...
     @property
     def preferences(self) -> preferences_root: ...
     @property

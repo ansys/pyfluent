@@ -2,8 +2,7 @@
 import importlib
 import json
 import logging
-import os
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -97,12 +96,18 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(self, fluent_connection: FluentConnection):
+    def __init__(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
+        self._remote_file_handler = remote_file_handler
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
@@ -111,7 +116,6 @@ class BaseSession:
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
-        self._uploader = None
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 
@@ -258,93 +262,10 @@ class BaseSession:
         logger.debug("session.__exit__() called")
         self.exit()
 
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server."""
-        if not self._uploader:
-            self._uploader = _Uploader(self.fluent_connection._remote_instance)
-        return self._uploader.upload(file_name, remote_file_name)
+    def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
+        """Upload a file on the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
+        return self._remote_file_handler.upload(file_name, on_uploaded)
 
-    def download(self, file_name: str, local_file_name: Optional[str] = None):
-        """Downloads a file from the server."""
-        if not self._uploader:
-            self._uploader = _Uploader(self.fluent_connection._remote_instance)
-        return self._uploader.download(file_name, local_file_name)
-
-
-class _Uploader:
-    """Instantiates a file uploader and downloader to have a seamless file reading /
-    writing in the cloud particularly in Ansys lab . Here we are exposing upload and
-    download methods on session objects. These would be no- ops if PyPIM is not
-    configured or not authorized with the appropriate service. This will be used for
-    internal purpose only.
-
-    Attributes
-    ----------
-    pim_instance: PIM instance
-        Instance of PIM which supports upload server services.
-
-    file_service: Client instance
-        Instance of Client which supports upload and download methods.
-
-    Methods
-    -------
-    upload(
-        file_name, remote_file_name
-        )
-        Upload a file to the server.
-
-    download(
-        file_name, local_file_name
-        )
-        Download a file from the server.
-    """
-
-    def __init__(self, pim_instance):
-        self.pim_instance = pim_instance
-        self.file_service = None
-        try:
-            upload_server = self.pim_instance.services["http-simple-upload-server"]
-        except (AttributeError, KeyError):
-            pass
-        else:
-            from simple_upload_server.client import Client
-
-            self.file_service = Client(
-                token="token", url=upload_server.uri, headers=upload_server.headers
-            )
-
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server.
-
-        Parameters
-        ----------
-        file_name : str
-            file path
-        remote_file_name : str, optional
-            remote file name, by default None
-        """
-        if self.file_service:
-            expanded_file_name = os.path.expandvars(file_name)
-            upload_file_name = remote_file_name or os.path.basename(expanded_file_name)
-            self.file_service.upload_file(expanded_file_name, upload_file_name)
-
-    def download(self, file_name: str, local_file_name: Optional[str] = None):
-        """Downloads a file from the server.
-
-        Parameters
-        ----------
-        file_name : str
-            file name
-        local_file_name : str, optional
-            local file path, by default None
-
-        Raises
-        ------
-        FileNotFoundError
-            If the remote file does not exist.
-        """
-        if self.file_service:
-            if self.file_service.file_exist(file_name):
-                self.file_service.download_file(file_name, local_file_name)
-            else:
-                raise FileNotFoundError("Remote file does not exist.")
+    def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
+        """Download a file from the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
+        return self._remote_file_handler.download(file_name, before_downloaded)

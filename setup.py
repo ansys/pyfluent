@@ -30,13 +30,15 @@ install_requires = [
     "numpy>=1.21.5",
     "platformdirs>=3.5.1",
     "pandas>=1.1.5",
-    "h5py>=3.8.0",
     "lxml>=4.9.2",
     "pyyaml>=6.0",
     "docker>=6.1.3",
     "psutil>=5.9.5",
 ]
 
+extras_require = {
+    "reader": ["h5py>=3.8.0"],
+}
 
 packages = []
 for package in find_namespace_packages(where="src", include="ansys*"):
@@ -66,6 +68,7 @@ setup(
     url="https://github.com/ansys/pyfluent",
     python_requires=">=3.9",
     install_requires=install_requires,
+    extras_require=extras_require,
     project_urls={
         "Documentation": "https://fluent.docs.pyansys.com/",
         "Source": "https://github.com/ansys/pyfluent",
