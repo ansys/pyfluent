@@ -1,11 +1,10 @@
-""".. _ref_exhaust_system_tui_api:
+""".. _ref_exhaust_system_settings_api:
 
 Fault-tolerant meshing workflow
 -------------------------------
 This example sets up and solves a three-dimensional turbulent fluid flow
-in a manifold exhaust system, which is common in the automotive industry.
-Predicting the flow field in the area of the mixing region is important
-to designing the junction properly.
+in a manifold exhaust system, which is common in the automotive industry,
+using the PyFluent Settings API. Predicting the flow field in the area of the mixing region is important to designing the junction properly.
 
 This example uses the guided workflow for fault-tolerant meshing because it
 is appropriate for geometries that can have imperfections, such as gaps and
@@ -58,7 +57,11 @@ import_file_name = examples.download_file(
 # Launch Fluent as a service in meshing mode with double precision running on
 # two processors.
 
-meshing = pyfluent.launch_fluent(precision="double", processor_count=2, mode="meshing")
+meshing = pyfluent.launch_fluent(
+    precision="double",
+    processor_count=2,
+    mode="meshing",
+)
 
 ###############################################################################
 # Initialize workflow
@@ -549,21 +552,27 @@ meshing.tui.mesh.check_mesh()
 
 solver = meshing.switch_to_solver()
 
-solver.tui.mesh.check()
+solver.mesh.check()
 
 ###############################################################################
 # Set units for length
 # ~~~~~~~~~~~~~~~~~~~~
 # Set the units for length.
 
-solver.tui.define.units("length", "mm")
+solver.setup.general.units.set_units(
+    quantity="length",
+    units_name="mm",
+)
 
 ###############################################################################
 # Select turbulence model
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Select the kw sst turbulence model.
 
-solver.tui.define.models.viscous.kw_sst("yes")
+viscous = solver.setup.models.viscous
+
+viscous.model = "k-omega"
+viscous.k_omega_model = "sst"
 
 ###############################################################################
 # Set velocity and turbulence boundary conditions for first inlet
@@ -571,9 +580,16 @@ solver.tui.define.models.viscous.kw_sst("yes")
 # Set the velocity and turbulence boundary conditions for the first inlet
 # (``inlet-1``).
 
-solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet-1", [], "vmag", "no", 1, "quit"
-)
+boundary_conditions = solver.setup.boundary_conditions
+
+boundary_conditions.velocity_inlet["inlet-1"] = {
+    "momentum": {
+        "velocity_specification_method": "Magnitude, Normal to Boundary",
+        "velocity": {
+            "value": 1,
+        },
+    },
+}
 
 ###############################################################################
 # Set same boundary conditions for other velocity inlets
@@ -581,24 +597,31 @@ solver.tui.define.boundary_conditions.set.velocity_inlet(
 # Set the same boundary conditions for the other velocity inlets (``inlet_2``
 # and ``inlet_3``).
 
-solver.tui.define.boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
+boundary_conditions.copy(
+    from_="inlet-1",
+    to=["inlet-2", "inlet-3"],
+)
 
 ###############################################################################
 # Set boundary conditions at outlet
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set the boundary conditions at the outlet (``outlet-1``).
 
-solver.tui.define.boundary_conditions.set.pressure_outlet(
-    "outlet-1", [], "turb-intensity", 5, "quit"
-)
-solver.tui.solve.monitors.residual.plot("yes")
+boundary_conditions.pressure_outlet["outlet-1"].turbulence.turbulent_intensity = 0.05
+
+###############################################################################
+# Turn on residual plots
+# ~~~~~~~~~~~~~~~~~~~~~~
+# Activate plotting of the solution residuals.
+
+solver.solution.monitor.residual.options.plot = True
 
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
 
-solver.tui.solve.initialize.hyb_initialization()
+solver.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Start calculation
@@ -610,10 +633,7 @@ solver.tui.solve.initialize.hyb_initialization()
 #   :width: 500pt
 #   :align: center
 
-solver.tui.solve.set.number_of_iterations(100)
-solver.tui.solve.iterate()
-
-# solver.tui.report.volume_integrals.volume("fluid-region-1","()","yes","volume.vrp")
+solver.solution.run_calculation.iterate(iter_count=100)
 
 ###############################################################################
 # Create path lines
@@ -625,38 +645,25 @@ solver.tui.solve.iterate()
 #   :width: 500pt
 #   :align: center
 
-solver.tui.display.objects.create(
-    "pathlines",
-    "pathlines-1",
-    "field",
-    "time",
-    "accuracy-control",
-    "tolerance",
-    "0.001",
-    "skip",
-    "5",
-    "surfaces-list",
-    "inlet-1",
-    "inlet-2",
-    "inlet-3",
-    "()",
-    "quit",
-)
+solver.results.graphics.pathline["pathlines-1"] = {
+    "field": "time",
+    "accuracy_control": {
+        "tolerance": 0.001,
+    },
+    "skip": 5,
+    "release_from_surfaces": ["inlet-1", "inlet-2", "inlet-3"],
+}
 
 ###############################################################################
 # Create iso-surface
 # ~~~~~~~~~~~~~~~~~~
 # Create an iso-surface through the manifold geometry.
 
-solver.tui.surface.iso_surface(
-    "x-coordinate",
-    "surf-x-coordinate",
-    "()",
-    "fluid-region-1",
-    "()",
-    "380",
-    "()",
-)
+solver.results.surfaces.iso_surface["surf-x-coordinate"] = {
+    "field": "x-coordinate",
+    "zones": ["fluid-region-1"],
+    "iso_values": [0.38],
+}
 
 ###############################################################################
 # Create contours of velocity magnitude
@@ -669,25 +676,20 @@ solver.tui.surface.iso_surface(
 #   :width: 500pt
 #   :align: center
 
-solver.tui.display.objects.create(
-    "contour",
-    "contour-velocity",
-    "field",
-    "velocity-magnitude",
-    "surfaces-list",
-    "surf-x-coordinate",
-    "()",
-    "node-values?",
-    "no",
-    "range-option",
-    "auto-range-on",
-    "global-range?",
-    "no",
-    "quit",
-    "quit",
-)
-
-solver.tui.display.objects.create("mesh", "mesh-1", "surfaces-list", "*", "()", "quit")
+solver.results.graphics.contour["contour-velocity"] = {
+    "field": "velocity-magnitude",
+    "surfaces_list": ["surf-x-coordinate"],
+    "node_values": False,
+    "range_option": {
+        "option": "auto-range-on",
+        "auto_range_on": {
+            "global_range": False,
+        },
+    },
+}
+solver.results.graphics.mesh["mesh-1"] = {
+    "surfaces_list": "*",
+}
 
 ###############################################################################
 # Create scene
@@ -699,21 +701,12 @@ solver.tui.display.objects.create("mesh", "mesh-1", "surfaces-list", "*", "()", 
 #   :width: 500pt
 #   :align: center
 
-solver.tui.display.objects.create(
-    "scene",
-    "scene-1",
-    "graphics-objects",
-    "add",
-    "mesh-1",
-    "transparency",
-    "90",
-    "quit",
-    "add",
-    "contour-velocity",
-    "quit",
-    "quit",
-    "quit",
-)
+solver.results.scene["scene-1"] = {}
+scene1 = solver.results.scene["scene-1"]
+scene1.graphics_objects["mesh-1"] = {
+    "transparency": 90,
+}
+scene1.graphics_objects["contour-velocity"] = {}
 
 #########################################################################
 # Close Fluent
