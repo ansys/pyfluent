@@ -7,8 +7,6 @@ from util.fixture_fluent import get_name_info
 from util.solver import SettingsValDict as D
 from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
-import ansys.units as ansunits
-
 
 @pytest.mark.fluent_version(">=24.1")
 @pytest.mark.integration
@@ -75,10 +73,6 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
         ].turbulence.turbulent_viscosity_ratio_real()
         == 4
     )
-    solver_session.reals_with_units = True
-    assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
-    hot_inlet.turbulence.hydraulic_diameter = 1
-    assert hot_inlet.turbulence.hydraulic_diameter() == ansunits.Quantity(1, "m")
 
 
 # TODO: Skipped for the nightly test run to be successful. Later decide what to do with this test (discard?).

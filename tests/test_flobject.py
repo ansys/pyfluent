@@ -11,6 +11,7 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import find_children
+import ansys.units as ansunits
 
 
 class Setting:
@@ -695,10 +696,6 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     mesh = solver.results.graphics.mesh.create("mesh-1")
     assert mesh.name.is_read_only()
 
-    assert solver.reals_with_units == False
-    solver.reals_with_units = True
-    assert solver.reals_with_units == True
-
 
 @pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
@@ -919,3 +916,21 @@ def test_strings_with_allowed_values(load_static_mixer_case):
         "density-based-implicit",
         "density-based-explicit",
     ]
+
+
+@pytest.mark.fluent_version("latest")
+def test_ansys_units_intigration(load_mixing_elbow_mesh):
+    solver = load_mixing_elbow_mesh
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+
+    assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
+    assert solver.reals_with_units == False
+    solver.reals_with_units = True
+    assert solver.reals_with_units == True
+    assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
+
+    hot_inlet.turbulence.hydraulic_diameter = 1
+    assert hot_inlet.turbulence.hydraulic_diameter() == ansunits.Quantity(1, "m")
