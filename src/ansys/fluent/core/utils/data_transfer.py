@@ -141,7 +141,7 @@ def transfer_case(
                 writer("y")
             else:
                 writer()
-            source_instance.download(full_file_name)
+            source_instance._remote_file_handler.download(file_name=full_file_name)
             network_logger.info(f"Saved mesh from meshing session: {full_file_name}")
             if inside_container:
                 _read_case_into_each(
