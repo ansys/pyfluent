@@ -18,7 +18,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 @asynchronous
 def _read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Trying to read case: {file_name}")
-    solver.upload(file_name)
+    solver._remote_file_handler.upload(file_name=file_name)
     if full_file_name_container:
         solver.file.read(file_name=full_file_name_container, file_type=file_type)
     else:
