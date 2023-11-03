@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.exceptions import SurfaceNameIDsProvided
+from ansys.fluent.core.exceptions import BothSurfaceIDsAndSurfaceNamesProvided
 from ansys.fluent.core.file_session import (
     FileSession,
     InvalidFieldName,
@@ -352,7 +352,7 @@ def test_error_handling_multi_phase():
         )[34].size
     assert msg.value.args[0] == error_message_2
 
-    with pytest.raises(SurfaceNameIDsProvided) as msg:
+    with pytest.raises(BothSurfaceIDsAndSurfaceNamesProvided) as msg:
         d_size = field_data.get_vector_field_data(
             "velocity", surface_ids=[34], surface_name="wall"
         )[34].size

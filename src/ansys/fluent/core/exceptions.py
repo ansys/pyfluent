@@ -4,7 +4,7 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class DisallowedValuesError(ValueError):
-    """Raises exception if argument value is not in allowed values."""
+    """Provides the error when an argument value is not in allowed values."""
 
     def __init__(self, context, name, allowed_values):
         super().__init__(
@@ -15,12 +15,12 @@ class DisallowedValuesError(ValueError):
 
 
 class InvalidArgument(ValueError):
-    """Raises exception for invalid argument."""
+    """Provides the error when an argument value is inappropriate."""
 
     pass
 
 
-class SurfaceNameIDsProvided(ValueError):
-    """Raises exception for invalid surface names and IDs."""
+class BothSurfaceIDsAndSurfaceNamesProvided(ValueError):
+    """Provides the error when both ``surface_ids`` and ``surface_names`` are provided."""
 
     pass
