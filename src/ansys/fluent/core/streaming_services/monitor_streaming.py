@@ -192,6 +192,8 @@ class MonitorsManager(StreamingService):
             self._monitors_info = self._streaming_service.get_monitors_info()
             self._data_frames = {}
             for monitor_set_name, monitor_set_info in self._monitors_info.items():
+                if "monitors" not in monitor_set_info:
+                    continue
                 self._data_frames[monitor_set_name] = {}
                 monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
                 df = pd.DataFrame([], columns=monitors_name)

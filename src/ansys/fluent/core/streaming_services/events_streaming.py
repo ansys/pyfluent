@@ -5,7 +5,6 @@ from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -103,9 +102,7 @@ class EventsManager(StreamingService):
             )
 
         if event_name not in self.events_list:
-            raise DisallowedValuesError(
-                allowed_name_error_message("event-name", event_name, self.events_list)
-            )
+            raise DisallowedValuesError("event-name", event_name, self.events_list)
         with self._lock:
             event_name = event_name.lower()
             callback_id = f"{event_name}-{next(self._service_callback_id)}"

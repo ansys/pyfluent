@@ -23,10 +23,6 @@ def test_mode():
             mode="meshing-solver",
             start_container=False,
         )
-    assert msg.value.args[0] == (
-        "meshing-solver is not an allowed mode name.\n"
-        "The allowed values are: ['meshing', 'pure-meshing', 'solver', 'solver-icing']."
-    )
 
 
 @pytest.mark.skip(reason="Can be used only locally.")

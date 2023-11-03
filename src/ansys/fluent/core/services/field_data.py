@@ -269,9 +269,7 @@ class _AllowedSurfaceNames(_AllowedNames):
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names."""
         if validate_inputs and not self.is_valid(surface_name):
-            raise DisallowedValuesError(
-                allowed_name_error_message("surface", surface_name, self())
-            )
+            raise DisallowedValuesError("surface", surface_name, self())
         return surface_name
 
 
