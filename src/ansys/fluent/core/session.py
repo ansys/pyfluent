@@ -2,7 +2,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Optional
+from typing import Any
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -99,15 +99,12 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
     ):
         """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
         """
-        self._remote_file_handler = remote_file_handler
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):

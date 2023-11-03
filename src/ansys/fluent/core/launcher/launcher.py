@@ -26,6 +26,10 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.file_transfer_service import (
+    PimFileTransferService,
+    RemoteFileHandler,
+)
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
@@ -825,15 +829,22 @@ def launch_fluent(
 
         port, password = start_fluent_container(args, container_dict)
 
+        session_fluent_connection = FluentConnection(
+            port=port,
+            password=password,
+            cleanup_on_exit=cleanup_on_exit,
+            start_transcript=start_transcript,
+            launcher_args=argvals,
+            inside_container=True,
+        )
+
         session = new_session(
-            fluent_connection=FluentConnection(
-                port=port,
-                password=password,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=argvals,
-                inside_container=True,
-            )
+            fluent_connection=session_fluent_connection,
+            remote_file_handler=RemoteFileHandler(
+                transfer_service=PimFileTransferService(
+                    session_fluent_connection._remote_instance
+                )
+            ),
         )
 
         if start_watchdog:

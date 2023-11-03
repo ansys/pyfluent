@@ -1,7 +1,7 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
-from typing import Optional
+from typing import Any, Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
@@ -14,10 +14,6 @@ from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.data_transfer import transfer_case
-from ansys.fluent.core.utils.file_transfer_service import (
-    PimFileTransferService,
-    RemoteFileHandler,
-)
 
 
 class PureMeshing(BaseSession):
@@ -34,20 +30,19 @@ class PureMeshing(BaseSession):
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
-    def __init__(self, fluent_connection: FluentConnection):
+    def __init__(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """PureMeshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
-        super(PureMeshing, self).__init__(
-            fluent_connection=fluent_connection,
-            remote_file_handler=RemoteFileHandler(
-                transfer_service=PimFileTransferService(
-                    fluent_connection._remote_instance
-                )
-            ),
-        )
+        super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
+        self._remote_file_handler = remote_file_handler
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
