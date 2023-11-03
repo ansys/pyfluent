@@ -169,10 +169,8 @@ class PureMeshing(BaseSession):
         file_name : str
             Case file name
         """
-
-        self.upload(
-            file_name=file_name,
-            on_uploaded=self.tui.file.read_case,
+        self._remote_file_handler.upload(
+            file_name=file_name, on_uploaded=self.tui.file.read_case
         )
 
     def write_case(
@@ -186,7 +184,6 @@ class PureMeshing(BaseSession):
         file_name : str
             Case file name
         """
-        self.download(
-            file_name=file_name,
-            before_downloaded=self.tui.file.write_case,
+        self._remote_file_handler.download(
+            file_name=file_name, before_downloaded=self.tui.file.write_case
         )

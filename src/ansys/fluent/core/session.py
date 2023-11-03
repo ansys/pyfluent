@@ -2,7 +2,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Callable, Optional
+from typing import Any, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -261,11 +261,3 @@ class BaseSession:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self.exit()
-
-    def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
-        """Upload a file on the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
-        return self._remote_file_handler.upload(file_name, on_uploaded)
-
-    def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
-        """Download a file from the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
-        return self._remote_file_handler.download(file_name, before_downloaded)
