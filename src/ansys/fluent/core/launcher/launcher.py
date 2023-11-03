@@ -388,13 +388,13 @@ def _await_fluent_launch(
 
 
 def _get_server_info(
-    server_info_filepath: str,
+    server_info_filepath: Optional[str] = None,
     ip: Optional[str] = None,
     port: Optional[int] = None,
     password: Optional[str] = None,
 ):
     """Get server connection information of an already running session."""
-    if ip and port:
+    if ip and port and server_info_filepath:
         logger.warning(
             "Could not parse server-info file because ip and port were provided explicitly."
         )
@@ -402,7 +402,7 @@ def _get_server_info(
         ip, port, password = _parse_server_info_file(server_info_filepath)
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
         ip = port = None
-    else:
+    elif not (ip and port) and not server_info_filepath:
         raise RuntimeError(
             "Please provide either ip and port data or server-info file."
         )
