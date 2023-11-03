@@ -4,13 +4,10 @@ updates:
     directory: "/requirements" # Location of package manifests
     insecure-external-code-execution: allow
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     labels:
       - "Maintenance"
       - "Dependencies"
-    ignore:
-      - dependency-name: "vtk"
-      - dependency-name: "grpcio"
     groups:
       dependencies:
         patterns:
@@ -22,7 +19,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     labels:
       - "Maintenance"
     groups:

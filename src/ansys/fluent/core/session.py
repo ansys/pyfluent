@@ -2,8 +2,7 @@
 import importlib
 import json
 import logging
-import os
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -42,8 +41,8 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 logger = logging.getLogger("pyfluent.general")
 
 
-def _parse_server_info_file(filename: str):
-    with open(filename, encoding="utf-8") as f:
+def _parse_server_info_file(file_name: str):
+    with open(file_name, encoding="utf-8") as f:
         lines = f.readlines()
     ip_and_port = lines[0].strip().split(":")
     ip = ip_and_port[0]
@@ -89,7 +88,7 @@ class BaseSession:
     Methods
     -------
     create_from_server_info_file(
-        server_info_filepath, cleanup_on_exit, start_transcript
+        server_info_file_name, cleanup_on_exit, start_transcript
         )
         Create a Session instance from server-info file
 
@@ -97,12 +96,18 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(self, fluent_connection: FluentConnection):
+    def __init__(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
+        self._remote_file_handler = remote_file_handler
         BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
@@ -111,7 +116,6 @@ class BaseSession:
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
-        self._uploader = None
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 
@@ -190,10 +194,10 @@ class BaseSession:
         """Return the session ID."""
         return self.fluent_connection._id
 
-    def start_journal(self, file_path: str):
+    def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
         warnings.warn("Use -> journal.start()", DeprecationWarning)
-        self.journal.start(file_path)
+        self.journal.start(file_name)
 
     def stop_journal(self):
         """Executes tui command to stop journal."""
@@ -202,13 +206,13 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-        cls, server_info_filepath: str, **connection_kwargs
+        cls, server_info_file_name: str, **connection_kwargs
     ):
         """Create a Session instance from server-info file.
 
         Parameters
         ----------
-        server_info_filepath : str
+        server_info_file_name : str
             Path to server-info file written out by Fluent server
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
@@ -221,7 +225,7 @@ class BaseSession:
         Session
             Session instance
         """
-        ip, port, password = _parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_file_name)
         session = cls(
             fluent_connection=FluentConnection(
                 ip=ip, port=port, password=password, **connection_kwargs
@@ -258,93 +262,10 @@ class BaseSession:
         logger.debug("session.__exit__() called")
         self.exit()
 
-    def upload(self, file_path: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server."""
-        if not self._uploader:
-            self._uploader = _Uploader(self.fluent_connection._remote_instance)
-        return self._uploader.upload(file_path, remote_file_name)
+    def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
+        """Upload a file on the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
+        return self._remote_file_handler.upload(file_name, on_uploaded)
 
-    def download(self, file_name: str, local_file_path: Optional[str] = None):
-        """Downloads a file from the server."""
-        if not self._uploader:
-            self._uploader = _Uploader(self.fluent_connection._remote_instance)
-        return self._uploader.download(file_name, local_file_path)
-
-
-class _Uploader:
-    """Instantiates a file uploader and downloader to have a seamless file reading /
-    writing in the cloud particularly in Ansys lab . Here we are exposing upload and
-    download methods on session objects. These would be no- ops if PyPIM is not
-    configured or not authorized with the appropriate service. This will be used for
-    internal purpose only.
-
-    Attributes
-    ----------
-    pim_instance: PIM instance
-        Instance of PIM which supports upload server services.
-
-    file_service: Client instance
-        Instance of Client which supports upload and download methods.
-
-    Methods
-    -------
-    upload(
-        file_path, remote_file_name
-        )
-        Upload a file to the server.
-
-    download(
-        file_name, local_file_path
-        )
-        Download a file from the server.
-    """
-
-    def __init__(self, pim_instance):
-        self.pim_instance = pim_instance
-        self.file_service = None
-        try:
-            upload_server = self.pim_instance.services["http-simple-upload-server"]
-        except (AttributeError, KeyError):
-            pass
-        else:
-            from simple_upload_server.client import Client
-
-            self.file_service = Client(
-                token="token", url=upload_server.uri, headers=upload_server.headers
-            )
-
-    def upload(self, file_path: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server.
-
-        Parameters
-        ----------
-        file_path : str
-            filepath
-        remote_file_name : str, optional
-            remote filename, by default None
-        """
-        if self.file_service:
-            expanded_file_path = os.path.expandvars(file_path)
-            upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
-            self.file_service.upload_file(expanded_file_path, upload_file_name)
-
-    def download(self, file_name: str, local_file_path: Optional[str] = None):
-        """Downloads a file from the server.
-
-        Parameters
-        ----------
-        file_name : str
-            filename
-        local_file_path : str, optional
-            local filepath, by default None
-
-        Raises
-        ------
-        FileNotFoundError
-            If the remote file does not exist.
-        """
-        if self.file_service:
-            if self.file_service.file_exist(file_name):
-                self.file_service.download_file(file_name, local_file_path)
-            else:
-                raise FileNotFoundError("Remote file does not exist.")
+    def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
+        """Download a file from the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
+        return self._remote_file_handler.download(file_name, before_downloaded)

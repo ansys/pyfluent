@@ -218,9 +218,9 @@ def to_string(x):
         return str(x)
 
 
-def load(filename):
+def load(file_name):
     """Eval every expression from a file."""
-    repl(None, InputPort(open(filename)), None)
+    repl(None, InputPort(open(file_name)), None)
 
 
 def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):

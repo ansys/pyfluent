@@ -15,7 +15,7 @@ def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
@@ -29,7 +29,7 @@ def test_parametric_workflow():
     else:
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
-    solver_session.file.read_case(file_name=import_filename)
+    solver_session.file.read_case(file_name=import_file_name)
     solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
 
@@ -143,16 +143,16 @@ def test_parametric_workflow():
     del solver_session.parametric_studies[study1_name]
     assert len(solver_session.parametric_studies) == 1
 
-    project_filename = Path(tmp_save_path) / "static_mixer_study.flprj"
+    project_file_name = Path(tmp_save_path) / "static_mixer_study.flprj"
     if inside_container:
-        write_project_filename = str(container_workdir / "static_mixer_study.flprj")
+        write_project_file_name = str(container_workdir / "static_mixer_study.flprj")
     else:
-        write_project_filename = str(project_filename)
+        write_project_file_name = str(project_file_name)
 
     solver_session.file.parametric_project.save_as(
-        project_filename=write_project_filename
+        project_filename=write_project_file_name
     )
-    assert project_filename.exists()
+    assert project_file_name.exists()
     solver_session.exit()
 
     if inside_container:
@@ -162,7 +162,9 @@ def test_parametric_workflow():
     else:
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 
-    solver_session.file.parametric_project.open(project_filename=write_project_filename)
+    solver_session.file.parametric_project.open(
+        project_filename=write_project_file_name
+    )
     solver_session.file.parametric_project.save()
     project_save_as_name = Path(tmp_save_path) / "static_mixer_study_save_as.flprj"
     if inside_container:
@@ -186,7 +188,7 @@ def test_parametric_workflow():
         )
     else:
         write_project_save_as_copy_name = str(project_save_as_copy_name)
-    solver_session.file.parametric_project.save_as(
+    solver_session.file.parametric_project.save_as_copy(
         project_filename=write_project_save_as_copy_name
     )
     assert project_save_as_copy_name.exists()
