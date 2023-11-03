@@ -1,4 +1,5 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
+from collections import OrderedDict
 from enum import Enum
 import functools
 import itertools
@@ -1002,8 +1003,24 @@ class PyNamedObjectContainer:
         """
         self._del_item(key)
 
+    @staticmethod
+    def _get_type_and_name(type_and_name):
+        return type_and_name.split(":", maxsplit=1)
+
+    def _compare_type(self, obj_type):
+        child_obj_type = self.path[-1][0]
+        return child_obj_type == obj_type
+
     def get_state(self):
-        return PyMenu(self.service, self.rules).get_state()
+        parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
+        returned_state = {}
+
+        for key, value in parent_state.items():
+            type_and_name = self._get_type_and_name(key)
+            if len(type_and_name) == 2 and self._compare_type(type_and_name[0]):
+                returned_state[type_and_name[1]] = value
+
+        return OrderedDict(sorted(returned_state.items()))
 
 
 class PyCommand:
