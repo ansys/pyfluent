@@ -12,6 +12,7 @@ class Attribute:
     VALID_NAMES = [
         "range",
         "allowed_values",
+        "display_name_allowed_values",
         "help_str",
         "is_valid",
         "is_active",
@@ -458,8 +459,9 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
                 )
                 if obj is not None:
                     self._object = obj
-                return obj
-
+                return obj 
+            if item == "ref":                                
+                return self._object._object                  
         return wrapper
 
     def __new__(cls, name, bases, attrs):
