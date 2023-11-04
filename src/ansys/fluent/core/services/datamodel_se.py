@@ -1,5 +1,4 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-from collections import OrderedDict
 from enum import Enum
 import functools
 import itertools
@@ -1020,7 +1019,7 @@ class PyNamedObjectContainer:
             if len(type_and_name) == 2 and self._compare_type(type_and_name[0]):
                 returned_state[type_and_name[1]] = value
 
-        return OrderedDict(sorted(returned_state.items()))
+        return dict(sorted(returned_state.items()))
 
 
 class PyCommand:
