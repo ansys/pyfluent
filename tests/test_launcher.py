@@ -12,7 +12,7 @@ from ansys.fluent.core.launcher.launcher import (
 )
 
 
-@pytest.mark.skip(reason="Can be used only locally.")
+@pytest.mark.standalone
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(RuntimeError) as msg:
@@ -182,3 +182,8 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
     assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+
+
+def test_watchdog_launch(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
+    pyfluent.launch_fluent(start_watchdog=True)

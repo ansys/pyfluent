@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import BaseSession as Session
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 _THIS_DIR = Path(__file__).parent
 
@@ -103,7 +103,7 @@ class DataModelStaticInfo:
             / f"datamodel_{version}"
         ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
-        self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -306,7 +306,7 @@ class DataModelGenerator:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
             if class_name == "Root":
-                heading_ = heading.replace("_", "\_")
+                heading_ = heading
             else:
                 heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
@@ -376,7 +376,7 @@ class DataModelGenerator:
         for name, info in self._static_info.items():
             if info.static_info == None:
                 continue
-            with open(info.filepath, "w", encoding="utf8") as f:
+            with open(info.file_name, "w", encoding="utf8") as f:
                 f.write("#\n")
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
@@ -421,8 +421,8 @@ class DataModelGenerator:
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
-            if info.filepath.exists():
-                info.filepath.unlink()
+            if info.file_name.exists():
+                info.file_name.unlink()
         if Path(_MESHING_DM_DOC_DIR).exists():
             shutil.rmtree(Path(_MESHING_DM_DOC_DIR))
         if Path(_SOLVER_DM_DOC_DIR).exists():
@@ -434,5 +434,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_filepath()
+    version = get_version_for_file_name()
     generate(version, None)

@@ -7,7 +7,6 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-import time
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import warnings
 import weakref
@@ -193,7 +192,6 @@ class FluentConnection:
 
     def __init__(
         self,
-        start_timeout: int = 60,
         ip: Optional[str] = None,
         port: Optional[int] = None,
         password: Optional[str] = None,
@@ -208,9 +206,6 @@ class FluentConnection:
 
         Parameters
         ----------
-        start_timeout: int, optional
-            Maximum allowable time in seconds for connecting to the Fluent
-            server. The default is ``60``.
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
@@ -274,15 +269,9 @@ class FluentConnection:
         self.health_check_service = HealthCheckService(
             self._channel, self._metadata, self.error_state
         )
-
-        counter = 0
-        while not self.health_check_service.is_serving:
-            time.sleep(1)
-            counter += 1
-            if counter > start_timeout:
-                raise RuntimeError(
-                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
-                )
+        # At this point, the server must be running. If the following check_health()
+        # throws, we should not proceed.
+        self.health_check_service.check_health()
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
@@ -413,14 +402,14 @@ class FluentConnection:
                 "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
             )
             return
-        cleanup_filename = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
-        logger.debug(f"Looking for {cleanup_filename}...")
-        cleanup_filepath = Path(pwd, cleanup_filename)
-        if cleanup_filepath.is_file():
+        cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+        logger.debug(f"Looking for {cleanup_file_name}...")
+        cleanup_file_name = Path(pwd, cleanup_file_name)
+        if cleanup_file_name.is_file():
             logger.info(
-                f"Executing Fluent cleanup script, filepath: {cleanup_filepath}"
+                f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
             )
-            cmd_list.append(cleanup_filepath)
+            cmd_list.append(cleanup_file_name)
             logger.debug(f"Cleanup command list = {cmd_list}")
             subprocess.Popen(
                 cmd_list,
@@ -454,11 +443,11 @@ class FluentConnection:
             return
         container_id = self.connection_properties.cortex_host
         pid = self.connection_properties.fluent_host_pid
-        cleanup_filename = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_filename}")
+        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
         if get_container(container_id):
             try:
-                container.exec_run(["bash", cleanup_filename], detach=True)
+                container.exec_run(["bash", cleanup_file_name], detach=True)
             except docker.errors.APIError as e:
                 logger.info(f"{type(e).__name__}: {e}")
                 logger.debug(

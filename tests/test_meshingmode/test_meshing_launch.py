@@ -11,8 +11,8 @@ from util.fixture_fluent import download_input_file
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     assert pure_meshing_session.health_check_service.is_serving
-    file_path = "launch_pure_meshing_journal.py"
-    pure_meshing_session.journal.start(file_path)
+    file_name = "launch_pure_meshing_journal.py"
+    pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)
     for attr in ("field_data", "field_info", "meshing", "workflow"):
         assert attr in session_dir
@@ -74,6 +74,6 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
         FileName=input_name, LengthUnit="in"
     )
-    pure_meshing_session.tui.file.read_journal(file_path)
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    pure_meshing_session.tui.file.read_journal(file_name)
+    if os.path.exists(file_name):
+        os.remove(file_name)

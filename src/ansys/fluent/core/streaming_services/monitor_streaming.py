@@ -117,7 +117,7 @@ class MonitorsManager(StreamingService):
                 if df.empty
                 else (
                     df.index.to_numpy(),
-                    {column: df[[column]].to_numpy() for column in df.columns},
+                    {column: df[column].to_numpy() for column in df.columns},
                 )
             )
 
@@ -176,7 +176,10 @@ class MonitorsManager(StreamingService):
                         if monitor_data:
                             new_df = pd.DataFrame([monitor_data], columns=monitors)
                             new_df.set_index("xvalues", inplace=True)
-                            df_data["df"] = pd.concat([df, new_df])
+                            if df.empty:
+                                df_data["df"] = new_df
+                            else:
+                                df_data["df"] = pd.concat([df, new_df])
                             for callback_map in self._service_callbacks.values():
                                 callback, args, kwargs = callback_map
                                 callback(*args, **kwargs)
@@ -189,6 +192,8 @@ class MonitorsManager(StreamingService):
             self._monitors_info = self._streaming_service.get_monitors_info()
             self._data_frames = {}
             for monitor_set_name, monitor_set_info in self._monitors_info.items():
+                if "monitors" not in monitor_set_info:
+                    continue
                 self._data_frames[monitor_set_name] = {}
                 monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
                 df = pd.DataFrame([], columns=monitors_name)

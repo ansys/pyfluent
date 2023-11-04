@@ -29,7 +29,9 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+import_file_name = examples.download_file(
+    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+)
 
 ###############################################################################
 # Launch Fluent
@@ -48,7 +50,7 @@ solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="sol
 # in the mesh are reported. Ensure that the minimum volume is not negative because
 # Fluent cannot begin a calculation when this is the case.
 
-solver.file.read(file_type="case", file_name=import_filename)
+solver.file.read(file_type="case", file_name=import_file_name)
 solver.tui.mesh.check()
 
 ###############################################################################

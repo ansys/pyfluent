@@ -46,7 +46,7 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     assert len(all_vars) == pytest.approx(9000, 20)
 
     # CaseFile comparison, note that the PyFluent work dir is not necessarily the same as the Fluent work dir
-    case = CaseReader(case_filepath=path(case_path))
+    case = CaseReader(case_file_name=path(case_path))
     case_vars = case.rp_vars()
     assert len(case_vars) == pytest.approx(9000, 450)
 

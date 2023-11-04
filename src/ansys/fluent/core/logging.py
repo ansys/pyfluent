@@ -61,8 +61,8 @@ def get_default_config() -> dict:
                  'pyfluent.tui': {'handlers': ['pyfluent_file'], 'level': 'DEBUG'}},
      'version': 1}
     """
-    file_path = os.path.abspath(__file__)
-    file_dir = os.path.dirname(file_path)
+    file_name = os.path.abspath(__file__)
+    file_dir = os.path.dirname(file_name)
     yaml_path = os.path.join(file_dir, "logging_config.yaml")
     with open(yaml_path, "rt") as f:
         config = yaml.safe_load(f)
@@ -114,9 +114,9 @@ def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = Non
         config = get_default_config()
 
     logging.config.dictConfig(config)
-    filename = config["handlers"]["pyfluent_file"]["filename"]
+    file_name = config["handlers"]["pyfluent_file"]["filename"]
 
-    print(f"PyFluent logging file {os.path.join(os.getcwd(), filename)}")
+    print(f"PyFluent logging file {os.path.join(os.getcwd(), file_name)}")
 
     set_global_level(level)
 
