@@ -621,6 +621,9 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                         "PyLocalPropertyMeta",
                         "PyLocalObjectMeta",
                     ):
+                        #delete old property if overridden     
+                        if getattr(self, name).__class__.__name__ == name:
+                            delattr(self, name)                        
                         setattr(
                             self,
                             name,
