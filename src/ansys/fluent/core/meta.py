@@ -3,7 +3,7 @@ from abc import ABCMeta
 from collections.abc import MutableMapping
 import inspect
 from pprint import pformat
-
+from typing import List
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
 
@@ -55,117 +55,6 @@ class Attribute:
             return self.function(obj)
         except Exception as e:
             raise RuntimeError(f"Property attribute '{self.name}' evaluation failed with error. "+str(e))         
-
-
-class Command:
-    def __init__(self, method):
-        self.arguments_attrs = {}
-        self.attrs = {}
-        cmd_args = inspect.signature(method).parameters
-        for arg_name in cmd_args:
-            if arg_name != "self":
-                self.arguments_attrs[arg_name] = {}
-
-        def _init(_self, obj):
-            _self.obj = obj
-
-        def _execute(_self, *args, **kwargs):
-            for arg, attr_data in self.arguments_attrs.items():
-                arg_value = None
-                if arg in kwargs:
-                    arg_value = kwargs[arg]
-                else:
-                    index = list(self.arguments_attrs.keys()).index(arg)
-                    if len(args) > index:
-                        arg_value = args[index]
-                if arg_value is not None:
-                    for attr, attr_value in attr_data.items():
-                        if attr == "allowed_values":
-                            allowed_values = attr_value(_self.obj)
-                            if isinstance(arg_value, list):
-                                if not all(
-                                    elem in allowed_values for elem in arg_value
-                                ):
-                                    raise RuntimeError(
-                                        f"All values of {arg} value {arg_value} is not within allowed values."
-                                    )
-                            else:
-                                if arg_value not in allowed_values:
-                                    raise RuntimeError(
-                                        f"{arg} value {arg_value} is not within allowed values."
-                                    )
-
-                        elif attr == "range":
-                            if type(arg_value) != int and type(arg_value) != float:
-                                raise RuntimeError(
-                                    f"{arg} value {arg_value} is not number."
-                                )
-
-                            minimum, maximum = attr_value(_self.obj)
-                            if arg_value < minimum or arg_value > maximum:
-                                raise RuntimeError(
-                                    f"{arg} value {arg_value} is not within range."
-                                )
-            return method(_self.obj, *args, **kwargs)
-
-        self.command_cls = type(
-            "command",
-            (),
-            {
-                "__init__": _init,
-                "__call__": _execute,
-                "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
-                    argument_name
-                ][
-                    attr_name
-                ](
-                    _self.obj
-                ),
-            "update_argument_value": lambda _self, argument_name, value: self.arguments_attrs[
-                    argument_name
-                ].update({"command_arg_value":lambda obj: value})
-                ,                
-                "attribute": lambda _self, attr_name: self.attrs[
-                    attr_name
-                ](
-                    _self.obj
-                ),    
-                "attributes": lambda _self: list(self.attrs.keys()),                
-                "arguments": lambda _self: list(self.arguments_attrs.keys()),
-            },
-        )
-
-    def __set_name__(self, obj, name):
-        self.obj = obj
-        if not hasattr(obj, "commands"):
-            obj.commands = {}
-        obj.commands[name] = {}
-
-    def __get__(self, obj, obj_type=None):
-        if hasattr(self, "command"):
-            return self.command
-        else:
-            return self.command_cls(obj)
-
-
-def CommandArgs(command_object, argument_name):
-    def wrapper(attribute):
-        if argument_name in command_object.arguments_attrs:
-            command_object.arguments_attrs[argument_name].update(
-                {attribute.__name__: attribute}
-            )
-        else:
-            raise RuntimeError(f"{argument_name} not a valid argument.")
-        return attribute
-
-    return wrapper
-    
-    
-def CommandAttributes(command_object):
-    def wrapper(attribute):    
-        command_object.attrs.update({attribute.__name__: attribute})                  
-        return attribute
-    return wrapper    
 
 
 class PyLocalBaseMeta(type):
@@ -482,18 +371,20 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             self._parent = parent
             self._name = name
             self._api_helper = api_helper(self)
+            self._command_names = []
             self.type = "object"
-            commands = getattr(self.__class__, "commands", None)
-            if commands:
-                for cmd in commands:
-                    cmd_class = self.__class__.__dict__[cmd]
-                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
+                        "PyLocalCommandMeta"
+                    ):
+                        self._command_names.append(name)
+                        
+                    if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
                         "PyLocalObjectMeta",
+                        "PyLocalCommandMeta"
                     ):
                         setattr(
                             self,
@@ -590,13 +481,70 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __new__(cls, name, bases, attrs):
         attrs["__getattribute__"] = cls.__create_getattribute()
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
-        attrs["__call__"] = cls.__create_get_state()
+        if "__call__" not in attrs:
+            attrs["__call__"] = cls.__create_get_state()                
         attrs["__setattr__"] = cls.__create_setattr()
         attrs["__repr__"] = cls.__create_repr()
         attrs["update"] = cls.__create_updateitem()
         return super(PyLocalObjectMeta, cls).__new__(cls, name, bases, attrs)
 
+class PyLocalCommandMeta(PyLocalObjectMeta):
+    @classmethod
+    def __create_init(cls):
+        def wrapper(self, parent, api_helper, name=""):
+            """Create the initialization method for 'PyLocalObjectMeta'."""
+            self._parent = parent
+            self._name = name
+            self._api_helper = api_helper(self)
+            self.type = "object"
+            self._args = []
+            self._command_names = []
+            self._exe_cmd = (                
+                 getattr(self, "_exe_cmd")
+            )            
 
+            def update(clss):
+                for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in (
+                        "PyLocalCommandArgMeta",
+                        "PyLocalPropertyMeta"
+                    ):
+                        self._args.append(name)
+                        setattr(
+                            self,
+                            name,
+                            cls(self, api_helper, name),
+                        )                   
+                for base_class in clss.__bases__:
+                    update(base_class)
+
+            update(self.__class__)
+
+        return wrapper
+        
+    @classmethod
+    def __execute_command(cls):
+        def wrapper(self, **kwargs):
+            try:
+                for arg_name, arg_value in kwargs.items():
+                    getattr(self, arg_name).set_state(arg_value)
+                cmd_args = {}    
+                for arg_name in self._args: 
+                    cmd_args[arg_name]= getattr(self, arg_name)()                
+                rv = self._exe_cmd(**cmd_args)
+                return rv
+            except AttributeError:
+                return None
+
+        return wrapper        
+        
+    def __new__(cls, name, bases, attrs):
+        attrs["__init__"] = cls.__create_init()
+        attrs["__call__"] = cls.__execute_command()
+        return super(PyLocalCommandMeta, cls).__new__(cls, name, bases, attrs)        
+
+
+    
 class PyLocalNamedObjectMeta(PyLocalObjectMeta):
     """Metaclass for local named object classes."""
 
@@ -607,19 +555,20 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
+            self._command_names = []
             self.type = "object"
-
-            commands = getattr(self.__class__, "commands", None)
-            if commands:
-                for cmd in commands:
-                    cmd_class = self.__class__.__dict__[cmd]
-                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
+                        "PyLocalCommandMeta"
+                    ):
+                        self._command_names.append(name)
+                        
+                    if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
                         "PyLocalObjectMeta",
+                        "PyLocalCommandMeta"
                     ):
                         #delete old property if overridden     
                         if getattr(self, name).__class__.__name__ == name:
@@ -669,6 +618,7 @@ class PyLocalContainer(MutableMapping):
         self.__collection: dict = {}
         self.__api_helper = api_helper
         self.type = "named-object"
+        self._command_names = []
 
         if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):
             PyLocalContainer.show_as_separate_object = property(
@@ -698,6 +648,24 @@ class PyLocalContainer(MutableMapping):
             PyLocalContainer.is_active = property(
                 lambda self: self.__object_class.IS_ACTIVE(self)
             )
+            
+        for name, cls in self.__class__.__dict__.items():            
+            if cls.__class__.__name__ in (
+                "PyLocalCommandMeta"
+            ):
+                self._command_names.append(name)
+                
+            if cls.__class__.__name__ in (
+                "PyLocalCommandMeta"
+            ):                
+                setattr(
+                    self,
+                    name,
+                    cls(self, api_helper, name),
+                )            
+
+
+
 
 
     @classmethod
@@ -826,26 +794,52 @@ class PyLocalContainer(MutableMapping):
             index += 1
         return unique_name
 
-    @Command
-    def Delete(self, names):
-        for item in names:
-            self.__delitem__(item)
+    class Delete(metaclass=PyLocalCommandMeta):
 
-    @CommandArgs(Delete, "names")
-    def command_arg_type(self):
-        return "string-list"
+        def _exe_cmd(self, names):   
+            for item in names:
+              self._parent.__delitem__(item)
 
-    @CommandArgs(Delete, "names")
-    def command_arg_allowed_values(self):
-        return list(self)
+        class names(metaclass=PyLocalPropertyMeta): 
+            value: List[str] = []
 
-    @Command
-    def Create(self, name=None):
-        if not name:
-            name = self._get_unique_chid_name()
-        new_object = self.__getitem__(name)
-        return new_object._name
+            @Attribute
+            def allowed_values(self):
+                return  list(self._parent._parent) 
+                
+    class Create(metaclass=PyLocalCommandMeta):
 
-    @CommandArgs(Create, "name")
-    def command_arg_type(self):
-        return "string"
+        def _exe_cmd(self, name=None):   
+            if name is None:
+                name = self._parent._get_unique_chid_name()
+            new_object = self._parent.__getitem__(name)
+            return new_object._name
+
+        class name(metaclass=PyLocalPropertyMeta): 
+            value: str = None 
+
+                           
+                
+    # @Command
+    # def Delete(self, names):
+        # for item in names:
+            # self.__delitem__(item)
+
+    # @CommandArgs(Delete, "names")
+    # def command_arg_type(self):
+        # return "string-list"
+
+    # @CommandArgs(Delete, "names")
+    # def command_arg_allowed_values(self):
+        # return list(self)
+
+    # @Command
+    # def Create(self, name=None):
+        # if not name:
+            # name = self._get_unique_chid_name()
+        # new_object = self.__getitem__(name)
+        # return new_object._name
+
+    # @CommandArgs(Create, "name")
+    # def command_arg_type(self):
+        # return "string"
