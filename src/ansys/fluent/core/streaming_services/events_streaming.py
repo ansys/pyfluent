@@ -59,8 +59,8 @@ class EventsManager(StreamingService):
                         self._fluent_error_state.set("fatal", error_message)
                         continue
                     callbacks_map = self._service_callbacks.get(event_name, {})
-                    for call_back in callbacks_map.values():
-                        call_back(
+                    for callback in callbacks_map.values():
+                        callback(
                             session_id=self._session_id,
                             event_info=getattr(response, event_name),
                         )
@@ -70,7 +70,7 @@ class EventsManager(StreamingService):
     def register_callback(
         self,
         event_name: str,
-        call_back: Callable,
+        callback: Callable,
         *args,
         **kwargs,
     ):
@@ -81,7 +81,7 @@ class EventsManager(StreamingService):
         event_name : str
             Event name to register the callback to.
 
-        call_back : Callable
+        callback : Callable
             Callback to register.
 
         Returns
@@ -96,10 +96,8 @@ class EventsManager(StreamingService):
         DisallowedValuesError
             If an argument value not in allowed values.
         """
-        if event_name is None or call_back is None:
-            raise InvalidArgument(
-                "Please provide compulsory arguments : 'event_name' and 'call_back'"
-            )
+        if event_name is None or callback is None:
+            raise InvalidArgument("'event_name' and 'callback' ")
 
         if event_name not in self.events_list:
             raise DisallowedValuesError("event-name", event_name, self.events_list)
@@ -108,10 +106,10 @@ class EventsManager(StreamingService):
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
             if callbacks_map:
-                callbacks_map.update({callback_id: partial(call_back, *args, **kwargs)})
+                callbacks_map.update({callback_id: partial(callback, *args, **kwargs)})
             else:
                 self._service_callbacks[event_name] = {
-                    callback_id: partial(call_back, *args, **kwargs)
+                    callback_id: partial(callback, *args, **kwargs)
                 }
 
     def unregister_callback(self, callback_id: str):

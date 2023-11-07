@@ -26,12 +26,12 @@ class StreamingService:
         with self._lock:
             return self._streaming
 
-    def register_callback(self, call_back: Callable, *args, **kwargs) -> str:
+    def register_callback(self, callback: Callable, *args, **kwargs) -> str:
         """Register the callback.
 
         Parameters
         ----------
-        call_back : Callable
+        callback : Callable
             Callback to register.
 
         Returns
@@ -41,7 +41,7 @@ class StreamingService:
         """
         with self._lock:
             callback_id = f"{next(self._service_callback_id)}"
-            self._service_callbacks[callback_id] = [call_back, args, kwargs]
+            self._service_callbacks[callback_id] = [callback, args, kwargs]
             return callback_id
 
     def unregister_callback(self, callback_id: str):
