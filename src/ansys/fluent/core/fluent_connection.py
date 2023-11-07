@@ -244,15 +244,9 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
-            if not ip:
-                ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
-            if not port:
-                port = os.getenv("PYFLUENT_FLUENT_PORT")
+            assert ip
+            assert port
             self._channel_str = f"{ip}:{port}"
-            if not port:
-                raise ValueError(
-                    "The port to connect to Fluent session is not provided."
-                )
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(
