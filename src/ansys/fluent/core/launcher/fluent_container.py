@@ -67,19 +67,28 @@ DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 class FluentImageNameTagNotSpecified(ValueError):
     """Provides the error when Fluent image name or image tag is not specified."""
 
-    pass
+    def __init__(self):
+        super().__init__(
+            "Specify either 'fluent_image' or 'image_tag' and 'image_name'."
+        )
 
 
 class ServerInfoFileError(ValueError):
     """Provides the error when server info file is not given properly."""
 
-    pass
+    def __init__(self):
+        super().__init__(
+            "Specify server info file either using 'container_server_info_file' argument or in the 'container_dict'."
+        )
 
 
 class LicenseServerNotSpecified(KeyError):
     """Provides the error when license server is not specified."""
 
-    pass
+    def __init__(self):
+        super().__init__(
+            "Specify licence server either using 'ANSYSLMD_LICENSE_FILE' environment variable or in the 'container_dict'."
+        )
 
 
 def configure_container_dict(
@@ -226,9 +235,7 @@ def configure_container_dict(
             license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
 
         if not license_server:
-            raise LicenseServerNotSpecified(
-                "Specify licence server either using 'ANSYSLMD_LICENSE_FILE' environment variable or in the 'container_dict'."
-            )
+            raise LicenseServerNotSpecified()
         container_dict.update(
             environment={
                 "ANSYSLMD_LICENSE_FILE": license_server,
@@ -251,9 +258,7 @@ def configure_container_dict(
         for v in container_dict["command"]:
             if v.startswith("-sifile="):
                 if container_server_info_file:
-                    raise ServerInfoFileError(
-                        "Specify server info file either using 'container_server_info_file' parameter or in the 'container_dict'."
-                    )
+                    raise ServerInfoFileError()
                 container_server_info_file = PurePosixPath(
                     v.replace("-sifile=", "")
                 ).name
@@ -285,9 +290,7 @@ def configure_container_dict(
         elif image_tag and image_name:
             fluent_image = f"{image_name}:{image_tag}"
         else:
-            raise FluentImageNameTagNotSpecified(
-                "Specify either 'fluent_image' or 'image_tag' and 'image_name'."
-            )
+            raise FluentImageNameTagNotSpecified()
 
     container_dict["fluent_image"] = fluent_image
 
