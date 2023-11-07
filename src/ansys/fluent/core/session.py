@@ -218,7 +218,7 @@ class BaseSession:
         server_info_file_name : str
             Path to server-info file written out by Fluent server
         remote_file_handler : Optional
-            Support file upload and download
+            Support file upload and download.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
