@@ -275,6 +275,7 @@ class Solver(BaseSession):
         file_name: str,
     ):
         """Write a case file.
+
         Parameters
         ----------
         file_name : str
