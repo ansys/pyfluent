@@ -211,7 +211,7 @@ class FieldInfo:
 
 
 class FieldUnavailable(RuntimeError):
-    """Raises exception if field is unavailable."""
+    """Provides the error when field is unavailable."""
 
     pass
 

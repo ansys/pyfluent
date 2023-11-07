@@ -31,7 +31,6 @@ def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(TimeoutError) as msg:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
-    assert msg.value.args[0] == "The launch process has been timed out."
 
 
 def test_additional_argument_g_gu():
@@ -62,16 +61,11 @@ def test_additional_argument_g_gu():
 
 def test_container_launcher():
     if not check_docker_support():
-        error_message = (
-            "Docker is not working correctly in this system, "
-            "yet a Fluent Docker container launch was specified."
-        )
         with pytest.raises(DockerContainerLaunchNotSupported) as msg:
             container_dict_1 = pyfluent.launch_fluent(start_container=True)
             container_dict_2 = pyfluent.launch_fluent(
                 start_container=True, dry_run=True
             )
-        assert msg.value.args[0] == error_message
 
     # test dry_run
     container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)

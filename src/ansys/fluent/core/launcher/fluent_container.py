@@ -65,19 +65,19 @@ DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
 class FluentImageNameTagNotSpecified(ValueError):
-    """Raises exception if Fluent image name or image tag is not specified."""
+    """Provides the error when Fluent image name or image tag is not specified."""
 
     pass
 
 
 class ServerInfoFileError(ValueError):
-    """Raises exception if server info file is not given properly."""
+    """Provides the error when server info file is not given properly."""
 
     pass
 
 
 class LicenseServerNotSpecified(KeyError):
-    """Raises exception if license server is not specified."""
+    """Provides the error when license server is not specified."""
 
     pass
 

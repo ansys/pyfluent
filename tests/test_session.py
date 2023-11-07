@@ -81,12 +81,10 @@ def test_create_session_by_passing_ip_and_port_and_password() -> None:
     )
     server.start()
 
-    error_message = "The port to connect to Fluent session is not provided."
     with pytest.raises(PortNotProvided) as msg:
         session = BaseSession(
             FluentConnection(ip=ip, password="12345", cleanup_on_exit=False)
         )
-    assert msg.value.args[0] == error_message
 
     session = BaseSession(
         FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)

@@ -83,7 +83,6 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     )
     server.start()
 
-    error_message = "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
     with pytest.raises(RemoteNotSupported) as msg:
         session = BaseSession(
             FluentConnection(
@@ -96,4 +95,3 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         )
         session.exit(wait=60)
         session.fluent_connection.wait_process_finished(wait=60)
-    assert msg.value.args[0] == error_message

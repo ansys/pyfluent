@@ -23,7 +23,7 @@ WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
 class WatchdogLaunchFailed(RuntimeError):
-    """Raises exception if watchdog launch is failed."""
+    """Provides the error when watchdog launch is failed."""
 
     pass
 

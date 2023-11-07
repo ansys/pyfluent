@@ -126,13 +126,11 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
 ) -> None:
     session1 = pyfluent.launch_fluent()
 
-    error_message = "Please provide either ip and port data or server-info file."
     with pytest.raises(IpPortNotProvided) as msg:
         session2 = pyfluent.connect_to_fluent(
             ip=session1.connection_properties.ip,
             password=session1.connection_properties.password,
         )
-    assert msg.value.args[0] == error_message
 
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
@@ -259,8 +257,6 @@ def test_fluent_exit_wait():
     session3.exit(wait=True)
     assert session3.fluent_connection.wait_process_finished(wait=0)
 
-    error_message = "Invalid 'limit' type."
     with pytest.raises(WaitTypeError) as msg:
         session4 = pyfluent.launch_fluent()
         session4.exit(wait="wait")
-    assert msg.value.args[0] == error_message

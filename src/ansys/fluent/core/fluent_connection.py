@@ -25,19 +25,19 @@ logger = logging.getLogger("pyfluent.general")
 
 
 class PortNotProvided(ValueError):
-    """Raises exception if port is not provided."""
+    """Provides the error when port is not provided."""
 
     pass
 
 
 class RemoteNotSupported(ValueError):
-    """Raises exception if remote wait process is not supported."""
+    """Provides the error when remote wait process is not supported."""
 
     pass
 
 
 class WaitTypeError(TypeError):
-    """Raises exception if invalid ``wait`` type is provided."""
+    """Provides the error when invalid ``wait`` type is provided."""
 
     pass
 
@@ -273,9 +273,7 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise PortNotProvided(
-                    "The port to connect to Fluent session is not provided."
-                )
+                raise PortNotProvided("Provide the port.")
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(

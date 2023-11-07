@@ -27,19 +27,19 @@ logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 
 class InvalidNamedObject(RuntimeError):
-    """Raises exception if the object is not a named object."""
+    """Provides the error when the object is not a named object."""
 
     pass
 
 
 class SubscribeEventError(RuntimeError):
-    """Raises exception if server fails to subscribe from event."""
+    """Provides the error when server fails to subscribe from event."""
 
     pass
 
 
 class UnsubscribeEventError(RuntimeError):
-    """Raises exception if server fails to unsubscribe from event."""
+    """Provides the error when server fails to unsubscribe from event."""
 
     pass
 
