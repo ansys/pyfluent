@@ -21,6 +21,7 @@ class InvalidArgument(ValueError):
 
 
 class BothSurfaceIDsAndSurfaceNamesProvided(ValueError):
-    """Provides the error when both ``surface_ids`` and ``surface_names`` are provided."""
+    """Provides the error when both ``surface_ids`` and ``surface_names`` are
+    provided."""
 
     pass
