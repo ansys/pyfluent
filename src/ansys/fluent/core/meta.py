@@ -79,6 +79,8 @@ class PyLocalBaseMeta(type):
             if getattr(obj, "_parent", None):
                 if obj._parent.__class__.__name__ == obj_type:
                     return obj._parent
+                if getattr(obj._parent, "PLURAL", None)==obj_type:
+                    return obj._parent._parent                
                 parent = self.get_ancestors_by_name(obj_type, obj._parent)
             return parent
 
@@ -220,21 +222,19 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
     @classmethod
     def __create_get_state(cls, show_attributes=False):
         def wrapper(self):
-            try:
-                rv = self.value
+            rv = self.value
 
-                if hasattr(self, "allowed_values"):
-                    allowed_values = self.allowed_values
-                    if len(allowed_values) > 0 and (
-                        rv is None
-                        or (not isinstance(rv, list) and rv not in allowed_values)
-                    ):
-                        self.set_state(allowed_values[0])
-                        rv = self.value
+            if hasattr(self, "allowed_values"):
+                allowed_values = self.allowed_values
+                if len(allowed_values) > 0 and (
+                    rv is None
+                    or (not isinstance(rv, list) and rv not in allowed_values)
+                ):
+                    self.set_state(allowed_values[0])
+                    rv = self.value
 
-                return rv
-            except AttributeError:
-                return None
+            return rv
+
 
         return wrapper
 
@@ -525,16 +525,14 @@ class PyLocalCommandMeta(PyLocalObjectMeta):
     @classmethod
     def __execute_command(cls):
         def wrapper(self, **kwargs):
-            try:
-                for arg_name, arg_value in kwargs.items():
-                    getattr(self, arg_name).set_state(arg_value)
-                cmd_args = {}    
-                for arg_name in self._args: 
-                    cmd_args[arg_name]= getattr(self, arg_name)()                
-                rv = self._exe_cmd(**cmd_args)
-                return rv
-            except AttributeError:
-                return None
+            for arg_name, arg_value in kwargs.items():
+                getattr(self, arg_name).set_state(arg_value)
+            cmd_args = {}    
+            for arg_name in self._args: 
+                cmd_args[arg_name]= getattr(self, arg_name)()                
+            rv = self._exe_cmd(**cmd_args)
+            return rv
+
 
         return wrapper        
         
@@ -663,10 +661,6 @@ class PyLocalContainer(MutableMapping):
                     name,
                     cls(self, api_helper, name),
                 )            
-
-
-
-
 
     @classmethod
     def get_root(self, obj=None):
@@ -817,29 +811,3 @@ class PyLocalContainer(MutableMapping):
 
         class name(metaclass=PyLocalPropertyMeta): 
             value: str = None 
-
-                           
-                
-    # @Command
-    # def Delete(self, names):
-        # for item in names:
-            # self.__delitem__(item)
-
-    # @CommandArgs(Delete, "names")
-    # def command_arg_type(self):
-        # return "string-list"
-
-    # @CommandArgs(Delete, "names")
-    # def command_arg_allowed_values(self):
-        # return list(self)
-
-    # @Command
-    # def Create(self, name=None):
-        # if not name:
-            # name = self._get_unique_chid_name()
-        # new_object = self.__getitem__(name)
-        # return new_object._name
-
-    # @CommandArgs(Create, "name")
-    # def command_arg_type(self):
-        # return "string"
