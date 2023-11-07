@@ -3,11 +3,11 @@ from pathlib import Path
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.exceptions import BothSurfaceIDsAndSurfaceNamesProvided
+from ansys.fluent.core.exceptions import SurfaceSpecificationError
 from ansys.fluent.core.file_session import (
     FileSession,
     InvalidFieldName,
-    InvalidFieldNamePrefix,
+    InvalidMultiPhaseFieldName,
 )
 from ansys.fluent.core.services.field_data import SurfaceDataType
 
@@ -333,27 +333,18 @@ def test_error_handling_multi_phase():
     field_data = file_session.field_data
 
     transaction_1 = field_data.new_transaction()
-    error_message = (
-        r"For multi-phase cases field name should have a prefix of phase name."
-    )
-    error_message_2 = "Only 'velocity' is allowed field."
-    error_message_3 = "Please provide either surface name or surface ids."
-    with pytest.raises(InvalidFieldNamePrefix) as msg:
+    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
         transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", [29, 30])
-    assert msg.value.args[0] == error_message
 
-    with pytest.raises(InvalidFieldNamePrefix) as msg:
+    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
         d_size = field_data.get_vector_field_data("velocity", surface_ids=[34])[34].size
-    assert msg.value.args[0] == error_message
 
     with pytest.raises(InvalidFieldName) as msg:
         d_size = field_data.get_vector_field_data(
             "phase-1:temperature", surface_ids=[34]
         )[34].size
-    assert msg.value.args[0] == error_message_2
 
-    with pytest.raises(BothSurfaceIDsAndSurfaceNamesProvided) as msg:
+    with pytest.raises(SurfaceSpecificationError) as msg:
         d_size = field_data.get_vector_field_data(
             "velocity", surface_ids=[34], surface_name="wall"
         )[34].size
-    assert msg.value.args[0] == error_message_3

@@ -3,7 +3,7 @@ from typing import List, Optional
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
-from ansys.fluent.core.exceptions import BothSurfaceIDsAndSurfaceNamesProvided
+from ansys.fluent.core.exceptions import SurfaceSpecificationError
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.services.field_data import (
@@ -16,9 +16,10 @@ from ansys.fluent.core.services.field_data import (
 
 
 class InvalidMultiPhaseFieldName(ValueError):
-    """Raises exception for invalid field name prefix."""
+    """Provides the error when multi-phase field name is inappropriate."""
 
-    pass
+    def __init__(self):
+        super().__init__("Multi-phase field name should starts with 'phase-'.")
 
 
 class InvalidFieldName(ValueError):
@@ -121,7 +122,7 @@ class Transaction:
 
         Raises
         ------
-        BothSurfaceIDsAndSurfaceNamesProvided
+        SurfaceSpecificationError
             If both ``surface_ids`` and ``surface_names`` are provided.
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
@@ -129,9 +130,7 @@ class Transaction:
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise BothSurfaceIDsAndSurfaceNamesProvided(
-                "Please provide either surface names or surface ids."
-            )
+            raise SurfaceSpecificationError()
 
         if surface_names:
             for surface_name in surface_names:
@@ -141,9 +140,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise InvalidMultiPhaseFieldName(
-                    "For multi-phase cases field name should have a prefix of phase name."
-                )
+                raise InvalidMultiPhaseFieldName()
             self._scalar_field_transactions.append(
                 Transaction._ScalarFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
@@ -177,7 +174,7 @@ class Transaction:
 
         Raises
         ------
-        BothSurfaceIDsAndSurfaceNamesProvided
+        SurfaceSpecificationError
             If both ``surface_ids`` and ``surface_names`` are provided.
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
@@ -185,9 +182,7 @@ class Transaction:
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise BothSurfaceIDsAndSurfaceNamesProvided(
-                "Please provide either surface names or surface ids."
-            )
+            raise SurfaceSpecificationError()
 
         if surface_names:
             for surface_name in surface_names:
@@ -197,9 +192,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise InvalidMultiPhaseFieldName(
-                    "For multi-phase cases field name should have a prefix of phase name."
-                )
+                raise InvalidMultiPhaseFieldName()
             self._vector_field_transactions.append(
                 Transaction._VectorFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
@@ -340,13 +333,11 @@ class FileFieldData:
 
         Raises
         ------
-        BothSurfaceIDsAndSurfaceNamesProvided
+        SurfaceSpecificationError
             If both ``surface_ids`` and ``surface_names`` are provided.
         """
         if surface_ids and surface_name:
-            raise BothSurfaceIDsAndSurfaceNamesProvided(
-                "Please provide either surface name or surface ids."
-            )
+            raise SurfaceSpecificationError()
 
         if data_type == SurfaceDataType.Vertices:
             if surface_name:
@@ -426,15 +417,13 @@ class FileFieldData:
 
         Raises
         ------
-        BothSurfaceIDsAndSurfaceNamesProvided
+        SurfaceSpecificationError
             If both ``surface_ids`` and ``surface_names`` are provided.
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise BothSurfaceIDsAndSurfaceNamesProvided(
-                "Please provide either surface name or surface ids."
-            )
+            raise SurfaceSpecificationError()
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -442,9 +431,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidMultiPhaseFieldName(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 return ScalarFieldData(
                     surface_ids[0],
                     self._file_session._data_file.get_face_scalar_field_data(
@@ -463,9 +450,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidMultiPhaseFieldName(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 return {
                     surface_id: ScalarFieldData(
                         surface_id,
@@ -514,7 +499,7 @@ class FileFieldData:
 
         Raises
         ------
-        BothSurfaceIDsAndSurfaceNamesProvided
+        SurfaceSpecificationError
             If both ``surface_ids`` and ``surface_names`` are provided.
         InvalidFieldName
             If any field other than ``"velocity"`` is provided.
@@ -522,9 +507,7 @@ class FileFieldData:
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise BothSurfaceIDsAndSurfaceNamesProvided(
-                "Please provide either surface name or surface ids."
-            )
+            raise SurfaceSpecificationError()
 
         if (
             field_name.lower() != "velocity"
@@ -538,9 +521,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidMultiPhaseFieldName(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 vector_data = self._file_session._data_file.get_face_vector_field_data(
                     field_name.split(":")[0], surface_ids[0]
                 )
@@ -553,9 +534,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise InvalidMultiPhaseFieldName(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 return {
                     surface_id: VectorFieldData(
                         surface_id,

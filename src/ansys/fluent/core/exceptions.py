@@ -20,8 +20,9 @@ class InvalidArgument(ValueError):
     pass
 
 
-class BothSurfaceIDsAndSurfaceNamesProvided(ValueError):
+class SurfaceSpecificationError(ValueError):
     """Provides the error when both ``surface_ids`` and ``surface_names`` are
     provided."""
 
-    pass
+    def __init__(self):
+        super().__init__("Provide either 'surface_ids' or 'surface_names'.")

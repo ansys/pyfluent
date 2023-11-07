@@ -9,8 +9,8 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.exceptions import (
-    BothSurfaceIDsAndSurfaceNamesProvided,
     DisallowedValuesError,
+    SurfaceSpecificationError,
 )
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
@@ -701,13 +701,11 @@ def _get_surface_ids(
 
     Raises
     ------
-    BothSurfaceIDsAndSurfaceNamesProvided
+    SurfaceSpecificationError
         If both ``surface_ids`` and ``surface_names`` are provided.
     """
     if surface_ids and (surface_name or surface_names):
-        raise BothSurfaceIDsAndSurfaceNamesProvided(
-            "Please provide either surface names or surface IDs."
-        )
+        raise SurfaceSpecificationError()
     if not surface_ids:
         surface_ids = []
         if surface_names:
@@ -720,9 +718,7 @@ def _get_surface_ids(
                 allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
-            raise BothSurfaceIDsAndSurfaceNamesProvided(
-                "Please provide either surface names or surface IDs."
-            )
+            raise SurfaceSpecificationError()
     return surface_ids
 
 
