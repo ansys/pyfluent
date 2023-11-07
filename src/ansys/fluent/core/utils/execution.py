@@ -162,9 +162,7 @@ def timeout_loop(
             if not ret_obj:
                 return ret_obj
         else:
-            raise InvalidArgument(
-                "Unrecognized value for 'expected' variable. Accepted: 'truthy' or 'falsy'."
-            )
+            raise InvalidArgument("Specify 'expected' as either 'truthy' or 'falsy'.")
         time.sleep(idle_period)
         time_elapsed += idle_period
 

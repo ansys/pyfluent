@@ -38,19 +38,22 @@ logger = logging.getLogger("pyfluent.launcher")
 class AnsysVersionNotFound(RuntimeError):
     """Provides the error when Ansys version is not found."""
 
-    pass
+    def __init__(self):
+        super().__init__("Set the environment variable 'AWP_ROOT' properly.")
 
 
 class InvalidPassword(ValueError):
     """Provides the error when password is invalid."""
 
-    pass
+    def __init__(self):
+        super().__init__("Provide correct 'password'.")
 
 
 class IpPortNotProvided(ValueError):
-    """Provides the error when ip or port is not specified."""
+    """Provides the error when ip and port are not specified."""
 
-    pass
+    def __init__(self):
+        super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
 
 
 class UnexpectedKeywordArgument(TypeError):
@@ -62,7 +65,8 @@ class UnexpectedKeywordArgument(TypeError):
 class DockerContainerLaunchNotSupported(SystemError):
     """Provides the error when docker container launch is not supported."""
 
-    pass
+    def __init__(self):
+        super().__init__("Python Docker SDK is unsupported on this system.")
 
 
 def _is_windows():
@@ -136,7 +140,7 @@ def get_ansys_version() -> str:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
 
-    raise AnsysVersionNotFound("An Ansys version cannot be found.")
+    raise AnsysVersionNotFound()
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -379,7 +383,7 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     if _is_windows() and (
         ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
-        raise InvalidArgument("'-g' and '-gu' is not supported on windows platform.")
+        raise InvalidArgument("Unsupported '-g' and '-gu' on windows platform.")
 
 
 def _update_launch_string_wrt_gui_options(
@@ -429,9 +433,7 @@ def _get_server_info(
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
         ip = port = None
     else:
-        raise IpPortNotProvided(
-            "Please provide either ip and port data or server-info file."
-        )
+        raise IpPortNotProvided()
 
     return ip, port, password
 
@@ -451,7 +453,7 @@ def _get_running_session_mode(
                 else "meshing"
             )
         except Exception as ex:
-            raise InvalidPassword("Fluent session password mismatch") from ex
+            raise InvalidPassword() from ex
     return session_mode.value[1]
 
 
@@ -637,8 +639,7 @@ def launch_fluent(
     if kwargs:
         if "meshing_mode" in kwargs:
             raise UnexpectedKeywordArgument(
-                "'meshing_mode' argument is no longer used."
-                " Please use launch_fluent(mode='meshing') to launch in meshing mode."
+                "Use 'launch_fluent(mode='meshing')' to launch Fluent in meshing mode."
             )
         else:
             raise UnexpectedKeywordArgument(
@@ -655,10 +656,7 @@ def launch_fluent(
         if check_docker_support():
             fluent_launch_mode = LaunchMode.CONTAINER
         else:
-            raise DockerContainerLaunchNotSupported(
-                "Docker is not working correctly in this system, "
-                "yet a Fluent Docker container launch was specified."
-            )
+            raise DockerContainerLaunchNotSupported()
     else:
         fluent_launch_mode = LaunchMode.STANDALONE
 
@@ -740,13 +738,15 @@ def launch_fluent(
             kwargs.update(cwd=cwd)
         if journal_file_names:
             if not isinstance(journal_file_names, (str, list)):
-                raise InvalidArgument("Journal name should be a list of strings.")
+                raise InvalidArgument(
+                    "'journal_file_names' should be a list of strings."
+                )
             if isinstance(journal_file_names, str):
                 journal_file_names = [journal_file_names]
         if topy:
             if not journal_file_names:
                 raise InvalidArgument(
-                    "Please provide the journal files to be converted as 'journal_file_names' argument."
+                    "Use 'journal_file_names' to specify and convert journal files."
                 )
             launch_string += scm_to_py(topy, journal_file_names)
 

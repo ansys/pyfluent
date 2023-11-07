@@ -18,7 +18,8 @@ network_logger = logging.getLogger("pyfluent.networking")
 class MeshWriteError(RuntimeError):
     """Provides the error when mesh write is unsuccessful."""
 
-    pass
+    def __init__(self):
+        super().__init__("Could not write mesh from meshing session.")
 
 
 @asynchronous
@@ -166,4 +167,4 @@ def transfer_case(
                         f"Encountered exception while cleaning up during case transfer {ex}"
                     )
             return
-    raise MeshWriteError("Could not write mesh from meshing session.")
+    raise MeshWriteError()

@@ -22,8 +22,8 @@ IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
-class WatchdogLaunchFailed(RuntimeError):
-    """Provides the error when watchdog launch is failed."""
+class UnsuccessfulWatchdogLaunch(RuntimeError):
+    """Provides the error when watchdog launch is unsuccessful."""
 
     pass
 
@@ -46,7 +46,7 @@ def launch(
 
     Raises
     ------
-    WatchdogLaunchFailed
+    UnsuccessfulWatchdogLaunch
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
@@ -170,12 +170,12 @@ def launch(
             watchdog_err.unlink()
             logger.error(err_content)
             if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
-                raise WatchdogLaunchFailed(err_content)
+                raise UnsuccessfulWatchdogLaunch(err_content)
 
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
         if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
-            raise WatchdogLaunchFailed(
+            raise UnsuccessfulWatchdogLaunch(
                 "PyFluent Watchdog did not initialize correctly."
             )

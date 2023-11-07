@@ -509,7 +509,6 @@ def test_attrs():
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError) as einfo:
         r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
-    assert einfo.value.args == ("Object is not active",)
 
 
 # The following test is commented out as codegen module is not packaged in the

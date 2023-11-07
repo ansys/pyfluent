@@ -35,7 +35,8 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 class InactiveObjectError(RuntimeError):
     """Provides the error when the object is inactive."""
 
-    pass
+    def __init__(self):
+        super().__init__("Object is not active.")
 
 
 class _InlineConstants:
@@ -190,7 +191,7 @@ class Base:
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise InactiveObjectError("Object is not active")
+            raise InactiveObjectError()
         val = None
         if attrs:
             val = attrs[attr]

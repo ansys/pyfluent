@@ -29,19 +29,22 @@ logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 class InvalidNamedObject(RuntimeError):
     """Provides the error when the object is not a named object."""
 
-    pass
+    def __init__(self, class_name):
+        super().__init__(f"{class_name} is not a named object class.")
 
 
 class SubscribeEventError(RuntimeError):
     """Provides the error when server fails to subscribe from event."""
 
-    pass
+    def __init__(self, request):
+        super().__init__(f"Failed to subscribe event: {request}!")
 
 
 class UnsubscribeEventError(RuntimeError):
     """Provides the error when server fails to unsubscribe from event."""
 
-    pass
+    def __init__(self, request):
+        super().__init__(f"Failed to unsubscribe event: {request}!")
 
 
 class Attribute(Enum):
@@ -315,7 +318,7 @@ class EventSubscription:
         response = service.subscribe_events(request)
         response = response.response[0]
         if response.status != DataModelProtoModule.STATUS_SUBSCRIBED:
-            raise SubscribeEventError(f"Failed to subscribe event: {request}!")
+            raise SubscribeEventError(request)
         self.status = response.status
         self.tag = response.tag
         self._service.events[self.tag] = self
@@ -335,7 +338,7 @@ class EventSubscription:
             response = self._service.unsubscribe_events(request)
             response = response.response[0]
             if response.status != DataModelProtoModule.STATUS_UNSUBSCRIBED:
-                raise UnsubscribeEventError(f"Failed to unsubscribe event: {request}!")
+                raise UnsubscribeEventError(request)
             self.status = response.status
         self._service.events.pop(self.tag, None)
 
@@ -583,9 +586,7 @@ class PyMenu(PyStateContainer):
         try:
             self._name_.set_state(new_name)
         except AttributeError:
-            raise InvalidNamedObject(
-                f"{self.__class__.__name__} is not a named object class."
-            )
+            raise InvalidNamedObject(self.__class__.__name__)
 
     def name(self) -> str:
         """Get the name of the named object.
@@ -603,9 +604,7 @@ class PyMenu(PyStateContainer):
         try:
             return self._name_()
         except AttributeError:
-            raise InvalidNamedObject(
-                f"{self.__class__.__name__} is not a named object class."
-            )
+            raise InvalidNamedObject(self.__class__.__name__)
 
     def _raise_method_not_yet_implemented_exception(self) -> NoReturn:
         raise AttributeError("This method is yet to be implemented in pyfluent.")

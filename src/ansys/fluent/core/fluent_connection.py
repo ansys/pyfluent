@@ -27,19 +27,25 @@ logger = logging.getLogger("pyfluent.general")
 class PortNotProvided(ValueError):
     """Provides the error when port is not provided."""
 
-    pass
+    def __init__(self):
+        super().__init__(
+            "Provide the 'port' to connect to an existing Fluent instance."
+        )
 
 
-class RemoteNotSupported(ValueError):
-    """Provides the error when remote wait process is not supported."""
+class UnsupportedRemoteFluentInstance(ValueError):
+    """Provides the error when 'wait_process_finished' does not support remote Fluent
+    session."""
 
-    pass
+    def __init__(self):
+        super().__init__("Remote Fluent instance is unsupported.")
 
 
 class WaitTypeError(TypeError):
     """Provides the error when invalid ``wait`` type is provided."""
 
-    pass
+    def __init__(self):
+        super().__init__("Invalid 'wait' type.")
 
 
 def _get_max_c_int_limit() -> int:
@@ -273,7 +279,7 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise PortNotProvided("Provide the port.")
+                raise PortNotProvided()
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(
@@ -516,15 +522,13 @@ class FluentConnection:
 
         Raises
         ------
-        RemoteNotSupported
+        UnsupportedRemoteFluentInstance
             If current Fluent instance is running remotely.
         WaitTypeError
             If ``wait`` is specified improperly.
         """
         if self._remote_instance:
-            raise RemoteNotSupported(
-                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
-            )
+            raise UnsupportedRemoteFluentInstance()
         if isinstance(wait, bool):
             if wait:
                 wait = 60
@@ -534,7 +538,7 @@ class FluentConnection:
         if isinstance(wait, (float, int)):
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
-            raise WaitTypeError("Invalid 'limit' type.")
+            raise WaitTypeError()
         if self.connection_properties.inside_container:
             _response = timeout_loop(
                 get_container,

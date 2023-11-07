@@ -227,8 +227,7 @@ def configure_container_dict(
 
         if not license_server:
             raise LicenseServerNotSpecified(
-                "License server needs to be specified through an environment variable, "
-                "or in the `container_dict`."
+                "Specify licence server either using 'ANSYSLMD_LICENSE_FILE' environment variable or in the 'container_dict'."
             )
         container_dict.update(
             environment={
@@ -253,8 +252,7 @@ def configure_container_dict(
             if v.startswith("-sifile="):
                 if container_server_info_file:
                     raise ServerInfoFileError(
-                        "Specified a server info file command argument as well as "
-                        "a container_server_info_file, pick one."
+                        "Specify server info file either using 'container_server_info_file' parameter or in the 'container_dict'."
                     )
                 container_server_info_file = PurePosixPath(
                     v.replace("-sifile=", "")
@@ -288,7 +286,7 @@ def configure_container_dict(
             fluent_image = f"{image_name}:{image_tag}"
         else:
             raise FluentImageNameTagNotSpecified(
-                "Missing 'fluent_image', or 'image_tag' and 'image_name', specification for Docker container launch."
+                "Specify either 'fluent_image' or 'image_tag' and 'image_name'."
             )
 
     container_dict["fluent_image"] = fluent_image
@@ -396,7 +394,7 @@ def start_fluent_container(
 
         if not success:
             raise TimeoutError(
-                "Fluent container launch timeout, will have to stop container manually."
+                "Fluent container launch has timed out, stop container manually."
             )
         else:
             _, _, password = _parse_server_info_file(str(host_server_info_file))
