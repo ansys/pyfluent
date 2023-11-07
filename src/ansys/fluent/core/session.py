@@ -2,7 +2,7 @@
 import importlib
 import json
 import logging
-from typing import Any
+from typing import Any, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -99,13 +99,16 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
     ):
         """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
         BaseSession.build_from_fluent_connection(self, fluent_connection)
+        self._remote_file_handler = remote_file_handler
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         """Build a BaseSession object from fluent_connection object."""
@@ -203,7 +206,10 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-        cls, server_info_file_name: str, **connection_kwargs
+        cls,
+        server_info_file_name: str,
+        remote_file_handler: Optional[Any] = None,
+        **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
 
@@ -211,6 +217,8 @@ class BaseSession:
         ----------
         server_info_file_name : str
             Path to server-info file written out by Fluent server
+        remote_file_handler : Optional
+            Support file upload and download
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
@@ -226,7 +234,8 @@ class BaseSession:
         session = cls(
             fluent_connection=FluentConnection(
                 ip=ip, port=port, password=password, **connection_kwargs
-            )
+            ),
+            remote_file_handler=remote_file_handler,
         )
         return session
 

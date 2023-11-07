@@ -41,8 +41,9 @@ class PureMeshing(BaseSession):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             remote_file_handler: Supports file upload and download.
         """
-        super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-        self._remote_file_handler = remote_file_handler
+        super(PureMeshing, self).__init__(
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,

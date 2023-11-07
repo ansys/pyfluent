@@ -63,8 +63,9 @@ class Solver(BaseSession):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             remote_file_handler: Supports file upload and download.
         """
-        super(Solver, self).__init__(fluent_connection=fluent_connection)
-        self._remote_file_handler = remote_file_handler
+        super(Solver, self).__init__(
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        )
         self._build_from_fluent_connection(fluent_connection)
 
     def _build_from_fluent_connection(self, fluent_connection):

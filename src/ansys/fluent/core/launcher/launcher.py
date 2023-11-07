@@ -320,14 +320,23 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return session_cls(
-        fluent_connection=FluentConnection(
-            channel=channel,
-            cleanup_on_exit=cleanup_on_exit,
-            remote_instance=instance,
-            start_transcript=start_transcript,
-            launcher_args=launcher_args,
+
+    fluent_connection = FluentConnection(
+        channel=channel,
+        cleanup_on_exit=cleanup_on_exit,
+        remote_instance=instance,
+        start_transcript=start_transcript,
+        launcher_args=launcher_args,
+    )
+
+    remote_file_handler = RemoteFileHandler(
+        transfer_service=PimFileTransferService(
+            pim_instance=fluent_connection._remote_instance
         )
+    )
+
+    return session_cls(
+        fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
     )
 
 
@@ -829,22 +838,15 @@ def launch_fluent(
 
         port, password = start_fluent_container(args, container_dict)
 
-        session_fluent_connection = FluentConnection(
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
-            launcher_args=argvals,
-            inside_container=True,
-        )
-
         session = new_session(
-            fluent_connection=session_fluent_connection,
-            remote_file_handler=RemoteFileHandler(
-                transfer_service=PimFileTransferService(
-                    session_fluent_connection._remote_instance
-                )
-            ),
+            fluent_connection=FluentConnection(
+                port=port,
+                password=password,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                launcher_args=argvals,
+                inside_container=True,
+            )
         )
 
         if start_watchdog:
