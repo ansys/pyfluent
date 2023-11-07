@@ -23,9 +23,10 @@ class InvalidMultiPhaseFieldName(ValueError):
 
 
 class InvalidFieldName(ValueError):
-    """Raises exception for invalid field name."""
+    """Provides the error when a field name is inappropriate."""
 
-    pass
+    def __init__(self):
+        super().__init__("The only allowed field is 'velocity'.")
 
 
 class Transaction:
@@ -268,7 +269,7 @@ class Transaction:
 
         for transaction in self._vector_field_transactions:
             if "velocity" not in transaction.field_name:
-                raise InvalidFieldName("The only allowed field is 'velocity'.")
+                raise InvalidFieldName()
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
@@ -513,7 +514,7 @@ class FileFieldData:
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
         ):
-            raise InvalidFieldName("Only 'velocity' is allowed field.")
+            raise InvalidFieldName()
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
