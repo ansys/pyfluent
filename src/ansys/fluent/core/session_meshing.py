@@ -30,7 +30,6 @@ class Meshing(PureMeshing):
         super(Meshing, self).__init__(
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
-        self._remote_file_handler = remote_file_handler
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
 

@@ -107,12 +107,18 @@ class BaseSession:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             remote_file_handler: Supports file upload and download.
         """
-        BaseSession.build_from_fluent_connection(self, fluent_connection)
-        self._remote_file_handler = remote_file_handler
+        BaseSession.build_from_fluent_connection(
+            self, fluent_connection, remote_file_handler
+        )
 
-    def build_from_fluent_connection(self, fluent_connection: FluentConnection):
+    def build_from_fluent_connection(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
+        self._remote_file_handler = remote_file_handler
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
