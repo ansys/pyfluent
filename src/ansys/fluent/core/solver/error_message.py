@@ -15,7 +15,9 @@ def allowed_name_error_message(
     """Provide an error message with the closest names matching the 'trial_name' from
     the 'allowed_values' list."""
     message = f"{trial_name} is not an allowed {context} name.\n"
-    matches = closest_allowed_names(trial_name, allowed_values)
+    matches = None
+    if isinstance(allowed_values, list) and isinstance(allowed_values[0], str):
+        matches = closest_allowed_names(trial_name, allowed_values)
     if matches:
         message += f"The most similar names are: {', '.join(matches)}."
     else:

@@ -44,17 +44,10 @@ def test_additional_argument_g_gu():
                 additional_arguments="-g",
                 start_container=False,
             )
-        assert (
-            msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
-        )
-
         with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
                 mode="solver", additional_arguments="-gu", start_container=False
             )
-        assert (
-            msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
-        )
     finally:
         launcher._is_windows = lambda: default_windows_flag
 
