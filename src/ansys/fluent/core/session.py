@@ -2,7 +2,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Callable, Optional
+from typing import Any, Optional
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -107,12 +107,18 @@ class BaseSession:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             remote_file_handler: Supports file upload and download.
         """
-        self._remote_file_handler = remote_file_handler
-        BaseSession.build_from_fluent_connection(self, fluent_connection)
+        BaseSession.build_from_fluent_connection(
+            self, fluent_connection, remote_file_handler
+        )
 
-    def build_from_fluent_connection(self, fluent_connection: FluentConnection):
+    def build_from_fluent_connection(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
+        self._remote_file_handler = remote_file_handler
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -206,7 +212,10 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-        cls, server_info_file_name: str, **connection_kwargs
+        cls,
+        server_info_file_name: str,
+        remote_file_handler: Optional[Any] = None,
+        **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
 
@@ -214,6 +223,8 @@ class BaseSession:
         ----------
         server_info_file_name : str
             Path to server-info file written out by Fluent server
+        remote_file_handler : Optional
+            Support file upload and download.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
@@ -229,7 +240,8 @@ class BaseSession:
         session = cls(
             fluent_connection=FluentConnection(
                 ip=ip, port=port, password=password, **connection_kwargs
-            )
+            ),
+            remote_file_handler=remote_file_handler,
         )
         return session
 
@@ -261,11 +273,3 @@ class BaseSession:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self.exit()
-
-    def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
-        """Upload a file on the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
-        return self._remote_file_handler.upload(file_name, on_uploaded)
-
-    def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
-        """Download a file from the server if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is configured."""
-        return self._remote_file_handler.download(file_name, before_downloaded)

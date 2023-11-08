@@ -26,6 +26,10 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.file_transfer_service import (
+    PimFileTransferService,
+    RemoteFileHandler,
+)
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
@@ -316,14 +320,23 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return session_cls(
-        fluent_connection=FluentConnection(
-            channel=channel,
-            cleanup_on_exit=cleanup_on_exit,
-            remote_instance=instance,
-            start_transcript=start_transcript,
-            launcher_args=launcher_args,
+
+    fluent_connection = FluentConnection(
+        channel=channel,
+        cleanup_on_exit=cleanup_on_exit,
+        remote_instance=instance,
+        start_transcript=start_transcript,
+        launcher_args=launcher_args,
+    )
+
+    remote_file_handler = RemoteFileHandler(
+        transfer_service=PimFileTransferService(
+            pim_instance=fluent_connection._remote_instance
         )
+    )
+
+    return session_cls(
+        fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
     )
 
 
@@ -744,6 +757,7 @@ def launch_fluent(
 
             session = new_session.create_from_server_info_file(
                 server_info_file_name=server_info_file_name,
+                remote_file_handler=RemoteFileHandler(),
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
                 launcher_args=argvals,
@@ -833,7 +847,8 @@ def launch_fluent(
                 start_transcript=start_transcript,
                 launcher_args=argvals,
                 inside_container=True,
-            )
+            ),
+            remote_file_handler=RemoteFileHandler(),
         )
 
         if start_watchdog:

@@ -32,7 +32,7 @@ class PimFileTransferService:
         Download a file from the server.
     """
 
-    def __init__(self, pim_instance):
+    def __init__(self, pim_instance: Optional[Any] = None):
         self.pim_instance = pim_instance
         self.file_service = None
         try:
@@ -120,7 +120,7 @@ class RemoteFileHandler:
         Download a file from the server after performing callback operation.
     """
 
-    def __init__(self, transfer_service):
+    def __init__(self, transfer_service: Optional[Any] = None):
         self._transfer_service = transfer_service
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
