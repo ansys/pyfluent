@@ -252,8 +252,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
     addArgs = kwargs["additional_arguments"]
     if "-t" not in addArgs and "-cnf=" not in addArgs:
-        mlist = load_machines(ncores=kwargs["processor_count"])
-        launch_args_string += " " + build_parallel_options(mlist)
+        parallel_options = build_parallel_options(
+            load_machines(ncores=kwargs["processor_count"])
+        )
+        if parallel_options:
+            launch_args_string += " " + parallel_options
     return launch_args_string
 
 
@@ -433,15 +436,20 @@ def _generate_launch_string(
 ):
     """Generates the launch string to launch fluent."""
     if _is_windows():
-        exe_path = '"' + str(get_fluent_exe_path(**argvals)) + '"'
+        exe_path = str(get_fluent_exe_path(**argvals))
+        if " " in exe_path:
+            exe_path = '"' + exe_path + '"'
     else:
         exe_path = str(get_fluent_exe_path(**argvals))
     launch_string = exe_path
     launch_string += _build_fluent_launch_args_string(**argvals)
     if meshing_mode:
         launch_string += " -meshing"
-    launch_string += f" {additional_arguments}"
-    launch_string += f' -sifile="{server_info_file_name}"'
+    if additional_arguments:
+        launch_string += f" {additional_arguments}"
+    if " " in server_info_file_name:
+        server_info_file_name = '"' + server_info_file_name + '"'
+    launch_string += f" -sifile={server_info_file_name}"
     launch_string += " -nm"
     launch_string = _update_launch_string_wrt_gui_options(
         launch_string, show_gui, additional_arguments
