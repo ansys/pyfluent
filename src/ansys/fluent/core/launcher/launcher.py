@@ -65,6 +65,7 @@ def check_docker_support():
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions."""
 
+    version_24R2 = "24.2.0"
     version_24R1 = "24.1.0"
     version_23R2 = "23.2.0"
     version_23R1 = "23.1.0"
