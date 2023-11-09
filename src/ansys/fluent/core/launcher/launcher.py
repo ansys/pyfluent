@@ -464,7 +464,8 @@ def _generate_launch_string(
 
 
 def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
-    """Confirm whether Fluent is running locally, and whether the Watchdog should be started."""
+    """Confirm whether Fluent is running locally, and whether the Watchdog should be
+    started."""
     if start_watchdog is None and cleanup_on_exit:
         host = fluent_connection.connection_properties.cortex_host
         if host == socket.gethostname():
