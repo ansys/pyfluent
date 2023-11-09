@@ -79,7 +79,7 @@ class MonitorDefn(PlotDefn):
     class monitor_set_name(metaclass=PyLocalPropertyMeta):
         """Monitor set name."""
 
-        value: str
+        value: str = None
 
         @Attribute
         def allowed_values(self):
@@ -110,7 +110,7 @@ class XYPlotDefn(PlotDefn):
     class y_axis_function(metaclass=PyLocalPropertyMeta):
         """Y Axis Function."""
 
-        value: str
+        value: str = None
 
         @Attribute
         def allowed_values(self):
@@ -181,7 +181,7 @@ class PathlinesDefn(GraphicsDefn):
     class field(metaclass=PyLocalPropertyMeta):
         """Pathlines field."""
 
-        value: str
+        value: str = None
 
         @Attribute
         def allowed_values(self):
@@ -308,7 +308,7 @@ class SurfaceDefn(GraphicsDefn):
             class field(metaclass=PyLocalPropertyMeta):
                 """Iso surface field."""
 
-                value: str
+                value: str = None
 
                 @Attribute
                 def allowed_values(self):
@@ -328,7 +328,7 @@ class SurfaceDefn(GraphicsDefn):
             class iso_value(metaclass=PyLocalPropertyMeta):
                 """Iso value for field."""
 
-                _value: float
+                _value: float = None
 
                 def _reset_on_change(self):
                     return [self._parent.field]
@@ -363,7 +363,7 @@ class ContourDefn(GraphicsDefn):
     class field(metaclass=PyLocalPropertyMeta):
         """Contour field."""
 
-        value: str
+        value: str = None
 
         @Attribute
         def allowed_values(self):
@@ -465,7 +465,7 @@ class ContourDefn(GraphicsDefn):
             class minimum(metaclass=PyLocalPropertyMeta):
                 """Range minimum."""
 
-                _value: float
+                _value: float = None
 
                 def _reset_on_change(self):
                     return [
@@ -494,7 +494,7 @@ class ContourDefn(GraphicsDefn):
             class maximum(metaclass=PyLocalPropertyMeta):
                 """Range maximum."""
 
-                _value: float
+                _value: float = None
 
                 def _reset_on_change(self):
                     return [
@@ -542,7 +542,7 @@ class VectorDefn(GraphicsDefn):
     class field(metaclass=PyLocalPropertyMeta):
         """Vector color field."""
 
-        value: str
+        value: str = None
 
         @Attribute
         def allowed_values(self):
@@ -616,7 +616,7 @@ class VectorDefn(GraphicsDefn):
             class minimum(metaclass=PyLocalPropertyMeta):
                 """Range minimum."""
 
-                _value: float
+                _value: float = None
 
                 @property
                 def value(self):
@@ -637,7 +637,7 @@ class VectorDefn(GraphicsDefn):
             class maximum(metaclass=PyLocalPropertyMeta):
                 """Range maximum."""
 
-                _value: float
+                _value: float = None
 
                 @property
                 def value(self):
