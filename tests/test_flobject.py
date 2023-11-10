@@ -11,7 +11,7 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import find_children
-import ansys.units as ansunits
+from ansys.units import Quantity
 
 
 class Setting:
