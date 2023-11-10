@@ -55,6 +55,7 @@ solver = pyfluent.launch_fluent(
     processor_count=4,
     mode="solver",
     version="2d",
+    show_gui=True,
 )
 
 ###############################################################################
