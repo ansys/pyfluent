@@ -1,6 +1,7 @@
 from pathlib import Path
 import platform
 
+from beartype.roar import BeartypeCallHintParamViolation
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -11,6 +12,7 @@ from ansys.fluent.core.launcher.launcher import (
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
     UnexpectedKeywordArgument,
+    _build_journal_argument,
     check_docker_support,
     get_ansys_version,
     get_fluent_exe_path,
@@ -200,3 +202,26 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
     pyfluent.launch_fluent(start_watchdog=True)
+
+
+@pytest.mark.parametrize(
+    "topy,journal_file_names,result,raises",
+    [
+        (None, "a.jou", ' -i "a.jou"', pytest.wont_raise()),
+        (None, ["a.jou", "b.jou"], ' -i "a.jou" -i "b.jou"', pytest.wont_raise()),
+        (True, "a.jou", ' -i "a.jou" -topy', pytest.wont_raise()),
+        (True, ["a.jou", "b.jou"], ' -i "a.jou" -i "b.jou" -topy', pytest.wont_raise()),
+        ("c.py", "a.jou", ' -i "a.jou" -topy="c.py"', pytest.wont_raise()),
+        (
+            "c.py",
+            ["a.jou", "b.jou"],
+            ' -i "a.jou" -i "b.jou" -topy="c.py"',
+            pytest.wont_raise(),
+        ),
+        (None, 5, None, pytest.raises(BeartypeCallHintParamViolation)),
+        (True, None, None, pytest.raises(ValueError)),
+    ],
+)
+def test_build_journal_argument(topy, journal_file_names, result, raises):
+    with raises:
+        assert _build_journal_argument(topy, journal_file_names) == result

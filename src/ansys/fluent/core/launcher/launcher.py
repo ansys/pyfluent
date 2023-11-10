@@ -13,7 +13,9 @@ import socket
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
+
+from beartype import beartype
 
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
@@ -522,12 +524,28 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
     return start_watchdog
 
 
-def scm_to_py(topy, journal_file_names):
-    """Convert journal file names to Python file name."""
-    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in journal_file_names])
-    if isinstance(topy, str):
-        return f" {fluent_jou_arg} -topy={topy}"
-    return f" {fluent_jou_arg} -topy"
+@beartype
+def _build_journal_argument(
+    topy: Union[None, bool, str], journal_file_names: Union[None, str, list[str]]
+) -> str:
+    """Build Fluent commandline journal argument."""
+    if topy and not journal_file_names:
+        raise InvalidArgument(
+            "Use 'journal_file_names' to specify and convert journal files."
+        )
+    fluent_jou_arg = ""
+    if isinstance(journal_file_names, str):
+        journal_file_names = [journal_file_names]
+    if journal_file_names:
+        fluent_jou_arg += "".join(
+            [f' -i "{journal}"' for journal in journal_file_names]
+        )
+    if topy:
+        if isinstance(topy, str):
+            fluent_jou_arg += f' -topy="{topy}"'
+        else:
+            fluent_jou_arg += " -topy"
+    return fluent_jou_arg
 
 
 # pylint: disable=missing-raises-doc
@@ -546,7 +564,7 @@ def launch_fluent(
     version: Optional[str] = None,
     precision: Optional[str] = None,
     processor_count: Optional[int] = None,
-    journal_file_names: Optional[List[str]] = None,
+    journal_file_names: Union[None, str, list[str]] = None,
     start_timeout: int = 60,
     additional_arguments: Optional[str] = None,
     env: Optional[Dict[str, Any]] = None,
@@ -587,7 +605,7 @@ def launch_fluent(
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
         allocated cores is clamped to value of ``processor_count``.
-    journal_file_names : str, optional
+    journal_file_names : Union[None, str, list[str]], optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s). The default is ``None``.
     start_timeout : int, optional
@@ -769,19 +787,8 @@ def launch_fluent(
         kwargs = _get_subprocess_kwargs_for_fluent(env)
         if cwd:
             kwargs.update(cwd=cwd)
-        if journal_file_names:
-            if not isinstance(journal_file_names, (str, list)):
-                raise InvalidArgument(
-                    "'journal_file_names' should be a list of strings."
-                )
-            if isinstance(journal_file_names, str):
-                journal_file_names = [journal_file_names]
-        if topy:
-            if not journal_file_names:
-                raise InvalidArgument(
-                    "Use 'journal_file_names' to specify and convert journal files."
-                )
-            launch_string += scm_to_py(topy, journal_file_names)
+        launch_string += _build_journal_argument(topy, journal_file_names)
+
 
         if _is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
@@ -833,11 +840,6 @@ def launch_fluent(
                     session.tui.file.read_case(case_file_name)
                 else:
                     session.read_case(case_file_name, lightweight_mode)
-            if journal_file_names:
-                if meshing_mode:
-                    session.tui.file.read_journal(*journal_file_names)
-                else:
-                    session.file.read_journal(file_name_list=journal_file_names)
             if case_data_file_name:
                 if not meshing_mode:
                     session.file.read(
