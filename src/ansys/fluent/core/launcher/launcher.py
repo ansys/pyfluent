@@ -9,6 +9,7 @@ import logging
 import os
 from pathlib import Path
 import platform
+import socket
 import subprocess
 import tempfile
 import time
@@ -457,8 +458,21 @@ def _generate_launch_string(
     return launch_string
 
 
+def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
+    """Confirm whether Fluent is running locally, and whether the Watchdog should be
+    started."""
+    if start_watchdog is None and cleanup_on_exit:
+        host = fluent_connection.connection_properties.cortex_host
+        if host == socket.gethostname():
+            logger.debug(
+                "Fluent running on the host machine and 'cleanup_on_exit' activated, will launch Watchdog."
+            )
+            start_watchdog = True
+    return start_watchdog
+
+
 def scm_to_py(topy, journal_filepaths):
-    """Convert journal filenames to Python filename."""
+    """Convert journal file names to Python file name."""
     fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in journal_filepaths])
     if isinstance(topy, str):
         return f" {fluent_jou_arg} -topy={topy}"
@@ -648,13 +662,6 @@ def launch_fluent(
             "when starting a remote Fluent PyPIM client."
         )
 
-    if (
-        start_watchdog is None
-        and cleanup_on_exit
-        and (fluent_launch_mode in (LaunchMode.CONTAINER, LaunchMode.STANDALONE))
-    ):
-        start_watchdog = True
-
     if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
         logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
@@ -757,6 +764,9 @@ def launch_fluent(
                 launcher_args=argvals,
                 inside_container=False,
             )
+            start_watchdog = _confirm_watchdog_start(
+                start_watchdog, cleanup_on_exit, session.fluent_connection
+            )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
                 ip, port, password = _get_server_info(server_info_filepath)
@@ -844,6 +854,8 @@ def launch_fluent(
             )
         )
 
+        if start_watchdog is None and cleanup_on_exit:
+            start_watchdog = True
         if start_watchdog:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
@@ -912,11 +924,12 @@ def connect_to_fluent(
     )
     new_session = _get_running_session_mode(fluent_connection)
 
-    if start_watchdog is None and cleanup_on_exit:
-        start_watchdog = True
+    start_watchdog = _confirm_watchdog_start(
+        start_watchdog, cleanup_on_exit, fluent_connection
+    )
 
     if start_watchdog:
-        logger.info("Launching Watchdog for existing Fluent connection...")
+        logger.info("Launching Watchdog for existing Fluent session...")
         ip, port, password = _get_server_info(server_info_filepath, ip, port, password)
         watchdog.launch(os.getpid(), port, password, ip)
 
