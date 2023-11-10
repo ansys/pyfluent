@@ -86,8 +86,12 @@ def launch(
             python_executable = pythonw_executable
         else:
             logger.debug("Could not find Windows 'pythonw.exe' executable.")
-        python_executable = '"' + str(python_executable) + '"'
-        watchdog_exec = '"' + str(watchdog_exec) + '"'
+        python_executable = str(python_executable)
+        watchdog_exec = str(watchdog_exec)
+        if " " in python_executable:
+            python_executable = '"' + str(python_executable) + '"'
+        if " " in watchdog_exec:
+            watchdog_exec = '"' + str(watchdog_exec) + '"'
 
     # Command to be executed by the new process
     command_list = [
