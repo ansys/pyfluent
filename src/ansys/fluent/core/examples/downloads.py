@@ -77,7 +77,7 @@ def _retrieve_file(
     # Download file
     logger.info(f'Downloading URL: "{url}"')
     content = requests.get(url).content
-    with open(file_name, "wb") as f:
+    with open(local_path, "wb") as f:
         f.write(content)
 
     if local_path.endswith(".zip"):
