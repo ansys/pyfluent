@@ -33,6 +33,7 @@ install_requires = [
     "pyyaml>=6.0",
     "docker>=6.1.3",
     "psutil>=5.9.5",
+    "requests>=2.31.0",
 ]
 
 extras_require = {
