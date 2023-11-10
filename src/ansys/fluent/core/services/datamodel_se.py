@@ -107,6 +107,27 @@ class DatamodelService(StreamingService):
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def rename(
+        self, request: DataModelProtoModule.RenameRequest
+    ) -> DataModelProtoModule.RenameResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.rename(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_object_names(
+        self, request: DataModelProtoModule.GetObjectNamesRequest
+    ) -> DataModelProtoModule.GetObjectNamesResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.getObjectNames(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def delete_child_objects(
+        self, request: DataModelProtoModule.DeleteChildObjectsRequest
+    ) -> DataModelProtoModule.DeleteChildObjectsResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.deleteChildObjects(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
@@ -151,7 +172,7 @@ class DatamodelService(StreamingService):
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
             raise RuntimeError(
-                f"The following excepton was caught\n {ex.details()}\n "
+                f"The following exception was caught\n {ex.details()}\n "
                 "while deleting a command instance. Command instancing is"
                 "supported from Ansys 2023R2 onward."
             ) from None
@@ -371,6 +392,40 @@ class PyStateContainer(PyCallableStateObject):
         return state
 
     getState = get_state
+
+    def get_object_names(self) -> Any:
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_object_names(request)
+        return _convert_variant_to_value(response.state)
+
+    def rename(self, new_name) -> None:
+        request = DataModelProtoModule.RenameRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.new_name = new_name
+        request.wait = True
+        response = self.service.rename(request)
+        return _convert_variant_to_value(response.state)
+
+    def delete_child_objects(self, child_names, delete_all=None):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        if child_names and delete_all:
+            request.delete_all = delete_all
+        elif child_names:
+            request.child_names = child_names
+        elif delete_all is not None:
+            request.delete_all = delete_all
+        else:
+            raise RuntimeError(
+                "Please provide child names or activate delete-all flag."
+            )
+        request.wait = True
+        response = self.service.rename(request)
+        return _convert_variant_to_value(response.state)
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
