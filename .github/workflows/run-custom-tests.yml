@@ -34,6 +34,8 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
+          - image-tag: v24.2.0
+            version: 242
 
     steps:
       - uses: actions/checkout@v4
