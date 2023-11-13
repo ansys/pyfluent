@@ -219,7 +219,7 @@ def test_watchdog_launch(monkeypatch):
             pytest.wont_raise(),
         ),
         (None, 5, None, pytest.raises(BeartypeCallHintParamViolation)),
-        (True, None, None, pytest.raises(ValueError)),
+        (True, None, None, pytest.raises(InvalidArgument)),
     ],
 )
 def test_build_journal_argument(topy, journal_file_names, result, raises):
