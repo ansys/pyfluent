@@ -167,12 +167,16 @@ _arg_type_strings = {
     flobject.Real: "Union[float, str]",
     flobject.String: "str",
     flobject.Filename: "str",
+    flobject.InputFileName: "str",
+    flobject.OutputFileName: "str",
     flobject.BooleanList: "List[bool]",
     flobject.IntegerList: "List[int]",
     flobject.RealVector: "Tuple[Union[float, str], Union[float, str], Union[float, str]",
     flobject.RealList: "List[Union[float, str]]",
     flobject.StringList: "List[str]",
     flobject.FilenameList: "List[str]",
+    flobject.InputFileNameList: "List[str]",
+    flobject.OutputFileNameList: "List[str]",
 }
 
 
