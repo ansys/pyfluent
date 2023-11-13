@@ -789,7 +789,6 @@ def launch_fluent(
             kwargs.update(cwd=cwd)
         launch_string += _build_journal_argument(topy, journal_file_names)
 
-
         if _is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
