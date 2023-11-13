@@ -39,7 +39,7 @@ class AnsysVersionNotFound(RuntimeError):
     """Provides the error when Ansys version is not found."""
 
     def __init__(self):
-        super().__init__("Set the environment variable 'AWP_ROOT' properly.")
+        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
 
 
 class InvalidPassword(ValueError):

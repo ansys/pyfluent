@@ -9,10 +9,10 @@ class IncompleteISOSurfaceDefinition(RuntimeError):
 
 
 class SurfaceCreationError(RuntimeError):
-    """Provides the error when surface creation is failed."""
+    """Provides the error when surface creation is unsuccessful."""
 
     def __init__(self):
-        super().__init__("Surface creation is unsuccessul.")
+        super().__init__("Surface creation is unsuccessful.")
 
 
 class PostAPIHelper:
