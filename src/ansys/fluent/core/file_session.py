@@ -19,7 +19,7 @@ class InvalidMultiPhaseFieldName(ValueError):
     """Provides the error when multi-phase field name is inappropriate."""
 
     def __init__(self):
-        super().__init__("Multi-phase field name should starts with 'phase-'.")
+        super().__init__("Multi-phase field name should start with 'phase-'.")
 
 
 class InvalidFieldName(ValueError):

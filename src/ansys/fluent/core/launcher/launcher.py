@@ -53,7 +53,10 @@ class IpPortNotProvided(ValueError):
     """Provides the error when ip and port are not specified."""
 
     def __init__(self):
-        super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
+        super().__init__(
+            "The ip and port will be extracted from the server-info file and "
+            "their explicitly specified values will be ignored."
+        )
 
 
 class UnexpectedKeywordArgument(TypeError):
