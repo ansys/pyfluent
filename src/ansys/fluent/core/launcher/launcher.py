@@ -427,7 +427,7 @@ def _await_fluent_launch(
 
 
 def _get_server_info(
-    server_info_file_name: Optional[str] = None,
+    server_info_file_name: str,
     ip: Optional[str] = None,
     port: Optional[int] = None,
     password: Optional[str] = None,
