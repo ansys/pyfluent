@@ -32,6 +32,13 @@ from .error_message import allowed_name_error_message, allowed_values_error
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
+class InactiveObjectError(RuntimeError):
+    """Provides the error when the object is inactive."""
+
+    def __init__(self):
+        super().__init__("Object is not active.")
+
+
 class _InlineConstants:
     is_active = "active?"
     is_read_only = "read-only?"
@@ -177,14 +184,14 @@ class Base:
 
         Raises
         ------
-        RuntimeError
+        InactiveObjectError
             If any attribute other than ``"active?`` is queried when the object is not active.
         """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Object is not active")
+            raise InactiveObjectError()
         val = None
         if attrs:
             val = attrs[attr]
@@ -346,8 +353,32 @@ class Filename(SettingsBase[str], Textual):
     _state_type = str
 
 
+class InputFileName(Filename, Textual):
+    """A ``InputFileName`` object representing a file name."""
+
+    _state_type = str
+
+
+class OutputFileName(Filename, Textual):
+    """A ``OutputFileName`` object representing a file name."""
+
+    _state_type = str
+
+
 class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
+
+    _state_type = StringListType
+
+
+class InputFileNameList(FilenameList, Textual):
+    """A InputFileNameList object represents a list of file names."""
+
+    _state_type = StringListType
+
+
+class OutputFileNameList(FilenameList, Textual):
+    """A OutputFileNameList object represents a list of file names."""
 
     _state_type = StringListType
 
@@ -1019,7 +1050,11 @@ _baseTypes = {
     "thread-var": String,
     "list-object": ListObject,
     "file": Filename,
+    "input-file": InputFileName,
+    "output-file": OutputFileName,
     "file-list": FilenameList,
+    "input-file-list": InputFileNameList,
+    "output-file-list": OutputFileNameList,
     "map": Map,
 }
 
