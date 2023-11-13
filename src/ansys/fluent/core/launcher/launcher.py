@@ -605,7 +605,7 @@ def launch_fluent(
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
         allocated cores is clamped to value of ``processor_count``.
-    journal_file_names : Union[None, str, list[str]], optional
+    journal_file_names : str or list of str, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s). The default is ``None``.
     start_timeout : int, optional
