@@ -224,7 +224,9 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = connect_to_fluent(cleanup_on_exit=False, password="12345")
+    session = connect_to_fluent(
+        cleanup_on_exit=False, ip=ip, port=port, password="12345"
+    )
     # check a few dir elements
     session_dir = dir(session)
     for attr in ("field_data", "field_info"):
