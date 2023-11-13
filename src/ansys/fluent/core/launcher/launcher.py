@@ -35,6 +35,15 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
+class PortNotProvided(ValueError):
+    """Provides the error when port is not provided."""
+
+    def __init__(self):
+        super().__init__(
+            "Provide the 'port' to connect to an existing Fluent instance."
+        )
+
+
 class AnsysVersionNotFound(RuntimeError):
     """Provides the error when Ansys version is not found."""
 
@@ -53,10 +62,7 @@ class IpPortNotProvided(ValueError):
     """Provides the error when ip and port are not specified."""
 
     def __init__(self):
-        super().__init__(
-            "The ip and port will be extracted from the server-info file and "
-            "their explicitly specified values will be ignored."
-        )
+        super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
 
 
 class UnexpectedKeywordArgument(TypeError):
@@ -421,22 +427,26 @@ def _await_fluent_launch(
 
 
 def _get_server_info(
-    server_info_file_name: str,
+    server_info_file_name: Optional[str] = None,
     ip: Optional[str] = None,
     port: Optional[int] = None,
     password: Optional[str] = None,
 ):
     """Get server connection information of an already running session."""
-    if ip and port:
-        logger.warning(
-            "Could not parse server-info file because ip and port were provided explicitly."
-        )
-    elif server_info_file_name:
-        ip, port, password = _parse_server_info_file(server_info_file_name)
-    elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
-        ip = port = None
-    else:
+    if not (ip and port) and not server_info_file_name:
         raise IpPortNotProvided()
+    if (ip or port) and server_info_file_name:
+        logger.warning(
+            "The ip and port will be extracted from the server-info file and their explicitly specified values will be ignored."
+        )
+    else:
+        if server_info_file_name:
+            ip, port, password = _parse_server_info_file(server_info_file_name)
+        ip = ip or os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+        port = port or os.getenv("PYFLUENT_FLUENT_PORT")
+
+    if not port:
+        raise PortNotProvided()
 
     return ip, port, password
 
