@@ -15,7 +15,7 @@ import time
 from typing import Any, Dict, List, Optional, Union
 
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
@@ -33,15 +33,6 @@ import ansys.platform.instancemanagement as pypim
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
-
-
-class PortNotProvided(ValueError):
-    """Provides the error when port is not provided."""
-
-    def __init__(self):
-        super().__init__(
-            "Provide the 'port' to connect to an existing Fluent instance."
-        )
 
 
 class AnsysVersionNotFound(RuntimeError):
