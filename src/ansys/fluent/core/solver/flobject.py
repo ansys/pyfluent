@@ -32,13 +32,6 @@ from .error_message import allowed_name_error_message, allowed_values_error
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
-class InactiveObjectError(RuntimeError):
-    """Provides the error when the object is inactive."""
-
-    def __init__(self):
-        super().__init__("Object is not active.")
-
-
 class _InlineConstants:
     is_active = "active?"
     is_read_only = "read-only?"
@@ -184,14 +177,14 @@ class Base:
 
         Raises
         ------
-        InactiveObjectError
+        RuntimeError
             If any attribute other than ``"active?`` is queried when the object is not active.
         """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise InactiveObjectError()
+            raise RuntimeError("Object is not active")
         val = None
         if attrs:
             val = attrs[attr]
