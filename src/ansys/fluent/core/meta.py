@@ -14,7 +14,7 @@ class Attribute:
         "allowed_values",
         "display_name_allowed_values",
         "help_str",
-        "is_valid",
+        "is_read_only",
         "is_active",
         "on_create",
         "on_change",
@@ -709,15 +709,6 @@ class PyLocalContainer(MutableMapping):
     def session_handle(self):
         """Returns the session-handle object."""
         return self.get_session_handle()
-
-
-    @classmethod
-    def get_root(self, obj=None):
-        obj = self if obj is None else obj
-        parent = obj
-        if getattr(obj, "_parent", None):
-            parent = self.get_root(obj._parent)
-        return parent
 
     def get_root(self, obj=None):
         obj = self if obj is None else obj
