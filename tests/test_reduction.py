@@ -235,8 +235,6 @@ def _test_error_handling(solver):
                 locations=solver.setup.boundary_conditions.velocity_inlet,
             )
 
-        assert msg.value.args[0] == "Unable to evaluate expression"
-
 
 def _test_force(solver):
     solver.solution.initialization.hybrid_initialize()

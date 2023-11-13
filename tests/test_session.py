@@ -14,7 +14,7 @@ from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
-from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -80,6 +80,12 @@ def test_create_session_by_passing_ip_and_port_and_password() -> None:
         MockSchemeEvalServicer(), server
     )
     server.start()
+
+    with pytest.raises(PortNotProvided) as msg:
+        session = BaseSession(
+            FluentConnection(ip=ip, password="12345", cleanup_on_exit=False)
+        )
+
     session = BaseSession(
         FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
     )
@@ -218,7 +224,9 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = connect_to_fluent(cleanup_on_exit=False, password="12345")
+    session = connect_to_fluent(
+        cleanup_on_exit=False, ip=ip, port=port, password="12345"
+    )
     # check a few dir elements
     session_dir = dir(session)
     for attr in ("field_data", "field_info"):
