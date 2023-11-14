@@ -10,8 +10,8 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.units import Quantity
 from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
+from ansys.units import Quantity
 
 
 class Setting:
