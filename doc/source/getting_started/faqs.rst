@@ -237,7 +237,7 @@ learn how to use PyFluent:
 
   .. code:: python
 
-    %py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})"
+    (%py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})")
 
 
   Here is the manually translated equivalent command in PyFluent syntax:
