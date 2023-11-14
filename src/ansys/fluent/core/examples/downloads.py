@@ -1,13 +1,17 @@
 """Functions to download sample datasets from the Ansys example data repository."""
+import logging
 import os
 from pathlib import Path
 import re
 import shutil
 from typing import Optional
-import urllib.request
 import zipfile
 
+import requests
+
 import ansys.fluent.core as pyfluent
+
+logger = logging.getLogger("pyfluent.networking")
 
 
 def delete_downloads():
@@ -55,30 +59,33 @@ def _retrieve_file(
     local_path_no_zip = re.sub(".zip$", "", local_path)
     file_name_no_zip = re.sub(".zip$", "", file_name)
     # First check if file has already been downloaded
-    print("Checking if specified file already exists...")
+    logger.info(f"Checking if {local_path_no_zip} already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
         print(f"File already exists. File path:\n{local_path_no_zip}")
+        logger.info("File already exists.")
         if return_without_path:
             return file_name_no_zip
         else:
             return local_path_no_zip
 
-    print("File does not exist. Downloading specified file...")
+    logger.info("File does not exist. Downloading specified file...")
 
     # Check if save path exists
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
-    # grab the correct url retriever
-    urlretrieve = urllib.request.urlretrieve
+    # Download file
+    logger.info(f'Downloading URL: "{url}"')
+    content = requests.get(url).content
+    with open(local_path, "wb") as f:
+        f.write(content)
 
-    # Perform download
-    urlretrieve(url, filename=local_path)
     if local_path.endswith(".zip"):
         _decompress(local_path)
         local_path = local_path_no_zip
         file_name = file_name_no_zip
     print(f"Download successful. File path:\n{local_path}")
+    logger.info("Download successful.")
     if return_without_path:
         return file_name
     else:

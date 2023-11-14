@@ -73,6 +73,16 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: v24.1.0
 
+      - name: Pull 24.2 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v24.2.0
+
+      - name: 24.2 Unit Testing
+        run: make unittest-all-242-no-codegen
+        env:
+          FLUENT_IMAGE_TAG: v24.2.0
+
       - name: 24.1 Unit Testing
         run: make unittest-all-241-no-codegen
         env:

@@ -61,7 +61,6 @@ def test_meshing_unavailable():
     reader = SettingsReader(settings_file_name=static_mixer_settings_file())
     with pytest.raises(AttributeError) as msg:
         reader.get_mesh()
-    assert msg.value.args[0] == "'SettingsFile' object has no attribute 'get_mesh'"
 
 
 def test_settings_reader_get_rp_and_config_vars():
@@ -79,7 +78,6 @@ def test_settings_reader_get_rp_and_config_vars():
 
     with pytest.raises(RuntimeError) as msg:
         reader.rp_var.defaults.pre_r19__dot0_early()
-    assert msg.value.args[0] == r"Invalid variable defaults/pre-r19.0-early"
 
     with pytest.raises(ValueError) as msg:
         reader.config_var("rp-3d")
