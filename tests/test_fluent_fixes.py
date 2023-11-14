@@ -38,11 +38,11 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     solver_session = new_solver_session
 
     import_case = examples.download_file(
-        file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
+        "exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
     )
 
     import_data = examples.download_file(
-        file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
+        "exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
 
     solver_session.tui.file.read_case(import_case)
