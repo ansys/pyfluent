@@ -218,8 +218,8 @@ Depending on how you prefer to learn, you can use any or all of these methods to
 learn how to use PyFluent:
 
 - Review the examples in the documentation, working first through those provided
-  in the :ref:`ref_example_gallery` in this guide and then through those provided
-  in the **Examples** sections in the `PyFluent-Parametric
+  in the :ref:`ref_example_gallery`, then, through those provided in the
+  **Examples** sections in the `PyFluent-Parametric
   <https://parametric.fluent.docs.pyansys.com/>`_ and `PyFluent-Visusalization
   <https://visualization.fluent.docs.pyansys.com/>`_ guides.
 - Record a journal of your actions in Fluent and review the corresponding Python
