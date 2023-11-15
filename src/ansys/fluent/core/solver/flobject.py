@@ -128,6 +128,7 @@ class Base:
 
     _name = None
     fluent_name = None
+    _python_name = None
 
     @property
     def parent(self):
@@ -152,7 +153,7 @@ class Base:
         By default, this returns the object's static name. If the object is a child of a
         named object, the object's name is returned.
         """
-        return getattr(self, "_python_name") or self.__class__.__name__
+        return getattr(self, "_python_name", None) or "." + self.__class__.__name__
 
     @property
     def path(self) -> str:
@@ -180,7 +181,7 @@ class Base:
         ppath = self._parent.python_path
         if not ppath:
             return self.python_name
-        return ppath + "." + self.python_name
+        return ppath + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
