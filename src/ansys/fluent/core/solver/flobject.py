@@ -159,6 +159,22 @@ class Base:
             return self.obj_name
         return ppath + "/" + self.obj_name
 
+    @property
+    def python_path(self) -> str:
+        """Path of the object.
+
+        Constructed from the ``obj_name`` of self and the path of
+        parent.
+        """
+        if self._parent is None:
+            return self.obj_name
+        ppath = self._parent.python_path
+        if not ppath:
+            return self.obj_name
+        if self._name:
+            return f"{ppath}['{self.obj_name}']"
+        return ppath + "." + self.obj_name
+
     def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs, recursive)
@@ -556,7 +572,9 @@ class Group(SettingsBase[DictStateType]):
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
-                raise RuntimeError(f"'{self.path}' is currently not active")
+                raise RuntimeError(
+                    f"'{self.python_path.replace('-', '_')}' is currently not active"
+                )
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
