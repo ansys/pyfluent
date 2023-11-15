@@ -32,7 +32,7 @@ from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 import ansys.platform.instancemanagement as pypim
 
-from .rpvars import RPVars
+# from .rpvars import RPVars
 
 try:
     from ansys.fluent.core.solver.settings import root
@@ -125,7 +125,7 @@ class BaseSession:
         self._remote_file_handler = remote_file_handler
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
-        self.rp_vars = RPVars(self.scheme_eval.string_eval)
+        # self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 
@@ -137,9 +137,13 @@ class BaseSession:
             DatamodelService_TUI, self.error_state
         )
 
-        self.datamodel_service_se = self.fluent_connection.create_service(
-            DatamodelService_SE, self.error_state
+        self.datamodel_service_se = self.fluent_connection.create_datamodel_service(
+            DatamodelService_SE,
+            fluent_connection._channel,
+            fluent_connection._metadata,
+            self.error_state,
         )
+
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 
@@ -181,8 +185,12 @@ class BaseSession:
             self.fluent_connection._id, self._field_data_service
         )
 
-        self.settings_service = self.fluent_connection.create_service(
-            SettingsService, self.scheme_eval, self.error_state
+        self.settings_service = self.fluent_connection.create_settings_service(
+            SettingsService,
+            fluent_connection._channel,
+            fluent_connection._metadata,
+            self.scheme_eval,
+            self.error_state,
         )
 
         self.health_check_service = fluent_connection.health_check_service

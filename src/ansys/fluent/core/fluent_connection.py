@@ -311,10 +311,12 @@ class FluentConnection:
 
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = SchemeEvalService(
-            self._channel, self._metadata, self.error_state
+        self._scheme_eval_service = self.create_service(
+            SchemeEvalService, self.error_state
         )
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
+        self.scheme_eval = self.create_scheme_eval(
+            SchemeEval, self._scheme_eval_service
+        )
 
         self._cleanup_on_exit = cleanup_on_exit
         self.start_transcript = start_transcript
@@ -512,6 +514,15 @@ class FluentConnection:
             service object
         """
         return service(self._channel, self._metadata, *args)
+
+    def create_datamodel_service(self, datamodel_service_cls, *args, **kwargs):
+        return datamodel_service_cls(*args, **kwargs)
+
+    def create_scheme_eval(self, scheme_eval_cls, *args, **kwargs):
+        return scheme_eval_cls(*args, **kwargs)
+
+    def create_settings_service(self, settings_service_cls, *args, **kwargs):
+        return settings_service_cls(*args, **kwargs)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""

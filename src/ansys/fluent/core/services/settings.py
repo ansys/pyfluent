@@ -12,6 +12,7 @@ from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
     TracingInterceptor,
+    WrapApiCallInterceptor,
 )
 
 
@@ -24,6 +25,7 @@ class _SettingsServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
+            WrapApiCallInterceptor(),
         )
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata

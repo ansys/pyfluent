@@ -74,3 +74,7 @@ DATAMODEL_USE_ATTR_CACHE = True
 
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+
+def wrap_api_call(f, *args, **kwargs):
+    return f(*args, **kwargs)
