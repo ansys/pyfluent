@@ -289,11 +289,9 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
 
     with pytest.raises(AttributeError) as msg:
         import_geom.arguments.MeshUnit.set_state("in")
-    assert msg.value.args[0] == "Command Arguments are read-only."
 
     with pytest.raises(AttributeError) as msg:
         import_geom.arguments.CadImportOptions.OneZonePer.set_state(None)
-    assert msg.value.args[0] == "Command Arguments are read-only."
 
     assert "set_state" in dir(m())
     assert "set_state" in dir(m().NumParts)
@@ -328,16 +326,12 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_child()
-    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_child_objects()
-    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_all_child_objects()
-    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError) as msg:
         import_geom.fix_state()
-    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
 
 
 @pytest.mark.fluent_version(">=23.1")

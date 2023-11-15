@@ -12,6 +12,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -23,6 +24,27 @@ from ansys.fluent.core.services.streaming import StreamingService
 Path = list[tuple[str, str]]
 
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
+
+
+class InvalidNamedObject(RuntimeError):
+    """Provides the error when the object is not a named object."""
+
+    def __init__(self, class_name):
+        super().__init__(f"{class_name} is not a named object class.")
+
+
+class SubscribeEventError(RuntimeError):
+    """Provides the error when server fails to subscribe from event."""
+
+    def __init__(self, request):
+        super().__init__(f"Failed to subscribe event: {request}!")
+
+
+class UnsubscribeEventError(RuntimeError):
+    """Provides the error when server fails to unsubscribe from event."""
+
+    def __init__(self, request):
+        super().__init__(f"Failed to unsubscribe event: {request}!")
 
 
 class Attribute(Enum):
@@ -285,12 +307,18 @@ class EventSubscription:
         service: DatamodelService,
         request: DataModelProtoModule.SubscribeEventsRequest,
     ) -> None:
-        """Subscribe to a datamodel event."""
+        """Subscribe to a datamodel event.
+
+        Raises
+        ------
+        SubscribeEventError
+            If server fails to subscribe from event.
+        """
         self._service = service
         response = service.subscribe_events(request)
         response = response.response[0]
         if response.status != DataModelProtoModule.STATUS_SUBSCRIBED:
-            raise RuntimeError(f"Failed to subscribe event: {request}!")
+            raise SubscribeEventError(request)
         self.status = response.status
         self.tag = response.tag
         self._service.events[self.tag] = self
@@ -300,7 +328,7 @@ class EventSubscription:
 
         Raises
         ------
-        RuntimeError
+        UnsubscribeEventError
             If server fails to unsubscribe from event.
         """
         if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
@@ -310,7 +338,7 @@ class EventSubscription:
             response = self._service.unsubscribe_events(request)
             response = response.response[0]
             if response.status != DataModelProtoModule.STATUS_UNSUBSCRIBED:
-                raise RuntimeError(f"Failed to unsubscribe event: {request}!")
+                raise UnsubscribeEventError(request)
             self.status = response.status
         self._service.events.pop(self.tag, None)
 
@@ -552,15 +580,13 @@ class PyMenu(PyStateContainer):
 
         Raises
         ------
-        RuntimeError
+        InvalidNamedObject
             If the object is not a named object.
         """
         try:
             self._name_.set_state(new_name)
         except AttributeError:
-            raise RuntimeError(
-                f"{self.__class__.__name__} is not a named object class."
-            )
+            raise InvalidNamedObject(self.__class__.__name__)
 
     def name(self) -> str:
         """Get the name of the named object.
@@ -572,15 +598,13 @@ class PyMenu(PyStateContainer):
 
         Raises
         ------
-        RuntimeError
+        InvalidNamedObject
             If the object is not a named object.
         """
         try:
             return self._name_()
         except AttributeError:
-            raise RuntimeError(
-                f"{self.__class__.__name__} is not a named object class."
-            )
+            raise InvalidNamedObject(self.__class__.__name__)
 
     def _raise_method_not_yet_implemented_exception(self) -> NoReturn:
         raise AttributeError("This method is yet to be implemented in pyfluent.")
@@ -1363,13 +1387,13 @@ class DataModelType(Enum):
 
         Raises
         ------
-        TypeError
+        InvalidArgument
             If an unknown mode is passed.
         """
         for m in DataModelType:
             if mode in m.value[0]:
                 return m
-        raise TypeError(f"The specified mode: {mode} was not found.")
+        raise InvalidArgument(f"The specified mode: {mode} was not found.")
 
 
 class PyMenuGeneric(PyMenu):

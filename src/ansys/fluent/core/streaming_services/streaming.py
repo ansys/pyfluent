@@ -1,6 +1,9 @@
 import itertools
+import logging
 import threading
 from typing import Callable, Optional
+
+logger = logging.getLogger("pyfluent.networking")
 
 
 class StreamingService:
@@ -26,12 +29,12 @@ class StreamingService:
         with self._lock:
             return self._streaming
 
-    def register_callback(self, call_back: Callable, *args, **kwargs) -> str:
+    def register_callback(self, callback: Callable, *args, **kwargs) -> str:
         """Register the callback.
 
         Parameters
         ----------
-        call_back : Callable
+        callback : Callable
             Callback to register.
 
         Returns
@@ -41,7 +44,7 @@ class StreamingService:
         """
         with self._lock:
             callback_id = f"{next(self._service_callback_id)}"
-            self._service_callbacks[callback_id] = [call_back, args, kwargs]
+            self._service_callbacks[callback_id] = [callback, args, kwargs]
             return callback_id
 
     def unregister_callback(self, callback_id: str):
@@ -57,7 +60,7 @@ class StreamingService:
                 del self._service_callbacks[callback_id]
 
     def start(self, *args, **kwargs) -> None:
-        """Start streaming of Fluent transcript."""
+        """Start streaming."""
         with self._lock:
             if not self.is_streaming:
                 self._prepare()
@@ -78,30 +81,14 @@ class StreamingService:
                 self._streaming = True
 
     def stop(self) -> None:
-        """Stop streaming of Fluent transcript."""
+        """Stop streaming."""
         if self.is_streaming:
             self._streaming_service.end_streaming(self._id, self._stream_begin_method)
-            self._stream_thread.join()
+            self._stream_thread.join(timeout=5)
+            if self._stream_thread.is_alive():
+                logger.warning(f"Streaming service {self._id} is unresponsive.")
             self._streaming = False
             self._stream_thread = None
-
-    def refresh(self, session_id, event_info) -> None:
-        """Refresh stream.
-
-        Parameters
-        ----------
-        session_id : str
-            Name of the monitor set.
-        event_info : object
-            Event info object.
-
-        Returns
-        -------
-        None
-        """
-        with self._lock_refresh:
-            self.stop()
-            self.start()
 
     def _prepare(self):
         pass  # Currently only used by monitor services.

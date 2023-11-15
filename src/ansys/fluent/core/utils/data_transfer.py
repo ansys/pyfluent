@@ -15,10 +15,17 @@ from ansys.fluent.core.utils.execution import asynchronous
 network_logger = logging.getLogger("pyfluent.networking")
 
 
+class MeshWriteError(RuntimeError):
+    """Provides the error when mesh write is unsuccessful."""
+
+    def __init__(self):
+        super().__init__("Could not write mesh from meshing session.")
+
+
 @asynchronous
 def _read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Trying to read case: {file_name}")
-    solver.upload(file_name)
+    solver._remote_file_handler.upload(file_name=file_name)
     if full_file_name_container:
         solver.file.read(file_name=full_file_name_container, file_type=file_type)
     else:
@@ -80,7 +87,7 @@ def transfer_case(
 
     Raises
     ------
-    RuntimeError
+    MeshWriteError
         If mesh cannot be written from ``source_instance``.
     """
     inside_container = source_instance.connection_properties.inside_container
@@ -141,7 +148,7 @@ def transfer_case(
                 writer("y")
             else:
                 writer()
-            source_instance.download(full_file_name)
+            source_instance._remote_file_handler.download(file_name=full_file_name)
             network_logger.info(f"Saved mesh from meshing session: {full_file_name}")
             if inside_container:
                 _read_case_into_each(
@@ -160,4 +167,4 @@ def transfer_case(
                         f"Encountered exception while cleaning up during case transfer {ex}"
                     )
             return
-    raise RuntimeError("Could not write mesh from meshing session.")
+    raise MeshWriteError()

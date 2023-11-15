@@ -10,7 +10,7 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.solver.flobject import find_children
+from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
 
 
 class Setting:
@@ -507,9 +507,8 @@ def test_attrs():
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True
     assert not r.g_1.s_4.get_attr("active?")
-    with pytest.raises(RuntimeError) as einfo:
+    with pytest.raises(InactiveObjectError) as einfo:
         r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
-    assert einfo.value.args == ("Object is not active",)
 
 
 # The following test is commented out as codegen module is not packaged in the
@@ -821,7 +820,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     root = solver._root

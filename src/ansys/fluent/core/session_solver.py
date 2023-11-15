@@ -6,6 +6,7 @@ import functools
 import importlib
 import logging
 import threading
+from typing import Any, Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -23,10 +24,6 @@ from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
-from ansys.fluent.core.utils.file_transfer_service import (
-    PimFileTransferService,
-    RemoteFileHandler,
-)
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 from ansys.fluent.core.workflow import WorkflowWrapper
 
@@ -58,19 +55,16 @@ class Solver(BaseSession):
     def __init__(
         self,
         fluent_connection,
+        remote_file_handler: Optional[Any] = None,
     ):
         """Solver session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
         super(Solver, self).__init__(
-            fluent_connection=fluent_connection,
-            remote_file_handler=RemoteFileHandler(
-                transfer_service=PimFileTransferService(
-                    fluent_connection._remote_instance
-                )
-            ),
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._build_from_fluent_connection(fluent_connection)
 
@@ -271,7 +265,7 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        self.upload(
+        self._remote_file_handler.upload(
             file_name=file_name,
             on_uploaded=(lambda file_name: self.file.read_case(file_name=file_name)),
         )
@@ -287,7 +281,7 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        self.download(
+        self._remote_file_handler.download(
             file_name=file_name,
             before_downloaded=(
                 lambda file_name: self.file.write_case(file_name=file_name)
