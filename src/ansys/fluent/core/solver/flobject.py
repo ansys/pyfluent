@@ -146,6 +146,17 @@ class Base:
         return self._name
 
     @property
+    def python_name(self) -> str:
+        """Python name of this object.
+
+        By default, this returns the object's static name. If the object is a child of a
+        named object, the object's name is returned.
+        """
+        if self._name:
+            return self._python_name
+        return "." + self.__class__.__name__
+
+    @property
     def path(self) -> str:
         """Path of the object.
 
@@ -163,17 +174,15 @@ class Base:
     def python_path(self) -> str:
         """Path of the object.
 
-        Constructed from the ``obj_name`` of self and the path of
-        parent.
+        Constructed in python syntax from 'python_path' and the parents python
+        path.
         """
         if self._parent is None:
-            return self.obj_name
+            return "<session>"
         ppath = self._parent.python_path
         if not ppath:
-            return self.obj_name
-        if self._name:
-            return f"{ppath}['{self.obj_name}']"
-        return ppath + "." + self.obj_name
+            return self.python_name
+        return ppath + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
@@ -572,9 +581,7 @@ class Group(SettingsBase[DictStateType]):
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
-                raise RuntimeError(
-                    f"'{self.python_path.replace('-', '_')}' is currently not active"
-                )
+                raise RuntimeError(f"'{self.python_path}' is currently not active")
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -744,6 +751,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if not ret:
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = cls(cname, self)
+        ret._setattr("_python_name", f'["{cname}"]')
         return ret
 
     def _update_objects(self):
