@@ -2,7 +2,7 @@
 
 Use meshing workflows
 =====================
-PyFluent supports accessing all Fluent meshing functionalities, including 
+PyFluent supports accessing all Fluent meshing functionalities, including
 guided meshing workflows.
 
 Watertight geometry meshing workflow

@@ -4,7 +4,6 @@ import threading
 from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
-import pandas as pd
 
 from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
@@ -174,6 +173,8 @@ class MonitorsManager(StreamingService):
                             monitor_data.append(data_received[monitor_name])
 
                         if monitor_data:
+                            import pandas as pd
+
                             new_df = pd.DataFrame([monitor_data], columns=monitors)
                             new_df.set_index("xvalues", inplace=True)
                             if df.empty:
@@ -194,6 +195,8 @@ class MonitorsManager(StreamingService):
             for monitor_set_name, monitor_set_info in self._monitors_info.items():
                 if "monitors" not in monitor_set_info:
                     continue
+                import pandas as pd
+
                 self._data_frames[monitor_set_name] = {}
                 monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
                 df = pd.DataFrame([], columns=monitors_name)
