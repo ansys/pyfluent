@@ -152,9 +152,7 @@ class Base:
         By default, this returns the object's static name. If the object is a child of a
         named object, the object's name is returned.
         """
-        if self._name:
-            return self._python_name
-        return "." + self.__class__.__name__
+        return getattr(self, "_python_name") or self.__class__.__name__
 
     @property
     def path(self) -> str:
