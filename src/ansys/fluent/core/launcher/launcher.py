@@ -3,6 +3,7 @@
 This module supports both starting Fluent locally and connecting to a remote instance
 with gRPC.
 """
+from abc import ABC, abstractmethod
 from enum import Enum
 import json
 import logging
@@ -558,6 +559,224 @@ class LaunchFluentError(Exception):
         super().__init__(details)
 
 
+class Launcher(ABC):
+    @abstractmethod
+    def launch(self, **args):
+        pass
+
+
+class StandaloneLauncher(Launcher):
+    def launch(
+        self,
+        new_session: Optional[Any] = None,
+        argvals: Optional[Any] = None,
+        lightweight_mode: Optional[Any] = None,
+        additional_arguments: Optional[Any] = None,
+        meshing_mode: Optional[Any] = None,
+        show_gui: Optional[Any] = None,
+        env: Optional[Any] = None,
+        cwd: Optional[Any] = None,
+        journal_file_names: Optional[Any] = None,
+        topy: Optional[Any] = None,
+        start_timeout: Optional[Any] = None,
+        cleanup_on_exit: Optional[Any] = None,
+        start_transcript: Optional[Any] = None,
+        start_watchdog: Optional[Any] = None,
+        case_file_name: Optional[Any] = None,
+        case_data_file_name: Optional[Any] = None,
+        **kwargs,
+    ):
+        if lightweight_mode is None:
+            # note argvals is no longer locals() here due to _get_session_info() pass
+            argvals.pop("lightweight_mode")
+            lightweight_mode = False
+
+        _raise_exception_g_gu_in_windows_os(additional_arguments)
+
+        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+            argvals["fluent_debug"] = True
+
+        server_info_file_name = _get_server_info_file_name()
+        launch_string = _generate_launch_string(
+            argvals, meshing_mode, show_gui, additional_arguments, server_info_file_name
+        )
+
+        sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
+        if env is None:
+            env = {}
+        kwargs = _get_subprocess_kwargs_for_fluent(env)
+        if cwd:
+            kwargs.update(cwd=cwd)
+        launch_string += _build_journal_argument(topy, journal_file_names)
+
+        if _is_windows():
+            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
+            launch_cmd = 'start "" ' + launch_string
+        else:
+            launch_cmd = launch_string
+
+        try:
+            logger.debug(f"Launching Fluent with command: {launch_cmd}")
+
+            subprocess.Popen(launch_cmd, **kwargs)
+
+            try:
+                _await_fluent_launch(
+                    server_info_file_name, start_timeout, sifile_last_mtime
+                )
+            except TimeoutError as ex:
+                if _is_windows():
+                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
+                    launch_cmd = launch_string.replace('"', "", 2)
+                    kwargs.update(shell=False)
+                    logger.warning(
+                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
+                    )
+                    subprocess.Popen(launch_cmd, **kwargs)
+                    _await_fluent_launch(
+                        server_info_file_name, start_timeout, sifile_last_mtime
+                    )
+                else:
+                    raise ex
+
+            session = new_session.create_from_server_info_file(
+                server_info_file_name=server_info_file_name,
+                remote_file_handler=RemoteFileHandler(),
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                launcher_args=argvals,
+                inside_container=False,
+            )
+            start_watchdog = _confirm_watchdog_start(
+                start_watchdog, cleanup_on_exit, session.fluent_connection
+            )
+            if start_watchdog:
+                logger.info("Launching Watchdog for local Fluent client...")
+                ip, port, password = _get_server_info(server_info_file_name)
+                watchdog.launch(os.getpid(), port, password, ip)
+            if case_file_name:
+                if meshing_mode:
+                    session.tui.file.read_case(case_file_name)
+                else:
+                    session.read_case(case_file_name, lightweight_mode)
+            if case_data_file_name:
+                if not meshing_mode:
+                    session.file.read(
+                        file_type="case-data", file_name=case_data_file_name
+                    )
+                else:
+                    raise RuntimeError(
+                        "Case and data file cannot be read in meshing mode."
+                    )
+
+            return session
+        except Exception as ex:
+            logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
+            raise LaunchFluentError(launch_cmd) from ex
+        finally:
+            server_info_file = Path(server_info_file_name)
+            if server_info_file.exists():
+                server_info_file.unlink()
+
+
+class PIMLauncher(Launcher):
+    def launch(
+        self,
+        product_version: Optional[Any] = None,
+        new_session: Optional[Any] = None,
+        start_transcript: Optional[Any] = None,
+        argvals: Optional[Any] = None,
+        cleanup_on_exit: Optional[Any] = None,
+        meshing_mode: Optional[Any] = None,
+        version: Optional[Any] = None,
+        **kwargs,
+    ):
+        logger.info(
+            "Starting Fluent remotely. The startup configuration will be ignored."
+        )
+
+        if product_version:
+            fluent_product_version = "".join(product_version.split("."))[:-1]
+        else:
+            fluent_product_version = None
+
+        return launch_remote_fluent(
+            session_cls=new_session,
+            start_transcript=start_transcript,
+            product_version=fluent_product_version,
+            cleanup_on_exit=cleanup_on_exit,
+            meshing_mode=meshing_mode,
+            dimensionality=version,
+            launcher_args=argvals,
+        )
+
+
+class DockerLauncher(Launcher):
+    def launch(
+        self,
+        new_session: Optional[Any] = None,
+        meshing_mode: Optional[Any] = None,
+        dry_run: Optional[Any] = None,
+        argvals: Optional[Any] = None,
+        container_dict: Optional[Any] = None,
+        cleanup_on_exit: Optional[Any] = None,
+        start_transcript: Optional[Any] = None,
+        start_watchdog: Optional[Any] = None,
+        **kwargs,
+    ):
+        args = _build_fluent_launch_args_string(**argvals).split()
+        if meshing_mode:
+            args.append(" -meshing")
+
+        if dry_run:
+            if container_dict is None:
+                container_dict = {}
+            config_dict, *_ = configure_container_dict(args, **container_dict)
+            from pprint import pprint
+
+            print("\nDocker container run configuration:\n")
+            print("config_dict = ")
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                pprint(config_dict)
+            else:
+                config_dict_h = config_dict.copy()
+                config_dict_h.pop("environment")
+                pprint(config_dict_h)
+                del config_dict_h
+            return config_dict
+
+        port, password = start_fluent_container(args, container_dict)
+
+        session = new_session(
+            fluent_connection=FluentConnection(
+                port=port,
+                password=password,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                launcher_args=argvals,
+                inside_container=True,
+            ),
+            remote_file_handler=RemoteFileHandler(),
+        )
+
+        if start_watchdog is None and cleanup_on_exit:
+            start_watchdog = True
+        if start_watchdog:
+            logger.debug("Launching Watchdog for Fluent container...")
+            watchdog.launch(os.getpid(), port, password)
+
+        return session
+
+
+def create_launcher(fluent_launch_mode):
+    if fluent_launch_mode == LaunchMode.STANDALONE:
+        return StandaloneLauncher()
+    elif fluent_launch_mode == LaunchMode.CONTAINER:
+        return DockerLauncher()
+    elif fluent_launch_mode == LaunchMode.PIM:
+        return PIMLauncher()
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     product_version: Optional[str] = None,
@@ -741,7 +960,6 @@ def launch_fluent(
         )
 
     argvals = locals().copy()
-    argvals.pop("fluent_launch_mode")
 
     if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
@@ -764,162 +982,11 @@ def launch_fluent(
             )
 
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
+    argvals["new_session"] = new_session
+    argvals["argvals"] = argvals
 
-    if fluent_launch_mode == LaunchMode.STANDALONE:
-        if lightweight_mode is None:
-            # note argvals is no longer locals() here due to _get_session_info() pass
-            argvals.pop("lightweight_mode")
-            lightweight_mode = False
-
-        _raise_exception_g_gu_in_windows_os(additional_arguments)
-
-        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
-            argvals["fluent_debug"] = True
-
-        server_info_file_name = _get_server_info_file_name()
-        launch_string = _generate_launch_string(
-            argvals, meshing_mode, show_gui, additional_arguments, server_info_file_name
-        )
-
-        sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
-        if env is None:
-            env = {}
-        kwargs = _get_subprocess_kwargs_for_fluent(env)
-        if cwd:
-            kwargs.update(cwd=cwd)
-        launch_string += _build_journal_argument(topy, journal_file_names)
-
-        if _is_windows():
-            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
-            launch_cmd = 'start "" ' + launch_string
-        else:
-            launch_cmd = launch_string
-
-        try:
-            logger.debug(f"Launching Fluent with command: {launch_cmd}")
-
-            subprocess.Popen(launch_cmd, **kwargs)
-
-            try:
-                _await_fluent_launch(
-                    server_info_file_name, start_timeout, sifile_last_mtime
-                )
-            except TimeoutError as ex:
-                if _is_windows():
-                    logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = launch_string.replace('"', "", 2)
-                    kwargs.update(shell=False)
-                    logger.warning(
-                        f"Retrying Fluent launch with less robust command: {launch_cmd}"
-                    )
-                    subprocess.Popen(launch_cmd, **kwargs)
-                    _await_fluent_launch(
-                        server_info_file_name, start_timeout, sifile_last_mtime
-                    )
-                else:
-                    raise ex
-
-            session = new_session.create_from_server_info_file(
-                server_info_file_name=server_info_file_name,
-                remote_file_handler=RemoteFileHandler(),
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=argvals,
-                inside_container=False,
-            )
-            start_watchdog = _confirm_watchdog_start(
-                start_watchdog, cleanup_on_exit, session.fluent_connection
-            )
-            if start_watchdog:
-                logger.info("Launching Watchdog for local Fluent client...")
-                ip, port, password = _get_server_info(server_info_file_name)
-                watchdog.launch(os.getpid(), port, password, ip)
-            if case_file_name:
-                if meshing_mode:
-                    session.tui.file.read_case(case_file_name)
-                else:
-                    session.read_case(case_file_name, lightweight_mode)
-            if case_data_file_name:
-                if not meshing_mode:
-                    session.file.read(
-                        file_type="case-data", file_name=case_data_file_name
-                    )
-                else:
-                    raise RuntimeError(
-                        "Case and data file cannot be read in meshing mode."
-                    )
-
-            return session
-        except Exception as ex:
-            logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
-            raise LaunchFluentError(launch_cmd) from ex
-        finally:
-            server_info_file = Path(server_info_file_name)
-            if server_info_file.exists():
-                server_info_file.unlink()
-    elif fluent_launch_mode == LaunchMode.PIM:
-        logger.info(
-            "Starting Fluent remotely. The startup configuration will be ignored."
-        )
-
-        if product_version:
-            fluent_product_version = "".join(product_version.split("."))[:-1]
-        else:
-            fluent_product_version = None
-
-        return launch_remote_fluent(
-            session_cls=new_session,
-            start_transcript=start_transcript,
-            product_version=fluent_product_version,
-            cleanup_on_exit=cleanup_on_exit,
-            meshing_mode=meshing_mode,
-            dimensionality=version,
-            launcher_args=argvals,
-        )
-
-    elif fluent_launch_mode == LaunchMode.CONTAINER:
-        args = _build_fluent_launch_args_string(**argvals).split()
-        if meshing_mode:
-            args.append(" -meshing")
-
-        if dry_run:
-            if container_dict is None:
-                container_dict = {}
-            config_dict, *_ = configure_container_dict(args, **container_dict)
-            from pprint import pprint
-
-            print("\nDocker container run configuration:\n")
-            print("config_dict = ")
-            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-                pprint(config_dict)
-            else:
-                config_dict_h = config_dict.copy()
-                config_dict_h.pop("environment")
-                pprint(config_dict_h)
-                del config_dict_h
-            return config_dict
-
-        port, password = start_fluent_container(args, container_dict)
-
-        session = new_session(
-            fluent_connection=FluentConnection(
-                port=port,
-                password=password,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=argvals,
-                inside_container=True,
-            ),
-            remote_file_handler=RemoteFileHandler(),
-        )
-
-        if start_watchdog is None and cleanup_on_exit:
-            start_watchdog = True
-        if start_watchdog:
-            logger.debug("Launching Watchdog for Fluent container...")
-            watchdog.launch(os.getpid(), port, password)
-
-        return session
+    launcher = create_launcher(argvals.pop("fluent_launch_mode"))
+    return launcher.launch(**argvals)
 
 
 def connect_to_fluent(
