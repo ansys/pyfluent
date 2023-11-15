@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 import functools
 import operator
 import os
@@ -74,3 +75,6 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+
+
+pytest.wont_raise = nullcontext

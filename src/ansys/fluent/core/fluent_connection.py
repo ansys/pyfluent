@@ -24,6 +24,30 @@ import docker
 logger = logging.getLogger("pyfluent.general")
 
 
+class PortNotProvided(ValueError):
+    """Provides the error when port is not provided."""
+
+    def __init__(self):
+        super().__init__(
+            "Provide the 'port' to connect to an existing Fluent instance."
+        )
+
+
+class UnsupportedRemoteFluentInstance(ValueError):
+    """Provides the error when 'wait_process_finished' does not support remote Fluent
+    session."""
+
+    def __init__(self):
+        super().__init__("Remote Fluent instance is unsupported.")
+
+
+class WaitTypeError(TypeError):
+    """Provides the error when invalid ``wait`` type is provided."""
+
+    def __init__(self):
+        super().__init__("Invalid 'wait' type.")
+
+
 def _get_max_c_int_limit() -> int:
     """Get the maximum limit of a C int.
 
@@ -236,6 +260,11 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a docker container.
+
+        Raises
+        ------
+        PortNotProvided
+            If port is not provided.
         """
         self.error_state = ErrorState()
         self._data_valid = False
@@ -250,9 +279,7 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise ValueError(
-                    "The port to connect to Fluent session is not provided."
-                )
+                raise PortNotProvided()
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(
@@ -495,15 +522,13 @@ class FluentConnection:
 
         Raises
         ------
-        ValueError
+        UnsupportedRemoteFluentInstance
             If current Fluent instance is running remotely.
-        TypeError
+        WaitTypeError
             If ``wait`` is specified improperly.
         """
         if self._remote_instance:
-            raise ValueError(
-                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
-            )
+            raise UnsupportedRemoteFluentInstance()
         if isinstance(wait, bool):
             if wait:
                 wait = 60
@@ -513,7 +538,7 @@ class FluentConnection:
         if isinstance(wait, (float, int)):
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
-            raise TypeError("Invalid 'limit' type.")
+            raise WaitTypeError()
         if self.connection_properties.inside_container:
             _response = timeout_loop(
                 get_container,

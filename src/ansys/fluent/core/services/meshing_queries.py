@@ -6,6 +6,7 @@ import grpc
 
 from ansys.api.fluent.v0 import meshing_queries_pb2 as MeshingQueriesProtoModule
 from ansys.api.fluent.v0 import meshing_queries_pb2_grpc as MeshingQueriesGrpcModule
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -622,12 +623,12 @@ class MeshingQueries:
     def __get_allowed_region_type(self, region_type):
         """Check region_type in available regions."""
         if region_type not in self.region_types:
-            raise ValueError(f"Allowed region types - {self.region_types}\n")
+            raise DisallowedValuesError("region-type", region_type, self.region_types)
 
     def _get_allowed_orders(self, order):
         """Check order in available orders."""
         if order not in self.orders:
-            raise ValueError(f"Allowed orders - {self.orders}\n")
+            raise DisallowedValuesError("order", order, self.orders)
 
     def get_all_object_name_list(self) -> Any:
         """Return a list of all objects.
@@ -646,9 +647,9 @@ class MeshingQueries:
         if isinstance(object, list):
             for obj in object:
                 if obj not in allowed_args:
-                    raise ValueError(f"Allowed objects - {allowed_args}\n")
+                    raise DisallowedValuesError("object", obj, allowed_args)
         elif isinstance(object, str) and object not in allowed_args:
-            raise ValueError(f"Allowed objects - {allowed_args}\n")
+            raise DisallowedValuesError("object", object, allowed_args)
 
     def get_region_name_list_of_object(self, object) -> Any:
         """Return a list of regions in the specified object.
@@ -672,9 +673,9 @@ class MeshingQueries:
         if isinstance(region, list):
             for reg in region:
                 if reg not in regions:
-                    raise ValueError(f"Allowed regions - {regions}\n")
+                    raise DisallowedValuesError("region", reg, regions)
         elif isinstance(region, str) and region not in regions:
-            raise ValueError(f"Allowed regions - {regions}\n")
+            raise DisallowedValuesError("region", region, regions)
 
     def get_face_zone_at_location(self, location) -> Any:
         """Return face zone at or closest to a specified location.

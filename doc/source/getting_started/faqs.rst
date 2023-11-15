@@ -114,9 +114,9 @@ all PyFluent packages in a Python *virtual environment*:
 #. In a command window, use this code to set up and activate a local Python
    virtual environment::
 
-   .. code:: bash
+  .. code:: bash
 
-   .. vale off
+  
 
       # Set up a local virtual environment
       python -m venv venv 
@@ -130,12 +130,12 @@ all PyFluent packages in a Python *virtual environment*:
       # Activate the virtual environment on Linux (bash)
       . venv/bin/activate
 
-   .. vale on
+   
    
 #. In the same command window, use ``pip``, the package installer for Python, to
    install the PyFluent packages::
 
-   .. code:: bash
+  .. code:: bash
 
       python -m pip install ansys-fluent-core   # Use Fluent’s core capabilities (mesh, solve, postprocess)
       python -m pip install ansys-fluent-parametric   # Use Fluent’s parametric capabilities (optional)
@@ -218,8 +218,8 @@ Depending on how you prefer to learn, you can use any or all of these methods to
 learn how to use PyFluent:
 
 - Review the examples in the documentation, working first through those provided
-  in the :ref:_ref_example_gallery in this guide and then through those provided
-  in the **Examples** sections in the `PyFluent-Parametric
+  in the :ref:`ref_example_gallery`, then, through those provided in the
+  **Examples** sections in the `PyFluent-Parametric
   <https://parametric.fluent.docs.pyansys.com/>`_ and `PyFluent-Visusalization
   <https://visualization.fluent.docs.pyansys.com/>`_ guides.
 - Record a journal of your actions in Fluent and review the corresponding Python
@@ -237,7 +237,7 @@ learn how to use PyFluent:
 
   .. code:: python
 
-    import :(%py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})")
+    (%py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})")
 
 
   Here is the manually translated equivalent command in PyFluent syntax:

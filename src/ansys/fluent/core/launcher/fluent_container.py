@@ -64,6 +64,33 @@ logger = logging.getLogger("pyfluent.launcher")
 DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
+class FluentImageNameTagNotSpecified(ValueError):
+    """Provides the error when Fluent image name or image tag is not specified."""
+
+    def __init__(self):
+        super().__init__(
+            "Specify either 'fluent_image' or 'image_tag' and 'image_name'."
+        )
+
+
+class ServerInfoFileError(ValueError):
+    """Provides the error when server info file is not given properly."""
+
+    def __init__(self):
+        super().__init__(
+            "Specify server info file either using 'container_server_info_file' argument or in the 'container_dict'."
+        )
+
+
+class LicenseServerNotSpecified(KeyError):
+    """Provides the error when license server is not specified."""
+
+    def __init__(self):
+        super().__init__(
+            "Specify licence server either using 'ANSYSLMD_LICENSE_FILE' environment variable or in the 'container_dict'."
+        )
+
+
 def configure_container_dict(
     args: List[str],
     host_mount_path: Optional[Union[str, Path]] = None,
@@ -120,11 +147,11 @@ def configure_container_dict(
 
     Raises
     ------
-    KeyError
+    LicenseServerNotSpecified
         If license server is not specified through an environment variable or in ``container_dict``.
-    ValueError
+    ServerInfoFileError
         If server info file is specified through both a command-line argument inside ``container_dict`` and the  ``container_server_info_file`` parameter.
-    ValueError
+    FluentImageNameTagNotSpecified
         If ``fluent_image`` or ``image_tag`` and ``image_name`` are not specified.
 
     Notes
@@ -208,10 +235,7 @@ def configure_container_dict(
             license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
 
         if not license_server:
-            raise KeyError(
-                "License server needs to be specified through an environment variable, "
-                "or in the `container_dict`."
-            )
+            raise LicenseServerNotSpecified()
         container_dict.update(
             environment={
                 "ANSYSLMD_LICENSE_FILE": license_server,
@@ -234,10 +258,7 @@ def configure_container_dict(
         for v in container_dict["command"]:
             if v.startswith("-sifile="):
                 if container_server_info_file:
-                    raise ValueError(
-                        "Specified a server info file command argument as well as "
-                        "a container_server_info_file, pick one."
-                    )
+                    raise ServerInfoFileError()
                 container_server_info_file = PurePosixPath(
                     v.replace("-sifile=", "")
                 ).name
@@ -269,9 +290,7 @@ def configure_container_dict(
         elif image_tag and image_name:
             fluent_image = f"{image_name}:{image_tag}"
         else:
-            raise ValueError(
-                "Missing 'fluent_image', or 'image_tag' and 'image_name', specification for Docker container launch."
-            )
+            raise FluentImageNameTagNotSpecified()
 
     container_dict["fluent_image"] = fluent_image
 
@@ -320,7 +339,7 @@ def start_fluent_container(
 
     Raises
     ------
-    RuntimeError
+    TimeoutError
         If Fluent container launch reaches timeout.
 
     Notes
@@ -377,8 +396,8 @@ def start_fluent_container(
         )
 
         if not success:
-            raise RuntimeError(
-                "Fluent container launch timeout, will have to stop container manually."
+            raise TimeoutError(
+                "Fluent container launch has timed out, stop container manually."
             )
         else:
             _, _, password = _parse_server_info_file(str(host_server_info_file))

@@ -22,6 +22,12 @@ IDLE_PERIOD = 2  # seconds
 WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
+class UnsuccessfulWatchdogLaunch(RuntimeError):
+    """Provides the error when watchdog launch is unsuccessful."""
+
+    pass
+
+
 def launch(
     main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None
 ) -> None:
@@ -40,7 +46,7 @@ def launch(
 
     Raises
     ------
-    RuntimeError
+    UnsuccessfulWatchdogLaunch
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
@@ -86,8 +92,12 @@ def launch(
             python_executable = pythonw_executable
         else:
             logger.debug("Could not find Windows 'pythonw.exe' executable.")
-        python_executable = '"' + str(python_executable) + '"'
-        watchdog_exec = '"' + str(watchdog_exec) + '"'
+        python_executable = str(python_executable)
+        watchdog_exec = str(watchdog_exec)
+        if " " in python_executable:
+            python_executable = '"' + str(python_executable) + '"'
+        if " " in watchdog_exec:
+            watchdog_exec = '"' + str(watchdog_exec) + '"'
 
     # Command to be executed by the new process
     command_list = [
@@ -164,10 +174,12 @@ def launch(
             watchdog_err.unlink()
             logger.error(err_content)
             if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
-                raise RuntimeError(err_content)
+                raise UnsuccessfulWatchdogLaunch(err_content)
 
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
         if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
-            raise RuntimeError("PyFluent Watchdog did not initialize correctly.")
+            raise UnsuccessfulWatchdogLaunch(
+                "PyFluent Watchdog did not initialize correctly."
+            )

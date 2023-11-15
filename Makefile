@@ -43,6 +43,12 @@ unittest-dev-241:
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest --fluent-version=24.1
 
+unittest-dev-242:
+	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest --fluent-version=24.2
+
 unittest-all-222:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
@@ -85,17 +91,29 @@ unittest-all-241:
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest --nightly --fluent-version=24.1
 
-unittest-solvermode-241:
-	@echo "Running all unittests"
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest --fluent-version=24.1 --solvermode
-
 unittest-all-241-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest --nightly --fluent-version=24.1 -m "not codegen_required"
+
+unittest-all-242:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest --nightly --fluent-version=24.2
+
+unittest-solvermode-242:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest --fluent-version=24.2 --solvermode
+
+unittest-all-242-no-codegen:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required"
 
 api-codegen:
 	@echo "Running API codegen"

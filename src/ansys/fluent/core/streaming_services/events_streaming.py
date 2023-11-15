@@ -1,9 +1,10 @@
 """Module for events management."""
 from functools import partial
 import logging
-from typing import Callable, List, Optional
+from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -58,8 +59,8 @@ class EventsManager(StreamingService):
                         self._fluent_error_state.set("fatal", error_message)
                         continue
                     callbacks_map = self._service_callbacks.get(event_name, {})
-                    for call_back in callbacks_map.values():
-                        call_back(
+                    for callback in callbacks_map.values():
+                        callback(
                             session_id=self._session_id,
                             event_info=getattr(response, event_name),
                         )
@@ -68,8 +69,8 @@ class EventsManager(StreamingService):
 
     def register_callback(
         self,
-        event_name: Optional[str] = None,
-        call_back: Optional[Callable] = None,
+        event_name: str,
+        callback: Callable,
         *args,
         **kwargs,
     ):
@@ -80,7 +81,7 @@ class EventsManager(StreamingService):
         event_name : str
             Event name to register the callback to.
 
-        call_back : Callable
+        callback : Callable
             Callback to register.
 
         Returns
@@ -90,25 +91,25 @@ class EventsManager(StreamingService):
 
         Raises
         ------
-        RuntimeError
+        InvalidArgument
             If event name is not valid.
+        DisallowedValuesError
+            If an argument value not in allowed values.
         """
-        if event_name is None or call_back is None:
-            raise RuntimeError(
-                "Please provide compulsory arguments : 'event_name' and 'call_back'"
-            )
+        if event_name is None or callback is None:
+            raise InvalidArgument("'event_name' and 'callback' ")
 
         if event_name not in self.events_list:
-            raise RuntimeError(f"{event_name} is not a valid event.")
+            raise DisallowedValuesError("event-name", event_name, self.events_list)
         with self._lock:
             event_name = event_name.lower()
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
             if callbacks_map:
-                callbacks_map.update({callback_id: partial(call_back, *args, **kwargs)})
+                callbacks_map.update({callback_id: partial(callback, *args, **kwargs)})
             else:
                 self._service_callbacks[event_name] = {
-                    callback_id: partial(call_back, *args, **kwargs)
+                    callback_id: partial(callback, *args, **kwargs)
                 }
 
     def unregister_callback(self, callback_id: str):
