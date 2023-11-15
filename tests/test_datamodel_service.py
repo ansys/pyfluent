@@ -334,3 +334,14 @@ def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
     assert x.FileName() == "dummy_file_name.dummy_extn"
+
+
+@pytest.mark.codegen_required
+def test_add_on_deleted(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    task_object_state = meshing.workflow.TaskObject()
+
+    assert len(task_object_state) == 11
+
+    assert list(task_object_state.keys()) == sorted(meshing.workflow.TaskObject())
