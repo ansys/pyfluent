@@ -1,5 +1,6 @@
 from time import sleep
 
+from google.protobuf.json_format import MessageToDict
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
@@ -53,21 +54,18 @@ def test_event_subscription(new_mesh_session):
     e8 = request.eventrequest.add(rules="workflow")
     e8.commandExecutedEventRequest.path = ""
     e8.commandExecutedEventRequest.command = "InitializeWorkflow"
-    response = session.datamodel_service_se.subscribe_events(request)
+    response = session.datamodel_service_se.subscribe_events(MessageToDict(request))
     assert all(
         [
-            r.status == datamodel_se_pb2.STATUS_SUBSCRIBED and r.tag == t
-            for r, t in zip(response.response, tags)
+            r["status"] == datamodel_se_pb2.STATUS_SUBSCRIBED and r["tag"] == t
+            for r, t in zip(response, tags)
         ]
     )
-
-    request = datamodel_se_pb2.UnsubscribeEventsRequest()
-    request.tag.extend(tags)
-    response = session.datamodel_service_se.unsubscribe_events(request)
+    response = session.datamodel_service_se.unsubscribe_events(tags)
     assert all(
         [
-            r.status == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r.tag == t
-            for r, t in zip(response.response, tags)
+            r["status"] == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r["tag"] == t
+            for r, t in zip(response, tags)
         ]
     )
 
