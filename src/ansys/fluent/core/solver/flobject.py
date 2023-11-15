@@ -180,7 +180,7 @@ class Base:
         ppath = self._parent.python_path
         if not ppath:
             return self.python_name
-        return ppath + self.python_name
+        return ppath + "." + self.python_name
 
     def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
