@@ -118,7 +118,7 @@ class BaseSession:
     ):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
-        self._remote_file_handler = remote_file_handler
+        self.remote_file_handler = remote_file_handler
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)

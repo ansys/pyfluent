@@ -37,7 +37,7 @@ class Meshing(PureMeshing):
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self.fluent_connection,
-            remote_file_handler=self._remote_file_handler,
+            remote_file_handler=self.remote_file_handler,
         )
         delattr(self, "switch_to_solver")
         self.switched = True

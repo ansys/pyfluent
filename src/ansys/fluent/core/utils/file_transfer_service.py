@@ -138,6 +138,8 @@ class RemoteFileHandler:
         ------
         FileNotFoundError
             If a file does not exist.
+        ConnectionError
+            If PyPIM is not configured.
         """
         if pypim.is_configured():
             if os.path.isfile(file_name):
@@ -149,6 +151,10 @@ class RemoteFileHandler:
                 os.path.basename(file_name)
             ):
                 raise FileNotFoundError(f"{file_name} does not exist.")
+        elif not pypim.is_configured():
+            raise ConnectionError(
+                "Verify environment variable 'ANSYS_PLATFORM_INSTANCEMANAGEMENT_CONFIG'."
+            )
         if on_uploaded:
             on_uploaded(
                 os.path.basename(file_name) if pypim.is_configured() else file_name
@@ -165,6 +171,11 @@ class RemoteFileHandler:
             File name
         before_downloaded: Callable
             Write a file.
+
+        Raises
+        ------
+        ConnectionError
+            If PyPIM is not configured.
         """
         if before_downloaded:
             before_downloaded(
@@ -177,3 +188,7 @@ class RemoteFileHandler:
                 self._transfer_service.download(
                     os.path.basename(file_name), local_file_name="."
                 )
+        elif not pypim.is_configured():
+            raise ConnectionError(
+                "Verify environment variable 'ANSYS_PLATFORM_INSTANCEMANAGEMENT_CONFIG'."
+            )

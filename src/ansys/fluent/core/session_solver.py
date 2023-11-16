@@ -265,7 +265,7 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        self._remote_file_handler.upload(
+        self.remote_file_handler.upload(
             file_name=file_name,
             on_uploaded=(lambda file_name: self.file.read_case(file_name=file_name)),
         )
@@ -281,7 +281,7 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        self._remote_file_handler.download(
+        self.remote_file_handler.download(
             file_name=file_name,
             before_downloaded=(
                 lambda file_name: self.file.write_case(file_name=file_name)
