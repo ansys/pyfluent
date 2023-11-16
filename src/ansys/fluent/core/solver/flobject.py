@@ -32,7 +32,6 @@ import ansys.units as ansunits
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
-reals_with_units = False
 
 
 class InactiveObjectError(RuntimeError):
@@ -353,17 +352,15 @@ class Real(SettingsBase[RealType], Numerical):
     expression values.
     """
 
-    def get_state(self) -> StateT:
-        """Get the state of the object."""
-        if reals_with_units and self.get_attr("units-quantity"):
-            try:
-                unit = self._quantity_map(self.get_attr("units-quantity"))
-                value = float(self.to_python_keys(self.flproxy.get_var(self.path)))
-                quantity = ansunits.Quantity(value, quantity_map={unit: 1})
-                return quantity
-            except Exception as e:
-                print(f"Unable to construct 'Quantity'.", e)
-        return super().get_state()
+    def get_state_as_quantity(self) -> StateT:
+        """Get the state of the object as a Quantity."""
+        try:
+            unit = self._quantity_map(self.get_attr("units-quantity"))
+            value = float(self.to_python_keys(self.flproxy.get_var(self.path)))
+            quantity = ansunits.Quantity(value, quantity_map={unit: 1})
+            return quantity
+        except Exception as e:
+            print(f"Unable to construct 'Quantity'.", e)
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
