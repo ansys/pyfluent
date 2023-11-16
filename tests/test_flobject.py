@@ -918,7 +918,7 @@ def test_strings_with_allowed_values(load_static_mixer_case):
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_ansys_units_intigration(load_mixing_elbow_mesh):
+def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
 
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
