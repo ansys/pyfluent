@@ -27,7 +27,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
-import ansys.units as ansunits
+from ansys.units import Quantity, QuantityMap
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
@@ -352,21 +352,21 @@ class Real(SettingsBase[RealType], Numerical):
     expression values.
     """
 
-    def get_state_as_quantity(self) -> StateT:
+    def get_state_as_quantity(self) -> Quantity:
         """Get the state of the object as a Quantity."""
         try:
             unit = self._quantity_map(self.get_attr("units-quantity"))
-            value = float(self.to_python_keys(self.flproxy.get_var(self.path)))
-            quantity = ansunits.Quantity(value, quantity_map={unit: 1})
+            value = self.get_state()
+            quantity = Quantity(value, quantity_map={unit: 1})
             return quantity
         except Exception as e:
             print(f"Unable to construct 'Quantity'.", e)
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        if isinstance(state, ansunits.Quantity):
+        if isinstance(state, Quantity):
             unit = self._quantity_map(self.get_attr("units-quantity"))
-            state = state.to(ansunits.QuantityMap({unit: 1}).units)
+            state = state.to(QuantityMap({unit: 1}).units)
             return self.flproxy.set_var(
                 self.path, self.to_scheme_keys(state.si_value), **kwargs
             )
