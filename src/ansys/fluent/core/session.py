@@ -29,6 +29,8 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
+import ansys.platform.instancemanagement as pypim
 
 from .rpvars import RPVars
 
@@ -96,6 +98,8 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
+    _pim_methods = ["upload", "download"]
+
     def __init__(
         self,
         fluent_connection: FluentConnection,
@@ -110,6 +114,12 @@ class BaseSession:
         BaseSession.build_from_fluent_connection(
             self, fluent_connection, remote_file_handler
         )
+
+        BaseSession._get_uploader(fluent_connection)
+
+    def _get_uploader(self, fluent_connection: FluentConnection):
+        uploader = PimFileTransferService(fluent_connection._remote_instance)
+        return uploader
 
     def build_from_fluent_connection(
         self,
@@ -265,6 +275,38 @@ class BaseSession:
     def force_exit_container(self) -> None:
         """Terminate Docker container session."""
         self.fluent_connection.force_exit_container()
+
+    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
+        """Uploads a file on the server.
+        Parameters
+        ----------
+        file_name : str
+            file name
+        remote_file_name : str, optional
+            remote file name, by default None
+        """
+        uploader = BaseSession._get_uploader(self.fluent_connection)
+        return uploader.upload(file_name, remote_file_name)
+
+    def download(self, file_name: str, local_file_name: Optional[str] = None):
+        """Downloads a file from the server.
+        Parameters
+        ----------
+        file_name : str
+            file name
+        local_file_name : str, optional
+            local file path, by default None
+        """
+        uploader = BaseSession._get_uploader(self.fluent_connection)
+        return uploader.download(file_name, local_file_name)
+
+    def __dir__(self):
+        returned_list = sorted(set(list(self.__dict__.keys()) + dir(type(self))))
+        if not pypim.is_configured():
+            for method in BaseSession._pim_methods:
+                if method in returned_list:
+                    returned_list.remove(method)
+        return returned_list
 
     def __enter__(self):
         return self
