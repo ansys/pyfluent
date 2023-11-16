@@ -33,5 +33,5 @@ def test_solver_session_upload(new_solver_session):
 def test_solver_session_download(new_solver_session):
     session = new_solver_session
     with pytest.raises(ConnectionError) as e_info:
-        session.remote_file_handler.download("test_upload_download.py")
+        session.remote_file_handler.download(import_file_name)
     session.exit()
