@@ -277,7 +277,7 @@ class BaseSession:
         self.fluent_connection.force_exit_container()
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server.
+        """Upload a file on the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
         Parameters
         ----------
         file_name : str
@@ -289,7 +289,7 @@ class BaseSession:
         return uploader.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
-        """Downloads a file from the server.
+        """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
         Parameters
         ----------
         file_name : str
