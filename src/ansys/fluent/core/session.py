@@ -288,7 +288,7 @@ class BaseSession:
         uploader = _get_uploader(self.fluent_connection)
         return uploader.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_file_name: Optional[str] = None):
+    def download(self, file_name: str, local_file_name: Optional[str] = "."):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -296,7 +296,7 @@ class BaseSession:
         file_name : str
             file name
         local_file_name : str, optional
-            local file path, by default None
+            local file path, by default current directory
         """
         uploader = _get_uploader(self.fluent_connection)
         return uploader.download(file_name, local_file_name)

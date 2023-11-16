@@ -86,7 +86,7 @@ class PimFileTransferService:
         elif not pypim.is_configured():
             raise PyPIMConfigurationError()
 
-    def download(self, file_name: str, local_file_name: Optional[str] = "."):
+    def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -94,7 +94,7 @@ class PimFileTransferService:
         file_name : str
             file name
         local_file_name : str, optional
-            local file path, by default current directory
+            local file path, by default None
 
         Raises
         ------
