@@ -926,13 +926,13 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
 
     assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
-    assert solver.reals_with_units == False
-    solver.reals_with_units = True
-    assert solver.reals_with_units == True
-    assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
 
     hot_inlet.turbulence.hydraulic_diameter = 1
-    assert hot_inlet.turbulence.hydraulic_diameter() == Quantity(1, "m")
+    assert hot_inlet.turbulence.hydraulic_diameter.get_state_as_quantity() == Quantity(
+        1, "m"
+    )
 
     hot_inlet.turbulence.hydraulic_diameter = Quantity(1, "in")
-    assert hot_inlet.turbulence.hydraulic_diameter() == Quantity(0.0254, "m")
+    assert hot_inlet.turbulence.hydraulic_diameter.get_state_as_quantity() == Quantity(
+        0.0254, "m"
+    )
