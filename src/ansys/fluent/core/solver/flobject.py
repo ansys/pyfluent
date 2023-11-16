@@ -173,8 +173,7 @@ class Base:
     def python_path(self) -> str:
         """Path of the object.
 
-        Constructed in python syntax from 'python_path' and the parents python
-        path.
+        Constructed in python syntax from 'python_path' and the parents python path.
         """
         if self._parent is None:
             return "<session>"
