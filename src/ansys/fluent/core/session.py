@@ -278,7 +278,7 @@ class BaseSession:
         self.exit()
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Upload a file on the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        """Uploads a file on the server.
 
         Parameters
         ----------
@@ -301,7 +301,7 @@ class BaseSession:
         return self._uploader.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
-        """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        """Downloads a file from the server.
 
         Parameters
         ----------
