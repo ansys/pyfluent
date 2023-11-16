@@ -13,26 +13,26 @@ import_file_name = examples.download_file(
 def test_meshing_session_upload(new_mesh_session):
     session = new_mesh_session
     with pytest.raises(PyPIMConfigurationError) as e_info:
-        session.remote_file_handler.upload(import_file_name)
+        session.upload(import_file_name)
     session.exit()
 
 
 def test_meshing_session_download(new_mesh_session):
     session = new_mesh_session
     with pytest.raises(PyPIMConfigurationError) as e_info:
-        session.remote_file_handler.download(import_file_name)
+        session.download(import_file_name)
     session.exit()
 
 
 def test_solver_session_upload(new_solver_session):
     session = new_solver_session
     with pytest.raises(PyPIMConfigurationError) as e_info:
-        session.remote_file_handler.upload(import_file_name)
+        session.upload(import_file_name)
     session.exit()
 
 
 def test_solver_session_download(new_solver_session):
     session = new_solver_session
     with pytest.raises(PyPIMConfigurationError) as e_info:
-        session.remote_file_handler.download(import_file_name)
+        session.download(import_file_name)
     session.exit()
