@@ -29,8 +29,6 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
-import ansys.platform.instancemanagement as pypim
 
 from .rpvars import RPVars
 
@@ -121,7 +119,6 @@ class BaseSession:
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
         self._remote_file_handler = remote_file_handler
-        self._uploader = None
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -276,49 +273,3 @@ class BaseSession:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self.exit()
-
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Uploads a file on the server.
-
-        Parameters
-        ----------
-        file_name : str
-            file name
-        remote_file_name : str, optional
-            remote file name, by default None
-
-        Raises
-        ------
-        ConnectionError
-            If PyPIM is not configured.
-        """
-        if not pypim.is_configured():
-            raise ConnectionError("PyPIM is not configured.")
-        elif not self._uploader:
-            self._uploader = PimFileTransferService(
-                self.fluent_connection._remote_instance
-            )
-        return self._uploader.upload(file_name, remote_file_name)
-
-    def download(self, file_name: str, local_file_name: Optional[str] = None):
-        """Downloads a file from the server.
-
-        Parameters
-        ----------
-        file_name : str
-            file name
-        local_file_name : str, optional
-            local file path, by default None
-
-        Raises
-        ------
-        ConnectionError
-            If PyPIM is not configured.
-        """
-        if not pypim.is_configured():
-            raise ConnectionError("PyPIM is not configured.")
-        elif not self._uploader:
-            self._uploader = PimFileTransferService(
-                self.fluent_connection._remote_instance
-            )
-        return self._uploader.download(file_name, local_file_name)
