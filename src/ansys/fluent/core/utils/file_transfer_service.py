@@ -4,6 +4,15 @@ from typing import Any, Callable, Optional  # noqa: F401
 import ansys.platform.instancemanagement as pypim
 
 
+class PyPIMConfigurationError(ConnectionError):
+    """Provides the error when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
+
+    def __init__(self):
+        super().__init__(
+            "Verify the value of the 'ANSYS_PLATFORM_INSTANCEMANAGEMENT_CONFIG' environment variable."
+        )
+
+
 class PimFileTransferService:
     """Instantiates a file uploader and downloader to have a seamless file reading /
     writing in the cloud particularly in Ansys lab . Here we are exposing upload and
@@ -138,7 +147,7 @@ class RemoteFileHandler:
         ------
         FileNotFoundError
             If a file does not exist.
-        ConnectionError
+        PyPIMConfigurationError
             If PyPIM is not configured.
         """
         if pypim.is_configured():
@@ -152,9 +161,7 @@ class RemoteFileHandler:
             ):
                 raise FileNotFoundError(f"{file_name} does not exist.")
         elif not pypim.is_configured():
-            raise ConnectionError(
-                "Verify environment variable 'ANSYS_PLATFORM_INSTANCEMANAGEMENT_CONFIG'."
-            )
+            raise PyPIMConfigurationError()
         if on_uploaded:
             on_uploaded(
                 os.path.basename(file_name) if pypim.is_configured() else file_name
@@ -174,7 +181,7 @@ class RemoteFileHandler:
 
         Raises
         ------
-        ConnectionError
+        PyPIMConfigurationError
             If PyPIM is not configured.
         """
         if before_downloaded:
@@ -189,6 +196,4 @@ class RemoteFileHandler:
                     os.path.basename(file_name), local_file_name="."
                 )
         elif not pypim.is_configured():
-            raise ConnectionError(
-                "Verify environment variable 'ANSYS_PLATFORM_INSTANCEMANAGEMENT_CONFIG'."
-            )
+            raise PyPIMConfigurationError()
