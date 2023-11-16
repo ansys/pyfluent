@@ -8,9 +8,7 @@ class PyPIMConfigurationError(ConnectionError):
     """Provides the error when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
 
     def __init__(self):
-        super().__init__(
-            "Verify the value of the 'ANSYS_PLATFORM_INSTANCEMANAGEMENT_CONFIG' environment variable."
-        )
+        super().__init__("PyPIM is not configured.")
 
 
 class PimFileTransferService:
