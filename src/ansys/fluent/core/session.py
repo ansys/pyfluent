@@ -78,6 +78,11 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
+def _get_uploader(fluent_connection: FluentConnection):
+    uploader = PimFileTransferService(fluent_connection._remote_instance)
+    return uploader
+
+
 class BaseSession:
     """Instantiates a Fluent connection.
 
@@ -114,12 +119,6 @@ class BaseSession:
         BaseSession.build_from_fluent_connection(
             self, fluent_connection, remote_file_handler
         )
-
-        BaseSession._get_uploader(self, fluent_connection)
-
-    def _get_uploader(self, fluent_connection: FluentConnection):
-        uploader = PimFileTransferService(fluent_connection._remote_instance)
-        return uploader
 
     def build_from_fluent_connection(
         self,
@@ -278,6 +277,7 @@ class BaseSession:
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Upload a file on the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+
         Parameters
         ----------
         file_name : str
@@ -285,11 +285,12 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        uploader = BaseSession._get_uploader(self, self.fluent_connection)
+        uploader = _get_uploader(self.fluent_connection)
         return uploader.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+
         Parameters
         ----------
         file_name : str
@@ -297,7 +298,7 @@ class BaseSession:
         local_file_name : str, optional
             local file path, by default None
         """
-        uploader = BaseSession._get_uploader(self, self.fluent_connection)
+        uploader = _get_uploader(self.fluent_connection)
         return uploader.download(file_name, local_file_name)
 
     def __dir__(self):
