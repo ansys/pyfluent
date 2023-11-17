@@ -157,6 +157,13 @@ class DatamodelService(StreamingService):
         return self._stub.setState(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def fix_state(
+        self, request: DataModelProtoModule.FixStateRequest
+    ) -> DataModelProtoModule.FixStateResponse:
+        """setState RPC of DataModel service."""
+        return self._stub.fixState(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
@@ -421,38 +428,13 @@ class PyStateContainer(PyCallableStateObject):
 
     getState = get_state
 
-    def get_object_names(self) -> Any:
-        request = DataModelProtoModule.GetStateRequest()
+    def fix_state(self) -> None:
+        request = DataModelProtoModule.FixStateRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
-        response = self.service.get_object_names(request)
-        return response.names
+        self.service.fix_state(request)
 
-    def rename(self, new_name) -> None:
-        request = DataModelProtoModule.RenameRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        request.new_name = new_name
-        request.wait = True
-        self.service.rename(request)
-
-    def delete_child_objects(self, child_names=None, delete_all=None):
-        request = DataModelProtoModule.DeleteChildObjectsRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        if child_names and delete_all:
-            request.delete_all = delete_all
-        elif child_names:
-            for name in child_names:
-                request.child_names.names.append(name)
-        elif delete_all is not None:
-            request.delete_all = delete_all
-        else:
-            raise RuntimeError(
-                "Please provide child names or activate delete-all flag."
-            )
-        request.wait = True
-        self.service.delete_child_objects(request)
+    fixState = fix_state
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
@@ -664,15 +646,6 @@ class PyMenu(PyStateContainer):
         raise AttributeError("This method is yet to be implemented in pyfluent.")
 
     def delete_child(self) -> None:
-        self._raise_method_not_yet_implemented_exception()
-
-    def delete_child_objects(self) -> None:
-        self._raise_method_not_yet_implemented_exception()
-
-    def delete_all_child_objects(self) -> None:
-        self._raise_method_not_yet_implemented_exception()
-
-    def fix_state(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
     def create_command_arguments(self, command: str) -> str:
@@ -985,8 +958,43 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
-    def get_object_names(self) -> list[str]:
-        return self._get_child_object_display_names()
+    def get_object_names(self) -> Any:
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_object_names(request)
+        return response.names
+
+    getChildObjectDisplayNames = get_object_names
+
+    def rename(self, new_name) -> None:
+        request = DataModelProtoModule.RenameRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.new_name = new_name
+        request.wait = True
+        self.service.rename(request)
+
+    def delete_child_objects(self, child_names):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        for name in child_names:
+            request.child_names.names.append(name)
+        request.wait = True
+        self.service.delete_child_objects(request)
+
+    deleteChildObjects = delete_child_objects
+
+    def delete_all_child_objects(self):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.delete_all = True
+        request.wait = True
+        self.service.delete_child_objects(request)
+
+    deleteAllChildObjects = delete_all_child_objects
 
     def __len__(self) -> int:
         """Return a count of child objects.
