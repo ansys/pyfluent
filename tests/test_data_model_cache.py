@@ -11,7 +11,13 @@ from ansys.fluent.core.services.datamodel_se import _convert_value_to_variant
 
 class Fake:
     def __init__(self, path):
-        self.path = path
+        if isinstance(path, str):
+            self.path = [
+                comp.split(":") if ":" in comp else [comp, ""]
+                for comp in path.split("/")
+            ]
+        else:
+            self.path = path
 
 
 @pytest.fixture
@@ -244,3 +250,144 @@ def test_internal_names_as_keys(new_watertight_workflow_session, clear_cache):
         not in DataModelCache.rules_str_to_cache["workflow"]
     )
     assert "TaskObject:TaskObject1" in DataModelCache.rules_str_to_cache["workflow"]
+
+
+@pytest.mark.parametrize(
+    "cache,internal_names_as_keys_in_config,path,internal_names_in_keys,state",
+    [
+        ({"A": {"B": {"C": 2}}}, True, "A/B", True, {"C": 2}),
+        (
+            {"A": {"B:B1": {"C:C1": {"_name_": "C-1"}, "_name_": "B-1"}}},
+            True,
+            "A/B:B-1",
+            False,
+            {"C:C-1": {"_name_": "C-1"}, "_name_": "B-1"},
+        ),
+        (
+            {"A": {"B:B-1": {"C:C-1": {"__iname__": "C1"}, "__iname__": "B1"}}},
+            False,
+            "A/B:B1",
+            True,
+            {"C:C1": {"__iname__": "C1"}, "__iname__": "B1"},
+        ),
+        (
+            {"A": {"B:B1": {"C": 2, "_name_": "B-1"}}},
+            True,
+            "A/B:B-2",
+            False,
+            DataModelCache.Empty,
+        ),
+    ],
+)
+def test_cache_get_state(
+    cache, internal_names_as_keys_in_config, path, internal_names_in_keys, state
+):
+    rules = "x"
+    DataModelCache.set_config(
+        rules, "internal_names_as_keys", internal_names_as_keys_in_config
+    )
+    cache_rules = DataModelCache.rules_str_to_cache
+    cache_rules.clear()
+    cache_rules[rules] = cache
+    assert state == DataModelCache.get_state(rules, Fake(path), internal_names_in_keys)
+
+
+@pytest.mark.parametrize(
+    "initial_cache,internal_names_as_keys_in_config,path,value,internal_names_in_keys,final_cache",
+    [
+        ({"A": 2}, True, "A/B", {"C": {"D": 2}}, True, {"A": {"B": {"C": {"D": 2}}}}),
+        (
+            {"A": {"B": 2}},
+            True,
+            "A/B",
+            {"C": {"D": 2}},
+            True,
+            {"A": {"B": {"C": {"D": 2}}}},
+        ),
+        (
+            {"A": {"B": {"C": 2}}},
+            True,
+            "A/B",
+            {"C": {"D": 2}},
+            True,
+            {"A": {"B": {"C": {"D": 2}}}},
+        ),
+        (
+            {"A": {"B": {"C": {"D": 1}}}},
+            True,
+            "A/B",
+            {"C": {"D": 2}},
+            True,
+            {"A": {"B": {"C": {"D": 2}}}},
+        ),
+        (
+            {"A": {"B:B1": {"C:C1": {"_name_": "C-1"}, "_name_": "B-1"}}},
+            True,
+            "A/B:B-1",
+            {"C:C-1": {"D": 2}},
+            False,
+            {"A": {"B:B1": {"C:C1": {"_name_": "C-1", "D": 2}, "_name_": "B-1"}}},
+        ),
+        (
+            {"A": {"B:B1": {"C:C1": {"_name_": "C-1"}, "_name_": "B-1"}}},
+            True,
+            "A/B:B-1",
+            {"C:C-1": {"D:D-1": {"__iname__": "D1"}}},
+            False,
+            {
+                "A": {
+                    "B:B1": {
+                        "C:C1": {
+                            "_name_": "C-1",
+                            "D:D1": {"__iname__": "D1", "_name_": "D-1"},
+                        },
+                        "_name_": "B-1",
+                    }
+                }
+            },
+        ),
+        (
+            {"A": {"B:B-1": {"C:C-1": {"__iname__": "C1"}, "__iname__": "B1"}}},
+            False,
+            "A/B:B1",
+            {"C:C1": {"D": 2}},
+            True,
+            {"A": {"B:B-1": {"C:C-1": {"__iname__": "C1", "D": 2}, "__iname__": "B1"}}},
+        ),
+        (
+            {"A": {"B:B-1": {"C:C-1": {"__iname__": "C1"}, "__iname__": "B1"}}},
+            False,
+            "A/B:B1",
+            {"C:C1": {"D:D1": {"_name_": "D-1"}}},
+            True,
+            {
+                "A": {
+                    "B:B-1": {
+                        "C:C-1": {
+                            "__iname__": "C1",
+                            "D:D-1": {"__iname__": "D1", "_name_": "D-1"},
+                        },
+                        "__iname__": "B1",
+                    }
+                }
+            },
+        ),
+    ],
+)
+def test_cache_set_state(
+    initial_cache,
+    internal_names_as_keys_in_config,
+    path,
+    value,
+    internal_names_in_keys,
+    final_cache,
+):
+    rules = "x"
+    DataModelCache.set_config(
+        rules, "internal_names_as_keys", internal_names_as_keys_in_config
+    )
+    cache_rules = DataModelCache.rules_str_to_cache
+    cache_rules.clear()
+    cache_rules[rules] = initial_cache
+    DataModelCache.set_state(rules, Fake(path), value, internal_names_in_keys)
+    assert final_cache == cache_rules[rules]
