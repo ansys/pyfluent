@@ -74,7 +74,9 @@ class PimFileTransferService:
         PyPIMConfigurationError
             If PyPIM is not configured.
         """
-        if self.file_service:
+        if not pypim.is_configured():
+            raise PyPIMConfigurationError()
+        elif self.file_service:
             if os.path.isfile(file_name):
                 expanded_file_path = os.path.expandvars(file_name)
                 upload_file_name = remote_file_name or os.path.basename(
@@ -83,8 +85,6 @@ class PimFileTransferService:
                 self.file_service.upload_file(expanded_file_path, upload_file_name)
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
-        elif not pypim.is_configured():
-            raise PyPIMConfigurationError()
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -103,13 +103,13 @@ class PimFileTransferService:
         PyPIMConfigurationError
             If PyPIM is not configured.
         """
-        if self.file_service:
+        if not pypim.is_configured():
+            raise PyPIMConfigurationError()
+        elif self.file_service:
             if self.file_service.file_exist(file_name):
                 self.file_service.download_file(file_name, local_file_name)
             else:
                 raise FileNotFoundError("Remote file does not exist.")
-        elif not pypim.is_configured():
-            raise PyPIMConfigurationError()
 
 
 class RemoteFileHandler:
