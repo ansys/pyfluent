@@ -769,12 +769,13 @@ class DockerLauncher(Launcher):
 
 
 def create_launcher(fluent_launch_mode):
-    if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher()
-    elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher()
-    elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher()
+    match fluent_launch_mode:
+        case LaunchMode.STANDALONE:
+            return StandaloneLauncher()
+        case LaunchMode.CONTAINER:
+            return DockerLauncher()
+        case LaunchMode.PIM:
+            return PIMLauncher()
 
 
 #   pylint: disable=unused-argument

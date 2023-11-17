@@ -62,14 +62,14 @@ def test_container_launcher():
                 start_container=True, dry_run=True
             )
 
-    # test dry_run
-    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-    assert isinstance(container_dict, dict)
-    assert len(container_dict) > 1
+    if check_docker_support():
+        container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+        assert isinstance(container_dict, dict)
+        assert len(container_dict) > 1
 
-    # test run with configuration dict
-    session = pyfluent.launch_fluent(container_dict=container_dict)
-    assert session.health_check_service.is_serving
+        # test run with configuration dict
+        session = pyfluent.launch_fluent(container_dict=container_dict)
+        assert session.health_check_service.is_serving
 
 
 def test_gpu_launch_arg(monkeypatch):
