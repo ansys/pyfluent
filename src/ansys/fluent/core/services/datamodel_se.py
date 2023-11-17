@@ -426,7 +426,7 @@ class PyStateContainer(PyCallableStateObject):
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
         response = self.service.get_object_names(request)
-        return _convert_variant_to_value(response.state)
+        return response.names
 
     def rename(self, new_name) -> None:
         request = DataModelProtoModule.RenameRequest()
@@ -434,17 +434,17 @@ class PyStateContainer(PyCallableStateObject):
         request.path = convert_path_to_se_path(self.path)
         request.new_name = new_name
         request.wait = True
-        response = self.service.rename(request)
-        return _convert_variant_to_value(response.state)
+        self.service.rename(request)
 
-    def delete_child_objects(self, child_names, delete_all=None):
+    def delete_child_objects(self, child_names=None, delete_all=None):
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
         if child_names and delete_all:
             request.delete_all = delete_all
         elif child_names:
-            request.child_names = child_names
+            for name in child_names:
+                request.child_names.names.append(name)
         elif delete_all is not None:
             request.delete_all = delete_all
         else:
@@ -452,8 +452,7 @@ class PyStateContainer(PyCallableStateObject):
                 "Please provide child names or activate delete-all flag."
             )
         request.wait = True
-        response = self.service.rename(request)
-        return _convert_variant_to_value(response.state)
+        self.service.delete_child_objects(request)
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
