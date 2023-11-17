@@ -63,6 +63,7 @@ def test_container_launcher():
             )
 
     if check_docker_support():
+        # test dry_run
         container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
         assert isinstance(container_dict, dict)
         assert len(container_dict) > 1
