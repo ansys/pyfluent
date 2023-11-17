@@ -679,8 +679,12 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
         turbulent_viscosity_ratio = velocity_inlet[
             "inlet1"
         ].turbulence.turbulent_viscosity_ratio_real
+
         path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio_real'
+        name = "turbulent_viscosity_ratio_real"
+
         assert turbulent_viscosity_ratio.python_path == path
+        assert turbulent_viscosity_ratio.python_name == name
 
     assert turbulent_viscosity_ratio.default_value() == 10
     assert turbulent_viscosity_ratio.get_attr("min") == 0
