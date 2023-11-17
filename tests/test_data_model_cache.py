@@ -14,7 +14,13 @@ class Fake:
         self.path = path
 
 
-def test_data_model_cache():
+@pytest.fixture
+def clear_cache():
+    yield
+    DataModelCache.rules_str_to_cache.clear()
+
+
+def test_data_model_cache(clear_cache):
     DataModelCache.set_state("x", Fake([("A", ""), ("x", "")]), 42.0)
     assert 42.0 == DataModelCache.get_state("x", Fake([("A", ""), ("x", "")]))
     assert dict(x=42.0) == DataModelCache.get_state("x", Fake([("A", "")]))
@@ -202,12 +208,6 @@ def test_update_cache_internal_names_as_keys(
     _convert_value_to_variant(state, var)
     DataModelCache.update_cache(rules, var, deleted_paths)
     assert cache_rules == final_cache
-
-
-@pytest.fixture
-def clear_cache():
-    yield
-    DataModelCache.rules_str_to_cache.clear()
 
 
 @pytest.mark.fluent_version(">=23.1")
