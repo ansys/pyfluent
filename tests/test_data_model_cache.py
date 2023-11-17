@@ -1,4 +1,8 @@
 import pytest
+from util.meshing_workflow import (  # noqa: F401
+    new_mesh_session,
+    new_watertight_workflow_session,
+)
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache
@@ -200,12 +204,43 @@ def test_update_cache_internal_names_as_keys(
     assert cache_rules == final_cache
 
 
+@pytest.fixture
+def clear_cache():
+    yield
+    DataModelCache.rules_str_to_cache.clear()
+
+
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_get_cached_values_in_command_arguments(new_mesh_session):
+def test_get_cached_values_in_command_arguments(new_mesh_session, clear_cache):
     new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geo_import = new_mesh_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName="Bob")
     geo_import.Arguments = dict(FileName=None)
     assert "FileName" in geo_import.CommandArguments()
     assert geo_import.CommandArguments()["FileName"] is None
+
+
+@pytest.fixture
+def display_names_as_keys_in_cache():
+    rules_list = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
+    for rules in rules_list:
+        DataModelCache.set_config(rules, "internal_names_as_keys", False)
+    yield
+    for rules in rules_list:
+        DataModelCache.set_config(rules, "internal_names_as_keys", True)
+
+
+def test_display_names_as_keys(
+    display_names_as_keys_in_cache, new_watertight_workflow_session, clear_cache
+):
+    assert "TaskObject:Import Geometry" in DataModelCache.rules_str_to_cache["workflow"]
+    assert "TaskObject:TaskObject1" not in DataModelCache.rules_str_to_cache["workflow"]
+
+
+def test_internal_names_as_keys(new_watertight_workflow_session, clear_cache):
+    assert (
+        "TaskObject:Import Geometry"
+        not in DataModelCache.rules_str_to_cache["workflow"]
+    )
+    assert "TaskObject:TaskObject1" in DataModelCache.rules_str_to_cache["workflow"]
