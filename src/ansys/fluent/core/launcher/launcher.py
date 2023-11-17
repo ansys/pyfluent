@@ -982,6 +982,7 @@ def launch_fluent(
             )
 
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
+    argvals = locals().copy()
     argvals["new_session"] = new_session
     argvals["argvals"] = argvals
 
