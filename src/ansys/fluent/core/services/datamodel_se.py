@@ -1435,7 +1435,7 @@ class DataModelType(Enum):
 class PyMenuGeneric(PyMenu):
     """Generic PyMenu class for when generated API code is not available."""
 
-    attrs = ("service", "rules", "path")
+    attrs = ("service", "rules", "path", "cached_attrs")
 
     def _get_child_names(self) -> tuple[list, list, list]:
         request = DataModelProtoModule.GetSpecsRequest()
