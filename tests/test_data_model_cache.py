@@ -293,15 +293,14 @@ def test_cache_get_state(
 
 
 @pytest.mark.parametrize(
-    "initial_cache,internal_names_as_keys_in_config,path,value,internal_names_in_keys,final_cache",
+    "initial_cache,internal_names_as_keys_in_config,path,value,final_cache",
     [
-        ({"A": 2}, True, "A/B", {"C": {"D": 2}}, True, {"A": {"B": {"C": {"D": 2}}}}),
+        ({"A": 2}, True, "A/B", {"C": {"D": 2}}, {"A": {"B": {"C": {"D": 2}}}}),
         (
             {"A": {"B": 2}},
             True,
             "A/B",
             {"C": {"D": 2}},
-            True,
             {"A": {"B": {"C": {"D": 2}}}},
         ),
         (
@@ -309,7 +308,6 @@ def test_cache_get_state(
             True,
             "A/B",
             {"C": {"D": 2}},
-            True,
             {"A": {"B": {"C": {"D": 2}}}},
         ),
         (
@@ -317,7 +315,6 @@ def test_cache_get_state(
             True,
             "A/B",
             {"C": {"D": 2}},
-            True,
             {"A": {"B": {"C": {"D": 2}}}},
         ),
         (
@@ -325,7 +322,6 @@ def test_cache_get_state(
             True,
             "A/B:B-1",
             {"C:C-1": {"D": 2}},
-            False,
             {"A": {"B:B1": {"C:C1": {"_name_": "C-1", "D": 2}, "_name_": "B-1"}}},
         ),
         (
@@ -333,13 +329,29 @@ def test_cache_get_state(
             True,
             "A/B:B-1",
             {"C:C-1": {"D:D-1": {"__iname__": "D1"}}},
-            False,
             {
                 "A": {
                     "B:B1": {
                         "C:C1": {
                             "_name_": "C-1",
-                            "D:D1": {"__iname__": "D1", "_name_": "D-1"},
+                            "D:D1": {"__iname__": "D1"},
+                        },
+                        "_name_": "B-1",
+                    }
+                }
+            },
+        ),
+        (
+            {"A": {"B:B1": {"C:C1": {"_name_": "C-1"}, "_name_": "B-1"}}},
+            True,
+            "A/B:B1",
+            {"C:C1": {"D:D1": {"_name_": "D-1"}}},
+            {
+                "A": {
+                    "B:B1": {
+                        "C:C1": {
+                            "_name_": "C-1",
+                            "D:D1": {"_name_": "D-1"},
                         },
                         "_name_": "B-1",
                     }
@@ -351,7 +363,6 @@ def test_cache_get_state(
             False,
             "A/B:B1",
             {"C:C1": {"D": 2}},
-            True,
             {"A": {"B:B-1": {"C:C-1": {"__iname__": "C1", "D": 2}, "__iname__": "B1"}}},
         ),
         (
@@ -359,13 +370,29 @@ def test_cache_get_state(
             False,
             "A/B:B1",
             {"C:C1": {"D:D1": {"_name_": "D-1"}}},
-            True,
             {
                 "A": {
                     "B:B-1": {
                         "C:C-1": {
                             "__iname__": "C1",
-                            "D:D-1": {"__iname__": "D1", "_name_": "D-1"},
+                            "D:D-1": {"_name_": "D-1"},
+                        },
+                        "__iname__": "B1",
+                    }
+                }
+            },
+        ),
+        (
+            {"A": {"B:B-1": {"C:C-1": {"__iname__": "C1"}, "__iname__": "B1"}}},
+            False,
+            "A/B:B-1",
+            {"C:C-1": {"D:D-1": {"__iname__": "D1"}}},
+            {
+                "A": {
+                    "B:B-1": {
+                        "C:C-1": {
+                            "__iname__": "C1",
+                            "D:D-1": {"__iname__": "D1"},
                         },
                         "__iname__": "B1",
                     }
@@ -379,7 +406,6 @@ def test_cache_set_state(
     internal_names_as_keys_in_config,
     path,
     value,
-    internal_names_in_keys,
     final_cache,
 ):
     rules = "x"
@@ -389,5 +415,5 @@ def test_cache_set_state(
     cache_rules = DataModelCache.rules_str_to_cache
     cache_rules.clear()
     cache_rules[rules] = initial_cache
-    DataModelCache.set_state(rules, Fake(path), value, internal_names_in_keys)
+    DataModelCache.set_state(rules, Fake(path), value)
     assert final_cache == cache_rules[rules]
