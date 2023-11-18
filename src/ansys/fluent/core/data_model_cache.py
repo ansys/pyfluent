@@ -196,9 +196,11 @@ class DataModelCache:
         return [DataModelCache._dm_path_comp(comp) for comp in obj.path]
 
     @staticmethod
-    def _find_by_display_name_in_internal_name_dict(
+    def _find_in_internal_name_dict(
         d: dict[str, Any], key: str, default: Any
     ) -> tuple[str, Any]:
+        if key in d:
+            return key, d[key]
         if ":" in key:
             type_, name = key.split(":")
             return next(
@@ -209,13 +211,14 @@ class DataModelCache:
                 ),
                 (None, default),
             )
-        else:
-            return key, d.get(key, default)
+        return key, default
 
     @staticmethod
-    def _find_by_internal_name_in_display_name_dict(
+    def _find_in_display_name_dict(
         d: dict[str, Any], key: str, default: Any
     ) -> tuple[str, Any]:
+        if key in d:
+            return key, d[key]
         if ":" in key:
             type_, name = key.split(":")
             return next(
@@ -227,12 +230,10 @@ class DataModelCache:
                 (None, default),
             )
         else:
-            return key, d.get(key, default)
+            return key, default
 
     @staticmethod
-    def _transform_internal_name_dict_by_display_names(
-        d_in: dict[str, Any], add_missing=False
-    ):
+    def _transform_internal_name_dict_by_display_names(d_in: dict[str, Any]):
         d_out = {}
         for k_in, v_in in d_in.items():
             k_out = f'{k_in.split(":")[0]}:{v_in["_name_"]}' if ":" in k_in else k_in
@@ -240,16 +241,12 @@ class DataModelCache:
                 d_out[
                     k_out
                 ] = DataModelCache._transform_internal_name_dict_by_display_names(v_in)
-                if add_missing and ":" in k_in:
-                    d_out[k_out]["__iname__"] = k_in.split(":")[1]
             else:
                 d_out[k_out] = v_in
         return d_out
 
     @staticmethod
-    def _transform_display_name_dict_by_internal_names(
-        d_in: dict[str, Any], add_missing=False
-    ):
+    def _transform_display_name_dict_by_internal_names(d_in: dict[str, Any]):
         d_out = {}
         for k_in, v_in in d_in.items():
             k_out = f'{k_in.split(":")[0]}:{v_in["__iname__"]}' if ":" in k_in else k_in
@@ -257,64 +254,49 @@ class DataModelCache:
                 d_out[
                     k_out
                 ] = DataModelCache._transform_display_name_dict_by_internal_names(v_in)
-                if add_missing and ":" in k_in:
-                    d_out[k_out]["_name_"] = k_in.split(":")[1]
             else:
                 d_out[k_out] = v_in
         return d_out
 
     @staticmethod
-    def _update_dict(d: dict[str, Any], d1: dict[str, Any]):
+    def _update_internal_name_dict(d: dict[str, Any], d1: dict[str, Any]):
         for k1, v1 in d1.items():
-            v = d.get(k1, None)
+            k, v = DataModelCache._find_in_internal_name_dict(d, k1, None)
             if isinstance(v, abc.Mapping) and isinstance(v1, abc.Mapping):
-                DataModelCache._update_dict(v, v1)
-            else:
-                d[k1] = v1
-
-    @staticmethod
-    def _update_internal_name_dict_with_display_name_dict(
-        d: dict[str, Any], d1: dict[str, Any]
-    ):
-        for k1, v1 in d1.items():
-            k, v = DataModelCache._find_by_display_name_in_internal_name_dict(
-                d, k1, None
-            )
-            if isinstance(v, abc.Mapping) and isinstance(v1, abc.Mapping):
-                DataModelCache._update_internal_name_dict_with_display_name_dict(v, v1)
+                DataModelCache._update_internal_name_dict(v, v1)
             else:
                 if isinstance(v1, abc.Mapping):
-                    k = f'{k1.split(":")[0]}:{v1["__iname__"]}' if ":" in k1 else k1
+                    k = (
+                        f'{k1.split(":")[0]}:{v1.get("__iname__", k1.split(":")[1])}'
+                        if ":" in k1
+                        else k1
+                    )
                     d[
                         k
                     ] = DataModelCache._transform_display_name_dict_by_internal_names(
-                        v1, True
+                        v1
                     )
-                    if ":" in k1:
-                        d[k]["_name_"] = k1.split(":")[1]
                 else:
                     d[k] = v1
 
     @staticmethod
-    def _update_display_name_dict_with_internal_name_dict(
-        d: dict[str, Any], d1: dict[str, Any]
-    ):
+    def _update_display_name_dict(d: dict[str, Any], d1: dict[str, Any]):
         for k1, v1 in d1.items():
-            k, v = DataModelCache._find_by_internal_name_in_display_name_dict(
-                d, k1, None
-            )
+            k, v = DataModelCache._find_in_display_name_dict(d, k1, None)
             if isinstance(v, abc.Mapping) and isinstance(v1, abc.Mapping):
-                DataModelCache._update_display_name_dict_with_internal_name_dict(v, v1)
+                DataModelCache._update_display_name_dict(v, v1)
             else:
                 if isinstance(v1, abc.Mapping):
-                    k = f'{k1.split(":")[0]}:{v1["_name_"]}' if ":" in k1 else k1
+                    k = (
+                        f'{k1.split(":")[0]}:{v1.get("_name_", k1.split(":")[1])}'
+                        if ":" in k1
+                        else k1
+                    )
                     d[
                         k
                     ] = DataModelCache._transform_internal_name_dict_by_display_names(
-                        v1, True
+                        v1
                     )
-                    if ":" in k1:
-                        d[k]["__iname__"] = k1.split(":")[1]
                 else:
                     d[k] = v1
 
@@ -328,11 +310,13 @@ class DataModelCache:
             datamodel rules
         obj : object
             datamodel object
+        internal_names_as_keys : bool
+            if True, returned state will hold internal names as keys
 
         Returns
         -------
-        _type_
-            _description_
+        state : Any
+            cached state
         """
         internal_names_as_keys_in_config = DataModelCache.get_config(
             rules, "internal_names_as_keys"
@@ -347,13 +331,9 @@ class DataModelCache:
             if internal_names_as_keys == internal_names_as_keys_in_config:
                 cache = cache.get(comp, None)
             elif not internal_names_as_keys and internal_names_as_keys_in_config:
-                _, cache = DataModelCache._find_by_display_name_in_internal_name_dict(
-                    cache, comp, None
-                )
+                _, cache = DataModelCache._find_in_internal_name_dict(cache, comp, None)
             else:
-                _, cache = DataModelCache._find_by_internal_name_in_display_name_dict(
-                    cache, comp, None
-                )
+                _, cache = DataModelCache._find_in_display_name_dict(cache, comp, None)
             if cache is None:
                 return DataModelCache.Empty
 
@@ -365,7 +345,7 @@ class DataModelCache:
             return DataModelCache._transform_display_name_dict_by_internal_names(cache)
 
     @staticmethod
-    def set_state(rules: str, obj: object, value: Any, internal_names_as_keys=None):
+    def set_state(rules: str, obj: object, value: Any):
         """Set datamodel cache state.
 
         Parameters
@@ -380,42 +360,28 @@ class DataModelCache:
         internal_names_as_keys_in_config = DataModelCache.get_config(
             rules, "internal_names_as_keys"
         )
-        if internal_names_as_keys == None:
-            internal_names_as_keys = internal_names_as_keys_in_config
         cache = DataModelCache.rules_str_to_cache[rules]
         comps = DataModelCache._dm_path_comp_list(obj)
         for comp in comps:
-            if internal_names_as_keys == internal_names_as_keys_in_config:
-                key, next_cache = comp, cache.get(comp, None)
-            elif not internal_names_as_keys and internal_names_as_keys_in_config:
+            if internal_names_as_keys_in_config:
                 (
                     key,
                     next_cache,
-                ) = DataModelCache._find_by_display_name_in_internal_name_dict(
-                    cache, comp, None
-                )
+                ) = DataModelCache._find_in_internal_name_dict(cache, comp, None)
             else:
                 (
                     key,
                     next_cache,
-                ) = DataModelCache._find_by_internal_name_in_display_name_dict(
-                    cache, comp, None
-                )
+                ) = DataModelCache._find_in_display_name_dict(cache, comp, None)
             if isinstance(next_cache, abc.Mapping):
                 cache = next_cache
             else:
                 cache[key] = {}
                 cache = cache[key]
         if isinstance(value, abc.Mapping):
-            if internal_names_as_keys == internal_names_as_keys_in_config:
-                DataModelCache._update_dict(cache, value)
-            elif not internal_names_as_keys and internal_names_as_keys_in_config:
-                DataModelCache._update_internal_name_dict_with_display_name_dict(
-                    cache, value
-                )
+            if internal_names_as_keys_in_config:
+                DataModelCache._update_internal_name_dict(cache, value)
             else:
-                DataModelCache._update_display_name_dict_with_internal_name_dict(
-                    cache, value
-                )
+                DataModelCache._update_display_name_dict(cache, value)
         else:
             cache[key] = value
