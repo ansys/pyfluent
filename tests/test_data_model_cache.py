@@ -334,7 +334,7 @@ def test_cache_get_state(
                     "B:B1": {
                         "C:C1": {
                             "_name_": "C-1",
-                            "D:D1": {"__iname__": "D1"},
+                            "D:D1": {"__iname__": "D1", "_name_": "D-1"},
                         },
                         "_name_": "B-1",
                     }
@@ -351,7 +351,7 @@ def test_cache_get_state(
                     "B:B1": {
                         "C:C1": {
                             "_name_": "C-1",
-                            "D:D1": {"_name_": "D-1"},
+                            "D:D1": {"_name_": "D-1", "__iname__": "D1"},
                         },
                         "_name_": "B-1",
                     }
@@ -375,7 +375,7 @@ def test_cache_get_state(
                     "B:B-1": {
                         "C:C-1": {
                             "__iname__": "C1",
-                            "D:D-1": {"_name_": "D-1"},
+                            "D:D-1": {"_name_": "D-1", "__iname__": "D1"},
                         },
                         "__iname__": "B1",
                     }
@@ -392,7 +392,7 @@ def test_cache_get_state(
                     "B:B-1": {
                         "C:C-1": {
                             "__iname__": "C1",
-                            "D:D-1": {"__iname__": "D1"},
+                            "D:D-1": {"__iname__": "D1", "_name_": "D-1"},
                         },
                         "__iname__": "B1",
                     }
