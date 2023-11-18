@@ -326,8 +326,8 @@ class DataModelCache:
         obj : object
             datamodel object, optional
         internal_names_as_keys : bool
-            if True, the returned state will hold internal names as keys.
-            if False, the returned state will hold display names as keys.
+            if True, the returned state will contain internal names in keys.
+            if False, the returned state will contain display names in keys.
             Default value is picked from configuration.
 
         Returns
