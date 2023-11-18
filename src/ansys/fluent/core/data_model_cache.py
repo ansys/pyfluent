@@ -325,12 +325,7 @@ class DataModelCache:
         cache = DataModelCache.rules_str_to_cache[rules]
         comps = DataModelCache._dm_path_comp_list(obj)
         for i, comp in enumerate(comps):
-            (
-                key,
-                next_cache,
-            ) = _CacheImpl(
-                name_key_in_config
-            ).find(cache, comp, None)
+            key, next_cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
             if i == len(comps) - 1 and not isinstance(value, abc.Mapping):
                 cache[key] = value
                 return
