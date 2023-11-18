@@ -196,6 +196,15 @@ class DataModelCache:
         return [DataModelCache._dm_path_comp(comp) for comp in obj.path]
 
     @staticmethod
+    def _add_missing_name_keys(k: str, v: dict[str, Any]):
+        if ":" in k:
+            name_in_key = k.split(":")[1]
+            if "_name_" in v and v["_name_"] != name_in_key:
+                v["__iname__"] = name_in_key
+            if "__iname__" in v and v["__iname__"] != name_in_key:
+                v["_name_"] = name_in_key
+
+    @staticmethod
     def _find_in_internal_name_dict(
         d: dict[str, Any], key: str, default: Any
     ) -> tuple[str, Any]:
@@ -233,27 +242,37 @@ class DataModelCache:
             return key, default
 
     @staticmethod
-    def _transform_internal_name_dict_by_display_names(d_in: dict[str, Any]):
+    def _transform_internal_name_dict_by_display_names(
+        d_in: dict[str, Any], add_missing_name_keys=False
+    ):
         d_out = {}
         for k_in, v_in in d_in.items():
             k_out = f'{k_in.split(":")[0]}:{v_in["_name_"]}' if ":" in k_in else k_in
             if isinstance(v_in, abc.Mapping):
-                d_out[
-                    k_out
-                ] = DataModelCache._transform_internal_name_dict_by_display_names(v_in)
+                v_out = DataModelCache._transform_internal_name_dict_by_display_names(
+                    v_in, add_missing_name_keys
+                )
+                if add_missing_name_keys:
+                    DataModelCache._add_missing_name_keys(k_in, v_out)
+                d_out[k_out] = v_out
             else:
                 d_out[k_out] = v_in
         return d_out
 
     @staticmethod
-    def _transform_display_name_dict_by_internal_names(d_in: dict[str, Any]):
+    def _transform_display_name_dict_by_internal_names(
+        d_in: dict[str, Any], add_missing_name_keys=False
+    ):
         d_out = {}
         for k_in, v_in in d_in.items():
             k_out = f'{k_in.split(":")[0]}:{v_in["__iname__"]}' if ":" in k_in else k_in
             if isinstance(v_in, abc.Mapping):
-                d_out[
-                    k_out
-                ] = DataModelCache._transform_display_name_dict_by_internal_names(v_in)
+                v_out = DataModelCache._transform_display_name_dict_by_internal_names(
+                    v_in, add_missing_name_keys
+                )
+                if add_missing_name_keys:
+                    DataModelCache._add_missing_name_keys(k_in, v_out)
+                d_out[k_out] = v_out
             else:
                 d_out[k_out] = v_in
         return d_out
@@ -271,11 +290,11 @@ class DataModelCache:
                         if ":" in k1
                         else k1
                     )
-                    d[
-                        k
-                    ] = DataModelCache._transform_display_name_dict_by_internal_names(
-                        v1
+                    v1 = DataModelCache._transform_display_name_dict_by_internal_names(
+                        v1, True
                     )
+                    DataModelCache._add_missing_name_keys(k1, v1)
+                    d[k] = v1
                 else:
                     d[k] = v1
 
@@ -292,11 +311,11 @@ class DataModelCache:
                         if ":" in k1
                         else k1
                     )
-                    d[
-                        k
-                    ] = DataModelCache._transform_internal_name_dict_by_display_names(
-                        v1
+                    v1 = DataModelCache._transform_internal_name_dict_by_display_names(
+                        v1, True
                     )
+                    DataModelCache._add_missing_name_keys(k1, v1)
+                    d[k] = v1
                 else:
                     d[k] = v1
 
