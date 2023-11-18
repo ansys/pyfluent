@@ -294,9 +294,7 @@ class DataModelCache:
                         v1, True
                     )
                     DataModelCache._add_missing_name_keys(k1, v1)
-                    d[k] = v1
-                else:
-                    d[k] = v1
+                d[k] = v1
 
     @staticmethod
     def _update_display_name_dict(d: dict[str, Any], d1: dict[str, Any]):
@@ -315,9 +313,7 @@ class DataModelCache:
                         v1, True
                     )
                     DataModelCache._add_missing_name_keys(k1, v1)
-                    d[k] = v1
-                else:
-                    d[k] = v1
+                d[k] = v1
 
     @staticmethod
     def get_state(rules: str, obj: object, internal_names_as_keys=None) -> Any:
@@ -328,7 +324,7 @@ class DataModelCache:
         rules : str
             datamodel rules
         obj : object
-            datamodel object
+            datamodel object, optional
         internal_names_as_keys : bool
             if True, returned state will hold internal names as keys
 
@@ -381,7 +377,7 @@ class DataModelCache:
         )
         cache = DataModelCache.rules_str_to_cache[rules]
         comps = DataModelCache._dm_path_comp_list(obj)
-        for comp in comps:
+        for i, comp in enumerate(comps):
             if internal_names_as_keys_in_config:
                 (
                     key,
@@ -392,15 +388,15 @@ class DataModelCache:
                     key,
                     next_cache,
                 ) = DataModelCache._find_in_display_name_dict(cache, comp, None)
+            if i == len(comps) - 1 and not isinstance(value, abc.Mapping):
+                cache[key] = value
+                return
             if isinstance(next_cache, abc.Mapping):
                 cache = next_cache
             else:
                 cache[key] = {}
                 cache = cache[key]
-        if isinstance(value, abc.Mapping):
-            if internal_names_as_keys_in_config:
-                DataModelCache._update_internal_name_dict(cache, value)
-            else:
-                DataModelCache._update_display_name_dict(cache, value)
+        if internal_names_as_keys_in_config:
+            DataModelCache._update_internal_name_dict(cache, value)
         else:
-            cache[key] = value
+            DataModelCache._update_display_name_dict(cache, value)

@@ -295,6 +295,7 @@ def test_cache_get_state(
 @pytest.mark.parametrize(
     "initial_cache,internal_names_as_keys_in_config,path,value,final_cache",
     [
+        ({"A": 2}, True, "A/B", 2, {"A": {"B": 2}}),
         ({"A": 2}, True, "A/B", {"C": {"D": 2}}, {"A": {"B": {"C": {"D": 2}}}}),
         (
             {"A": {"B": 2}},
