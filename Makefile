@@ -19,7 +19,7 @@ test-import:
 
 PYTESTEXTRA = --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
-unittest: unittest-dev-232
+unittest: unittest-dev-241
 
 unittest-dev-222:
 	@echo "Running unittests"
