@@ -366,6 +366,12 @@ class TaskContainer(PyCallableStateObject):
             )
         )
 
+    def get_state(self):
+        return self._task_container.get_state()
+
+    def __call__(self):
+        return self.get_state()
+
 
 class ArgumentsWrapper(PyCallableStateObject):
     """Wrapper for a dictionary of task arguments."""
