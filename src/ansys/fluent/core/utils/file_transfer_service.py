@@ -139,7 +139,7 @@ class RemoteFileHandler:
         self._transfer_service = transfer_service
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
-        """Upload a file if it's unavailable to the server
+        """Upload a file if it's unavailable on the server
         supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
         and performs callback operation.
 
