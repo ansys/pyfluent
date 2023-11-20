@@ -4,6 +4,13 @@ from typing import Any, Callable, Optional  # noqa: F401
 import ansys.platform.instancemanagement as pypim
 
 
+class PyPIMConfigurationError(ConnectionError):
+    """Provides the error when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
+
+    def __init__(self):
+        super().__init__("PyPIM is not configured.")
+
+
 class PimFileTransferService:
     """Instantiates a file uploader and downloader to have a seamless file reading /
     writing in the cloud particularly in Ansys lab . Here we are exposing upload and
@@ -52,7 +59,7 @@ class PimFileTransferService:
         return self.file_service
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Upload a file on the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
@@ -64,8 +71,12 @@ class PimFileTransferService:
         ------
         FileNotFoundError
             If the file does not exist.
+        PyPIMConfigurationError
+            If PyPIM is not configured.
         """
-        if self.file_service:
+        if not pypim.is_configured():
+            raise PyPIMConfigurationError()
+        elif self.file_service:
             if os.path.isfile(file_name):
                 expanded_file_path = os.path.expandvars(file_name)
                 upload_file_name = remote_file_name or os.path.basename(
@@ -89,8 +100,12 @@ class PimFileTransferService:
         ------
         FileNotFoundError
             If the remote file does not exist.
+        PyPIMConfigurationError
+            If PyPIM is not configured.
         """
-        if self.file_service:
+        if not pypim.is_configured():
+            raise PyPIMConfigurationError()
+        elif self.file_service:
             if self.file_service.file_exist(file_name):
                 self.file_service.download_file(file_name, local_file_name)
             else:
@@ -112,7 +127,7 @@ class RemoteFileHandler:
     upload(
         file_name, on_uploaded
         )
-        Upload a file on the server before performing callback operation.
+        Upload a file to the server before performing callback operation.
 
     download(
         file_name, before_downloaded
@@ -156,7 +171,7 @@ class RemoteFileHandler:
 
     def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
         """Perform callback operation and
-        downloads a file if it's available on the server supported by
+        downloads a file if it's available to the server supported by
         `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
