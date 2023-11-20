@@ -238,9 +238,9 @@ in a single solver session:
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
-  >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+  >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode="solver")
-  >>> solver.file.read(file_type="case", file_name=import_filename)
+  >>> solver.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
   >>> solver.setup.models.viscous.is_active()

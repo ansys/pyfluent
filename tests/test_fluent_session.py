@@ -14,7 +14,8 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import get_container
+from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
+from ansys.fluent.core.launcher.launcher import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 
@@ -107,11 +108,11 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
             cmd_list = ["bash"]
         else:
             raise Exception("Unrecognized operating system.")
-        cleanup_filename = (
+        cleanup_file_name = (
             f"cleanup-fluent-{cortex_host}-{fluent_host_pid}.{cleanup_file_ext}"
         )
-        print(f"cleanup_filename: {cleanup_filename}")
-        cmd_list.append(Path(cortex_pwd, cleanup_filename))
+        print(f"cleanup_file_name: {cleanup_file_name}")
+        cmd_list.append(Path(cortex_pwd, cleanup_file_name))
         print(f"cmd_list: {cmd_list}")
         subprocess.Popen(
             cmd_list,
@@ -124,6 +125,13 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
     session1 = pyfluent.launch_fluent()
+
+    with pytest.raises(IpPortNotProvided) as msg:
+        session2 = pyfluent.connect_to_fluent(
+            ip=session1.connection_properties.ip,
+            password=session1.connection_properties.password,
+        )
+
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
@@ -248,3 +256,7 @@ def test_fluent_exit_wait():
     session3 = pyfluent.launch_fluent()
     session3.exit(wait=True)
     assert session3.fluent_connection.wait_process_finished(wait=0)
+
+    with pytest.raises(WaitTypeError) as msg:
+        session4 = pyfluent.launch_fluent()
+        session4.exit(wait="wait")

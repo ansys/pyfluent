@@ -14,8 +14,8 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert solver_session._root.is_active()
     assert solver_session.health_check_service.is_serving
-    file_path = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
-    solver_session.journal.start(file_path.as_posix())
+    file_name = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
+    solver_session.journal.start(file_name.as_posix())
     ###
     assert not solver_session.setup.models.energy.enabled()
     scheme_eval = solver_session.scheme_eval.scheme_eval
@@ -72,13 +72,13 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     assert auto_save.root_name() == "file_auto_save"
     solver_session.setup.reference_values.compute(from_zone_name="outlet")
     solver_session.journal.stop()
-    solver_session.tui.file.read_journal(file_path.as_posix())
+    solver_session.tui.file.read_journal(file_name.as_posix())
     assert auto_save.root_name() == "file_auto_save"
     assert general_solver.type() == "pressure-based"
     assert auto_save.data_frequency() == 10
     assert general_solver.time() == "steady"
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    if os.path.exists(file_name):
+        os.remove(file_name)
 
 
 @pytest.mark.quick

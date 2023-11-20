@@ -1,5 +1,5 @@
 """Module containing class encapsulating Fluent connection."""
-from typing import Any
+from typing import Any, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -19,19 +19,26 @@ class Meshing(PureMeshing):
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
     ):
         """Meshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
-        super(Meshing, self).__init__(fluent_connection=fluent_connection)
+        super(Meshing, self).__init__(
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        )
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
 
     def _switch_to_solver(self) -> Any:
         self.tui.switch_to_solution_mode("yes")
-        solver_session = Solver(fluent_connection=self.fluent_connection)
+        solver_session = Solver(
+            fluent_connection=self.fluent_connection,
+            remote_file_handler=self._remote_file_handler,
+        )
         delattr(self, "switch_to_solver")
         self.switched = True
         return solver_session

@@ -6,6 +6,8 @@ import multiprocessing.pool
 import time
 from typing import Any, Callable, Optional
 
+from ansys.fluent.core.exceptions import InvalidArgument
+
 
 def asynchronous(f: Callable) -> Callable:
     """Use for decorating functions that are to execute asynchronously. The decorated
@@ -122,7 +124,7 @@ def timeout_loop(
 
     Raises
     ------
-    RuntimeError
+    InvalidArgument
         If an unrecognized value is passed for ``expected``.
 
     Examples
@@ -160,9 +162,7 @@ def timeout_loop(
             if not ret_obj:
                 return ret_obj
         else:
-            raise RuntimeError(
-                "Unrecognized value for 'expected' variable. Accepted: 'truthy' or 'falsy'."
-            )
+            raise InvalidArgument("Specify 'expected' as either 'truthy' or 'falsy'.")
         time.sleep(idle_period)
         time_elapsed += idle_period
 

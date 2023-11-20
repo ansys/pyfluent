@@ -73,7 +73,8 @@ class SystemCoupling:
     def __get_syc_setup(self) -> dict:
         def get_scp_string() -> str:
             """Get SCP file contents in the form of the XML string."""
-            scp_file_name = "fluent.scp"
+            fluent_cwd = self._solver.connection_properties.cortex_pwd
+            scp_file_name = os.path.join(fluent_cwd, "fluent.scp")
             self._solver.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name
             )
@@ -102,7 +103,7 @@ class SystemCoupling:
             if tensor_type_elem is not None:
                 return tensor_type_elem.text
 
-            if get_name(variable) in {"force", "lorentz-force"}:
+            if get_name(variable) in {"displacement", "force", "lorentz-force"}:
                 return "Vector"
             else:
                 return "Scalar"

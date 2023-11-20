@@ -11,8 +11,8 @@ from ansys.fluent.core.services.datamodel_se import (
 from tests.run_stateengine_server import kill_server, run_server
 
 
-def run_datamodel_server(batch_file_path: Union[str, Path], rules):
-    run_command = str(batch_file_path) + " " + rules
+def run_datamodel_server(batch_file_name: Union[str, Path], rules):
+    run_command = str(batch_file_name) + " " + rules
     run_server(run_command)
     _channel = grpc.insecure_channel("localhost:50055")
     _data_model_service = DatamodelService(channel=_channel, metadata=[])

@@ -186,7 +186,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
         ###############################################################################
         # Set up the boundary conditions
-        velocity_inlet = velocity_inlet
+        velocity_inlet = define.boundary_conditions.set.velocity_inlet
         velocity_inlet("cold-inlet", [], "vmag", "no", 0.4, "quit")
         velocity_inlet("cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit")
         velocity_inlet("cold-inlet", [], "turb-intensity", 5, "quit")
