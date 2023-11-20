@@ -38,16 +38,16 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
         "multiphase": {
             "open_channel": True,
             "ht_bottom": -0.941875,
-            "den_spec": "From Free Surface Level"
+            "den_spec": "From Free Surface Level",
         },
         "momentum": {
             "direction_spec": "Normal to Boundary",
-            "p_backflow_spec_gen": "Static Pressure"
+            "p_backflow_spec_gen": "Static Pressure",
         },
         "turbulence": {
             "turbulent_intensity": 0.01,
-            "turbulent_viscosity_ratio_real": 1
-        }
+            "turbulent_viscosity_ratio_real": 1,
+        },
     }
 
     solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"

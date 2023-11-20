@@ -95,7 +95,7 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     for (
         boundary_type
     ) in solver_session.setup.boundary_conditions.get_active_child_names():
-        if boundary_type in ['non_reflecting_bc', 'perforated_wall', 'settings']:
+        if boundary_type in ["non_reflecting_bc", "perforated_wall", "settings"]:
             continue
         for name, boundary in getattr(
             solver_session.setup.boundary_conditions, boundary_type
