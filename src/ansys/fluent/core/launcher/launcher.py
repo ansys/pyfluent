@@ -560,12 +560,16 @@ class LaunchFluentError(Exception):
 
 
 class Launcher(ABC):
+    """Declares abstract method to launch Fluent."""
+
     @abstractmethod
     def launch(self, **args):
         pass
 
 
 class StandaloneLauncher(Launcher):
+    """Instantiates Fluent session in standalone mode."""
+
     def __init__(
         self,
         new_session: Optional[Any] = None,
@@ -591,6 +595,7 @@ class StandaloneLauncher(Launcher):
         self.argvals = argvals
 
     def launch(self):
+        """Launch Fluent session in standalone mode."""
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
@@ -692,6 +697,8 @@ class StandaloneLauncher(Launcher):
 
 
 class PIMLauncher(Launcher):
+    """Instantiates Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
+
     def __init__(
         self,
         product_version: Optional[Any] = None,
@@ -708,6 +715,7 @@ class PIMLauncher(Launcher):
         self.argvals = argvals
 
     def launch(self):
+        """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
@@ -732,6 +740,8 @@ class PIMLauncher(Launcher):
 
 
 class DockerLauncher(Launcher):
+    """Instantiates Fluent session in container mode."""
+
     def __init__(
         self,
         product_version: Optional[Any] = None,
@@ -748,6 +758,7 @@ class DockerLauncher(Launcher):
         self.argvals = argvals
 
     def launch(self):
+        """Launch Fluent session in container mode."""
         args = _build_fluent_launch_args_string(**self.argvals).split()
         if self.meshing_mode:
             args.append(" -meshing")
@@ -795,7 +806,24 @@ class DockerLauncher(Launcher):
         return self.launch()
 
 
-def create_launcher(fluent_launch_mode, **kwargs):
+def create_launcher(
+    fluent_launch_mode, **kwargs
+) -> Union[DockerLauncher, PIMLauncher, StandaloneLauncher]:
+    """Factory function to launch Fluent in supported launch modes.
+
+    Parameters
+    ----------
+    fluent_launch_mode: LaunchMode
+        Supported Fluent launch modes.
+
+    Returns
+    -------
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+        Session object.
+    """
     if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
