@@ -2,11 +2,13 @@ from time import sleep
 
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
+from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyMenuGeneric,
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
@@ -342,6 +344,26 @@ def test_add_on_deleted(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     task_object_state = meshing.workflow.TaskObject()
 
+    assert set(task_object_state.keys()) == {
+        "Add Boundary Layers",
+        "Add Local Sizing",
+        "Apply Share Topology",
+        "Create Regions",
+        "Describe Geometry",
+        "Enclose Fluid Regions (Capping)",
+        "Generate the Surface Mesh",
+        "Generate the Volume Mesh",
+        "Import Geometry",
+        "Update Boundaries",
+        "Update Regions",
+    }
     assert len(task_object_state) == 11
 
     assert list(task_object_state.keys()) == sorted(meshing.workflow.TaskObject())
+
+
+def test_generic_datamodel(new_solver_session):
+    solver = new_solver_session
+    solver.scheme_eval.scheme_eval("(init-flserver)")
+    flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
+    assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0

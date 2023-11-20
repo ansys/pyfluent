@@ -1,8 +1,10 @@
 """Module to manage datamodel cache."""
 
 
-from collections import defaultdict
-from typing import Any, Dict, List, Union
+from collections import abc, defaultdict
+import copy
+from enum import Enum
+from typing import Any, Dict, List, Optional, Union
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 
@@ -18,6 +20,77 @@ StateType = Union[
     List["StateType"],
     Dict[str, "StateType"],
 ]
+
+
+class NameKey(Enum):
+    INTERNAL = "__iname__"
+    DISPLAY = "_name_"
+
+    def __invert__(self):
+        l = list(NameKey)
+        return l[~l.index(self)]
+
+
+class _CacheImpl:
+    def __init__(self, name_key: NameKey):
+        self.name_key = name_key
+
+    @staticmethod
+    def add_missing_name_keys(k: str, v: dict[str, Any]):
+        if ":" in k:
+            name_in_key = k.split(":")[1]
+            if NameKey.DISPLAY.value in v and v[NameKey.DISPLAY.value] != name_in_key:
+                v[NameKey.INTERNAL.value] = name_in_key
+            if NameKey.INTERNAL.value in v and v[NameKey.INTERNAL.value] != name_in_key:
+                v[NameKey.DISPLAY.value] = name_in_key
+
+    def find(self, d: dict[str, Any], key: str, default: Any) -> tuple[str, Any]:
+        if key in d:
+            return key, d[key]
+        if ":" in key:
+            type_, name = key.split(":")
+            return next(
+                (
+                    (k, v)
+                    for k, v in d.items()
+                    if type_ == k.split(":")[0] and name == v[(~self.name_key).value]
+                ),
+                (None, default),
+            )
+        return key, default
+
+    def transform(self, d_in: dict[str, Any], add_missing_name_keys=False):
+        d_out = {}
+        for k_in, v_in in d_in.items():
+            k_out = (
+                f'{k_in.split(":")[0]}:{v_in[(~self.name_key).value]}'
+                if ":" in k_in
+                else k_in
+            )
+            if isinstance(v_in, abc.Mapping):
+                v_out = self.transform(v_in, add_missing_name_keys)
+                if add_missing_name_keys:
+                    _CacheImpl.add_missing_name_keys(k_in, v_out)
+                d_out[k_out] = v_out
+            else:
+                d_out[k_out] = v_in
+        return d_out
+
+    def update(self, d: dict[str, Any], d1: dict[str, Any]):
+        for k1, v1 in d1.items():
+            k, v = self.find(d, k1, None)
+            if isinstance(v, abc.Mapping) and isinstance(v1, abc.Mapping):
+                self.update(v, v1)
+            else:
+                if isinstance(v1, abc.Mapping):
+                    k = (
+                        f'{k1.split(":")[0]}:{v1.get(self.name_key.value, k1.split(":")[1])}'
+                        if ":" in k1
+                        else k1
+                    )
+                    v1 = _CacheImpl(~self.name_key).transform(v1, True)
+                    _CacheImpl.add_missing_name_keys(k1, v1)
+                d[k] = v1
 
 
 class DataModelCache:
@@ -107,8 +180,8 @@ class DataModelCache:
                     rules, source, key, item, lambda d, k, v: d[k].append(v)
                 )
         elif state.HasField("variant_map_state"):
-            internal_names_as_keys = DataModelCache.get_config(
-                rules, "internal_names_as_keys"
+            internal_names_as_keys = (
+                DataModelCache.get_config(rules, "name_key") == NameKey.INTERNAL
             )
             if ":" in key:
                 type_, iname = key.split(":", maxsplit=1)
@@ -116,7 +189,7 @@ class DataModelCache:
                     if (internal_names_as_keys and k1 == key) or (
                         (not internal_names_as_keys)
                         and isinstance(v1, dict)
-                        and v1.get("__iname__") == iname
+                        and v1.get(NameKey.INTERNAL.value) == iname
                     ):
                         key = k1
                         break
@@ -124,9 +197,11 @@ class DataModelCache:
                     if internal_names_as_keys:
                         source[key] = {}
                     else:
-                        name = state.variant_map_state.item["_name_"].string_state
+                        name = state.variant_map_state.item[
+                            NameKey.DISPLAY.value
+                        ].string_state
                         key = f"{type_}:{name}"
-                        source[key] = {"__iname__": iname}
+                        source[key] = {NameKey.INTERNAL.value: iname}
             else:
                 if key not in source:
                     source[key] = {}
@@ -150,8 +225,8 @@ class DataModelCache:
             list of deleted paths
         """
         cache = DataModelCache.rules_str_to_cache[rules]
-        internal_names_as_keys = DataModelCache.get_config(
-            rules, "internal_names_as_keys"
+        internal_names_as_keys = (
+            DataModelCache.get_config(rules, "name_key") == NameKey.INTERNAL
         )
         for deleted_path in deleted_paths:
             comps = [x for x in deleted_path.split("/") if x]
@@ -164,7 +239,7 @@ class DataModelCache:
                         if (internal_names_as_keys and k == comp) or (
                             (not internal_names_as_keys)
                             and isinstance(v, dict)
-                            and v.get("__iname__") == iname
+                            and v.get(NameKey.INTERNAL.value) == iname
                         ):
                             if i == len(comps) - 1:
                                 key_to_del = k
@@ -194,7 +269,7 @@ class DataModelCache:
         return [DataModelCache._dm_path_comp(comp) for comp in obj.path]
 
     @staticmethod
-    def get_state(rules: str, obj: object) -> Any:
+    def get_state(rules: str, obj: object, name_key: Optional[NameKey] = None) -> Any:
         """Retrieve state from datamodel cache.
 
         Parameters
@@ -202,35 +277,36 @@ class DataModelCache:
         rules : str
             datamodel rules
         obj : object
-            datamodel object
+            datamodel object, optional
+        name_key : NameKey, optional
+            if NameKey.INTERNAL, the returned state will contain internal names in keys.
+            if NameKey.DISPLAY, the returned state will contain display names in keys.
+            Default value is picked from configuration.
 
         Returns
         -------
-        _type_
-            _description_
+        state : Any
+            cached state
         """
+        name_key_in_config = DataModelCache.get_config(rules, "name_key")
+        if name_key == None:
+            name_key = name_key_in_config
         cache = DataModelCache.rules_str_to_cache[rules]
         if not len(cache):
             return DataModelCache.Empty
-        path_components = DataModelCache._dm_path_comp_list(obj)
-        for path_component in path_components:
-            cache = cache.get(path_component, None)
-            if not cache:
+        comps = DataModelCache._dm_path_comp_list(obj)
+        for comp in comps:
+            if name_key == name_key_in_config:
+                cache = cache.get(comp, None)
+            else:
+                _, cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
+            if cache is None:
                 return DataModelCache.Empty
-        return cache
 
-    @staticmethod
-    def _set_state_at_path(cache, path, value):
-        if len(path) == 0:
-            return
-        path_component = path[0]
-        if len(path) == 1:
-            cache[path_component] = value
+        if name_key == name_key_in_config:
+            return copy.deepcopy(cache)
         else:
-            next_cache = cache.get(path_component, None)
-            if not next_cache:
-                next_cache = cache[path_component] = dict()
-            DataModelCache._set_state_at_path(next_cache, path[1:], value)
+            return _CacheImpl(name_key_in_config).transform(cache)
 
     @staticmethod
     def set_state(rules: str, obj: object, value: Any):
@@ -245,8 +321,17 @@ class DataModelCache:
         value : Any
             state
         """
-        DataModelCache._set_state_at_path(
-            DataModelCache.rules_str_to_cache[rules],
-            DataModelCache._dm_path_comp_list(obj),
-            value,
-        )
+        name_key_in_config = DataModelCache.get_config(rules, "name_key")
+        cache = DataModelCache.rules_str_to_cache[rules]
+        comps = DataModelCache._dm_path_comp_list(obj)
+        for i, comp in enumerate(comps):
+            key, next_cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
+            if i == len(comps) - 1 and not isinstance(value, abc.Mapping):
+                cache[key] = value
+                return
+            if isinstance(next_cache, abc.Mapping):
+                cache = next_cache
+            else:
+                cache[key] = {}
+                cache = cache[key]
+        _CacheImpl(name_key_in_config).update(cache, value)

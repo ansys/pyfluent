@@ -11,7 +11,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
@@ -393,7 +393,7 @@ class PyStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self)
+        state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
         if DataModelCache.is_unassigned(state):
             state = self.get_remote_state()
         return state
@@ -1399,7 +1399,7 @@ class DataModelType(Enum):
 class PyMenuGeneric(PyMenu):
     """Generic PyMenu class for when generated API code is not available."""
 
-    attrs = ("service", "rules", "path")
+    attrs = ("service", "rules", "path", "cached_attrs")
 
     def _get_child_names(self) -> tuple[list, list, list]:
         request = DataModelProtoModule.GetSpecsRequest()
