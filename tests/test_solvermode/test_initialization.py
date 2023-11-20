@@ -4,7 +4,6 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.quick
 @pytest.mark.setup
-# @pytest.mark.skip("Too sensitive to settings API; test doesn't initialize at all")
 def test_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/wigley_hull", "wigley.msh")

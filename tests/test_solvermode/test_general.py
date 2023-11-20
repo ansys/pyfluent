@@ -6,7 +6,6 @@ import pytest
 import ansys.fluent.core as pyfluent
 
 
-# @pytest.mark.skip("Fluent side bug")
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
