@@ -808,7 +808,7 @@ class DockerLauncher(Launcher):
 
 def create_launcher(
     fluent_launch_mode, **kwargs
-) -> Union[DockerLauncher, PIMLauncher, StandaloneLauncher]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Factory function to launch Fluent in supported launch modes.
 
     Parameters
