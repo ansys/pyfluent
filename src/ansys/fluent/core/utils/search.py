@@ -3,7 +3,7 @@ from pathlib import Path
 import pickle
 from typing import Any, Optional
 
-from ansys.fluent.core.launcher.launcher import FluentVersion
+from ansys.fluent.core.launcher.fluent_version import FluentVersion
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_pure_meshing import PureMeshing

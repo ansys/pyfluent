@@ -14,7 +14,6 @@ logging.configure_env_var()
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentMode,
-    FluentVersion,
     connect_to_fluent,
     launch_fluent,
 )

@@ -19,6 +19,7 @@ from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
+from ansys.fluent.core.launcher.fluent_version import FluentVersion
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import _parse_server_info_file
@@ -56,56 +57,6 @@ def check_docker_support():
     except docker.errors.DockerException:
         return False
     return True
-
-
-class FluentVersion(Enum):
-    """An enumeration over supported Fluent versions."""
-
-    version_24R1 = "24.1.0"
-    version_23R2 = "23.2.0"
-    version_23R1 = "23.1.0"
-    version_22R2 = "22.2.0"
-
-    @classmethod
-    def _missing_(cls, version):
-        if isinstance(version, (float, str)):
-            version = str(version) + ".0"
-            for v in FluentVersion:
-                if version == v.value:
-                    return FluentVersion(version)
-            else:
-                raise RuntimeError(
-                    f"The specified version '{version[:-2]}' is not supported."
-                    + " Supported versions are: "
-                    + ", ".join([ver.value for ver in FluentVersion][::-1])
-                )
-
-    def __str__(self):
-        return str(self.value)
-
-
-def get_ansys_version() -> str:
-    """Return the version string corresponding to the most recent, available ANSYS
-    installation.
-
-    The returned value is the string component of one of the members of the
-    FluentVersion class.
-
-    Returns
-    -------
-    str
-        Ansys version string
-
-    Raises
-    ------
-    RuntimeError
-        If an Ansys version cannot be found.
-    """
-    for v in FluentVersion:
-        if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
-            return str(v)
-
-    raise RuntimeError("An Ansys version cannot be found.")
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
