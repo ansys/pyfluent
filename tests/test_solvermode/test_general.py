@@ -6,7 +6,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 
 
-@pytest.mark.skip("Fluent side bug")
+# @pytest.mark.skip("Fluent side bug")
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
@@ -70,7 +70,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     assert auto_save.case_frequency() == "each-time"
     auto_save.root_name = "file_auto_save"
     assert auto_save.root_name() == "file_auto_save"
-    solver_session.setup.reference_values.compute(from_zone_name="outlet")
+    solver_session.setup.reference_values.compute(from_zone_name="outlet", from_zone_type='pressure-outlet')
     solver_session.journal.stop()
     solver_session.tui.file.read_journal(file_name.as_posix())
     assert auto_save.root_name() == "file_auto_save"
