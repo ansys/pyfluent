@@ -566,7 +566,7 @@ class Launcher(ABC):
 
 
 class StandaloneLauncher(Launcher):
-    def launch(
+    def __init__(
         self,
         new_session: Optional[Any] = None,
         argvals: Optional[Any] = None,
@@ -586,28 +586,37 @@ class StandaloneLauncher(Launcher):
         case_data_file_name: Optional[Any] = None,
         **kwargs,
     ):
-        if lightweight_mode is None:
-            # note argvals is no longer locals() here due to _get_session_info() pass
-            argvals.pop("lightweight_mode")
-            lightweight_mode = False
+        for arg_name, arg_values in argvals.items():
+            setattr(self, arg_name, arg_values)
+        self.argvals = argvals
 
-        _raise_exception_g_gu_in_windows_os(additional_arguments)
+    def launch(self):
+        if self.lightweight_mode is None:
+            # note argvals is no longer locals() here due to _get_session_info() pass
+            self.argvals.pop("lightweight_mode")
+            setattr(self, "lightweight_mode", False)
+
+        _raise_exception_g_gu_in_windows_os(self.additional_arguments)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
-            argvals["fluent_debug"] = True
+            self.argvals["fluent_debug"] = True
 
         server_info_file_name = _get_server_info_file_name()
         launch_string = _generate_launch_string(
-            argvals, meshing_mode, show_gui, additional_arguments, server_info_file_name
+            self.argvals,
+            self.meshing_mode,
+            self.show_gui,
+            self.additional_arguments,
+            server_info_file_name,
         )
 
         sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
-        if env is None:
-            env = {}
-        kwargs = _get_subprocess_kwargs_for_fluent(env)
-        if cwd:
-            kwargs.update(cwd=cwd)
-        launch_string += _build_journal_argument(topy, journal_file_names)
+        if self.env is None:
+            setattr(self, "env", {})
+        kwargs = _get_subprocess_kwargs_for_fluent(self.env)
+        if self.cwd:
+            kwargs.update(cwd=self.cwd)
+        launch_string += _build_journal_argument(self.topy, self.journal_file_names)
 
         if _is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
@@ -622,7 +631,7 @@ class StandaloneLauncher(Launcher):
 
             try:
                 _await_fluent_launch(
-                    server_info_file_name, start_timeout, sifile_last_mtime
+                    server_info_file_name, self.start_timeout, sifile_last_mtime
                 )
             except TimeoutError as ex:
                 if _is_windows():
@@ -634,35 +643,35 @@ class StandaloneLauncher(Launcher):
                     )
                     subprocess.Popen(launch_cmd, **kwargs)
                     _await_fluent_launch(
-                        server_info_file_name, start_timeout, sifile_last_mtime
+                        server_info_file_name, self.start_timeout, sifile_last_mtime
                     )
                 else:
                     raise ex
 
-            session = new_session.create_from_server_info_file(
+            session = self.new_session.create_from_server_info_file(
                 server_info_file_name=server_info_file_name,
                 remote_file_handler=RemoteFileHandler(),
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=argvals,
+                cleanup_on_exit=self.cleanup_on_exit,
+                start_transcript=self.start_transcript,
+                launcher_args=self.argvals,
                 inside_container=False,
             )
             start_watchdog = _confirm_watchdog_start(
-                start_watchdog, cleanup_on_exit, session.fluent_connection
+                self.start_watchdog, self.cleanup_on_exit, session.fluent_connection
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
                 ip, port, password = _get_server_info(server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
-            if case_file_name:
-                if meshing_mode:
-                    session.tui.file.read_case(case_file_name)
+            if self.case_file_name:
+                if self.meshing_mode:
+                    session.tui.file.read_case(self.case_file_name)
                 else:
-                    session.read_case(case_file_name, lightweight_mode)
-            if case_data_file_name:
-                if not meshing_mode:
+                    session.read_case(self.case_file_name, self.lightweight_mode)
+            if self.case_data_file_name:
+                if not self.meshing_mode:
                     session.file.read(
-                        file_type="case-data", file_name=case_data_file_name
+                        file_type="case-data", file_name=self.case_data_file_name
                     )
                 else:
                     raise RuntimeError(
@@ -678,9 +687,12 @@ class StandaloneLauncher(Launcher):
             if server_info_file.exists():
                 server_info_file.unlink()
 
+    def __call__(self):
+        return self.launch()
+
 
 class PIMLauncher(Launcher):
-    def launch(
+    def __init__(
         self,
         product_version: Optional[Any] = None,
         new_session: Optional[Any] = None,
@@ -691,47 +703,59 @@ class PIMLauncher(Launcher):
         version: Optional[Any] = None,
         **kwargs,
     ):
+        for arg in argvals:
+            setattr(self, arg, argvals[arg])
+        self.argvals = argvals
+
+    def launch(self):
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
 
-        if product_version:
-            fluent_product_version = "".join(product_version.split("."))[:-1]
+        if self.product_version:
+            fluent_product_version = "".join(self.product_version.split("."))[:-1]
         else:
             fluent_product_version = None
 
         return launch_remote_fluent(
-            session_cls=new_session,
-            start_transcript=start_transcript,
+            session_cls=self.new_session,
+            start_transcript=self.start_transcript,
             product_version=fluent_product_version,
-            cleanup_on_exit=cleanup_on_exit,
-            meshing_mode=meshing_mode,
-            dimensionality=version,
-            launcher_args=argvals,
+            cleanup_on_exit=self.cleanup_on_exit,
+            meshing_mode=self.meshing_mode,
+            dimensionality=self.version,
+            launcher_args=self.argvals,
         )
+
+    def __call__(self):
+        return self.launch()
 
 
 class DockerLauncher(Launcher):
-    def launch(
+    def __init__(
         self,
+        product_version: Optional[Any] = None,
         new_session: Optional[Any] = None,
-        meshing_mode: Optional[Any] = None,
-        dry_run: Optional[Any] = None,
-        argvals: Optional[Any] = None,
-        container_dict: Optional[Any] = None,
-        cleanup_on_exit: Optional[Any] = None,
         start_transcript: Optional[Any] = None,
-        start_watchdog: Optional[Any] = None,
+        argvals: Optional[Any] = None,
+        cleanup_on_exit: Optional[Any] = None,
+        meshing_mode: Optional[Any] = None,
+        version: Optional[Any] = None,
         **kwargs,
     ):
-        args = _build_fluent_launch_args_string(**argvals).split()
-        if meshing_mode:
+        for arg in argvals:
+            setattr(self, arg, argvals[arg])
+        self.argvals = argvals
+
+    def launch(self):
+        args = _build_fluent_launch_args_string(**self.argvals).split()
+        if self.meshing_mode:
             args.append(" -meshing")
 
-        if dry_run:
-            if container_dict is None:
-                container_dict = {}
-            config_dict, *_ = configure_container_dict(args, **container_dict)
+        if self.dry_run:
+            if self.container_dict is None:
+                setattr(self, "container_dict", {})
+            config_dict, *_ = configure_container_dict(args, **self.container_dict)
             from pprint import pprint
 
             print("\nDocker container run configuration:\n")
@@ -745,36 +769,39 @@ class DockerLauncher(Launcher):
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(args, container_dict)
+        port, password = start_fluent_container(args, self.container_dict)
 
-        session = new_session(
+        session = self.new_session(
             fluent_connection=FluentConnection(
                 port=port,
                 password=password,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=argvals,
+                cleanup_on_exit=self.cleanup_on_exit,
+                start_transcript=self.start_transcript,
+                launcher_args=self.argvals,
                 inside_container=True,
             ),
             remote_file_handler=RemoteFileHandler(),
         )
 
-        if start_watchdog is None and cleanup_on_exit:
-            start_watchdog = True
-        if start_watchdog:
+        if self.start_watchdog is None and self.cleanup_on_exit:
+            setattr(self, "start_watchdog", True)
+        if self.start_watchdog:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
 
         return session
 
+    def __call__(self):
+        return self.launch()
 
-def create_launcher(fluent_launch_mode):
+
+def create_launcher(fluent_launch_mode, **kwargs):
     if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher()
+        return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher()
+        return DockerLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher()
+        return PIMLauncher(**kwargs)
 
 
 #   pylint: disable=unused-argument
@@ -983,9 +1010,10 @@ def launch_fluent(
 
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     argvals = locals().copy()
+    argvals["argvals"] = argvals
 
-    launcher = create_launcher(argvals.pop("fluent_launch_mode"))
-    return launcher.launch(**argvals)
+    launcher = create_launcher(argvals.pop("fluent_launch_mode"), **argvals)
+    return launcher()
 
 
 def connect_to_fluent(
