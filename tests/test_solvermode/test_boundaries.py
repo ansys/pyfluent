@@ -79,7 +79,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 @pytest.mark.integration
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_boundaries_periodic(load_periodic_rot_cas):
     solver_session = load_periodic_rot_cas
     print(__file__)
@@ -97,7 +97,7 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     for (
         boundary_type
     ) in solver_session.setup.boundary_conditions.get_active_child_names():
-        if boundary_type == "matching_tolerance":
+        if boundary_type in ['non_reflecting_bc', 'perforated_wall', 'settings']:
             continue
         for name, boundary in getattr(
             solver_session.setup.boundary_conditions, boundary_type
