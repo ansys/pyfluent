@@ -4,7 +4,7 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.skip("Too sensitive to settings API; test doesn't initialize at all")
+# @pytest.mark.skip("Too sensitive to settings API; test doesn't initialize at all")
 def test_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/wigley_hull", "wigley.msh")
@@ -36,13 +36,19 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
         },
     }
     solver.setup.boundary_conditions.pressure_outlet["outflow"].phase["mixture"] = {
-        "open_channel": True,
-        "ht_bottom": -0.941875,
-        "den_spec": "From Free Surface Level",
-        "direction_spec": "Normal to Boundary",
-        "turbulent_intensity": 0.01,
-        "turbulent_viscosity_ratio_real": 1,
-        "p_backflow_spec_gen": "Static Pressure",
+        "multiphase": {
+            "open_channel": True,
+            "ht_bottom": -0.941875,
+            "den_spec": "From Free Surface Level"
+        },
+        "momentum": {
+            "direction_spec": "Normal to Boundary",
+            "p_backflow_spec_gen": "Static Pressure"
+        },
+        "turbulence": {
+            "turbulent_intensity": 0.01,
+            "turbulent_viscosity_ratio_real": 1
+        }
     }
 
     solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
@@ -51,11 +57,11 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
         True
     )
     solver.solution.initialization.open_channel_auto_init = {
-        "boundary_thread": 3,
+        "boundary_zone": 3,
         "flat_init": True,
     }
     assert solver.solution.initialization.open_channel_auto_init() == {
-        "boundary_thread": 3,
+        "boundary_zone": 3,
         "flat_init": True,
     }
     # solver.solution.initialization.hybrid_initialize()
