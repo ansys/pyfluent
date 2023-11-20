@@ -59,7 +59,7 @@ class PimFileTransferService:
         return self.file_service
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Upload a file on the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
@@ -127,7 +127,7 @@ class RemoteFileHandler:
     upload(
         file_name, on_uploaded
         )
-        Upload a file on the server before performing callback operation.
+        Upload a file to the server before performing callback operation.
 
     download(
         file_name, before_downloaded
@@ -139,7 +139,7 @@ class RemoteFileHandler:
         self._transfer_service = transfer_service
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
-        """Upload a file if it's unavailable on the server
+        """Upload a file if it's unavailable to the server
         supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
         and performs callback operation.
 
@@ -171,7 +171,7 @@ class RemoteFileHandler:
 
     def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
         """Perform callback operation and
-        downloads a file if it's available on the server supported by
+        downloads a file if it's available to the server supported by
         `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
