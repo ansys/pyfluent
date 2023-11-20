@@ -49,31 +49,32 @@ class _CacheImpl:
             return key, d[key]
         if ":" in key:
             type_, name = key.split(":")
-            return next(
-                (
-                    (k, v)
-                    for k, v in d.items()
-                    if type_ == k.split(":")[0] and name == v[(~self.name_key).value]
-                ),
-                (None, default),
-            )
+            for k, v in d.items():
+                if (
+                    isinstance(v, abc.Mapping)
+                    and ":" in k
+                    and type_ == k.split(":")[0]
+                    and name == v.get((~self.name_key).value, None)
+                ):
+                    return k, v
+            return None, default
         return key, default
 
     def transform(self, d_in: dict[str, Any], add_missing_name_keys=False):
         d_out = {}
         for k_in, v_in in d_in.items():
-            k_out = (
-                f'{k_in.split(":")[0]}:{v_in[(~self.name_key).value]}'
-                if ":" in k_in
-                else k_in
-            )
             if isinstance(v_in, abc.Mapping):
+                k_out = (
+                    f'{k_in.split(":")[0]}:{v_in[(~self.name_key).value]}'
+                    if ":" in k_in
+                    else k_in
+                )
                 v_out = self.transform(v_in, add_missing_name_keys)
                 if add_missing_name_keys:
                     _CacheImpl.add_missing_name_keys(k_in, v_out)
                 d_out[k_out] = v_out
             else:
-                d_out[k_out] = v_in
+                d_out[k_in] = v_in
         return d_out
 
     def update(self, d: dict[str, Any], d1: dict[str, Any]):
@@ -262,7 +263,7 @@ class DataModelCache:
 
     @staticmethod
     def _dm_path_comp(comp):
-        return ":".join(comp if comp[1] else comp[0])
+        return ":".join(comp) if comp[1] else comp[0]
 
     @staticmethod
     def _dm_path_comp_list(obj):
@@ -303,7 +304,7 @@ class DataModelCache:
             if cache is None:
                 return DataModelCache.Empty
 
-        if name_key == name_key_in_config:
+        if not isinstance(cache, abc.Mapping) or name_key == name_key_in_config:
             return copy.deepcopy(cache)
         else:
             return _CacheImpl(name_key_in_config).transform(cache)
