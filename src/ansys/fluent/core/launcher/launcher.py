@@ -132,11 +132,11 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     # 1. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
-        return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+        return get_exe_path(get_fluent_root(FluentVersion(product_version).value))
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
-    ansys_version = get_ansys_version()
-    return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
+
+    return get_exe_path(get_fluent_root(FluentVersion.current().value))
 
 
 class FluentMode(Enum):

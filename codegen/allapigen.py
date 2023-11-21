@@ -8,7 +8,7 @@ import print_fluent_version
 import settingsgen
 import tuigen
 
-from ansys.fluent.core.launcher.launcher import FluentVersion, get_ansys_version
+from ansys.fluent.core.launcher.fluent_version import FluentVersion
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 from ansys.fluent.core.utils.search import get_api_tree_file_name
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
         parser.add_argument(
             "--ansys-version",
             dest="ansys_version",
-            help=f"Specify the ansys package version to use, default is {get_ansys_version()}",
+            help=f"Specify the ansys package version to use, default is {FluentVersion.current()}",
         )
         parser.add_argument(
             "--fluent-path",
