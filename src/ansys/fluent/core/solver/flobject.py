@@ -32,9 +32,16 @@ from .error_message import allowed_name_error_message, allowed_values_error
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
+class InactiveObjectError(RuntimeError):
+    """Provides the error when the object is inactive."""
+
+    def __init__(self):
+        super().__init__("Object is not active.")
+
+
 class _InlineConstants:
     is_active = "active?"
-    is_read_only = "read-only"
+    is_read_only = "read-only?"
     default_value = "default"
     min = "min"
     max = "max"
@@ -121,6 +128,7 @@ class Base:
 
     _name = None
     fluent_name = None
+    _python_name = None
 
     @property
     def parent(self):
@@ -139,6 +147,15 @@ class Base:
         return self._name
 
     @property
+    def python_name(self) -> str:
+        """Python name of this object.
+
+        By default, this returns the object's static name. If the object is a child of a
+        named object, the object's name is returned.
+        """
+        return getattr(self, "_python_name", None) or self.__class__.__name__
+
+    @property
     def path(self) -> str:
         """Path of the object.
 
@@ -152,12 +169,29 @@ class Base:
             return self.obj_name
         return ppath + "/" + self.obj_name
 
+    @property
+    def python_path(self) -> str:
+        """Path of the object.
+
+        Constructed in python syntax from 'python_path' and the parents python path.
+        """
+        if self._parent is None:
+            return "<session>"
+        ppath = self._parent.python_path
+        if not ppath:
+            return self.python_name
+        if self.python_name[0] == "[":
+            return ppath + self.python_name
+        return ppath + "." + self.python_name
+
     def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(
-        self, attr: str, attr_type_or_types: Optional[Union[str, List[str]]] = None
+        self,
+        attr: str,
+        attr_type_or_types: Optional[Union[type, Tuple[type]]] = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -165,7 +199,7 @@ class Base:
         ----------
         attr : str
             attribute name
-        attr_type_or_types : str or list of str, optional
+        attr_type_or_types : type or tuple of type, optional
             attribute type, by default None
 
         Returns
@@ -175,14 +209,14 @@ class Base:
 
         Raises
         ------
-        RuntimeError
+        InactiveObjectError
             If any attribute other than ``"active?`` is queried when the object is not active.
         """
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Object is not active")
+            raise InactiveObjectError()
         val = None
         if attrs:
             val = attrs[attr]
@@ -547,7 +581,7 @@ class Group(SettingsBase[DictStateType]):
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
-                raise RuntimeError(f"'{self.path}' is currently not active")
+                raise RuntimeError(f"'{self.python_path}' is currently not active")
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -717,6 +751,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if not ret:
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = cls(cname, self)
+        ret._setattr("_python_name", f'["{cname}"]')
         return ret
 
     def _update_objects(self):

@@ -2,7 +2,7 @@ import pytest
 
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file(
+import_file_name = examples.download_file(
     "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
 )
 
@@ -10,7 +10,7 @@ import_filename = examples.download_file(
 @pytest.mark.fluent_version(">=23.2")
 def test_meshing_queries(new_mesh_session):
     meshing_session = new_mesh_session
-    meshing_session.tui.file.read_case(import_filename)
+    meshing_session.tui.file.read_case(import_file_name)
     meshing_queries = meshing_session.meshing_queries
 
     assert meshing_queries.get_face_zone_at_location([1.4, 1.4, 1.4]) == 34

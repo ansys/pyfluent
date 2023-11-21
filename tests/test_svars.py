@@ -11,10 +11,10 @@ from ansys.fluent.core import examples
 @pytest.mark.fluent_version(">=23.2")
 def test_svars(new_solver_session):
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
@@ -115,14 +115,13 @@ def test_svars(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.skip("Failing on latest Fluent v241 dev version, see #1902")
 @pytest.mark.fluent_version(">=23.2")
 def test_svars_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)

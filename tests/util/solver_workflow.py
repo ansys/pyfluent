@@ -15,6 +15,21 @@ def new_solver_session():
 
 
 @pytest.fixture
+def make_new_session():
+    sessions = []
+
+    def _make_new_session(**kwargs):
+        session = pyfluent.launch_fluent(**kwargs)
+        sessions.append(session)
+        return session
+
+    yield _make_new_session
+
+    for session in sessions:
+        session.exit(timeout=5, timeout_force=True)
+
+
+@pytest.fixture
 def new_solver_session_single_precision():
     solver = create_solver_session(precision="single")
     yield solver

@@ -1,1223 +1,1688 @@
 {
     "val_1": {
         "duct-pipe_1": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_1",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_1-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_1-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_2": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_2",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_2-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_2-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_3": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_3",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_3-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_3-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "inlet": {
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "p_sup": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "initial_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                },
+                "reference_frame": "Absolute",
+                "velocity": {
+                    "option": "value",
+                    "value": 0
+                },
+                "velocity_specification_method": "Magnitude, Normal to Boundary"
             },
-            "t": {
-                "option": "value",
-                "value": 300
+            "name": "inlet",
+            "thermal": {
+                "t": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10,
-            "velocity_spec": "Magnitude, Normal to Boundary",
-            "vmag": {
-                "option": "value",
-                "value": 0
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
             }
         },
         "inner_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "inner_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
-        "interior--duct": null,
-        "interior--pipe_1": null,
-        "interior--pipe_2": null,
-        "interior--pipe_3": null,
+        "interior--duct": {
+            "name": "interior--duct"
+        },
+        "interior--pipe_1": {
+            "name": "interior--pipe_1"
+        },
+        "interior--pipe_2": {
+            "name": "interior--pipe_2"
+        },
+        "interior--pipe_3": {
+            "name": "interior--pipe_3"
+        },
         "outer_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "outer_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "outlet": {
-            "avg_press_spec": false,
-            "direction_spec": "Normal to Boundary",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "p": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "avg_press_spec": false,
+                "direction_spec": "Normal to Boundary",
+                "frame_of_reference": "Absolute",
+                "gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                },
+                "p_backflow_spec_gen": "Total Pressure",
+                "p_profile_multiplier": 1.0,
+                "prevent_reverse_flow": false,
+                "radial": false,
+                "targeted_mf_boundary": false
             },
-            "p_backflow_spec_gen": "Total Pressure",
-            "p_profile_multiplier": 1.0,
-            "prevent_reverse_flow": false,
-            "radial": false,
-            "t0": {
-                "option": "value",
-                "value": 300
+            "name": "outlet",
+            "thermal": {
+                "t0": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "targeted_mf_boundary": false,
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "periodic_1": {
-            "angular": true
+            "angular": true,
+            "name": "periodic_1"
         },
         "peripodic_2": {
-            "angular": true
+            "angular": true,
+            "name": "peripodic_2"
         },
         "pipe_1_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_1_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_1_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_1_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "pipe_2_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_2_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_2_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_2_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "pipe_3_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_3_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_3_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_3_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         }
     },
     "val_2": {
         "duct-pipe_1": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_1",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_1-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_1-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_2": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_2",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_2-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_2-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_3": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_3",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_3-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_3-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "inlet": {
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "p_sup": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "initial_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                },
+                "reference_frame": "Absolute",
+                "velocity": {
+                    "option": "value",
+                    "value": 0
+                },
+                "velocity_specification_method": "Magnitude, Normal to Boundary"
             },
-            "t": {
-                "option": "value",
-                "value": 300
+            "name": "inlet",
+            "thermal": {
+                "t": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10,
-            "velocity_spec": "Magnitude, Normal to Boundary",
-            "vmag": {
-                "option": "value",
-                "value": 0
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
             }
         },
         "inner_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "inner_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
-        "interior--duct": null,
-        "interior--pipe_1": null,
-        "interior--pipe_2": null,
-        "interior--pipe_3": null,
+        "interior--duct": {
+            "name": "interior--duct"
+        },
+        "interior--pipe_1": {
+            "name": "interior--pipe_1"
+        },
+        "interior--pipe_2": {
+            "name": "interior--pipe_2"
+        },
+        "interior--pipe_3": {
+            "name": "interior--pipe_3"
+        },
         "outer_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "outer_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "outlet": {
-            "avg_press_spec": false,
-            "direction_spec": "Normal to Boundary",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "p": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "avg_press_spec": false,
+                "direction_spec": "Normal to Boundary",
+                "frame_of_reference": "Absolute",
+                "gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                },
+                "p_backflow_spec_gen": "Total Pressure",
+                "p_profile_multiplier": 1.0,
+                "prevent_reverse_flow": false,
+                "radial": false,
+                "targeted_mf_boundary": false
             },
-            "p_backflow_spec_gen": "Total Pressure",
-            "p_profile_multiplier": 1.0,
-            "prevent_reverse_flow": false,
-            "radial": false,
-            "t0": {
-                "option": "value",
-                "value": 300
+            "name": "outlet",
+            "thermal": {
+                "t0": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "targeted_mf_boundary": false,
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "periodic_1": {
-            "angular": true
+            "angular": true,
+            "name": "periodic_1"
         },
         "peripodic_2": {
-            "angular": true
+            "angular": true,
+            "name": "peripodic_2"
         },
         "pipe_1_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_1_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_1_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_1_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "pipe_2_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_2_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_2_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_2_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "pipe_3_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_3_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_3_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_3_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         }
     },
     "val_3": {
         "duct-pipe_1": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_1",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_1-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_1-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_2": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_2",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_2-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_2-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_3": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_3",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "duct-pipe_3-shadow": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q_dot": {
-                "option": "value",
-                "value": 0
+            "name": "duct-pipe_3-shadow",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Coupled",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Coupled"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "inlet": {
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "p_sup": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "initial_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                },
+                "reference_frame": "Absolute",
+                "velocity": {
+                    "option": "value",
+                    "value": 10.0
+                },
+                "velocity_specification_method": "Magnitude, Normal to Boundary"
             },
-            "t": {
-                "option": "value",
-                "value": 300
+            "name": "inlet",
+            "thermal": {
+                "t": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10,
-            "velocity_spec": "Magnitude, Normal to Boundary",
-            "vmag": {
-                "option": "value",
-                "value": 10.0
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
             }
         },
         "inner_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "inner_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
-        "interior--duct": null,
-        "interior--pipe_1": null,
-        "interior--pipe_2": null,
-        "interior--pipe_3": null,
+        "interior--duct": {
+            "name": "interior--duct"
+        },
+        "interior--pipe_1": {
+            "name": "interior--pipe_1"
+        },
+        "interior--pipe_2": {
+            "name": "interior--pipe_2"
+        },
+        "interior--pipe_3": {
+            "name": "interior--pipe_3"
+        },
         "out": {
-            "avg_press_spec": false,
-            "direction_spec": "Normal to Boundary",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "p": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "avg_press_spec": false,
+                "direction_spec": "Normal to Boundary",
+                "frame_of_reference": "Absolute",
+                "gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                },
+                "p_backflow_spec_gen": "Total Pressure",
+                "p_profile_multiplier": 1.0,
+                "prevent_reverse_flow": false,
+                "radial": false,
+                "targeted_mf_boundary": false
             },
-            "p_backflow_spec_gen": "Total Pressure",
-            "p_profile_multiplier": 1.0,
-            "prevent_reverse_flow": false,
-            "radial": false,
-            "t0": {
-                "option": "value",
-                "value": 300
+            "name": "out",
+            "thermal": {
+                "t0": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "targeted_mf_boundary": false,
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "outer_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "outer_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "periodic_1": {
-            "angular": true
+            "angular": true,
+            "name": "periodic_1"
         },
         "peripodic_2": {
-            "angular": true
+            "angular": true,
+            "name": "peripodic_2"
         },
         "pipe2_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe2_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "pipe_1_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_1_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_1_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_1_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         },
         "pipe_2_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_2_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_3_end": {
-            "direction_spec": "Normal to Boundary",
-            "flow_spec": "Mass Flow Rate",
-            "frame_of_reference": "Absolute",
-            "ke_spec": "Intensity and Viscosity Ratio",
-            "mass_flow": {
-                "option": "value",
-                "value": 0
+            "momentum": {
+                "direction_specification": "Normal to Boundary",
+                "mass_flow_rate": {
+                    "option": "value",
+                    "value": 0
+                },
+                "mass_flow_specification": "Mass Flow Rate",
+                "reference_frame": "Absolute",
+                "supersonic_gauge_pressure": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "supersonic_or_initial_gauge_pressure": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_3_end",
+            "thermal": {
+                "total_temperature": {
+                    "option": "value",
+                    "value": 300
+                }
             },
-            "t0": {
-                "option": "value",
-                "value": 300
-            },
-            "turb_intensity": 0.05,
-            "turb_viscosity_ratio": 10
+            "turbulence": {
+                "turbulent_intensity": 0.05,
+                "turbulent_specification": "Intensity and Viscosity Ratio",
+                "turbulent_viscosity_ratio_real": 10
+            }
         },
         "pipe_3_wall": {
-            "caf": {
-                "option": "value",
-                "value": 1
+            "momentum": {
+                "motion_bc": "Stationary Wall",
+                "shear_bc": "No Slip"
             },
-            "d": 0,
-            "material": "aluminum",
-            "motion_bc": "Stationary Wall",
-            "planar_conduction": false,
-            "q": {
-                "option": "value",
-                "value": 0
+            "name": "pipe_3_wall",
+            "thermal": {
+                "caf": {
+                    "option": "value",
+                    "value": 1
+                },
+                "material": "aluminum",
+                "planar_conduction": false,
+                "q": {
+                    "option": "value",
+                    "value": 0
+                },
+                "q_dot": {
+                    "option": "value",
+                    "value": 0
+                },
+                "thermal_bc": "Heat Flux",
+                "wall_thickness": {
+                    "option": "value",
+                    "value": 0
+                }
             },
-            "q_dot": {
-                "option": "value",
-                "value": 0
-            },
-            "rough_bc": "rough-bc-standard",
-            "roughness_const": {
-                "option": "value",
-                "value": 0.5
-            },
-            "roughness_height": {
-                "option": "value",
-                "value": 0
-            },
-            "shear_bc": "No Slip",
-            "thermal_bc": "Heat Flux"
+            "turbulence": {
+                "rough_bc": "rough-bc-standard",
+                "roughness_const": {
+                    "option": "value",
+                    "value": 0.5
+                },
+                "roughness_height": {
+                    "option": "value",
+                    "value": 0
+                }
+            }
         }
     }
 }

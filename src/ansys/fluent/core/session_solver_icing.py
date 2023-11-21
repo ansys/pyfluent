@@ -3,10 +3,11 @@
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
 import importlib
+from typing import Any, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
 class SolverIcing(Solver):
@@ -19,13 +20,17 @@ class SolverIcing(Solver):
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
     ):
         """SolverIcing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
-        super(SolverIcing, self).__init__(fluent_connection=fluent_connection)
+        super(SolverIcing, self).__init__(
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        )
         self._flserver_root = None
         self._version = None
         self._fluent_connection = fluent_connection
@@ -34,7 +39,7 @@ class SolverIcing(Solver):
     def version(self):
         """Fluent's product version."""
         if self._version is None:
-            self._version = get_version_for_filepath(session=self)
+            self._version = get_version_for_file_name(session=self)
         return self._version
 
     @property

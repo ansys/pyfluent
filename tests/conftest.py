@@ -1,5 +1,7 @@
+from contextlib import nullcontext
 import functools
 import operator
+import os
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -27,6 +29,12 @@ def pytest_addoption(parser):
 
 
 def pytest_runtest_setup(item):
+    if (
+        any(mark.name == "standalone" for mark in item.iter_markers())
+        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+    ):
+        pytest.skip()
+
     is_nightly = item.config.getoption("--nightly")
     if not is_nightly and any(mark.name == "nightly" for mark in item.iter_markers()):
         pytest.skip()
@@ -67,3 +75,6 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+
+
+pytest.wont_raise = nullcontext

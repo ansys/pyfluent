@@ -1,10 +1,12 @@
 """Module containing class encapsulating Fluent connection."""
 
+
 from asyncio import Future
 import functools
 import importlib
 import logging
 import threading
+from typing import Any, Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -12,15 +14,35 @@ from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.solver.flobject import (
+    Group,
+    NamedObject,
+    SettingsBase,
+    StateType,
+)
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 from ansys.fluent.core.workflow import WorkflowWrapper
 
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
+
+
+def _set_state_safe(obj: SettingsBase, state: StateType):
+    try:
+        obj.set_state(state)
+    except RuntimeError:
+        if isinstance(obj, NamedObject):
+            for k, v in state.items():
+                _set_state_safe(obj[k], v)
+        elif isinstance(obj, Group):
+            for k, v in state.items():
+                _set_state_safe(getattr(obj, k), v)
+        else:
+            datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
 class Solver(BaseSession):
@@ -33,13 +55,17 @@ class Solver(BaseSession):
     def __init__(
         self,
         fluent_connection,
+        remote_file_handler: Optional[Any] = None,
     ):
         """Solver session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
-        super(Solver, self).__init__(fluent_connection=fluent_connection)
+        super(Solver, self).__init__(
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        )
         self._build_from_fluent_connection(fluent_connection)
 
     def _build_from_fluent_connection(self, fluent_connection):
@@ -79,7 +105,7 @@ class Solver(BaseSession):
     def version(self):
         """Fluent's product version."""
         if self._version is None:
-            self._version = get_version_for_filepath(session=self)
+            self._version = get_version_for_file_name(session=self)
         return self._version
 
     @property
@@ -185,6 +211,11 @@ class Solver(BaseSession):
         return self._root.report
 
     @property
+    def server(self):
+        """Settings for server."""
+        return self._root.server
+
+    @property
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
@@ -197,14 +228,12 @@ class Solver(BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            try:
-                state = self._root.get_state()
-                self.build_from_fluent_connection(fut_session.fluent_connection)
-                self._root.set_state(state)
-            except Exception:
-                fut_session.exit()
+            state = self._root.get_state()
+            self.build_from_fluent_connection(fut_session.fluent_connection)
+            # TODO temporary fix till set_state at settings root is fixed
+            _set_state_safe(self._root, state)
 
-    def read_case(self, file_name: str, lightweight_mode: bool = False):
+    def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
         ``True``.
 
@@ -212,19 +241,49 @@ class Solver(BaseSession):
         ----------
         file_name : str
             Case file name
-        lightweight_mode : bool, default False
-            Whether to use light io
         """
         import ansys.fluent.core as pyfluent
 
-        if lightweight_mode:
-            self.file.read(
-                file_type="case", file_name=file_name, lightweight_setup=True
-            )
-            launcher_args = dict(self.fluent_connection.launcher_args)
-            launcher_args.pop("lightweight_mode", None)
-            launcher_args["case_filepath"] = file_name
-            fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
-            fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
-        else:
-            self.file.read(file_type="case", file_name=file_name)
+        self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+        launcher_args = dict(self.fluent_connection.launcher_args)
+        launcher_args.pop("lightweight_mode", None)
+        launcher_args["case_file_name"] = file_name
+        fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
+        fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
+
+    def __call__(self):
+        return self._root.get_state()
+
+    def read_case(
+        self,
+        file_name: str,
+    ):
+        """Read a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        self._remote_file_handler.upload(
+            file_name=file_name,
+            on_uploaded=(lambda file_name: self.file.read_case(file_name=file_name)),
+        )
+
+    def write_case(
+        self,
+        file_name: str,
+    ):
+        """Write a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        self._remote_file_handler.download(
+            file_name=file_name,
+            before_downloaded=(
+                lambda file_name: self.file.write_case(file_name=file_name)
+            ),
+        )
