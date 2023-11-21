@@ -7,7 +7,6 @@ from typing import Any, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
 class SolverIcing(Solver):
@@ -34,13 +33,6 @@ class SolverIcing(Solver):
         self._flserver_root = None
         self._version = None
         self._fluent_connection = fluent_connection
-
-    @property
-    def version(self):
-        """Fluent's product version."""
-        if self._version is None:
-            self._version = get_version_for_file_name(session=self)
-        return self._version
 
     @property
     def _flserver(self):
