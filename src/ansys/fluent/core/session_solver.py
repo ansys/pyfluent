@@ -5,6 +5,7 @@ from asyncio import Future
 import functools
 import importlib
 import logging
+from os.path import dirname, join
 import threading
 from typing import Any, Optional
 
@@ -43,6 +44,38 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
                 _set_state_safe(getattr(obj, k), v)
         else:
             datamodel_logger.debug(f"set_state failed at {obj.path}")
+
+
+def write_root_gen(root_objects, version):
+    _tab = "    "
+    generated_code = "class SettingsRoot:\n"
+
+    generated_code += _tab + "def __init__(self, root):\n"
+    generated_code += (_tab * 2) + "self._root = root\n"
+
+    for item in root_objects:
+        generated_code += "\n" + _tab + "@property\n"
+        generated_code += _tab + f"def {item}(self):\n".replace("-", "_")
+        generated_code += (_tab * 2) + f'"""Settings for {item}."""\n'
+        generated_code += (_tab * 2) + f"return self._root.{item}\n".replace("-", "_")
+
+    f = open(join(dirname(__file__), f"settings_root_{version}.py"), "w")
+    f.write(generated_code)
+    f.close()
+
+
+def _import_settings_root(settings_service, root, version):
+    try:
+        settings_root = importlib.import_module(
+            f"ansys.fluent.core.settings_root_{version}"
+        )
+    except ImportError:
+        write_root_gen(settings_service.get_static_info()["children"].keys(), version)
+        settings_root = importlib.import_module(
+            f"ansys.fluent.core.settings_root_{version}"
+        )
+
+    return settings_root.SettingsRoot(root)
 
 
 class Solver(BaseSession):
@@ -87,6 +120,9 @@ class Solver(BaseSession):
             self.reduction = Reduction(self._reduction_service)
         else:
             self.reduction = reduction_old
+        self._settings_api_root = _import_settings_root(
+            self.settings_service, self._root, self.version
+        )
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
@@ -161,61 +197,6 @@ class Solver(BaseSession):
         return self._system_coupling
 
     @property
-    def file(self):
-        """Settings for file."""
-        return self._root.file
-
-    @property
-    def mesh(self):
-        """Settings for mesh."""
-        return self._root.mesh
-
-    @property
-    def setup(self):
-        """Settings for setup."""
-        return self._root.setup
-
-    @property
-    def solution(self):
-        """Settings for solution."""
-        return self._root.solution
-
-    @property
-    def results(self):
-        """Settings for results."""
-        return self._root.results
-
-    @property
-    def parametric_studies(self):
-        """Settings for parametric_studies."""
-        return self._root.parametric_studies
-
-    @property
-    def current_parametric_study(self):
-        """Settings for current_parametric_study."""
-        return self._root.current_parametric_study
-
-    @property
-    def parameters(self):
-        """Settings for parameters."""
-        return self._root.parameters
-
-    @property
-    def parallel(self):
-        """Settings for parallel."""
-        return self._root.parallel
-
-    @property
-    def report(self):
-        """Settings for report."""
-        return self._root.report
-
-    @property
-    def server(self):
-        """Settings for server."""
-        return self._root.server
-
-    @property
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
@@ -287,3 +268,9 @@ class Solver(BaseSession):
                 lambda file_name: self.file.write_case(file_name=file_name)
             ),
         )
+
+    def __getattr__(self, attr):
+        return getattr(self._settings_api_root, attr)
+
+    def __dir__(self):
+        return sorted(set(list(self.__dict__.keys()) + dir(self._settings_api_root)))
