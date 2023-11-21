@@ -5,7 +5,7 @@ import os
 from typing import List
 import xml.etree.ElementTree as XmlET
 
-from ansys.fluent.core.launcher.fluent_version import FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @dataclass

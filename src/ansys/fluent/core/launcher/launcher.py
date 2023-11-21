@@ -23,7 +23,6 @@ from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.fluent_version import FluentVersion
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import _parse_server_info_file
@@ -35,6 +34,7 @@ from ansys.fluent.core.utils.file_transfer_service import (
     PimFileTransferService,
     RemoteFileHandler,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
