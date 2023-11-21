@@ -3,7 +3,7 @@
 This module supports both starting Fluent locally and connecting to a remote instance
 with gRPC.
 """
-from abc import ABC
+from abc import ABC, abstractmethod
 from enum import Enum
 import json
 import logging
@@ -560,7 +560,11 @@ class LaunchFluentError(Exception):
 
 
 class Launcher(ABC):
-    pass
+    """Declares abstract method to launch Fluent."""
+
+    @abstractmethod
+    def launch(self, **args):
+        pass
 
 
 class StandaloneLauncher(Launcher):
@@ -590,12 +594,8 @@ class StandaloneLauncher(Launcher):
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
 
-    def __call__(self, **argvals):
+    def launch(self):
         """Launch Fluent session in standalone mode."""
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
-        self.argvals.update(argvals)
-
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
@@ -692,6 +692,9 @@ class StandaloneLauncher(Launcher):
             if server_info_file.exists():
                 server_info_file.unlink()
 
+    def __call__(self):
+        return self.launch()
+
 
 class PIMLauncher(Launcher):
     """Instantiates Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
@@ -711,13 +714,8 @@ class PIMLauncher(Launcher):
             setattr(self, arg, argvals[arg])
         self.argvals = argvals
 
-    def __call__(self, **argvals):
+    def launch(self):
         """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
-
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
-        self.argvals.update(argvals)
-
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
@@ -736,6 +734,9 @@ class PIMLauncher(Launcher):
             dimensionality=self.version,
             launcher_args=self.argvals,
         )
+
+    def __call__(self):
+        return self.launch()
 
 
 class DockerLauncher(Launcher):
@@ -756,13 +757,8 @@ class DockerLauncher(Launcher):
             setattr(self, arg, argvals[arg])
         self.argvals = argvals
 
-    def __call__(self, **argvals):
+    def launch(self):
         """Launch Fluent session in container mode."""
-
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
-        self.argvals.update(argvals)
-
         args = _build_fluent_launch_args_string(**self.argvals).split()
         if self.meshing_mode:
             args.append(" -meshing")
@@ -805,6 +801,9 @@ class DockerLauncher(Launcher):
             watchdog.launch(os.getpid(), port, password)
 
         return session
+
+    def __call__(self):
+        return self.launch()
 
 
 def create_launcher(
