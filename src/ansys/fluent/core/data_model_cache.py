@@ -307,6 +307,8 @@ class DataModelCache:
         if not isinstance(cache, abc.Mapping) or name_key == name_key_in_config:
             return copy.deepcopy(cache)
         else:
+            if not cache:
+                return DataModelCache.Empty
             return _CacheImpl(name_key_in_config).transform(cache)
 
     @staticmethod
