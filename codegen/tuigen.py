@@ -28,14 +28,16 @@ from data.fluent_gui_help_patch import XML_HELP_PATCH
 from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.fluent_version import FluentVersion
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 logger = logging.getLogger("pyfluent.tui")
 
