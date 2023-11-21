@@ -559,7 +559,8 @@ class LaunchFluentError(Exception):
         super().__init__(details)
 
 
-def get_fluent_launcher_mode(start_container, container_dict):
+def _get_fluent_launcher_mode(start_container, container_dict):
+    """Get Fluent launch mode."""
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM
     elif start_container is True or (
@@ -1054,7 +1055,7 @@ def launch_fluent(
     """
     argvals = locals().copy()
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
-    fluent_launch_mode = get_fluent_launcher_mode(
+    fluent_launch_mode = _get_fluent_launcher_mode(
         start_container=start_container, container_dict=container_dict
     )
     argvals = locals().copy()
