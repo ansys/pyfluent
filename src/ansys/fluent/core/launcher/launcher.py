@@ -3,7 +3,6 @@
 This module supports both starting Fluent locally and connecting to a remote instance
 with gRPC.
 """
-from abc import ABC
 from enum import Enum
 import json
 import logging
@@ -559,13 +558,7 @@ class LaunchFluentError(Exception):
         super().__init__(details)
 
 
-class Launcher(ABC):
-    """Declares abstract method to launch Fluent."""
-
-    pass
-
-
-class StandaloneLauncher(Launcher):
+class StandaloneLauncher:
     """Instantiates Fluent session in standalone mode."""
 
     def __init__(
@@ -709,7 +702,7 @@ class StandaloneLauncher(Launcher):
                 server_info_file.unlink()
 
 
-class PIMLauncher(Launcher):
+class PIMLauncher:
     """Instantiates Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
 
     def __init__(
@@ -789,7 +782,7 @@ class PIMLauncher(Launcher):
         )
 
 
-class DockerLauncher(Launcher):
+class DockerLauncher:
     """Instantiates Fluent session in container mode."""
 
     def __init__(
@@ -852,12 +845,9 @@ class DockerLauncher(Launcher):
 
         return session
 
-    def __call__(self):
-        return self.launch()
-
 
 def create_launcher(fluent_launch_mode: str = None, **kwargs):
-    """Factory function to launch Fluent in supported launch modes.
+    """Factory function to create launcher for supported launch modes.
 
     Parameters
     ----------
@@ -871,7 +861,18 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
+
+    Raises
+    ------
+    DisallowedValuesError
+        If an unknown mode is passed.
     """
+    if not isinstance(fluent_launch_mode, str):
+        raise DisallowedValuesError(
+            "fluent_launch_mode",
+            fluent_launch_mode,
+            allowed_values=["container", "pim", "standalone"],
+        )
     if fluent_launch_mode == "standalone":
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == "container":
@@ -881,6 +882,18 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
 
 
 def _process_kwargs(kwargs):
+    """Verify whether keyword arguments are valid or not.
+
+    Parameters
+    ----------
+    kwargs: Any
+        Provided keyword arguments.
+
+    Raises
+    ------
+    UnexpectedKeywordArgument
+        If an unexpected keyword argument is provided.
+    """
     if kwargs:
         if "meshing_mode" in kwargs:
             raise UnexpectedKeywordArgument(
@@ -893,6 +906,20 @@ def _process_kwargs(kwargs):
 
 
 def _get_fluent_launch_mode(start_container, container_dict):
+    """Get Fluent launch mode.
+
+    Parameters
+    ----------
+    start_container: bool
+        Specifies whether to launch a Fluent Docker container image.
+    container_dict: dict
+        Dictionary for Fluent Docker container configuration.
+
+    Returns
+    -------
+    fluent_launch_mode: str
+        Fluent launch mode.
+    """
     if pypim.is_configured():
         fluent_launch_mode = "pim"
     elif start_container is True or (
@@ -909,6 +936,18 @@ def _get_fluent_launch_mode(start_container, container_dict):
 
 
 def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
+    """Get invalid arguments.
+
+    Parameters
+    ----------
+    dry_run: bool
+        If dry running a container start,
+        ``launch_fluent()`` will return the configured ``container_dict``.
+    fluent_launch_mode: str
+        Fluent launch mode.
+    argvals: dict
+        Local arguments.
+    """
     if dry_run and fluent_launch_mode != "container":
         logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
@@ -936,6 +975,21 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
 
 
 def _get_argvals(argvals, mode):
+    """Update local arguments.
+
+    Parameters
+    ----------
+    argvals: dict
+        Local arguments.
+    mode : str
+        Launch mode of Fluent to point to a specific session type.
+        Options are ``"meshing"``, ``"pure-meshing"`` and ``"solver"``.
+
+    Returns
+    -------
+    argvals: dict
+        Updated local arguments.
+    """
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     argvals = locals().copy()
     return argvals
