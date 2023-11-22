@@ -20,13 +20,7 @@ class Fake:
             self.path = path
 
 
-@pytest.fixture
-def clear_cache():
-    yield
-    DataModelCache.rules_str_to_cache.clear()
-
-
-def test_data_model_cache(clear_cache):
+def test_data_model_cache():
     DataModelCache.set_state("x", Fake([("A", ""), ("x", "")]), 42.0)
     assert 42.0 == DataModelCache.get_state("x", Fake([("A", ""), ("x", "")]))
     assert dict(x=42.0) == DataModelCache.get_state("x", Fake([("A", "")]))
@@ -218,7 +212,7 @@ def test_update_cache_internal_names_as_keys(
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_get_cached_values_in_command_arguments(new_mesh_session, clear_cache):
+def test_get_cached_values_in_command_arguments(new_mesh_session):
     new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geo_import = new_mesh_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName="Bob")
@@ -238,13 +232,13 @@ def display_names_as_keys_in_cache():
 
 
 def test_display_names_as_keys(
-    display_names_as_keys_in_cache, new_watertight_workflow_session, clear_cache
+    display_names_as_keys_in_cache, new_watertight_workflow_session
 ):
     assert "TaskObject:Import Geometry" in DataModelCache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" not in DataModelCache.rules_str_to_cache["workflow"]
 
 
-def test_internal_names_as_keys(new_watertight_workflow_session, clear_cache):
+def test_internal_names_as_keys(new_watertight_workflow_session):
     assert (
         "TaskObject:Import Geometry"
         not in DataModelCache.rules_str_to_cache["workflow"]
@@ -260,6 +254,13 @@ def test_internal_names_as_keys(new_watertight_workflow_session, clear_cache):
             {"A": {"B:B1": {"C:C1": {"_name_": "C-1"}, "_name_": "B-1"}}},
             NameKey.INTERNAL,
             "A/B:B-1",
+            NameKey.DISPLAY,
+            {"C:C-1": {"_name_": "C-1"}, "_name_": "B-1"},
+        ),
+        (
+            {"A": {"B:B1": {"C:C1": {"_name_": "C-1"}, "_name_": "B-1"}}},
+            NameKey.INTERNAL,
+            "A/B:B1",
             NameKey.DISPLAY,
             {"C:C-1": {"_name_": "C-1"}, "_name_": "B-1"},
         ),
