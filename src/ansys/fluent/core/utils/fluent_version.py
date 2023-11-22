@@ -65,14 +65,14 @@ class FluentVersion(Enum):
 
         Raises
         ------
-        RuntimeError
+        AnsysVersionNotFound
             If an Ansys version cannot be found.
         """
         for v in FluentVersion:
             if "AWP_ROOT" + "".join(v.value.split("."))[:-1] in os.environ:
                 return v
 
-        raise AnsysVersionNotFound("An Ansys version cannot be found.")
+        raise AnsysVersionNotFound()
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
