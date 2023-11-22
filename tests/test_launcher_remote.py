@@ -17,6 +17,7 @@ from ansys.fluent.core.fluent_connection import (
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.session import BaseSession
 import ansys.fluent.core.utils.fluent_version as docker_image_version
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
@@ -54,7 +55,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
     if os.getenv("FLUENT_IMAGE_TAG"):
         monkeypatch.setattr(
-            launcher, "get_ansys_version", lambda: docker_image_version.get_version()
+            FluentVersion, "current", lambda: docker_image_version.get_version()
         )
 
     # Start fluent with launch_fluent
