@@ -18,12 +18,12 @@ from typing import Any, Dict, Optional, Union
 
 from beartype import beartype
 
+from ansys.fluent.core import watchdog
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing

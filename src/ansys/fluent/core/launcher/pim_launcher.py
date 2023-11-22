@@ -4,8 +4,8 @@ import logging
 import os
 from typing import Any, Dict, Optional, Union
 
+from ansys.fluent.core import FluentMode
 from ansys.fluent.core.launcher.launcher import (
-    FluentMode,
     _get_argvals,
     _get_fluent_launch_mode,
     _process_invalid_args,

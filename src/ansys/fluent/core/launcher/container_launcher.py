@@ -4,20 +4,19 @@ import logging
 import os
 from typing import Any, Dict, Optional, Union
 
+from ansys.fluent.core import FluentMode, watchdog
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
 from ansys.fluent.core.launcher.launcher import (
-    FluentMode,
     _build_fluent_launch_args_string,
     _get_argvals,
     _get_fluent_launch_mode,
     _process_invalid_args,
     _process_kwargs,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
 
 _THIS_DIR = os.path.dirname(__file__)
