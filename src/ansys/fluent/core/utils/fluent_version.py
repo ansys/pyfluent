@@ -5,6 +5,13 @@ from typing import Optional
 import ansys.fluent.core as pyfluent
 
 
+class AnsysVersionNotFound(RuntimeError):
+    """Provides the error when Ansys version is not found."""
+
+    def __init__(self):
+        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
+
+
 def get_version(session=None):
     if session is None:
         # for CI runs, get the version statically from env var set within CI
@@ -53,8 +60,8 @@ class FluentVersion(Enum):
 
         Returns
         -------
-        str
-            Ansys version string
+        FluentVersion
+            FluentVersion member corresponding to the Fluent version.
 
         Raises
         ------
@@ -65,7 +72,7 @@ class FluentVersion(Enum):
             if "AWP_ROOT" + "".join(v.value.split("."))[:-1] in os.environ:
                 return v
 
-        raise RuntimeError("An Ansys version cannot be found.")
+        raise AnsysVersionNotFound("An Ansys version cannot be found.")
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):

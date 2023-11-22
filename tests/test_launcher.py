@@ -8,7 +8,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.launcher.launcher import (
-    AnsysVersionNotFound,
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
     UnexpectedKeywordArgument,
@@ -16,7 +15,7 @@ from ansys.fluent.core.launcher.launcher import (
     check_docker_support,
     get_fluent_exe_path,
 )
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 
 
 def test_mode():
