@@ -114,7 +114,6 @@ def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
         get_fluent_exe_path()
     with pytest.raises(AnsysVersionNotFound):
         FluentVersion.current()
-    assert 0
 
 
 def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
