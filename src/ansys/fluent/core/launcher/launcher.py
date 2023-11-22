@@ -710,8 +710,13 @@ class StandaloneLauncher:
         argvals.update(args)
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
+        self.argvals = argvals
 
     def __call__(self, **kwargs):
+        self.argvals.update(kwargs)
+        for arg_name, arg_values in self.argvals.items():
+            setattr(self, arg_name, arg_values)
+
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
@@ -977,6 +982,9 @@ class PIMLauncher:
             )
 
     def __call__(self, **kwargs):
+        self.argvals.update(kwargs)
+        for arg_name, arg_values in self.argvals.items():
+            setattr(self, arg_name, arg_values)
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
@@ -1152,6 +1160,9 @@ class DockerLauncher:
         self.argvals = argvals
 
     def __call__(self, **kwargs):
+        self.argvals.update(kwargs)
+        for arg_name, arg_values in self.argvals.items():
+            setattr(self, arg_name, arg_values)
         args = _build_fluent_launch_args_string(**self.argvals).split()
         if self.meshing_mode:
             args.append(" -meshing")
