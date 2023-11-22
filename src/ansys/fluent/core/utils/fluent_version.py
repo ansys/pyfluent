@@ -12,6 +12,15 @@ class AnsysVersionNotFound(RuntimeError):
         super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
 
 
+class ComparisonError(RuntimeError):
+    """Provides the error when a comparison can't be completed."""
+
+    def __init__(self, op: str):
+        super().__init__(
+            f"'{op}' is only supported between two members of 'FluentVersion'."
+        )
+
+
 def get_version(session=None):
     if session is None:
         # for CI runs, get the version statically from env var set within CI
@@ -77,27 +86,19 @@ class FluentVersion(Enum):
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
             return self.value < other.value
-        return RuntimeError(
-            "'<' is only supported between instances of 'FluentVersion' and 'FluentVersion'."
-        )
+        return ComparisonError(op="<")
 
     def __le__(self, other):
         if isinstance(other, FluentVersion):
             return self.value <= other.value
-        return RuntimeError(
-            "'<=' is only supported between instances of 'FluentVersion' and 'FluentVersion'."
-        )
+        return ComparisonError(op="<=")
 
     def __gt__(self, other):
         if isinstance(other, FluentVersion):
             return self.value > other.value
-        return RuntimeError(
-            "'>' is only supported between instances of 'FluentVersion' and 'FluentVersion'."
-        )
+        return ComparisonError(op=">")
 
     def __ge__(self, other):
         if isinstance(other, FluentVersion):
             return self.value >= other.value
-        return RuntimeError(
-            "'>=' is only supported between instances of 'FluentVersion' and 'FluentVersion'."
-        )
+        return ComparisonError(op=">=")
