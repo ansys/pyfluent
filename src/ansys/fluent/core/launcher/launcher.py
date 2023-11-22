@@ -43,6 +43,13 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
+class AnsysVersionNotFound(RuntimeError):
+    """Provides the error when Ansys version is not found."""
+
+    def __init__(self):
+        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
+
+
 class InvalidPassword(ValueError):
     """Provides the error when password is invalid."""
 

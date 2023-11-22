@@ -8,6 +8,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.launcher.launcher import (
+    AnsysVersionNotFound,
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
     UnexpectedKeywordArgument,
@@ -15,7 +16,7 @@ from ansys.fluent.core.launcher.launcher import (
     check_docker_support,
     get_fluent_exe_path,
 )
-from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def test_mode():
@@ -111,9 +112,10 @@ def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
     monkeypatch.delenv("AWP_ROOT231", raising=False)
     monkeypatch.delenv("AWP_ROOT222", raising=False)
     with pytest.raises(AnsysVersionNotFound):
-        FluentVersion.current()
-    with pytest.raises(AnsysVersionNotFound):
         get_fluent_exe_path()
+    with pytest.raises(AnsysVersionNotFound):
+        FluentVersion.current()
+    assert 0
 
 
 def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
