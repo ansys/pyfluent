@@ -211,6 +211,8 @@ class DataModelCache:
                 DataModelCache._update_cache_from_variant_state(
                     rules, source, k, v, dict.__setitem__
                 )
+        else:
+            updaterFn(source, key, None)
 
     @staticmethod
     def update_cache(rules: str, state: Variant, deleted_paths: List[str]):
