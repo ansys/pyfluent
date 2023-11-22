@@ -273,4 +273,10 @@ class Solver(BaseSession):
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
-        return sorted(set(list(self.__dict__.keys()) + dir(self._settings_api_root)))
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self._settings_api_root)
+            )
+        )
