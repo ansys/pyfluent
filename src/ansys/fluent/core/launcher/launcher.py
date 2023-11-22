@@ -602,7 +602,7 @@ class StandaloneLauncher(Launcher):
             start_container=start_container, container_dict=container_dict
         )
         del start_container
-        _process_invalid_args(fluent_launch_mode)
+        _process_invalid_args(dry_run, fluent_launch_mode)
         argvals = locals().copy()
         argvals.pop("fluent_launch_mode")
         args = _get_argvals(argvals, mode)
@@ -888,7 +888,12 @@ def _get_fluent_launch_mode(start_container, container_dict):
     return fluent_launch_mode
 
 
-def _process_invalid_args(fluent_launch_mode):
+def _process_invalid_args(dry_run, fluent_launch_mode):
+    if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
+        logger.warning(
+            "'dry_run' argument for 'launch_fluent' currently is only "
+            "supported when starting containers."
+        )
     if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
             "env",
