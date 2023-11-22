@@ -5,6 +5,13 @@ from typing import Optional
 import ansys.fluent.core as pyfluent
 
 
+class AnsysVersionNotFound(RuntimeError):
+    """Provides the error when Ansys version is not found."""
+
+    def __init__(self):
+        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
+
+
 def get_version(session=None):
     if session is None:
         # for CI runs, get the version statically from env var set within CI
