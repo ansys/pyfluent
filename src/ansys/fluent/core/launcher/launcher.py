@@ -3,7 +3,7 @@
 This module supports both starting Fluent locally and connecting to a remote instance
 with gRPC.
 """
-from abc import ABC, abstractmethod
+from abc import ABC
 from enum import Enum
 import json
 import logging
@@ -562,9 +562,7 @@ class LaunchFluentError(Exception):
 class Launcher(ABC):
     """Declares abstract method to launch Fluent."""
 
-    @abstractmethod
-    def launch(self, **args):
-        pass
+    pass
 
 
 class StandaloneLauncher(Launcher):
@@ -572,36 +570,54 @@ class StandaloneLauncher(Launcher):
 
     def __init__(
         self,
-        new_session: Optional[Any] = None,
         argvals: Optional[Any] = None,
-        lightweight_mode: Optional[Any] = None,
-        additional_arguments: Optional[Any] = None,
-        meshing_mode: Optional[Any] = None,
-        show_gui: Optional[Any] = None,
-        env: Optional[Any] = None,
-        cwd: Optional[Any] = None,
-        journal_file_names: Optional[Any] = None,
-        topy: Optional[Any] = None,
-        start_timeout: Optional[Any] = None,
-        cleanup_on_exit: Optional[Any] = None,
-        start_transcript: Optional[Any] = None,
-        start_watchdog: Optional[Any] = None,
-        case_file_name: Optional[Any] = None,
-        case_data_file_name: Optional[Any] = None,
+        product_version: Optional[str] = None,
+        version: Optional[str] = None,
+        precision: Optional[str] = None,
+        processor_count: Optional[int] = None,
+        journal_file_names: Union[None, str, list[str]] = None,
+        start_timeout: int = 60,
+        additional_arguments: Optional[str] = "",
+        env: Optional[Dict[str, Any]] = None,
+        start_container: Optional[bool] = None,
+        container_dict: Optional[dict] = None,
+        dry_run: bool = False,
+        cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
+        show_gui: Optional[bool] = None,
+        case_file_name: Optional[str] = None,
+        case_data_file_name: Optional[str] = None,
+        lightweight_mode: Optional[bool] = None,
+        mode: Optional[Union[FluentMode, str, None]] = None,
+        py: Optional[bool] = None,
+        gpu: Optional[bool] = None,
+        cwd: Optional[str] = None,
+        topy: Optional[Union[str, list]] = None,
+        start_watchdog: Optional[bool] = None,
         **kwargs,
     ):
+        _process_kwargs(kwargs)
+        del kwargs
+        fluent_launch_mode = _get_fluent_launch_mode(
+            start_container=start_container, container_dict=container_dict
+        )
+        del start_container
+        _process_invalid_args(fluent_launch_mode)
+        argvals = locals().copy()
+        argvals.pop("fluent_launch_mode")
+        args = _get_argvals(argvals, mode)
+        argvals.update(args)
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
-        self.argvals = argvals
 
-    def launch(self):
-        """Launch Fluent session in standalone mode."""
+    def __call__(self, *args, **kwargs):
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
             setattr(self, "lightweight_mode", False)
 
-        _raise_exception_g_gu_in_windows_os(self.additional_arguments)
+        if self.additional_arguments:
+            _raise_exception_g_gu_in_windows_os(self.additional_arguments)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
@@ -692,9 +708,6 @@ class StandaloneLauncher(Launcher):
             if server_info_file.exists():
                 server_info_file.unlink()
 
-    def __call__(self):
-        return self.launch()
-
 
 class PIMLauncher(Launcher):
     """Instantiates Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
@@ -713,6 +726,18 @@ class PIMLauncher(Launcher):
         for arg in argvals:
             setattr(self, arg, argvals[arg])
         self.argvals = argvals
+
+        if self.additional_arguments:
+            logger.warning(
+                "'additional_arguments' option for 'launch_fluent' is currently not supported "
+                "when starting a remote Fluent PyPIM client."
+            )
+
+        if self.start_watchdog:
+            logger.warning(
+                "'start_watchdog' argument for 'launch_fluent' is currently not supported "
+                "when starting a remote Fluent PyPIM client."
+            )
 
     def launch(self):
         """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
@@ -806,9 +831,7 @@ class DockerLauncher(Launcher):
         return self.launch()
 
 
-def create_launcher(
-    fluent_launch_mode, **kwargs
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+def create_launcher(fluent_launch_mode: Union[LaunchMode, str] = None, **kwargs):
     """Factory function to launch Fluent in supported launch modes.
 
     Parameters
@@ -824,12 +847,73 @@ def create_launcher(
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
-    if fluent_launch_mode == LaunchMode.STANDALONE:
+    if (
+        fluent_launch_mode == LaunchMode.STANDALONE
+        or fluent_launch_mode == "standalone"
+    ):
         return StandaloneLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.CONTAINER:
+    elif (
+        fluent_launch_mode == LaunchMode.STANDALONE or fluent_launch_mode == "container"
+    ):
         return DockerLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.PIM:
+    elif fluent_launch_mode == LaunchMode.STANDALONE or fluent_launch_mode == "pim":
         return PIMLauncher(**kwargs)
+
+
+def _process_kwargs(kwargs):
+    if kwargs:
+        if "meshing_mode" in kwargs:
+            raise UnexpectedKeywordArgument(
+                "Use 'launch_fluent(mode='meshing')' to launch Fluent in meshing mode."
+            )
+        else:
+            raise UnexpectedKeywordArgument(
+                f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
+            )
+
+
+def _get_fluent_launch_mode(start_container, container_dict):
+    if pypim.is_configured():
+        fluent_launch_mode = LaunchMode.PIM
+    elif start_container is True or (
+        start_container is None
+        and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
+    ):
+        if check_docker_support():
+            fluent_launch_mode = LaunchMode.CONTAINER
+        else:
+            raise DockerContainerLaunchNotSupported()
+    else:
+        fluent_launch_mode = LaunchMode.STANDALONE
+    return fluent_launch_mode
+
+
+def _process_invalid_args(fluent_launch_mode):
+    if fluent_launch_mode != LaunchMode.STANDALONE:
+        arg_names = [
+            "env",
+            "cwd",
+            "topy",
+            "case_file_name",
+            "lightweight_mode",
+            "journal_file_names",
+            "case_data_file_name",
+        ]
+        invalid_arg_names = list(
+            filter(lambda arg_name: argvals[arg_name] is not None, arg_names)
+        )
+        if len(invalid_arg_names) != 0:
+            invalid_str_names = ", ".join(invalid_arg_names)
+            logger.warning(
+                f"These specified arguments are only supported when starting "
+                f"local standalone Fluent clients: {invalid_str_names}."
+            )
+
+
+def _get_argvals(argvals, mode):
+    new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
+    argvals = locals().copy()
+    return argvals
 
 
 #   pylint: disable=unused-argument
