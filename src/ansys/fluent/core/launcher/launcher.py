@@ -602,8 +602,8 @@ class StandaloneLauncher(Launcher):
             start_container=start_container, container_dict=container_dict
         )
         del start_container
-        _process_invalid_args(dry_run, fluent_launch_mode)
         argvals = locals().copy()
+        _process_invalid_args(dry_run, fluent_launch_mode, argvals)
         argvals.pop("fluent_launch_mode")
         args = _get_argvals(argvals, mode)
         argvals.update(args)
@@ -746,8 +746,8 @@ class PIMLauncher(Launcher):
             start_container=start_container, container_dict=container_dict
         )
         del start_container
-        _process_invalid_args(dry_run, fluent_launch_mode)
         argvals = locals().copy()
+        _process_invalid_args(dry_run, fluent_launch_mode, argvals)
         argvals.pop("fluent_launch_mode")
         args = _get_argvals(argvals, mode)
         argvals.update(args)
@@ -916,7 +916,7 @@ def _get_fluent_launch_mode(start_container, container_dict):
     return fluent_launch_mode
 
 
-def _process_invalid_args(dry_run, fluent_launch_mode):
+def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
     if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
         logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
@@ -1091,8 +1091,8 @@ def launch_fluent(
         start_container=start_container, container_dict=container_dict
     )
     del start_container
-    _process_invalid_args(dry_run, fluent_launch_mode)
     argvals = locals().copy()
+    _process_invalid_args(dry_run, fluent_launch_mode, argvals)
     fluent_launch_mode = argvals.pop("fluent_launch_mode")
     launcher = create_launcher(fluent_launch_mode, **argvals)
     return launcher()
