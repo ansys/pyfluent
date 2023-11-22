@@ -921,8 +921,13 @@ class WorkflowWrapper:
 
     def _workflow_and_task_list_state(self) -> Tuple[dict, dict]:
         workflow_state = self._workflow_state()
-        workflow_state_workflow = workflow_state["Workflow"]
-        return (workflow_state, workflow_state_workflow["TaskList"])
+        prefix = "TaskObject:"
+        task_list = [
+            x.removeprefix(prefix)
+            for x in workflow_state.keys()
+            if x.startswith(prefix)
+        ]
+        return workflow_state, task_list
 
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
