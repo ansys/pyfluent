@@ -788,9 +788,6 @@ class PIMLauncher(Launcher):
             launcher_args=self.argvals,
         )
 
-    def __call__(self):
-        return self.launch()
-
 
 class DockerLauncher(Launcher):
     """Instantiates Fluent session in container mode."""
@@ -859,7 +856,7 @@ class DockerLauncher(Launcher):
         return self.launch()
 
 
-def create_launcher(fluent_launch_mode: Union[LaunchMode, str] = None, **kwargs):
+def create_launcher(fluent_launch_mode: str = None, **kwargs):
     """Factory function to launch Fluent in supported launch modes.
 
     Parameters
@@ -875,16 +872,11 @@ def create_launcher(fluent_launch_mode: Union[LaunchMode, str] = None, **kwargs)
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
-    if (
-        fluent_launch_mode == LaunchMode.STANDALONE
-        or fluent_launch_mode == "standalone"
-    ):
+    if fluent_launch_mode == "standalone":
         return StandaloneLauncher(**kwargs)
-    elif (
-        fluent_launch_mode == LaunchMode.STANDALONE or fluent_launch_mode == "container"
-    ):
+    elif fluent_launch_mode == "container":
         return DockerLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.STANDALONE or fluent_launch_mode == "pim":
+    elif fluent_launch_mode == "pim":
         return PIMLauncher(**kwargs)
 
 
@@ -902,27 +894,27 @@ def _process_kwargs(kwargs):
 
 def _get_fluent_launch_mode(start_container, container_dict):
     if pypim.is_configured():
-        fluent_launch_mode = LaunchMode.PIM
+        fluent_launch_mode = "pim"
     elif start_container is True or (
         start_container is None
         and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
         if check_docker_support():
-            fluent_launch_mode = LaunchMode.CONTAINER
+            fluent_launch_mode = "container"
         else:
             raise DockerContainerLaunchNotSupported()
     else:
-        fluent_launch_mode = LaunchMode.STANDALONE
+        fluent_launch_mode = "standalone"
     return fluent_launch_mode
 
 
 def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
-    if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
+    if dry_run and fluent_launch_mode != "container":
         logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
             "supported when starting containers."
         )
-    if fluent_launch_mode != LaunchMode.STANDALONE:
+    if fluent_launch_mode != "standalone":
         arg_names = [
             "env",
             "cwd",

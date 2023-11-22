@@ -11,7 +11,6 @@ from ansys.fluent.core.launcher.launcher import (
     AnsysVersionNotFound,
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
-    LaunchMode,
     UnexpectedKeywordArgument,
     _build_journal_argument,
     check_docker_support,
@@ -208,23 +207,13 @@ def test_watchdog_launch(monkeypatch):
 
 
 def test_standalone_launcher():
-    standalone_meshing_enum_launcher = create_launcher(
-        LaunchMode.STANDALONE, mode="meshing"
-    )
-    standalone_meshing_enum_session = standalone_meshing_enum_launcher()
-    assert standalone_meshing_enum_session
+    standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
+    standalone_meshing_session = standalone_meshing_launcher()
+    assert standalone_meshing_session
 
-    standalone_meshing_str_launcher = create_launcher("standalone", mode="meshing")
-    standalone_meshing_str_session = standalone_meshing_str_launcher()
-    assert standalone_meshing_str_session
-
-    standalone_solver_enum_launcher = create_launcher(LaunchMode.STANDALONE)
-    standalone_solver_enum_session = standalone_solver_enum_launcher()
-    assert standalone_solver_enum_session
-
-    standalone_solver_str_launcher = create_launcher("standalone")
-    standalone_solver_str_session = standalone_solver_str_launcher()
-    assert standalone_solver_str_session
+    standalone_solver_launcher = create_launcher("standalone")
+    standalone_solver_session = standalone_solver_launcher()
+    assert standalone_solver_session
 
 
 @pytest.mark.parametrize(
