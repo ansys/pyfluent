@@ -6,7 +6,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher import launcher
+from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     AnsysVersionNotFound,
@@ -38,8 +38,8 @@ def test_unsuccessful_fluent_connection():
 
 
 def test_additional_argument_g_gu():
-    default_windows_flag = launcher._is_windows()
-    launcher._is_windows = lambda: True
+    default_windows_flag = launcher_utils._is_windows()
+    launcher_utils._is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
@@ -53,7 +53,7 @@ def test_additional_argument_g_gu():
                 mode="solver", additional_arguments="-gu", start_container=False
             )
     finally:
-        launcher._is_windows = lambda: default_windows_flag
+        launcher_utils._is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
