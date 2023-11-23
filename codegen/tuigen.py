@@ -356,7 +356,7 @@ class TUIGenerator:
 
 def generate(version, pyfluent_path):
     api_tree = {}
-    if version > "222":
+    if int(version) > int(FluentVersion.v22R2):
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
