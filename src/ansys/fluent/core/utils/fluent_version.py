@@ -77,11 +77,19 @@ class FluentVersion(Enum):
         AnsysVersionNotFound
             If an Ansys version cannot be found.
         """
-        for v in FluentVersion:
-            if "AWP_ROOT" + "".join(v.value.split("."))[:-1] in os.environ:
-                return v
+        for version in FluentVersion:
+            if str(version) in os.environ:
+                return version
 
         raise AnsysVersionNotFound()
+
+    def __int__(self):
+        """Return the version as a number (e.g. 232)"""
+        return int(self.value.replace(".", "")[:-1])
+
+    def __str__(self):
+        """Return the version path (e.g. "AWP_ROOT232")"""
+        return str(f"AWP_ROOT{int(self)}")
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
