@@ -34,7 +34,8 @@ def _init_task_accessors(obj):
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
-        obj._python_task_names.append(py_name)
+        with obj._lock:
+            obj._python_task_names.append(py_name)
         if py_name not in obj._task_objects:
             logger.debug(f"adding {py_name} {type(task)}")
             obj._task_objects[py_name] = task
@@ -47,7 +48,8 @@ def _init_task_accessors(obj):
 
 def _refresh_task_accessors(obj):
     logger.debug(f"thread ID in _refresh_task_accessors {threading.get_ident()}")
-    old_task_names = set(obj._python_task_names)
+    with obj._lock:
+        old_task_names = set(obj._python_task_names)
     logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
@@ -68,8 +70,9 @@ def _refresh_task_accessors(obj):
             logger.debug(
                 f"Could not add task {task_name} {type(getattr(obj, task_name, None))}"
             )
-    obj._python_task_names = current_task_names
-    logger.debug(f"updated_task_names: {obj._python_task_names}")
+    with obj._lock:
+        obj._python_task_names = current_task_names
+        logger.debug(f"updated_task_names: {obj._python_task_names}")
     for task in tasks:
         logger.debug(f"next task {task.python_name()} {id(task)}")
         _refresh_task_accessors(task)
@@ -119,6 +122,7 @@ class BaseTask:
                 _cmd=None,
                 _python_name=None,
                 _python_task_names=[],
+                _lock=command_source._lock,
                 _ordered_children=[],
                 _task_list=[],
                 _task_objects={},
@@ -789,6 +793,7 @@ class WorkflowWrapper:
         self._workflow = workflow
         self._command_source = command_source
         self._python_task_names = []
+        self._lock = threading.RLock()
         self._refreshing = False
         self._refresh_count = 0
         self._ordered_children = []
@@ -872,7 +877,8 @@ class WorkflowWrapper:
         List[str]
             Pythonic names of the child tasks.
         """
-        return self._python_task_names
+        with self._lock:
+            return self._python_task_names
 
     def inactive_ordered_children(self) -> list:
         """Get the inactive ordered task list held by this task.

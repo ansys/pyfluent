@@ -119,7 +119,7 @@ def test_add_on_changed(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[0] > 0
+    assert data[-1] > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
