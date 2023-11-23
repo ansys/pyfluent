@@ -4,8 +4,8 @@ import logging
 import os
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core import FluentMode
-from ansys.fluent.core.launcher.launcher import (
+from ansys.fluent.core.launcher.launcher_utils import (
+    FluentMode,
     _get_argvals,
     _get_fluent_launch_mode,
     _process_invalid_args,
@@ -15,7 +15,7 @@ from ansys.fluent.core.launcher.launcher import (
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_pim_launcher_options.json")
-logger = logging.getLogger("pyfluent.launcher")
+logger = logging.getLogger("pyfluent.pim_launcher")
 
 
 class PIMLauncher:

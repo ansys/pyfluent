@@ -6,8 +6,8 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core import FluentMode, watchdog
-from ansys.fluent.core.launcher.launcher import (
+from ansys.fluent.core.launcher.launcher_utils import (
+    FluentMode,
     LaunchFluentError,
     _await_fluent_launch,
     _build_journal_argument,
@@ -23,11 +23,12 @@ from ansys.fluent.core.launcher.launcher import (
     _process_kwargs,
     _raise_exception_g_gu_in_windows_os,
 )
+import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_standalone_launcher_options.json")
-logger = logging.getLogger("pyfluent.launcher")
+logger = logging.getLogger("pyfluent.standalone_launcher")
 
 
 class StandaloneLauncher:
