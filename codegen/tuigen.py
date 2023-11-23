@@ -98,7 +98,7 @@ def _copy_tui_help_xml_file(version: str):
         ansys_version = (
             FluentVersion.current()
         )  # picking up the file from the latest install location
-        awp_root = os.environ["AWP_ROOT" + "".join(str(ansys_version).split("."))[:-1]]
+        awp_root = os.environ[str(ansys_version)]
         xml_source = (
             Path(awp_root)
             / "commonfiles"
@@ -314,7 +314,7 @@ class TUIGenerator:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if self._version == "222":
+            if int(self._version) == int(FluentVersion.v22R2):
                 with open(
                     os.path.join(
                         _THIS_DIRNAME,

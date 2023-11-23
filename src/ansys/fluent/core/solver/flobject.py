@@ -27,6 +27,8 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
@@ -1208,7 +1210,7 @@ def get_cls(name, info, parent=None, version=None):
             "user_creatable", False
         )
 
-        if version == "222":
+        if int(version) == int(FluentVersion.v22R2):
             user_creatable = True
 
         bases = (base,)

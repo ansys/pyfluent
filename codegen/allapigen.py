@@ -34,7 +34,7 @@ if __name__ == "__main__":
         parser.add_argument(
             "--ansys-version",
             dest="ansys_version",
-            help=f"Specify the ansys package version to use, default is {FluentVersion.current()}",
+            help=f"Specify the ansys package version to use, default is {FluentVersion.current().value}",
         )
         parser.add_argument(
             "--fluent-path",
@@ -45,10 +45,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
         if args.ansys_version:
-            awp_root = os.environ[
-                "AWP_ROOT"
-                + "".join(FluentVersion(args.ansys_version).value.split("."))[:-1]
-            ]
+            awp_root = os.environ[str(FluentVersion(args.ansys_version))]
             os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path

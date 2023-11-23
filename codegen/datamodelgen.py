@@ -6,7 +6,10 @@ from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import BaseSession as Session
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 _THIS_DIR = Path(__file__).parent
 
@@ -141,7 +144,7 @@ class DataModelGenerator:
                 self.version,
             ),
         }
-        if int(self.version) >= 231:
+        if int(self.version) >= int(FluentVersion.v23R1):
             self._static_info["solverworkflow"] = DataModelStaticInfo(
                 pyfluent_path, "solverworkflow", ("solver",), self.version
             )
@@ -162,7 +165,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             "solver" in info.modes for _, info in self._static_info.items()
         )
-        run_icing_mode = int(self.version) >= 231 and any(
+        run_icing_mode = int(self.version) >= int(FluentVersion.v23R1) and any(
             "flicing" in info.modes for _, info in self._static_info.items()
         )
         import ansys.fluent.core as pyfluent

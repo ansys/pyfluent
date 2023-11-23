@@ -46,7 +46,7 @@ class SystemCoupling:
         # version check - this requires Fluent 2024 R1 or newer.
         if FluentVersion.current() < FluentVersion._24R1:
             raise RuntimeError(
-                f"Fluent version is {FluentVersion.current()}. PySystemCoupling integration requires Fluent 24.1.0 or later."
+                f"Fluent version is {FluentVersion.current().value}. PySystemCoupling integration requires Fluent 24.1.0 or later."
             )
 
     @property

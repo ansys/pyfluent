@@ -107,7 +107,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     """
 
     def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ["AWP_ROOT" + "".join(version.value.split("."))[:-1]]
+        awp_root = os.environ[str(version)]
         return Path(awp_root) / "fluent"
 
     def get_exe_path(fluent_root: Path) -> Path:
@@ -805,10 +805,7 @@ def launch_fluent(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
 
-        if product_version:
-            fluent_product_version = "".join(product_version.split("."))[:-1]
-        else:
-            fluent_product_version = None
+        fluent_product_version = product_version or None
 
         return launch_remote_fluent(
             session_cls=new_session,
