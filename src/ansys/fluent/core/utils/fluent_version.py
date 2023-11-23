@@ -40,7 +40,18 @@ def get_version_for_file_name(version: Optional[str] = None, session=None):
 
 
 class FluentVersion(Enum):
-    """An enumeration over supported Fluent versions."""
+    """An enumeration over supported Fluent versions.
+
+    Examples
+    --------
+    FluentVersion("23.2.0") == FluentVersion.v23R2
+
+    int(FluentVersion.v23R2) == 232
+
+    str(FluentVersion.v23R2) == 'AWP_ROOT232'
+
+    FluentVersion.v23R2.value == '23.2.0'
+    """
 
     v24R2 = "24.2.0"
     v24R1 = "24.1.0"
@@ -70,7 +81,7 @@ class FluentVersion(Enum):
         Returns
         -------
         FluentVersion
-            FluentVersion member corresponding to the Fluent version.
+            FluentVersion member corresponding to the newest Fluent version.
 
         Raises
         ------
