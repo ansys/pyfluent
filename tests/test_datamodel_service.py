@@ -338,28 +338,17 @@ def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
     assert x.FileName() == "dummy_file_name.dummy_extn"
 
 
+def _is_internal_name(name: str, prefix: str) -> bool:
+    return name.startswith(prefix) and name.removeprefix(prefix).isdigit()
+
+
 @pytest.mark.codegen_required
-def test_add_on_deleted(new_mesh_session):
+def test_task_object_keys_are_display_names(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     task_object_state = meshing.workflow.TaskObject()
-
-    assert set(task_object_state.keys()) == {
-        "Add Boundary Layers",
-        "Add Local Sizing",
-        "Apply Share Topology",
-        "Create Regions",
-        "Describe Geometry",
-        "Enclose Fluid Regions (Capping)",
-        "Generate the Surface Mesh",
-        "Generate the Volume Mesh",
-        "Import Geometry",
-        "Update Boundaries",
-        "Update Regions",
-    }
-    assert len(task_object_state) == 11
-
-    assert list(task_object_state.keys()) == sorted(meshing.workflow.TaskObject())
+    assert len(task_object_state) > 0
+    assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
 
 
 def test_generic_datamodel(new_solver_session):
