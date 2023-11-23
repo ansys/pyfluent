@@ -1,4 +1,5 @@
 from functools import partial
+from time import sleep
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -561,16 +562,19 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert 8 < len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(FileName=None))
+    sleep(5)
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(
         FileName=None
     )
     assert import_geometry.arguments.get_state()["FileName"] is None
     import_geometry.arguments.set_state(dict(FileName=mixing_elbow_geometry))
+    sleep(5)
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(
         FileName=mixing_elbow_geometry
     )
     assert import_geometry.FileName() == mixing_elbow_geometry
     import_geometry.FileName.set_state("bob")
+    sleep(5)
     assert import_geometry.FileName() == "bob"
     import_geometry.FileName.set_state(mixing_elbow_geometry)
     import_geometry.Execute()

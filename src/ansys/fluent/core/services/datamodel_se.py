@@ -11,7 +11,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
@@ -393,7 +393,7 @@ class PyStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self)
+        state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
         if DataModelCache.is_unassigned(state):
             state = self.get_remote_state()
         return state
@@ -1023,6 +1023,25 @@ class PyNamedObjectContainer:
             Name of the child object.
         """
         self._del_item(key)
+
+    @staticmethod
+    def _get_type_and_name(type_and_name):
+        return type_and_name.split(":", maxsplit=1)
+
+    def _compare_type(self, obj_type):
+        child_obj_type = self.path[-1][0]
+        return child_obj_type == obj_type
+
+    def get_state(self):
+        parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
+        returned_state = {}
+
+        for key, value in parent_state.items():
+            type_and_name = self._get_type_and_name(key)
+            if len(type_and_name) == 2 and self._compare_type(type_and_name[0]):
+                returned_state[type_and_name[1]] = value
+
+        return dict(sorted(returned_state.items()))
 
 
 class PyCommand:
