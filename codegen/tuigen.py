@@ -28,7 +28,7 @@ from data.fluent_gui_help_patch import XML_HELP_PATCH
 from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.launcher import get_ansys_version
+from ansys.fluent.core.launcher.launcher_utils import get_ansys_version
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,

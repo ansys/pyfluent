@@ -7,14 +7,14 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import (
+from ansys.fluent.core.launcher.launcher import create_launcher
+from ansys.fluent.core.launcher.launcher_utils import (
     AnsysVersionNotFound,
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
     UnexpectedKeywordArgument,
     _build_journal_argument,
     check_docker_support,
-    create_launcher,
     get_ansys_version,
     get_fluent_exe_path,
 )
