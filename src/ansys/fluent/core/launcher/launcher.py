@@ -837,8 +837,10 @@ def launch_fluent(
             if case_file_name:
                 if meshing_mode:
                     session.tui.file.read_case(case_file_name)
+                elif lightweight_mode:
+                    session.read_case_lightweight(case_file_name)
                 else:
-                    session.read_case(case_file_name, lightweight_mode)
+                    session.read_case(case_file_name)
             if case_data_file_name:
                 if not meshing_mode:
                     session.file.read(
