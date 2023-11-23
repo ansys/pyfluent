@@ -179,7 +179,7 @@ class PIMLauncher:
                 "when starting a remote Fluent PyPIM client."
             )
 
-    def __call__(self, **kwargs):
+    def __call__(self):
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
