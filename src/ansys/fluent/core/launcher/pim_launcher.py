@@ -14,8 +14,8 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 
 _THIS_DIR = os.path.dirname(__file__)
-_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_pim_launcher_options.json")
-logger = logging.getLogger("pyfluent.pim_launcher")
+_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
+logger = logging.getLogger("pyfluent.launcher")
 
 
 class PIMLauncher:

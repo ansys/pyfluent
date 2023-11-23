@@ -21,8 +21,8 @@ import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
 
 _THIS_DIR = os.path.dirname(__file__)
-_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_container_launcher_options.json")
-logger = logging.getLogger("pyfluent.container_launcher")
+_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
+logger = logging.getLogger("pyfluent.launcher")
 
 
 class DockerLauncher:
