@@ -14,7 +14,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
     _generate_launch_string,
     _get_argvals,
-    _get_fluent_launch_mode,
     _get_server_info,
     _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
@@ -172,24 +171,16 @@ class StandaloneLauncher:
         """
         _process_kwargs(kwargs)
         del kwargs
-        fluent_launch_mode = _get_fluent_launch_mode(
-            start_container=start_container, container_dict=container_dict
-        )
         del start_container
         argvals = locals().copy()
-        _process_invalid_args(dry_run, fluent_launch_mode, argvals)
-        argvals.pop("fluent_launch_mode")
+        _process_invalid_args(dry_run, "standalone", argvals)
         args = _get_argvals(argvals, mode)
         argvals.update(args)
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
 
-    def __call__(self, **kwargs):
-        self.argvals.update(kwargs)
-        for arg_name, arg_values in self.argvals.items():
-            setattr(self, arg_name, arg_values)
-
+    def __call__(self):
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")

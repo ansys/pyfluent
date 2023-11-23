@@ -212,60 +212,28 @@ def test_fluent_launchers():
         standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
-        assert standalone_meshing_launcher.start_transcript is True
-
-        standalone_meshing_session_2 = standalone_meshing_launcher(
-            start_transcript=False
-        )
-        assert standalone_meshing_session_2
-        assert standalone_meshing_launcher.start_transcript is False
 
         standalone_solver_launcher = create_launcher("standalone")
         standalone_solver_session = standalone_solver_launcher()
         assert standalone_solver_session
-        assert standalone_solver_launcher.start_transcript is True
-
-        standalone_solver_session_2 = standalone_solver_launcher(start_transcript=False)
-        assert standalone_solver_session_2
-        assert standalone_solver_launcher.start_transcript is False
 
     if check_docker_support():
         container_meshing_launcher = create_launcher("container", mode="meshing")
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
-        assert container_meshing_launcher.start_transcript is True
-
-        container_meshing_session_2 = container_meshing_launcher(start_transcript=False)
-        assert container_meshing_session_2
-        assert container_meshing_launcher.start_transcript is False
 
         container_solver_launcher = create_launcher("container")
         container_solver_session = container_solver_launcher()
         assert container_solver_session
-        assert container_solver_launcher.start_transcript is True
-
-        container_solver_session_2 = container_solver_launcher(start_transcript=False)
-        assert container_solver_session_2
-        assert container_solver_launcher.start_transcript is False
 
     if pypim.is_configured():
         pim_meshing_launcher = create_launcher("pim", mode="meshing")
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
-        assert pim_meshing_launcher.start_transcript is True
-
-        pim_meshing_session_2 = pim_meshing_launcher(start_transcript=False)
-        assert pim_meshing_session_2
-        assert pim_meshing_launcher.start_transcript is False
 
         pim_solver_launcher = create_launcher("pim")
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
-        assert pim_solver_launcher.start_transcript is True
-
-        pim_solver_session_2 = pim_solver_launcher(start_transcript=False)
-        assert pim_solver_session_2
-        assert pim_solver_launcher.start_transcript is False
 
 
 @pytest.mark.parametrize(

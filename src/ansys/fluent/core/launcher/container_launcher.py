@@ -13,7 +13,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
     _build_fluent_launch_args_string,
     _get_argvals,
-    _get_fluent_launch_mode,
     _process_invalid_args,
     _process_kwargs,
 )
@@ -166,23 +165,16 @@ class DockerLauncher:
         """
         _process_kwargs(kwargs)
         del kwargs
-        fluent_launch_mode = _get_fluent_launch_mode(
-            start_container=start_container, container_dict=container_dict
-        )
         del start_container
         argvals = locals().copy()
-        _process_invalid_args(dry_run, fluent_launch_mode, argvals)
-        argvals.pop("fluent_launch_mode")
+        _process_invalid_args(dry_run, "container", argvals)
         args = _get_argvals(argvals, mode)
         argvals.update(args)
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
 
-    def __call__(self, **kwargs):
-        self.argvals.update(kwargs)
-        for arg_name, arg_values in self.argvals.items():
-            setattr(self, arg_name, arg_values)
+    def __call__(self):
         args = _build_fluent_launch_args_string(**self.argvals).split()
         if self.meshing_mode:
             args.append(" -meshing")
