@@ -104,7 +104,9 @@ class FluentVersion(Enum):
 
     def __int__(self):
         """Return the version as a number (e.g. 232)"""
-        return int(self.value.replace(".", "")[:-1])
+        if self.value:
+            return int(self.value.replace(".", "")[:-1])
+        return 0
 
     def __str__(self):
         """Return the version path (e.g. "AWP_ROOT232")"""
