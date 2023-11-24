@@ -552,7 +552,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     watertight = new_mesh_session.watertight()
@@ -607,7 +607,7 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
     assert tasks[0].name() == "Import Geometry"
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
@@ -625,7 +625,7 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
@@ -660,7 +660,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
