@@ -4,7 +4,7 @@ import functools
 from typing import Any, Optional
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.meshing_queries import (
     MeshingQueries,
@@ -28,7 +28,7 @@ class PureMeshing(BaseSession):
 
     rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
     for r in rules:
-        DataModelCache.set_config(r, "internal_names_as_keys", True)
+        DataModelCache.set_config(r, "name_key", NameKey.INTERNAL)
 
     def __init__(
         self,
