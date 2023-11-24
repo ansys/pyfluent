@@ -64,7 +64,7 @@ class FluentVersion(Enum):
 
     @classmethod
     def _missing_(cls, version):
-        if version == None:
+        if not version:
             return FluentVersion.default
         if isinstance(version, (int, float, str)):
             version = str(version)
@@ -78,9 +78,7 @@ class FluentVersion(Enum):
                 raise RuntimeError(
                     f"The specified version '{version[:-2]}' is not supported."
                     + " Supported versions are: "
-                    + ", ".join(
-                        [v.value for v in FluentVersion if v.name.startswith("v")][::-1]
-                    )
+                    + ", ".join([v.value for v in FluentVersion][::-1])
                 )
 
     @classmethod
