@@ -60,10 +60,12 @@ class FluentVersion(Enum):
     v23R2 = "23.2.0"
     v23R1 = "23.1.0"
     v22R2 = "22.2.0"
-    default = None
+    default = ""
 
     @classmethod
     def _missing_(cls, version):
+        if version == None:
+            return FluentVersion.default
         if isinstance(version, (int, float, str)):
             version = str(version)
             if len(version) == 3:
