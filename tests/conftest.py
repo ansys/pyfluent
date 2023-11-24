@@ -7,9 +7,8 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.data_model_cache import DataModelCache
-
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_versions = list(FluentVersion)
 _fluent_release_version = _fluent_versions[2].value
