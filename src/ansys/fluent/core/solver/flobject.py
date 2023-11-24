@@ -1210,7 +1210,7 @@ def get_cls(name, info, parent=None, version=None):
             "user_creatable", False
         )
 
-        if version == str(int(FluentVersion.v22R2)):
+        if FluentVersion(version) == FluentVersion.v22R2:
             user_creatable = True
 
         bases = (base,)

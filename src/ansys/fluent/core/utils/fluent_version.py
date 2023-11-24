@@ -44,6 +44,8 @@ class FluentVersion(Enum):
 
     Examples
     --------
+    FluentVersion(None) == <FluentVersion.default: None>
+
     FluentVersion("23.2.0") == FluentVersion.v23R2
 
     int(FluentVersion.v23R2) == 232
@@ -58,11 +60,15 @@ class FluentVersion(Enum):
     v23R2 = "23.2.0"
     v23R1 = "23.1.0"
     v22R2 = "22.2.0"
+    default = None
 
     @classmethod
     def _missing_(cls, version):
-        if isinstance(version, (float, str)):
-            version = str(version) + ".0"
+        if isinstance(version, (int, float, str)):
+            version = str(version)
+            if len(version) == 3:
+                version = version[:2] + "." + version[2:]
+            version += ".0"
             for v in FluentVersion:
                 if version == v.value:
                     return FluentVersion(version)
@@ -70,7 +76,9 @@ class FluentVersion(Enum):
                 raise RuntimeError(
                     f"The specified version '{version[:-2]}' is not supported."
                     + " Supported versions are: "
-                    + ", ".join([ver.value for ver in FluentVersion][::-1])
+                    + ", ".join(
+                        [v.value for v in FluentVersion if v.name.startswith("v")][::-1]
+                    )
                 )
 
     @classmethod

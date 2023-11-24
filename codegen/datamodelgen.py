@@ -144,7 +144,7 @@ class DataModelGenerator:
                 self.version,
             ),
         }
-        if int(self.version) >= int(FluentVersion.v23R1):
+        if FluentVersion(self.version) >= FluentVersion.v23R1:
             self._static_info["solverworkflow"] = DataModelStaticInfo(
                 pyfluent_path, "solverworkflow", ("solver",), self.version
             )
@@ -165,7 +165,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             "solver" in info.modes for _, info in self._static_info.items()
         )
-        run_icing_mode = int(self.version) >= int(FluentVersion.v23R1) and any(
+        run_icing_mode = FluentVersion(self.version) >= FluentVersion.v23R1 and any(
             "flicing" in info.modes for _, info in self._static_info.items()
         )
         import ansys.fluent.core as pyfluent

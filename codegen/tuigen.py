@@ -314,7 +314,7 @@ class TUIGenerator:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if int(self._version) == int(FluentVersion.v22R2):
+            if FluentVersion(self._version) == FluentVersion.v22R2:
                 with open(
                     os.path.join(
                         _THIS_DIRNAME,
@@ -356,7 +356,7 @@ class TUIGenerator:
 
 def generate(version, pyfluent_path):
     api_tree = {}
-    if int(version) > int(FluentVersion.v22R2):
+    if FluentVersion(version) > FluentVersion.v22R2:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
