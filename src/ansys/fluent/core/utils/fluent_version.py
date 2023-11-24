@@ -44,7 +44,7 @@ class FluentVersion(Enum):
 
     Examples
     --------
-    FluentVersion(None) == <FluentVersion.default: None>
+    FluentVersion(None) == <FluentVersion.default: "">
 
     FluentVersion("23.2.0") == FluentVersion.v23R2
 
