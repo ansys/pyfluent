@@ -31,6 +31,7 @@ class Attribute:
         "show_text",
         "widget",
         "dir_info",
+        "extensions", 
     ]
 
     def __init__(self, function):
@@ -421,11 +422,28 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_updateitem(cls):
         def wrapper(self, value):
-            for name, val in value.items():
+            properties = value
+            sort_by = None 
+            if hasattr(self, "sort_by"):                
+                sort_by = self.sort_by  
+            elif hasattr(self, "include"):
+                sort_by = self.include            
+            if sort_by:                
+                sorted_properties = {
+                    prop: properties[prop] for prop in sort_by if prop in properties
+                }
+                sorted_properties.update(
+                    {k: v for k, v in properties.items() if k not in sort_by}
+                )
+                properties.clear()
+                properties.update(sorted_properties)        
+            for name, val in properties.items():
                 obj = getattr(self, name)
                 if obj.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                     obj.set_state(val)
                 else:
+                    if obj.__class__.__class__.__name__ == "PyReferenceObjectMeta":
+                        obj = obj.ref     
                     obj.update(val)
 
         wrapper.__doc__ = "Update object."
@@ -437,15 +455,35 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             state = {}
 
             def update_state(clss):
-                for name, cls in clss.__dict__.items():
+                for name, cls in clss.__dict__.items():                   
                     o = getattr(self, name)
-                    if o is None:
+                    if o is None or name.startswith("_") or name.startswith("__"):
                         continue
-                    if getattr(o, "is_active", True):
-                        if cls.__class__.__name__ == "PyLocalObjectMeta":
-                            state[name] = o(show_attributes)
 
-                        if cls.__class__.__name__ == "PyLocalPropertyMeta":
+                    if cls.__class__.__name__ == "PyReferenceObjectMeta": 
+                        if o.LOCATION=="local":
+                            o = o.ref
+                        else: continue  
+                    elif cls.__class__.__name__ == "PyLocalCommandMeta": 
+                        args = {}
+                        for arg in o._args:
+                            args[arg] = getattr(o, arg)()          
+                        state[name] = args                           
+                    if cls.__class__.__name__ == "PyLocalObjectMeta" or cls.__class__.__name__ == "PyReferenceObjectMeta":
+                        if getattr(o, "is_active", True): state[name] = o(show_attributes)                        
+                    elif (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):                       
+                        container = getattr(self, cls.PLURAL) 
+                        if getattr(container, "is_active", True):
+                            state[cls.PLURAL]={}
+                            for child_name in container:
+                                o = container[child_name]
+                                if getattr(o, "is_active", True): state[cls.PLURAL][child_name] = o()    
+                        
+                    elif cls.__class__.__name__ == "PyLocalPropertyMeta":
+                        if getattr(o, "is_active", True):
                             state[name] = o()
                             attrs = show_attributes and getattr(o, "attributes", None)
                             if attrs:
@@ -484,7 +522,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         if "__call__" not in attrs:
             attrs["__call__"] = cls.__create_get_state()                
         attrs["__setattr__"] = cls.__create_setattr()
-        attrs["__repr__"] = cls.__create_repr()
+        #attrs["__repr__"] = cls.__create_repr()
         attrs["update"] = cls.__create_updateitem()
         return super(PyLocalObjectMeta, cls).__new__(cls, name, bases, attrs)
 
@@ -670,6 +708,14 @@ class PyLocalContainer(MutableMapping):
         if getattr(obj, "_parent", None):
             parent = self.get_root(obj._parent)
         return parent
+        
+    
+    def update(self, value):
+        for name, val in value.items():
+            o = self[name]
+            o.update(val)
+
+        
 
     def get_root(self, obj=None):
         """Returns the top-most parent object."""

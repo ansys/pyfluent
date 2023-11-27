@@ -53,6 +53,28 @@ class Container:
     def type(self):
         """Type."""
         return "object"
+        
+    def update(self, value):
+        for name, val in value.items():
+            o = getattr(self,name)
+            o.update(val)        
+        
+    def __call__(self, show_attributes=False):
+        state = {}
+        for name, cls in self.__dict__.items():                   
+            o = getattr(self, name)
+            if o is None or name.startswith("_") or name.startswith("__"):
+                continue
+                
+            if cls.__class__.__name__ == "PyLocalContainer":           
+                container = o 
+                if getattr(container, "is_active", True):
+                    state[name]={}
+                    for child_name in container:
+                        o = container[child_name]
+                        if getattr(o, "is_active", True): state[name][child_name] = o()    
+                            
+        return state        
 
     def _init_module(self, obj, mod, post_api_helper):
         for name, cls in mod.__dict__.items():
