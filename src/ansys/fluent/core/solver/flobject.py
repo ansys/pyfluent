@@ -27,9 +27,8 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
 from .error_message import allowed_name_error_message, allowed_values_error
+from .flversion import FluentVersion
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
