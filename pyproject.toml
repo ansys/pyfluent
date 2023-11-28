@@ -10,9 +10,6 @@ requires = [
 testpaths = ["tests"]
 addopts = """
 -v
---cov=ansys.fluent
---cov-report=xml:cov_xml.xml
---cov-report=html
 --durations=0
 --show-capture=all
 """
