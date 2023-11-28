@@ -51,7 +51,7 @@ def version_info() -> str:
 
 
 # Setup data directory
-USER_DATA_PATH = platformdirs.user_data_dir(
+USER_DATA_PATH = os.getenv("PYFLUENT_DATA_PATH") or platformdirs.user_data_dir(
     appname="ansys_fluent_core", appauthor="Ansys"
 )
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
