@@ -145,7 +145,7 @@ class DataModelGenerator:
             if int(self.version) >= 231
             else None,
         }
-        if int(self.version) >= 241:
+        if int(self.version) >= 242:
             self._static_info["meshing_utilities"] = DataModelStaticInfo(
                 pyfluent_path, "MeshingUtilities", ("meshing",), self.version
             )

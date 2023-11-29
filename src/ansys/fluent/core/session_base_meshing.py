@@ -95,7 +95,7 @@ class BaseMeshing:
     def _meshing_utilities_root(self):
         """Datamodel root of meshing_utilities."""
         try:
-            if self.get_fluent_version() >= "24.1.0":
+            if self.get_fluent_version() >= "24.2.0":
                 meshing_utilities_module = importlib.import_module(
                     f"ansys.fluent.core.datamodel_{self.version}.MeshingUtilities"
                 )
@@ -104,7 +104,7 @@ class BaseMeshing:
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            if self.get_fluent_version() >= "24.1.0":
+            if self.get_fluent_version() >= "24.2.0":
                 meshing_utilities_root = PyMenuGeneric(
                     self._se_service, "meshing_utilities"
                 )
