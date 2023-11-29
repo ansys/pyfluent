@@ -45,7 +45,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
         if args.ansys_version:
-            awp_root = os.environ[str(FluentVersion(args.ansys_version))]
+            awp_root = os.environ[FluentVersion(args.ansys_version).awp_var()]
             os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path

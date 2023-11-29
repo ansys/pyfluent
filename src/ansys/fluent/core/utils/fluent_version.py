@@ -104,15 +104,31 @@ class FluentVersion(Enum):
 
         raise AnsysVersionNotFound()
 
+    def awp_var(self):
+        """Get the Fluent version in AWP environment variable format.
+
+        Returns
+        -------
+        str
+            Version path (e.g. "AWP_ROOT232")
+        """
+        return str(f"AWP_ROOT{int(self)}")
+
+    def img_tag(self):
+        """Get the Fluent version in the image tag format.
+
+        Returns
+        -------
+        str
+            Image tag (e.g. "v23.2.0")
+        """
+        return str(f"v{self.value}")
+
     def __int__(self):
         """Return the version as a number (e.g. 232)"""
         if self.value:
             return int(self.value.replace(".", "")[:-1])
         return 0
-
-    def __str__(self):
-        """Return the version path (e.g. "AWP_ROOT232")"""
-        return str(f"AWP_ROOT{int(self)}")
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):

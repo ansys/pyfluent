@@ -98,7 +98,7 @@ def _copy_tui_help_xml_file(version: str):
         ansys_version = (
             FluentVersion.current()
         )  # picking up the file from the latest install location
-        awp_root = os.environ[str(ansys_version)]
+        awp_root = os.environ[ansys_version.awp_var()]
         xml_source = (
             Path(awp_root)
             / "commonfiles"

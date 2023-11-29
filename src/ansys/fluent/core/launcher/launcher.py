@@ -107,7 +107,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     """
 
     def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ[str(version)]
+        awp_root = os.environ[version.awp_var()]
         return Path(awp_root) / "fluent"
 
     def get_exe_path(fluent_root: Path) -> Path:
