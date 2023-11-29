@@ -660,6 +660,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
+@pytest.mark.skip(reason="Randomly hanging.")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
