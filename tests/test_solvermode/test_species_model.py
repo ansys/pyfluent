@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.setup
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=24.1")
 def test_change_create_mixture(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
 
