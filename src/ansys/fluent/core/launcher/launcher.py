@@ -883,15 +883,14 @@ def launch_fluent(
         args = _build_fluent_launch_args_string(**argvals).split()
         if meshing_mode:
             args.append(" -meshing")
-        print(args, "args")
-        print(container_dict, "container_dict")
-        if dry_run:
-            if container_dict is None:
+        if container_dict is None:
                 container_dict = {}
+        if product_version:
+                container_dict["fluent_image"] = f"ghcr.io/ansys/pyfluent:v{product_version}"
+        if dry_run:
             config_dict, *_ = configure_container_dict(args, **container_dict)
             from pprint import pprint
 
-            print(config_dict, "config_dict")
             print("\nDocker container run configuration:\n")
             print("config_dict = ")
             if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
@@ -902,7 +901,7 @@ def launch_fluent(
                 pprint(config_dict_h)
                 del config_dict_h
             return config_dict
-
+        
         port, password = start_fluent_container(args, container_dict)
 
         session = new_session(
