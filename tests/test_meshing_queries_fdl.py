@@ -2044,7 +2044,7 @@ def test_meshing_utilities(new_mesh_session):
             new_suffix="fluid-new",
             merge=True,
         )
-        is False
+        == "*the-non-printing-object*"
     )
 
     assert (
@@ -2054,5 +2054,5 @@ def test_meshing_utilities(new_mesh_session):
             new_suffix="fluid-new",
             merge=True,
         )
-        is False
+        == "*the-non-printing-object*"
     )
