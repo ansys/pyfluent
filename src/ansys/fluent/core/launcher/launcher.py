@@ -52,11 +52,12 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    if not isinstance(fluent_launch_mode, str):
+    allowed_options = ["container", "pim", "standalone"]
+    if not isinstance(fluent_launch_mode, str) or str(fluent_launch_mode) not in allowed_options:
         raise DisallowedValuesError(
             "fluent_launch_mode",
             fluent_launch_mode,
-            allowed_values=["container", "pim", "standalone"],
+            allowed_values=allowed_options,
         )
     if fluent_launch_mode == "standalone":
         return StandaloneLauncher(**kwargs)
