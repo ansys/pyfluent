@@ -161,7 +161,7 @@ class DatamodelService(StreamingService):
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """executeQuery rpc of DataModel service."""
+        """ExecuteQuery rpc of DataModel service."""
         logger.debug(f"Query: {request.query}")
         return self._stub.executeQuery(request, metadata=self._metadata)
 
@@ -1053,9 +1053,8 @@ class PyNamedObjectContainer:
 
 
 class PyQuery:
-    """Query class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Query class using the StateEngine-based DatamodelService as the backend. Use this
+    class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
