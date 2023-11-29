@@ -1,26 +1,31 @@
 import pytest
 
 
-@pytest.mark.quick
-@pytest.mark.setup
 @pytest.mark.fluent_version("latest")
-def test_species_material(load_mixing_elbow_mesh):
+def test_change_create_mixture(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
 
     # Test turning on species transport model
     species_mdl = solver_session.setup.models.species.model
 
-    assert species_mdl.option.get_state() == "off"
+    assert species_mdl.option() == "off"
     species_mdl.option = "species-transport"
-    assert species_mdl.option.get_state() == "species-transport"
+    assert species_mdl.option() == "species-transport"
 
-    # Create custom species
+    # Test command names list
     materials = solver_session.setup.materials
+    assert sorted(materials.mixture.command_names) == sorted(
+        [
+            "delete",
+            "list",
+            "list_properties",
+            "make_a_copy",
+        ]
+    )
 
+    # Test change/creating a mixture with custom species from template
     custom_species_1 = materials.fluid.create("custom-species-1")
     custom_species_2 = materials.fluid.create("custom-species-2")
-
-    # Test change/creating a mixture from template
     solver_session.tui.define.materials.change_create(
         "mixture-template",  # Change/create mixture-template
         "custom-mixture",  # Rename to `custom-mixture`
@@ -41,6 +46,13 @@ def test_species_material(load_mixing_elbow_mesh):
     assert "custom-mixture" in materials.mixture.keys()
     assert "mixture-template" not in materials.mixture.keys()
 
+    # Test that mixture contains correct species
+    mix_species = solver_session.setup.materials.mixture[
+        "custom-mixture"
+    ].species.volumetric_species.keys()
+    assert "custom-species-1" in mix_species
+    assert "custom-species-2" in mix_species
+
     # Test copying a mixture
     materials.mixture.make_a_copy(
         from_="custom-mixture",
@@ -48,14 +60,12 @@ def test_species_material(load_mixing_elbow_mesh):
     )
     assert "custom-mixture-copy" in materials.mixture.keys()
 
-    # Test deleting a mixture
-    solver_session.tui.define.materials.delete("custom-mixture-copy")
-    assert "custom-mixture-copy" not in materials.mixture.keys()
+    # Test changing cellzone mixture
+    elbow_zone = solver_session.setup.cell_zone_conditions.fluid["elbow-fluid"]
+    assert elbow_zone.material() == "custom-mixture"
+    elbow_zone.material = "custom-mixture-copy"
+    assert elbow_zone.material() == "custom-mixture-copy"
 
-    # Check command names list
-    assert materials.mixture.command_names == [
-        "delete",
-        "list",
-        "list_properties",
-        "make_a_copy",
-    ]
+    # Test deleting a mixture
+    materials.mixture.delete(name_list=["custom-mixture"])
+    assert "custom-mixture" not in materials.mixture.keys()
