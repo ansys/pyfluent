@@ -2025,7 +2025,7 @@ def test_meshing_utilities(new_mesh_session):
 
     assert meshing_session.meshing_utilities.replace_cell_zone_suffix(
         cell_zone_id_list=[87], old_suffix="fluid", new_suffix="fluid-new", merge=True
-    ) == ["*the-non-printing-object*"]
+    ) == [False]
 
     assert (
         meshing_session.meshing_utilities.replace_cell_zone_suffix(
@@ -2044,7 +2044,7 @@ def test_meshing_utilities(new_mesh_session):
             new_suffix="fluid-new",
             merge=True,
         )
-        == "*the-non-printing-object*"
+        is False
     )
 
     assert (
@@ -2054,5 +2054,5 @@ def test_meshing_utilities(new_mesh_session):
             new_suffix="fluid-new",
             merge=True,
         )
-        == "*the-non-printing-object*"
+        is False
     )
