@@ -178,6 +178,8 @@ class DockerLauncher:
         args = _build_fluent_launch_args_string(**self.argvals).split()
         if self.meshing_mode:
             args.append(" -meshing")
+        if self.product_version:
+            os.environ["FLUENT_IMAGE_TAG"] = f"v{self.product_version}"
 
         if self.dry_run:
             if self.container_dict is None:
