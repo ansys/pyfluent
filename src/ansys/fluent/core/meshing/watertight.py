@@ -1,6 +1,7 @@
 """Watertight workflow module."""
 
-from ansys.fluent.core.launcher.launcher import FluentMode, launch_fluent
+from ansys.fluent.core.launcher.launcher import launch_fluent
+from ansys.fluent.core.launcher.launcher_utils import FluentMode
 
 from .meshing_workflow import MeshingWorkflow
 
