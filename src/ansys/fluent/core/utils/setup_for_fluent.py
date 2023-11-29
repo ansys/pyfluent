@@ -13,7 +13,6 @@ def setup_for_fluent(*args, **kwargs):
         globals["solver"] = Solver(fluent_connection=session.fluent_connection)
     else:
         globals["solver"] = session
-        globals["solverworkflow"] = session.solverworkflow
 
     globals["preferences"] = session.preferences
     globals["workflow"] = session.workflow

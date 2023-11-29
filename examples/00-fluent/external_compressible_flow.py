@@ -28,8 +28,6 @@ on the upper (suction) side. The wing has a mean aerodynamic chord length of 0.6
 an aspect ratio of 3.8, and a taper ratio of 0.562.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
-
 ###############################################################################
 # .. image:: /_static/external_compressible_flow_011.png
 #   :width: 500pt
@@ -46,13 +44,12 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 # Perform required imports, which includes downloading and importing
 # the geometry files.
 
+# sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 wing_spaceclaim_file, wing_intermediary_file = [
-    examples.download_file(
-        CAD_file, "pyfluent/external_compressible", save_path=pyfluent.EXAMPLES_PATH
-    )
+    examples.download_file(CAD_file, "pyfluent/external_compressible")
     for CAD_file in ["wing.scdoc", "wing.pmdb"]
 ]
 
@@ -66,7 +63,6 @@ meshing = pyfluent.launch_fluent(
     precision="double",
     processor_count=4,
     mode="meshing",
-    cwd=pyfluent.EXAMPLES_PATH,
 )
 
 ###############################################################################
@@ -85,21 +81,21 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # Import CAD and set length units
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry and set the length units to inches.
-
-meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
+geo_import = meshing.workflow.TaskObject["Import Geometry"]
+geo_import.Arguments.set_state(
     {
         "FileName": wing_intermediary_file,
     }
 )
 
-meshing.workflow.TaskObject["Import Geometry"].Execute()
+geo_import.Execute()
 
 ###############################################################################
 # Add local sizing
 # ~~~~~~~~~~~~~~~~
 # Add local sizing controls to the faceted geometry.
-
-meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+local_sizing = meshing.workflow.TaskObject["Add Local Sizing"]
+local_sizing.Arguments.set_state(
     {
         "AddChild": "yes",
         "BOIControlName": "wing-facesize",
@@ -108,9 +104,9 @@ meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+local_sizing.AddChildAndUpdate()
 
-meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+local_sizing.Arguments.set_state(
     {
         "AddChild": "yes",
         "BOIControlName": "wing-ege-facesize",
@@ -119,9 +115,9 @@ meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+local_sizing.AddChildAndUpdate()
 
-meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+local_sizing.Arguments.set_state(
     {
         "AddChild": "yes",
         "BOIControlName": "boi_1",
@@ -131,35 +127,33 @@ meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+local_sizing.AddChildAndUpdate()
 
 ###############################################################################
 # Generate surface mesh
 # ~~~~~~~~~~~~~~~~~~~~~
 # Generate the surface mash.
-
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+surface_mesh_gen = meshing.workflow.TaskObject["Generate the Surface Mesh"]
+surface_mesh_gen.Arguments.set_state(
     {"CFDSurfaceMeshControls": {"MaxSize": 1000, "MinSize": 2}}
 )
 
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+surface_mesh_gen.Execute()
 
 ###############################################################################
 # Describe geometry
 # ~~~~~~~~~~~~~~~~~
 # Describe geometry and define the fluid region.
+describe_geo = meshing.workflow.TaskObject["Describe Geometry"]
+describe_geo.UpdateChildTasks(SetupTypeChanged=False)
 
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=False
-)
-
-meshing.workflow.TaskObject["Describe Geometry"].Arguments.set_state(
+describe_geo.Arguments.set_state(
     {"SetupType": "The geometry consists of only fluid regions with no voids"}
 )
 
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
+describe_geo.UpdateChildTasks(SetupTypeChanged=True)
 
-meshing.workflow.TaskObject["Describe Geometry"].Execute()
+describe_geo.Execute()
 
 ###############################################################################
 # Update boundaries
@@ -180,20 +174,18 @@ meshing.workflow.TaskObject["Update Regions"].Execute()
 # ~~~~~~~~~~~~~~~~~~~
 # Add boundary layers, which consist of setting properties for the
 # boundary layer mesh.
+add_boundary_layer = meshing.workflow.TaskObject["Add Boundary Layers"]
+add_boundary_layer.Arguments.set_state({"NumberOfLayers": 12})
 
-meshing.workflow.TaskObject["Add Boundary Layers"].Arguments.set_state(
-    {"NumberOfLayers": 12}
-)
-
-meshing.workflow.TaskObject["Add Boundary Layers"].AddChildAndUpdate()
+add_boundary_layer.AddChildAndUpdate()
 
 ###############################################################################
 # Generate volume mesh
 # ~~~~~~~~~~~~~~~~~~~~
 # Generate the volume mesh, which consists of setting properties for the
 # volume mesh.
-
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
+volume_mesh_gen = meshing.workflow.TaskObject["Generate the Volume Mesh"]
+volume_mesh_gen.Arguments.set_state(
     {
         "VolumeFill": "poly-hexcore",
         "VolumeFillControls": {"HexMaxCellLength": 512},
@@ -204,7 +196,7 @@ meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
     }
 )
 
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+volume_mesh_gen.Execute()
 
 ###############################################################################
 # Check mesh in meshing mode
@@ -332,7 +324,7 @@ solver.solution.initialization.hybrid_initialize()
 ###############################################################################
 # Save case file
 # ~~~~~~~~~~~~~~
-# Solve the case file (``external_compressible1.cas.h5``).
+# Save the case file ``external_compressible1.cas.h5``.
 
 solver.file.write(file_name="external_compressible.cas.h5", file_type="case")
 

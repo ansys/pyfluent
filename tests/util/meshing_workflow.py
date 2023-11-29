@@ -92,17 +92,17 @@ def shared_watertight_workflow(shared_watertight_workflow_session):
     yield shared_watertight_workflow_session.workflow
 
 
-_mixing_elbow_geometry_filename = None
+_mixing_elbow_geometry_file_name = None
 
 
 @pytest.fixture
 def mixing_elbow_geometry():
-    global _mixing_elbow_geometry_filename
-    if not _mixing_elbow_geometry_filename:
-        _mixing_elbow_geometry_filename = download_file(
-            filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    global _mixing_elbow_geometry_file_name
+    if not _mixing_elbow_geometry_file_name:
+        _mixing_elbow_geometry_file_name = download_file(
+            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
         )
-    return _mixing_elbow_geometry_filename
+    return _mixing_elbow_geometry_file_name
 
 
 def initialize_fault_tolerant(mesh_session):
@@ -120,17 +120,6 @@ def new_fault_tolerant_workflow(new_fault_tolerant_workflow_session):
     yield new_fault_tolerant_workflow_session.workflow
 
 
-_mesher = None
-
-
-@pytest.fixture
-def shared_mesh_session():
-    global _mesher
-    if not _mesher:
-        _mesher = create_mesh_session()
-    return _mesher
-
-
 @pytest.fixture
 def shared_fault_tolerant_workflow_session(shared_mesh_session):
     initialize_fault_tolerant(shared_mesh_session)
@@ -143,17 +132,17 @@ def shared_fault_tolerant_workflow(shared_fault_tolerant_workflow_session):
     yield shared_fault_tolerant_workflow_session.workflow
 
 
-_exhaust_system_geometry_filename = None
+_exhaust_system_geometry_file_name = None
 
 
 @pytest.fixture
 def exhaust_system_geometry():
-    global _exhaust_system_geometry_filename
-    if not _exhaust_system_geometry_filename:
-        _exhaust_system_geometry_filename = download_file(
-            filename="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+    global _exhaust_system_geometry_file_name
+    if not _exhaust_system_geometry_file_name:
+        _exhaust_system_geometry_file_name = download_file(
+            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
         )
-    return _exhaust_system_geometry_filename
+    return _exhaust_system_geometry_file_name
 
 
 """

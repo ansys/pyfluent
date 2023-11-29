@@ -1,11 +1,10 @@
-"""Module containing class encapsulating Fluent connection.
-"""
-
+"""Module containing class encapsulating Fluent connection."""
 
 import functools
+from typing import Any, Optional
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.meshing_queries import (
     MeshingQueries,
@@ -18,11 +17,14 @@ from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
 class PureMeshing(BaseSession):
-    """Encapsulates a Fluent meshing session. A ``tui`` object
+    """Encapsulates a Fluent meshing session.
+
+    A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all
     exposed here. No ``switch_to_solver`` method is available
-    in this mode."""
+    in this mode.
+    """
 
     rules = [
         "workflow",
@@ -33,15 +35,22 @@ class PureMeshing(BaseSession):
     ]
 
     for r in rules:
-        DataModelCache.set_config(r, "internal_names_as_keys", True)
+        DataModelCache.set_config(r, "name_key", NameKey.INTERNAL)
 
-    def __init__(self, fluent_connection: FluentConnection):
+    def __init__(
+        self,
+        fluent_connection: FluentConnection,
+        remote_file_handler: Optional[Any] = None,
+    ):
         """PureMeshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            remote_file_handler: Supports file upload and download.
         """
-        super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
+        super(PureMeshing, self).__init__(
+            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
@@ -99,10 +108,12 @@ class PureMeshing(BaseSession):
         return self._base_meshing.workflow
 
     def watertight(self, dynamic_interface=True):
+        """Get a new watertight workflow."""
         self.workflow.watertight(dynamic_interface)
         return self.workflow
 
     def fault_tolerant(self, dynamic_interface=True):
+        """Get a new fault-tolerant workflow."""
         self.workflow.fault_tolerant(dynamic_interface)
         return self.workflow
 
@@ -125,7 +136,7 @@ class PureMeshing(BaseSession):
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: str = None,
+        file_name_stem: Optional[str] = None,
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,
@@ -160,4 +171,34 @@ class PureMeshing(BaseSession):
             num_files_to_try,
             clean_up_mesh_file,
             overwrite_previous,
+        )
+
+    def read_case(
+        self,
+        file_name: str,
+    ):
+        """Read a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        self._remote_file_handler.upload(
+            file_name=file_name, on_uploaded=self.tui.file.read_case
+        )
+
+    def write_case(
+        self,
+        file_name: str,
+    ):
+        """Write a case file.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        self._remote_file_handler.download(
+            file_name=file_name, before_downloaded=self.tui.file.write_case
         )

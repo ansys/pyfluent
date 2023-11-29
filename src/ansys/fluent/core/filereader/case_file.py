@@ -6,14 +6,13 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.casereader import CaseReader
+    >>> from ansys.fluent.core.filereader.case_file import CaseFile
 
-    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
+    >>> case_file_name = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer", return_without_path=False)
 
-    >>> reader = CaseReader(case_filepath=case_filepath) # Instantiate a CaseFile class
+    >>> reader = CaseFile(case_file_name=case_file_name) # Instantiate a CaseFile class
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
-
 """
 import codecs
 import gzip
@@ -23,13 +22,19 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union
 import xml.etree.ElementTree as ET
 
-import h5py
 from lxml import etree
 import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+
+try:
+    import h5py
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+    ) from exc
 
 
 class InputParameterOld:
@@ -163,7 +168,7 @@ class OutputParameter:
 
 
 class CaseVariable:
-    """Provides access to variables defined in the case"""
+    """Provides access to variables defined in the case."""
 
     def __init__(self, variables: dict, path: Optional[str] = ""):
         """Initialize CaseVariable.
@@ -225,6 +230,7 @@ class Mesh:
     """
 
     def __init__(self, file_handle):
+        """Initialize the object."""
         self._file_handle = file_handle
 
     def get_surface_ids(self) -> list:
@@ -344,8 +350,7 @@ class RPVarProcessor:
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
     def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
-        """
-        Get the input parameters.
+        """Get the input parameters.
 
         Returns
         -------
@@ -368,8 +373,7 @@ class RPVarProcessor:
             return [InputParameterOld(param) for param in rp_var_params]
 
     def output_parameters(self) -> List[OutputParameter]:
-        """
-        Get the output parameters.
+        """Get the output parameters.
 
         Returns
         -------
@@ -380,8 +384,7 @@ class RPVarProcessor:
         return [OutputParameter(param) for param in parameters]
 
     def num_dimensions(self) -> int:
-        """
-        Get the dimensionality associated with this case.
+        """Get the dimensionality associated with this case.
 
         Returns
         -------
@@ -393,8 +396,7 @@ class RPVarProcessor:
                 return 3 if attr[1] is True else 2
 
     def precision(self) -> int:
-        """
-        Get the precision associated with this case (single or double).
+        """Get the precision associated with this case (single or double).
 
         Returns
         -------
@@ -406,8 +408,7 @@ class RPVarProcessor:
                 return 2 if attr[1] is True else 1
 
     def iter_count(self) -> int:
-        """
-        Get the number of iterations associated with this case.
+        """Get the number of iterations associated with this case.
 
         Returns
         -------
@@ -417,8 +418,7 @@ class RPVarProcessor:
         return self._find_rp_var("number-of-iterations")
 
     def rp_vars(self) -> dict:
-        """
-        Get the rpvars associated with this case.
+        """Get the rpvars associated with this case.
 
         Returns
         -------
@@ -429,8 +429,7 @@ class RPVarProcessor:
 
     @property
     def rp_var(self) -> CaseVariable:
-        """
-        Access the rpvars associated with this case.
+        """Access the rpvars associated with this case.
 
         Returns
         -------
@@ -440,8 +439,7 @@ class RPVarProcessor:
         return CaseVariable(self._rp_vars)
 
     def has_rp_var(self, name: str) -> bool:
-        """
-        Find if this case has the given rpvar.
+        """Find if this case has the given rpvar.
 
         Parameters
         ----------
@@ -456,8 +454,7 @@ class RPVarProcessor:
         return name in self._rp_vars
 
     def config_vars(self) -> dict:
-        """
-        Get the config variables associated with this case.
+        """Get the config variables associated with this case.
 
         Returns
         -------
@@ -468,8 +465,7 @@ class RPVarProcessor:
 
     @property
     def config_var(self) -> CaseVariable:
-        """
-        Access the config variables associated with this case.
+        """Access the config variables associated with this case.
 
         Returns
         -------
@@ -479,6 +475,7 @@ class RPVarProcessor:
         return CaseVariable(self._config_vars)
 
     def has_config_var(self, name):
+        """Get whether the case has a given variable."""
         return name in self._config_vars
 
     def _named_expressions(self):
@@ -494,34 +491,35 @@ class RPVarProcessor:
 class SettingsFile(RPVarProcessor):
     """Class to read a Fluent Settings file."""
 
-    def __init__(self, settings_filepath: Optional[str] = None) -> None:
-        """Initialize a SettingsFile object. Exactly one file path argument must be specified.
+    def __init__(self, settings_file_name: Optional[str] = None) -> None:
+        """Initialize a SettingsFile object. Exactly one file path argument must be
+        specified.
 
         Parameters
         ----------
-        settings_filepath : Optional[str]
+        settings_file_name : Optional[str]
             The path of a settings file.
         """
-        if settings_filepath:
+        if settings_file_name:
             try:
-                with open(settings_filepath, "r") as file:
+                with open(settings_file_name, "r") as file:
                     rp_vars_str = file.read()
                 if not rp_vars_str.startswith("(rp ("):
                     raise RuntimeError("Not a valid settings file.")
 
             except FileNotFoundError as e:
                 raise FileNotFoundError(
-                    f"The settings file {settings_filepath} cannot be found."
+                    f"The settings file {settings_file_name} cannot be found."
                 ) from e
 
             except OSError as e:
                 raise OSError(
-                    f"Error while reading settings file {settings_filepath}"
+                    f"Error while reading settings file {settings_file_name}"
                 ) from e
 
             except Exception as e:
                 raise RuntimeError(
-                    f"Could not read settings file {settings_filepath}"
+                    f"Could not read settings file {settings_file_name}"
                 ) from e
 
         super().__init__(rp_vars_str)
@@ -538,31 +536,32 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_filepath: Optional[str] = None,
-        project_filepath: Optional[str] = None,
+        case_file_name: Optional[str] = None,
+        project_file_name: Optional[str] = None,
     ) -> None:
-        """Initialize a CaseFile object. Exactly one file path argument must be specified.
+        """Initialize a CaseFile object. Exactly one file path argument must be
+        specified.
 
         Parameters
         ----------
-        case_filepath : Optional[str]
+        case_file_name : Optional[str]
             The path of a case file.
-        project_filepath : Optional[str]
+        project_file_name : Optional[str]
             The path of a project file from which the case file is selected.
         """
 
-        if (not case_filepath) == (not project_filepath):
+        if (not case_file_name) == (not project_file_name):
             raise RuntimeError(
                 "Please enter either the case file path or the project file path"
             )
-        if project_filepath:
-            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
+        if project_file_name:
+            if Path(project_file_name).suffix in [".flprj", ".flprz"]:
                 project_dir = os.path.join(
-                    dirname(project_filepath),
-                    Path(project_filepath).name.split(".")[0] + ".cffdb",
+                    dirname(project_file_name),
+                    Path(project_file_name).name.split(".")[0] + ".cffdb",
                 )
-                case_filepath = Path(
-                    project_dir + _get_case_filepath_from_flprj(project_filepath)
+                case_file_name = Path(
+                    project_dir + _get_case_file_name_from_flprj(project_file_name)
                 )
             else:
                 raise FileNotFoundError(
@@ -570,17 +569,17 @@ class CaseFile(RPVarProcessor):
                 )
 
         try:
-            if Path(case_filepath).match("*.cas.h5"):
-                _file = h5py.File(case_filepath)
+            if Path(case_file_name).match("*.cas.h5"):
+                _file = h5py.File(case_file_name)
                 settings = _file["settings"]
                 rpvars = settings["Rampant Variables"][0]
                 rp_vars_str = rpvars.decode()
-            elif Path(case_filepath).match("*.cas"):
-                with open(case_filepath, "rb") as _file:
+            elif Path(case_file_name).match("*.cas"):
+                with open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
-            elif Path(case_filepath).match("*.cas.gz"):
-                with gzip.open(case_filepath, "rb") as _file:
+            elif Path(case_file_name).match("*.cas.gz"):
+                with gzip.open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
             else:
@@ -592,25 +591,26 @@ class CaseFile(RPVarProcessor):
 
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                f"The case file {case_filepath} cannot be found."
+                f"The case file {case_file_name} cannot be found."
             ) from e
 
         except OSError as e:
-            raise OSError(f"Error while reading case file {case_filepath}") from e
+            raise OSError(f"Error while reading case file {case_file_name}") from e
 
         except Exception as e:
-            raise RuntimeError(f"Could not read case file {case_filepath}") from e
+            raise RuntimeError(f"Could not read case file {case_file_name}") from e
 
         super().__init__(rp_vars_str=rp_vars_str)
         self._mesh = Mesh(_file)
 
     def get_mesh(self):
+        """Get the mesh data."""
         return self._mesh
 
 
 def _get_processed_string(input_string: bytes) -> str:
-    """Processes the input string (binary) with help of an identifier to return
-    it in a format which can be parsed by lispy.parse()
+    """Processes the input string (binary) with help of an identifier to return it in a
+    format which can be parsed by lispy.parse().
 
     Parameters
     ----------
@@ -626,9 +626,19 @@ def _get_processed_string(input_string: bytes) -> str:
     return string_identifier + rp_vars_str.split(string_identifier)[1]
 
 
-def _get_case_filepath_from_flprj(flprj_file):
+def _get_case_file_name_from_flprj(flprj_file):
     parser = etree.XMLParser(recover=True)
     tree = ET.parse(flprj_file, parser)
     root = tree.getroot()
     folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
+    # If the project file name begins with a digit then the node to find will be prepended
+    # with "_". Rather than making any assumptions that this is a hard rule, or what
+    # the scope of the rule is, simply retry with the name prepended:
+    find_folder = lambda retry=False: root.find(("_" if retry else "") + folder_name)
+    return (
+        (find_folder() or find_folder(retry=True))
+        .find("Input")
+        .find("Case")
+        .find("Target")
+        .get("value")
+    )

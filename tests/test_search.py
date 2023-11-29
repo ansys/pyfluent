@@ -7,6 +7,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
 
 
+@pytest.mark.codegen_required
 def test_search(capsys):
     pyfluent.search("display")
     lines = capsys.readouterr().out.splitlines()
@@ -52,6 +53,7 @@ def test_search(capsys):
     )
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
     new_watertight_workflow_session, new_solver_session
@@ -123,6 +125,7 @@ def test_get_version_path_prefix_from_obj(
     )
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_search_from_root(capsys, new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
@@ -157,6 +160,7 @@ def test_search_from_root(capsys, new_watertight_workflow_session):
     assert "<search_root>.IdleTimeout (Parameter)" in lines
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
 def test_search_settings_from_root(capsys, load_static_mixer_case):
     solver = load_static_mixer_case

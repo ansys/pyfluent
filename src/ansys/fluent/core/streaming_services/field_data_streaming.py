@@ -1,6 +1,5 @@
 """Module for Field data streaming."""
 
-import threading
 from typing import Callable, Dict, List, Union
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
@@ -26,7 +25,6 @@ class FieldDataStreaming(StreamingService):
             streaming_service=service,
         )
         self._session_id: str = session_id
-        self._lock_refresh: threading.Lock = threading.Lock()
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes field data streaming."""
@@ -38,5 +36,5 @@ class FieldDataStreaming(StreamingService):
         )
 
     def callbacks(self) -> List[List[Union[Callable, List, Dict]]]:
-        """Get list of callbacks along with arguments and keyword arguments"""
+        """Get list of callbacks along with arguments and keyword arguments."""
         return self._service_callbacks.values()

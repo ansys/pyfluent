@@ -19,21 +19,21 @@ def get_file_type(full_file_name):
 
 def download_input_file(directory_name, full_file_name, data_file_name=None):
     file_type = get_file_type(full_file_name)
-    file_name = f'_{full_file_name.split(".")[0]}_{file_type}_filename'
+    file_name = f'_{full_file_name.split(".")[0]}_{file_type}_file_name'
     globals()[file_name] = None
     if not globals()[file_name]:
         globals()[file_name] = download_file(
-            filename=full_file_name,
+            file_name=full_file_name,
             directory=directory_name,
         )
     file_name = globals()[file_name]
     if data_file_name:
         dat_file_type = get_file_type(data_file_name)
-        dat_name = f'_{data_file_name.split(".")[0]}_{dat_file_type}_filename'
+        dat_name = f'_{data_file_name.split(".")[0]}_{dat_file_type}_file_name'
         globals()[dat_name] = None
         if not globals()[dat_name]:
             globals()[dat_name] = download_file(
-                filename=data_file_name,
+                file_name=data_file_name,
                 directory=directory_name,
             )
         file_type = "case-data"
@@ -82,17 +82,17 @@ def launch_fluent_solver_2ddp_t2():
     solver_session.exit()
 
 
-_exhaust_system_geometry_filename = None
+_exhaust_system_geometry_file_name = None
 
 
 @pytest.fixture
 def exhaust_system_geometry():
-    global _exhaust_system_geometry_filename
-    if not _exhaust_system_geometry_filename:
-        _exhaust_system_geometry_filename = download_file(
-            filename="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+    global _exhaust_system_geometry_file_name
+    if not _exhaust_system_geometry_file_name:
+        _exhaust_system_geometry_file_name = download_file(
+            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
         )
-    return _exhaust_system_geometry_filename
+    return _exhaust_system_geometry_file_name
 
 
 @pytest.fixture
@@ -126,6 +126,9 @@ def load_static_mixer_case(sample_solver_session):
     solver.exit()
 
 
+_mixing_elbow_geom_file_name = None
+
+
 @pytest.fixture
 def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
     solver_session = launch_fluent_solver_3ddp_t2
@@ -137,23 +140,20 @@ def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
     solver_session.exit()
 
 
-_mixing_elbow_geom_filename = None
-
-
 @pytest.fixture
 def load_mixing_elbow_pure_meshing():
     pure_meshing_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="pure-meshing"
     )
-    global _mixing_elbow_geom_filename
-    if not _mixing_elbow_geom_filename:
-        _mixing_elbow_geom_filename = download_file(
-            filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    global _mixing_elbow_geom_file_name
+    if not _mixing_elbow_geom_file_name:
+        _mixing_elbow_geom_file_name = download_file(
+            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
         )
 
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=_mixing_elbow_geom_filename, LengthUnit="in"
+        FileName=_mixing_elbow_geom_file_name, LengthUnit="in"
     )
 
     yield pure_meshing_session
@@ -165,15 +165,15 @@ def load_mixing_elbow_meshing():
     meshing_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="meshing"
     )
-    global _mixing_elbow_geom_filename
-    if not _mixing_elbow_geom_filename:
-        _mixing_elbow_geom_filename = download_file(
-            filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    global _mixing_elbow_geom_file_name
+    if not _mixing_elbow_geom_file_name:
+        _mixing_elbow_geom_file_name = download_file(
+            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
         )
 
     meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=_mixing_elbow_geom_filename, LengthUnit="in"
+        FileName=_mixing_elbow_geom_file_name, LengthUnit="in"
     )
 
     yield meshing_session

@@ -4,28 +4,33 @@ import functools
 from multiprocessing.context import TimeoutError
 import multiprocessing.pool
 import time
-from typing import Any, Callable
+from typing import Any, Callable, Optional
+
+from ansys.fluent.core.exceptions import InvalidArgument
 
 
 def asynchronous(f: Callable) -> Callable:
-    """Use for decorating functions that are to execute asynchronously. The
-    decorated function returns a `future`_ object. Calling `result()`_ on the
-    future object synchronizes the function execution.
+    """Use for decorating functions that are to execute asynchronously. The decorated
+    function returns a `future`_ object. Calling `result()`_ on the future object
+    synchronizes the function execution.
 
     Examples
     --------
-    >>> # asynchronous execution using @asynchronous decorator
+    asynchronous execution using @asynchronous decorator
+
     >>> @asynchronous
-    ... def asynchronous_solve(session, number_of_iterations):
-    ...     session.solver.tui.solve.iterate(number_of_iterations)
-    >>> asynchronous_solve(session1, 100)
+    ... def asynchronous_solve(solver_session, number_of_iterations):
+    ...     solver_session.tui.solve.iterate(number_of_iterations)
+    >>> asynchronous_solve(solver_session_1, 100)
 
-    >>> # using the asynchronous function directly
-    >>> asynchronous(session2.solver.tui.solve.iterate)(100)
+    using the asynchronous function directly
 
-    >>> # synchronous execution of above 2 calls
-    >>> asynchronous_solve(session1, 100).result()
-    >>> asynchronous(session2.solver.tui.solve.iterate)(100).result()
+    >>> asynchronous(solver_session_2.tui.solve.iterate)(100)
+
+    synchronous execution of above 2 calls
+
+    >>> asynchronous_solve(solver_session_1, 100).result()
+    >>> asynchronous(solver_session_2.tui.solve.iterate)(100).result()
 
     .. _Future: https://docs.python.org/3/library/asyncio-future.html#future-object  # noqa: E501
     .. _result(): https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result  # noqa: E501
@@ -39,8 +44,8 @@ def asynchronous(f: Callable) -> Callable:
 
 
 def timeout_exec(obj, timeout, args=None, kwargs=None):
-    """Executes object with the timeout limit. Tries to return whatever the provided object returns.
-    If the object returns nothing, this function will return ``True``.
+    """Executes object with the timeout limit. Tries to return whatever the provided
+    object returns. If the object returns nothing, this function will return ``True``.
     If it times out, returns ``False``.
 
     Parameters
@@ -90,15 +95,16 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
 def timeout_loop(
     obj: Any,
     timeout: float,
-    args: Any = None,
-    kwargs: Any = None,
+    args: Optional[Any] = None,
+    kwargs: Optional[Any] = None,
     idle_period: float = 0.2,
     expected: str = "truthy",
 ) -> Any:
-    """Loops while specified object does not return expected response. Timeouts after specified time has elapsed.
-    Tries to return whatever is returned by the specified object.
-    If nothing is returned before timeout, returns the opposite of the expected value, i.e.
-    ``True`` if ``expected == "falsy"`` and ``False`` if ``expected == "truthy"``.
+    """Loops while specified object does not return expected response. Timeouts after
+    specified time has elapsed. Tries to return whatever is returned by the specified
+    object. If nothing is returned before timeout, returns the opposite of the expected
+    value, i.e. ``True`` if ``expected == "falsy"`` and ``False`` if ``expected ==
+    "truthy"``.
 
     Parameters
     ----------
@@ -115,6 +121,11 @@ def timeout_loop(
     expected: str, optional
         Possible values are ``"truthy"`` or ``"falsy"``, indicating what type of return is expected.
         By default, expects a ``"truthy"`` return from the specified object.
+
+    Raises
+    ------
+    InvalidArgument
+        If an unrecognized value is passed for ``expected``.
 
     Examples
     --------
@@ -151,9 +162,7 @@ def timeout_loop(
             if not ret_obj:
                 return ret_obj
         else:
-            raise RuntimeError(
-                "Unrecognized value for 'expected' variable. Accepted: 'truthy' or 'falsy'."
-            )
+            raise InvalidArgument("Specify 'expected' as either 'truthy' or 'falsy'.")
         time.sleep(idle_period)
         time_elapsed += idle_period
 

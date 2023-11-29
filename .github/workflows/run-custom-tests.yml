@@ -34,14 +34,16 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
+          - image-tag: v24.2.0
+            version: 242
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -64,11 +66,11 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.GH_USERNAME }}
-          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
         run: make docker-pull
@@ -94,6 +96,6 @@ jobs:
             echo "Running custom unittest"
             sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
             pip install -r requirements/requirements_tests.txt
-            python -m pytest -v --no-cov --capture=no -k test_fluent_fatal_error
+            python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}

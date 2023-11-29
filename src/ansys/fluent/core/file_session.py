@@ -3,6 +3,7 @@ from typing import List, Optional
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
+from ansys.fluent.core.exceptions import SurfaceSpecificationError
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.services.field_data import (
@@ -12,6 +13,20 @@ from ansys.fluent.core.services.field_data import (
     VectorFieldData,
     Vertices,
 )
+
+
+class InvalidMultiPhaseFieldName(ValueError):
+    """Provides the error when multi-phase field name is inappropriate."""
+
+    def __init__(self):
+        super().__init__("Multi-phase field name should start with 'phase-'.")
+
+
+class InvalidFieldName(ValueError):
+    """Provides the error when a field name is inappropriate."""
+
+    def __init__(self):
+        super().__init__("The only allowed field is 'velocity'.")
 
 
 class Transaction:
@@ -46,8 +61,8 @@ class Transaction:
     def add_surfaces_request(
         self, surface_ids, provide_vertices=True, provide_faces=True
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity,
-        centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -105,11 +120,18 @@ class Transaction:
         Returns
         -------
         None
+
+        Raises
+        ------
+        SurfaceSpecificationError
+            If both ``surface_ids`` and ``surface_names`` are provided.
+        InvalidMultiPhaseFieldName
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise SurfaceSpecificationError()
 
         if surface_names:
             for surface_name in surface_names:
@@ -119,9 +141,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise RuntimeError(
-                    "For multi-phase cases field name should have a prefix of phase name."
-                )
+                raise InvalidMultiPhaseFieldName()
             self._scalar_field_transactions.append(
                 Transaction._ScalarFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
@@ -152,11 +172,18 @@ class Transaction:
         Returns
         -------
         None
+
+        Raises
+        ------
+        SurfaceSpecificationError
+            If both ``surface_ids`` and ``surface_names`` are provided.
+        InvalidMultiPhaseFieldName
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids is None:
             surface_ids = []
         if surface_ids and surface_names:
-            raise RuntimeError("Please provide either surface names or surface ids.")
+            raise SurfaceSpecificationError()
 
         if surface_names:
             for surface_name in surface_names:
@@ -166,9 +193,7 @@ class Transaction:
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
-                raise RuntimeError(
-                    "For multi-phase cases field name should have a prefix of phase name."
-                )
+                raise InvalidMultiPhaseFieldName()
             self._vector_field_transactions.append(
                 Transaction._VectorFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
@@ -200,7 +225,7 @@ class Transaction:
         -------
         None
         """
-        raise RuntimeError("Path-lines not supported.")
+        raise NotImplementedError("Pathlines are not supported.")
 
     def get_fields(self):
         """Get data for previously added requests and then clear all requests.
@@ -210,6 +235,11 @@ class Transaction:
         Dict[int, Dict[int, Dict[str, np.array]]]
             Data is returned as dictionary of dictionaries in the following structure:
             tag Union[int, Tuple]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+
+        Raises
+        ------
+        InvalidFieldName
+            If any field other than ``"velocity"`` is provided.
         """
         mesh = self._file_session._case_file.get_mesh()
         field_data = {}
@@ -239,7 +269,7 @@ class Transaction:
 
         for transaction in self._vector_field_transactions:
             if "velocity" not in transaction.field_name:
-                raise RuntimeError("Only 'velocity' is allowed field.")
+                raise InvalidFieldName()
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
@@ -301,9 +331,14 @@ class FileFieldData:
              If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
+
+        Raises
+        ------
+        SurfaceSpecificationError
+            If both ``surface_ids`` and ``surface_names`` are provided.
         """
         if surface_ids and surface_name:
-            raise RuntimeError("Please provide either surface name or surface ids.")
+            raise SurfaceSpecificationError()
 
         if data_type == SurfaceDataType.Vertices:
             if surface_name:
@@ -380,9 +415,16 @@ class FileFieldData:
             If a surface name is provided as input, scalar field data is returned. If surface
             IDs are provided as input, a dictionary containing a map of surface IDs to scalar
             field data.
+
+        Raises
+        ------
+        SurfaceSpecificationError
+            If both ``surface_ids`` and ``surface_names`` are provided.
+        InvalidMultiPhaseFieldName
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise RuntimeError("Please provide either surface name or surface ids.")
+            raise SurfaceSpecificationError()
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -390,9 +432,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 return ScalarFieldData(
                     surface_ids[0],
                     self._file_session._data_file.get_face_scalar_field_data(
@@ -411,9 +451,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 return {
                     surface_id: ScalarFieldData(
                         surface_id,
@@ -459,15 +497,24 @@ class FileFieldData:
             If a surface name is provided as input, vector field data is returned.
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
+
+        Raises
+        ------
+        SurfaceSpecificationError
+            If both ``surface_ids`` and ``surface_names`` are provided.
+        InvalidFieldName
+            If any field other than ``"velocity"`` is provided.
+        InvalidMultiPhaseFieldName
+            If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         if surface_ids and surface_name:
-            raise RuntimeError("Please provide either surface name or surface ids.")
+            raise SurfaceSpecificationError()
 
         if (
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
         ):
-            raise RuntimeError("Only 'velocity' is allowed field.")
+            raise InvalidFieldName()
 
         if surface_name:
             surface_ids = self._field_info.get_surfaces_info()[surface_name][
@@ -475,9 +522,7 @@ class FileFieldData:
             ]
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 vector_data = self._file_session._data_file.get_face_vector_field_data(
                     field_name.split(":")[0], surface_ids[0]
                 )
@@ -490,9 +535,7 @@ class FileFieldData:
         else:
             if len(self._file_session._data_file.get_phases()) > 1:
                 if not field_name.startswith("phase-"):
-                    raise RuntimeError(
-                        "For multi-phase cases field name should have a prefix of phase name."
-                    )
+                    raise InvalidMultiPhaseFieldName()
                 return {
                     surface_id: VectorFieldData(
                         surface_id,
@@ -538,7 +581,7 @@ class FileFieldData:
             Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
         """
-        raise RuntimeError("Path-lines not supported.")
+        raise NotImplementedError("Pathlines are not supported.")
 
 
 class FileFieldInfo:
@@ -665,7 +708,7 @@ class FileFieldInfo:
 
 class FileSession:
     def __init__(self):
-        """__init__ method of FileSession class"""
+        """__init__ method of FileSession class."""
         self._case_file = None
         self._data_file = None
         self.field_info = FileFieldInfo(self)
@@ -673,10 +716,10 @@ class FileSession:
         self.monitors_manager = lambda: None
         self.session_id = 1
 
-    def read_case(self, case_filepath):
+    def read_case(self, case_file_name):
         """Read Case file."""
-        self._case_file = CaseFile(case_filepath)
+        self._case_file = CaseFile(case_file_name)
 
-    def read_data(self, data_filepath):
-        """Read Data file"""
-        self._data_file = DataFile(data_filepath, case_file_handle=self._case_file)
+    def read_data(self, data_file_name):
+        """Read Data file."""
+        self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)

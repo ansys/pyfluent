@@ -2,11 +2,13 @@ from time import sleep
 
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
+from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyMenuGeneric,
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
@@ -117,7 +119,7 @@ def test_add_on_changed(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[0] > 0
+    assert data[-1] > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -142,7 +144,7 @@ def test_add_on_affected(new_mesh_session):
     calls = []
     subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
     geom = examples.download_file(
-        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
@@ -209,16 +211,16 @@ def test_add_on_command_executed(new_mesh_session):
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert len(data) > 0
     assert data[0] == True
     data.clear()
     subscription.unsubscribe()
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert data == []
 
@@ -246,10 +248,10 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
     stream.register_callback(cb)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
@@ -274,10 +276,10 @@ def test_datamodel_streaming_no_commands_diff_state(
     stream.register_callback(cb)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.meshing.ImportGeometry(FileName=import_filename)
+    meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
@@ -306,3 +308,51 @@ def test_get_object_names_wtm(new_mesh_session):
     ]
 
     assert meshing.workflow.TaskObject.get_object_names() == child_object_names
+
+
+@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
+def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
+    meshing = new_mesh_session
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    x = meshing.meshing.ImportGeometry.create_instance()
+
+    assert x.LengthUnit() == "mm"
+
+    assert x.LengthUnit.allowed_values() == ["m", "cm", "mm", "in", "ft", "um", "nm"]
+
+    x.LengthUnit.set_state("ft")
+
+    assert x.LengthUnit.get_state() == "ft"
+
+    assert x.CadImportOptions.ExtractFeatures()
+
+    x.CadImportOptions.ExtractFeatures.set_state(False)
+
+    assert not x.CadImportOptions.ExtractFeatures()
+
+    x.set_state({"FileName": "dummy_file_name.dummy_extn"})
+
+    assert x.FileName() == "dummy_file_name.dummy_extn"
+
+
+def _is_internal_name(name: str, prefix: str) -> bool:
+    return name.startswith(prefix) and name.removeprefix(prefix).isdigit()
+
+
+@pytest.mark.codegen_required
+def test_task_object_keys_are_display_names(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    task_object_state = meshing.workflow.TaskObject()
+    assert len(task_object_state) > 0
+    assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
+
+
+def test_generic_datamodel(new_solver_session):
+    solver = new_solver_session
+    solver.scheme_eval.scheme_eval("(init-flserver)")
+    flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
+    assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0

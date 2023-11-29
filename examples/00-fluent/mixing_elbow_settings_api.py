@@ -19,18 +19,19 @@ boundary conditions are given in SI units. Because the Reynolds number for the
 flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
-
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
+# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+import_file_name = examples.download_file(
+    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+)
 
 ###############################################################################
 # Launch Fluent
@@ -49,7 +50,7 @@ solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="sol
 # in the mesh are reported. Ensure that the minimum volume is not negative because
 # Fluent cannot begin a calculation when this is the case.
 
-solver.file.read(file_type="case", file_name=import_filename)
+solver.file.read(file_type="case", file_name=import_file_name)
 solver.tui.mesh.check()
 
 ###############################################################################
@@ -97,16 +98,13 @@ solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 # Turbulent Intensity: 5 [%]
 # Hydraulic Diameter: 4 [inch]
 # Temperature: 293.15 [K]
+cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 
-solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = 0.4
-solver.setup.boundary_conditions.velocity_inlet[
-    "cold-inlet"
-].ke_spec = "Intensity and Hydraulic Diameter"
-solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 0.05
-solver.setup.boundary_conditions.velocity_inlet[
-    "cold-inlet"
-].turb_hydraulic_diam = "4 [in]"
-solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
+cold_inlet.vmag = 0.4
+cold_inlet.ke_spec = "Intensity and Hydraulic Diameter"
+cold_inlet.turb_intensity = 0.05
+cold_inlet.turb_hydraulic_diam = "4 [in]"
+cold_inlet.t = 293.15
 
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
@@ -115,15 +113,12 @@ solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
 # Turbulent Intensity: 5 [%]
 # Hydraulic Diameter: 1 [inch]
 # Temperature: 313.15 [K]
+hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
-solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = 1.2
-solver.setup.boundary_conditions.velocity_inlet[
-    "hot-inlet"
-].ke_spec = "Intensity and Hydraulic Diameter"
-solver.setup.boundary_conditions.velocity_inlet[
-    "hot-inlet"
-].turb_hydraulic_diam = "1 [in]"
-solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = 313.15
+hot_inlet.vmag = 1.2
+hot_inlet.ke_spec = "Intensity and Hydraulic Diameter"
+hot_inlet.turb_hydraulic_diam = "1 [in]"
+hot_inlet.t = 313.15
 
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
@@ -150,22 +145,22 @@ solver.solution.initialization.hybrid_initialize()
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 150 iterations.
 
-solver.solution.run_calculation.iterate.get_attr("arguments")
+solver.solution.run_calculation.iterate.argument_names
 solver.solution.run_calculation.iterate(iter_count=150)
 
 ###############################################################################
 # Create velocity vectors
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create and display velocity vectors on the ``symmetry-xyplane`` plane.
-
+# Create and display velocity vectors on the ``symmetry-xyplane`` plane
 solver.results.graphics.vector["velocity_vector_symmetry"] = {}
-solver.results.graphics.vector["velocity_vector_symmetry"].print_state()
-solver.results.graphics.vector["velocity_vector_symmetry"].field = "temperature"
-solver.results.graphics.vector["velocity_vector_symmetry"].surfaces_list = [
+velocity_symmetry = solver.results.graphics.vector["velocity_vector_symmetry"]
+velocity_symmetry.print_state()
+velocity_symmetry.field = "temperature"
+velocity_symmetry.surfaces_list = [
     "symmetry-xyplane",
 ]
-solver.results.graphics.vector["velocity_vector_symmetry"].scale.scale_f = 4
-solver.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
+velocity_symmetry.scale.scale_f = 4
+velocity_symmetry.style = "arrow"
 
 ###############################################################################
 # .. image:: /_static/mixing_elbow_016.png
@@ -176,17 +171,16 @@ solver.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
 # Compute mass flow rate
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Compute the mass flow rate.
-
 solver.solution.report_definitions.flux["mass_flow_rate"] = {}
-solver.solution.report_definitions.flux["mass_flow_rate"].zone_names.get_attr(
-    "allowed-values"
-)
-solver.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
+
+mass_flow_rate = solver.solution.report_definitions.flux["mass_flow_rate"]
+mass_flow_rate.zone_names.get_attr("allowed-values")
+mass_flow_rate.zone_names = [
     "cold-inlet",
     "hot-inlet",
     "outlet",
 ]
-solver.solution.report_definitions.flux["mass_flow_rate"].print_state()
+mass_flow_rate.print_state()
 solver.solution.report_definitions.compute(report_defs=["mass_flow_rate"])
 
 #########################################################################

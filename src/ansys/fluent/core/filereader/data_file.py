@@ -6,22 +6,29 @@ Example
 .. code-block:: python
 
     >>> from ansys.fluent.core import examples
-    >>> from ansys.fluent.core.filereader.datareader import DataReader
+    >>> from ansys.fluent.core.filereader.data_file import DataFile
 
-    >>> data_filepath = examples.download_file("Static_Mixer_Parameters.dat.h5", "pyfluent/static_mixer")
+    >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session", return_without_path=False)
 
-    >>> reader = DataReader(data_filepath=data_filepath) # Instantiate a DataFile class
+    >>> reader = DataFile(data_file_name=data_file_name) # Instantiate a DataFile class
 """
 import os
 from os.path import dirname
 from pathlib import Path
+from typing import Optional
 import xml.etree.ElementTree as ET
 
-import h5py
 from lxml import etree
 import numpy as np
 
 from . import lispy
+
+try:
+    import h5py
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
+    ) from exc
 
 
 class DataFile:
@@ -45,24 +52,24 @@ class DataFile:
 
     def __init__(
         self,
-        data_filepath: str = None,
-        project_filepath: str = None,
+        data_file_name: Optional[str] = None,
+        project_file_name: Optional[str] = None,
         case_file_handle=None,
     ):
         """__init__ method of CaseFile class."""
         self._case_file_handle = case_file_handle
-        if data_filepath and project_filepath:
+        if data_file_name and project_file_name:
             raise RuntimeError(
                 "Please enter either the data file path or the project file path"
             )
-        if project_filepath:
-            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
+        if project_file_name:
+            if Path(project_file_name).suffix in [".flprj", ".flprz"]:
                 project_dir = os.path.join(
-                    dirname(project_filepath),
-                    Path(project_filepath).name.split(".")[0] + ".cffdb",
+                    dirname(project_file_name),
+                    Path(project_file_name).name.split(".")[0] + ".cffdb",
                 )
-                data_filepath = Path(
-                    project_dir + _get_data_filepath_from_flprj(project_filepath)
+                data_file_name = Path(
+                    project_dir + _get_data_file_name_from_flprj(project_file_name)
                 )
             else:
                 raise FileNotFoundError(
@@ -70,8 +77,8 @@ class DataFile:
                 )
 
         try:
-            if Path(data_filepath).match("*.dat.h5"):
-                _file = h5py.File(data_filepath)
+            if Path(data_file_name).match("*.dat.h5"):
+                _file = h5py.File(data_file_name)
                 results = _file["results"]
                 self._settings = _file["settings"]
                 self._field_data = results["1"]
@@ -86,20 +93,18 @@ class DataFile:
 
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                f"The data file {data_filepath} cannot be found."
+                f"The data file {data_file_name} cannot be found."
             ) from e
 
         except OSError as e:
-            raise OSError(f"Error while reading data file {data_filepath}") from e
+            raise OSError(f"Error while reading data file {data_file_name}") from e
 
         except Exception as e:
-            raise RuntimeError(f"Could not read data file {data_filepath}") from e
+            raise RuntimeError(f"Could not read data file {data_file_name}") from e
 
     @property
     def case_file(self) -> str:
-        """
-        Returns the name of the associated case file in string format.
-        """
+        """Returns the name of the associated case file in string format."""
         return self._settings["Case File"][0].decode()
 
     def variables(self) -> dict:
@@ -108,14 +113,11 @@ class DataFile:
         return {v[0]: v[1] for v in lispy.parse(data_vars_str)[1]}
 
     def get_phases(self) -> list:
-        """
-        Returns list of phases available.
-        """
+        """Returns list of phases available."""
         return list(self._field_data.keys())
 
     def get_face_variables(self, phase_name) -> list:
-        """
-        Extracts face variables available for a particular phase.
+        """Extracts face variables available for a particular phase.
 
         Parameters
         ----------
@@ -129,8 +131,7 @@ class DataFile:
         return self._field_data[phase_name]["faces"]["fields"][0].decode().split(";")
 
     def get_cell_variables(self, phase_name) -> list:
-        """
-        Extracts cell variables available for a particular phase.
+        """Extracts cell variables available for a particular phase.
 
         Parameters
         ----------
@@ -146,8 +147,7 @@ class DataFile:
     def get_face_scalar_field_data(
         self, phase_name: str, field_name: str, surface_id: int
     ) -> np.array:
-        """
-        Gets scalar field data for face.
+        """Gets scalar field data for face.
 
         Parameters
         ----------
@@ -177,8 +177,7 @@ class DataFile:
         return np.zeros(max_id + 1 - min_id)
 
     def get_face_vector_field_data(self, phase_name: str, surface_id: int) -> np.array:
-        """
-        Gets vector field data for face.
+        """Gets vector field data for face.
 
         Parameters
         ----------
@@ -203,7 +202,7 @@ class DataFile:
         return vector_data
 
 
-def _get_data_filepath_from_flprj(flprj_file):
+def _get_data_file_name_from_flprj(flprj_file):
     parser = etree.XMLParser(recover=True)
     tree = ET.parse(flprj_file, parser)
     root = tree.getroot()

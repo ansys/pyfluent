@@ -4,7 +4,7 @@
 Installation
 ============
 
-The ``ansys-fluent-core`` package supports Python 3.8 through
+The ``ansys-fluent-core`` package supports Python 3.9 through
 Python 3.11 on Windows and Linux.
 
 .. note::
@@ -56,7 +56,7 @@ For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release
 On a Windows system, this environment variable is configured when a release is installed.
 
 On a Linux system, you must configure this environment variable to point to the absolute
-path of the installed release. For example, for the 2023 R1 release, you would set
+path of the installed release. For example, for the 2023 R2 release, you would set
 the ``AWP_ROOT232`` environment variable to point to an absolute location such as
 ``/apps/ansys_inc/v232``.
 
@@ -80,12 +80,13 @@ to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent
 
   session = pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True, mode="solver")
 
-If you want to print the debug information for development, set the following
-environment variable:
+If you want to look at PyFluent's debug logging, use the following command:
 
 .. code:: python
 
-  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
+   pyfluent.logging.enable()
+
+For more details, see :ref:`ref_logging_user_guide`.
 
 
 Additional PyFluent packages

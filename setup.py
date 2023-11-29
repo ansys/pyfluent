@@ -22,20 +22,24 @@ _DOCS_FILE = os.path.join(
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
 install_requires = [
-    "ansys-api-fluent>=0.3.15",
+    "ansys-api-fluent>=0.3.18",
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "grpcio-health-checking>=1.30.0",
     "numpy>=1.21.5",
     "platformdirs>=3.5.1",
     "pandas>=1.1.5",
-    "h5py>=3.8.0",
     "lxml>=4.9.2",
     "pyyaml>=6.0",
     "docker>=6.1.3",
     "psutil>=5.9.5",
+    "requests>=2.31.0",
+    "beartype>=0.16.4",
 ]
 
+extras_require = {
+    "reader": ["h5py>=3.8.0"],
+}
 
 packages = []
 for package in find_namespace_packages(where="src", include="ansys*"):
@@ -58,11 +62,21 @@ setup(
     maintainer_email="pyansys.maintainers@ansys.com",
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Programming Language :: Python :: 3",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Information Analysis",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     url="https://github.com/ansys/pyfluent",
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     install_requires=install_requires,
+    extras_require=extras_require,
+    project_urls={
+        "Documentation": "https://fluent.docs.pyansys.com/",
+        "Source": "https://github.com/ansys/pyfluent",
+        "Tracker": "https://github.com/ansys/pyfluent/issues",
+    },
 )

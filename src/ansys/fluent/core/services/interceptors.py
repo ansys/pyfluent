@@ -5,16 +5,17 @@ import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
+from google.protobuf.message import Message
 import grpc
 
 from ansys.fluent.core.services.batch_ops import BatchOps
 
-network_logger = logging.getLogger("pyfluent.networking")
-log_bytes_limit = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
-truncate_len = log_bytes_limit // 5
+network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
+log_bytes_limit: int = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
+truncate_len: int = log_bytes_limit // 5
 
 
-def _truncate_grpc_str(message):
+def _truncate_grpc_str(message: Message) -> str:
     message_bytes = message.ByteSize()
     message_str = str(MessageToDict(message))
     if not log_bytes_limit or message_bytes < log_bytes_limit:
@@ -30,7 +31,7 @@ def _truncate_grpc_str(message):
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
     """Interceptor class to trace gRPC calls."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """__init__ method of TracingInterceptor class."""
         super().__init__()
 
@@ -39,9 +40,9 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         continuation: Any,
         client_call_details: grpc.ClientCallDetails,
         request: Any,
-    ):
+    ) -> Any:
         network_logger.debug(
-            f"GRPC_TRACE: rpc = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
+            f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
         response = continuation(client_call_details, request)
         if not response.exception():
@@ -62,9 +63,10 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
 
 
 class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
-    """Interceptor class to check Fluent server error state before gRPC calls are made."""
+    """Interceptor class to check Fluent server error state before gRPC calls are
+    made."""
 
-    def __init__(self, fluent_error_state):
+    def __init__(self, fluent_error_state) -> None:
         """__init__ method of ErrorStateInterceptor class."""
         super().__init__()
         self._fluent_error_state = fluent_error_state
@@ -74,7 +76,7 @@ class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
         continuation: Any,
         client_call_details: grpc.ClientCallDetails,
         request: Any,
-    ):
+    ) -> Any:
         if self._fluent_error_state.name == "fatal":
             details = self._fluent_error_state.details
             raise RuntimeError(
@@ -95,43 +97,43 @@ class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
 class BatchedFuture(grpc.Future):
     """Class implementing gRPC.Future interface.
 
-    An instance of BatchedFuture is returned if the gRPC method is
-    queued to be executed in batch later.
+    An instance of BatchedFuture is returned if the gRPC method is queued to be executed
+    in batch later.
     """
 
-    def __init__(self, result_cls):
+    def __init__(self, result_cls) -> None:
         """__init__ method of BatchedFuture class."""
         self._result_cls = result_cls
 
-    def cancel(self):
+    def cancel(self) -> bool:
         """Attempts to cancel the computation."""
         return False
 
-    def cancelled(self):
+    def cancelled(self) -> bool:
         """Describes whether the computation was cancelled."""
         return False
 
-    def running(self):
+    def running(self) -> bool:
         """Describes whether the computation is taking place."""
         return False
 
-    def done(self):
+    def done(self) -> bool:
         """Describes whether the computation has taken place."""
         return True
 
-    def result(self, timeout=None):
+    def result(self, timeout=None) -> Any:
         """Returns the result of the computation or raises its exception."""
         return self._result_cls()
 
-    def exception(self, timeout=None):
+    def exception(self, timeout=None) -> None:
         """Return the exception raised by the computation."""
         return None
 
-    def traceback(self, timeout=None):
+    def traceback(self, timeout=None) -> None:
         """Access the traceback of the exception raised by the computation."""
         return None
 
-    def add_done_callback(self, fn):
+    def add_done_callback(self, fn) -> None:
         """Adds a function to be called at completion of the computation."""
         pass
 
@@ -139,7 +141,7 @@ class BatchedFuture(grpc.Future):
 class BatchInterceptor(grpc.UnaryUnaryClientInterceptor):
     """Interceptor class to batch gRPC calls."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """__init__ method of BatchInterceptor class."""
         super().__init__()
 
@@ -148,7 +150,7 @@ class BatchInterceptor(grpc.UnaryUnaryClientInterceptor):
         continuation: Any,
         client_call_details: grpc.ClientCallDetails,
         request: Any,
-    ):
+    ) -> Any:
         batchOps = BatchOps.instance()
         if batchOps and batchOps.batching:
             qual_method = client_call_details.method

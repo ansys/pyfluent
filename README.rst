@@ -1,10 +1,14 @@
 PyFluent
 ========
-|pyansys| |pypi| |GH-CI| |codecov| |MIT| |black| |pre-commit|
+|pyansys| |python| |pypi| |GH-CI| |codecov| |MIT| |black| |pre-commit|
 
 .. |pyansys| image:: https://img.shields.io/badge/Py-Ansys-ffc107.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAABDklEQVQ4jWNgoDfg5mD8vE7q/3bpVyskbW0sMRUwofHD7Dh5OBkZGBgW7/3W2tZpa2tLQEOyOzeEsfumlK2tbVpaGj4N6jIs1lpsDAwMJ278sveMY2BgCA0NFRISwqkhyQ1q/Nyd3zg4OBgYGNjZ2ePi4rB5loGBhZnhxTLJ/9ulv26Q4uVk1NXV/f///////69du4Zdg78lx//t0v+3S88rFISInD59GqIH2esIJ8G9O2/XVwhjzpw5EAam1xkkBJn/bJX+v1365hxxuCAfH9+3b9/+////48cPuNehNsS7cDEzMTAwMMzb+Q2u4dOnT2vWrMHu9ZtzxP9vl/69RVpCkBlZ3N7enoDXBwEAAA+YYitOilMVAAAAAElFTkSuQmCC
    :target: https://docs.pyansys.com/
    :alt: PyAnsys
+
+.. |python| image:: https://img.shields.io/pypi/pyversions/ansys-fluent-core?logo=pypi
+   :target: https://pypi.org/project/ansys-fluent-core/
+   :alt: Python
 
 .. |pypi| image:: https://img.shields.io/pypi/v/ansys-fluent-core.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/ansys-fluent-core
@@ -62,7 +66,7 @@ To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@a
 
 Installation
 ------------
-The ``ansys-fluent-core`` package supports Python 3.8 through Python
+The ``ansys-fluent-core`` package supports Python 3.9 through Python
 3.11 on Windows and Linux.
 
 Install the latest release from `PyPI
@@ -72,6 +76,8 @@ Install the latest release from `PyPI
 
    pip install ansys-fluent-core
 
+For developers
+--------------
 If you plan on doing local *development* of PyFluent with Git, install
 the latest release with:
 

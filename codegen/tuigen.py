@@ -34,7 +34,8 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fix_doc import escape_wildcards
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -152,8 +153,7 @@ class _TUIMenu:
             del _XML_HELPSTRINGS[tui_path]
         else:
             self.doc = doc
-        self.doc = self.doc.replace("\\*", "*")
-        self.doc = self.doc.replace("*", "\*")
+        self.doc = escape_wildcards(self.doc)
         self.doc = self.doc.strip()
         if not self.doc.endswith("."):
             self.doc = self.doc + "."
@@ -211,18 +211,24 @@ class TUIGenerator:
             if line:
                 self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
-        self._write_code_to_tui_file("def __init__(self, path, service):\n", indent)
+        self._write_code_to_tui_file(
+            "def __init__(self, service, version, mode, path):\n", indent
+        )
         indent += 1
-        self._write_code_to_tui_file("self.path = path\n", indent)
-        self._write_code_to_tui_file("self.service = service\n", indent)
+        self._write_code_to_tui_file("self._service = service\n", indent)
+        self._write_code_to_tui_file("self._version = version\n", indent)
+        self._write_code_to_tui_file("self._mode = mode\n", indent)
+        self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
             if not v.is_command:
                 self._write_code_to_tui_file(
                     f"self.{k} = self.__class__.{k}"
-                    f'(path + ["{v.tui_name}"], service)\n',
+                    f'(service, version, mode, path + ["{v.tui_name}"])\n',
                     indent,
                 )
-        self._write_code_to_tui_file("super().__init__(path, service)\n", indent)
+        self._write_code_to_tui_file(
+            "super().__init__(service, version, mode, path)\n", indent
+        )
         indent -= 1
 
         command_names = [v.name for _, v in menu.children.items() if v.is_command]
@@ -240,7 +246,7 @@ class TUIGenerator:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
-                    f"return PyMenu(self.service, "
+                    f"return PyMenu(self._service, self._version, self._mode, "
                     f'"{menu.get_command_path(command)}").execute('
                     f"*args, **kwargs)\n",
                     indent,
@@ -263,7 +269,7 @@ class TUIGenerator:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
             if class_name == "main_menu":
-                heading_ = heading.replace("_", "\_")
+                heading_ = heading
             else:
                 heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
@@ -317,7 +323,9 @@ class TUIGenerator:
                 ) as f:
                     self._main_menu = pickle.load(f)
             else:
-                info = PyMenu(self._service, self._main_menu.path).get_static_info()
+                info = PyMenu(
+                    self._service, self._version, self._mode, self._main_menu.path
+                ).get_static_info()
                 self._populate_menu(self._main_menu, info)
             self.session.exit()
             self._write_code_to_tui_file(
@@ -345,7 +353,6 @@ class TUIGenerator:
 
 
 def generate(version, pyfluent_path):
-    # pyfluent.set_log_level("WARNING")
     api_tree = {}
     if version > "222":
         _copy_tui_help_xml_file(version)
@@ -367,5 +374,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_filepath()
+    version = get_version_for_file_name()
     generate(version, None)

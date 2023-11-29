@@ -10,9 +10,6 @@ requires = [
 testpaths = ["tests"]
 addopts = """
 -v
---cov=ansys.fluent
---cov-report=xml:cov_xml.xml
---cov-report=html
 --durations=0
 --show-capture=all
 """
@@ -26,6 +23,7 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
+    "standalone: Tests that cannot be run within container"
 ]
 
 
@@ -48,7 +46,7 @@ skip_glob = [
     "src/ansys/fluent/core/solver/settings_222",
     "src/ansys/fluent/core/solver/settings_231",
     "src/ansys/fluent/core/solver/settings_232",
-    "src/ansys/fluent/core/solver/settings_241"     
+    "src/ansys/fluent/core/solver/settings_241"
 ]
 filter_files = "true"
 known_first_party = ["ansys"]
@@ -56,7 +54,7 @@ known_first_party = ["ansys"]
 
 [tool.codespell]
 skip = "*.xml,./src/ansys/fluent/core/meshing/tui*,./src/ansys/fluent/core/solver/tui*,./src/ansys/fluent/core/datamodel_222/*,./src/ansys/fluent/core/datamodel_231/*,./src/ansys/fluent/core/datamodel_232/*,./src/ansys/fluent/core/datamodel_241/*,./codegen/data/fluent_gui_help.xml,./src/ansys/fluent/core/solver/settings_222/*,./src/ansys/fluent/core/solver/settings_231/*,./src/ansys/fluent/core/solver/settings_232/*,./src/ansys/fluent/core/solver/settings_241/*"
-ignore-words = "doc/styles/Vocab/ANSYS/accept.txt"
+ignore-words = ".github/styles/Vocab/ANSYS/accept.txt"
 
 
 [tool.docformatter]
@@ -78,11 +76,24 @@ exclude = [
     "src/ansys/fluent/core/meshing/tui_241.py",
     "src/ansys/fluent/core/solver/tui_241.py",
     "src/ansys/fluent/core/solver/settings_241/",
-    "src/ansys/fluent/core/datamodel_241/"    
+    "src/ansys/fluent/core/datamodel_241/"
 ]
-pre-summary-space = true
-wrap-descriptions = 88
-wrap-summaries = 88
+black = "true"
+non-cap = [
+    "initDatamodel",
+    "getAttributeValue",
+    "getState",
+    "setState",
+    "updateDict",
+    "deleteObject",
+    "executeCommand",
+    "createCommandArguments",
+    "deleteCommandArguments",
+    "getSpecs",
+    "getStaticInfo",
+    "subscribeEvents",
+    "unsubscribeEvents"
+]
 
 
 [tool.coverage.run]

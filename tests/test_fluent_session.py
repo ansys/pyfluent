@@ -5,6 +5,8 @@ import time
 
 from docker.models.containers import Container
 import psutil
+import pytest
+from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
     new_solver_session_no_transcript,
@@ -12,8 +14,9 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import get_container
-from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
+from ansys.fluent.core.launcher.launcher import IpPortNotProvided
+from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 
 def _read_case(session):
@@ -105,11 +108,11 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
             cmd_list = ["bash"]
         else:
             raise Exception("Unrecognized operating system.")
-        cleanup_filename = (
+        cleanup_file_name = (
             f"cleanup-fluent-{cortex_host}-{fluent_host_pid}.{cleanup_file_ext}"
         )
-        print(f"cleanup_filename: {cleanup_filename}")
-        cmd_list.append(Path(cortex_pwd, cleanup_filename))
+        print(f"cleanup_file_name: {cleanup_file_name}")
+        cmd_list.append(Path(cortex_pwd, cleanup_file_name))
         print(f"cmd_list: {cmd_list}")
         subprocess.Popen(
             cmd_list,
@@ -122,6 +125,13 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
     session1 = pyfluent.launch_fluent()
+
+    with pytest.raises(IpPortNotProvided) as msg:
+        session2 = pyfluent.connect_to_fluent(
+            ip=session1.connection_properties.ip,
+            password=session1.connection_properties.password,
+        )
+
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
@@ -164,17 +174,15 @@ def test_exit_fluent_when_connected_to_running_fluent(
 def test_fluent_connection_properties(
     new_solver_session,
 ) -> None:
-    session = new_solver_session
-    assert isinstance(session.connection_properties.ip, str)
-    assert isinstance(session.connection_properties.port, int)
-    assert isinstance(session.connection_properties.password, str)
-    assert isinstance(session.connection_properties.cortex_pwd, str)
-    assert isinstance(session.connection_properties.cortex_pid, int)
-    assert isinstance(session.connection_properties.cortex_host, str)
-    assert isinstance(
-        session.connection_properties.inside_container, bool
-    ) or isinstance(session.connection_properties.inside_container, Container)
-    assert isinstance(session.connection_properties.fluent_host_pid, int)
+    connection_properties = new_solver_session.connection_properties
+    assert isinstance(connection_properties.ip, str)
+    assert isinstance(connection_properties.port, int)
+    assert isinstance(connection_properties.password, str)
+    assert isinstance(connection_properties.cortex_pwd, str)
+    assert isinstance(connection_properties.cortex_pid, int)
+    assert isinstance(connection_properties.cortex_host, str)
+    assert isinstance(connection_properties.inside_container, (bool, Container))
+    assert isinstance(connection_properties.fluent_host_pid, int)
 
 
 def test_fluent_freeze_kill(
@@ -199,11 +207,56 @@ def test_fluent_freeze_kill(
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    alive = timeout_loop(
-        get_container,
-        5.0,
-        args=(session.connection_properties.cortex_host,),
-        expected="falsy",
+    assert session.fluent_connection.wait_process_finished(wait=5)
+
+
+@pytest.mark.fluent_version(">=23.1")
+def test_interrupt(load_static_mixer_case):
+    solver = load_static_mixer_case
+    solver.setup.general.solver.time = "unsteady-2nd-order"
+    solver.solution.initialization.standard_initialize()
+    asynchronous(solver.solution.run_calculation.dual_time_iterate)(
+        time_step_count=100, max_iter_per_step=20
+    )
+    time.sleep(5)
+    solver.solution.run_calculation.interrupt()
+    assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100
+
+
+def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.delenv("PYFLUENT_LOGGING")
+    monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
+    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
+    script = (
+        "import ansys.fluent.core as pyfluent;"
+        "solver = pyfluent.launch_fluent(start_watchdog=False);"
+        f'{"print(solver.connection_properties.cortex_host);" if inside_container else "print(solver.connection_properties.cortex_pid);"}'
+        "exit()"
+    )
+    output = subprocess.check_output(f'python -c "{script}"', shell=True)
+    cortex = output.decode().strip()
+    cortex = cortex if inside_container else int(cortex)
+    assert timeout_loop(
+        lambda: (inside_container and not get_container(cortex))
+        or (not inside_container and not psutil.pid_exists(cortex)),
+        timeout=60,
+        idle_period=1,
     )
 
-    assert not alive
+
+def test_fluent_exit_wait():
+    session1 = pyfluent.launch_fluent()
+    session1.exit()
+    assert not session1.fluent_connection.wait_process_finished(wait=0)
+
+    session2 = pyfluent.launch_fluent()
+    session2.exit(wait=60)
+    assert session2.fluent_connection.wait_process_finished(wait=0)
+
+    session3 = pyfluent.launch_fluent()
+    session3.exit(wait=True)
+    assert session3.fluent_connection.wait_process_finished(wait=0)
+
+    with pytest.raises(WaitTypeError) as msg:
+        session4 = pyfluent.launch_fluent()
+        session4.exit(wait="wait")

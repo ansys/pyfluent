@@ -87,7 +87,7 @@ html_static_path = ["_static"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
-# The suffix(es) of source filenames.
+# The suffix(es) of source file names.
 source_suffix = ".rst"
 
 # The master toctree document.
@@ -156,6 +156,9 @@ sphinx_gallery_conf = {
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
     "reset_modules": (_stop_fluent_container),
+    "capture_repr": (),
+    "remove_config_comments": True,
+    "abort_on_example_error": True,
 }
 
 

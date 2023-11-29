@@ -1,7 +1,7 @@
 repos:
 
 - repo: https://github.com/psf/black
-  rev: 23.1.0
+  rev: 23.11.0
   hooks:
   - id: black
 
@@ -11,11 +11,11 @@ repos:
   - id: isort
 
 - repo: https://github.com/PyCQA/flake8
-  rev: 6.0.0
+  rev: 6.1.0
   hooks:
   - id: flake8
     additional_dependencies: [
-      'flake8-annotations==2.9.0'
+      'flake8-annotations==3.0.1'
     ]
     args: [
       --exclude, src/ansys/fluent/core/meshing/tui* src/ansys/fluent/core/solver/tui* src/ansys/fluent/core/datamodel_222/* src/ansys/fluent/core/datamodel_231/* src/ansys/fluent/core/datamodel_232/* src/ansys/fluent/core/datamodel_241/* src/ansys/fluent/core/solver/settings_222/* src/ansys/fluent/core/solver/settings_231/* src/ansys/fluent/core/solver/settings_232/* src/ansys/fluent/core/solver/settings_241/*,
@@ -30,16 +30,17 @@ repos:
     ]
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.2
+  rev: v2.2.6
   hooks:
   - id: codespell
     args: ["--toml", "pyproject.toml"]
     additional_dependencies: ["tomli"]
 
 - repo: https://github.com/PyCQA/docformatter
-  rev: v1.5.1
+  rev: v1.7.5
   hooks:
   - id: docformatter
+    stages: [manual]
     args: ["--config", "pyproject.toml"]
 
 #- repo: https://github.com/pycqa/pydocstyle
@@ -54,7 +55,18 @@ repos:
 #      --count,
 #    ]
 
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-    -   id: check-yaml
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+    - id: check-yaml
+
+- repo: https://github.com/PyCQA/pylint
+  rev: v3.0.1
+  hooks:
+    - id: pylint
+      args:
+        [
+          "--reports", "n",
+          "--score", "n",
+          "--rcfile=pylintrc",
+        ]

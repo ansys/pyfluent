@@ -1,6 +1,6 @@
-"""Provide a module to generate the documentation classes for Fluent settings
-tree.
-Running this module generates a .rst files for the Fluent
+"""Provide a module to generate the documentation classes for Fluent settings tree.
+Running this module generates a .rst files for the Fluent.
+
 settings classes. The out is placed at:
 - doc/source/api/solver/_autosummary/settings
 Process
@@ -12,7 +12,7 @@ Process
     -- Add properties like members, undoc-memebers, show-inheritence to the autoclass directive.
     -- Generate the tables of children, commands, arguments, and parents.
     --- Get access to the respective properties and members on the class with get_attr.
-    --- Use the filename of the child class to generate the hyperlink to that class.
+    --- Use the file name of the child class to generate the hyperlink to that class.
     --- Use the __doc__ property to generate the short summary for the corresponding child
     --- Use the previously generated perents dict to populate the parents table.
 Usage
@@ -23,7 +23,7 @@ python <path to settings_rstgen.py>
 import importlib
 import os
 
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 parents_dict = {}
 rst_list = []
@@ -214,7 +214,7 @@ if __name__ == "__main__":
         os.makedirs(rst_dir)
 
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
-    version = get_version_for_filepath(image_tag.lstrip("v"))
+    version = get_version_for_file_name(image_tag.lstrip("v"))
     settings = importlib.import_module(f"ansys.fluent.core.solver.settings_{version}")
     _populate_parents_list(settings.root)
     _populate_rst_from_settings(rst_dir, settings.root, version)
