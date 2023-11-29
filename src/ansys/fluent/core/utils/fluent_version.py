@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import total_ordering
 import os
 from typing import Optional
 
@@ -17,7 +18,7 @@ class ComparisonError(RuntimeError):
 
     def __init__(self, op: str):
         super().__init__(
-            f"'{op}' is only supported between two members of 'FluentVersion'."
+            f"Comparison operations are only supported between two members of 'FluentVersion'."
         )
 
 
@@ -39,6 +40,7 @@ def get_version_for_file_name(version: Optional[str] = None, session=None):
     return "".join(version.split(".")[0:2])
 
 
+@total_ordering
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions.
 
@@ -115,19 +117,4 @@ class FluentVersion(Enum):
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
             return self.value < other.value
-        return ComparisonError(op="<")
-
-    def __le__(self, other):
-        if isinstance(other, FluentVersion):
-            return self.value <= other.value
-        return ComparisonError(op="<=")
-
-    def __gt__(self, other):
-        if isinstance(other, FluentVersion):
-            return self.value > other.value
-        return ComparisonError(op=">")
-
-    def __ge__(self, other):
-        if isinstance(other, FluentVersion):
-            return self.value >= other.value
-        return ComparisonError(op=">=")
+        return ComparisonError()
