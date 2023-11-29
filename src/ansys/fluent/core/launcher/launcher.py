@@ -30,6 +30,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.utils.file_transfer_service import (
     PimFileTransferService,
     RemoteFileHandler,
@@ -197,6 +198,7 @@ class FluentMode(Enum):
     PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
     SOLVER = ("solver", Solver, False, [])
     SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
+    SOLVER_LITE = ("solver-lite", SolverLite, False, [("fluent_lite", True)])
 
     @staticmethod
     def get_mode(mode: str) -> "FluentMode":
@@ -311,7 +313,7 @@ def launch_remote_fluent(
     meshing_mode: bool = False,
     dimensionality: Optional[str] = None,
     launcher_args: Optional[Dict[str, Any]] = None,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SolverLite]:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
     When calling this method, you must ensure that you are in an
@@ -321,7 +323,7 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: Union[type(Meshing), type(PureMeshing), type(Solver), type(SolverIcing)]
+    session_cls: Union[type(Meshing), type(PureMeshing), type(Solver), type(SolverIcing), type(SolverLite)]
         Session type.
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client. The
@@ -347,7 +349,8 @@ def launch_remote_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`], \
+    :class:`~ansys.fluent.core.session_solver_lite.SolverLite`]
         Session object.
     """
     pim = pypim.connect()
@@ -584,7 +587,7 @@ def launch_fluent(
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
     **kwargs,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SolverLite, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
@@ -678,7 +681,8 @@ def launch_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`,
+    :class:`~ansys.fluent.core.session_solver_lite.SolverLite`], dict]
         Session object or configuration dictionary if ``dry_run = True``.
 
     Raises
@@ -932,7 +936,7 @@ def connect_to_fluent(
     server_info_file_name: Optional[str] = None,
     password: Optional[str] = None,
     start_watchdog: Optional[bool] = None,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SolverLite]:
     """Connect to an existing Fluent server instance.
 
     Parameters
@@ -972,7 +976,8 @@ def connect_to_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`], \
+    :class:`~ansys.fluent.core.session_solver_lite.SolverLite`]
         Session object.
     """
     ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
