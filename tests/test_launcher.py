@@ -6,8 +6,9 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import (
+from ansys.fluent.core.launcher import launcher_utils
+from ansys.fluent.core.launcher.launcher import create_launcher
+from ansys.fluent.core.launcher.launcher_utils import (
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
     UnexpectedKeywordArgument,
@@ -16,6 +17,7 @@ from ansys.fluent.core.launcher.launcher import (
     get_fluent_exe_path,
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
+import ansys.platform.instancemanagement as pypim
 
 
 def test_mode():
@@ -35,8 +37,8 @@ def test_unsuccessful_fluent_connection():
 
 
 def test_additional_argument_g_gu():
-    default_windows_flag = launcher._is_windows()
-    launcher._is_windows = lambda: True
+    default_windows_flag = launcher_utils._is_windows()
+    launcher_utils._is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
@@ -50,7 +52,7 @@ def test_additional_argument_g_gu():
                 mode="solver", additional_arguments="-gu", start_container=False
             )
     finally:
-        launcher._is_windows = lambda: default_windows_flag
+        launcher_utils._is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
@@ -61,14 +63,15 @@ def test_container_launcher():
                 start_container=True, dry_run=True
             )
 
-    # test dry_run
-    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-    assert isinstance(container_dict, dict)
-    assert len(container_dict) > 1
+    if check_docker_support():
+        # test dry_run
+        container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+        assert isinstance(container_dict, dict)
+        assert len(container_dict) > 1
 
-    # test run with configuration dict
-    session = pyfluent.launch_fluent(container_dict=container_dict)
-    assert session.health_check_service.is_serving
+        # test run with configuration dict
+        session = pyfluent.launch_fluent(container_dict=container_dict)
+        assert session.health_check_service.is_serving
 
 
 def test_gpu_launch_arg(monkeypatch):
@@ -201,6 +204,35 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
     pyfluent.launch_fluent(start_watchdog=True)
+
+
+def test_fluent_launchers():
+    if not check_docker_support() and not pypim.is_configured():
+        standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
+        standalone_meshing_session = standalone_meshing_launcher()
+        assert standalone_meshing_session
+
+        standalone_solver_launcher = create_launcher("standalone")
+        standalone_solver_session = standalone_solver_launcher()
+        assert standalone_solver_session
+
+    if check_docker_support():
+        container_meshing_launcher = create_launcher("container", mode="meshing")
+        container_meshing_session = container_meshing_launcher()
+        assert container_meshing_session
+
+        container_solver_launcher = create_launcher("container")
+        container_solver_session = container_solver_launcher()
+        assert container_solver_session
+
+    if pypim.is_configured():
+        pim_meshing_launcher = create_launcher("pim", mode="meshing")
+        pim_meshing_session = pim_meshing_launcher()
+        assert pim_meshing_session
+
+        pim_solver_launcher = create_launcher("pim")
+        pim_solver_session = pim_solver_launcher()
+        assert pim_solver_session
 
 
 @pytest.mark.parametrize(
