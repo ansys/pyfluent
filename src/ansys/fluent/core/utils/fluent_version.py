@@ -99,7 +99,7 @@ class FluentVersion(Enum):
             If an Ansys version cannot be found.
         """
         for version in FluentVersion:
-            if str(version) in os.environ:
+            if version.awp_var() in os.environ:
                 return version
 
         raise AnsysVersionNotFound()
