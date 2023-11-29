@@ -3,6 +3,7 @@
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
 from typing import Any, Optional
+
 from ansys.fluent.core.session_solver import Solver
 
 
