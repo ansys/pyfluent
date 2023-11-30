@@ -142,11 +142,12 @@ class DataModelGenerator:
                 ("meshing", "solver", "flicing,"),
                 self.version,
             ),
-        }
-        if FluentVersion(self.version) >= FluentVersion.v23R1:
-            self._static_info["solverworkflow"] = DataModelStaticInfo(
+            "solverworkflow": DataModelStaticInfo(
                 pyfluent_path, "solverworkflow", ("solver",), self.version
             )
+            if FluentVersion(self.version) >= FluentVersion.v23R1
+            else None,
+        }
         if FluentVersion(self.version) >= FluentVersion.v24R2:
             self._static_info["meshing_utilities"] = DataModelStaticInfo(
                 pyfluent_path, "MeshingUtilities", ("meshing",), self.version
