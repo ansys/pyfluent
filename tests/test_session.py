@@ -10,7 +10,12 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import make_new_session, new_solver_session  # noqa: F401
 
-from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
+from ansys.api.fluent.v0 import (
+    scheme_eval_pb2,
+    scheme_eval_pb2_grpc,
+    settings_pb2,
+    settings_pb2_grpc,
+)
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
@@ -19,6 +24,24 @@ from ansys.fluent.core.launcher.launcher import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
+
+
+class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
+    def GetStaticInfo(
+        self, request: settings_pb2.GetStaticInfoRequest, context: grpc.ServicerContext
+    ) -> settings_pb2.GetStaticInfoResponse:
+        response = settings_pb2.GetStaticInfoResponse()
+        response.info.type = "Dummy"
+        return response
+
+    def GetVar(
+        self,
+        request: settings_pb2.GetVarRequest,
+        context: grpc.ServicerContext,
+    ) -> settings_pb2.GetVarResponse:
+        response = settings_pb2.GetVarResponse()
+        response.value.value_map.SetInParent()
+        return response
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
@@ -193,6 +216,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     server.start()
     session = connect_to_fluent(
         ip=ip,
@@ -202,7 +226,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
     )
     # check a few dir elements
     session_dir = dir(session)
-    for attr in ("field_data", "field_info", "setup", "solution"):
+    for attr in ("field_data", "field_info"):
         assert attr in session_dir
     assert session.health_check_service.is_serving
     server.stop(None)
@@ -221,6 +245,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))

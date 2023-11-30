@@ -5,7 +5,6 @@ from asyncio import Future
 import functools
 import importlib
 import logging
-from os.path import dirname, join
 import threading
 from typing import Any, Optional
 
@@ -46,36 +45,14 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
             datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
-def write_root_gen(root_objects, version):
-    _tab = "    "
-    generated_code = "class SettingsRoot:\n"
+def _import_settings_root(root):
+    _class_dict = {}
 
-    generated_code += _tab + "def __init__(self, root):\n"
-    generated_code += (_tab * 2) + "self._root = root\n"
+    for root_item in root().keys():
+        _class_dict[root_item] = getattr(root, root_item)
 
-    for item in root_objects:
-        generated_code += "\n" + _tab + "@property\n"
-        generated_code += _tab + f"def {item}(self):\n".replace("-", "_")
-        generated_code += (_tab * 2) + f'"""Settings for {item}."""\n'
-        generated_code += (_tab * 2) + f"return self._root.{item}\n".replace("-", "_")
-
-    f = open(join(dirname(__file__), f"settings_root_{version}.py"), "w")
-    f.write(generated_code)
-    f.close()
-
-
-def _import_settings_root(root, version):
-    try:
-        settings_root = importlib.import_module(
-            f"ansys.fluent.core.settings_root_{version}"
-        )
-    except ImportError:
-        write_root_gen(root().keys(), version)
-        settings_root = importlib.import_module(
-            f"ansys.fluent.core.settings_root_{version}"
-        )
-
-    return settings_root.SettingsRoot(root)
+    settings_api_root = type("SettingsRoot", (object,), _class_dict)
+    return settings_api_root()
 
 
 class Solver(BaseSession):
@@ -100,6 +77,7 @@ class Solver(BaseSession):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._build_from_fluent_connection(fluent_connection)
+        self._settings_api_root = None
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -120,7 +98,6 @@ class Solver(BaseSession):
             self.reduction = Reduction(self._reduction_service)
         else:
             self.reduction = reduction_old
-        self._settings_api_root = _import_settings_root(self._root, self.version)
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
@@ -268,6 +245,7 @@ class Solver(BaseSession):
         )
 
     def __getattr__(self, attr):
+        self._settings_api_root = _import_settings_root(self._root)
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
