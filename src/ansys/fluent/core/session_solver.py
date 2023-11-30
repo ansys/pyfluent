@@ -190,8 +190,7 @@ class Solver(BaseSession):
             _set_state_safe(self._root, state)
 
     def read_case_lightweight(self, file_name: str):
-        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
-        ``True``.
+        """Read a case file using light IO mode.
 
         Parameters
         ----------

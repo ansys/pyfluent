@@ -17,4 +17,3 @@ Solver sessions
 
     session_solver
     session_solver_icing
-    session_solver_lite

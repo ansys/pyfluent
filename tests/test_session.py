@@ -20,7 +20,7 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
-from ansys.fluent.core.launcher.launcher import LaunchFluentError
+from ansys.fluent.core.launcher.launcher_utils import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port

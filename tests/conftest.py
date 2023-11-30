@@ -7,7 +7,8 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
-from ansys.fluent.core.launcher.launcher import FluentVersion
+from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 
 _fluent_versions = list(FluentVersion)
 _fluent_release_version = _fluent_versions[1]
@@ -75,6 +76,12 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+
+
+@pytest.fixture(autouse=True)
+def clear_datamodel_cache():
+    yield
+    DataModelCache.rules_str_to_cache.clear()
 
 
 pytest.wont_raise = nullcontext
