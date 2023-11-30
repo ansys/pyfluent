@@ -13,7 +13,6 @@ from ansys.fluent.core.utils.fluent_version import (
 
 _THIS_DIR = Path(__file__).parent
 
-
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
     **dict.fromkeys(["Logical List", "ListBool"], "List[bool]"),
@@ -69,8 +68,8 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_docstring(name: str, info: Any, indent: str):
-    doc = f"{indent}Command {name}.\n\n"
+def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
+    doc = f"{indent}Command {name}.\n\n" if is_command else f"{indent}Query {name}.\n\n"
     if info.args:
         doc += f"{indent}Parameters\n"
         doc += f"{indent}{'-' * len('Parameters')}\n"
@@ -148,7 +147,12 @@ class DataModelGenerator:
             self._static_info["solverworkflow"] = DataModelStaticInfo(
                 pyfluent_path, "solverworkflow", ("solver",), self.version
             )
-
+        if FluentVersion(self.version) >= FluentVersion.v24R2:
+            self._static_info["meshing_utilities"] = DataModelStaticInfo(
+                pyfluent_path, "MeshingUtilities", ("meshing",), self.version
+            )
+        if not self._static_info["solverworkflow"]:
+            del self._static_info["solverworkflow"]
         self._delete_generated_files()
         self._populate_static_info()
 
@@ -224,6 +228,9 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
+        queries = []
+        if hasattr(info, "queries"):
+            queries = sorted(info.queries)
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
@@ -242,6 +249,11 @@ class DataModelGenerator:
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in commands:
+            f.write(
+                f"{indent}        self.{k} = "
+                f'self.__class__.{k}(service, rules, "{k}", path)\n'
+            )
+        for k in queries:
             f.write(
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
@@ -289,13 +301,24 @@ class DataModelGenerator:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
             f.write(
-                _build_command_docstring(
-                    k, info.commands[k].commandinfo, f"{indent}        "
+                _build_command_query_docstring(
+                    k, info.commands[k].commandinfo, f"{indent}        ", True
                 )
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
+        for k in queries:
+            f.write(f"{indent}    class {k}(PyQuery):\n")
+            f.write(f'{indent}        """\n')
+            f.write(
+                _build_command_query_docstring(
+                    k, info.queries[k].queryinfo, f"{indent}        ", False
+                )
+            )
+            f.write(f'{indent}        """\n')
+            f.write(f"{indent}        pass\n\n")
+            api_tree[k] = "Query"
         return api_tree
 
     def _write_doc_for_model_object(
@@ -318,6 +341,9 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
+            queries = []
+            if hasattr(info, "queries"):
+                queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
             if noindex:
@@ -389,7 +415,8 @@ class DataModelGenerator:
                 f.write("    PyNumerical,\n")
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
-                f.write("    PyCommand\n")
+                f.write("    PyCommand,\n")
+                f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
