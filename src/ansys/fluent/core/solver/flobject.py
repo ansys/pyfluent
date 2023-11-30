@@ -27,6 +27,8 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
+import ansys.platform.instancemanagement as pypim
+
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
@@ -47,6 +49,7 @@ class _InlineConstants:
     max = "max"
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
+    file_purpose = "file-purpose"
 
 
 # Type hints
@@ -108,12 +111,17 @@ class Base:
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
+        self._setattr("_remote_file_handler", None)
         if name is not None:
             self._setattr("_name", name)
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def set_remote_file_handler(self, remote_file_handler):
+        """Set remote_file_handler."""
+        self._setattr("_remote_file_handler", remote_file_handler)
 
     @property
     def flproxy(self):
@@ -125,6 +133,16 @@ class Base:
         if self._flproxy is None:
             return self._parent.flproxy
         return self._flproxy
+
+    @property
+    def remote_file_handler(self):
+        """Remote file handler.
+
+        Supports file upload and download.
+        """
+        if self._remote_file_handler is None:
+            return self._parent.remote_file_handler
+        return self._remote_file_handler
 
     _name = None
     fluent_name = None
@@ -377,11 +395,19 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
+    def file_purpose(self):
+        """Specifies whether this file is used as input or output by Fluent"""
+        return self.get_attr(_InlineConstants.file_purpose)
+
 
 class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    def file_purpose(self):
+        """Specifies whether this file is used as input or output by Fluent"""
+        return self.get_attr(_InlineConstants.file_purpose)
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -1007,6 +1033,20 @@ class Command(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
+        if hasattr(self, "file_name"):
+            file_purpose = self.file_name.get_attr(_InlineConstants.file_purpose)
+        elif hasattr(self, "file_name_list"):
+            file_purpose = self.file_name_list.get_attr(_InlineConstants.file_purpose)
+        elif hasattr(self, "filename"):
+            file_purpose = self.filename.get_attr(_InlineConstants.file_purpose)
+        print(f"\nfile_purpose = {file_purpose}\n")
+
+        if file_purpose == "input" and pypim.is_configured():
+            self.remote_file_handler.upload(file_name=kwds["file_name"])
+            print(
+                f"\nfile - {kwds['file_name']} uploaded for {str(self.__class__.__name__)}.\n"
+            )
+
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1021,7 +1061,15 @@ class Command(Action):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+        if file_purpose == "output" and pypim.is_configured():
+            self.remote_file_handler.download(file_name=kwds["file_name"])
+            print(
+                f"file - {kwds['file_name']} downloaded for {str(self.__class__.__name__)}."
+            )
+
+        return cmd
 
 
 class Query(Action):
@@ -1307,7 +1355,9 @@ def _gethash(obj_info):
 
 
 # pylint: disable=missing-raises-doc
-def get_root(flproxy, version: str = "") -> Group:
+def get_root(
+    flproxy, version: str = "", remote_file_handler: Optional[Any] = None
+) -> Group:
     """Get the root settings object.
 
     Parameters
@@ -1337,7 +1387,9 @@ def get_root(flproxy, version: str = "") -> Group:
         cls = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root.set_remote_file_handler(remote_file_handler)
     root._setattr("_static_info", obj_info)
+    root._setattr("_remote_file_handler", remote_file_handler)
     return root
 
 
