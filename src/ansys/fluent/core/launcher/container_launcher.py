@@ -179,9 +179,9 @@ class DockerLauncher:
         if self.meshing_mode:
             args.append(" -meshing")
         if self.container_dict is None:
-            setattr(self, "container_dict", {})    
+            setattr(self, "container_dict", {})
         if self.product_version:
-            self.container_dict['image_tag'] = f"v{self.product_version}"
+            self.container_dict["image_tag"] = f"v{self.product_version}"
         if self.dry_run:
             config_dict, *_ = configure_container_dict(args, **self.container_dict)
             from pprint import pprint
