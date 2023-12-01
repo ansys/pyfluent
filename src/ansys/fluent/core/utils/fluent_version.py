@@ -16,7 +16,7 @@ class AnsysVersionNotFound(RuntimeError):
 class ComparisonError(RuntimeError):
     """Provides the error when a comparison can't be completed."""
 
-    def __init__(self, op: str):
+    def __init__(self):
         super().__init__(
             f"Comparison operations are only supported between two members of 'FluentVersion'."
         )
