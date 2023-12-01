@@ -145,10 +145,10 @@ class DataModelGenerator:
             "solverworkflow": DataModelStaticInfo(
                 pyfluent_path, "solverworkflow", ("solver",), self.version
             )
-            if FluentVersion(self.version) >= FluentVersion.v23R1
+            if FluentVersion(self.version) >= FluentVersion.v231
             else None,
         }
-        if FluentVersion(self.version) >= FluentVersion.v24R2:
+        if FluentVersion(self.version) >= FluentVersion.v242:
             self._static_info["meshing_utilities"] = DataModelStaticInfo(
                 pyfluent_path, "MeshingUtilities", ("meshing",), self.version
             )
@@ -170,7 +170,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             "solver" in info.modes for _, info in self._static_info.items()
         )
-        run_icing_mode = FluentVersion(self.version) >= FluentVersion.v23R1 and any(
+        run_icing_mode = FluentVersion(self.version) >= FluentVersion.v231 and any(
             "flicing" in info.modes for _, info in self._static_info.items()
         )
         import ansys.fluent.core as pyfluent
