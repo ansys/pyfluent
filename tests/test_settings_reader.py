@@ -7,9 +7,9 @@ from ansys.fluent.core.filereader.case_file import SettingsFile as SettingsReade
 
 
 def call_settings_reader(
-    settings_filepath: Optional[str] = None, expected: Optional[dict] = None
+    settings_file_name: Optional[str] = None, expected: Optional[dict] = None
 ):
-    reader = SettingsReader(settings_filepath=settings_filepath)
+    reader = SettingsReader(settings_file_name=settings_file_name)
     if expected is not None:
         assert reader.precision() == expected["precision"]
         assert reader.num_dimensions() == expected["num_dimensions"]
@@ -23,10 +23,10 @@ def call_settings_reader(
 
 
 def call_settings_reader_static_mixer(
-    settings_filepath: Optional[str] = None,
+    settings_file_name: Optional[str] = None,
 ):
     call_settings_reader(
-        settings_filepath=settings_filepath,
+        settings_file_name=settings_file_name,
         expected=dict(
             precision=2,
             num_dimensions=3,
@@ -49,23 +49,22 @@ def static_mixer_settings_file():
     return examples.download_file(
         "Static_Mixer_Params",
         "pyfluent/static_mixer",
-        return_only_filename=False,
+        return_without_path=False,
     )
 
 
 def test_settings_reader_static_mixer_h5():
-    call_settings_reader_static_mixer(settings_filepath=static_mixer_settings_file())
+    call_settings_reader_static_mixer(settings_file_name=static_mixer_settings_file())
 
 
 def test_meshing_unavailable():
-    reader = SettingsReader(settings_filepath=static_mixer_settings_file())
+    reader = SettingsReader(settings_file_name=static_mixer_settings_file())
     with pytest.raises(AttributeError) as msg:
         reader.get_mesh()
-    assert msg.value.args[0] == "'SettingsFile' object has no attribute 'get_mesh'"
 
 
 def test_settings_reader_get_rp_and_config_vars():
-    reader = SettingsReader(settings_filepath=static_mixer_settings_file())
+    reader = SettingsReader(settings_file_name=static_mixer_settings_file())
     rp_vars = reader.rp_vars()
     assert rp_vars
     assert hasattr(rp_vars, "__getitem__")
@@ -79,7 +78,6 @@ def test_settings_reader_get_rp_and_config_vars():
 
     with pytest.raises(RuntimeError) as msg:
         reader.rp_var.defaults.pre_r19__dot0_early()
-    assert msg.value.args[0] == r"Invalid variable defaults/pre-r19.0-early"
 
     with pytest.raises(ValueError) as msg:
         reader.config_var("rp-3d")

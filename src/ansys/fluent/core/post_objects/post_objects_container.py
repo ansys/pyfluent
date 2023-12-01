@@ -1,20 +1,19 @@
-"""Module providing visualization objects to facilitate
-   integration with libraries like Matplotlib and pyvista."""
+"""Module providing visualization objects to facilitate integration with libraries like
+Matplotlib and pyvista."""
 import inspect
 
 from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    """
-    Base class for containers, e.g. Plots, Graphics.
+    """Base class for containers, for example, Plots, Graphics.
 
     Parameters
         ----------
         session : object
             Session object.
         container_type: object
-            Container type (e.g. Plots, Graphics)
+            Container type (for example, Plots, Graphics)
         module: object
             Python module containing post definitions
         post_api_helper: object
@@ -46,35 +45,36 @@ class Container:
             self, "Surfaces", []
         )
 
-    def get_path(self):                              
+    def get_path(self):
         return self._path
-        
+
     @property
     def type(self):
         """Type."""
         return "object"
-        
+
     def update(self, value):
         for name, val in value.items():
-            o = getattr(self,name)
-            o.update(val)        
-        
+            o = getattr(self, name)
+            o.update(val)
+
     def __call__(self, show_attributes=False):
         state = {}
-        for name, cls in self.__dict__.items():                   
+        for name, cls in self.__dict__.items():
             o = getattr(self, name)
             if o is None or name.startswith("_") or name.startswith("__"):
                 continue
-                
-            if cls.__class__.__name__ == "PyLocalContainer":           
-                container = o 
+
+            if cls.__class__.__name__ == "PyLocalContainer":
+                container = o
                 if getattr(container, "is_active", True):
-                    state[name]={}
+                    state[name] = {}
                     for child_name in container:
                         o = container[child_name]
-                        if getattr(o, "is_active", True): state[name][child_name] = o()    
-                            
-        return state        
+                        if getattr(o, "is_active", True):
+                            state[name][child_name] = o()
+
+        return state
 
     def _init_module(self, obj, mod, post_api_helper):
         for name, cls in mod.__dict__.items():
@@ -86,7 +86,6 @@ class Container:
                     cls.PLURAL,
                     PyLocalContainer(self, cls, post_api_helper, cls.PLURAL),
                 )
-                
 
 
 class Plots(Container):

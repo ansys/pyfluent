@@ -6,11 +6,13 @@ import multiprocessing.pool
 import time
 from typing import Any, Callable, Optional
 
+from ansys.fluent.core.exceptions import InvalidArgument
+
 
 def asynchronous(f: Callable) -> Callable:
-    """Use for decorating functions that are to execute asynchronously. The
-    decorated function returns a `future`_ object. Calling `result()`_ on the
-    future object synchronizes the function execution.
+    """Use for decorating functions that are to execute asynchronously. The decorated
+    function returns a `future`_ object. Calling `result()`_ on the future object
+    synchronizes the function execution.
 
     Examples
     --------
@@ -42,8 +44,8 @@ def asynchronous(f: Callable) -> Callable:
 
 
 def timeout_exec(obj, timeout, args=None, kwargs=None):
-    """Executes object with the timeout limit. Tries to return whatever the provided object returns.
-    If the object returns nothing, this function will return ``True``.
+    """Executes object with the timeout limit. Tries to return whatever the provided
+    object returns. If the object returns nothing, this function will return ``True``.
     If it times out, returns ``False``.
 
     Parameters
@@ -98,10 +100,11 @@ def timeout_loop(
     idle_period: float = 0.2,
     expected: str = "truthy",
 ) -> Any:
-    """Loops while specified object does not return expected response. Timeouts after specified time has elapsed.
-    Tries to return whatever is returned by the specified object.
-    If nothing is returned before timeout, returns the opposite of the expected value, i.e.
-    ``True`` if ``expected == "falsy"`` and ``False`` if ``expected == "truthy"``.
+    """Loops while specified object does not return expected response. Timeouts after
+    specified time has elapsed. Tries to return whatever is returned by the specified
+    object. If nothing is returned before timeout, returns the opposite of the expected
+    value, i.e. ``True`` if ``expected == "falsy"`` and ``False`` if ``expected ==
+    "truthy"``.
 
     Parameters
     ----------
@@ -118,6 +121,11 @@ def timeout_loop(
     expected: str, optional
         Possible values are ``"truthy"`` or ``"falsy"``, indicating what type of return is expected.
         By default, expects a ``"truthy"`` return from the specified object.
+
+    Raises
+    ------
+    InvalidArgument
+        If an unrecognized value is passed for ``expected``.
 
     Examples
     --------
@@ -154,9 +162,7 @@ def timeout_loop(
             if not ret_obj:
                 return ret_obj
         else:
-            raise RuntimeError(
-                "Unrecognized value for 'expected' variable. Accepted: 'truthy' or 'falsy'."
-            )
+            raise InvalidArgument("Specify 'expected' as either 'truthy' or 'falsy'.")
         time.sleep(idle_period)
         time_elapsed += idle_period
 

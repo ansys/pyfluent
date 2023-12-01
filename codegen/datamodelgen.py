@@ -6,10 +6,9 @@ from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import BaseSession as Session
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 _THIS_DIR = Path(__file__).parent
-
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
@@ -66,8 +65,8 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_docstring(name: str, info: Any, indent: str):
-    doc = f"{indent}Command {name}.\n\n"
+def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
+    doc = f"{indent}Command {name}.\n\n" if is_command else f"{indent}Query {name}.\n\n"
     if info.args:
         doc += f"{indent}Parameters\n"
         doc += f"{indent}{'-' * len('Parameters')}\n"
@@ -103,7 +102,7 @@ class DataModelStaticInfo:
             / f"datamodel_{version}"
         ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
-        self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -146,6 +145,10 @@ class DataModelGenerator:
             if int(self.version) >= 231
             else None,
         }
+        if int(self.version) >= 242:
+            self._static_info["meshing_utilities"] = DataModelStaticInfo(
+                pyfluent_path, "MeshingUtilities", ("meshing",), self.version
+            )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
         self._delete_generated_files()
@@ -223,6 +226,9 @@ class DataModelGenerator:
         singletons = sorted(info.singletons)
         parameters = sorted(info.parameters)
         commands = sorted(info.commands)
+        queries = []
+        if hasattr(info, "queries"):
+            queries = sorted(info.queries)
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
@@ -241,6 +247,11 @@ class DataModelGenerator:
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in commands:
+            f.write(
+                f"{indent}        self.{k} = "
+                f'self.__class__.{k}(service, rules, "{k}", path)\n'
+            )
+        for k in queries:
             f.write(
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
@@ -288,13 +299,24 @@ class DataModelGenerator:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
             f.write(
-                _build_command_docstring(
-                    k, info.commands[k].commandinfo, f"{indent}        "
+                _build_command_query_docstring(
+                    k, info.commands[k].commandinfo, f"{indent}        ", True
                 )
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Command"
+        for k in queries:
+            f.write(f"{indent}    class {k}(PyQuery):\n")
+            f.write(f'{indent}        """\n')
+            f.write(
+                _build_command_query_docstring(
+                    k, info.queries[k].queryinfo, f"{indent}        ", False
+                )
+            )
+            f.write(f'{indent}        """\n')
+            f.write(f"{indent}        pass\n\n")
+            api_tree[k] = "Query"
         return api_tree
 
     def _write_doc_for_model_object(
@@ -306,7 +328,7 @@ class DataModelGenerator:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
             if class_name == "Root":
-                heading_ = heading.replace("_", "\_")
+                heading_ = heading
             else:
                 heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
@@ -317,6 +339,9 @@ class DataModelGenerator:
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
+            queries = []
+            if hasattr(info, "queries"):
+                queries = sorted(info.queries)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
             if noindex:
@@ -376,7 +401,7 @@ class DataModelGenerator:
         for name, info in self._static_info.items():
             if info.static_info == None:
                 continue
-            with open(info.filepath, "w", encoding="utf8") as f:
+            with open(info.file_name, "w", encoding="utf8") as f:
                 f.write("#\n")
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
@@ -388,7 +413,8 @@ class DataModelGenerator:
                 f.write("    PyNumerical,\n")
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
-                f.write("    PyCommand\n")
+                f.write("    PyCommand,\n")
+                f.write("    PyQuery\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
@@ -421,8 +447,8 @@ class DataModelGenerator:
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
-            if info.filepath.exists():
-                info.filepath.unlink()
+            if info.file_name.exists():
+                info.file_name.unlink()
         if Path(_MESHING_DM_DOC_DIR).exists():
             shutil.rmtree(Path(_MESHING_DM_DOC_DIR))
         if Path(_SOLVER_DM_DOC_DIR).exists():
@@ -434,5 +460,5 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_filepath()
+    version = get_version_for_file_name()
     generate(version, None)

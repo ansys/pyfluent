@@ -1,12 +1,23 @@
 ﻿"""Test the PyPIM integration."""
+from concurrent import futures
 import os
 from unittest.mock import create_autospec
 
 import grpc
+from grpc_health.v1 import health_pb2_grpc
+import pytest
+from test_session import MockHealthServicer, MockSchemeEvalServicer
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.fluent.core.launcher import launcher
+from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
+from ansys.fluent.core.fluent_connection import (
+    FluentConnection,
+    UnsupportedRemoteFluentInstance,
+)
+from ansys.fluent.core.launcher import launcher, launcher_utils
+from ansys.fluent.core.session import BaseSession
 import ansys.fluent.core.utils.fluent_version as docker_image_version
+from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
 
@@ -43,7 +54,9 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
     if os.getenv("FLUENT_IMAGE_TAG"):
         monkeypatch.setattr(
-            launcher, "get_ansys_version", lambda: docker_image_version.get_version()
+            launcher_utils,
+            "get_ansys_version",
+            lambda: docker_image_version.get_version(),
         )
 
     # Start fluent with launch_fluent
@@ -64,3 +77,26 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
     # and it kept track of the instance to be able to delete it
     assert fluent.fluent_connection._remote_instance == mock_instance
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+    ip = "127.0.0.1"
+    port = get_free_port()
+    server.add_insecure_port(f"{ip}:{port}")
+    health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
+    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
+        MockSchemeEvalServicer(), server
+    )
+    server.start()
+
+    with pytest.raises(UnsupportedRemoteFluentInstance) as msg:
+        session = BaseSession(
+            FluentConnection(
+                ip=ip,
+                port=port,
+                password="12345",
+                remote_instance=mock_instance,
+                cleanup_on_exit=False,
+            )
+        )
+        session.exit(wait=60)
+        session.fluent_connection.wait_process_finished(wait=60)

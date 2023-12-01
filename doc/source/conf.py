@@ -87,7 +87,7 @@ html_static_path = ["_static"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
-# The suffix(es) of source filenames.
+# The suffix(es) of source file names.
 source_suffix = ".rst"
 
 # The master toctree document.
@@ -183,12 +183,6 @@ html_theme_options = {
     "switcher": {
         "json_url": f"https://{cname}/versions.json",
         "version_match": get_version_match(__version__),
-    },
-    "use_meilisearch": {
-        "api_key": os.getenv("MEILISEARCH_PUBLIC_API_KEY", ""),
-        "index_uids": {
-            f"pyfluent-v{get_version_match(__version__).replace('.', '-')}": "PyFluent",
-        },
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,

@@ -60,8 +60,7 @@ class RPVars:
         )
 
     def allowed_values(self) -> List[str]:
-        """
-        Returns list with the allowed rpvars names.
+        """Returns list with the allowed rpvars names.
 
         Returns
         -------

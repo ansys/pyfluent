@@ -3,7 +3,7 @@ from enum import Enum
 import functools
 import itertools
 import logging
-from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple, Type
+from typing import Any, Callable, Iterator, NoReturn, Optional, Union
 
 import grpc
 
@@ -11,7 +11,8 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -20,44 +21,65 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 
-Path = List[Tuple[str, str]]
+Path = list[tuple[str, str]]
 
-logger = logging.getLogger("pyfluent.datamodel")
+logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
+
+
+class InvalidNamedObject(RuntimeError):
+    """Provides the error when the object is not a named object."""
+
+    def __init__(self, class_name):
+        super().__init__(f"{class_name} is not a named object class.")
+
+
+class SubscribeEventError(RuntimeError):
+    """Provides the error when server fails to subscribe from event."""
+
+    def __init__(self, request):
+        super().__init__(f"Failed to subscribe event: {request}!")
+
+
+class UnsubscribeEventError(RuntimeError):
+    """Provides the error when server fails to unsubscribe from event."""
+
+    def __init__(self, request):
+        super().__init__(f"Failed to unsubscribe event: {request}!")
 
 
 class Attribute(Enum):
-    """Contains the standard names of data model attributes associated with the
-    data model service."""
+    """Contains the standard names of data model attributes associated with the data
+    model service."""
 
-    IS_ACTIVE = "isActive"
-    EXPOSURE_LEVEL = "exposureLevel"
-    IS_READ_ONLY = "isReadOnly"
-    DEFAULT = "default"
-    FORCE_DEFAULT = "forceDefault"
-    MIN = "min"
-    MAX = "max"
-    ALLOWED_VALUES = "allowedValues"
-    EXCLUDED_VALUES = "excludedValues"
-    MIN_LENGTH = "minLength"
-    MAX_LENGTH = "maxLength"
-    ERROR_STATUS = "errorStatus"
-    USER_ERROR_STATUS = "userErrorStatus"
-    MEMBERS = "members"
-    DISPLAY_TEXT = "displayText"
-    NAMES = "__names__"
-    INTERNAL_NAMES = "__ids__"
-    PATHS = "__paths__"
-    ROOT_ID = "__root__"
-    NAME = "_name_"
-    REFERENCE_PATH = "referencePath"
-    ARGUMENTS = "arguments"
-    TOOL_TIP = "toolTip"
-    SHOW_AT_PARENT_NODE = "showAtParentNode"
-    WIDGET_TYPE = "widgetType"
-    ECHO_MODE = "echoMode"
-    IS_TREE_NODE = "isTreeNode"
-    MIGRATION = "migration"
-    DEPRECATED_VERSION = "deprecatedVersion"
+    IS_ACTIVE: str = "isActive"
+    EXPOSURE_LEVEL: str = "exposureLevel"
+    IS_READ_ONLY: str = "isReadOnly"
+    DEFAULT: str = "default"
+    FORCE_DEFAULT: str = "forceDefault"
+    MIN: str = "min"
+    MAX: str = "max"
+    ALLOWED_VALUES: str = "allowedValues"
+    EXCLUDED_VALUES: str = "excludedValues"
+    MIN_LENGTH: str = "minLength"
+    MAX_LENGTH: str = "maxLength"
+    ERROR_STATUS: str = "errorStatus"
+    USER_ERROR_STATUS: str = "userErrorStatus"
+    MEMBERS: str = "members"
+    DISPLAY_TEXT: str = "displayText"
+    NAMES: str = "__names__"
+    INTERNAL_NAMES: str = "__ids__"
+    PATHS: str = "__paths__"
+    ROOT_ID: str = "__root__"
+    NAME: str = "_name_"
+    REFERENCE_PATH: str = "referencePath"
+    ARGUMENTS: str = "arguments"
+    TOOL_TIP: str = "toolTip"
+    SHOW_AT_PARENT_NODE: str = "showAtParentNode"
+    WIDGET_TYPE: str = "widgetType"
+    ECHO_MODE: str = "echoMode"
+    IS_TREE_NODE: str = "isTreeNode"
+    MIGRATION: str = "migration"
+    DEPRECATED_VERSION: str = "deprecatedVersion"
 
 
 class DatamodelService(StreamingService):
@@ -67,8 +89,8 @@ class DatamodelService(StreamingService):
     """
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
-    ):
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ) -> None:
         """__init__ method of DatamodelService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
@@ -89,63 +111,72 @@ class DatamodelService(StreamingService):
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        """initDatamodel rpc of DataModel service."""
+        """initDatamodel RPC of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """getAttributeValue rpc of DataModel service."""
+        """getAttributeValue RPC of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """getState rpc of DataModel service."""
+        """getState RPC of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """setState rpc of DataModel service."""
+        """setState RPC of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
-        """updateDict rpc of DataModel service."""
+        """updateDict RPC of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
-        """deleteObject rpc of DataModel service."""
+        """deleteObject RPC of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """executeCommand rpc of DataModel service."""
+        """executeCommand RPC of DataModel service."""
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def execute_query(
+        self, request: DataModelProtoModule.ExecuteQueryRequest
+    ) -> DataModelProtoModule.ExecuteQueryResponse:
+        """ExecuteQuery rpc of DataModel service."""
+        logger.debug(f"Query: {request.query}")
+        return self._stub.executeQuery(request, metadata=self._metadata)
 
     @catch_grpc_error
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
-        """createCommandArguments rpc of DataModel service."""
+        """createCommandArguments RPC of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
+    # pylint: disable=missing-raises-doc
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments rpc of DataModel service."""
+        """deleteCommandArguments RPC of DataModel service."""
         try:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
@@ -159,38 +190,38 @@ class DatamodelService(StreamingService):
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
-        """getSpecs rpc of DataModel service."""
+        """getSpecs RPC of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """getStaticInfo rpc of DataModel service."""
+        """getStaticInfo RPC of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
-        """subscribeEvents rpc of DataModel service."""
+        """subscribeEvents RPC of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
     @catch_grpc_error
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
-        """unsubscribeEvents rpc of DataModel service."""
+        """unsubscribeEvents RPC of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
-    def unsubscribe_all_events(self):
+    def unsubscribe_all_events(self) -> None:
         """Unsubscribe all subscribed events."""
         for event in list(self.events.values()):
             event.unsubscribe()
         self.events.clear()
 
 
-def _convert_value_to_variant(val: Any, var: Variant):
+def _convert_value_to_variant(val: Any, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type."""
     if isinstance(val, bool):
         var.bool_state = val
@@ -212,7 +243,7 @@ def _convert_value_to_variant(val: Any, var: Variant):
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
 
-def _convert_variant_to_value(var: Variant):
+def _convert_variant_to_value(var: Variant) -> Any:
     """Convert Fluent's variant type to a Python data type."""
     if var.HasField("bool_state"):
         return var.bool_state
@@ -283,19 +314,31 @@ class EventSubscription:
         self,
         service: DatamodelService,
         request: DataModelProtoModule.SubscribeEventsRequest,
-    ):
-        """Subscribe to a datamodel event."""
+    ) -> None:
+        """Subscribe to a datamodel event.
+
+        Raises
+        ------
+        SubscribeEventError
+            If server fails to subscribe from event.
+        """
         self._service = service
         response = service.subscribe_events(request)
         response = response.response[0]
         if response.status != DataModelProtoModule.STATUS_SUBSCRIBED:
-            raise RuntimeError(f"Failed to subscribe event: {request}!")
+            raise SubscribeEventError(request)
         self.status = response.status
         self.tag = response.tag
         self._service.events[self.tag] = self
 
-    def unsubscribe(self):
-        """Unsubscribe the datamodel event."""
+    def unsubscribe(self) -> None:
+        """Unsubscribe the datamodel event.
+
+        Raises
+        ------
+        UnsubscribeEventError
+            If server fails to unsubscribe from event.
+        """
         if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
             self._service.event_streaming.unregister_callback(self.tag)
             request = DataModelProtoModule.UnsubscribeEventsRequest()
@@ -303,18 +346,18 @@ class EventSubscription:
             response = self._service.unsubscribe_events(request)
             response = response.response[0]
             if response.status != DataModelProtoModule.STATUS_UNSUBSCRIBED:
-                raise RuntimeError(f"Failed to unsubscribe event: {request}!")
+                raise UnsubscribeEventError(request)
             self.status = response.status
         self._service.events.pop(self.tag, None)
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Unsubscribe the datamodel event."""
         self.unsubscribe()
 
 
 class PyStateContainer(PyCallableStateObject):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using StateEngine based DatamodelService as backend. Use this class
+    instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -338,7 +381,7 @@ class PyStateContainer(PyCallableStateObject):
 
     def __init__(
         self, service: DatamodelService, rules: str, path: Optional[Path] = None
-    ):
+    ) -> None:
         """__init__ method of PyStateContainer class."""
         super().__init__()
         self.service = service
@@ -349,8 +392,6 @@ class PyStateContainer(PyCallableStateObject):
             self.path = path
         self.cached_attrs = {}
 
-    docstring = None
-
     def get_remote_state(self) -> Any:
         """Get state of the current object."""
         request = DataModelProtoModule.GetStateRequest()
@@ -360,7 +401,7 @@ class PyStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self)
+        state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
         if DataModelCache.is_unassigned(state):
             state = self.get_remote_state()
         return state
@@ -420,11 +461,11 @@ class PyStateContainer(PyCallableStateObject):
 
     getAttribValue = get_attr
 
-    def is_active(self):
+    def is_active(self) -> bool:
         """Returns true if the object is active."""
         return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
 
-    def is_read_only(self):
+    def is_read_only(self) -> bool:
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
@@ -439,7 +480,7 @@ class PyStateContainer(PyCallableStateObject):
         ).common.helpstring
         print(help_string)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> Any:
         if kwargs:
             self.set_state(kwargs)
         elif args:
@@ -452,7 +493,7 @@ class PyStateContainer(PyCallableStateObject):
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
+        """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
@@ -477,7 +518,7 @@ class PyStateContainer(PyCallableStateObject):
     def add_on_command_attribute_changed(
         self, command: str, attribute: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
+        """Register a callback for when an attribute is changed.
 
         Parameters
         ----------
@@ -504,8 +545,8 @@ class PyStateContainer(PyCallableStateObject):
 
 
 class PyMenu(PyStateContainer):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using StateEngine based DatamodelService as backend. Use this class
+    instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -518,11 +559,11 @@ class PyMenu(PyStateContainer):
 
     def __init__(
         self, service: DatamodelService, rules: str, path: Optional[Path] = None
-    ):
+    ) -> None:
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
-    def __setattr__(self, name: str, value: Any):
+    def __setattr__(self, name: str, value: Any) -> None:
         """Set state of the child object.
 
         Parameters
@@ -544,36 +585,48 @@ class PyMenu(PyStateContainer):
         ----------
         new_name : str
             New name for the object.
+
+        Raises
+        ------
+        InvalidNamedObject
+            If the object is not a named object.
         """
         try:
             self._name_.set_state(new_name)
         except AttributeError:
-            raise RuntimeError(
-                f"{self.__class__.__name__} is not a named object class."
-            )
+            raise InvalidNamedObject(self.__class__.__name__)
 
-    def name(self):
-        """Get the name of the named object."""
+    def name(self) -> str:
+        """Get the name of the named object.
+
+        Returns
+        -------
+        str
+            name
+
+        Raises
+        ------
+        InvalidNamedObject
+            If the object is not a named object.
+        """
         try:
             return self._name_()
         except AttributeError:
-            raise RuntimeError(
-                f"{self.__class__.__name__} is not a named object class."
-            )
+            raise InvalidNamedObject(self.__class__.__name__)
 
-    def _raise_method_not_yet_implemented_exception(self):
+    def _raise_method_not_yet_implemented_exception(self) -> NoReturn:
         raise AttributeError("This method is yet to be implemented in pyfluent.")
 
-    def delete_child(self):
+    def delete_child(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
-    def delete_child_objects(self):
+    def delete_child_objects(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
-    def delete_all_child_objects(self):
+    def delete_all_child_objects(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
-    def fix_state(self):
+    def fix_state(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
     def create_command_arguments(self, command: str) -> str:
@@ -587,7 +640,7 @@ class PyMenu(PyStateContainer):
         Returns
         -------
         str
-            Command id
+            Command ID
         """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
@@ -682,7 +735,7 @@ class PyMenu(PyStateContainer):
     def add_on_affected_at_type_path(
         self, child_type: str, cb: Callable
     ) -> EventSubscription:
-        """Register a callback for when the object is affected at child type
+        """Register a callback for when the object is affected at child type.
 
         Parameters
         ----------
@@ -705,7 +758,7 @@ class PyMenu(PyStateContainer):
         return subscription
 
     def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
-        """Register a callback for when a command is executed
+        """Register a callback for when a command is executed.
 
         Parameters
         ----------
@@ -731,11 +784,10 @@ class PyMenu(PyStateContainer):
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
-    Use this class instead of directly calling DatamodelService's
-    method.
+    Use this class instead of directly calling DatamodelService's method.
     """
 
-    def default_value(self):
+    def default_value(self) -> Any:
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
@@ -760,37 +812,37 @@ class PyParameter(PyStateContainer):
         return subscription
 
 
-def _bool_value_if_none(val, default):
+def _bool_value_if_none(val: Optional[bool], default: bool) -> bool:
     if isinstance(val, bool) or val is None:
         return default if val is None else val
     raise TypeError(f"{val} should be a bool or None")
 
 
-def true_if_none(val):
+def true_if_none(val: Optional[bool]) -> bool:
     """Returns true if 'val' is true or None, else returns false."""
     return _bool_value_if_none(val, default=True)
 
 
-def false_if_none(val):
-    """Returns true if 'val' is true or None, else returns false."""
+def false_if_none(val: Optional[bool]) -> bool:
+    """Returns false if 'val' is false or None, else returns true."""
     return _bool_value_if_none(val, default=False)
 
 
 class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
 
-    def allowed_values(self):
+    def allowed_values(self) -> list[str]:
         return self.get_attr(Attribute.ALLOWED_VALUES.value)
 
 
 class PyNumerical(PyParameter):
     """Provides interface for numerical parameters."""
 
-    def min(self):
+    def min(self) -> float:
         """Minimum value of the numerical parameter."""
         return self.get_attr(Attribute.MIN.value)
 
-    def max(self):
+    def max(self) -> float:
         """Maximum value of the numerical parameter."""
         return self.get_attr(Attribute.MAX.value)
 
@@ -812,15 +864,14 @@ class PyDictionary(PyParameter):
         to dict.update semantics (same as update_dict(dict_state))]
     """
 
-    def update_dict(self, dict_state: Dict[str, Any]) -> None:
-        """Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics.
+    def update_dict(self, dict_state: dict[str, Any]) -> None:
+        """Update the state of the current object if the current object is a Dict in the
+        data model, else throws RuntimeError (currently not showing up in Python).
+        Update is executed according to dict.update semantics.
 
         Parameters
         ----------
-        dict_state : Dict[str, Any]
+        dict_state : dict[str, Any]
             Incoming dict state
         """
         request = DataModelProtoModule.UpdateDictRequest()
@@ -833,9 +884,8 @@ class PyDictionary(PyParameter):
 
 
 class PyNamedObjectContainer:
-    """Container class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Container class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -853,7 +903,7 @@ class PyNamedObjectContainer:
 
     def __init__(
         self, service: DatamodelService, rules: str, path: Optional[Path] = None
-    ):
+    ) -> None:
         """__init__ method of PyNamedObjectContainer class."""
         self.service = service
         self.rules = rules
@@ -862,7 +912,7 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
-    def _get_child_object_names(self):
+    def _get_child_object_names(self) -> list[str]:
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
         parent_path = self.path[0:-1]
@@ -878,7 +928,7 @@ class PyNamedObjectContainer:
                         child_object_names.append(member[len(child_type_suffix) :])
         return child_object_names
 
-    def _get_child_object_display_names(self):
+    def _get_child_object_display_names(self) -> list[str]:
         child_object_display_names = []
         for name in self._get_child_object_names():
             name_path = self.path[0:-1]
@@ -889,7 +939,7 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
-    def get_object_names(self):
+    def get_object_names(self) -> list[str]:
         return self._get_child_object_display_names()
 
     def __len__(self) -> int:
@@ -917,7 +967,7 @@ class PyNamedObjectContainer:
                 self.service, self.rules, child_path
             )
 
-    def _get_item(self, key: str):
+    def _get_item(self, key: str) -> PyMenu:
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
@@ -929,7 +979,7 @@ class PyNamedObjectContainer:
                 f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )
 
-    def _del_item(self, key: str):
+    def _del_item(self, key: str) -> None:
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
@@ -957,7 +1007,7 @@ class PyNamedObjectContainer:
         """
         return self._get_item(key)
 
-    def __setitem__(self, key: str, value: Any):
+    def __setitem__(self, key: str, value: Any) -> None:
         """Set state of the child object by name.
 
         Parameters
@@ -972,7 +1022,7 @@ class PyNamedObjectContainer:
         parent_state = {f"{self.__class__.__name__}:{key}": value}
         PyMenu(self.service, self.rules, self.path[:-1]).set_state(parent_state)
 
-    def __delitem__(self, key: str):
+    def __delitem__(self, key: str) -> None:
         """Delete the child object by name.
 
         Parameters
@@ -982,11 +1032,84 @@ class PyNamedObjectContainer:
         """
         self._del_item(key)
 
+    @staticmethod
+    def _get_type_and_name(type_and_name):
+        return type_and_name.split(":", maxsplit=1)
+
+    def _compare_type(self, obj_type):
+        child_obj_type = self.path[-1][0]
+        return child_obj_type == obj_type
+
+    def get_state(self):
+        parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
+        returned_state = {}
+
+        for key, value in parent_state.items():
+            type_and_name = self._get_type_and_name(key)
+            if len(type_and_name) == 2 and self._compare_type(type_and_name[0]):
+                returned_state[type_and_name[1]] = value
+
+        return dict(sorted(returned_state.items()))
+
+
+class PyQuery:
+    """Query class using the StateEngine-based DatamodelService as the backend. Use this
+    class instead of directly calling the DatamodelService's method.
+
+    Methods
+    -------
+    __call__()
+        Execute the query.
+    help()
+        Print the query help string.
+    """
+
+    docstring = None
+    _stored_static_info = {}
+
+    def __init__(
+        self, service: DatamodelService, rules: str, query: str, path: Path = None
+    ):
+        """__init__ method of PyQuery class."""
+        self.service = service
+        self.rules = rules
+        self.query = query
+        if path is None:
+            self.path = []
+        else:
+            self.path = path
+
+    def __call__(self, *args, **kwds) -> Any:
+        """Execute the query.
+
+        Returns
+        -------
+        Any
+            Return value.
+        """
+        request = DataModelProtoModule.ExecuteQueryRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.query = self.query
+        _convert_value_to_variant(kwds, request.args)
+        response = self.service.execute_query(request)
+        return _convert_variant_to_value(response.result)
+
+    def help(self) -> None:
+        """Prints help string."""
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        help_string = getattr(
+            response.member, response.member.WhichOneof("as")
+        ).query.helpstring
+        print(help_string)
+
 
 class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the
-    backend. Use this class instead of directly calling the DatamodelService's
-    method.
+    """Command class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method.
 
     Methods
     -------
@@ -996,8 +1119,7 @@ class PyCommand:
         Print the command help string.
     """
 
-    docstring = None
-    _stored_static_info = {}
+    _stored_static_info: dict[str, DataModelProtoModule.StaticInfo] = {}
 
     def __init__(
         self,
@@ -1005,7 +1127,7 @@ class PyCommand:
         rules: str,
         command: str,
         path: Optional[Path] = None,
-    ):
+    ) -> None:
         """__init__ method of PyCommand class."""
         self.service = service
         self.rules = rules
@@ -1043,7 +1165,7 @@ class PyCommand:
         ).common.helpstring
         print(help_string)
 
-    def _create_command_arguments(self):
+    def _create_command_arguments(self) -> str:
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
@@ -1051,7 +1173,7 @@ class PyCommand:
         response = self.service.create_command_arguments(request)
         return response.commandid
 
-    def _get_static_info(self):
+    def _get_static_info(self) -> DataModelProtoModule.StaticInfo:
         if self.rules not in PyCommand._stored_static_info.keys():
             # Populate the static info with respect to a rules only if the
             # same info has not been obtained in another context already.
@@ -1062,7 +1184,7 @@ class PyCommand:
             PyCommand._stored_static_info[self.rules] = response.info
         return PyCommand._stored_static_info[self.rules]
 
-    def create_instance(self):
+    def create_instance(self) -> Optional["PyCommandArguments"]:
         """Create a command instance."""
         try:
             static_info = self._get_static_info()
@@ -1079,7 +1201,6 @@ class PyCommand:
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
-            pass
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
@@ -1093,7 +1214,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         rules: str,
         path: Path,
         parent_arg,
-    ):
+    ) -> None:
         """__init__ method of PyCommandArgumentsSubItem class."""
         self.parent = parent
         self.name = name
@@ -1106,12 +1227,17 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     def get_state(self) -> Any:
         """Get state of the command argument."""
         parent_state = self.parent.get_state()
-        try:
-            return parent_state[self.name]
-        except KeyError:
-            pass
+        return parent_state[self.name]
 
     getState = get_state
+
+    def set_state(self, state) -> Any:
+        """Set state of the command argument."""
+        parent_state = self.parent.get_state()
+        parent_state[self.name] = state
+        self.parent.set_state(parent_state)
+
+    setState = set_state
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the command argument.
@@ -1146,7 +1272,7 @@ class PyCommandArguments(PyStateContainer):
         path: Path,
         id: str,
         static_info,
-    ):
+    ) -> None:
         """__init__ method of PyCommandArguments class."""
         self.static_info = static_info
         super().__init__(service, rules, path)
@@ -1154,7 +1280,7 @@ class PyCommandArguments(PyStateContainer):
         self.command = command
         self.id = id
 
-    def __del__(self):
+    def __del__(self) -> None:
         request = DataModelProtoModule.DeleteCommandArgumentsRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path[:-1])
@@ -1165,7 +1291,7 @@ class PyCommandArguments(PyStateContainer):
         except Exception as exc:
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Optional[PyCommandArgumentsSubItem]:
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
                 mode = DataModelType.get_mode(arg.type)
@@ -1194,12 +1320,12 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
     def __init__(
         self,
         parent,
-        attr,
+        attr: str,
         service: DatamodelService,
         rules: str,
         path: Path,
         arg,
-    ):
+    ) -> None:
         """__init__ method of PyTextualCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
@@ -1213,12 +1339,12 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
     def __init__(
         self,
         parent,
-        attr,
+        attr: str,
         service: DatamodelService,
         rules: str,
         path: Path,
         arg,
-    ):
+    ) -> None:
         """__init__ method of PyNumericalCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
@@ -1232,12 +1358,12 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
     def __init__(
         self,
         parent,
-        attr,
+        attr: str,
         service: DatamodelService,
         rules: str,
         path: Path,
         arg,
-    ):
+    ) -> None:
         """__init__ method of PyDictionaryCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
@@ -1251,12 +1377,12 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
     def __init__(
         self,
         parent,
-        attr,
+        attr: str,
         service: DatamodelService,
         rules: str,
         path: Path,
         arg,
-    ):
+    ) -> None:
         """__init__ method of PyParameterCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
@@ -1270,18 +1396,18 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
     def __init__(
         self,
         parent,
-        attr,
+        attr: str,
         service: DatamodelService,
         rules: str,
         path: Path,
         arg,
-    ):
+    ) -> None:
         """__init__ method of PySingletonCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
         )
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> PyCommandArgumentsSubItem:
         arg = self.parent_arg.info.parameters[attr]
 
         mode = DataModelType.get_mode(arg.type)
@@ -1309,21 +1435,36 @@ class DataModelType(Enum):
     MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
 
     @staticmethod
-    def get_mode(mode: str) -> Type[PyCommandArgumentsSubItem]:
-        """Returns the datamodel type."""
+    def get_mode(mode: str) -> "DataModelType":
+        """Returns the datamodel type.
+
+        Parameters
+        ----------
+        mode : str
+            mode
+
+        Returns
+        -------
+        DataModelType
+            datamodel type
+
+        Raises
+        ------
+        InvalidArgument
+            If an unknown mode is passed.
+        """
         for m in DataModelType:
             if mode in m.value[0]:
                 return m
-        else:
-            raise TypeError(f"The specified mode: {mode} was not found.")
+        raise InvalidArgument(f"The specified mode: {mode} was not found.")
 
 
 class PyMenuGeneric(PyMenu):
     """Generic PyMenu class for when generated API code is not available."""
 
-    attrs = ("service", "rules", "path")
+    attrs = ("service", "rules", "path", "cached_attrs")
 
-    def _get_child_names(self):
+    def _get_child_names(self) -> tuple[list, list, list]:
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
@@ -1331,6 +1472,7 @@ class PyMenuGeneric(PyMenu):
         singleton_names = []
         creatable_type_names = []
         command_names = []
+        query_names = []
         for struct_type in ("singleton", "namedobject"):
             if response.member.HasField(struct_type):
                 struct_field = getattr(response.member, struct_type)
@@ -1339,10 +1481,14 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-        return singleton_names, creatable_type_names, command_names
+                if hasattr(struct_field, "queries"):
+                    query_names = [x.name for x in struct_field.queries]
+        return singleton_names, creatable_type_names, command_names, query_names
 
-    def _get_child(self, name: str):
-        singletons, creatable_types, commands = self._get_child_names()
+    def _get_child(
+        self, name: str
+    ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand]:
+        singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
             return PyMenuGeneric(self.service, self.rules, child_path)
@@ -1351,12 +1497,14 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
+        elif name in queries:
+            return PyQuery(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
                 f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )
 
-    def __dir__(self):
+    def __dir__(self) -> list[str]:
         return list(itertools.chain(*self._get_child_names()))
 
     def __getattr__(self, name: str):
@@ -1369,13 +1517,13 @@ class PyMenuGeneric(PyMenu):
 class PySimpleMenuGeneric(PyMenu, PyDictionary):
     """A simple implementation of PyMenuGeneric applicable only for SINGLETONS.
 
-    This is required for the stand-alone datamodel server to avoid the
-    usage of 'service.get_specs'
+    This is required for the stand-alone datamodel server to avoid the usage of
+    'service.get_specs'
     """
 
     attrs = ("service", "rules", "path")
 
-    def _get_child(self, name: str):
+    def _get_child(self, name: str) -> "PySimpleMenuGeneric":
         child_path = self.path + [(name, "")]
         return PySimpleMenuGeneric(self.service, self.rules, child_path)
 
@@ -1387,15 +1535,16 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
 
 
 class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
-    """Generic PyNamedObjectContainer class for when generated API code is not available."""
+    """Generic PyNamedObjectContainer class for when generated API code is not
+    available."""
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[PyMenuGeneric]:
         for name in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
             yield PyMenuGeneric(self.service, self.rules, child_path)
 
-    def _get_item(self, key: str):
+    def _get_item(self, key: str) -> PyMenuGeneric:
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))

@@ -7,7 +7,6 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-import time
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import warnings
 import weakref
@@ -23,6 +22,30 @@ from ansys.platform.instancemanagement import Instance
 import docker
 
 logger = logging.getLogger("pyfluent.general")
+
+
+class PortNotProvided(ValueError):
+    """Provides the error when port is not provided."""
+
+    def __init__(self):
+        super().__init__(
+            "Provide the 'port' to connect to an existing Fluent instance."
+        )
+
+
+class UnsupportedRemoteFluentInstance(ValueError):
+    """Provides the error when 'wait_process_finished' does not support remote Fluent
+    session."""
+
+    def __init__(self):
+        super().__init__("Remote Fluent instance is unsupported.")
+
+
+class WaitTypeError(TypeError):
+    """Provides the error when invalid ``wait`` type is provided."""
+
+    def __init__(self):
+        super().__init__("Invalid 'wait' type.")
 
 
 def _get_max_c_int_limit() -> int:
@@ -75,7 +98,6 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     See `Docker container`_ for more information.
 
     .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
-
     """
     if not isinstance(container_id_or_name, str):
         container_id_or_name = str(container_id_or_name)
@@ -134,7 +156,8 @@ class ErrorState:
         self._details = details
 
     def clear(self):
-        """Method to clear the current error state, emptying the error name and details properties."""
+        """Method to clear the current error state, emptying the error name and details
+        properties."""
         self._name = ""
         self._details = ""
 
@@ -142,8 +165,8 @@ class ErrorState:
 @dataclass(frozen=True)
 class FluentConnectionProperties:
     """Stores Fluent connection properties, including connection IP, port and password;
-    Fluent Cortex working directory, process ID and hostname;
-    and whether Fluent was launched in a docker container.
+    Fluent Cortex working directory, process ID and hostname; and whether Fluent was
+    launched in a docker container.
 
     Examples
     --------
@@ -193,7 +216,6 @@ class FluentConnection:
 
     def __init__(
         self,
-        start_timeout: int = 60,
         ip: Optional[str] = None,
         port: Optional[int] = None,
         password: Optional[str] = None,
@@ -208,9 +230,6 @@ class FluentConnection:
 
         Parameters
         ----------
-        start_timeout: int, optional
-            Maximum allowable time in seconds for connecting to the Fluent
-            server. The default is ``60``.
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
@@ -241,6 +260,11 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a docker container.
+
+        Raises
+        ------
+        PortNotProvided
+            If port is not provided.
         """
         self.error_state = ErrorState()
         self._data_valid = False
@@ -255,9 +279,7 @@ class FluentConnection:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             self._channel_str = f"{ip}:{port}"
             if not port:
-                raise ValueError(
-                    "The port to connect to Fluent session is not provided."
-                )
+                raise PortNotProvided()
             # Same maximum message length is used in the server
             max_message_length = _get_max_c_int_limit()
             self._channel = grpc.insecure_channel(
@@ -274,15 +296,9 @@ class FluentConnection:
         self.health_check_service = HealthCheckService(
             self._channel, self._metadata, self.error_state
         )
-
-        counter = 0
-        while not self.health_check_service.is_serving:
-            time.sleep(1)
-            counter += 1
-            if counter > start_timeout:
-                raise RuntimeError(
-                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
-                )
+        # At this point, the server must be running. If the following check_health()
+        # throws, we should not proceed.
+        self.health_check_service.check_health()
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
@@ -372,9 +388,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def force_exit(self):
-        """
-        Immediately terminates the Fluent client,
-        losing unsaved progress and data.
+        """Immediately terminates the Fluent client, losing unsaved progress and data.
 
         Notes
         -----
@@ -415,14 +429,14 @@ class FluentConnection:
                 "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
             )
             return
-        cleanup_filename = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
-        logger.debug(f"Looking for {cleanup_filename}...")
-        cleanup_filepath = Path(pwd, cleanup_filename)
-        if cleanup_filepath.is_file():
+        cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+        logger.debug(f"Looking for {cleanup_file_name}...")
+        cleanup_file_name = Path(pwd, cleanup_file_name)
+        if cleanup_file_name.is_file():
             logger.info(
-                f"Executing Fluent cleanup script, filepath: {cleanup_filepath}"
+                f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
             )
-            cmd_list.append(cleanup_filepath)
+            cmd_list.append(cleanup_file_name)
             logger.debug(f"Cleanup command list = {cmd_list}")
             subprocess.Popen(
                 cmd_list,
@@ -433,9 +447,8 @@ class FluentConnection:
             logger.error("Could not find cleanup file.")
 
     def force_exit_container(self):
-        """
-        Immediately terminates the Fluent client running inside a container,
-        losing unsaved progress and data.
+        """Immediately terminates the Fluent client running inside a container, losing
+        unsaved progress and data.
 
         Notes
         -----
@@ -457,11 +470,11 @@ class FluentConnection:
             return
         container_id = self.connection_properties.cortex_host
         pid = self.connection_properties.fluent_host_pid
-        cleanup_filename = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_filename}")
+        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
         if get_container(container_id):
             try:
-                container.exec_run(["bash", cleanup_filename], detach=True)
+                container.exec_run(["bash", cleanup_file_name], detach=True)
             except docker.errors.APIError as e:
                 logger.info(f"{type(e).__name__}: {e}")
                 logger.debug(
@@ -497,9 +510,9 @@ class FluentConnection:
         return self.health_check_service.status()
 
     def wait_process_finished(self, wait: Union[float, int, bool] = 60):
-        """Returns ``True`` if local Fluent processes have finished,
-        ``False`` if they are still running when wait limit (default 60 seconds) is reached.
-        Immediately cancels and returns ``None`` if ``wait`` is set to ``False``.
+        """Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
 
         Parameters
         ----------
@@ -509,15 +522,13 @@ class FluentConnection:
 
         Raises
         ------
-        ValueError
+        UnsupportedRemoteFluentInstance
             If current Fluent instance is running remotely.
-        TypeError
+        WaitTypeError
             If ``wait`` is specified improperly.
         """
         if self._remote_instance:
-            raise ValueError(
-                "Fluent remote instance not supported by FluentConnection.wait_process_finished()."
-            )
+            raise UnsupportedRemoteFluentInstance()
         if isinstance(wait, bool):
             if wait:
                 wait = 60
@@ -527,7 +538,7 @@ class FluentConnection:
         if isinstance(wait, (float, int)):
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
-            raise TypeError("Invalid 'limit' type.")
+            raise WaitTypeError()
         if self.connection_properties.inside_container:
             _response = timeout_loop(
                 get_container,

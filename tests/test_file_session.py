@@ -3,7 +3,12 @@ from pathlib import Path
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.file_session import FileSession
+from ansys.fluent.core.exceptions import SurfaceSpecificationError
+from ansys.fluent.core.file_session import (
+    FileSession,
+    InvalidFieldName,
+    InvalidMultiPhaseFieldName,
+)
 from ansys.fluent.core.services.field_data import SurfaceDataType
 
 
@@ -15,21 +20,21 @@ def round_off_list_elements(input_list):
 
 
 def test_field_info_data_multi_phase():
-    case_filename = examples.download_file(
+    case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
-    data_filename = examples.download_file(
+    data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
     file_session = FileSession()
-    assert Path(case_filename).exists()
-    assert Path(data_filename).exists()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    assert Path(case_file_name).exists()
+    assert Path(data_file_name).exists()
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     sv_density = file_session.field_data.get_scalar_field_data(
         "phase-2:SV_DENSITY", [33]
@@ -51,15 +56,15 @@ def test_field_info_data_multi_phase():
 
 
 def test_field_info_data_single_phase():
-    case_filename = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_filename=False
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
-    data_filename = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     assert round_off_list_elements(
         file_session.field_info.get_scalar_field_range("SV_P")
@@ -105,15 +110,15 @@ def test_field_info_data_single_phase():
 
 
 def test_data_reader_single_phase():
-    case_filename = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_filename=False
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
-    data_filename = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     data_file = file_session._data_file
     assert data_file.case_file == "elbow1.cas.h5"
@@ -142,19 +147,19 @@ def test_data_reader_single_phase():
 
 
 def test_data_reader_multi_phase():
-    case_filename = examples.download_file(
+    case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
-    data_filename = examples.download_file(
+    data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     data_file = file_session._data_file
     assert data_file.case_file == "mixing_elbow_mul_ph.cas.h5"
@@ -189,15 +194,15 @@ def test_data_reader_multi_phase():
 
 
 def test_transaction_request_single_phase():
-    case_filename = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_filename=False
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
-    data_filename = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     field_data = file_session.field_data
 
@@ -245,19 +250,19 @@ def test_transaction_request_single_phase():
 
 
 def test_transaction_request_multi_phase():
-    case_filename = examples.download_file(
+    case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
-    data_filename = examples.download_file(
+    data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     field_data = file_session.field_data
 
@@ -289,54 +294,57 @@ def test_transaction_request_multi_phase():
 
 
 def test_error_handling_single_phase():
-    case_filename = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_filename=False
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
-    data_filename = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     field_data = file_session.field_data
 
     transaction_1 = field_data.new_transaction()
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(NotImplementedError) as msg:
         transaction_1.add_pathlines_fields_request("SV_T", [3, 5])
-    assert msg.value.args[0] == r"Path-lines not supported."
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(NotImplementedError) as msg:
         field_data.get_pathlines_field_data("SV_T", [3, 5])
-    assert msg.value.args[0] == r"Path-lines not supported."
 
 
 def test_error_handling_multi_phase():
-    case_filename = examples.download_file(
+    case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
-    data_filename = examples.download_file(
+    data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
     file_session = FileSession()
-    file_session.read_case(case_filename)
-    file_session.read_data(data_filename)
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
 
     field_data = file_session.field_data
 
     transaction_1 = field_data.new_transaction()
-    error_message = (
-        r"For multi-phase cases field name should have a prefix of phase name."
-    )
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
         transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", [29, 30])
-    assert msg.value.args[0] == error_message
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
         d_size = field_data.get_vector_field_data("velocity", surface_ids=[34])[34].size
-    assert msg.value.args[0] == error_message
+
+    with pytest.raises(InvalidFieldName) as msg:
+        d_size = field_data.get_vector_field_data(
+            "phase-1:temperature", surface_ids=[34]
+        )[34].size
+
+    with pytest.raises(SurfaceSpecificationError) as msg:
+        d_size = field_data.get_vector_field_data(
+            "velocity", surface_ids=[34], surface_name="wall"
+        )[34].size

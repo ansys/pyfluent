@@ -1,60 +1,78 @@
 from pathlib import Path
 import platform
 
+from beartype.roar import BeartypeCallHintParamViolation
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import (
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
+from ansys.fluent.core.launcher import launcher_utils
+from ansys.fluent.core.launcher.launcher import create_launcher
+from ansys.fluent.core.launcher.launcher_utils import (
+    AnsysVersionNotFound,
+    DockerContainerLaunchNotSupported,
     LaunchFluentError,
+    UnexpectedKeywordArgument,
+    _build_journal_argument,
+    check_docker_support,
     get_ansys_version,
     get_fluent_exe_path,
 )
+import ansys.platform.instancemanagement as pypim
+
+
+def test_mode():
+    with pytest.raises(DisallowedValuesError) as msg:
+        pyfluent.launch_fluent(
+            mode="meshing-solver",
+            start_container=False,
+        )
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
+@pytest.mark.standalone
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(TimeoutError) as msg:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
-    assert msg.value.args[0] == "The launch process has been timed out."
 
 
 def test_additional_argument_g_gu():
-    default_windows_flag = launcher._is_windows()
-    launcher._is_windows = lambda: True
+    default_windows_flag = launcher_utils._is_windows()
+    launcher_utils._is_windows = lambda: True
     try:
-        with pytest.raises(ValueError) as msg:
+        with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
                 mode="solver",
                 show_gui=True,
                 additional_arguments="-g",
                 start_container=False,
             )
-        assert (
-            msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
-        )
-
-        with pytest.raises(ValueError) as msg:
+        with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
                 mode="solver", additional_arguments="-gu", start_container=False
             )
-        assert (
-            msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
-        )
     finally:
-        launcher._is_windows = lambda: default_windows_flag
+        launcher_utils._is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
-    # test dry_run
-    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-    assert isinstance(container_dict, dict)
-    assert len(container_dict) > 1
+    if not check_docker_support():
+        with pytest.raises(DockerContainerLaunchNotSupported) as msg:
+            container_dict_1 = pyfluent.launch_fluent(start_container=True)
+            container_dict_2 = pyfluent.launch_fluent(
+                start_container=True, dry_run=True
+            )
 
-    # test run with configuration dict
-    session = pyfluent.launch_fluent(container_dict=container_dict)
-    assert session.health_check_service.is_serving
+    if check_docker_support():
+        # test dry_run
+        container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+        assert isinstance(container_dict, dict)
+        assert len(container_dict) > 1
+
+        # test run with configuration dict
+        session = pyfluent.launch_fluent(container_dict=container_dict)
+        assert session.health_check_service.is_serving
 
 
 def test_gpu_launch_arg(monkeypatch):
@@ -84,9 +102,9 @@ def test_gpu_launch_arg_additional_arg(monkeypatch):
 
 
 def test_kwargs():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(UnexpectedKeywordArgument):
         pyfluent.launch_fluent(abc=1, meshing_mode=True)
-    with pytest.raises(TypeError):
+    with pytest.raises(UnexpectedKeywordArgument):
         pyfluent.launch_fluent(abc=1, xyz=2)
 
 
@@ -96,9 +114,9 @@ def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
     monkeypatch.delenv("AWP_ROOT232", raising=False)
     monkeypatch.delenv("AWP_ROOT231", raising=False)
     monkeypatch.delenv("AWP_ROOT222", raising=False)
-    with pytest.raises(RuntimeError):
+    with pytest.raises(AnsysVersionNotFound):
         get_ansys_version()
-    with pytest.raises(RuntimeError):
+    with pytest.raises(AnsysVersionNotFound):
         get_fluent_exe_path()
 
 
@@ -182,3 +200,60 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
     assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+
+
+def test_watchdog_launch(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
+    pyfluent.launch_fluent(start_watchdog=True)
+
+
+def test_fluent_launchers():
+    if not check_docker_support() and not pypim.is_configured():
+        standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
+        standalone_meshing_session = standalone_meshing_launcher()
+        assert standalone_meshing_session
+
+        standalone_solver_launcher = create_launcher("standalone")
+        standalone_solver_session = standalone_solver_launcher()
+        assert standalone_solver_session
+
+    if check_docker_support():
+        container_meshing_launcher = create_launcher("container", mode="meshing")
+        container_meshing_session = container_meshing_launcher()
+        assert container_meshing_session
+
+        container_solver_launcher = create_launcher("container")
+        container_solver_session = container_solver_launcher()
+        assert container_solver_session
+
+    if pypim.is_configured():
+        pim_meshing_launcher = create_launcher("pim", mode="meshing")
+        pim_meshing_session = pim_meshing_launcher()
+        assert pim_meshing_session
+
+        pim_solver_launcher = create_launcher("pim")
+        pim_solver_session = pim_solver_launcher()
+        assert pim_solver_session
+
+
+@pytest.mark.parametrize(
+    "topy,journal_file_names,result,raises",
+    [
+        (None, "a.jou", ' -i "a.jou"', pytest.wont_raise()),
+        (None, ["a.jou", "b.jou"], ' -i "a.jou" -i "b.jou"', pytest.wont_raise()),
+        (True, "a.jou", ' -i "a.jou" -topy', pytest.wont_raise()),
+        (True, ["a.jou", "b.jou"], ' -i "a.jou" -i "b.jou" -topy', pytest.wont_raise()),
+        ("c.py", "a.jou", ' -i "a.jou" -topy="c.py"', pytest.wont_raise()),
+        (
+            "c.py",
+            ["a.jou", "b.jou"],
+            ' -i "a.jou" -i "b.jou" -topy="c.py"',
+            pytest.wont_raise(),
+        ),
+        (None, 5, None, pytest.raises(BeartypeCallHintParamViolation)),
+        (True, None, None, pytest.raises(InvalidArgument)),
+    ],
+)
+def test_build_journal_argument(topy, journal_file_names, result, raises):
+    with raises:
+        assert _build_journal_argument(topy, journal_file_names) == result

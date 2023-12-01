@@ -1,8 +1,7 @@
-"""Wrapper over the health check grpc service of Fluent."""
+"""Wrapper over the health check gRPC service of Fluent."""
 from enum import Enum
 import logging
 import sys
-from typing import List, Tuple
 
 import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule
@@ -15,7 +14,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 
-logger = logging.getLogger("pyfluent.general")
+logger: logging.Logger = logging.getLogger("pyfluent.general")
 
 
 class HealthCheckService:
@@ -30,14 +29,14 @@ class HealthCheckService:
     class Status(Enum):
         """Health check status."""
 
-        UNKNOWN = 0
-        SERVING = 1
-        NOT_SERVING = 2
-        SERVICE_UNKNOWN = 3
+        UNKNOWN: int = 0
+        SERVING: int = 1
+        NOT_SERVING: int = 2
+        SERVICE_UNKNOWN: int = 3
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
-    ):
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ) -> None:
         """__init__ method of HealthCheckService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
@@ -62,11 +61,22 @@ class HealthCheckService:
         response = self._stub.Check(request, metadata=self._metadata)
         return HealthCheckService.Status(response.status).name
 
+    # pylint: disable=missing-raises-doc
     @catch_grpc_error
-    def wait_for_server(self, timeout) -> None:
+    def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
 
         Response changes only when the service's serving status changes.
+
+        Parameters
+        ----------
+        timeout : int
+            timeout in seconds
+
+        Raises
+        ------
+        TimeoutError
+            If the connection to the Fluent server could not be established within the timeout.
         """
         request = HealthCheckModule.HealthCheckRequest()
         responses = self._stub.Watch(request, metadata=self._metadata, timeout=timeout)
@@ -78,7 +88,7 @@ class HealthCheckService:
                     responses.cancel()
             except StopIteration:
                 break
-            except Exception as e:
+            except grpc.RpcError as e:
                 if e.code() == grpc.StatusCode.CANCELLED:
                     break
                 if e.code() == grpc.StatusCode.DEADLINE_EXCEEDED:

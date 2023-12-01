@@ -3,13 +3,8 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.services.field_data import (
-    ScalarFieldNameError,
-    ScalarFieldUnavailable,
-    SurfaceDataType,
-    SurfaceNameError,
-    VectorFieldNameError,
-)
+from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.services.field_data import FieldUnavailable, SurfaceDataType
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -17,10 +12,10 @@ HOT_INLET_TEMPERATURE = 313.15
 @pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
     solver.tui.mesh.check()
 
     solver.setup.models.energy.enabled = True
@@ -118,7 +113,7 @@ def test_field_data(new_solver_session) -> None:
 
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -129,7 +124,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -174,7 +169,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
@@ -182,7 +177,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -302,27 +297,24 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
 def test_field_data_errors(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
-    with pytest.raises(ScalarFieldNameError) as fne:
+    with pytest.raises(DisallowedValuesError) as fne:
         solver.field_data.get_scalar_field_data(
             field_name="y-face-area", surface_ids=[0]
         )
-    assert fne.value.field_name == "y-face-area"
 
-    with pytest.raises(ScalarFieldNameError) as fne:
+    with pytest.raises(DisallowedValuesError) as fne:
         solver.field_data.get_scalar_field_data(
             field_name="partition-neighbors", surface_ids=[0]
         )
-    assert fne.value.field_name == "partition-neighbors"
 
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
 
-    with pytest.raises(ScalarFieldUnavailable) as fnu:
+    with pytest.raises(FieldUnavailable) as fnu:
         solver.field_data.get_scalar_field_data(field_name="density", surface_ids=[0])
-    assert fnu.value.field_name == "density"
 
     y_face_area = solver.field_data.get_scalar_field_data(
         field_name="y-face-area", surface_ids=[0]
@@ -340,43 +332,38 @@ def test_field_data_errors(new_solver_session) -> None:
     # Get field data object
     field_data = solver.field_data
 
-    with pytest.raises(SurfaceNameError) as sne:
+    with pytest.raises(DisallowedValuesError) as sne:
         solver.field_data.get_scalar_field_data(
             field_name="density", surface_name="bob"
         )
-    assert sne.value.surface_name == "bob"
 
-    with pytest.raises(ScalarFieldNameError) as fne:
+    with pytest.raises(DisallowedValuesError) as fne:
         solver.field_data.get_scalar_field_data(field_name="xdensity", surface_ids=[0])
-    assert fne.value.field_name == "xdensity"
 
 
 @pytest.mark.fluent_version(">=23.2")
 def test_field_info_validators(new_solver_session) -> None:
     solver = new_solver_session
-    import_filename = examples.download_file(
+    import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
+    solver.file.read(file_type="case", file_name=import_file_name)
     solver.solution.initialization.hybrid_initialize()
 
     vector_field_1 = solver.field_info.validate_vector_fields("velocity")
     assert vector_field_1 is None
 
-    with pytest.raises(VectorFieldNameError) as vector_field_error:
+    with pytest.raises(DisallowedValuesError) as vector_field_error:
         solver.field_info.validate_vector_fields("relative-vel")
-    assert vector_field_error.value.field_name == "relative-vel"
 
     scalar_field_1 = solver.field_info.validate_scalar_fields("z-velocity")
     assert scalar_field_1 is None
 
-    with pytest.raises(ScalarFieldNameError) as scalar_field_error:
+    with pytest.raises(DisallowedValuesError) as scalar_field_error:
         solver.field_info.validate_scalar_fields("z-vel")
-    assert scalar_field_error.value.field_name == "z-vel"
 
     surface = solver.field_info.validate_surfaces(["cold-inlet"])
     assert surface is None
 
-    with pytest.raises(SurfaceNameError) as surface_error:
+    with pytest.raises(DisallowedValuesError) as surface_error:
         solver.field_info.validate_surfaces(["out"])
-    assert surface_error.value.surface_name == "out"

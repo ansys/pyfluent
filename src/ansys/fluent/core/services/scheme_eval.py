@@ -19,7 +19,7 @@ Example
 0.7
 """
 
-from typing import Any, List, Sequence, Tuple
+from typing import Any, Sequence, Union
 
 import grpc
 
@@ -40,8 +40,8 @@ class SchemeEvalService:
     """
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
-    ):
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+    ) -> None:
         """__init__ method of SchemeEvalService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
@@ -53,25 +53,25 @@ class SchemeEvalService:
         self.__metadata = metadata
 
     def eval(self, request: SchemePointer) -> SchemePointer:
-        """Eval rpc of SchemeEval service."""
+        """Eval RPC of SchemeEval service."""
         return self.__stub.Eval(request, metadata=self.__metadata)
 
     def exec(
         self, request: SchemeEvalProtoModule.ExecRequest
     ) -> SchemeEvalProtoModule.ExecResponse:
-        """Exec rpc of SchemeEval service."""
+        """Exec RPC of SchemeEval service."""
         return self.__stub.Exec(request, metadata=self.__metadata)
 
     def string_eval(
         self, request: SchemeEvalProtoModule.StringEvalRequest
     ) -> SchemeEvalProtoModule.StringEvalResponse:
-        """StringEval rpc of SchemeEval service."""
+        """StringEval RPC of SchemeEval service."""
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
         self, request: SchemeEvalProtoModule.SchemeEvalRequest
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
-        """SchemeEval rpc of SchemeEval service."""
+        """SchemeEval RPC of SchemeEval service."""
         return self.__stub.SchemeEval(request, metadata=self.__metadata)
 
 
@@ -84,7 +84,7 @@ class Symbol:
         Underlying string representation
     """
 
-    def __init__(self, str: str):
+    def __init__(self, str: str) -> None:
         """__init__ method of Symbol class."""
         self.str = str
 
@@ -92,20 +92,24 @@ class Symbol:
         return self.str
 
 
-def _convert_pair_to_scheme_pointer(val: Tuple[Any, Any], p: SchemePointer, version):
+def _convert_pair_to_scheme_pointer(
+    val: tuple[Any, Any], p: SchemePointer, version: str
+) -> None:
     _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
     _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
 
 
 def _convert_list_of_pairs_to_scheme_pointer(
-    val: List[Tuple[Any, Any]], p: SchemePointer, version
-):
+    val: list[tuple[Any, Any]], p: SchemePointer, version: str
+) -> None:
     if len(val) > 0:
         _convert_pair_to_scheme_pointer(val[0], p.pair.car, version)
         _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr, version)
 
 
-def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
+def _convert_py_value_to_scheme_pointer(
+    val: Any, p: SchemePointer, version: str
+) -> None:
     """Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
         p.b = val
@@ -144,7 +148,9 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
                 _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
 
 
-def _convert_scheme_pointer_to_py_list(p: SchemePointer, version):
+def _convert_scheme_pointer_to_py_list(
+    p: SchemePointer, version: str
+) -> Union[dict, list]:
     val = []
     val.append(_convert_scheme_pointer_to_py_value(p.pair.car, version))
     if p.pair.cdr.HasField("pair"):
@@ -169,7 +175,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer, version):
     return val
 
 
-def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
+def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
     """Convert Scheme pointer to Python datatype."""
     if p.HasField("b"):
         return p.b
@@ -235,7 +241,7 @@ class SchemeEval:
         value
     """
 
-    def __init__(self, service: SchemeEvalService):
+    def __init__(self, service: SchemeEvalService) -> None:
         """__init__ method of SchemeEval class."""
         self.service = service
         try:

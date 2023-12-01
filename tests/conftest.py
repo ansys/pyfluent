@@ -1,11 +1,14 @@
+from contextlib import nullcontext
 import functools
 import operator
+import os
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
-from ansys.fluent.core.launcher.launcher import FluentVersion
+from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 
 _fluent_versions = list(FluentVersion)
 _fluent_release_version = _fluent_versions[1]
@@ -27,6 +30,12 @@ def pytest_addoption(parser):
 
 
 def pytest_runtest_setup(item):
+    if (
+        any(mark.name == "standalone" for mark in item.iter_markers())
+        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+    ):
+        pytest.skip()
+
     is_nightly = item.config.getoption("--nightly")
     if not is_nightly and any(mark.name == "nightly" for mark in item.iter_markers()):
         pytest.skip()
@@ -67,3 +76,12 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+
+
+@pytest.fixture(autouse=True)
+def clear_datamodel_cache():
+    yield
+    DataModelCache.rules_str_to_cache.clear()
+
+
+pytest.wont_raise = nullcontext

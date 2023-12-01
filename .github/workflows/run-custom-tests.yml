@@ -34,6 +34,8 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
+          - image-tag: v24.2.0
+            version: 242
 
     steps:
       - uses: actions/checkout@v4
@@ -41,7 +43,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -94,6 +96,6 @@ jobs:
             echo "Running custom unittest"
             sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
             pip install -r requirements/requirements_tests.txt
-            python -m pytest -v --no-cov --capture=no -k test_fluent_fatal_error
+            python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}

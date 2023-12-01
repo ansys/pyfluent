@@ -90,8 +90,7 @@ class InputPort:
         self.line = ""
 
     def next_token(self):
-        """Return the next token, reading new text into line buffer if
-        needed."""
+        """Return the next token, reading new text into line buffer if needed."""
         while True:
             if self.line == "":
                 self.line = self.file.readline()
@@ -219,9 +218,9 @@ def to_string(x):
         return str(x)
 
 
-def load(filename):
+def load(file_name):
     """Eval every expression from a file."""
-    repl(None, InputPort(open(filename)), None)
+    repl(None, InputPort(open(file_name)), None)
 
 
 def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):
@@ -259,6 +258,7 @@ class Env(dict):
                 )
             self.update(zip(params, args))
 
+    # pylint: disable=missing-raises-doc
     def find(self, var):
         """Find the innermost Env where var appears."""
         if var in self:
@@ -277,6 +277,7 @@ def cons(x, y):
     return [x] + y
 
 
+# pylint: disable=missing-raises-doc
 def callcc(proc):
     """Call proc with current continuation; escape only."""
     ball = RuntimeWarning("Sorry, can't continue this continuation any longer.")
@@ -400,8 +401,7 @@ def eval(x, env=global_env):
 
 
 def expand(x, toplevel=False):
-    """Walk tree of x, making optimizations/fixes, and signaling
-    SyntaxError."""
+    """Walk tree of x, making optimizations/fixes, and signaling SyntaxError."""
     # require(x, x!=[])                    # () => Error
     if x == []:
         return x
@@ -464,6 +464,7 @@ def expand(x, toplevel=False):
         return list(map(expand, x))  # (f arg...) => expand each
 
 
+# pylint: disable=missing-raises-doc
 def require(x, predicate, msg="wrong length"):
     """Signal a syntax error if predicate is false."""
     if not predicate:

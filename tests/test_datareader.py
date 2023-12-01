@@ -4,17 +4,17 @@ from ansys.fluent.core.filereader.data_file import DataFile
 
 
 def test_data_reader_for_single_phase():
-    case_filename = examples.download_file(
-        "elbow1.cas.h5", "pyfluent/file_session", return_only_filename=False
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
 
-    data_filename = examples.download_file(
-        "elbow1.dat.h5", "pyfluent/file_session", return_only_filename=False
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
 
     reader = DataFile(
-        data_filepath=data_filename,
-        case_file_handle=CaseFile(case_filepath=case_filename),
+        data_file_name=data_file_name,
+        case_file_handle=CaseFile(case_file_name=case_file_name),
     )
 
     assert reader.case_file == "elbow1.cas.h5"
@@ -50,20 +50,20 @@ def test_data_reader_for_single_phase():
 
 
 def test_data_reader_for_multi_phase():
-    case_filename = examples.download_file(
+    case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
-    data_filename = examples.download_file(
+    data_file_name = examples.download_file(
         "mixing_elbow_mul_ph.dat.h5",
         "pyfluent/file_session",
-        return_only_filename=False,
+        return_without_path=False,
     )
 
     reader = DataFile(
-        data_filepath=data_filename,
-        case_file_handle=CaseFile(case_filepath=case_filename),
+        data_file_name=data_file_name,
+        case_file_handle=CaseFile(case_file_name=case_file_name),
     )  # Instantiate a DataFile class
 
     assert reader.case_file == "mixing_elbow_mul_ph.cas.h5"
