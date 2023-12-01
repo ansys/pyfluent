@@ -106,7 +106,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls.v23R2
+        return cls.v232
 
     @property
     def awp_var(self):
