@@ -9,8 +9,7 @@ import ansys.fluent.core as pyfluent
 class AnsysVersionNotFound(RuntimeError):
     """Provides the error when Ansys version is not found."""
 
-    def __init__(self):
-        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
+    pass
 
 
 class ComparisonError(RuntimeError):
@@ -46,15 +45,11 @@ class FluentVersion(Enum):
 
     Examples
     --------
-    FluentVersion(None) == <FluentVersion.default: "">
+    FluentVersion("23.2.0") == FluentVersion.v232
 
-    FluentVersion("23.2.0") == FluentVersion.v23R2
+    FluentVersion.v232.number == 232
 
-    int(FluentVersion.v23R2) == 232
-
-    str(FluentVersion.v23R2) == 'AWP_ROOT232'
-
-    FluentVersion.v23R2.value == '23.2.0'
+    FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
     v242 = "24.2.0"
@@ -62,29 +57,25 @@ class FluentVersion(Enum):
     v232 = "23.2.0"
     v231 = "23.1.0"
     v222 = "22.2.0"
-    default = ""
 
     @classmethod
     def _missing_(cls, version):
-        if not version:
-            return FluentVersion.default
         if isinstance(version, (int, float, str)):
             version = str(version)
             if len(version) == 3:
                 version = version[:2] + "." + version[2:]
             version += ".0"
-            for v in FluentVersion:
-                if version == v.value:
-                    return FluentVersion(version)
-            else:
-                raise RuntimeError(
-                    f"The specified version '{version[:-2]}' is not supported."
-                    + " Supported versions are: "
-                    + ", ".join([v.value for v in FluentVersion][::-1])
-                )
+            for member in cls:
+                if version == member.value:
+                    return member
+        raise AnsysVersionNotFound(
+            f"The specified version '{version[:-2]}' is not supported."
+            + " Supported versions are: "
+            + ", ".join([member.value for member in cls][::-1])
+        )
 
-    @staticmethod
-    def get_latest_installed():
+    @classmethod
+    def get_latest_installed(cls):
         """Return the version member corresponding to the most recent, available ANSYS
         installation.
 
@@ -98,14 +89,16 @@ class FluentVersion(Enum):
         AnsysVersionNotFound
             If an Ansys version cannot be found.
         """
-        for version in FluentVersion:
-            if version.awp_var() in os.environ:
-                return version
+        for member in cls:
+            if member.awp_var() in os.environ:
+                return member
 
-        raise AnsysVersionNotFound()
+        raise AnsysVersionNotFound(
+            "Verify the value of the 'AWP_ROOT' environment variable."
+        )
 
-    @staticmethod
-    def current_release():
+    @classmethod
+    def current_release(cls):
         """Return the version member of the current release.
 
         Returns
@@ -113,34 +106,17 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return FluentVersion.v23R2
+        return cls.v23R2
 
+    @property
     def awp_var(self):
-        """Get the Fluent version in AWP environment variable format.
-
-        Returns
-        -------
-        str
-            Version path (e.g. "AWP_ROOT232")
-        """
-        return f"AWP_ROOT{int(self)}"
-
-    def img_tag(self):
-        """Get the Fluent version in the image tag format.
-
-        Returns
-        -------
-        str
-            Image tag (e.g. "v23.2.0")
-        """
-        return f"v{self.value}"
+        """Get the Fluent version in AWP environment variable format."""
+        return f"AWP_ROOT{self.number}"
 
     @property
     def number(self):
         """Get the Fluent version as a plain integer."""
-        if self.value:
-            return int(self.value.replace(".", "")[:-1])
-        return 0
+        return int(self.value.replace(".", "")[:-1])
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
