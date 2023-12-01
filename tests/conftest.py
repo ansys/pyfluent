@@ -11,7 +11,7 @@ from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_versions = list(FluentVersion)
-_fluent_release_version = _fluent_versions[2].value
+_fluent_release_version = FluentVersion.current_release()
 
 
 def pytest_addoption(parser):

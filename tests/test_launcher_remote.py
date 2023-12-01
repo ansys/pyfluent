@@ -55,7 +55,9 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
     if os.getenv("FLUENT_IMAGE_TAG"):
         monkeypatch.setattr(
-            FluentVersion, "current", lambda: docker_image_version.get_version()
+            FluentVersion,
+            "get_latest_installed",
+            lambda: docker_image_version.get_version(),
         )
 
     # Start fluent with launch_fluent

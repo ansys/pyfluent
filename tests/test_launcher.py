@@ -116,7 +116,7 @@ def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
     with pytest.raises(AnsysVersionNotFound):
         get_fluent_exe_path()
     with pytest.raises(AnsysVersionNotFound):
-        FluentVersion.current()
+        FluentVersion.get_latest_installed()
 
 
 def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
@@ -129,7 +129,7 @@ def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
         expected_path = Path("ansys_inc/v222/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v222/fluent") / "bin" / "fluent"
-    assert FluentVersion.current() == FluentVersion.v22R2
+    assert FluentVersion.get_latest_installed() == FluentVersion.v222
     assert get_fluent_exe_path() == expected_path
 
 
@@ -143,7 +143,7 @@ def test_get_fluent_exe_path_from_awp_root_231(monkeypatch):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert FluentVersion.current() == FluentVersion.v23R1
+    assert FluentVersion.get_latest_installed() == FluentVersion.v231
     assert get_fluent_exe_path() == expected_path
 
 
@@ -157,7 +157,7 @@ def test_get_fluent_exe_path_from_awp_root_232(monkeypatch):
         expected_path = Path("ansys_inc/v232/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v232/fluent") / "bin" / "fluent"
-    assert FluentVersion.current() == FluentVersion.v23R2
+    assert FluentVersion.get_latest_installed() == FluentVersion.v232
     assert get_fluent_exe_path() == expected_path
 
 
@@ -171,7 +171,7 @@ def test_get_fluent_exe_path_from_awp_root_241(monkeypatch):
         expected_path = Path("ansys_inc/v241/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v241/fluent") / "bin" / "fluent"
-    assert FluentVersion.current() == FluentVersion.v24R1
+    assert FluentVersion.get_latest_installed() == FluentVersion.v241
     assert get_fluent_exe_path() == expected_path
 
 
