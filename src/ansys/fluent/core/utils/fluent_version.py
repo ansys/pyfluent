@@ -134,4 +134,4 @@ class FluentVersion(Enum):
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
             return self.value < other.value
-        return ComparisonError()
+        raise ComparisonError()
