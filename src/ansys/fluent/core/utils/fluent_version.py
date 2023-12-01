@@ -83,8 +83,8 @@ class FluentVersion(Enum):
                     + ", ".join([v.value for v in FluentVersion][::-1])
                 )
 
-    @classmethod
-    def current(cls):
+    @staticmethod
+    def current():
         """Return the version member corresponding to the most recent, available ANSYS
         installation.
 
