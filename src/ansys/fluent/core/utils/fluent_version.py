@@ -124,8 +124,14 @@ class FluentVersion(Enum):
         """
         return str(f"v{self.value}")
 
-    def __int__(self):
-        """Return the version as a number (e.g. 232)"""
+    def number(self):
+        """Get the Fluent version as a plain integer.
+
+        Returns
+        -------
+        int
+            Plain integer (e.g. 232)
+        """
         if self.value:
             return int(self.value.replace(".", "")[:-1])
         return 0
