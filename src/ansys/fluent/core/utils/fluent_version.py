@@ -90,7 +90,7 @@ class FluentVersion(Enum):
             If an Ansys version cannot be found.
         """
         for member in cls:
-            if member.awp_var() in os.environ:
+            if member.awp_var in os.environ:
                 return member
 
         raise AnsysVersionNotFound(

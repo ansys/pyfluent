@@ -25,7 +25,7 @@ def test_version_not_found():
         FluentVersion(22)
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("==23.2.0")
 def test_get_latest_installed():
     assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
 
