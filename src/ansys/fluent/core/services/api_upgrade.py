@@ -27,7 +27,7 @@ class ApiUpgradeAdvisor:
     def _can_advise(self) -> bool:
         return (
             not os.getenv("PYFLUENT_SKIP_API_UPGRADE_ADVICE")
-            and FluentVersion(self._version) >= FluentVersion.v23R1
+            and FluentVersion(self._version) >= FluentVersion.v231
             and self._mode == "solver"
         )
 

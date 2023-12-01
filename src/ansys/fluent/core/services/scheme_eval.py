@@ -126,7 +126,7 @@ def _convert_py_value_to_scheme_pointer(
         _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
     elif isinstance(val, list) or isinstance(val, tuple):
-        if FluentVersion(version) < FluentVersion.v23R1:
+        if FluentVersion(version) < FluentVersion.v231:
             if val:
                 val = list(val)
                 _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
@@ -135,7 +135,7 @@ def _convert_py_value_to_scheme_pointer(
             for item in val:
                 _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
     elif isinstance(val, dict):
-        if FluentVersion(version) < FluentVersion.v23R1:
+        if FluentVersion(version) < FluentVersion.v231:
             as_list = list(val.items())
             if as_list:
                 _convert_pair_to_scheme_pointer(as_list[0], p.pair.car, version)
@@ -191,7 +191,7 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version: str) -> Any:
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        if FluentVersion(version) < FluentVersion.v23R1:
+        if FluentVersion(version) < FluentVersion.v231:
             if any(
                 p.pair.cdr.HasField(x)
                 for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
@@ -249,7 +249,7 @@ class SchemeEval:
             version = self.string_eval("(cx-version)")
             self.version = ".".join(version.strip("()").split())
         except Exception:  # for pypim launch
-            self.version = FluentVersion.v23R1.value
+            self.version = FluentVersion.v231.value
 
     def eval(self, val: Any) -> Any:
         """Evaluates a scheme expression.
@@ -264,7 +264,7 @@ class SchemeEval:
         Any
             Output scheme value represented as Python datatype
         """
-        if FluentVersion(self.version) < FluentVersion.v23R1:
+        if FluentVersion(self.version) < FluentVersion.v231:
             request = SchemePointer()
             _convert_py_value_to_scheme_pointer(val, request, self.version)
             response = self.service.eval(request)
