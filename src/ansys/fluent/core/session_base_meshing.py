@@ -36,13 +36,14 @@ class BaseMeshing:
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
+        self._fluent_version = fluent_version
+        self._meshing_utilities = None
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._version = None
-        self._fluent_version = fluent_version
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
@@ -91,6 +92,31 @@ class BaseMeshing:
         if self._meshing is None:
             self._meshing = self._meshing_root
         return self._meshing
+
+    @property
+    def _meshing_utilities_root(self):
+        """Datamodel root of meshing_utilities."""
+        try:
+            if self.get_fluent_version() >= "24.2.0":
+                meshing_utilities_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.MeshingUtilities"
+                )
+                meshing_utilities_root = meshing_utilities_module.Root(
+                    self._se_service, "MeshingUtilities", []
+                )
+        except ImportError:
+            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
+            if self.get_fluent_version() >= "24.2.0":
+                meshing_utilities_root = PyMenuGeneric(
+                    self._se_service, "meshing_utilities"
+                )
+        return meshing_utilities_root
+
+    @property
+    def meshing_utilities(self):
+        if self._meshing_utilities is None:
+            self._meshing_utilities = self._meshing_utilities_root
+        return self._meshing_utilities
 
     @property
     def _workflow_se(self):

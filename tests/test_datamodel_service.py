@@ -119,7 +119,7 @@ def test_add_on_changed(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[0] > 0
+    assert data[-1] > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -336,6 +336,19 @@ def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
     assert x.FileName() == "dummy_file_name.dummy_extn"
+
+
+def _is_internal_name(name: str, prefix: str) -> bool:
+    return name.startswith(prefix) and name.removeprefix(prefix).isdigit()
+
+
+@pytest.mark.codegen_required
+def test_task_object_keys_are_display_names(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    task_object_state = meshing.workflow.TaskObject()
+    assert len(task_object_state) > 0
+    assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
 
 
 def test_generic_datamodel(new_solver_session):
