@@ -96,9 +96,9 @@ def _copy_tui_help_xml_file(version: str):
 
     else:
         ansys_version = (
-            FluentVersion.current()
+            FluentVersion.get_latest_installed()
         )  # picking up the file from the latest install location
-        awp_root = os.environ[ansys_version.awp_var()]
+        awp_root = os.environ[ansys_version.awp_var]
         xml_source = (
             Path(awp_root)
             / "commonfiles"
@@ -314,7 +314,7 @@ class TUIGenerator:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if FluentVersion(self._version) == FluentVersion.v22R2:
+            if FluentVersion(self._version) == FluentVersion.v222:
                 with open(
                     os.path.join(
                         _THIS_DIRNAME,
@@ -356,7 +356,7 @@ class TUIGenerator:
 
 def generate(version, pyfluent_path):
     api_tree = {}
-    if FluentVersion(version) > FluentVersion.v22R2:
+    if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
