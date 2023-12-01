@@ -104,6 +104,17 @@ class FluentVersion(Enum):
 
         raise AnsysVersionNotFound()
 
+    @staticmethod
+    def current_release():
+        """Return the version member of the current release.
+
+        Returns
+        -------
+        FluentVersion
+            FluentVersion member corresponding to the latest release.
+        """
+        return FluentVersion.v23R2
+
     def awp_var(self):
         """Get the Fluent version in AWP environment variable format.
 
