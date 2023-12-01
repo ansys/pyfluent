@@ -57,11 +57,11 @@ class FluentVersion(Enum):
     FluentVersion.v23R2.value == '23.2.0'
     """
 
-    v24R2 = "24.2.0"
-    v24R1 = "24.1.0"
-    v23R2 = "23.2.0"
-    v23R1 = "23.1.0"
-    v22R2 = "22.2.0"
+    v242 = "24.2.0"
+    v241 = "24.1.0"
+    v232 = "23.2.0"
+    v231 = "23.1.0"
+    v222 = "22.2.0"
     default = ""
 
     @classmethod
