@@ -84,7 +84,7 @@ class FluentVersion(Enum):
                 )
 
     @staticmethod
-    def current():
+    def get_latest_installed():
         """Return the version member corresponding to the most recent, available ANSYS
         installation.
 
@@ -112,7 +112,7 @@ class FluentVersion(Enum):
         str
             Version path (e.g. "AWP_ROOT232")
         """
-        return str(f"AWP_ROOT{int(self)}")
+        return f"AWP_ROOT{int(self)}"
 
     def img_tag(self):
         """Get the Fluent version in the image tag format.
@@ -122,7 +122,7 @@ class FluentVersion(Enum):
         str
             Image tag (e.g. "v23.2.0")
         """
-        return str(f"v{self.value}")
+        return f"v{self.value}"
 
     @property
     def number(self):
