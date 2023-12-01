@@ -124,14 +124,9 @@ class FluentVersion(Enum):
         """
         return str(f"v{self.value}")
 
+    @property
     def number(self):
-        """Get the Fluent version as a plain integer.
-
-        Returns
-        -------
-        int
-            Plain integer (e.g. 232)
-        """
+        """Get the Fluent version as a plain integer."""
         if self.value:
             return int(self.value.replace(".", "")[:-1])
         return 0
