@@ -79,6 +79,7 @@ class LaunchMode(Enum):
     STANDALONE = 1
     PIM = 2
     CONTAINER = 3
+    SLURM = 4
 
 
 def check_docker_support():
@@ -218,15 +219,21 @@ class FluentMode(Enum):
             )
 
 
-def _get_server_info_file_name():
+def _get_server_info_file_name(use_tmpdir=True):
     server_info_dir = os.getenv("SERVER_INFO_DIR")
-    dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
+    dir_ = (
+        Path(server_info_dir)
+        if server_info_dir
+        else tempfile.gettempdir()
+        if use_tmpdir
+        else Path.cwd()
+    )
     fd, file_name = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=str(dir_))
     os.close(fd)
     return file_name
 
 
-def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
+def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if _is_windows():
@@ -236,12 +243,17 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
-    from ansys.fluent.core import INFER_REMOTING_IP
 
-    if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
-        remoting_ip = find_remoting_ip()
-        if remoting_ip:
-            fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+    scheduler_options = argvals.get("scheduler_options")
+    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
+    if not is_slurm:
+        from ansys.fluent.core import INFER_REMOTING_IP
+
+        if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
+            remoting_ip = find_remoting_ip()
+            if remoting_ip:
+                fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+
     kwargs.update(env=fluent_env)
     return kwargs
 
@@ -495,7 +507,7 @@ def _process_kwargs(kwargs):
             )
 
 
-def _get_fluent_launch_mode(start_container, container_dict):
+def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     """Get Fluent launch mode.
 
     Parameters
@@ -520,6 +532,8 @@ def _get_fluent_launch_mode(start_container, container_dict):
             fluent_launch_mode = "container"
         else:
             raise DockerContainerLaunchNotSupported()
+    elif scheduler_options and scheduler_options["scheduler"] == "slurm":
+        fluent_launch_mode = "slurm"
     else:
         fluent_launch_mode = "standalone"
     return fluent_launch_mode

@@ -59,6 +59,7 @@ class StandaloneLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
+        scheduler_options: Optional[dict] = None,
         **kwargs,
     ):
         """Launch Fluent session in standalone mode.
@@ -204,7 +205,7 @@ class StandaloneLauncher:
         sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
         if self.env is None:
             setattr(self, "env", {})
-        kwargs = _get_subprocess_kwargs_for_fluent(self.env)
+        kwargs = _get_subprocess_kwargs_for_fluent(self.env, self.argvals)
         if self.cwd:
             kwargs.update(cwd=self.cwd)
         launch_string += _build_journal_argument(self.topy, self.journal_file_names)

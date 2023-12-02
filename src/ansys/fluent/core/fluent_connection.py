@@ -269,6 +269,7 @@ class FluentConnection:
         self.error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
+        self._slurm_job_id = None
         self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
@@ -299,6 +300,8 @@ class FluentConnection:
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         self.health_check_service.check_health()
+
+        self._slurm_job_id = launcher_args and launcher_args.get("slurm_job_id")
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
@@ -387,6 +390,9 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
+    def _close_slurm(self):
+        subprocess.run(["scancel", f"{self._slurm_job_id}"])
+
     def force_exit(self):
         """Immediately terminates the Fluent client, losing unsaved progress and data.
 
@@ -443,6 +449,9 @@ class FluentConnection:
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
+        elif self._slurm_job_id:
+            logger.debug("Fluent running inside Slurm, closing Slurm session...")
+            self._close_slurm()
         else:
             logger.error("Could not find cleanup file.")
 
