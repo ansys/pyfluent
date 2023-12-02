@@ -373,7 +373,7 @@ def start_fluent_container(
             )
         else:
             host, _, password = _parse_server_info_file(str(host_server_info_file))
-
+            print("host, port, password", host, port, password)
             return host, port, password
     finally:
         if remove_server_info_file and host_server_info_file.exists():
