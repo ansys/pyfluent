@@ -323,7 +323,7 @@ def start_fluent_container(
 
     if container_dict is None:
         container_dict = {}
-    import pdb; pdb.set_trace()
+    print('container_dict', container_dict)
     container_vars = configure_container_dict(args, **container_dict)
 
     (
