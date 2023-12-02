@@ -360,7 +360,7 @@ def start_fluent_container(
         docker_client = docker.from_env()
 
         logger.debug("Starting Fluent docker container...")
-        #import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
 
         success = timeout_loop(
