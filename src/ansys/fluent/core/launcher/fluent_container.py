@@ -360,13 +360,13 @@ def start_fluent_container(
         docker_client = docker.from_env()
 
         logger.debug("Starting Fluent docker container...")
-
+        import pdb; pdb.set_trace()
         docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
 
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
-        import pdb; pdb.set_trace()
+        
         if not success:
             raise RuntimeError(
                 "Fluent container launch timeout, will have to stop container manually."
