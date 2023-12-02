@@ -280,7 +280,11 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    host_server_info_file = Path(".") / container_server_info_file.name
+    def is_inside_docker():
+        cgroup = Path('/proc/self/cgroup')
+        return Path('/.dockerenv').is_file() or cgroup.is_file() and 'docker' in cgroup.read_text()
+    
+    host_server_info_file = Path("." if is_inside_docker() else host_mount_path) / container_server_info_file.name
 
     return (
         container_dict,
