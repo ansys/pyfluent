@@ -238,6 +238,7 @@ def configure_container_dict(
                     f"Found server info file specification for {container_server_info_file}."
                 )
 
+    print("host_mount_path, container_mount_path", host_mount_path, container_mount_path)
     if container_server_info_file:
         container_server_info_file = (
             PurePosixPath(container_mount_path)
