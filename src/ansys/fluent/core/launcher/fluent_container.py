@@ -325,7 +325,7 @@ def start_fluent_container(
         container_dict = {}
     print('container_dict', container_dict)
     container_vars = configure_container_dict(args, **container_dict)
-
+    print('container_dict', container_vars)
     (
         config_dict,
         timeout,
