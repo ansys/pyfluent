@@ -239,6 +239,7 @@ def configure_container_dict(
                 )
 
     print("host_mount_path, container_mount_path", host_mount_path, container_mount_path)
+    import pdb; pdb.set_trace()
     if container_server_info_file:
         container_server_info_file = (
             PurePosixPath(container_mount_path)
