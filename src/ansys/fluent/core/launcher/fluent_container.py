@@ -238,8 +238,6 @@ def configure_container_dict(
                     f"Found server info file specification for {container_server_info_file}."
                 )
 
-    print("host_mount_path, container_mount_path", host_mount_path, container_mount_path)
-    import pdb; pdb.set_trace()
     if container_server_info_file:
         container_server_info_file = (
             PurePosixPath(container_mount_path)
@@ -247,7 +245,7 @@ def configure_container_dict(
         )
     else:
         fd, sifile = tempfile.mkstemp(
-            suffix=".txt", prefix="serverinfo-", dir=host_mount_path
+            suffix=".txt", prefix="serverinfo-", dir="." if in_docker() else host_mount_path
         )
         os.close(fd)
         container_server_info_file = (
