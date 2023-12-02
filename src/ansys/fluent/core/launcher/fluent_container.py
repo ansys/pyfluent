@@ -280,7 +280,7 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
+    host_server_info_file = Path(".") / container_server_info_file.name
 
     return (
         container_dict,
