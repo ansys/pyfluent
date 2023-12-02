@@ -800,11 +800,12 @@ def launch_fluent(
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(args, container_dict)
+        host, port, password = start_fluent_container(args, container_dict)
 
         session = new_session(
             fluent_connection=FluentConnection(
                 start_timeout=start_timeout,
+                ip=host,
                 port=port,
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,

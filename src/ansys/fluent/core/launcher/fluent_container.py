@@ -366,15 +366,15 @@ def start_fluent_container(
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
-
+        import pdb; pdb.set_trace()
         if not success:
             raise RuntimeError(
                 "Fluent container launch timeout, will have to stop container manually."
             )
         else:
-            _, _, password = _parse_server_info_file(str(host_server_info_file))
+            host, _, password = _parse_server_info_file(str(host_server_info_file))
 
-            return port, password
+            return host, port, password
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
