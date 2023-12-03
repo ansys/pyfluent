@@ -36,7 +36,7 @@ member_specs_oneof_fields = [
 def _get_value_from_message_dict(
     d: dict[str, Any], key: list[Union[str, Sequence[str]]]
 ):
-    """Get value from a protobuf message dict"""
+    """Get value from a protobuf message dict."""
     for k in key:
         if isinstance(k, str):
             d = d[k]
