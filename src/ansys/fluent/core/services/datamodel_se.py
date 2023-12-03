@@ -1619,7 +1619,7 @@ class PyMenuGeneric(PyMenu):
 
     attrs = ("service", "rules", "path", "cached_attrs")
 
-    def _get_child_names(self) -> tuple[list, list, list]:
+    def _get_child_names(self) -> tuple[list, list, list, list]:
         response = self.service.get_specs(
             self.rules, convert_path_to_se_path(self.path)
         )
