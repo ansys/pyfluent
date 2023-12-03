@@ -340,7 +340,7 @@ class DatamodelService(StreamingService):
         self, rules: str, path: str, query: str, args: dict[str, _TValue]
     ) -> _TValue:
         request = DataModelProtoModule.ExecuteQueryRequest(
-            rules=rules, path=path, query=query, wait=True
+            rules=rules, path=path, query=query
         )
         _convert_value_to_variant(args, request.args)
         response = self._impl.execute_query(request)
