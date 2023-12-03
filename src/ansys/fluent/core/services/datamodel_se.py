@@ -19,7 +19,6 @@ from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
     TracingInterceptor,
-    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
 
@@ -117,7 +116,6 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
-            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
@@ -336,6 +334,16 @@ class DatamodelService(StreamingService):
         )
         _convert_value_to_variant(args, request.args)
         response = self._impl.execute_command(request)
+        return _convert_variant_to_value(response.result)
+
+    def execute_query(
+        self, rules: str, path: str, query: str, args: dict[str, _TValue]
+    ) -> _TValue:
+        request = DataModelProtoModule.ExecuteQueryRequest(
+            rules=rules, path=path, query=query, wait=True
+        )
+        _convert_value_to_variant(args, request.args)
+        response = self._impl.execute_query(request)
         return _convert_variant_to_value(response.result)
 
     def create_command_arguments(self, rules: str, path: str, command: str) -> str:
@@ -1247,23 +1255,18 @@ class PyQuery:
         Any
             Return value.
         """
-        request = DataModelProtoModule.ExecuteQueryRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        request.query = self.query
-        _convert_value_to_variant(kwds, request.args)
-        response = self.service.execute_query(request)
-        return _convert_variant_to_value(response.result)
+        return self.service.execute_query(
+            self.rules, convert_path_to_se_path(self.path), self.query, kwds
+        )
 
     def help(self) -> None:
         """Prints help string."""
-        request = DataModelProtoModule.GetSpecsRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        response = self.service.get_specs(request)
-        help_string = getattr(
-            response.member, response.member.WhichOneof("as")
-        ).query.helpstring
+        response = self.service.get_specs(
+            self.rules, convert_path_to_se_path(self.path)
+        )
+        help_string = _get_value_from_message_dict(
+            response, [member_specs_oneof_fields, "query", "helpstring"]
+        )
         print(help_string)
 
 
@@ -1630,21 +1633,14 @@ class PyMenuGeneric(PyMenu):
                 for member in struct_field["members"]:
                     if ":" not in member:
                         singleton_names.append(member)
-<<<<<<< HEAD
-                creatable_type_names = struct_field.creatabletypes
-                command_names = [x.name for x in struct_field.commands]
-                if hasattr(struct_field, "queries"):
-                    query_names = [x.name for x in struct_field.queries]
-        return singleton_names, creatable_type_names, command_names, query_names
-=======
                 creatable_type_names = struct_field.get("creatabletypes", [])
                 command_names = [x["name"] for x in struct_field.get("commands", [])]
-        return singleton_names, creatable_type_names, command_names
->>>>>>> 40dfceccf (Factor out pure service class from datamodel_se)
+                query_names = [x["name"] for x in struct_field.get("queries", [])]
+        return singleton_names, creatable_type_names, command_names, query_names
 
     def _get_child(
         self, name: str
-    ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand]:
+    ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand, PyQuery]:
         singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
