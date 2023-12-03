@@ -306,7 +306,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(
                 _build_command_query_docstring(
-                    k, info.queries[k].queryinfo, f"{indent}        ", False
+                    k, info["queries"][k]["queryinfo"], f"{indent}        ", False
                 )
             )
             f.write(f'{indent}        """\n')
