@@ -46,6 +46,7 @@ class PIMLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
+        scheduler_options: Optional[dict] = None,
         **kwargs,
     ):
         """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode.
