@@ -2,7 +2,7 @@ from concurrent.futures import Future, ThreadPoolExecutor
 import logging
 from pathlib import Path
 import subprocess
-from typing import Any, Union
+from typing import Any, Callable, Union
 
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -31,6 +31,27 @@ def _get_slurm_job_id(proc: subprocess.Popen):
 
 
 class SlurmFuture:
+    """Encapsulates asynchronous launch of Fluent within a Slurm environment. The
+    interface is similar to Python's
+    `future object <https://docs.python.org/3/library/asyncio-future.html#future-object>`_.
+
+    Examples
+    --------
+    >>> slurm = pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"})
+    >>> type(slurm)
+    <class 'ansys.fluent.core.launcher.slurm_launcher.SlurmFuture'>
+    >>> slurm.pending(), slurm.running(), slurm.done() # before Fluent is launched
+    (True, False, False)
+    >>>  slurm.pending(), slurm.running(), slurm.done() # after Fluent is launched
+    (False, True, False)
+    >>> session = slurm.result()
+    >>> type(session)
+    <class 'ansys.fluent.core.session_solver.Solver'>
+    >>> session.exit()
+    >>> slurm.pending(), slurm.running(), slurm.done()
+    (False, False, True)
+    """
+
     def __init__(self, future: Future, job_id: int):
         self._future = future
         self._job_id = job_id
@@ -48,37 +69,99 @@ class SlurmFuture:
         return out.decode().strip().strip('"')
 
     def cancel(self, timeout: int = 60) -> bool:
+        """Attempt to cancel the Fluent launch within timeout seconds.
+
+        Parameters
+        ----------
+        timeout : int, optional
+            timeout in seconds, by default 60
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch is successfully cancelled, otherwise ``False``.
+        """
         if self.done():
             return False
         subprocess.run(["scancel", f"{self._job_id}"])
         for _ in range(timeout):
-            if self.cancelled():
+            if self._get_state() in ["", "CANCELLED"]:
                 return True
         return False
 
-    def cancelled(self) -> bool:
-        return self._get_state() == "CANCELLED"
-
     def running(self) -> bool:
+        """Return ``True`` if Fluent is currently running, otherwise ``False``."""
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
+        """Return ``True`` if the Fluent launch is currently waiting for Slurm allocation
+        or Fluent is being launched, otherwise ``False``.
+        """
         return self._future.running()
 
     def done(self) -> bool:
+        """Return ``True`` if the Fluent launch was successfully cancelled or Fluent was
+        finished running, otherwise ``False``.
+        """
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
-    def result(self, timeout=None):
+    def result(
+        self, timeout: int = None
+    ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+        """Return the session instance corresponding to the Fluent launch. If Fluent
+        hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
+        hasn't launched in timeout seconds, then a TimeoutError will be raised. If
+        timeout is not specified or None, there is no limit to the wait time.
+
+        If the Fluent launch raised an exception, this method will raise the same exception.
+
+        Parameters
+        ----------
+        timeout : int, optional
+            timeout in seconds
+
+        Returns
+        -------
+        Union[Meshing, PureMeshing, Solver, SolverIcing]
+            The session instance corresponding to the Fluent launch.
+        """
         return self._future.result(timeout)
 
-    def exception(self, timeout=None):
+    def exception(self, timeout: int = None) -> Exception:
+        """Return the exception raised by the Fluent launch. If Fluent hasn't yet
+        launched, then this method will wait up to timeout seconds. If Fluent hasn't
+        launched in timeout seconds, then a TimeoutError will be raised. If timeout is
+        not specified or None, there is no limit to the wait time.
+
+        If the Fluent launch completed without raising, None is returned.
+
+        Parameters
+        ----------
+        timeout : int, optional
+            timeout in seconds
+
+        Returns
+        -------
+        Exception
+            The exception raised by the Fluent launch.
+        """
         return self._future.exception(timeout)
 
-    def add_done_callback(self, fn):
+    def add_done_callback(self, fn: Callable):
+        """Attaches the callable function. The function will be called, with the session
+        as its only argument, when Fluent is launched.
+
+        Parameters
+        ----------
+        fn : Callable
+            Callback function.
+        """
         self._future.add_done_callback(fn)
 
 
 class SlurmLauncher:
+    """Instantiates Fluent session within a Slurm environment."""
+
     def __init__(
         self,
         **kwargs,
