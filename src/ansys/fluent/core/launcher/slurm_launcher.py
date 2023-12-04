@@ -9,8 +9,10 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _generate_launch_string,
+    _get_argvals,
     _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
+    _process_invalid_args,
 )
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -79,36 +81,25 @@ class SlurmFuture:
 class SlurmLauncher:
     def __init__(
         self,
-        argvals,
-        meshing_mode,
-        show_gui,
-        additional_arguments,
-        env,
-        topy,
-        journal_file_names,
-        new_session,
-        cleanup_on_exit,
-        start_transcript,
         **kwargs,
     ):
+        dry_run = kwargs.get("dry_run")
+        mode = kwargs.get("mode")
+        argvals = kwargs.copy()
+        del kwargs
+        _process_invalid_args(dry_run, "slurm", argvals)
+        args = _get_argvals(argvals, mode)
+        argvals.update(args)
+        for arg_name, arg_values in argvals.items():
+            setattr(self, f"_{arg_name}", arg_values)
         self._argvals = argvals
-        self._meshing_mode = meshing_mode
-        self._show_gui = show_gui
-        self._additional_arguments = additional_arguments
-        self._env = env
-        self._topy = topy
-        self._journal_file_names = journal_file_names
-        self._new_session = new_session
-        self._cleanup_on_exit = cleanup_on_exit
-        self._start_transcript = start_transcript
 
-        scheduler_options = self._argvals["scheduler_options"]
-        if scheduler_options:
-            if "scheduler" not in scheduler_options:
+        if self._scheduler_options:
+            if "scheduler" not in self._scheduler_options:
                 raise InvalidArgument(
                     "The scheduler must be specified within scheduler options."
                 )
-            elif scheduler_options["scheduler"] != "slurm":
+            elif self._scheduler_options["scheduler"] != "slurm":
                 raise InvalidArgument("Only slurm is supported as scheduler.")
 
     def _prepare(self):
