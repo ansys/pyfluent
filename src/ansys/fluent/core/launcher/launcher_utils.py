@@ -361,9 +361,7 @@ def _await_fluent_launch(
         start_timeout -= 1
         logger.info(f"Waiting for Fluent to launch...")
         if start_timeout >= 0:
-            logger.info(
-                f"...{start_timeout} seconds remaining"
-            )
+            logger.info(f"...{start_timeout} seconds remaining")
 
 
 def _get_server_info(
