@@ -177,6 +177,8 @@ class StandaloneLauncher:
         _process_invalid_args(dry_run, "standalone", argvals)
         args = _get_argvals(argvals, mode)
         argvals.update(args)
+        if argvals["start_timeout"] is None:
+            argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals

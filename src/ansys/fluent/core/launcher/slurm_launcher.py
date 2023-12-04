@@ -90,6 +90,8 @@ class SlurmLauncher:
         _process_invalid_args(dry_run, "slurm", argvals)
         args = _get_argvals(argvals, mode)
         argvals.update(args)
+        if argvals["start_timeout"] is None:
+            argvals["start_timeout"] = -1
         for arg_name, arg_values in argvals.items():
             setattr(self, f"_{arg_name}", arg_values)
         self._argvals = argvals
@@ -127,7 +129,9 @@ class SlurmLauncher:
         return slurm_job_id
 
     def _launch(self, slurm_job_id) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
-        _await_fluent_launch(self._server_info_file_name, -1, self._sifile_last_mtime)
+        _await_fluent_launch(
+            self._server_info_file_name, self._start_timeout, self._sifile_last_mtime
+        )
         session = self._new_session.create_from_server_info_file(
             server_info_file_name=self._server_info_file_name,
             remote_file_handler=None,
