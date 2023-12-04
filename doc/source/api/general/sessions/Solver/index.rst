@@ -7,8 +7,6 @@ Solver sessions
 :ref:`ref_session_solver`          | Module containing class encapsulating Fluent connection.
 
 :ref:`ref_session_solver_icing`    Module containing class encapsulating Fluent connection.
-
-:ref:`ref_session_solver_lite`     Module containing class encapsulating Fluent connection.
 =================================  ===========================================================
 
 .. toctree::
