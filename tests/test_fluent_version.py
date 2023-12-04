@@ -25,8 +25,10 @@ def test_version_not_found():
         FluentVersion(22)
 
 
-@pytest.mark.fluent_version("==23.2.0")
-def test_get_latest_installed():
+def test_get_latest_installed(monkeypatch):
+    monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
+    monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
+    monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
     assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
 
 
