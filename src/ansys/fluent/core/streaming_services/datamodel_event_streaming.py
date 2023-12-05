@@ -1,9 +1,15 @@
+import logging
+import os
 import threading
 from typing import Callable
+
+from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+
+network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
 class DatamodelEvents(StreamingService):
@@ -39,6 +45,10 @@ class DatamodelEvents(StreamingService):
         while True:
             try:
                 response: DataModelProtoModule.EventResponse = next(responses)
+                if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                    network_logger.debug(
+                        f"GRPC_TRACE: RPC = /grpcRemoting.DataModel/BeginEventStreaming, response = {MessageToDict(response)}"
+                    )
                 with self._lock:
                     self._streaming = True
                     for tag, cb in self._cbs.items():
