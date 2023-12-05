@@ -1307,7 +1307,7 @@ def _gethash(obj_info):
 
 
 # pylint: disable=missing-raises-doc
-def get_root(flproxy, version: str = "23.2.0") -> Group:
+def get_root(flproxy, version: str = "") -> Group:
     """Get the root settings object.
 
     Parameters
