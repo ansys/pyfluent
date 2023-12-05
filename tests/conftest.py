@@ -90,7 +90,8 @@ class Helpers:
         self.monkeypatch = monkeypatch
 
     def mock_awp_vars(self, version=None):
-        """Activates env vars for Fluent versions up to specified version, deactivates env vars for newer versions than specified."""
+        """Activates env vars for Fluent versions up to specified version, deactivates
+        env vars for versions newer than specified."""
         if not version:
             version = FluentVersion.current_release()
         elif not isinstance(version, FluentVersion):
