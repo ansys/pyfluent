@@ -197,7 +197,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_svars(new_solver_session):
+def test_svars_data_initialization(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
