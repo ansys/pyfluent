@@ -72,6 +72,9 @@ class SlurmFuture:
         )
         return out.decode().strip().strip('"')
 
+    def _cancel(self):
+        subprocess.run(["scancel", f"{self._job_id}"])
+
     def cancel(self, timeout: int = 60) -> bool:
         """Attempt to cancel the Fluent launch within timeout seconds.
 
@@ -87,7 +90,7 @@ class SlurmFuture:
         """
         if self.done():
             return False
-        subprocess.run(["scancel", f"{self._job_id}"])
+        self._cancel()
         for _ in range(timeout):
             if self._get_state() in ["", "CANCELLED"]:
                 return True
