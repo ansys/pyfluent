@@ -4,6 +4,7 @@ import os
 from typing import Optional
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._version import fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):
@@ -106,7 +107,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls.v232
+        return cls(fluent_release_version)
 
     @property
     def awp_var(self):

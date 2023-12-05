@@ -10,3 +10,6 @@ version_info = 0, 19, "dev1"
 
 # Nice string for the version
 __version__ = ".".join(map(str, version_info))
+
+# Current Fluent version
+fluent_release_version = "23.2.0"
