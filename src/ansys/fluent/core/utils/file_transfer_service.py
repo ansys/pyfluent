@@ -66,6 +66,9 @@ class PimFileTransferService:
         """PIM file transfer service."""
         return self.file_service
 
+    def is_pim_configured(self):
+        return pypim.is_configured()
+
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
@@ -82,7 +85,7 @@ class PimFileTransferService:
         PyPIMConfigurationError
             If PyPIM is not configured.
         """
-        if not pypim.is_configured():
+        if not self.is_pim_configured():
             raise PyPIMConfigurationError()
         elif self.file_service:
             if os.path.isfile(file_name):
@@ -111,7 +114,7 @@ class PimFileTransferService:
         PyPIMConfigurationError
             If PyPIM is not configured.
         """
-        if not pypim.is_configured():
+        if not self.is_pim_configured():
             raise PyPIMConfigurationError()
         elif self.file_service:
             if self.file_service.file_exist(file_name):
@@ -146,6 +149,9 @@ class RemoteFileHandler:
     def __init__(self, transfer_service: Optional[Any] = None):
         self._transfer_service = transfer_service
 
+    def is_pim_configured(self):
+        return pypim.is_configured()
+
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
         """Upload a file if it's unavailable on the server
         supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
@@ -162,7 +168,7 @@ class RemoteFileHandler:
         FileNotFoundError
             If a file does not exist.
         """
-        if pypim.is_configured():
+        if self.is_pim_configured():
             if os.path.isfile(file_name):
                 if not self._transfer_service.pim_service.file_exist(
                     os.path.basename(file_name)
@@ -193,7 +199,7 @@ class RemoteFileHandler:
             before_downloaded(
                 os.path.basename(file_name) if pypim.is_configured() else file_name
             )
-        if pypim.is_configured():
+        if self.is_pim_configured():
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:

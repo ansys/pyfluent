@@ -27,8 +27,6 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
-import ansys.platform.instancemanagement as pypim
-
 from .error_message import allowed_name_error_message, allowed_values_error
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
@@ -1041,7 +1039,7 @@ class Command(Action):
             file_purpose = self.filename.get_attr(_InlineConstants.file_purpose)
         print(f"\nfile_purpose = {file_purpose}\n")
 
-        if file_purpose == "input" and pypim.is_configured():
+        if file_purpose == "input" and self.remote_file_handler.is_pim_configured():
             self.remote_file_handler.upload(file_name=kwds["file_name"])
             print(
                 f"\nfile - {kwds['file_name']} uploaded for {str(self.__class__.__name__)}.\n"
@@ -1063,7 +1061,7 @@ class Command(Action):
                     return
         cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
-        if file_purpose == "output" and pypim.is_configured():
+        if file_purpose == "output" and self.remote_file_handler.is_pim_configured():
             self.remote_file_handler.download(file_name=kwds["file_name"])
             print(
                 f"file - {kwds['file_name']} downloaded for {str(self.__class__.__name__)}."
