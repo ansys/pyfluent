@@ -51,8 +51,9 @@ def _get_slurm_job_id(proc: subprocess.Popen):
 
 
 class SlurmFuture:
-    """Encapsulates asynchronous launch of Fluent within a Slurm environment. The
-    interface is similar to Python's
+    """Encapsulates asynchronous launch of Fluent within a Slurm environment.
+
+    The interface is similar to Python's
     `future object <https://docs.python.org/3/library/asyncio-future.html#future-object>`_.
     """
 
@@ -102,15 +103,13 @@ class SlurmFuture:
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
-        """Return ``True`` if the Fluent launch is currently waiting for Slurm allocation
-        or Fluent is being launched, otherwise ``False``.
-        """
+        """Return ``True`` if the Fluent launch is currently waiting for Slurm
+        allocation or Fluent is being launched, otherwise ``False``."""
         return self._future.running()
 
     def done(self) -> bool:
         """Return ``True`` if the Fluent launch was successfully cancelled or Fluent was
-        finished running, otherwise ``False``.
-        """
+        finished running, otherwise ``False``."""
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
