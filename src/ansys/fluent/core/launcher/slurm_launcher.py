@@ -1,3 +1,22 @@
+"""Provides a module for launching Fluent within a Slurm environment.
+
+Examples
+--------
+>>> slurm = pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"})
+>>> type(slurm)
+<class 'ansys.fluent.core.launcher.slurm_launcher.SlurmFuture'>
+>>> slurm.pending(), slurm.running(), slurm.done() # before Fluent is launched
+(True, False, False)
+>>>  slurm.pending(), slurm.running(), slurm.done() # after Fluent is launched
+(False, True, False)
+>>> session = slurm.result()
+>>> type(session)
+<class 'ansys.fluent.core.session_solver.Solver'>
+>>> session.exit()
+>>> slurm.pending(), slurm.running(), slurm.done()
+(False, False, True)
+"""
+
 from concurrent.futures import Future, ThreadPoolExecutor
 import logging
 from pathlib import Path
@@ -34,22 +53,6 @@ class SlurmFuture:
     """Encapsulates asynchronous launch of Fluent within a Slurm environment. The
     interface is similar to Python's
     `future object <https://docs.python.org/3/library/asyncio-future.html#future-object>`_.
-
-    Examples
-    --------
-    >>> slurm = pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm"})
-    >>> type(slurm)
-    <class 'ansys.fluent.core.launcher.slurm_launcher.SlurmFuture'>
-    >>> slurm.pending(), slurm.running(), slurm.done() # before Fluent is launched
-    (True, False, False)
-    >>>  slurm.pending(), slurm.running(), slurm.done() # after Fluent is launched
-    (False, True, False)
-    >>> session = slurm.result()
-    >>> type(session)
-    <class 'ansys.fluent.core.session_solver.Solver'>
-    >>> session.exit()
-    >>> slurm.pending(), slurm.running(), slurm.done()
-    (False, False, True)
     """
 
     def __init__(self, future: Future, job_id: int):
@@ -122,7 +125,10 @@ class SlurmFuture:
 
         Returns
         -------
-        Union[Meshing, PureMeshing, Solver, SolverIcing]
+        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+        :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+        :class:`~ansys.fluent.core.session_solver.Solver`, \
+        :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
             The session instance corresponding to the Fluent launch.
         """
         return self._future.result(timeout)
