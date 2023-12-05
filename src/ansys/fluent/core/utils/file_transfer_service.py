@@ -41,16 +41,24 @@ class PimFileTransferService:
 
     def __init__(self, pim_instance: Optional[Any] = None):
         self.pim_instance = pim_instance
+        self.upload_server = None
         self.file_service = None
         try:
-            upload_server = self.pim_instance.services["http-simple-upload-server"]
+            if self.pim_instance.services["http-simple-upload-server"]:
+                self.upload_server = self.pim_instance.services[
+                    "http-simple-upload-server"
+                ]
+            elif self.pim_instance.services["grpc"]:
+                self.upload_server = self.pim_instance.services["grpc"]
         except (AttributeError, KeyError):
             pass
         else:
             from simple_upload_server.client import Client
 
             self.file_service = Client(
-                token="token", url=upload_server.uri, headers=upload_server.headers
+                token="token",
+                url=self.upload_server.uri,
+                headers=self.upload_server.headers,
             )
 
     @property

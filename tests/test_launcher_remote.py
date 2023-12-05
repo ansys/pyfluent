@@ -10,6 +10,7 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
+from ansys.fluent.core import examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
@@ -20,9 +21,14 @@ import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
+import_file_name = examples.download_file(
+    "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+)
+
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
-    fluent = new_solver_session
+    solver = new_solver_session
+
     # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
         definition_name="definitions/fake-fluent",
@@ -30,17 +36,19 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         ready=True,
         status_message=None,
         services={
-            "grpc": pypim.Service(uri=fluent.fluent_connection._channel_str, headers={})
+            "grpc": pypim.Service(uri=solver.fluent_connection._channel_str, headers={})
         },
     )
     pim_channel = grpc.insecure_channel(
-        fluent.fluent_connection._channel_str,
+        solver.fluent_connection._channel_str,
     )
     mock_instance.wait_for_ready = create_autospec(mock_instance.wait_for_ready)
     mock_instance.build_grpc_channel = create_autospec(
         mock_instance.build_grpc_channel, return_value=pim_channel
     )
     mock_instance.delete = create_autospec(mock_instance.delete)
+    mock_instance.read_case = create_autospec(solver.file.read_case)
+    mock_instance.write_case = create_autospec(solver.file.write_case)
 
     mock_client = pypim.Client(channel=grpc.insecure_channel("localhost:12345"))
     mock_client.create_instance = create_autospec(
@@ -77,6 +85,10 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
     # and it kept track of the instance to be able to delete it
     assert fluent.fluent_connection._remote_instance == mock_instance
+
+    mock_instance.read_case(file_name=import_file_name)
+
+    mock_instance.write_case(file_name="sample_write_case_mock.cas.h5")
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
