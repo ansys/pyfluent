@@ -28,7 +28,6 @@ from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, 
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
-from .flversion import FluentVersion
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -1209,7 +1208,7 @@ def get_cls(name, info, parent=None, version=None):
             "user_creatable", False
         )
 
-        if FluentVersion(version) == FluentVersion.v222:
+        if version == "222":
             user_creatable = True
 
         bases = (base,)
@@ -1308,7 +1307,7 @@ def _gethash(obj_info):
 
 
 # pylint: disable=missing-raises-doc
-def get_root(flproxy, version: str = FluentVersion.current_release().value) -> Group:
+def get_root(flproxy, version: str = "23.2.0") -> Group:
     """Get the root settings object.
 
     Parameters
