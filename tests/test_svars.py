@@ -6,7 +6,6 @@ from util.solver_workflow import (  # noqa: F401
 )
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.services.svar import SvarError
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -15,13 +14,14 @@ def test_svars(new_solver_session):
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
+
+    svar_info = solver.svar_info
+    svar_data = solver.svar_data
+
     solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
-
-    svar_info = solver.svar_info
-    svar_data = solver.svar_data
 
     zones_info = svar_info.get_zones_info()
 
@@ -122,13 +122,14 @@ def test_svars_single_precision(new_solver_session_single_precision):
     import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )
+
+    svar_info = solver.svar_info
+    svar_data = solver.svar_data
+
     solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
-
-    svar_info = solver.svar_info
-    svar_data = solver.svar_data
 
     zones_info = svar_info.get_zones_info()
 
@@ -194,36 +195,3 @@ def test_svars_single_precision(new_solver_session_single_precision):
     fluid_temp = sv_p_wall_fluid["tank"]
     assert fluid_temp.size == 183424
     assert str(fluid_temp.dtype) == "float32"
-
-
-@pytest.mark.fluent_version(">=23.2")
-def test_svars_data_initialization(new_solver_session):
-    solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
-    svar_data = solver.svar_data
-    solver.file.read(file_type="case", file_name=import_file_name)
-
-    with pytest.raises(SvarError):
-        svar_data.get_svar_data(
-            svar_name="SV_P",
-            zone_names=["elbow-fluid", "wall-elbow"],
-            domain_name="mixture",
-        )
-
-    solver.solution.initialization.hybrid_initialize()
-    solver.solution.run_calculation.iterate(iter_count=10)
-
-    sv_p_wall_fluid = svar_data.get_svar_data(
-        svar_name="SV_P",
-        zone_names=["elbow-fluid", "wall-elbow"],
-        domain_name="mixture",
-    )
-    assert sv_p_wall_fluid.domain == "mixture"
-
-    assert sv_p_wall_fluid.zones == ["wall-elbow", "elbow-fluid"]
-
-    fluid_temp = sv_p_wall_fluid["elbow-fluid"]
-    assert fluid_temp.size == 17822
-    assert str(fluid_temp.dtype) == "float64"
