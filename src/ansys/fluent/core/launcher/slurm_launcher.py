@@ -21,6 +21,7 @@ from concurrent.futures import Future, ThreadPoolExecutor
 import logging
 from pathlib import Path
 import subprocess
+import time
 from typing import Any, Callable, Union
 
 from ansys.fluent.core.exceptions import InvalidArgument
@@ -90,6 +91,7 @@ class SlurmFuture:
         for _ in range(timeout):
             if self._get_state() in ["", "CANCELLED"]:
                 return True
+            time.sleep(1)
         return False
 
     def running(self) -> bool:
