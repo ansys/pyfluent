@@ -83,4 +83,33 @@ def clear_datamodel_cache():
     DataModelCache.rules_str_to_cache.clear()
 
 
+class Helpers:
+    """Can be reused to provide helper methods to tests."""
+
+    def __init__(self, monkeypatch: pytest.MonkeyPatch):
+        self.monkeypatch = monkeypatch
+
+    def mock_awp_vars(self, version=None):
+        """Activates env vars for Fluent versions up to specified version, deactivates env vars for newer versions than specified."""
+        if not version:
+            version = FluentVersion.current_release()
+        elif not isinstance(version, FluentVersion):
+            version = FluentVersion(version)
+        self.monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+        for fv in FluentVersion:
+            if fv <= version:
+                self.monkeypatch.setenv(fv.awp_var, f"ansys_inc/{fv.name}")
+            else:
+                self.monkeypatch.delenv(fv.awp_var, raising=False)
+
+    def delete_all_awp_vars(self):
+        for fv in FluentVersion:
+            self.monkeypatch.delenv(fv.awp_var, raising=False)
+
+
+@pytest.fixture
+def helpers(monkeypatch):
+    return Helpers(monkeypatch)
+
+
 pytest.wont_raise = nullcontext
