@@ -450,7 +450,7 @@ class SVARData:
                 svar_accessor=self.get_svar_data,
                 args_allowed_values_accessors=svar_args,
             ),
-            self.get_svar_data,
+            SVARData.get_svar_data,
         )
 
     def get_array(
