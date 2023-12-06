@@ -44,11 +44,11 @@ class PimFileTransferService:
         self.upload_server = None
         self.file_service = None
         try:
-            if self.pim_instance.services["http-simple-upload-server"]:
+            if "http-simple-upload-server" in self.pim_instance.services:
                 self.upload_server = self.pim_instance.services[
                     "http-simple-upload-server"
                 ]
-            elif self.pim_instance.services["grpc"]:
+            elif "grpc" in self.pim_instance.services:
                 self.upload_server = self.pim_instance.services["grpc"]
         except (AttributeError, KeyError):
             pass

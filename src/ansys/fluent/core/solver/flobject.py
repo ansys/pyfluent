@@ -1030,7 +1030,7 @@ class Command(Action):
     """Command object."""
 
     def __call__(self, **kwds):
-        """Call a query with the specified keyword arguments."""
+        """Call a command with the specified keyword arguments."""
         file_purpose = None
         if hasattr(self, "file_name"):
             file_purpose = self.file_name.get_attr(_InlineConstants.file_purpose)
@@ -1038,13 +1038,9 @@ class Command(Action):
             file_purpose = self.file_name_list.get_attr(_InlineConstants.file_purpose)
         elif hasattr(self, "filename"):
             file_purpose = self.filename.get_attr(_InlineConstants.file_purpose)
-        print(f"\nfile_purpose = {file_purpose}\n")
 
         if file_purpose == "input" and self.remote_file_handler.is_pim_configured():
             self.remote_file_handler.upload(file_name=kwds["file_name"])
-            print(
-                f"\nfile - {kwds['file_name']} uploaded for {str(self.__class__.__name__)}.\n"
-            )
 
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
@@ -1060,15 +1056,11 @@ class Command(Action):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+        self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
         if file_purpose == "output" and self.remote_file_handler.is_pim_configured():
             self.remote_file_handler.download(file_name=kwds["file_name"])
-            print(
-                f"file - {kwds['file_name']} downloaded for {str(self.__class__.__name__)}."
-            )
-
-        return cmd
 
 
 class Query(Action):
