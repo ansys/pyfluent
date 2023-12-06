@@ -3,6 +3,7 @@ from abc import ABCMeta
 from collections.abc import MutableMapping
 import inspect
 from pprint import pformat
+from typing import List
 
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 
@@ -14,8 +15,9 @@ class Attribute:
     VALID_NAMES = [
         "range",
         "allowed_values",
+        "display_name_allowed_values",
         "help_str",
-        "is_valid",
+        "is_read_only",
         "is_active",
         "on_create",
         "on_change",
@@ -30,6 +32,9 @@ class Attribute:
         "style",
         "icon",
         "show_text",
+        "widget",
+        "dir_info",
+        "extensions",
     ]
 
     def __init__(self, function):
@@ -38,6 +43,7 @@ class Attribute:
     def __set_name__(self, obj, name):
         if name not in self.VALID_NAMES:
             raise DisallowedValuesError("attribute", name, self.VALID_NAMES)
+        self.name = name
         if not hasattr(obj, "attributes"):
             obj.attributes = set()
         obj.attributes.add(name)
@@ -164,6 +170,8 @@ class PyLocalBaseMeta(type):
             if getattr(obj, "_parent", None):
                 if obj._parent.__class__.__name__ == obj_type:
                     return obj._parent
+                if getattr(obj._parent, "PLURAL", None) == obj_type:
+                    return obj._parent._parent
                 parent = self.get_ancestors_by_name(obj_type, obj._parent)
             return parent
 
@@ -205,13 +213,23 @@ class PyLocalBaseMeta(type):
 
         return wrapper
 
+    @classmethod
+    def __create_get_session_handle(cls):
+        def wrapper(self, obj=None):
+            root = self.get_root(obj)
+            return root.session_handle
+
+        return wrapper
+
     def __new__(cls, name, bases, attrs):
         attrs["get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
         attrs["get_ancestors_by_name"] = cls.__create_get_ancestors_by_name()
         attrs["get_root"] = cls.__create_get_root()
         attrs["get_session"] = cls.__create_get_session()
         attrs["get_session_handle"] = cls.__create_get_session_handle()
-        attrs["get_path"] = cls.__create_get_path()
+        if "get_path" not in attrs:
+            attrs["get_path"] = cls.__create_get_path()
+        attrs["root"] = property(lambda self: self.get_root())
         attrs["path"] = property(lambda self: self.get_path())
         attrs["session"] = property(lambda self: self.get_session())
         attrs["session_handle"] = property(lambda self: self.get_session_handle())
@@ -285,21 +303,18 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
     @classmethod
     def __create_get_state(cls, show_attributes=False):
         def wrapper(self):
-            try:
-                rv = self.value
+            rv = self.value
 
-                if hasattr(self, "allowed_values"):
-                    allowed_values = self.allowed_values
-                    if len(allowed_values) > 0 and (
-                        rv is None
-                        or (not isinstance(rv, list) and rv not in allowed_values)
-                    ):
-                        self.set_state(allowed_values[0])
-                        rv = self.value
+            if hasattr(self, "allowed_values"):
+                allowed_values = self.allowed_values
+                if len(allowed_values) > 0 and (
+                    rv is None
+                    or (not isinstance(rv, list) and rv not in allowed_values)
+                ):
+                    self.set_state(allowed_values[0])
+                    rv = self.value
 
-                return rv
-            except AttributeError:
-                return None
+            return rv
 
         return wrapper
 
@@ -342,21 +357,53 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, path, location, session_id):
+        def wrapper(self, parent, path, location, session_id, name=""):
             """Create the initialization method for 'PyReferenceObjectMeta'."""
             self._parent = parent
             self.type = "object"
             self.parent = parent
-            self.path = path
+            self._path = path
             self.location = location
             self.session_id = session_id
+
+            def update(clss):
+                for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in (
+                        "PyLocalPropertyMeta",
+                        "PyLocalObjectMeta",
+                    ):
+                        setattr(
+                            self,
+                            name,
+                            cls(self, lambda arg: None, name),
+                        )
+                    if (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
+                        setattr(
+                            self,
+                            cls.PLURAL,
+                            PyLocalContainer(self, cls, lambda arg: None, cls.PLURAL),
+                        )
+                for base_class in clss.__bases__:
+                    update(base_class)
+
+            update(self.__class__)
+
+        return wrapper
+
+    @classmethod
+    def __create_get_path(cls):
+        def wrapper(self):
+            return self._path
 
         return wrapper
 
     @classmethod
     def __create_reset(cls):
         def wrapper(self, path, location, session_id):
-            self.path = path
+            self._path = path
             self.location = location
             self.session_id = session_id
             if hasattr(self, "_object"):
@@ -384,6 +431,8 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
                 if obj is not None:
                     self._object = obj
                 return obj
+            if item == "ref":
+                return self._object._object
 
         return wrapper
 
@@ -391,6 +440,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
         attrs["__getattr__"] = attrs.get("__getattr__", cls.__create_getattr())
         attrs["reset"] = cls.__create_reset()
+        attrs["get_path"] = cls.__create_get_path()
         return super(PyReferenceObjectMeta, cls).__new__(cls, name, bases, attrs)
 
 
@@ -404,18 +454,18 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             self._parent = parent
             self._name = name
             self._api_helper = api_helper(self)
+            self._command_names = []
             self.type = "object"
-            commands = getattr(self.__class__, "commands", None)
-            if commands:
-                for cmd in commands:
-                    cmd_class = self.__class__.__dict__[cmd]
-                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in ("PyLocalCommandMeta"):
+                        self._command_names.append(name)
+
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
                         "PyLocalObjectMeta",
+                        "PyLocalCommandMeta",
                     ):
                         setattr(
                             self,
@@ -433,7 +483,9 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                         )
                     if cls.__class__.__name__ == "PyReferenceObjectMeta":
                         setattr(
-                            self, name, cls(self, cls.PATH, cls.LOCATION, cls.SESSION)
+                            self,
+                            name,
+                            cls(self, cls.PATH, cls.LOCATION, cls.SESSION, name),
                         )
                 for base_class in clss.__bases__:
                     update(base_class)
@@ -453,11 +505,28 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     @classmethod
     def __create_updateitem(cls):
         def wrapper(self, value):
-            for name, val in value.items():
+            properties = value
+            sort_by = None
+            if hasattr(self, "sort_by"):
+                sort_by = self.sort_by
+            elif hasattr(self, "include"):
+                sort_by = self.include
+            if sort_by:
+                sorted_properties = {
+                    prop: properties[prop] for prop in sort_by if prop in properties
+                }
+                sorted_properties.update(
+                    {k: v for k, v in properties.items() if k not in sort_by}
+                )
+                properties.clear()
+                properties.update(sorted_properties)
+            for name, val in properties.items():
                 obj = getattr(self, name)
                 if obj.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                     obj.set_state(val)
                 else:
+                    if obj.__class__.__class__.__name__ == "PyReferenceObjectMeta":
+                        obj = obj.ref
                     obj.update(val)
 
         wrapper.__doc__ = "Update object."
@@ -474,13 +543,39 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
                     o = getattr(self, name)
-                    if o is None:
+                    if o is None or name.startswith("_") or name.startswith("__"):
                         continue
-                    if getattr(o, "is_active", True):
-                        if cls.__class__.__name__ == "PyLocalObjectMeta":
-                            state[name] = o(show_attributes)
 
-                        if cls.__class__.__name__ == "PyLocalPropertyMeta":
+                    if cls.__class__.__name__ == "PyReferenceObjectMeta":
+                        if o.LOCATION == "local":
+                            o = o.ref
+                        else:
+                            continue
+                    elif cls.__class__.__name__ == "PyLocalCommandMeta":
+                        args = {}
+                        for arg in o._args:
+                            args[arg] = getattr(o, arg)()
+                        state[name] = args
+                    if (
+                        cls.__class__.__name__ == "PyLocalObjectMeta"
+                        or cls.__class__.__name__ == "PyReferenceObjectMeta"
+                    ):
+                        if getattr(o, "is_active", True):
+                            state[name] = o(show_attributes)
+                    elif (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
+                        container = getattr(self, cls.PLURAL)
+                        if getattr(container, "is_active", True):
+                            state[cls.PLURAL] = {}
+                            for child_name in container:
+                                o = container[child_name]
+                                if getattr(o, "is_active", True):
+                                    state[cls.PLURAL][child_name] = o()
+
+                    elif cls.__class__.__name__ == "PyLocalPropertyMeta":
+                        if getattr(o, "is_active", True):
                             state[name] = o()
                             attrs = show_attributes and getattr(o, "attributes", None)
                             if attrs:
@@ -516,11 +611,63 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __new__(cls, name, bases, attrs):
         attrs["__getattribute__"] = cls.__create_getattribute()
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
-        attrs["__call__"] = cls.__create_get_state()
+        if "__call__" not in attrs:
+            attrs["__call__"] = cls.__create_get_state()
         attrs["__setattr__"] = cls.__create_setattr()
-        attrs["__repr__"] = cls.__create_repr()
+        # attrs["__repr__"] = cls.__create_repr()
         attrs["update"] = cls.__create_updateitem()
         return super(PyLocalObjectMeta, cls).__new__(cls, name, bases, attrs)
+
+
+class PyLocalCommandMeta(PyLocalObjectMeta):
+    @classmethod
+    def __create_init(cls):
+        def wrapper(self, parent, api_helper, name=""):
+            """Create the initialization method for 'PyLocalObjectMeta'."""
+            self._parent = parent
+            self._name = name
+            self._api_helper = api_helper(self)
+            self.type = "object"
+            self._args = []
+            self._command_names = []
+            self._exe_cmd = getattr(self, "_exe_cmd")
+
+            def update(clss):
+                for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in (
+                        "PyLocalCommandArgMeta",
+                        "PyLocalPropertyMeta",
+                    ):
+                        self._args.append(name)
+                        setattr(
+                            self,
+                            name,
+                            cls(self, api_helper, name),
+                        )
+                for base_class in clss.__bases__:
+                    update(base_class)
+
+            update(self.__class__)
+
+        return wrapper
+
+    @classmethod
+    def __execute_command(cls):
+        def wrapper(self, **kwargs):
+            for arg_name, arg_value in kwargs.items():
+                getattr(self, arg_name).set_state(arg_value)
+            cmd_args = {}
+            for arg_name in self._args:
+                cmd_args[arg_name] = getattr(self, arg_name)()
+            rv = self._exe_cmd(**cmd_args)
+            return rv
+
+        return wrapper
+
+    def __new__(cls, name, bases, attrs):
+        attrs["__init__"] = cls.__create_init()
+        attrs["__call__"] = cls.__execute_command()
+        return super(PyLocalCommandMeta, cls).__new__(cls, name, bases, attrs)
 
 
 class PyLocalNamedObjectMeta(PyLocalObjectMeta):
@@ -533,20 +680,22 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
+            self._command_names = []
             self.type = "object"
-
-            commands = getattr(self.__class__, "commands", None)
-            if commands:
-                for cmd in commands:
-                    cmd_class = self.__class__.__dict__[cmd]
-                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in ("PyLocalCommandMeta"):
+                        self._command_names.append(name)
+
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
                         "PyLocalObjectMeta",
+                        "PyLocalCommandMeta",
                     ):
+                        # delete old property if overridden
+                        if getattr(self, name).__class__.__name__ == name:
+                            delattr(self, name)
                         setattr(
                             self,
                             name,
@@ -592,6 +741,7 @@ class PyLocalContainer(MutableMapping):
         self.__collection: dict = {}
         self.__api_helper = api_helper
         self.type = "named-object"
+        self._command_names = []
 
         if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):
             PyLocalContainer.show_as_separate_object = property(
@@ -622,6 +772,17 @@ class PyLocalContainer(MutableMapping):
                 lambda self: self.__object_class.IS_ACTIVE(self)
             )
 
+        for name, cls in self.__class__.__dict__.items():
+            if cls.__class__.__name__ in ("PyLocalCommandMeta"):
+                self._command_names.append(name)
+
+            if cls.__class__.__name__ in ("PyLocalCommandMeta"):
+                setattr(
+                    self,
+                    name,
+                    cls(self, api_helper, name),
+                )
+
     @classmethod
     def get_root(self, obj=None):
         """Returns the top-most parent object."""
@@ -630,6 +791,11 @@ class PyLocalContainer(MutableMapping):
         if getattr(obj, "_parent", None):
             parent = self.get_root(obj._parent)
         return parent
+
+    def update(self, value):
+        for name, val in value.items():
+            o = self[name]
+            o.update(val)
 
     def get_root(self, obj=None):
         """Returns the top-most parent object."""
@@ -670,6 +836,38 @@ class PyLocalContainer(MutableMapping):
         """Returns the session-handle object."""
         return self.get_session_handle()
 
+    def get_root(self, obj=None):
+        obj = self if obj is None else obj
+        parent = obj
+        if getattr(obj, "_parent", None):
+            parent = self.get_root(obj._parent)
+        return parent
+
+    def get_session(self, obj=None):
+        root = self.get_root(obj)
+        return root.session
+
+    def get_path(self):
+        if getattr(self, "_parent", None):
+            return self._parent.get_path() + "/" + self._name
+        return self._name
+
+    @property
+    def path(self):
+        return self.get_path()
+
+    @property
+    def session(self):
+        return self.get_session()
+
+    def get_session_handle(self, obj=None):
+        root = self.get_root(obj)
+        return root.session_handle
+
+    @property
+    def session_handle(self):
+        return self.get_session_handle()
+
     def __iter__(self):
         return iter(self.__collection)
 
@@ -701,32 +899,32 @@ class PyLocalContainer(MutableMapping):
         children = list(self)
         index = 0
         while True:
-            unique_name = f"{self._PyLocalContainer__object_class.__name__}-{index}"
+            unique_name = (
+                f"{self._PyLocalContainer__object_class.__name__.lower()}-{index}"
+            )
             if unique_name not in children:
                 break
             index += 1
         return unique_name
 
-    @Command
-    def Delete(self, names):
-        for item in names:
-            self.__delitem__(item)
+    class Delete(metaclass=PyLocalCommandMeta):
+        def _exe_cmd(self, names):
+            for item in names:
+                self._parent.__delitem__(item)
 
-    @CommandArgs(Delete, "names")
-    def type(self):
-        return "string-list"
+        class names(metaclass=PyLocalPropertyMeta):
+            value: List[str] = []
 
-    @CommandArgs(Delete, "names")
-    def allowed_values(self):
-        return list(self)
+            @Attribute
+            def allowed_values(self):
+                return list(self._parent._parent)
 
-    @Command
-    def Create(self, name=None):
-        if not name:
-            name = self._get_unique_chid_name()
-        new_object = self.__getitem__(name)
-        return new_object._name
+    class Create(metaclass=PyLocalCommandMeta):
+        def _exe_cmd(self, name=None):
+            if name is None:
+                name = self._parent._get_unique_chid_name()
+            new_object = self._parent.__getitem__(name)
+            return new_object._name
 
-    @CommandArgs(Create, "name")
-    def type(self):
-        return "string"
+        class name(metaclass=PyLocalPropertyMeta):
+            value: str = None
