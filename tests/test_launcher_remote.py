@@ -10,7 +10,6 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
-from ansys.fluent.core import examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
@@ -20,10 +19,6 @@ from ansys.fluent.core.session import BaseSession
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
-
-import_file_name = examples.download_file(
-    "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
-)
 
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
