@@ -435,11 +435,12 @@ class SVARData:
         self._service = service
         self._svar_info = svar_info
 
-        self._allowed_zone_names = _AllowedZoneNames(svar_info)
+    def _update_svar_info(self):
+        self._allowed_zone_names = _AllowedZoneNames(self._svar_info)
 
-        self._allowed_domain_names = _AllowedDomainNames(svar_info)
+        self._allowed_domain_names = _AllowedDomainNames(self._svar_info)
 
-        self._allowed_svar_names = _AllowedSvarNames(svar_info)
+        self._allowed_svar_names = _AllowedSvarNames(self._svar_info)
         svar_args = dict(
             zone_names=self._allowed_zone_names, svar_name=self._allowed_svar_names
         )
@@ -449,7 +450,7 @@ class SVARData:
                 svar_accessor=self.get_svar_data,
                 args_allowed_values_accessors=svar_args,
             ),
-            self.get_svar_data,
+            SVARData.get_svar_data,
         )
 
     def get_array(
@@ -459,6 +460,7 @@ class SVARData:
 
         This array can be populated  with values to set SVAR data.
         """
+        self._update_svar_info()
 
         zones_info = self._svar_info.get_zones_info()
         if zone_name in zones_info.zones:
@@ -493,6 +495,7 @@ class SVARData:
         SVARData.Data
             Object containing SVAR data.
         """
+        self._update_svar_info()
         svars_request = SvarProtoModule.GetSvarDataRequest(
             provideBytesStream=_FieldDataConstants.bytes_stream,
             chunkSize=_FieldDataConstants.chunk_size,
@@ -534,6 +537,7 @@ class SVARData:
         -------
         None
         """
+        self._update_svar_info()
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
             self._allowed_zone_names.valid_name(zone_name): svar_data

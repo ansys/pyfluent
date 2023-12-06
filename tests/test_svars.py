@@ -14,13 +14,14 @@ def test_svars(new_solver_session):
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
+
+    svar_info = solver.svar_info
+    svar_data = solver.svar_data
+
     solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
-
-    svar_info = solver.svar_info
-    svar_data = solver.svar_data
 
     zones_info = svar_info.get_zones_info()
 
@@ -121,13 +122,14 @@ def test_svars_single_precision(new_solver_session_single_precision):
     import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )
+
+    svar_info = solver.svar_info
+    svar_data = solver.svar_data
+
     solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
-
-    svar_info = solver.svar_info
-    svar_data = solver.svar_data
 
     zones_info = svar_info.get_zones_info()
 
