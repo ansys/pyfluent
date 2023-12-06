@@ -1031,6 +1031,7 @@ class Command(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
+        file_purpose = None
         if hasattr(self, "file_name"):
             file_purpose = self.file_name.get_attr(_InlineConstants.file_purpose)
         elif hasattr(self, "file_name_list"):
