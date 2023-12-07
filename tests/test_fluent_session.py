@@ -39,7 +39,11 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
 
     session.transcript.register_callback(print_transcript)
 
-    _read_case(session=session)
+    # Lightweight setup not supported for 22.2
+    if float(session.get_fluent_version()[:-2]) < 23.1:
+        _read_case(session=session, lightweight_setup=False)
+    else:
+        _read_case(session=session)
 
     assert print_transcript.called
     assert print_transcript.transcript
@@ -57,7 +61,11 @@ def test_session_starts_no_transcript_if_disabled(
 
     session.transcript.start(write_to_stdout=False)
 
-    _read_case(session=session)
+    # Lightweight setup not supported for 22.2
+    if float(session.get_fluent_version()[:-2]) < 23.1:
+        _read_case(session=session, lightweight_setup=False)
+    else:
+        _read_case(session=session)
 
     assert not print_transcript.called
 
