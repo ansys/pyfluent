@@ -3,6 +3,7 @@ from enum import Enum
 import functools
 import itertools
 import logging
+import os
 from typing import Any, Callable, Iterator, NoReturn, Optional, Union
 
 import grpc
@@ -89,7 +90,11 @@ class DatamodelService(StreamingService):
     """
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        remote_file_handler: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         intercept_channel = grpc.intercept_channel(
@@ -106,6 +111,7 @@ class DatamodelService(StreamingService):
         )
         self.event_streaming = None
         self.events = {}
+        self.remote_file_handler = remote_file_handler
 
     @catch_grpc_error
     def initialize_datamodel(
@@ -1137,7 +1143,7 @@ class PyCommand:
         else:
             self.path = path
 
-    def __call__(self, *args, **kwds) -> Any:
+    def __call__(self, purpose: Optional[str] = None, *args, **kwds) -> Any:
         """Execute the command.
 
         Returns
@@ -1150,8 +1156,30 @@ class PyCommand:
         request.path = convert_path_to_se_path(self.path)
         request.command = self.command
         request.wait = True
+        print(f"\n file_name_original = {kwds['FileName']}.\n")
+        kwds.update(
+            dict(
+                FileName=os.path.basename(kwds["FileName"])
+                if self.service.remote_file_handler.is_pim_configured()
+                else kwds["FileName"]
+            )
+        )
+        print(f"\n file_name_pim = {kwds['FileName']}.")
         _convert_value_to_variant(kwds, request.args)
+        file_purpose = self.create_instance().get_attr("FileName/filePurpose")
+        if (
+            file_purpose == "input"
+            and self.service.remote_file_handler.is_pim_configured()
+        ):
+            self.service.remote_file_handler.upload(file_name=kwds["FileName"])
+            print(f"\n{kwds['FileName']} uploaded.")
         response = self.service.execute_command(request)
+        if (
+            file_purpose == "output"
+            and self.service.remote_file_handler.is_pim_configured()
+        ):
+            self.service.remote_file_handler.download(file_name=kwds["FileName"])
+            print(f"\n{kwds['FileName']} downloaded.\n")
         return _convert_variant_to_value(response.result)
 
     def help(self) -> None:

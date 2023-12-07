@@ -138,7 +138,9 @@ class BaseSession:
         )
 
         self.datamodel_service_se = self.fluent_connection.create_service(
-            DatamodelService_SE, self.error_state
+            DatamodelService_SE,
+            self.error_state,
+            self._remote_file_handler,
         )
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
