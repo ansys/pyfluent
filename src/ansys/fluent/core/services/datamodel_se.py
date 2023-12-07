@@ -1156,30 +1156,28 @@ class PyCommand:
         request.path = convert_path_to_se_path(self.path)
         request.command = self.command
         request.wait = True
-        print(f"\n file_name_original = {kwds['FileName']}.\n")
-        kwds.update(
-            dict(
-                FileName=os.path.basename(kwds["FileName"])
-                if self.service.remote_file_handler.is_pim_configured()
-                else kwds["FileName"]
+        if "FileName" in kwds:
+            kwds.update(
+                dict(
+                    FileName=os.path.basename(kwds["FileName"])
+                    if self.service.remote_file_handler.is_pim_configured()
+                    else kwds["FileName"]
+                )
             )
-        )
-        print(f"\n file_name_pim = {kwds['FileName']}.")
         _convert_value_to_variant(kwds, request.args)
         file_purpose = self.create_instance().get_attr("FileName/filePurpose")
+        file_purpose = purpose if purpose else file_purpose
         if (
             file_purpose == "input"
             and self.service.remote_file_handler.is_pim_configured()
         ):
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
-            print(f"\n{kwds['FileName']} uploaded.")
         response = self.service.execute_command(request)
         if (
             file_purpose == "output"
             and self.service.remote_file_handler.is_pim_configured()
         ):
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
-            print(f"\n{kwds['FileName']} downloaded.\n")
         return _convert_variant_to_value(response.result)
 
     def help(self) -> None:
