@@ -21,9 +21,14 @@ from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 def _read_case(session, lightweight_setup=True):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.file.read(
-        file_name=case_path, file_type="case", lightweight_setup=lightweight_setup
-    )
+    fluent_version_str = session.get_fluent_version()[:-2]
+    # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
+    if float(fluent_version_str) < 23.1:
+        session.file.read(file_name=case_path, file_type="case")
+    else:
+        session.file.read(
+            file_name=case_path, file_type="case", lightweight_setup=lightweight_setup
+        )
 
 
 def test_session_starts_transcript_by_default(new_solver_session) -> None:
@@ -39,11 +44,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
 
     session.transcript.register_callback(print_transcript)
 
-    # Lightweight setup not supported for 22.2
-    if float(session.get_fluent_version()[:-2]) < 23.1:
-        _read_case(session=session, lightweight_setup=False)
-    else:
-        _read_case(session=session)
+    _read_case(session=session)
 
     assert print_transcript.called
     assert print_transcript.transcript
@@ -61,11 +62,7 @@ def test_session_starts_no_transcript_if_disabled(
 
     session.transcript.start(write_to_stdout=False)
 
-    # Lightweight setup not supported for 22.2
-    if float(session.get_fluent_version()[:-2]) < 23.1:
-        _read_case(session=session, lightweight_setup=False)
-    else:
-        _read_case(session=session)
+    _read_case(session=session)
 
     assert not print_transcript.called
 
