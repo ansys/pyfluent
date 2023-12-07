@@ -53,13 +53,16 @@ class PimFileTransferService:
         except (AttributeError, KeyError):
             pass
         else:
-            from simple_upload_server.client import Client
+            try:
+                from simple_upload_server.client import Client
 
-            self.file_service = Client(
-                token="token",
-                url=self.upload_server.uri,
-                headers=self.upload_server.headers,
-            )
+                self.file_service = Client(
+                    token="token",
+                    url=self.upload_server.uri,
+                    headers=self.upload_server.headers,
+                )
+            except ModuleNotFoundError:
+                pass
 
     @property
     def pim_service(self):
