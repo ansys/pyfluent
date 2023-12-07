@@ -13,10 +13,9 @@ class PyPIMConfigurationError(ConnectionError):
 
 
 class ServiceType(Enum):
-    """An enumeration over supported file transfer service types."""
+    """Enumerates supported file transfer service types."""
 
     PIM = 1
-    OTHER = 2
 
 
 class PimFileTransferService:
@@ -185,7 +184,7 @@ class RemoteFileHandler:
         FileNotFoundError
             If a file does not exist.
         """
-        if self.is_pim_configured():
+        if self.is_configured():
             if os.path.isfile(file_name):
                 if not self._transfer_service.pim_service.file_exist(
                     os.path.basename(file_name)
@@ -216,7 +215,7 @@ class RemoteFileHandler:
             before_downloaded(
                 os.path.basename(file_name) if pypim.is_configured() else file_name
             )
-        if self.is_pim_configured():
+        if self.is_configured():
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
