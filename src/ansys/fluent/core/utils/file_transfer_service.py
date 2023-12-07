@@ -1,3 +1,4 @@
+from enum import Enum
 import os
 from typing import Any, Callable, Optional  # noqa: F401
 
@@ -9,6 +10,13 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
+
+
+class ServiceType(Enum):
+    """An enumeration over supported file transfer service types."""
+
+    PIM = 1
+    OTHER = 2
 
 
 class PimFileTransferService:
@@ -151,9 +159,15 @@ class RemoteFileHandler:
 
     def __init__(self, transfer_service: Optional[Any] = None):
         self._transfer_service = transfer_service
+        self._service_type = (
+            ServiceType.PIM
+            if isinstance(transfer_service, PimFileTransferService)
+            else None
+        )
 
-    def is_pim_configured(self):
-        return pypim.is_configured()
+    def is_configured(self):
+        if self._service_type == ServiceType.PIM:
+            return pypim.is_configured()
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
         """Upload a file if it's unavailable on the server

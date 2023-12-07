@@ -1160,22 +1160,19 @@ class PyCommand:
             kwds.update(
                 dict(
                     FileName=os.path.basename(kwds["FileName"])
-                    if self.service.remote_file_handler.is_pim_configured()
+                    if self.service.remote_file_handler.is_configured()
                     else kwds["FileName"]
                 )
             )
         _convert_value_to_variant(kwds, request.args)
         file_purpose = self.create_instance().get_attr("FileName/filePurpose")
         file_purpose = purpose if purpose else file_purpose
-        if (
-            file_purpose == "input"
-            and self.service.remote_file_handler.is_pim_configured()
-        ):
+        if file_purpose == "input" and self.service.remote_file_handler.is_configured():
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         response = self.service.execute_command(request)
         if (
             file_purpose == "output"
-            and self.service.remote_file_handler.is_pim_configured()
+            and self.service.remote_file_handler.is_configured()
         ):
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
         return _convert_variant_to_value(response.result)
