@@ -1,7 +1,7 @@
 import pytest
 
 
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_post_elbow(load_mixing_elbow_case_dat):
     load_mixing_elbow_case_dat.results.graphics.vector["velocity_vector_symmetry"] = {}
