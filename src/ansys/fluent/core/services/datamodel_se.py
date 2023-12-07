@@ -1165,7 +1165,9 @@ class PyCommand:
                 )
             )
         _convert_value_to_variant(kwds, request.args)
-        file_purpose = self.create_instance().get_attr("FileName/filePurpose")
+        file_purpose = None
+        if hasattr(self.create_instance(), "get_attr"):
+            file_purpose = self.create_instance().get_attr("FileName/filePurpose")
         file_purpose = purpose if purpose else file_purpose
         if file_purpose == "input" and self.service.remote_file_handler.is_configured():
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
