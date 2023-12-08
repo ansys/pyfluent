@@ -1043,12 +1043,12 @@ class Command(Action):
             kwds.update(
                 dict(
                     file_name=os.path.basename(kwds["file_name"])
-                    if self.remote_file_handler.is_configured()
+                    if bool(self.remote_file_handler)
                     else kwds["file_name"]
                 )
             )
         file_purpose = purpose if purpose else file_purpose
-        if file_purpose == "input" and self.remote_file_handler.is_configured():
+        if file_purpose == "input":
             self.remote_file_handler.upload(file_name=kwds["file_name"])
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
@@ -1065,7 +1065,7 @@ class Command(Action):
                 if response in ["n", "N", "no"]:
                     return
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-        if file_purpose == "output" and self.remote_file_handler.is_configured():
+        if file_purpose == "output":
             self.remote_file_handler.download(file_name=kwds["file_name"])
 
 

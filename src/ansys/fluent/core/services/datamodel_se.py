@@ -1160,7 +1160,7 @@ class PyCommand:
             kwds.update(
                 dict(
                     FileName=os.path.basename(kwds["FileName"])
-                    if self.service.remote_file_handler.is_configured()
+                    if bool(self.service.remote_file_handler)
                     else kwds["FileName"]
                 )
             )
@@ -1171,14 +1171,11 @@ class PyCommand:
             file_purpose = command_instance.get_attr("FileName/filePurpose")
             del command_instance
         file_purpose = purpose if purpose else file_purpose
-        if file_purpose == "input" and self.service.remote_file_handler.is_configured():
+        if file_purpose == "input":
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         response = self.service.execute_command(request)
         _convert_variant_to_value(response.result)
-        if (
-            file_purpose == "output"
-            and self.service.remote_file_handler.is_configured()
-        ):
+        if file_purpose == "output":
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
 
     def help(self) -> None:

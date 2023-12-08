@@ -16,6 +16,7 @@ class ServiceType(Enum):
     """Enumerates supported file transfer service types."""
 
     PIM = 1
+    Test = 2
 
 
 class PimFileTransferService:
@@ -107,6 +108,33 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
+    def upload_file(self, file_name: str, on_uploaded: Optional[Callable] = None):
+        """Upload a file if it's unavailable on the server
+        supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
+        and performs callback operation.
+
+        Parameters
+        ----------
+        file_name : str
+            File name
+        on_uploaded: Callable
+            Read a file.
+        Raises
+        ------
+        FileNotFoundError
+            If a file does not exist.
+        """
+        if self.is_configured():
+            if os.path.isfile(file_name):
+                if not self.file_service.file_exist(os.path.basename(file_name)):
+                    self.upload(file_name)
+            elif not self.file_service.file_exist(os.path.basename(file_name)):
+                raise FileNotFoundError(f"{file_name} does not exist.")
+        if on_uploaded:
+            on_uploaded(
+                os.path.basename(file_name) if self.is_configured() else file_name
+            )
+
     def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
@@ -131,6 +159,30 @@ class PimFileTransferService:
                 self.file_service.download_file(file_name, local_file_name)
             else:
                 raise FileNotFoundError("Remote file does not exist.")
+
+    def download_file(
+        self, file_name: str, before_downloaded: Optional[Callable] = None
+    ):
+        """Perform callback operation and
+        downloads a file if it's available to the server supported by
+        `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+
+        Parameters
+        ----------
+        file_name : str
+            File name
+        before_downloaded: Callable
+            Write a file.
+        """
+        if before_downloaded:
+            before_downloaded(
+                os.path.basename(file_name) if self.is_configured() else file_name
+            )
+        if self.is_configured():
+            if os.path.isfile(file_name):
+                print(f"\nFile already exists. File path:\n{file_name}\n")
+            else:
+                self.download(os.path.basename(file_name), local_file_name=".")
 
 
 class RemoteFileHandler:
@@ -161,12 +213,8 @@ class RemoteFileHandler:
         self._service_type = (
             ServiceType.PIM
             if isinstance(transfer_service, PimFileTransferService)
-            else None
+            else ServiceType.Test
         )
-
-    def is_configured(self):
-        if self._service_type == ServiceType.PIM:
-            return pypim.is_configured()
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
         """Upload a file if it's unavailable on the server
@@ -184,20 +232,7 @@ class RemoteFileHandler:
         FileNotFoundError
             If a file does not exist.
         """
-        if self.is_configured():
-            if os.path.isfile(file_name):
-                if not self._transfer_service.pim_service.file_exist(
-                    os.path.basename(file_name)
-                ):
-                    self._transfer_service.upload(file_name)
-            elif not self._transfer_service.pim_service.file_exist(
-                os.path.basename(file_name)
-            ):
-                raise FileNotFoundError(f"{file_name} does not exist.")
-        if on_uploaded:
-            on_uploaded(
-                os.path.basename(file_name) if pypim.is_configured() else file_name
-            )
+        self._transfer_service.upload_file(file_name=file_name, on_uploaded=on_uploaded)
 
     def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
         """Perform callback operation and
@@ -211,14 +246,32 @@ class RemoteFileHandler:
         before_downloaded: Callable
             Write a file.
         """
-        if before_downloaded:
-            before_downloaded(
-                os.path.basename(file_name) if pypim.is_configured() else file_name
-            )
-        if self.is_configured():
-            if os.path.isfile(file_name):
-                print(f"\nFile already exists. File path:\n{file_name}\n")
-            else:
-                self._transfer_service.download(
-                    os.path.basename(file_name), local_file_name="."
-                )
+        self._transfer_service.download_file(
+            file_name=file_name, before_downloaded=before_downloaded
+        )
+
+    def __bool__(self):
+        if self._service_type == ServiceType.PIM:
+            return self._transfer_service.is_pim_configured()
+        if self._service_type == ServiceType.Test:
+            return False
+
+
+class MyFileService:
+    def __init__(self):
+        self.uploaded_files = list()
+        self.downloaded_files = list()
+
+    def uploads(self):
+        return self.uploaded_files
+
+    def downloads(self):
+        return self.downloaded_files
+
+    def upload_file(self, file_name: str, on_uploaded: Optional[Callable] = None):
+        self.uploaded_files.append(file_name)
+
+    def download_file(
+        self, file_name: str, before_downloaded: Optional[Callable] = None
+    ):
+        self.downloaded_files.append(file_name)

@@ -10,15 +10,26 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
+from ansys.fluent.core import examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
 )
 from ansys.fluent.core.launcher import launcher, launcher_utils
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.utils.file_transfer_service import (
+    MyFileService,
+    RemoteFileHandler,
+)
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
+
+import_file_name = examples.download_file(
+    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+)
 
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
@@ -100,3 +111,40 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         )
         session.exit(wait=60)
         session.fluent_connection.wait_process_finished(wait=60)
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_file_purpose_on_remote_instance(
+    monkeypatch, new_solver_session, new_mesh_session
+):
+    solver = new_solver_session
+
+    file_service = MyFileService()
+
+    solver_session = Solver(
+        fluent_connection=solver.fluent_connection,
+        remote_file_handler=RemoteFileHandler(transfer_service=file_service),
+    )
+
+    solver_session.file.read_case(file_name=import_file_name)
+    assert len(file_service.uploads()) == 1
+    assert file_service.uploads()[0] == import_file_name
+
+    solver_session.file.write_case(file_name=import_file_name)
+    assert len(file_service.downloads()) == 1
+    assert file_service.downloads()[0] == import_file_name
+
+    meshing = new_mesh_session
+
+    meshing_session = PureMeshing(
+        fluent_connection=meshing.fluent_connection,
+        remote_file_handler=RemoteFileHandler(transfer_service=file_service),
+    )
+
+    meshing_session.meshing.File.ReadMesh(FileName=import_file_name)
+    assert len(file_service.uploads()) == 2
+    assert file_service.uploads()[1] == import_file_name
+
+    meshing_session.meshing.File.WriteMesh(FileName=import_file_name)
+    assert len(file_service.downloads()) == 2
+    assert file_service.downloads()[1] == import_file_name
