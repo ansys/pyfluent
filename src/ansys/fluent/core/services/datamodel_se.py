@@ -1174,13 +1174,12 @@ class PyCommand:
         if file_purpose == "input" and self.service.remote_file_handler.is_configured():
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         response = self.service.execute_command(request)
-        result = _convert_variant_to_value(response.result)
+        _convert_variant_to_value(response.result)
         if (
             file_purpose == "output"
             and self.service.remote_file_handler.is_configured()
         ):
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
-        return result
 
     def help(self) -> None:
         """Prints help string."""
