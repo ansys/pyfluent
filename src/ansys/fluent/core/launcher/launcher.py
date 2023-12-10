@@ -801,6 +801,7 @@ def launch_fluent(
             return config_dict
 
         host, port, password = start_fluent_container(args, container_dict)
+        print('start_fluent_container', host, port, password)
 
         session = new_session(
             fluent_connection=FluentConnection(
