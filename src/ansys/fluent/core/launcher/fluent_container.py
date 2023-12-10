@@ -143,8 +143,6 @@ def configure_container_dict(
     else:
         logger.debug(f"container_dict before processing: {container_dict}")
 
-    print('host_mount_path, container_mount_path', host_mount_path, container_mount_path, container_dict)
-    import pdb; pdb.set_trace()
     if not host_mount_path:
         host_mount_path = pyfluent.EXAMPLES_PATH
     elif "volumes" in container_dict:
@@ -284,7 +282,6 @@ def configure_container_dict(
             container_dict[k] = v
 
 
-    import pdb; pdb.set_trace()
     host_server_info_file = Path("/mnt" if in_docker() else host_mount_path) / container_server_info_file.name
      
     return (
@@ -362,14 +359,13 @@ def start_fluent_container(
 
         logger.debug("Starting Fluent docker container...")
         
-        print('host_server_info_file', host_server_info_file, host_server_info_file.stat().st_mtime, last_mtime)
-        import pdb; pdb.set_trace()        
+           
         docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
 
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
-        print('host_server_info_file', host_server_info_file, host_server_info_file.stat().st_mtime, last_mtime)
+        
         if not success:
             raise RuntimeError(
                 "Fluent container launch timeout, will have to stop container manually."
