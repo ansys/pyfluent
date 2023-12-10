@@ -284,9 +284,9 @@ def configure_container_dict(
             container_dict[k] = v
 
 
-    
+    import pdb; pdb.set_trace()
     host_server_info_file = Path("/mnt" if in_docker() else host_mount_path) / container_server_info_file.name
-
+     
     return (
         container_dict,
         timeout,
