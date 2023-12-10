@@ -144,6 +144,7 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     print('host_mount_path, container_mount_path', host_mount_path, container_mount_path, container_dict)
+    import pdb; pdb.set_trace()
     if not host_mount_path:
         host_mount_path = pyfluent.EXAMPLES_PATH
     elif "volumes" in container_dict:
