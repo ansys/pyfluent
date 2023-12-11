@@ -6,8 +6,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_solver_import_mixingelbow(load_mixing_elbow_settings_only):
     solver_session = load_mixing_elbow_settings_only
@@ -82,8 +81,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_settings_only):
         os.remove(file_name)
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_disk_2d_setup(load_disk_settings_only):
     session = load_disk_settings_only

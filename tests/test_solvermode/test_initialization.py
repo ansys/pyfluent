@@ -2,9 +2,8 @@ import pytest
 from util.fixture_fluent import download_input_file
 
 
-@pytest.mark.quick
-@pytest.mark.setup
-def test_initialize_settings(launch_fluent_solver_3ddp):
+@pytest.mark.settings_only
+def test_initialize(launch_fluent_solver_3ddp):
     solver = launch_fluent_solver_3ddp
     input_type, input_name = download_input_file(
         "pyfluent/wigley_hull",
@@ -72,8 +71,6 @@ def test_initialize_settings(launch_fluent_solver_3ddp):
     }
 
 
-@pytest.mark.quick
-@pytest.mark.setup
 @pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2

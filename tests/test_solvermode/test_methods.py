@@ -1,8 +1,7 @@
 import pytest
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_methods(load_mixing_elbow_settings_only):
     solver = load_mixing_elbow_settings_only
