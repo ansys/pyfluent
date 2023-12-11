@@ -11,7 +11,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
@@ -156,6 +156,14 @@ class DatamodelService(StreamingService):
         """executeCommand RPC of DataModel service."""
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def execute_query(
+        self, request: DataModelProtoModule.ExecuteQueryRequest
+    ) -> DataModelProtoModule.ExecuteQueryResponse:
+        """ExecuteQuery rpc of DataModel service."""
+        logger.debug(f"Query: {request.query}")
+        return self._stub.executeQuery(request, metadata=self._metadata)
 
     @catch_grpc_error
     def create_command_arguments(
@@ -393,7 +401,7 @@ class PyStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self)
+        state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
         if DataModelCache.is_unassigned(state):
             state = self.get_remote_state()
         return state
@@ -1024,6 +1032,80 @@ class PyNamedObjectContainer:
         """
         self._del_item(key)
 
+    @staticmethod
+    def _get_type_and_name(type_and_name):
+        return type_and_name.split(":", maxsplit=1)
+
+    def _compare_type(self, obj_type):
+        child_obj_type = self.path[-1][0]
+        return child_obj_type == obj_type
+
+    def get_state(self):
+        parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
+        returned_state = {}
+
+        for key, value in parent_state.items():
+            type_and_name = self._get_type_and_name(key)
+            if len(type_and_name) == 2 and self._compare_type(type_and_name[0]):
+                returned_state[type_and_name[1]] = value
+
+        return dict(sorted(returned_state.items()))
+
+
+class PyQuery:
+    """Query class using the StateEngine-based DatamodelService as the backend. Use this
+    class instead of directly calling the DatamodelService's method.
+
+    Methods
+    -------
+    __call__()
+        Execute the query.
+    help()
+        Print the query help string.
+    """
+
+    docstring = None
+    _stored_static_info = {}
+
+    def __init__(
+        self, service: DatamodelService, rules: str, query: str, path: Path = None
+    ):
+        """__init__ method of PyQuery class."""
+        self.service = service
+        self.rules = rules
+        self.query = query
+        if path is None:
+            self.path = []
+        else:
+            self.path = path
+
+    def __call__(self, *args, **kwds) -> Any:
+        """Execute the query.
+
+        Returns
+        -------
+        Any
+            Return value.
+        """
+        request = DataModelProtoModule.ExecuteQueryRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.query = self.query
+        _convert_value_to_variant(kwds, request.args)
+        response = self.service.execute_query(request)
+        return _convert_variant_to_value(response.result)
+
+    def help(self) -> None:
+        """Prints help string."""
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        help_string = getattr(
+            response.member, response.member.WhichOneof("as")
+        ).query.helpstring
+        print(help_string)
+
 
 class PyCommand:
     """Command class using the StateEngine-based DatamodelService as the backend. Use
@@ -1380,7 +1462,7 @@ class DataModelType(Enum):
 class PyMenuGeneric(PyMenu):
     """Generic PyMenu class for when generated API code is not available."""
 
-    attrs = ("service", "rules", "path")
+    attrs = ("service", "rules", "path", "cached_attrs")
 
     def _get_child_names(self) -> tuple[list, list, list]:
         request = DataModelProtoModule.GetSpecsRequest()
@@ -1390,6 +1472,7 @@ class PyMenuGeneric(PyMenu):
         singleton_names = []
         creatable_type_names = []
         command_names = []
+        query_names = []
         for struct_type in ("singleton", "namedobject"):
             if response.member.HasField(struct_type):
                 struct_field = getattr(response.member, struct_type)
@@ -1398,12 +1481,14 @@ class PyMenuGeneric(PyMenu):
                         singleton_names.append(member)
                 creatable_type_names = struct_field.creatabletypes
                 command_names = [x.name for x in struct_field.commands]
-        return singleton_names, creatable_type_names, command_names
+                if hasattr(struct_field, "queries"):
+                    query_names = [x.name for x in struct_field.queries]
+        return singleton_names, creatable_type_names, command_names, query_names
 
     def _get_child(
         self, name: str
     ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand]:
-        singletons, creatable_types, commands = self._get_child_names()
+        singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
             return PyMenuGeneric(self.service, self.rules, child_path)
@@ -1412,6 +1497,8 @@ class PyMenuGeneric(PyMenu):
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
+        elif name in queries:
+            return PyQuery(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
                 f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"

@@ -8,7 +8,7 @@ import print_fluent_version
 import settingsgen
 import tuigen
 
-from ansys.fluent.core.launcher.launcher import FluentVersion, get_ansys_version
+from ansys.fluent.core.launcher.launcher_utils import FluentVersion, get_ansys_version
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 from ansys.fluent.core.utils.search import get_api_tree_file_name
 

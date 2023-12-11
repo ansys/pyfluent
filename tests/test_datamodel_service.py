@@ -2,11 +2,13 @@ from time import sleep
 
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
+from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyMenuGeneric,
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
@@ -117,7 +119,7 @@ def test_add_on_changed(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[0] > 0
+    assert data[-1] > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -334,3 +336,23 @@ def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
     assert x.FileName() == "dummy_file_name.dummy_extn"
+
+
+def _is_internal_name(name: str, prefix: str) -> bool:
+    return name.startswith(prefix) and name.removeprefix(prefix).isdigit()
+
+
+@pytest.mark.codegen_required
+def test_task_object_keys_are_display_names(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    task_object_state = meshing.workflow.TaskObject()
+    assert len(task_object_state) > 0
+    assert not any(_is_internal_name(x, "TaskObject:") for x in task_object_state)
+
+
+def test_generic_datamodel(new_solver_session):
+    solver = new_solver_session
+    solver.scheme_eval.scheme_eval("(init-flserver)")
+    flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
+    assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
