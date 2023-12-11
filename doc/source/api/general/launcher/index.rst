@@ -16,3 +16,4 @@ Fluent launcher
     :hidden:
 
     fluent_container
+    slurm
