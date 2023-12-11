@@ -4,7 +4,7 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.quick
 @pytest.mark.setup
-def test_initialize(launch_fluent_solver_3ddp):
+def test_initialize_settings(launch_fluent_solver_3ddp):
     solver = launch_fluent_solver_3ddp
     input_type, input_name = download_input_file(
         "pyfluent/wigley_hull",
@@ -70,8 +70,6 @@ def test_initialize(launch_fluent_solver_3ddp):
         "boundary_zone": 3,
         "flat_init": True,
     }
-    # solver.solution.initialization.hybrid_initialize()
-    # solver.exit()
 
 
 @pytest.mark.quick
