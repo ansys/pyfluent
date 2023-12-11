@@ -352,14 +352,14 @@ class Real(SettingsBase[RealType], Numerical):
     expression values.
     """
 
-    def get_state_as_quantity(self) -> Quantity:
+    def get_state_as_quantity(self) -> Optional[Quantity]:
         """Get the state of the object as a Quantity."""
         try:
             unit = self._quantity_map(self.get_attr("units-quantity"))
             value = self.get_state()
             quantity = Quantity(value, quantity_map={unit: 1})
             return quantity
-        except Exception as e:
+        except (ValueError, KeyError, ModuleNotFoundError) as e:
             print(f"Unable to construct 'Quantity'.", e)
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
