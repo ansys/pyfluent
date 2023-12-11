@@ -2,8 +2,7 @@ import pytest
 from util.solver import copy_database_material
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_solver_material(load_mixing_elbow_settings_only):
     solver_session = load_mixing_elbow_settings_only
