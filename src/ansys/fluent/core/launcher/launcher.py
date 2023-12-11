@@ -21,6 +21,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _process_kwargs,
 )
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
+from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session_meshing import Meshing
@@ -52,7 +53,7 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    allowed_options = ["container", "pim", "standalone"]
+    allowed_options = ["container", "pim", "standalone", "slurm"]
     if (
         not isinstance(fluent_launch_mode, str)
         or str(fluent_launch_mode) not in allowed_options
@@ -68,6 +69,8 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
         return DockerLauncher(**kwargs)
     elif fluent_launch_mode == "pim":
         return PIMLauncher(**kwargs)
+    elif fluent_launch_mode == "slurm":
+        return SlurmLauncher(**kwargs)
 
 
 #   pylint: disable=unused-argument
@@ -77,7 +80,7 @@ def launch_fluent(
     precision: Optional[str] = None,
     processor_count: Optional[int] = None,
     journal_file_names: Union[None, str, list[str]] = None,
-    start_timeout: int = 60,
+    start_timeout: Optional[int] = None,
     additional_arguments: Optional[str] = "",
     env: Optional[Dict[str, Any]] = None,
     start_container: Optional[bool] = None,
@@ -95,8 +98,9 @@ def launch_fluent(
     cwd: Optional[str] = None,
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
+    scheduler_options: Optional[dict] = None,
     **kwargs,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing, dict]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
@@ -122,7 +126,8 @@ def launch_fluent(
         journal(s). The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``60``.
+        server. The default is ``60`` if Fluent is launched outside a Slurm environment,
+        no timeout if Fluent is launched within a Slurm environment.
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
@@ -184,6 +189,8 @@ def launch_fluent(
         which means an independent watchdog process is run to ensure
         that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
         when the current Python process ends.
+    scheduler_options : dict, optional
+        Dictionary containing scheduler options. Default is None.
 
     Returns
     -------
@@ -209,7 +216,9 @@ def launch_fluent(
     _process_kwargs(kwargs)
     del kwargs
     fluent_launch_mode = _get_fluent_launch_mode(
-        start_container=start_container, container_dict=container_dict
+        start_container=start_container,
+        container_dict=container_dict,
+        scheduler_options=scheduler_options,
     )
     del start_container
     argvals = locals().copy()
