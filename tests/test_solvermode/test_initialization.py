@@ -3,7 +3,7 @@ from util.fixture_fluent import download_input_file
 
 
 @pytest.mark.settings_only
-def test_initialize(launch_fluent_solver_3ddp):
+def test_initialization_settings(launch_fluent_solver_3ddp):
     solver = launch_fluent_solver_3ddp
     input_type, input_name = download_input_file(
         "pyfluent/wigley_hull",
