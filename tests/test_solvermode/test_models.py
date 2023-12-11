@@ -5,12 +5,12 @@ import pytest
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
-def test_solver_models(load_mixing_elbow_mesh):
-    solver_session = load_mixing_elbow_mesh
+def test_solver_models(load_mixing_elbow_settings_only):
+    solver_session = load_mixing_elbow_settings_only
     models = solver_session.setup.models
-    assert not models.energy.enabled()
-    models.energy.enabled = True
     assert models.energy.enabled()
+    models.energy.enabled = False
+    assert not models.energy.enabled()
     models.multiphase.models = "vof"
     assert models.multiphase.models() == "vof"
     models.viscous.model = "laminar"
@@ -26,8 +26,8 @@ def test_solver_models(load_mixing_elbow_mesh):
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
-def test_disk_2d_models(load_disk_mesh):
-    solver_session = load_disk_mesh
+def test_disk_2d_models(load_disk_settings_only):
+    solver_session = load_disk_settings_only
     models = solver_session.setup.models
     solver_session.setup.general.solver.two_dim_space = "axisymmetric"
     solver_session.setup.general.solver.two_dim_space = "swirl"

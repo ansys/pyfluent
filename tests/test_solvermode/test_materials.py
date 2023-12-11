@@ -5,8 +5,8 @@ from util.solver import copy_database_material
 @pytest.mark.quick
 @pytest.mark.setup
 @pytest.mark.fluent_version("latest")
-def test_solver_material(load_mixing_elbow_mesh):
-    solver_session = load_mixing_elbow_mesh
+def test_solver_material(load_mixing_elbow_settings_only):
+    solver_session = load_mixing_elbow_settings_only
     setup_materials = solver_session.setup.materials
     copy_database_material(materials=setup_materials, type="fluid", name="water-liquid")
     elbow_fluid = solver_session.setup.cell_zone_conditions.fluid["elbow-fluid"]
