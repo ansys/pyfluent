@@ -25,10 +25,8 @@ def test_version_not_found():
         FluentVersion(22)
 
 
-def test_get_latest_installed(monkeypatch):
-    monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
-    monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
-    monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
+def test_get_latest_installed(helpers):
+    helpers.mock_awp_vars()
     assert FluentVersion.get_latest_installed() == FluentVersion.current_release()
 
 
