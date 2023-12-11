@@ -73,7 +73,6 @@ def test_initialize(launch_fluent_solver_3ddp):
     # solver.exit()
 
 
-@pytest.mark.settings_only
 @pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
