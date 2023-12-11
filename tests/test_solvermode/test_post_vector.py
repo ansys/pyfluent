@@ -4,7 +4,9 @@ import pytest
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_post_elbow(load_mixing_elbow_settings_only):
-    load_mixing_elbow_settings_only.results.graphics.vector["velocity_vector_symmetry"] = {}
+    load_mixing_elbow_settings_only.results.graphics.vector[
+        "velocity_vector_symmetry"
+    ] = {}
     vector_graphics = load_mixing_elbow_settings_only.results.graphics.vector[
         "velocity_vector_symmetry"
     ]
