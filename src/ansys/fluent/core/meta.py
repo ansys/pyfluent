@@ -337,7 +337,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
                 top_most_parent = self.get_root(self)
 
                 if self.session_id is None:
-                    self.session_id = top_most_parent.session.id
+                    self.session_id = top_most_parent.session_handle._session_id
                 property_editor_data = top_most_parent.accessor(
                     "AnsysUser", self.session_id
                 )

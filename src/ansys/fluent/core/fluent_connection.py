@@ -274,7 +274,7 @@ class FluentConnection:
         self.health_check_service = HealthCheckService(
             self._channel, self._metadata, self.error_state
         )
-
+        print("connecting with", ip, port, password)
         counter = 0
         while not self.health_check_service.is_serving:
             time.sleep(1)
