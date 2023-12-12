@@ -83,7 +83,34 @@ def test_case_load():
         "mixing_elbow.cas.h5",
     )
     session = pyfluent.launch_fluent(case_file_name=cas_path)
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh available because not lightweight
+    assert session.mesh.quality.is_active()
+    # Data not loaded
+    assert not session.field_data.is_data_valid()
+
     session.exit()
+
+
+def test_case_lightweight_setup():
+    # Test that launch_fluent() correctly performs lightweight setup
+    _, cas_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+    )
+    session = pyfluent.launch_fluent(
+        case_file_name=cas_path,
+        lightweight_mode=True,
+    )
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh not available because lightweight
+    assert not session.mesh.quality.is_active()
+    # Data not loaded
+    assert not session.field_data.is_data_valid()
 
 
 def test_case_data_load():
@@ -94,6 +121,14 @@ def test_case_data_load():
         "mixing_elbow.dat.h5",
     )
     session = pyfluent.launch_fluent(case_data_file_name=cas_dat_path)
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh available because not lightweight
+    assert session.mesh.quality.is_active()
+    # Data loaded
+    assert session.field_data.is_data_valid()
+
     session.exit()
 
 
