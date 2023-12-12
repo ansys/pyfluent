@@ -3,6 +3,7 @@ import platform
 
 from beartype.roar import BeartypeCallHintParamViolation
 import pytest
+from util.fixture_fluent import download_input_file
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
@@ -73,6 +74,27 @@ def test_container_launcher():
         # test run with configuration dict
         session = pyfluent.launch_fluent(container_dict=container_dict)
         assert session.health_check_service.is_serving
+
+
+def test_case_load():
+    # Test that launch_fluent() works with a case file as an argument
+    _, cas_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+    )
+    session = pyfluent.launch_fluent(case_file_name=cas_path)
+    session.exit()
+
+
+def test_case_data_load():
+    # Test that launch_fluent() works with a case+data file as an argument
+    _, cas_dat_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+        "mixing_elbow.dat.h5",
+    )
+    session = pyfluent.launch_fluent(case_data_file_name=cas_dat_path)
+    session.exit()
 
 
 def test_gpu_launch_arg(monkeypatch):
