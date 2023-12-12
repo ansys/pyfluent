@@ -260,12 +260,10 @@ class StandaloneLauncher:
             if self.case_file_name:
                 if self.meshing_mode:
                     session.tui.file.read_case(self.case_file_name)
+                elif self.lightweight_mode:
+                    session.read_case_lightweight(self.case_file_name)
                 else:
-                    session.file.read(
-                        file_type="case",
-                        file_name=self.case_file_name,
-                        lightweight_setup=self.lightweight_mode,
-                    )
+                    session.read_case(self.case_file_name)
             if self.case_data_file_name:
                 if not self.meshing_mode:
                     session.file.read(
