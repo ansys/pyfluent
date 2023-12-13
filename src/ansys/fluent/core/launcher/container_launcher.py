@@ -53,6 +53,7 @@ class DockerLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
+        scheduler_options: Optional[dict] = None,
         **kwargs,
     ):
         """Launch Fluent session in container mode.
@@ -170,6 +171,8 @@ class DockerLauncher:
         _process_invalid_args(dry_run, "container", argvals)
         args = _get_argvals(argvals, mode)
         argvals.update(args)
+        if argvals["start_timeout"] is None:
+            argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
@@ -178,10 +181,11 @@ class DockerLauncher:
         args = _build_fluent_launch_args_string(**self.argvals).split()
         if self.meshing_mode:
             args.append(" -meshing")
-
+        if self.container_dict is None:
+            setattr(self, "container_dict", {})
+        if self.product_version:
+            self.container_dict["image_tag"] = f"v{self.product_version}"
         if self.dry_run:
-            if self.container_dict is None:
-                setattr(self, "container_dict", {})
             config_dict, *_ = configure_container_dict(args, **self.container_dict)
             from pprint import pprint
 
