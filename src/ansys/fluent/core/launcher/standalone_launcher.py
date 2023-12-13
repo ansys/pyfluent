@@ -263,11 +263,15 @@ class StandaloneLauncher:
                 elif self.lightweight_mode:
                     session.read_case_lightweight(self.case_file_name)
                 else:
-                    session.read_case(self.case_file_name)
+                    session.file.read(
+                        file_type="case",
+                        file_name=self.case_file_name,
+                    )
             if self.case_data_file_name:
                 if not self.meshing_mode:
                     session.file.read(
-                        file_type="case-data", file_name=self.case_data_file_name
+                        file_type="case-data",
+                        file_name=self.case_data_file_name,
                     )
                 else:
                     raise RuntimeError(
