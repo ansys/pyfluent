@@ -94,6 +94,7 @@ def test_case_load():
     session.exit()
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
     _, cas_path = download_input_file(
