@@ -76,6 +76,7 @@ def test_container_launcher():
         assert session.health_check_service.is_serving
 
 
+@pytest.mark.standalone
 def test_case_load():
     # Test that launch_fluent() works with a case file as an argument
     _, cas_path = download_input_file(
@@ -94,6 +95,7 @@ def test_case_load():
     session.exit()
 
 
+@pytest.mark.standalone
 @pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
@@ -114,6 +116,7 @@ def test_case_lightweight_setup():
     assert not session.field_data.is_data_valid()
 
 
+@pytest.mark.standalone
 def test_case_data_load():
     # Test that launch_fluent() works with a case+data file as an argument
     _, cas_dat_path = download_input_file(
