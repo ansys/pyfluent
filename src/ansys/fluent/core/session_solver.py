@@ -48,7 +48,7 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
 def _import_settings_root(root, version):
     _class_dict = {}
 
-    if int(version) > 231:
+    if int(version) >= 232:
         api_keys = root().keys()
     else:
         api_keys = {
@@ -258,7 +258,8 @@ class Solver(BaseSession):
         )
 
     def __getattr__(self, attr):
-        self._settings_api_root = _import_settings_root(self._root, self._version)
+        if not self._settings_api_root:
+            self._settings_api_root = _import_settings_root(self._root, self._version)
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
