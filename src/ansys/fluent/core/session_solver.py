@@ -263,6 +263,8 @@ class Solver(BaseSession):
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
+        if not self._settings_api_root:
+            self._settings_api_root = _import_settings_root(self._root, self._version)
         return sorted(
             set(
                 list(self.__dict__.keys())
