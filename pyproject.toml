@@ -14,12 +14,7 @@ addopts = """
 --show-capture=all
 """
 markers = [
-    "integration: Short-running tests which read a simple input file and check the exposure and values of various setting objects",
-    "quick: Run the quick tests",
-    "setup: Read different input files, setup the simulation, initialize, and run for a few iterations and check the results",
-    "solve: Long-running tests that continue until convergence",
-    "mesh: Tests covering meshing scenarios",
-    "optislang: Test Optislang integration scenarios",
+    "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",

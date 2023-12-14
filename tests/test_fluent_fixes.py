@@ -13,7 +13,9 @@ def test_allowed_values_on_report_definitions_1364(new_solver_session):
         "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
     )
 
-    solver.file.read_case(file_name=import_file_name)
+    solver.file.read(
+        file_name=import_file_name, file_type="case", lightweight_setup=True
+    )
 
     report_def = solver.solution.report_definitions.volume.create("xxx")
 
