@@ -257,14 +257,16 @@ class Solver(BaseSession):
             ),
         )
 
-    def __getattr__(self, attr):
+    def _populate_settings_api_root(self):
         if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self._root, self._version)
+            self._settings_api_root = _import_settings_root(self._root, self._version)        
+    
+    def __getattr__(self, attr):
+        self._populate_settings_api_root()
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
-        if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self._root, self._version)
+        self._populate_settings_api_root()
         return sorted(
             set(
                 list(self.__dict__.keys())
