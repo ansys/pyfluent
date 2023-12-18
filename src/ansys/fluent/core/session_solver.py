@@ -259,8 +259,8 @@ class Solver(BaseSession):
 
     def _populate_settings_api_root(self):
         if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self._root, self._version)        
-    
+            self._settings_api_root = _import_settings_root(self._root, self._version)
+
     def __getattr__(self, attr):
         self._populate_settings_api_root()
         return getattr(self._settings_api_root, attr)
