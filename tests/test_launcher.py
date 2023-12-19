@@ -3,11 +3,13 @@ import platform
 
 from beartype.roar import BeartypeCallHintParamViolation
 import pytest
+from util.fixture_fluent import download_input_file
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import (
+from ansys.fluent.core.launcher import launcher_utils
+from ansys.fluent.core.launcher.launcher import create_launcher
+from ansys.fluent.core.launcher.launcher_utils import (
     AnsysVersionNotFound,
     DockerContainerLaunchNotSupported,
     LaunchFluentError,
@@ -17,6 +19,7 @@ from ansys.fluent.core.launcher.launcher import (
     get_ansys_version,
     get_fluent_exe_path,
 )
+import ansys.platform.instancemanagement as pypim
 
 
 def test_mode():
@@ -36,8 +39,8 @@ def test_unsuccessful_fluent_connection():
 
 
 def test_additional_argument_g_gu():
-    default_windows_flag = launcher._is_windows()
-    launcher._is_windows = lambda: True
+    default_windows_flag = launcher_utils._is_windows()
+    launcher_utils._is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
@@ -51,7 +54,7 @@ def test_additional_argument_g_gu():
                 mode="solver", additional_arguments="-gu", start_container=False
             )
     finally:
-        launcher._is_windows = lambda: default_windows_flag
+        launcher_utils._is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
@@ -62,14 +65,79 @@ def test_container_launcher():
                 start_container=True, dry_run=True
             )
 
-    # test dry_run
-    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-    assert isinstance(container_dict, dict)
-    assert len(container_dict) > 1
+    if check_docker_support():
+        # test dry_run
+        container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+        assert isinstance(container_dict, dict)
+        assert len(container_dict) > 1
 
-    # test run with configuration dict
-    session = pyfluent.launch_fluent(container_dict=container_dict)
-    assert session.health_check_service.is_serving
+        # test run with configuration dict
+        session = pyfluent.launch_fluent(container_dict=container_dict)
+        assert session.health_check_service.is_serving
+
+
+@pytest.mark.standalone
+def test_case_load():
+    # Test that launch_fluent() works with a case file as an argument
+    _, cas_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+    )
+    session = pyfluent.launch_fluent(case_file_name=cas_path)
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh available because not lightweight
+    fluent_version = float(session.get_fluent_version()[:-2])
+    if not fluent_version < 23.1:
+        assert session.mesh.quality.is_active()
+    # Data not loaded
+    assert not session.field_data.is_data_valid()
+
+    session.exit()
+
+
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=23.2")
+def test_case_lightweight_setup():
+    # Test that launch_fluent() correctly performs lightweight setup
+    _, cas_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+    )
+    session = pyfluent.launch_fluent(
+        case_file_name=cas_path,
+        lightweight_mode=True,
+    )
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh not available because lightweight
+    assert not session.mesh.quality.is_active()
+    # Data not loaded
+    assert not session.field_data.is_data_valid()
+
+
+@pytest.mark.standalone
+def test_case_data_load():
+    # Test that launch_fluent() works with a case+data file as an argument
+    _, cas_dat_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+        "mixing_elbow.dat.h5",
+    )
+    session = pyfluent.launch_fluent(case_data_file_name=cas_dat_path)
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh available because not lightweight
+    fluent_version = float(session.get_fluent_version()[:-2])
+    if not fluent_version < 23.1:
+        assert session.mesh.quality.is_active()
+    # Data loaded
+    assert session.field_data.is_data_valid()
+
+    session.exit()
 
 
 def test_gpu_launch_arg(monkeypatch):
@@ -202,6 +270,35 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
     pyfluent.launch_fluent(start_watchdog=True)
+
+
+def test_fluent_launchers():
+    if not check_docker_support() and not pypim.is_configured():
+        standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
+        standalone_meshing_session = standalone_meshing_launcher()
+        assert standalone_meshing_session
+
+        standalone_solver_launcher = create_launcher("standalone")
+        standalone_solver_session = standalone_solver_launcher()
+        assert standalone_solver_session
+
+    if check_docker_support():
+        container_meshing_launcher = create_launcher("container", mode="meshing")
+        container_meshing_session = container_meshing_launcher()
+        assert container_meshing_session
+
+        container_solver_launcher = create_launcher("container")
+        container_solver_session = container_solver_launcher()
+        assert container_solver_session
+
+    if pypim.is_configured():
+        pim_meshing_launcher = create_launcher("pim", mode="meshing")
+        pim_meshing_session = pim_meshing_launcher()
+        assert pim_meshing_session
+
+        pim_solver_launcher = create_launcher("pim")
+        pim_solver_session = pim_solver_launcher()
+        assert pim_solver_session
 
 
 @pytest.mark.parametrize(

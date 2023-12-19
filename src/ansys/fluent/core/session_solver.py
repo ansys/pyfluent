@@ -96,10 +96,7 @@ class Solver(BaseSession):
     @property
     def svar_data(self) -> SVARData:
         """Return the SVARData handle."""
-        try:
-            return SVARData(self.svar_service, self.svar_info)
-        except RuntimeError:
-            return None
+        return SVARData(self.svar_service, self.svar_info)
 
     @property
     def version(self):
@@ -234,8 +231,7 @@ class Solver(BaseSession):
             _set_state_safe(self._root, state)
 
     def read_case_lightweight(self, file_name: str):
-        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is set to
-        ``True``.
+        """Read a case file using light IO mode.
 
         Parameters
         ----------

@@ -654,8 +654,8 @@ class root(Group):
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
 
     existing = solver.file.read.file_type.get_attr("allowed-values")
     modified = solver.file.read.file_type.allowed_values()
@@ -680,6 +680,12 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
             "inlet1"
         ].turbulence.turbulent_viscosity_ratio_real
 
+        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio_real'
+        name = "turbulent_viscosity_ratio_real"
+
+        assert turbulent_viscosity_ratio.python_path == path
+        assert turbulent_viscosity_ratio.python_name == name
+
     assert turbulent_viscosity_ratio.default_value() == 10
     assert turbulent_viscosity_ratio.get_attr("min") == 0
 
@@ -696,8 +702,8 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
 
     assert solver.setup.general.solver.type.allowed_values() == [
         "pressure-based",
@@ -719,8 +725,8 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 @pytest.mark.fluent_version("==23.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_231(load_static_mixer_case):
-    setup_cls = load_static_mixer_case.setup.__class__
+def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
+    setup_cls = load_static_mixer_settings_only.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -744,8 +750,8 @@ def test_find_children_from_settings_root_231(load_static_mixer_case):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_232(load_static_mixer_case):
-    setup_cls = load_static_mixer_case.setup.__class__
+def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
+    setup_cls = load_static_mixer_settings_only.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -765,9 +771,9 @@ def test_find_children_from_settings_root_232(load_static_mixer_case):
 
 
 @pytest.mark.fluent_version("latest")
-def test_find_children_from_fluent_solver_session(load_static_mixer_case):
-    setup_children = find_children(load_static_mixer_case.setup)
-    load_mixer = load_static_mixer_case.setup
+def test_find_children_from_fluent_solver_session(load_static_mixer_settings_only):
+    setup_children = find_children(load_static_mixer_settings_only.setup)
+    load_mixer = load_static_mixer_settings_only.setup
     assert len(setup_children) >= 18514
 
     viscous = load_mixer.models.viscous
@@ -901,8 +907,8 @@ def get_child_nodes(node, nodes, type_list):
 
 
 @pytest.mark.fluent_version("latest")
-def test_strings_with_allowed_values(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_strings_with_allowed_values(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
 
     with pytest.raises(AttributeError) as e:
         string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()

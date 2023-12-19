@@ -15,13 +15,20 @@ from util.solver_workflow import (  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
-from ansys.fluent.core.launcher.launcher import IpPortNotProvided
+from ansys.fluent.core.launcher.launcher_utils import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 
-def _read_case(session):
+def _read_case(session, lightweight_setup=True):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.tui.file.read_case(case_path)
+    fluent_version_str = session.get_fluent_version()[:-2]
+    # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
+    if float(fluent_version_str) < 23.1:
+        session.file.read(file_name=case_path, file_type="case")
+    else:
+        session.file.read(
+            file_name=case_path, file_type="case", lightweight_setup=lightweight_setup
+        )
 
 
 def test_session_starts_transcript_by_default(new_solver_session) -> None:
@@ -189,7 +196,7 @@ def test_fluent_freeze_kill(
     new_solver_session,
 ) -> None:
     session = new_solver_session
-    _read_case(session=session)
+    _read_case(session=session, lightweight_setup=False)
 
     def _freeze_fluent(s):
         try:

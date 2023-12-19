@@ -1,12 +1,10 @@
 import pytest
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-@pytest.mark.skip("Too sensitive to settings API")
-def test_methods(load_mixing_elbow_mesh):
-    solver = load_mixing_elbow_mesh
+def test_methods(load_mixing_elbow_settings_only):
+    solver = load_mixing_elbow_settings_only
     solver.setup.models.multiphase.models = "vof"
     solver.setup.general.operating_conditions.gravity = {
         "enable": True,
@@ -28,13 +26,14 @@ def test_methods(load_mixing_elbow_mesh):
         "mp": "compressive",
         "pressure": "presto!",
         "k": "second-order-upwind",
+        "temperature": "second-order-upwind",
     }
     solver.solution.methods.gradient_scheme = "least-square-cell-based"
     assert solver.solution.methods.gradient_scheme() == "least-square-cell-based"
 
-    enable_warped_face = solver.solution.methods.warped_face_gradient_correction.enable
-    enable_warped_face(enable=True, gradient_correction_mode="fast-mode")
-    enable_warped_face(enable=False, gradient_correction_mode="fast-mode")
+    enable_warped_face = solver.solution.methods.warped_face_gradient_correction
+    enable_warped_face(enable=True, mode="fast")
+    enable_warped_face(enable=False, mode="fast")
 
     solver.solution.methods.expert.numerics_pbns.velocity_formulation = "relative"
     assert (
@@ -47,7 +46,7 @@ def test_methods(load_mixing_elbow_mesh):
         "physical_velocity_formulation": True,
         "disable_rhie_chow_flux": True,
         "presto_pressure_scheme": False,
-        "first_to_second_order_blending": 2.0,
+        "first_to_second_order_blending": 1.0,
     }
     assert solver.solution.methods.expert.numerics_pbns() == {
         "implicit_bodyforce_treatment": True,
@@ -55,12 +54,12 @@ def test_methods(load_mixing_elbow_mesh):
         "physical_velocity_formulation": True,
         "disable_rhie_chow_flux": True,
         "presto_pressure_scheme": False,
-        "first_to_second_order_blending": 2.0,
+        "first_to_second_order_blending": 1.0,
     }
     solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme = True
     assert solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme() == True
     solver.solution.methods.gradient_scheme = "green-gauss-node-based"
     assert solver.solution.methods.gradient_scheme() == "green-gauss-node-based"
-    solver.solution.methods.warped_face_gradient_correction.enable(
-        enable=True, gradient_correction_mode="memory-saving-mode"
+    solver.solution.methods.warped_face_gradient_correction(
+        enable=True, mode="memory-saving"
     )

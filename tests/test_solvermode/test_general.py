@@ -6,18 +6,16 @@ import pytest
 import ansys.fluent.core as pyfluent
 
 
-@pytest.mark.skip("Fluent side bug")
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
-    solver_session = load_mixing_elbow_mesh
+def test_solver_import_mixingelbow(load_mixing_elbow_settings_only):
+    solver_session = load_mixing_elbow_settings_only
     assert solver_session._root.is_active()
     assert solver_session.health_check_service.is_serving
     file_name = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
     solver_session.journal.start(file_name.as_posix())
     ###
-    assert not solver_session.setup.models.energy.enabled()
+    assert solver_session.setup.models.energy.enabled()
     scheme_eval = solver_session.scheme_eval.scheme_eval
     assert scheme_eval("(case-valid?)")
     ###
@@ -70,7 +68,9 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     assert auto_save.case_frequency() == "each-time"
     auto_save.root_name = "file_auto_save"
     assert auto_save.root_name() == "file_auto_save"
-    solver_session.setup.reference_values.compute(from_zone_name="outlet")
+    solver_session.setup.reference_values.compute(
+        from_zone_name="outlet", from_zone_type="pressure-outlet"
+    )
     solver_session.journal.stop()
     solver_session.tui.file.read_journal(file_name.as_posix())
     assert auto_save.root_name() == "file_auto_save"
@@ -81,11 +81,10 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
         os.remove(file_name)
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_disk_2d_setup(load_disk_mesh):
-    session = load_disk_mesh
+def test_disk_2d_setup(load_disk_settings_only):
+    session = load_disk_settings_only
     assert session._root.is_active()
     assert session.health_check_service.is_serving
     ###

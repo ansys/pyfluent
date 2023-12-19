@@ -8,6 +8,7 @@ from time import sleep, time
 from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
+from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
 
 logger = logging.getLogger("pyfluent.datamodel")
@@ -33,7 +34,8 @@ def _init_task_accessors(obj):
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
-        obj._python_task_names.append(py_name)
+        with obj._lock:
+            obj._python_task_names.append(py_name)
         if py_name not in obj._task_objects:
             logger.debug(f"adding {py_name} {type(task)}")
             obj._task_objects[py_name] = task
@@ -46,7 +48,8 @@ def _init_task_accessors(obj):
 
 def _refresh_task_accessors(obj):
     logger.debug(f"thread ID in _refresh_task_accessors {threading.get_ident()}")
-    old_task_names = set(obj._python_task_names)
+    with obj._lock:
+        old_task_names = set(obj._python_task_names)
     logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
@@ -67,11 +70,19 @@ def _refresh_task_accessors(obj):
             logger.debug(
                 f"Could not add task {task_name} {type(getattr(obj, task_name, None))}"
             )
-    obj._python_task_names = current_task_names
-    logger.debug(f"updated_task_names: {obj._python_task_names}")
+    with obj._lock:
+        obj._python_task_names = current_task_names
+        logger.debug(f"updated_task_names: {obj._python_task_names}")
     for task in tasks:
         logger.debug(f"next task {task.python_name()} {id(task)}")
         _refresh_task_accessors(task)
+
+
+def _convert_task_list_to_display_names(workflow_root, task_list):
+    return [
+        DataModelCache.get_state("workflow", workflow_root)[f"TaskObject:{x}"]["_name_"]
+        for x in task_list
+    ]
 
 
 class BaseTask:
@@ -111,6 +122,7 @@ class BaseTask:
                 _cmd=None,
                 _python_name=None,
                 _python_task_names=[],
+                _lock=command_source._lock,
                 _ordered_children=[],
                 _task_list=[],
                 _task_objects={},
@@ -191,6 +203,7 @@ class BaseTask:
                 return _task_by_id
 
             task_list = self._task.TaskList()
+            task_list = _convert_task_list_to_display_names(self._workflow, task_list)
             if task_list != self._task_list:
                 mappings = {
                     k: v for k, v in zip(self._task_list, self._ordered_children)
@@ -365,6 +378,12 @@ class TaskContainer(PyCallableStateObject):
                 list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
             )
         )
+
+    def get_state(self):
+        return self._task_container.get_state()
+
+    def __call__(self):
+        return self.get_state()
 
 
 class ArgumentsWrapper(PyCallableStateObject):
@@ -649,9 +668,10 @@ class ConditionalTask(CommandTask):
         list
             Inactive ordered children.
         """
+        inactive_task_list = self._task.InactiveTaskList()
+        inactive_task_list = _convert_task_list_to_display_names(inactive_task_list)
         return [
-            self._command_source._task_by_id(task_id)
-            for task_id in self._task.InactiveTaskList()
+            self._command_source._task_by_id(task_id) for task_id in inactive_task_list
         ]
 
 
@@ -773,6 +793,7 @@ class WorkflowWrapper:
         self._workflow = workflow
         self._command_source = command_source
         self._python_task_names = []
+        self._lock = threading.RLock()
         self._refreshing = False
         self._refresh_count = 0
         self._ordered_children = []
@@ -856,7 +877,8 @@ class WorkflowWrapper:
         List[str]
             Pythonic names of the child tasks.
         """
-        return self._python_task_names
+        with self._lock:
+            return self._python_task_names
 
     def inactive_ordered_children(self) -> list:
         """Get the inactive ordered task list held by this task.
@@ -915,8 +937,13 @@ class WorkflowWrapper:
 
     def _workflow_and_task_list_state(self) -> Tuple[dict, dict]:
         workflow_state = self._workflow_state()
-        workflow_state_workflow = workflow_state["Workflow"]
-        return (workflow_state, workflow_state_workflow["TaskList"])
+        prefix = "TaskObject:"
+        task_list = [
+            x.removeprefix(prefix)
+            for x in workflow_state.keys()
+            if x.startswith(prefix)
+        ]
+        return workflow_state, task_list
 
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
