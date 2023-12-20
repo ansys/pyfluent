@@ -47,7 +47,9 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
 
 def _import_settings_root(root):
     _class_dict = {}
-    api_keys = root.child_names
+    api_keys = []
+    if hasattr(root, "child_names"):
+        api_keys = root.child_names
 
     for root_item in api_keys:
         _class_dict[root_item] = getattr(root, root_item)
