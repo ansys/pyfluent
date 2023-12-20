@@ -418,16 +418,16 @@ def test_solver_methods(new_solver_session):
             "report",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver.version) == 241:
+    if int(solver.version) >= 241:
         api_keys = {
             "file",
             "mesh",
             "server",
             "setup",
             "solution",
+            "results",
             "parametric_studies",
             "current_parametric_study",
             "parallel",
-            "report",
         }
         assert api_keys.issubset(set(dir(solver)))
