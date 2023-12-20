@@ -45,25 +45,9 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
             datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
-def _import_settings_root(root, version):
+def _import_settings_root(root):
     _class_dict = {}
-
-    if int(version) >= 232:
-        api_keys = root().keys()
-    else:
-        api_keys = {
-            "file",
-            "mesh",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-            "parameters",
-            "parallel",
-            "report",
-            "server",
-        }.intersection(set(dir(root)))
+    api_keys = root.child_names
 
     for root_item in api_keys:
         _class_dict[root_item] = getattr(root, root_item)
@@ -259,8 +243,8 @@ class Solver(BaseSession):
 
     def _populate_settings_api_root(self):
         if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self._root, self._version)        
-    
+            self._settings_api_root = _import_settings_root(self._root)
+
     def __getattr__(self, attr):
         self._populate_settings_api_root()
         return getattr(self._settings_api_root, attr)

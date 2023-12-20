@@ -93,7 +93,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
-def test_create_session_by_passing_ip_and_port_and_password() -> None:
+def test_create_mock_session_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -118,7 +118,7 @@ def test_create_session_by_passing_ip_and_port_and_password() -> None:
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_by_setting_ip_and_port_env_var(
+def test_create_mock_session_by_setting_ip_port_env_var(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -139,7 +139,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_by_passing_grpc_channel() -> None:
+def test_create_mock_session_by_passing_grpc_channel() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -159,7 +159,7 @@ def test_create_session_by_passing_grpc_channel() -> None:
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_from_server_info_file(tmp_path: Path) -> None:
+def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -180,7 +180,7 @@ def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_from_server_info_file_with_wrong_password(
+def test_create_mock_session_from_server_info_file_with_wrong_password(
     tmp_path: Path,
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -205,9 +205,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
     assert ex.value.__context__.code() == grpc.StatusCode.UNAUTHENTICATED
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> (
-    None
-):
+def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -234,7 +232,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
+def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -391,3 +389,45 @@ def test_recover_grpc_error_from_connection_error():
     with pytest.raises(RuntimeError) as ex:
         pyfluent.connect_to_fluent(ip="127.0.0.1", port=50000, password="abcdefg")
     assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
+
+
+def test_solver_methods(new_solver_session):
+    solver = new_solver_session
+
+    if int(solver.version) == 222:
+        api_keys = {
+            "file",
+            "setup",
+            "solution",
+            "results",
+            "parametric_studies",
+            "current_parametric_study",
+        }
+        assert api_keys.issubset(set(dir(solver)))
+    if int(solver.version) == 232:
+        api_keys = {
+            "file",
+            "mesh",
+            "server",
+            "setup",
+            "solution",
+            "results",
+            "parametric_studies",
+            "current_parametric_study",
+            "parallel",
+            "report",
+        }
+        assert api_keys.issubset(set(dir(solver)))
+    if int(solver.version) == 241:
+        api_keys = {
+            "file",
+            "mesh",
+            "server",
+            "setup",
+            "solution",
+            "parametric_studies",
+            "current_parametric_study",
+            "parallel",
+            "report",
+        }
+        assert api_keys.issubset(set(dir(solver)))
