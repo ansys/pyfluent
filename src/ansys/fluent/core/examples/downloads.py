@@ -134,7 +134,6 @@ def download_file(
 
     Examples
     --------
-    TODO: Update these
     >>> from ansys.fluent.core import examples
     >>> file_path = examples.download_file("bracket.iges", "geometry")
     >>> file_path
