@@ -162,11 +162,11 @@ def download_file(
     if save_path is None:
         if directory:
             # Get name of last folder in directory
-            directory_tip = Path(directory).name
+            directory_tip = os.path.basename(directory)
         else:
             # Strip all suffixes from file name
             directory_tip = file_name.split(".")[0]
-        save_path = Path(pyfluent.EXAMPLES_PATH) / directory_tip
+        save_path = os.path.join(pyfluent.EXAMPLES_PATH, directory_tip)
 
     url = _get_file_url(file_name, directory)
     return _retrieve_file(url, file_name, save_path, return_without_path)
