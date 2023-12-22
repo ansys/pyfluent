@@ -76,9 +76,10 @@ def _retrieve_file(
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
-    content = requests.get(url).content
+    request = requests.get(url)
+    request.raise_for_status()  # Throw 404 error if file not found
     with open(local_path, "wb") as f:
-        f.write(content)
+        f.write(request.content)
 
     if local_path.endswith(".zip"):
         _decompress(local_path)
