@@ -139,7 +139,7 @@ def test_case_data_load():
     session.exit()
 
 
-def test_gpu_launch_arg(monkeypatch):
+def test_gpu_launch_arg(helpers, monkeypatch):
     # The launch process is terminated intentionally to verify whether the fluent launch string
     # (which is available in the error message) is generated correctly.
     helpers.mock_awp_vars()
