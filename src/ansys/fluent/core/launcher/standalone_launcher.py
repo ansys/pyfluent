@@ -59,6 +59,7 @@ class StandaloneLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
+        scheduler_options: Optional[dict] = None,
         **kwargs,
     ):
         """Launch Fluent session in standalone mode.
@@ -176,6 +177,8 @@ class StandaloneLauncher:
         _process_invalid_args(dry_run, "standalone", argvals)
         args = _get_argvals(argvals, mode)
         argvals.update(args)
+        if argvals["start_timeout"] is None:
+            argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
@@ -204,7 +207,7 @@ class StandaloneLauncher:
         sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
         if self.env is None:
             setattr(self, "env", {})
-        kwargs = _get_subprocess_kwargs_for_fluent(self.env)
+        kwargs = _get_subprocess_kwargs_for_fluent(self.env, self.argvals)
         if self.cwd:
             kwargs.update(cwd=self.cwd)
         launch_string += _build_journal_argument(self.topy, self.journal_file_names)
@@ -257,12 +260,18 @@ class StandaloneLauncher:
             if self.case_file_name:
                 if self.meshing_mode:
                     session.tui.file.read_case(self.case_file_name)
+                elif self.lightweight_mode:
+                    session.read_case_lightweight(self.case_file_name)
                 else:
-                    session.read_case(self.case_file_name, self.lightweight_mode)
+                    session.file.read(
+                        file_type="case",
+                        file_name=self.case_file_name,
+                    )
             if self.case_data_file_name:
                 if not self.meshing_mode:
                     session.file.read(
-                        file_type="case-data", file_name=self.case_data_file_name
+                        file_type="case-data",
+                        file_name=self.case_data_file_name,
                     )
                 else:
                     raise RuntimeError(

@@ -10,8 +10,6 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.nightly
-@pytest.mark.optislang
-@pytest.mark.integration
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_simple_solve(load_mixing_elbow_param_case_dat):
@@ -103,8 +101,6 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
 
 @pytest.mark.nightly
-@pytest.mark.optislang
-@pytest.mark.integration
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_generate_read_mesh(mixing_elbow_geometry):

@@ -99,10 +99,7 @@ class Solver(BaseSession):
     @property
     def svar_data(self) -> SVARData:
         """Return the SVARData handle."""
-        try:
-            return SVARData(self.svar_service, self.svar_info)
-        except RuntimeError:
-            return None
+        return SVARData(self.svar_service, self.svar_info)
 
     @property
     def version(self):

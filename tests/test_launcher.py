@@ -3,6 +3,7 @@ import platform
 
 from beartype.roar import BeartypeCallHintParamViolation
 import pytest
+from util.fixture_fluent import download_input_file
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
@@ -74,7 +75,71 @@ def test_container_launcher():
         assert session.health_check_service.is_serving
 
 
-def test_gpu_launch_arg(monkeypatch, helpers):
+@pytest.mark.standalone
+def test_case_load():
+    # Test that launch_fluent() works with a case file as an argument
+    _, cas_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+    )
+    session = pyfluent.launch_fluent(case_file_name=cas_path)
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh available because not lightweight
+    fluent_version = float(session.get_fluent_version()[:-2])
+    if not fluent_version < 23.1:
+        assert session.mesh.quality.is_active()
+    # Data not loaded
+    assert not session.field_data.is_data_valid()
+
+    session.exit()
+
+
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=23.2")
+def test_case_lightweight_setup():
+    # Test that launch_fluent() correctly performs lightweight setup
+    _, cas_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+    )
+    session = pyfluent.launch_fluent(
+        case_file_name=cas_path,
+        lightweight_mode=True,
+    )
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh not available because lightweight
+    assert not session.mesh.quality.is_active()
+    # Data not loaded
+    assert not session.field_data.is_data_valid()
+
+
+@pytest.mark.standalone
+def test_case_data_load():
+    # Test that launch_fluent() works with a case+data file as an argument
+    _, cas_dat_path = download_input_file(
+        "pyfluent/mixing_elbow",
+        "mixing_elbow.cas.h5",
+        "mixing_elbow.dat.h5",
+    )
+    session = pyfluent.launch_fluent(case_data_file_name=cas_dat_path)
+
+    # Case loaded
+    assert session.setup.boundary_conditions.is_active()
+    # Mesh available because not lightweight
+    fluent_version = float(session.get_fluent_version()[:-2])
+    if not fluent_version < 23.1:
+        assert session.mesh.quality.is_active()
+    # Data loaded
+    assert session.field_data.is_data_valid()
+
+    session.exit()
+
+
+def test_gpu_launch_arg(monkeypatch):
     # The launch process is terminated intentionally to verify whether the fluent launch string
     # (which is available in the error message) is generated correctly.
     helpers.mock_awp_vars()

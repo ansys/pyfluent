@@ -1,11 +1,10 @@
 import pytest
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_controls(load_mixing_elbow_mesh):
-    solver = load_mixing_elbow_mesh
+def test_controls(load_mixing_elbow_settings_only):
+    solver = load_mixing_elbow_settings_only
     solver.setup.models.multiphase.models = "vof"
     assert solver.setup.models.multiphase.models() == "vof"
     solver.setup.general.operating_conditions.gravity = {
@@ -83,6 +82,7 @@ def test_controls(load_mixing_elbow_mesh):
             "omega": 0.75,
             "mp": 0.5,
             "density": 1.0,
+            "temperature": 0.75,
         }
     }
     solver.solution.controls.pseudo_time_explicit_relaxation_factor = {
@@ -96,6 +96,7 @@ def test_controls(load_mixing_elbow_mesh):
             "omega": 0.75,
             "mp": 0.5,
             "density": 1.0,
+            "temperature": 0.75,
         }
     }
     solver.solution.methods.p_v_coupling.flow_scheme = "SIMPLE"
@@ -110,6 +111,7 @@ def test_controls(load_mixing_elbow_mesh):
         "body-force": 1.0,
         "pressure": 0.9,
         "k": 0.8,
+        "temperature": 1.0,
     }
     solver.solution.controls.under_relaxation = {
         "body-force": 0.7,
@@ -125,4 +127,5 @@ def test_controls(load_mixing_elbow_mesh):
         "body-force": 0.7,
         "pressure": 0.9,
         "k": 0.8,
+        "temperature": 1.0,
     }
