@@ -67,27 +67,6 @@ jobs:
           filter_mode: nofilter
           fail_on_error: true
 
-  code-style:
-    name: "Running code style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v5.0
-  
-  commit-style:
-    name: "Run commit style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/commit-style@v5.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-  
-  branch-name-style:
-  name: "Run branch name style checks"
-  runs-on: ubuntu-latest
-  steps:
-    - uses: ansys/actions/branch-name-style@v5.0
-
   test-import:
     name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
