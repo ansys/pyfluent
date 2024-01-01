@@ -1,5 +1,5 @@
 Sphinx==7.2.6
-jupyter_sphinx==0.4.0
+jupyter_sphinx==0.5.3
 numpydoc==1.6.0
 matplotlib==3.8.2
 ansys-sphinx-theme==0.12.5
