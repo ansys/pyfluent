@@ -1324,12 +1324,12 @@ class PyCommand:
             self.delete_instance()
         file_purpose = purpose if purpose else file_purpose
         print(f"file_purpose = {file_purpose}")
-        if file_purpose == "input":
+        if file_purpose == "input" and bool(self.remote_file_handler):
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
-        if file_purpose == "output":
+        if file_purpose == "output" and bool(self.remote_file_handler):
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
 
     def help(self) -> None:
