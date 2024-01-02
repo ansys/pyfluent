@@ -285,7 +285,11 @@ def _convert_variant_to_value(var: Variant) -> _TValue:
 
 class DatamodelService(StreamingService):
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        remote_file_handler: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
