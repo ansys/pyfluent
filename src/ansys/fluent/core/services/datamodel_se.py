@@ -1312,13 +1312,13 @@ class PyCommand:
         Any
             Return value.
         """
-        if "Read" in self.__class__.__name__:
-            self.service.remote_file_handler.upload(file_name=kwds["FileName"])
-        self.service.execute_command(
+        # if "Read" in self.__class__.__name__:
+        #     self.service.remote_file_handler.upload(file_name=kwds["FileName"])
+        return self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
-        if "Write" in self.__class__.__name__:
-            self.service.remote_file_handler.download(file_name=kwds["FileName"])
+        # if "Write" in self.__class__.__name__:
+        #     self.service.remote_file_handler.download(file_name=kwds["FileName"])
 
     def help(self) -> None:
         """Prints help string."""
