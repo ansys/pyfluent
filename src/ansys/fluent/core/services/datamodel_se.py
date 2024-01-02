@@ -299,6 +299,7 @@ class DatamodelService(StreamingService):
         )
         self.event_streaming = None
         self.events = {}
+        self.remote_file_handler = remote_file_handler
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         request = DataModelProtoModule.GetAttributeValueRequest(
@@ -1316,13 +1317,20 @@ class PyCommand:
         Any
             Return value.
         """
-        # if "Read" in self.__class__.__name__:
-        #     self.service.remote_file_handler.upload(file_name=kwds["FileName"])
-        return self.service.execute_command(
+        file_purpose = None
+        if hasattr(self.create_instance(), "get_attr"):
+            command_instance = self.create_instance()
+            file_purpose = command_instance.get_attr("FileName/filePurpose")
+            self.delete_instance()
+        file_purpose = purpose if purpose else file_purpose
+        print(f"file_purpose = {file_purpose}")
+        if file_purpose == "input":
+            self.service.remote_file_handler.upload(file_name=kwds["FileName"])
+        self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
-        # if "Write" in self.__class__.__name__:
-        #     self.service.remote_file_handler.download(file_name=kwds["FileName"])
+        if file_purpose == "output":
+            self.service.remote_file_handler.download(file_name=kwds["FileName"])
 
     def help(self) -> None:
         """Prints help string."""
@@ -1339,6 +1347,12 @@ class PyCommand:
             self.rules, convert_path_to_se_path(self.path), self.command
         )
         return commandid
+
+    def _delete_command_arguments(self):
+        commandid = self._create_command_arguments()
+        self.service.delete_command_arguments(
+            self.rules, convert_path_to_se_path(self.path), self.command, commandid
+        )
 
     def _get_static_info(self) -> dict[str, Any]:
         if self.rules not in PyCommand._stored_static_info.keys():
@@ -1365,6 +1379,15 @@ class PyCommand:
         except RuntimeError:
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
+            )
+
+    def delete_instance(self):
+        """Delete a command instance."""
+        try:
+            self._delete_command_arguments()
+        except RuntimeError:
+            logger.warning(
+                "Delete command arguments object is available from 23.1 onwards"
             )
 
 

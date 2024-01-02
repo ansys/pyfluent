@@ -21,7 +21,6 @@ import hashlib
 import importlib
 import keyword
 import logging
-import os
 import pickle
 import string
 import sys
@@ -1039,14 +1038,6 @@ class Command(Action):
             file_purpose = self.file_name_list.get_attr(_InlineConstants.file_purpose)
         elif hasattr(self, "filename"):
             file_purpose = self.filename.get_attr(_InlineConstants.file_purpose)
-        if "file_name" in kwds:
-            kwds.update(
-                dict(
-                    file_name=os.path.basename(kwds["file_name"])
-                    if bool(self.remote_file_handler)
-                    else kwds["file_name"]
-                )
-            )
         file_purpose = purpose if purpose else file_purpose
         if file_purpose == "input":
             self.remote_file_handler.upload(file_name=kwds["file_name"])
