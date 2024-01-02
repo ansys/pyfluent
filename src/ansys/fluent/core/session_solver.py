@@ -92,9 +92,9 @@ class Solver(BaseSession):
         self._settings_root = None
         self._version = None
         self._lck = threading.Lock()
-        self.svar_service = self.fluent_connection.create_service(SVARService)
+        self.svar_service = self.fluent_connection.create_grpc_service(SVARService)
         self.svar_info = SVARInfo(self.svar_service)
-        self._reduction_service = self.fluent_connection.create_service(
+        self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
         )
         if int(self.version) >= 241:

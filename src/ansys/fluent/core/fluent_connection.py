@@ -15,8 +15,9 @@ from docker.models.containers import Container
 import grpc
 import psutil
 
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
+from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.platform.instancemanagement import Instance
 import docker
@@ -311,11 +312,11 @@ class FluentConnection:
 
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = self.create_service(
+        self._scheme_eval_service = self.create_grpc_service(
             SchemeEvalService, self.error_state
         )
-        self.scheme_eval = self.create_scheme_eval(
-            SchemeEval, self._scheme_eval_service
+        self.scheme_eval = service_creator().create(
+            "scheme_eval", self._scheme_eval_service
         )
 
         self._cleanup_on_exit = cleanup_on_exit
@@ -498,7 +499,7 @@ class FluentConnection:
         """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
-    def create_service(self, service, *args):
+    def create_grpc_service(self, service, *args):
         """Create a gRPC service.
 
         Parameters
@@ -514,15 +515,6 @@ class FluentConnection:
             service object
         """
         return service(self._channel, self._metadata, *args)
-
-    def create_datamodel_service(self, datamodel_service_cls, *args, **kwargs):
-        return datamodel_service_cls(*args, **kwargs)
-
-    def create_scheme_eval(self, scheme_eval_cls, *args, **kwargs):
-        return scheme_eval_cls(*args, **kwargs)
-
-    def create_settings_service(self, settings_service_cls, *args, **kwargs):
-        return settings_service_cls(*args, **kwargs)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
