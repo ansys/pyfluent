@@ -58,7 +58,11 @@ def test_slurm_future_exception(slurm_future: SlurmFuture):
     assert isinstance(slurm_future.exception(), SlurmFutureException)
 
 
-def test_slurm_future_done_callback(slurm_future: SlurmFuture):
+def test_slurm_future_done_callback(
+    slurm_future: SlurmFuture, load_mixing_elbow_settings_only
+):
+    solver = load_mixing_elbow_settings_only()
+    print(type(solver))
     called = []
     slurm_future.add_done_callback(lambda session: called.append(True))
     assert not called

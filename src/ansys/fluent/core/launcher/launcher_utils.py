@@ -411,9 +411,9 @@ def _get_running_session_mode(
 def _generate_launch_string(
     argvals,
     meshing_mode: bool,
-    show_gui: bool,
-    additional_arguments: str,
     server_info_file_name: str,
+    show_gui: Optional[bool] = None,
+    additional_arguments: Optional[str] = None,
 ):
     """Generates the launch string to launch fluent."""
     if _is_windows():
