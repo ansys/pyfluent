@@ -3,7 +3,6 @@ from enum import Enum
 import functools
 import itertools
 import logging
-import os
 from typing import Any, Callable, Iterator, NoReturn, Optional, Union
 
 import grpc
@@ -1156,26 +1155,12 @@ class PyCommand:
         request.path = convert_path_to_se_path(self.path)
         request.command = self.command
         request.wait = True
-        if "FileName" in kwds:
-            kwds.update(
-                dict(
-                    FileName=os.path.basename(kwds["FileName"])
-                    if bool(self.service.remote_file_handler)
-                    else kwds["FileName"]
-                )
-            )
         _convert_value_to_variant(kwds, request.args)
-        file_purpose = None
-        if hasattr(self.create_instance(), "get_attr"):
-            command_instance = self.create_instance()
-            file_purpose = command_instance.get_attr("FileName/filePurpose")
-            del command_instance
-        file_purpose = purpose if purpose else file_purpose
-        if file_purpose == "input":
+        if "Read" in self.__class__.__name__:
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         response = self.service.execute_command(request)
         _convert_variant_to_value(response.result)
-        if file_purpose == "output":
+        if "Write" in self.__class__.__name__:
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
 
     def help(self) -> None:
