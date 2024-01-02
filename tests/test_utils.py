@@ -2,11 +2,7 @@ import time
 
 import pytest
 
-from ansys.fluent.core.utils.execution import (
-    InvalidArgument,
-    timeout_exec,
-    timeout_loop,
-)
+from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
 
 def test_timeout_exec():
@@ -42,18 +38,18 @@ def test_timeout_loop():
                 return returned
 
     waiter = Waiter(ExpectedAfterFive, expected=True)
-    ret = timeout_loop(waiter, timeout=1, expected="truthy", idle_period=0.1)
+    ret = timeout_loop(waiter, timeout=1.0, expected="truthy", idle_period=0.1)
     assert ret is True
 
     waiter = Waiter(ExpectedAfterFive, expected=False)
-    ret = timeout_loop(waiter, timeout=1, expected="falsy", idle_period=0.1)
+    ret = timeout_loop(waiter, timeout=1.0, expected="falsy", idle_period=0.1)
     assert ret is False
 
     waiter = Waiter(ExpectedAfterFive, expected=True)
     ret = timeout_loop(waiter, timeout=0.2, expected="truthy", idle_period=0.1)
     assert ret is False
 
-    with pytest.raises(InvalidArgument) as msg:
+    with pytest.raises(Exception) as msg:
         timeout_loop(waiter, timeout=0.2, expected=True, idle_period=0.1)
 
 

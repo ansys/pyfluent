@@ -17,7 +17,7 @@ class SlurmFutureResult:
     pass
 
 
-class SlurmFutureException:
+class SlurmFutureException(Exception):
     pass
 
 
