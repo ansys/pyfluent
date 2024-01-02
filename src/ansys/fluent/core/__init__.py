@@ -1,4 +1,7 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
+from beartype.claw import beartype_this_package
+
+beartype_this_package()
 
 import os
 import pydoc
