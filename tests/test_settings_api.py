@@ -9,8 +9,11 @@ from ansys.fluent.core.examples import download_file
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver_session.file.read_case(file_name=case_path)
-    solver_session.solution.initialization.hybrid_initialize()
+    solver_session.file.read(
+        file_name=case_path, file_type="case", lightweight_setup=True
+    )
+    # NOTE: Not sure why initialization is necessary here
+    # solver_session.solution.initialization.hybrid_initialize()
 
     viscous_model = solver_session.setup.models.viscous
 
@@ -26,7 +29,7 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.file.read_case(file_name=case_path)
+    solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
     boundary_conditions = solver.setup.boundary_conditions
     assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
         "inlet2": {"momentum": {"velocity": {"option": "value", "value": 15}}},
@@ -104,7 +107,7 @@ def test_wildcard_fnmatch(new_solver_session):
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.file.read_case(file_name=case_path)
+    solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
 
     velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     assert [x for x in velocity_inlet] == ["inlet2", "inlet1"]

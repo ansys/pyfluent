@@ -4,7 +4,6 @@ from pathlib import Path
 import shutil
 from typing import Any, Dict
 
-from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import BaseSession as Session
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -67,14 +66,14 @@ def _build_parameter_docstring(name: str, t: str):
 
 def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
     doc = f"{indent}Command {name}.\n\n" if is_command else f"{indent}Query {name}.\n\n"
-    if info.args:
+    if info.get("args"):
         doc += f"{indent}Parameters\n"
         doc += f"{indent}{'-' * len('Parameters')}\n"
-        for arg in info.args:
-            doc += f"{indent}{arg.name} : {_PY_TYPE_BY_DM_TYPE[arg.type]}\n"
+        for arg in info.get("args"):
+            doc += f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n'
     doc += f"\n{indent}Returns\n"
     doc += f"{indent}{'-' * len('Returns')}\n"
-    doc += f"{indent}{_PY_TYPE_BY_DM_TYPE[info.returntype]}\n"
+    doc += f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n'
     return doc
 
 
@@ -155,10 +154,8 @@ class DataModelGenerator:
         self._populate_static_info()
 
     def _get_static_info(self, rules: str, session: Session):
-        request = DataModelProtoModule.GetStaticInfoRequest()
-        request.rules = rules
-        response = session.datamodel_service_se.get_static_info(request)
-        return response.info
+        response = session.datamodel_service_se.get_static_info(rules)
+        return response
 
     def _populate_static_info(self):
         run_meshing_mode = any(
@@ -194,9 +191,9 @@ class DataModelGenerator:
                     try:
                         if (
                             len(
-                                info.static_info.singletons["Case"]
-                                .singletons["App"]
-                                .singletons
+                                info.static_info["singletons"]["Case"]["singletons"][
+                                    "App"
+                                ]["singletons"]
                             )
                             == 0
                         ):
@@ -222,13 +219,11 @@ class DataModelGenerator:
         f.write(f"{indent}    {_build_singleton_docstring(name)}\n")
         f.write(f'{indent}    """\n')
         f.write(f"{indent}    def __init__(self, service, rules, path):\n")
-        named_objects = sorted(info.namedobjects)
-        singletons = sorted(info.singletons)
-        parameters = sorted(info.parameters)
-        commands = sorted(info.commands)
-        queries = []
-        if hasattr(info, "queries"):
-            queries = sorted(info.queries)
+        named_objects = sorted(info.get("namedobjects", []))
+        singletons = sorted(info.get("singletons", []))
+        parameters = sorted(info.get("parameters", []))
+        commands = sorted(info.get("commands", []))
+        queries = sorted(info.get("queries", []))
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
@@ -263,7 +258,7 @@ class DataModelGenerator:
             f.write(f"{indent}        .\n")
             f.write(f'{indent}        """\n')
             api_tree[f"{k}:<name>"] = self._write_static_info(
-                f"_{k}", info.namedobjects[k], f, level + 2
+                f"_{k}", info["namedobjects"][k], f, level + 2
             )
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
@@ -272,13 +267,13 @@ class DataModelGenerator:
             if k.isidentifier():
                 # print("included", k)
                 api_tree[k] = self._write_static_info(
-                    k, info.singletons[k], f, level + 1
+                    k, info["singletons"][k], f, level + 1
                 )
             else:
                 # print("\t\texcluded", k)
                 pass
         for k in parameters:
-            k_type = _PY_TYPE_BY_DM_TYPE[info.parameters[k].type]
+            k_type = _PY_TYPE_BY_DM_TYPE[info["parameters"][k]["type"]]
             if k_type in ["str", "List[str]"]:
                 f.write(f"{indent}    class {k}(PyTextual):\n")
             elif k_type in ["int", "float"]:
@@ -290,7 +285,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(
                 f"{indent}        "
-                f"{_build_parameter_docstring(k, info.parameters[k].type)}\n"
+                f'{_build_parameter_docstring(k, info["parameters"][k]["type"])}\n'
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
@@ -300,7 +295,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(
                 _build_command_query_docstring(
-                    k, info.commands[k].commandinfo, f"{indent}        ", True
+                    k, info["commands"][k]["commandinfo"], f"{indent}        ", True
                 )
             )
             f.write(f'{indent}        """\n')
@@ -311,7 +306,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(
                 _build_command_query_docstring(
-                    k, info.queries[k].queryinfo, f"{indent}        ", False
+                    k, info["queries"][k]["queryinfo"], f"{indent}        ", False
                 )
             )
             f.write(f'{indent}        """\n')
@@ -335,13 +330,11 @@ class DataModelGenerator:
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
 
-            named_objects = sorted(info.namedobjects)
-            singletons = sorted(info.singletons)
-            parameters = sorted(info.parameters)
-            commands = sorted(info.commands)
-            queries = []
-            if hasattr(info, "queries"):
-                queries = sorted(info.queries)
+            named_objects = sorted(info.get("namedobjects", []))
+            singletons = sorted(info.get("singletons", []))
+            parameters = sorted(info.get("parameters", []))
+            commands = sorted(info.get("commands", []))
+            queries = sorted(info.get("queries", []))
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
             if noindex:
@@ -361,7 +354,7 @@ class DataModelGenerator:
                     if k.isidentifier():
                         f.write(f"   {k}/index\n")
                         self._write_doc_for_model_object(
-                            info.singletons[k],
+                            info["singletons"][k],
                             doc_dir / k,
                             heading + "." + k,
                             module_name,
@@ -371,7 +364,7 @@ class DataModelGenerator:
                 for k in named_objects:
                     f.write(f"   {k}/index\n")
                     self._write_doc_for_model_object(
-                        info.namedobjects[k],
+                        info["namedobjects"][k],
                         doc_dir / k,
                         heading + "." + k,
                         module_name,

@@ -58,5 +58,21 @@
             "false": ""
         },
         "fluent_format": "{}"
+    },
+    "scheduler": {
+        "type": "str",
+        "fluent_format": " -scheduler={}"
+    },
+    "scheduler_headnode": {
+        "type": "str",
+        "fluent_format": " -scheduler_headnode={}"
+    },
+    "scheduler_queue": {
+        "type": "str",
+        "fluent_format": " -scheduler_queue={}"
+    },
+    "scheduler_account": {
+        "type": "str",
+        "fluent_format": " -scheduler_account={}"
     }
 }

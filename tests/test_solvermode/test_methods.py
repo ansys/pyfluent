@@ -1,11 +1,10 @@
 import pytest
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_methods(load_mixing_elbow_mesh):
-    solver = load_mixing_elbow_mesh
+def test_methods(load_mixing_elbow_settings_only):
+    solver = load_mixing_elbow_settings_only
     solver.setup.models.multiphase.models = "vof"
     solver.setup.general.operating_conditions.gravity = {
         "enable": True,
@@ -27,6 +26,7 @@ def test_methods(load_mixing_elbow_mesh):
         "mp": "compressive",
         "pressure": "presto!",
         "k": "second-order-upwind",
+        "temperature": "second-order-upwind",
     }
     solver.solution.methods.gradient_scheme = "least-square-cell-based"
     assert solver.solution.methods.gradient_scheme() == "least-square-cell-based"
