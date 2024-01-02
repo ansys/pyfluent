@@ -257,7 +257,7 @@ class RemoteFileHandler:
             return False
 
 
-class MyFileService:
+class TransferRequestRecorder:
     def __init__(self):
         self.uploaded_files = list()
         self.downloaded_files = list()

@@ -20,8 +20,8 @@ from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.utils.file_transfer_service import (
-    MyFileService,
     RemoteFileHandler,
+    TransferRequestRecorder,
 )
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.networking import get_free_port
@@ -119,7 +119,7 @@ def test_file_purpose_on_remote_instance(
 ):
     solver = new_solver_session
 
-    file_service = MyFileService()
+    file_service = TransferRequestRecorder()
 
     solver_session = Solver(
         fluent_connection=solver.fluent_connection,
