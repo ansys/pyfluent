@@ -15,7 +15,10 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.monitor import MonitorsService
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL  # noqa: F401
+from ansys.fluent.core.session_shared import (  # noqa: F401
+    _CODEGEN_MSG_DATAMODEL,
+    _CODEGEN_MSG_TUI,
+)
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
@@ -26,7 +29,7 @@ from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 import ansys.platform.instancemanagement as pypim
 
-# from .rpvars import RPVars
+from .rpvars import RPVars
 
 try:
     from ansys.fluent.core.solver.settings import root
@@ -119,7 +122,7 @@ class BaseSession:
         self._remote_file_handler = remote_file_handler
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
-        # self.rp_vars = RPVars(self.scheme_eval.string_eval)
+        self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 

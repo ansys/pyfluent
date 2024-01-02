@@ -329,7 +329,7 @@ class SchemeEval:
 
         Returns
         -------
-        str
+        Any
             Output scheme value represented as Python datatype
         """
         S = Symbol  # noqa N806
