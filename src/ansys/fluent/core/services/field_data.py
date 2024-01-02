@@ -17,7 +17,6 @@ from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
     TracingInterceptor,
-    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -47,7 +46,6 @@ class FieldDataService(StreamingService):
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
-            WrapApiCallInterceptor(),
         )
         super().__init__(
             stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
@@ -645,7 +643,9 @@ class FieldTransaction:
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return _get_field_and_parse(self._service, self._fields_request)
+        return ChunkParser().extract_fields(
+            self._service.get_fields(self._fields_request)
+        )
 
     def __call__(self):
         self.get_fields()
@@ -871,15 +871,6 @@ class ChunkParser:
                 else:
                     payload_data[surface_id] = {payload_info.fieldName: field}
         return fields_data
-
-
-def _get_field_and_parse(service, request):
-    def inner(service, request):
-        return ChunkParser().extract_fields(service.get_fields(request))
-
-    from ansys.fluent.core import wrap_api_call
-
-    return wrap_api_call(inner, service, request)
 
 
 class BaseFieldData:
@@ -1186,7 +1177,7 @@ class FieldData:
             ]
         )
 
-        fields = _get_field_and_parse(self._service, fields_request)
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
 
         if surface_name:
@@ -1258,7 +1249,7 @@ class FieldData:
             SurfaceDataType.FacesCentroid: "centroid",
             SurfaceDataType.FacesNormal: "face-normal",
         }
-        fields = _get_field_and_parse(self._service, fields_request)
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
         def _get_surfaces_data(parent_class, surf_id, _data_type):
@@ -1354,7 +1345,7 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        fields = _get_field_and_parse(self._service, fields_request)
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
 
         if surface_name:
@@ -1461,7 +1452,7 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        fields = _get_field_and_parse(self._service, fields_request)
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         pathlines_data = next(iter(fields.values()))
 
         def _get_surfaces_data(parent_class, surf_id, _data_type):
