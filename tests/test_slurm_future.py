@@ -38,7 +38,11 @@ def test_cancel_slurm_future(slurm_future: SlurmFuture):
     assert slurm_future.cancel()
 
 
-def test_slurm_future_lifecycle(slurm_future: SlurmFuture):
+def test_slurm_future_lifecycle(
+    slurm_future: SlurmFuture, load_mixing_elbow_settings_only
+):
+    solver = load_mixing_elbow_settings_only()
+    print(type(solver))
     assert slurm_future.pending()
     assert not slurm_future.running()
     assert not slurm_future.done()

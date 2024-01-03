@@ -197,11 +197,11 @@ class StandaloneLauncher:
 
         server_info_file_name = _get_server_info_file_name()
         launch_string = _generate_launch_string(
-            self.argvals,
-            self.meshing_mode,
-            self.show_gui,
-            self.additional_arguments,
-            server_info_file_name,
+            argvals=self.argvals,
+            meshing_mode=self.meshing_mode,
+            show_gui=self.show_gui,
+            additional_arguments=self.additional_arguments,
+            server_info_file_name=server_info_file_name,
         )
 
         sifile_last_mtime = Path(server_info_file_name).stat().st_mtime

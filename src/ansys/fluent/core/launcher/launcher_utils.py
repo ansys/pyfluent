@@ -219,7 +219,7 @@ class FluentMode(Enum):
             )
 
 
-def _get_server_info_file_name(use_tmpdir=True):
+def _get_server_info_file_name(use_tmpdir=True) -> str:
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = (
         Path(server_info_dir)
@@ -342,7 +342,6 @@ def _update_launch_string_wrt_gui_options(
     ):
         if not {"-g", "-gu"} & set(additional_arguments.split()):
             launch_string += " -hidden"
-
     return launch_string
 
 
