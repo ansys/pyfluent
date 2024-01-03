@@ -134,8 +134,7 @@ class BaseSession:
             DatamodelService_TUI, self.error_state
         )
 
-        self.datamodel_service_se = service_creator().create(
-            "datamodel",
+        self.datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.error_state,
@@ -184,8 +183,7 @@ class BaseSession:
             self.fluent_connection._id, self._field_data_service
         )
 
-        self.settings_service = service_creator().create(
-            "settings",
+        self.settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.scheme_eval,

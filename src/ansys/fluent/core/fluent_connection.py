@@ -315,8 +315,8 @@ class FluentConnection:
         self._scheme_eval_service = self.create_grpc_service(
             SchemeEvalService, self.error_state
         )
-        self.scheme_eval = service_creator().create(
-            "scheme_eval", self._scheme_eval_service
+        self.scheme_eval = service_creator("scheme_eval").create(
+            self._scheme_eval_service
         )
 
         self._cleanup_on_exit = cleanup_on_exit

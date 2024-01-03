@@ -12,5 +12,8 @@ _service_cls_by_name = {
 
 
 class service_creator:
-    def create(self, service_name: str, *args, **kwargs):
-        return _service_cls_by_name[service_name](*args, **kwargs)
+    def __init__(self, service_name: str):
+        self._service_cls = _service_cls_by_name[service_name]
+
+    def create(self, *args, **kwargs):
+        return self._service_cls(*args, **kwargs)
