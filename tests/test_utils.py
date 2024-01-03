@@ -1,8 +1,13 @@
 import time
 
+from beartype import roar
 import pytest
 
-from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
+from ansys.fluent.core.utils.execution import (
+    InvalidArgument,
+    timeout_exec,
+    timeout_loop,
+)
 
 
 def test_timeout_exec():
@@ -49,8 +54,11 @@ def test_timeout_loop():
     ret = timeout_loop(waiter, timeout=0.2, expected="truthy", idle_period=0.1)
     assert ret is False
 
-    with pytest.raises(Exception) as msg:
+    with pytest.raises(roar.BeartypeCallHintParamViolation) as msg:
         timeout_loop(waiter, timeout=0.2, expected=True, idle_period=0.1)
+
+    with pytest.raises(InvalidArgument) as msg:
+        timeout_loop(waiter, timeout=0.2, expected="True", idle_period=0.1)
 
 
 def count_key_recursive(dictionary, key):
