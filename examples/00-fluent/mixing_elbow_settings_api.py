@@ -36,7 +36,7 @@ import_file_name = examples.download_file(
 ###############################################################################
 # Launch Fluent
 # ~~~~~~~~~~~~~
-# Launch Fluent as a service in meshing mode with double precision running on
+# Launch Fluent as a service in solver mode with double precision running on
 # two processors.
 
 solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
