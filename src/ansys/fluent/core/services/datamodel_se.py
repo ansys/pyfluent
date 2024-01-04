@@ -144,11 +144,39 @@ class DatamodelServiceImpl:
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def rename(
+        self, request: DataModelProtoModule.RenameRequest
+    ) -> DataModelProtoModule.RenameResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.rename(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_object_names(
+        self, request: DataModelProtoModule.GetObjectNamesRequest
+    ) -> DataModelProtoModule.GetObjectNamesResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.getObjectNames(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def delete_child_objects(
+        self, request: DataModelProtoModule.DeleteChildObjectsRequest
+    ) -> DataModelProtoModule.DeleteChildObjectsResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.deleteChildObjects(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
         """setState RPC of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def fix_state(
+        self, request: DataModelProtoModule.FixStateRequest
+    ) -> DataModelProtoModule.FixStateResponse:
+        """setState RPC of DataModel service."""
+        return self._stub.fixState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
@@ -196,7 +224,7 @@ class DatamodelServiceImpl:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
             raise RuntimeError(
-                f"The following excepton was caught\n {ex.details()}\n "
+                f"The following exception was caught\n {ex.details()}\n "
                 "while deleting a command instance. Command instancing is"
                 "supported from Ansys 2023R2 onward."
             ) from None
@@ -305,12 +333,50 @@ class DatamodelService(StreamingService):
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
+    def get_object_names(self, rules, path):
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        response = self._impl.get_object_names(request)
+        return response.names
+
+    def rename(self, new_name, rules, path) -> None:
+        request = DataModelProtoModule.RenameRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        request.new_name = new_name
+        request.wait = True
+        self._impl.rename(request)
+
+    def delete_child_objects(self, child_names, rules, path) -> None:
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        for name in child_names:
+            request.child_names.names.append(name)
+        request.wait = True
+        self._impl.delete_child_objects(request)
+
+    def delete_all_child_objects(self, rules, path):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        request.delete_all = True
+        request.wait = True
+        self._impl.delete_child_objects(request)
+
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
         )
         _convert_value_to_variant(state, request.state)
         self._impl.set_state(request)
+
+    def fix_state(self, rules, path) -> None:
+        request = DataModelProtoModule.FixStateRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        self._impl.fix_state(request)
 
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
@@ -535,6 +601,11 @@ class PyStateContainer(PyCallableStateObject):
         return state
 
     getState = get_state
+
+    def fix_state(self) -> None:
+        self.service.fix_state(self.rules, self.path)
+
+    fixState = fix_state
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
@@ -1114,8 +1185,23 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
-    def get_object_names(self) -> list[str]:
-        return self._get_child_object_display_names()
+    def get_object_names(self) -> Any:
+        return self.service.get_object_names(self.rules, self.path)
+
+    getChildObjectDisplayNames = get_object_names
+
+    def rename(self, new_name) -> None:
+        self.service.rename(new_name, self.rules, self.path)
+
+    def delete_child_objects(self, child_names):
+        self.service.delete_child_objects(child_names, self.rules, self.path)
+
+    deleteChildObjects = delete_child_objects
+
+    def delete_all_child_objects(self):
+        self.service.delete_all_child_objects(self.rules, self.path)
+
+    deleteAllChildObjects = delete_all_child_objects
 
     def __len__(self) -> int:
         """Return a count of child objects.
