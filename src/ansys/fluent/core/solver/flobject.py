@@ -1039,7 +1039,7 @@ class Command(Action):
         elif hasattr(self, "filename"):
             file_purpose = self.filename.get_attr(_InlineConstants.file_purpose)
         file_purpose = purpose if purpose else file_purpose
-        if file_purpose == "input":
+        if file_purpose == "input" and bool(self.remote_file_handler):
             self.remote_file_handler.upload(file_name=kwds["file_name"])
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
@@ -1056,7 +1056,7 @@ class Command(Action):
                 if response in ["n", "N", "no"]:
                     return
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-        if file_purpose == "output":
+        if file_purpose == "output" and bool(self.remote_file_handler):
             self.remote_file_handler.download(file_name=kwds["file_name"])
 
 
