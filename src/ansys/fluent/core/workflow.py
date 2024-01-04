@@ -8,6 +8,7 @@ from time import sleep, time
 from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
 
@@ -79,10 +80,11 @@ def _refresh_task_accessors(obj):
 
 
 def _convert_task_list_to_display_names(workflow_root, task_list):
-    return [
-        DataModelCache.get_state("workflow", workflow_root)[f"TaskObject:{x}"]["_name_"]
-        for x in task_list
-    ]
+    if pyfluent.DATAMODEL_USE_STATE_CACHE:
+        workflow_state = DataModelCache.get_state("workflow", workflow_root)
+    else:
+        workflow_state = workflow_root.get_remote_state()
+    return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
 
 
 class BaseTask:
