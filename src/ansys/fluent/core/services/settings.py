@@ -274,8 +274,11 @@ class SettingsService:
             ret["object-type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
-        if info.file_purpose:
-            ret["file_purpose"] = info.file_purpose
+        try:
+            if info.file_purpose:
+                ret["file_purpose"] = info.file_purpose
+        except AttributeError:
+            pass
 
         try:
             if info.include_child_named_objects:
