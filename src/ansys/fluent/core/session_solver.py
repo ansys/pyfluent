@@ -24,7 +24,10 @@ from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 from ansys.fluent.core.workflow import WorkflowWrapper
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -97,7 +100,7 @@ class Solver(BaseSession):
         self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
         )
-        if int(self.version) >= 241:
+        if FluentVersion(self.version) >= FluentVersion.v241:
             self.reduction = Reduction(self._reduction_service)
         else:
             self.reduction = reduction_old
