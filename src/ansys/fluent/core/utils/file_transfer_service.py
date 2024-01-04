@@ -232,7 +232,10 @@ class RemoteFileHandler:
         FileNotFoundError
             If a file does not exist.
         """
-        self._transfer_service.upload_file(file_name=file_name, on_uploaded=on_uploaded)
+        if bool(self):
+            self._transfer_service.upload_file(
+                file_name=file_name, on_uploaded=on_uploaded
+            )
 
     def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
         """Perform callback operation and
@@ -246,9 +249,10 @@ class RemoteFileHandler:
         before_downloaded: Callable
             Write a file.
         """
-        self._transfer_service.download_file(
-            file_name=file_name, before_downloaded=before_downloaded
-        )
+        if bool(self):
+            self._transfer_service.download_file(
+                file_name=file_name, before_downloaded=before_downloaded
+            )
 
     def __bool__(self):
         if self._service_type == ServiceType.PIM:
