@@ -45,6 +45,19 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
             datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
+def _import_settings_root(root):
+    _class_dict = {}
+    api_keys = []
+    if hasattr(root, "child_names"):
+        api_keys = root.child_names
+
+    for root_item in api_keys:
+        _class_dict[root_item] = getattr(root, root_item)
+
+    settings_api_root = type("SettingsRoot", (object,), _class_dict)
+    return settings_api_root()
+
+
 class Solver(BaseSession):
     """Encapsulates a Fluent solver session.
 
@@ -67,6 +80,7 @@ class Solver(BaseSession):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._build_from_fluent_connection(fluent_connection)
+        self._settings_api_root = None
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -158,61 +172,6 @@ class Solver(BaseSession):
         return self._system_coupling
 
     @property
-    def file(self):
-        """Settings for file."""
-        return self._root.file
-
-    @property
-    def mesh(self):
-        """Settings for mesh."""
-        return self._root.mesh
-
-    @property
-    def setup(self):
-        """Settings for setup."""
-        return self._root.setup
-
-    @property
-    def solution(self):
-        """Settings for solution."""
-        return self._root.solution
-
-    @property
-    def results(self):
-        """Settings for results."""
-        return self._root.results
-
-    @property
-    def parametric_studies(self):
-        """Settings for parametric_studies."""
-        return self._root.parametric_studies
-
-    @property
-    def current_parametric_study(self):
-        """Settings for current_parametric_study."""
-        return self._root.current_parametric_study
-
-    @property
-    def parameters(self):
-        """Settings for parameters."""
-        return self._root.parameters
-
-    @property
-    def parallel(self):
-        """Settings for parallel."""
-        return self._root.parallel
-
-    @property
-    def report(self):
-        """Settings for report."""
-        return self._root.report
-
-    @property
-    def server(self):
-        """Settings for server."""
-        return self._root.server
-
-    @property
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
@@ -282,4 +241,22 @@ class Solver(BaseSession):
             before_downloaded=(
                 lambda file_name: self.file.write_case(file_name=file_name)
             ),
+        )
+
+    def _populate_settings_api_root(self):
+        if not self._settings_api_root:
+            self._settings_api_root = _import_settings_root(self._root)
+
+    def __getattr__(self, attr):
+        self._populate_settings_api_root()
+        return getattr(self._settings_api_root, attr)
+
+    def __dir__(self):
+        self._populate_settings_api_root()
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self._settings_api_root)
+            )
         )
