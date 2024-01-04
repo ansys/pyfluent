@@ -19,6 +19,7 @@ from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
     TracingInterceptor,
+    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
 
@@ -116,6 +117,7 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
+            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
@@ -524,8 +526,11 @@ class PyStateContainer(PyCallableStateObject):
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
     def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
-        if DataModelCache.is_unassigned(state):
+        if pyfluent.DATAMODEL_USE_STATE_CACHE:
+            state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
+            if DataModelCache.is_unassigned(state):
+                state = self.get_remote_state()
+        else:
             state = self.get_remote_state()
         return state
 
