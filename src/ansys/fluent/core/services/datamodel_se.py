@@ -331,6 +331,38 @@ class DatamodelService(StreamingService):
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
+    def get_object_names(self, rules, path):
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        response = self._impl.get_object_names(request)
+        return response.names
+
+    def rename(self, new_name, rules, path) -> None:
+        request = DataModelProtoModule.RenameRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        request.new_name = new_name
+        request.wait = True
+        self._impl.rename(request)
+
+    def delete_child_objects(self, child_names, rules, path) -> None:
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        for name in child_names:
+            request.child_names.names.append(name)
+        request.wait = True
+        self._impl.delete_child_objects(request)
+
+    def delete_all_child_objects(self, rules, path):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        request.delete_all = True
+        request.wait = True
+        self._impl.delete_child_objects(request)
+
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
@@ -1146,40 +1178,20 @@ class PyNamedObjectContainer:
         return child_object_display_names
 
     def get_object_names(self) -> Any:
-        request = DataModelProtoModule.GetStateRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        response = self.service.get_object_names(request)
-        return response.names
+        return self.service.get_object_names(self.rules, self.path)
 
     getChildObjectDisplayNames = get_object_names
 
     def rename(self, new_name) -> None:
-        request = DataModelProtoModule.RenameRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        request.new_name = new_name
-        request.wait = True
-        self.service.rename(request)
+        self.service.rename(new_name, self.rules, self.path)
 
     def delete_child_objects(self, child_names):
-        request = DataModelProtoModule.DeleteChildObjectsRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        for name in child_names:
-            request.child_names.names.append(name)
-        request.wait = True
-        self.service.delete_child_objects(request)
+        self.service.delete_child_objects(child_names, self.rules, self.path)
 
     deleteChildObjects = delete_child_objects
 
     def delete_all_child_objects(self):
-        request = DataModelProtoModule.DeleteChildObjectsRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        request.delete_all = True
-        request.wait = True
-        self.service.delete_child_objects(request)
+        self.service.delete_all_child_objects(self.rules, self.path)
 
     deleteAllChildObjects = delete_all_child_objects
 
