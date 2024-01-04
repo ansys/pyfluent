@@ -282,7 +282,7 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session

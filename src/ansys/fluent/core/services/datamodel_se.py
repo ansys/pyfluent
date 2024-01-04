@@ -370,6 +370,12 @@ class DatamodelService(StreamingService):
         _convert_value_to_variant(state, request.state)
         self._impl.set_state(request)
 
+    def fix_state(self, rules, path) -> None:
+        request = DataModelProtoModule.FixStateRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        self._impl.fix_state(request)
+
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
     ) -> None:
@@ -592,10 +598,7 @@ class PyStateContainer(PyCallableStateObject):
     getState = get_state
 
     def fix_state(self) -> None:
-        request = DataModelProtoModule.FixStateRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        self.service.fix_state(request)
+        self.service.fix_state(self.rules, self.path)
 
     fixState = fix_state
 
