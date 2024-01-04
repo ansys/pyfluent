@@ -258,7 +258,7 @@ class RemoteFileHandler:
         if self._service_type == ServiceType.PIM:
             return self._transfer_service.is_pim_configured()
         if self._service_type == ServiceType.Test:
-            return False
+            return True
 
 
 class TransferRequestRecorder:
