@@ -142,11 +142,39 @@ class DatamodelServiceImpl:
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def rename(
+        self, request: DataModelProtoModule.RenameRequest
+    ) -> DataModelProtoModule.RenameResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.rename(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_object_names(
+        self, request: DataModelProtoModule.GetObjectNamesRequest
+    ) -> DataModelProtoModule.GetObjectNamesResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.getObjectNames(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def delete_child_objects(
+        self, request: DataModelProtoModule.DeleteChildObjectsRequest
+    ) -> DataModelProtoModule.DeleteChildObjectsResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.deleteChildObjects(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
         """setState RPC of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def fix_state(
+        self, request: DataModelProtoModule.FixStateRequest
+    ) -> DataModelProtoModule.FixStateResponse:
+        """setState RPC of DataModel service."""
+        return self._stub.fixState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
@@ -194,7 +222,7 @@ class DatamodelServiceImpl:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
             raise RuntimeError(
-                f"The following excepton was caught\n {ex.details()}\n "
+                f"The following exception was caught\n {ex.details()}\n "
                 "while deleting a command instance. Command instancing is"
                 "supported from Ansys 2023R2 onward."
             ) from None
@@ -530,6 +558,14 @@ class PyStateContainer(PyCallableStateObject):
         return state
 
     getState = get_state
+
+    def fix_state(self) -> None:
+        request = DataModelProtoModule.FixStateRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        self.service.fix_state(request)
+
+    fixState = fix_state
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
@@ -1109,8 +1145,43 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
-    def get_object_names(self) -> list[str]:
-        return self._get_child_object_display_names()
+    def get_object_names(self) -> Any:
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_object_names(request)
+        return response.names
+
+    getChildObjectDisplayNames = get_object_names
+
+    def rename(self, new_name) -> None:
+        request = DataModelProtoModule.RenameRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.new_name = new_name
+        request.wait = True
+        self.service.rename(request)
+
+    def delete_child_objects(self, child_names):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        for name in child_names:
+            request.child_names.names.append(name)
+        request.wait = True
+        self.service.delete_child_objects(request)
+
+    deleteChildObjects = delete_child_objects
+
+    def delete_all_child_objects(self):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.delete_all = True
+        request.wait = True
+        self.service.delete_child_objects(request)
+
+    deleteAllChildObjects = delete_all_child_objects
 
     def __len__(self) -> int:
         """Return a count of child objects.
