@@ -6,6 +6,7 @@ import multiprocessing.pool
 import time
 from typing import Any, Callable, Optional
 
+from ansys.fluent.core import beartowertype
 from ansys.fluent.core.exceptions import InvalidArgument
 
 
@@ -92,6 +93,7 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
         return False
 
 
+@beartowertype
 def timeout_loop(
     obj: Any,
     timeout: float,
