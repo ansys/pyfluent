@@ -714,3 +714,35 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
         }
     )
     import_cad.Execute()
+
+
+@pytest.mark.codegen_required
+def test_modified_workflow(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    task_object_display_names = {
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Apply Share Topology",
+        "Enclose Fluid Regions (Capping)",
+        "Update Boundaries",
+        "Create Regions",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+    }
+
+    task_display_name = []
+    for task in meshing.workflow.TaskObject:
+        task_display_name.append(task.display_name())
+
+    assert set(task_display_name) == task_object_display_names
+
+    task_display_name = []
+    for name, _ in meshing.workflow.TaskObject.items():
+        task_display_name.append(name)
+
+    assert set(task_display_name) == task_object_display_names
