@@ -735,9 +735,9 @@ def test_modified_workflow(new_mesh_session):
         "Generate the Volume Mesh",
     }
 
-    task_display_name = []
+    task_display_names = []
     for task in meshing.workflow.TaskObject:
-        task_display_name.append(task.display_name())
+        task_display_names.append(task.display_name())
 
     assert set(task_display_name) == task_object_display_names
 
