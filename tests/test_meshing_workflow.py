@@ -739,7 +739,7 @@ def test_modified_workflow(new_mesh_session):
     for task in meshing.workflow.TaskObject:
         task_display_names.append(task.display_name())
 
-    assert set(task_display_name) == task_object_display_names
+    assert set(task_display_names) == task_object_display_names
 
     task_display_name = []
     for name, _ in meshing.workflow.TaskObject.items():
