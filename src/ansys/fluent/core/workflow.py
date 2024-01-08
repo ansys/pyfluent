@@ -334,7 +334,7 @@ class BaseTask:
         return matches
 
     def display_name(self):
-        return self.get_id()
+        return self._name_()
 
 
 class TaskContainer(PyCallableStateObject):
