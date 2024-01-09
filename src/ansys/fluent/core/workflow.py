@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import threading
-from time import sleep
 from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
@@ -966,7 +965,6 @@ class WorkflowWrapper:
             def refresh_after_sleep(_):
                 while self._refreshing:
                     logger.debug("Already _refreshing, ...")
-                    sleep(0.1)
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
                 _refresh_task_accessors(self)
