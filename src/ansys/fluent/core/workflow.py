@@ -333,6 +333,9 @@ class BaseTask:
                 matches.append(task)
         return matches
 
+    def display_name(self):
+        return self._name_()
+
 
 class TaskContainer(PyCallableStateObject):
     """Wrap a workflow TaskObject container.
@@ -380,6 +383,9 @@ class TaskContainer(PyCallableStateObject):
                 list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
             )
         )
+
+    def items(self):
+        return self._task_container.get_state().items()
 
     def get_state(self):
         return self._task_container.get_state()
