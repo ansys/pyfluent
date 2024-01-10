@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 import threading
-from time import sleep, time
 from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
@@ -294,7 +293,6 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
             logger.debug(str(ex))
-        self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __setattr__(self, attr, value):
@@ -911,7 +909,6 @@ class WorkflowWrapper:
         )  # or self._task_with_cmd_matching_help_string(attr)
         if obj:
             return obj
-        self._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __dir__(self):
@@ -924,21 +921,6 @@ class WorkflowWrapper:
     def __call__(self):
         """Delegate calls to the underlying workflow."""
         return self._workflow()
-
-    def _wait_on_refresh(self, time_unit=0.1, skip_check=False):
-        if not skip_check:
-            t0 = time()
-        if skip_check or threading.get_ident() == self._main_thread_ident:
-            refresh_count = self._refresh_count
-            orig_refresh_count = refresh_count
-            sleep(20 * time_unit)
-            while self._refreshing or self._refresh_count > refresh_count:
-                refresh_count = self._refresh_count
-                sleep(time_unit)
-            if self._refresh_count > orig_refresh_count:
-                self._wait_on_refresh(time_unit=time_unit, skip_check=True)
-        if not skip_check:
-            logger.debug("_wait_on_refresh time taken {time() - t0}")
 
     def _workflow_state(self):
         return self._workflow()
@@ -983,7 +965,6 @@ class WorkflowWrapper:
             def refresh_after_sleep(_):
                 while self._refreshing:
                     logger.debug("Already _refreshing, ...")
-                    sleep(0.1)
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
                 _refresh_task_accessors(self)
