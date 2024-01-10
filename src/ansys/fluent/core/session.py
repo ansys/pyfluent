@@ -13,7 +13,7 @@ from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.events import EventsService
-from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
+from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
@@ -170,10 +170,10 @@ class BaseSession:
         self._field_data_service = self.fluent_connection.create_grpc_service(
             FieldDataService, self.error_state
         )
-        self.field_info = FieldInfo(
+        self.field_info = service_creator("field_info").create(
             self._field_data_service, _IsDataValid(self.scheme_eval)
         )
-        self.field_data = FieldData(
+        self.field_data = service_creator("field_data").create(
             self._field_data_service,
             self.field_info,
             _IsDataValid(self.scheme_eval),
