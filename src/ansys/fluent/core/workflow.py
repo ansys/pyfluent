@@ -540,13 +540,15 @@ class CommandTask(BaseTask):
         cmd = self._command()
         if task_arg_state:
             cmd.set_state(task_arg_state)
-        return ReadOnlyObject(self._cmd_sub_items_read_only(cmd))
+        return ReadOnlyObject(self._cmd_sub_items_read_only(cmd, cmd()))
 
-    def _cmd_sub_items_read_only(self, cmd):
-        for item in cmd():
-            if type(getattr(cmd, item).get_state()) == dict:
-                setattr(cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item)))
-            setattr(cmd, item, ReadOnlyObject(getattr(cmd, item)))
+    def _cmd_sub_items_read_only(self, cmd, cmd_state):
+        for key, value in cmd_state.items():
+            if type(value) == dict:
+                setattr(
+                    cmd, key, self._cmd_sub_items_read_only(getattr(cmd, key), value)
+                )
+            setattr(cmd, key, ReadOnlyObject(getattr(cmd, key)))
         return cmd
 
     def _command(self):
