@@ -176,8 +176,11 @@ def _get_server_info_file_name(use_tmpdir=True):
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+    scheduler_options = argvals.get("scheduler_options")
+    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     kwargs: Dict[str, Any] = {}
-    kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if is_slurm:
+        kwargs.update(stdout=subprocess.PIPE)
     if _is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
@@ -186,8 +189,6 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
 
-    scheduler_options = argvals.get("scheduler_options")
-    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     if not is_slurm:
         from ansys.fluent.core import INFER_REMOTING_IP
 
