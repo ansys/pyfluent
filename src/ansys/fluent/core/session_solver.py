@@ -14,13 +14,13 @@ from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     Group,
     NamedObject,
     SettingsBase,
     StateType,
 )
-from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
@@ -163,7 +163,7 @@ class Solver(BaseSession):
     def _root(self):
         """Root settings object."""
         if self._settings_root is None:
-            self._settings_root = settings_get_root(
+            self._settings_root = flobject.get_root(
                 flproxy=self._settings_service, version=self.version
             )
         return self._settings_root
