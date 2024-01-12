@@ -128,7 +128,10 @@ class BaseSession:
             self.transcript.start()
 
         self.datamodel_service_tui = service_creator("tui").create(
-            fluent_connection._channel, fluent_connection._metadata, self.error_state
+            fluent_connection._channel,
+            fluent_connection._metadata,
+            self.error_state,
+            self.scheme_eval,
         )
 
         self.datamodel_service_se = service_creator("datamodel").create(
