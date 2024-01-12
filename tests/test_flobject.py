@@ -663,28 +663,23 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    if solver.get_fluent_version() < "24.1.0":
-        assert existing == None and modified == False
-    else:
-        assert existing == modified
+
+    assert existing == modified
 
     velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     existing = velocity_inlet.get_attr("user-creatable?", bool)
     modified = velocity_inlet.user_creatable()
     assert existing == modified
 
-    if solver.get_fluent_version() < "24.1.0":
-        turbulent_viscosity_ratio = velocity_inlet["inlet1"].turb_viscosity_ratio
-    else:
-        turbulent_viscosity_ratio = velocity_inlet[
-            "inlet1"
-        ].turbulence.turbulent_viscosity_ratio_real
+    turbulent_viscosity_ratio = velocity_inlet[
+        "inlet1"
+    ].turbulence.turbulent_viscosity_ratio
 
-        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio_real'
-        name = "turbulent_viscosity_ratio_real"
+    path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+    name = "turbulent_viscosity_ratio"
 
-        assert turbulent_viscosity_ratio.python_path == path
-        assert turbulent_viscosity_ratio.python_name == name
+    assert turbulent_viscosity_ratio.python_path == path
+    assert turbulent_viscosity_ratio.python_name == name
 
     assert turbulent_viscosity_ratio.default_value() == 10
     assert turbulent_viscosity_ratio.get_attr("min") == 0
@@ -790,9 +785,9 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
     assert set(
         find_children(load_mixer.materials.fluid["air"].density.piecewise_polynomial)
     ) >= {
-        "minimum",
-        "maximum",
-        "coefficients",
+        "range/minimum",
+        "range/maximum",
+        "range/coefficients",
     }
 
 
