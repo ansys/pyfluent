@@ -327,6 +327,12 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_child()
+    with pytest.raises(AttributeError) as msg:
+        import_geom.delete_child_objects()
+    with pytest.raises(AttributeError) as msg:
+        import_geom.delete_all_child_objects()
+    with pytest.raises(AttributeError) as msg:
+        import_geom.fix_state()
 
 
 @pytest.mark.fluent_version(">=23.1")
