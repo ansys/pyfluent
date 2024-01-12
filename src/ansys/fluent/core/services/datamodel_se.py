@@ -3,6 +3,7 @@ from enum import Enum
 import functools
 import itertools
 import logging
+from os.path import join
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -397,7 +398,7 @@ class DatamodelService(StreamingService):
     def delete_child_objects(self, rules, path, child_names) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
-        request.path = convert_path_to_se_path(path)
+        request.path = path
         for name in child_names:
             request.child_names.names.append(name)
         request.wait = True
@@ -930,7 +931,7 @@ class PyMenu(PyStateContainer):
         """
         self.service.rename(self.rules, self.path, new_name)
 
-    def delete_child_objects(self, child_names):
+    def delete_child_objects(self, obj_type, child_names):
         """Delete the named objects in 'child_names' from  the container..
 
         Parameters
@@ -938,7 +939,8 @@ class PyMenu(PyStateContainer):
         child_names : List[str]
             List of named objects.
         """
-        self.service.delete_child_objects(self.rules, self.path, child_names)
+        child_obj_path = join(convert_path_to_se_path(self.path), obj_type)
+        self.service.delete_child_objects(self.rules, child_obj_path, child_names)
 
     deleteChildObjects = delete_child_objects
 

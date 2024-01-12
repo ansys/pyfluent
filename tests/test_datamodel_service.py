@@ -438,10 +438,12 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_named_object_specific_methods(new_mesh_session):
-    meshing = new_mesh_session
-
-    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+def test_named_object_specific_methods():
+    # meshing = new_mesh_session
+    meshing = pyfluent.connect_to_fluent(
+        ip="10.18.44.105", port=54340, password="hypc11tp"
+    )
+    # meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert set(meshing.workflow.TaskObject.get_object_names()) == {
         "Import Geometry",
