@@ -17,6 +17,7 @@ from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
     TracingInterceptor,
+    WrapApiCallInterceptor,
 )
 
 Path = list[str]
@@ -38,6 +39,7 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(self._fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
+            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
@@ -137,7 +139,7 @@ class DatamodelService:
     ) -> Any:
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
-        request.attribute = attribute
+        request.attribute = DataModelProtoModule.Attribute.Value(attribute.upper())
         if include_unavailable:
             request.args["include_unavailable"] = 1
         response = self._impl.get_attribute_value(request)
@@ -207,8 +209,11 @@ class PyMenu:
         List[str]
             Names of child menus.
         """
+        attribute = DataModelProtoModule.Attribute.Name(
+            DataModelProtoModule.Attribute.CHILD_NAMES
+        ).lower()
         return self._service.get_attribute_value(
-            self._path, DataModelProtoModule.Attribute.CHILD_NAMES, include_unavailable
+            self._path, attribute, include_unavailable
         )
 
     def execute(self, *args, **kwargs) -> Any:
@@ -246,8 +251,11 @@ class PyMenu:
         -------
         str
         """
+        attribute = DataModelProtoModule.Attribute.Name(
+            DataModelProtoModule.Attribute.HELP_STRING
+        ).lower()
         return self._service.get_attribute_value(
-            self._path, DataModelProtoModule.Attribute.HELP_STRING, include_unavailable
+            self._path, attribute, include_unavailable
         )
 
     def get_static_info(self) -> dict[str, Any]:
