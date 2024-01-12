@@ -9,9 +9,6 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.batch_ops import BatchOpsService
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.monitor import MonitorsService
@@ -130,8 +127,8 @@ class BaseSession:
         if fluent_connection.start_transcript:
             self.transcript.start()
 
-        self.datamodel_service_tui = self.fluent_connection.create_grpc_service(
-            DatamodelService_TUI, self.error_state
+        self.datamodel_service_tui = service_creator("tui").create(
+            fluent_connection._channel, fluent_connection._metadata, self.error_state
         )
 
         self.datamodel_service_se = service_creator("datamodel").create(
