@@ -407,7 +407,7 @@ class DatamodelService(StreamingService):
     def delete_all_child_objects(self, rules, path):
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
-        request.path = convert_path_to_se_path(path)
+        request.path = path
         request.delete_all = True
         request.wait = True
         self._impl.delete_child_objects(request)
@@ -940,13 +940,14 @@ class PyMenu(PyStateContainer):
             List of named objects.
         """
         child_obj_path = join(convert_path_to_se_path(self.path), obj_type)
-        self.service.delete_child_objects(self.rules, child_obj_path, child_names)
+        self.service.delete_child_objects(self.rules, "/" + child_obj_path, child_names)
 
     deleteChildObjects = delete_child_objects
 
-    def delete_all_child_objects(self):
+    def delete_all_child_objects(self, obj_type):
         """Delete all the named objects in the container."""
-        self.service.delete_all_child_objects(self.rules, self.path)
+        child_obj_path = join(convert_path_to_se_path(self.path), obj_type)
+        self.service.delete_all_child_objects(self.rules, "/" + child_obj_path)
 
     deleteAllChildObjects = delete_all_child_objects
 

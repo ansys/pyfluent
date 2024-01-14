@@ -422,8 +422,8 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
 
     assert "contour-x1" in flserver.Case.Results.Graphics.Contour.get_object_names()
 
-    flserver.Case.Results.Graphics.Contour.delete_child_objects(
-        ["contour-x1", "contour-z2"]
+    flserver.Case.Results.Graphics.delete_child_objects(
+        "Contour", ["contour-x1", "contour-z2"]
     )
 
     assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
@@ -432,18 +432,15 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
         "contour-z5",
     }
 
-    flserver.Case.Results.Graphics.Contour.delete_all_child_objects()
+    flserver.Case.Results.Graphics.delete_all_child_objects("Contour")
 
     assert not flserver.Case.Results.Graphics.Contour.get_object_names()
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_named_object_specific_methods():
-    # meshing = new_mesh_session
-    meshing = pyfluent.connect_to_fluent(
-        ip="10.18.44.105", port=54340, password="hypc11tp"
-    )
-    # meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+def test_named_object_specific_methods(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert set(meshing.workflow.TaskObject.get_object_names()) == {
         "Import Geometry",
@@ -465,6 +462,6 @@ def test_named_object_specific_methods():
 
     assert "xyz" in meshing.workflow.TaskObject.get_object_names()
 
-    meshing.workflow.TaskObject.delete_all_child_objects()
+    meshing.workflow.delete_all_child_objects("TaskObject")
 
     assert not meshing.workflow.TaskObject.get_object_names()
