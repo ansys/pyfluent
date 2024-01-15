@@ -12,4 +12,4 @@ version_info = 0, 19, "dev1"
 __version__ = ".".join(map(str, version_info))
 
 # Current Fluent version
-fluent_release_version = "23.2.0"
+fluent_release_version = "24.1.0"
