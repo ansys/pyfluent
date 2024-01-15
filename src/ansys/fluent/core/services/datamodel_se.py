@@ -103,10 +103,7 @@ class Attribute(Enum):
 
 
 class DatamodelServiceImpl:
-    """Wraps the StateEngine-based datamodel gRPC service of Fluent.
-
-    Using the methods from the ``PyMenu`` class is recommended.
-    """
+    """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
@@ -355,6 +352,8 @@ class EventSubscription:
 
 
 class DatamodelService(StreamingService):
+    """Pure Python wrapper of DatamodelServiceImpl."""
+
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ) -> None:
