@@ -671,12 +671,21 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     modified = velocity_inlet.user_creatable()
     assert existing == modified
 
-    turbulent_viscosity_ratio = velocity_inlet[
-        "inlet1"
-    ].turbulence.turbulent_viscosity_ratio
+    if solver.get_fluent_version() < "24.2.0":
+        turbulent_viscosity_ratio = velocity_inlet[
+            "inlet1"
+        ].turbulence.turbulent_viscosity_ratio_real
 
-    path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
-    name = "turbulent_viscosity_ratio"
+        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio_real'
+        name = "turbulent_viscosity_ratio_real"
+
+    else:
+        turbulent_viscosity_ratio = velocity_inlet[
+            "inlet1"
+        ].turbulence.turbulent_viscosity_ratio
+
+        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+        name = "turbulent_viscosity_ratio"
 
     assert turbulent_viscosity_ratio.python_path == path
     assert turbulent_viscosity_ratio.python_name == name
@@ -782,13 +791,26 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         if path.endswith("geom_dir_spec")
     )
 
-    assert set(
-        find_children(load_mixer.materials.fluid["air"].density.piecewise_polynomial)
-    ) >= {
-        "range/minimum",
-        "range/maximum",
-        "range/coefficients",
-    }
+    if load_mixer.get_fluent_version() < "24.2.0":
+        assert set(
+            find_children(
+                load_mixer.materials.fluid["air"].density.piecewise_polynomial
+            )
+        ) >= {
+            "minimum",
+            "maximum",
+            "coefficients",
+        }
+    else:
+        assert set(
+            find_children(
+                load_mixer.materials.fluid["air"].density.piecewise_polynomial
+            )
+        ) >= {
+            "range/minimum",
+            "range/maximum",
+            "range/coefficients",
+        }
 
 
 @pytest.mark.fluent_version("latest")
