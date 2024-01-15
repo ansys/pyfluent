@@ -477,14 +477,14 @@ jobs:
 
       - name: Upload 24.1 Coverage Results to Codecov
         if: matrix.image-tag == 'v24.1.0' && github.event_name == 'push'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           root_dir: ${{ github.workspace }}
           name: cov_xml.xml
 
       - name: Upload 24.1 Coverage Artifacts
         if: matrix.image-tag == 'v24.1.0'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: coverage_report
           path: ./htmlcov
