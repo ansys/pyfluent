@@ -941,7 +941,7 @@ class PyMenu(PyStateContainer):
             List of named objects.
         """
         child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
-        self.service.delete_child_objects(self.rules, "/" + child_obj_path, child_names)
+        self.service.delete_child_objects(self.rules, child_obj_path, child_names)
 
     deleteChildObjects = delete_child_objects
 
