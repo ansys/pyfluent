@@ -11,7 +11,6 @@ from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldDataService
-from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -151,8 +150,8 @@ class BaseSession:
             self.events_service, self.error_state, self.fluent_connection._id
         )
 
-        self._monitors_service = self.fluent_connection.create_grpc_service(
-            MonitorsService, self.error_state
+        self._monitors_service = service_creator("monitors").create(
+            fluent_connection._channel, fluent_connection._metadata, self.error_state
         )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service

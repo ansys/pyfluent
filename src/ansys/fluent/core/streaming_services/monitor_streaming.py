@@ -145,6 +145,28 @@ class MonitorsManager(StreamingService):
     def _prepare(self):
         self._update_dataframe()
 
+    def _populate_dataframes(self, data_received, *args, **kwargs):
+        for _, df_data in self._data_frames.items():
+            df = df_data["df"]
+            monitors = df_data["monitors"]
+            monitor_data = []
+            for monitor_name in monitors:
+                if monitor_name not in data_received:
+                    monitor_data = []
+                    break
+                monitor_data.append(data_received[monitor_name])
+
+            if monitor_data:
+                new_df = pd.DataFrame([monitor_data], columns=monitors)
+                new_df.set_index("xvalues", inplace=True)
+                if df.empty:
+                    df_data["df"] = new_df
+                else:
+                    df_data["df"] = pd.concat([df, new_df])
+                for callback_map in self._service_callbacks.values():
+                    callback, args, kwargs = callback_map
+                    callback(*args, **kwargs)
+
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Begin monitors streaming."""
         request = MonitorModule.StreamingRequest(*args, **kwargs)
@@ -163,26 +185,7 @@ class MonitorsManager(StreamingService):
                     data_received[y_axis_value.name] = y_axis_value.value
                 with self._lock:
                     self._streaming = True
-                    for monitor_set_name, df_data in self._data_frames.items():
-                        df = df_data["df"]
-                        monitors = df_data["monitors"]
-                        monitor_data = []
-                        for monitor_name in monitors:
-                            if monitor_name not in data_received:
-                                monitor_data = []
-                                break
-                            monitor_data.append(data_received[monitor_name])
-
-                        if monitor_data:
-                            new_df = pd.DataFrame([monitor_data], columns=monitors)
-                            new_df.set_index("xvalues", inplace=True)
-                            if df.empty:
-                                df_data["df"] = new_df
-                            else:
-                                df_data["df"] = pd.concat([df, new_df])
-                            for callback_map in self._service_callbacks.values():
-                                callback, args, kwargs = callback_map
-                                callback(*args, **kwargs)
+                    self._populate_dataframes(data_received, *args, **kwargs)
 
             except StopIteration:
                 break
