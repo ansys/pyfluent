@@ -791,7 +791,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         if path.endswith("geom_dir_spec")
     )
 
-    if load_mixer.get_fluent_version() < "24.2.0":
+    if load_static_mixer_settings_only.get_fluent_version() < "24.2.0":
         assert set(
             find_children(
                 load_mixer.materials.fluid["air"].density.piecewise_polynomial
