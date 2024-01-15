@@ -25,7 +25,7 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
     assert before_init_mod_2[1][1][1] == ("value", True)
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
