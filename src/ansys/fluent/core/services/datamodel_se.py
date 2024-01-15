@@ -920,7 +920,7 @@ class PyMenu(PyStateContainer):
     def delete_child(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
-    def rename(self, new_name) -> None:
+    def rename(self, new_name: str) -> None:
         """Rename the named object.
 
         Parameters
@@ -930,11 +930,13 @@ class PyMenu(PyStateContainer):
         """
         self.service.rename(self.rules, self.path, new_name)
 
-    def delete_child_objects(self, obj_type, child_names):
+    def delete_child_objects(self, obj_type: str, child_names: list[str]):
         """Delete the named objects in 'child_names' from  the container..
 
         Parameters
         ----------
+        obj_type: str
+            Type of the named object container.
         child_names : List[str]
             List of named objects.
         """
@@ -944,7 +946,13 @@ class PyMenu(PyStateContainer):
     deleteChildObjects = delete_child_objects
 
     def delete_all_child_objects(self, obj_type):
-        """Delete all the named objects in the container."""
+        """Delete all the named objects in the container.
+
+         Parameters
+        ----------
+        obj_type: str
+            Type of the named object container.
+        """
         child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
         self.service.delete_all_child_objects(self.rules, "/" + child_obj_path)
 
@@ -1231,6 +1239,7 @@ class PyNamedObjectContainer:
         return child_object_display_names
 
     def get_object_names(self) -> Any:
+        """Displays the name of objects within a container."""
         return self.service.get_object_names(self.rules, self.path)
 
     getChildObjectDisplayNames = get_object_names
@@ -1331,6 +1340,7 @@ class PyNamedObjectContainer:
         return child_obj_type == obj_type
 
     def get_state(self):
+        """Returns state of the container."""
         parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
         returned_state = {}
 
