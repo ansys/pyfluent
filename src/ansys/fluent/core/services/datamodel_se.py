@@ -3,7 +3,6 @@ from enum import Enum
 import functools
 import itertools
 import logging
-from os.path import join
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -939,14 +938,14 @@ class PyMenu(PyStateContainer):
         child_names : List[str]
             List of named objects.
         """
-        child_obj_path = join(convert_path_to_se_path(self.path), obj_type)
+        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
         self.service.delete_child_objects(self.rules, "/" + child_obj_path, child_names)
 
     deleteChildObjects = delete_child_objects
 
     def delete_all_child_objects(self, obj_type):
         """Delete all the named objects in the container."""
-        child_obj_path = join(convert_path_to_se_path(self.path), obj_type)
+        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
         self.service.delete_all_child_objects(self.rules, "/" + child_obj_path)
 
     deleteAllChildObjects = delete_all_child_objects
