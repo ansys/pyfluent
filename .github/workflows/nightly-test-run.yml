@@ -143,6 +143,18 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: v24.1.0
 
+      - name: Upload 24.1 Coverage Results to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          root_dir: ${{ github.workspace }}
+          name: cov_xml.xml
+
+      - name: Upload 24.1 Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage_report
+          path: ./htmlcov
+
       - name: 23.2 Unit Testing
         run: make unittest-all-232
         env:
@@ -152,12 +164,6 @@ jobs:
         run: make unittest-all-231
         env:
           FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: Upload 23.1 Coverage Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage_report
-          path: ./htmlcov
 
       - name: 22.2 Unit Testing
         run: make unittest-all-222
