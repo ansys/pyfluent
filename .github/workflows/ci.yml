@@ -461,6 +461,13 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      - name: Upload 24.1 Coverage Artifacts
+        if: matrix.image-tag == 'v24.1.0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage_report
+          path: ./htmlcov
+
 # Separate build+test job for 24.2 Fluent
 # Don't upload anything to artifacts/cache/release-package from here
   build_test_242:
