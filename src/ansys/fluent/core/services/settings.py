@@ -275,8 +275,8 @@ class SettingsService:
         if info.help:
             ret["help"] = info.help
         try:
-            if info.file_purpose:
-                ret["file_purpose"] = info.file_purpose
+            if info.attrs:
+                ret["attrs"] = info.attrs
         except AttributeError:
             pass
 
