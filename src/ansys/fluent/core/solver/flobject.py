@@ -569,7 +569,7 @@ class Group(SettingsBase[DictStateType]):
         for parent in self.get_active_child_names():
             try:
                 if hasattr(getattr(self, parent), str(name)):
-                    path_list.append(f"\n {self.python_path}.{parent}.{str(name)} \n")
+                    path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
                     if len(parents) != 0:
                         parents += ", " + parent
                     else:
