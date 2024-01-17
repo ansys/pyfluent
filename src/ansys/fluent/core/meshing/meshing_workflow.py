@@ -38,7 +38,6 @@ class MeshingWorkflow(WorkflowWrapper):
         self._is_ftm = False
         self._part_management = part_management
         self._pm_file_management = pm_file_management
-        self._task_names_map = {}
 
     def watertight(self, dynamic_interface: bool) -> None:
         """Initialize a watertight workflow.
@@ -90,25 +89,3 @@ class MeshingWorkflow(WorkflowWrapper):
         """
         if self._is_ftm:
             return self._pm_file_management
-
-    def __getattr__(self, item):
-        if not self._task_names_map:
-            for task in self.TaskObject().keys():
-                python_task_name = (
-                    str(task)
-                    .lower()
-                    .replace(" ", "_")
-                    .replace("_the", "")
-                    .replace("(", "")
-                    .replace(")", "")
-                )
-                self._task_names_map[python_task_name] = task
-
-        for python_name, task_name in self._task_names_map.items():
-            if item == python_name:
-                return self.task(task_name)
-
-        return AttributeError(
-            f"'{item}' is not a valid attribute name."
-            f"\nAllowed attributes are: {list(self._task_names_map.keys())}."
-        )

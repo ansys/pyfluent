@@ -809,6 +809,7 @@ class WorkflowWrapper:
         self._getattr_recurse_depth = 0
         self._main_thread_ident = None
         self._task_objects = {}
+        self._task_names_map = {}
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -898,6 +899,19 @@ class WorkflowWrapper:
         """
         return []
 
+    def _populate_task_name_map(self):
+        if not self._task_names_map:
+            for task in self.TaskObject().keys():
+                python_task_name = (
+                    str(task)
+                    .lower()
+                    .replace(" ", "_")
+                    .replace("_the", "")
+                    .replace("(", "")
+                    .replace(")", "")
+                )
+                self._task_names_map[python_task_name] = task
+
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object.
 
@@ -906,12 +920,18 @@ class WorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        obj = self._attr_from_wrapped_workflow(
-            attr
-        )  # or self._task_with_cmd_matching_help_string(attr)
-        if obj:
-            return obj
-        return self._task_objects.get(attr, None)
+        self._populate_task_name_map()
+        if attr in self._task_names_map:
+            for python_name, task_name in self._task_names_map.items():
+                if attr == python_name:
+                    return self.task(task_name)
+        else:
+            obj = self._attr_from_wrapped_workflow(
+                attr
+            )  # or self._task_with_cmd_matching_help_string(attr)
+            if obj:
+                return obj
+            return self._task_objects.get(attr, None)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
