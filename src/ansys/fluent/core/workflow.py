@@ -922,9 +922,7 @@ class WorkflowWrapper:
         """
         self._populate_task_name_map()
         if attr in self._task_names_map:
-            for python_name, task_name in self._task_names_map.items():
-                if attr == python_name:
-                    return self.task(task_name)
+            return self.task(self._task_names_map[attr])
         else:
             obj = self._attr_from_wrapped_workflow(
                 attr
