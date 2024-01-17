@@ -33,7 +33,7 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
 class InactiveObjectError(RuntimeError):
-    """Inactive object access.."""
+    """Inactive object access."""
 
     def __init__(self, python_path):
         super().__init__(f"'{python_path}' is currently inactive.")
