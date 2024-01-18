@@ -394,20 +394,20 @@ class DatamodelService(StreamingService):
         self._impl.rename(request)
 
     def delete_child_objects(
-        self, rules: str, path: str, child_names: list[str]
+        self, rules: str, path: str, obj_type: str, child_names: list[str]
     ) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
-        request.path = path
+        request.path = path + "/" + obj_type
         for name in child_names:
             request.child_names.names.append(name)
         request.wait = True
         self._impl.delete_child_objects(request)
 
-    def delete_all_child_objects(self, rules: str, path: str) -> None:
+    def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
-        request.path = path
+        request.path = path + "/" + obj_type
         request.delete_all = True
         request.wait = True
         self._impl.delete_child_objects(request)
@@ -941,8 +941,9 @@ class PyMenu(PyStateContainer):
         child_names : List[str]
             List of named objects.
         """
-        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
-        self.service.delete_child_objects(self.rules, child_obj_path, child_names)
+        self.service.delete_child_objects(
+            self.rules, convert_path_to_se_path(self.path), obj_type, child_names
+        )
 
     deleteChildObjects = delete_child_objects
 
@@ -954,8 +955,9 @@ class PyMenu(PyStateContainer):
         obj_type: str
             Type of the named object container.
         """
-        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
-        self.service.delete_all_child_objects(self.rules, child_obj_path)
+        self.service.delete_all_child_objects(
+            self.rules, convert_path_to_se_path(self.path), obj_type
+        )
 
     deleteAllChildObjects = delete_all_child_objects
 
