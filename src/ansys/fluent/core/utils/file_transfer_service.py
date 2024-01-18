@@ -79,7 +79,7 @@ class PimFileTransferService:
         return self.file_service
 
     def is_pim_configured(self):
-        return pypim.is_configured()
+        return pypim.is_pim_configured()
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -125,7 +125,7 @@ class PimFileTransferService:
         FileNotFoundError
             If a file does not exist.
         """
-        if self.is_configured():
+        if self.is_pim_configured():
             if os.path.isfile(file_name):
                 if not self.file_service.file_exist(os.path.basename(file_name)):
                     self.upload(file_name)
@@ -133,7 +133,7 @@ class PimFileTransferService:
                 raise FileNotFoundError(f"{file_name} does not exist.")
         if on_uploaded:
             on_uploaded(
-                os.path.basename(file_name) if self.is_configured() else file_name
+                os.path.basename(file_name) if self.is_pim_configured() else file_name
             )
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
@@ -177,9 +177,9 @@ class PimFileTransferService:
         """
         if before_downloaded:
             before_downloaded(
-                os.path.basename(file_name) if self.is_configured() else file_name
+                os.path.basename(file_name) if self.is_pim_configured() else file_name
             )
-        if self.is_configured():
+        if self.is_pim_configured():
             if os.path.isfile(file_name):
                 print(f"\nFile already exists. File path:\n{file_name}\n")
             else:
