@@ -79,7 +79,7 @@ class PimFileTransferService:
         return self.file_service
 
     def is_pim_configured(self):
-        return pypim.is_pim_configured()
+        return pypim.is_configured()
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
         """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
