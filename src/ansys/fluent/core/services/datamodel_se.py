@@ -378,22 +378,24 @@ class DatamodelService(StreamingService):
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
-    def get_object_names(self, rules, path):
-        request = DataModelProtoModule.GetStateRequest()
+    def get_object_names(self, rules: str, path: str) -> list[str]:
+        request = DataModelProtoModule.GetObjectNamesRequest()
         request.rules = rules
-        request.path = convert_path_to_se_path(path)
+        request.path = path
         response = self._impl.get_object_names(request)
         return response.names
 
-    def rename(self, rules, path, new_name) -> None:
+    def rename(self, rules: str, path: str, new_name: str) -> None:
         request = DataModelProtoModule.RenameRequest()
         request.rules = rules
-        request.path = convert_path_to_se_path(path)
+        request.path = path
         request.new_name = new_name
         request.wait = True
         self._impl.rename(request)
 
-    def delete_child_objects(self, rules, path, child_names) -> None:
+    def delete_child_objects(
+        self, rules: str, path: str, child_names: list[str]
+    ) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
         request.path = path
@@ -402,7 +404,7 @@ class DatamodelService(StreamingService):
         request.wait = True
         self._impl.delete_child_objects(request)
 
-    def delete_all_child_objects(self, rules, path):
+    def delete_all_child_objects(self, rules: str, path: str) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
         request.path = path
@@ -927,7 +929,7 @@ class PyMenu(PyStateContainer):
         new_name : str
             New name for the object.
         """
-        self.service.rename(self.rules, self.path, new_name)
+        self.service.rename(self.rules, convert_path_to_se_path(self.path), new_name)
 
     def delete_child_objects(self, obj_type: str, child_names: list[str]):
         """Delete the named objects in 'child_names' from  the container..
@@ -1239,7 +1241,9 @@ class PyNamedObjectContainer:
 
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        return self.service.get_object_names(self.rules, self.path)
+        return self.service.get_object_names(
+            self.rules, convert_path_to_se_path(self.path)
+        )
 
     getChildObjectDisplayNames = get_object_names
 
