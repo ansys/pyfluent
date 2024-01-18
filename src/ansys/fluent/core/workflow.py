@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import logging
 import threading
-from time import sleep, time
 from typing import Any, Iterator, List, Optional, Tuple
 import warnings
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
 
@@ -79,10 +79,11 @@ def _refresh_task_accessors(obj):
 
 
 def _convert_task_list_to_display_names(workflow_root, task_list):
-    return [
-        DataModelCache.get_state("workflow", workflow_root)[f"TaskObject:{x}"]["_name_"]
-        for x in task_list
-    ]
+    if pyfluent.DATAMODEL_USE_STATE_CACHE:
+        workflow_state = DataModelCache.get_state("workflow", workflow_root)
+    else:
+        workflow_state = workflow_root.get_remote_state()
+    return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
 
 
 class BaseTask:
@@ -292,7 +293,6 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
             logger.debug(str(ex))
-        self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __setattr__(self, attr, value):
@@ -330,6 +330,9 @@ class BaseTask:
             if other_attrs and (attrs & set(other_attrs)):
                 matches.append(task)
         return matches
+
+    def display_name(self):
+        return self._name_()
 
 
 class TaskContainer(PyCallableStateObject):
@@ -378,6 +381,9 @@ class TaskContainer(PyCallableStateObject):
                 list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
             )
         )
+
+    def items(self):
+        return self._task_container.get_state().items()
 
     def get_state(self):
         return self._task_container.get_state()
@@ -534,13 +540,15 @@ class CommandTask(BaseTask):
         cmd = self._command()
         if task_arg_state:
             cmd.set_state(task_arg_state)
-        return ReadOnlyObject(self._cmd_sub_items_read_only(cmd))
+        return ReadOnlyObject(self._cmd_sub_items_read_only(cmd, cmd()))
 
-    def _cmd_sub_items_read_only(self, cmd):
-        for item in cmd():
-            if type(getattr(cmd, item).get_state()) == dict:
-                setattr(cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item)))
-            setattr(cmd, item, ReadOnlyObject(getattr(cmd, item)))
+    def _cmd_sub_items_read_only(self, cmd, cmd_state):
+        for key, value in cmd_state.items():
+            if type(value) == dict:
+                setattr(
+                    cmd, key, self._cmd_sub_items_read_only(getattr(cmd, key), value)
+                )
+            setattr(cmd, key, ReadOnlyObject(getattr(cmd, key)))
         return cmd
 
     def _command(self):
@@ -903,7 +911,6 @@ class WorkflowWrapper:
         )  # or self._task_with_cmd_matching_help_string(attr)
         if obj:
             return obj
-        self._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __dir__(self):
@@ -916,21 +923,6 @@ class WorkflowWrapper:
     def __call__(self):
         """Delegate calls to the underlying workflow."""
         return self._workflow()
-
-    def _wait_on_refresh(self, time_unit=0.1, skip_check=False):
-        if not skip_check:
-            t0 = time()
-        if skip_check or threading.get_ident() == self._main_thread_ident:
-            refresh_count = self._refresh_count
-            orig_refresh_count = refresh_count
-            sleep(20 * time_unit)
-            while self._refreshing or self._refresh_count > refresh_count:
-                refresh_count = self._refresh_count
-                sleep(time_unit)
-            if self._refresh_count > orig_refresh_count:
-                self._wait_on_refresh(time_unit=time_unit, skip_check=True)
-        if not skip_check:
-            logger.debug("_wait_on_refresh time taken {time() - t0}")
 
     def _workflow_state(self):
         return self._workflow()
@@ -975,7 +967,6 @@ class WorkflowWrapper:
             def refresh_after_sleep(_):
                 while self._refreshing:
                     logger.debug("Already _refreshing, ...")
-                    sleep(0.1)
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
                 _refresh_task_accessors(self)

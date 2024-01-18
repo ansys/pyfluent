@@ -1,32 +1,22 @@
 import os
 from typing import TypeVar
 
-import grpc
-
-from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
+from ansys.fluent.core.services.scheme_eval import SchemeEval
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _TApiUpgradeAdvisor = TypeVar("_TApiUpgradeAdvisor", bound="ApiUpgradeAdvisor")
 
 
 class ApiUpgradeAdvisor:
-    def __init__(
-        self,
-        channel: grpc.Channel,
-        metadata: list[tuple[str, str]],
-        fluent_error_state,
-        version: str,
-        mode: str,
-    ) -> None:
-        self._scheme_eval = SchemeEval(
-            SchemeEvalService(channel, metadata, fluent_error_state)
-        ).scheme_eval
+    def __init__(self, scheme_eval: SchemeEval, version: str, mode: str) -> None:
+        self._scheme_eval = scheme_eval.scheme_eval
         self._version = version
         self._mode = mode
 
     def _can_advise(self) -> bool:
         return (
             not os.getenv("PYFLUENT_SKIP_API_UPGRADE_ADVICE")
-            and self._version >= "23.1"
+            and FluentVersion(self._version) >= FluentVersion.v231
             and self._mode == "solver"
         )
 

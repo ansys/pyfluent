@@ -244,9 +244,10 @@ solver.mesh.check()
 # model : k-omega
 # k-omega model : sst
 
-solver.setup.models.viscous.model = "k-omega"
+viscous = solver.setup.models.viscous
 
-solver.setup.models.viscous.k_omega_model = "sst"
+viscous.model = "k-omega"
+viscous.k_omega_model = "sst"
 
 ###############################################################################
 # Define materials
@@ -301,9 +302,9 @@ pressure_farfield.flow_direction[0] = 0.998574
 
 pressure_farfield.flow_direction[2] = 0.053382
 
-pressure_farfield.turb_intensity = 0.05
+pressure_farfield.turbulent_intensity = 0.05
 
-pressure_farfield.turb_viscosity_ratio = 10
+pressure_farfield.turbulent_viscosity_ratio_real = 10
 
 ###############################################################################
 # Operating Conditions

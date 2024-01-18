@@ -327,12 +327,6 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_child()
-    with pytest.raises(AttributeError) as msg:
-        import_geom.delete_child_objects()
-    with pytest.raises(AttributeError) as msg:
-        import_geom.delete_all_child_objects()
-    with pytest.raises(AttributeError) as msg:
-        import_geom.fix_state()
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -714,3 +708,35 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
         }
     )
     import_cad.Execute()
+
+
+@pytest.mark.codegen_required
+def test_modified_workflow(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    task_object_display_names = {
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Apply Share Topology",
+        "Enclose Fluid Regions (Capping)",
+        "Update Boundaries",
+        "Create Regions",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+    }
+
+    task_display_names = []
+    for task in meshing.workflow.TaskObject:
+        task_display_names.append(task.display_name())
+
+    assert set(task_display_names) == task_object_display_names
+
+    task_display_names = []
+    for name, _ in meshing.workflow.TaskObject.items():
+        task_display_names.append(name)
+
+    assert set(task_display_names) == task_object_display_names

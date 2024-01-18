@@ -19,6 +19,7 @@ from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
     TracingInterceptor,
+    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
 
@@ -102,10 +103,7 @@ class Attribute(Enum):
 
 
 class DatamodelServiceImpl:
-    """Wraps the StateEngine-based datamodel gRPC service of Fluent.
-
-    Using the methods from the ``PyMenu`` class is recommended.
-    """
+    """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
         self,
@@ -120,6 +118,7 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
+            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
@@ -147,11 +146,39 @@ class DatamodelServiceImpl:
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def rename(
+        self, request: DataModelProtoModule.RenameRequest
+    ) -> DataModelProtoModule.RenameResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.rename(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_object_names(
+        self, request: DataModelProtoModule.GetObjectNamesRequest
+    ) -> DataModelProtoModule.GetObjectNamesResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.getObjectNames(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def delete_child_objects(
+        self, request: DataModelProtoModule.DeleteChildObjectsRequest
+    ) -> DataModelProtoModule.DeleteChildObjectsResponse:
+        """getState RPC of DataModel service."""
+        return self._stub.deleteChildObjects(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
         """setState RPC of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def fix_state(
+        self, request: DataModelProtoModule.FixStateRequest
+    ) -> DataModelProtoModule.FixStateResponse:
+        """setState RPC of DataModel service."""
+        return self._stub.fixState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
@@ -199,7 +226,7 @@ class DatamodelServiceImpl:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
             raise RuntimeError(
-                f"The following excepton was caught\n {ex.details()}\n "
+                f"The following exception was caught\n {ex.details()}\n "
                 "while deleting a command instance. Command instancing is"
                 "supported from Ansys 2023R2 onward."
             ) from None
@@ -283,7 +310,55 @@ def _convert_variant_to_value(var: Variant) -> _TValue:
         return val
 
 
+class EventSubscription:
+    """EventSubscription class for any datamodel event."""
+
+    def __init__(
+        self,
+        service,
+        request_dict: dict[str, Any],
+    ) -> None:
+        """Subscribe to a datamodel event.
+
+        Raises
+        ------
+        SubscribeEventError
+            If server fails to subscribe from event.
+        """
+        self._service = service
+        response = service.subscribe_events(request_dict)
+        response = response[0]
+        if response["status"] != DataModelProtoModule.STATUS_SUBSCRIBED:
+            raise SubscribeEventError(request_dict)
+        self.status = response["status"]
+        self.tag = response["tag"]
+        self._service.events[self.tag] = self
+
+    def unsubscribe(self) -> None:
+        """Unsubscribe the datamodel event.
+
+        Raises
+        ------
+        UnsubscribeEventError
+            If server fails to unsubscribe from event.
+        """
+        if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
+            self._service.event_streaming.unregister_callback(self.tag)
+            response = self._service.unsubscribe_events([self.tag])
+            response = response[0]
+            if response["status"] != DataModelProtoModule.STATUS_UNSUBSCRIBED:
+                raise UnsubscribeEventError(self.tag)
+            self.status = response["status"]
+            self._service.events.pop(self.tag, None)
+
+    def __del__(self) -> None:
+        """Unsubscribe the datamodel event."""
+        self.unsubscribe()
+
+
 class DatamodelService(StreamingService):
+    """Pure Python wrapper of DatamodelServiceImpl."""
+
     def __init__(
         self,
         channel: grpc.Channel,
@@ -313,12 +388,50 @@ class DatamodelService(StreamingService):
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
+    def get_object_names(self, rules, path):
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        response = self._impl.get_object_names(request)
+        return response.names
+
+    def rename(self, rules, path, new_name) -> None:
+        request = DataModelProtoModule.RenameRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        request.new_name = new_name
+        request.wait = True
+        self._impl.rename(request)
+
+    def delete_child_objects(self, rules, path, child_names) -> None:
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = rules
+        request.path = path
+        for name in child_names:
+            request.child_names.names.append(name)
+        request.wait = True
+        self._impl.delete_child_objects(request)
+
+    def delete_all_child_objects(self, rules, path):
+        request = DataModelProtoModule.DeleteChildObjectsRequest()
+        request.rules = rules
+        request.path = path
+        request.delete_all = True
+        request.wait = True
+        self._impl.delete_child_objects(request)
+
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
         )
         _convert_value_to_variant(state, request.state)
         self._impl.set_state(request)
+
+    def fix_state(self, rules, path) -> None:
+        request = DataModelProtoModule.FixStateRequest()
+        request.rules = rules
+        request.path = convert_path_to_se_path(path)
+        self._impl.fix_state(request)
 
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
@@ -411,6 +524,142 @@ class DatamodelService(StreamingService):
             event.unsubscribe()
         self.events.clear()
 
+    def add_on_child_created(
+        self, rules: str, path: str, child_type: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "createdEventRequest": {
+                        "parentpath": path,
+                        "childtype": child_type,
+                    },
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_deleted(
+        self, rules: str, path: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "deletedEventRequest": {"path": path},
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_changed(
+        self, rules: str, path: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "modifiedEventRequest": {"path": path},
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_affected(
+        self, rules: str, path: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "affectedEventRequest": {"path": path},
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_affected_at_type_path(
+        self, rules: str, path: str, child_type: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "affectedEventRequest": {
+                        "path": path,
+                        "subtype": child_type,
+                    },
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_command_executed(
+        self, rules: str, path: str, command: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "commandExecutedEventRequest": {
+                        "path": path,
+                        "command": command,
+                    },
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_attribute_changed(
+        self, rules: str, path: str, attribute: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "attributeChangedEventRequest": {
+                        "path": path,
+                        "attribute": attribute,
+                    },
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_command_attribute_changed(
+        self, rules: str, path: str, command: str, attribute: str, obj, cb: Callable
+    ) -> EventSubscription:
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "commandAttributeChangedEventRequest": {
+                        "path": path,
+                        "command": command,
+                        "attribute": attribute,
+                    },
+                }
+            ]
+        }
+        subscription = EventSubscription(self, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
 
 def convert_path_to_se_path(path: Path) -> str:
     """Convert a path structure to a StateEngine path.
@@ -444,52 +693,6 @@ class PyCallableStateObject:
 
     def __call__(self, *args, **kwds) -> Any:
         return self.get_state()
-
-
-class EventSubscription:
-    """EventSubscription class for any datamodel event."""
-
-    def __init__(
-        self,
-        service: DatamodelService,
-        request_dict: dict[str, Any],
-    ) -> None:
-        """Subscribe to a datamodel event.
-
-        Raises
-        ------
-        SubscribeEventError
-            If server fails to subscribe from event.
-        """
-        self._service = service
-        response = service.subscribe_events(request_dict)
-        response = response[0]
-        if response["status"] != DataModelProtoModule.STATUS_SUBSCRIBED:
-            raise SubscribeEventError(request_dict)
-        self.status = response["status"]
-        self.tag = response["tag"]
-        self._service.events[self.tag] = self
-
-    def unsubscribe(self) -> None:
-        """Unsubscribe the datamodel event.
-
-        Raises
-        ------
-        UnsubscribeEventError
-            If server fails to unsubscribe from event.
-        """
-        if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
-            self._service.event_streaming.unregister_callback(self.tag)
-            response = self._service.unsubscribe_events([self.tag])
-            response = response[0]
-            if response["status"] != DataModelProtoModule.STATUS_UNSUBSCRIBED:
-                raise UnsubscribeEventError(self.tag)
-            self.status = response["status"]
-            self._service.events.pop(self.tag, None)
-
-    def __del__(self) -> None:
-        """Unsubscribe the datamodel event."""
-        self.unsubscribe()
 
 
 class PyStateContainer(PyCallableStateObject):
@@ -534,12 +737,20 @@ class PyStateContainer(PyCallableStateObject):
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
     def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
-        if DataModelCache.is_unassigned(state):
+        if pyfluent.DATAMODEL_USE_STATE_CACHE:
+            state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
+            if DataModelCache.is_unassigned(state):
+                state = self.get_remote_state()
+        else:
             state = self.get_remote_state()
         return state
 
     getState = get_state
+
+    def fix_state(self) -> None:
+        self.service.fix_state(self.rules, self.path)
+
+    fixState = fix_state
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
         """Set state of the current object."""
@@ -632,20 +843,9 @@ class PyStateContainer(PyCallableStateObject):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "attributeChangedEventRequest": {
-                        "path": convert_path_to_se_path(self.path),
-                        "attribute": attribute,
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_attribute_changed(
+            self.rules, convert_path_to_se_path(self.path), attribute, self, cb
+        )
 
     def add_on_command_attribute_changed(
         self, command: str, attribute: str, cb: Callable
@@ -666,21 +866,9 @@ class PyStateContainer(PyCallableStateObject):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "commandAttributeChangedEventRequest": {
-                        "path": convert_path_to_se_path(self.path),
-                        "command": command,
-                        "attribute": attribute,
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_command_attribute_changed(
+            self.rules, convert_path_to_se_path(self.path), command, attribute, self, cb
+        )
 
 
 class PyMenu(PyStateContainer):
@@ -717,24 +905,6 @@ class PyMenu(PyStateContainer):
         else:
             super().__setattr__(name, value)
 
-    def rename(self, new_name: str) -> None:
-        """Rename the named object.
-
-        Parameters
-        ----------
-        new_name : str
-            New name for the object.
-
-        Raises
-        ------
-        InvalidNamedObject
-            If the object is not a named object.
-        """
-        try:
-            self._name_.set_state(new_name)
-        except AttributeError:
-            raise InvalidNamedObject(self.__class__.__name__)
-
     def name(self) -> str:
         """Get the name of the named object.
 
@@ -759,14 +929,43 @@ class PyMenu(PyStateContainer):
     def delete_child(self) -> None:
         self._raise_method_not_yet_implemented_exception()
 
-    def delete_child_objects(self) -> None:
-        self._raise_method_not_yet_implemented_exception()
+    def rename(self, new_name: str) -> None:
+        """Rename the named object.
 
-    def delete_all_child_objects(self) -> None:
-        self._raise_method_not_yet_implemented_exception()
+        Parameters
+        ----------
+        new_name : str
+            New name for the object.
+        """
+        self.service.rename(self.rules, self.path, new_name)
 
-    def fix_state(self) -> None:
-        self._raise_method_not_yet_implemented_exception()
+    def delete_child_objects(self, obj_type: str, child_names: list[str]):
+        """Delete the named objects in 'child_names' from  the container..
+
+        Parameters
+        ----------
+        obj_type: str
+            Type of the named object container.
+        child_names : List[str]
+            List of named objects.
+        """
+        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
+        self.service.delete_child_objects(self.rules, child_obj_path, child_names)
+
+    deleteChildObjects = delete_child_objects
+
+    def delete_all_child_objects(self, obj_type):
+        """Delete all the named objects in the container.
+
+         Parameters
+        ----------
+        obj_type: str
+            Type of the named object container.
+        """
+        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
+        self.service.delete_all_child_objects(self.rules, child_obj_path)
+
+    deleteAllChildObjects = delete_all_child_objects
 
     def create_command_arguments(self, command: str) -> str:
         """Create command arguments.
@@ -800,20 +999,9 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "createdEventRequest": {
-                        "parentpath": convert_path_to_se_path(self.path),
-                        "childtype": child_type,
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_child_created(
+            self.rules, convert_path_to_se_path(self.path), child_type, self, cb
+        )
 
     def add_on_deleted(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is deleted.
@@ -828,17 +1016,9 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "deletedEventRequest": {"path": convert_path_to_se_path(self.path)},
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_deleted(
+            self.rules, convert_path_to_se_path(self.path), self, cb
+        )
 
     def add_on_changed(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is modified.
@@ -853,19 +1033,9 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "modifiedEventRequest": {
-                        "path": convert_path_to_se_path(self.path)
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_changed(
+            self.rules, convert_path_to_se_path(self.path), self, cb
+        )
 
     def add_on_affected(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is affected.
@@ -880,19 +1050,9 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "affectedEventRequest": {
-                        "path": convert_path_to_se_path(self.path)
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_affected(
+            self.rules, convert_path_to_se_path(self.path), self, cb
+        )
 
     def add_on_affected_at_type_path(
         self, child_type: str, cb: Callable
@@ -911,20 +1071,9 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "affectedEventRequest": {
-                        "path": convert_path_to_se_path(self.path),
-                        "subtype": child_type,
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_affected_at_type_path(
+            self.rules, convert_path_to_se_path(self.path), child_type, self, cb
+        )
 
     def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
         """Register a callback for when a command is executed.
@@ -941,20 +1090,9 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "commandExecutedEventRequest": {
-                        "path": convert_path_to_se_path(self.path),
-                        "command": command,
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_command_executed(
+            self.rules, convert_path_to_se_path(self.path), command, self, cb
+        )
 
 
 class PyParameter(PyStateContainer):
@@ -980,19 +1118,9 @@ class PyParameter(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
-        request_dict = {
-            "eventrequest": [
-                {
-                    "rules": self.rules,
-                    "modifiedEventRequest": {
-                        "path": convert_path_to_se_path(self.path)
-                    },
-                }
-            ]
-        }
-        subscription = EventSubscription(self.service, request_dict)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
+        return self.service.add_on_changed(
+            self.rules, convert_path_to_se_path(self.path), self, cb
+        )
 
 
 def _bool_value_if_none(val: Optional[bool], default: bool) -> bool:
@@ -1119,8 +1247,11 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
-    def get_object_names(self) -> list[str]:
-        return self._get_child_object_display_names()
+    def get_object_names(self) -> Any:
+        """Displays the name of objects within a container."""
+        return self.service.get_object_names(self.rules, self.path)
+
+    getChildObjectDisplayNames = get_object_names
 
     def __len__(self) -> int:
         """Return a count of child objects.
@@ -1218,6 +1349,7 @@ class PyNamedObjectContainer:
         return child_obj_type == obj_type
 
     def get_state(self):
+        """Returns state of the container."""
         parent_state = PyMenu(self.service, self.rules, self.path[:-1]).get_state()
         returned_state = {}
 

@@ -8,8 +8,10 @@ import print_fluent_version
 import settingsgen
 import tuigen
 
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion, get_ansys_version
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 from ansys.fluent.core.utils.search import get_api_tree_file_name
 
 
@@ -32,7 +34,7 @@ if __name__ == "__main__":
         parser.add_argument(
             "--ansys-version",
             dest="ansys_version",
-            help=f"Specify the ansys package version to use, default is {get_ansys_version()}",
+            help=f"Specify the ansys package version to use, default is {FluentVersion.get_latest_installed().value}",
         )
         parser.add_argument(
             "--fluent-path",
@@ -43,10 +45,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
         if args.ansys_version:
-            awp_root = os.environ[
-                "AWP_ROOT"
-                + "".join(str(FluentVersion(args.ansys_version)).split("."))[:-1]
-            ]
+            awp_root = os.environ[FluentVersion(args.ansys_version).awp_var]
             os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path

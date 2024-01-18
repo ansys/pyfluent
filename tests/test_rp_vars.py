@@ -5,7 +5,6 @@ from ansys.fluent.core.examples import download_file, path
 from ansys.fluent.core.filereader.casereader import CaseReader
 
 
-@pytest.mark.skip("Temporarily skipping till the docker image is updated, see #2141")
 def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
@@ -26,8 +25,7 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
     assert before_init_mod_2[1][1][1] == ("value", True)
 
 
-@pytest.mark.skip("Temporarily skipping till the docker image is updated, see #2141")
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
@@ -51,7 +49,6 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     assert len(case_vars) == pytest.approx(9000, 450)
 
 
-@pytest.mark.skip("Temporarily skipping till the docker image is updated, see #2141")
 @pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_allowed_values(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript

@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
@@ -67,6 +67,20 @@ jobs:
           filter_mode: nofilter
           fail_on_error: true
 
+  commit-style:
+    name: "Run commit style checks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/commit-style@v5.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  branch-name-style:
+    name: "Run branch name style checks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/branch-name-style@v5.0
+
   test-import:
     name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
@@ -82,7 +96,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@v4
+        uses: ansys/actions/build-wheelhouse@v5
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -93,13 +107,13 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v23.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v24.1.0
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -188,7 +202,7 @@ jobs:
           popd
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
@@ -203,7 +217,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -336,6 +350,40 @@ jobs:
           cat src/ansys/fluent/core/fluent_version_232.py
           python -c "from ansys.fluent.core.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Cache 24.1 API Code
+        uses: actions/cache@v3
+        id: cache-241-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel_241
+            src/ansys/fluent/core/fluent_version_241.py
+            src/ansys/fluent/core/meshing/tui_241.py
+            src/ansys/fluent/core/solver/settings_241
+            src/ansys/fluent/core/solver/tui_241.py
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0
+
+      - name: Pull 24.1 Fluent docker image
+        if: steps.cache-241-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: Run 24.1 API codegen
+        if: steps.cache-241-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: Print 24.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_241.py
+          python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Install again after codegen
         run: |
           rm -rf dist
@@ -347,7 +395,7 @@ jobs:
           twine check dist/*
 
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: PyFluent-packages
           path: |
@@ -369,18 +417,20 @@ jobs:
             version: 231
           - image-tag: v23.2.0
             version: 232
+          - image-tag: v24.1.0
+            version: 241
 
     steps:
 
       - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Download package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: PyFluent-packages
           path: dist
@@ -411,91 +461,12 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload 23.2 Coverage Results to Codecov
-        if: matrix.image-tag == 'v23.2.0' && github.event_name == 'push'
-        uses: codecov/codecov-action@v3
-        with:
-          root_dir: ${{ github.workspace }}
-          name: cov_xml.xml
-
-      - name: Upload 23.2 Coverage Artifacts
-        if: matrix.image-tag == 'v23.2.0'
-        uses: actions/upload-artifact@v3
+      - name: Upload 24.1 Coverage Artifacts
+        if: matrix.image-tag == 'v24.1.0'
+        uses: actions/upload-artifact@v4
         with:
           name: coverage_report
           path: ./htmlcov
-
-# Separate build+test job for 24.1 Fluent
-# Don't upload anything to artifacts/cache/release-package from here
-  build_test_241:
-    name: Build and Test
-    needs: test-import
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image-tag: v24.1.0
-            version: 241
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Add version information
-        run: make version-info
-
-      - name: Install pyfluent
-        run: make install
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Run API codegen
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Print Fluent version info
-        run: |
-          cat src/ansys/fluent/core/fluent_version_${{ matrix.version }}.py
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
-
-      - name: Unit Testing
-        run: make unittest-dev-${{ matrix.version }}
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
 # Separate build+test job for 24.2 Fluent
 # Don't upload anything to artifacts/cache/release-package from here
@@ -514,7 +485,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -572,15 +543,15 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, build_test_241]
+    needs: [test, build_test_242]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
 
       - name: Display package file list
         run: ls -R
