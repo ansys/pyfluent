@@ -1309,6 +1309,13 @@ class PyCommand:
         else:
             self.path = path
 
+    def _get_file_purpose(self):
+        static_info = self._get_static_info()
+        file_purpose = static_info["singletons"]["File"]["commands"][
+            self.__class__.__name__
+        ]["commandinfo"]["args"][0]["attrs"]["filepurpose"]["stringState"]
+        return file_purpose
+
     def __call__(self, purpose: Optional[str] = None, *args, **kwds) -> Any:
         """Execute the command.
 
@@ -1317,16 +1324,16 @@ class PyCommand:
         Any
             Return value.
         """
-        if "Read" in self.__class__.__name__ and bool(
-            self.service.remote_file_handler
-        ):  # temporary to check upload/download based on pypim configuration status
+        # file_purpose = self._get_file_purpose()
+        file_purpose = (
+            purpose if purpose else self._get_file_purpose()
+        )  # purpose is temporary. we will remove it soon.
+        if file_purpose == "input" and bool(self.service.remote_file_handler):
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
-        if "Write" in self.__class__.__name__ and bool(
-            self.service.remote_file_handler
-        ):  # temporary to check upload/download based on pypim configuration status
+        if file_purpose == "output" and bool(self.service.remote_file_handler):
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
 
     def help(self) -> None:

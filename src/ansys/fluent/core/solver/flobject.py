@@ -138,9 +138,11 @@ class Base:
 
         Supports file upload and download.
         """
-        if self._remote_file_handler is None:
-            return self._parent.remote_file_handler
-        return self._remote_file_handler
+        return (
+            self._remote_file_handler
+            if self._remote_file_handler
+            else self._parent.remote_file_handler
+        )
 
     _name = None
     fluent_name = None
@@ -1029,8 +1031,7 @@ class Action(Base):
 class Command(Action):
     """Command object."""
 
-    def __call__(self, purpose: Optional[str] = None, **kwds):
-        """Call a command with the specified keyword arguments."""
+    def _get_file_purpose(self):
         file_purpose = None
         if hasattr(self, "file_name"):
             file_purpose = self.file_name.get_attr(_InlineConstants.file_purpose)
@@ -1038,7 +1039,14 @@ class Command(Action):
             file_purpose = self.file_name_list.get_attr(_InlineConstants.file_purpose)
         elif hasattr(self, "filename"):
             file_purpose = self.filename.get_attr(_InlineConstants.file_purpose)
-        file_purpose = purpose if purpose else file_purpose
+        return file_purpose
+
+    def __call__(self, purpose: Optional[str] = None, **kwds):
+        """Call a command with the specified keyword arguments."""
+        # file_purpose = self._get_file_purpose()
+        file_purpose = (
+            purpose if purpose else self._get_file_purpose()
+        )  # purpose is temporary. we will remove it soon.
         if file_purpose == "input" and bool(self.remote_file_handler):
             self.remote_file_handler.upload(file_name=kwds["file_name"])
         newkwds = _get_new_keywords(self, kwds)
