@@ -164,7 +164,9 @@ class Solver(BaseSession):
         """Root settings object."""
         if self._settings_root is None:
             self._settings_root = flobject.get_root(
-                flproxy=self._settings_service, version=self.version, remote_file_handler=self._remote_file_handler
+                flproxy=self._settings_service,
+                version=self.version,
+                remote_file_handler=self._remote_file_handler,
             )
         return self._settings_root
 
