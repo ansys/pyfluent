@@ -17,6 +17,7 @@ class ServiceType(Enum):
 
     PIM = 1
     Test = 2
+    Null = 3
 
 
 class PimFileTransferService:
@@ -210,11 +211,12 @@ class RemoteFileHandler:
 
     def __init__(self, transfer_service: Optional[Any] = None):
         self._transfer_service = transfer_service
-        self._service_type = (
-            ServiceType.PIM
-            if isinstance(transfer_service, PimFileTransferService)
-            else ServiceType.Test
-        )
+        if isinstance(transfer_service, PimFileTransferService):
+            self._service_type = ServiceType.PIM
+        elif isinstance(transfer_service, TransferRequestRecorder):
+            self._service_type = ServiceType.Test
+        else:
+            self._service_type = ServiceType.Null
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
         """Upload a file if it's unavailable on the server
@@ -255,6 +257,8 @@ class RemoteFileHandler:
             return self._transfer_service.is_pim_configured()
         if self._service_type == ServiceType.Test:
             return True
+        if self._service_type == ServiceType.Null:
+            return False
 
 
 class TransferRequestRecorder:
