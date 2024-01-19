@@ -33,10 +33,10 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
 class InactiveObjectError(RuntimeError):
-    """Provides the error when the object is inactive."""
+    """Inactive object access."""
 
-    def __init__(self):
-        super().__init__("Object is not active.")
+    def __init__(self, python_path):
+        super().__init__(f"'{python_path}' is currently inactive.")
 
 
 class _InlineConstants:
@@ -216,7 +216,7 @@ class Base:
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise InactiveObjectError()
+            raise InactiveObjectError(self.python_path)
         val = None
         if attrs:
             val = attrs[attr]
@@ -581,7 +581,7 @@ class Group(SettingsBase[DictStateType]):
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
-                raise RuntimeError(f"'{self.python_path}' is currently not active")
+                raise InactiveObjectError(self.python_path)
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
