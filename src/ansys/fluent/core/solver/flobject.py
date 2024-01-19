@@ -138,11 +138,7 @@ class Base:
 
         Supports file upload and download.
         """
-        return (
-            self._remote_file_handler
-            if self._remote_file_handler
-            else self._parent.remote_file_handler
-        )
+        return self._remote_file_handler or self._parent.remote_file_handler
 
     _name = None
     fluent_name = None
