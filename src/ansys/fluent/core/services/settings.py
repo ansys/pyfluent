@@ -272,7 +272,7 @@ class SettingsService:
             }
             for child in info.arguments:
                 for key, value in child.value.attrs.items():
-                    ret[key] = value.string_state
+                    ret[key] = self._get_state_from_value(value)
         if info.HasField("object_type"):
             ret["object-type"] = self._extract_static_info(info.object_type)
         if info.help:
