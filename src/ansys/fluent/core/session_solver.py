@@ -8,10 +8,11 @@ import logging
 import threading
 from typing import Any, Optional
 
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import Reduction, ReductionService
-from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
+from ansys.fluent.core.services.svar import SVARData, SVARInfo
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver import flobject
@@ -95,7 +96,9 @@ class Solver(BaseSession):
         self._settings_root = None
         self._version = None
         self._lck = threading.Lock()
-        self.svar_service = self.fluent_connection.create_grpc_service(SVARService)
+        self.svar_service = service_creator("svar").create(
+            fluent_connection._channel, fluent_connection._metadata
+        )
         self.svar_info = SVARInfo(self.svar_service)
         self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
@@ -113,7 +116,7 @@ class Solver(BaseSession):
     @property
     def svar_data(self) -> SVARData:
         """Return the SVARData handle."""
-        return SVARData(self.svar_service, self.svar_info)
+        return service_creator("svar_data").create(self.svar_service, self.svar_info)
 
     @property
     def version(self):
