@@ -15,8 +15,9 @@ from docker.models.containers import Container
 import grpc
 import psutil
 
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
+from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.platform.instancemanagement import Instance
 import docker
@@ -311,10 +312,12 @@ class FluentConnection:
 
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = SchemeEvalService(
-            self._channel, self._metadata, self.error_state
+        self._scheme_eval_service = self.create_grpc_service(
+            SchemeEvalService, self.error_state
         )
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
+        self.scheme_eval = service_creator("scheme_eval").create(
+            self._scheme_eval_service
+        )
 
         self._cleanup_on_exit = cleanup_on_exit
         self.start_transcript = start_transcript
@@ -496,7 +499,7 @@ class FluentConnection:
         """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
-    def create_service(self, service, *args):
+    def create_grpc_service(self, service, *args):
         """Create a gRPC service.
 
         Parameters

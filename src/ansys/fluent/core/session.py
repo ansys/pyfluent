@@ -7,17 +7,10 @@ import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.batch_ops import BatchOpsService
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService as DatamodelService_SE,
-)
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.events import EventsService
-from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
-from ansys.fluent.core.services.monitor import MonitorsService
-from ansys.fluent.core.services.settings import SettingsService
+from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -129,28 +122,36 @@ class BaseSession:
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 
-        self.transcript = self.fluent_connection.create_service(Transcript)
+        self.transcript = self.fluent_connection.create_grpc_service(Transcript)
         if fluent_connection.start_transcript:
             self.transcript.start()
 
-        self.datamodel_service_tui = self.fluent_connection.create_service(
-            DatamodelService_TUI, self.error_state
+        self.datamodel_service_tui = service_creator("tui").create(
+            fluent_connection._channel,
+            fluent_connection._metadata,
+            self.error_state,
+            self.scheme_eval,
         )
 
-        self.datamodel_service_se = self.fluent_connection.create_service(
-            DatamodelService_SE, self.error_state
+        self.datamodel_service_se = service_creator("datamodel").create(
+            fluent_connection._channel,
+            fluent_connection._metadata,
+            self.error_state,
         )
+
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 
-        self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
-        self.events_service = self.fluent_connection.create_service(EventsService)
+        self._batch_ops_service = self.fluent_connection.create_grpc_service(
+            BatchOpsService
+        )
+        self.events_service = self.fluent_connection.create_grpc_service(EventsService)
         self.events_manager = EventsManager(
             self.events_service, self.error_state, self.fluent_connection._id
         )
 
-        self._monitors_service = self.fluent_connection.create_service(
-            MonitorsService, self.error_state
+        self._monitors_service = service_creator("monitors").create(
+            fluent_connection._channel, fluent_connection._metadata, self.error_state
         )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service
@@ -165,13 +166,13 @@ class BaseSession:
 
         self.events_manager.start()
 
-        self._field_data_service = self.fluent_connection.create_service(
+        self._field_data_service = self.fluent_connection.create_grpc_service(
             FieldDataService, self.error_state
         )
-        self.field_info = FieldInfo(
+        self.field_info = service_creator("field_info").create(
             self._field_data_service, _IsDataValid(self.scheme_eval)
         )
-        self.field_data = FieldData(
+        self.field_data = service_creator("field_data").create(
             self._field_data_service,
             self.field_info,
             _IsDataValid(self.scheme_eval),
@@ -181,8 +182,11 @@ class BaseSession:
             self.fluent_connection._id, self._field_data_service
         )
 
-        self.settings_service = self.fluent_connection.create_service(
-            SettingsService, self.scheme_eval, self.error_state
+        self.settings_service = service_creator("settings").create(
+            fluent_connection._channel,
+            fluent_connection._metadata,
+            self.scheme_eval,
+            self.error_state,
         )
 
         self.health_check_service = fluent_connection.health_check_service

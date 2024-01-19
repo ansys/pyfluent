@@ -1,5 +1,6 @@
 from time import sleep
 
+from google.protobuf.json_format import MessageToDict
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
@@ -53,21 +54,18 @@ def test_event_subscription(new_mesh_session):
     e8 = request.eventrequest.add(rules="workflow")
     e8.commandExecutedEventRequest.path = ""
     e8.commandExecutedEventRequest.command = "InitializeWorkflow"
-    response = session.datamodel_service_se.subscribe_events(request)
+    response = session.datamodel_service_se.subscribe_events(MessageToDict(request))
     assert all(
         [
-            r.status == datamodel_se_pb2.STATUS_SUBSCRIBED and r.tag == t
-            for r, t in zip(response.response, tags)
+            r["status"] == datamodel_se_pb2.STATUS_SUBSCRIBED and r["tag"] == t
+            for r, t in zip(response, tags)
         ]
     )
-
-    request = datamodel_se_pb2.UnsubscribeEventsRequest()
-    request.tag.extend(tags)
-    response = session.datamodel_service_se.unsubscribe_events(request)
+    response = session.datamodel_service_se.unsubscribe_events(tags)
     assert all(
         [
-            r.status == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r.tag == t
-            for r, t in zip(response.response, tags)
+            r["status"] == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r["tag"] == t
+            for r, t in zip(response, tags)
         ]
     )
 
@@ -284,7 +282,7 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session
@@ -356,3 +354,114 @@ def test_generic_datamodel(new_solver_session):
     solver.scheme_eval.scheme_eval("(init-flserver)")
     flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_named_object_specific_methods_using_flserver(new_solver_session):
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    solver = new_solver_session
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.solution.initialization.hybrid_initialize()
+    solver.solution.run_calculation.iterate(iter_count=10)
+    solver.tui.display.objects.create(
+        "contour",
+        "contour-z1",
+        "field",
+        "velocity-magnitude",
+        "surfaces-list",
+        "cold-inlet",
+    )
+    solver.tui.display.objects.create(
+        "contour",
+        "contour-z2",
+        "field",
+        "velocity-magnitude",
+        "surfaces-list",
+        "hot-inlet",
+    )
+    solver.tui.display.objects.create(
+        "contour",
+        "contour-z3",
+        "field",
+        "velocity-magnitude",
+        "surfaces-list",
+        "outlet",
+    )
+    solver.tui.display.objects.create(
+        "contour",
+        "contour-z4",
+        "field",
+        "velocity-magnitude",
+        "surfaces-list",
+        "wall-elbow",
+    )
+    solver.tui.display.objects.create(
+        "contour",
+        "contour-z5",
+        "field",
+        "velocity-magnitude",
+        "surfaces-list",
+        "wall-inlet",
+    )
+
+    flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
+
+    assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
+        "contour-z1",
+        "contour-z2",
+        "contour-z3",
+        "contour-z4",
+        "contour-z5",
+    }
+
+    assert "contour-x1" not in flserver.Case.Results.Graphics.Contour.get_object_names()
+
+    flserver.Case.Results.Graphics.Contour["contour-z1"].rename("contour-x1")
+
+    assert "contour-x1" in flserver.Case.Results.Graphics.Contour.get_object_names()
+
+    flserver.Case.Results.Graphics.delete_child_objects(
+        "Contour", ["contour-x1", "contour-z2"]
+    )
+
+    assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
+        "contour-z3",
+        "contour-z4",
+        "contour-z5",
+    }
+
+    flserver.Case.Results.Graphics.delete_all_child_objects("Contour")
+
+    assert not flserver.Case.Results.Graphics.Contour.get_object_names()
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_named_object_specific_methods(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert set(meshing.workflow.TaskObject.get_object_names()) == {
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Apply Share Topology",
+        "Enclose Fluid Regions (Capping)",
+        "Update Boundaries",
+        "Create Regions",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+    }
+
+    assert "xyz" not in meshing.workflow.TaskObject.get_object_names()
+
+    meshing.workflow.TaskObject["Import Geometry"].rename("xyz")
+
+    assert "xyz" in meshing.workflow.TaskObject.get_object_names()
+
+    meshing.workflow.delete_all_child_objects("TaskObject")
+
+    assert not meshing.workflow.TaskObject.get_object_names()

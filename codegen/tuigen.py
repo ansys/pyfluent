@@ -28,14 +28,16 @@ from data.fluent_gui_help_patch import XML_HELP_PATCH
 from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.launcher_utils import get_ansys_version
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -94,9 +96,9 @@ def _copy_tui_help_xml_file(version: str):
 
     else:
         ansys_version = (
-            get_ansys_version()
+            FluentVersion.get_latest_installed()
         )  # picking up the file from the latest install location
-        awp_root = os.environ["AWP_ROOT" + "".join(str(ansys_version).split("."))[:-1]]
+        awp_root = os.environ[ansys_version.awp_var]
         xml_source = (
             Path(awp_root)
             / "commonfiles"
@@ -312,7 +314,7 @@ class TUIGenerator:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if self._version == "222":
+            if FluentVersion(self._version) == FluentVersion.v222:
                 with open(
                     os.path.join(
                         _THIS_DIRNAME,
@@ -354,7 +356,7 @@ class TUIGenerator:
 
 def generate(version, pyfluent_path):
     api_tree = {}
-    if version > "222":
+    if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(

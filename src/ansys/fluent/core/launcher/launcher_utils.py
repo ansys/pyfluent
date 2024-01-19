@@ -26,19 +26,13 @@ from ansys.fluent.core.utils.file_transfer_service import (
     PimFileTransferService,
     RemoteFileHandler,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
-
-
-class AnsysVersionNotFound(RuntimeError):
-    """Provides the error when Ansys version is not found."""
-
-    def __init__(self):
-        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
 
 
 class InvalidPassword(ValueError):
@@ -93,57 +87,6 @@ def check_docker_support():
     return True
 
 
-class FluentVersion(Enum):
-    """An enumeration over supported Fluent versions."""
-
-    version_24R2 = "24.2.0"
-    version_24R1 = "24.1.0"
-    version_23R2 = "23.2.0"
-    version_23R1 = "23.1.0"
-    version_22R2 = "22.2.0"
-
-    @classmethod
-    def _missing_(cls, version):
-        if isinstance(version, (float, str)):
-            version = str(version) + ".0"
-            for v in FluentVersion:
-                if version == v.value:
-                    return FluentVersion(version)
-            else:
-                raise RuntimeError(
-                    f"The specified version '{version[:-2]}' is not supported."
-                    + " Supported versions are: "
-                    + ", ".join([ver.value for ver in FluentVersion][::-1])
-                )
-
-    def __str__(self):
-        return str(self.value)
-
-
-def get_ansys_version() -> str:
-    """Return the version string corresponding to the most recent, available ANSYS
-    installation.
-
-    The returned value is the string component of one of the members of the
-    FluentVersion class.
-
-    Returns
-    -------
-    str
-        Ansys version string
-
-    Raises
-    ------
-    AnsysVersionNotFound
-        If an Ansys version cannot be found.
-    """
-    for v in FluentVersion:
-        if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
-            return str(v)
-
-    raise AnsysVersionNotFound()
-
-
 def get_fluent_exe_path(**launch_argvals) -> Path:
     """Get Fluent executable path. The path is searched in the following order.
 
@@ -157,7 +100,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     """
 
     def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ["AWP_ROOT" + "".join(str(version).split("."))[:-1]]
+        awp_root = os.environ[version.awp_var]
         return Path(awp_root) / "fluent"
 
     def get_exe_path(fluent_root: Path) -> Path:
@@ -178,8 +121,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
-    ansys_version = get_ansys_version()
-    return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
+    return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
 
 
 class FluentMode(Enum):
@@ -234,8 +176,11 @@ def _get_server_info_file_name(use_tmpdir=True):
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+    scheduler_options = argvals.get("scheduler_options")
+    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     kwargs: Dict[str, Any] = {}
-    kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if is_slurm:
+        kwargs.update(stdout=subprocess.PIPE)
     if _is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
@@ -244,8 +189,6 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
 
-    scheduler_options = argvals.get("scheduler_options")
-    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     if not is_slurm:
         from ansys.fluent.core import INFER_REMOTING_IP
 

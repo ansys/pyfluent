@@ -8,10 +8,9 @@ from packaging.version import Version
 import pytest
 
 from ansys.fluent.core.data_model_cache import DataModelCache
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-_fluent_versions = list(FluentVersion)
-_fluent_release_version = _fluent_versions[1]
+_fluent_release_version = FluentVersion.current_release().value
 
 
 def pytest_addoption(parser):
@@ -82,6 +81,36 @@ def run_before_each_test(
 def clear_datamodel_cache():
     yield
     DataModelCache.rules_str_to_cache.clear()
+
+
+class Helpers:
+    """Can be reused to provide helper methods to tests."""
+
+    def __init__(self, monkeypatch: pytest.MonkeyPatch):
+        self.monkeypatch = monkeypatch
+
+    def mock_awp_vars(self, version=None):
+        """Activates env vars for Fluent versions up to specified version, deactivates
+        env vars for versions newer than specified."""
+        if not version:
+            version = FluentVersion.current_release()
+        elif not isinstance(version, FluentVersion):
+            version = FluentVersion(version)
+        self.monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+        for fv in FluentVersion:
+            if fv <= version:
+                self.monkeypatch.setenv(fv.awp_var, f"ansys_inc/{fv.name}")
+            else:
+                self.monkeypatch.delenv(fv.awp_var, raising=False)
+
+    def delete_all_awp_vars(self):
+        for fv in FluentVersion:
+            self.monkeypatch.delenv(fv.awp_var, raising=False)
+
+
+@pytest.fixture
+def helpers(monkeypatch):
+    return Helpers(monkeypatch)
 
 
 pytest.wont_raise = nullcontext

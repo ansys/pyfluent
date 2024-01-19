@@ -59,7 +59,7 @@ class PureMeshing(BaseSession):
             self.datamodel_service_se,
         )
 
-        self.meshing_queries_service = fluent_connection.create_service(
+        self.meshing_queries_service = fluent_connection.create_grpc_service(
             MeshingQueriesService, self.error_state
         )
 

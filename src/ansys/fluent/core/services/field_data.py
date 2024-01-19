@@ -24,7 +24,8 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 def override_help_text(func, func_to_be_wrapped):
     """Override function help text."""
-    func.__doc__ = "\n" + func_to_be_wrapped.__doc__
+    if func_to_be_wrapped.__doc__:
+        func.__doc__ = "\n" + func_to_be_wrapped.__doc__
     func.__name__ = func_to_be_wrapped.__qualname__
     return func
 

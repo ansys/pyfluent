@@ -16,13 +16,11 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
-from ansys.fluent.core.launcher.launcher_utils import (  # noqa: F401
-    FluentMode,
-    FluentVersion,
-)
+from ansys.fluent.core.launcher.launcher_utils import FluentMode  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
+from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
@@ -74,3 +72,8 @@ DATAMODEL_USE_ATTR_CACHE = True
 
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+
+def wrap_api_call(f, *args, **kwargs):
+    # overwritten in PyConsole
+    return f(*args, **kwargs)

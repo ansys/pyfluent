@@ -3,13 +3,15 @@ from pathlib import Path
 import pickle
 from typing import Any, Optional
 
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 from ansys.fluent.core.workflow import BaseTask, TaskContainer, WorkflowWrapper
 
 
@@ -178,7 +180,7 @@ def search(
         version = root_version
     if not version:
         for fluent_version in FluentVersion:
-            version = get_version_for_file_name(str(fluent_version))
+            version = get_version_for_file_name(fluent_version.value)
             if get_api_tree_file_name(version, None).exists():
                 break
     api_tree_file = get_api_tree_file_name(version, None)
