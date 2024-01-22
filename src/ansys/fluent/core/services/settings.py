@@ -272,7 +272,7 @@ class SettingsService:
             }
             try:
                 for child in info.arguments:
-                    for key, value in child.value.attrs.items():
+                    for key, value in sorted(child.value.attrs.items()):
                         ret[key] = self._get_state_from_value(value)
             except AttributeError:
                 pass
