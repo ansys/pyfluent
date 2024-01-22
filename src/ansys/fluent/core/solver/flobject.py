@@ -1209,6 +1209,24 @@ class _HasAllowedValuesMixin:
             return []
 
 
+class _InputFilePurposeMixin:
+    def file_purpose(self):
+        """Signifies this file as an input to Fluent"""
+        try:
+            return self.get_attr(_InlineConstants.file_purpose)
+        except Exception:
+            return []
+
+
+class _OutputFilePurposeMixin:
+    def file_purpose(self):
+        """Signifies this file as an output from Fluent"""
+        try:
+            return self.get_attr(_InlineConstants.file_purpose)
+        except Exception:
+            return []
+
+
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
@@ -1260,6 +1278,10 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
+        elif info.get("filepurpose") == "input":
+            base += (_InputFilePurposeMixin,)
+        elif info.get("filepurpose") == "output":
+            base += (_OutputFilePurposeMixin,)
 
         cls = type(pname, bases, dct)
 
