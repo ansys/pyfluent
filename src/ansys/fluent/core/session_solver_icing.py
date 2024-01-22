@@ -16,6 +16,8 @@ class SolverIcing(Solver):
     datamodel objects calls.
     """
 
+    _internal_name = "solver-icing"
+
     def __init__(
         self,
         fluent_connection: FluentConnection,

@@ -171,16 +171,13 @@ class DockerLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value[1]
+        self.new_session = self.mode.value
 
     def __call__(self):
         if self.mode == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
         args = _build_fluent_launch_args_string(**self.argvals).split()
-        if (
-            self.mode == FluentMode.MESHING_MODE
-            or self.mode == FluentMode.PURE_MESHING_MODE
-        ):
+        if FluentMode.is_meshing(self.mode):
             args.append(" -meshing")
         if self.container_dict is None:
             setattr(self, "container_dict", {})
