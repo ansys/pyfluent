@@ -2,13 +2,22 @@
 
 Examples
 --------
->>> # The keys scheduler_headnode, scheduler_queue and scheduler_account are optional and should be specified in a similar manner to Fluent's scheduler options.
->>> slurm = pyfluent.launch_fluent(scheduler_options={"scheduler": "slurm", "scheduler_headnode": "<headnode>", "scheduler_queue": "<queue>", "scheduler_account": "<account>"})
+>>> # The keys scheduler_headnode, scheduler_queue and scheduler_account are optional
+>>> # and should be specified in a similar manner to Fluent's scheduler options.
+>>> slurm = pyfluent.launch_fluent(
+...   scheduler_options={
+...     "scheduler": "slurm",
+...     "scheduler_headnode": "<headnode>",
+...     "scheduler_queue": "<queue>",
+...     "scheduler_account": "<account>"
+...   },
+...   additional_arguments="-t16 -cnf=m1:8,m2:8",
+... )
 >>> type(slurm)
 <class 'ansys.fluent.core.launcher.slurm_launcher.SlurmFuture'>
 >>> slurm.pending(), slurm.running(), slurm.done() # before Fluent is launched
 (True, False, False)
->>>  slurm.pending(), slurm.running(), slurm.done() # after Fluent is launched
+>>> slurm.pending(), slurm.running(), slurm.done() # after Fluent is launched
 (False, True, False)
 >>> session = slurm.result()
 >>> type(session)
