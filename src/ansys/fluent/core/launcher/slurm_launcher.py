@@ -29,7 +29,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _generate_launch_string,
-    _get_argvals,
+    _get_mode,
     _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
     _process_invalid_args,
@@ -179,10 +179,11 @@ class SlurmLauncher:
         dry_run = kwargs.get("dry_run")
         mode = kwargs.get("mode")
         argvals = kwargs.copy()
+        del argvals["self"]
         del kwargs
         _process_invalid_args(dry_run, "slurm", argvals)
-        args = _get_argvals(argvals, mode)
-        argvals.update(args)
+        self.mode = _get_mode(mode)
+        self.new_session = self.mode.value[1]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = -1
         for arg_name, arg_values in argvals.items():
@@ -202,7 +203,7 @@ class SlurmLauncher:
         self._argvals.update(self._argvals["scheduler_options"])
         launch_cmd = _generate_launch_string(
             self._argvals,
-            self._meshing_mode,
+            self.mode,
             self._show_gui,
             self._additional_arguments,
             self._server_info_file_name,

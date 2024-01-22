@@ -12,9 +12,8 @@ from ansys.fluent.core.launcher.fluent_container import (
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
     _build_fluent_launch_args_string,
-    _get_argvals,
+    _get_mode,
     _process_invalid_args,
-    _process_kwargs,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
@@ -29,7 +28,6 @@ class DockerLauncher:
 
     def __init__(
         self,
-        argvals: Optional[Any] = None,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -54,7 +52,6 @@ class DockerLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
-        **kwargs,
     ):
         """Launch Fluent session in container mode.
 
@@ -164,22 +161,26 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _process_kwargs(kwargs)
-        del kwargs
         del start_container
         argvals = locals().copy()
+        del argvals["self"]
         _process_invalid_args(dry_run, "container", argvals)
-        args = _get_argvals(argvals, mode)
-        argvals.update(args)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
+        self.mode = _get_mode(mode)
+        self.new_session = self.mode.value[1]
 
     def __call__(self):
+        if self.mode == FluentMode.SOLVER_ICING:
+            self.argvals["fluent_icing"] = True
         args = _build_fluent_launch_args_string(**self.argvals).split()
-        if self.meshing_mode:
+        if (
+            self.mode == FluentMode.MESHING_MODE
+            or self.mode == FluentMode.PURE_MESHING_MODE
+        ):
             args.append(" -meshing")
         if self.container_dict is None:
             setattr(self, "container_dict", {})
