@@ -1211,7 +1211,7 @@ class _HasAllowedValuesMixin:
 
 class _InputFilePurposeMixin:
     def file_purpose(self):
-        """Signifies this file as an input to Fluent"""
+        """Signifies this file as an input to Fluent."""
         try:
             return self.get_attr(_InlineConstants.file_purpose)
         except Exception:
@@ -1220,7 +1220,7 @@ class _InputFilePurposeMixin:
 
 class _OutputFilePurposeMixin:
     def file_purpose(self):
-        """Signifies this file as an output from Fluent"""
+        """Signifies this file as an output from Fluent."""
         try:
             return self.get_attr(_InlineConstants.file_purpose)
         except Exception:
