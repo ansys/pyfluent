@@ -359,7 +359,7 @@ def _get_running_session_mode(
             )
         except Exception as ex:
             raise InvalidPassword() from ex
-    return session_mode.value[1]
+    return session_mode.value
 
 
 def _generate_launch_string(
