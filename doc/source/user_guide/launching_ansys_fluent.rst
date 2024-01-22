@@ -209,6 +209,8 @@ scheduler without using any bash script:
       additional_arguments="-t16 -cnf=m1:8,m2:8",
    )
 
+.. vale off
+
 The keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account`` are
 optional and should be specified in a similar manner to Fluent's scheduler options.
 Here, the :func:`launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
@@ -216,6 +218,8 @@ method returns a :class:`SlurmFuture <ansys.fluent.core.launcher.slurm_launcher.
 instance from which the PyFluent session can be extracted. For a detailed usage, see the
 documentation of the :mod:`slurm_launcher <ansys.fluent.core.launcher.slurm_launcher>`
 module.
+
+.. vale on
 
 The ``scheduler_options`` parameter doesn't support the automatic scheduler allocation,
 the ``-t`` and ``-cnf`` arguments must be passed to the
