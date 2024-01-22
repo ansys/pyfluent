@@ -1443,10 +1443,13 @@ class PyCommand:
 
     def _get_file_purpose(self):
         static_info = self._get_static_info()
-        file_purpose = static_info["singletons"]["File"]["commands"][
-            self.__class__.__name__
-        ]["commandinfo"]["args"][0]["attrs"]["filepurpose"]["stringState"]
-        return file_purpose
+        try:
+            file_purpose = static_info["singletons"]["File"]["commands"][
+                self.__class__.__name__
+            ]["commandinfo"]["args"][0]["attrs"]["filepurpose"]["stringState"]
+            return file_purpose
+        except KeyError:
+            return None
 
     def __call__(self, purpose: Optional[str] = None, *args, **kwds) -> Any:
         """Execute the command.
