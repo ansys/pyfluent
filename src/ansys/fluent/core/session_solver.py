@@ -69,6 +69,8 @@ class Solver(BaseSession):
     commanding, and solver settings objects are all exposed here.
     """
 
+    _internal_name = "solver"
+
     def __init__(
         self,
         fluent_connection,

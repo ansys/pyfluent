@@ -172,7 +172,7 @@ class StandaloneLauncher:
         del argvals["self"]
         _process_invalid_args(dry_run, "standalone", argvals)
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value[1]
+        self.new_session = self.mode.value
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():

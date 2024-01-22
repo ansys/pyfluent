@@ -128,10 +128,10 @@ class FluentMode(Enum):
     """An enumeration over supported Fluent modes."""
 
     # Tuple: Name, Solver object type, Meshing flag, Launcher options
-    MESHING_MODE = ("meshing", Meshing, [])
-    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, [])
-    SOLVER = ("solver", Solver, [])
-    SOLVER_ICING = ("solver-icing", SolverIcing, [("fluent_icing", True)])
+    MESHING_MODE = Meshing
+    PURE_MESHING_MODE = PureMeshing
+    SOLVER = Solver
+    SOLVER_ICING = SolverIcing
 
     @staticmethod
     def get_mode(mode: str) -> "FluentMode":
@@ -153,12 +153,27 @@ class FluentMode(Enum):
             If an unknown mode is passed.
         """
         for m in FluentMode:
-            if mode == m.value[0]:
+            if mode == m.value._internal_name:
                 return m
-        else:
-            raise DisallowedValuesError(
-                "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
-            )
+        raise DisallowedValuesError(
+            "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
+        )
+
+    @staticmethod
+    def is_meshing(mode: "FluentMode") -> bool:
+        """Returns whether the current mode is meshing.
+
+        Parameters
+        ----------
+        mode : FluentMode
+            mode
+
+        Returns
+        -------
+        True if mode is FluentMode.MESHING_MODE or FluentMode.PURE_MESHING_MODE else False
+            bool
+        """
+        return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
 def _get_server_info_file_name(use_tmpdir=True):
@@ -344,7 +359,7 @@ def _get_running_session_mode(
             )
         except Exception as ex:
             raise InvalidPassword() from ex
-    return session_mode.value[1]
+    return session_mode.value
 
 
 def _generate_launch_string(
@@ -365,7 +380,7 @@ def _generate_launch_string(
     if mode == FluentMode.SOLVER_ICING:
         argvals["fluent_icing"] = True
     launch_string += _build_fluent_launch_args_string(**argvals)
-    if mode == FluentMode.MESHING_MODE or mode == FluentMode.PURE_MESHING_MODE:
+    if FluentMode.is_meshing(mode):
         launch_string += " -meshing"
     if additional_arguments:
         launch_string += f" {additional_arguments}"
@@ -571,7 +586,7 @@ def launch_remote_fluent(
     pim = pypim.connect()
     instance = pim.create_instance(
         product_name="fluent-meshing"
-        if mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
+        if FluentMode.is_meshing(mode)
         else "fluent-2ddp"
         if dimensionality == "2d"
         else "fluent-3ddp",
