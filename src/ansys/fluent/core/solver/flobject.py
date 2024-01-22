@@ -1279,9 +1279,9 @@ def get_cls(name, info, parent=None, version=None):
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
         elif info.get("filepurpose") == "input":
-            base += (_InputFilePurposeMixin,)
+            bases += (_InputFilePurposeMixin,)
         elif info.get("filepurpose") == "output":
-            base += (_OutputFilePurposeMixin,)
+            bases += (_OutputFilePurposeMixin,)
 
         cls = type(pname, bases, dct)
 
