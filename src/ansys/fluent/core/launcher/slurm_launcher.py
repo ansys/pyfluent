@@ -179,11 +179,10 @@ class SlurmLauncher:
         dry_run = kwargs.get("dry_run")
         mode = kwargs.get("mode")
         argvals = kwargs.copy()
-        del argvals["self"]
         del kwargs
         _process_invalid_args(dry_run, "slurm", argvals)
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value[1]
+        self._new_session = self.mode.value
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = -1
         for arg_name, arg_values in argvals.items():
