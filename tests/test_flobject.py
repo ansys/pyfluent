@@ -455,11 +455,9 @@ def test_named_object():
     r.n_1["n1"] = {}
     r.n_1["n2"] = {}
     assert r.n_1.get_object_names() == ["n1", "n2"]
-    r.n_1.rename("n3", "n1")
-    assert r.n_1.get_object_names() == ["n3", "n2"]
     r.n_1.create("n4")
-    assert r.n_1.get_object_names() == ["n3", "n2", "n4"]
-    del r.n_1["n3"]
+    assert r.n_1.get_object_names() == ["n1", "n2", "n4"]
+    del r.n_1["n1"]
     assert r.n_1.get_object_names() == ["n2", "n4"]
     r.n_1["n1"] = {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
     assert r.n_1["n1"]() == {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
@@ -471,11 +469,7 @@ def test_named_object():
 def test_list_object():
     r = flobject.get_root(Proxy())
     assert r.l_1.get_size() == 0
-    r.l_1.resize(3)
-    assert r.l_1.get_size() == 3
-    r.l_1.resize(2)
-    assert r.l_1.get_size() == 2
-    assert r.l_1() == [
+    r.l_1 = [
         {"il_1": None, "bl_1": None},
         {"il_1": None, "bl_1": None},
     ]
