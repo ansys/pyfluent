@@ -171,7 +171,7 @@ class DockerLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value
+        self.new_session = self.mode.value[0]
 
     def __call__(self):
         if self.mode == FluentMode.SOLVER_ICING:
