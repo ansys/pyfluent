@@ -16,6 +16,8 @@ class Meshing(PureMeshing):
     in this mode.
     """
 
+    _internal_name = "meshing"
+
     def __init__(
         self,
         fluent_connection: FluentConnection,

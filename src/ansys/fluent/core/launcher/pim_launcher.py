@@ -6,9 +6,8 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
-    _get_argvals,
+    _get_mode,
     _process_invalid_args,
-    _process_kwargs,
     launch_remote_fluent,
 )
 
@@ -22,7 +21,6 @@ class PIMLauncher:
 
     def __init__(
         self,
-        argvals: Optional[Any] = None,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -47,7 +45,6 @@ class PIMLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
-        **kwargs,
     ):
         """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode.
 
@@ -157,13 +154,12 @@ class PIMLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _process_kwargs(kwargs)
-        del kwargs
         del start_container
         argvals = locals().copy()
+        del argvals["self"]
         _process_invalid_args(dry_run, "pim", argvals)
-        args = _get_argvals(argvals, mode)
-        argvals.update(args)
+        self.mode = _get_mode(mode)
+        self.new_session = self.mode.value
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
@@ -196,7 +192,7 @@ class PIMLauncher:
             start_transcript=self.start_transcript,
             product_version=fluent_product_version,
             cleanup_on_exit=self.cleanup_on_exit,
-            meshing_mode=self.meshing_mode,
+            mode=self.mode,
             dimensionality=self.version,
             launcher_args=self.argvals,
         )

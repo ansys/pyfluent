@@ -13,13 +13,12 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _generate_launch_string,
-    _get_argvals,
+    _get_mode,
     _get_server_info,
     _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
     _is_windows,
     _process_invalid_args,
-    _process_kwargs,
     _raise_exception_g_gu_in_windows_os,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
@@ -35,7 +34,6 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        argvals: Optional[Any] = None,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -60,7 +58,6 @@ class StandaloneLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
-        **kwargs,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -170,13 +167,12 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _process_kwargs(kwargs)
-        del kwargs
         del start_container
         argvals = locals().copy()
+        del argvals["self"]
         _process_invalid_args(dry_run, "standalone", argvals)
-        args = _get_argvals(argvals, mode)
-        argvals.update(args)
+        self.mode = _get_mode(mode)
+        self.new_session = self.mode.value
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
@@ -198,7 +194,7 @@ class StandaloneLauncher:
         server_info_file_name = _get_server_info_file_name()
         launch_string = _generate_launch_string(
             self.argvals,
-            self.meshing_mode,
+            self.mode,
             self.show_gui,
             self.additional_arguments,
             server_info_file_name,
@@ -258,7 +254,10 @@ class StandaloneLauncher:
                 ip, port, password = _get_server_info(server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
             if self.case_file_name:
-                if self.meshing_mode:
+                if (
+                    self.mode == FluentMode.MESHING_MODE
+                    or self.mode == FluentMode.PURE_MESHING_MODE
+                ):
                     session.tui.file.read_case(self.case_file_name)
                 elif self.lightweight_mode:
                     session.read_case_lightweight(self.case_file_name)
@@ -268,7 +267,10 @@ class StandaloneLauncher:
                         file_name=self.case_file_name,
                     )
             if self.case_data_file_name:
-                if not self.meshing_mode:
+                if not (
+                    self.mode == FluentMode.MESHING_MODE
+                    or self.mode == FluentMode.PURE_MESHING_MODE
+                ):
                     session.file.read(
                         file_type="case-data",
                         file_name=self.case_data_file_name,
