@@ -1203,12 +1203,18 @@ class _HasAllowedValuesMixin:
 
 class _InputFileMixin:
     def before_execution(self, value):
-        self.remote_file_handler.upload(file_name=value)
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
 
 
 class _OutputFileMixin:
     def after_execution(self, value):
-        self.remote_file_handler.download(file_name=value)
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
 
 
 # pylint: disable=missing-raises-doc
