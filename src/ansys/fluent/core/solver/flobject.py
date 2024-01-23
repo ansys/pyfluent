@@ -1034,6 +1034,39 @@ class Command(Action):
         elif "_OutputFilePurposeMixin" in base_classes:
             return "output"
 
+    def _transfer_files(self, transfer_type, **kwds):
+        for argument_name in self.argument_names:
+            argument = getattr(self, argument_name)
+            if argument_name in kwds and isinstance(argument, Filename):
+                value = kwds.get(argument_name)
+                transfer_type(file_name=value)
+            elif argument_name in kwds and isinstance(value, FilenameList):
+                values = kwds.get(argument_name)
+                for value in values:
+                    transfer_type(file_name=value)
+
+    def _upload_input_files(self, **kwds):
+        for argument_name in self.argument_names:
+            argument = getattr(self, argument_name)
+            if argument_name in kwds and isinstance(argument, Filename):
+                value = kwds.get(argument_name)
+                self.remote_file_handler.upload(file_name=value)
+            elif argument_name in kwds and isinstance(value, FilenameList):
+                values = kwds.get(argument_name)
+                for value in values:
+                    self.remote_file_handler.upload(file_name=value)
+
+    def _download_output_files(self, **kwds):
+        for argument_name in self.argument_names:
+            argument = getattr(self, argument_name)
+            if argument_name in kwds and isinstance(argument, Filename):
+                value = kwds.get(argument_name)
+                self.remote_file_handler.download(file_name=value)
+            elif argument_name in kwds and isinstance(value, FilenameList):
+                values = kwds.get(argument_name)
+                for value in values:
+                    self.remote_file_handler.download(file_name=value)
+
     def __call__(self, purpose: Optional[str] = None, **kwds):
         """Call a command with the specified keyword arguments."""
         # file_purpose = self._get_file_purpose()
@@ -1042,7 +1075,7 @@ class Command(Action):
         )  # purpose is temporary. we will remove it soon.
         print(f"\n Test file purpose = {file_purpose} \n")
         if file_purpose == "input" and bool(self.remote_file_handler):
-            self.remote_file_handler.upload(file_name=kwds["file_name"])
+            self._upload_input_files(**kwds)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1059,7 +1092,7 @@ class Command(Action):
                     return
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         if file_purpose == "output" and bool(self.remote_file_handler):
-            self.remote_file_handler.download(file_name=kwds["file_name"])
+            self._download_output_files(**kwds)
 
 
 class Query(Action):
