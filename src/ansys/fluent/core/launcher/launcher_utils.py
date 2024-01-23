@@ -127,7 +127,6 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
 class FluentMode(Enum):
     """An enumeration over supported Fluent modes."""
 
-    # Tuple: Name, Solver object type, Meshing flag, Launcher options
     MESHING_MODE = Meshing
     PURE_MESHING_MODE = PureMeshing
     SOLVER = Solver
@@ -152,12 +151,12 @@ class FluentMode(Enum):
         DisallowedValuesError
             If an unknown mode is passed.
         """
+        allowed_modes = []
         for m in FluentMode:
+            allowed_modes.append(m.value._internal_name)
             if mode == m.value._internal_name:
                 return m
-        raise DisallowedValuesError(
-            "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
-        )
+        raise DisallowedValuesError("mode", mode, allowed_modes)
 
     @staticmethod
     def is_meshing(mode: "FluentMode") -> bool:
