@@ -29,6 +29,7 @@ def test_mode():
         )
 
 
+@pytest.mark.standalone
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(TimeoutError) as msg:
@@ -81,6 +82,10 @@ def test_case_load():
     )
     session = pyfluent.launch_fluent(case_file_name=cas_path)
 
+    import time
+
+    time.sleep(30)
+
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
     # Mesh available because not lightweight
@@ -93,6 +98,7 @@ def test_case_load():
     session.exit()
 
 
+@pytest.mark.standalone
 @pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
@@ -113,6 +119,7 @@ def test_case_lightweight_setup():
     assert not session.field_data.is_data_valid()
 
 
+@pytest.mark.standalone
 def test_case_data_load():
     # Test that launch_fluent() works with a case+data file as an argument
     _, cas_dat_path = download_input_file(
