@@ -2,8 +2,9 @@
 
 Examples
 --------
->>> # The keys scheduler_headnode, scheduler_queue and scheduler_account are optional
->>> # and should be specified in a similar manner to Fluent's scheduler options.
+Note that the keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account``
+are optional and should be specified in a similar manner to Fluent's scheduler options.
+
 >>> slurm = pyfluent.launch_fluent(
 ...   scheduler_options={
 ...     "scheduler": "slurm",
