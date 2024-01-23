@@ -265,6 +265,12 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
+    def before_execute(self, value):
+        pass
+
+    def after_execute(self, value):
+        pass
+
 
 StateT = TypeVar("StateT")
 
@@ -1027,55 +1033,10 @@ class Action(Base):
 class Command(Action):
     """Command object."""
 
-    def _get_file_purpose(self):
-        base_classes = [class_name.__name__ for class_name in self.__class__.__bases__]
-        if "_InputFilePurposeMixin" in base_classes:
-            return "input"
-        elif "_OutputFilePurposeMixin" in base_classes:
-            return "output"
-
-    def _transfer_files(self, transfer_type, **kwds):
-        for argument_name in self.argument_names:
-            argument = getattr(self, argument_name)
-            if argument_name in kwds and isinstance(argument, Filename):
-                value = kwds.get(argument_name)
-                transfer_type(file_name=value)
-            elif argument_name in kwds and isinstance(value, FilenameList):
-                values = kwds.get(argument_name)
-                for value in values:
-                    transfer_type(file_name=value)
-
-    def _upload_input_files(self, **kwds):
-        for argument_name in self.argument_names:
-            argument = getattr(self, argument_name)
-            if argument_name in kwds and isinstance(argument, Filename):
-                value = kwds.get(argument_name)
-                self.remote_file_handler.upload(file_name=value)
-            elif argument_name in kwds and isinstance(value, FilenameList):
-                values = kwds.get(argument_name)
-                for value in values:
-                    self.remote_file_handler.upload(file_name=value)
-
-    def _download_output_files(self, **kwds):
-        for argument_name in self.argument_names:
-            argument = getattr(self, argument_name)
-            if argument_name in kwds and isinstance(argument, Filename):
-                value = kwds.get(argument_name)
-                self.remote_file_handler.download(file_name=value)
-            elif argument_name in kwds and isinstance(value, FilenameList):
-                values = kwds.get(argument_name)
-                for value in values:
-                    self.remote_file_handler.download(file_name=value)
-
     def __call__(self, purpose: Optional[str] = None, **kwds):
         """Call a command with the specified keyword arguments."""
-        # file_purpose = self._get_file_purpose()
-        file_purpose = (
-            purpose if purpose else self._get_file_purpose()
-        )  # purpose is temporary. we will remove it soon.
-        print(f"\n Test file purpose = {file_purpose} \n")
-        if file_purpose == "input" and bool(self.remote_file_handler):
-            self._upload_input_files(**kwds)
+        for arg, value in kwds:
+            arg.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1091,8 +1052,8 @@ class Command(Action):
                 if response in ["n", "N", "no"]:
                     return
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-        if file_purpose == "output" and bool(self.remote_file_handler):
-            self._download_output_files(**kwds)
+        for arg, value in kwds:
+            arg.after_execute(value)
 
 
 class Query(Action):
@@ -1240,22 +1201,14 @@ class _HasAllowedValuesMixin:
             return []
 
 
-class _InputFilePurposeMixin:
-    def file_purpose(self):
-        """Signifies this file as an input to Fluent."""
-        try:
-            return self.get_attr(_InlineConstants.file_purpose)
-        except Exception:
-            return []
+class _InputFileMixin:
+    def before_execution(self, value):
+        self.remote_file_handler.upload(file_name=value)
 
 
-class _OutputFilePurposeMixin:
-    def file_purpose(self):
-        """Signifies this file as an output from Fluent."""
-        try:
-            return self.get_attr(_InlineConstants.file_purpose)
-        except Exception:
-            return []
+class _OutputFileMixin:
+    def after_execution(self, value):
+        self.remote_file_handler.download(file_name=value)
 
 
 # pylint: disable=missing-raises-doc
@@ -1309,10 +1262,10 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
-        elif info.get("filepurpose") == "input":
-            bases += (_InputFilePurposeMixin,)
-        elif info.get("filepurpose") == "output":
-            bases += (_OutputFilePurposeMixin,)
+        elif info.get("file_purpose") == "input":
+            bases += (_InputFileMixin,)
+        elif info.get("file_purpose") == "output":
+            bases += (_OutputFileMixin,)
 
         cls = type(pname, bases, dct)
 

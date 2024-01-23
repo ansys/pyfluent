@@ -1,6 +1,5 @@
-from enum import Enum
 import os
-from typing import Any, Callable, Optional  # noqa: F401
+from typing import Any, Callable, Optional, Union  # noqa: F401
 
 import ansys.platform.instancemanagement as pypim
 
@@ -10,14 +9,6 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
-
-
-class ServiceType(Enum):
-    """Enumerates supported file transfer service types."""
-
-    PIM = 1
-    Test = 2
-    Null = 3
 
 
 class PimFileTransferService:
@@ -78,7 +69,7 @@ class PimFileTransferService:
         """PIM file transfer service."""
         return self.file_service
 
-    def is_pim_configured(self):
+    def is_configured(self):
         return pypim.is_configured()
 
     def upload(self, file_name: str, remote_file_name: Optional[str] = None):
@@ -97,7 +88,7 @@ class PimFileTransferService:
         PyPIMConfigurationError
             If PyPIM is not configured.
         """
-        if not self.is_pim_configured():
+        if not self.is_configured():
             raise PyPIMConfigurationError()
         elif self.file_service:
             if os.path.isfile(file_name):
@@ -109,7 +100,9 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def upload_file(self, file_name: str, on_uploaded: Optional[Callable] = None):
+    def upload_file(
+        self, file_name: Union[list, str], on_uploaded: Optional[Callable] = None
+    ):
         """Upload a file if it's unavailable on the server
         supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
         and performs callback operation.
@@ -125,16 +118,17 @@ class PimFileTransferService:
         FileNotFoundError
             If a file does not exist.
         """
-        if self.is_pim_configured():
-            if os.path.isfile(file_name):
-                if not self.file_service.file_exist(os.path.basename(file_name)):
-                    self.upload(file_name)
-            elif not self.file_service.file_exist(os.path.basename(file_name)):
-                raise FileNotFoundError(f"{file_name} does not exist.")
+        files = [file_name] if isinstance(file_name, str) else file_name
+        if self.is_configured():
+            for file in files:
+                if os.path.isfile(file):
+                    if not self.file_service.file_exist(os.path.basename(file)):
+                        self.upload(file)
+                elif not self.file_service.file_exist(os.path.basename(file)):
+                    raise FileNotFoundError(f"{file} does not exist.")
         if on_uploaded:
-            on_uploaded(
-                os.path.basename(file_name) if self.is_pim_configured() else file_name
-            )
+            for file in files:
+                on_uploaded(os.path.basename(file) if self.is_configured() else file)
 
     def download(self, file_name: str, local_file_name: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -153,7 +147,7 @@ class PimFileTransferService:
         PyPIMConfigurationError
             If PyPIM is not configured.
         """
-        if not self.is_pim_configured():
+        if not self.is_configured():
             raise PyPIMConfigurationError()
         elif self.file_service:
             if self.file_service.file_exist(file_name):
@@ -175,15 +169,18 @@ class PimFileTransferService:
         before_downloaded: Callable
             Write a file.
         """
-        if before_downloaded:
-            before_downloaded(
-                os.path.basename(file_name) if self.is_pim_configured() else file_name
-            )
-        if self.is_pim_configured():
-            if os.path.isfile(file_name):
-                print(f"\nFile already exists. File path:\n{file_name}\n")
-            else:
-                self.download(os.path.basename(file_name), local_file_name=".")
+        files = [file_name] if isinstance(file_name, str) else file_name
+        for file in files:
+            if before_downloaded:
+                before_downloaded(
+                    os.path.basename(file) if self.is_configured() else file
+                )
+        if self.is_configured():
+            for file in files:
+                if os.path.isfile(file):
+                    print(f"\nFile already exists. File path:\n{file}\n")
+                else:
+                    self.download(os.path.basename(file), local_file_name=".")
 
 
 class RemoteFileHandler:
@@ -211,12 +208,6 @@ class RemoteFileHandler:
 
     def __init__(self, transfer_service: Optional[Any] = None):
         self._transfer_service = transfer_service
-        if isinstance(transfer_service, PimFileTransferService):
-            self._service_type = ServiceType.PIM
-        elif isinstance(transfer_service, TransferRequestRecorder):
-            self._service_type = ServiceType.Test
-        else:
-            self._service_type = ServiceType.Null
 
     def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
         """Upload a file if it's unavailable on the server
@@ -253,12 +244,9 @@ class RemoteFileHandler:
         )
 
     def __bool__(self):
-        if self._service_type == ServiceType.PIM:
-            return self._transfer_service.is_pim_configured()
-        if self._service_type == ServiceType.Test:
-            return True
-        if self._service_type == ServiceType.Null:
-            return False
+        return (
+            self._transfer_service.is_configured() if self._transfer_service else False
+        )
 
 
 class TransferRequestRecorder:
@@ -279,3 +267,6 @@ class TransferRequestRecorder:
         self, file_name: str, before_downloaded: Optional[Callable] = None
     ):
         self.downloaded_files.append(file_name)
+
+    def is_configured(self):
+        return True
