@@ -47,6 +47,7 @@ class _InlineConstants:
     max = "max"
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
+    file_purpose = "file-purpose"
 
 
 # Type hints
@@ -377,11 +378,19 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
+    def file_purpose(self):
+        """Specifies whether this file is used as input or output by Fluent"""
+        return self.get_attr(_InlineConstants.file_purpose)
+
 
 class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    def file_purpose(self):
+        """Specifies whether these files are used as input or output by Fluent"""
+        return self.get_attr(_InlineConstants.file_purpose)
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -768,21 +777,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             if name not in self._objects:
                 self._create_child_object(name)
 
-    def rename(self, new: str, old: str):
-        """Rename a named object.
-
-        Parameters
-        ----------
-        new: str
-            New name.
-        old : str
-            Current name.
-        """
-        self.flproxy.rename(self.path, new, old)
-        if old in self._objects:
-            del self._objects[old]
-        self._create_child_object(new)
-
     def __delitem__(self, name: str):
         self.flproxy.delete(self.path, name)
         if name in self._objects:
@@ -878,8 +872,6 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     get_size()
        Get the size of the list.
 
-    resize(size)
-        Resize the list.
     """
 
     # New objects could get inserted by other operations, so we cannot assume
@@ -934,16 +926,6 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         """
         return self.flproxy.get_list_size(self.path)
 
-    def resize(self, size: int):
-        """Resize the list object.
-
-        Parameters
-        ----------
-        size: int
-            New size
-        """
-        self.flproxy.resize_list_object(self.path, size)
-
     def __getitem__(self, index: int) -> ChildTypeT:
         size = self.get_size()
         if index >= size:
@@ -961,10 +943,22 @@ class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
 
-def _get_new_keywords(obj, kwds):
+def _get_new_keywords(obj, args, kwds):
     newkwds = {}
+    argNames = []
+    argumentNames = []
+    if args:
+        argNames = obj.argument_names[:]
+        for i, arg in enumerate(args):
+            ccls = getattr(obj, argNames[0])
+            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(arg)
+            argNames.pop(0)
+    if kwds:
+        argumentNames = obj.argument_names[:]
+        if argNames:
+            argumentNames = argNames
     for k, v in kwds.items():
-        if k in obj.argument_names:
+        if k in argumentNames:
             ccls = getattr(obj, k)
             newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
         else:
@@ -1012,7 +1006,29 @@ class Command(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
+        newkwds = _get_new_keywords(self, [], kwds)
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **newkwds
+            )
+            if prompt:
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ")
+                    if response in ["y", "Y", "n", "N", "yes", "no"]:
+                        break
+                    else:
+                        print("Enter y[es]/n[o]")
+                if response in ["n", "N", "no"]:
+                    return
+        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+
+class CommandWithPositionalArgs(Action):
+    """Command Object."""
+
+    def __call__(self, *args, **kwds):
+        """Call a query with the specified keyword arguments."""
+        newkwds = _get_new_keywords(self, args, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
                 self._parent.path, self.obj_name, **newkwds
@@ -1034,7 +1050,7 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
+        newkwds = _get_new_keywords(self, [], kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -1184,6 +1200,8 @@ def get_cls(name, info, parent=None, version=None):
             pname = to_python_name(name)
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
+        if obj_type == "command" and name in ["rename", "delete", "resize"]:
+            base = CommandWithPositionalArgs
         if base is None:
             settings_logger.warning(
                 f"Unable to find base class for '{name}' "
@@ -1293,7 +1311,7 @@ def get_cls(name, info, parent=None, version=None):
                 "child-object-type", object_type, cls, version=version
             )
             cls.child_object_type.rename = lambda self, name: self._parent.rename(
-                name, self._name
+                new=name, old=self._name
             )
             cls.child_object_type.get_name = lambda self: self._name
     except Exception:
