@@ -379,7 +379,7 @@ class Filename(SettingsBase[str], Textual):
     _state_type = str
 
     def file_purpose(self):
-        """Specifies whether this file is used as input or output by Fluent"""
+        """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
 
@@ -389,7 +389,7 @@ class FilenameList(SettingsBase[StringListType], Textual):
     _state_type = StringListType
 
     def file_purpose(self):
-        """Specifies whether these files are used as input or output by Fluent"""
+        """Specifies whether these files are used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
 
@@ -871,7 +871,6 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     -------
     get_size()
        Get the size of the list.
-
     """
 
     # New objects could get inserted by other operations, so we cannot assume
