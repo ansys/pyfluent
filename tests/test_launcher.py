@@ -248,7 +248,9 @@ def test_fluent_launchers():
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
 
-        standalone_solver_launcher = create_launcher("standalone")
+        standalone_solver_launcher = create_launcher(
+            "standalone", mode=FluentMode.SOLVER
+        )
         standalone_solver_session = standalone_solver_launcher()
         assert standalone_solver_session
 
@@ -259,7 +261,7 @@ def test_fluent_launchers():
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
 
-        container_solver_launcher = create_launcher("container")
+        container_solver_launcher = create_launcher("container", mode=FluentMode.SOLVER)
         container_solver_session = container_solver_launcher()
         assert container_solver_session
 
@@ -268,7 +270,7 @@ def test_fluent_launchers():
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
 
-        pim_solver_launcher = create_launcher("pim")
+        pim_solver_launcher = create_launcher("pim", mode=FluentMode.SOLVER)
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
 
