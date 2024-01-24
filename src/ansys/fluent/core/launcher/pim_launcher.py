@@ -6,7 +6,6 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
-    _get_mode,
     _process_invalid_args,
     launch_remote_fluent,
 )
@@ -21,6 +20,7 @@ class PIMLauncher:
 
     def __init__(
         self,
+        mode: FluentMode,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -38,7 +38,6 @@ class PIMLauncher:
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
-        mode: Optional[Union[FluentMode, str, None]] = None,
         py: Optional[bool] = None,
         gpu: Optional[bool] = None,
         cwd: Optional[str] = None,
@@ -50,6 +49,8 @@ class PIMLauncher:
 
         Parameters
         ----------
+        mode : FluentMode
+            Launch mode of Fluent to point to a specific session type.
         product_version : str, optional
             Select an installed version of ANSYS. The string must be in a format like
             ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
@@ -114,10 +115,6 @@ class PIMLauncher:
             made by the user in the current Fluent solver session have been applied in the background Fluent
             solver session. This is all orchestrated by PyFluent and requires no special usage.
             This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-        mode : str, optional
-            Launch mode of Fluent to point to a specific session type.
-            The default value is ``None``. Options are ``"meshing"``,
-            ``"pure-meshing"`` and ``"solver"``.
         py : bool, optional
             If True, Fluent will run in Python mode. Default is None.
         gpu : bool, optional
@@ -158,13 +155,12 @@ class PIMLauncher:
         argvals = locals().copy()
         del argvals["self"]
         _process_invalid_args(dry_run, "pim", argvals)
-        self.mode = _get_mode(mode)
-        self.new_session = self.mode.value[0]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
+        self.new_session = self.mode.value[0]
 
         if self.additional_arguments:
             logger.warning(
@@ -179,7 +175,6 @@ class PIMLauncher:
             )
 
     def __call__(self):
-        self.mode = _get_mode(self.mode)
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )

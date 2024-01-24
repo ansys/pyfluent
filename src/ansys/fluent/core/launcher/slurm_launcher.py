@@ -192,13 +192,13 @@ class SlurmLauncher:
         argvals = kwargs.copy()
         del kwargs
         _process_invalid_args(dry_run, "slurm", argvals)
-        self.mode = _get_mode(mode)
-        self._new_session = self.mode.value[0]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = -1
         for arg_name, arg_values in argvals.items():
             setattr(self, f"_{arg_name}", arg_values)
         self._argvals = argvals
+        self.mode = _get_mode(mode)
+        self._new_session = self.mode.value[0]
 
         if self._scheduler_options:
             if "scheduler" not in self._scheduler_options:
