@@ -1060,7 +1060,8 @@ class Command(Action):
                     return
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
-            self.after_execute(arg, value)
+            argument = getattr(self, arg)
+            argument.after_execute(arg, value)
 
 
 class Query(Action):
@@ -1211,8 +1212,7 @@ class _HasAllowedValuesMixin:
 class _InputFileMixin:
     def before_execute(self, arg, value):
         try:
-            if isinstance(getattr(self, arg), (Filename, FilenameList)):
-                self.remote_file_handler.upload(file_name=value)
+            self.remote_file_handler.upload(file_name=value)
         except AttributeError:
             pass
 
@@ -1223,8 +1223,7 @@ class _InputFileMixin:
 class _OutputFileMixin:
     def after_execute(self, arg, value):
         try:
-            if isinstance(getattr(self, arg), (Filename, FilenameList)):
-                self.remote_file_handler.download(file_name=value)
+            self.remote_file_handler.download(file_name=value)
         except AttributeError:
             pass
 
