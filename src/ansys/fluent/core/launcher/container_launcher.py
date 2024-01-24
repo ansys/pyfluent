@@ -171,9 +171,10 @@ class DockerLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value
+        self.new_session = self.mode.value[0]
 
     def __call__(self):
+        self.mode = _get_mode(self.mode)
         if self.mode == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
         args = _build_fluent_launch_args_string(**self.argvals).split()

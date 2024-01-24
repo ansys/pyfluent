@@ -159,7 +159,7 @@ class PIMLauncher:
         del argvals["self"]
         _process_invalid_args(dry_run, "pim", argvals)
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value
+        self.new_session = self.mode.value[0]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
@@ -179,6 +179,7 @@ class PIMLauncher:
             )
 
     def __call__(self):
+        self.mode = _get_mode(self.mode)
         logger.info(
             "Starting Fluent remotely. The startup configuration will be ignored."
         )

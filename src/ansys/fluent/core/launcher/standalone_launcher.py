@@ -172,7 +172,7 @@ class StandaloneLauncher:
         del argvals["self"]
         _process_invalid_args(dry_run, "standalone", argvals)
         self.mode = _get_mode(mode)
-        self.new_session = self.mode.value
+        self.new_session = self.mode.value[0]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
@@ -180,6 +180,7 @@ class StandaloneLauncher:
         self.argvals = argvals
 
     def __call__(self):
+        self.mode = _get_mode(self.mode)
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
@@ -254,10 +255,7 @@ class StandaloneLauncher:
                 ip, port, password = _get_server_info(server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
             if self.case_file_name:
-                if (
-                    self.mode == FluentMode.MESHING_MODE
-                    or self.mode == FluentMode.PURE_MESHING_MODE
-                ):
+                if FluentMode.is_meshing(self.mode):
                     session.tui.file.read_case(self.case_file_name)
                 elif self.lightweight_mode:
                     session.read_case_lightweight(self.case_file_name)
@@ -267,10 +265,7 @@ class StandaloneLauncher:
                         file_name=self.case_file_name,
                     )
             if self.case_data_file_name:
-                if not (
-                    self.mode == FluentMode.MESHING_MODE
-                    or self.mode == FluentMode.PURE_MESHING_MODE
-                ):
+                if not FluentMode.is_meshing(self.mode):
                     session.file.read(
                         file_type="case-data",
                         file_name=self.case_data_file_name,
