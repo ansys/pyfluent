@@ -265,10 +265,16 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def before_execute(self, value):
+    def before_execute(self, arg, value):
         pass
 
-    def after_execute(self, value):
+    def after_execute(self, arg, value):
+        pass
+
+    def is_input(self):
+        pass
+
+    def is_output(self):
         pass
 
 
@@ -1035,8 +1041,9 @@ class Command(Action):
 
     def __call__(self, purpose: Optional[str] = None, **kwds):
         """Call a command with the specified keyword arguments."""
-        for arg, value in kwds:
-            arg.before_execute(value)
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.before_execute(arg, value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1052,8 +1059,8 @@ class Command(Action):
                 if response in ["n", "N", "no"]:
                     return
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-        for arg, value in kwds:
-            arg.after_execute(value)
+        for arg, value in kwds.items():
+            self.after_execute(arg, value)
 
 
 class Query(Action):
@@ -1202,19 +1209,27 @@ class _HasAllowedValuesMixin:
 
 
 class _InputFileMixin:
-    def before_execution(self, value):
+    def before_execute(self, arg, value):
         try:
-            self.remote_file_handler.upload(file_name=value)
+            if isinstance(getattr(self, arg), (Filename, FilenameList)):
+                self.remote_file_handler.upload(file_name=value)
         except AttributeError:
             pass
+
+    def is_input(self):
+        return True
 
 
 class _OutputFileMixin:
-    def after_execution(self, value):
+    def after_execute(self, arg, value):
         try:
-            self.remote_file_handler.download(file_name=value)
+            if isinstance(getattr(self, arg), (Filename, FilenameList)):
+                self.remote_file_handler.download(file_name=value)
         except AttributeError:
             pass
+
+    def is_output(self):
+        return True
 
 
 # pylint: disable=missing-raises-doc

@@ -272,8 +272,12 @@ class SettingsService:
             }
             try:
                 for child in info.arguments:
-                    for key, value in sorted(child.value.attrs.items()):
-                        ret[key] = self._get_state_from_value(value)
+                    ret["arguments"][child.name].update(
+                        {
+                            key: self._get_state_from_value(value)
+                            for key, value in sorted(child.value.attrs.items())
+                        }
+                    )
             except AttributeError:
                 pass
         if info.HasField("object_type"):
