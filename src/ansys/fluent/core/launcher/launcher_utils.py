@@ -172,7 +172,6 @@ class FluentMode(Enum):
         True if mode is FluentMode.MESHING_MODE or FluentMode.PURE_MESHING_MODE else False
             bool
         """
-        print(mode, "+++++")
         return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
