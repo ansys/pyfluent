@@ -427,26 +427,6 @@ class FilenameList(SettingsBase[StringListType], Textual):
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
 
-    def is_input(self):
-        if self.file_purpose() is "input":
-            return True
-
-    def before_execute(self, value):
-        try:
-            self.remote_file_handler.upload(file_name=value)
-        except AttributeError:
-            pass
-
-    def is_output(self):
-        if self.file_purpose() is "output":
-            return True
-
-    def after_execute(self, value):
-        try:
-            self.remote_file_handler.download(file_name=value)
-        except AttributeError:
-            pass
-
 
 class Boolean(SettingsBase[bool], Property):
     """A ``Boolean`` object representing a Boolean value setting."""
