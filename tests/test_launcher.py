@@ -11,6 +11,7 @@ from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     DockerContainerLaunchNotSupported,
+    FluentMode,
     LaunchFluentError,
     UnexpectedKeywordArgument,
     _build_journal_argument,
@@ -241,29 +242,35 @@ def test_watchdog_launch(monkeypatch):
 
 def test_fluent_launchers():
     if not check_docker_support() and not pypim.is_configured():
-        standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
+        standalone_meshing_launcher = create_launcher(
+            "standalone", mode=FluentMode.MESHING_MODE
+        )
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
 
-        standalone_solver_launcher = create_launcher("standalone")
+        standalone_solver_launcher = create_launcher(
+            "standalone", mode=FluentMode.SOLVER
+        )
         standalone_solver_session = standalone_solver_launcher()
         assert standalone_solver_session
 
     if check_docker_support():
-        container_meshing_launcher = create_launcher("container", mode="meshing")
+        container_meshing_launcher = create_launcher(
+            "container", mode=FluentMode.MESHING_MODE
+        )
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
 
-        container_solver_launcher = create_launcher("container")
+        container_solver_launcher = create_launcher("container", mode=FluentMode.SOLVER)
         container_solver_session = container_solver_launcher()
         assert container_solver_session
 
     if pypim.is_configured():
-        pim_meshing_launcher = create_launcher("pim", mode="meshing")
+        pim_meshing_launcher = create_launcher("pim", mode=FluentMode.MESHING_MODE)
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
 
-        pim_solver_launcher = create_launcher("pim")
+        pim_solver_launcher = create_launcher("pim", mode=FluentMode.SOLVER)
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
 
