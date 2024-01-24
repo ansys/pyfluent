@@ -265,10 +265,10 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def before_execute(self, arg, value):
+    def before_execute(self, value):
         pass
 
-    def after_execute(self, arg, value):
+    def after_execute(self, value):
         pass
 
     def is_input(self):
@@ -1043,7 +1043,7 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.before_execute(arg, value)
+            argument.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1061,7 +1061,7 @@ class Command(Action):
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.after_execute(arg, value)
+            argument.after_execute(value)
 
 
 class Query(Action):
@@ -1210,7 +1210,7 @@ class _HasAllowedValuesMixin:
 
 
 class _InputFileMixin:
-    def before_execute(self, arg, value):
+    def before_execute(self, value):
         try:
             self.remote_file_handler.upload(file_name=value)
         except AttributeError:
@@ -1221,7 +1221,7 @@ class _InputFileMixin:
 
 
 class _OutputFileMixin:
-    def after_execute(self, arg, value):
+    def after_execute(self, value):
         try:
             self.remote_file_handler.download(file_name=value)
         except AttributeError:
