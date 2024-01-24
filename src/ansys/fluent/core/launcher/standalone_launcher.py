@@ -254,10 +254,7 @@ class StandaloneLauncher:
                 ip, port, password = _get_server_info(server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
             if self.case_file_name:
-                if (
-                    self.mode == FluentMode.MESHING_MODE
-                    or self.mode == FluentMode.PURE_MESHING_MODE
-                ):
+                if FluentMode.is_meshing(self.mode):
                     session.tui.file.read_case(self.case_file_name)
                 elif self.lightweight_mode:
                     session.read_case_lightweight(self.case_file_name)
@@ -267,10 +264,7 @@ class StandaloneLauncher:
                         file_name=self.case_file_name,
                     )
             if self.case_data_file_name:
-                if not (
-                    self.mode == FluentMode.MESHING_MODE
-                    or self.mode == FluentMode.PURE_MESHING_MODE
-                ):
+                if not FluentMode.is_meshing(self.mode):
                     session.file.read(
                         file_type="case-data",
                         file_name=self.case_data_file_name,
