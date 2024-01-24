@@ -345,6 +345,7 @@ class TUIMenu:
 
 class TUIMethod:
     """Base class for the generated menu methods.
+
     Methods like ___repr__ are inserted at PyConsole side.
     """
 
