@@ -222,12 +222,11 @@ class TUIGenerator:
         self._write_code_to_tui_file("self._mode = mode\n", indent)
         self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
-            if not v.is_command:
-                self._write_code_to_tui_file(
-                    f"self.{k} = self.__class__.{k}"
-                    f'(service, version, mode, path + ["{v.tui_name}"])\n',
-                    indent,
-                )
+            self._write_code_to_tui_file(
+                f"self.{k} = self.__class__.{k}"
+                f'(service, version, mode, path + ["{v.tui_name}"])\n',
+                indent,
+            )
         self._write_code_to_tui_file(
             "super().__init__(service, version, mode, path)\n", indent
         )
@@ -236,9 +235,7 @@ class TUIGenerator:
         command_names = [v.name for _, v in menu.children.items() if v.is_command]
         if command_names:
             for command in command_names:
-                self._write_code_to_tui_file(
-                    f"def {command}(self, *args, **kwargs):\n", indent
-                )
+                self._write_code_to_tui_file(f"class {command}(TUIMethod):\n", indent)
                 indent += 1
                 self._write_code_to_tui_file('"""\n', indent)
                 doc_lines = menu.children[command].doc.splitlines()
@@ -248,12 +245,26 @@ class TUIGenerator:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
-                    f"return PyMenu(self._service, self._version, self._mode, "
-                    f'"{menu.get_command_path(command)}").execute('
-                    f"*args, **kwargs)\n",
-                    indent,
+                    "def __init__(self, service, version, mode, path):\n", indent
+                )
+                indent += 1
+                self._write_code_to_tui_file("self._service = service\n", indent)
+                self._write_code_to_tui_file("self._version = version\n", indent)
+                self._write_code_to_tui_file("self._mode = mode\n", indent)
+                self._write_code_to_tui_file(
+                    f'self._path = "{menu.get_command_path(command)}"\n', indent
                 )
                 indent -= 1
+                self._write_code_to_tui_file(
+                    f"def __call__(self, *args, **kwargs):\n", indent
+                )
+                indent += 1
+                self._write_code_to_tui_file(
+                    "return PyMenu(self._service, self._version, self._mode, self._path)"
+                    ".execute(*args, **kwargs)\n",
+                    indent,
+                )
+                indent -= 2
         for k, v in menu.children.items():
             if v.is_command:
                 api_tree[k] = "Command"
@@ -301,14 +312,13 @@ class TUIGenerator:
                 f.write("   :hidden:\n\n")
 
                 for _, v in menu.children.items():
-                    if not v.is_command:
-                        f.write(f"   {v.name}/index\n")
-                        self._write_doc_for_menu(
-                            v,
-                            doc_dir / v.name,
-                            heading + "." + v.name,
-                            class_name + "." + v.name,
-                        )
+                    f.write(f"   {v.name}/index\n")
+                    self._write_doc_for_menu(
+                        v,
+                        doc_dir / v.name,
+                        heading + "." + v.name,
+                        class_name + "." + v.name,
+                    )
 
     def generate(self) -> None:
         api_tree = {}
@@ -340,7 +350,7 @@ class TUIGenerator:
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
                 "from ansys.fluent.core.services.datamodel_tui "
-                "import PyMenu, TUIMenu\n\n\n"
+                "import PyMenu, TUIMenu, TUIMethod\n\n\n"
             )
             self._main_menu.name = "main_menu"
             api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)

@@ -343,6 +343,12 @@ class TUIMenu:
                 raise ex
 
 
+class TUIMethod:
+    """Base class for the generated menu methods.
+    Methods like ___repr__ are inserted at PyConsole side.
+    """
+
+
 class TUICommand(TUIMenu):
     """Generic command class for when the explicit menu classes aren't available."""
 
