@@ -265,18 +265,6 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def before_execute(self, value):
-        pass
-
-    def after_execute(self, value):
-        pass
-
-    def is_input(self):
-        pass
-
-    def is_output(self):
-        pass
-
 
 StateT = TypeVar("StateT")
 
@@ -398,7 +386,29 @@ class String(SettingsBase[str], Textual):
     _state_type = str
 
 
-class Filename(SettingsBase[str], Textual):
+class InputOutputFileBase:
+    def is_input(self):
+        if self.file_purpose() == "input":
+            return True
+
+    def before_execute(self, value):
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+    def is_output(self):
+        if self.file_purpose() == "output":
+            return True
+
+    def after_execute(self, value):
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class Filename(SettingsBase[str], Textual, InputOutputFileBase):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
@@ -416,6 +426,26 @@ class FilenameList(SettingsBase[StringListType], Textual):
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
+
+    def is_input(self):
+        if self.file_purpose() is "input":
+            return True
+
+    def before_execute(self, value):
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+    def is_output(self):
+        if self.file_purpose() is "output":
+            return True
+
+    def after_execute(self, value):
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -1043,7 +1073,8 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.before_execute(value)
+            if argument.is_input():
+                argument.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1061,7 +1092,8 @@ class Command(Action):
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.after_execute(value)
+            if argument.is_output():
+                argument.after_execute(value)
 
 
 class Query(Action):
