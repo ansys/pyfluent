@@ -26,8 +26,6 @@ class PureMeshing(BaseSession):
     in this mode.
     """
 
-    _internal_name = "pure-meshing"
-
     rules = [
         "workflow",
         "meshing",

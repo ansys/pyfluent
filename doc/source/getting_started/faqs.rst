@@ -104,7 +104,7 @@ all PyFluent packages in a Python *virtual environment*:
 #. Install Fluent 2022 R2 or later.
 #. Set the environment variable for your installed release to point to
    the appropriate Ansys installation folder.
-   
+
    For example, for Ansys 2022 R2, you would likely set the ``AWP_ROOT222``
    environment variable to point to ``C:\Program Files\ANSYS Inc\v222``.
 
@@ -116,10 +116,10 @@ all PyFluent packages in a Python *virtual environment*:
 
   .. code:: bash
 
-  
+
 
       # Set up a local virtual environment
-      python -m venv venv 
+      python -m venv venv
 
       # Activate the virtual environment on Windows
       venv\Scripts\activate
@@ -130,8 +130,8 @@ all PyFluent packages in a Python *virtual environment*:
       # Activate the virtual environment on Linux (bash)
       . venv/bin/activate
 
-   
-   
+
+
 #. In the same command window, use ``pip``, the package installer for Python, to
    install the PyFluent packages::
 
@@ -164,7 +164,7 @@ Where do you find source code and documentation?
 All PyAnsys public libraries are available from the `PyAnsys GitHub account
 <https://github.com/pyansys>`_. The **Repositories** page displays the number of
 repositories, which are searchable by name. For example, to find all PyFluent
-libraries, type ``pyfluent`` in the search option. 
+libraries, type ``pyfluent`` in the search option.
 
 The ``README.md`` file for the PyAnsys GitHub account lists the public PyAnsys
 libraries. The links in this list are to the documentation for the respective
@@ -203,10 +203,10 @@ increasing order of precedence:
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
    when Fluent is installed, where ``<ver>`` is the Fluent release number such
-   as ``232`` for release 2023 R2.  PyFluent automatically uses this environment
+   as ``241`` for release 2024 R1.  PyFluent automatically uses this environment
    variable to locate the latest Fluent installation. On Linux systems configure
    ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such
-   as ``/apps/ansys_inc/v232``.
+   as ``/apps/ansys_inc/v241``.
 
 #. Value of ``product_version`` parameter passed to :func:`launch_fluent()
    <ansys.fluent.core.launch_fluent>`.
@@ -224,7 +224,7 @@ learn how to use PyFluent:
   <https://visualization.fluent.docs.pyansys.com/>`_ guides.
 - Record a journal of your actions in Fluent and review the corresponding Python
   script.
-  
+
   .. note::
      In Fluent 2022 R2, you can record a journal of your actions in Fluent
      meshing to produce a Scheme script. Within that script are embedded
@@ -232,7 +232,7 @@ learn how to use PyFluent:
      action. When extracted from the Scheme script, those Python statements
      are valid in the PyFluent context.
 
-  
+
   Here is a Python command recorded in Fluent:
 
   .. code:: python
@@ -241,7 +241,7 @@ learn how to use PyFluent:
 
 
   Here is the manually translated equivalent command in PyFluent syntax:
-  
+
   .. code:: python
 
     session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object’,})
