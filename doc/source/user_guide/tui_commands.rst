@@ -21,7 +21,7 @@ both command line completion and history. To inspect any PyFluent TUI object fur
 you can use the Python built-in `help <https://docs.python.org/3/library/functions.html#help>`_
 and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 For example, to see the options available under the viscous model menu, the
-following can be used assuming that ``solver`` is the session instance returned
+following can be used, assuming that ``solver`` is the session instance returned
 by ``launch_fluent``:
 
 .. code-block:: python
