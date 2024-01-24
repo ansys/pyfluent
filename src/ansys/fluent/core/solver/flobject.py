@@ -420,7 +420,7 @@ class Filename(SettingsBase[str], Textual, InputOutputFileBase):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-class FilenameList(SettingsBase[StringListType], Textual):
+class FilenameList(SettingsBase[StringListType], Textual, InputOutputFileBase):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
@@ -1221,28 +1221,6 @@ class _HasAllowedValuesMixin:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
-
-
-class _InputFileMixin:
-    def before_execute(self, value):
-        try:
-            self.remote_file_handler.upload(file_name=value)
-        except AttributeError:
-            pass
-
-    def is_input(self):
-        return True
-
-
-class _OutputFileMixin:
-    def after_execute(self, value):
-        try:
-            self.remote_file_handler.download(file_name=value)
-        except AttributeError:
-            pass
-
-    def is_output(self):
-        return True
 
 
 # pylint: disable=missing-raises-doc
