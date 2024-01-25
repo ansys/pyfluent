@@ -1452,7 +1452,7 @@ class PyCommand:
         try:
             file_purpose = static_info["singletons"]["File"]["commands"][
                 self.__class__.__name__
-            ]["commandinfo"]["args"][0]["attrs"]["filepurpose"]["stringState"]
+            ]["commandinfo"]["args"][0]["attrs"]["file_purpose"]["stringState"]
             return file_purpose
         except KeyError:
             return None
