@@ -312,13 +312,14 @@ class TUIGenerator:
                 f.write("   :hidden:\n\n")
 
                 for _, v in menu.children.items():
-                    f.write(f"   {v.name}/index\n")
-                    self._write_doc_for_menu(
-                        v,
-                        doc_dir / v.name,
-                        heading + "." + v.name,
-                        class_name + "." + v.name,
-                    )
+                    if not v.is_command:
+                        f.write(f"   {v.name}/index\n")
+                        self._write_doc_for_menu(
+                            v,
+                            doc_dir / v.name,
+                            heading + "." + v.name,
+                            class_name + "." + v.name,
+                        )
 
     def generate(self) -> None:
         api_tree = {}
