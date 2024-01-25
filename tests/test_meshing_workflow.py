@@ -16,6 +16,7 @@ from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
 from ansys.fluent.core.meshing.watertight import watertight_workflow
 
 
+@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
