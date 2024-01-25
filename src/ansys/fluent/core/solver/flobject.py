@@ -1055,7 +1055,7 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if argument.is_input():
+            if hasattr(argument, "is_input") and argument.is_input():
                 argument.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
@@ -1074,7 +1074,7 @@ class Command(Action):
         self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if argument.is_output():
+            if hasattr(argument, "is_output") and argument.is_output():
                 argument.after_execute(value)
 
 
