@@ -65,11 +65,11 @@ def test_boundaries_elbow(load_mixing_elbow_settings_only):
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
-    ].turbulence.turbulent_viscosity_ratio_real = 4
+    ].turbulence.turbulent_viscosity_ratio = 4
     assert (
         solver_session.setup.boundary_conditions.pressure_outlet[
             "outlet"
-        ].turbulence.turbulent_viscosity_ratio_real()
+        ].turbulence.turbulent_viscosity_ratio()
         == 4
     )
 
