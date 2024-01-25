@@ -266,7 +266,7 @@ def _locns(locns, ctxt=None):
 class Reduction:
     """Reduction."""
 
-    def __init__(self, service: ReductionService):
+    def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
 
