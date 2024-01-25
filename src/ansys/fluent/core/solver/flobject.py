@@ -267,6 +267,18 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
+    def is_input(self):
+        pass
+
+    def before_execute(self, value):
+        pass
+
+    def is_output(self):
+        pass
+
+    def after_execute(self, value):
+        pass
+
 
 StateT = TypeVar("StateT")
 
@@ -388,7 +400,7 @@ class String(SettingsBase[str], Textual):
     _state_type = str
 
 
-class InputOutputFileBase:
+class _InputFile(Base):
     def is_input(self):
         return self.file_purpose() == "input" or False
 
@@ -398,6 +410,8 @@ class InputOutputFileBase:
         except AttributeError:
             pass
 
+
+class _OutputFile(Base):
     def is_output(self):
         return self.file_purpose() == "output" or False
 
@@ -408,7 +422,7 @@ class InputOutputFileBase:
             pass
 
 
-class Filename(SettingsBase[str], Textual, InputOutputFileBase):
+class Filename(SettingsBase[str], Textual, _InputFile, _OutputFile):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
@@ -418,7 +432,7 @@ class Filename(SettingsBase[str], Textual, InputOutputFileBase):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-class FilenameList(SettingsBase[StringListType], Textual, InputOutputFileBase):
+class FilenameList(SettingsBase[StringListType], Textual, _InputFile, _OutputFile):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
