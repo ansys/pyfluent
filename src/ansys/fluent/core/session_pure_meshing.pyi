@@ -1,11 +1,14 @@
-from ansys.fluent.core.datamodel_232.PMFileManagement import (
+from ansys.fluent.core.datamodel_241.PMFileManagement import (
     Root as pmfilemanagement_root,
 )
-from ansys.fluent.core.datamodel_232.PartManagement import Root as partmanagement_root
-from ansys.fluent.core.datamodel_232.meshing import Root as meshing_root
-from ansys.fluent.core.datamodel_232.preferences import Root as preferences_root
-from ansys.fluent.core.datamodel_232.workflow import Root as workflow_root
-from ansys.fluent.core.solver.tui_232 import main_menu
+from ansys.fluent.core.datamodel_241.PartManagement import Root as partmanagement_root
+from ansys.fluent.core.datamodel_241.meshing import Root as meshing_root
+from ansys.fluent.core.datamodel_241.meshing_utilities import (
+    Root as meshing_utilities_root,
+)
+from ansys.fluent.core.datamodel_241.preferences import Root as preferences_root
+from ansys.fluent.core.datamodel_241.workflow import Root as workflow_root
+from ansys.fluent.core.solver.tui_241 import main_menu
 
 class PureMeshing:
     @property
@@ -13,11 +16,17 @@ class PureMeshing:
     @property
     def meshing(self) -> meshing_root: ...
     @property
+    def meshing_utilities(self) -> meshing_utilities_root: ...
+    @property
     def workflow(self) -> workflow_root: ...
+    def watertight(self, dynamic_interface: bool): ...
+    def fault_tolerant(self, dynamic_interface: bool): ...
     @property
     def PartManagement(self) -> partmanagement_root: ...
     @property
     def PMFileManagement(self) -> pmfilemanagement_root: ...
+    @property
+    def preferences(self) -> preferences_root: ...
     def transfer_mesh_to_solvers(
         self,
         solvers,
