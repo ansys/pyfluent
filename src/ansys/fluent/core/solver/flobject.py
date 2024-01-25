@@ -390,9 +390,7 @@ class String(SettingsBase[str], Textual):
 
 class InputOutputFileBase:
     def is_input(self):
-        if self.file_purpose() == "input":
-            return True
-        return False
+        return True if self.file_purpose() == "input" else False
 
     def before_execute(self, value):
         try:
@@ -401,9 +399,7 @@ class InputOutputFileBase:
             pass
 
     def is_output(self):
-        if self.file_purpose() == "output":
-            return True
-        return False
+        return True if self.file_purpose() == "output" else False
 
     def after_execute(self, value):
         try:
