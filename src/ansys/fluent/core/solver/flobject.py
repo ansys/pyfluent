@@ -392,6 +392,7 @@ class InputOutputFileBase:
     def is_input(self):
         if self.file_purpose() == "input":
             return True
+        return False
 
     def before_execute(self, value):
         try:
@@ -402,6 +403,7 @@ class InputOutputFileBase:
     def is_output(self):
         if self.file_purpose() == "output":
             return True
+        return False
 
     def after_execute(self, value):
         try:
@@ -1055,7 +1057,9 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if hasattr(argument, "is_input") and argument.is_input():
+            if (
+                hasattr(argument, "is_input") and argument.is_input()
+            ) or purpose == "input":
                 argument.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
@@ -1071,11 +1075,14 @@ class Command(Action):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if hasattr(argument, "is_output") and argument.is_output():
+            if (
+                hasattr(argument, "is_output") and argument.is_output()
+            ) or purpose == "output":
                 argument.after_execute(value)
+        return cmd
 
 
 class Query(Action):

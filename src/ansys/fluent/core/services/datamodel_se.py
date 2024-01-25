@@ -1471,11 +1471,12 @@ class PyCommand:
         )  # purpose is temporary. we will remove it soon.
         if file_purpose == "input" and bool(self.service.remote_file_handler):
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
-        self.service.execute_command(
+        command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
         if file_purpose == "output" and bool(self.service.remote_file_handler):
             self.service.remote_file_handler.download(file_name=kwds["FileName"])
+        return command
 
     def help(self) -> None:
         """Prints help string."""

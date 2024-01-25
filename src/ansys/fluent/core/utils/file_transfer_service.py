@@ -101,7 +101,7 @@ class PimFileTransferService:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
     def upload_file(
-        self, file_name: Union[list, str], on_uploaded: Optional[Callable] = None
+        self, file_name: Union[list[str], str], on_uploaded: Optional[Callable] = None
     ):
         """Upload a file if it's unavailable on the server
         supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
@@ -156,7 +156,9 @@ class PimFileTransferService:
                 raise FileNotFoundError("Remote file does not exist.")
 
     def download_file(
-        self, file_name: str, before_downloaded: Optional[Callable] = None
+        self,
+        file_name: Union[list[str], str],
+        before_downloaded: Optional[Callable] = None,
     ):
         """Perform callback operation and
         downloads a file if it's available to the server supported by
