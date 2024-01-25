@@ -378,34 +378,36 @@ class DatamodelService(StreamingService):
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
-    def get_object_names(self, rules, path):
-        request = DataModelProtoModule.GetStateRequest()
+    def get_object_names(self, rules: str, path: str) -> list[str]:
+        request = DataModelProtoModule.GetObjectNamesRequest()
         request.rules = rules
-        request.path = convert_path_to_se_path(path)
+        request.path = path
         response = self._impl.get_object_names(request)
         return response.names
 
-    def rename(self, rules, path, new_name) -> None:
+    def rename(self, rules: str, path: str, new_name: str) -> None:
         request = DataModelProtoModule.RenameRequest()
         request.rules = rules
-        request.path = convert_path_to_se_path(path)
+        request.path = path
         request.new_name = new_name
         request.wait = True
         self._impl.rename(request)
 
-    def delete_child_objects(self, rules, path, child_names) -> None:
+    def delete_child_objects(
+        self, rules: str, path: str, obj_type: str, child_names: list[str]
+    ) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
-        request.path = path
+        request.path = path + "/" + obj_type
         for name in child_names:
             request.child_names.names.append(name)
         request.wait = True
         self._impl.delete_child_objects(request)
 
-    def delete_all_child_objects(self, rules, path):
+    def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
-        request.path = path
+        request.path = path + "/" + obj_type
         request.delete_all = True
         request.wait = True
         self._impl.delete_child_objects(request)
@@ -927,7 +929,7 @@ class PyMenu(PyStateContainer):
         new_name : str
             New name for the object.
         """
-        self.service.rename(self.rules, self.path, new_name)
+        self.service.rename(self.rules, convert_path_to_se_path(self.path), new_name)
 
     def delete_child_objects(self, obj_type: str, child_names: list[str]):
         """Delete the named objects in 'child_names' from  the container..
@@ -939,8 +941,9 @@ class PyMenu(PyStateContainer):
         child_names : List[str]
             List of named objects.
         """
-        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
-        self.service.delete_child_objects(self.rules, child_obj_path, child_names)
+        self.service.delete_child_objects(
+            self.rules, convert_path_to_se_path(self.path), obj_type, child_names
+        )
 
     deleteChildObjects = delete_child_objects
 
@@ -952,8 +955,9 @@ class PyMenu(PyStateContainer):
         obj_type: str
             Type of the named object container.
         """
-        child_obj_path = convert_path_to_se_path(self.path) + "/" + obj_type
-        self.service.delete_all_child_objects(self.rules, child_obj_path)
+        self.service.delete_all_child_objects(
+            self.rules, convert_path_to_se_path(self.path), obj_type
+        )
 
     deleteAllChildObjects = delete_all_child_objects
 
@@ -1239,7 +1243,9 @@ class PyNamedObjectContainer:
 
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        return self.service.get_object_names(self.rules, self.path)
+        return self.service.get_object_names(
+            self.rules, convert_path_to_se_path(self.path)
+        )
 
     getChildObjectDisplayNames = get_object_names
 
