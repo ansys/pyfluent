@@ -84,7 +84,6 @@ class Solver(BaseSession):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._build_from_fluent_connection(fluent_connection)
-        self._settings_api_root = None
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -107,6 +106,7 @@ class Solver(BaseSession):
             self.reduction = Reduction(self._reduction_service)
         else:
             self.reduction = reduction_old
+        self._settings_api_root = None
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""

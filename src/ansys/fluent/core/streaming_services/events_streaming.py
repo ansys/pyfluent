@@ -50,7 +50,11 @@ class EventsManager(StreamingService):
                 event_name = response.WhichOneof("as")
                 with self._lock:
                     self._streaming = True
-                    if event_name == "errorevent":
+                    # error-code 0 from Fluent indicates server running without error
+                    if (
+                        event_name == "errorevent"
+                        and response.errorevent.errorCode != 0
+                    ):
                         error_message = response.errorevent.message.rstrip()
                         network_logger.error(
                             f"gRPC - {error_message}, "
