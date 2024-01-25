@@ -267,17 +267,13 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def is_input(self):
-        pass
-
     def before_execute(self, value):
-        pass
-
-    def is_output(self):
-        pass
+        if hasattr(self, "do_before_execute"):
+            self.do_before_execute(value)
 
     def after_execute(self, value):
-        pass
+        if hasattr(self, "do_after_execute"):
+            self.do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -400,29 +396,7 @@ class String(SettingsBase[str], Textual):
     _state_type = str
 
 
-class _InputFile(Base):
-    def is_input(self):
-        return self.file_purpose() == "input" or False
-
-    def before_execute(self, value):
-        try:
-            self.remote_file_handler.upload(file_name=value)
-        except AttributeError:
-            pass
-
-
-class _OutputFile(Base):
-    def is_output(self):
-        return self.file_purpose() == "output" or False
-
-    def after_execute(self, value):
-        try:
-            self.remote_file_handler.download(file_name=value)
-        except AttributeError:
-            pass
-
-
-class Filename(SettingsBase[str], Textual, _InputFile, _OutputFile):
+class Filename(SettingsBase[str], Textual):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
@@ -432,7 +406,7 @@ class Filename(SettingsBase[str], Textual, _InputFile, _OutputFile):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-class FilenameList(SettingsBase[StringListType], Textual, _InputFile, _OutputFile):
+class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
@@ -440,6 +414,30 @@ class FilenameList(SettingsBase[StringListType], Textual, _InputFile, _OutputFil
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
+
+
+class FileName(Base):
+    pass
+
+
+class _InputFile(FileName):
+    def do_before_execute(self, value):
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile(FileName):
+    def do_after_execute(self, value):
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutputFile(_InputFile, _OutputFile):
+    pass
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -1072,10 +1070,7 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if (
-                hasattr(argument, "is_input") and argument.is_input()
-            ) or purpose == "input":
-                argument.before_execute(value)
+            argument.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1093,10 +1088,7 @@ class Command(Action):
         cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if (
-                hasattr(argument, "is_output") and argument.is_output()
-            ) or purpose == "output":
-                argument.after_execute(value)
+            argument.after_execute(value)
         return cmd
 
 
@@ -1296,6 +1288,10 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
+        elif info.get("file_purpose") == "input":
+            bases += (_InputFile,)
+        elif info.get("file_purpose") == "output":
+            bases += (_OutputFile,)
 
         cls = type(pname, bases, dct)
 
