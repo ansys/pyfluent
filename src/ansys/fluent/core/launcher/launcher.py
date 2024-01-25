@@ -15,6 +15,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
     _confirm_watchdog_start,
     _get_fluent_launch_mode,
+    _get_mode,
     _get_running_session_mode,
     _get_server_info,
     _process_invalid_args,
@@ -192,6 +193,13 @@ def launch_fluent(
     scheduler_options : dict, optional
         Dictionary containing scheduler options. Default is None.
 
+        Currently only the Slurm scheduler is supported. The ``scheduler_options``
+        dictionary must be of the form ``{"scheduler": "slurm",
+        "scheduler_headnode": "<headnode>", "scheduler_queue": "<queue>",
+        "scheduler_account": "<account>"}``. The keys ``scheduler_headnode``,
+        ``scheduler_queue`` and ``scheduler_account`` are optional and should be
+        specified in a similar manner to Fluent's scheduler options.
+
     Returns
     -------
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
@@ -221,6 +229,7 @@ def launch_fluent(
         scheduler_options=scheduler_options,
     )
     del start_container
+    mode = _get_mode(mode)
     argvals = locals().copy()
     _process_invalid_args(dry_run, fluent_launch_mode, argvals)
     fluent_launch_mode = argvals.pop("fluent_launch_mode")

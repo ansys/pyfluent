@@ -33,10 +33,10 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
 class InactiveObjectError(RuntimeError):
-    """Provides the error when the object is inactive."""
+    """Inactive object access."""
 
-    def __init__(self):
-        super().__init__("Object is not active.")
+    def __init__(self, python_path):
+        super().__init__(f"'{python_path}' is currently inactive.")
 
 
 class _InlineConstants:
@@ -216,7 +216,7 @@ class Base:
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise InactiveObjectError()
+            raise InactiveObjectError(self.python_path)
         val = None
         if attrs:
             val = attrs[attr]
@@ -565,23 +565,28 @@ class Group(SettingsBase[DictStateType]):
 
     def _get_parent_of_active_child_names(self, name):
         parents = ""
+        path_list = []
         for parent in self.get_active_child_names():
             try:
                 if hasattr(getattr(self, parent), str(name)):
+                    path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
                     if len(parents) != 0:
-                        parents += "." + parent
+                        parents += ", " + parent
                     else:
                         parents += parent
             except AttributeError:
                 pass
+        if len(path_list):
+            print(f"\n {str(name)} can be accessed from the following paths: \n")
+            for path in path_list:
+                print(path)
         if len(parents):
-            print(f"\n {name} is a child of {parents} \n")
             return f"\n {name} is a child of {parents} \n"
 
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
-                raise RuntimeError(f"'{self.python_path}' is currently not active")
+                raise InactiveObjectError(self.python_path)
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:

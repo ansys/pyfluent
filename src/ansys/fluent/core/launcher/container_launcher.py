@@ -12,9 +12,7 @@ from ansys.fluent.core.launcher.fluent_container import (
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
     _build_fluent_launch_args_string,
-    _get_argvals,
     _process_invalid_args,
-    _process_kwargs,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
@@ -29,7 +27,7 @@ class DockerLauncher:
 
     def __init__(
         self,
-        argvals: Optional[Any] = None,
+        mode: FluentMode,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -47,19 +45,19 @@ class DockerLauncher:
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
-        mode: Optional[Union[FluentMode, str, None]] = None,
         py: Optional[bool] = None,
         gpu: Optional[bool] = None,
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
-        **kwargs,
     ):
         """Launch Fluent session in container mode.
 
         Parameters
         ----------
+        mode : FluentMode
+            Launch mode of Fluent to point to a specific session type.
         product_version : str, optional
             Select an installed version of ANSYS. The string must be in a format like
             ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
@@ -124,10 +122,6 @@ class DockerLauncher:
             made by the user in the current Fluent solver session have been applied in the background Fluent
             solver session. This is all orchestrated by PyFluent and requires no special usage.
             This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-        mode : str, optional
-            Launch mode of Fluent to point to a specific session type.
-            The default value is ``None``. Options are ``"meshing"``,
-            ``"pure-meshing"`` and ``"solver"``.
         py : bool, optional
             If True, Fluent will run in Python mode. Default is None.
         gpu : bool, optional
@@ -164,22 +158,22 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _process_kwargs(kwargs)
-        del kwargs
         del start_container
         argvals = locals().copy()
+        del argvals["self"]
         _process_invalid_args(dry_run, "container", argvals)
-        args = _get_argvals(argvals, mode)
-        argvals.update(args)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
+        self.new_session = self.mode.value[0]
 
     def __call__(self):
+        if self.mode == FluentMode.SOLVER_ICING:
+            self.argvals["fluent_icing"] = True
         args = _build_fluent_launch_args_string(**self.argvals).split()
-        if self.meshing_mode:
+        if FluentMode.is_meshing(self.mode):
             args.append(" -meshing")
         if self.container_dict is None:
             setattr(self, "container_dict", {})
