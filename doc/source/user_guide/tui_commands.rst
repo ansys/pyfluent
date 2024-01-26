@@ -20,6 +20,46 @@ session easier, you can install a tool such as
 both command line completion and history. To inspect any PyFluent TUI object further,
 you can use the Python built-in `help <https://docs.python.org/3/library/functions.html#help>`_
 and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
+For example, to see the options available under the viscous model menu, the
+following can be used, assuming that ``solver`` is the session instance returned
+by ``launch_fluent``:
+
+.. code-block:: python
+
+   >>> dir(solver.tui.define.models.viscous)
+   ['add_intermittency_transition_model', 'add_transition_model',
+   'corner_flow_correction', 'curvature_correction',
+   'detached_eddy_simulation', 'inviscid', 'k_kl_w', 'ke_realizable', 'ke_rng',
+   'ke_standard', 'kw_bsl', 'kw_geko', 'kw_low_re_correction', 'kw_sst',
+   'kw_standard', 'kw_wj_bsl_earsm', 'laminar', 'large_eddy_simulation',
+   'mixing_length', 'near_wall_treatment', 'reynolds_stress_model', 'sas',
+   'spalart_allmaras', 'transition_sst', 'turbulence_expert', 'user_defined']
+
+To see the documentation for the viscous model menu options, you can run:
+
+.. code-block:: python
+
+   >>> help(solver.tui.define.models.viscous)
+   Help on viscous in module ansys.fluent.core.solver.tui_241 object:
+
+   class viscous(ansys.fluent.core.services.datamodel_tui.TUIMenu)
+    |  viscous(service, version, mode, path)
+    |
+    |  Enters the viscous model menu.
+    |
+    |  Method resolution order:
+    |      viscous
+    |      ansys.fluent.core.services.datamodel_tui.TUIMenu
+    |      builtins.object
+    |
+    |  Methods defined here:
+    |
+    |  __init__(self, service, version, mode, path)
+    |      __init__ method of TUIMenu class.
+    |
+    |  add_intermittency_transition_model(self, *args, **kwargs)
+    |      Enable/disable the intermittency transition model to account for transitional effects.
+   ...
 
 The arguments to a TUI command are those that would be passed in direct
 interaction in the Fluent console, but they are in a Pythonic style. In the recent
