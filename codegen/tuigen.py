@@ -275,11 +275,9 @@ class TUIGenerator:
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
             if noindex:
                 f.write("   :noindex:\n")
-            f.write("   :members:\n")
+            f.write(f"   :members: {', '.join(command_names)}\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
-            f.write('   :exclude-members: "__weakref__, __dict__"\n')
-            f.write('   :special-members: " __init__"\n')
             f.write("   :autosummary:\n\n")
 
             if child_menu_names:
