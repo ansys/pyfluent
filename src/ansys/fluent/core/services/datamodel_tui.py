@@ -305,6 +305,17 @@ class TUIMethod:
     Methods like ___repr__ are inserted at PyConsole side.
     """
 
+    def __init__(self, service, version, mode, path):
+        self._service = service
+        self._version = version
+        self._mode = mode
+        self._path = path
+
+    def __call__(self, *args, **kwargs):
+        return PyMenu(self._service, self._version, self._mode, self._path).execute(
+            *args, **kwargs
+        )
+
 
 class TUIMenu:
     """Base class for the generated menu classes."""

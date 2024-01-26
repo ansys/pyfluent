@@ -217,10 +217,6 @@ class TUIGenerator:
             "def __init__(self, service, version, mode, path):\n", indent
         )
         indent += 1
-        self._write_code_to_tui_file("self._service = service\n", indent)
-        self._write_code_to_tui_file("self._version = version\n", indent)
-        self._write_code_to_tui_file("self._mode = mode\n", indent)
-        self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
             self._write_code_to_tui_file(
                 f"self.{k} = self.__class__.{k}"
@@ -244,27 +240,7 @@ class TUIGenerator:
                     if line:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
-                self._write_code_to_tui_file(
-                    "def __init__(self, service, version, mode, path):\n", indent
-                )
-                indent += 1
-                self._write_code_to_tui_file("self._service = service\n", indent)
-                self._write_code_to_tui_file("self._version = version\n", indent)
-                self._write_code_to_tui_file("self._mode = mode\n", indent)
-                self._write_code_to_tui_file(
-                    f'self._path = "{menu.get_command_path(command)}"\n', indent
-                )
                 indent -= 1
-                self._write_code_to_tui_file(
-                    f"def __call__(self, *args, **kwargs):\n", indent
-                )
-                indent += 1
-                self._write_code_to_tui_file(
-                    "return PyMenu(self._service, self._version, self._mode, self._path)"
-                    ".execute(*args, **kwargs)\n",
-                    indent,
-                )
-                indent -= 2
         for k, v in menu.children.items():
             if v.is_command:
                 api_tree[k] = "Command"
@@ -296,7 +272,6 @@ class TUIGenerator:
             child_menu_names = [
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
-
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
             if noindex:
                 f.write("   :noindex:\n")
