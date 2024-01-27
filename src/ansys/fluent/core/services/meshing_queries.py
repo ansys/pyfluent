@@ -25,8 +25,8 @@ class MeshingQueriesService:
     ):
         """__init__ method of MeshingQueriesService class."""
         intercept_channel = grpc.intercept_channel(
-            GrpcErrorInterceptor(),
             channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),

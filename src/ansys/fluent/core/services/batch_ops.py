@@ -11,7 +11,6 @@ import grpc
 
 import ansys.api.fluent.v0 as api
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
-from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
 
 _TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
 
@@ -23,6 +22,8 @@ class BatchOpsService:
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of BatchOpsService class."""
+
+        from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
 
         intercept_channel = grpc.intercept_channel(
             channel,
