@@ -11,7 +11,7 @@ import grpc
 
 import ansys.api.fluent.v0 as api
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
-from ansys.fluent.core.services.error_handler import catch_grpc_error
+from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
 
 _TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
 
@@ -23,10 +23,14 @@ class BatchOpsService:
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:
         """__init__ method of BatchOpsService class."""
-        self._stub = batch_ops_pb2_grpc.BatchOpsStub(channel)
+
+        intercept_channel = grpc.intercept_channel(
+            channel,
+            GrpcErrorInterceptor(),
+        )
+        self._stub = batch_ops_pb2_grpc.BatchOpsStub(intercept_channel)
         self._metadata = metadata
 
-    @catch_grpc_error
     def execute(
         self, request: batch_ops_pb2.ExecuteRequest
     ) -> batch_ops_pb2.ExecuteResponse:
