@@ -202,7 +202,7 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
         session.scheme_eval.scheme_eval("")
         server.stop(None)
         session.exit()
-    assert ex.value.__context__.code() == grpc.StatusCode.UNAUTHENTICATED
+    assert ex.value.args[1] == grpc.StatusCode.UNAUTHENTICATED
 
 
 def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() -> None:
@@ -382,13 +382,13 @@ def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
     with pytest.raises(LaunchFluentError) as ex:
         solver = pyfluent.launch_fluent()
     # grpc.RpcError -> RuntimeError -> LaunchFluentError
-    assert ex.value.__context__.__context__.code() == grpc.StatusCode.UNAVAILABLE
+    assert ex.value.__context__.args[1] == grpc.StatusCode.UNAVAILABLE
 
 
 def test_recover_grpc_error_from_connection_error():
     with pytest.raises(RuntimeError) as ex:
         pyfluent.connect_to_fluent(ip="127.0.0.1", port=50000, password="abcdefg")
-    assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
+    assert ex.value.args[1] == grpc.StatusCode.UNAVAILABLE
 
 
 def test_solver_methods(new_solver_session):

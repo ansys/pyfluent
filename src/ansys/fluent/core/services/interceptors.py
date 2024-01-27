@@ -105,8 +105,8 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
         request: Any,
     ) -> Any:
         response = continuation(client_call_details, request)
-        if not (response.exception() is None and response.code() == grpc.StatusCode.OK):
-            raise RuntimeError(response.details())
+        if response.exception() is not None and response.code() != grpc.StatusCode.OK:
+            raise RuntimeError(response.details(), response.code())
         return response
 
     def intercept_unary_unary(
