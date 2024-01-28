@@ -594,3 +594,110 @@ attribute access methods in a watertight geometry meshing workflow.
     w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
     w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
 
+Some alternate usages
+---------------------
+The meshing workflow objects can now be accessed in a much more pythonic object
+oriented way getting rid of much of the string aspects.
+
+For example:
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Add Local Sizing"]
+
+The above can be replaced by:
+
+.. code:: python
+
+    watertight.add_local_sizing
+
+Here are some code snippets which show this for both pre-defined meshing workflows:
+
+
+Watertight Geometry
+~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+    from ansys.fluent.core.meshing.watertight import watertight_workflow
+
+    mixing_elbow_geometry_file_name = examples.download_file(
+                file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+            )
+
+    meshing = pyfluent.launch_fluent(mode="meshing", precision="double", processor_count=2)
+
+    watertight = watertight_workflow(
+            geometry_file_name=mixing_elbow_geometry_file_name, session=meshing
+        )
+
+    add_local_sizing = watertight.add_local_sizing
+
+    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+
+    added_sizing = add_local_sizing.add_child_and_update(
+        state={"BOIFaceLabelList": ["elbow-fluid"]}
+    )
+
+    added_sizing_by_name = add_local_sizing.compound_child("facesize_1")
+    added_sizing_by_pos = add_local_sizing.last_child()
+
+    describe_geometry = watertight.describe_geometry
+    describe_geometry_children = describe_geometry.ordered_children()
+
+    describe_geometry_child_task_python_names = (
+        describe_geometry.child_task_python_names()
+    )
+
+
+Fault-tolerant Meshing
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+    from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
+
+    exhaust_system_geometry_file_name = download_file(
+            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+        )
+
+    meshing = pyfluent.launch_fluent(mode="meshing", precision="double", processor_count=2)
+
+    fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
+    part_management = fault_tolerant.part_management
+    file_name = exhaust_system_geometry_file_name
+    part_management.LoadFmdFile(FilePath=file_name)
+    part_management.MoveCADComponentsToNewObject(
+        Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
+    )
+    part_management.Node["Object"].Rename(NewName=r"Engine")
+    import_cad = fault_tolerant.TaskObject["Import CAD and Part Management"]
+    import_cad.Arguments.setState(
+        {
+            r"CreateObjectPer": r"Custom",
+            r"FMDFileName": file_name,
+            r"FileLoaded": r"yes",
+            r"ObjectSetting": r"DefaultObjectSetting",
+        }
+    )
+    import_cad.Execute()
+
+
+Some improvements
+-----------------
+One can call the TaskObject to get it's state:
+
+.. code:: python
+
+    meshing.workflow.TaskObject()
+
+Items of the TaskObject can now be accessed in settings dictionary style:
+
+.. code:: python
+
+    for name, object in meshing.workflow.TaskObject.items():
+        ...
