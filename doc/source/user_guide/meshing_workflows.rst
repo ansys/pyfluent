@@ -596,7 +596,7 @@ attribute access methods in a watertight geometry meshing workflow.
 
 Some alternate usages
 ---------------------
-The meshing workflow objects can now be accessed in a much more pythonic object
+The meshing workflow objects can now be accessed in a much more Pythonic object
 oriented way getting rid of much of the string aspects.
 
 For example:
