@@ -707,6 +707,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
 
     assert solver.results.graphics.mesh.get_object_names() == ["mesh_new"]
 
+    if solver.get_fluent_version() >= "24.2.0":
+        solver.results.graphics.mesh.rename(new="mesh-242", old="mesh_new")
+        assert solver.results.graphics.mesh.get_object_names() == ["mesh-242"]
+
 
 @pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_only):
