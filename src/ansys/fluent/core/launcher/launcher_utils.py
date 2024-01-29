@@ -127,11 +127,10 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
 class FluentMode(Enum):
     """An enumeration over supported Fluent modes."""
 
-    # Tuple: Name, Solver object type, Meshing flag, Launcher options
-    MESHING_MODE = ("meshing", Meshing, True, [])
-    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
-    SOLVER = ("solver", Solver, False, [])
-    SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
+    MESHING_MODE = (Meshing, "meshing")
+    PURE_MESHING_MODE = (PureMeshing, "pure-meshing")
+    SOLVER = (Solver, "solver")
+    SOLVER_ICING = (SolverIcing, "solver-icing")
 
     @staticmethod
     def get_mode(mode: str) -> "FluentMode":
@@ -152,13 +151,28 @@ class FluentMode(Enum):
         DisallowedValuesError
             If an unknown mode is passed.
         """
+        allowed_modes = []
         for m in FluentMode:
-            if mode == m.value[0]:
+            allowed_modes.append(m.value[1])
+            if mode == m.value[1]:
                 return m
-        else:
-            raise DisallowedValuesError(
-                "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
-            )
+        raise DisallowedValuesError("mode", mode, allowed_modes)
+
+    @staticmethod
+    def is_meshing(mode: "FluentMode") -> bool:
+        """Returns whether the current mode is meshing.
+
+        Parameters
+        ----------
+        mode : FluentMode
+            mode
+
+        Returns
+        -------
+        True if mode is FluentMode.MESHING_MODE or FluentMode.PURE_MESHING_MODE else False
+            bool
+        """
+        return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
 def _get_server_info_file_name(use_tmpdir=True):
@@ -250,19 +264,15 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     return launch_args_string
 
 
-def _get_session_info(argvals, mode: Optional[Union[FluentMode, str, None]] = None):
+def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
     """Updates the session information."""
     if mode is None:
         mode = FluentMode.SOLVER
 
     if isinstance(mode, str):
         mode = FluentMode.get_mode(mode)
-    new_session = mode.value[1]
-    meshing_mode = mode.value[2]
-    for k, v in mode.value[3]:
-        argvals[k] = v
 
-    return new_session, meshing_mode, argvals, mode
+    return mode
 
 
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
@@ -348,12 +358,12 @@ def _get_running_session_mode(
             )
         except Exception as ex:
             raise InvalidPassword() from ex
-    return session_mode.value[1]
+    return session_mode.value[0]
 
 
 def _generate_launch_string(
     argvals,
-    meshing_mode: bool,
+    mode: FluentMode,
     show_gui: bool,
     additional_arguments: str,
     server_info_file_name: str,
@@ -366,8 +376,10 @@ def _generate_launch_string(
     else:
         exe_path = str(get_fluent_exe_path(**argvals))
     launch_string = exe_path
+    if mode == FluentMode.SOLVER_ICING:
+        argvals["fluent_icing"] = True
     launch_string += _build_fluent_launch_args_string(**argvals)
-    if meshing_mode:
+    if FluentMode.is_meshing(mode):
         launch_string += " -meshing"
     if additional_arguments:
         launch_string += f" {additional_arguments}"
@@ -523,33 +535,12 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
             )
 
 
-def _get_argvals(argvals, mode):
-    """Update local arguments.
-
-    Parameters
-    ----------
-    argvals: dict
-        Local arguments.
-    mode : str
-        Launch mode of Fluent to point to a specific session type.
-        Options are ``"meshing"``, ``"pure-meshing"`` and ``"solver"``.
-
-    Returns
-    -------
-    argvals: dict
-        Updated local arguments.
-    """
-    new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
-    argvals = locals().copy()
-    return argvals
-
-
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
     product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
-    meshing_mode: bool = False,
+    mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Optional[str] = None,
     launcher_args: Optional[Dict[str, Any]] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
@@ -576,9 +567,9 @@ def launch_remote_fluent(
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
-    meshing_mode : bool, optional
+    mode : FluentMode, optional
         Whether to launch Fluent remotely in meshing mode. The default is
-        ``False``.
+        ``FluentMode.SOLVER``.
     dimensionality : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -594,7 +585,7 @@ def launch_remote_fluent(
     pim = pypim.connect()
     instance = pim.create_instance(
         product_name="fluent-meshing"
-        if meshing_mode
+        if FluentMode.is_meshing(mode)
         else "fluent-2ddp"
         if dimensionality == "2d"
         else "fluent-3ddp",
