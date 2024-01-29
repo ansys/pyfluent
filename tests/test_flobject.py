@@ -702,7 +702,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     assert count_key_recursive(default_attrs, "default") > 5
 
     mesh = solver.results.graphics.mesh.create("mesh-1")
-    assert mesh.name.is_read_only()
+    if solver.get_fluent_version() < "24.2.0":
+        assert mesh.name.is_read_only()
+    else:
+        assert not mesh.name.is_read_only()
 
 
 @pytest.mark.fluent_version("latest")
