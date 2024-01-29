@@ -115,7 +115,6 @@ def test_boundaries_periodic(load_periodic_rot_settings_only):
     solver_session.setup.boundary_conditions["inlet"].momentum.velocity = 10.0
     boundaries_check = ["inlet", "out", "pipe2_wall"]
     boundary_test = dict()
-    solver_session.setup.boundary_conditions.pressure_outlet["outlet"].rename("out")
     for name, boundary in solver_session.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_3"] = boundary_test
