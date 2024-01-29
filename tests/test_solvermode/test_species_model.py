@@ -16,11 +16,7 @@ def test_change_create_mixture(load_mixing_elbow_settings_only):
     # Test command names list
     materials = solver_session.setup.materials
     assert sorted(materials.mixture.command_names) == sorted(
-        ["delete",
-         "list",
-         "list_properties",
-         "make_a_copy",
-         "rename"]
+        ["delete", "list", "list_properties", "make_a_copy", "rename"]
     )
 
     # Test change/creating a mixture with custom species from template
