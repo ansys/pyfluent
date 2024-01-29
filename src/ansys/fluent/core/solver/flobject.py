@@ -24,6 +24,7 @@ import logging
 import pickle
 import string
 import sys
+import types
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import weakref
 
@@ -766,6 +767,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = cls(cname, self)
         ret._setattr("_python_name", f'["{cname}"]')
+        ret._setattr(
+            "rename",
+            types.MethodType(lambda obj, name: _rename(self, name, cname), ret),
+        )
         return ret
 
     def _update_objects(self):
@@ -856,6 +861,23 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if not obj:
             obj = self._create_child_object(name)
         return obj
+
+
+def _rename(obj: NamedObject, new: str, old: str):
+    """Rename a named object.
+    Parameters
+    ----------
+    obj: NamedObject
+        named-object to be renamed
+    new: str
+        New name.
+    old : str
+        Current name.
+    """
+    obj.flproxy.rename(obj.path, new, old)
+    if old in obj._objects:
+        del obj._objects[old]
+    obj._create_child_object(new)
 
 
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
@@ -1308,6 +1330,9 @@ def get_cls(name, info, parent=None, version=None):
         if object_type:
             cls.child_object_type = get_cls(
                 "child-object-type", object_type, cls, version=version
+            )
+            cls.child_object_type.rename = lambda self, name: _rename(
+                self._parent, name, self._name
             )
             cls.child_object_type.get_name = lambda self: self._name
     except Exception:
