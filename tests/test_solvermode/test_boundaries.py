@@ -126,4 +126,3 @@ def test_boundaries_periodic(load_periodic_rot_settings_only):
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
     with open("boundaries_periodic_outDict.py", "a") as f:
         json.dump(boundary_tested, f, sort_keys=True, indent=4)
-
