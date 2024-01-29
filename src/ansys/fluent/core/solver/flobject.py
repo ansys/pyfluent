@@ -865,6 +865,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
 def _rename(obj: NamedObject, new: str, old: str):
     """Rename a named object.
+
     Parameters
     ----------
     obj: NamedObject
