@@ -108,7 +108,7 @@ def test_boundaries_periodic(load_periodic_rot_settings_only):
     selected_bou_exp = get_name_info(boundary_exp["val_1"], boundaries_check)
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
     solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
-
+    solver_session.setup.boundary_conditions.pressure_outlet["outlet"].rename("out")
     solver_session.setup.boundary_conditions.velocity_inlet[
         "inlet"
     ].momentum.velocity = 5.0
