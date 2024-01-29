@@ -21,6 +21,7 @@ def test_change_create_mixture(load_mixing_elbow_settings_only):
             "list",
             "list_properties",
             "make_a_copy",
+            "rename"
         ]
     )
 
