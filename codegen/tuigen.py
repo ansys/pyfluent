@@ -279,6 +279,7 @@ class TUIGenerator:
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
             f.write("   :autosummary:\n\n")
+            f.write("   :autosummary-members:\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
@@ -292,6 +293,7 @@ class TUIGenerator:
                             doc_dir / v.name,
                             heading + "." + v.name,
                             class_name + "." + v.name,
+                            False,
                         )
 
     def generate(self) -> None:
