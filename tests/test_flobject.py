@@ -701,6 +701,12 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     else:
         assert not mesh.name.is_read_only()
 
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh-1"]
+
+    solver.results.graphics.mesh.rename("mesh_new", "mesh-1")
+
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh_new"]
+
 
 @pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_only):
