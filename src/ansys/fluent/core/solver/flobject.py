@@ -1332,9 +1332,6 @@ def get_cls(name, info, parent=None, version=None):
             cls.child_object_type = get_cls(
                 "child-object-type", object_type, cls, version=version
             )
-            cls.child_object_type.rename = lambda self, name: _rename(
-                self._parent, name, self._name
-            )
             cls.child_object_type.get_name = lambda self: self._name
     except Exception:
         print(
