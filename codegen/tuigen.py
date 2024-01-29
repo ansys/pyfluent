@@ -278,7 +278,7 @@ class TUIGenerator:
             f.write(f"   :members: {', '.join(command_names)}\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
-            f.write("   :autosummary:\n\n")
+            f.write("   :autosummary:\n")
             f.write("   :autosummary-members:\n\n")
 
             if child_menu_names:
