@@ -9,12 +9,14 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
-from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
     override_help_text,
 )
-from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.services.interceptors import (
+    GrpcErrorInterceptor,
+    TracingInterceptor,
+)
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
@@ -23,27 +25,26 @@ class SVARService:
 
     def __init__(self, channel: grpc.Channel, metadata):
         """__init__ method of SVAR service class."""
-        tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
+        intercept_channel = grpc.intercept_channel(
+            channel,
+            GrpcErrorInterceptor(),
+            TracingInterceptor(),
+        )
         self.__stub = SvarGrpcModule.svarStub(intercept_channel)
         self.__metadata = metadata
 
-    @catch_grpc_error
     def get_svar_data(self, request):
         """GetSvarData RPC of SVAR service."""
         return self.__stub.GetSvarData(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def set_svar_data(self, request):
         """SetSvarData RPC of SVAR service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_svars_info(self, request):
         """GetSvarsInfo RPC of SVAR service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_zones_info(self, request):
         """GetZonesInfo RPC of SVAR service."""
         return self.__stub.GetZonesInfo(request, metadata=self.__metadata)

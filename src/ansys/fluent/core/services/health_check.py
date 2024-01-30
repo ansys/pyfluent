@@ -7,10 +7,10 @@ import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule
 from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
-from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
+    GrpcErrorInterceptor,
     TracingInterceptor,
 )
 
@@ -40,6 +40,7 @@ class HealthCheckService:
         """__init__ method of HealthCheckService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
@@ -48,7 +49,6 @@ class HealthCheckService:
         self._metadata = metadata
         self._channel = channel
 
-    @catch_grpc_error
     def check_health(self) -> str:
         """Check the health of the Fluent connection.
 
@@ -62,7 +62,6 @@ class HealthCheckService:
         return HealthCheckService.Status(response.status).name
 
     # pylint: disable=missing-raises-doc
-    @catch_grpc_error
     def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
 
