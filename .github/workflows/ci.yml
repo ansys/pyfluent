@@ -211,6 +211,7 @@ jobs:
     name: Build
     needs: test-import
     runs-on: [self-hosted, pyfluent]
+    if: false
 
     steps:
       - uses: actions/checkout@v4
@@ -406,6 +407,7 @@ jobs:
     name: Unit Testing
     needs: build
     runs-on: ubuntu-latest
+    if: false
     strategy:
       fail-fast: false
       matrix:

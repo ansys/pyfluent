@@ -741,3 +741,10 @@ def test_modified_workflow(new_mesh_session):
         task_display_names.append(name)
 
     assert set(task_display_names) == task_object_display_names
+
+
+def test_nonexistent_attrs(new_mesh_session):
+    meshing = new_mesh_session
+    assert not hasattr(meshing.workflow, "xyz")
+    with pytest.raises(Exception):
+        meshing.workflow.xyz
