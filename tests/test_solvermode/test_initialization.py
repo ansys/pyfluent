@@ -3,8 +3,8 @@ from util.fixture_fluent import download_input_file
 
 
 @pytest.mark.settings_only
-def test_initialization_settings(launch_fluent_solver_3ddp):
-    solver = launch_fluent_solver_3ddp
+def test_initialization_settings(launch_fluent_solver_3ddp_t2):
+    solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(
         "pyfluent/wigley_hull",
         "wigley.cas.h5",
@@ -37,7 +37,7 @@ def test_initialization_settings(launch_fluent_solver_3ddp):
         "momentum": {"direction_specification_method": "Direction Vector"},
         "turbulence": {
             "turbulent_intensity": 0.01,
-            "turbulent_viscosity_ratio_real": 1,
+            "turbulent_viscosity_ratio": 1,
         },
     }
     solver.setup.boundary_conditions.pressure_outlet["outflow"].phase["mixture"] = {
@@ -52,7 +52,7 @@ def test_initialization_settings(launch_fluent_solver_3ddp):
         },
         "turbulence": {
             "turbulent_intensity": 0.01,
-            "turbulent_viscosity_ratio_real": 1,
+            "turbulent_viscosity_ratio": 1,
         },
     }
 
