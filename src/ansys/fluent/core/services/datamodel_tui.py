@@ -2,7 +2,6 @@
 
 import keyword
 import logging
-import types
 from typing import Any, Union
 
 from google.protobuf.json_format import MessageToDict
@@ -300,6 +299,24 @@ def _get_static_info_at_level(menu: PyMenu) -> dict[str, Any]:
     return info
 
 
+class TUIMethod:
+    """Base class for the generated menu methods.
+
+    Methods like ___repr__ are inserted at PyConsole side.
+    """
+
+    def __init__(self, service, version, mode, path):
+        self._service = service
+        self._version = version
+        self._mode = mode
+        self._path = path
+
+    def __call__(self, *args, **kwargs):
+        return PyMenu(self._service, self._version, self._mode, self._path).execute(
+            *args, **kwargs
+        )
+
+
 class TUIMenu:
     """Base class for the generated menu classes."""
 
@@ -321,7 +338,7 @@ class TUIMenu:
     def __getattribute__(self, name) -> Any:
         try:
             attr = super().__getattribute__(name)
-            if type(attr) == types.MethodType:
+            if isinstance(attr, TUIMethod):
                 # some runtime submenus are generated as methods during codegen
                 path = self._path + [name]
                 if PyMenu(
