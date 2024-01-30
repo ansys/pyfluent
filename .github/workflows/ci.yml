@@ -83,7 +83,6 @@ jobs:
   test-import:
     name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
-    if: false
     strategy:
       fail-fast: false
       matrix:
