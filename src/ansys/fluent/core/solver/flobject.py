@@ -267,13 +267,13 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    def before_execute(self, value):
-        if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
-
-    def after_execute(self, value):
-        if hasattr(self, "_do_after_execute"):
-            self._do_after_execute(value)
+    # def before_execute(self, value):
+    #     if hasattr(self, "_do_before_execute"):
+    #         self._do_before_execute(value)
+    #
+    # def after_execute(self, value):
+    #     if hasattr(self, "_do_after_execute"):
+    #         self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -416,28 +416,49 @@ class FilenameList(SettingsBase[StringListType], Textual):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-class FileName(Base):
-    pass
+# class FileName(Base):
+#     pass
+#
+#
+# class _InputFile(FileName):
+#     def _do_before_execute(self, value):
+#         try:
+#             self.remote_file_handler.upload(file_name=value)
+#         except AttributeError:
+#             pass
+#
+#
+# class _OutputFile(FileName):
+#     def _do_after_execute(self, value):
+#         try:
+#             self.remote_file_handler.download(file_name=value)
+#         except AttributeError:
+#             pass
+
+# class _InOutputFile(_InputFile, _OutputFile):
+#     pass
 
 
-class _InputFile(FileName):
-    def _do_before_execute(self, value):
-        try:
-            self.remote_file_handler.upload(file_name=value)
-        except AttributeError:
-            pass
+def _do_before_execute(value, remote_file_handler):
+    try:
+        remote_file_handler.upload(file_name=value)
+    except AttributeError:
+        pass
 
 
-class _OutputFile(FileName):
-    def _do_after_execute(self, value):
-        try:
-            self.remote_file_handler.download(file_name=value)
-        except AttributeError:
-            pass
+def _do_after_execute(value, remote_file_handler):
+    try:
+        remote_file_handler.download(file_name=value)
+    except AttributeError:
+        pass
 
 
-class _InOutputFile(_InputFile, _OutputFile):
-    pass
+def before_execute(value, remote_file_handler):
+    _do_before_execute(value, remote_file_handler)
+
+
+def after_execute(value, remote_file_handler):
+    _do_after_execute(value, remote_file_handler)
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -1070,7 +1091,7 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.before_execute(value)
+            argument.before_execute(value, self.remote_file_handler)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1088,7 +1109,7 @@ class Command(Action):
         cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.after_execute(value)
+            argument.after_execute(value, self.remote_file_handler)
         return cmd
 
 
@@ -1357,10 +1378,10 @@ def get_cls(name, info, parent=None, version=None):
                     try:
                         if "file_purpose" in value:
                             if value["file_purpose"] == "input":
-                                ccls._do_before_execute = _InputFile._do_before_execute
+                                ccls.before_execute = before_execute
                                 taboo.add(ccls_name)
                             if value["file_purpose"] == "output":
-                                ccls._do_after_execute = _OutputFile._do_after_execute
+                                ccls.after_execute = after_execute
                                 taboo.add(ccls_name)
                     except TypeError:
                         pass
