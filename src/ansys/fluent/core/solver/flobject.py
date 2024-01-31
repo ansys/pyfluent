@@ -1212,6 +1212,17 @@ class _HasAllowedValuesMixin:
             return []
 
 
+class InputFile:
+    pass
+
+
+class OutputFile:
+    pass
+
+
+_bases_by_class = {}
+
+
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
@@ -1266,6 +1277,26 @@ def get_cls(name, info, parent=None, version=None):
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
 
+        if parent and parent.__name__ == "read_case" and pname == "file_name":
+            bases += (InputFile,)
+            print(parent, pname, bases)
+
+        if parent and parent.__name__ == "write_case" and pname == "file_name":
+            bases += (OutputFile,)
+            print(parent, pname, bases)
+
+        original_pname = pname
+        if any(
+            x in bases for x in (InputFile, OutputFile)
+        ):  # not generalizing for performance
+            i = 0
+            while pname in _bases_by_class and _bases_by_class[pname] != bases:
+                if i > 0:
+                    pname = pname[: pname.rfind("_")]
+                i += 1
+                pname += f"_{str(i)}"
+            _bases_by_class[pname] = bases
+
         cls = type(pname, bases, dct)
 
         taboo = set(dir(cls))
@@ -1280,7 +1311,7 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls = get_cls(cname, cinfo, cls, version=version)
+                ccls, original_pname = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
 
                 i = 0
@@ -1296,10 +1327,11 @@ def get_cls(name, info, parent=None, version=None):
                         ccls_name = ccls_name[: ccls_name.rfind("_")]
                     i += 1
                     ccls_name += f"_{str(i)}"
+
                 ccls.__name__ = ccls_name
-                names.append(ccls.__name__)
+                names.append(ccls.__name__ if i > 0 else original_pname)
                 taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+                setattr(cls, ccls.__name__ if i > 0 else original_pname, ccls)
 
         children = info.get("children")
         if children:
@@ -1329,7 +1361,7 @@ def get_cls(name, info, parent=None, version=None):
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
-            cls.child_object_type = get_cls(
+            cls.child_object_type, _ = get_cls(
                 "child-object-type", object_type, cls, version=version
             )
             cls.child_object_type.get_name = lambda self: self._name
@@ -1339,7 +1371,7 @@ def get_cls(name, info, parent=None, version=None):
             f"'{parent.fluent_name if parent else None}'"
         )
         raise
-    return cls
+    return cls, original_pname
 
 
 def _gethash(obj_info):
@@ -1376,7 +1408,7 @@ def get_root(flproxy, version: str = "") -> Group:
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
     except Exception:
-        cls = get_cls("", obj_info, version=version)
+        cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
     root._setattr("_static_info", obj_info)
