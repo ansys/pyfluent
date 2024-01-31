@@ -1371,20 +1371,32 @@ def get_cls(name, info, parent=None, version=None):
                 # ccls = get_cls(cname, cinfo, cls, version=version)
                 # ccls_name = ccls.__name__
 
-                ccls = get_cls(cname, cinfo, cls, version=version)
-                ccls_name = ccls.__name__
+                # ccls = get_cls(cname, cinfo, cls, version=version)
+                # ccls_name = ccls.__name__
+                #
+                # for arg, value in cinfo.items():
+                #     try:
+                #         if "file_purpose" in value:
+                #             if value["file_purpose"] == "input":
+                #                 ccls.before_execute = before_execute
+                #                 taboo.add(ccls_name)
+                #             if value["file_purpose"] == "output":
+                #                 ccls.after_execute = after_execute
+                #                 taboo.add(ccls_name)
+                #     except TypeError:
+                #         pass
 
                 for arg, value in cinfo.items():
                     try:
                         if "file_purpose" in value:
                             if value["file_purpose"] == "input":
-                                ccls.before_execute = before_execute
-                                taboo.add(ccls_name)
+                                cinfo.update({"before_execute": before_execute})
                             if value["file_purpose"] == "output":
-                                ccls.after_execute = after_execute
-                                taboo.add(ccls_name)
+                                cinfo.update({"after_execute": after_execute})
                     except TypeError:
                         pass
+                ccls = get_cls(cname, cinfo, cls, version=version)
+                ccls_name = ccls.__name__
 
                 i = 0
                 if write_doc:
