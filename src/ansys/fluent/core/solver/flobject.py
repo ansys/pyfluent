@@ -268,12 +268,12 @@ class Base:
         super().__setattr__(name, value)
 
     def before_execute(self, value):
-        # if hasattr(self, "_do_before_execute"):
-        self._do_before_execute(value)
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
 
     def after_execute(self, value):
-        # if hasattr(self, "_do_after_execute"):
-        self._do_after_execute(value)
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
