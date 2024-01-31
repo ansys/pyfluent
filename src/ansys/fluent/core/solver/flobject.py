@@ -267,13 +267,13 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
-    # def before_execute(self, value):
-    #     if hasattr(self, "_do_before_execute"):
-    #         self._do_before_execute(value)
-    #
-    # def after_execute(self, value):
-    #     if hasattr(self, "_do_after_execute"):
-    #         self._do_after_execute(value)
+    def before_execute(self, value):
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
+
+    def after_execute(self, value):
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -416,49 +416,50 @@ class FilenameList(SettingsBase[StringListType], Textual):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-# class FileName(Base):
-#     pass
+class FileName(Base):
+    pass
+
+
+class _InputFile(FileName):
+    def _do_before_execute(self, value):
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile(FileName):
+    def _do_after_execute(self, value):
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutputFile(_InputFile, _OutputFile):
+    pass
+
+
+# def _do_before_execute(value, remote_file_handler):
+#     try:
+#         remote_file_handler.upload(file_name=value)
+#     except AttributeError:
+#         pass
 #
 #
-# class _InputFile(FileName):
-#     def _do_before_execute(self, value):
-#         try:
-#             self.remote_file_handler.upload(file_name=value)
-#         except AttributeError:
-#             pass
+# def _do_after_execute(value, remote_file_handler):
+#     try:
+#         remote_file_handler.download(file_name=value)
+#     except AttributeError:
+#         pass
 #
 #
-# class _OutputFile(FileName):
-#     def _do_after_execute(self, value):
-#         try:
-#             self.remote_file_handler.download(file_name=value)
-#         except AttributeError:
-#             pass
-
-# class _InOutputFile(_InputFile, _OutputFile):
-#     pass
-
-
-def _do_before_execute(value, remote_file_handler):
-    try:
-        remote_file_handler.upload(file_name=value)
-    except AttributeError:
-        pass
-
-
-def _do_after_execute(value, remote_file_handler):
-    try:
-        remote_file_handler.download(file_name=value)
-    except AttributeError:
-        pass
-
-
-def before_execute(value, remote_file_handler):
-    _do_before_execute(value, remote_file_handler)
-
-
-def after_execute(value, remote_file_handler):
-    _do_after_execute(value, remote_file_handler)
+# def before_execute(value, remote_file_handler):
+#     _do_before_execute(value, remote_file_handler)
+#
+#
+# def after_execute(value, remote_file_handler):
+#     _do_after_execute(value, remote_file_handler)
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -1091,7 +1092,7 @@ class Command(Action):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.before_execute(value, self.remote_file_handler)
+            argument.before_execute(value)
         newkwds = _get_new_keywords(self, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1109,7 +1110,7 @@ class Command(Action):
         cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.after_execute(value, self.remote_file_handler)
+            argument.after_execute(value)
         return cmd
 
 
@@ -1341,21 +1342,21 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                # ccls = get_cls(cname, cinfo, cls, version=version)
-                # ccls_name = ccls.__name__
-                # for arg, value in cinfo.items():
-                #     try:
-                #         if "file_purpose" in value:
-                #             if value["file_purpose"] == "input":
-                #                 if _InputFile not in cls.__bases__:
-                #                     ccls.__bases__ += (_InputFile,)
-                #                 taboo.add(ccls_name)
-                #             if value["file_purpose"] == "output":
-                #                 if _OutputFile not in cls.__bases__:
-                #                     ccls.__bases__ += (_OutputFile,)
-                #                 taboo.add(ccls_name)
-                #     except TypeError:
-                #         pass
+                ccls = get_cls(cname, cinfo, cls, version=version)
+                ccls_name = ccls.__name__
+                for arg, value in cinfo.items():
+                    try:
+                        if "file_purpose" in value:
+                            if value["file_purpose"] == "input":
+                                if _InputFile not in cls.__bases__:
+                                    ccls.__bases__ += (_InputFile,)
+                                taboo.add(ccls_name)
+                            if value["file_purpose"] == "output":
+                                if _OutputFile not in cls.__bases__:
+                                    ccls.__bases__ += (_OutputFile,)
+                                taboo.add(ccls_name)
+                    except TypeError:
+                        pass
 
                 # for arg, value in cinfo.items():
                 #     try:
@@ -1386,17 +1387,17 @@ def get_cls(name, info, parent=None, version=None):
                 #     except TypeError:
                 #         pass
 
-                for arg, value in cinfo.items():
-                    try:
-                        if "file_purpose" in value:
-                            if value["file_purpose"] == "input":
-                                cinfo.update({"before_execute": before_execute})
-                            if value["file_purpose"] == "output":
-                                cinfo.update({"after_execute": after_execute})
-                    except TypeError:
-                        pass
-                ccls = get_cls(cname, cinfo, cls, version=version)
-                ccls_name = ccls.__name__
+                # for arg, value in cinfo.items():
+                #     try:
+                #         if "file_purpose" in value:
+                #             if value["file_purpose"] == "input":
+                #                 cinfo.update({"before_execute": before_execute})
+                #             if value["file_purpose"] == "output":
+                #                 cinfo.update({"after_execute": after_execute})
+                #     except TypeError:
+                #         pass
+                # ccls = get_cls(cname, cinfo, cls, version=version)
+                # ccls_name = ccls.__name__
 
                 i = 0
                 if write_doc:
