@@ -9,7 +9,11 @@ import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
-from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
+from ansys.fluent.core.services.datamodel_se import (
+    PyCallableStateObject,
+    PyMenuGeneric,
+    convert_path_to_se_path,
+)
 
 logger = logging.getLogger("pyfluent.datamodel")
 
@@ -911,7 +915,11 @@ class WorkflowWrapper:
         )  # or self._task_with_cmd_matching_help_string(attr)
         if obj:
             return obj
-        return self._task_objects.get(attr, None)
+        if attr in self._task_objects:
+            return self._task_objects[attr]
+        raise LookupError(
+            f"{attr} is not found at path {convert_path_to_se_path(self._workflow.path)}"
+        )
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
