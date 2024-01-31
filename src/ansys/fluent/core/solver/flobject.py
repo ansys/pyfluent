@@ -268,12 +268,12 @@ class Base:
         super().__setattr__(name, value)
 
     def before_execute(self, value):
-        if hasattr(self, "do_before_execute"):
-            self.do_before_execute(value)
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
 
     def after_execute(self, value):
-        if hasattr(self, "do_after_execute"):
-            self.do_after_execute(value)
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -421,7 +421,7 @@ class FileName(Base):
 
 
 class _InputFile(FileName):
-    def do_before_execute(self, value):
+    def _do_before_execute(self, value):
         try:
             self.remote_file_handler.upload(file_name=value)
         except AttributeError:
@@ -429,7 +429,7 @@ class _InputFile(FileName):
 
 
 class _OutputFile(FileName):
-    def do_after_execute(self, value):
+    def _do_after_execute(self, value):
         try:
             self.remote_file_handler.download(file_name=value)
         except AttributeError:
@@ -1288,10 +1288,23 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
-        elif info.get("file_purpose") == "input":
-            bases += (_InputFile,)
-        elif info.get("file_purpose") == "output":
-            bases += (_OutputFile,)
+        # elif info.get("file_purpose") == "input":
+        #     bases += (_InputFile,)
+        # elif info.get("file_purpose") == "output":
+        #     bases += (_OutputFile,)
+        # elif info.get("arguments"):
+        #     args = info.get("arguments")
+        #     for arg, value in args.items():
+        #         try:
+        #             if 'file_purpose' in value:
+        #                 if value['file_purpose'] == 'input':
+        #                     if _InputFile not in bases:
+        #                         bases += (_InputFile,)
+        #                 if value['file_purpose'] == 'output':
+        #                     if _OutputFile not in bases:
+        #                         bases += (_OutputFile,)
+        #         except TypeError:
+        #             pass
 
         cls = type(pname, bases, dct)
 
@@ -1309,6 +1322,19 @@ def get_cls(name, info, parent=None, version=None):
             for cname, cinfo in info_dict.items():
                 ccls = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
+                for arg, value in cinfo.items():
+                    try:
+                        if "file_purpose" in value:
+                            if value["file_purpose"] == "input":
+                                if _InputFile not in cls.__bases__:
+                                    ccls.__bases__ += (_InputFile,)
+                                    taboo.add(ccls_name)
+                            if value["file_purpose"] == "output":
+                                if _OutputFile not in cls.__bases__:
+                                    ccls.__bases__ += (_OutputFile,)
+                                    taboo.add(ccls_name)
+                    except TypeError:
+                        pass
 
                 i = 0
                 if write_doc:
@@ -1351,6 +1377,18 @@ def get_cls(name, info, parent=None, version=None):
             doc += "Parameters\n"
             doc += "----------\n"
             cls.argument_names = []
+            # add mixin to command
+            # for arg, value in arguments.items():
+            #     try:
+            #         if 'file_purpose' in value:
+            #             if value['file_purpose'] == 'input':
+            #                 if _InputFile not in cls.__bases__:
+            #                     cls.__bases__ += (_InputFile,)
+            #             if value['file_purpose'] == 'output':
+            #                 if _OutputFile not in cls.__bases__:
+            #                     cls.__bases__ += (_OutputFile,)
+            #     except TypeError:
+            #         pass
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
@@ -1363,6 +1401,7 @@ def get_cls(name, info, parent=None, version=None):
                 name, self._name
             )
             cls.child_object_type.get_name = lambda self: self._name
+
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
