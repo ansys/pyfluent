@@ -268,12 +268,12 @@ class Base:
         super().__setattr__(name, value)
 
     def before_execute(self, value):
-        if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+        # if hasattr(self, "_do_before_execute"):
+        self._do_before_execute(value)
 
     def after_execute(self, value):
-        if hasattr(self, "_do_after_execute"):
-            self._do_after_execute(value)
+        # if hasattr(self, "_do_after_execute"):
+        self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -1320,19 +1320,48 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
+                # ccls = get_cls(cname, cinfo, cls, version=version)
+                # ccls_name = ccls.__name__
+                # for arg, value in cinfo.items():
+                #     try:
+                #         if "file_purpose" in value:
+                #             if value["file_purpose"] == "input":
+                #                 if _InputFile not in cls.__bases__:
+                #                     ccls.__bases__ += (_InputFile,)
+                #                 taboo.add(ccls_name)
+                #             if value["file_purpose"] == "output":
+                #                 if _OutputFile not in cls.__bases__:
+                #                     ccls.__bases__ += (_OutputFile,)
+                #                 taboo.add(ccls_name)
+                #     except TypeError:
+                #         pass
+
+                # for arg, value in cinfo.items():
+                #     try:
+                #         if "file_purpose" in value:
+                #             if value["file_purpose"] == "input":
+                #                 cinfo.update({"_do_before_execute": _InputFile._do_before_execute})
+                #                 # ccls._do_before_execute = _InputFile._do_before_execute
+                #             if value["file_purpose"] == "output":
+                #                 cinfo.update({"_do_after_execute": _OutputFile._do_after_execute})
+                #                 # ccls._do_after_execute = _OutputFile._do_after_execute
+                #     except TypeError:
+                #         pass
+                # ccls = get_cls(cname, cinfo, cls, version=version)
+                # ccls_name = ccls.__name__
+
                 ccls = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
+
                 for arg, value in cinfo.items():
                     try:
                         if "file_purpose" in value:
                             if value["file_purpose"] == "input":
-                                if _InputFile not in cls.__bases__:
-                                    ccls.__bases__ += (_InputFile,)
-                                    taboo.add(ccls_name)
+                                ccls._do_before_execute = _InputFile._do_before_execute
+                                taboo.add(ccls_name)
                             if value["file_purpose"] == "output":
-                                if _OutputFile not in cls.__bases__:
-                                    ccls.__bases__ += (_OutputFile,)
-                                    taboo.add(ccls_name)
+                                ccls._do_after_execute = _OutputFile._do_after_execute
+                                taboo.add(ccls_name)
                     except TypeError:
                         pass
 
