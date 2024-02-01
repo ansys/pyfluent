@@ -1441,7 +1441,7 @@ class PyCommand:
         except KeyError:
             return None
 
-    def __call__(self, purpose: Optional[str] = None, *args, **kwds) -> Any:
+    def __call__(self, *args, **kwds) -> Any:
         """Execute the command.
 
         Returns
@@ -1449,10 +1449,7 @@ class PyCommand:
         Any
             Return value.
         """
-        # file_purpose = self._get_file_purpose()
-        file_purpose = (
-            purpose if purpose else self._get_file_purpose()
-        )  # purpose is temporary. we will remove it soon.
+        file_purpose = self._get_file_purpose()
         if file_purpose == "input" and bool(self.service.remote_file_handler):
             self.service.remote_file_handler.upload(file_name=kwds["FileName"])
         command = self.service.execute_command(
