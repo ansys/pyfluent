@@ -1101,6 +1101,9 @@ class CommandWithPositionalArgs(Action):
 
     def __call__(self, *args, **kwds):
         """Call a query with the specified keyword arguments."""
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.before_execute(value)
         newkwds = _get_new_keywords(self, args, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1329,7 +1332,9 @@ def get_cls(name, info, parent=None, version=None):
             bases += (_OutputFile,)
 
         original_pname = pname
-        if _InputFile in bases:  # not generalizing for performance
+        if any(
+            x in bases for x in (_InputFile, _OutputFile)
+        ):  # not generalizing for performance
             i = 0
             while pname in _bases_by_class and _bases_by_class[pname] != bases:
                 if i > 0:
@@ -1354,19 +1359,6 @@ def get_cls(name, info, parent=None, version=None):
             for cname, cinfo in info_dict.items():
                 ccls, original_pname = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
-                for arg, value in cinfo.items():
-                    try:
-                        if "file_purpose" in value:
-                            if value["file_purpose"] == "input":
-                                if _InputFile not in cls.__bases__:
-                                    ccls.__bases__ += (_InputFile,)
-                                taboo.add(ccls_name)
-                            if value["file_purpose"] == "output":
-                                if _OutputFile not in cls.__bases__:
-                                    ccls.__bases__ += (_OutputFile,)
-                                taboo.add(ccls_name)
-                    except TypeError:
-                        pass
 
                 i = 0
                 if write_doc:
