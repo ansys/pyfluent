@@ -9,7 +9,10 @@ from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.services.svar import SVARData, SVARService
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariablesData,
+    SolutionVariablesService,
+)
 
 _service_cls_by_name = {
     "datamodel": DatamodelService_SE,
@@ -20,8 +23,8 @@ _service_cls_by_name = {
     "field_info": FieldInfo,
     "monitors": MonitorsService,
     "reduction": Reduction,
-    "svar": SVARService,
-    "svar_data": SVARData,
+    "solution_variables": SolutionVariablesService,
+    "solution_variables_data": SolutionVariablesData,
 }
 
 

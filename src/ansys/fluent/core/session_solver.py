@@ -12,7 +12,10 @@ from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
-from ansys.fluent.core.services.svar import SVARData, SVARInfo
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariablesData,
+    SolutionVariablesInfo,
+)
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver import flobject
@@ -95,10 +98,12 @@ class Solver(BaseSession):
         self._settings_root = None
         self._version = None
         self._lck = threading.Lock()
-        self.svar_service = service_creator("svar").create(
+        self.solution_variables_service = service_creator("solution_variables").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.svar_info = SVARInfo(self.svar_service)
+        self.solution_variables_info = SolutionVariablesInfo(
+            self.solution_variables_service
+        )
         self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
         )
@@ -116,9 +121,11 @@ class Solver(BaseSession):
         self._build_from_fluent_connection(fluent_connection)
 
     @property
-    def svar_data(self) -> SVARData:
-        """Return the SVARData handle."""
-        return service_creator("svar_data").create(self.svar_service, self.svar_info)
+    def solution_variables_data(self) -> SolutionVariablesData:
+        """Return the SolutionVariablesData handle."""
+        return service_creator("solution_variables_data").create(
+            self.solution_variables_service, self.solution_variables_info
+        )
 
     @property
     def version(self):

@@ -9,21 +9,21 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_svars(new_solver_session):
+def test_solution_variabless(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
 
-    svar_info = solver.svar_info
-    svar_data = solver.svar_data
+    solution_variables_info = solver.solution_variables_info
+    solution_variables_data = solver.solution_variables_data
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
 
-    zones_info = svar_info.get_zones_info()
+    zones_info = solution_variables_info.get_zones_info()
 
     assert zones_info.domains == ["mixture"]
 
@@ -48,11 +48,13 @@ def test_svars(new_solver_session):
 
     assert zone_info.zone_type == "wall"
 
-    svars_info_wall_fluid = svar_info.get_svars_info(
-        zone_names=["wall-elbow", "elbow-fluid"], domain_name="mixture"
+    solution_variabless_info_wall_fluid = (
+        solution_variables_info.get_solution_variabless_info(
+            zone_names=["wall-elbow", "elbow-fluid"], domain_name="mixture"
+        )
     )
 
-    assert set(svars_info_wall_fluid.svars) == {
+    assert set(solution_variabless_info_wall_fluid.solution_variabless) == {
         "SV_ADS_1",
         "SV_CENTROID",
         "SV_H",
@@ -65,16 +67,18 @@ def test_svars(new_solver_session):
         "SV_W",
     }
 
-    svar_info_centroid = svars_info_wall_fluid["SV_CENTROID"]
+    solution_variables_info_centroid = solution_variabless_info_wall_fluid[
+        "SV_CENTROID"
+    ]
 
-    assert svar_info_centroid.name == "SV_CENTROID"
+    assert solution_variables_info_centroid.name == "SV_CENTROID"
 
-    assert svar_info_centroid.dimension == 3
+    assert solution_variables_info_centroid.dimension == 3
 
-    assert svar_info_centroid.field_type == np.float64
+    assert solution_variables_info_centroid.field_type == np.float64
 
-    sv_p_wall_fluid = svar_data.get_svar_data(
-        svar_name="SV_P",
+    sv_p_wall_fluid = solution_variables_data.get_solution_variables_data(
+        solution_variables_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
     )
@@ -86,22 +90,26 @@ def test_svars(new_solver_session):
     assert fluid_temp.size == 17822
     assert str(fluid_temp.dtype) == "float64"
 
-    wall_press_array = svar_data.get_array("SV_P", "wall-elbow", "mixture")
-    fluid_press_array = svar_data.get_array("SV_P", "elbow-fluid", "mixture")
+    wall_press_array = solution_variables_data.get_array(
+        "SV_P", "wall-elbow", "mixture"
+    )
+    fluid_press_array = solution_variables_data.get_array(
+        "SV_P", "elbow-fluid", "mixture"
+    )
     wall_press_array[:] = 500
     fluid_press_array[:] = 600
-    zone_names_to_svar_data = {
+    zone_names_to_solution_variables_data = {
         "wall-elbow": wall_press_array,
         "elbow-fluid": fluid_press_array,
     }
-    svar_data.set_svar_data(
-        svar_name="SV_P",
-        zone_names_to_svar_data=zone_names_to_svar_data,
+    solution_variables_data.set_solution_variables_data(
+        solution_variables_name="SV_P",
+        zone_names_to_solution_variables_data=zone_names_to_solution_variables_data,
         domain_name="mixture",
     )
 
-    updated_sv_p_data = svar_data.get_svar_data(
-        svar_name="SV_P",
+    updated_sv_p_data = solution_variables_data.get_solution_variables_data(
+        solution_variables_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
     )
@@ -117,21 +125,21 @@ def test_svars(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_svars_single_precision(new_solver_session_single_precision):
+def test_solution_variabless_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
     import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )
 
-    svar_info = solver.svar_info
-    svar_data = solver.svar_data
+    solution_variables_info = solver.solution_variables_info
+    solution_variables_data = solver.solution_variables_data
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
     solver.solution.initialization.hybrid_initialize()
     solver.solution.run_calculation.iterate(iter_count=10)
 
-    zones_info = svar_info.get_zones_info()
+    zones_info = solution_variables_info.get_zones_info()
 
     assert zones_info.domains == ["water", "air", "mixture"]
 
@@ -158,11 +166,13 @@ def test_svars_single_precision(new_solver_session_single_precision):
 
     assert zone_info.zone_type == "wall"
 
-    svars_info_wall_fluid = svar_info.get_svars_info(
-        zone_names=["wall_tank", "tank"], domain_name="mixture"
+    solution_variabless_info_wall_fluid = (
+        solution_variables_info.get_solution_variabless_info(
+            zone_names=["wall_tank", "tank"], domain_name="mixture"
+        )
     )
 
-    assert set(svars_info_wall_fluid.svars) == {
+    assert set(solution_variabless_info_wall_fluid.solution_variabless) == {
         "SV_ADS_0",
         "SV_ADS_1",
         "SV_CENTROID",
@@ -175,16 +185,18 @@ def test_svars_single_precision(new_solver_session_single_precision):
         "SV_W",
     }
 
-    svar_info_centroid = svars_info_wall_fluid["SV_CENTROID"]
+    solution_variables_info_centroid = solution_variabless_info_wall_fluid[
+        "SV_CENTROID"
+    ]
 
-    assert svar_info_centroid.name == "SV_CENTROID"
+    assert solution_variables_info_centroid.name == "SV_CENTROID"
 
-    assert svar_info_centroid.dimension == 3
+    assert solution_variables_info_centroid.dimension == 3
 
-    assert svar_info_centroid.field_type == np.float32
+    assert solution_variables_info_centroid.field_type == np.float32
 
-    sv_p_wall_fluid = svar_data.get_svar_data(
-        svar_name="SV_P",
+    sv_p_wall_fluid = solution_variables_data.get_solution_variables_data(
+        solution_variables_name="SV_P",
         zone_names=["wall_tank", "tank"],
         domain_name="air",
     )
