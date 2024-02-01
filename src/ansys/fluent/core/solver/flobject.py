@@ -440,28 +440,6 @@ class _InOutputFile(_InputFile, _OutputFile):
     pass
 
 
-# def _do_before_execute(value, remote_file_handler):
-#     try:
-#         remote_file_handler.upload(file_name=value)
-#     except AttributeError:
-#         pass
-#
-#
-# def _do_after_execute(value, remote_file_handler):
-#     try:
-#         remote_file_handler.download(file_name=value)
-#     except AttributeError:
-#         pass
-#
-#
-# def before_execute(value, remote_file_handler):
-#     _do_before_execute(value, remote_file_handler)
-#
-#
-# def after_execute(value, remote_file_handler):
-#     _do_after_execute(value, remote_file_handler)
-
-
 class Boolean(SettingsBase[bool], Property):
     """A ``Boolean`` object representing a Boolean value setting."""
 
@@ -1310,23 +1288,12 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
-        # elif info.get("file_purpose") == "input":
-        #     bases += (_InputFile,)
-        # elif info.get("file_purpose") == "output":
-        #     bases += (_OutputFile,)
-        # elif info.get("arguments"):
-        #     args = info.get("arguments")
-        #     for arg, value in args.items():
-        #         try:
-        #             if 'file_purpose' in value:
-        #                 if value['file_purpose'] == 'input':
-        #                     if _InputFile not in bases:
-        #                         bases += (_InputFile,)
-        #                 if value['file_purpose'] == 'output':
-        #                     if _OutputFile not in bases:
-        #                         bases += (_OutputFile,)
-        #         except TypeError:
-        #             pass
+        elif info.get("file_purpose") == "input":
+            bases += (_InputFile,)
+            pname = "input" + f"_{pname}"
+        elif info.get("file_purpose") == "output":
+            bases += (_OutputFile,)
+            pname = "output" + f"_{pname}"
 
         cls = type(pname, bases, dct)
 
@@ -1357,47 +1324,6 @@ def get_cls(name, info, parent=None, version=None):
                                 taboo.add(ccls_name)
                     except TypeError:
                         pass
-
-                # for arg, value in cinfo.items():
-                #     try:
-                #         if "file_purpose" in value:
-                #             if value["file_purpose"] == "input":
-                #                 cinfo.update({"_do_before_execute": _InputFile._do_before_execute})
-                #                 # ccls._do_before_execute = _InputFile._do_before_execute
-                #             if value["file_purpose"] == "output":
-                #                 cinfo.update({"_do_after_execute": _OutputFile._do_after_execute})
-                #                 # ccls._do_after_execute = _OutputFile._do_after_execute
-                #     except TypeError:
-                #         pass
-                # ccls = get_cls(cname, cinfo, cls, version=version)
-                # ccls_name = ccls.__name__
-
-                # ccls = get_cls(cname, cinfo, cls, version=version)
-                # ccls_name = ccls.__name__
-                #
-                # for arg, value in cinfo.items():
-                #     try:
-                #         if "file_purpose" in value:
-                #             if value["file_purpose"] == "input":
-                #                 ccls.before_execute = before_execute
-                #                 taboo.add(ccls_name)
-                #             if value["file_purpose"] == "output":
-                #                 ccls.after_execute = after_execute
-                #                 taboo.add(ccls_name)
-                #     except TypeError:
-                #         pass
-
-                # for arg, value in cinfo.items():
-                #     try:
-                #         if "file_purpose" in value:
-                #             if value["file_purpose"] == "input":
-                #                 cinfo.update({"before_execute": before_execute})
-                #             if value["file_purpose"] == "output":
-                #                 cinfo.update({"after_execute": after_execute})
-                #     except TypeError:
-                #         pass
-                # ccls = get_cls(cname, cinfo, cls, version=version)
-                # ccls_name = ccls.__name__
 
                 i = 0
                 if write_doc:
@@ -1440,18 +1366,6 @@ def get_cls(name, info, parent=None, version=None):
             doc += "Parameters\n"
             doc += "----------\n"
             cls.argument_names = []
-            # add mixin to command
-            # for arg, value in arguments.items():
-            #     try:
-            #         if 'file_purpose' in value:
-            #             if value['file_purpose'] == 'input':
-            #                 if _InputFile not in cls.__bases__:
-            #                     cls.__bases__ += (_InputFile,)
-            #             if value['file_purpose'] == 'output':
-            #                 if _OutputFile not in cls.__bases__:
-            #                     cls.__bases__ += (_OutputFile,)
-            #     except TypeError:
-            #         pass
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
