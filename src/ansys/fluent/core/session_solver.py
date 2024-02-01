@@ -84,7 +84,6 @@ class Solver(BaseSession):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._build_from_fluent_connection(fluent_connection)
-        self._settings_api_root: Future = asynchronous(self._get_settings_api_root)()
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -251,17 +250,20 @@ class Solver(BaseSession):
             ),
         )
 
-    def _get_settings_api_root(self):
-        return _import_settings_root(self._root)
+    def _populate_settings_api_root(self):
+        if not self._settings_api_root:
+            self._settings_api_root = _import_settings_root(self._root)
 
     def __getattr__(self, attr):
-        return getattr(self._settings_api_root.result(), attr)
+        self._populate_settings_api_root()
+        return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
+        self._populate_settings_api_root()
         return sorted(
             set(
                 list(self.__dict__.keys())
                 + dir(type(self))
-                + dir(self._settings_api_root.result())
+                + dir(self._settings_api_root)
             )
         )
