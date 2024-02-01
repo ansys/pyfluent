@@ -1074,7 +1074,7 @@ class Action(Base):
 class Command(Action):
     """Command object."""
 
-    def __call__(self, purpose: Optional[str] = None, **kwds):
+    def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
@@ -1093,14 +1093,18 @@ class Command(Action):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.after_execute(value)
+        return cmd
 
 
 class CommandWithPositionalArgs(Action):
     """Command Object."""
 
     def __call__(self, *args, **kwds):
-        """Call a query with the specified keyword arguments."""
+        """Call a command with the specified keyword arguments."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.before_execute(value)
