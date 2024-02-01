@@ -1,4 +1,4 @@
-"""Wrappers oversolution variables gRPC service of Fluent."""
+"""Wrappers over solution variables gRPC service of Fluent."""
 
 import math
 from typing import Dict, List, Optional
@@ -24,7 +24,7 @@ class SolutionVariablesService:
     """Solution variables service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
-        """__init__ method ofsolution variables service class."""
+        """__init__ method of solution variables service class."""
         intercept_channel = grpc.intercept_channel(
             channel,
             GrpcErrorInterceptor(),
@@ -34,19 +34,19 @@ class SolutionVariablesService:
         self.__metadata = metadata
 
     def get_solution_variables_data(self, request):
-        """GetSvarData RPC ofsolution variables service."""
+        """GetSvarData RPC of solution variables service."""
         return self.__stub.GetSvarData(request, metadata=self.__metadata)
 
     def set_solution_variables_data(self, request):
-        """SetSvarData RPC ofsolution variables service."""
+        """SetSvarData RPC of solution variables service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
-    def get_solution_variabless_info(self, request):
-        """GetSvarsInfo RPC ofsolution variables service."""
+    def get_solution_variables_info(self, request):
+        """GetSvarsInfo RPC of solution variables service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
     def get_zones_info(self, request):
-        """GetZonesInfo RPC ofsolution variables service."""
+        """GetZonesInfo RPC of solution variables service."""
         return self.__stub.GetZonesInfo(request, metadata=self.__metadata)
 
 
@@ -60,10 +60,10 @@ class SolutionVariablesInfo:
 
         >>> solution_variables_info = solver_session.solution_variables_info
         >>>
-        >>> solution_variabless_info_wall_fluid = solution_variables_info.get_solution_variabless_info(zone_names=['wall' , "fluid"], domain_name="mixture")
-        >>> solution_variabless_info_wall_fluid.solution_variabless
+        >>> solution_variables_info_wall_fluid = solution_variables_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+        >>> solution_variables_info_wall_fluid.solution_variables
         >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
-        >>> solution_variables_info_centroid = solution_variabless_info_wall_fluid['SV_CENTROID']
+        >>> solution_variables_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
         >>> solution_variables_info_centroid
         >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
         >>>
@@ -91,32 +91,32 @@ class SolutionVariablesInfo:
             def __repr__(self):
                 return f"name:{self.name} dimension:{self.dimension} field_type:{self.field_type}"
 
-        def __init__(self, solution_variabless_info):
-            self._solution_variabless_info = {}
-            for solution_variables_info in solution_variabless_info:
-                self._solution_variabless_info[
+        def __init__(self, solution_variables_info):
+            self._solution_variables_info = {}
+            for solution_variables_info in solution_variables_info:
+                self._solution_variables_info[
                     solution_variables_info.name
                 ] = SolutionVariablesInfo.SolutionVariables.SolutionVariable(
                     solution_variables_info
                 )
 
-        def _filter(self, solution_variabless_info):
-            self._solution_variabless_info = {
+        def _filter(self, solution_variables_info):
+            self._solution_variables_info = {
                 k: v
-                for k, v in self._solution_variabless_info.items()
+                for k, v in self._solution_variables_info.items()
                 if k
                 in [
                     solution_variables_info.name
-                    for solution_variables_info in solution_variabless_info
+                    for solution_variables_info in solution_variables_info
                 ]
             }
 
         def __getitem__(self, name):
-            return self._solution_variabless_info.get(name, None)
+            return self._solution_variables_info.get(name, None)
 
         @property
-        def solution_variabless(self) -> List[str]:
-            return list(self._solution_variabless_info.keys())
+        def solution_variables(self) -> List[str]:
+            return list(self._solution_variables_info.keys())
 
     class ZonesInfo:
         """Class containing information for multiple zones."""
@@ -184,7 +184,7 @@ class SolutionVariablesInfo:
     ):
         self._service = service
 
-    def get_solution_variabless_info(
+    def get_solution_variables_info(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SolutionVariables:
         """Get solution variables info for zones in the domain.
@@ -204,20 +204,20 @@ class SolutionVariablesInfo:
 
         allowed_zone_names = _AllowedZoneNames(self)
         allowed_domain_names = _AllowedDomainNames(self)
-        solution_variabless_info = None
+        solution_variables_info = None
         for zone_name in zone_names:
             request = SvarProtoModule.GetSvarsInfoRequest(
                 domainId=allowed_domain_names.valid_name(domain_name),
                 zoneId=allowed_zone_names.valid_name(zone_name),
             )
-            response = self._service.get_solution_variabless_info(request)
-            if solution_variabless_info is None:
-                solution_variabless_info = SolutionVariablesInfo.SolutionVariables(
-                    response.solution_variablessInfo
+            response = self._service.get_solution_variables_info(request)
+            if solution_variables_info is None:
+                solution_variables_info = SolutionVariablesInfo.SolutionVariables(
+                    response.solution_variablesInfo
                 )
             else:
-                solution_variabless_info._filter(response.solution_variablessInfo)
-        return solution_variabless_info
+                solution_variables_info._filter(response.solution_variablesInfo)
+        return solution_variables_info
 
     def get_zones_info(self) -> ZonesInfo:
         """Get Zones info.
@@ -237,7 +237,7 @@ class SolutionVariablesInfo:
 
 
 class SvarError(ValueError):
-    """Exception class for errors insolution variables name."""
+    """Exception class for errors in solution variables name."""
 
     def __init__(self, solution_variables_name: str, allowed_values: List[str]):
         self.solution_variables_name = solution_variables_name
@@ -268,9 +268,9 @@ class _AllowedSvarNames:
     def __call__(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> List[str]:
-        return self._solution_variables_info.get_solution_variabless_info(
+        return self._solution_variables_info.get_solution_variables_info(
             zone_names=zone_names, domain_name=domain_name
-        ).solution_variabless
+        ).solution_variables
 
     def is_valid(
         self,
@@ -347,16 +347,16 @@ class _SvarMethod:
         return self._solution_variables_accessor(*args, **kwargs)
 
 
-def extract_solution_variabless(solution_variabless_data):
+def extract_solution_variables(solution_variables_data):
     """Extractssolution variables data via a server call."""
 
     def _extract_solution_variables(
-        field_datatype, field_size, solution_variabless_data
+        field_datatype, field_size, solution_variables_data
     ):
         field_arr = np.empty(field_size, dtype=field_datatype)
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
-        for solution_variables_data in solution_variabless_data:
+        for solution_variables_data in solution_variables_data:
             chunk = solution_variables_data.payload
             if chunk.bytePayload:
                 count = min(
@@ -385,7 +385,7 @@ def extract_solution_variabless(solution_variabless_data):
                     return field_arr
 
     zones_solution_variables_data = {}
-    for array in solution_variabless_data:
+    for array in solution_variables_data:
         if array.WhichOneof("array") == "payloadInfo":
             zones_solution_variables_data[
                 array.payloadInfo.zone
@@ -394,7 +394,7 @@ def extract_solution_variabless(solution_variabless_data):
                     array.payloadInfo.fieldType
                 ],
                 array.payloadInfo.fieldSize,
-                solution_variabless_data,
+                solution_variables_data,
             )
         elif array.WhichOneof("array") == "header":
             continue
@@ -498,16 +498,16 @@ class SolutionVariablesData:
 
         zones_info = self._solution_variables_info.get_zones_info()
         if zone_name in zones_info.zones:
-            solution_variabless_info = (
-                self._solution_variables_info.get_solution_variabless_info(
+            solution_variables_info = (
+                self._solution_variables_info.get_solution_variables_info(
                     zone_names=[zone_name], domain_name=domain_name
                 )
             )
-            if solution_variables_name in solution_variabless_info.solution_variabless:
+            if solution_variables_name in solution_variables_info.solution_variables:
                 return np.zeros(
                     zones_info[zone_name].count
-                    * solution_variabless_info[solution_variables_name].dimension,
-                    dtype=solution_variabless_info[solution_variables_name].field_type,
+                    * solution_variables_info[solution_variables_name].dimension,
+                    dtype=solution_variables_info[solution_variables_name].field_type,
                 )
 
     def get_solution_variables_data(
@@ -516,31 +516,31 @@ class SolutionVariablesData:
         zone_names: List[str],
         domain_name: Optional[str] = "mixture",
     ) -> Data:
-        """Getsolution variables data on zones.
+        """Get solution variables data on zones.
 
         Parameters
         ----------
         solution_variables_name : str
             Name of the solution variable.
         zone_names: List[str]
-            Zone names list forsolution variables data.
+            Zone names list for solution variables data.
         domain_name : str, optional
             Domain name. The default is ``mixture``.
 
         Returns
         -------
         SolutionVariablesData.Data
-            Object containingsolution variables data.
+            Object containing solution variables data.
         """
         self._update_solution_variables_info()
-        solution_variabless_request = SvarProtoModule.GetSvarDataRequest(
+        solution_variables_request = SvarProtoModule.GetSvarDataRequest(
             provideBytesStream=_FieldDataConstants.bytes_stream,
             chunkSize=_FieldDataConstants.chunk_size,
         )
-        solution_variabless_request.domainId = self._allowed_domain_names.valid_name(
+        solution_variables_request.domainId = self._allowed_domain_names.valid_name(
             domain_name
         )
-        solution_variabless_request.name = (
+        solution_variables_request.name = (
             self._allowed_solution_variables_names.valid_name(
                 solution_variables_name, zone_names, domain_name
             )
@@ -549,13 +549,13 @@ class SolutionVariablesData:
         for zone_name in zone_names:
             zone_id = self._allowed_zone_names.valid_name(zone_name)
             zone_id_name_map[zone_id] = zone_name
-            solution_variabless_request.zones.append(zone_id)
+            solution_variables_request.zones.append(zone_id)
 
         return SolutionVariablesData.Data(
             domain_name,
             zone_id_name_map,
-            extract_solution_variabless(
-                self._service.get_solution_variables_data(solution_variabless_request)
+            extract_solution_variables(
+                self._service.get_solution_variables_data(solution_variables_request)
             ),
         )
 
@@ -565,14 +565,14 @@ class SolutionVariablesData:
         zone_names_to_solution_variables_data: Dict[str, np.array],
         domain_name: str = "mixture",
     ) -> None:
-        """Setsolution variables data on zones.
+        """Set solution variables data on zones.
 
         Parameters
         ----------
         solution_variables_name : str
             Name of the solution variable.
         zone_names_to_solution_variables_data: Dict[str, np.array]
-            Dictionary containing zone names forsolution variables data.
+            Dictionary containing zone names for solution variables data.
         domain_name : str, optional
             Domain name. The default is ``mixture``.
 

@@ -9,7 +9,7 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_solution_variabless(new_solver_session):
+def test_solution_variables(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -48,13 +48,13 @@ def test_solution_variabless(new_solver_session):
 
     assert zone_info.zone_type == "wall"
 
-    solution_variabless_info_wall_fluid = (
-        solution_variables_info.get_solution_variabless_info(
+    solution_variables_info_wall_fluid = (
+        solution_variables_info.get_solution_variables_info(
             zone_names=["wall-elbow", "elbow-fluid"], domain_name="mixture"
         )
     )
 
-    assert set(solution_variabless_info_wall_fluid.solution_variabless) == {
+    assert set(solution_variables_info_wall_fluid.solution_variables) == {
         "SV_ADS_1",
         "SV_CENTROID",
         "SV_H",
@@ -67,9 +67,7 @@ def test_solution_variabless(new_solver_session):
         "SV_W",
     }
 
-    solution_variables_info_centroid = solution_variabless_info_wall_fluid[
-        "SV_CENTROID"
-    ]
+    solution_variables_info_centroid = solution_variables_info_wall_fluid["SV_CENTROID"]
 
     assert solution_variables_info_centroid.name == "SV_CENTROID"
 
@@ -125,7 +123,7 @@ def test_solution_variabless(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_solution_variabless_single_precision(new_solver_session_single_precision):
+def test_solution_variables_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
     import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
@@ -166,13 +164,13 @@ def test_solution_variabless_single_precision(new_solver_session_single_precisio
 
     assert zone_info.zone_type == "wall"
 
-    solution_variabless_info_wall_fluid = (
-        solution_variables_info.get_solution_variabless_info(
+    solution_variables_info_wall_fluid = (
+        solution_variables_info.get_solution_variables_info(
             zone_names=["wall_tank", "tank"], domain_name="mixture"
         )
     )
 
-    assert set(solution_variabless_info_wall_fluid.solution_variabless) == {
+    assert set(solution_variables_info_wall_fluid.solution_variables) == {
         "SV_ADS_0",
         "SV_ADS_1",
         "SV_CENTROID",
@@ -185,9 +183,7 @@ def test_solution_variabless_single_precision(new_solver_session_single_precisio
         "SV_W",
     }
 
-    solution_variables_info_centroid = solution_variabless_info_wall_fluid[
-        "SV_CENTROID"
-    ]
+    solution_variables_info_centroid = solution_variables_info_wall_fluid["SV_CENTROID"]
 
     assert solution_variables_info_centroid.name == "SV_CENTROID"
 
