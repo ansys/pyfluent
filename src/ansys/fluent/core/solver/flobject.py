@@ -1267,14 +1267,6 @@ class _HasAllowedValuesMixin:
             return []
 
 
-class InputFile:
-    pass
-
-
-class OutputFile:
-    pass
-
-
 _bases_by_class = {}
 
 
@@ -1331,18 +1323,14 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
-
-        if parent and parent.__name__ == "read_case" and pname == "file_name":
-            bases += (InputFile,)
-            print(parent, pname, bases)
-
-        if parent and parent.__name__ == "write_case" and pname == "file_name":
-            bases += (OutputFile,)
-            print(parent, pname, bases)
+        elif info.get("file_purpose") == "input":
+            bases += (_InputFile,)
+        elif info.get("file_purpose") == "output":
+            bases += (_OutputFile,)
 
         original_pname = pname
         if any(
-            x in bases for x in (InputFile, OutputFile)
+            x in bases for x in (_InputFile, _OutputFile)
         ):  # not generalizing for performance
             i = 0
             while pname in _bases_by_class and _bases_by_class[pname] != bases:
