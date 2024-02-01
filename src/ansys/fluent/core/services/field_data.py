@@ -12,10 +12,10 @@ from ansys.fluent.core.exceptions import (
     DisallowedValuesError,
     SurfaceSpecificationError,
 )
-from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
+    GrpcErrorInterceptor,
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
@@ -44,6 +44,7 @@ class FieldDataService(StreamingService):
         """__init__ method of FieldDataService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
@@ -52,28 +53,23 @@ class FieldDataService(StreamingService):
             stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
         )
 
-    @catch_grpc_error
     def get_scalar_field_range(self, request):
         """GetRange RPC of FieldData service."""
         return self._stub.GetRange(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_scalar_fields_info(self, request):
         """GetFieldsInfo RPC of FieldData service."""
         return self._stub.GetFieldsInfo(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_vector_fields_info(self, request):
         """GetVectorFieldsInfo RPC of FieldData service."""
         return self._stub.GetVectorFieldsInfo(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_surfaces_info(self, request):
         """GetSurfacesInfo RPC of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
     # pylint: disable=missing-raises-doc
-    @catch_grpc_error
     def get_fields(self, request):
         """GetFields RPC of FieldData service."""
         chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)

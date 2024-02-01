@@ -217,17 +217,12 @@ class TUIGenerator:
             "def __init__(self, service, version, mode, path):\n", indent
         )
         indent += 1
-        self._write_code_to_tui_file("self._service = service\n", indent)
-        self._write_code_to_tui_file("self._version = version\n", indent)
-        self._write_code_to_tui_file("self._mode = mode\n", indent)
-        self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
-            if not v.is_command:
-                self._write_code_to_tui_file(
-                    f"self.{k} = self.__class__.{k}"
-                    f'(service, version, mode, path + ["{v.tui_name}"])\n',
-                    indent,
-                )
+            self._write_code_to_tui_file(
+                f"self.{k} = self.__class__.{k}"
+                f'(service, version, mode, path + ["{v.tui_name}"])\n',
+                indent,
+            )
         self._write_code_to_tui_file(
             "super().__init__(service, version, mode, path)\n", indent
         )
@@ -236,9 +231,7 @@ class TUIGenerator:
         command_names = [v.name for _, v in menu.children.items() if v.is_command]
         if command_names:
             for command in command_names:
-                self._write_code_to_tui_file(
-                    f"def {command}(self, *args, **kwargs):\n", indent
-                )
+                self._write_code_to_tui_file(f"class {command}(TUIMethod):\n", indent)
                 indent += 1
                 self._write_code_to_tui_file('"""\n', indent)
                 doc_lines = menu.children[command].doc.splitlines()
@@ -247,12 +240,6 @@ class TUIGenerator:
                     if line:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
-                self._write_code_to_tui_file(
-                    f"return PyMenu(self._service, self._version, self._mode, "
-                    f'"{menu.get_command_path(command)}").execute('
-                    f"*args, **kwargs)\n",
-                    indent,
-                )
                 indent -= 1
         for k, v in menu.children.items():
             if v.is_command:
@@ -285,16 +272,14 @@ class TUIGenerator:
             child_menu_names = [
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
-
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
             if noindex:
                 f.write("   :noindex:\n")
-            f.write("   :members:\n")
+            f.write(f"   :members: {', '.join(command_names)}\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
-            f.write('   :exclude-members: "__weakref__, __dict__"\n')
-            f.write('   :special-members: " __init__"\n')
-            f.write("   :autosummary:\n\n")
+            f.write("   :autosummary:\n")
+            f.write("   :autosummary-members:\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
@@ -308,6 +293,7 @@ class TUIGenerator:
                             doc_dir / v.name,
                             heading + "." + v.name,
                             class_name + "." + v.name,
+                            False,
                         )
 
     def generate(self) -> None:
@@ -340,7 +326,7 @@ class TUIGenerator:
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
                 "from ansys.fluent.core.services.datamodel_tui "
-                "import PyMenu, TUIMenu\n\n\n"
+                "import PyMenu, TUIMenu, TUIMethod\n\n\n"
             )
             self._main_menu.name = "main_menu"
             api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)

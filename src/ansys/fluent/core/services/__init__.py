@@ -6,6 +6,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.services.field_data import FieldData, FieldInfo
 from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.svar import SVARData, SVARService
@@ -18,6 +19,7 @@ _service_cls_by_name = {
     "field_data": FieldData,
     "field_info": FieldInfo,
     "monitors": MonitorsService,
+    "reduction": Reduction,
     "svar": SVARService,
     "svar_data": SVARData,
 }

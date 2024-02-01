@@ -14,10 +14,10 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
+    GrpcErrorInterceptor,
     TracingInterceptor,
     WrapApiCallInterceptor,
 )
@@ -115,6 +115,7 @@ class DatamodelServiceImpl:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
             channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
@@ -124,77 +125,66 @@ class DatamodelServiceImpl:
         self._metadata = metadata
         self.remote_file_handler = remote_file_handler
 
-    @catch_grpc_error
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
         """initDatamodel RPC of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
         """getAttributeValue RPC of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
         """getState RPC of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def rename(
         self, request: DataModelProtoModule.RenameRequest
     ) -> DataModelProtoModule.RenameResponse:
         """getState RPC of DataModel service."""
         return self._stub.rename(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_object_names(
         self, request: DataModelProtoModule.GetObjectNamesRequest
     ) -> DataModelProtoModule.GetObjectNamesResponse:
         """getState RPC of DataModel service."""
         return self._stub.getObjectNames(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def delete_child_objects(
         self, request: DataModelProtoModule.DeleteChildObjectsRequest
     ) -> DataModelProtoModule.DeleteChildObjectsResponse:
         """getState RPC of DataModel service."""
         return self._stub.deleteChildObjects(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
         """setState RPC of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def fix_state(
         self, request: DataModelProtoModule.FixStateRequest
     ) -> DataModelProtoModule.FixStateResponse:
         """setState RPC of DataModel service."""
         return self._stub.fixState(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
         """updateDict RPC of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
         """deleteObject RPC of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
@@ -202,7 +192,6 @@ class DatamodelServiceImpl:
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
@@ -210,7 +199,6 @@ class DatamodelServiceImpl:
         logger.debug(f"Query: {request.query}")
         return self._stub.executeQuery(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
@@ -231,28 +219,24 @@ class DatamodelServiceImpl:
                 "supported from Ansys 2023R2 onward."
             ) from None
 
-    @catch_grpc_error
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
         """getSpecs RPC of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
         """getStaticInfo RPC of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
         """subscribeEvents RPC of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:

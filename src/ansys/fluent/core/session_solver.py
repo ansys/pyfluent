@@ -11,7 +11,7 @@ from typing import Any, Optional
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.services.reduction import Reduction, ReductionService
+from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
@@ -103,7 +103,9 @@ class Solver(BaseSession):
             ReductionService, self.error_state
         )
         if FluentVersion(self.version) >= FluentVersion.v241:
-            self.reduction = Reduction(self._reduction_service)
+            self.reduction = service_creator("reduction").create(
+                self._reduction_service, self
+            )
         else:
             self.reduction = reduction_old
         self._settings_api_root = None

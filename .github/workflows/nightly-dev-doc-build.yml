@@ -75,6 +75,7 @@ jobs:
   deploy_dev_docs:
     runs-on: ubuntu-latest
     needs: [build_dev_docs]
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy development documentation"
         uses: ansys/actions/doc-deploy-dev@v5

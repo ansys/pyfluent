@@ -7,10 +7,10 @@ import grpc
 
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
-from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
+    GrpcErrorInterceptor,
     TracingInterceptor,
 )
 
@@ -21,6 +21,7 @@ class _SettingsServiceImpl:
     ) -> None:
         intercept_channel = grpc.intercept_channel(
             channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
@@ -28,73 +29,61 @@ class _SettingsServiceImpl:
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 
-    @catch_grpc_error
     def set_var(
         self, request: SettingsModule.SetVarRequest
     ) -> SettingsModule.SetVarResponse:
         return self.__stub.SetVar(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_var(
         self, request: SettingsModule.GetVarRequest
     ) -> SettingsModule.GetVarResponse:
         return self.__stub.GetVar(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def rename(
         self, request: SettingsModule.RenameRequest
     ) -> SettingsModule.RenameResponse:
         return self.__stub.Rename(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def create(
         self, request: SettingsModule.CreateRequest
     ) -> SettingsModule.CreateResponse:
         return self.__stub.Create(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def delete(
         self, request: SettingsModule.DeleteRequest
     ) -> SettingsModule.DeleteResponse:
         return self.__stub.Delete(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_object_names(
         self, request: SettingsModule.GetObjectNamesRequest
     ) -> SettingsModule.GetObjectNamesResponse:
         return self.__stub.GetObjectNames(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_list_size(
         self, request: SettingsModule.GetListSizeRequest
     ) -> SettingsModule.GetListSizeResponse:
         return self.__stub.GetListSize(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def resize_list_object(
         self, request: SettingsModule.ResizeListObjectRequest
     ) -> SettingsModule.ResizeListObjectResponse:
         return self.__stub.ResizeListObject(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_static_info(
         self, request: SettingsModule.GetStaticInfoRequest
     ) -> SettingsModule.GetStaticInfoResponse:
         return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def execute_cmd(
         self, request: SettingsModule.ExecuteCommandRequest
     ) -> SettingsModule.ExecuteCommandResponse:
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def execute_query(
         self, request: SettingsModule.ExecuteQueryRequest
     ) -> SettingsModule.ExecuteQueryResponse:
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 
-    @catch_grpc_error
     def get_attrs(
         self, request: SettingsModule.GetAttrsRequest
     ) -> SettingsModule.GetAttrsResponse:

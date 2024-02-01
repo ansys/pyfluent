@@ -2,7 +2,6 @@
 
 import keyword
 import logging
-import types
 from typing import Any, Union
 
 from google.protobuf.json_format import MessageToDict
@@ -12,10 +11,10 @@ from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
-from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
+    GrpcErrorInterceptor,
     TracingInterceptor,
     WrapApiCallInterceptor,
 )
@@ -36,6 +35,7 @@ class DatamodelServiceImpl:
         self._fluent_error_state = fluent_error_state
         intercept_channel = grpc.intercept_channel(
             self._channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(self._fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
@@ -44,42 +44,36 @@ class DatamodelServiceImpl:
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
 
-    @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
         """GetAttributeValue RPC of DataModel service."""
         return self._stub.GetAttributeValue(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
         """GetState RPC of DataModel service."""
         return self._stub.GetState(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
         """SetState RPC of DataModel service."""
         return self._stub.SetState(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """ExecuteCommand RPC of DataModel service."""
         return self._stub.ExecuteCommand(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
         """ExecuteQuery RPC of DataModel service."""
         return self._stub.ExecuteQuery(request, metadata=self._metadata)
 
-    @catch_grpc_error
     def get_static_info(self, request):
         """GetStaticInfo RPC of DataModel service."""
         return self._stub.GetStaticInfo(request, metadata=self._metadata)
@@ -300,6 +294,24 @@ def _get_static_info_at_level(menu: PyMenu) -> dict[str, Any]:
     return info
 
 
+class TUIMethod:
+    """Base class for the generated menu methods.
+
+    Methods like ___repr__ are inserted at PyConsole side.
+    """
+
+    def __init__(self, service, version, mode, path):
+        self._service = service
+        self._version = version
+        self._mode = mode
+        self._path = path
+
+    def __call__(self, *args, **kwargs):
+        return PyMenu(self._service, self._version, self._mode, self._path).execute(
+            *args, **kwargs
+        )
+
+
 class TUIMenu:
     """Base class for the generated menu classes."""
 
@@ -321,7 +333,7 @@ class TUIMenu:
     def __getattribute__(self, name) -> Any:
         try:
             attr = super().__getattribute__(name)
-            if type(attr) == types.MethodType:
+            if isinstance(attr, TUIMethod):
                 # some runtime submenus are generated as methods during codegen
                 path = self._path + [name]
                 if PyMenu(
