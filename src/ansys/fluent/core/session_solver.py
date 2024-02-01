@@ -84,7 +84,7 @@ class Solver(BaseSession):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._build_from_fluent_connection(fluent_connection)
-        asynchronous(self._populate_settings_api_root)()
+        self._settings_root_flag = asynchronous(self._populate_settings_api_root)()
 
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
@@ -257,10 +257,12 @@ class Solver(BaseSession):
             self._settings_api_root = _import_settings_root(self._root)
 
     def __getattr__(self, attr):
+        self._settings_root_flag.result()
         self._populate_settings_api_root()
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
+        self._settings_root_flag.result()
         self._populate_settings_api_root()
         return sorted(
             set(
