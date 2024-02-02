@@ -1479,7 +1479,7 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                static_info,
+                static_info["args"],
             )
         except RuntimeError:
             logger.warning(
@@ -1576,7 +1576,7 @@ class PyCommandArguments(PyStateContainer):
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
     def __getattr__(self, attr: str) -> Optional[PyCommandArgumentsSubItem]:
-        for arg in self.static_info["args"]:
+        for arg in self.static_info:
             if arg["name"] == attr:
                 mode = DataModelType.get_mode(arg["type"])
                 py_class = mode.value[1]
