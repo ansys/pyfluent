@@ -467,6 +467,7 @@ def test_named_object_specific_methods(new_mesh_session):
     assert not meshing.workflow.TaskObject.get_object_names()
 
 
+@pytest.mark.fluent_version(">=24.1")
 def test_command_creation_inside_singleton(new_mesh_session):
     meshing = new_mesh_session
     read_mesh = meshing.meshing.File.ReadMesh.create_instance()
