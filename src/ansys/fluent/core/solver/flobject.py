@@ -49,7 +49,6 @@ class _InlineConstants:
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
     file_purpose = "file-purpose"
-    file_purpose = "file-purpose"
 
 
 # Type hints

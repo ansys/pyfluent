@@ -132,7 +132,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
     else:
         object_hash = None
 
-    cls_touple = (
+    cls_tuple = (
         name,
         cls.__bases__,
         info["type"],
@@ -143,7 +143,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
         arguments_hash,
         object_hash,
     )
-    hash = _gethash(cls_touple)
+    hash = _gethash(cls_tuple)
     if not hash_dict.get(hash):
         hash_dict[hash] = (
             cls,
