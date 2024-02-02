@@ -465,3 +465,9 @@ def test_named_object_specific_methods(new_mesh_session):
     meshing.workflow.delete_all_child_objects("TaskObject")
 
     assert not meshing.workflow.TaskObject.get_object_names()
+
+
+def test_command_creation_inside_singleton(new_mesh_session):
+    meshing = new_mesh_session
+    read_mesh = meshing.meshing.File.ReadMesh.create_instance()
+    assert read_mesh.FileName is not None
