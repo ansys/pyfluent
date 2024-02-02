@@ -913,7 +913,7 @@ class WorkflowWrapper:
             return obj
         if attr in self._task_objects:
             return self._task_objects[attr]
-        super().__getattribute__(attr)
+        return super().__getattribute__(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
