@@ -75,7 +75,6 @@ def test_container_launcher():
         assert session.health_check_service.is_serving
 
 
-@pytest.mark.standalone
 def test_case_load():
     # Test that launch_fluent() works with a case file as an argument
     _, cas_path = download_input_file(
@@ -83,6 +82,10 @@ def test_case_load():
         "mixing_elbow.cas.h5",
     )
     session = pyfluent.launch_fluent(case_file_name=cas_path)
+
+    import time
+
+    time.sleep(30)
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
