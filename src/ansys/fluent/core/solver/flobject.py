@@ -437,7 +437,7 @@ class _OutputFile(FileName):
             pass
 
 
-class _InOutputFile(_InputFile, _OutputFile):
+class _InOutFile(_InputFile, _OutputFile):
     pass
 
 

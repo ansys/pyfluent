@@ -259,20 +259,16 @@ class SettingsService:
                 child.name: self._extract_static_info(child.value)
                 for child in info.arguments
             }
-            try:
-                for child in info.arguments:
-                    ret["arguments"][child.name].update(
-                        {
-                            key: self._get_state_from_value(value)
-                            for key, value in sorted(child.value.attrs.items())
-                        }
-                    )
-            except AttributeError:
-                pass
         if info.HasField("object_type"):
             ret["object-type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
+        try:
+            if info.attrs:
+                for key, value in sorted(info.attrs.items()):
+                    ret[key] = self._get_state_from_value(value)
+        except ValueError:
+            pass
         try:
             if info.include_child_named_objects:
                 ret["include_child_named_objects"] = info.include_child_named_objects
