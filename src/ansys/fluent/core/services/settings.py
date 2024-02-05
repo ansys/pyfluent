@@ -267,7 +267,7 @@ class SettingsService:
             if info.attrs:
                 for key, value in sorted(info.attrs.items()):
                     ret[key] = self._get_state_from_value(value)
-        except ValueError:
+        except AttributeError:
             pass
         try:
             if info.include_child_named_objects:
