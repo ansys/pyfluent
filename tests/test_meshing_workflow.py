@@ -747,5 +747,5 @@ def test_nonexistent_attrs(new_mesh_session):
     meshing = new_mesh_session
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
-        meshing.workflow.xyz()
+        meshing.workflow.xyz
     assert msg.value.args[0] == "'MeshingWorkflow' object has no attribute 'xyz'"
