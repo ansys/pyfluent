@@ -16,7 +16,6 @@ import grpc
 import psutil
 
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.platform.instancemanagement import Instance
@@ -295,7 +294,7 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check_service = HealthCheckService(
+        self.health_check_service = service_creator("health_check").create(
             self._channel, self._metadata, self.error_state
         )
         # At this point, the server must be running. If the following check_health()
