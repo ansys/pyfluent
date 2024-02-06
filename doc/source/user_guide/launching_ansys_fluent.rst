@@ -208,6 +208,7 @@ scheduler without using any bash script:
       },
       additional_arguments="-t16 -cnf=m1:8,m2:8",
    )
+   solver = slurm.result()
 
 .. vale off
 
