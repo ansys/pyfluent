@@ -31,7 +31,7 @@ class SolverIcing(Solver):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._flserver_root = None
-        self._version = None
+        self._fluent_version = None
         self._fluent_connection = fluent_connection
 
     @property
