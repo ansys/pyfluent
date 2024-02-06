@@ -1,7 +1,7 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import functools
-import itertools
+from itertools import chain, repeat
 import logging
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
@@ -1363,9 +1363,6 @@ class PyQuery:
         Print the query help string.
     """
 
-    docstring = None
-    _stored_static_info = {}
-
     def __init__(
         self, service: DatamodelService, rules: str, query: str, path: Path = None
     ):
@@ -1413,7 +1410,7 @@ class PyCommand:
         Print the command help string.
     """
 
-    _stored_static_info: dict[str, dict[str, Any]] = {}
+    _full_static_info: dict[str, dict[str, Any]] = {}
 
     def __init__(
         self,
@@ -1430,6 +1427,7 @@ class PyCommand:
             self.path = []
         else:
             self.path = path
+        self._static_info = None  # command's static info
 
     def _get_file_purpose(self):
         static_info = self._get_static_info()
@@ -1476,13 +1474,25 @@ class PyCommand:
         return commandid
 
     def _get_static_info(self) -> dict[str, Any]:
-        if self.rules not in PyCommand._stored_static_info.keys():
-            # Populate the static info with respect to a rules only if the
-            # same info has not been obtained in another context already.
-            # If the information is available, we can use it without additional remote calls.
-            response = self.service.get_static_info(self.rules)
-            PyCommand._stored_static_info[self.rules] = response
-        return PyCommand._stored_static_info[self.rules]
+        if self._static_info is None:
+            if self.rules not in PyCommand._full_static_info.keys():
+                # Populate the static info with respect to a rules only if the
+                # same info has not been obtained in another context already.
+                # If the information is available, we can use it without additional remote calls.
+                response = self.service.get_static_info(self.rules)
+                PyCommand._full_static_info[self.rules] = response
+            rules_static_info = PyCommand._full_static_info[self.rules]
+            names = [x[0] for x in self.path]
+            static_info_path = list(
+                chain(*zip(repeat(["singletons", "namedobjects"], len(names)), names))
+            )
+            parent_static_info = _get_value_from_message_dict(
+                rules_static_info, static_info_path
+            )
+            self._static_info = _get_value_from_message_dict(
+                parent_static_info, ["commands", self.command, "commandinfo"]
+            )
+        return self._static_info
 
     def create_instance(self) -> Optional["PyCommandArguments"]:
         """Create a command instance."""
@@ -1495,7 +1505,7 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                static_info,
+                static_info["args"],
             )
         except RuntimeError:
             logger.warning(
@@ -1592,9 +1602,7 @@ class PyCommandArguments(PyStateContainer):
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
     def __getattr__(self, attr: str) -> Optional[PyCommandArgumentsSubItem]:
-        for arg in _get_value_from_message_dict(
-            self.static_info, ["commands", self.command, "commandinfo", "args"]
-        ):
+        for arg in self.static_info:
             if arg["name"] == attr:
                 mode = DataModelType.get_mode(arg["type"])
                 py_class = mode.value[1]
@@ -1805,7 +1813,7 @@ class PyMenuGeneric(PyMenu):
             )
 
     def __dir__(self) -> list[str]:
-        return list(itertools.chain(*self._get_child_names()))
+        return list(chain(*self._get_child_names()))
 
     def __getattr__(self, name: str):
         if name in PyMenuGeneric.attrs:

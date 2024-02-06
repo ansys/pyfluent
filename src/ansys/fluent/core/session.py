@@ -8,8 +8,6 @@ import warnings
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.batch_ops import BatchOpsService
-from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
@@ -122,7 +120,10 @@ class BaseSession:
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
 
-        self.transcript = self.fluent_connection.create_grpc_service(Transcript)
+        self._transcript_service = service_creator("transcript").create(
+            fluent_connection._channel, fluent_connection._metadata
+        )
+        self.transcript = Transcript(self._transcript_service)
         if fluent_connection.start_transcript:
             self.transcript.start()
 
@@ -143,10 +144,12 @@ class BaseSession:
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 
-        self._batch_ops_service = self.fluent_connection.create_grpc_service(
-            BatchOpsService
+        self._batch_ops_service = service_creator("batch_ops").create(
+            fluent_connection._channel, fluent_connection._metadata
         )
-        self.events_service = self.fluent_connection.create_grpc_service(EventsService)
+        self.events_service = service_creator("events").create(
+            fluent_connection._channel, fluent_connection._metadata
+        )
         self.events_manager = EventsManager(
             self.events_service, self.error_state, self.fluent_connection._id
         )

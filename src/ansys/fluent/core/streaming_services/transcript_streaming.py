@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Optional
 
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
-from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -27,12 +26,12 @@ class Transcript(StreamingService):
 
     _writing_transcript_to_interpreter = False
 
-    def __init__(self, channel, metadata):
+    def __init__(self, transcript_service):
         """__init__ method of Transcript class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
             target=Transcript._process_streaming,
-            streaming_service=TranscriptService(channel, metadata),
+            streaming_service=transcript_service,
         )
         self.callback_ids = []
 

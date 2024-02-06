@@ -336,5 +336,5 @@ The following list summarizes common wildcards:
 
 Root object
 -----------
-The :obj:`~ansys.fluent.core.solver.settings_232.root.root` object (named solver in the preceding examples) is the top-level
+The :ref:`_root` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.
