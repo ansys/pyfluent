@@ -189,6 +189,6 @@ class PIMLauncher:
             product_version=fluent_product_version,
             cleanup_on_exit=self.cleanup_on_exit,
             mode=self.mode,
-            dimensionality=self.version,
+            dimensionality=self._version,
             launcher_args=self.argvals,
         )

@@ -49,7 +49,7 @@ def _parse_server_info_file(file_name: str):
 def _get_datamodel_attributes(session, attribute: str):
     try:
         preferences_module = importlib.import_module(
-            f"ansys.fluent.core.datamodel_{session.version}." + attribute
+            f"ansys.fluent.core.datamodel_{session._version}." + attribute
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except ImportError:

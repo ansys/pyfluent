@@ -102,7 +102,7 @@ class Solver(BaseSession):
         self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
         )
-        if FluentVersion(self.version) >= FluentVersion.v241:
+        if FluentVersion(self._version) >= FluentVersion.v241:
             self.reduction = service_creator("reduction").create(
                 self._reduction_service, self
             )
@@ -121,7 +121,7 @@ class Solver(BaseSession):
         return service_creator("svar_data").create(self.svar_service, self.svar_info)
 
     @property
-    def version(self):
+    def _version(self):
         """Fluent's product version."""
         if self._version is None:
             self._version = get_version_for_file_name(session=self)
@@ -134,7 +134,7 @@ class Solver(BaseSession):
         if self._tui is None:
             try:
                 tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self.version}"
+                    f"ansys.fluent.core.solver.tui_{self._version}"
                 )
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "solver", []
@@ -149,7 +149,7 @@ class Solver(BaseSession):
         """Datamodel root for workflow."""
         try:
             workflow_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self.version}.workflow"
+                f"ansys.fluent.core.datamodel_{self._version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except ImportError:
@@ -169,7 +169,7 @@ class Solver(BaseSession):
         """Root settings object."""
         if self._settings_root is None:
             self._settings_root = flobject.get_root(
-                flproxy=self._settings_service, version=self.version
+                flproxy=self._settings_service, version=self._version
             )
         return self._settings_root
 
