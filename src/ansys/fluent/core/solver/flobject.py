@@ -1070,14 +1070,26 @@ class Action(Base):
         return ret
 
 
-class Command(Action):
-    """Command object."""
-
-    def __call__(self, **kwds):
-        """Call a command with the specified keyword arguments."""
+class BaseCommand(Action):
+    def execute_command(self, *args, **kwds):
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.before_execute(value)
+        cmd = self._execute_command(*args, **kwds)
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.after_execute(value)
+        return cmd
+
+    def __call__(self, *args, **kwds):
+        return self.execute_command(*args, **kwds)
+
+
+class Command(BaseCommand):
+    """Command object."""
+
+    def _execute_command(self, **kwds):
+        """Execute a command with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, [], kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1092,21 +1104,18 @@ class Command(Action):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-        for arg, value in kwds.items():
-            argument = getattr(self, arg)
-            argument.after_execute(value)
-        return cmd
+        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+    def __call__(self, **kwds):
+        """Call a command with the specified keyword arguments."""
+        return self.execute_command(**kwds)
 
 
-class CommandWithPositionalArgs(Action):
+class CommandWithPositionalArgs(BaseCommand):
     """Command Object."""
 
-    def __call__(self, *args, **kwds):
-        """Call a command with the specified keyword arguments."""
-        for arg, value in kwds.items():
-            argument = getattr(self, arg)
-            argument.before_execute(value)
+    def _execute_command(self, *args, **kwds):
+        """Execute a command with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, args, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1121,11 +1130,11 @@ class CommandWithPositionalArgs(Action):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        cmd = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-        for arg, value in kwds.items():
-            argument = getattr(self, arg)
-            argument.after_execute(value)
-        return cmd
+        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+    def __call__(self, *args, **kwds):
+        """Call a command with the specified keyword arguments."""
+        return self.execute_command(*args, **kwds)
 
 
 class Query(Action):
