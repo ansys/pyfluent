@@ -43,7 +43,7 @@ class BaseMeshing:
         self._pm_file_management = None
         self._preferences = None
         self._session_execute_tui = session_execute_tui
-        self._version = None
+        self._fluent_version = None
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
@@ -53,9 +53,9 @@ class BaseMeshing:
     @property
     def _version(self):
         """Fluent's product version."""
-        if self._version is None:
-            self._version = get_version_for_file_name(session=self)
-        return self._version
+        if self._fluent_version is None:
+            self._fluent_version = get_version_for_file_name(session=self)
+        return self._fluent_version
 
     @property
     def tui(self):

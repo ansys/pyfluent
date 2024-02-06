@@ -93,7 +93,7 @@ class Solver(BaseSession):
         self._workflow = None
         self._system_coupling = None
         self._settings_root = None
-        self._version = None
+        self._fluent_version = None
         self._lck = threading.Lock()
         self.svar_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
@@ -123,9 +123,9 @@ class Solver(BaseSession):
     @property
     def _version(self):
         """Fluent's product version."""
-        if self._version is None:
-            self._version = get_version_for_file_name(session=self)
-        return self._version
+        if self._fluent_version is None:
+            self._fluent_version = get_version_for_file_name(session=self)
+        return self._fluent_version
 
     @property
     def tui(self):
