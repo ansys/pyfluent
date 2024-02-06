@@ -911,7 +911,7 @@ class WorkflowWrapper:
         )  # or self._task_with_cmd_matching_help_string(attr)
         if obj:
             return obj
-        return self._task_objects.get(attr, None)
+        return self._task_objects.get(attr) or super().__getattribute__(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
