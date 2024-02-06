@@ -234,10 +234,41 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = w.task("Import Geometry")
     assert import_geom.arguments.LengthUnit.default_value() == "mm"
-    assert import_geom.arguments.MeshUnit.is_read_only()
+    assert import_geom.arguments.LengthUnit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert import_geom.arguments.LengthUnit() == "mm"
+    import_geom.arguments.LengthUnit.set_state("cm")
+    assert import_geom.arguments.LengthUnit.get_state() == "cm"
+    import_geom.arguments.LengthUnit = "in"
+    assert import_geom.arguments.LengthUnit() == "in"
+
+    assert not import_geom.arguments.MeshUnit.is_read_only()
     assert import_geom.arguments.LengthUnit.is_active()
-    assert import_geom.arguments.FileName.is_read_only()
-    assert import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
+    assert not import_geom.arguments.FileName.is_read_only()
+    assert not import_geom.arguments.FileName()
+    import_geom.arguments.FileName = "xyz.txt"
+    assert import_geom.arguments.FileName() == "xyz.txt"
+    with pytest.warns(
+        UserWarning, match="No attribute named 'File' in 'Import Geometry'."
+    ):
+        import_geom.arguments.File = "sample.txt"
+    assert not import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
+
+    assert import_geom.arguments.CadImportOptions.OneZonePer.allowed_values() == [
+        "body",
+        "face",
+        "object",
+    ]
+    assert import_geom.arguments.CadImportOptions.OneZonePer() == "body"
+    import_geom.arguments.CadImportOptions.OneZonePer.set_state("face")
+    assert import_geom.arguments.CadImportOptions.OneZonePer() == "face"
 
     volume_mesh_gen = w.task("Generate the Volume Mesh")
     assert (
