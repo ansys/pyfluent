@@ -109,7 +109,7 @@ scheduler environments are Univa Grid Engine (UGE), Load Sharing Facility (LSF),
 Portable Batch System (PBS), and Slurm.
 
 This example shows a bash shell script that can be submitted to a Slurm
-scheduler using the ```sbatch``` command:
+scheduler using the ``sbatch`` command:
 
 .. code:: bash
 
