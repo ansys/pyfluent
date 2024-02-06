@@ -634,11 +634,9 @@ def _get_case_file_name_from_flprj(flprj_file):
     # If the project file name begins with a digit then the node to find will be prepended
     # with "_". Rather than making any assumptions that this is a hard rule, or what
     # the scope of the rule is, simply retry with the name prepended:
-    find_folder = lambda retry=False: root.find(("_" if retry else "") + folder_name)
-    return (
-        (find_folder() or find_folder(retry=True))
-        .find("Input")
-        .find("Case")
-        .find("Target")
-        .get("value")
+    folder_obj = (
+        root.find(folder_name)
+        if len(root.find(folder_name)) > 0
+        else root.find("_" + folder_name)
     )
+    return folder_obj.find("Input").find("Case").find("Target").get("value")
