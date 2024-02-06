@@ -1,27 +1,35 @@
+from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
+from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldInfo
+from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.svar import SVARData, SVARService
+from ansys.fluent.core.services.transcript import TranscriptService
 
 _service_cls_by_name = {
+    "health_check": HealthCheckService,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "settings": SettingsService,
     "scheme_eval": SchemeEval,
+    "events": EventsService,
     "field_data": FieldData,
     "field_info": FieldInfo,
     "monitors": MonitorsService,
     "reduction": Reduction,
     "svar": SVARService,
     "svar_data": SVARData,
+    "transcript": TranscriptService,
+    "batch_ops": BatchOpsService,
 }
 
 
