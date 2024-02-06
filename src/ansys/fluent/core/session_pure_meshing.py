@@ -171,33 +171,3 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
-
-    def read_case(
-        self,
-        file_name: str,
-    ):
-        """Read a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.upload(
-            file_name=file_name, on_uploaded=self.tui.file.read_case
-        )
-
-    def write_case(
-        self,
-        file_name: str,
-    ):
-        """Write a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.download(
-            file_name=file_name, before_downloaded=self.tui.file.write_case
-        )
