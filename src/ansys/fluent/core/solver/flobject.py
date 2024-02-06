@@ -468,13 +468,13 @@ class Group(SettingsBase[DictStateType]):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
-            cls = getattr(self.__class__, child)
+            cls = self.__class__._child_classes[child]
             self._setattr(child, cls(None, self))
         for cmd in self.command_names:
-            cls = getattr(self.__class__, cmd)
+            cls = self.__class__._child_classes[cmd]
             self._setattr(cmd, cls(None, self))
         for query in self.query_names:
-            cls = getattr(self.__class__, query)
+            cls = self.__class__._child_classes[query]
             self._setattr(query, cls(None, self))
 
     def __call__(self, *args, **kwargs):
@@ -730,10 +730,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         super().__init__(name, parent)
         self._setattr("_objects", {})
         for cmd in self.command_names:
-            cls = getattr(self.__class__, cmd)
+            cls = self.__class__._child_classes[cmd]
             self._setattr(cmd, cls(None, self))
         for query in self.query_names:
-            cls = getattr(self.__class__, query)
+            cls = self.__class__._child_classes[query]
             self._setattr(query, cls(None, self))
 
     @classmethod
@@ -903,10 +903,10 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         super().__init__(name, parent)
         self._setattr("_objects", [])
         for cmd in self.command_names:
-            cls = getattr(self.__class__, cmd)
+            cls = self.__class__._child_classes[cmd]
             self._setattr(cmd, cls(None, self))
         for query in self.query_names:
-            cls = getattr(self.__class__, query)
+            cls = self.__class__._child_classes[query]
             self._setattr(query, cls(None, self))
 
     @classmethod
@@ -996,7 +996,7 @@ class Action(Base):
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
             for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
+                cls = self.__class__._child_classes[argument]
                 self._setattr(argument, cls(None, self))
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
@@ -1267,10 +1267,17 @@ def get_cls(name, info, parent=None, version=None):
             bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
+        setattr(cls, "_child_classes", {})
 
         taboo = set(dir(cls))
         taboo |= set(
-            ["child_names", "command_names", "argument_names", "child_object_type"]
+            [
+                "child_names",
+                "command_names",
+                "argument_names",
+                "child_object_type",
+                "_child_classes",
+            ]
         )
 
         doc = ""
@@ -1299,7 +1306,7 @@ def get_cls(name, info, parent=None, version=None):
                 ccls.__name__ = ccls_name
                 names.append(ccls.__name__)
                 taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+                cls._child_classes[ccls.__name__] = ccls
 
         children = info.get("children")
         if children:

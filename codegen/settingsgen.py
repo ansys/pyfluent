@@ -58,7 +58,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
         children_hash = []
         for cname, cinfo in children.items():
             for child in getattr(cls, "child_names", None):
-                child_cls = getattr(cls, child)
+                child_cls = cls._child_classes[child]
                 if cname == child_cls.fluent_name:
                     api_tree[child] = {}
                     children_hash.append(
@@ -80,7 +80,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
         commands_hash = []
         for cname, cinfo in commands.items():
             for command in getattr(cls, "command_names", None):
-                command_cls = getattr(cls, command)
+                command_cls = cls._child_classes[command]
                 if cname == command_cls.fluent_name:
                     api_tree[command] = "Command"
                     commands_hash.append(
@@ -95,7 +95,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
         queries_hash = []
         for qname, qinfo in queries.items():
             for query in getattr(cls, "query_names", None):
-                query_cls = getattr(cls, query)
+                query_cls = cls._child_classes[query]
                 if qname == query_cls.fluent_name:
                     api_tree[query] = "Query"
                     queries_hash.append(
@@ -110,7 +110,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
         arguments_hash = []
         for aname, ainfo in arguments.items():
             for argument in getattr(cls, "argument_names", None):
-                argument_cls = getattr(cls, argument)
+                argument_cls = cls._child_classes[argument]
                 if aname == argument_cls.fluent_name:
                     arguments_hash.append(
                         _populate_hash_dict(aname, ainfo, argument_cls, {})
@@ -350,6 +350,8 @@ def _populate_classes(parent_dir):
             if stubf:
                 stubf.write(f"{istr1}fluent_name = ...\n")
 
+            child_class_strings = []
+
             # write children objects
             child_names = getattr(cls, "child_names", None)
             if child_names:
@@ -362,10 +364,7 @@ def _populate_classes(parent_dir):
                     stubf.write(f"{istr1}child_names = ...\n")
 
                 for child in child_names:
-                    f.write(f"{istr1}{child}: {child}_cls = {child}_cls\n")
-                    f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{child} child of {cls_name}.")
-                    f.write(f'\n{istr1}"""\n')
+                    child_class_strings.append(f"{child}={child}_cls")
                     if stubf:
                         stubf.write(f"{istr1}{child} = ...\n")
 
@@ -382,10 +381,7 @@ def _populate_classes(parent_dir):
 
                 commands_info = _get_commands_info(commands_hash)
                 for command in command_names:
-                    f.write(f"{istr1}{command}: {command}_cls = {command}_cls\n")
-                    f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{command} command of {cls_name}.")
-                    f.write(f'\n{istr1}"""\n')
+                    child_class_strings.append(f"{command}={command}_cls")
                     # function annotation for commands
                     if stubf:
                         command_info = commands_info[command]
@@ -402,13 +398,12 @@ def _populate_classes(parent_dir):
                 pprint.pprint(query_names, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
+                if stubf:
+                    stubf.write(f"{istr1}query_names = ...\n\n")
 
                 queries_info = _get_commands_info(queries_hash)
                 for query in query_names:
-                    f.write(f"{istr1}{query}: {query}_cls = {query}_cls\n")
-                    f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{query} query of {cls_name}.")
-                    f.write(f'\n{istr1}"""\n')
+                    child_class_strings.append(f"{query}={query}_cls")
                     # function annotation for queries
                     if stubf:
                         query_info = queries_info[query]
@@ -429,12 +424,16 @@ def _populate_classes(parent_dir):
                     stubf.write(f"{istr1}argument_names = ...\n")
 
                 for argument in arguments:
-                    f.write(f"{istr1}{argument}: {argument}_cls = {argument}_cls\n")
-                    f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{argument} argument of {cls_name}.")
-                    f.write(f'\n{istr1}"""\n')
+                    child_class_strings.append(f"{argument}={argument}_cls")
                     if stubf:
                         stubf.write(f"{istr1}{argument} = ...\n")
+
+            if child_class_strings:
+                f.write(f"{istr1}_child_classes = dict(\n")
+                f.writelines(
+                    [f"{istr2}{cls_str},\n" for cls_str in child_class_strings]
+                )
+                f.write(f"{istr1})\n\n")
 
             # write object type
             child_object_type = getattr(cls, "child_object_type", None)
