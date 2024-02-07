@@ -30,9 +30,9 @@ The solution_variable_info and solution_variable_data objects are attributes of 
   >>> solution_variable_data = solver.solution_variable_data
 
 
-solution variable info
+Solution variable info
 ----------------------
-solution variable metadata information can be accessed via the following solution_variable_info methods:
+Solution variable metadata information can be accessed via the following solution_variable_info methods:
 
 - ``get_zones_info`` for zone information.
 - ``get_solution_variables_info`` for solution variable information.
@@ -93,7 +93,7 @@ by calling the ``get_solution_variables_info`` method.
   >>>solution_variable_info_centroid.field_type 
   <class 'numpy.float64'> 
   
-solution variable data
+Solution variable data
 ----------------------
 solution variable data can be extracted and modified via the following solution_variable_data object methods:
 
@@ -153,6 +153,6 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
     :template: flobject-class-template.rst
     :recursive:
 
-    solution_variable.SolutionVariableInfo
-    solution_variable.SolutionVariableData
+    solution_variables.SolutionVariableInfo
+    solution_variables.SolutionVariableData
    
