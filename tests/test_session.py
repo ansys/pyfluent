@@ -394,7 +394,7 @@ def test_recover_grpc_error_from_connection_error():
 def test_solver_methods(new_solver_session):
     solver = new_solver_session
 
-    if int(solver.version) == 222:
+    if int(solver._version) == 222:
         api_keys = {
             "file",
             "setup",
@@ -404,7 +404,7 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver.version) == 232:
+    if int(solver._version) == 232:
         api_keys = {
             "file",
             "mesh",
@@ -418,7 +418,7 @@ def test_solver_methods(new_solver_session):
             "report",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver.version) >= 241:
+    if int(solver._version) >= 241:
         api_keys = {
             "file",
             "mesh",

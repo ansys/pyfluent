@@ -228,7 +228,7 @@ def _test_area_integrated_average(solver1, solver2):
 
 
 def _test_error_handling(solver):
-    if int(solver.version) < 241:
+    if int(solver._version) < 241:
         with pytest.raises(RuntimeError) as msg:
             solver.reduction.area_average(
                 expression="AbsoluteVelocity",  # This is a wrong expression intentionally passed

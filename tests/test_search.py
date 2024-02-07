@@ -60,7 +60,7 @@ def test_get_version_path_prefix_from_obj(
 ):
     meshing = new_watertight_workflow_session
     solver = new_solver_session
-    version = solver.version
+    version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
         version,
         ["<meshing_session>"],
