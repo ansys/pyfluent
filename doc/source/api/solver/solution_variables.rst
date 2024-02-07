@@ -74,12 +74,12 @@ by calling the ``get_solution_variables_info`` method.
 
 .. code-block:: python
 
-  >>> solution_variables_info_wall_fluid = solution_variable_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+  >>> wall_fluid_info = solution_variable_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
   >>>
-  >>> solution_variables_info_wall_fluid.solution_variables
+  >>> wall_fluid_info.solution_variables
   ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
   >>>
-  >>> solution_variable_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
+  >>> solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
   >>>
   >>> solution_variable_info_centroid
   name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
