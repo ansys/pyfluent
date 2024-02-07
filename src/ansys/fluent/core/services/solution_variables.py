@@ -41,7 +41,7 @@ class SolutionVariableService:
         """SetSvarData RPC of SVAR service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
-    def get_solution_variables_data(self, request):
+    def get_solution_variables_info(self, request):
         """GetSvarsInfo RPC of SVAR service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
@@ -60,7 +60,7 @@ class SolutionVariableInfo:
 
         >>> solution_variable_info = solver_session.solution_variable_info
         >>>
-        >>> solution_variables_info_wall_fluid = solution_variable_info.get_solution_variables_data(zone_names=['wall' , "fluid"], domain_name="mixture")
+        >>> solution_variables_info_wall_fluid = solution_variable_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
         >>> solution_variables_info_wall_fluid.solution_variables
         >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
         >>> solution_variable_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
@@ -495,7 +495,7 @@ class SolutionVariableData:
         zones_info = self._solution_variable_info.get_zones_info()
         if zone_name in zones_info.zones:
             solution_variables_info = (
-                self._solution_variable_info.get_solution_variables_data(
+                self._solution_variable_info.get_solution_variables_info(
                     zone_names=[zone_name], domain_name=domain_name
                 )
             )
