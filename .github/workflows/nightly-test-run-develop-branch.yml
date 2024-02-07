@@ -1,8 +1,8 @@
 name: Nightly Test Run Develop
 
 on:
-  schedule:  # UTC at 0400
-    - cron:  '0 4 * * *'
+  schedule:  # UTC at 0300
+    - cron:  '0 3 * * *'
   workflow_dispatch:
 
 env:
