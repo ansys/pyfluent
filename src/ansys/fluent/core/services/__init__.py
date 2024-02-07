@@ -12,7 +12,10 @@ from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.services.solution_variables import SVARData, SVARService
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData,
+    SVARService,
+)
 from ansys.fluent.core.services.transcript import TranscriptService
 
 _service_cls_by_name = {
@@ -27,7 +30,7 @@ _service_cls_by_name = {
     "monitors": MonitorsService,
     "reduction": Reduction,
     "svar": SVARService,
-    "svar_data": SVARData,
+    "svar_data": SolutionVariableData,
     "transcript": TranscriptService,
     "batch_ops": BatchOpsService,
 }
