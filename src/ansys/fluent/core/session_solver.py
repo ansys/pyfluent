@@ -98,10 +98,12 @@ class Solver(BaseSession):
         self._settings_root = None
         self._fluent_version = None
         self._lck = threading.Lock()
-        self.svar_service = service_creator("svar").create(
+        self.solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.svar_info = SolutionVariableInfo(self.svar_service)
+        self.solution_variable_info = SolutionVariableInfo(
+            self.solution_variable_service
+        )
         self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
         )
@@ -119,9 +121,11 @@ class Solver(BaseSession):
         self._build_from_fluent_connection(fluent_connection)
 
     @property
-    def svar_data(self) -> SolutionVariableData:
+    def solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
-        return service_creator("svar_data").create(self.svar_service, self.svar_info)
+        return service_creator("svar_data").create(
+            self.solution_variable_service, self.solution_variable_info
+        )
 
     @property
     def _version(self):
