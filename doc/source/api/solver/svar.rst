@@ -1,16 +1,16 @@
-.. _ref_svar_data:
+.. _ref_solution_variable_data:
 
-SVAR data
-=========
+Solution variable data
+======================
 
-An SVAR is an array variable that holds the data for a particular
-solved field (such as pressure or velocity). You can use svar_info
-and svar_data objects to access Fluent SVAR info and data respectively.
+A solution variable is an array variable that holds the data for a particular
+solved field (such as pressure or velocity). You can use solution_variable_info
+and solution_variable_data objects to access Fluent solution variable info and data respectively.
 
-Accessing SVAR objects
-----------------------
+Accessing solution variable objects
+-----------------------------------
 
-Launch the fluent solver, and make SVAR objects available 
+Launch the fluent solver, and make solution variable objects available 
 (for example, by reading case and data files):
 
 .. code-block:: python
@@ -22,20 +22,20 @@ Launch the fluent solver, and make SVAR objects available
   >>> solver.file.read(file_type="case", file_name=import_filename)
 
 
-The svar_info and svar_data objects are attributes of the solver object:
+The solution_variable_info and solution_variable_data objects are attributes of the solver object:
 
 .. code-block:: python
 
-  >>> svar_info = solver.svar_info
-  >>> svar_data = solver.svar_data
+  >>> solution_variable_info = solver.solution_variable_info
+  >>> solution_variable_data = solver.solution_variable_data
 
 
-SVAR info
----------
-SVAR metadata information can be accessed via the following svar_info methods:
+solution variable info
+----------------------
+solution variable metadata information can be accessed via the following solution_variable_info methods:
 
 - ``get_zones_info`` for zone information.
-- ``get_svars_info`` for SVAR information.
+- ``get_solution_variables_info`` for solution variable information.
 
 Get zone information
 ~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,7 @@ You can access zone information by calling the ``get_zones_info`` method.
 
 .. code-block:: python
   
-  >>> zones_info = svar_info.get_zones_info()
+  >>> zones_info = solution_variable_info.get_zones_info()
   >>> zones_info.domains
   ['mixture']  
   >>>
@@ -67,19 +67,19 @@ You can access zone information by calling the ``get_zones_info`` method.
   >>> zone_info.zone_type 
   'wall'  
   
-Get SVAR information
-~~~~~~~~~~~~~~~~~~~~
-You can request SVARs information for a given ``domain_name`` and list of ``zone_names``
-by calling the ``get_svars_info`` method.
+Get solution variable information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+You can request solution variables information for a given ``domain_name`` and list of ``zone_names``
+by calling the ``get_solution_variables_info`` method.
 
 .. code-block:: python
 
-  >>> svars_info_wall_fluid = svar_info.get_svars_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+  >>> solution_variables_info_wall_fluid = solution_variable_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
   >>>
-  >>> svars_info_wall_fluid.svars
+  >>> solution_variables_info_wall_fluid.solution_variables
   ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
   >>>
-  >>> svar_info_centroid = svars_info_wall_fluid['SV_CENTROID']
+  >>> svar_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
   >>>
   >>> svar_info_centroid
   name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
@@ -93,22 +93,22 @@ by calling the ``get_svars_info`` method.
   >>>svar_info_centroid.field_type 
   <class 'numpy.float64'> 
   
-SVAR data
----------
-SVAR data can be extracted and modified via the following svar_data object methods:
+solution variable data
+----------------------
+solution variable data can be extracted and modified via the following solution_variable_data object methods:
 
-- ``get_svar_data`` to get SVAR data.
-- ``set_svar_data`` to set SVAR data.
+- ``get_solution_variable_data`` to get solution variable data.
+- ``set_solution_variable_data`` to set solution variable data.
 
 
-Get SVAR data
-~~~~~~~~~~~~~
-You can request SVAR data for a given ``domain_name`` and multiple ``zone_names`` by calling
-the ``get_svar_data`` method and passing the particular ``svar_name``.
+Get solution variable data
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+You can request solution variable data for a given ``domain_name`` and multiple ``zone_names`` by calling
+the ``get_solution_variable_data`` method and passing the particular ``solution_variable_name``.
 
 .. code-block:: python
   
-    >>> sv_t_wall_fluid= svar_data.get_svar_data(svar_name="SV_T", zone_names=["fluid", "wall"], domain_name="mixture")
+    >>> sv_t_wall_fluid= solution_variable_data.get_solution_variable_data(solution_variable_name="SV_T", zone_names=["fluid", "wall"], domain_name="mixture")
     >>>
     >>> sv_t_wall_fluid.domain
     'mixture'
@@ -127,24 +127,24 @@ the ``get_svar_data`` method and passing the particular ``svar_name``.
     >>> fluid_temp
     array([600., 600., 600., ..., 600., 600., 600.])
   
-Set SVAR data
-~~~~~~~~~~~~~
-You can set SVAR data for a given ``domain_name`` by calling the ``set_svar_data``
-method and passing required ``svar_name`` and dictionary of ``zone_name`` 
-to numpy array of ``svar_data``
+Set solution variable data
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+You can set solution variable data for a given ``domain_name`` by calling the ``set_solution_variable_data``
+method and passing required ``solution_variable_name`` and dictionary of ``zone_name`` 
+to numpy array of ``solution_variable_data``
 
-Additionally svar_data object also supports ``get_array`` method. This method can be used to 
+Additionally solution_variable_data object also supports ``get_array`` method. This method can be used to 
 generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and 
-``svar_name``. This array can be populated and passed to ``set_svar_data``.
+``solution_variable_name``. This array can be populated and passed to ``set_solution_variable_data``.
 
 .. code-block:: python
   
-    >>> wall_temp_array = svar_data.get_array("SV_T", "wall", "mixture")
-    >>> fluid_temp_array = svar_data.get_array("SV_T", "fluid", "mixture")
+    >>> wall_temp_array = solution_variable_data.get_array("SV_T", "wall", "mixture")
+    >>> fluid_temp_array = solution_variable_data.get_array("SV_T", "fluid", "mixture")
     >>> wall_temp_array[:] = 500
     >>> fluid_temp_array[:] = 600
-    >>> zone_names_to_svar_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-    >>> svar_data.set_svar_data(svar_name="SV_T", zone_names_to_svar_data=zone_names_to_svar_data, domain_name="mixture")
+    >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
+    >>> solution_variable_data.set_solution_variable_data(solution_variable_name="SV_T", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data, domain_name="mixture")
 
 .. currentmodule:: ansys.fluent.core.services
 
@@ -153,6 +153,6 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
     :template: flobject-class-template.rst
     :recursive:
 
-    svar.SVARInfo
-    svar.SVARData
+    solution_variable.SolutionVariableInfo
+    solution_variable.SolutionVariableData
    
