@@ -49,16 +49,6 @@
         },
         "fluent_format": "{}"
     },
-    "gpu": {
-        "type": "bool",
-        "default": "null",
-        "fluent_required": false,
-        "fluent_map": {
-            "true": " -gpu",
-            "false": ""
-        },
-        "fluent_format": "{}"
-    },
     "scheduler": {
         "type": "str",
         "fluent_format": " -scheduler={}"
