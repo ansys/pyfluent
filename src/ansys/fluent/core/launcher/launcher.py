@@ -95,7 +95,7 @@ def launch_fluent(
     lightweight_mode: Optional[bool] = None,
     mode: Optional[Union[FluentMode, str, None]] = None,
     py: Optional[bool] = None,
-    gpu: Optional[bool] = None,
+    gpu: Union[bool, list[int], None] = None,
     cwd: Optional[str] = None,
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
@@ -178,8 +178,13 @@ def launch_fluent(
         ``"pure-meshing"`` and ``"solver"``.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
-    gpu : bool, optional
-        If True, Fluent will start with GPU Solver.
+    gpu : bool or list, optional
+        This option will start Fluent with the GPU Solver. A list of GPU IDs can be
+        passed to use specific GPUs. If True is passed, the number of GPUs used will be
+        clamped to the value of ``processor_count``. Please refer to
+        *Starting the Fluent GPU Solver* section in *Fluent's User Guide* for more
+        information like how to determine the GPU IDs.
+
     cwd : str, Optional
         Working directory for the Fluent client.
     topy : bool or str, optional
