@@ -493,7 +493,7 @@ class Group(SettingsBase[DictStateType]):
             ret = {}
             for k, v in value.items():
                 if k in cls.child_names:
-                    ccls = getattr(cls, k)
+                    ccls = cls._child_classes[k]
                     ret[ccls.fluent_name] = ccls.to_scheme_keys(v)
                 else:
                     raise RuntimeError("Key '" + str(k) + "' is invalid")
@@ -508,7 +508,7 @@ class Group(SettingsBase[DictStateType]):
             ret = {}
             undef = object()
             for mname in cls.child_names:
-                ccls = getattr(cls, mname)
+                ccls = cls._child_classes[mname]
                 mvalue = value.get(ccls.fluent_name, undef)
                 if mvalue is not undef:
                     ret[mname] = ccls.to_python_keys(mvalue)
