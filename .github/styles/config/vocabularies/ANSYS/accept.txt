@@ -62,7 +62,6 @@ svar_info
 SVARs
 solution_variable_data
 solution_variable_info
-
 transcript
 TUI
 UDFs
