@@ -33,15 +33,15 @@ class SVARService:
         self.__stub = SvarGrpcModule.svarStub(intercept_channel)
         self.__metadata = metadata
 
-    def get_svar_data(self, request):
+    def get_solution_variable_data(self, request):
         """GetSvarData RPC of SVAR service."""
         return self.__stub.GetSvarData(request, metadata=self.__metadata)
 
-    def set_svar_data(self, request):
+    def set_solution_variable_data(self, request):
         """SetSvarData RPC of SVAR service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
-    def get_svars_info(self, request):
+    def get_solution_variables_data(self, request):
         """GetSvarsInfo RPC of SVAR service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
@@ -50,7 +50,7 @@ class SVARService:
         return self.__stub.GetZonesInfo(request, metadata=self.__metadata)
 
 
-class SVARInfo:
+class SolutionVariableInfo:
     """Provide access to Fluent SVARs and Zones information.
 
     Example
@@ -58,16 +58,16 @@ class SVARInfo:
 
     .. code-block:: python
 
-        >>> svar_info = solver_session.svar_info
+        >>> solution_variable_info = solver_session.solution_variable_info
         >>>
-        >>> svars_info_wall_fluid = svar_info.get_svars_info(zone_names=['wall' , "fluid"], domain_name="mixture")
-        >>> svars_info_wall_fluid.svars
+        >>> solution_variables_info_wall_fluid = solution_variable_info.get_solution_variables_data(zone_names=['wall' , "fluid"], domain_name="mixture")
+        >>> solution_variables_info_wall_fluid.solution_variables
         >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
-        >>> svar_info_centroid = svars_info_wall_fluid['SV_CENTROID']
-        >>> svar_info_centroid
+        >>> solution_variable_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
+        >>> solution_variable_info_centroid
         >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
         >>>
-        >>> zones_info = svar_info.get_zones_info()
+        >>> zones_info = solution_variable_info.get_zones_info()
         >>> zones_info.zones
         >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
         >>> zone_info = zones_info['wall']
@@ -75,40 +75,48 @@ class SVARInfo:
         >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
     """
 
-    class SVARS:
-        """Class containing information for multiple SVARs."""
+    class SolutionVariables:
+        """Class containing information for multiple solution variables."""
 
-        class SVAR:
-            """Class containing information for single SVAR."""
+        class SolutionVariable:
+            """Class containing information for single solution variable."""
 
-            def __init__(self, svar_info):
-                self.name = svar_info.name
-                self.dimension = svar_info.dimension
+            def __init__(self, solution_variable_info):
+                self.name = solution_variable_info.name
+                self.dimension = solution_variable_info.dimension
                 self.field_type = _FieldDataConstants.proto_field_type_to_np_data_type[
-                    svar_info.fieldType
+                    solution_variable_info.fieldType
                 ]
 
             def __repr__(self):
                 return f"name:{self.name} dimension:{self.dimension} field_type:{self.field_type}"
 
-        def __init__(self, svars_info):
-            self._svars_info = {}
-            for svar_info in svars_info:
-                self._svars_info[svar_info.name] = SVARInfo.SVARS.SVAR(svar_info)
+        def __init__(self, solution_variables_info):
+            self._solution_variables_info = {}
+            for solution_variable_info in solution_variables_info:
+                self._solution_variables_info[
+                    solution_variable_info.name
+                ] = SolutionVariableInfo.SolutionVariables.SolutionVariable(
+                    solution_variable_info
+                )
 
-        def _filter(self, svars_info):
-            self._svars_info = {
+        def _filter(self, solution_variables_info):
+            self._solution_variables_info = {
                 k: v
-                for k, v in self._svars_info.items()
-                if k in [svar_info.name for svar_info in svars_info]
+                for k, v in self._solution_variables_info.items()
+                if k
+                in [
+                    solution_variable_info.name
+                    for solution_variable_info in solution_variables_info
+                ]
             }
 
         def __getitem__(self, name):
-            return self._svars_info.get(name, None)
+            return self._solution_variables_info.get(name, None)
 
         @property
-        def svars(self) -> List[str]:
-            return list(self._svars_info.keys())
+        def solution_variables(self) -> List[str]:
+            return list(self._solution_variables_info.keys())
 
     class ZonesInfo:
         """Class containing information for multiple zones."""
@@ -176,9 +184,9 @@ class SVARInfo:
     ):
         self._service = service
 
-    def get_svars_info(
+    def get_solution_variables_data(
         self, zone_names: List[str], domain_name: str = "mixture"
-    ) -> SVARS:
+    ) -> SolutionVariables:
         """Get SVARs info for zones in the domain.
 
         Parameters
@@ -190,24 +198,26 @@ class SVARInfo:
 
         Returns
         -------
-        SVARInfo.SVARS
+        SolutionVariableInfo.SolutionVariables
             Object containing information for SVARs which are common for list of zone names.
         """
 
         allowed_zone_names = _AllowedZoneNames(self)
         allowed_domain_names = _AllowedDomainNames(self)
-        svars_info = None
+        solution_variables_info = None
         for zone_name in zone_names:
             request = SvarProtoModule.GetSvarsInfoRequest(
                 domainId=allowed_domain_names.valid_name(domain_name),
                 zoneId=allowed_zone_names.valid_name(zone_name),
             )
-            response = self._service.get_svars_info(request)
-            if svars_info is None:
-                svars_info = SVARInfo.SVARS(response.svarsInfo)
+            response = self._service.get_solution_variables_data(request)
+            if solution_variables_info is None:
+                solution_variables_info = SolutionVariableInfo.SolutionVariables(
+                    response.svarsInfo
+                )
             else:
-                svars_info._filter(response.svarsInfo)
-        return svars_info
+                solution_variables_info._filter(response.svarsInfo)
+        return solution_variables_info
 
     def get_zones_info(self) -> ZonesInfo:
         """Get Zones info.
@@ -218,20 +228,22 @@ class SVARInfo:
 
         Returns
         -------
-        SVARInfo.ZonesInfo
+        SolutionVariableInfo.ZonesInfo
             Object containing information for all zones.
         """
         request = SvarProtoModule.GetZonesInfoRequest()
         response = self._service.get_zones_info(request)
-        return SVARInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
+        return SolutionVariableInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
 
 
 class SvarError(ValueError):
     """Exception class for errors in SVAR name."""
 
-    def __init__(self, svar_name: str, allowed_values: List[str]):
-        self.svar_name = svar_name
-        super().__init__(allowed_name_error_message("svar", svar_name, allowed_values))
+    def __init__(self, solution_variable_name: str, allowed_values: List[str]):
+        self.solution_variable_name = solution_variable_name
+        super().__init__(
+            allowed_name_error_message("svar", solution_variable_name, allowed_values)
+        )
 
 
 class ZoneError(ValueError):
@@ -248,33 +260,45 @@ class _AllowedNames:
 
 
 class _AllowedSvarNames:
-    def __init__(self, svar_info: SVARInfo):
-        self._svar_info = svar_info
+    def __init__(self, solution_variable_info: SolutionVariableInfo):
+        self._solution_variable_info = solution_variable_info
 
     def __call__(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> List[str]:
-        return self._svar_info.get_svars_info(
+        return self._solution_variable_info.get_solution_variables_data(
             zone_names=zone_names, domain_name=domain_name
-        ).svars
+        ).solution_variables
 
-    def is_valid(self, svar_name, zone_names: List[str], domain_name: str = "mixture"):
-        return svar_name in self(zone_names=zone_names, domain_name=domain_name)
+    def is_valid(
+        self,
+        solution_variable_name,
+        zone_names: List[str],
+        domain_name: str = "mixture",
+    ):
+        return solution_variable_name in self(
+            zone_names=zone_names, domain_name=domain_name
+        )
 
     def valid_name(
-        self, svar_name, zone_names: List[str], domain_name: str = "mixture"
+        self,
+        solution_variable_name,
+        zone_names: List[str],
+        domain_name: str = "mixture",
     ):
-        if not self.is_valid(svar_name, zone_names=zone_names, domain_name=domain_name):
+        if not self.is_valid(
+            solution_variable_name, zone_names=zone_names, domain_name=domain_name
+        ):
             raise SvarError(
-                svar_name=svar_name,
+                solution_variable_name=solution_variable_name,
                 allowed_values=self(zone_names=zone_names, domain_name=domain_name),
             )
-        return svar_name
+        return solution_variable_name
 
 
 class _AllowedZoneNames(_AllowedNames):
-    def __init__(self, svar_info: SVARInfo):
-        self._zones_info = svar_info.get_zones_info()
+    def __init__(self, solution_variable_info: SolutionVariableInfo):
+        self._zones_info = solution_variable_info.get_zones_info()
 
     def __call__(self) -> List[str]:
         return self._zones_info.zones
@@ -289,8 +313,8 @@ class _AllowedZoneNames(_AllowedNames):
 
 
 class _AllowedDomainNames(_AllowedNames):
-    def __init__(self, svar_info: SVARInfo):
-        self._zones_info = svar_info.get_zones_info()
+    def __init__(self, solution_variable_info: SolutionVariableInfo):
+        self._zones_info = solution_variable_info.get_zones_info()
 
     def __call__(self) -> List[str]:
         return self._zones_info.domains
@@ -321,15 +345,15 @@ class _SvarMethod:
         return self._svar_accessor(*args, **kwargs)
 
 
-def extract_svars(svars_data):
+def extract_svars(solution_variables_data):
     """Extracts SVAR data via a server call."""
 
-    def _extract_svar(field_datatype, field_size, svars_data):
+    def _extract_svar(field_datatype, field_size, solution_variables_data):
         field_arr = np.empty(field_size, dtype=field_datatype)
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
-        for svar_data in svars_data:
-            chunk = svar_data.payload
+        for solution_variable_data in solution_variables_data:
+            chunk = solution_variable_data.payload
             if chunk.bytePayload:
                 count = min(
                     len(chunk.bytePayload) // field_datatype_item_size,
@@ -357,14 +381,14 @@ def extract_svars(svars_data):
                     return field_arr
 
     zones_svar_data = {}
-    for array in svars_data:
+    for array in solution_variables_data:
         if array.WhichOneof("array") == "payloadInfo":
             zones_svar_data[array.payloadInfo.zone] = _extract_svar(
                 _FieldDataConstants.proto_field_type_to_np_data_type[
                     array.payloadInfo.fieldType
                 ],
                 array.payloadInfo.fieldSize,
-                svars_data,
+                solution_variables_data,
             )
         elif array.WhichOneof("array") == "header":
             continue
@@ -372,16 +396,16 @@ def extract_svars(svars_data):
     return zones_svar_data
 
 
-class SVARData:
+class SolutionVariableData:
     """Provides access to Fluent SVAR data on zones.
 
     Example
     -------
     .. code-block:: python
         >>>
-        >>> svar_data = solver_session.svar_data
+        >>> solution_variable_data = solver_session.solution_variable_data
         >>>
-        >>> sv_t_wall_fluid=solver_session.svar_data.get_svar_data(svar_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
+        >>> sv_t_wall_fluid=solver_session.solution_variable_data.get_solution_variable_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
         >>>
         >>> sv_t_wall_fluid.domain
         >>> 'mixture'
@@ -397,20 +421,20 @@ class SVARData:
         >>> fluid_temp
         >>> array([600., 600., 600., ..., 600., 600., 600.])
         >>>
-        >>> wall_temp_array = svar_data.get_array("SV_T", "wall")
-        >>> fluid_temp_array =svar_data.get_array("SV_T", "fluid")
+        >>> wall_temp_array = solution_variable_data.get_array("SV_T", "wall")
+        >>> fluid_temp_array =solution_variable_data.get_array("SV_T", "fluid")
         >>> wall_temp_array[:]= 500
         >>> fluid_temp_array[:]= 600
         >>> zone_names_to_svar_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-        >>> svar_data.set_svar_data(svar_name="SV_T", domain_name="mixture", zone_names_to_svar_data=zone_names_to_svar_data)
+        >>> solution_variable_data.set_solution_variable_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_svar_data=zone_names_to_svar_data)
     """
 
     class Data:
-        def __init__(self, domain_name, zone_id_name_map, svar_data):
+        def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
             self._domain_name = domain_name
             self._data = {
                 zone_id_name_map[zone_id]: zone_data
-                for zone_id, zone_data in svar_data.items()
+                for zone_id, zone_data in solution_variable_data.items()
             }
 
         @property
@@ -431,52 +455,58 @@ class SVARData:
     def __init__(
         self,
         service: SVARService,
-        svar_info: SVARInfo,
+        solution_variable_info: SolutionVariableInfo,
     ):
         self._service = service
-        self._svar_info = svar_info
+        self._solution_variable_info = solution_variable_info
 
-    def _update_svar_info(self):
-        self._allowed_zone_names = _AllowedZoneNames(self._svar_info)
+    def _update_solution_variable_info(self):
+        self._allowed_zone_names = _AllowedZoneNames(self._solution_variable_info)
 
-        self._allowed_domain_names = _AllowedDomainNames(self._svar_info)
+        self._allowed_domain_names = _AllowedDomainNames(self._solution_variable_info)
 
-        self._allowed_svar_names = _AllowedSvarNames(self._svar_info)
+        self._allowed_solution_variable_names = _AllowedSvarNames(
+            self._solution_variable_info
+        )
         svar_args = dict(
-            zone_names=self._allowed_zone_names, svar_name=self._allowed_svar_names
+            zone_names=self._allowed_zone_names,
+            solution_variable_name=self._allowed_solution_variable_names,
         )
 
-        self.get_svar_data = override_help_text(
+        self.get_solution_variable_data = override_help_text(
             _SvarMethod(
-                svar_accessor=self.get_svar_data,
+                svar_accessor=self.get_solution_variable_data,
                 args_allowed_values_accessors=svar_args,
             ),
-            SVARData.get_svar_data,
+            SolutionVariableData.get_solution_variable_data,
         )
 
     def get_array(
-        self, svar_name: str, zone_name: str, domain_name: str = "mixture"
+        self, solution_variable_name: str, zone_name: str, domain_name: str = "mixture"
     ) -> np.zeros:
         """Get numpy zeros array for the SVAR on a zone.
 
         This array can be populated  with values to set SVAR data.
         """
-        self._update_svar_info()
+        self._update_solution_variable_info()
 
-        zones_info = self._svar_info.get_zones_info()
+        zones_info = self._solution_variable_info.get_zones_info()
         if zone_name in zones_info.zones:
-            svars_info = self._svar_info.get_svars_info(
-                zone_names=[zone_name], domain_name=domain_name
+            solution_variables_info = (
+                self._solution_variable_info.get_solution_variables_data(
+                    zone_names=[zone_name], domain_name=domain_name
+                )
             )
-            if svar_name in svars_info.svars:
+            if solution_variable_name in solution_variables_info.solution_variables:
                 return np.zeros(
-                    zones_info[zone_name].count * svars_info[svar_name].dimension,
-                    dtype=svars_info[svar_name].field_type,
+                    zones_info[zone_name].count
+                    * solution_variables_info[solution_variable_name].dimension,
+                    dtype=solution_variables_info[solution_variable_name].field_type,
                 )
 
-    def get_svar_data(
+    def get_solution_variable_data(
         self,
-        svar_name: str,
+        solution_variable_name: str,
         zone_names: List[str],
         domain_name: Optional[str] = "mixture",
     ) -> Data:
@@ -484,7 +514,7 @@ class SVARData:
 
         Parameters
         ----------
-        svar_name : str
+        solution_variable_name : str
             Name of the SVAR.
         zone_names: List[str]
             Zone names list for SVAR data.
@@ -493,17 +523,17 @@ class SVARData:
 
         Returns
         -------
-        SVARData.Data
+        SolutionVariableData.Data
             Object containing SVAR data.
         """
-        self._update_svar_info()
+        self._update_solution_variable_info()
         svars_request = SvarProtoModule.GetSvarDataRequest(
             provideBytesStream=_FieldDataConstants.bytes_stream,
             chunkSize=_FieldDataConstants.chunk_size,
         )
         svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
-        svars_request.name = self._allowed_svar_names.valid_name(
-            svar_name, zone_names, domain_name
+        svars_request.name = self._allowed_solution_variable_names.valid_name(
+            solution_variable_name, zone_names, domain_name
         )
         zone_id_name_map = {}
         for zone_name in zone_names:
@@ -511,15 +541,15 @@ class SVARData:
             zone_id_name_map[zone_id] = zone_name
             svars_request.zones.append(zone_id)
 
-        return SVARData.Data(
+        return SolutionVariableData.Data(
             domain_name,
             zone_id_name_map,
-            extract_svars(self._service.get_svar_data(svars_request)),
+            extract_svars(self._service.get_solution_variable_data(svars_request)),
         )
 
-    def set_svar_data(
+    def set_solution_variable_data(
         self,
-        svar_name: str,
+        solution_variable_name: str,
         zone_names_to_svar_data: Dict[str, np.array],
         domain_name: str = "mixture",
     ) -> None:
@@ -527,7 +557,7 @@ class SVARData:
 
         Parameters
         ----------
-        svar_name : str
+        solution_variable_name : str
             Name of the SVAR.
         zone_names_to_svar_data: Dict[str, np.array]
             Dictionary containing zone names for SVAR data.
@@ -538,73 +568,79 @@ class SVARData:
         -------
         None
         """
-        self._update_svar_info()
+        self._update_solution_variable_info()
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
-            self._allowed_zone_names.valid_name(zone_name): svar_data
-            for zone_name, svar_data in zone_names_to_svar_data.items()
+            self._allowed_zone_names.valid_name(zone_name): solution_variable_data
+            for zone_name, solution_variable_data in zone_names_to_svar_data.items()
         }
 
-        def generate_set_svar_data_requests():
-            set_svar_data_requests = []
+        def generate_set_solution_variable_data_requests():
+            set_solution_variable_data_requests = []
 
-            set_svar_data_requests.append(
+            set_solution_variable_data_requests.append(
                 SvarProtoModule.SetSvarDataRequest(
                     header=SvarProtoModule.SvarHeader(
-                        name=svar_name, domainId=domain_id
+                        name=solution_variable_name, domainId=domain_id
                     )
                 )
             )
 
-            for zone_id, svar_data in zone_ids_to_svar_data.items():
+            for zone_id, solution_variable_data in zone_ids_to_svar_data.items():
                 max_array_size = (
-                    _FieldDataConstants.chunk_size / np.dtype(svar_data.dtype).itemsize
+                    _FieldDataConstants.chunk_size
+                    / np.dtype(solution_variable_data.dtype).itemsize
                 )
-                svar_data_list = np.array_split(
-                    svar_data, math.ceil(svar_data.size / max_array_size)
+                solution_variable_data_list = np.array_split(
+                    solution_variable_data,
+                    math.ceil(solution_variable_data.size / max_array_size),
                 )
-                set_svar_data_requests.append(
+                set_solution_variable_data_requests.append(
                     SvarProtoModule.SetSvarDataRequest(
                         payloadInfo=SvarProtoModule.Info(
                             fieldType=_FieldDataConstants.np_data_type_to_proto_field_type[
-                                svar_data.dtype.type
+                                solution_variable_data.dtype.type
                             ],
-                            fieldSize=svar_data.size,
+                            fieldSize=solution_variable_data.size,
                             zone=zone_id,
                         )
                     )
                 )
-                set_svar_data_requests += [
+                set_solution_variable_data_requests += [
                     SvarProtoModule.SetSvarDataRequest(
                         payload=SvarProtoModule.Payload(
                             floatPayload=FieldDataProtoModule.FloatPayload(
-                                payload=svar_data
+                                payload=solution_variable_data
                             )
                         )
-                        if svar_data.dtype.type == np.float32
+                        if solution_variable_data.dtype.type == np.float32
                         else SvarProtoModule.Payload(
                             doublePayload=FieldDataProtoModule.DoublePayload(
-                                payload=svar_data
+                                payload=solution_variable_data
                             )
                         )
-                        if svar_data.dtype.type == np.float64
+                        if solution_variable_data.dtype.type == np.float64
                         else SvarProtoModule.Payload(
                             intPayload=FieldDataProtoModule.IntPayload(
-                                payload=svar_data
+                                payload=solution_variable_data
                             )
                         )
-                        if svar_data.dtype.type == np.int32
+                        if solution_variable_data.dtype.type == np.int32
                         else SvarProtoModule.Payload(
                             longPayload=FieldDataProtoModule.LongPayload(
-                                payload=svar_data
+                                payload=solution_variable_data
                             )
                         )
                     )
-                    for svar_data in svar_data_list
-                    if svar_data.size > 0
+                    for solution_variable_data in solution_variable_data_list
+                    if solution_variable_data.size > 0
                 ]
 
-            for set_svar_data_request in set_svar_data_requests:
-                yield set_svar_data_request
+            for (
+                set_solution_variable_data_request
+            ) in set_solution_variable_data_requests:
+                yield set_solution_variable_data_request
 
-        self._service.set_svar_data(generate_set_svar_data_requests())
+        self._service.set_solution_variable_data(
+            generate_set_solution_variable_data_requests()
+        )

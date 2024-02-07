@@ -12,7 +12,7 @@ from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
-from ansys.fluent.core.services.svar import SVARData, SVARInfo
+from ansys.fluent.core.services.solution_variables import SVARData, SVARInfo
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver import flobject
