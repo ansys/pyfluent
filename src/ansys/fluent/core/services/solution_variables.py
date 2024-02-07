@@ -184,7 +184,7 @@ class SolutionVariableInfo:
     ):
         self._service = service
 
-    def get_solution_variables_data(
+    def get_solution_variables_info(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SolutionVariables:
         """Get SVARs info for zones in the domain.
@@ -210,7 +210,7 @@ class SolutionVariableInfo:
                 domainId=allowed_domain_names.valid_name(domain_name),
                 zoneId=allowed_zone_names.valid_name(zone_name),
             )
-            response = self._service.get_solution_variables_data(request)
+            response = self._service.get_solution_variables_info(request)
             if solution_variables_info is None:
                 solution_variables_info = SolutionVariableInfo.SolutionVariables(
                     response.svarsInfo
@@ -237,12 +237,14 @@ class SolutionVariableInfo:
 
 
 class SvarError(ValueError):
-    """Exception class for errors in SVAR name."""
+    """Exception class for errors in solution variable name."""
 
     def __init__(self, solution_variable_name: str, allowed_values: List[str]):
         self.solution_variable_name = solution_variable_name
         super().__init__(
-            allowed_name_error_message("svar", solution_variable_name, allowed_values)
+            allowed_name_error_message(
+                "solution variable", solution_variable_name, allowed_values
+            )
         )
 
 
@@ -266,7 +268,7 @@ class _AllowedSvarNames:
     def __call__(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> List[str]:
-        return self._solution_variable_info.get_solution_variables_data(
+        return self._solution_variable_info.get_solution_variables_info(
             zone_names=zone_names, domain_name=domain_name
         ).solution_variables
 
