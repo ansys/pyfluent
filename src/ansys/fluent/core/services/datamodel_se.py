@@ -1429,15 +1429,29 @@ class PyCommand:
             self.path = path
         self._static_info = None  # command's static info
 
-    def _get_file_purpose(self):
-        static_info = self._get_static_info()
+    def _get_file_purpose(self, arg):
         try:
-            file_purpose = static_info["singletons"]["File"]["commands"][
-                self.__class__.__name__
-            ]["commandinfo"]["args"][0]["attrs"]["file_purpose"]["stringState"]
-            return file_purpose
-        except KeyError:
-            return None
+            cmd_instance = self.create_instance()
+            arg_instance = getattr(cmd_instance, arg)
+            file_purpose = arg_instance.get_attr("filePurpose")
+            if file_purpose == "input":
+                if _InputFile not in self.__class__.__bases__:
+                    self.__class__.__bases__ += (_InputFile,)
+            elif file_purpose == "output":
+                if _OutputFile not in self.__class__.__bases__:
+                    self.__class__.__bases__ += (_OutputFile,)
+            del cmd_instance, arg_instance
+            return file_purpose if file_purpose else None
+        except AttributeError:
+            pass
+
+    def before_execute(self, value):
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
+
+    def after_execute(self, value):
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
 
     def __call__(self, *args, **kwds) -> Any:
         """Execute the command.
@@ -1447,14 +1461,15 @@ class PyCommand:
         Any
             Return value.
         """
-        file_purpose = self._get_file_purpose()
-        if file_purpose == "input" and bool(self.service.remote_file_handler):
-            self.service.remote_file_handler.upload(file_name=kwds["FileName"])
+        for arg, value in kwds.items():
+            if self._get_file_purpose(arg):
+                self.before_execute(value)
         command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
-        if file_purpose == "output" and bool(self.service.remote_file_handler):
-            self.service.remote_file_handler.download(file_name=kwds["FileName"])
+        for arg, value in kwds.items():
+            if self._get_file_purpose(arg):
+                self.after_execute(value)
         return command
 
     def help(self) -> None:
@@ -1511,6 +1526,26 @@ class PyCommand:
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
+
+
+class _InputFile:
+    def _do_before_execute(self, value):
+        try:
+            self.service.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile:
+    def _do_after_execute(self, value):
+        try:
+            self.service.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutFile(_InputFile, _OutputFile):
+    pass
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
