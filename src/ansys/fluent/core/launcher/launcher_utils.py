@@ -261,6 +261,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         )
         if parallel_options:
             launch_args_string += " " + parallel_options
+    gpu = kwargs.get("gpu")
+    if gpu is True:
+        launch_args_string += " -gpu"
+    elif isinstance(gpu, list):
+        launch_args_string += f" -gpu={','.join(map(str, gpu))}"
     return launch_args_string
 
 
