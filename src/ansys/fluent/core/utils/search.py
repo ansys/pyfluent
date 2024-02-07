@@ -12,7 +12,7 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
-from ansys.fluent.core.workflow import BaseTask, TaskContainer, WorkflowWrapper
+from ansys.fluent.core.workflow import BaseTask, NewWorkflowWrapper, TaskContainer
 
 
 def get_api_tree_file_name(version: str, pyfluent_path: str) -> Path:
@@ -72,7 +72,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.extend(obj._path)
         version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
-    elif isinstance(obj, WorkflowWrapper):
+    elif isinstance(obj, NewWorkflowWrapper):
         path = ["<meshing_session>", obj.rules]
         module = obj._workflow.__class__.__module__
         module = _remove_suffix(module, ".workflow")

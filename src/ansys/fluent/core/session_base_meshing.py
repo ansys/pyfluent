@@ -2,7 +2,10 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.meshing.meshing_workflow import MeshingWorkflow
+from ansys.fluent.core.meshing.meshing_workflow import (
+    NewMeshingWorkflow,
+    OldMeshingWorkflow,
+)
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
@@ -38,7 +41,8 @@ class BaseMeshing:
         self._meshing = None
         self._fluent_version = fluent_version
         self._meshing_utilities = None
-        self._workflow = None
+        self._old_workflow = None
+        self._new_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -134,14 +138,25 @@ class BaseMeshing:
     @property
     def workflow(self):
         """Datamodel root of workflow."""
-        if not self._workflow:
-            self._workflow = MeshingWorkflow(
+        if not self._old_workflow:
+            self._old_workflow = OldMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
                 self.PartManagement,
                 self.PMFileManagement,
             )
-        return self._workflow
+        return self._old_workflow
+
+    @property
+    def new_workflow(self):
+        if not self._new_workflow:
+            self._new_workflow = NewMeshingWorkflow(
+                self._workflow_se,
+                self.meshing,
+                self.PartManagement,
+                self.PMFileManagement,
+            )
+        return self._new_workflow
 
     @property
     def PartManagement(self):
