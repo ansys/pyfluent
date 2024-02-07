@@ -79,18 +79,18 @@ by calling the ``get_solution_variables_info`` method.
   >>> solution_variables_info_wall_fluid.solution_variables
   ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
   >>>
-  >>> svar_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
+  >>> solution_variable_info_centroid = solution_variables_info_wall_fluid['SV_CENTROID']
   >>>
-  >>> svar_info_centroid
+  >>> solution_variable_info_centroid
   name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
   >>>
-  >>>svar_info_centroid.name 
+  >>>solution_variable_info_centroid.name 
   'SV_CENTROID'
   >>>
-  >>>svar_info_centroid.dimension 
+  >>>solution_variable_info_centroid.dimension 
   >>>3
   >>>
-  >>>svar_info_centroid.field_type 
+  >>>solution_variable_info_centroid.field_type 
   <class 'numpy.float64'> 
   
 solution variable data
