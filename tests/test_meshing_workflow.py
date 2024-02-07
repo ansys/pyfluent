@@ -224,7 +224,7 @@ def test_attribute_query_list_types(new_mesh_session):
     assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_mesh_session):
     session_new = new_mesh_session
