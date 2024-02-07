@@ -20,7 +20,7 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
-class SVARService:
+class SolutionVariableService:
     """SVAR service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
@@ -180,7 +180,7 @@ class SolutionVariableInfo:
 
     def __init__(
         self,
-        service: SVARService,
+        service: SolutionVariableService,
     ):
         self._service = service
 
@@ -454,7 +454,7 @@ class SolutionVariableData:
 
     def __init__(
         self,
-        service: SVARService,
+        service: SolutionVariableService,
         solution_variable_info: SolutionVariableInfo,
     ):
         self._service = service
