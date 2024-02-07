@@ -427,8 +427,8 @@ class SolutionVariableData:
         >>> fluid_temp_array =solution_variable_data.get_array("SV_T", "fluid")
         >>> wall_temp_array[:]= 500
         >>> fluid_temp_array[:]= 600
-        >>> zone_names_to_svar_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-        >>> solution_variable_data.set_solution_variable_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_svar_data=zone_names_to_svar_data)
+        >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
+        >>> solution_variable_data.set_solution_variable_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
     """
 
     class Data:
@@ -552,7 +552,7 @@ class SolutionVariableData:
     def set_solution_variable_data(
         self,
         solution_variable_name: str,
-        zone_names_to_svar_data: Dict[str, np.array],
+        zone_names_to_solution_variable_data: Dict[str, np.array],
         domain_name: str = "mixture",
     ) -> None:
         """Set SVAR data on zones.
@@ -561,7 +561,7 @@ class SolutionVariableData:
         ----------
         solution_variable_name : str
             Name of the SVAR.
-        zone_names_to_svar_data: Dict[str, np.array]
+        zone_names_to_solution_variable_data: Dict[str, np.array]
             Dictionary containing zone names for SVAR data.
         domain_name : str, optional
             Domain name. The default is ``mixture``.
@@ -574,7 +574,7 @@ class SolutionVariableData:
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
             self._allowed_zone_names.valid_name(zone_name): solution_variable_data
-            for zone_name, solution_variable_data in zone_names_to_svar_data.items()
+            for zone_name, solution_variable_data in zone_names_to_solution_variable_data.items()
         }
 
         def generate_set_solution_variable_data_requests():
