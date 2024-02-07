@@ -195,7 +195,7 @@ def test_command_args_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.task("Import Geometry")
+    igt = w.TaskObject["Import Geometry"]
     assert igt.arguments.CadImportOptions()
     assert igt.arguments.CadImportOptions.OneZonePer()
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
@@ -232,14 +232,14 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w = session_new.workflow
 
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.task("Import Geometry")
+    import_geom = w.TaskObject["Import Geometry"]
     assert import_geom.arguments.LengthUnit.default_value() == "mm"
     assert import_geom.arguments.MeshUnit.is_read_only()
     assert import_geom.arguments.LengthUnit.is_active()
     assert import_geom.arguments.FileName.is_read_only()
     assert import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
 
-    volume_mesh_gen = w.task("Generate the Volume Mesh")
+    volume_mesh_gen = w.TaskObject["Generate the Volume Mesh"]
     assert (
         volume_mesh_gen.arguments.VolumeFillControls.Type.default_value() == "Cartesian"
     )
@@ -287,7 +287,7 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     w = session_new.workflow
     m = session_new.meshing.ImportGeometry.create_instance
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.task("Import Geometry")
+    import_geom = w.TaskObject["Import Geometry"]
 
     with pytest.raises(AttributeError) as msg:
         import_geom.arguments.MeshUnit.set_state("in")
@@ -305,7 +305,7 @@ def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    assert w.task("Import Geometry").arguments.LengthUnit.allowed_values() == [
+    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.allowed_values() == [
         "m",
         "cm",
         "mm",
@@ -314,9 +314,9 @@ def test_sample_use_of_command_arguments(new_mesh_session):
         "um",
         "nm",
     ]
-    assert w.task("Import Geometry").arguments.LengthUnit.default_value() == "mm"
+    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.default_value() == "mm"
     w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
-    assert w.task("Import Geometry").arguments.LengthUnit() == "in"
+    assert w.TaskObject["Import Geometry"].arguments.LengthUnit() == "in"
 
 
 @pytest.mark.codegen_required
@@ -324,7 +324,7 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.task("Import Geometry")
+    import_geom = w.TaskObject["Import Geometry"]
 
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_child()
@@ -748,4 +748,4 @@ def test_nonexistent_attrs(new_mesh_session):
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz
-    assert msg.value.args[0] == "'MeshingWorkflow' object has no attribute 'xyz'"
+    assert msg.value.args[0] == "'OldMeshingWorkflow' object has no attribute 'xyz'"
