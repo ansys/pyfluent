@@ -31,7 +31,7 @@ class SolverIcing(Solver):
             fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
         )
         self._flserver_root = None
-        self._version = None
+        self._fluent_version = None
         self._fluent_connection = fluent_connection
 
     @property
@@ -40,7 +40,7 @@ class SolverIcing(Solver):
         if self._flserver_root is None:
             se = self.datamodel_service_se
             dm_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self.version}.flicing"
+                f"ansys.fluent.core.datamodel_{self._version}.flicing"
             )
             self._flserver_root = dm_module.Root(se, "flserver", [])
         return self._flserver_root
