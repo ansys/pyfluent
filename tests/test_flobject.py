@@ -943,3 +943,11 @@ def test_strings_with_allowed_values(load_static_mixer_settings_only):
         "density-based-implicit",
         "density-based-explicit",
     ]
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_parent_class_attributes(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+    assert solver.setup.models.energy.enabled
+    with pytest.raises(AttributeError):
+        solver.setup.models.energy.__class__.enabled

@@ -139,10 +139,3 @@ def test_api_upgrade(new_solver_session, capsys):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
     "<solver_session>.file.read_case" in capsys.readouterr().out
-
-
-def test_parent_class_attributes(new_solver_session):
-    solver = new_solver_session
-    assert solver.file.export
-    with pytest.raises(AttributeError):
-        solver.file.__class__.export

@@ -1424,5 +1424,5 @@ def _get_child_path(cls, path, identifier, list_of_children):
             path_to_append = "/".join(path)
             if path_to_append not in list_of_children:
                 list_of_children.append(path_to_append)
-        _list_children(getattr(cls, name), identifier, path, list_of_children)
+        _list_children(cls._child_classes[name], identifier, path, list_of_children)
         path.pop()
