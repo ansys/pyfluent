@@ -1,7 +1,7 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import functools
-from itertools import chain, repeat
+import itertools
 import logging
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
@@ -37,7 +37,8 @@ member_specs_oneof_fields = [
 def _get_value_from_message_dict(
     d: dict[str, Any], key: list[Union[str, Sequence[str]]]
 ):
-    """Get value from a protobuf message dict."""
+    """Get value from a protobuf message dict by a sequence of keys. A key can also be
+    a list of oneof types."""
     for k in key:
         if isinstance(k, str):
             d = d[k]
@@ -1497,10 +1498,10 @@ class PyCommand:
                 response = self.service.get_static_info(self.rules)
                 PyCommand._full_static_info[self.rules] = response
             rules_static_info = PyCommand._full_static_info[self.rules]
-            names = [x[0] for x in self.path]
-            static_info_path = list(
-                chain(*zip(repeat(["singletons", "namedobjects"], len(names)), names))
-            )
+            static_info_path = []
+            for comp in self.path:
+                static_info_path.append("namedobjects" if comp[1] else "singletons")
+                static_info_path.append(comp[0])
             parent_static_info = _get_value_from_message_dict(
                 rules_static_info, static_info_path
             )
@@ -1848,7 +1849,7 @@ class PyMenuGeneric(PyMenu):
             )
 
     def __dir__(self) -> list[str]:
-        return list(chain(*self._get_child_names()))
+        return list(itertools.chain(*self._get_child_names()))
 
     def __getattr__(self, name: str):
         if name in PyMenuGeneric.attrs:
