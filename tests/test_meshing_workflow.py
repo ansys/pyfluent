@@ -699,7 +699,7 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
         Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
     )
     part_management.Node["Object"].Rename(NewName=r"Engine")
-    import_cad = fault_tolerant.TaskObject["Import CAD and Part Management"]
+    import_cad = fault_tolerant.task("Import CAD and Part Management")
     import_cad.Arguments.setState(
         {
             r"CreateObjectPer": r"Custom",
