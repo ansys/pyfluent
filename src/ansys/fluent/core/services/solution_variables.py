@@ -119,6 +119,14 @@ class SolutionVariableInfo:
         def solution_variables(self) -> List[str]:
             return list(self._solution_variables_info.keys())
 
+        @property
+        def svars(self) -> List[str]:
+            warnings.warn(
+                "svars is deprecated, use solution_variables instead",
+                DeprecationWarning,
+            )
+            return self.solution_variables
+
     class ZonesInfo:
         """Class containing information for multiple zones."""
 
@@ -685,7 +693,7 @@ class SolutionVariableData:
             "set_svar_data is deprecated, use set_solution_variable_data instead",
             DeprecationWarning,
         )
-        return self.get_solution_variable_data(
+        return self.set_solution_variable_data(
             solution_variable_name=svar_name,
             zone_names_to_solution_variable_data=zone_names_to_svar_data,
             domain_name=domain_name,
