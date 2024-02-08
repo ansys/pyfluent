@@ -37,8 +37,10 @@ member_specs_oneof_fields = [
 def _get_value_from_message_dict(
     d: dict[str, Any], key: list[Union[str, Sequence[str]]]
 ):
-    """Get value from a protobuf message dict by a sequence of keys. A key can also be
-    a list of oneof types."""
+    """Get value from a protobuf message dict by a sequence of keys.
+
+    A key can also be a list of oneof types.
+    """
     for k in key:
         if isinstance(k, str):
             d = d[k]
