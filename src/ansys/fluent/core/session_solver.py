@@ -99,11 +99,11 @@ class Solver(BaseSession):
         self._settings_root = None
         self._fluent_version = None
         self._lck = threading.Lock()
-        self.solution_variable_service = service_creator("svar").create(
+        self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
         self.solution_variable_info = SolutionVariableInfo(
-            self.solution_variable_service
+            self._solution_variable_service
         )
         self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
@@ -125,7 +125,7 @@ class Solver(BaseSession):
     def solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
         return service_creator("svar_data").create(
-            self.solution_variable_service, self.solution_variable_info
+            self._solution_variable_service, self.solution_variable_info
         )
 
     @property
@@ -145,15 +145,6 @@ class Solver(BaseSession):
             DeprecationWarning,
         )
         return self.solution_variable_info
-
-    @property
-    def svar_service(self):
-        """Return the SolutionVariableService handle."""
-        warnings.warn(
-            "svar_service is deprecated, use solution_variable_service instead",
-            DeprecationWarning,
-        )
-        return self.solution_variable_service
 
     @property
     def _version(self):
