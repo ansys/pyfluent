@@ -449,7 +449,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         try:
             getattr(self, key).set_state(value)
         except AttributeError:
-            warnings.warn(f"No attribute named '{key}' in '{self._task.name()}'.")
+            raise AttributeError(
+                f"No attribute named '{key}' in '{self._task.name()}'."
+            )
 
     def __setitem__(self, key, value):
         self._task._command_arguments.__setitem__(key, value)

@@ -255,10 +255,9 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     assert not import_geom.arguments.FileName()
     import_geom.arguments.FileName = "xyz.txt"
     assert import_geom.arguments.FileName() == "xyz.txt"
-    with pytest.warns(
-        UserWarning, match="No attribute named 'File' in 'Import Geometry'."
-    ):
+    with pytest.raises(AttributeError) as msg:
         import_geom.arguments.File = "sample.txt"
+    assert msg.value.args[0] == "No attribute named 'File' in 'Import Geometry'."
     assert not import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
 
     assert import_geom.arguments.CadImportOptions.OneZonePer() == "body"
