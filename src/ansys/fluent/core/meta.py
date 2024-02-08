@@ -1,9 +1,12 @@
 """Metaclasses used in various explicit classes in PyFluent."""
+
 from abc import ABCMeta
 from collections.abc import MutableMapping
 import inspect
 from pprint import pformat
 from typing import List
+
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
@@ -40,10 +43,8 @@ class Attribute:
 
     def __set_name__(self, obj, name):
         if name not in self.VALID_NAMES:
-            raise ValueError(
-                f"Attribute {name} is not allowed."
-                f"Expected values are {self.VALID_NAMES}"
-            )
+            raise DisallowedValuesError("attribute", name, self.VALID_NAMES)
+
         self.name = name
         if not hasattr(obj, "attributes"):
             obj.attributes = set()
@@ -163,24 +164,20 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         if self.range and (
                             value < self.range[0] or value > self.range[1]
                         ):
-                            raise ValueError(
-                                f"Value {value}, is not within valid range"
-                                f" {self.range}."
-                            )
+                            raise DisallowedValuesError("value", value, self.range)
+
                     elif attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
                                 v is None or v in self.allowed_values for v in value
                             ):
-                                raise ValueError(
-                                    f"Not all values in {value}, are in the "
-                                    "list of allowed values "
-                                    f"{self.allowed_values}."
+                                raise DisallowedValuesError(
+                                    "value", value, self.allowed_values
                                 )
+
                         elif value is not None and value not in self.allowed_values:
-                            raise ValueError(
-                                f"Value {value}, is not in the list of "
-                                f"allowed values {self.allowed_values}."
+                            raise DisallowedValuesError(
+                                "value", value, self.allowed_values
                             )
 
             return value

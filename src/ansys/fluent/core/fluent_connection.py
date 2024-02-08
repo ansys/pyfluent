@@ -323,7 +323,6 @@ class FluentConnection:
         self.start_transcript = start_transcript
         from grpc._channel import _InactiveRpcError
 
-        print("Obtaining Cortex connection properties...")
         try:
             logger.debug("Obtaining Cortex connection properties...")
             fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
@@ -381,7 +380,6 @@ class FluentConnection:
         # gets executed during exit.
         self._waiting_thread = threading.Thread(target=self._exit_event.wait)
         self._waiting_thread.start()
-        print("finalizer")
         self._finalizer = weakref.finalize(
             self,
             FluentConnection._exit,

@@ -48,6 +48,7 @@ config_dict =
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 """
+
 import logging
 import os
 from pathlib import Path, PurePosixPath
@@ -274,7 +275,9 @@ def configure_container_dict(
         )
     else:
         fd, sifile = tempfile.mkstemp(
-            suffix=".txt", prefix="serverinfo-", dir="." if in_docker() else host_mount_path
+            suffix=".txt",
+            prefix="serverinfo-",
+            dir="." if in_docker() else host_mount_path,
         )
         os.close(fd)
         container_server_info_file = (
@@ -308,9 +311,11 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
+    host_server_info_file = (
+        Path("/mnt" if in_docker() else host_mount_path)
+        / container_server_info_file.name
+    )
 
-    host_server_info_file = Path("/mnt" if in_docker() else host_mount_path) / container_server_info_file.name
-     
     return (
         container_dict,
         timeout,
@@ -354,9 +359,7 @@ def start_fluent_container(
 
     if container_dict is None:
         container_dict = {}
-    print('container_dict', container_dict)
     container_vars = configure_container_dict(args, **container_dict)
-    print('container_dict', container_vars)
     (
         config_dict,
         timeout,
@@ -390,14 +393,13 @@ def start_fluent_container(
         docker_client = docker.from_env()
 
         logger.debug("Starting Fluent docker container...")
-        
-           
+
         docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
 
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
         )
-        
+
         if not success:
             raise TimeoutError(
                 "Fluent container launch has timed out, stop container manually."
