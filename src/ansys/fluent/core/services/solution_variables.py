@@ -2,6 +2,7 @@
 
 import math
 from typing import Dict, List, Optional
+import warnings
 
 import grpc
 import numpy as np
@@ -218,6 +219,17 @@ class SolutionVariableInfo:
             else:
                 solution_variables_info._filter(response.svarsInfo)
         return solution_variables_info
+
+    def get_svars_info(
+        self, zone_names: List[str], domain_name: str = "mixture"
+    ) -> SolutionVariables:
+        warnings.warn(
+            "Use get_solution_variables_info instead of get_svars_info",
+            DeprecationWarning,
+        )
+        return self.get_solution_variables_info(
+            zone_names=zone_names, domain_name=domain_name
+        )
 
     def get_zones_info(self) -> ZonesInfo:
         """Get Zones info.
@@ -549,6 +561,22 @@ class SolutionVariableData:
             extract_svars(self._service.get_solution_variable_data(svars_request)),
         )
 
+    def get_svar_data(
+        self,
+        svar_name: str,
+        zone_names: List[str],
+        domain_name: Optional[str] = "mixture",
+    ) -> Data:
+        warnings.warn(
+            "get_svar_data is deprecated, use get_solution_variable_data instead",
+            DeprecationWarning,
+        )
+        return self.get_solution_variable_data(
+            solution_variable_name=svar_name,
+            zone_names=zone_names,
+            domain_name=domain_name,
+        )
+
     def set_solution_variable_data(
         self,
         solution_variable_name: str,
@@ -645,4 +673,20 @@ class SolutionVariableData:
 
         self._service.set_solution_variable_data(
             generate_set_solution_variable_data_requests()
+        )
+
+    def set_svar_data(
+        self,
+        svar_name: str,
+        zone_names_to_svar_data: List[str],
+        domain_name: Optional[str] = "mixture",
+    ) -> Data:
+        warnings.warn(
+            "set_svar_data is deprecated, use set_solution_variable_data instead",
+            DeprecationWarning,
+        )
+        return self.get_solution_variable_data(
+            solution_variable_name=svar_name,
+            zone_names_to_solution_variable_data=zone_names_to_svar_data,
+            domain_name=domain_name,
         )

@@ -7,6 +7,7 @@ import importlib
 import logging
 import threading
 from typing import Any, Optional
+import warnings
 
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
@@ -126,6 +127,33 @@ class Solver(BaseSession):
         return service_creator("svar_data").create(
             self.solution_variable_service, self.solution_variable_info
         )
+
+    @property
+    def svar_data(self):
+        """Return the SolutionVariableData handle."""
+        warnings.warn(
+            "svar_data is deprecated, use solution_variable_data instead",
+            DeprecationWarning,
+        )
+        return self.solution_variable_data
+
+    @property
+    def svar_info(self):
+        """Return the SolutionVariableInfo handle."""
+        warnings.warn(
+            "svar_info is deprecated, use solution_variable_info instead",
+            DeprecationWarning,
+        )
+        return self.solution_variable_info
+
+    @property
+    def svar_service(self):
+        """Return the SolutionVariableService handle."""
+        warnings.warn(
+            "svar_service is deprecated, use solution_variable_service instead",
+            DeprecationWarning,
+        )
+        return self.solution_variable_service
 
     @property
     def _version(self):
