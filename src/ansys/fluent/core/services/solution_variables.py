@@ -232,7 +232,7 @@ class SolutionVariableInfo:
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SolutionVariables:
         warnings.warn(
-            "Use get_solution_variables_info instead of get_svars_info",
+            "get_svars_info is deprecated, use get_solution_variables_info instead",
             DeprecationWarning,
         )
         return self.get_solution_variables_info(
