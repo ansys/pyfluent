@@ -1769,7 +1769,7 @@ class DataModelType(Enum):
     # Really???
     TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
     NUMBER = (
-        ["Real", "Int", "ListReal", "Real List", "Integer"],
+        ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt"],
         PyNumericalCommandArgumentsSubItem,
     )
     DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)

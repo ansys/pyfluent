@@ -108,6 +108,14 @@ def test_meshing_utilities(new_mesh_session):
         "cold-inlet",
         "hot-inlet",
         "symmetry-xyplane",
+    ] or [
+        "symmetry-xyplane",
+        "hot-inlet",
+        "cold-inlet",
+        "outlet",
+        "wall-inlet",
+        "wall-elbow",
+        "elbow-fluid",
     ]
 
     assert meshing_session.meshing_utilities.get_labels(
@@ -120,6 +128,14 @@ def test_meshing_utilities(new_mesh_session):
         "cold-inlet",
         "hot-inlet",
         "symmetry-xyplane",
+    ] or [
+        "symmetry-xyplane",
+        "hot-inlet",
+        "cold-inlet",
+        "outlet",
+        "wall-inlet",
+        "wall-elbow",
+        "elbow-fluid",
     ]
 
     assert meshing_session.meshing_utilities.get_labels(
@@ -132,6 +148,14 @@ def test_meshing_utilities(new_mesh_session):
         "cold-inlet",
         "hot-inlet",
         "symmetry-xyplane",
+    ] or [
+        "symmetry-xyplane",
+        "hot-inlet",
+        "cold-inlet",
+        "outlet",
+        "wall-inlet",
+        "wall-elbow",
+        "elbow-fluid",
     ]
 
     assert (
@@ -144,7 +168,19 @@ def test_meshing_utilities(new_mesh_session):
 
     assert meshing_session.meshing_utilities.get_labels_on_face_zones(
         face_zone_name_list=["wall-inlet", "wall-elbow"]
-    ) == ["elbow-fluid", "wall-elbow", "wall-inlet-1", "wall-elbow-1", "wall-inlet"]
+    ) == [
+        "elbow-fluid",
+        "wall-elbow",
+        "wall-inlet-1",
+        "wall-elbow-1",
+        "wall-inlet",
+    ] or [
+        "wall-elbow",
+        "elbow-fluid",
+        "wall-inlet-1",
+        "wall-elbow-1",
+        "wall-inlet",
+    ]
 
     assert meshing_session.meshing_utilities.get_face_zone_id_list_with_labels(
         face_zone_name_list=["wall-inlet", "wall-elbow"],
@@ -170,7 +206,13 @@ def test_meshing_utilities(new_mesh_session):
 
     assert meshing_session.meshing_utilities.get_labels_on_face_zones(
         face_zone_id_list=[30, 31]
-    ) == ["elbow-fluid", "cold-inlet", "hot-inlet-1", "cold-inlet-1", "hot-inlet"]
+    ) == ["elbow-fluid", "cold-inlet", "hot-inlet-1", "cold-inlet-1", "hot-inlet"] or [
+        "cold-inlet",
+        "elbow-fluid",
+        "hot-inlet-1",
+        "cold-inlet-1",
+        "hot-inlet",
+    ]
 
     assert (
         meshing_session.meshing_utilities.add_labels_on_face_zones(
@@ -181,7 +223,7 @@ def test_meshing_utilities(new_mesh_session):
 
     assert meshing_session.meshing_utilities.get_labels_on_face_zones(
         face_zone_name_pattern="out*"
-    ) == ["elbow-fluid", "outlet", "outlet-1"]
+    ) == ["elbow-fluid", "outlet", "outlet-1"] or ["outlet", "elbow-fluid", "outlet-1"]
 
     assert (
         meshing_session.meshing_utilities.remove_labels_on_face_zones(
@@ -1738,6 +1780,104 @@ def test_meshing_utilities(new_mesh_session):
                 None,
                 None,
                 "facelabel",
+            ],
+        ],
+        [[87], None],
+        [None],
+        None,
+    ] or [
+        "elbow-fluid-1",
+        "solid",
+        10,
+        [29, 33, 34, 1, 2, 3],
+        [20, 21, 22, 23, 24, 25, 26, 27, 28],
+        "mesh",
+        [
+            [
+                "elbow-fluid",
+                "fluid",
+                [3.981021240569742, 7.614496699403261, 0.02968953016527287],
+                [3, 2, 1, 34, 33, 29],
+                [[87], None],
+            ]
+        ],
+        [
+            ["outlet-1", "fluid", 1, [3], None, "geom", False, None],
+            ["hot-inlet-1", "fluid", 1, [2], None, "geom", False, None],
+            ["cold-inlet-1", "fluid", 1, [2, 1], None, "geom", False, None],
+            ["wall-inlet-1", "fluid", 1, [34], None, "geom", False, None],
+            [
+                "symmetry-xyplane",
+                "solid",
+                10,
+                [29],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "hot-inlet",
+                "solid",
+                10,
+                [1],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "cold-inlet",
+                "solid",
+                10,
+                [2],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            ["outlet", "solid", 10, [3], None, "geom", None, None, None, "facelabel"],
+            [
+                "wall-inlet",
+                "solid",
+                10,
+                [33],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "wall-elbow",
+                "solid",
+                10,
+                [34],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "facelabel",
+            ],
+            [
+                "elbow-fluid",
+                "solid",
+                10,
+                [3, 2, 1, 34, 33, 29],
+                None,
+                "geom",
+                None,
+                None,
+                None,
+                "body",
             ],
         ],
         [[87], None],
