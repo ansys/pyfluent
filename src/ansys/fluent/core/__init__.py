@@ -35,7 +35,7 @@ if os.path.exists(_README_FILE):
         __doc__ = f.read()
 
 
-def git_version() -> str:
+def version_info() -> str:
     """Method returning the version of PyFluent being used.
 
     Returns
