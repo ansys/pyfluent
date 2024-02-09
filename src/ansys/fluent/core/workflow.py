@@ -403,7 +403,11 @@ class ArgumentsWrapper(PyCallableStateObject):
         task : BaseTask
             The task holding these arguments.
         """
-        self._task = task
+        self.__dict__.update(
+            dict(
+                _task=task,
+            )
+        )
 
     def set_state(self, args: dict) -> None:
         """Overwrite arguments.
@@ -440,6 +444,14 @@ class ArgumentsWrapper(PyCallableStateObject):
 
     def __getattr__(self, attr):
         return getattr(self._task._command_arguments, attr)
+
+    def __setattr__(self, key, value):
+        try:
+            getattr(self, key).set_state(value)
+        except AttributeError:
+            raise AttributeError(
+                f"No attribute named '{key}' in '{self._task.name()}'."
+            )
 
     def __setitem__(self, key, value):
         self._task._command_arguments.__setitem__(key, value)
@@ -540,7 +552,7 @@ class CommandTask(BaseTask):
         cmd = self._command()
         if task_arg_state:
             cmd.set_state(task_arg_state)
-        return ReadOnlyObject(self._cmd_sub_items_read_only(cmd, cmd()))
+        return self._cmd_sub_items_read_only(cmd, cmd())
 
     def _cmd_sub_items_read_only(self, cmd, cmd_state):
         for key, value in cmd_state.items():
@@ -548,7 +560,7 @@ class CommandTask(BaseTask):
                 setattr(
                     cmd, key, self._cmd_sub_items_read_only(getattr(cmd, key), value)
                 )
-            setattr(cmd, key, ReadOnlyObject(getattr(cmd, key)))
+            setattr(cmd, key, getattr(cmd, key))
         return cmd
 
     def _command(self):

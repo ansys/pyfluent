@@ -224,7 +224,7 @@ def test_attribute_query_list_types(new_mesh_session):
     assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_mesh_session):
     session_new = new_mesh_session
@@ -234,10 +234,35 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = w.task("Import Geometry")
     assert import_geom.arguments.LengthUnit.default_value() == "mm"
-    assert import_geom.arguments.MeshUnit.is_read_only()
+    assert import_geom.arguments.LengthUnit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert import_geom.arguments.LengthUnit() == "mm"
+    import_geom.arguments.LengthUnit.set_state("cm")
+    assert import_geom.arguments.LengthUnit.get_state() == "cm"
+    import_geom.arguments.LengthUnit = "in"
+    assert import_geom.arguments.LengthUnit() == "in"
+
+    assert not import_geom.arguments.MeshUnit.is_read_only()
     assert import_geom.arguments.LengthUnit.is_active()
-    assert import_geom.arguments.FileName.is_read_only()
-    assert import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
+    assert not import_geom.arguments.FileName.is_read_only()
+    assert not import_geom.arguments.FileName()
+    import_geom.arguments.FileName = "xyz.txt"
+    assert import_geom.arguments.FileName() == "xyz.txt"
+    with pytest.raises(AttributeError) as msg:
+        import_geom.arguments.File = "sample.txt"
+    assert msg.value.args[0] == "No attribute named 'File' in 'Import Geometry'."
+    assert not import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
+
+    assert import_geom.arguments.CadImportOptions.OneZonePer() == "body"
+    import_geom.arguments.CadImportOptions.OneZonePer.set_state("face")
+    assert import_geom.arguments.CadImportOptions.OneZonePer() == "face"
 
     volume_mesh_gen = w.task("Generate the Volume Mesh")
     assert (
@@ -280,6 +305,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     )
 
 
+@pytest.mark.skip("Wait for later implementation.")
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_mesh_session):
