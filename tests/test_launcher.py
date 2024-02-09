@@ -12,6 +12,7 @@ from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     DockerContainerLaunchNotSupported,
     FluentMode,
+    GPUSolverSupportError,
     LaunchFluentError,
     UnexpectedKeywordArgument,
     _build_journal_argument,
@@ -20,6 +21,26 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 import ansys.platform.instancemanagement as pypim
+
+
+def test_gpu_version_error():
+    with pytest.raises(GPUSolverSupportError) as msg:
+        pyfluent.launch_fluent(
+            mode="meshing",
+            version="2d",
+            precision="single",
+            processor_count=5,
+            show_gui=True,
+            gpu=True,
+        )
+        pyfluent.setup_for_fluent(
+            mode="meshing",
+            version="2d",
+            precision="single",
+            processor_count=5,
+            show_gui=True,
+            gpu=True,
+        )
 
 
 def test_mode():
