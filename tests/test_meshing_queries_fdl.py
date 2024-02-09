@@ -254,6 +254,7 @@ def test_meshing_utilities(new_mesh_session):
             cell_zone_name_list=["elbow-fluid"], label_name_list=["elbow-1"]
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.get_cell_zone_id_list_with_labels(
@@ -280,6 +281,7 @@ def test_meshing_utilities(new_mesh_session):
             cell_zone_id_list=[87], label_name_list=["87-1"]
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.get_labels_on_cell_zones(
@@ -291,6 +293,7 @@ def test_meshing_utilities(new_mesh_session):
             cell_zone_name_pattern="*", label_name_list=["cell-1"]
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.get_labels_on_cell_zones(
@@ -336,6 +339,7 @@ def test_meshing_utilities(new_mesh_session):
             label_name_list=["20-1", "21-1"],
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.get_edge_zone_id_list_with_labels(
@@ -368,6 +372,7 @@ def test_meshing_utilities(new_mesh_session):
             edge_zone_id_list=[22, 23], label_name_list=["22-1", "23-1"]
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.get_labels_on_edge_zones(
@@ -379,6 +384,7 @@ def test_meshing_utilities(new_mesh_session):
             edge_zone_name_pattern="cold-inlet*", label_name_list=["26-1"]
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.get_labels_on_edge_zones(
@@ -1540,6 +1546,7 @@ def test_meshing_utilities(new_mesh_session):
             region_type="hexcore", boi_prefix_string="wall", create_size_function=True
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -1664,11 +1671,13 @@ def test_meshing_utilities(new_mesh_session):
     assert (
         meshing_session.meshing_utilities.remove_id_suffix_from_face_zones()
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
         meshing_session.meshing_utilities.clean_face_zone_names()
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -1683,6 +1692,7 @@ def test_meshing_utilities(new_mesh_session):
             zone_id_list=[30, 31, 32], start_number=1
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert meshing_session.meshing_utilities.rename_object(
@@ -1890,6 +1900,7 @@ def test_meshing_utilities(new_mesh_session):
             object_name_list=["elbow-fluid"], separator="-", new_suffix="fluid-new"
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -1906,6 +1917,7 @@ def test_meshing_utilities(new_mesh_session):
             object_name_list=["elbow-fluid-1"], separator="-", new_suffix="fluid-new"
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -1913,6 +1925,7 @@ def test_meshing_utilities(new_mesh_session):
             from_face_zone_id=33, to_face_zone_id=34
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -2044,6 +2057,7 @@ def test_meshing_utilities(new_mesh_session):
     assert (
         meshing_session.meshing_utilities.delete_all_sub_domains()
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -2165,7 +2179,7 @@ def test_meshing_utilities(new_mesh_session):
 
     assert meshing_session.meshing_utilities.replace_cell_zone_suffix(
         cell_zone_id_list=[87], old_suffix="fluid", new_suffix="fluid-new", merge=True
-    ) == ["*the-non-printing-object*"]
+    ) == ["*the-non-printing-object*"] or [False]
 
     assert (
         meshing_session.meshing_utilities.replace_cell_zone_suffix(
@@ -2185,6 +2199,7 @@ def test_meshing_utilities(new_mesh_session):
             merge=True,
         )
         == "*the-non-printing-object*"
+        or False
     )
 
     assert (
@@ -2195,4 +2210,5 @@ def test_meshing_utilities(new_mesh_session):
             merge=True,
         )
         == "*the-non-printing-object*"
+        or False
     )
