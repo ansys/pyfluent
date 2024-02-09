@@ -227,9 +227,8 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    if gpu:
-        if version != "3d":
-            raise GPUSolverSupportError()
+    if version != "3d" and gpu:
+        raise GPUSolverSupportError()
     _process_kwargs(kwargs)
     del kwargs
     fluent_launch_mode = _get_fluent_launch_mode(
