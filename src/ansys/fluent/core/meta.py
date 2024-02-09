@@ -213,14 +213,6 @@ class PyLocalBaseMeta(type):
 
         return wrapper
 
-    @classmethod
-    def __create_get_session_handle(cls):
-        def wrapper(self, obj=None):
-            root = self.get_root(obj)
-            return root.session_handle
-
-        return wrapper
-
     def __new__(cls, name, bases, attrs):
         attrs["get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
         attrs["get_ancestors_by_name"] = cls.__create_get_ancestors_by_name()
@@ -829,7 +821,7 @@ class PyLocalContainer(MutableMapping):
     def get_session_handle(self, obj=None):
         """Returns the session-handle object."""
         root = self.get_root(obj)
-        return root.session_handle
+        return getattr(root, "session_handle", None)
 
     @property
     def session_handle(self):
@@ -859,14 +851,6 @@ class PyLocalContainer(MutableMapping):
     @property
     def session(self):
         return self.get_session()
-
-    def get_session_handle(self, obj=None):
-        root = self.get_root(obj)
-        return root.session_handle
-
-    @property
-    def session_handle(self):
-        return self.get_session_handle()
 
     def __iter__(self):
         return iter(self.__collection)
