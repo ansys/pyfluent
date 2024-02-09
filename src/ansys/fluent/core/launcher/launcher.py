@@ -13,6 +13,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
+    GPUSolverSupportError,
     _confirm_watchdog_start,
     _get_fluent_launch_mode,
     _get_mode,
@@ -226,6 +227,9 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
+    if version and gpu:
+        if version != "3d" and gpu:
+            raise GPUSolverSupportError()
     _process_kwargs(kwargs)
     del kwargs
     fluent_launch_mode = _get_fluent_launch_mode(
