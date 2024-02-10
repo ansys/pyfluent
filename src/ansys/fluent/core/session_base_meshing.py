@@ -142,13 +142,12 @@ class BaseMeshing:
             self._old_workflow = OldMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
-                self.PartManagement,
-                self.PMFileManagement,
             )
         return self._old_workflow
 
     @property
     def new_workflow(self):
+        """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._new_workflow:
             self._new_workflow = NewMeshingWorkflow(
                 self._workflow_se,

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import threading
-from typing import Any, Iterator, List, Optional, Tuple
+from typing import Any, Iterator, List, Optional, Tuple, Union
 import warnings
 
 import ansys.fluent.core as pyfluent
@@ -104,7 +104,9 @@ class BaseTask:
     __call__()
     """
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize BaseTask.
 
         Parameters
@@ -508,7 +510,9 @@ class CommandTask(BaseTask):
     Classes without these attributes cannot be commanded.
     """
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CommandTask.
 
         Parameters
@@ -573,7 +577,9 @@ class SimpleTask(CommandTask):
     """Simple task representation for wrapping a Workflow TaskObject instance of
     TaskType Simple."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize SimpleTask.
 
         Parameters
@@ -597,7 +603,9 @@ class CompoundChild(SimpleTask):
     """Compound Child representation for wrapping a Workflow TaskObject instance of
     TaskType Compound Child."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CompoundChild.
 
         Parameters
@@ -624,7 +632,9 @@ class CompositeTask(BaseTask):
     """Composite task representation for wrapping a Workflow TaskObject instance of
     TaskType Composite."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CompositeTask.
 
         Parameters
@@ -668,7 +678,9 @@ class ConditionalTask(CommandTask):
     """Conditional task representation for wrapping a Workflow TaskObject instance of
     TaskType Conditional."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize ConditionalTask.
 
         Parameters
@@ -699,7 +711,9 @@ class CompoundTask(CommandTask):
     """Compound task representation for wrapping a Workflow TaskObject instance of
     TaskType Compound."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CompoundTask.
 
         Parameters
@@ -793,7 +807,6 @@ class NewWorkflowWrapper:
 
     Methods
     -------
-    task(name)
     ordered_children()
     __getattr__(attr)
     __dir__()

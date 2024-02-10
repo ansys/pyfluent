@@ -11,15 +11,12 @@ from ansys.fluent.core.workflow import NewWorkflowWrapper, OldWorkflowWrapper
 
 
 class OldMeshingWorkflow(OldWorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper that extends the core
-    functionality."""
+    """Meshing specialization of the WorkflowWrapper."""
 
     def __init__(
         self,
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
-        part_management: PyMenuGeneric,
-        pm_file_management: PyMenuGeneric,
     ) -> None:
         """Initialize MeshingWorkflow.
 
@@ -39,7 +36,7 @@ class OldMeshingWorkflow(OldWorkflowWrapper):
 
 class NewMeshingWorkflow(NewWorkflowWrapper):
     """Meshing specialization of the WorkflowWrapper that extends the core
-    functionality."""
+    functionality in an object-oriented manner."""
 
     def __init__(
         self,
