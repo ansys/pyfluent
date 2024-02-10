@@ -822,22 +822,6 @@ class NewWorkflowWrapper:
         self._main_thread_ident = None
         self._task_objects = {}
 
-    def task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
-        functionality.
-
-        Parameters
-        ----------
-        name : str
-            Task name - the display name, not the internal ID.
-
-        Returns
-        -------
-        BaseTask
-            wrapped task object.
-        """
-        return _makeTask(self, name)
-
     def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow. Sorting is in terms of the
         workflow order and only includes the top-level tasks, while other tasks can be
@@ -940,7 +924,7 @@ class NewWorkflowWrapper:
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
         task_state = workflow_state[task_key]
-        return self.task(task_state["_name_"])
+        return _makeTask(self, task_state["_name_"])
 
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()

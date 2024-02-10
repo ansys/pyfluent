@@ -37,7 +37,7 @@ def watertight_workflow(geometry_file_name, **launch_args) -> NewMeshingWorkflow
             session = launch_fluent(**args)
     meshing_workflow = session.watertight(dynamic_interface=dynamic_interface)
     if geometry_file_name:
-        import_geometry = meshing_workflow.task("Import Geometry")
+        import_geometry = meshing_workflow.import_geometry
         # change it so we can do this:
         # import_geometry.arguments.FileName = geometry_file_name
         # or import_geometry.FileName = geometry_file_name
