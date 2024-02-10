@@ -776,3 +776,24 @@ def test_nonexistent_attrs(new_mesh_session):
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz
     assert msg.value.args[0] == "'OldMeshingWorkflow' object has no attribute 'xyz'"
+
+
+def test_old_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    assert meshing.workflow.__class__.__name__ == "OldMeshingWorkflow"
+    assert meshing.workflow.TaskObject.__class__.__name__ == "TaskContainer"
+    assert meshing.workflow.TaskObject["Import Geometry"].arguments()
+    with pytest.raises(AttributeError):
+        meshing.workflow.import_geometry
+    meshing.exit()
+
+
+def test_new_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    watertight = meshing.watertight()
+    assert watertight.__class__.__name__ == "NewMeshingWorkflow"
+    assert watertight.import_geometry.arguments()
+    with pytest.raises(AttributeError):
+        watertight.Taskobject["Import Geometry"]
+    meshing.exit()
