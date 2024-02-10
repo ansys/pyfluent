@@ -35,8 +35,8 @@ class OldMeshingWorkflow(OldWorkflowWrapper):
 
 
 class NewMeshingWorkflow(NewWorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper that extends the core
-    functionality in an object-oriented manner."""
+    """Meshing specialization of the WorkflowWrapper that extends the core functionality
+    in an object-oriented manner."""
 
     def __init__(
         self,
