@@ -778,6 +778,7 @@ def test_nonexistent_attrs(new_mesh_session):
     assert msg.value.args[0] == "'OldMeshingWorkflow' object has no attribute 'xyz'"
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_old_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -789,6 +790,7 @@ def test_old_workflow_structure(new_mesh_session):
     meshing.exit()
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_new_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
