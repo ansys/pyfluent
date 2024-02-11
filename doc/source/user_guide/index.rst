@@ -18,6 +18,7 @@ Python code to control and monitor Ansys Fluent.
    specify_file_paths
    tui_commands
    meshing_workflows
+   new_meshing_workflows
    general_settings
    solver_settings
    models
