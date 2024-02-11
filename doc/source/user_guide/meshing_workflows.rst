@@ -594,3 +594,14 @@ attribute access methods in a watertight geometry meshing workflow.
     w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
     w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
 
+Some improvements
+-----------------
+One can call the TaskObject to get it's state:
+
+.. code:: python
+    meshing.workflow.TaskObject()
+Items of the TaskObject can now be accessed in settings dictionary style:
+
+.. code:: python
+    for name, object in meshing.workflow.TaskObject.items():
+        ...
