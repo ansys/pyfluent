@@ -455,11 +455,9 @@ def test_named_object():
     r.n_1["n1"] = {}
     r.n_1["n2"] = {}
     assert r.n_1.get_object_names() == ["n1", "n2"]
-    r.n_1.rename("n3", "n1")
-    assert r.n_1.get_object_names() == ["n3", "n2"]
     r.n_1.create("n4")
-    assert r.n_1.get_object_names() == ["n3", "n2", "n4"]
-    del r.n_1["n3"]
+    assert r.n_1.get_object_names() == ["n1", "n2", "n4"]
+    del r.n_1["n1"]
     assert r.n_1.get_object_names() == ["n2", "n4"]
     r.n_1["n1"] = {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
     assert r.n_1["n1"]() == {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
@@ -471,11 +469,7 @@ def test_named_object():
 def test_list_object():
     r = flobject.get_root(Proxy())
     assert r.l_1.get_size() == 0
-    r.l_1.resize(3)
-    assert r.l_1.get_size() == 3
-    r.l_1.resize(2)
-    assert r.l_1.get_size() == 2
-    assert r.l_1() == [
+    r.l_1 = [
         {"il_1": None, "bl_1": None},
         {"il_1": None, "bl_1": None},
     ]
@@ -702,7 +696,19 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     assert count_key_recursive(default_attrs, "default") > 5
 
     mesh = solver.results.graphics.mesh.create("mesh-1")
-    assert mesh.name.is_read_only()
+    if solver.get_fluent_version() < "24.2.0":
+        assert mesh.name.is_read_only()
+    else:
+        assert not mesh.name.is_read_only()
+
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh-1"]
+
+    solver.results.graphics.mesh["mesh-1"].rename("mesh_new")
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh_new"]
+
+    if solver.get_fluent_version() >= "24.2.0":
+        solver.results.graphics.mesh.rename(new="mesh_242", old="mesh_new")
+        assert solver.results.graphics.mesh.get_object_names() == ["mesh_242"]
 
 
 @pytest.mark.fluent_version("latest")

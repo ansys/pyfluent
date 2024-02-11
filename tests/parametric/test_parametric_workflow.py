@@ -138,7 +138,7 @@ def test_parametric_workflow():
     )
     study2 = solver_session.parametric_studies[study2_name]
     assert len(study2.design_points) == 2
-    solver_session.parametric_studies.rename("New Study", study2_name)
+    solver_session.parametric_studies[study2_name].rename("New Study")
     assert "New Study" in solver_session.parametric_studies
     del solver_session.parametric_studies[study1_name]
     assert len(solver_session.parametric_studies) == 1

@@ -233,7 +233,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "inner_wall": {
@@ -276,15 +276,19 @@
             }
         },
         "interior--duct": {
+            "interior": null,
             "name": "interior--duct"
         },
         "interior--pipe_1": {
+            "interior": null,
             "name": "interior--pipe_1"
         },
         "interior--pipe_2": {
+            "interior": null,
             "name": "interior--pipe_2"
         },
         "interior--pipe_3": {
+            "interior": null,
             "name": "interior--pipe_3"
         },
         "outer_wall": {
@@ -351,16 +355,20 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "periodic_1": {
-            "angular": true,
-            "name": "periodic_1"
+            "name": "periodic_1",
+            "periodic": {
+                "rotationally_periodic": true
+            }
         },
         "peripodic_2": {
-            "angular": true,
-            "name": "peripodic_2"
+            "name": "peripodic_2",
+            "periodic": {
+                "rotationally_periodic": true
+            }
         },
         "pipe_1_end": {
             "momentum": {
@@ -386,7 +394,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_1_wall": {
@@ -452,7 +460,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_2_wall": {
@@ -518,7 +526,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_3_wall": {
@@ -795,7 +803,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "inner_wall": {
@@ -838,15 +846,19 @@
             }
         },
         "interior--duct": {
+            "interior": null,
             "name": "interior--duct"
         },
         "interior--pipe_1": {
+            "interior": null,
             "name": "interior--pipe_1"
         },
         "interior--pipe_2": {
+            "interior": null,
             "name": "interior--pipe_2"
         },
         "interior--pipe_3": {
+            "interior": null,
             "name": "interior--pipe_3"
         },
         "outer_wall": {
@@ -913,16 +925,20 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "periodic_1": {
-            "angular": true,
-            "name": "periodic_1"
+            "name": "periodic_1",
+            "periodic": {
+                "rotationally_periodic": true
+            }
         },
         "peripodic_2": {
-            "angular": true,
-            "name": "peripodic_2"
+            "name": "peripodic_2",
+            "periodic": {
+                "rotationally_periodic": true
+            }
         },
         "pipe_1_end": {
             "momentum": {
@@ -948,7 +964,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_1_wall": {
@@ -1014,7 +1030,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_2_wall": {
@@ -1080,7 +1096,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_3_wall": {
@@ -1357,7 +1373,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "inner_wall": {
@@ -1400,15 +1416,19 @@
             }
         },
         "interior--duct": {
+            "interior": null,
             "name": "interior--duct"
         },
         "interior--pipe_1": {
+            "interior": null,
             "name": "interior--pipe_1"
         },
         "interior--pipe_2": {
+            "interior": null,
             "name": "interior--pipe_2"
         },
         "interior--pipe_3": {
+            "interior": null,
             "name": "interior--pipe_3"
         },
         "out": {
@@ -1436,7 +1456,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "outer_wall": {
@@ -1479,12 +1499,16 @@
             }
         },
         "periodic_1": {
-            "angular": true,
-            "name": "periodic_1"
+            "name": "periodic_1",
+            "periodic": {
+                "rotationally_periodic": true
+            }
         },
         "peripodic_2": {
-            "angular": true,
-            "name": "peripodic_2"
+            "name": "peripodic_2",
+            "periodic": {
+                "rotationally_periodic": true
+            }
         },
         "pipe2_wall": {
             "momentum": {
@@ -1549,7 +1573,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_1_wall": {
@@ -1615,7 +1639,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_3_end": {
@@ -1642,7 +1666,7 @@
             "turbulence": {
                 "turbulent_intensity": 0.05,
                 "turbulent_specification": "Intensity and Viscosity Ratio",
-                "turbulent_viscosity_ratio_real": 10
+                "turbulent_viscosity_ratio": 10
             }
         },
         "pipe_3_wall": {
