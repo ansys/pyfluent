@@ -585,18 +585,18 @@ attribute access methods in a watertight geometry meshing workflow.
     w = meshing.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    w.task("Import Geometry").CommandArguments()
-    w.task("Import Geometry").CommandArguments.FileName.is_read_only()
-    w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
-    w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values()
-    w.task("Import Geometry").CommandArguments.LengthUnit.default_value()
-    w.task("Import Geometry").CommandArguments.LengthUnit()
-    w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
-    w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
+    w.TaskObject["Import Geometry"].CommandArguments()
+    w.TaskObject["Import Geometry"].CommandArguments.FileName.is_read_only()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.is_active()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.allowed_values()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.default_value()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit()
+    w.TaskObject["Import Geometry"].CommandArguments.CadImportOptions.OneZonePer()
+    w.TaskObject["Import Geometry"].CommandArguments.CadImportOptions.FeatureAngle.min()
 
 Some improvements
 -----------------
-One can call the TaskObject to get it's state:
+You can call the TaskObject to get it's state:
 
 .. code:: python
 
