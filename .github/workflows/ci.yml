@@ -607,7 +607,7 @@ jobs:
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: Upload to Public PyPi
-        if: contains(github.ref, 'dev') != 'true'
+        if: ${{ !contains(github.ref, 'dev') }}
         run: |
           pip install twine
           twine upload --skip-existing ./**/*.whl
@@ -617,7 +617,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
-        if: contains(github.ref, 'dev') != 'true'
+        if: ${{ !contains(github.ref, 'dev') }}
         uses: softprops/action-gh-release@v1
         with:
           files: |
