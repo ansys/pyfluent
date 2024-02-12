@@ -250,6 +250,7 @@ jobs:
             src/ansys/fluent/core/meshing/tui_222.py
             src/ansys/fluent/core/solver/settings_222
             src/ansys/fluent/core/solver/tui_222.py
+            src/ansys/fluent/core/data/api_tree_222.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -291,6 +292,7 @@ jobs:
             src/ansys/fluent/core/meshing/tui_231.py
             src/ansys/fluent/core/solver/settings_231
             src/ansys/fluent/core/solver/tui_231.py
+            src/ansys/fluent/core/data/api_tree_231.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -325,6 +327,7 @@ jobs:
             src/ansys/fluent/core/meshing/tui_232.py
             src/ansys/fluent/core/solver/settings_232
             src/ansys/fluent/core/solver/tui_232.py
+            src/ansys/fluent/core/data/api_tree_232.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -359,6 +362,7 @@ jobs:
             src/ansys/fluent/core/meshing/tui_241.py
             src/ansys/fluent/core/solver/settings_241
             src/ansys/fluent/core/solver/tui_241.py
+            src/ansys/fluent/core/data/api_tree_241.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -382,6 +386,43 @@ jobs:
         run: |
           cat src/ansys/fluent/core/fluent_version_241.py
           python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Cache 24.2 API Code
+        if: startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        uses: actions/cache@v3
+        id: cache-242-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel_242
+            src/ansys/fluent/core/fluent_version_242.py
+            src/ansys/fluent/core/meshing/tui_242.py
+            src/ansys/fluent/core/solver/settings_242
+            src/ansys/fluent/core/solver/tui_242.py
+            src/ansys/fluent/core/data/api_tree_242.pickle
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
+
+      - name: Pull 24.2 Fluent docker image
+        if: steps.cache-242-api-code.outputs.cache-hit != 'true' and startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v24.2.0
+
+      - name: Run 24.2 API codegen
+        if: steps.cache-242-api-code.outputs.cache-hit != 'true' and startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v24.2.0
+
+      - name: Print 24.2 Fluent version info
+        if: startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        run: |
+          cat src/ansys/fluent/core/fluent_version_242.py
+          python -c "from ansys.fluent.core.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -566,6 +607,7 @@ jobs:
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: Upload to Public PyPi
+        if: not contains(github.ref, 'dev')
         run: |
           pip install twine
           twine upload --skip-existing ./**/*.whl
@@ -575,6 +617,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
+        if: not contains(github.ref, 'dev')
         uses: softprops/action-gh-release@v1
         with:
           files: |
