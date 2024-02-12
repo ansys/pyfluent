@@ -114,3 +114,8 @@ def helpers(monkeypatch):
 
 
 pytest.wont_raise = nullcontext
+
+
+def pytest_sessionfinish(session, exitstatus):
+    if exitstatus == 5:
+        session.exitstatus = 0
