@@ -1,4 +1,5 @@
 """Wrapper to settings gRPC service of Fluent."""
+
 import collections.abc
 from functools import wraps
 from typing import Any

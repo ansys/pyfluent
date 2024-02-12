@@ -1,6 +1,5 @@
 """Module to manage datamodel cache."""
 
-
 from collections import abc, defaultdict
 import copy
 from enum import Enum

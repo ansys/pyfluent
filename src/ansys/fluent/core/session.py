@@ -1,4 +1,5 @@
 """Module containing class encapsulating Fluent connection and the Base Session."""
+
 import importlib
 import json
 import logging

@@ -15,6 +15,7 @@ Example
 >>> r.setup.models.energy.enabled = True
 >>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
+
 import collections
 import fnmatch
 import hashlib

@@ -14,6 +14,7 @@ Example
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 """
+
 import codecs
 import gzip
 import os

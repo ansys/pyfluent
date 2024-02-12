@@ -1,4 +1,5 @@
 ﻿"""Test the PyPIM integration."""
+
 from concurrent import futures
 import os
 from unittest.mock import create_autospec

@@ -1,4 +1,5 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
+
 from enum import Enum
 import functools
 from itertools import chain, repeat

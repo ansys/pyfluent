@@ -187,9 +187,7 @@ def _get_server_info_file_name(use_tmpdir=True):
     dir_ = (
         Path(server_info_dir)
         if server_info_dir
-        else tempfile.gettempdir()
-        if use_tmpdir
-        else Path.cwd()
+        else tempfile.gettempdir() if use_tmpdir else Path.cwd()
     )
     fd, file_name = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=str(dir_))
     os.close(fd)
@@ -596,11 +594,11 @@ def launch_remote_fluent(
     """
     pim = pypim.connect()
     instance = pim.create_instance(
-        product_name="fluent-meshing"
-        if FluentMode.is_meshing(mode)
-        else "fluent-2ddp"
-        if dimensionality == "2d"
-        else "fluent-3ddp",
+        product_name=(
+            "fluent-meshing"
+            if FluentMode.is_meshing(mode)
+            else "fluent-2ddp" if dimensionality == "2d" else "fluent-3ddp"
+        ),
         product_version=product_version,
     )
     instance.wait_for_ready()

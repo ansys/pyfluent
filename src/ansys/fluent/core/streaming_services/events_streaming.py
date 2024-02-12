@@ -1,4 +1,5 @@
 """Module for events management."""
+
 from functools import partial
 import logging
 from typing import Callable, List
