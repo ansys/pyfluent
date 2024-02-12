@@ -48,7 +48,7 @@ def test_solution_variables(new_solver_session):
 
     assert zone_info.zone_type == "wall"
 
-    wall_fluid_info = solution_variable_info.get_solution_variables_info(
+    wall_fluid_info = solution_variable_info.get_variables_info(
         zone_names=["wall-elbow", "elbow-fluid"], domain_name="mixture"
     )
 
@@ -73,7 +73,7 @@ def test_solution_variables(new_solver_session):
 
     assert solution_variable_info_centroid.field_type == np.float64
 
-    sv_p_wall_fluid = solution_variable_data.get_solution_variable_data(
+    sv_p_wall_fluid = solution_variable_data.get_data(
         solution_variable_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
@@ -98,13 +98,13 @@ def test_solution_variables(new_solver_session):
         "wall-elbow": wall_press_array,
         "elbow-fluid": fluid_press_array,
     }
-    solution_variable_data.set_solution_variable_data(
+    solution_variable_data.set_data(
         solution_variable_name="SV_P",
         zone_names_to_solution_variable_data=zone_names_to_solution_variable_data,
         domain_name="mixture",
     )
 
-    updated_sv_p_data = solution_variable_data.get_solution_variable_data(
+    updated_sv_p_data = solution_variable_data.get_data(
         solution_variable_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
@@ -162,7 +162,7 @@ def test_solution_variables_single_precision(new_solver_session_single_precision
 
     assert zone_info.zone_type == "wall"
 
-    wall_fluid_info = solution_variable_info.get_solution_variables_info(
+    wall_fluid_info = solution_variable_info.get_variables_info(
         zone_names=["wall_tank", "tank"], domain_name="mixture"
     )
 
@@ -187,7 +187,7 @@ def test_solution_variables_single_precision(new_solver_session_single_precision
 
     assert solution_variable_info_centroid.field_type == np.float32
 
-    sv_p_wall_fluid = solution_variable_data.get_solution_variable_data(
+    sv_p_wall_fluid = solution_variable_data.get_data(
         solution_variable_name="SV_P",
         zone_names=["wall_tank", "tank"],
         domain_name="air",

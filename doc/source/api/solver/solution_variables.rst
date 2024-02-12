@@ -35,7 +35,7 @@ Solution variable info
 Solution variable metadata information can be accessed via the following solution_variable_info methods:
 
 - ``get_zones_info`` for zone information.
-- ``get_solution_variables_info`` for solution variable information.
+- ``get_variables_info`` for solution variable information.
 
 Get zone information
 ~~~~~~~~~~~~~~~~~~~~
@@ -70,11 +70,11 @@ You can access zone information by calling the ``get_zones_info`` method.
 Get solution variable information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can request solution variables information for a given ``domain_name`` and list of ``zone_names``
-by calling the ``get_solution_variables_info`` method.
+by calling the ``get_variables_info`` method.
 
 .. code-block:: python
 
-  >>> wall_fluid_info = solution_variable_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+  >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
   >>>
   >>> wall_fluid_info.solution_variables
   ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
@@ -97,18 +97,18 @@ Solution variable data
 ----------------------
 solution variable data can be extracted and modified via the following solution_variable_data object methods:
 
-- ``get_solution_variable_data`` to get solution variable data.
-- ``set_solution_variable_data`` to set solution variable data.
+- ``get_data`` to get solution variable data.
+- ``set_data`` to set solution variable data.
 
 
 Get solution variable data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can request solution variable data for a given ``domain_name`` and multiple ``zone_names`` by calling
-the ``get_solution_variable_data`` method and passing the particular ``solution_variable_name``.
+the ``get_data`` method and passing the particular ``solution_variable_name``.
 
 .. code-block:: python
   
-    >>> sv_t_wall_fluid= solution_variable_data.get_solution_variable_data(solution_variable_name="SV_T", zone_names=["fluid", "wall"], domain_name="mixture")
+    >>> sv_t_wall_fluid= solution_variable_data.get_data(solution_variable_name="SV_T", zone_names=["fluid", "wall"], domain_name="mixture")
     >>>
     >>> sv_t_wall_fluid.domain
     'mixture'
@@ -129,22 +129,22 @@ the ``get_solution_variable_data`` method and passing the particular ``solution_
   
 Set solution variable data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can set solution variable data for a given ``domain_name`` by calling the ``set_solution_variable_data``
+You can set solution variable data for a given ``domain_name`` by calling the ``set_data``
 method and passing required ``solution_variable_name`` and dictionary of ``zone_name`` 
 to numpy array of ``solution_variable_data``
 
-Additionally solution_variable_data object also supports ``get_array`` method. This method can be used to 
+Additionally solution_variable_data object also supports ``create_empty_array`` method. This method can be used to 
 generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and 
-``solution_variable_name``. This array can be populated and passed to ``set_solution_variable_data``.
+``solution_variable_name``. This array can be populated and passed to ``set_data``.
 
 .. code-block:: python
   
-    >>> wall_temp_array = solution_variable_data.get_array("SV_T", "wall", "mixture")
-    >>> fluid_temp_array = solution_variable_data.get_array("SV_T", "fluid", "mixture")
+    >>> wall_temp_array = solution_variable_data.create_empty_array("SV_T", "wall", "mixture")
+    >>> fluid_temp_array = solution_variable_data.create_empty_array("SV_T", "fluid", "mixture")
     >>> wall_temp_array[:] = 500
     >>> fluid_temp_array[:] = 600
     >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-    >>> solution_variable_data.set_solution_variable_data(solution_variable_name="SV_T", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data, domain_name="mixture")
+    >>> solution_variable_data.set_data(solution_variable_name="SV_T", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data, domain_name="mixture")
 
 .. currentmodule:: ansys.fluent.core.services
 

@@ -34,15 +34,15 @@ class SolutionVariableService:
         self.__stub = SvarGrpcModule.svarStub(intercept_channel)
         self.__metadata = metadata
 
-    def get_solution_variable_data(self, request):
+    def get_data(self, request):
         """GetSvarData RPC of SVAR service."""
         return self.__stub.GetSvarData(request, metadata=self.__metadata)
 
-    def set_solution_variable_data(self, request):
+    def set_data(self, request):
         """SetSvarData RPC of SVAR service."""
         return self.__stub.SetSvarData(request, metadata=self.__metadata)
 
-    def get_solution_variables_info(self, request):
+    def get_variables_info(self, request):
         """GetSvarsInfo RPC of SVAR service."""
         return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)
 
@@ -61,7 +61,7 @@ class SolutionVariableInfo:
 
         >>> solution_variable_info = solver_session.solution_variable_info
         >>>
-        >>> wall_fluid_info = solution_variable_info.get_solution_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+        >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
         >>> wall_fluid_info.solution_variables
         >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
         >>> solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
@@ -193,7 +193,7 @@ class SolutionVariableInfo:
     ):
         self._service = service
 
-    def get_solution_variables_info(
+    def get_variables_info(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SolutionVariables:
         """Get SVARs info for zones in the domain.
@@ -219,7 +219,7 @@ class SolutionVariableInfo:
                 domainId=allowed_domain_names.valid_name(domain_name),
                 zoneId=allowed_zone_names.valid_name(zone_name),
             )
-            response = self._service.get_solution_variables_info(request)
+            response = self._service.get_variables_info(request)
             if solution_variables_info is None:
                 solution_variables_info = SolutionVariableInfo.SolutionVariables(
                     response.svarsInfo
@@ -232,12 +232,10 @@ class SolutionVariableInfo:
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SolutionVariables:
         warnings.warn(
-            "get_svars_info is deprecated, use get_solution_variables_info instead",
+            "get_svars_info is deprecated, use get_variables_info instead",
             DeprecationWarning,
         )
-        return self.get_solution_variables_info(
-            zone_names=zone_names, domain_name=domain_name
-        )
+        return self.get_variables_info(zone_names=zone_names, domain_name=domain_name)
 
     def get_zones_info(self) -> ZonesInfo:
         """Get Zones info.
@@ -288,7 +286,7 @@ class _AllowedSvarNames:
     def __call__(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> List[str]:
-        return self._solution_variable_info.get_solution_variables_info(
+        return self._solution_variable_info.get_variables_info(
             zone_names=zone_names, domain_name=domain_name
         ).solution_variables
 
@@ -427,7 +425,7 @@ class SolutionVariableData:
         >>>
         >>> solution_variable_data = solver_session.solution_variable_data
         >>>
-        >>> sv_t_wall_fluid=solver_session.solution_variable_data.get_solution_variable_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
+        >>> sv_t_wall_fluid=solver_session.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
         >>>
         >>> sv_t_wall_fluid.domain
         >>> 'mixture'
@@ -443,12 +441,12 @@ class SolutionVariableData:
         >>> fluid_temp
         >>> array([600., 600., 600., ..., 600., 600., 600.])
         >>>
-        >>> wall_temp_array = solution_variable_data.get_array("SV_T", "wall")
-        >>> fluid_temp_array =solution_variable_data.get_array("SV_T", "fluid")
+        >>> wall_temp_array = solution_variable_data.create_empty_array("SV_T", "wall")
+        >>> fluid_temp_array =solution_variable_data.create_empty_array("SV_T", "fluid")
         >>> wall_temp_array[:]= 500
         >>> fluid_temp_array[:]= 600
         >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-        >>> solution_variable_data.set_solution_variable_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
+        >>> solution_variable_data.set_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
     """
 
     class Data:
@@ -495,15 +493,15 @@ class SolutionVariableData:
             solution_variable_name=self._allowed_solution_variable_names,
         )
 
-        self.get_solution_variable_data = override_help_text(
+        self.get_data = override_help_text(
             _SvarMethod(
-                svar_accessor=self.get_solution_variable_data,
+                svar_accessor=self.get_data,
                 args_allowed_values_accessors=svar_args,
             ),
-            SolutionVariableData.get_solution_variable_data,
+            SolutionVariableData.get_data,
         )
 
-    def get_array(
+    def create_empty_array(
         self, solution_variable_name: str, zone_name: str, domain_name: str = "mixture"
     ) -> np.zeros:
         """Get numpy zeros array for the SVAR on a zone.
@@ -514,10 +512,8 @@ class SolutionVariableData:
 
         zones_info = self._solution_variable_info.get_zones_info()
         if zone_name in zones_info.zones:
-            solution_variables_info = (
-                self._solution_variable_info.get_solution_variables_info(
-                    zone_names=[zone_name], domain_name=domain_name
-                )
+            solution_variables_info = self._solution_variable_info.get_variables_info(
+                zone_names=[zone_name], domain_name=domain_name
             )
             if solution_variable_name in solution_variables_info.solution_variables:
                 return np.zeros(
@@ -526,7 +522,7 @@ class SolutionVariableData:
                     dtype=solution_variables_info[solution_variable_name].field_type,
                 )
 
-    def get_solution_variable_data(
+    def get_data(
         self,
         solution_variable_name: str,
         zone_names: List[str],
@@ -566,7 +562,7 @@ class SolutionVariableData:
         return SolutionVariableData.Data(
             domain_name,
             zone_id_name_map,
-            extract_svars(self._service.get_solution_variable_data(svars_request)),
+            extract_svars(self._service.get_data(svars_request)),
         )
 
     def get_svar_data(
@@ -576,16 +572,16 @@ class SolutionVariableData:
         domain_name: Optional[str] = "mixture",
     ) -> Data:
         warnings.warn(
-            "get_svar_data is deprecated, use get_solution_variable_data instead",
+            "get_svar_data is deprecated, use get_data instead",
             DeprecationWarning,
         )
-        return self.get_solution_variable_data(
+        return self.get_data(
             solution_variable_name=svar_name,
             zone_names=zone_names,
             domain_name=domain_name,
         )
 
-    def set_solution_variable_data(
+    def set_data(
         self,
         solution_variable_name: str,
         zone_names_to_solution_variable_data: Dict[str, np.array],
@@ -613,10 +609,10 @@ class SolutionVariableData:
             for zone_name, solution_variable_data in zone_names_to_solution_variable_data.items()
         }
 
-        def generate_set_solution_variable_data_requests():
-            set_solution_variable_data_requests = []
+        def generate_set_data_requests():
+            set_data_requests = []
 
-            set_solution_variable_data_requests.append(
+            set_data_requests.append(
                 SvarProtoModule.SetSvarDataRequest(
                     header=SvarProtoModule.SvarHeader(
                         name=solution_variable_name, domainId=domain_id
@@ -633,7 +629,7 @@ class SolutionVariableData:
                     solution_variable_data,
                     math.ceil(solution_variable_data.size / max_array_size),
                 )
-                set_solution_variable_data_requests.append(
+                set_data_requests.append(
                     SvarProtoModule.SetSvarDataRequest(
                         payloadInfo=SvarProtoModule.Info(
                             fieldType=_FieldDataConstants.np_data_type_to_proto_field_type[
@@ -644,7 +640,7 @@ class SolutionVariableData:
                         )
                     )
                 )
-                set_solution_variable_data_requests += [
+                set_data_requests += [
                     SvarProtoModule.SetSvarDataRequest(
                         payload=SvarProtoModule.Payload(
                             floatPayload=FieldDataProtoModule.FloatPayload(
@@ -674,14 +670,10 @@ class SolutionVariableData:
                     if solution_variable_data.size > 0
                 ]
 
-            for (
-                set_solution_variable_data_request
-            ) in set_solution_variable_data_requests:
-                yield set_solution_variable_data_request
+            for set_data_request in set_data_requests:
+                yield set_data_request
 
-        self._service.set_solution_variable_data(
-            generate_set_solution_variable_data_requests()
-        )
+        self._service.set_data(generate_set_data_requests())
 
     def set_svar_data(
         self,
@@ -690,10 +682,10 @@ class SolutionVariableData:
         domain_name: Optional[str] = "mixture",
     ) -> Data:
         warnings.warn(
-            "set_svar_data is deprecated, use set_solution_variable_data instead",
+            "set_svar_data is deprecated, use set_data instead",
             DeprecationWarning,
         )
-        return self.set_solution_variable_data(
+        return self.set_data(
             solution_variable_name=svar_name,
             zone_names_to_solution_variable_data=zone_names_to_svar_data,
             domain_name=domain_name,
