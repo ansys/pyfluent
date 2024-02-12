@@ -388,7 +388,7 @@ jobs:
           python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 24.2 API Code
-        if: startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')
         uses: actions/cache@v3
         id: cache-242-api-code
         with:
@@ -407,19 +407,19 @@ jobs:
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
 
       - name: Pull 24.2 Fluent docker image
-        if: steps.cache-242-api-code.outputs.cache-hit != 'true' and startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        if: steps.cache-242-api-code.outputs.cache-hit != 'true' && startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: v24.2.0
 
       - name: Run 24.2 API codegen
-        if: steps.cache-242-api-code.outputs.cache-hit != 'true' and startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        if: steps.cache-242-api-code.outputs.cache-hit != 'true' && startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.2.0
 
       - name: Print 24.2 Fluent version info
-        if: startsWith(github.ref, 'refs/tags/v') and contains(github.ref, 'dev')
+        if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')
         run: |
           cat src/ansys/fluent/core/fluent_version_242.py
           python -c "from ansys.fluent.core.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
@@ -607,7 +607,7 @@ jobs:
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: Upload to Public PyPi
-        if: not contains(github.ref, 'dev')
+        if: contains(github.ref, 'dev') != 'true'
         run: |
           pip install twine
           twine upload --skip-existing ./**/*.whl
@@ -617,7 +617,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
-        if: not contains(github.ref, 'dev')
+        if: contains(github.ref, 'dev') != 'true'
         uses: softprops/action-gh-release@v1
         with:
           files: |
