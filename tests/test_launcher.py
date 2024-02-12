@@ -12,6 +12,7 @@ from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     DockerContainerLaunchNotSupported,
     FluentMode,
+    GPUSolverSupportError,
     LaunchFluentError,
     UnexpectedKeywordArgument,
     _build_journal_argument,
@@ -20,6 +21,26 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 import ansys.platform.instancemanagement as pypim
+
+
+def test_gpu_version_error():
+    with pytest.raises(GPUSolverSupportError) as msg:
+        pyfluent.launch_fluent(
+            mode="meshing",
+            version="2d",
+            precision="single",
+            processor_count=5,
+            show_gui=True,
+            gpu=True,
+        )
+        pyfluent.setup_for_fluent(
+            mode="meshing",
+            version="2d",
+            precision="single",
+            processor_count=5,
+            show_gui=True,
+            gpu=True,
+        )
 
 
 def test_mode():
@@ -144,15 +165,11 @@ def test_gpu_launch_arg(helpers, monkeypatch):
     # (which is available in the error message) is generated correctly.
     helpers.mock_awp_vars()
     monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(LaunchFluentError) as error:
+    with pytest.raises(GPUSolverSupportError) as error:
         pyfluent.launch_fluent(gpu=True, start_timeout=0)
 
-    assert " -gpu" in str(error.value)
-
-    with pytest.raises(LaunchFluentError) as error:
+    with pytest.raises(GPUSolverSupportError) as error:
         pyfluent.launch_fluent(gpu=[1, 2, 4], start_timeout=0)
-
-    assert " -gpu=1,2,4" in str(error.value)
 
 
 def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
