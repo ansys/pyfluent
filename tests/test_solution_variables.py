@@ -86,8 +86,10 @@ def test_solution_variables(new_solver_session):
     assert fluid_temp.size == 17822
     assert str(fluid_temp.dtype) == "float64"
 
-    wall_press_array = solution_variable_data.get_array("SV_P", "wall-elbow", "mixture")
-    fluid_press_array = solution_variable_data.get_array(
+    wall_press_array = solution_variable_data.create_empty_array(
+        "SV_P", "wall-elbow", "mixture"
+    )
+    fluid_press_array = solution_variable_data.create_empty_array(
         "SV_P", "elbow-fluid", "mixture"
     )
     wall_press_array[:] = 500
@@ -277,8 +279,8 @@ def test_svars(new_solver_session):
     assert fluid_temp.size == 17822
     assert str(fluid_temp.dtype) == "float64"
 
-    wall_press_array = svar_data.get_array("SV_P", "wall-elbow", "mixture")
-    fluid_press_array = svar_data.get_array("SV_P", "elbow-fluid", "mixture")
+    wall_press_array = svar_data.create_empty_array("SV_P", "wall-elbow", "mixture")
+    fluid_press_array = svar_data.create_empty_array("SV_P", "elbow-fluid", "mixture")
     wall_press_array[:] = 500
     fluid_press_array[:] = 600
     zone_names_to_svar_data = {
