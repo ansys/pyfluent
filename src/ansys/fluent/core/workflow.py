@@ -835,6 +835,20 @@ class NewWorkflowWrapper:
         self._main_thread_ident = None
         self._task_objects = {}
 
+    def task(self, name: str) -> BaseTask:
+        """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
+        functionality.
+        Parameters
+        ----------
+        name : str
+            Task name - the display name, not the internal ID.
+        Returns
+        -------
+        BaseTask
+            wrapped task object.
+        """
+        return _makeTask(self, name)
+
     def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow. Sorting is in terms of the
         workflow order and only includes the top-level tasks, while other tasks can be
@@ -937,7 +951,7 @@ class NewWorkflowWrapper:
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
         task_state = workflow_state[task_key]
-        return _makeTask(self, task_state["_name_"])
+        return self.task(task_state["_name_"])
 
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
@@ -996,15 +1010,9 @@ class OldWorkflowWrapper:
         """
         self._workflow = workflow
         self._command_source = command_source
-        self._python_task_names = []
-        self._lock = threading.RLock()
-        self._refreshing = False
-        self._refresh_count = 0
-        self._ordered_children = []
-        self._task_list = []
-        self._getattr_recurse_depth = 0
-        self._main_thread_ident = None
-        self._task_objects = {}
+        self._lock = (
+            threading.RLock()
+        )  # TODO: sort out issues with these un-used variables.
 
     @property
     def TaskObject(self) -> TaskContainer:

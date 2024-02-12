@@ -14,7 +14,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
 
 from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
 from ansys.fluent.core.meshing.watertight import watertight_workflow
-from ansys.fluent.core.workflow import _makeTask
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -406,7 +405,7 @@ def test_meshing_workflow_structure(new_mesh_session):
         update_regions,
         add_boundary_layers,
         gen_vol_mesh,
-    ) = all_tasks = [_makeTask(w, name) for name in task_names]
+    ) = all_tasks = [w.task(name) for name in task_names]
 
     def upstream_names(task):
         return {upstream.name() for upstream in task.get_direct_upstream_tasks()}
@@ -726,7 +725,7 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
         Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
     )
     part_management.Node["Object"].Rename(NewName=r"Engine")
-    import_cad = _makeTask(fault_tolerant, "Import CAD and Part Management")
+    import_cad = fault_tolerant.task("Import CAD and Part Management")
     import_cad.Arguments.setState(
         {
             r"CreateObjectPer": r"Custom",
@@ -782,20 +781,22 @@ def test_nonexistent_attrs(new_mesh_session):
 def test_old_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    assert meshing.workflow.__class__.__name__ == "OldMeshingWorkflow"
-    assert meshing.workflow.TaskObject.__class__.__name__ == "TaskContainer"
     assert meshing.workflow.TaskObject["Import Geometry"].arguments()
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         meshing.workflow.import_geometry
-    meshing.exit()
+    assert (
+        msg.value.args[0]
+        == "'OldMeshingWorkflow' object has no attribute 'import_geometry'"
+    )
 
 
 @pytest.mark.fluent_version(">=23.2")
 def test_new_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
-    assert watertight.__class__.__name__ == "NewMeshingWorkflow"
     assert watertight.import_geometry.arguments()
-    with pytest.raises(AttributeError):
-        watertight.Taskobject["Import Geometry"]
-    meshing.exit()
+    with pytest.raises(AttributeError) as msg:
+        watertight.TaskObject["Import Geometry"]
+    assert (
+        msg.value.args[0] == "'NewMeshingWorkflow' object has no attribute 'TaskObject'"
+    )
