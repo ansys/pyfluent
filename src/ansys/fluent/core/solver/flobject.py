@@ -800,12 +800,11 @@ class Group(SettingsBase[DictStateType]):
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
-            if name not in ["remote_file_handler"]:
-                self._get_parent_of_active_child_names(name)
-                error_msg = allowed_name_error_message(
-                    "Settings objects", name, super().__getattribute__("child_names")
-                )
-                ex.args = (error_msg,)
+            self._get_parent_of_active_child_names(name)
+            error_msg = allowed_name_error_message(
+                "Settings objects", name, super().__getattribute__("child_names")
+            )
+            ex.args = (error_msg,)
             raise
 
     def __setattr__(self, name: str, value):
