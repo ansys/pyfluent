@@ -2,8 +2,7 @@
 
 Using meshing workflows
 =======================
-PyFluent supports accessing all Fluent meshing functionalities, including
-guided meshing workflows.
+Fluent meshing guided workflows are designed to make it easier to generate a volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
 
 Watertight geometry meshing workflow
 ------------------------------------
