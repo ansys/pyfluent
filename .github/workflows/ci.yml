@@ -593,6 +593,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
 
+      # Delete the package artifact for dev release
       - uses: geekyeggo/delete-artifact@v4
         if: contains(github.ref, 'dev')
         with:
