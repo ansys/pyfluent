@@ -1,7 +1,7 @@
 .. _ref_user_guide_new_meshing_workflows:
 
-Use meshing workflows
-=====================
+Using meshing workflows
+=======================
 PyFluent supports accessing all Fluent meshing functionalities, including
 guided meshing workflows.
 
