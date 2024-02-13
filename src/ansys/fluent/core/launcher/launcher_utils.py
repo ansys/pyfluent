@@ -42,6 +42,13 @@ class InvalidPassword(ValueError):
         super().__init__("Provide correct 'password'.")
 
 
+class GPUSolverSupportError(ValueError):
+    """Provides the error when an unsupported Fluent version is specified."""
+
+    def __init__(self):
+        super().__init__("Fluent GPU Solver is only supported for 3D.")
+
+
 class IpPortNotProvided(ValueError):
     """Provides the error when ip and port are not specified."""
 
