@@ -18,6 +18,7 @@ Example
 from __future__ import annotations
 
 import collections
+from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
 import importlib
@@ -287,6 +288,24 @@ class Base:
         if hasattr(self, "_do_after_execute"):
             self._do_after_execute(value)
 
+    def while_setting_state(self):
+        return nullcontext()
+
+    def while_renaming(self):
+        return nullcontext()
+
+    def while_deleting(self):
+        return nullcontext()
+
+    def while_creating(self):
+        return nullcontext()
+
+    def while_resizing(self):
+        return nullcontext()
+
+    def while_executing_command(self):
+        return nullcontext()
+
 
 StateT = TypeVar("StateT")
 
@@ -315,6 +334,82 @@ class Numerical(Property):
 
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
+
+
+class DeprecatedSettingWarning(DeprecationWarning):
+    pass
+
+
+_show_warning_orig = warnings.showwarning
+
+
+def _show_warning(message, category, *args, **kwargs):
+    if category == DeprecatedSettingWarning:
+        print(message)
+    else:
+        _show_warning_orig(message, category, *args, **kwargs)
+
+
+warnings.showwarning = _show_warning
+warnings.simplefilter("default", category=DeprecatedSettingWarning)
+
+
+class _Alias:
+    scheme_eval = None
+    once = False
+
+    @contextmanager
+    def _print_newer_api(self):
+        scheme_eval = _Alias.scheme_eval
+        if scheme_eval:
+            scheme_eval("(define pyfluent-journal-str-port (open-output-string))")
+            scheme_eval("(api-echo-python-port pyfluent-journal-str-port)")
+        try:
+            yield
+        finally:
+            if scheme_eval:
+                scheme_eval("(api-unecho-python-port pyfluent-journal-str-port)")
+                journal_str = scheme_eval(
+                    "(close-output-port pyfluent-journal-str-port)"
+                ).strip()
+                warnings.warn(
+                    "Note: A newer syntax is available to perform the last operation:\n"
+                    f"{journal_str}",
+                    DeprecatedSettingWarning,
+                )
+                if not _Alias.once:
+                    warnings.warn(
+                        "\nExecute the following code to suppress future warnings like the above:\n\n"
+                        ">>> import warnings\n"
+                        '>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)',
+                        DeprecatedSettingWarning,
+                    )
+                    _Alias.once = True
+
+    def while_setting_state(self):
+        return self._print_newer_api()
+
+    def while_renaming(self):
+        return self._print_newer_api()
+
+    def while_deleting(self):
+        return self._print_newer_api()
+
+    def while_creating(self):
+        return self._print_newer_api()
+
+    def while_resizing(self):
+        return self._print_newer_api()
+
+    def while_executing_command(self):
+        return self._print_newer_api()
+
+
+def _create_child(cls, name, parent, is_alias=False):
+    if is_alias or isinstance(parent, _Alias):
+        alias_cls = type(f"{cls.__name__}_alias", (_Alias, cls), dict(cls.__dict__))
+        return alias_cls(name, parent)
+    return cls(name, parent)
 
 
 class SettingsBase(Base, Generic[StateT]):
@@ -357,10 +452,8 @@ class SettingsBase(Base, Generic[StateT]):
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        if kwargs:
-            return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
-        else:
-            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+        with self.while_setting_state():
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs or state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -563,14 +656,14 @@ class Group(SettingsBase[DictStateType]):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
-            cls = getattr(self.__class__, child)
-            self._setattr(child, cls(None, self))
+            cls = self.__class__._child_classes[child]
+            self._setattr(child, _create_child(cls, None, self))
         for cmd in self.command_names:
-            cls = getattr(self.__class__, cmd)
-            self._setattr(cmd, cls(None, self))
+            cls = self.__class__._child_classes[cmd]
+            self._setattr(cmd, _create_child(cls, None, self))
         for query in self.query_names:
-            cls = getattr(self.__class__, query)
-            self._setattr(query, cls(None, self))
+            cls = self.__class__._child_classes[query]
+            self._setattr(query, _create_child(cls, None, self))
 
     def __call__(self, *args, **kwargs):
         if kwargs:
@@ -588,7 +681,7 @@ class Group(SettingsBase[DictStateType]):
             ret = {}
             for k, v in value.items():
                 if k in cls.child_names:
-                    ccls = getattr(cls, k)
+                    ccls = cls._child_classes[k]
                     ret[ccls.fluent_name] = ccls.to_scheme_keys(v)
                 else:
                     raise RuntimeError("Key '" + str(k) + "' is invalid")
@@ -603,7 +696,7 @@ class Group(SettingsBase[DictStateType]):
             ret = {}
             undef = object()
             for mname in cls.child_names:
-                ccls = getattr(cls, mname)
+                ccls = cls._child_classes[mname]
                 mvalue = value.get(ccls.fluent_name, undef)
                 if mvalue is not undef:
                     ret[mname] = ccls.to_python_keys(mvalue)
@@ -611,9 +704,11 @@ class Group(SettingsBase[DictStateType]):
         else:
             return value
 
+    _child_classes = {}
     child_names = []
     command_names = []
     query_names = []
+    _child_aliases = {}
 
     def get_active_child_names(self):
         """Names of children that are currently active."""
@@ -692,14 +787,25 @@ class Group(SettingsBase[DictStateType]):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
                 raise InactiveObjectError(self.python_path)
+        alias = super().__getattribute__("_child_aliases").get(name)
+        if alias:
+            if isinstance(alias, str):
+                cls = self._child_classes[alias]
+                # replacing aliased names with alias objects in _child_aliases
+                alias_obj = self._child_aliases[name] = _create_child(
+                    cls, None, self, True
+                )
+                return alias_obj
+            return alias
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
-            self._get_parent_of_active_child_names(name)
-            error_msg = allowed_name_error_message(
-                "Settings objects", name, super().__getattribute__("child_names")
-            )
-            ex.args = (error_msg,)
+            if name not in ["remote_file_handler"]:
+                self._get_parent_of_active_child_names(name)
+                error_msg = allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+                ex.args = (error_msg,)
             raise
 
     def __setattr__(self, name: str, value):
@@ -825,11 +931,11 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         super().__init__(name, parent)
         self._setattr("_objects", {})
         for cmd in self.command_names:
-            cls = getattr(self.__class__, cmd)
-            self._setattr(cmd, cls(None, self))
+            cls = self.__class__._child_classes[cmd]
+            self._setattr(cmd, _create_child(cls, None, self))
         for query in self.query_names:
-            cls = getattr(self.__class__, query)
-            self._setattr(query, cls(None, self))
+            cls = self.__class__._child_classes[query]
+            self._setattr(query, _create_child(cls, None, self))
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -853,14 +959,16 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         else:
             return value
 
+    _child_classes = {}
     command_names = []
     query_names = []
+    _child_aliases = {}
 
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
         if not ret:
             cls = self.__class__.child_object_type
-            ret = self._objects[cname] = cls(cname, self)
+            ret = self._objects[cname] = _create_child(cls, cname, self)
         ret._setattr("_python_name", f'["{cname}"]')
         ret._setattr(
             "rename",
@@ -878,7 +986,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 self._create_child_object(name)
 
     def __delitem__(self, name: str):
-        self.flproxy.delete(self.path, name)
+        while self.while_deleting():
+            self.flproxy.delete(self.path, name)
         if name in self._objects:
             del self._objects[name]
 
@@ -939,6 +1048,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child_cls = self.__class__.child_object_type
+                # TODO: alias
                 return WildcardPath(
                     self.flproxy,
                     self.path + "/" + name,
@@ -957,8 +1067,22 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             obj = self._create_child_object(name)
         return obj
 
+    def __getattr__(self, name: str):
+        alias = self._child_aliases.get(name)
+        if alias:
+            if isinstance(alias, str):
+                cls = self._child_classes[alias]
+                # replacing aliased names with alias objects in _child_aliases
+                alias_obj = self._child_aliases[name] = _create_child(
+                    cls, None, self, True
+                )
+                return alias_obj
+            return alias
+        else:
+            return getattr(super(), name)
 
-def _rename(obj: NamedObject, new: str, old: str):
+
+def _rename(obj: Union[NamedObject, _Alias], new: str, old: str):
     """Rename a named object.
 
     Parameters
@@ -970,7 +1094,8 @@ def _rename(obj: NamedObject, new: str, old: str):
     old : str
         Current name.
     """
-    obj.flproxy.rename(obj.path, new, old)
+    with obj.while_renaming():
+        obj.flproxy.rename(obj.path, new, old)
     if old in obj._objects:
         del obj._objects[old]
     obj._create_child_object(new)
@@ -998,11 +1123,11 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         super().__init__(name, parent)
         self._setattr("_objects", [])
         for cmd in self.command_names:
-            cls = getattr(self.__class__, cmd)
-            self._setattr(cmd, cls(None, self))
+            cls = self.__class__._child_classes[cmd]
+            self._setattr(cmd, _create_child(cls, None, self))
         for query in self.query_names:
-            cls = getattr(self.__class__, query)
-            self._setattr(query, cls(None, self))
+            cls = self.__class__._child_classes[query]
+            self._setattr(query, _create_child(cls, None, self))
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -1020,12 +1145,17 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         else:
             return value
 
+    _child_classes = {}
     command_names = []
     query_names = []
+    _child_aliases = {}
 
     def _update_objects(self):
         cls = self.__class__.child_object_type
-        self._setattr("_objects", [cls(str(x), self) for x in range(self.get_size())])
+        self._setattr(
+            "_objects",
+            [_create_child(cls, str(x), self) for x in range(self.get_size())],
+        )
 
     def __len__(self):
         return self.get_size()
@@ -1054,6 +1184,20 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __setitem__(self, index: int, value):
         child = self[index]
         child.set_state(value)
+
+    def __getattr__(self, name: str):
+        alias = self._child_aliases.get(name)
+        if alias:
+            if isinstance(alias, str):
+                cls = self._child_classes[alias]
+                # replacing aliased names with alias objects in _child_aliases
+                alias_obj = self._child_aliases[name] = _create_child(
+                    cls, None, self, True
+                )
+                return alias_obj
+            return alias
+        else:
+            return getattr(super(), name)
 
 
 class Map(SettingsBase[DictStateType]):
@@ -1086,13 +1230,16 @@ def _get_new_keywords(obj, args, kwds):
 class Action(Base):
     """Intermediate Base class for Command and Query class."""
 
+    _child_classes = {}
+    _child_aliases = {}
+
     def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
             for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
-                self._setattr(argument, cls(None, self))
+                cls = self.__class__._child_classes[argument]
+                self._setattr(argument, _create_child(cls, None, self))
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all arguments.
@@ -1116,6 +1263,20 @@ class Action(Base):
                         ]
                     )
         return ret
+
+    def __getattr__(self, name: str):
+        alias = self._child_aliases.get(name)
+        if alias:
+            if isinstance(alias, str):
+                cls = self._child_classes[alias]
+                # replacing aliased names with alias objects in _child_aliases
+                alias_obj = self._child_aliases[name] = _create_child(
+                    cls, None, self, True
+                )
+                return alias_obj
+            return alias
+        else:
+            return getattr(super(), name)
 
 
 class BaseCommand(Action):
@@ -1152,7 +1313,8 @@ class Command(BaseCommand):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        with self.while_executing_command():
+            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
@@ -1178,7 +1340,8 @@ class CommandWithPositionalArgs(BaseCommand):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        with self.while_executing_command():
+            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified keyword arguments."""
@@ -1297,12 +1460,14 @@ class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTy
         Object
             Object that has been created.
         """
-        self.flproxy.create(self.path, name)
+        with self.while_creating():
+            self.flproxy.create(self.path, name)
         return self._create_child_object(name)
 
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            self.flproxy.create(self.path, name)
+            with self.while_creating():
+                self.flproxy.create(self.path, name)
         child = self._objects.get(name)
         if not child:
             child = self._create_child_object(name)
@@ -1403,11 +1568,18 @@ def get_cls(name, info, parent=None, version=None):
                 pname += f"_{str(i)}"
             _bases_by_class[pname] = bases
 
+        dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
         taboo = set(dir(cls))
         taboo |= set(
-            ["child_names", "command_names", "argument_names", "child_object_type"]
+            [
+                "child_names",
+                "command_names",
+                "query_names",
+                "argument_names",
+                "child_object_type",
+            ]
         )
 
         doc = ""
@@ -1437,7 +1609,7 @@ def get_cls(name, info, parent=None, version=None):
                 ccls.__name__ = ccls_name
                 names.append(ccls.__name__ if i > 0 else original_pname)
                 taboo.add(ccls_name)
-                setattr(cls, ccls.__name__ if i > 0 else original_pname, ccls)
+                cls._child_classes[ccls.__name__ if i > 0 else original_pname] = ccls
 
         children = info.get("children")
         if children:
@@ -1472,6 +1644,14 @@ def get_cls(name, info, parent=None, version=None):
             )
             cls.child_object_type.get_name = lambda self: self._name
 
+        child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
+        command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
+        query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
+        if child_aliases or command_aliases or query_aliases:
+            # No need to differentiate in the Python implementation
+            for k, v in (child_aliases | command_aliases | query_aliases).items():
+                cls._child_aliases[to_python_name(k)] = to_python_name(v)
+
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
@@ -1489,7 +1669,10 @@ def _gethash(obj_info):
 
 # pylint: disable=missing-raises-doc
 def get_root(
-    flproxy, version: str = "", remote_file_handler: Optional[Any] = None
+    flproxy,
+    version: str = "",
+    remote_file_handler: Optional[Any] = None,
+    scheme_eval=None,
 ) -> Group:
     """Get the root settings object.
 
@@ -1521,6 +1704,7 @@ def get_root(
     root = cls()
     root.set_flproxy(flproxy)
     root.set_remote_file_handler(remote_file_handler)
+    _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
     root._setattr("_remote_file_handler", remote_file_handler)
     return root
@@ -1560,5 +1744,5 @@ def _get_child_path(cls, path, identifier, list_of_children):
             path_to_append = "/".join(path)
             if path_to_append not in list_of_children:
                 list_of_children.append(path_to_append)
-        _list_children(getattr(cls, name), identifier, path, list_of_children)
+        _list_children(cls._child_classes[name], identifier, path, list_of_children)
         path.pop()

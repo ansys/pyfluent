@@ -946,6 +946,14 @@ def test_strings_with_allowed_values(load_static_mixer_settings_only):
     ]
 
 
+@pytest.mark.fluent_version(">=24.2")
+def test_parent_class_attributes(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+    assert solver.setup.models.energy.enabled
+    with pytest.raises(AttributeError):
+        solver.setup.models.energy.__class__.enabled
+
+
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh

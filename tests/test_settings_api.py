@@ -2,6 +2,7 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
 
 
 @pytest.mark.nightly
@@ -139,3 +140,67 @@ def test_api_upgrade(new_solver_session, capsys):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
     "<solver_session>.file.read_case" in capsys.readouterr().out
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_deprecated_settings(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file._setattr("_child_aliases", {"rcd": "read_case_data"})
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.file.rcd(file_name=case_path)
+
+    solver.setup.boundary_conditions.wall[
+        "wall-inlet"
+    ].thermal.thermal_bc = "Temperature"
+    assert (
+        len(
+            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+        )
+        > 0
+    )
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
+            "constant"
+        ]
+        == "value"
+    )
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+
+    assert (
+        len(
+            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+        )
+        > 0
+    )
+    assert isinstance(
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
+            "constant"
+        ],
+        _Alias,
+    )
+    solver.setup.boundary_conditions.wall["wall-inlet"].thermal._setattr(
+        "_child_aliases", {"temp": "t"}
+    )
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temp.value = 410
+
+    solver.setup.boundary_conditions._setattr("_child_aliases", {"w": "wall"})
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.w["wall-inlet"].thermal.t.value = 420
+
+    solver.setup._setattr("_child_aliases", {"bc": "boundary_conditions"})
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.bc.wall["wall-inlet"].thermal.t.value = 430
+
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+
+    solver.results._setattr("_child_aliases", {"gr": "graphics"})
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.results.gr.contour.create("c1")
+
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.results.gr.contour["c1"].field = "pressure"
