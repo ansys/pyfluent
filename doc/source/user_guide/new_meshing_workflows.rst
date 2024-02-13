@@ -6,7 +6,7 @@ Fluent meshing guided workflows are designed to make it easier to generate a vol
 
 Watertight geometry meshing workflow
 ------------------------------------
-This simple example shows how to use the watertight geometry meshing workflow.
+Use the **Watertight Geometry** workflow for water-tight CAD geometries that do not require much in the way of clean-up or modifications. The following example shows you how to use the Watertight Geometry workflow.
 
 Import geometry
 ~~~~~~~~~~~~~~~
