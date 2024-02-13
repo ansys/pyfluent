@@ -77,10 +77,10 @@ Add boundary layers
 
     watertight.add_boundary_layer.AddChildToTask()
     watertight.add_boundary_layer.InsertCompoundChildTask()
-    watertight.task("smooth-transition_1").Arguments = {
+    watertight.task("smooth-transition_1").arguments = {
         "BLControlName": "smooth-transition_1",
     }
-    watertight.add_boundary_layer.Arguments = {}
+    watertight.add_boundary_layer.arguments = {}
     watertight.task("smooth-transition_1")()
 
 Generate volume mesh
@@ -184,7 +184,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["inlet.1"])
     fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
     fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
-    fault_tolerant.enclose_fluid_regions_fault.Arguments.set_state({})
+    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("inlet-1")()
 
     fault_tolerant.enclose_fluid_regions_fault.PatchName.set_state("inlet-2")
@@ -206,7 +206,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["inlet.2"])
     fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
     fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
-    fault_tolerant.enclose_fluid_regions_fault.Arguments.set_state({})
+    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("inlet-2")()
 
     fault_tolerant.enclose_fluid_regions_fault.PatchName.set_state("inlet-3")
@@ -228,7 +228,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["inlet"])
     fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
     fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
-    fault_tolerant.enclose_fluid_regions_fault.Arguments.set_state({})
+    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("inlet-3")()
 
     fault_tolerant.enclose_fluid_regions_fault.PatchName.set_state("outlet-1")
@@ -252,7 +252,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.ZoneType.set_state("pressure-outlet")
     fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
     fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
-    fault_tolerant.enclose_fluid_regions_fault.Arguments.set_state({})
+    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("outlet-1")()
 
 Extract edge features
@@ -269,7 +269,7 @@ Extract edge features
     fault_tolerant.extract_edge_features.ExtractMethodType.set_state("Intersection Loops")
     fault_tolerant.extract_edge_features.ObjectSelectionList.set_state(["flow_pipe", "main"])
 
-    fault_tolerant.extract_edge_features.Arguments.set_state({})
+    fault_tolerant.extract_edge_features.arguments.set_state({})
     fault_tolerant.task("edge-group-1")()
 
 Identify regions
@@ -301,7 +301,7 @@ Identify regions
     fault_tolerant.identify_regions.AddChildToTask()
     fault_tolerant.identify_regions.InsertCompoundChildTask()
 
-    fault_tolerant.task("fluid-region-1").Arguments.set_state(
+    fault_tolerant.task("fluid-region-1").arguments.set_state(
         {
             "MaterialPointsName": "fluid-region-1",
             "SelectionType": "zone",
@@ -321,7 +321,7 @@ Identify regions
             "ZoneSelectionList": ["main.1"],
         }
     )
-    fault_tolerant.identify_regions.Arguments.set_state({})
+    fault_tolerant.identify_regions.arguments.set_state({})
     fault_tolerant.task("fluid-region-1")()
 
     fault_tolerant.identify_regions.MaterialPointsName.set_state("void-region-1")
@@ -332,7 +332,7 @@ Identify regions
     fault_tolerant.identify_regions.Z.set_state(-161.1700719416913)
     fault_tolerant.identify_regions.AddChildToTask()
     fault_tolerant.identify_regions.InsertCompoundChildTask()
-    fault_tolerant.identify_regions.Arguments.set_state({})
+    fault_tolerant.identify_regions.arguments.set_state({})
     fault_tolerant.task("void-region-1")()
 
 Define leakage threshold
@@ -348,7 +348,7 @@ Define leakage threshold
     fault_tolerant.define_leakage_threshold.InsertCompoundChildTask()
 
 
-    fault_tolerant.task("leakage-1").Arguments.set_state(
+    fault_tolerant.task("leakage-1").arguments.set_state(
         {
             "AddChild": "yes",
             "FlipDirection": True,
@@ -427,12 +427,12 @@ Add boundary layers
 
     fault_tolerant.add_boundary_layer_ftm.AddChildToTask()
     fault_tolerant.add_boundary_layer_ftm.InsertCompoundChildTask()
-    fault_tolerant.task("aspect-ratio_1").Arguments.set_state(
+    fault_tolerant.task("aspect-ratio_1").arguments.set_state(
         {
             "BLControlName": "aspect-ratio_1",
         }
     )
-    fault_tolerant.add_boundary_layer_ftm.Arguments.set_state({})
+    fault_tolerant.add_boundary_layer_ftm.arguments.set_state({})
     fault_tolerant.task("aspect-ratio_1")()
 
 Generate volume mesh
