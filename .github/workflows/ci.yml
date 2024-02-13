@@ -122,7 +122,7 @@ jobs:
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_doc.txt') }}
@@ -139,7 +139,7 @@ jobs:
         id: version
 
       - name: Cache API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-api-code
         with:
           path: |
@@ -181,7 +181,7 @@ jobs:
           make install > /dev/null
 
       - name: Cache examples
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: doc/source/examples
           key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('examples/**', 'doc/source/conf.py') }}
@@ -221,7 +221,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
@@ -241,7 +241,7 @@ jobs:
         id: version
 
       - name: Cache 22.2 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-222-api-code
         with:
           path:
@@ -283,7 +283,7 @@ jobs:
           python -c "from ansys.fluent.core.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 23.1 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-231-api-code
         with:
           path:
@@ -318,7 +318,7 @@ jobs:
           python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 23.2 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-232-api-code
         with:
           path:
@@ -353,7 +353,7 @@ jobs:
           python -c "from ansys.fluent.core.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 24.1 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-241-api-code
         with:
           path:
@@ -389,7 +389,7 @@ jobs:
 
       - name: Cache 24.2 API Code
         if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-242-api-code
         with:
           path:
@@ -530,7 +530,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
