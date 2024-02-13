@@ -318,13 +318,12 @@ class FluentConnection:
             self._scheme_eval_service
         )
 
-        logger.info(self.fluent_build_version_string())
-
         self._cleanup_on_exit = cleanup_on_exit
         self.start_transcript = start_transcript
         from grpc._channel import _InactiveRpcError
 
         try:
+            logger.info(self.fluent_build_version_string())
             logger.debug("Obtaining Cortex connection properties...")
             fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
             cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
