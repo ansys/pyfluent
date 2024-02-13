@@ -318,6 +318,8 @@ class FluentConnection:
             self._scheme_eval_service
         )
 
+        self.fluent_build_version_string()
+
         self._cleanup_on_exit = cleanup_on_exit
         self.start_transcript = start_transcript
         from grpc._channel import _InactiveRpcError
@@ -391,6 +393,15 @@ class FluentConnection:
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    def fluent_build_version_string(self):
+        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
+        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
+        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
+        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        print(
+            f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
+        )
 
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
