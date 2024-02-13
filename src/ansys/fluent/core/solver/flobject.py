@@ -25,9 +25,10 @@ import pickle
 import string
 import sys
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
+import warnings
 import weakref
 
-from ansys.units import Quantity, QuantityMap
+from ansys.units import Quantity, Unit
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
@@ -382,16 +383,16 @@ class Real(SettingsBase[RealType], Numerical):
         try:
             unit = self._quantity_map(self.get_attr("units-quantity"))
             value = self.get_state()
-            quantity = Quantity(value, quantity_map={unit: 1})
+            quantity = Quantity(value, quantity_table={unit: 1})
             return quantity
         except (ValueError, KeyError, ModuleNotFoundError) as e:
-            print(f"Unable to construct 'Quantity'.", e)
+            warnings.warn(f"Unable to construct 'Quantity'. {e}")
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         if isinstance(state, Quantity):
             unit = self._quantity_map(self.get_attr("units-quantity"))
-            state = state.to(QuantityMap({unit: 1}).units)
+            state = state.to(Unit(table={unit: 1}))
             return self.flproxy.set_var(
                 self.path, self.to_scheme_keys(state.si_value), **kwargs
             )
