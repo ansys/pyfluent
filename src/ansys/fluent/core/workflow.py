@@ -838,6 +838,7 @@ class NewWorkflowWrapper:
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
         functionality.
+
         Parameters
         ----------
         name : str
