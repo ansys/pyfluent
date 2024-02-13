@@ -10,7 +10,6 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.get_git_build_id import get_build_details_string
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentMode,
@@ -227,7 +226,6 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    print(get_build_details_string())
     _process_kwargs(kwargs)
     del kwargs
     fluent_launch_mode = _get_fluent_launch_mode(
@@ -295,7 +293,6 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
-    print(get_build_details_string())
     ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
     fluent_connection = FluentConnection(
         ip=ip,
