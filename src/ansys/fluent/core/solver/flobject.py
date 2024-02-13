@@ -110,12 +110,17 @@ class Base:
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
+        self._setattr("_remote_file_handler", None)
         if name is not None:
             self._setattr("_name", name)
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def set_remote_file_handler(self, remote_file_handler):
+        """Set remote_file_handler."""
+        self._setattr("_remote_file_handler", remote_file_handler)
 
     @property
     def flproxy(self):
@@ -127,6 +132,16 @@ class Base:
         if self._flproxy is None:
             return self._parent.flproxy
         return self._flproxy
+
+    @property
+    def remote_file_handler(self):
+        """Remote file handler.
+
+        Supports file upload and download.
+        """
+        if self._remote_file_handler is None:
+            return self._parent.remote_file_handler
+        return self._remote_file_handler
 
     _name = None
     fluent_name = None
@@ -252,6 +267,14 @@ class Base:
     # overriding existing ones. _setattr is the backdoor to set attributes
     def _setattr(self, name, value):
         super().__setattr__(name, value)
+
+    def before_execute(self, value):
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
+
+    def after_execute(self, value):
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -390,8 +413,32 @@ class FilenameList(SettingsBase[StringListType], Textual):
     _state_type = StringListType
 
     def file_purpose(self):
-        """Specifies whether these files are used as input or output by Fluent."""
+        """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
+
+
+class FileName(Base):
+    pass
+
+
+class _InputFile(FileName):
+    def _do_before_execute(self, value):
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile(FileName):
+    def _do_after_execute(self, value):
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutFile(_InputFile, _OutputFile):
+    pass
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -1023,11 +1070,26 @@ class Action(Base):
         return ret
 
 
-class Command(Action):
+class BaseCommand(Action):
+    def execute_command(self, *args, **kwds):
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.before_execute(value)
+        cmd = self._execute_command(*args, **kwds)
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.after_execute(value)
+        return cmd
+
+    def __call__(self, *args, **kwds):
+        return self.execute_command(*args, **kwds)
+
+
+class Command(BaseCommand):
     """Command object."""
 
-    def __call__(self, **kwds):
-        """Call a query with the specified keyword arguments."""
+    def _execute_command(self, **kwds):
+        """Execute a command with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, [], kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1044,12 +1106,16 @@ class Command(Action):
                     return
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
+    def __call__(self, **kwds):
+        """Call a command with the specified keyword arguments."""
+        return self.execute_command(**kwds)
 
-class CommandWithPositionalArgs(Action):
+
+class CommandWithPositionalArgs(BaseCommand):
     """Command Object."""
 
-    def __call__(self, *args, **kwds):
-        """Call a query with the specified keyword arguments."""
+    def _execute_command(self, *args, **kwds):
+        """Execute a command with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, args, kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
@@ -1065,6 +1131,10 @@ class CommandWithPositionalArgs(Action):
                 if response in ["n", "N", "no"]:
                     return
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+    def __call__(self, *args, **kwds):
+        """Call a command with the specified keyword arguments."""
+        return self.execute_command(*args, **kwds)
 
 
 class Query(Action):
@@ -1212,6 +1282,9 @@ class _HasAllowedValuesMixin:
             return []
 
 
+_bases_by_class = {}
+
+
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
@@ -1265,6 +1338,22 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
+        elif info.get("file_purpose") == "input":
+            bases += (_InputFile,)
+        elif info.get("file_purpose") == "output":
+            bases += (_OutputFile,)
+
+        original_pname = pname
+        if any(
+            x in bases for x in (_InputFile, _OutputFile)
+        ):  # not generalizing for performance
+            i = 0
+            while pname in _bases_by_class and _bases_by_class[pname] != bases:
+                if i > 0:
+                    pname = pname[: pname.rfind("_")]
+                i += 1
+                pname += f"_{str(i)}"
+            _bases_by_class[pname] = bases
 
         cls = type(pname, bases, dct)
 
@@ -1280,7 +1369,7 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls = get_cls(cname, cinfo, cls, version=version)
+                ccls, original_pname = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
 
                 i = 0
@@ -1296,10 +1385,11 @@ def get_cls(name, info, parent=None, version=None):
                         ccls_name = ccls_name[: ccls_name.rfind("_")]
                     i += 1
                     ccls_name += f"_{str(i)}"
+
                 ccls.__name__ = ccls_name
-                names.append(ccls.__name__)
+                names.append(ccls.__name__ if i > 0 else original_pname)
                 taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+                setattr(cls, ccls.__name__ if i > 0 else original_pname, ccls)
 
         children = info.get("children")
         if children:
@@ -1329,17 +1419,18 @@ def get_cls(name, info, parent=None, version=None):
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
-            cls.child_object_type = get_cls(
+            cls.child_object_type, _ = get_cls(
                 "child-object-type", object_type, cls, version=version
             )
             cls.child_object_type.get_name = lambda self: self._name
+
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
             f"'{parent.fluent_name if parent else None}'"
         )
         raise
-    return cls
+    return cls, original_pname
 
 
 def _gethash(obj_info):
@@ -1349,7 +1440,9 @@ def _gethash(obj_info):
 
 
 # pylint: disable=missing-raises-doc
-def get_root(flproxy, version: str = "") -> Group:
+def get_root(
+    flproxy, version: str = "", remote_file_handler: Optional[Any] = None
+) -> Group:
     """Get the root settings object.
 
     Parameters
@@ -1376,10 +1469,12 @@ def get_root(flproxy, version: str = "") -> Group:
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
     except Exception:
-        cls = get_cls("", obj_info, version=version)
+        cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root.set_remote_file_handler(remote_file_handler)
     root._setattr("_static_info", obj_info)
+    root._setattr("_remote_file_handler", remote_file_handler)
     return root
 
 

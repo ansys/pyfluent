@@ -237,6 +237,8 @@ class SettingsService:
     def _extract_static_info(self, info: SettingsModule.StaticInfo) -> dict[str, Any]:
         ret = {}
         ret["type"] = info.type
+        for key, value in sorted(info.attrs.items()):
+            ret[key] = self._get_state_from_value(value)
         if info.has_allowed_values:
             ret["has-allowed-values"] = info.has_allowed_values
         if info.children:
@@ -263,7 +265,6 @@ class SettingsService:
             ret["object-type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
-
         try:
             if info.include_child_named_objects:
                 ret["include_child_named_objects"] = info.include_child_named_objects

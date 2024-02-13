@@ -138,6 +138,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self.error_state,
+            self._remote_file_handler,
         )
 
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)

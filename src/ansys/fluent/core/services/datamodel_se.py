@@ -1,7 +1,7 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import functools
-from itertools import chain, repeat
+import itertools
 import logging
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
@@ -37,7 +37,10 @@ member_specs_oneof_fields = [
 def _get_value_from_message_dict(
     d: dict[str, Any], key: list[Union[str, Sequence[str]]]
 ):
-    """Get value from a protobuf message dict."""
+    """Get value from a protobuf message dict by a sequence of keys.
+
+    A key can also be a list of oneof types.
+    """
     for k in key:
         if isinstance(k, str):
             d = d[k]
@@ -106,7 +109,11 @@ class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        remote_file_handler: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
@@ -119,6 +126,7 @@ class DatamodelServiceImpl:
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
+        self.remote_file_handler = remote_file_handler
 
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
@@ -339,7 +347,11 @@ class DatamodelService(StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        remote_file_handler: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -349,6 +361,7 @@ class DatamodelService(StreamingService):
         )
         self.event_streaming = None
         self.events = {}
+        self.remote_file_handler = remote_file_handler
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         request = DataModelProtoModule.GetAttributeValueRequest(
@@ -1419,6 +1432,30 @@ class PyCommand:
             self.path = path
         self._static_info = None  # command's static info
 
+    def _get_file_purpose(self, arg):
+        try:
+            cmd_instance = self.create_instance()
+            arg_instance = getattr(cmd_instance, arg)
+            file_purpose = arg_instance.get_attr("filePurpose")
+            if file_purpose == "input":
+                if _InputFile not in self.__class__.__bases__:
+                    self.__class__.__bases__ += (_InputFile,)
+            elif file_purpose == "output":
+                if _OutputFile not in self.__class__.__bases__:
+                    self.__class__.__bases__ += (_OutputFile,)
+            del cmd_instance, arg_instance
+            return file_purpose if file_purpose else None
+        except AttributeError:
+            pass
+
+    def before_execute(self, value):
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
+
+    def after_execute(self, value):
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
+
     def __call__(self, *args, **kwds) -> Any:
         """Execute the command.
 
@@ -1427,9 +1464,16 @@ class PyCommand:
         Any
             Return value.
         """
-        return self.service.execute_command(
+        for arg, value in kwds.items():
+            if self._get_file_purpose(arg):
+                self.before_execute(value)
+        command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
+        for arg, value in kwds.items():
+            if self._get_file_purpose(arg):
+                self.after_execute(value)
+        return command
 
     def help(self) -> None:
         """Prints help string."""
@@ -1456,10 +1500,10 @@ class PyCommand:
                 response = self.service.get_static_info(self.rules)
                 PyCommand._full_static_info[self.rules] = response
             rules_static_info = PyCommand._full_static_info[self.rules]
-            names = [x[0] for x in self.path]
-            static_info_path = list(
-                chain(*zip(repeat(["singletons", "namedobjects"], len(names)), names))
-            )
+            static_info_path = []
+            for comp in self.path:
+                static_info_path.append("namedobjects" if comp[1] else "singletons")
+                static_info_path.append(comp[0])
             parent_static_info = _get_value_from_message_dict(
                 rules_static_info, static_info_path
             )
@@ -1485,6 +1529,26 @@ class PyCommand:
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
+
+
+class _InputFile:
+    def _do_before_execute(self, value):
+        try:
+            self.service.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile:
+    def _do_after_execute(self, value):
+        try:
+            self.service.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutFile(_InputFile, _OutputFile):
+    pass
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
@@ -1708,7 +1772,7 @@ class DataModelType(Enum):
     # Really???
     TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
     NUMBER = (
-        ["Real", "Int", "ListReal", "Real List", "Integer"],
+        ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt"],
         PyNumericalCommandArgumentsSubItem,
     )
     DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)
@@ -1787,7 +1851,7 @@ class PyMenuGeneric(PyMenu):
             )
 
     def __dir__(self) -> list[str]:
-        return list(chain(*self._get_child_names()))
+        return list(itertools.chain(*self._get_child_names()))
 
     def __getattr__(self, name: str):
         if name in PyMenuGeneric.attrs:

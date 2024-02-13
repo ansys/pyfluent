@@ -195,7 +195,9 @@ class Solver(BaseSession):
         """Root settings object."""
         if self._settings_root is None:
             self._settings_root = flobject.get_root(
-                flproxy=self._settings_service, version=self._version
+                flproxy=self._settings_service,
+                version=self._version,
+                remote_file_handler=self._remote_file_handler,
             )
         return self._settings_root
 
@@ -242,40 +244,6 @@ class Solver(BaseSession):
 
     def __call__(self):
         return self._root.get_state()
-
-    def read_case(
-        self,
-        file_name: str,
-    ):
-        """Read a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.upload(
-            file_name=file_name,
-            on_uploaded=(lambda file_name: self.file.read_case(file_name=file_name)),
-        )
-
-    def write_case(
-        self,
-        file_name: str,
-    ):
-        """Write a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.download(
-            file_name=file_name,
-            before_downloaded=(
-                lambda file_name: self.file.write_case(file_name=file_name)
-            ),
-        )
 
     def _populate_settings_api_root(self):
         if not self._settings_api_root:

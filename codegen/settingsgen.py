@@ -132,8 +132,9 @@ def _populate_hash_dict(name, info, cls, api_tree):
     else:
         object_hash = None
 
-    cls_touple = (
+    cls_tuple = (
         name,
+        cls.__bases__,
         info["type"],
         info.get("help"),
         children_hash,
@@ -142,7 +143,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
         arguments_hash,
         object_hash,
     )
-    hash = _gethash(cls_touple)
+    hash = _gethash(cls_tuple)
     if not hash_dict.get(hash):
         hash_dict[hash] = (
             cls,
@@ -429,7 +430,10 @@ def _populate_classes(parent_dir):
                     stubf.write(f"{istr1}argument_names = ...\n")
 
                 for argument in arguments:
-                    f.write(f"{istr1}{argument}: {argument}_cls = {argument}_cls\n")
+                    argument_cls = getattr(cls, argument)
+                    f.write(
+                        f"{istr1}{argument}: {argument_cls.__name__}_cls = {argument_cls.__name__}_cls\n"
+                    )
                     f.write(f'{istr1}"""\n')
                     f.write(f"{istr1}{argument} argument of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
@@ -483,7 +487,7 @@ def generate(version, pyfluent_path):
     session = launch_fluent()
     sinfo = session._settings_service.get_static_info()
     session.exit()
-    cls = flobject.get_cls("", sinfo, version=version)
+    cls, _ = flobject.get_cls("", sinfo, version=version)
 
     api_tree = {}
     _populate_hash_dict("", sinfo, cls, api_tree)

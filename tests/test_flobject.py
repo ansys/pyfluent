@@ -509,7 +509,7 @@ def test_attrs():
 # install
 def _disabled_test_settings_gen():
     info = Proxy().get_static_info()
-    cls = flobject.get_cls("", info)
+    cls, _ = flobject.get_cls("", info)
     f = io.StringIO()
     codegen.settingsgen.write_settings_classes(f, cls, info)
     assert (
