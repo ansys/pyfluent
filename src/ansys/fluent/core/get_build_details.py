@@ -35,9 +35,9 @@ def get_build_version():
     return build_details
 
 
-def build_version_string():
+def get_build_version_string():
     build_details = get_build_version()
     build_string = ""
     for key, value in build_details.items():
         build_string += key + ":" + f" {value}  "
-    print(build_string)
+    return build_string

@@ -13,8 +13,8 @@ logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
-    build_version_string,
     get_build_version,
+    get_build_version_string,
 )
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
@@ -27,8 +27,6 @@ from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
-
-build_version_string()
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""

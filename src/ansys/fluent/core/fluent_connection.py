@@ -318,7 +318,7 @@ class FluentConnection:
             self._scheme_eval_service
         )
 
-        self.fluent_build_version_string()
+        logger.info(self.fluent_build_version_string())
 
         self._cleanup_on_exit = cleanup_on_exit
         self.start_transcript = start_transcript
@@ -399,9 +399,7 @@ class FluentConnection:
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
         rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
         branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
-        print(
-            f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
-        )
+        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
 
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
