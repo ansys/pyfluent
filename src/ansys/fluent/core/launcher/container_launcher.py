@@ -137,7 +137,7 @@ class DockerLauncher:
             which means an independent watchdog process is run to ensure
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
-        remote_file_handler : optional
+        file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
 
         Returns
