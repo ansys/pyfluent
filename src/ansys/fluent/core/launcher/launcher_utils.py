@@ -22,10 +22,6 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.file_transfer_service import (
-    PimFileTransferService,
-    RemoteFileHandler,
-)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
@@ -555,6 +551,7 @@ def launch_remote_fluent(
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Optional[str] = None,
     launcher_args: Optional[Dict[str, Any]] = None,
+    remote_file_handler: Optional[Any] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
@@ -585,6 +582,8 @@ def launch_remote_fluent(
     dimensionality : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
+    remote_file_handler : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -615,12 +614,11 @@ def launch_remote_fluent(
         launcher_args=launcher_args,
     )
 
-    remote_file_handler = RemoteFileHandler(
-        transfer_service=PimFileTransferService(
+    return session_cls(
+        fluent_connection=fluent_connection,
+        remote_file_handler=remote_file_handler(
             pim_instance=fluent_connection._remote_instance
         )
-    )
-
-    return session_cls(
-        fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        if pypim.is_configured()
+        else remote_file_handler(),
     )

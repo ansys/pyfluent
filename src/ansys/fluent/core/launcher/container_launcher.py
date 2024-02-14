@@ -15,7 +15,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _process_invalid_args,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
+from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -51,6 +51,7 @@ class DockerLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
+        remote_file_handler: Optional[Any] = PimFileTransferService(),
     ):
         """Launch Fluent session in container mode.
 
@@ -136,6 +137,8 @@ class DockerLauncher:
             which means an independent watchdog process is run to ensure
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
+        remote_file_handler : optional
+            File transfer service. Uploads/downloads files to/from the server.
 
         Returns
         -------
@@ -168,6 +171,7 @@ class DockerLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
+        self.remote_file_handler = remote_file_handler
 
     def __call__(self):
         if self.mode == FluentMode.SOLVER_ICING:
@@ -205,7 +209,7 @@ class DockerLauncher:
                 launcher_args=self.argvals,
                 inside_container=True,
             ),
-            remote_file_handler=RemoteFileHandler(),
+            remote_file_handler=self.remote_file_handler,
         )
 
         if self.start_watchdog is None and self.cleanup_on_exit:

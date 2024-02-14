@@ -19,10 +19,6 @@ from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.file_transfer_service import (
-    RemoteFileHandler,
-    TransferRequestRecorder,
-)
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
@@ -114,6 +110,27 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         session.fluent_connection.wait_process_finished(wait=60)
 
 
+class TransferRequestRecorder:
+    def __init__(self):
+        self.uploaded_files = list()
+        self.downloaded_files = list()
+
+    def uploads(self):
+        return self.uploaded_files
+
+    def downloads(self):
+        return self.downloaded_files
+
+    def upload(self, file_name: str):
+        self.uploaded_files.append(file_name)
+
+    def download(self, file_name: str):
+        self.downloaded_files.append(file_name)
+
+    def is_configured(self):
+        return True
+
+
 @pytest.mark.fluent_version(">=24.2")
 def test_file_purpose_on_remote_instance(
     monkeypatch, new_solver_session, new_mesh_session
@@ -124,7 +141,7 @@ def test_file_purpose_on_remote_instance(
 
     solver_session = Solver(
         fluent_connection=solver.fluent_connection,
-        remote_file_handler=RemoteFileHandler(transfer_service=file_service),
+        remote_file_handler=file_service,
     )
 
     solver_session.file.read_case(file_name=import_file_name)
@@ -139,7 +156,7 @@ def test_file_purpose_on_remote_instance(
 
     meshing_session = PureMeshing(
         fluent_connection=meshing.fluent_connection,
-        remote_file_handler=RemoteFileHandler(transfer_service=file_service),
+        remote_file_handler=file_service,
     )
 
     meshing_session.meshing.File.ReadMesh(FileName=import_file_name)
