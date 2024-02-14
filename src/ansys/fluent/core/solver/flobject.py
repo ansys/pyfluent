@@ -985,8 +985,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 self._create_child_object(name)
 
     def __delitem__(self, name: str):
-        # TODO: there is an issue in wrapping the following line with a context manager
-        self.flproxy.delete(self.path, name)
+        with self.while_deleting():
+            self.flproxy.delete(self.path, name)
         if name in self._objects:
             del self._objects[name]
 
