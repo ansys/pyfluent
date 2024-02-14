@@ -22,6 +22,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
@@ -615,9 +616,9 @@ def launch_remote_fluent(
     )
 
     remote_file_handler = (
-        file_transfer_service(pim_instance=fluent_connection._remote_instance)
-        if pypim.is_configured()
-        else file_transfer_service()
+        file_transfer_service
+        if file_transfer_service
+        else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
     )
 
     return session_cls(
