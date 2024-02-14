@@ -1,3 +1,5 @@
+import warnings
+
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
@@ -205,4 +207,6 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour["c1"].field = "pressure"
 
-    del solver.results.gr.contour["c1"]
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        del solver.results.gr.contour["c1"]
