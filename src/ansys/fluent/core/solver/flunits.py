@@ -32,7 +32,6 @@ def make_python_fl_unit_table(scheme_unit_table):
     as_list = lispy.parse(scheme_unit_table)[1][1]
     as_dict = { x[0]:x[1][3].split('"')[1] for x in as_list }
     return substitute_fl_units_with_py_units(as_dict)
-
 """
 
 _fl_unit_table = {

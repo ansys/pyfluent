@@ -405,21 +405,22 @@ class Real(SettingsBase[RealType], Numerical):
         if not ansys_units:
             error = "Code not configured to support units."
         if not error:
-            try:
-                quantity = self.get_attr("units-quantity")
-                if not quantity:
-                    error = f"{self.path} does not contain quantity information."
-                else:
+            quantity = self.get_attr("units-quantity")
+            if not quantity:
+                error = f"{self.path} does not contain quantity information."
+            else:
+                try:
                     return ansys_units.Quantity(
                         value=self.get_state(),
                         units=get_si_unit_for_fluent_quantity(quantity),
                     )
-            except (TypeError, ValueError) as e:
-                error = e
+                except (TypeError, ValueError) as e:
+                    error = e
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object.
+
         Raises
         ------
         TypeError
@@ -432,8 +433,7 @@ class Real(SettingsBase[RealType], Numerical):
             if not quantity:
                 raise ValueError(f"{self.path} does not contain quantity information.")
             unit = get_si_unit_for_fluent_quantity(quantity)
-            state = state.to(unit)
-            state = state.value
+            state = state.to(unit).value
         return super().set_state(state=state, **kwargs)
 
     _state_type = RealType
