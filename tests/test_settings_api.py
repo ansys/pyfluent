@@ -204,3 +204,5 @@ def test_deprecated_settings(new_solver_session):
 
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour["c1"].field = "pressure"
+
+    del solver.results.gr.contour["c1"]
