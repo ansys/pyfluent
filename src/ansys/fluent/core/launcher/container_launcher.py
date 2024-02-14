@@ -51,7 +51,7 @@ class DockerLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
-        remote_file_handler: Optional[Any] = PimFileTransferService(),
+        file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in container mode.
 
@@ -171,7 +171,9 @@ class DockerLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
-        self.remote_file_handler = remote_file_handler
+        self.file_transfer_service = (
+            file_transfer_service if file_transfer_service else PimFileTransferService()
+        )
 
     def __call__(self):
         if self.mode == FluentMode.SOLVER_ICING:
@@ -209,7 +211,7 @@ class DockerLauncher:
                 launcher_args=self.argvals,
                 inside_container=True,
             ),
-            remote_file_handler=self.remote_file_handler,
+            remote_file_handler=self.file_transfer_service,
         )
 
         if self.start_watchdog is None and self.cleanup_on_exit:

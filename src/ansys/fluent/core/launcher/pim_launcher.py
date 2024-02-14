@@ -45,7 +45,7 @@ class PIMLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
-        remote_file_handler: Optional[Any] = PimFileTransferService(),
+        file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode.
 
@@ -131,7 +131,7 @@ class PIMLauncher:
             which means an independent watchdog process is run to ensure
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
-        remote_file_handler : optional
+        file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
 
         Returns
@@ -177,7 +177,9 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent' is currently not supported "
                 "when starting a remote Fluent PyPIM client."
             )
-        self.remote_file_handler = remote_file_handler
+        self.file_transfer_service = (
+            file_transfer_service if file_transfer_service else PimFileTransferService()
+        )
 
     def __call__(self):
         logger.info(
@@ -196,5 +198,5 @@ class PIMLauncher:
             mode=self.mode,
             dimensionality=self.version,
             launcher_args=self.argvals,
-            remote_file_handler=self.remote_file_handler,
+            file_transfer_service=self.file_transfer_service,
         )
