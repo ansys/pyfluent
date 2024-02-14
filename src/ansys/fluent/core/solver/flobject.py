@@ -15,6 +15,8 @@ Example
 >>> r.setup.models.energy.enabled = True
 >>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
+from __future__ import annotations
+
 import collections
 import fnmatch
 import hashlib
@@ -26,7 +28,16 @@ import string
 import sys
 import types
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
+import warnings
 import weakref
+
+try:
+    import ansys.units as ansys_units
+
+    from .flunits import get_si_unit_for_fluent_quantity
+except ImportError:
+    get_unit_for_fl_quantity_attr = None
+    ansys_units = None
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
@@ -387,6 +398,43 @@ class Real(SettingsBase[RealType], Numerical):
     Some ``Real`` objects also accept string arguments representing
     expression values.
     """
+
+    def get_state_as_quantity(self) -> Optional[ansys_units.Quantity]:
+        """Get the state of the object as a Quantity."""
+        error = None
+        if not ansys_units:
+            error = "Code not configured to support units."
+        if not error:
+            quantity = self.get_attr("units-quantity")
+            if not quantity:
+                error = f"{self.path} does not contain quantity information."
+            else:
+                try:
+                    return ansys_units.Quantity(
+                        value=self.get_state(),
+                        units=get_si_unit_for_fluent_quantity(quantity),
+                    )
+                except (TypeError, ValueError) as e:
+                    error = e
+        warnings.warn(f"Unable to construct 'Quantity'. {error}")
+
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
+        """Set the state of the object.
+
+        Raises
+        ------
+        TypeError
+            If the quantity attribute is not a string instance.
+        ValueError
+            If the quantity attribute is not present in this parameter.
+        """
+        if ansys_units and isinstance(state, ansys_units.Quantity):
+            quantity = self.get_attr("units-quantity")
+            if not quantity:
+                raise ValueError(f"{self.path} does not contain quantity information.")
+            unit = get_si_unit_for_fluent_quantity(quantity)
+            state = state.to(unit).value
+        return super().set_state(state=state, **kwargs)
 
     _state_type = RealType
 
