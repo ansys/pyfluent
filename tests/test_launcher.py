@@ -1,7 +1,6 @@
 from pathlib import Path
 import platform
 
-from beartype.roar import BeartypeCallHintParamViolation
 import pytest
 from util.fixture_fluent import download_input_file
 
@@ -316,7 +315,7 @@ def test_fluent_launchers():
             ' -i "a.jou" -i "b.jou" -topy="c.py"',
             pytest.wont_raise(),
         ),
-        (None, 5, None, pytest.raises(BeartypeCallHintParamViolation)),
+        (None, 5, None, pytest.raises(TypeError)),
         (True, None, None, pytest.raises(InvalidArgument)),
     ],
 )
