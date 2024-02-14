@@ -60,7 +60,7 @@ def test_get_version_path_prefix_from_obj(
 ):
     meshing = new_watertight_workflow_session
     solver = new_solver_session
-    version = solver.version
+    version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
         version,
         ["<meshing_session>"],
@@ -162,8 +162,8 @@ def test_search_from_root(capsys, new_watertight_workflow_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
-def test_search_settings_from_root(capsys, load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
     pyfluent.search("conduction", search_root=solver)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.tui.define.models.shell_conduction (Object)" in lines

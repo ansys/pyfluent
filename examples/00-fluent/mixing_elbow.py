@@ -53,7 +53,11 @@ import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_
 # Launch Fluent as a service in meshing mode with double precision running on
 # two processors.
 
-meshing = pyfluent.launch_fluent(precision="double", processor_count=2, mode="meshing")
+meshing = pyfluent.launch_fluent(
+    precision="double",
+    processor_count=2,
+    mode="meshing",
+)
 
 
 ###############################################################################
@@ -213,16 +217,6 @@ solver = meshing.switch_to_solver()
 # Fluent cannot begin a calculation when this is the case.
 
 solver.tui.mesh.check()
-
-###############################################################################
-# Set working units for mesh
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the working units for the mesh to inches. Because the default SI units are
-# used for everything except length, you do not have to change any other units
-# in this example. If you want working units for length to be other than inches
-# (for example, millimeters), make the appropriate change.
-
-solver.tui.define.units("length", "in")
 
 ###############################################################################
 # Enable heat transfer
@@ -424,10 +418,24 @@ solver.tui.solve.iterate(100)
 solver.tui.file.write_data("mixing_elbow1.dat.h5")
 
 ###############################################################################
+# Configure graphics picture export
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Since Fluent is being run without the GUI, we will need to export plots as
+# picture files. Edit the picture settings to use a custom resolution so that
+# the images are large enough.
+
+picture = solver.tui.display.set.picture
+# use-window-container TUI option not available inside containers
+if not solver.connection_properties.inside_container:
+    picture.use_window_resolution("no")
+picture.x_resolution("1920")
+picture.y_resolution("1440")
+
+###############################################################################
 # Create definition for velocity magnitude contours
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for the velocity magnitude contours on the
-# symmetry plane.
+# symmetry plane. Then display it and export the image for inspection.
 #
 # - Set ``"contour"`` to ``"contour-vel"``.
 # - Set ``"field"`` to ``"velocity-magnitude"``.
@@ -451,6 +459,13 @@ solver.tui.display.objects.create(
     "quit",
 )
 
+solver.tui.display.objects.display("contour-vel")
+
+views = solver.tui.display.views
+views.restore_view("front")
+views.auto_scale()
+solver.tui.display.save_picture("contour-vel.png")
+
 ###############################################################################
 # .. image:: /_static/mixing_elbow_014.png
 #   :width: 500pt
@@ -460,7 +475,7 @@ solver.tui.display.objects.create(
 # Create definition for temperature contours
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for temperature contours on the symmetry
-# plane.
+# plane. Then display it and export the image for inspection.
 #
 # - Set ``"contour"`` to ``"contour-temp"``.
 # - Set ``"field"`` to ``"temperature"``.
@@ -484,6 +499,13 @@ solver.tui.display.objects.create(
     "quit",
 )
 
+solver.tui.display.objects.display("contour-temp")
+
+views = solver.tui.display.views
+views.restore_view("front")
+views.auto_scale()
+solver.tui.display.save_picture("contour-temp.png")
+
 ###############################################################################
 # .. image:: /_static/mixing_elbow_015.png
 #   :width: 500pt
@@ -492,7 +514,8 @@ solver.tui.display.objects.create(
 ###############################################################################
 # Create velocity vectors
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create and display velocity vectors on the symmetry-xyplane plane.
+# Create and display velocity vectors on the symmetry-xyplane plane. Then
+# display it and export the image for inspection.
 #
 # - Set ``"vector"`` to ``"vector-vel"``.
 # - Set ``"style"`` to ``"arrow"``.
@@ -517,8 +540,15 @@ solver.tui.display.objects.create(
     "quit",
 )
 
+solver.tui.display.objects.display("vector-vel")
+
+views = solver.tui.display.views
+views.restore_view("front")
+views.auto_scale()
+solver.tui.display.save_picture("vector-vel.png")
+
 ###############################################################################
-# .. image:: /_static/mixing_elbow_016.png
+# .. image:: /_static/mixing_elbow_tui_016.png
 #   :width: 500pt
 #   :align: center
 

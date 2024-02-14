@@ -28,14 +28,16 @@ from data.fluent_gui_help_patch import XML_HELP_PATCH
 from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.launcher_utils import get_ansys_version
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -94,9 +96,9 @@ def _copy_tui_help_xml_file(version: str):
 
     else:
         ansys_version = (
-            get_ansys_version()
+            FluentVersion.get_latest_installed()
         )  # picking up the file from the latest install location
-        awp_root = os.environ["AWP_ROOT" + "".join(str(ansys_version).split("."))[:-1]]
+        awp_root = os.environ[ansys_version.awp_var]
         xml_source = (
             Path(awp_root)
             / "commonfiles"
@@ -215,17 +217,12 @@ class TUIGenerator:
             "def __init__(self, service, version, mode, path):\n", indent
         )
         indent += 1
-        self._write_code_to_tui_file("self._service = service\n", indent)
-        self._write_code_to_tui_file("self._version = version\n", indent)
-        self._write_code_to_tui_file("self._mode = mode\n", indent)
-        self._write_code_to_tui_file("self._path = path\n", indent)
         for k, v in menu.children.items():
-            if not v.is_command:
-                self._write_code_to_tui_file(
-                    f"self.{k} = self.__class__.{k}"
-                    f'(service, version, mode, path + ["{v.tui_name}"])\n',
-                    indent,
-                )
+            self._write_code_to_tui_file(
+                f"self.{k} = self.__class__.{k}"
+                f'(service, version, mode, path + ["{v.tui_name}"])\n',
+                indent,
+            )
         self._write_code_to_tui_file(
             "super().__init__(service, version, mode, path)\n", indent
         )
@@ -234,9 +231,7 @@ class TUIGenerator:
         command_names = [v.name for _, v in menu.children.items() if v.is_command]
         if command_names:
             for command in command_names:
-                self._write_code_to_tui_file(
-                    f"def {command}(self, *args, **kwargs):\n", indent
-                )
+                self._write_code_to_tui_file(f"class {command}(TUIMethod):\n", indent)
                 indent += 1
                 self._write_code_to_tui_file('"""\n', indent)
                 doc_lines = menu.children[command].doc.splitlines()
@@ -245,12 +240,6 @@ class TUIGenerator:
                     if line:
                         self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
-                self._write_code_to_tui_file(
-                    f"return PyMenu(self._service, self._version, self._mode, "
-                    f'"{menu.get_command_path(command)}").execute('
-                    f"*args, **kwargs)\n",
-                    indent,
-                )
                 indent -= 1
         for k, v in menu.children.items():
             if v.is_command:
@@ -283,16 +272,14 @@ class TUIGenerator:
             child_menu_names = [
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
-
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
             if noindex:
                 f.write("   :noindex:\n")
-            f.write("   :members:\n")
+            f.write(f"   :members: {', '.join(command_names)}\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
-            f.write('   :exclude-members: "__weakref__, __dict__"\n')
-            f.write('   :special-members: " __init__"\n')
-            f.write("   :autosummary:\n\n")
+            f.write("   :autosummary:\n")
+            f.write("   :autosummary-members:\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
@@ -306,13 +293,14 @@ class TUIGenerator:
                             doc_dir / v.name,
                             heading + "." + v.name,
                             class_name + "." + v.name,
+                            False,
                         )
 
     def generate(self) -> None:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if self._version == "222":
+            if FluentVersion(self._version) == FluentVersion.v222:
                 with open(
                     os.path.join(
                         _THIS_DIRNAME,
@@ -338,7 +326,7 @@ class TUIGenerator:
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
                 "from ansys.fluent.core.services.datamodel_tui "
-                "import PyMenu, TUIMenu\n\n\n"
+                "import PyMenu, TUIMenu, TUIMethod\n\n\n"
             )
             self._main_menu.name = "main_menu"
             api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
@@ -354,7 +342,7 @@ class TUIGenerator:
 
 def generate(version, pyfluent_path):
     api_tree = {}
-    if version > "222":
+    if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(

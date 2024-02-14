@@ -15,8 +15,8 @@ from docker.models.containers import Container
 import grpc
 import psutil
 
-from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
+from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.platform.instancemanagement import Instance
 import docker
@@ -269,6 +269,7 @@ class FluentConnection:
         self.error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
+        self._slurm_job_id = None
         self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
@@ -293,12 +294,14 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check_service = HealthCheckService(
+        self.health_check_service = service_creator("health_check").create(
             self._channel, self._metadata, self.error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         self.health_check_service.check_health()
+
+        self._slurm_job_id = launcher_args and launcher_args.get("slurm_job_id")
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
@@ -308,10 +311,12 @@ class FluentConnection:
 
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = SchemeEvalService(
-            self._channel, self._metadata, self.error_state
+        self._scheme_eval_service = self.create_grpc_service(
+            SchemeEvalService, self.error_state
         )
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
+        self.scheme_eval = service_creator("scheme_eval").create(
+            self._scheme_eval_service
+        )
 
         self._cleanup_on_exit = cleanup_on_exit
         self.start_transcript = start_transcript
@@ -387,6 +392,9 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
+    def _close_slurm(self):
+        subprocess.run(["scancel", f"{self._slurm_job_id}"])
+
     def force_exit(self):
         """Immediately terminates the Fluent client, losing unsaved progress and data.
 
@@ -443,6 +451,9 @@ class FluentConnection:
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
+        elif self._slurm_job_id:
+            logger.debug("Fluent running inside Slurm, closing Slurm session...")
+            self._close_slurm()
         else:
             logger.error("Could not find cleanup file.")
 
@@ -487,7 +498,7 @@ class FluentConnection:
         """Register a callback to run with the finalizer."""
         self.finalizer_cbs.append(cb)
 
-    def create_service(self, service, *args):
+    def create_grpc_service(self, service, *args):
         """Create a gRPC service.
 
         Parameters

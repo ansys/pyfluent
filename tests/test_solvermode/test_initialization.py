@@ -2,12 +2,18 @@ import pytest
 from util.fixture_fluent import download_input_file
 
 
-@pytest.mark.quick
-@pytest.mark.setup
-def test_initialize(launch_fluent_solver_3ddp_t2):
+@pytest.mark.settings_only
+def test_initialization_settings(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
-    input_type, input_name = download_input_file("pyfluent/wigley_hull", "wigley.msh")
-    solver.file.read(file_type=input_type, file_name=input_name)
+    input_type, input_name = download_input_file(
+        "pyfluent/wigley_hull",
+        "wigley.cas.h5",
+    )
+    solver.file.read(
+        file_type=input_type,
+        file_name=input_name,
+        lightweight_setup=True,
+    )
     solver.parallel.partition.set.laplace_smoothing.enabled = True
     solver.parallel.partition.method(partition_method="metis", count=2)
     copy_by_name = solver.setup.materials.database.copy_by_name
@@ -31,7 +37,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
         "momentum": {"direction_specification_method": "Direction Vector"},
         "turbulence": {
             "turbulent_intensity": 0.01,
-            "turbulent_viscosity_ratio_real": 1,
+            "turbulent_viscosity_ratio": 1,
         },
     }
     solver.setup.boundary_conditions.pressure_outlet["outflow"].phase["mixture"] = {
@@ -46,7 +52,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
         },
         "turbulence": {
             "turbulent_intensity": 0.01,
-            "turbulent_viscosity_ratio_real": 1,
+            "turbulent_viscosity_ratio": 1,
         },
     }
 
@@ -63,12 +69,8 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
         "boundary_zone": 3,
         "flat_init": True,
     }
-    # solver.solution.initialization.hybrid_initialize()
-    # solver.exit()
 
 
-@pytest.mark.quick
-@pytest.mark.setup
 @pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2

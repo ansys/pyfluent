@@ -1,12 +1,12 @@
 import pytest
 
 
-@pytest.mark.quick
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version(">=24.1")
-def test_expression(load_mixing_elbow_mesh):
-    solver_session = load_mixing_elbow_mesh
-    solver_session.setup.models.energy.enabled = True
+def test_expression(load_mixing_elbow_settings_only):
+    solver_session = load_mixing_elbow_settings_only
+    # Case file already has energy model turned on
+    # solver_session.setup.models.energy.enabled = True
     expressions = solver_session.setup.named_expressions
     expressions["r"] = {}
     expressions["r"] = {"definition": "(Position.z**2.0 +Position.x**2.0)**0.5"}

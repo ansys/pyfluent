@@ -59,7 +59,7 @@ class PureMeshing(BaseSession):
             self.datamodel_service_se,
         )
 
-        self.meshing_queries_service = fluent_connection.create_service(
+        self.meshing_queries_service = fluent_connection.create_grpc_service(
             MeshingQueriesService, self.error_state
         )
 
@@ -170,34 +170,4 @@ class PureMeshing(BaseSession):
             num_files_to_try,
             clean_up_mesh_file,
             overwrite_previous,
-        )
-
-    def read_case(
-        self,
-        file_name: str,
-    ):
-        """Read a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.upload(
-            file_name=file_name, on_uploaded=self.tui.file.read_case
-        )
-
-    def write_case(
-        self,
-        file_name: str,
-    ):
-        """Write a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.download(
-            file_name=file_name, before_downloaded=self.tui.file.write_case
         )

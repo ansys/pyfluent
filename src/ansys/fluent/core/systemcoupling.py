@@ -5,6 +5,8 @@ import os
 from typing import List
 import xml.etree.ElementTree as XmlET
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 
 @dataclass
 class Variable:
@@ -42,10 +44,9 @@ class SystemCoupling:
     def __init__(self, solver):
         self._solver = solver
         # version check - this requires Fluent 2024 R1 or newer.
-        fluent_version = self._solver.get_fluent_version()
-        if float(fluent_version[:-2]) < 24.1:
+        if FluentVersion.get_latest_installed() < FluentVersion.v241:
             raise RuntimeError(
-                f"Fluent version is {fluent_version}. PySystemCoupling integration requires Fluent 24.1.0 or later."
+                f"Fluent version is {FluentVersion.get_latest_installed().value}. PySystemCoupling integration requires Fluent 24.1.0 or later."
             )
 
     @property

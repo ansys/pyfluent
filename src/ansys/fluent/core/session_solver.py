@@ -7,24 +7,32 @@ import importlib
 import logging
 import threading
 from typing import Any, Optional
+import warnings
 
+from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.services.reduction import Reduction, ReductionService
-from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
+from ansys.fluent.core.services.reduction import ReductionService
+from ansys.fluent.core.services.solution_variables import (
+    SolutionVariableData,
+    SolutionVariableInfo,
+)
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     Group,
     NamedObject,
     SettingsBase,
     StateType,
 )
-from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 from ansys.fluent.core.workflow import WorkflowWrapper
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -43,6 +51,19 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
                 _set_state_safe(getattr(obj, k), v)
         else:
             datamodel_logger.debug(f"set_state failed at {obj.path}")
+
+
+def _import_settings_root(root):
+    _class_dict = {}
+    api_keys = []
+    if hasattr(root, "child_names"):
+        api_keys = root.child_names
+
+    for root_item in api_keys:
+        _class_dict[root_item] = getattr(root, root_item)
+
+    settings_api_root = type("SettingsRoot", (object,), _class_dict)
+    return settings_api_root()
 
 
 class Solver(BaseSession):
@@ -76,17 +97,24 @@ class Solver(BaseSession):
         self._workflow = None
         self._system_coupling = None
         self._settings_root = None
-        self._version = None
+        self._fluent_version = None
         self._lck = threading.Lock()
-        self.svar_service = self.fluent_connection.create_service(SVARService)
-        self.svar_info = SVARInfo(self.svar_service)
-        self._reduction_service = self.fluent_connection.create_service(
+        self._solution_variable_service = service_creator("svar").create(
+            fluent_connection._channel, fluent_connection._metadata
+        )
+        self.solution_variable_info = SolutionVariableInfo(
+            self._solution_variable_service
+        )
+        self._reduction_service = self.fluent_connection.create_grpc_service(
             ReductionService, self.error_state
         )
-        if int(self.version) >= 241:
-            self.reduction = Reduction(self._reduction_service)
+        if FluentVersion(self._version) >= FluentVersion.v241:
+            self.reduction = service_creator("reduction").create(
+                self._reduction_service, self
+            )
         else:
             self.reduction = reduction_old
+        self._settings_api_root = None
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
@@ -94,19 +122,36 @@ class Solver(BaseSession):
         self._build_from_fluent_connection(fluent_connection)
 
     @property
-    def svar_data(self) -> SVARData:
-        """Return the SVARData handle."""
-        try:
-            return SVARData(self.svar_service, self.svar_info)
-        except RuntimeError:
-            return None
+    def solution_variable_data(self) -> SolutionVariableData:
+        """Return the SolutionVariableData handle."""
+        return service_creator("svar_data").create(
+            self._solution_variable_service, self.solution_variable_info
+        )
 
     @property
-    def version(self):
+    def svar_data(self):
+        """Return the SolutionVariableData handle."""
+        warnings.warn(
+            "svar_data is deprecated, use solution_variable_data instead",
+            DeprecationWarning,
+        )
+        return self.solution_variable_data
+
+    @property
+    def svar_info(self):
+        """Return the SolutionVariableInfo handle."""
+        warnings.warn(
+            "svar_info is deprecated, use solution_variable_info instead",
+            DeprecationWarning,
+        )
+        return self.solution_variable_info
+
+    @property
+    def _version(self):
         """Fluent's product version."""
-        if self._version is None:
-            self._version = get_version_for_file_name(session=self)
-        return self._version
+        if self._fluent_version is None:
+            self._fluent_version = get_version_for_file_name(session=self)
+        return self._fluent_version
 
     @property
     def tui(self):
@@ -115,7 +160,7 @@ class Solver(BaseSession):
         if self._tui is None:
             try:
                 tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self.version}"
+                    f"ansys.fluent.core.solver.tui_{self._version}"
                 )
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "solver", []
@@ -130,7 +175,7 @@ class Solver(BaseSession):
         """Datamodel root for workflow."""
         try:
             workflow_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self.version}.workflow"
+                f"ansys.fluent.core.datamodel_{self._version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except ImportError:
@@ -149,8 +194,10 @@ class Solver(BaseSession):
     def _root(self):
         """Root settings object."""
         if self._settings_root is None:
-            self._settings_root = settings_get_root(
-                flproxy=self._settings_service, version=self.version
+            self._settings_root = flobject.get_root(
+                flproxy=self._settings_service,
+                version=self._version,
+                remote_file_handler=self._remote_file_handler,
             )
         return self._settings_root
 
@@ -159,61 +206,6 @@ class Solver(BaseSession):
         if self._system_coupling is None:
             self._system_coupling = SystemCoupling(self)
         return self._system_coupling
-
-    @property
-    def file(self):
-        """Settings for file."""
-        return self._root.file
-
-    @property
-    def mesh(self):
-        """Settings for mesh."""
-        return self._root.mesh
-
-    @property
-    def setup(self):
-        """Settings for setup."""
-        return self._root.setup
-
-    @property
-    def solution(self):
-        """Settings for solution."""
-        return self._root.solution
-
-    @property
-    def results(self):
-        """Settings for results."""
-        return self._root.results
-
-    @property
-    def parametric_studies(self):
-        """Settings for parametric_studies."""
-        return self._root.parametric_studies
-
-    @property
-    def current_parametric_study(self):
-        """Settings for current_parametric_study."""
-        return self._root.current_parametric_study
-
-    @property
-    def parameters(self):
-        """Settings for parameters."""
-        return self._root.parameters
-
-    @property
-    def parallel(self):
-        """Settings for parallel."""
-        return self._root.parallel
-
-    @property
-    def report(self):
-        """Settings for report."""
-        return self._root.report
-
-    @property
-    def server(self):
-        """Settings for server."""
-        return self._root.server
 
     @property
     def preferences(self):
@@ -253,36 +245,20 @@ class Solver(BaseSession):
     def __call__(self):
         return self._root.get_state()
 
-    def read_case(
-        self,
-        file_name: str,
-    ):
-        """Read a case file.
+    def _populate_settings_api_root(self):
+        if not self._settings_api_root:
+            self._settings_api_root = _import_settings_root(self._root)
 
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.upload(
-            file_name=file_name,
-            on_uploaded=(lambda file_name: self.file.read_case(file_name=file_name)),
-        )
+    def __getattr__(self, attr):
+        self._populate_settings_api_root()
+        return getattr(self._settings_api_root, attr)
 
-    def write_case(
-        self,
-        file_name: str,
-    ):
-        """Write a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.download(
-            file_name=file_name,
-            before_downloaded=(
-                lambda file_name: self.file.write_case(file_name=file_name)
-            ),
+    def __dir__(self):
+        self._populate_settings_api_root()
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self._settings_api_root)
+            )
         )

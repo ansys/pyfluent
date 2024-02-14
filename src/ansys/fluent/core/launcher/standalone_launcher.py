@@ -13,13 +13,11 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _generate_launch_string,
-    _get_argvals,
     _get_server_info,
     _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
     _is_windows,
     _process_invalid_args,
-    _process_kwargs,
     _raise_exception_g_gu_in_windows_os,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
@@ -35,7 +33,7 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        argvals: Optional[Any] = None,
+        mode: FluentMode,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -53,18 +51,19 @@ class StandaloneLauncher:
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
-        mode: Optional[Union[FluentMode, str, None]] = None,
         py: Optional[bool] = None,
         gpu: Optional[bool] = None,
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
-        **kwargs,
+        scheduler_options: Optional[dict] = None,
     ):
         """Launch Fluent session in standalone mode.
 
         Parameters
         ----------
+        mode : FluentMode
+            Launch mode of Fluent to point to a specific session type.
         product_version : str, optional
             Select an installed version of ANSYS. The string must be in a format like
             ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
@@ -129,10 +128,6 @@ class StandaloneLauncher:
             made by the user in the current Fluent solver session have been applied in the background Fluent
             solver session. This is all orchestrated by PyFluent and requires no special usage.
             This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-        mode : str, optional
-            Launch mode of Fluent to point to a specific session type.
-            The default value is ``None``. Options are ``"meshing"``,
-            ``"pure-meshing"`` and ``"solver"``.
         py : bool, optional
             If True, Fluent will run in Python mode. Default is None.
         gpu : bool, optional
@@ -169,16 +164,16 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _process_kwargs(kwargs)
-        del kwargs
         del start_container
         argvals = locals().copy()
+        del argvals["self"]
         _process_invalid_args(dry_run, "standalone", argvals)
-        args = _get_argvals(argvals, mode)
-        argvals.update(args)
+        if argvals["start_timeout"] is None:
+            argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
+        self.new_session = self.mode.value[0]
 
     def __call__(self):
         if self.lightweight_mode is None:
@@ -195,7 +190,7 @@ class StandaloneLauncher:
         server_info_file_name = _get_server_info_file_name()
         launch_string = _generate_launch_string(
             self.argvals,
-            self.meshing_mode,
+            self.mode,
             self.show_gui,
             self.additional_arguments,
             server_info_file_name,
@@ -204,7 +199,7 @@ class StandaloneLauncher:
         sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
         if self.env is None:
             setattr(self, "env", {})
-        kwargs = _get_subprocess_kwargs_for_fluent(self.env)
+        kwargs = _get_subprocess_kwargs_for_fluent(self.env, self.argvals)
         if self.cwd:
             kwargs.update(cwd=self.cwd)
         launch_string += _build_journal_argument(self.topy, self.journal_file_names)
@@ -255,14 +250,20 @@ class StandaloneLauncher:
                 ip, port, password = _get_server_info(server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
             if self.case_file_name:
-                if self.meshing_mode:
+                if FluentMode.is_meshing(self.mode):
                     session.tui.file.read_case(self.case_file_name)
+                elif self.lightweight_mode:
+                    session.read_case_lightweight(self.case_file_name)
                 else:
-                    session.read_case(self.case_file_name, self.lightweight_mode)
-            if self.case_data_file_name:
-                if not self.meshing_mode:
                     session.file.read(
-                        file_type="case-data", file_name=self.case_data_file_name
+                        file_type="case",
+                        file_name=self.case_file_name,
+                    )
+            if self.case_data_file_name:
+                if not FluentMode.is_meshing(self.mode):
+                    session.file.read(
+                        file_type="case-data",
+                        file_name=self.case_data_file_name,
                     )
                 else:
                     raise RuntimeError(

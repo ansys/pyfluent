@@ -25,7 +25,10 @@ class MeshWriteError(RuntimeError):
 @asynchronous
 def _read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Trying to read case: {file_name}")
-    solver._remote_file_handler.upload(file_name=file_name)
+    try:
+        solver._remote_file_handler.upload(file_name=file_name)
+    except AttributeError:
+        pass
     if full_file_name_container:
         solver.file.read(file_name=full_file_name_container, file_type=file_type)
     else:
@@ -148,7 +151,10 @@ def transfer_case(
                 writer("y")
             else:
                 writer()
-            source_instance._remote_file_handler.download(file_name=full_file_name)
+            try:
+                source_instance._remote_file_handler.download(file_name=full_file_name)
+            except AttributeError:
+                pass
             network_logger.info(f"Saved mesh from meshing session: {full_file_name}")
             if inside_container:
                 _read_case_into_each(

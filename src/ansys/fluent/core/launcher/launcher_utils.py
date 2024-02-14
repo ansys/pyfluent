@@ -26,6 +26,7 @@ from ansys.fluent.core.utils.file_transfer_service import (
     PimFileTransferService,
     RemoteFileHandler,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
@@ -34,18 +35,18 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-class AnsysVersionNotFound(RuntimeError):
-    """Provides the error when Ansys version is not found."""
-
-    def __init__(self):
-        super().__init__("Verify the value of the 'AWP_ROOT' environment variable.")
-
-
 class InvalidPassword(ValueError):
     """Provides the error when password is invalid."""
 
     def __init__(self):
         super().__init__("Provide correct 'password'.")
+
+
+class GPUSolverSupportError(ValueError):
+    """Provides the error when an unsupported Fluent version is specified."""
+
+    def __init__(self):
+        super().__init__("Fluent GPU Solver is only supported for 3D.")
 
 
 class IpPortNotProvided(ValueError):
@@ -79,6 +80,7 @@ class LaunchMode(Enum):
     STANDALONE = 1
     PIM = 2
     CONTAINER = 3
+    SLURM = 4
 
 
 def check_docker_support():
@@ -90,57 +92,6 @@ def check_docker_support():
     except docker.errors.DockerException:
         return False
     return True
-
-
-class FluentVersion(Enum):
-    """An enumeration over supported Fluent versions."""
-
-    version_24R2 = "24.2.0"
-    version_24R1 = "24.1.0"
-    version_23R2 = "23.2.0"
-    version_23R1 = "23.1.0"
-    version_22R2 = "22.2.0"
-
-    @classmethod
-    def _missing_(cls, version):
-        if isinstance(version, (float, str)):
-            version = str(version) + ".0"
-            for v in FluentVersion:
-                if version == v.value:
-                    return FluentVersion(version)
-            else:
-                raise RuntimeError(
-                    f"The specified version '{version[:-2]}' is not supported."
-                    + " Supported versions are: "
-                    + ", ".join([ver.value for ver in FluentVersion][::-1])
-                )
-
-    def __str__(self):
-        return str(self.value)
-
-
-def get_ansys_version() -> str:
-    """Return the version string corresponding to the most recent, available ANSYS
-    installation.
-
-    The returned value is the string component of one of the members of the
-    FluentVersion class.
-
-    Returns
-    -------
-    str
-        Ansys version string
-
-    Raises
-    ------
-    AnsysVersionNotFound
-        If an Ansys version cannot be found.
-    """
-    for v in FluentVersion:
-        if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
-            return str(v)
-
-    raise AnsysVersionNotFound()
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
@@ -156,7 +107,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     """
 
     def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ["AWP_ROOT" + "".join(str(version).split("."))[:-1]]
+        awp_root = os.environ[version.awp_var]
         return Path(awp_root) / "fluent"
 
     def get_exe_path(fluent_root: Path) -> Path:
@@ -177,18 +128,16 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
-    ansys_version = get_ansys_version()
-    return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
+    return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
 
 
 class FluentMode(Enum):
     """An enumeration over supported Fluent modes."""
 
-    # Tuple: Name, Solver object type, Meshing flag, Launcher options
-    MESHING_MODE = ("meshing", Meshing, True, [])
-    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
-    SOLVER = ("solver", Solver, False, [])
-    SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
+    MESHING_MODE = (Meshing, "meshing")
+    PURE_MESHING_MODE = (PureMeshing, "pure-meshing")
+    SOLVER = (Solver, "solver")
+    SOLVER_ICING = (SolverIcing, "solver-icing")
 
     @staticmethod
     def get_mode(mode: str) -> "FluentMode":
@@ -209,26 +158,50 @@ class FluentMode(Enum):
         DisallowedValuesError
             If an unknown mode is passed.
         """
+        allowed_modes = []
         for m in FluentMode:
-            if mode == m.value[0]:
+            allowed_modes.append(m.value[1])
+            if mode == m.value[1]:
                 return m
-        else:
-            raise DisallowedValuesError(
-                "mode", mode, ["meshing", "pure-meshing", "solver", "solver-icing"]
-            )
+        raise DisallowedValuesError("mode", mode, allowed_modes)
+
+    @staticmethod
+    def is_meshing(mode: "FluentMode") -> bool:
+        """Returns whether the current mode is meshing.
+
+        Parameters
+        ----------
+        mode : FluentMode
+            mode
+
+        Returns
+        -------
+        True if mode is FluentMode.MESHING_MODE or FluentMode.PURE_MESHING_MODE else False
+            bool
+        """
+        return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
-def _get_server_info_file_name():
+def _get_server_info_file_name(use_tmpdir=True):
     server_info_dir = os.getenv("SERVER_INFO_DIR")
-    dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
+    dir_ = (
+        Path(server_info_dir)
+        if server_info_dir
+        else tempfile.gettempdir()
+        if use_tmpdir
+        else Path.cwd()
+    )
     fd, file_name = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=str(dir_))
     os.close(fd)
     return file_name
 
 
-def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
+def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+    scheduler_options = argvals.get("scheduler_options")
+    is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     kwargs: Dict[str, Any] = {}
-    kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if is_slurm:
+        kwargs.update(stdout=subprocess.PIPE)
     if _is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
@@ -236,12 +209,15 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
-    from ansys.fluent.core import INFER_REMOTING_IP
 
-    if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
-        remoting_ip = find_remoting_ip()
-        if remoting_ip:
-            fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+    if not is_slurm:
+        from ansys.fluent.core import INFER_REMOTING_IP
+
+        if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
+            remoting_ip = find_remoting_ip()
+            if remoting_ip:
+                fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+
     kwargs.update(env=fluent_env)
     return kwargs
 
@@ -292,22 +268,23 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         )
         if parallel_options:
             launch_args_string += " " + parallel_options
+    gpu = kwargs.get("gpu")
+    if gpu is True:
+        launch_args_string += " -gpu"
+    elif isinstance(gpu, list):
+        launch_args_string += f" -gpu={','.join(map(str, gpu))}"
     return launch_args_string
 
 
-def _get_session_info(argvals, mode: Optional[Union[FluentMode, str, None]] = None):
+def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
     """Updates the session information."""
     if mode is None:
         mode = FluentMode.SOLVER
 
     if isinstance(mode, str):
         mode = FluentMode.get_mode(mode)
-    new_session = mode.value[1]
-    meshing_mode = mode.value[2]
-    for k, v in mode.value[3]:
-        argvals[k] = v
 
-    return new_session, meshing_mode, argvals, mode
+    return mode
 
 
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
@@ -347,7 +324,9 @@ def _await_fluent_launch(
             raise TimeoutError("The launch process has timed out.")
         time.sleep(1)
         start_timeout -= 1
-        logger.info(f"Waiting for Fluent to launch...{start_timeout} seconds remaining")
+        logger.info(f"Waiting for Fluent to launch...")
+        if start_timeout >= 0:
+            logger.info(f"...{start_timeout} seconds remaining")
 
 
 def _get_server_info(
@@ -391,12 +370,12 @@ def _get_running_session_mode(
             )
         except Exception as ex:
             raise InvalidPassword() from ex
-    return session_mode.value[1]
+    return session_mode.value[0]
 
 
 def _generate_launch_string(
     argvals,
-    meshing_mode: bool,
+    mode: FluentMode,
     show_gui: bool,
     additional_arguments: str,
     server_info_file_name: str,
@@ -409,8 +388,10 @@ def _generate_launch_string(
     else:
         exe_path = str(get_fluent_exe_path(**argvals))
     launch_string = exe_path
+    if mode == FluentMode.SOLVER_ICING:
+        argvals["fluent_icing"] = True
     launch_string += _build_fluent_launch_args_string(**argvals)
-    if meshing_mode:
+    if FluentMode.is_meshing(mode):
         launch_string += " -meshing"
     if additional_arguments:
         launch_string += f" {additional_arguments}"
@@ -495,7 +476,7 @@ def _process_kwargs(kwargs):
             )
 
 
-def _get_fluent_launch_mode(start_container, container_dict):
+def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     """Get Fluent launch mode.
 
     Parameters
@@ -520,6 +501,8 @@ def _get_fluent_launch_mode(start_container, container_dict):
             fluent_launch_mode = "container"
         else:
             raise DockerContainerLaunchNotSupported()
+    elif scheduler_options and scheduler_options["scheduler"] == "slurm":
+        fluent_launch_mode = "slurm"
     else:
         fluent_launch_mode = "standalone"
     return fluent_launch_mode
@@ -564,33 +547,12 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
             )
 
 
-def _get_argvals(argvals, mode):
-    """Update local arguments.
-
-    Parameters
-    ----------
-    argvals: dict
-        Local arguments.
-    mode : str
-        Launch mode of Fluent to point to a specific session type.
-        Options are ``"meshing"``, ``"pure-meshing"`` and ``"solver"``.
-
-    Returns
-    -------
-    argvals: dict
-        Updated local arguments.
-    """
-    new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
-    argvals = locals().copy()
-    return argvals
-
-
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
     product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
-    meshing_mode: bool = False,
+    mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Optional[str] = None,
     launcher_args: Optional[Dict[str, Any]] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
@@ -617,9 +579,9 @@ def launch_remote_fluent(
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
-    meshing_mode : bool, optional
+    mode : FluentMode, optional
         Whether to launch Fluent remotely in meshing mode. The default is
-        ``False``.
+        ``FluentMode.SOLVER``.
     dimensionality : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -635,7 +597,7 @@ def launch_remote_fluent(
     pim = pypim.connect()
     instance = pim.create_instance(
         product_name="fluent-meshing"
-        if meshing_mode
+        if FluentMode.is_meshing(mode)
         else "fluent-2ddp"
         if dimensionality == "2d"
         else "fluent-3ddp",

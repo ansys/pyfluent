@@ -9,15 +9,14 @@ from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
 
 @pytest.mark.fluent_version(">=24.1")
-@pytest.mark.integration
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.codegen_required
-def test_boundaries_elbow(load_mixing_elbow_mesh):
-    solver_session = load_mixing_elbow_mesh
+def test_boundaries_elbow(load_mixing_elbow_settings_only):
+    solver_session = load_mixing_elbow_settings_only
     solver_session.setup.models.energy.enabled = True
 
     cold_inlet = solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]
-    assert D(0) == cold_inlet.momentum.velocity()
+    assert D(1) == cold_inlet.momentum.velocity()
     assign_dict_val(cold_inlet.momentum.velocity, 0.4)
     assert D(0.4) == cold_inlet.momentum.velocity()
 
@@ -66,20 +65,19 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
-    ].turbulence.turbulent_viscosity_ratio_real = 4
+    ].turbulence.turbulent_viscosity_ratio = 4
     assert (
         solver_session.setup.boundary_conditions.pressure_outlet[
             "outlet"
-        ].turbulence.turbulent_viscosity_ratio_real()
+        ].turbulence.turbulent_viscosity_ratio()
         == 4
     )
 
 
-@pytest.mark.integration
-@pytest.mark.setup
+@pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_boundaries_periodic(load_periodic_rot_cas):
-    solver_session = load_periodic_rot_cas
+def test_boundaries_periodic(load_periodic_rot_settings_only):
+    solver_session = load_periodic_rot_settings_only
     print(__file__)
     _THIS_DIR = os.path.dirname(__file__)
     _DATA_FILE = os.path.join(_THIS_DIR, "boundaries_periodic_expDict")
@@ -89,6 +87,7 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     for name, boundary in solver_session.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_1"] = boundary_test
+
     TestCase().assertDictEqual(boundary_tested["val_1"], boundary_exp["val_1"])
 
     boundary_test = dict()
@@ -108,12 +107,8 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     selected_bou_test = get_name_info(boundary_tested["val_1"], boundaries_check)
     selected_bou_exp = get_name_info(boundary_exp["val_1"], boundaries_check)
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
-    # commented new method due to bug 753
-    # solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
-    rename_wall = solver_session.setup.boundary_conditions.wall.rename
-    rename_wall("pipe2_wall", "pipe_2_wall")
-    rename_wall("out", "outlet")
-
+    solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
+    solver_session.setup.boundary_conditions.pressure_outlet["outlet"].rename("out")
     solver_session.setup.boundary_conditions.velocity_inlet[
         "inlet"
     ].momentum.velocity = 5.0

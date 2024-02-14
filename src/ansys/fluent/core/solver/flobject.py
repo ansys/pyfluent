@@ -24,6 +24,7 @@ import logging
 import pickle
 import string
 import sys
+import types
 from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
 import warnings
 import weakref
@@ -36,10 +37,10 @@ settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
 class InactiveObjectError(RuntimeError):
-    """Provides the error when the object is inactive."""
+    """Inactive object access."""
 
-    def __init__(self):
-        super().__init__("Object is not active.")
+    def __init__(self, python_path):
+        super().__init__(f"'{python_path}' is currently inactive.")
 
 
 class _InlineConstants:
@@ -50,6 +51,7 @@ class _InlineConstants:
     max = "max"
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
+    file_purpose = "file-purpose"
 
 
 # Type hints
@@ -111,12 +113,17 @@ class Base:
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
+        self._setattr("_remote_file_handler", None)
         if name is not None:
             self._setattr("_name", name)
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def set_remote_file_handler(self, remote_file_handler):
+        """Set remote_file_handler."""
+        self._setattr("_remote_file_handler", remote_file_handler)
 
     @property
     def flproxy(self):
@@ -128,6 +135,16 @@ class Base:
         if self._flproxy is None:
             return self._parent.flproxy
         return self._flproxy
+
+    @property
+    def remote_file_handler(self):
+        """Remote file handler.
+
+        Supports file upload and download.
+        """
+        if self._remote_file_handler is None:
+            return self._parent.remote_file_handler
+        return self._remote_file_handler
 
     _name = None
     fluent_name = None
@@ -219,7 +236,7 @@ class Base:
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
-            raise InactiveObjectError()
+            raise InactiveObjectError(self.python_path)
         val = None
         if attrs:
             val = attrs[attr]
@@ -253,6 +270,14 @@ class Base:
     # overriding existing ones. _setattr is the backdoor to set attributes
     def _setattr(self, name, value):
         super().__setattr__(name, value)
+
+    def before_execute(self, value):
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
+
+    def after_execute(self, value):
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
 
 
 StateT = TypeVar("StateT")
@@ -416,11 +441,43 @@ class Filename(SettingsBase[str], Textual):
 
     _state_type = str
 
+    def file_purpose(self):
+        """Specifies whether this file is used as input or output by Fluent."""
+        return self.get_attr(_InlineConstants.file_purpose)
+
 
 class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    def file_purpose(self):
+        """Specifies whether this file is used as input or output by Fluent."""
+        return self.get_attr(_InlineConstants.file_purpose)
+
+
+class FileName(Base):
+    pass
+
+
+class _InputFile(FileName):
+    def _do_before_execute(self, value):
+        try:
+            self.remote_file_handler.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile(FileName):
+    def _do_after_execute(self, value):
+        try:
+            self.remote_file_handler.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutFile(_InputFile, _OutputFile):
+    pass
 
 
 class Boolean(SettingsBase[bool], Property):
@@ -604,23 +661,28 @@ class Group(SettingsBase[DictStateType]):
 
     def _get_parent_of_active_child_names(self, name):
         parents = ""
+        path_list = []
         for parent in self.get_active_child_names():
             try:
                 if hasattr(getattr(self, parent), str(name)):
+                    path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
                     if len(parents) != 0:
-                        parents += "." + parent
+                        parents += ", " + parent
                     else:
                         parents += parent
             except AttributeError:
                 pass
+        if len(path_list):
+            print(f"\n {str(name)} can be accessed from the following paths: \n")
+            for path in path_list:
+                print(path)
         if len(parents):
-            print(f"\n {name} is a child of {parents} \n")
             return f"\n {name} is a child of {parents} \n"
 
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
-                raise RuntimeError(f"'{self.python_path}' is currently not active")
+                raise InactiveObjectError(self.python_path)
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -791,6 +853,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = cls(cname, self)
         ret._setattr("_python_name", f'["{cname}"]')
+        ret._setattr(
+            "rename",
+            types.MethodType(lambda obj, name: _rename(self, name, cname), ret),
+        )
         return ret
 
     def _update_objects(self):
@@ -801,21 +867,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         for name in names:
             if name not in self._objects:
                 self._create_child_object(name)
-
-    def rename(self, new: str, old: str):
-        """Rename a named object.
-
-        Parameters
-        ----------
-        new: str
-            New name.
-        old : str
-            Current name.
-        """
-        self.flproxy.rename(self.path, new, old)
-        if old in self._objects:
-            del self._objects[old]
-        self._create_child_object(new)
 
     def __delitem__(self, name: str):
         self.flproxy.delete(self.path, name)
@@ -898,6 +949,24 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         return obj
 
 
+def _rename(obj: NamedObject, new: str, old: str):
+    """Rename a named object.
+
+    Parameters
+    ----------
+    obj: NamedObject
+        named-object to be renamed
+    new: str
+        New name.
+    old : str
+        Current name.
+    """
+    obj.flproxy.rename(obj.path, new, old)
+    if old in obj._objects:
+        del obj._objects[old]
+    obj._create_child_object(new)
+
+
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ``ListObject`` container is a container object, similar to a Python list
     object. Generally, many such objects can be created.
@@ -911,9 +980,6 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     -------
     get_size()
        Get the size of the list.
-
-    resize(size)
-        Resize the list.
     """
 
     # New objects could get inserted by other operations, so we cannot assume
@@ -968,16 +1034,6 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         """
         return self.flproxy.get_list_size(self.path)
 
-    def resize(self, size: int):
-        """Resize the list object.
-
-        Parameters
-        ----------
-        size: int
-            New size
-        """
-        self.flproxy.resize_list_object(self.path, size)
-
     def __getitem__(self, index: int) -> ChildTypeT:
         size = self.get_size()
         if index >= size:
@@ -995,10 +1051,22 @@ class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
 
-def _get_new_keywords(obj, kwds):
+def _get_new_keywords(obj, args, kwds):
     newkwds = {}
+    argNames = []
+    argumentNames = []
+    if args:
+        argNames = obj.argument_names[:]
+        for i, arg in enumerate(args):
+            ccls = getattr(obj, argNames[0])
+            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(arg)
+            argNames.pop(0)
+    if kwds:
+        argumentNames = obj.argument_names[:]
+        if argNames:
+            argumentNames = argNames
     for k, v in kwds.items():
-        if k in obj.argument_names:
+        if k in argumentNames:
             ccls = getattr(obj, k)
             newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
         else:
@@ -1041,12 +1109,27 @@ class Action(Base):
         return ret
 
 
-class Command(Action):
+class BaseCommand(Action):
+    def execute_command(self, *args, **kwds):
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.before_execute(value)
+        cmd = self._execute_command(*args, **kwds)
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            argument.after_execute(value)
+        return cmd
+
+    def __call__(self, *args, **kwds):
+        return self.execute_command(*args, **kwds)
+
+
+class Command(BaseCommand):
     """Command object."""
 
-    def __call__(self, **kwds):
-        """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
+    def _execute_command(self, **kwds):
+        """Execute a command with the specified keyword arguments."""
+        newkwds = _get_new_keywords(self, [], kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
                 self._parent.path, self.obj_name, **newkwds
@@ -1062,13 +1145,43 @@ class Command(Action):
                     return
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
+    def __call__(self, **kwds):
+        """Call a command with the specified keyword arguments."""
+        return self.execute_command(**kwds)
+
+
+class CommandWithPositionalArgs(BaseCommand):
+    """Command Object."""
+
+    def _execute_command(self, *args, **kwds):
+        """Execute a command with the specified keyword arguments."""
+        newkwds = _get_new_keywords(self, args, kwds)
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **newkwds
+            )
+            if prompt:
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ")
+                    if response in ["y", "Y", "n", "N", "yes", "no"]:
+                        break
+                    else:
+                        print("Enter y[es]/n[o]")
+                if response in ["n", "N", "no"]:
+                    return
+        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+    def __call__(self, *args, **kwds):
+        """Call a command with the specified keyword arguments."""
+        return self.execute_command(*args, **kwds)
+
 
 class Query(Action):
     """Query object."""
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
+        newkwds = _get_new_keywords(self, [], kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -1208,6 +1321,9 @@ class _HasAllowedValuesMixin:
             return []
 
 
+_bases_by_class = {}
+
+
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
@@ -1218,6 +1334,8 @@ def get_cls(name, info, parent=None, version=None):
             pname = to_python_name(name)
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
+        if obj_type == "command" and name in ["rename", "delete", "resize"]:
+            base = CommandWithPositionalArgs
         if base is None:
             settings_logger.warning(
                 f"Unable to find base class for '{name}' "
@@ -1259,6 +1377,22 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
             bases += (_HasAllowedValuesMixin,)
+        elif info.get("file_purpose") == "input":
+            bases += (_InputFile,)
+        elif info.get("file_purpose") == "output":
+            bases += (_OutputFile,)
+
+        original_pname = pname
+        if any(
+            x in bases for x in (_InputFile, _OutputFile)
+        ):  # not generalizing for performance
+            i = 0
+            while pname in _bases_by_class and _bases_by_class[pname] != bases:
+                if i > 0:
+                    pname = pname[: pname.rfind("_")]
+                i += 1
+                pname += f"_{str(i)}"
+            _bases_by_class[pname] = bases
 
         cls = type(pname, bases, dct)
 
@@ -1274,7 +1408,7 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls = get_cls(cname, cinfo, cls, version=version)
+                ccls, original_pname = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
 
                 i = 0
@@ -1290,10 +1424,11 @@ def get_cls(name, info, parent=None, version=None):
                         ccls_name = ccls_name[: ccls_name.rfind("_")]
                     i += 1
                     ccls_name += f"_{str(i)}"
+
                 ccls.__name__ = ccls_name
-                names.append(ccls.__name__)
+                names.append(ccls.__name__ if i > 0 else original_pname)
                 taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+                setattr(cls, ccls.__name__ if i > 0 else original_pname, ccls)
 
         children = info.get("children")
         if children:
@@ -1323,20 +1458,18 @@ def get_cls(name, info, parent=None, version=None):
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
-            cls.child_object_type = get_cls(
+            cls.child_object_type, _ = get_cls(
                 "child-object-type", object_type, cls, version=version
             )
-            cls.child_object_type.rename = lambda self, name: self._parent.rename(
-                name, self._name
-            )
             cls.child_object_type.get_name = lambda self: self._name
+
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
             f"'{parent.fluent_name if parent else None}'"
         )
         raise
-    return cls
+    return cls, original_pname
 
 
 def _gethash(obj_info):
@@ -1346,7 +1479,9 @@ def _gethash(obj_info):
 
 
 # pylint: disable=missing-raises-doc
-def get_root(flproxy, version: str = "") -> Group:
+def get_root(
+    flproxy, version: str = "", remote_file_handler: Optional[Any] = None
+) -> Group:
     """Get the root settings object.
 
     Parameters
@@ -1373,10 +1508,12 @@ def get_root(flproxy, version: str = "") -> Group:
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
     except Exception:
-        cls = get_cls("", obj_info, version=version)
+        cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root.set_remote_file_handler(remote_file_handler)
     root._setattr("_static_info", obj_info)
+    root._setattr("_remote_file_handler", remote_file_handler)
     return root
 
 

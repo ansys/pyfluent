@@ -456,11 +456,9 @@ def test_named_object():
     r.n_1["n1"] = {}
     r.n_1["n2"] = {}
     assert r.n_1.get_object_names() == ["n1", "n2"]
-    r.n_1.rename("n3", "n1")
-    assert r.n_1.get_object_names() == ["n3", "n2"]
     r.n_1.create("n4")
-    assert r.n_1.get_object_names() == ["n3", "n2", "n4"]
-    del r.n_1["n3"]
+    assert r.n_1.get_object_names() == ["n1", "n2", "n4"]
+    del r.n_1["n1"]
     assert r.n_1.get_object_names() == ["n2", "n4"]
     r.n_1["n1"] = {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
     assert r.n_1["n1"]() == {"rl_1": [1.2, 3.4], "sl_1": ["foo", "bar"]}
@@ -472,11 +470,7 @@ def test_named_object():
 def test_list_object():
     r = flobject.get_root(Proxy())
     assert r.l_1.get_size() == 0
-    r.l_1.resize(3)
-    assert r.l_1.get_size() == 3
-    r.l_1.resize(2)
-    assert r.l_1.get_size() == 2
-    assert r.l_1() == [
+    r.l_1 = [
         {"il_1": None, "bl_1": None},
         {"il_1": None, "bl_1": None},
     ]
@@ -516,7 +510,7 @@ def test_attrs():
 # install
 def _disabled_test_settings_gen():
     info = Proxy().get_static_info()
-    cls = flobject.get_cls("", info)
+    cls, _ = flobject.get_cls("", info)
     f = io.StringIO()
     codegen.settingsgen.write_settings_classes(f, cls, info)
     assert (
@@ -655,8 +649,8 @@ class root(Group):
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
 
     existing = solver.file.read.file_type.get_attr("allowed-values")
     modified = solver.file.read.file_type.allowed_values()
@@ -664,19 +658,15 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    if solver.get_fluent_version() < "24.1.0":
-        assert existing == None and modified == False
-    else:
-        assert existing == modified
+
+    assert existing == modified
 
     velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     existing = velocity_inlet.get_attr("user-creatable?", bool)
     modified = velocity_inlet.user_creatable()
     assert existing == modified
 
-    if solver.get_fluent_version() < "24.1.0":
-        turbulent_viscosity_ratio = velocity_inlet["inlet1"].turb_viscosity_ratio
-    else:
+    if solver.get_fluent_version() < "24.2.0":
         turbulent_viscosity_ratio = velocity_inlet[
             "inlet1"
         ].turbulence.turbulent_viscosity_ratio_real
@@ -684,8 +674,16 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
         path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio_real'
         name = "turbulent_viscosity_ratio_real"
 
-        assert turbulent_viscosity_ratio.python_path == path
-        assert turbulent_viscosity_ratio.python_name == name
+    else:
+        turbulent_viscosity_ratio = velocity_inlet[
+            "inlet1"
+        ].turbulence.turbulent_viscosity_ratio
+
+        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+        name = "turbulent_viscosity_ratio"
+
+    assert turbulent_viscosity_ratio.python_path == path
+    assert turbulent_viscosity_ratio.python_name == name
 
     assert turbulent_viscosity_ratio.default_value() == 10
     assert turbulent_viscosity_ratio.get_attr("min") == 0
@@ -699,12 +697,24 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     assert count_key_recursive(default_attrs, "default") > 5
 
     mesh = solver.results.graphics.mesh.create("mesh-1")
-    assert mesh.name.is_read_only()
+    if solver.get_fluent_version() < "24.2.0":
+        assert mesh.name.is_read_only()
+    else:
+        assert not mesh.name.is_read_only()
+
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh-1"]
+
+    solver.results.graphics.mesh["mesh-1"].rename("mesh_new")
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh_new"]
+
+    if solver.get_fluent_version() >= "24.2.0":
+        solver.results.graphics.mesh.rename(new="mesh_242", old="mesh_new")
+        assert solver.results.graphics.mesh.get_object_names() == ["mesh_242"]
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
 
     assert solver.setup.general.solver.type.allowed_values() == [
         "pressure-based",
@@ -726,8 +736,8 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 @pytest.mark.fluent_version("==23.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_231(load_static_mixer_case):
-    setup_cls = load_static_mixer_case.setup.__class__
+def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
+    setup_cls = load_static_mixer_settings_only.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -751,8 +761,8 @@ def test_find_children_from_settings_root_231(load_static_mixer_case):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_232(load_static_mixer_case):
-    setup_cls = load_static_mixer_case.setup.__class__
+def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
+    setup_cls = load_static_mixer_settings_only.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -772,9 +782,9 @@ def test_find_children_from_settings_root_232(load_static_mixer_case):
 
 
 @pytest.mark.fluent_version("latest")
-def test_find_children_from_fluent_solver_session(load_static_mixer_case):
-    setup_children = find_children(load_static_mixer_case.setup)
-    load_mixer = load_static_mixer_case.setup
+def test_find_children_from_fluent_solver_session(load_static_mixer_settings_only):
+    setup_children = find_children(load_static_mixer_settings_only.setup)
+    load_mixer = load_static_mixer_settings_only.setup
     assert len(setup_children) >= 18514
 
     viscous = load_mixer.models.viscous
@@ -788,13 +798,26 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
         if path.endswith("geom_dir_spec")
     )
 
-    assert set(
-        find_children(load_mixer.materials.fluid["air"].density.piecewise_polynomial)
-    ) >= {
-        "minimum",
-        "maximum",
-        "coefficients",
-    }
+    if load_static_mixer_settings_only.get_fluent_version() < "24.2.0":
+        assert set(
+            find_children(
+                load_mixer.materials.fluid["air"].density.piecewise_polynomial
+            )
+        ) >= {
+            "minimum",
+            "maximum",
+            "coefficients",
+        }
+    else:
+        assert set(
+            find_children(
+                load_mixer.materials.fluid["air"].density.piecewise_polynomial
+            )
+        ) >= {
+            "range/minimum",
+            "range/maximum",
+            "range/coefficients",
+        }
 
 
 @pytest.mark.fluent_version("latest")
@@ -908,8 +931,8 @@ def get_child_nodes(node, nodes, type_list):
 
 
 @pytest.mark.fluent_version("latest")
-def test_strings_with_allowed_values(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_strings_with_allowed_values(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
 
     with pytest.raises(AttributeError) as e:
         string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()

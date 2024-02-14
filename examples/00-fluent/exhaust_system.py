@@ -58,7 +58,11 @@ import_file_name = examples.download_file(
 # Launch Fluent as a service in meshing mode with double precision running on
 # two processors.
 
-meshing = pyfluent.launch_fluent(precision="double", processor_count=2, mode="meshing")
+meshing = pyfluent.launch_fluent(
+    precision="double",
+    processor_count=4,
+    mode="meshing",
+)
 
 ###############################################################################
 # Initialize workflow
@@ -552,13 +556,6 @@ solver = meshing.switch_to_solver()
 solver.tui.mesh.check()
 
 ###############################################################################
-# Set units for length
-# ~~~~~~~~~~~~~~~~~~~~
-# Set the units for length.
-
-solver.tui.define.units("length", "mm")
-
-###############################################################################
 # Select turbulence model
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Select the kw sst turbulence model.
@@ -616,9 +613,30 @@ solver.tui.solve.iterate()
 # solver.tui.report.volume_integrals.volume("fluid-region-1","()","yes","volume.vrp")
 
 ###############################################################################
+# Write the case and data files
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+solver.tui.file.write_case_data("exhaust_system.cas.h5", "yes")
+
+###############################################################################
+# Configure graphics picture export
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Since Fluent is being run without the GUI, we will need to export plots as
+# picture files. Edit the picture settings to use a custom resolution so that
+# the images are large enough.
+
+picture = solver.tui.display.set.picture
+# use-window-container TUI option not available inside containers
+if not solver.connection_properties.inside_container:
+    picture.use_window_resolution("no")
+picture.x_resolution("1920")
+picture.y_resolution("1440")
+
+###############################################################################
 # Create path lines
 # ~~~~~~~~~~~~~~~~~
-# Create path lines highlighting the flow field.
+# Create path lines highlighting the flow field, display it, then export the
+# image for inspection.
 
 ###############################################################################
 # .. image:: /_static/exhaust_system_016.png
@@ -642,6 +660,12 @@ solver.tui.display.objects.create(
     "()",
     "quit",
 )
+solver.tui.display.objects.display("pathlines-1")
+
+views = solver.tui.display.views
+views.restore_view("isometric")
+views.auto_scale()
+solver.tui.display.save_picture("pathlines-1.png")
 
 ###############################################################################
 # Create iso-surface
@@ -654,7 +678,7 @@ solver.tui.surface.iso_surface(
     "()",
     "fluid-region-1",
     "()",
-    "380",
+    "0.38",
     "()",
 )
 
@@ -662,7 +686,7 @@ solver.tui.surface.iso_surface(
 # Create contours of velocity magnitude
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create contours of the velocity magnitude throughout the manifold
-# along with the mesh.
+# along with the mesh. Display it and export the image for inspection.
 
 ###############################################################################
 # .. image:: /_static/exhaust_system_017.png
@@ -686,13 +710,19 @@ solver.tui.display.objects.create(
     "quit",
     "quit",
 )
-
 solver.tui.display.objects.create("mesh", "mesh-1", "surfaces-list", "*", "()", "quit")
+
+solver.tui.display.objects.display("contour-velocity")
+
+views.restore_view("right")
+views.auto_scale()
+solver.tui.display.save_picture("contour-velocity.png")
 
 ###############################################################################
 # Create scene
 # ~~~~~~~~~~~~
-# Create a scene containing the mesh and the contours.
+# Create a scene containing the mesh and the contours. Display it and export
+# the image for inspection.
 
 ###############################################################################
 # .. image:: /_static/exhaust_system_018.png
@@ -714,6 +744,13 @@ solver.tui.display.objects.create(
     "quit",
     "quit",
 )
+solver.tui.display.objects.display("scene-1")
+
+camera = solver.tui.display.views.camera
+camera.position("1.70", "1.14", "0.29")
+camera.up_vector("-0.66", "0.72", "-0.20")
+views.auto_scale()
+solver.tui.display.save_picture("scene-1.png")
 
 #########################################################################
 # Close Fluent

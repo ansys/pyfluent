@@ -10,7 +10,12 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import make_new_session, new_solver_session  # noqa: F401
 
-from ansys.api.fluent.v0 import scheme_eval_pb2, scheme_eval_pb2_grpc
+from ansys.api.fluent.v0 import (
+    scheme_eval_pb2,
+    scheme_eval_pb2_grpc,
+    settings_pb2,
+    settings_pb2_grpc,
+)
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
@@ -19,6 +24,24 @@ from ansys.fluent.core.launcher.launcher_utils import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
+
+
+class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
+    def GetStaticInfo(
+        self, request: settings_pb2.GetStaticInfoRequest, context: grpc.ServicerContext
+    ) -> settings_pb2.GetStaticInfoResponse:
+        response = settings_pb2.GetStaticInfoResponse()
+        response.info.type = "Dummy"
+        return response
+
+    def GetVar(
+        self,
+        request: settings_pb2.GetVarRequest,
+        context: grpc.ServicerContext,
+    ) -> settings_pb2.GetVarResponse:
+        response = settings_pb2.GetVarResponse()
+        response.value.value_map.SetInParent()
+        return response
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
@@ -70,7 +93,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
-def test_create_session_by_passing_ip_and_port_and_password() -> None:
+def test_create_mock_session_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -95,7 +118,7 @@ def test_create_session_by_passing_ip_and_port_and_password() -> None:
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_by_setting_ip_and_port_env_var(
+def test_create_mock_session_by_setting_ip_port_env_var(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -116,7 +139,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_by_passing_grpc_channel() -> None:
+def test_create_mock_session_by_passing_grpc_channel() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -136,7 +159,7 @@ def test_create_session_by_passing_grpc_channel() -> None:
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_from_server_info_file(tmp_path: Path) -> None:
+def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -157,7 +180,7 @@ def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_from_server_info_file_with_wrong_password(
+def test_create_mock_session_from_server_info_file_with_wrong_password(
     tmp_path: Path,
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -182,9 +205,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
     assert ex.value.__context__.code() == grpc.StatusCode.UNAUTHENTICATED
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> (
-    None
-):
+def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = get_free_port()
@@ -193,6 +214,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     server.start()
     session = connect_to_fluent(
         ip=ip,
@@ -202,7 +224,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
     )
     # check a few dir elements
     session_dir = dir(session)
-    for attr in ("field_data", "field_info", "setup", "solution"):
+    for attr in ("field_data", "field_info"):
         assert attr in session_dir
     assert session.health_check_service.is_serving
     server.stop(None)
@@ -210,7 +232,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
     assert not session.health_check_service.is_serving
 
 
-def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
+def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
@@ -221,6 +243,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
+    settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
@@ -366,3 +389,45 @@ def test_recover_grpc_error_from_connection_error():
     with pytest.raises(RuntimeError) as ex:
         pyfluent.connect_to_fluent(ip="127.0.0.1", port=50000, password="abcdefg")
     assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
+
+
+def test_solver_methods(new_solver_session):
+    solver = new_solver_session
+
+    if int(solver._version) == 222:
+        api_keys = {
+            "file",
+            "setup",
+            "solution",
+            "results",
+            "parametric_studies",
+            "current_parametric_study",
+        }
+        assert api_keys.issubset(set(dir(solver)))
+    if int(solver._version) == 232:
+        api_keys = {
+            "file",
+            "mesh",
+            "server",
+            "setup",
+            "solution",
+            "results",
+            "parametric_studies",
+            "current_parametric_study",
+            "parallel",
+            "report",
+        }
+        assert api_keys.issubset(set(dir(solver)))
+    if int(solver._version) >= 241:
+        api_keys = {
+            "file",
+            "mesh",
+            "server",
+            "setup",
+            "solution",
+            "results",
+            "parametric_studies",
+            "current_parametric_study",
+            "parallel",
+        }
+        assert api_keys.issubset(set(dir(solver)))

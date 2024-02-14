@@ -36,10 +36,14 @@ import_file_name = examples.download_file(
 ###############################################################################
 # Launch Fluent
 # ~~~~~~~~~~~~~
-# Launch Fluent as a service in meshing mode with double precision running on
+# Launch Fluent as a service in solver mode with double precision running on
 # two processors.
 
-solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
+solver = pyfluent.launch_fluent(
+    precision="double",
+    processor_count=2,
+    mode="solver",
+)
 
 ###############################################################################
 # Import mesh and perform mesh check
@@ -50,18 +54,8 @@ solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="sol
 # in the mesh are reported. Ensure that the minimum volume is not negative because
 # Fluent cannot begin a calculation when this is the case.
 
-solver.file.read(file_type="case", file_name=import_file_name)
-solver.tui.mesh.check()
-
-###############################################################################
-# Set working units for mesh
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the working units for the mesh to inches. Because the default SI units are
-# used for everything except length, you do not have to change any other units
-# in this example. If you want working units for length to be other than inches
-# (for example, millimeters), make the appropriate change.
-
-solver.tui.define.units("length", "in")
+solver.file.read_case(file_name=import_file_name)
+solver.mesh.check()
 
 ###############################################################################
 # Enable heat transfer
@@ -100,11 +94,11 @@ solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 # Temperature: 293.15 [K]
 cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 
-cold_inlet.vmag = 0.4
-cold_inlet.ke_spec = "Intensity and Hydraulic Diameter"
-cold_inlet.turb_intensity = 0.05
-cold_inlet.turb_hydraulic_diam = "4 [in]"
-cold_inlet.t = 293.15
+cold_inlet.momentum.velocity.value = 0.4
+cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+cold_inlet.turbulence.turbulent_intensity = 0.05
+cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+cold_inlet.thermal.t.value = 293.15
 
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
@@ -115,23 +109,25 @@ cold_inlet.t = 293.15
 # Temperature: 313.15 [K]
 hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
-hot_inlet.vmag = 1.2
-hot_inlet.ke_spec = "Intensity and Hydraulic Diameter"
-hot_inlet.turb_hydraulic_diam = "1 [in]"
-hot_inlet.t = 313.15
+hot_inlet.momentum.velocity.value = 1.2
+hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+hot_inlet.thermal.t.value = 313.15
 
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
 # Backflow Turbulent Viscosity Ratio: 4
 
-solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
+solver.setup.boundary_conditions.pressure_outlet[
+    "outlet"
+].turbulence.turbulent_viscosity_ratio_real = 4
 
 ###############################################################################
 # Disable plotting of residuals during calculation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Disable plotting of residuals during the calculation.
 
-solver.tui.solve.monitors.residual.plot("no")
+solver.solution.monitor.residual.options.plot = False
 
 ###############################################################################
 # Initialize flow field
@@ -145,22 +141,44 @@ solver.solution.initialization.hybrid_initialize()
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 150 iterations.
 
-solver.solution.run_calculation.iterate.argument_names
 solver.solution.run_calculation.iterate(iter_count=150)
+
+###############################################################################
+# Configure graphics picture export
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Since Fluent is being run without the GUI, we will need to export plots as
+# picture files. Edit the picture settings to use a custom resolution so that
+# the images are large enough.
+
+graphics = solver.results.graphics
+# use_window_resolution option not available inside containers
+if not solver.connection_properties.inside_container:
+    graphics.picture.use_window_resolution = False
+graphics.picture.x_resolution = 1920
+graphics.picture.y_resolution = 1440
 
 ###############################################################################
 # Create velocity vectors
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create and display velocity vectors on the ``symmetry-xyplane`` plane
-solver.results.graphics.vector["velocity_vector_symmetry"] = {}
+# Create and display velocity vectors on the ``symmetry-xyplane`` plane, then
+# export the image for inspection.
+
+graphics = solver.results.graphics
+
+graphics.vector["velocity_vector_symmetry"] = {}
 velocity_symmetry = solver.results.graphics.vector["velocity_vector_symmetry"]
 velocity_symmetry.print_state()
-velocity_symmetry.field = "temperature"
+velocity_symmetry.field = "velocity-magnitude"
 velocity_symmetry.surfaces_list = [
     "symmetry-xyplane",
 ]
 velocity_symmetry.scale.scale_f = 4
 velocity_symmetry.style = "arrow"
+velocity_symmetry.display()
+
+graphics.views.restore_view(view_name="front")
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="velocity_vector_symmetry.png")
 
 ###############################################################################
 # .. image:: /_static/mixing_elbow_016.png
@@ -174,8 +192,8 @@ velocity_symmetry.style = "arrow"
 solver.solution.report_definitions.flux["mass_flow_rate"] = {}
 
 mass_flow_rate = solver.solution.report_definitions.flux["mass_flow_rate"]
-mass_flow_rate.zone_names.get_attr("allowed-values")
-mass_flow_rate.zone_names = [
+mass_flow_rate.boundaries.allowed_values()
+mass_flow_rate.boundaries = [
     "cold-inlet",
     "hot-inlet",
     "outlet",

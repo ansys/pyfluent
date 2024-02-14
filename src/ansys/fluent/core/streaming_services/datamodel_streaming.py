@@ -21,7 +21,7 @@ class DatamodelStream(StreamingService):
         rules,
         no_commands_diff_state,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)

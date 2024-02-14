@@ -94,6 +94,34 @@ class ErrorStateInterceptor(grpc.UnaryUnaryClientInterceptor):
         return self._intercept_call(continuation, client_call_details, request)
 
 
+class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
+    """Interceptor class to check Fluent server error state before gRPC calls are
+    made."""
+
+    def _intercept_call(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ) -> Any:
+        response = continuation(client_call_details, request)
+        if response.exception() is not None and response.code() != grpc.StatusCode.OK:
+            grpc_ex = response.exception()
+            ex = RuntimeError(grpc_ex.details())
+            ex.__context__ = grpc_ex
+            raise ex from None
+        return response
+
+    def intercept_unary_unary(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ) -> Any:
+        """Intercept unary-unary call for error state checking."""
+        return self._intercept_call(continuation, client_call_details, request)
+
+
 class BatchedFuture(grpc.Future):
     """Class implementing gRPC.Future interface.
 
@@ -170,3 +198,22 @@ class BatchInterceptor(grpc.UnaryUnaryClientInterceptor):
     ) -> Any:
         """Intercept unary-unary call for batch operation."""
         return self._intercept_call(continuation, client_call_details, request)
+
+
+class WrapApiCallInterceptor(grpc.UnaryUnaryClientInterceptor):
+    """Interceptor class to wrap API calls."""
+
+    def __init__(self) -> None:
+        """__init__ method of WrapApiCallInterceptor class."""
+        super().__init__()
+
+    def intercept_unary_unary(
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ) -> Any:
+        """Intercept unary-unary call."""
+        from ansys.fluent.core import wrap_api_call
+
+        return wrap_api_call(continuation, client_call_details, request)
