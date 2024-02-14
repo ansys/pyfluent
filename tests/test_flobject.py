@@ -932,6 +932,7 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
 
     assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
+
     # Could not convert string to float: '1 [in]'
     assert hot_inlet.turbulence.hydraulic_diameter.get_state_as_quantity() == None
 

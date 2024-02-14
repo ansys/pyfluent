@@ -393,8 +393,11 @@ class Real(SettingsBase[RealType], Numerical):
         if isinstance(state, Quantity):
             unit = self._quantity_map(self.get_attr("units-quantity"))
             state = state.to(Unit(table={unit: 1}))
+            si_value = float(
+                (state.value + state.units.si_offset) * state.units.si_scaling_factor
+            )
             return self.flproxy.set_var(
-                self.path, self.to_scheme_keys(state.si_value), **kwargs
+                self.path, self.to_scheme_keys(si_value), **kwargs
             )
 
         return super().set_state(state=state, **kwargs)
