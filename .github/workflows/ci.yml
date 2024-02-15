@@ -512,7 +512,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, build_test_242]
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
