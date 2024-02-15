@@ -323,7 +323,7 @@ class FluentConnection:
         from grpc._channel import _InactiveRpcError
 
         try:
-            logger.info(self.fluent_build_version_string())
+            logger.info(self.fluent_build_info)
             logger.debug("Obtaining Cortex connection properties...")
             fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
             cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
@@ -393,7 +393,8 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
-    def fluent_build_version_string(self):
+    @property
+    def fluent_build_info(self) -> str:
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
         rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")

@@ -36,8 +36,4 @@ def get_build_version():
 
 
 def get_build_version_string():
-    build_details = get_build_version()
-    build_string = ""
-    for key, value in build_details.items():
-        build_string += key + ":" + f" {value}  "
-    return build_string
+    return "  ".join([f"{k}: {v}" for k, v in get_build_version().items()])
