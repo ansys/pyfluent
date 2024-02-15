@@ -35,7 +35,7 @@ install_requires = [
     "docker>=6.1.3",
     "psutil>=5.9.5",
     "requests>=2.31.0",
-    "beartype>=0.16.4",
+    "beartype>=0.17",
 ]
 
 extras_require = {
