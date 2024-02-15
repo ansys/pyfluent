@@ -2,12 +2,14 @@
 
 Use meshing workflows
 =====================
-PyFluent supports accessing all Fluent meshing functionalities, including 
-guided meshing workflows.
+Fluent meshing guided workflows are designed to make it easier to generate a
+volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
 
 Watertight geometry meshing workflow
 ------------------------------------
-This simple example shows how to use the watertight geometry meshing workflow.
+Use the **Watertight Geometry** workflow for water-tight CAD geometries that
+do not require much in the way of clean-up or modifications.
+The following example shows you how to use the Watertight Geometry workflow.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -114,7 +116,10 @@ Switch to solution mode
 
 Fault-tolerant meshing workflow
 -------------------------------
-This simple example shows how to use the fault-tolerant meshing workflow.
+Use the **Fault-tolerant** meshing workflow for more complicated non-water-tight CAD
+geometries that may require some form of clean-up or modification (for example,
+defects such as overlaps, intersections, holes, duplicates, etc).
+The following example shows you how to use the fault-tolerant workflow.
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -585,12 +590,26 @@ attribute access methods in a watertight geometry meshing workflow.
     w = meshing.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    w.task("Import Geometry").CommandArguments()
-    w.task("Import Geometry").CommandArguments.FileName.is_read_only()
-    w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
-    w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values()
-    w.task("Import Geometry").CommandArguments.LengthUnit.default_value()
-    w.task("Import Geometry").CommandArguments.LengthUnit()
-    w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
-    w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
+    w.TaskObject["Import Geometry"].CommandArguments()
+    w.TaskObject["Import Geometry"].CommandArguments.FileName.is_read_only()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.is_active()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.allowed_values()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.default_value()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit()
+    w.TaskObject["Import Geometry"].CommandArguments.CadImportOptions.OneZonePer()
+    w.TaskObject["Import Geometry"].CommandArguments.CadImportOptions.FeatureAngle.min()
 
+Some improvements
+-----------------
+You can call the TaskObject to get it's state:
+
+.. code:: python
+
+    meshing.workflow.TaskObject()
+
+Items of the TaskObject can now be accessed in settings dictionary style:
+
+.. code:: python
+
+    for name, object in meshing.workflow.TaskObject.items():
+        ...

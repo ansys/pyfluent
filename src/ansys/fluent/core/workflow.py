@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import threading
-from typing import Any, Iterator, List, Optional, Tuple
+from typing import Any, Iterator, List, Optional, Tuple, Union
 import warnings
 
 import ansys.fluent.core as pyfluent
@@ -104,7 +104,9 @@ class BaseTask:
     __call__()
     """
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize BaseTask.
 
         Parameters
@@ -307,6 +309,15 @@ class BaseTask:
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
         )
 
+    def add_child_to_task(self):
+        return self._task.AddChildToTask()
+
+    def update_child_tasks(self, setup_type_changed: bool):
+        self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
+
+    def insert_compound_child_task(self):
+        return self._task.InsertCompoundChildTask()
+
     def __call__(self, **kwds) -> Any:
         if kwds:
             self._task.Arguments.set_state(**kwds)
@@ -346,7 +357,7 @@ class TaskContainer(PyCallableStateObject):
     __dir__()
     """
 
-    def __init__(self, command_source: WorkflowWrapper) -> None:
+    def __init__(self, command_source: OldWorkflowWrapper) -> None:
         """Initialize TaskContainer.
 
         Parameters
@@ -508,7 +519,9 @@ class CommandTask(BaseTask):
     Classes without these attributes cannot be commanded.
     """
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CommandTask.
 
         Parameters
@@ -573,7 +586,9 @@ class SimpleTask(CommandTask):
     """Simple task representation for wrapping a Workflow TaskObject instance of
     TaskType Simple."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize SimpleTask.
 
         Parameters
@@ -597,7 +612,9 @@ class CompoundChild(SimpleTask):
     """Compound Child representation for wrapping a Workflow TaskObject instance of
     TaskType Compound Child."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CompoundChild.
 
         Parameters
@@ -624,7 +641,9 @@ class CompositeTask(BaseTask):
     """Composite task representation for wrapping a Workflow TaskObject instance of
     TaskType Composite."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CompositeTask.
 
         Parameters
@@ -668,7 +687,9 @@ class ConditionalTask(CommandTask):
     """Conditional task representation for wrapping a Workflow TaskObject instance of
     TaskType Conditional."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize ConditionalTask.
 
         Parameters
@@ -699,7 +720,9 @@ class CompoundTask(CommandTask):
     """Compound task representation for wrapping a Workflow TaskObject instance of
     TaskType Compound."""
 
-    def __init__(self, command_source: WorkflowWrapper, task: str) -> None:
+    def __init__(
+        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+    ) -> None:
         """Initialize CompoundTask.
 
         Parameters
@@ -787,13 +810,12 @@ def _makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class WorkflowWrapper:
+class NewWorkflowWrapper:
     """Wrap a Workflow object, adding methods to discover more about the relationships
     between TaskObjects.
 
     Methods
     -------
-    task(name)
     ordered_children()
     __getattr__(attr)
     __dir__()
@@ -830,22 +852,12 @@ class WorkflowWrapper:
         ----------
         name : str
             Task name - the display name, not the internal ID.
-
         Returns
         -------
         BaseTask
             wrapped task object.
         """
         return _makeTask(self, name)
-
-    @property
-    def TaskObject(self) -> TaskContainer:
-        # missing from dir
-        """Get a TaskObject container wrapper that 'holds' the underlying TaskObjects.
-
-        The wrapper adds extra functionality.
-        """
-        return TaskContainer(self)
 
     def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow. Sorting is in terms of the
@@ -918,11 +930,8 @@ class WorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        obj = self._attr_from_wrapped_workflow(
-            attr
-        )  # or self._task_with_cmd_matching_help_string(attr)
-        if obj:
-            return obj
+        if attr == "add_on_affected":
+            return self._attr_from_wrapped_workflow(attr)
         return self._task_objects.get(attr) or super().__getattribute__(attr)
 
     def __dir__(self):
@@ -986,6 +995,78 @@ class WorkflowWrapper:
                 self._refreshing = False
 
             self.add_on_affected(refresh_after_sleep)
+
+
+class OldWorkflowWrapper:
+    """Wrap a Workflow object, adding methods to discover more about the relationships
+    between TaskObjects.
+
+    Methods
+    -------
+    __getattr__(attr)
+    __dir__()
+    __call__()
+    """
+
+    def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
+        """Initialize WorkflowWrapper.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The workflow object.
+        command_source : PyMenuGeneric
+            The application root for commanding.
+        """
+        self._workflow = workflow
+        self._command_source = command_source
+        self._lock = (
+            threading.RLock()
+        )  # TODO: sort out issues with these un-used variables.
+
+    @property
+    def TaskObject(self) -> TaskContainer:
+        # missing from dir
+        """Get a TaskObject container wrapper that 'holds' the underlying TaskObjects.
+
+        The wrapper adds extra functionality.
+        """
+        return TaskContainer(self)
+
+    def __getattr__(self, attr):
+        """Delegate attribute lookup to the wrapped workflow object.
+
+        Parameters
+        ----------
+        attr : str
+            An attribute not defined in WorkflowWrapper
+        """
+        obj = self._attr_from_wrapped_workflow(
+            attr
+        )  # or self._task_with_cmd_matching_help_string(attr)
+        if obj:
+            return obj
+        else:
+            return super().__getattribute__(attr)
+
+    def __dir__(self):
+        """Override the behaviour of dir to include attributes in WorkflowWrapper and
+        the underlying workflow."""
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
+        )
+
+    def __call__(self):
+        """Delegate calls to the underlying workflow."""
+        return self._workflow()
+
+    def _attr_from_wrapped_workflow(self, attr):
+        try:
+            result = getattr(self._workflow, attr)
+            if result:
+                return result
+        except AttributeError:
+            pass
 
 
 class ReadOnlyObject:

@@ -7,12 +7,36 @@ from __future__ import annotations
 from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.workflow import WorkflowWrapper
+from ansys.fluent.core.workflow import NewWorkflowWrapper, OldWorkflowWrapper
 
 
-class MeshingWorkflow(WorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper that extends the core
-    functionality."""
+class OldMeshingWorkflow(OldWorkflowWrapper):
+    """Meshing specialization of the WorkflowWrapper."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+    ) -> None:
+        """Initialize MeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The underlying workflow object.
+        meshing : PyMenuGeneric
+            The meshing object.
+        part_management : PyMenuGeneric
+            The part-management object.
+        pm_file_management : PyMenuGeneric
+            The part-management file-management object.
+        """
+        super().__init__(workflow=workflow, command_source=meshing)
+
+
+class NewMeshingWorkflow(NewWorkflowWrapper):
+    """Meshing specialization of the WorkflowWrapper that extends the core functionality
+    in an object-oriented manner."""
 
     def __init__(
         self,
