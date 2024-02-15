@@ -152,7 +152,10 @@ the Python meshing workflow interface that Fluent meshing exposes directly:
 
     meshing.GlobalSettings.LengthUnit.set_state("mm")
 
-For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
+For additional examples, see :ref:`ref_user_guide_meshing_workflows` for
+classic meshing workflow interface that appear in journals or
+:ref:`ref_user_guide_new_meshing_workflows` for the new object oriented
+meshing workflow interface.
 For information on the full interface, see :ref:`ref_meshing_datamodel`.
 
 Search for Fluent settings or commands
