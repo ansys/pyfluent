@@ -2,11 +2,14 @@
 
 Using meshing workflows
 =======================
-Fluent meshing guided workflows are designed to make it easier to generate a volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
+Fluent meshing guided workflows are designed to make it easier to generate a
+volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
 
 Watertight geometry meshing workflow
 ------------------------------------
-Use the **Watertight Geometry** workflow for water-tight CAD geometries that do not require much in the way of clean-up or modifications. The following example shows you how to use the Watertight Geometry workflow.
+Use the **Watertight Geometry** workflow for water-tight CAD geometries that
+do not require much in the way of clean-up or modifications.
+The following example shows you how to use the Watertight Geometry workflow.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -100,7 +103,10 @@ Switch to solution mode
 
 Fault-tolerant meshing workflow
 -------------------------------
-Use the **Fault-tolerant** meshing workflow for more complicated non-water-tight CAD geometries that may require some form of clean-up or modification (for example, defects such as overlaps, intersections, holes, duplicates, etc). The following example shows you how to use the fault-tolerant workflow.
+Use the **Fault-tolerant** meshing workflow for more complicated non-water-tight CAD
+geometries that may require some form of clean-up or modification (for example,
+defects such as overlaps, intersections, holes, duplicates, etc).
+The following example shows you how to use the fault-tolerant workflow.
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
