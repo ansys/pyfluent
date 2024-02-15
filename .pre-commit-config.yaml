@@ -73,3 +73,10 @@ repos:
           "--score", "n",
           "--rcfile=pylintrc",
         ]
+
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v3.1.0
+  hooks:
+    - id: conventional-pre-commit
+      stages: [commit-msg]
+      args: []
