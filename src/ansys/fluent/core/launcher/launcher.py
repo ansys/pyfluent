@@ -30,7 +30,6 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -101,6 +100,7 @@ def launch_fluent(
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
+    file_transfer_service: Optional[Any] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
@@ -205,6 +205,8 @@ def launch_fluent(
         "scheduler_account": "<account>"}``. The keys ``scheduler_headnode``,
         ``scheduler_queue`` and ``scheduler_account`` are optional and should be
         specified in a similar manner to Fluent's scheduler options.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -316,5 +318,5 @@ def connect_to_fluent(
         watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(
-        fluent_connection=fluent_connection, remote_file_handler=RemoteFileHandler()
+        fluent_connection=fluent_connection,
     )

@@ -72,7 +72,7 @@ class PimFileTransferService:
     def is_configured(self):
         return pypim.is_configured()
 
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
+    def upload_file(self, file_name: str, remote_file_name: Optional[str] = None):
         """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -100,19 +100,14 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def upload_file(
-        self, file_name: Union[list[str], str], on_uploaded: Optional[Callable] = None
-    ):
+    def upload(self, file_name: Union[list[str], str]):
         """Upload a file if it's unavailable on the server
-        supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
-        and performs callback operation.
+        supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
         file_name : str
             File name
-        on_uploaded: Callable
-            Read a file.
         Raises
         ------
         FileNotFoundError
@@ -123,14 +118,11 @@ class PimFileTransferService:
             for file in files:
                 if os.path.isfile(file):
                     if not self.file_service.file_exist(os.path.basename(file)):
-                        self.upload(file)
+                        self.upload_file(file_name=file)
                 elif not self.file_service.file_exist(os.path.basename(file)):
                     raise FileNotFoundError(f"{file} does not exist.")
-        if on_uploaded:
-            for file in files:
-                on_uploaded(os.path.basename(file) if self.is_configured() else file)
 
-    def download(self, file_name: str, local_file_name: Optional[str] = None):
+    def download_file(self, file_name: str, local_file_name: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -155,120 +147,27 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError("Remote file does not exist.")
 
-    def download_file(
+    def download(
         self,
         file_name: Union[list[str], str],
-        before_downloaded: Optional[Callable] = None,
     ):
-        """Perform callback operation and
-        downloads a file if it's available to the server supported by
+        """Download a file if it's available to the server supported by
         `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
         file_name : str
             File name
-        before_downloaded: Callable
-            Write a file.
         """
         files = [file_name] if isinstance(file_name, str) else file_name
-        for file in files:
-            if before_downloaded:
-                before_downloaded(
-                    os.path.basename(file) if self.is_configured() else file
-                )
         if self.is_configured():
             for file in files:
                 if os.path.isfile(file):
                     print(f"\nFile already exists. File path:\n{file}\n")
                 else:
-                    self.download(os.path.basename(file), local_file_name=".")
+                    self.download_file(
+                        file_name=os.path.basename(file), local_file_name="."
+                    )
 
-
-class RemoteFileHandler:
-    """Uploads and downloads a file before and after performing callback operation
-    respectively, if `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is
-    configured.
-
-    Attributes
-    ----------
-    transfer_service: Client instance
-        Instance of Client which supports upload and download methods.
-
-    Methods
-    -------
-    upload(
-        file_name, on_uploaded
-        )
-        Upload a file to the server before performing callback operation.
-
-    download(
-        file_name, before_downloaded
-        )
-        Download a file from the server after performing callback operation.
-    """
-
-    def __init__(self, transfer_service: Optional[Any] = None):
-        self._transfer_service = transfer_service
-
-    def upload(self, file_name: str, on_uploaded: Optional[Callable] = None):
-        """Upload a file if it's unavailable on the server
-        supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`
-        and performs callback operation.
-
-        Parameters
-        ----------
-        file_name : str
-            File name
-        on_uploaded: Callable
-            Read a file.
-        Raises
-        ------
-        FileNotFoundError
-            If a file does not exist.
-        """
-        self._transfer_service.upload_file(file_name=file_name, on_uploaded=on_uploaded)
-
-    def download(self, file_name: str, before_downloaded: Optional[Callable] = None):
-        """Perform callback operation and
-        downloads a file if it's available to the server supported by
-        `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
-
-        Parameters
-        ----------
-        file_name : str
-            File name
-        before_downloaded: Callable
-            Write a file.
-        """
-        self._transfer_service.download_file(
-            file_name=file_name, before_downloaded=before_downloaded
-        )
-
-    def __bool__(self):
-        return (
-            self._transfer_service.is_configured() if self._transfer_service else False
-        )
-
-
-class TransferRequestRecorder:
-    def __init__(self):
-        self.uploaded_files = list()
-        self.downloaded_files = list()
-
-    def uploads(self):
-        return self.uploaded_files
-
-    def downloads(self):
-        return self.downloaded_files
-
-    def upload_file(self, file_name: str, on_uploaded: Optional[Callable] = None):
-        self.uploaded_files.append(file_name)
-
-    def download_file(
-        self, file_name: str, before_downloaded: Optional[Callable] = None
-    ):
-        self.downloaded_files.append(file_name)
-
-    def is_configured(self):
-        return True
+    def __call__(self, pim_instance: Optional[Any] = None):
+        self.pim_instance = pim_instance

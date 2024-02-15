@@ -9,6 +9,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _process_invalid_args,
     launch_remote_fluent,
 )
+from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -44,6 +45,7 @@ class PIMLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode.
 
@@ -129,6 +131,8 @@ class PIMLauncher:
             which means an independent watchdog process is run to ensure
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
+        file_transfer_service : optional
+            File transfer service. Uploads/downloads files to/from the server.
 
         Returns
         -------
@@ -173,6 +177,9 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent' is currently not supported "
                 "when starting a remote Fluent PyPIM client."
             )
+        self.file_transfer_service = (
+            file_transfer_service if file_transfer_service else PimFileTransferService()
+        )
 
     def __call__(self):
         logger.info(
@@ -191,4 +198,5 @@ class PIMLauncher:
             mode=self.mode,
             dimensionality=self.version,
             launcher_args=self.argvals,
+            file_transfer_service=self.file_transfer_service,
         )

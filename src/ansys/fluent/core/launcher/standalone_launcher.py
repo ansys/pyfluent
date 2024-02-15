@@ -21,7 +21,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _raise_exception_g_gu_in_windows_os,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
+from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -57,6 +57,7 @@ class StandaloneLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -142,6 +143,8 @@ class StandaloneLauncher:
             which means an independent watchdog process is run to ensure
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
+        file_transfer_service : optional
+            File transfer service. Uploads/downloads files to/from the server.
 
         Returns
         -------
@@ -174,6 +177,9 @@ class StandaloneLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
+        self.file_transfer_service = (
+            file_transfer_service if file_transfer_service else PimFileTransferService()
+        )
 
     def __call__(self):
         if self.lightweight_mode is None:
@@ -236,7 +242,7 @@ class StandaloneLauncher:
 
             session = self.new_session.create_from_server_info_file(
                 server_info_file_name=server_info_file_name,
-                remote_file_handler=RemoteFileHandler(),
+                remote_file_handler=self.file_transfer_service,
                 cleanup_on_exit=self.cleanup_on_exit,
                 start_transcript=self.start_transcript,
                 launcher_args=self.argvals,

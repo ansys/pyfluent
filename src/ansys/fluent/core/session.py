@@ -288,9 +288,9 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        return PimFileTransferService(self.fluent_connection._remote_instance).upload(
-            file_name, remote_file_name
-        )
+        return PimFileTransferService(
+            self.fluent_connection._remote_instance
+        ).upload_file(file_name, remote_file_name)
 
     def download(self, file_name: str, local_file_name: Optional[str] = "."):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -302,9 +302,9 @@ class BaseSession:
         local_file_name : str, optional
             local file path, by default current directory
         """
-        return PimFileTransferService(self.fluent_connection._remote_instance).download(
-            file_name, local_file_name
-        )
+        return PimFileTransferService(
+            self.fluent_connection._remote_instance
+        ).download_file(file_name, local_file_name)
 
     def __dir__(self):
         returned_list = sorted(set(list(self.__dict__.keys()) + dir(type(self))))
