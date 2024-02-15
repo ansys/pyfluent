@@ -309,6 +309,15 @@ class BaseTask:
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
         )
 
+    def add_child_to_task(self):
+        return self._task.AddChildToTask()
+
+    def update_child_tasks(self, setup_type_changed: bool):
+        self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
+
+    def insert_compound_child_task(self):
+        return self._task.InsertCompoundChildTask()
+
     def __call__(self, **kwds) -> Any:
         if kwds:
             self._task.Arguments.set_state(**kwds)

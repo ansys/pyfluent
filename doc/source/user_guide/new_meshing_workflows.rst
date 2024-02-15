@@ -33,7 +33,7 @@ Add local sizing
 
 .. code:: python
 
-    watertight.add_local_sizing.AddChildToTask()
+    watertight.add_local_sizing.add_child_to_task()
     watertight.add_local_sizing()
 
 Generate surface mesh
@@ -49,9 +49,9 @@ Describe geometry
 
 .. code:: python
 
-    watertight.describe_geometry.UpdateChildTasks(SetupTypeChanged=False)
+    watertight.describe_geometry.update_child_tasks(setup_type_changed=False)
     watertight.describe_geometry.SetupType.set_state("The geometry consists of only fluid regions with no voids")
-    watertight.describe_geometry.UpdateChildTasks(SetupTypeChanged=True)
+    watertight.describe_geometry.update_child_tasks(setup_type_changed=True)
     watertight.describe_geometry()
 
 Update boundaries
@@ -77,11 +77,9 @@ Add boundary layers
 
 .. code:: python
 
-    watertight.add_boundary_layer.AddChildToTask()
-    watertight.add_boundary_layer.InsertCompoundChildTask()
-    watertight.task("smooth-transition_1").arguments = {
-        "BLControlName": "smooth-transition_1",
-    }
+    watertight.add_boundary_layer.add_child_to_task()
+    watertight.add_boundary_layer.insert_compound_child_task()
+    watertight.task("smooth-transition_1").BLControlName.set_state("smooth-transition_1")
     watertight.add_boundary_layer.arguments = {}
     watertight.task("smooth-transition_1")()
 
@@ -153,14 +151,14 @@ Describe geometry and flow
     fault_tolerant.describe_geometry_and_flow.AddEnclosure.set_state("No")
     fault_tolerant.describe_geometry_and_flow.CloseCaps.set_state("Yes")
     fault_tolerant.describe_geometry_and_flow.FlowType.set_state("Internal flow through the object")
-    fault_tolerant.describe_geometry_and_flow.UpdateChildTasks(SetupTypeChanged=False)
+    fault_tolerant.describe_geometry_and_flow.update_child_tasks(setup_type_changed=False)
 
     fault_tolerant.describe_geometry_and_flow.AddEnclosure.set_state("No")
     fault_tolerant.describe_geometry_and_flow.CloseCaps.set_state("Yes")
     fault_tolerant.describe_geometry_and_flow.DescribeGeometryAndFlowOptions.AdvancedOptions.set_state(True)
     fault_tolerant.describe_geometry_and_flow.DescribeGeometryAndFlowOptions.ExtractEdgeFeatures.set_state("Yes")
     fault_tolerant.describe_geometry_and_flow.FlowType.set_state("Internal flow through the object")
-    fault_tolerant.describe_geometry_and_flow.UpdateChildTasks(SetupTypeChanged=False)
+    fault_tolerant.describe_geometry_and_flow.update_child_tasks(setup_type_changed=False)
     fault_tolerant.describe_geometry_and_flow()
 
 Enclose fluid regions (capping)
@@ -187,8 +185,8 @@ Enclose fluid regions (capping)
                 "inlet.1",
             ])
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["inlet.1"])
-    fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
-    fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
+    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
+    fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("inlet-1")()
 
@@ -209,8 +207,8 @@ Enclose fluid regions (capping)
                 "inlet.2",
             ])
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["inlet.2"])
-    fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
-    fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
+    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
+    fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("inlet-2")()
 
@@ -231,8 +229,8 @@ Enclose fluid regions (capping)
                 "inlet",
             ])
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["inlet"])
-    fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
-    fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
+    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
+    fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("inlet-3")()
 
@@ -255,8 +253,8 @@ Enclose fluid regions (capping)
             ])
     fault_tolerant.enclose_fluid_regions_fault.ZoneSelectionList.set_state(["outlet"])
     fault_tolerant.enclose_fluid_regions_fault.ZoneType.set_state("pressure-outlet")
-    fault_tolerant.enclose_fluid_regions_fault.AddChildToTask()
-    fault_tolerant.enclose_fluid_regions_fault.InsertCompoundChildTask()
+    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
+    fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.task("outlet-1")()
 
@@ -267,8 +265,8 @@ Extract edge features
 
     fault_tolerant.extract_edge_features.ExtractMethodType.set_state("Intersection Loops")
     fault_tolerant.extract_edge_features.ObjectSelectionList.set_state(["flow_pipe", "main"])
-    fault_tolerant.extract_edge_features.AddChildToTask()
-    fault_tolerant.extract_edge_features.InsertCompoundChildTask()
+    fault_tolerant.extract_edge_features.add_child_to_task()
+    fault_tolerant.extract_edge_features.insert_compound_child_task()
 
     fault_tolerant.extract_edge_features.ExtractEdgesName.set_state("edge-group-1")
     fault_tolerant.extract_edge_features.ExtractMethodType.set_state("Intersection Loops")
@@ -303,17 +301,15 @@ Identify regions
                 "main.1",
             ])
     fault_tolerant.identify_regions.ZoneSelectionList.set_state(["main.1"])
-    fault_tolerant.identify_regions.AddChildToTask()
-    fault_tolerant.identify_regions.InsertCompoundChildTask()
+    fault_tolerant.identify_regions.add_child_to_task()
+    fault_tolerant.identify_regions.insert_compound_child_task()
 
-    fault_tolerant.task("fluid-region-1").arguments.set_state(
-        {
-            "MaterialPointsName": "fluid-region-1",
-            "SelectionType": "zone",
-            "X": 377.322045740589,
-            "Y": -176.800676988458,
-            "Z": -37.0764628583475,
-            "ZoneLocation": [
+    fault_tolerant.task("fluid-region-1").MaterialPointsName.set_state("fluid-region-1")
+    fault_tolerant.task("fluid-region-1").SelectionType.set_state("zone")
+    fault_tolerant.identify_regions.X.set_state(377.322045740589)
+    fault_tolerant.identify_regions.Y.set_state(-176.800676988458)
+    fault_tolerant.identify_regions.Z.set_state(-37.0764628583475)
+    fault_tolerant.identify_regions.ZoneLocation.set_state([
                 "1",
                 "213.32205",
                 "-225.28068",
@@ -322,10 +318,8 @@ Identify regions
                 "-128.32068",
                 "84.102381",
                 "main.1",
-            ],
-            "ZoneSelectionList": ["main.1"],
-        }
-    )
+            ])
+    fault_tolerant.identify_regions.ZoneSelectionList.set_state(["main.1"])
     fault_tolerant.identify_regions.arguments.set_state({})
     fault_tolerant.task("fluid-region-1")()
 
@@ -335,8 +329,8 @@ Identify regions
     fault_tolerant.identify_regions.X.set_state(374.722045740589)
     fault_tolerant.identify_regions.Y.set_state(-278.9775145640143)
     fault_tolerant.identify_regions.Z.set_state(-161.1700719416913)
-    fault_tolerant.identify_regions.AddChildToTask()
-    fault_tolerant.identify_regions.InsertCompoundChildTask()
+    fault_tolerant.identify_regions.add_child_to_task()
+    fault_tolerant.identify_regions.insert_compound_child_task()
     fault_tolerant.identify_regions.arguments.set_state({})
     fault_tolerant.task("void-region-1")()
 
@@ -349,8 +343,8 @@ Define leakage threshold
     fault_tolerant.define_leakage_threshold.FlipDirection.set_state(True)
     fault_tolerant.define_leakage_threshold.PlaneDirection.set_state("X")
     fault_tolerant.define_leakage_threshold.RegionSelectionSingle.set_state("void-region-1")
-    fault_tolerant.define_leakage_threshold.AddChildToTask()
-    fault_tolerant.define_leakage_threshold.InsertCompoundChildTask()
+    fault_tolerant.define_leakage_threshold.add_child_to_task()
+    fault_tolerant.define_leakage_threshold.insert_compound_child_task()
 
 
     fault_tolerant.task("leakage-1").arguments.set_state(
@@ -430,13 +424,9 @@ Add boundary layers
 
 .. code:: python
 
-    fault_tolerant.add_boundary_layer_ftm.AddChildToTask()
-    fault_tolerant.add_boundary_layer_ftm.InsertCompoundChildTask()
-    fault_tolerant.task("aspect-ratio_1").arguments.set_state(
-        {
-            "BLControlName": "aspect-ratio_1",
-        }
-    )
+    fault_tolerant.add_boundary_layer_ftm.add_child_to_task()
+    fault_tolerant.add_boundary_layer_ftm.insert_compound_child_task()
+    fault_tolerant.task("aspect-ratio_1").BLControlName.set_state("aspect-ratio_1")
     fault_tolerant.add_boundary_layer_ftm.arguments.set_state({})
     fault_tolerant.task("aspect-ratio_1")()
 
