@@ -323,6 +323,7 @@ class FluentConnection:
         from grpc._channel import _InactiveRpcError
 
         try:
+            logger.info(self.fluent_build_info)
             logger.debug("Obtaining Cortex connection properties...")
             fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
             cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
@@ -391,6 +392,14 @@ class FluentConnection:
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    @property
+    def fluent_build_info(self) -> str:
+        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
+        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
+        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
+        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
 
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])

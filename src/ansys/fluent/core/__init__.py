@@ -12,6 +12,10 @@ logging.root_config()
 logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
+from ansys.fluent.core.get_build_details import (  # noqa: F401
+    get_build_version,
+    get_build_version_string,
+)
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
