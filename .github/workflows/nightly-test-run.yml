@@ -27,7 +27,7 @@ jobs:
           python-version: 3.9
 
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
@@ -119,7 +119,7 @@ jobs:
           FLUENT_IMAGE_TAG: v24.1.0
 
       - name: Upload 24.1 Coverage Results to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           root_dir: ${{ github.workspace }}
           name: cov_xml.xml
