@@ -757,7 +757,7 @@ class CompoundTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def add_child(self, state: Optional[dict] = None) -> None:
+    def _add_child(self, state: Optional[dict] = None) -> None:
         """Add a child to this CompoundTask.
 
         Parameters
@@ -777,7 +777,7 @@ class CompoundTask(CommandTask):
         state : Optional[dict]
             Optional state.
         """
-        self.add_child(state)
+        self._add_child(state)
         self._task.AddChildAndUpdate()
         return self.last_child()
 
