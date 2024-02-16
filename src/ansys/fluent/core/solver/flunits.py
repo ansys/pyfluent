@@ -10,7 +10,8 @@ The following code is employed to translate the source data
 into Python data structures:
 
 from ansys.fluent.core.filereader import lispy
-from ansys.units import Unit
+from ansys.units import Quantity, Unit
+from ansys.units.quantity import get_si_value
 import re
 from pprint import pprint
 
@@ -31,15 +32,21 @@ def substitute_fl_units_with_py_units(fl_units_dict):
     return fl_units_dict
 
 def remove_unhandled_units(fl_units_dict):
+    not_si = {}
     unhandled = {}
     for k, v in fl_units_dict.items():
         try:
             Unit(v)
+            q = Quantity(1.0, v)
+            if get_si_value(q) != 1.0:
+                not_si[k] = v
         except Exception:
             unhandled[k] = v
+    print("Not SI:")
+    pprint(not_si)
     print("Unhandled:")
     pprint(unhandled)
-    [fl_units_dict.pop(key) for key in unhandled]
+    [fl_units_dict.pop(key) for key in list(not_si) + list(unhandled)]
     return fl_units_dict
 
 def make_python_fl_unit_table(scheme_unit_table):
@@ -50,13 +57,11 @@ def make_python_fl_unit_table(scheme_unit_table):
 Output from most recent run to generate the table below:
 
 >>> pprint(make_python_fl_unit_table(fl_scheme_unit_table))
-
-Substitutions:
-'deg' -> 'radian' for 'angle'
-'rad s^-1' -> 'radian s^-1' for 'angular-velocity'
-'deg' -> 'radian' for 'crank-angle'
-'N m rad^-1' -> 'N m radian^-1' for 'spring-constant-angular'
-
+Not SI:
+{'concentration': 'kmol m^-3',
+ 'elec-charge': 'A h',
+ 'molec-wt': 'kg kmol^-1',
+ 'soot-sitespecies-concentration': 'kmol m^-3'}
 Unhandled:
 {'contact-resistance-vol': 'Ohm m^3',
  'crank-angular-velocity': 'rev min^-1',
@@ -91,7 +96,6 @@ _fl_unit_table = {
     "area": "m^2",
     "area-inverse": "m^-2",
     "collision-rate": "m^-3 s^-1",
-    "concentration": "kmol m^-3",
     "contact-resistance": "m^2 K W^-1",
     "crank-angle": "radian",
     "current": "A",
@@ -104,7 +108,6 @@ _fl_unit_table = {
     "density-gradient": "kg m^-4",
     "density-inverse": "m^3 kg^-1",
     "depth": "m",
-    "elec-charge": "A h",
     "elec-charge-density": "A s m^-3",
     "elec-conductivity": "S m^-1",
     "elec-field": "V m^-1",
@@ -133,7 +136,6 @@ _fl_unit_table = {
     "mass-flow-per-time": "kg s^-2",
     "mass-flux": "kg m^-2 s^-1",
     "mass-transfer-rate": "kg m^-3 s^-1",
-    "molec-wt": "kg kmol^-1",
     "moment": "N m",
     "moment-of-inertia": "kg m^2",
     "nucleation-rate": "m^-3 s^-1",
@@ -148,7 +150,6 @@ _fl_unit_table = {
     "resistance": "m^-1",
     "soot-formation-constant-unit": "kg N^-1 m^-1 s^-1",
     "soot-linear-termination": "m^3 s^-1",
-    "soot-sitespecies-concentration": "kmol m^-3",
     "source-elliptic-relaxation-function": "kg m^-3 s^-2",
     "source-energy": "W m^-3",
     "source-kinetic-energy": "kg m^-1 s^-3",
