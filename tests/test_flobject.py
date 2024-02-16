@@ -10,7 +10,11 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
+from ansys.fluent.core.solver.flobject import (
+    InactiveObjectError,
+    UnhandledQuantity,
+    find_children,
+)
 import ansys.units
 
 
@@ -963,21 +967,44 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
 
     assert hot_inlet.turbulence.hydraulic_diameter() == "1 [in]"
-    # Could not convert string to float: '1 [in]'
-    # TEMPORARILY disable. pending units changes
-    # assert hot_inlet.turbulence.hydraulic_diameter.get_state_as_quantity() == None
+    assert hot_inlet.turbulence.hydraulic_diameter.as_quantity() == None
+
+    hot_inlet.turbulence.turbulent_intensity = 0.2
+    assert hot_inlet.turbulence.turbulent_intensity() == 0.2
+
+    # turbulent_intensity has a units-quantity attribute, 'percentage', but it
+    # is unsupported
 
     # 'percentage' cannot be converted to a Quantity.
-    assert hot_inlet.turbulence.turbulent_intensity.get_state_as_quantity() == None
+    assert hot_inlet.turbulence.turbulent_intensity.as_quantity() == None
+
+    # likewise, cannot set turbulent_intensity via a Quantity
+    with pytest.raises(UnhandledQuantity):
+        hot_inlet.turbulence.turbulent_intensity = ansys.units.Quantity(0.1, "")
 
     hot_inlet.turbulence.hydraulic_diameter = 1
     assert (
-        hot_inlet.turbulence.hydraulic_diameter.get_state_as_quantity()
+        hot_inlet.turbulence.hydraulic_diameter.as_quantity()
         == ansys.units.Quantity(1, "m")
     )
 
     hot_inlet.turbulence.hydraulic_diameter = ansys.units.Quantity(1, "in")
     assert (
-        hot_inlet.turbulence.hydraulic_diameter.get_state_as_quantity()
+        hot_inlet.turbulence.hydraulic_diameter.as_quantity()
         == ansys.units.Quantity(0.0254, "m")
+    )
+
+    assert hot_inlet.turbulence.hydraulic_diameter() == 0.0254
+
+    # clip factor has no units-quantity attribute. We should not
+    # assume it to be dimensionless, or???
+    solver.setup.models.viscous.options.production_limiter.clip_factor.set_state(1.2)
+    assert solver.setup.models.viscous.options.production_limiter.clip_factor() == 1.2
+    with pytest.raises(UnhandledQuantity):
+        solver.setup.models.viscous.options.production_limiter.clip_factor.set_state(
+            ansys.units.Quantity(1.8, "")
+        )
+    assert (
+        solver.setup.models.viscous.options.production_limiter.clip_factor.as_quantity()
+        is None
     )

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Module for accessing and modifying hierarchy of Fluent settings.
 
 The only useful method is '`get_root``, which returns the root object for
@@ -15,7 +17,6 @@ Example
 >>> r.setup.models.energy.enabled = True
 >>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
-from __future__ import annotations
 
 import collections
 from contextlib import contextmanager, nullcontext
@@ -35,7 +36,7 @@ import weakref
 try:
     import ansys.units as ansys_units
 
-    from .flunits import get_si_unit_for_fluent_quantity
+    from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 except ImportError:
     get_unit_for_fl_quantity_attr = None
     ansys_units = None
@@ -492,7 +493,7 @@ class Real(SettingsBase[RealType], Numerical):
     expression values.
     """
 
-    def get_state_as_quantity(self) -> Optional[ansys_units.Quantity]:
+    def as_quantity(self) -> Optional[ansys_units.Quantity]:
         """Get the state of the object as a Quantity."""
         error = None
         if not ansys_units:
@@ -511,22 +512,29 @@ class Real(SettingsBase[RealType], Numerical):
                     error = e
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
+    def set_state(self, state: Optional[StateT] = None, **kwargs): # noqa W9006
         """Set the state of the object.
 
         Raises
         ------
-        TypeError
-            If the quantity attribute is not a string instance.
-        ValueError
-            If the quantity attribute is not present in this parameter.
+        UnhandledQuantity
+            If the quantity objet cannot be handled for the given path. This can
+            happen if the quantity attribute is not present in this parameter, or
+            if the quantity attribute specifies an unsupported quantity, or if
+            the units soecified for the quantity are not supported.
         """
         if ansys_units and isinstance(state, ansys_units.Quantity):
-            quantity = self.get_attr("units-quantity")
-            if not quantity:
-                raise ValueError(f"{self.path} does not contain quantity information.")
-            unit = get_si_unit_for_fluent_quantity(quantity)
-            state = state.to(unit).value
+            try:
+                quantity = self.get_attr("units-quantity")
+                if not quantity:
+                    raise ValueError(
+                        f"{self.path} does not contain quantity information."
+                    )
+                unit = get_si_unit_for_fluent_quantity(quantity)
+                state = state.to(unit).value
+            except Exception as ex:
+                raise UnhandledQuantity(self.path, state) from ex
+
         return super().set_state(state=state, **kwargs)
 
     _state_type = RealType
@@ -823,6 +831,8 @@ class Group(SettingsBase[DictStateType]):
             allowed = attr.allowed_values()
             if allowed and value not in allowed:
                 raise allowed_values_error(name, value, allowed) from ex
+            else:
+                raise ex
 
 
 class WildcardPath(Group):
