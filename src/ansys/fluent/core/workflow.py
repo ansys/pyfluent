@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import re
 import threading
 from typing import Any, Iterator, List, Optional, Tuple, Union
 import warnings
@@ -10,6 +11,24 @@ import warnings
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
+
+AttrMap = {}
+
+
+def camel_to_snake_case(input_arg: str) -> str:
+    return re.sub("((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", input_arg).lower()
+
+
+def populate_and_use_snake_case(attr: str, attr_dict):
+    if attr.islower():
+        for key in attr_dict.keys():
+            if camel_to_snake_case(str(key)) not in AttrMap:
+                AttrMap[camel_to_snake_case(str(key))] = str(key)
+        try:
+            return AttrMap[attr]
+        except KeyError:
+            return
+
 
 logger = logging.getLogger("pyfluent.datamodel")
 
@@ -285,6 +304,8 @@ class BaseTask:
         self._command_source.DeleteTasks(ListOfTasks=[self.name()])
 
     def __getattr__(self, attr):
+        snake_attr = populate_and_use_snake_case(str(attr), self.arguments())
+        attr = snake_attr if snake_attr else attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -509,6 +530,8 @@ class ArgumentWrapper(PyCallableStateObject):
         return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
 
     def __getattr__(self, attr):
+        snake_attr = populate_and_use_snake_case(str(attr), self())
+        attr = snake_attr if snake_attr else attr
         return getattr(self._arg, attr)
 
 
