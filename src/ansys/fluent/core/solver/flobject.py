@@ -500,41 +500,32 @@ class Real(SettingsBase[RealType], Numerical):
             error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
-            if not quantity:
-                error = f"{self.path} does not contain quantity information."
-            else:
-                try:
-                    return ansys_units.Quantity(
-                        value=self.get_state(),
-                        units=get_si_unit_for_fluent_quantity(quantity),
-                    )
-                except (TypeError, ValueError) as e:
-                    error = e
+            try:
+                return ansys_units.Quantity(
+                    value=self.get_state(),
+                    units=get_si_unit_for_fluent_quantity(quantity),
+                )
+            except (TypeError, ValueError) as e:
+                error = e
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs): # noqa W9006
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object.
 
         Raises
         ------
         UnhandledQuantity
-            If the quantity objet cannot be handled for the given path. This can
-            happen if the quantity attribute is not present in this parameter, or
-            if the quantity attribute specifies an unsupported quantity, or if
-            the units soecified for the quantity are not supported.
+            If the quantity object cannot be handled for the given path. This can
+            happen if the quantity attribute specifies an unsupported quantity, or if
+            the units specified for the quantity are not supported.
         """
         if ansys_units and isinstance(state, ansys_units.Quantity):
             try:
                 quantity = self.get_attr("units-quantity")
-                if not quantity:
-                    raise ValueError(
-                        f"{self.path} does not contain quantity information."
-                    )
                 unit = get_si_unit_for_fluent_quantity(quantity)
                 state = state.to(unit).value
             except Exception as ex:
                 raise UnhandledQuantity(self.path, state) from ex
-
         return super().set_state(state=state, **kwargs)
 
     _state_type = RealType

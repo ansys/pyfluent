@@ -996,15 +996,17 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
 
     assert hot_inlet.turbulence.hydraulic_diameter() == 0.0254
 
-    # clip factor has no units-quantity attribute. We should not
-    # assume it to be dimensionless, or???
+    # clip_factor has no units-quantity attribute, because it is dimensionless
     solver.setup.models.viscous.options.production_limiter.clip_factor.set_state(1.2)
     assert solver.setup.models.viscous.options.production_limiter.clip_factor() == 1.2
-    with pytest.raises(UnhandledQuantity):
-        solver.setup.models.viscous.options.production_limiter.clip_factor.set_state(
-            ansys.units.Quantity(1.8, "")
-        )
     assert (
         solver.setup.models.viscous.options.production_limiter.clip_factor.as_quantity()
-        is None
+        == ansys.units.Quantity(1.2, "")
+    )
+    solver.setup.models.viscous.options.production_limiter.clip_factor.set_state(
+        ansys.units.Quantity(1.8, "")
+    )
+    assert (
+        solver.setup.models.viscous.options.production_limiter.clip_factor.as_quantity()
+        == ansys.units.Quantity(1.8, "")
     )

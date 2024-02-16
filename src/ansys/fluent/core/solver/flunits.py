@@ -82,6 +82,8 @@ Unhandled:
  'wave-length': 'Angstrom'}
 """
 
+from typing import Optional
+
 _fl_unit_table = {
     "acceleration": "m s^-2",
     "angle": "radian",
@@ -225,16 +227,22 @@ class UnhandledQuantity(RuntimeError):
         )
 
 
-def get_si_unit_for_fluent_quantity(quantity: str, unit_table: dict = None):
+def get_si_unit_for_fluent_quantity(
+    quantity: Optional[str], unit_table: Optional[dict] = None
+):
     """Get the SI unit for the given Fluent quantity.
 
     Raises
     ------
     InvalidQuantityType
-        If ``quantity`` is not a string instance.
+        If ``quantity`` is not a string instance, unless it is None.
     UnitsNotDefinedForQuantity
         If ``quantity`` is undefined for PyFluent.
     """
+    # The settings API should return None only if the
+    # parameter is dict
+    if quantity is None:
+        return ""
     try:
         if quantity.startswith("'"):
             quantity = quantity[1:]
