@@ -4,6 +4,8 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.nightly
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
 def test_new_watertight_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -74,6 +76,8 @@ def test_new_watertight_workflow(new_mesh_session):
 
 
 @pytest.mark.nightly
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
 def test_new_fault_tolerant_workflow(new_mesh_session):
     meshing = new_mesh_session
 
