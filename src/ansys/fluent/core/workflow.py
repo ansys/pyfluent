@@ -16,10 +16,13 @@ AttrMap = {}
 
 
 def camel_to_snake_case(input_arg: str) -> str:
+    """Convert camel case input string to snake case output string."""
     return re.sub("((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", input_arg).lower()
 
 
 def populate_and_use_snake_case(attr: str, attr_dict):
+    """Populate the snake-case attribute map and
+    return snake case of the passed attribute."""
     if attr.islower():
         for key in attr_dict.keys():
             if camel_to_snake_case(str(key)) not in AttrMap:
@@ -148,6 +151,7 @@ class BaseTask:
                 _ordered_children=[],
                 _task_list=[],
                 _task_objects={},
+                _dynamic_interface=command_source._dynamic_interface,
             )
         )
 
@@ -304,8 +308,9 @@ class BaseTask:
         self._command_source.DeleteTasks(ListOfTasks=[self.name()])
 
     def __getattr__(self, attr):
-        snake_attr = populate_and_use_snake_case(str(attr), self.arguments())
-        attr = snake_attr if snake_attr else attr
+        if self._dynamic_interface:
+            snake_attr = populate_and_use_snake_case(str(attr), self.arguments())
+            attr = snake_attr if snake_attr else attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -326,8 +331,20 @@ class BaseTask:
             setattr(self._task, attr, value)
 
     def __dir__(self):
+        arg_list = []
+        for arg in self.arguments():
+            if self._dynamic_interface:
+                arg_list.append(camel_to_snake_case(arg))
+            else:
+                arg_list.append(arg)
+
         return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self._task)
+                + arg_list
+            )
         )
 
     def add_child_to_task(self):
@@ -507,6 +524,7 @@ class ArgumentWrapper(PyCallableStateObject):
         self._arg = getattr(task._command_arguments, arg)
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument")
+        self._dynamic_interface = task._dynamic_interface
 
     def set_state(self, value: Any) -> None:
         """Set the state of this argument.
@@ -530,9 +548,19 @@ class ArgumentWrapper(PyCallableStateObject):
         return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
 
     def __getattr__(self, attr):
-        snake_attr = populate_and_use_snake_case(str(attr), self())
-        attr = snake_attr if snake_attr else attr
+        if self._dynamic_interface:
+            snake_attr = populate_and_use_snake_case(str(attr), self())
+            attr = snake_attr if snake_attr else attr
         return getattr(self._arg, attr)
+
+    def __dir__(self):
+        arg_list = []
+        for arg in self():
+            if self._dynamic_interface:
+                arg_list.append(camel_to_snake_case(arg))
+            else:
+                arg_list.append(arg)
+        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
 
 
 class CommandTask(BaseTask):
@@ -866,6 +894,7 @@ class NewWorkflowWrapper:
         self._getattr_recurse_depth = 0
         self._main_thread_ident = None
         self._task_objects = {}
+        self._dynamic_interface = False
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -999,6 +1028,7 @@ class NewWorkflowWrapper:
             pass
 
     def _new_workflow(self, name: str, dynamic_interface: bool):
+        self._dynamic_interface = dynamic_interface
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
@@ -1046,6 +1076,7 @@ class OldWorkflowWrapper:
         self._lock = (
             threading.RLock()
         )  # TODO: sort out issues with these un-used variables.
+        self._dynamic_interface = False
 
     @property
     def TaskObject(self) -> TaskContainer:
