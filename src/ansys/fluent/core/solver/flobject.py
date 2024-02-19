@@ -907,8 +907,8 @@ class WildcardPath(Group):
         return self._path
 
     def __getattr__(self, name: str):
-        if hasattr(self._settings_cls, name):
-            child_settings_cls = getattr(self._settings_cls, name)
+        try:
+            child_settings_cls = self._settings_cls._child_classes[name]
             scheme_name = child_settings_cls.fluent_name
             wildcard_cls = (
                 NamedObjectWildcardPath
@@ -922,11 +922,12 @@ class WildcardPath(Group):
                 child_settings_cls,
                 self,
             )
-        raise KeyError(
-            allowed_name_error_message(
-                "Settings objects", name, self.get_object_names()
+        except KeyError:
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, self.get_active_child_names()
+                )
             )
-        )
 
     def items(self):
         """Items."""
