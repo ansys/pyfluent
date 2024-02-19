@@ -108,11 +108,11 @@ You can also access the state of an object with the ``get_state`` method and
 modify it with the ``set_state`` method.
 
 Real parameter objects can have units as well as values. If a particular object
-supports units then you can obtain its value and units as an ansys.units.Quantity
+supports units then you can obtain its value and units as an ``ansys.units.Quantity``
 object by calling the ``as_quantity`` method. You can obtain the same value 
 and units information as a tuple by calling the ``value_with_units`` method.
 That is especially useful if you do not wish to install the ansys.units package.
-Both ansys.units.Quantity objects and value-unit tuples can be passed to the
+Both ``ansys.units.Quantity`` objects and value-unit tuples can be passed to the
 ``set_state`` method.
 
 .. code-block::
