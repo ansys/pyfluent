@@ -555,9 +555,15 @@ class Real(SettingsBase[RealType], Numerical):
 
     def value_with_units(self) -> Optional[tuple]:
         """Get the value with physical units in a tuple"""
-        quantity = self.as_quantity()
-        if quantity is not None:
-            return (quantity.value, quantity.units.name)
+        if ansys_units:
+            quantity = self.as_quantity()
+            if quantity is not None:
+                return (quantity.value, quantity.units.name)
+        units = self.units()
+        if units is not None:
+            value = self.get_state()
+            if isinstance(value, (float, int)):
+                return (value, units)
 
     def units(self) -> Optional[str]:
         """Get the physical units of the object as a string"""

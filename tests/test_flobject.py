@@ -1008,3 +1008,43 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     assert clip_factor.as_quantity() == ansys.units.Quantity(1.8, "")
     assert clip_factor.value_with_units() == (1.8, "")
     assert clip_factor.units() == ""
+
+
+def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
+    solver = load_mixing_elbow_mesh
+    ansys_units = flobject.ansys_units
+    flobject.ansys_units = None
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    turbulence = hot_inlet.turbulence
+    turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+
+    hydraulic_diameter = turbulence.hydraulic_diameter
+    hydraulic_diameter.set_state("1 [in]")
+    assert hydraulic_diameter() == "1 [in]"
+    assert hydraulic_diameter.as_quantity() == None
+    assert hydraulic_diameter.value_with_units() == None
+    assert hydraulic_diameter.units() == "m"
+
+    turbulent_intensity = turbulence.turbulent_intensity
+    turbulent_intensity.set_state(0.2)
+    assert turbulent_intensity() == 0.2
+
+    # turbulent_intensity has a units-quantity attribute, 'percentage', but it
+    # is unsupported. So, 'percentage' cannot be converted to a Quantity.
+    assert turbulent_intensity.as_quantity() == None
+
+    hydraulic_diameter.set_state(1)
+    assert hydraulic_diameter.as_quantity() == None
+    assert hydraulic_diameter.value_with_units() == (1.0, "m")
+    assert hydraulic_diameter.units() == "m"
+
+    # clip_factor has no units-quantity attribute because it is dimensionless
+    clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
+    clip_factor.set_state(1.2)
+    assert clip_factor() == 1.2
+    assert clip_factor.as_quantity() == None
+    assert clip_factor.value_with_units() == (1.2, "")
+    assert clip_factor.units() == ""
+
+    flobject.ansys_units = ansys_units
