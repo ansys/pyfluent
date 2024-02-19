@@ -544,15 +544,12 @@ class Real(SettingsBase[RealType], Numerical):
         """
         try:
             if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
-                quantity = self.get_attr("units-quantity")
-                unit = get_si_unit_for_fluent_quantity(quantity)
                 state = (
                     ansys_units.Quantity(*state) if isinstance(state, tuple) else state
                 )
-                state = state.to(unit).value
+                state = state.to(self.units()).value
             elif isinstance(state, tuple):
-                quantity = self.get_attr("units-quantity")
-                if state[1] == get_si_unit_for_fluent_quantity(quantity):
+                if state[1] == self.units():
                     state = state[0]
                 else:
                     raise UnhandledQuantity(self.path, state)
