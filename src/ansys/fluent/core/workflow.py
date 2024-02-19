@@ -18,10 +18,11 @@ def camel_to_snake_case(camel_case_str: str) -> str:
     try:
         return camel_to_snake_case.cache[camel_case_str]
     except KeyError:
-        camel_to_snake_case.cache[camel_case_str] = re.sub(
+        _snake_case_str = re.sub(
             "((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", camel_case_str
         ).lower()
-        return camel_to_snake_case.cache[camel_case_str]
+        camel_to_snake_case.cache[camel_case_str] = _snake_case_str
+        return _snake_case_str
 
 
 camel_to_snake_case.cache = {}
@@ -35,14 +36,11 @@ def snake_to_camel_case(snake_case_str: str, camel_case_strs: Iterable):
     except KeyError:
         if snake_case_str.islower():
             for camel_case_str in camel_case_strs:
-                _snake_case_str = camel_to_snake_case(str(camel_case_str))
+                _snake_case_str = camel_to_snake_case(camel_case_str)
                 if _snake_case_str not in snake_to_camel_case.cache:
-                    snake_to_camel_case.cache[_snake_case_str] = str(camel_case_str)
-
-        try:
-            return snake_to_camel_case.cache[snake_case_str]
-        except KeyError:
-            return
+                    snake_to_camel_case.cache[_snake_case_str] = camel_case_str
+                if _snake_case_str == snake_case_str:
+                    return camel_case_str
 
 
 snake_to_camel_case.cache = {}
