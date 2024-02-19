@@ -21,8 +21,8 @@ def camel_to_snake_case(input_arg: str) -> str:
 
 
 def populate_and_use_snake_case(attr: str, attr_dict):
-    """Populate the snake-case attribute map and
-    return snake case of the passed attribute."""
+    """Populate the snake-case attribute map and return snake case of the passed
+    attribute."""
     if attr.islower():
         for key in attr_dict.keys():
             if camel_to_snake_case(str(key)) not in AttrMap:
