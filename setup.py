@@ -24,7 +24,7 @@ shutil.copy2(_README_FILE, _DOCS_FILE)
 install_requires = [
     "ansys-api-fluent>=0.3.22",
     "ansys-platform-instancemanagement~=1.0",
-    "ansys-units>=0.2.0",
+    "ansys-units>=0.3.0",
     "grpcio>=1.30.0",
     "grpcio-health-checking>=1.30.0",
     "numpy<2,>=1.21.5",
