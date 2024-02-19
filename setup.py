@@ -2,24 +2,26 @@
 import os
 import shutil
 
-from setuptools import find_namespace_packages, setup
+from setuptools import find_namespace_packages, find_packages, setup
 
 # Get version from version info
 __version__ = None
-_THIS_FILE = os.path.dirname(__file__)
-_VERSION_FILE = os.path.join(
-    _THIS_FILE, "src", "ansys", "fluent", "core", "_version.py"
-)
+_THIS_DIR = os.path.dirname(__file__)
+_VERSION_FILE = os.path.join(_THIS_DIR, "src", "ansys", "fluent", "core", "_version.py")
 with open(_VERSION_FILE, mode="r", encoding="utf8") as fd:
     # execute file from raw string
     exec(fd.read())
 
 # Copy README.rst file to docs folder in ansys.fluent.core
-_README_FILE = os.path.join(_THIS_FILE, "README.rst")
+_README_FILE = os.path.join(_THIS_DIR, "README.rst")
 _DOCS_FILE = os.path.join(
-    _THIS_FILE, "src", "ansys", "fluent", "core", "docs", "README.rst"
+    _THIS_DIR, "src", "ansys", "fluent", "core", "docs", "README.rst"
 )
 shutil.copy2(_README_FILE, _DOCS_FILE)
+
+_TESTS_DIR = os.path.join(_THIS_DIR, "tests")
+_TESTS_DIR_DEST = os.path.join(_THIS_DIR, "src", "ansys", "fluent", "tests")
+shutil.copytree(_TESTS_DIR, _TESTS_DIR_DEST, dirs_exist_ok=True)
 
 install_requires = [
     "ansys-api-fluent>=0.3.22",
@@ -40,11 +42,15 @@ install_requires = [
 
 extras_require = {
     "reader": ["h5py>=3.8.0"],
+    "tests": ["pytest", "pytest-mock", "pytest-cov"],
 }
 
 packages = []
 for package in find_namespace_packages(where="src", include="ansys*"):
     if package.startswith("ansys.fluent"):
+        packages.append(package)
+for package in find_packages(where="src", include="ansys.fluent*"):
+    if package.startswith("ansys.fluent.tests"):
         packages.append(package)
 
 setup(
