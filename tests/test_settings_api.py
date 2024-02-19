@@ -170,6 +170,7 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
 
+    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
     assert (
         len(
             solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
@@ -188,23 +189,51 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temp.value = 410
 
+    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 410
+
     solver.setup.boundary_conditions._setattr("_child_aliases", {"w": "wall"})
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.w["wall-inlet"].thermal.t.value = 420
+
+    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 420
 
     solver.setup._setattr("_child_aliases", {"bc": "boundary_conditions"})
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.bc.wall["wall-inlet"].thermal.t.value = 430
 
+    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 430
+
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+
+    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
 
     solver.results._setattr("_child_aliases", {"gr": "graphics"})
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour.create("c1")
 
+    assert solver.results.graphics.contour["c1"]
+
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour["c1"].field = "pressure"
 
+    assert solver.results.graphics.contour["c1"].field() == "pressure"
+
     with pytest.warns(DeprecatedSettingWarning):
         del solver.results.gr.contour["c1"]
+
+    assert "c1" not in solver.results.graphics.contour
+
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity._child_aliases["hd"] = "../../turbulence/hydraulic_diameter"
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.hd = 10
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].turbulence.hydraulic_diameter()
+        == 10
+    )

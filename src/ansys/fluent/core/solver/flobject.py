@@ -280,6 +280,15 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
+    def find_object(self, relative_path):
+        obj = self
+        for comp in relative_path.split("/"):
+            if comp == "..":
+                obj = obj.parent
+            else:
+                obj = getattr(obj, comp)
+        return obj
+
     def before_execute(self, value):
         if hasattr(self, "_do_before_execute"):
             self._do_before_execute(value)
@@ -405,10 +414,10 @@ class _Alias:
         return self._print_newer_api()
 
 
-def _create_child(cls, name, parent, is_alias=False):
+def _create_child(cls, name, parent: weakref.CallableProxyType, is_alias=False):
     if is_alias or isinstance(parent, _Alias):
         alias_cls = type(f"{cls.__name__}_alias", (_Alias, cls), dict(cls.__dict__))
-        return alias_cls(name, parent)
+        return alias_cls(name, parent.__repr__.__self__)
     return cls(name, parent)
 
 
@@ -790,10 +799,10 @@ class Group(SettingsBase[DictStateType]):
         alias = super().__getattribute__("_child_aliases").get(name)
         if alias:
             if isinstance(alias, str):
-                cls = self._child_classes[alias]
-                # replacing aliased names with alias objects in _child_aliases
+                obj = self.find_object(alias)
+                # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    cls, None, self, True
+                    obj.__class__, None, obj.parent, True
                 )
                 return alias_obj
             return alias
@@ -1071,10 +1080,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         alias = self._child_aliases.get(name)
         if alias:
             if isinstance(alias, str):
-                cls = self._child_classes[alias]
-                # replacing aliased names with alias objects in _child_aliases
+                obj = self.find_object(alias)
+                # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    cls, None, self, True
+                    obj.__class__, None, obj.parent, True
                 )
                 return alias_obj
             return alias
@@ -1189,10 +1198,10 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         alias = self._child_aliases.get(name)
         if alias:
             if isinstance(alias, str):
-                cls = self._child_classes[alias]
-                # replacing aliased names with alias objects in _child_aliases
+                obj = self.find_object(alias)
+                # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    cls, None, self, True
+                    obj.__class__, None, obj.parent, True
                 )
                 return alias_obj
             return alias
@@ -1268,10 +1277,10 @@ class Action(Base):
         alias = self._child_aliases.get(name)
         if alias:
             if isinstance(alias, str):
-                cls = self._child_classes[alias]
-                # replacing aliased names with alias objects in _child_aliases
+                obj = self.find_object(alias)
+                # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    cls, None, self, True
+                    obj.__class__, None, obj.parent, True
                 )
                 return alias_obj
             return alias
