@@ -1,4 +1,5 @@
 """Module providing dump session data functionality."""
+
 from pathlib import Path
 import pickle
 from typing import Optional, Union
@@ -50,12 +51,12 @@ def dump_session_data(
         session_data["range"][field] = {}
         for surface in surfaces_id:
             session_data["range"][field][surface] = {}
-            session_data["range"][field][surface][
-                "node_value"
-            ] = session.field_info.get_scalar_field_range(field, True, [surface])
-            session_data["range"][field][surface][
-                "cell_value"
-            ] = session.field_info.get_scalar_field_range(field, False, [surface])
+            session_data["range"][field][surface]["node_value"] = (
+                session.field_info.get_scalar_field_range(field, True, [surface])
+            )
+            session_data["range"][field][surface]["cell_value"] = (
+                session.field_info.get_scalar_field_range(field, False, [surface])
+            )
 
     transaction = session.field_data.new_transaction()
     transaction.add_surfaces_request(

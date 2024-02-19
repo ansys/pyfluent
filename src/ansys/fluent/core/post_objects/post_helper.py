@@ -96,11 +96,15 @@ class PostAPIHelper:
                 self._get_api_handle().plane_surface(
                     self._surface_name_on_server,
                     "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
-                    (xy_plane.z() / unit_info[1]) - unit_info[2]
-                    if xy_plane
-                    else (yz_plane.x() / unit_info[1]) - unit_info[2]
-                    if yz_plane
-                    else (zx_plane.y() / unit_info[1]) - unit_info[2],
+                    (
+                        (xy_plane.z() / unit_info[1]) - unit_info[2]
+                        if xy_plane
+                        else (
+                            (yz_plane.x() / unit_info[1]) - unit_info[2]
+                            if yz_plane
+                            else (zx_plane.y() / unit_info[1]) - unit_info[2]
+                        )
+                    ),
                 )
             field_info = self.obj._api_helper.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())

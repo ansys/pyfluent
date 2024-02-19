@@ -1,4 +1,5 @@
 """Unit tests for flobject module."""
+
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
