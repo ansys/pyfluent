@@ -577,7 +577,7 @@ class Real(SettingsBase[RealType], Numerical):
                 return (value, units)
 
     def units(self) -> Optional[str]:
-        """Get the physical units of the object as a string"""
+        """Get the physical units of the object as a string."""
         quantity = self.get_attr("units-quantity")
         return get_si_unit_for_fluent_quantity(quantity)
 
