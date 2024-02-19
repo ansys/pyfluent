@@ -25,7 +25,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-@pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.1")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
@@ -79,8 +78,10 @@ def test_wildcard(new_solver_session):
         }
     }
 
+    with pytest.raises(AttributeError):
+        boundary_conditions.velocity_inlet["inl*"].moment
 
-@pytest.mark.nightly
+
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
@@ -103,7 +104,6 @@ def test_wildcard_fnmatch(new_solver_session):
     assert sorted(mesh["mesh-[!2-5]"]()) == sorted(["mesh-1", "mesh-a"])
 
 
-@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
