@@ -5,32 +5,47 @@ from __future__ import annotations
 import logging
 import re
 import threading
-from typing import Any, Iterator, List, Optional, Tuple, Union
+from typing import Any, Iterable, Iterator, List, Optional, Tuple, Union
 import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
 
-AttrMap = {}
 
-
-def camel_to_snake_case(input_arg: str) -> str:
+def camel_to_snake_case(camel_case_str: str) -> str:
     """Convert camel case input string to snake case output string."""
-    return re.sub("((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", input_arg).lower()
+    try:
+        return camel_to_snake_case.cache[camel_case_str]
+    except KeyError:
+        camel_to_snake_case.cache[camel_case_str] = re.sub(
+            "((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", camel_case_str
+        ).lower()
+        return camel_to_snake_case.cache[camel_case_str]
 
 
-def populate_and_use_snake_case(attr: str, attr_dict):
-    """Populate the snake-case attribute map and return snake case of the passed
+camel_to_snake_case.cache = {}
+
+
+def snake_to_camel_case(snake_case_str: str, camel_case_strs: Iterable):
+    """Populate the snake-case attribute map and return camel case of the passed
     attribute."""
-    if attr.islower():
-        for key in attr_dict.keys():
-            if camel_to_snake_case(str(key)) not in AttrMap:
-                AttrMap[camel_to_snake_case(str(key))] = str(key)
+    try:
+        return snake_to_camel_case.cache[snake_case_str]
+    except KeyError:
+        if snake_case_str.islower():
+            for camel_case_str in camel_case_strs:
+                _snake_case_str = camel_to_snake_case(str(camel_case_str))
+                if _snake_case_str not in snake_to_camel_case.cache:
+                    snake_to_camel_case.cache[_snake_case_str] = str(camel_case_str)
+
         try:
-            return AttrMap[attr]
+            return snake_to_camel_case.cache[snake_case_str]
         except KeyError:
             return
+
+
+snake_to_camel_case.cache = {}
 
 
 logger = logging.getLogger("pyfluent.datamodel")
@@ -309,7 +324,7 @@ class BaseTask:
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            snake_attr = populate_and_use_snake_case(str(attr), self.arguments())
+            snake_attr = snake_to_camel_case(str(attr), self.arguments().keys())
             attr = snake_attr if snake_attr else attr
         try:
             result = getattr(self._task, attr)
@@ -333,10 +348,9 @@ class BaseTask:
     def __dir__(self):
         arg_list = []
         for arg in self.arguments():
-            if self._dynamic_interface:
-                arg_list.append(camel_to_snake_case(arg))
-            else:
-                arg_list.append(arg)
+            arg_list.append(
+                camel_to_snake_case(arg) if self._dynamic_interface else arg
+            )
 
         return sorted(
             set(
@@ -549,17 +563,16 @@ class ArgumentWrapper(PyCallableStateObject):
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            snake_attr = populate_and_use_snake_case(str(attr), self())
+            snake_attr = snake_to_camel_case(str(attr), self().keys())
             attr = snake_attr if snake_attr else attr
         return getattr(self._arg, attr)
 
     def __dir__(self):
         arg_list = []
         for arg in self():
-            if self._dynamic_interface:
-                arg_list.append(camel_to_snake_case(arg))
-            else:
-                arg_list.append(arg)
+            arg_list.append(
+                camel_to_snake_case(arg) if self._dynamic_interface else arg
+            )
         return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
 
 
