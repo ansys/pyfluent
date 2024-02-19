@@ -542,13 +542,23 @@ class Real(SettingsBase[RealType], Numerical):
             happen if the quantity attribute specifies an unsupported quantity, or if
             the units specified for the quantity are not supported.
         """
-        if ansys_units and isinstance(state, ansys_units.Quantity):
-            try:
+        try:
+            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
                 quantity = self.get_attr("units-quantity")
                 unit = get_si_unit_for_fluent_quantity(quantity)
+                state = (
+                    ansys_units.Quantity(*state) if isinstance(state, tuple) else state
+                )
                 state = state.to(unit).value
-            except Exception as ex:
-                raise UnhandledQuantity(self.path, state) from ex
+            elif isinstance(state, tuple):
+                quantity = self.get_attr("units-quantity")
+                if state[1] == get_si_unit_for_fluent_quantity(quantity):
+                    state = state[0]
+                else:
+                    raise UnhandledQuantity(self.path, state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
         return super().set_state(state=state, **kwargs)
 
     _state_type = RealType

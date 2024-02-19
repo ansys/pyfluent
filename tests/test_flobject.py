@@ -1038,6 +1038,8 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     assert hydraulic_diameter.as_quantity() == None
     assert hydraulic_diameter.value_with_units() == (1.0, "m")
     assert hydraulic_diameter.units() == "m"
+    hydraulic_diameter.set_state((2.0, "m"))
+    assert hydraulic_diameter.value_with_units() == (2.0, "m")
 
     # clip_factor has no units-quantity attribute because it is dimensionless
     clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
