@@ -508,6 +508,12 @@ class Real(SettingsBase[RealType], Numerical):
 
     set_state(state)
         Set the state of the object.
+
+    value_with_units()
+        Get a tuple containing the current value and units string.
+
+    units()
+        Get the units string.
     """
 
     def as_quantity(self) -> Optional[ansys_units.Quantity]:
@@ -558,8 +564,6 @@ class Real(SettingsBase[RealType], Numerical):
 
         return super().set_state(state=state, **kwargs)
 
-    _state_type = RealType
-
     def value_with_units(self) -> Optional[tuple]:
         """Get the value with physical units in a tuple"""
         if ansys_units:
@@ -576,6 +580,8 @@ class Real(SettingsBase[RealType], Numerical):
         """Get the physical units of the object as a string"""
         quantity = self.get_attr("units-quantity")
         return get_si_unit_for_fluent_quantity(quantity)
+
+    _state_type = RealType
 
 
 class String(SettingsBase[str], Textual):
