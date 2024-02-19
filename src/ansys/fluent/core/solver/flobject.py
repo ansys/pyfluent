@@ -500,10 +500,24 @@ class Real(SettingsBase[RealType], Numerical):
 
     Some ``Real`` objects also accept string arguments representing
     expression values.
+
+    Methods
+    -------
+    as_quantity()
+        Get the current state of the object as an ansys.units.Quantity.
+
+    set_state(state)
+        Set the state of the object.
+
+    value_with_units()
+        Get a tuple containing the current value and units string.
+
+    units()
+        Get the units string.
     """
 
     def as_quantity(self) -> Optional[ansys_units.Quantity]:
-        """Get the state of the object as a Quantity."""
+        """Get the state of the object as an ansys.units.Quantity."""
         error = None
         if not ansys_units:
             error = "Code not configured to support units."
@@ -521,6 +535,12 @@ class Real(SettingsBase[RealType], Numerical):
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object.
 
+        Parameters
+        ----------
+        state
+            The type of state can be float, str (representing either
+            an expression or a value with units), or an ansys.units.Quantity.
+
         Raises
         ------
         UnhandledQuantity
@@ -528,14 +548,38 @@ class Real(SettingsBase[RealType], Numerical):
             happen if the quantity attribute specifies an unsupported quantity, or if
             the units specified for the quantity are not supported.
         """
-        if ansys_units and isinstance(state, ansys_units.Quantity):
-            try:
-                quantity = self.get_attr("units-quantity")
-                unit = get_si_unit_for_fluent_quantity(quantity)
-                state = state.to(unit).value
-            except Exception as ex:
-                raise UnhandledQuantity(self.path, state) from ex
+        try:
+            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
+                state = (
+                    ansys_units.Quantity(*state) if isinstance(state, tuple) else state
+                )
+                state = state.to(self.units()).value
+            elif isinstance(state, tuple):
+                if state[1] == self.units():
+                    state = state[0]
+                else:
+                    raise UnhandledQuantity(self.path, state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
         return super().set_state(state=state, **kwargs)
+
+    def value_with_units(self) -> Optional[tuple]:
+        """Get the value with physical units in a tuple."""
+        if ansys_units:
+            quantity = self.as_quantity()
+            if quantity is not None:
+                return (quantity.value, quantity.units.name)
+        units = self.units()
+        if units is not None:
+            value = self.get_state()
+            if isinstance(value, (float, int)):
+                return (value, units)
+
+    def units(self) -> Optional[str]:
+        """Get the physical units of the object as a string."""
+        quantity = self.get_attr("units-quantity")
+        return get_si_unit_for_fluent_quantity(quantity)
 
     _state_type = RealType
 
