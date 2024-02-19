@@ -565,7 +565,7 @@ class Real(SettingsBase[RealType], Numerical):
         return super().set_state(state=state, **kwargs)
 
     def value_with_units(self) -> Optional[tuple]:
-        """Get the value with physical units in a tuple"""
+        """Get the value with physical units in a tuple."""
         if ansys_units:
             quantity = self.as_quantity()
             if quantity is not None:
