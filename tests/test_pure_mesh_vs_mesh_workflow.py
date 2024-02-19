@@ -4,6 +4,7 @@ from ansys.fluent.core.examples import download_file
 
 
 @pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.1")
 def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     # check a few dir elements

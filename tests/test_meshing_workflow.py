@@ -601,7 +601,7 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     import_geometry.Execute()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
 
     added_sizing = add_local_sizing.add_child_and_update(
@@ -636,7 +636,7 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
     added_sizing = add_local_sizing.add_child_and_update(
         state={"BOIFaceLabelList": ["elbow-fluid"]}
@@ -654,7 +654,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
     added_sizing = add_local_sizing.add_child_and_update(
         state={"BOIFaceLabelList": ["elbow-fluid"]}

@@ -3,13 +3,48 @@
 from __future__ import annotations
 
 import logging
+import re
 import threading
-from typing import Any, Iterator, List, Optional, Tuple, Union
+from typing import Any, Iterable, Iterator, List, Optional, Tuple, Union
 import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
+
+
+def camel_to_snake_case(camel_case_str: str) -> str:
+    """Convert camel case input string to snake case output string."""
+    try:
+        return camel_to_snake_case.cache[camel_case_str]
+    except KeyError:
+        _snake_case_str = re.sub(
+            "((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", camel_case_str
+        ).lower()
+        camel_to_snake_case.cache[camel_case_str] = _snake_case_str
+        return _snake_case_str
+
+
+camel_to_snake_case.cache = {}
+
+
+def snake_to_camel_case(snake_case_str: str, camel_case_strs: Iterable):
+    """Populate the snake-case attribute map and return camel case of the passed
+    attribute."""
+    try:
+        return snake_to_camel_case.cache[snake_case_str]
+    except KeyError:
+        if snake_case_str.islower():
+            for camel_case_str in camel_case_strs:
+                _snake_case_str = camel_to_snake_case(camel_case_str)
+                if _snake_case_str not in snake_to_camel_case.cache:
+                    snake_to_camel_case.cache[_snake_case_str] = camel_case_str
+                if _snake_case_str == snake_case_str:
+                    return camel_case_str
+
+
+snake_to_camel_case.cache = {}
+
 
 logger = logging.getLogger("pyfluent.datamodel")
 
@@ -129,6 +164,7 @@ class BaseTask:
                 _ordered_children=[],
                 _task_list=[],
                 _task_objects={},
+                _dynamic_interface=command_source._dynamic_interface,
             )
         )
 
@@ -285,6 +321,9 @@ class BaseTask:
         self._command_source.DeleteTasks(ListOfTasks=[self.name()])
 
     def __getattr__(self, attr):
+        if self._dynamic_interface:
+            snake_attr = snake_to_camel_case(str(attr), self.arguments().keys())
+            attr = snake_attr if snake_attr else attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -305,8 +344,19 @@ class BaseTask:
             setattr(self._task, attr, value)
 
     def __dir__(self):
+        arg_list = []
+        for arg in self.arguments():
+            arg_list.append(
+                camel_to_snake_case(arg) if self._dynamic_interface else arg
+            )
+
         return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self._task)
+                + arg_list
+            )
         )
 
     def add_child_to_task(self):
@@ -486,6 +536,7 @@ class ArgumentWrapper(PyCallableStateObject):
         self._arg = getattr(task._command_arguments, arg)
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument")
+        self._dynamic_interface = task._dynamic_interface
 
     def set_state(self, value: Any) -> None:
         """Set the state of this argument.
@@ -509,7 +560,18 @@ class ArgumentWrapper(PyCallableStateObject):
         return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
 
     def __getattr__(self, attr):
+        if self._dynamic_interface:
+            snake_attr = snake_to_camel_case(str(attr), self().keys())
+            attr = snake_attr if snake_attr else attr
         return getattr(self._arg, attr)
+
+    def __dir__(self):
+        arg_list = []
+        for arg in self():
+            arg_list.append(
+                camel_to_snake_case(arg) if self._dynamic_interface else arg
+            )
+        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
 
 
 class CommandTask(BaseTask):
@@ -734,7 +796,7 @@ class CompoundTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def add_child(self, state: Optional[dict] = None) -> None:
+    def _add_child(self, state: Optional[dict] = None) -> None:
         """Add a child to this CompoundTask.
 
         Parameters
@@ -754,7 +816,7 @@ class CompoundTask(CommandTask):
         state : Optional[dict]
             Optional state.
         """
-        self.add_child(state)
+        self._add_child(state)
         self._task.AddChildAndUpdate()
         return self.last_child()
 
@@ -843,6 +905,7 @@ class NewWorkflowWrapper:
         self._getattr_recurse_depth = 0
         self._main_thread_ident = None
         self._task_objects = {}
+        self._dynamic_interface = False
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -976,6 +1039,7 @@ class NewWorkflowWrapper:
             pass
 
     def _new_workflow(self, name: str, dynamic_interface: bool):
+        self._dynamic_interface = dynamic_interface
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
@@ -1023,6 +1087,7 @@ class OldWorkflowWrapper:
         self._lock = (
             threading.RLock()
         )  # TODO: sort out issues with these un-used variables.
+        self._dynamic_interface = False
 
     @property
     def TaskObject(self) -> TaskContainer:
