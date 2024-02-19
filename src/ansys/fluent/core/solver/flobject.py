@@ -500,10 +500,18 @@ class Real(SettingsBase[RealType], Numerical):
 
     Some ``Real`` objects also accept string arguments representing
     expression values.
+
+    Methods
+    -------
+    as_quantity()
+        Get the current state of the object as an ansys.units.Quantity.
+
+    set_state(state)
+        Set the state of the object.
     """
 
     def as_quantity(self) -> Optional[ansys_units.Quantity]:
-        """Get the state of the object as a Quantity."""
+        """Get the state of the object as an ansys.units.Quantity."""
         error = None
         if not ansys_units:
             error = "Code not configured to support units."
@@ -520,6 +528,12 @@ class Real(SettingsBase[RealType], Numerical):
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            The type of state can be float, str (representing either
+            an expression or a value with units), or an ansys.units.Quantity.
 
         Raises
         ------
@@ -538,6 +552,17 @@ class Real(SettingsBase[RealType], Numerical):
         return super().set_state(state=state, **kwargs)
 
     _state_type = RealType
+
+    def value_with_units(self) -> Optional[tuple]:
+        """Get the value with physical units in a tuple"""
+        quantity = self.as_quantity()
+        if quantity is not None:
+            return (quantity.value, quantity.units.name)
+
+    def units(self) -> Optional[str]:
+        """Get the physical units of the object as a string"""
+        quantity = self.get_attr("units-quantity")
+        return get_si_unit_for_fluent_quantity(quantity)
 
 
 class String(SettingsBase[str], Textual):
