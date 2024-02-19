@@ -1010,6 +1010,7 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     assert clip_factor.units() == ""
 
 
+@pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     ansys_units = flobject.ansys_units
