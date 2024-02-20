@@ -395,19 +395,20 @@ class RealNumerical(Numerical):
             the units specified for the quantity are not supported.
         """
         try:
-            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
+
+            def get_units():
                 units = self.units()
                 if units is None:
                     raise UnhandledQuantity(self.path, state)
+                return units
+
+            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
                 state = (
                     ansys_units.Quantity(*state) if isinstance(state, tuple) else state
                 )
-                state = state.to(units).value
+                state = state.to(get_units()).value
             elif isinstance(state, tuple):
-                units = self.units()
-                if units is None:
-                    raise UnhandledQuantity(self.path, state)
-                if state[1] == units:
+                if state[1] == get_units():
                     state = state[0]
                 else:
                     raise UnhandledQuantity(self.path, state)
