@@ -322,8 +322,8 @@ class BaseTask:
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            snake_attr = snake_to_camel_case(str(attr), self.arguments().keys())
-            attr = snake_attr if snake_attr else attr
+            camel_attr = snake_to_camel_case(str(attr), self.arguments().keys())
+            attr = camel_attr if camel_attr else attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -993,15 +993,31 @@ class NewWorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        if attr == "add_on_affected":
-            return self._attr_from_wrapped_workflow(attr)
+        if not attr.islower():
+            raise AttributeError("Camel case attribute access is not supported.")
+        camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
+        attr = camel_attr if camel_attr else attr
+        # if not
+        obj = self._attr_from_wrapped_workflow(attr)
+        if obj:
+            return obj
         return self._task_objects.get(attr) or super().__getattribute__(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
         the underlying workflow."""
-        return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
+        arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
+        return list(
+            dict.fromkeys(
+                sorted(
+                    set(
+                        list(self.__dict__.keys())
+                        + dir(type(self))
+                        + arg_list
+                        + self.child_task_python_names()
+                    )
+                )
+            )
         )
 
     def __call__(self):

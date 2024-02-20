@@ -26,10 +26,6 @@ class OldMeshingWorkflow(OldWorkflowWrapper):
             The underlying workflow object.
         meshing : PyMenuGeneric
             The meshing object.
-        part_management : PyMenuGeneric
-            The part-management object.
-        pm_file_management : PyMenuGeneric
-            The part-management file-management object.
         """
         super().__init__(workflow=workflow, command_source=meshing)
 
