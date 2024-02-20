@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from inspect import Parameter
-
 """Module for accessing and modifying hierarchy of Fluent settings.
 
 The only useful method is '`get_root``, which returns the root object for
@@ -356,9 +354,6 @@ class RealNumerical(Numerical):
     set_state(state)
         Set the state of the object.
 
-    state_with_units()
-        Get a tuple containing the current value and units string.
-
     units()
         Get the units string.
     """
@@ -370,13 +365,17 @@ class RealNumerical(Numerical):
             error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
-            try:
-                return ansys_units.Quantity(
-                    value=self.get_state(),
-                    units=get_si_unit_for_fluent_quantity(quantity),
-                )
-            except (TypeError, ValueError) as e:
-                error = e
+            units = get_si_unit_for_fluent_quantity(quantity)
+            if units is not None:
+                try:
+                    return ansys_units.Quantity(
+                        value=self.get_state(),
+                        units=units,
+                    )
+                except (TypeError, ValueError) as e:
+                    error = e
+            else:
+                error = "Could not determine units."
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
@@ -397,12 +396,18 @@ class RealNumerical(Numerical):
         """
         try:
             if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
+                units = self.units()
+                if units is None:
+                    raise UnhandledQuantity(self.path, state)
                 state = (
                     ansys_units.Quantity(*state) if isinstance(state, tuple) else state
                 )
-                state = state.to(self.units()).value
+                state = state.to(units).value
             elif isinstance(state, tuple):
-                if state[1] == self.units():
+                units = self.units()
+                if units is None:
+                    raise UnhandledQuantity(self.path, state)
+                if state[1] == units:
                     state = state[0]
                 else:
                     raise UnhandledQuantity(self.path, state)
@@ -410,17 +415,6 @@ class RealNumerical(Numerical):
             raise UnhandledQuantity(self.path, state) from ex
 
         return self.base_set_state(state=state, **kwargs)
-
-    def state_with_units(self) -> Optional[tuple]:
-        """Get the value with physical units in a tuple."""
-        if ansys_units:
-            quantity = self.as_quantity()
-            if quantity is not None:
-                return (quantity.value, quantity.units.name)
-        # n.b. different impl to previous. Especially for
-        # nested state, user will want to get maximal information,
-        # so unconditionally just return all we have here
-        return (self.get_state(), self.units())
 
     def units(self) -> Optional[str]:
         """Get the physical units of the object as a string."""
@@ -573,6 +567,29 @@ class SettingsBase(Base, Generic[StateT]):
         """Print the state of the object."""
         out = sys.stdout if out is None else out
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
+
+    def state_with_units(self) -> StateT:
+        """Get the state of the object with units where available."""
+        state = self.get_state()
+        if isinstance(self, RealNumerical):
+            return (state, self.units())
+        elif isinstance(state, collections.abc.Mapping):
+            self._add_units_to_state(state)
+        return state
+
+    def _add_units_to_state(self, state):
+        if isinstance(state, collections.abc.Mapping):
+            for k, v in state.items():
+                if isinstance(self, collections.abc.Mapping):
+                    child = self[k]
+                else:
+                    child = getattr(self, k, None)
+                if child is None:
+                    raise RuntimeError("Unexpected None child getting units for state")
+                elif isinstance(child, RealNumerical):
+                    state[k] = (state[k], child.units())
+                else:
+                    child._add_units_to_state(state[k])
 
 
 class Integer(SettingsBase[int], Numerical):
@@ -1813,18 +1830,3 @@ def _get_child_path(cls, path, identifier, list_of_children):
                 list_of_children.append(path_to_append)
         _list_children(cls._child_classes[name], identifier, path, list_of_children)
         path.pop()
-
-
-def update_state(obj, state):
-    if isinstance(state, collections.abc.Mapping):
-        for k, v in state.items():
-            if isinstance(obj, collections.abc.Mapping):
-                child = obj[k]
-            else:
-                child = getattr(obj, k, None)
-            if isinstance(child, RealNumerical):
-                state[k] = child.state_with_units()
-            elif child is None:
-                print("unexpected None child")
-            elif not isinstance(child, Parameter):
-                update_state(child, state[k])

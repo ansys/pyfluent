@@ -237,11 +237,9 @@ def get_si_unit_for_fluent_quantity(
     ------
     InvalidQuantityType
         If ``quantity`` is not a string instance, unless it is None.
-    UnitsNotDefinedForQuantity
-        If ``quantity`` is undefined for PyFluent.
     """
-    # The settings API should return None only if the
-    # parameter is dict
+    # The settings API should return None for the units-quantity
+    # attribute only for dimensionless variables
     if quantity is None:
         return ""
     try:
@@ -253,4 +251,7 @@ def get_si_unit_for_fluent_quantity(
     try:
         return (unit_table or _fl_unit_table)[quantity]
     except KeyError:
-        raise UnitsNotDefinedForQuantity(quantity)
+        # if it's not configured, None signifies that
+        # we don't know the units. no need to raise
+        # as this is pretty normal
+        pass
