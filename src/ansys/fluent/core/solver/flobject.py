@@ -589,7 +589,7 @@ class SettingsBase(Base, Generic[StateT]):
                         pass
                 child = child or getattr(self, k, None)
                 if child is None:
-                    raise RuntimeError("Unexpected None child getting units for state")
+                    raise RuntimeError("Unexpected None child {k} encountered while getting units for state.")
                 elif isinstance(child, RealNumerical):
                     state[k] = (state[k], child.units())
                 else:
