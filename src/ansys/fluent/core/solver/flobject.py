@@ -343,8 +343,8 @@ class Numerical(Property):
 
 
 class RealNumerical(Numerical):
-    """A ``RealNumerical`` object representing a real value setting,
-    including single real values and containers of real values, such as lists.
+    """A ``RealNumerical`` object representing a real value setting, including single
+    real values and containers of real values, such as lists.
 
     Methods
     -------
