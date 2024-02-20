@@ -431,3 +431,10 @@ def test_solver_methods(new_solver_session):
             "parallel",
         }
         assert api_keys.issubset(set(dir(solver)))
+
+
+def test_get_set_state_on_solver(new_solver_session):
+    solver = new_solver_session
+    state = solver.get_state()
+    assert state
+    solver.set_state(state)
