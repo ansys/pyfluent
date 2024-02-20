@@ -978,24 +978,9 @@ def _check_vector_units(obj, units):
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
 
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-
-    assert hot_inlet.state_with_units() == {
-        "momentum": {
-            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
-            "reference_frame": "Absolute",
-            "velocity": {"option": "value", "value": (0, "m s^-1")},
-            "velocity_specification_method": "Magnitude, Normal to Boundary",
-        },
-        "name": "hot-inlet",
-        "turbulence": {
-            "turbulent_intensity": (0.05, None),
-            "turbulent_specification": "Intensity and Viscosity Ratio",
-            "turbulent_viscosity_ratio": (10, None),
-        },
-    }
-
     assert isinstance(solver._root.state_with_units(), dict)
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
@@ -1060,24 +1045,9 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     ansys_units = flobject.ansys_units
     flobject.ansys_units = None
 
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-
-    assert hot_inlet.state_with_units() == {
-        "momentum": {
-            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
-            "reference_frame": "Absolute",
-            "velocity": {"option": "value", "value": (0, "m s^-1")},
-            "velocity_specification_method": "Magnitude, Normal to Boundary",
-        },
-        "name": "hot-inlet",
-        "turbulence": {
-            "turbulent_intensity": (0.05, None),
-            "turbulent_specification": "Intensity and Viscosity Ratio",
-            "turbulent_viscosity_ratio": (10, None),
-        },
-    }
-
     assert isinstance(solver._root.state_with_units(), dict)
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
@@ -1124,3 +1094,25 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     )
 
     flobject.ansys_units = ansys_units
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
+    solver = load_mixing_elbow_mesh
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+
+    assert hot_inlet.state_with_units() == {
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": (0, "m s^-1")},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "name": "hot-inlet",
+        "turbulence": {
+            "turbulent_intensity": (0.05, None),
+            "turbulent_specification": "Intensity and Viscosity Ratio",
+            "turbulent_viscosity_ratio": (10, None),
+        },
+    }
