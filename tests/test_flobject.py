@@ -995,6 +995,8 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
         },
     }
 
+    assert isinstance(solver._root.state_with_units(), dict)
+
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
 
@@ -1074,6 +1076,8 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
             "turbulent_viscosity_ratio": (10, None),
         },
     }
+
+    assert isinstance(solver._root.state_with_units(), dict)
 
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"

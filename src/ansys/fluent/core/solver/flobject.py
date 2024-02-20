@@ -581,10 +581,13 @@ class SettingsBase(Base, Generic[StateT]):
     def _add_units_to_state(self, state):
         if isinstance(state, collections.abc.Mapping):
             for k, v in state.items():
+                child = None
                 if isinstance(self, collections.abc.Mapping):
-                    child = self[k]
-                else:
-                    child = getattr(self, k, None)
+                    try:
+                        child = self[k]
+                    except KeyError:
+                        pass
+                child = child or getattr(self, k, None)
                 if child is None:
                     raise RuntimeError("Unexpected None child getting units for state")
                 elif isinstance(child, RealNumerical):
