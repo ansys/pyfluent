@@ -993,14 +993,17 @@ class NewWorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        if not attr.islower():
-            raise AttributeError("Camel case attribute access is not supported.")
-        camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
-        attr = camel_attr if camel_attr else attr
-        # if not
-        obj = self._attr_from_wrapped_workflow(attr)
-        if obj:
-            return obj
+        if attr != "TaskObject":
+            if not attr.islower():
+                raise AttributeError(
+                    "Camel case attribute access is not supported. "
+                    f"Try using '{camel_to_snake_case(attr)} instead.'"
+                )
+            camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
+            attr = camel_attr if camel_attr else attr
+            obj = self._attr_from_wrapped_workflow(attr)
+            if obj:
+                return obj
         return self._task_objects.get(attr) or super().__getattribute__(attr)
 
     def __dir__(self):
