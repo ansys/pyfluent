@@ -959,6 +959,21 @@ def test_parent_class_attributes(load_static_mixer_settings_only):
         solver.setup.models.energy.__class__.enabled
 
 
+def _check_vector_units(obj, units):
+    assert obj.units() == units
+    state_with_units = obj.state_with_units()
+    state = obj.get_state()
+    assert len(state_with_units) == 2
+    assert len(state) == len(state_with_units[0])
+    assert all(x == y for x, y in zip(state, state_with_units[0]))
+    assert units == state_with_units[1]
+    # TODO
+    # Needs update in ansys.units: comparison operator converts each
+    # object to float, but Quantity supports lists and arrays.
+    # if flobject.ansys_units:
+    #     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
+
+
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
@@ -1009,24 +1024,11 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     assert clip_factor.state_with_units() == (1.8, "")
     assert clip_factor.units() == ""
 
-    def check_vector_units(obj, units):
-        assert obj.units() == units
-        state_with_units = obj.state_with_units()
-        state = obj.get_state()
-        assert len(state_with_units) == 2
-        assert len(state) == len(state_with_units[0])
-        assert all(x == y for x, y in zip(state, state_with_units[0]))
-        assert units == state_with_units[1]
-        # TODO
-        # Needs update in ansys.units: comparison operator converts each
-        # object to float, but Quantity supports lists and arrays.
-        # assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
-
-    check_vector_units(
+    _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
 
-    check_vector_units(
+    _check_vector_units(
         solver.setup.reference_frames[
             "global"
         ].initial_state.orientation.first_axis.axis_to.vector,
@@ -1074,20 +1076,11 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     assert clip_factor.state_with_units() == (1.2, "")
     assert clip_factor.units() == ""
 
-    def check_vector_units(obj, units):
-        assert obj.units() == units
-        state_with_units = obj.state_with_units()
-        state = obj.get_state()
-        assert len(state_with_units) == 2
-        assert len(state) == len(state_with_units[0])
-        assert all(x == y for x, y in zip(state, state_with_units[0]))
-        assert units == state_with_units[1]
-
-    check_vector_units(
+    _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
 
-    check_vector_units(
+    _check_vector_units(
         solver.setup.reference_frames[
             "global"
         ].initial_state.orientation.first_axis.axis_to.vector,

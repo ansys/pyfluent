@@ -651,7 +651,7 @@ class Boolean(SettingsBase[bool], Property):
 class RealList(SettingsBase[RealListType], RealNumerical):
     """A ``RealList`` object representing a real list setting."""
 
-    base_set_state = SettingsBase[RealType].set_state
+    base_set_state = SettingsBase[RealListType].set_state
     set_state = RealNumerical.set_state
 
     _state_type = RealListType
