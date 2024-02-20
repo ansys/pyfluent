@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from inspect import Parameter
+
 """Module for accessing and modifying hierarchy of Fluent settings.
 
 The only useful method is '`get_root``, which returns the root object for
@@ -1811,3 +1813,18 @@ def _get_child_path(cls, path, identifier, list_of_children):
                 list_of_children.append(path_to_append)
         _list_children(cls._child_classes[name], identifier, path, list_of_children)
         path.pop()
+
+
+def update_state(obj, state):
+    if isinstance(state, collections.abc.Mapping):
+        for k, v in state.items():
+            if isinstance(obj, collections.abc.Mapping):
+                child = obj[k]
+            else:
+                child = getattr(obj, k, None)
+            if isinstance(child, RealNumerical):
+                state[k] = child.state_with_units()
+            elif child is None:
+                print("unexpected None child")
+            elif not isinstance(child, Parameter):
+                update_state(child, state[k])
