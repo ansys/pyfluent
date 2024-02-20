@@ -433,6 +433,7 @@ def test_solver_methods(new_solver_session):
         assert api_keys.issubset(set(dir(solver)))
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_get_set_state_on_solver(new_solver_session):
     solver = new_solver_session
     state = solver.get_state()
