@@ -971,7 +971,7 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
     assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.state_with_units() == None
+    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
 
     turbulent_intensity = turbulence.turbulent_intensity
@@ -1048,7 +1048,7 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
     assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.state_with_units() == None
+    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
 
     turbulent_intensity = turbulence.turbulent_intensity
@@ -1073,5 +1073,25 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     assert clip_factor.as_quantity() == None
     assert clip_factor.state_with_units() == (1.2, "")
     assert clip_factor.units() == ""
+
+    def check_vector_units(obj, units):
+        assert obj.units() == units
+        state_with_units = obj.state_with_units()
+        state = obj.get_state()
+        assert len(state_with_units) == 2
+        assert len(state) == len(state_with_units[0])
+        assert all(x == y for x, y in zip(state, state_with_units[0]))
+        assert units == state_with_units[1]
+
+    check_vector_units(
+        solver.setup.general.operating_conditions.reference_pressure_location, "m"
+    )
+
+    check_vector_units(
+        solver.setup.reference_frames[
+            "global"
+        ].initial_state.orientation.first_axis.axis_to.vector,
+        "",
+    )
 
     flobject.ansys_units = ansys_units
