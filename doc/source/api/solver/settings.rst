@@ -353,5 +353,5 @@ The following list summarizes common wildcards:
 
 Root object
 -----------
-The :ref:`_root` object (named solver in the preceding examples) is the top-level
+The :ref:`ref_root` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.
