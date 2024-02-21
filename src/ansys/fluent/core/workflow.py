@@ -320,15 +320,23 @@ class BaseTask:
         """Delete this task from the workflow."""
         self._command_source.DeleteTasks(ListOfTasks=[self.name()])
 
+    def _get_camel_case_arg_keys(self):
+        _args = self.arguments
+        _camel_args = []
+        for arg in _args().keys():
+            _camel_args.append(_args._snake_to_camel_map[arg])
+
+        return _camel_args
+
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            if not attr.islower():
+            if not attr.islower() and attr != "Arguments":
                 raise AttributeError(
                     "Camel case attribute access is not supported. "
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
             camel_attr = snake_to_camel_case(
-                str(attr), [*self.arguments().keys(), *dir(self._task)]
+                str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
             )
             attr = camel_attr if camel_attr else attr
         try:
@@ -352,7 +360,7 @@ class BaseTask:
 
     def __dir__(self):
         arg_list = []
-        for arg in [*self.arguments().keys(), *dir(self._task)]:
+        for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
             arg_list.append(
                 camel_to_snake_case(arg) if self._dynamic_interface else arg
             )
@@ -471,6 +479,8 @@ class ArgumentsWrapper(PyCallableStateObject):
         self.__dict__.update(
             dict(
                 _task=task,
+                _dynamic_interface=task._dynamic_interface,
+                _snake_to_camel_map={},
             )
         )
 
@@ -482,7 +492,14 @@ class ArgumentsWrapper(PyCallableStateObject):
         args : dict
             New argument state.
         """
-        self._task.Arguments.set_state(args)
+        if self._dynamic_interface:
+            self.get_state()
+            camel_args = {}
+            for key, val in args.items():
+                camel_args[self._snake_to_camel_map[key]] = val
+            self._task.Arguments.set_state(camel_args)
+        else:
+            self._task.Arguments.set_state(args)
 
     def update_dict(self, args: dict) -> None:
         """Merge with arguments.
@@ -492,7 +509,14 @@ class ArgumentsWrapper(PyCallableStateObject):
         args : dict
             new arguments state
         """
-        self._task.Arguments.update_dict(args)
+        if self._dynamic_interface:
+            self.get_state()
+            camel_args = {}
+            for key, val in args.items():
+                camel_args[self._snake_to_camel_map[key]] = val
+            self._task.Arguments.update_dict(camel_args)
+        else:
+            self._task.Arguments.update_dict(args)
 
     def get_state(self, explicit_only=False) -> dict:
         """Get arguments state.
@@ -503,9 +527,18 @@ class ArgumentsWrapper(PyCallableStateObject):
             Whether to only include explicitly set values,
             otherwise all values are included.
         """
-        return (
+        state_dict = (
             self._task.Arguments() if explicit_only else self._task._command_arguments()
         )
+
+        if self._dynamic_interface:
+            snake_case_state_dict = {}
+            for key, val in state_dict.items():
+                self._snake_to_camel_map[camel_to_snake_case(key)] = key
+                snake_case_state_dict[camel_to_snake_case(key)] = val
+            return snake_case_state_dict
+
+        return state_dict
 
     def __getattr__(self, attr):
         return getattr(self._task._command_arguments, attr)
@@ -565,6 +598,11 @@ class ArgumentWrapper(PyCallableStateObject):
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
+            if not attr.islower():
+                raise AttributeError(
+                    "Camel case attribute access is not supported. "
+                    f"Try using '{camel_to_snake_case(attr)}' instead."
+                )
             snake_attr = snake_to_camel_case(str(attr), self().keys())
             attr = snake_attr if snake_attr else attr
         return getattr(self._arg, attr)
