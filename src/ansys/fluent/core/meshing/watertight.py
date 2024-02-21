@@ -41,6 +41,6 @@ def watertight_workflow(geometry_file_name, **launch_args) -> NewMeshingWorkflow
         # change it so we can do this:
         # import_geometry.arguments.FileName = geometry_file_name
         # or import_geometry.FileName = geometry_file_name
-        import_geometry.arguments.update_dict(dict(FileName=geometry_file_name))
-        import_geometry.Execute()
+        import_geometry.arguments.update_dict(dict(file_name=geometry_file_name))
+        import_geometry()
     return meshing_workflow

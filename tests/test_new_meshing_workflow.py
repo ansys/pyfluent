@@ -353,11 +353,11 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
 
     fault_tolerant.task("leakage-1").arguments.set_state(
         {
-            "AddChild": "yes",
-            "FlipDirection": True,
-            "LeakageName": "leakage-1",
-            "PlaneDirection": "X",
-            "RegionSelectionSingle": "void-region-1",
+            "add_child": "yes",
+            "flip_direction": True,
+            "leakage_name": "leakage-1",
+            "plane_direction": "X",
+            "region_selection_single": "void-region-1",
         }
     )
 

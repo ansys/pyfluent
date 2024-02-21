@@ -582,23 +582,23 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     import_geometry.Arguments = dict(FileName=mixing_elbow_geometry)
     assert 8 < len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
-    import_geometry.arguments.set_state(dict(FileName=None))
+    import_geometry.arguments.set_state(dict(file_name=None))
     sleep(5)
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        FileName=None
+        file_name=None
     )
-    assert import_geometry.arguments.get_state()["FileName"] is None
-    import_geometry.arguments.set_state(dict(FileName=mixing_elbow_geometry))
+    assert import_geometry.arguments.get_state()["file_name"] is None
+    import_geometry.arguments.set_state(dict(file_name=mixing_elbow_geometry))
     sleep(5)
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        FileName=mixing_elbow_geometry
+        file_name=mixing_elbow_geometry
     )
-    assert import_geometry.FileName() == mixing_elbow_geometry
-    import_geometry.FileName.set_state("bob")
+    assert import_geometry.file_name() == mixing_elbow_geometry
+    import_geometry.file_name.set_state("bob")
     sleep(5)
-    assert import_geometry.FileName() == "bob"
-    import_geometry.FileName.set_state(mixing_elbow_geometry)
-    import_geometry.Execute()
+    assert import_geometry.file_name() == "bob"
+    import_geometry.file_name.set_state(mixing_elbow_geometry)
+    import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
     add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
@@ -612,9 +612,9 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
     # restart
     watertight = new_mesh_session.watertight()
-    assert import_geometry.State() == "Out-of-date"
+    assert import_geometry.state() == "Out-of-date"
     import_geometry(FileName=mixing_elbow_geometry, AppendMesh=False)
-    assert import_geometry.State() == "Up-to-date"
+    assert import_geometry.state() == "Up-to-date"
     import_geometry_state = import_geometry.arguments()
     assert len(import_geometry_state) > 2
 

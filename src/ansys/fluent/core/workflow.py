@@ -360,10 +360,12 @@ class BaseTask:
 
     def __dir__(self):
         arg_list = []
-        for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
-            arg_list.append(
-                camel_to_snake_case(arg) if self._dynamic_interface else arg
-            )
+        if self._dynamic_interface:
+            for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
+                arg_list.append(camel_to_snake_case(arg))
+        else:
+            for arg in [*self.arguments().keys(), *dir(self._task)]:
+                arg_list.append(arg)
 
         return list(
             dict.fromkeys(
@@ -1035,6 +1037,9 @@ class NewWorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
+        _task_object = self._task_objects.get(attr)
+        if _task_object:
+            return _task_object
         if attr != "TaskObject":
             if not attr.islower():
                 raise AttributeError(
@@ -1046,7 +1051,7 @@ class NewWorkflowWrapper:
             obj = self._attr_from_wrapped_workflow(attr)
             if obj:
                 return obj
-        return self._task_objects.get(attr) or super().__getattribute__(attr)
+        return super().__getattribute__(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
