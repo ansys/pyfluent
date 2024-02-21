@@ -734,7 +734,7 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
             r"ObjectSetting": r"DefaultObjectSetting",
         }
     )
-    import_cad.Execute()
+    import_cad()
 
 
 @pytest.mark.codegen_required
