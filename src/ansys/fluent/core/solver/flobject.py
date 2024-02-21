@@ -101,7 +101,7 @@ StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
 def check_type(val, tp):
-    if isinstance(tp, NewType):
+    if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
     if isinstance(tp, ForwardRef):
         return check_type(val, _eval_type(tp, globals(), locals()))
