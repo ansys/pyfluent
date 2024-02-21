@@ -101,6 +101,10 @@ StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
 def check_type(val, tp):
+    if isinstance(tp, NewType):
+        return check_type(val, tp.__supertype__)
+    if isinstance(tp, ForwardRef):
+        return check_type(val, _eval_type(tp, globals(), locals()))
     origin = get_origin(tp)
     if origin == list:
         return isinstance(val, list) and all(
@@ -117,15 +121,13 @@ def check_type(val, tp):
         return isinstance(val, dict) and all(
             check_type(k, k_t) and check_type(v, k_v) for k, v in val.items()
         )
-    elif isinstance(tp, NewType):
-        return check_type(val, tp.__supertype__)
-    elif isinstance(tp, ForwardRef):
-        return check_type(val, _eval_type(tp, globals(), locals()))
-    else:
+    elif origin is None:
         try:
             return isinstance(val, tp)
         except TypeError:
             return False
+    else:
+        return False
 
 
 def assert_type(val, tp):
