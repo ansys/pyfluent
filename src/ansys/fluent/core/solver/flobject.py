@@ -29,7 +29,21 @@ import pickle
 import string
 import sys
 import types
-from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
+from typing import (
+    Any,
+    Dict,
+    ForwardRef,
+    Generic,
+    List,
+    NewType,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+    _eval_type,
+    get_args,
+    get_origin,
+)
 import warnings
 import weakref
 
@@ -84,6 +98,40 @@ PrimitiveStateType = Union[
 DictStateType = Dict[str, "StateType"]
 ListStateType = List["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
+
+
+def check_type(val, tp):
+    origin = get_origin(tp)
+    if origin == list:
+        return isinstance(val, list) and all(
+            check_type(x, get_args(tp)[0]) for x in val
+        )
+    elif origin == tuple:
+        return isinstance(val, tuple) and all(
+            check_type(x, t) for x, t in zip(val, get_args(tp))
+        )
+    elif origin == Union:
+        return any(check_type(val, t) for t in get_args(tp))
+    elif origin == dict:
+        k_t, k_v = get_args(tp)
+        return isinstance(val, dict) and all(
+            check_type(k, k_t) and check_type(v, k_v) for k, v in val.items()
+        )
+    elif isinstance(tp, NewType):
+        return check_type(val, tp.__supertype__)
+    elif isinstance(tp, ForwardRef):
+        return check_type(val, _eval_type(tp, globals(), locals()))
+    else:
+        try:
+            return isinstance(val, tp)
+        except TypeError:
+            return False
+
+
+def assert_type(val, tp):
+    if not check_type(val, tp):
+        raise TypeError(f"{val} is not of type {tp}.")
+
 
 _ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation), "?'")
 
@@ -1378,7 +1426,11 @@ class BaseCommand(Action):
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.after_execute(value)
-        if hasattr(self, "return_type"):
+        return_t = getattr(self, "return_type", None)
+        if return_t:
+            base_t = _baseTypes.get(return_t)
+            if base_t:
+                assert_type(ret, base_t._state_type)
             return ret
 
     def __call__(self, *args, **kwds):

@@ -239,7 +239,7 @@ def test_deprecated_settings(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_return_type(new_solver_session):
+def test_command_return_type(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")

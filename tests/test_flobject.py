@@ -1115,3 +1115,45 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
             "turbulent_viscosity_ratio": (10, None),
         },
     }
+def test_assert_type():
+    types = [
+        bool,
+        int,
+        flobject.RealType,
+        str,
+        flobject.BoolListType,
+        flobject.IntListType,
+        flobject.RealListType,
+        flobject.StringListType,
+        flobject.RealVectorType,
+        flobject.DictStateType,
+    ]
+    vals = [
+        False,
+        1,
+        1.0,
+        "a",
+        [False, True],
+        [1, 2],
+        [1.0, 2.0],
+        ["a", "b"],
+        (1.0, 2.0, 3.0),
+        {"a": 1},
+    ]
+    subtypes = {
+        bool: (int,),
+        str: (flobject.RealType,),
+        flobject.BoolListType: (flobject.IntListType,),
+        flobject.StringListType: (flobject.RealListType,),
+    }
+    for i_t, tp in enumerate(types):
+        for i_v, val in enumerate(vals):
+            if i_t == i_v:
+                flobject.assert_type(val, tp)
+            else:
+                subtype = subtypes.get(types[i_v])
+                if subtype and types[i_t] in subtype:
+                    flobject.assert_type(val, tp)
+                else:
+                    with pytest.raises(TypeError):
+                        flobject.assert_type(val, tp)
