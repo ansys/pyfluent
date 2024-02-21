@@ -1115,6 +1115,8 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
             "turbulent_viscosity_ratio": (10, None),
         },
     }
+
+
 def test_assert_type():
     types = [
         bool,
