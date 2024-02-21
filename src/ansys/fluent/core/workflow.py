@@ -322,7 +322,14 @@ class BaseTask:
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            camel_attr = snake_to_camel_case(str(attr), self.arguments().keys())
+            if not attr.islower():
+                raise AttributeError(
+                    "Camel case attribute access is not supported. "
+                    f"Try using '{camel_to_snake_case(attr)}' instead."
+                )
+            camel_attr = snake_to_camel_case(
+                str(attr), [*self.arguments().keys(), *dir(self._task)]
+            )
             attr = camel_attr if camel_attr else attr
         try:
             result = getattr(self._task, attr)
@@ -345,17 +352,14 @@ class BaseTask:
 
     def __dir__(self):
         arg_list = []
-        for arg in self.arguments():
+        for arg in [*self.arguments().keys(), *dir(self._task)]:
             arg_list.append(
                 camel_to_snake_case(arg) if self._dynamic_interface else arg
             )
 
-        return sorted(
-            set(
-                list(self.__dict__.keys())
-                + dir(type(self))
-                + dir(self._task)
-                + arg_list
+        return list(
+            dict.fromkeys(
+                sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
             )
         )
 
@@ -596,7 +600,7 @@ class CommandTask(BaseTask):
         super().__init__(command_source, task)
 
     @property
-    def CommandArguments(self) -> ReadOnlyObject:
+    def command_arguments(self) -> ReadOnlyObject:
         """Get the task's arguments in read-only form (deprecated).
 
         Returns
@@ -718,7 +722,7 @@ class CompositeTask(BaseTask):
         super().__init__(command_source, task)
 
     @property
-    def CommandArguments(self) -> ReadOnlyObject:
+    def command_arguments(self) -> ReadOnlyObject:
         """Get the task's arguments in read-only form (deprecated).
 
         Returns
@@ -997,7 +1001,7 @@ class NewWorkflowWrapper:
             if not attr.islower():
                 raise AttributeError(
                     "Camel case attribute access is not supported. "
-                    f"Try using '{camel_to_snake_case(attr)} instead.'"
+                    f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
             camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
             attr = camel_attr if camel_attr else attr

@@ -146,10 +146,10 @@ def test_add_on_affected(new_mesh_session):
     )
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
-    assert import_geom.CommandArguments()["FileName"] is None
+    assert import_geom.command_arguments()["FileName"] is None
     import_geom.Arguments = {"FileName": geom}
     assert import_geom.Arguments()["FileName"] == geom
-    assert import_geom.CommandArguments()["FileName"] == geom
+    assert import_geom.command_arguments()["FileName"] == geom
     sleep(1)
     assert calls == [True]
     import_geom.Arguments = {"FileName": "dummy"}
