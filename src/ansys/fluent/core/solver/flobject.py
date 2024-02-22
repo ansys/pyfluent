@@ -154,7 +154,7 @@ class Base:
         """
         if self._remote_file_handler:
             return self._remote_file_handler
-        if self._parent:
+        elif self._parent:
             return self._parent.remote_file_handler
 
     _name = None
