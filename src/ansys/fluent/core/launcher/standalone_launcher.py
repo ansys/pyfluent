@@ -21,7 +21,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _raise_exception_g_gu_in_windows_os,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -177,9 +176,7 @@ class StandaloneLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
-        self.file_transfer_service = (
-            file_transfer_service if file_transfer_service else PimFileTransferService()
-        )
+        self.file_transfer_service = file_transfer_service
 
     def __call__(self):
         if self.lightweight_mode is None:
