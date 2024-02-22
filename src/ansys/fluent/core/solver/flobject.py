@@ -890,7 +890,9 @@ class Group(SettingsBase[DictStateType]):
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
-                "Settings objects", name, super().__getattribute__("child_names")
+                trial_name=name,
+                allowed_values=super().__getattribute__("child_names"),
+                message=ex.args[0],
             )
             ex.args = (error_msg,)
             raise
@@ -901,7 +903,9 @@ class Group(SettingsBase[DictStateType]):
             attr = getattr(self, name)
         except AttributeError as ex:
             error_msg = allowed_name_error_message(
-                "Settings objects", name, super().__getattribute__("child_names")
+                trial_name=name,
+                allowed_values=super().__getattribute__("child_names"),
+                message=ex.args[0],
             )
             ex.args = (error_msg,)
             raise
@@ -961,7 +965,9 @@ class WildcardPath(Group):
         except KeyError:
             raise AttributeError(
                 allowed_name_error_message(
-                    "Settings objects", name, self.get_active_child_names()
+                    context="Settings objects",
+                    trial_name=name,
+                    allowed_values=self.get_active_child_names(),
                 )
             )
 
@@ -1148,7 +1154,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             raise KeyError(
                 allowed_name_error_message(
-                    "Settings objects", name, self.get_object_names()
+                    context="Settings objects",
+                    trial_name=name,
+                    allowed_values=self.get_object_names(),
                 )
             )
 

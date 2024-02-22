@@ -837,7 +837,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         solver.setup.mod
 
     assert (
-        msg.value.args[0] == "mod is not an allowed Settings objects name.\n"
+        msg.value.args[0] == "'setup' object has no attribute 'mod'.\n"
         "The most similar names are: models."
     )
 

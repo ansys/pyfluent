@@ -76,7 +76,11 @@ class RPVars:
     def _get_var(self, var: str):
         if var not in self.allowed_values():
             raise RuntimeError(
-                allowed_name_error_message("rp-vars", var, RPVars._allowed_values)
+                allowed_name_error_message(
+                    context="rp-vars",
+                    trial_name=var,
+                    allowed_values=RPVars._allowed_values,
+                )
             )
 
         cmd = f"(rpgetvar {RPVars._var(var)})"
