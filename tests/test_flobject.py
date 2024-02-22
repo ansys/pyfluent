@@ -854,7 +854,6 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-@pytest.mark.skip("Failing in the latest image (#2463)")
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
@@ -959,11 +958,29 @@ def test_parent_class_attributes(load_static_mixer_settings_only):
         solver.setup.models.energy.__class__.enabled
 
 
+def _check_vector_units(obj, units):
+    assert obj.units() == units
+    state_with_units = obj.state_with_units()
+    state = obj.get_state()
+    assert len(state_with_units) == 2
+    assert len(state) == len(state_with_units[0])
+    assert all(x == y for x, y in zip(state, state_with_units[0]))
+    assert units == state_with_units[1]
+    # TODO
+    # Needs update in ansys.units: comparison operator converts each
+    # object to float, but Quantity supports lists and arrays.
+    # if flobject.ansys_units:
+    #     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
+
+
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
 
+    assert isinstance(solver._root.state_with_units(), dict)
+
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
 
@@ -971,7 +988,7 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
     assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.value_with_units() == None
+    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
 
     turbulent_intensity = turbulence.turbulent_intensity
@@ -988,12 +1005,12 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
 
     hydraulic_diameter.set_state(1)
     assert hydraulic_diameter.as_quantity() == ansys.units.Quantity(1, "m")
-    assert hydraulic_diameter.value_with_units() == (1.0, "m")
+    assert hydraulic_diameter.state_with_units() == (1.0, "m")
     assert hydraulic_diameter.units() == "m"
 
     hydraulic_diameter.set_state(ansys.units.Quantity(1, "in"))
     assert hydraulic_diameter.as_quantity() == ansys.units.Quantity(0.0254, "m")
-    assert hydraulic_diameter.value_with_units() == (0.0254, "m")
+    assert hydraulic_diameter.state_with_units() == (0.0254, "m")
     assert hydraulic_diameter.units() == "m"
     assert hydraulic_diameter() == 0.0254
 
@@ -1002,12 +1019,23 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     clip_factor.set_state(1.2)
     assert clip_factor() == 1.2
     assert clip_factor.as_quantity() == ansys.units.Quantity(1.2, "")
-    assert clip_factor.value_with_units() == (1.2, "")
+    assert clip_factor.state_with_units() == (1.2, "")
     assert clip_factor.units() == ""
     clip_factor.set_state(ansys.units.Quantity(1.8, ""))
     assert clip_factor.as_quantity() == ansys.units.Quantity(1.8, "")
-    assert clip_factor.value_with_units() == (1.8, "")
+    assert clip_factor.state_with_units() == (1.8, "")
     assert clip_factor.units() == ""
+
+    _check_vector_units(
+        solver.setup.general.operating_conditions.reference_pressure_location, "m"
+    )
+
+    _check_vector_units(
+        solver.setup.reference_frames[
+            "global"
+        ].initial_state.orientation.first_axis.axis_to.vector,
+        "",
+    )
 
 
 @pytest.mark.fluent_version(">=24.1")
@@ -1016,7 +1044,10 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     ansys_units = flobject.ansys_units
     flobject.ansys_units = None
 
+    assert isinstance(solver._root.state_with_units(), dict)
+
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
 
@@ -1024,7 +1055,7 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
     assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.value_with_units() == None
+    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
 
     turbulent_intensity = turbulence.turbulent_intensity
@@ -1037,17 +1068,50 @@ def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
 
     hydraulic_diameter.set_state(1)
     assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.value_with_units() == (1.0, "m")
+    assert hydraulic_diameter.state_with_units() == (1.0, "m")
     assert hydraulic_diameter.units() == "m"
     hydraulic_diameter.set_state((2.0, "m"))
-    assert hydraulic_diameter.value_with_units() == (2.0, "m")
+    assert hydraulic_diameter.state_with_units() == (2.0, "m")
 
     # clip_factor has no units-quantity attribute because it is dimensionless
     clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
     clip_factor.set_state(1.2)
     assert clip_factor() == 1.2
     assert clip_factor.as_quantity() == None
-    assert clip_factor.value_with_units() == (1.2, "")
+    assert clip_factor.state_with_units() == (1.2, "")
     assert clip_factor.units() == ""
 
+    _check_vector_units(
+        solver.setup.general.operating_conditions.reference_pressure_location, "m"
+    )
+
+    _check_vector_units(
+        solver.setup.reference_frames[
+            "global"
+        ].initial_state.orientation.first_axis.axis_to.vector,
+        "",
+    )
+
     flobject.ansys_units = ansys_units
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
+    solver = load_mixing_elbow_mesh
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+
+    assert hot_inlet.state_with_units() == {
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": (0, "m s^-1")},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "name": "hot-inlet",
+        "turbulence": {
+            "turbulent_intensity": (0.05, None),
+            "turbulent_specification": "Intensity and Viscosity Ratio",
+            "turbulent_viscosity_ratio": (10, None),
+        },
+    }
