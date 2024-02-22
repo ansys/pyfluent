@@ -152,9 +152,10 @@ class Base:
 
         Supports file upload and download.
         """
-        if self._remote_file_handler is None:
+        if self._remote_file_handler:
+            return self._remote_file_handler
+        if self._parent.remote_file_handler:
             return self._parent.remote_file_handler
-        return self._remote_file_handler
 
     _name = None
     fluent_name = None
@@ -616,18 +617,14 @@ class FileName(Base):
 
 class _InputFile(FileName):
     def _do_before_execute(self, value):
-        try:
+        if self.remote_file_handler:
             self.remote_file_handler.upload(file_name=value)
-        except AttributeError:
-            pass
 
 
 class _OutputFile(FileName):
     def _do_after_execute(self, value):
-        try:
+        if self.remote_file_handler:
             self.remote_file_handler.download(file_name=value)
-        except AttributeError:
-            pass
 
 
 class _InOutFile(_InputFile, _OutputFile):
