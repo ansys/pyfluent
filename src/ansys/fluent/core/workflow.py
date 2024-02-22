@@ -10,7 +10,11 @@ import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
-from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
+from ansys.fluent.core.services.datamodel_se import (
+    PyCallableStateObject,
+    PyMenuGeneric,
+    PySingletonCommandArgumentsSubItem,
+)
 
 
 def camel_to_snake_case(camel_case_str: str) -> str:
@@ -576,6 +580,7 @@ class ArgumentWrapper(PyCallableStateObject):
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument")
         self._dynamic_interface = task._dynamic_interface
+        self._snake_to_camel_map = {}
 
     def set_state(self, value: Any) -> None:
         """Set the state of this argument.
@@ -596,7 +601,32 @@ class ArgumentWrapper(PyCallableStateObject):
             Whether to return the explicitly set value or the
             full derived value.
         """
-        return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
+
+        state_dict = (
+            self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
+        )
+
+        if self._dynamic_interface and isinstance(
+            self._arg, PySingletonCommandArgumentsSubItem
+        ):
+            snake_case_state_dict = {}
+            for key, val in state_dict.items():
+                self._snake_to_camel_map[camel_to_snake_case(key)] = key
+                snake_case_state_dict[camel_to_snake_case(key)] = val
+            return snake_case_state_dict
+
+        return state_dict
+
+    def _get_camel_case_arg_keys(self):
+        _args = self
+        _camel_args = []
+        for arg in _args().keys():
+            try:
+                _camel_args.append(self._snake_to_camel_map[arg])
+            except KeyError:
+                _camel_args.append(arg)
+
+        return _camel_args
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
@@ -605,8 +635,8 @@ class ArgumentWrapper(PyCallableStateObject):
                     "Camel case attribute access is not supported. "
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
-            snake_attr = snake_to_camel_case(str(attr), self().keys())
-            attr = snake_attr if snake_attr else attr
+            camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
+            attr = camel_attr if camel_attr else attr
         return getattr(self._arg, attr)
 
     def __dir__(self):
