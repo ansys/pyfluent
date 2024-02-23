@@ -107,7 +107,7 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 You can also access the state of an object with the ``get_state()`` method and
 modify it with the ``set_state()`` method.
 
-``Real`` and ``RealList`` parameter objects can incorporate unit alongside values. If an object
+``Real`` and ``RealList`` settings objects can incorporate units alongside values. If an object
 supports units, you can retrieve its value and units as an ``ansys.units.Quantity`` object using
 the ``as_quantity()`` method. Alternatively, you can obtain the same information as a tuple by
 calling the ``state_with_units()`` method. You can call the ``state_with_units()`` method on a
