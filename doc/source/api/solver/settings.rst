@@ -109,14 +109,14 @@ modify it with the ``set_state`` method.
 
 The ``Real`` and ``RealList`` parameter objects in PyFluent can incorporate units
 alongside values. If an object supports units, you can retrieve its value and units
-as an ``ansys.units.Quantity`` object using the ``as_quantity`` method. Alternatively,
-you can obtain the same information as a tuple by calling the ``state_with_units``
-method. If the container object supports units, calling ``state_with_units`` on it
-returns a ``dict`` where relevant values are represented as tuples containing both
+as an ``ansys.units.Quantity`` object using the ``as_quantity()`` method. Alternatively,
+you can obtain the same information as a tuple by calling the ``state_with_units()``
+method. If the container object supports units, calling the ``state_with_units()`` method on it
+returns a dictionary where relevant values are represented as tuples containing both
 the value and units.
 
 Both ``ansys.units.Quantity`` objects and value-unit tuples can be used with the
-``set_state`` method of ``Real`` or ``RealList`` objects.
+``set_state()`` method of ``Real`` or ``RealList`` objects.
 
 .. code-block::
 
