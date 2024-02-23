@@ -107,12 +107,11 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 You can also access the state of an object with the ``get_state()`` method and
 modify it with the ``set_state()`` method.
 
-The ``Real`` and ``RealList`` parameter objects in PyFluent can incorporate units
-alongside values. If an object supports units, you can retrieve its value and units
-as an ``ansys.units.Quantity`` object using the ``as_quantity()`` method. Alternatively,
-you can obtain the same information as a tuple by calling the ``state_with_units()``
-method. If the container object supports units, calling the ``state_with_units()`` method on it
-returns a dictionary where relevant values are represented as tuples containing both
+``Real`` and ``RealList`` parameter objects can incorporate unit alongside values. If an object
+supports units, you can retrieve its value and units as an ``ansys.units.Quantity`` object using
+the ``as_quantity()`` method. Alternatively, you can obtain the same information as a tuple by
+calling the ``state_with_units()`` method. You can call the ``state_with_units()`` method on a
+container object. It returns a dictionary where relevant values are represented as tuples containing
 the value and units.
 
 Both ``ansys.units.Quantity`` objects and value-unit tuples can be used with the
