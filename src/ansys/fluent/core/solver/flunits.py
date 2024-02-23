@@ -15,16 +15,22 @@ from ansys.units.quantity import get_si_value
 import re
 from pprint import pprint
 
-fl_unit_subs = {'deg': 'radian', 'rad':'radian'}
+fl_unit_re_subs = {'deg': 'radian', 'rad':'radian'}
+fl_unit_subs = {'%':''}
+
 def replace_units(match):
-    return fl_unit_subs[match.group(0)]
+    return fl_unit_re_subs[match.group(0)]
 
 def substitute_fl_units_with_py_units(fl_units_dict):
     subs = {}
     for k, v in fl_units_dict.items():
-        new_val = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in fl_unit_subs), replace_units, v)
+        new_val = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in fl_unit_re_subs), replace_units, v)
         if new_val != v:
             subs[k] = new_val
+        else:
+            new_val = fl_unit_subs.get(v, None)
+            if new_val is not None:
+                subs[k] = new_val
     print("Substitutions:")
     for k, v in subs.items():
         print(f"'{fl_units_dict[k]}' -> '{v}' for '{k}'")
@@ -57,6 +63,12 @@ def make_python_fl_unit_table(scheme_unit_table):
 Output from most recent run to generate the table below:
 
 >>> pprint(make_python_fl_unit_table(fl_scheme_unit_table))
+Substitutions:
+'deg' -> 'radian' for 'angle'
+'rad s^-1' -> 'radian s^-1' for 'angular-velocity'
+'deg' -> 'radian' for 'crank-angle'
+'%' -> '' for 'percentage'
+'N m rad^-1' -> 'N m radian^-1' for 'spring-constant-angular'
 Not SI:
 {'concentration': 'kmol m^-3',
  'elec-charge': 'A h',
@@ -75,7 +87,6 @@ Unhandled:
  'mole-transfer-rate': 'kgmol m^-3 s^-1',
  'particles-conc': '1.e15-particles/kg',
  'particles-rate': '1.e15 m^-3 s^-1',
- 'percentage': '%',
  'site-density': 'kgmol m^-2',
  'soot-limiting-nuclei-rate': '1e+15-particles/m3-s',
  'soot-oxidation-constant': 'kg m kgmol^-1 K^-0.5 s^-1',
@@ -140,6 +151,7 @@ _fl_unit_table = {
     "moment-of-inertia": "kg m^2",
     "nucleation-rate": "m^-3 s^-1",
     "number-density": "m^-3",
+    "percentage": "",
     "power": "W",
     "power-per-time": "W s^-1",
     "pressure": "Pa",
