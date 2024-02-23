@@ -15,8 +15,13 @@ from ansys.units.quantity import get_si_value
 import re
 from pprint import pprint
 
-fl_unit_re_subs = {'deg': 'radian', 'rad':'radian'}
-fl_unit_subs = {'%':''}
+fl_unit_re_subs = {
+    'deg': 'radian',
+    'rad': 'radian',
+    'Ohm': 'ohm'
+}
+
+fl_unit_subs = {'%': ''}
 
 def replace_units(match):
     return fl_unit_re_subs[match.group(0)]
@@ -66,7 +71,11 @@ Output from most recent run to generate the table below:
 Substitutions:
 'deg' -> 'radian' for 'angle'
 'rad s^-1' -> 'radian s^-1' for 'angular-velocity'
+'Ohm m^3' -> 'ohm m^3' for 'contact-resistance-vol'
 'deg' -> 'radian' for 'crank-angle'
+'Ohm m^2' -> 'ohm m^2' for 'elec-contact-resistance'
+'Ohm m' -> 'ohm m' for 'elec-resistivity'
+'Ohm' -> 'ohm' for 'elec-resistance'
 '%' -> '' for 'percentage'
 'N m rad^-1' -> 'N m radian^-1' for 'spring-constant-angular'
 Not SI:
@@ -75,11 +84,7 @@ Not SI:
  'molec-wt': 'kg kmol^-1',
  'soot-sitespecies-concentration': 'kmol m^-3'}
 Unhandled:
-{'contact-resistance-vol': 'Ohm m^3',
- 'crank-angular-velocity': 'rev min^-1',
- 'elec-contact-resistance': 'Ohm m^2',
- 'elec-resistance': 'Ohm',
- 'elec-resistivity': 'Ohm m',
+{'crank-angular-velocity': 'rev min^-1',
  'energy-density': 'J/m2',
  'mole-con-henry-const': 'Pa m^3 kgmol^-1',
  'mole-specific-energy': 'J kgmol^-1',
@@ -108,6 +113,7 @@ _fl_unit_table = {
     "area-inverse": "m^-2",
     "collision-rate": "m^-3 s^-1",
     "contact-resistance": "m^2 K W^-1",
+    "contact-resistance-vol": "ohm m^3",
     "crank-angle": "radian",
     "current": "A",
     "current-density": "A m^-2",
@@ -121,8 +127,11 @@ _fl_unit_table = {
     "depth": "m",
     "elec-charge-density": "A s m^-3",
     "elec-conductivity": "S m^-1",
+    "elec-contact-resistance": "ohm m^2",
     "elec-field": "V m^-1",
     "elec-permittivity": "farad m^-1",
+    "elec-resistance": "ohm",
+    "elec-resistivity": "ohm m",
     "energy": "J",
     "force": "N",
     "force*time-per-volume": "N s m^-3",
