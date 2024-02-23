@@ -142,7 +142,6 @@ def test_api_upgrade(new_solver_session, capsys):
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
 
-@pytest.mark.skip(reason="Skipping till docker image is updated")
 @pytest.mark.fluent_version(">=24.2")
 def test_deprecated_settings(new_solver_session):
     solver = new_solver_session
@@ -237,3 +236,17 @@ def test_deprecated_settings(new_solver_session):
         ].turbulence.hydraulic_diameter()
         == 10
     )
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_command_return_type(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    ret = solver.file.read_case_data(file_name=case_path)
+    assert ret is None
+    solver.solution.report_definitions.surface["surface-1"] = dict(
+        surface_names=["cold-inlet"]
+    )
+    ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
+    assert ret is not None
