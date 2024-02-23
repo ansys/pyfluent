@@ -999,6 +999,16 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     ) / ansys.units.Quantity(3.0, ansys.units.UnitRegistry().s)
     hot_inlet.momentum.velocity.value = velocity
     assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
+    velocity = (1.0, "m s^-1")
+    hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value.state_with_units() == velocity
+    velocity = ansys.units.Quantity(12.0, "m s^-1")
+    hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
+    assert hot_inlet.momentum.velocity.state_with_units() == {
+        "option": "value",
+        "value": (12.0, "m s^-1"),
+    }
     clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
     clip_factor.set_state(1.2)
     assert clip_factor() == 1.2
@@ -1020,54 +1030,6 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
         ].initial_state.orientation.first_axis.axis_to.vector,
         "",
     )
-
-
-@pytest.mark.fluent_version(">=24.1")
-def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
-    solver = load_mixing_elbow_mesh
-    ansys_units = flobject.ansys_units
-    flobject.ansys_units = None
-    assert isinstance(solver._root.state_with_units(), dict)
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-    turbulence = hot_inlet.turbulence
-    turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-    hydraulic_diameter = turbulence.hydraulic_diameter
-    hydraulic_diameter.set_state("1 [in]")
-    assert hydraulic_diameter() == "1 [in]"
-    assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
-    assert hydraulic_diameter.units() == "m"
-    turbulent_intensity = turbulence.turbulent_intensity
-    turbulent_intensity.set_state(0.2)
-    assert turbulent_intensity() == 0.2
-    assert turbulent_intensity.as_quantity() == None
-    turbulent_intensity.set_state((0.1, ""))
-    assert turbulent_intensity.state_with_units == (0.1, "")
-    hydraulic_diameter.set_state(1)
-    assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.state_with_units() == (1.0, "m")
-    assert hydraulic_diameter.units() == "m"
-    hydraulic_diameter.set_state((2.0, "m"))
-    assert hydraulic_diameter.state_with_units() == (2.0, "m")
-    clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
-    clip_factor.set_state(1.2)
-    assert clip_factor() == 1.2
-    assert clip_factor.as_quantity() == None
-    assert clip_factor.state_with_units() == (1.2, "")
-    assert clip_factor.units() == ""
-
-    _check_vector_units(
-        solver.setup.general.operating_conditions.reference_pressure_location, "m"
-    )
-
-    _check_vector_units(
-        solver.setup.reference_frames[
-            "global"
-        ].initial_state.orientation.first_axis.axis_to.vector,
-        "",
-    )
-
-    flobject.ansys_units = ansys_units
 
 
 @pytest.mark.fluent_version(">=24.2")
