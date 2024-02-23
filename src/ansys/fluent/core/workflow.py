@@ -359,6 +359,8 @@ class BaseTask:
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
+        elif attr in self.arguments():
+            getattr(self, attr).set_state(value)
         else:
             setattr(self._task, attr, value)
 
@@ -654,7 +656,10 @@ class ArgumentWrapper(PyCallableStateObject):
         return getattr(self._arg, attr)
 
     def __setattr__(self, attr, value):
-        getattr(self, attr).set_state(value)
+        if attr in self.__dict__:
+            self.__dict__[attr] = value
+        else:
+            getattr(self, attr).set_state(value)
 
     def __dir__(self):
         arg_list = []
