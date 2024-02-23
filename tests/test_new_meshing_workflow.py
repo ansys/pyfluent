@@ -1,3 +1,5 @@
+from typing import Iterable
+
 import pytest
 
 from ansys.fluent.core import examples
@@ -466,3 +468,84 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
     # Generate volume mesh
     solver = meshing.switch_to_solver()
     assert solver
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_updating_state_in_new_meshing_workflow(new_mesh_session):
+    # Import geometry
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    watertight = new_mesh_session.watertight()
+    watertight.import_geometry.file_name.set_state(import_file_name)
+    assert watertight.import_geometry.length_unit() == "mm"
+    watertight.import_geometry.length_unit = "in"
+    assert watertight.import_geometry.length_unit.get_state() == "in"
+    assert watertight.import_geometry.cad_import_options.feature_angle() == 40.0
+    watertight.import_geometry.cad_import_options.feature_angle.set_state(25.0)
+    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
+    assert (
+        watertight.import_geometry.cad_import_options.one_zone_per.allowed_values()
+        == ["body", "face", "object"]
+    )
+    assert watertight.import_geometry.cad_import_options.one_zone_per() == "body"
+    watertight.import_geometry.cad_import_options.one_zone_per = "face"
+    assert watertight.import_geometry.cad_import_options.one_zone_per() == "face"
+    watertight.import_geometry()
+
+
+def _assert_snake_case_attrs(attrs: Iterable):
+    for attr in attrs:
+        assert str(attr).islower()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
+    # Import geometry
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    watertight = new_mesh_session.watertight()
+    _assert_snake_case_attrs(dir(watertight))
+    _assert_snake_case_attrs(dir(watertight.import_geometry))
+    _assert_snake_case_attrs(watertight.import_geometry.arguments())
+    _assert_snake_case_attrs(watertight.import_geometry.cad_import_options())
+    _assert_snake_case_attrs(dir(watertight.import_geometry.cad_import_options))
+    watertight.import_geometry.file_name.set_state(import_file_name)
+    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
+    # Import geometry
+    meshing = new_mesh_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    watertight = meshing.watertight()
+    assert (
+        meshing.workflow.CreateCompositeTask.__class__
+        == watertight.create_composite_task.__class__
+    )
+    assert (
+        meshing.workflow.InsertNewTask.__class__ == watertight.insert_new_task.__class__
+    )
+    assert (
+        meshing.workflow.TaskObject["Import Geometry"].__class__
+        == watertight.import_geometry.__class__
+    )
+    assert (
+        meshing.workflow.TaskObject["Import Geometry"].GetNextPossibleTasks()
+        == watertight.import_geometry.get_next_possible_tasks()
+    )
+    assert (
+        meshing.workflow.TaskObject["Import Geometry"].InsertNextTask.__class__
+        == watertight.import_geometry.insert_next_task.__class__
+    )
+    watertight.import_geometry.file_name = import_file_name
+    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry()
