@@ -119,7 +119,10 @@ def _populate_rst_from_settings(rst_dir, cls, version):
     with open(rstpath, "w") as r:
         # Populate initial rst
         r.write(":orphan:\n\n")
-        r.write(f".. _{file_name}:\n\n")
+        if file_name == "root":
+            r.write(f".. _ref_{file_name}:\n\n")
+        else:
+            r.write(f".. _{file_name}:\n\n")
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
         r.write(
