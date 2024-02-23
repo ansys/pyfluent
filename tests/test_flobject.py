@@ -994,6 +994,11 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     assert hydraulic_diameter.state_with_units() == (0.0254, "m")
     assert hydraulic_diameter.units() == "m"
     assert hydraulic_diameter() == 0.0254
+    velocity = ansys.units.Quantity(
+        12.0, ansys.units.UnitRegistry().ft
+    ) / ansys.units.Quantity(3.0, ansys.units.UnitRegistry().s)
+    hot_inlet.momentum.velocity.value = velocity
+    assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
     clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
     clip_factor.set_state(1.2)
     assert clip_factor() == 1.2
