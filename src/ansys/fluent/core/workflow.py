@@ -584,13 +584,17 @@ class ArgumentWrapper(PyCallableStateObject):
         arg: str
             Argument name.
         """
-        self._task = task
-        self._arg_name = arg
-        self._arg = getattr(task._command_arguments, arg)
+        self.__dict__.update(
+            dict(
+                _task=task,
+                _arg_name=arg,
+                _arg=getattr(task._command_arguments, arg),
+                _dynamic_interface=task._dynamic_interface,
+                _snake_to_camel_map={},
+            )
+        )
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument")
-        self._dynamic_interface = task._dynamic_interface
-        self._snake_to_camel_map = {}
 
     def set_state(self, value: Any) -> None:
         """Set the state of this argument.
@@ -648,6 +652,9 @@ class ArgumentWrapper(PyCallableStateObject):
             camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
             attr = camel_attr if camel_attr else attr
         return getattr(self._arg, attr)
+
+    def __setattr__(self, attr, value):
+        getattr(self, attr).set_state(value)
 
     def __dir__(self):
         arg_list = []
