@@ -209,9 +209,10 @@ def load_mixing_elbow_meshing():
         )
 
     meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=_mixing_elbow_geom_file_name, LengthUnit="in"
-    )
+    meshing_session.workflow.TaskObject[
+        "Import Geometry"
+    ].FileName = _mixing_elbow_geom_file_name
+    meshing_session.workflow.TaskObject["Import Geometry"].LengthUnit = "in"
 
     yield meshing_session
     meshing_session.exit()
