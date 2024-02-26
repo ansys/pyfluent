@@ -527,6 +527,18 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     watertight = meshing.watertight()
+
+    # Checks if any of the unwanted attrs are present in dir call
+    assert (set(dir(watertight)) - watertight._unwanted_attrs) == set(dir(watertight))
+
+    for attr in watertight._unwanted_attrs:
+        with pytest.raises(AttributeError) as msg:
+            getattr(watertight, attr)
+        assert (
+            msg.value.args[0]
+            == f"'NewMeshingWorkflow' object has no attribute '{attr}'"
+        )
+
     assert len(watertight._task_list) == 11
     watertight.insert_new_task("import_geometry")
     assert len(watertight._task_list) == 12

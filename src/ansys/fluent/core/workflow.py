@@ -374,11 +374,7 @@ class BaseTask:
             for arg in [*self.arguments().keys(), *dir(self._task)]:
                 arg_list.append(arg)
 
-        return list(
-            dict.fromkeys(
-                sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
-            )
-        )
+        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
 
     def add_child_to_task(self):
         """Add a child task."""
@@ -392,14 +388,10 @@ class BaseTask:
         """Insert a compound child task."""
         return self._task.InsertCompoundChildTask()
 
-    def get_next_possible_tasks(self) -> str:
+    def get_next_possible_tasks(self) -> list[str]:
         """Get the list of possible names of commands that can be inserted as tasks
         after this current task is executed."""
-        next_tasks = []
-        for task in self._task.GetNextPossibleTasks():
-            next_tasks.append(camel_to_snake_case(task))
-
-        return next_tasks
+        return [camel_to_snake_case(task) for task in self._task.GetNextPossibleTasks()]
 
     def insert_next_task(self, command_name: str):
         """Insert a task based on the command name passed as argument after the current
@@ -1050,6 +1042,12 @@ class NewWorkflowWrapper:
         self._task_objects = {}
         self._dynamic_interface = False
         self._help_string_command_id_map = {}
+        self._unwanted_attrs = {
+            "reset_workflow",
+            "initialize_workflow",
+            "load_workflow",
+            "create_new_workflow",
+        }
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -1140,7 +1138,7 @@ class NewWorkflowWrapper:
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
-        if attr != "TaskObject":
+        if attr != "TaskObject" and attr not in self._unwanted_attrs:
             if not attr.islower():
                 raise AttributeError(
                     "Camel case attribute access is not supported. "
@@ -1157,26 +1155,14 @@ class NewWorkflowWrapper:
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
         the underlying workflow."""
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
-        dir_list = list(
-            dict.fromkeys(
-                sorted(
-                    set(
-                        list(self.__dict__.keys())
-                        + dir(type(self))
-                        + arg_list
-                        + self.child_task_python_names()
-                    )
-                )
-            )
+        dir_list = set(
+            list(self.__dict__.keys())
+            + dir(type(self))
+            + arg_list
+            + self.child_task_python_names()
         )
-        unwanted = [
-            "reset_workflow",
-            "initialize_workflow",
-            "load_workflow",
-            "create_new_workflow",
-        ]
-        dir_list = [e for e in dir_list if e not in unwanted]
-        return dir_list
+        dir_list = dir_list - self._unwanted_attrs
+        return sorted(dir_list)
 
     def __call__(self):
         """Delegate calls to the underlying workflow."""
@@ -1238,80 +1224,6 @@ class NewWorkflowWrapper:
         """Save the current workflow to the location provided."""
         self._workflow.SaveWorkflow(FilePath=file_path)
 
-    def reset_workflow(self):
-        """Reset the current workflow.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        AttributeError
-            Not implemented in the new structure.
-        """
-        raise AttributeError(
-            "'reset_workflow' is not implemented in the new workflow structure."
-        )
-
-    def create_new_workflow(self):
-        """Create a new workflow.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        AttributeError
-            Not implemented in the new structure.
-        """
-        raise AttributeError(
-            "'create_new_workflow' is not implemented in the new workflow structure."
-        )
-
-    def initialize_workflow(self, work_flow_type: str):
-        """Initialize the current workflow.
-
-        Parameters
-        ----------
-        work_flow_type: str
-            Type of workflow
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        AttributeError
-            Not implemented in the new structure.
-        """
-        raise AttributeError(
-            "'initialize_workflow' is not implemented in the new workflow structure."
-        )
-
-    def load_workflow(self, file_path: str):
-        """Load a workflow.
-
-        Parameters
-        ----------
-        file_path: str
-            Location of the workflow file.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        AttributeError
-            Not implemented in the new structure.
-        """
-        raise AttributeError(
-            "'load_workflow' is not implemented in the new workflow structure."
-        )
-
     def load_state(self, list_of_roots: list):
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
@@ -1332,7 +1244,7 @@ class NewWorkflowWrapper:
     def get_possible_tasks(self):
         """Get the list of possible names of commands that can be inserted as tasks."""
         self._populate_help_string_command_id_map()
-        return list(self._help_string_command_id_map.keys())
+        return list(self._help_string_command_id_map)
 
     def insert_new_task(self, command_name: str):
         """Insert a new task based on the command name passed as argument.
@@ -1375,8 +1287,8 @@ class NewWorkflowWrapper:
 
         Raises
         ------
-        RuntimeError
-            If command_name does not match a task name.
+        ValueError
+            If command_name does not match a task name. None of the tasks is deleted.
         """
         self._populate_help_string_command_id_map()
         camel_case_list_of_tasks = []
@@ -1385,11 +1297,11 @@ class NewWorkflowWrapper:
                 camel_case_list_of_tasks.append(
                     self._help_string_command_id_map[task_name]
                 )
-            except KeyError:
-                raise RuntimeError(
+            except KeyError as ex:
+                raise ValueError(
                     f"'{task_name}' is not an allowed command task.\n"
                     "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
-                )
+                ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=camel_case_list_of_tasks)
 
