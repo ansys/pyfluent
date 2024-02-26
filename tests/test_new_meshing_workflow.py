@@ -527,25 +527,18 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     watertight = meshing.watertight()
-    assert (
-        meshing.workflow.CreateCompositeTask.__class__
-        == watertight.create_composite_task.__class__
-    )
-    assert (
-        meshing.workflow.InsertNewTask.__class__ == watertight.insert_new_task.__class__
-    )
-    assert (
-        meshing.workflow.TaskObject["Import Geometry"].__class__
-        == watertight.import_geometry.__class__
-    )
-    assert (
-        meshing.workflow.TaskObject["Import Geometry"].GetNextPossibleTasks()
-        == watertight.import_geometry.get_next_possible_tasks()
-    )
-    assert (
-        meshing.workflow.TaskObject["Import Geometry"].InsertNextTask.__class__
-        == watertight.import_geometry.insert_next_task.__class__
-    )
+    assert len(watertight._task_list) == 11
+    watertight.insert_new_task("import_geometry")
+    assert len(watertight._task_list) == 12
     watertight.import_geometry.file_name = import_file_name
     watertight.import_geometry.length_unit = "in"
     watertight.import_geometry()
+    assert watertight.import_geometry.get_next_possible_tasks() == [
+        "import_body_of_influence_geometry",
+        "set_up_periodic_boundaries",
+        "create_local_refinement_regions",
+        "run_custom_journal",
+    ]
+    watertight.import_geometry.insert_next_task("import_body_of_influence_geometry")
+    watertight.import_geometry.insert_next_task("set_up_periodic_boundaries")
+    assert len(watertight._task_list) == 14

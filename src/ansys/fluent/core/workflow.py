@@ -381,13 +381,52 @@ class BaseTask:
         )
 
     def add_child_to_task(self):
+        """Add a child task."""
         return self._task.AddChildToTask()
 
     def update_child_tasks(self, setup_type_changed: bool):
+        """Update child tasks."""
         self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
 
     def insert_compound_child_task(self):
+        """Insert a compound child task."""
         return self._task.InsertCompoundChildTask()
+
+    def get_next_possible_tasks(self) -> str:
+        """Get the list of possible names of commands that can be inserted as tasks after this current task is executed."""
+        next_tasks = []
+        for task in self._task.GetNextPossibleTasks():
+            next_tasks.append(camel_to_snake_case(task))
+
+        return next_tasks
+
+    def insert_next_task(self, command_name: str):
+        """Insert a task based on the command name passed as argument after the current task is executed.
+
+        Parameters
+        ----------
+        command_name: str
+            Name of the new task.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If command_name does not match a task name.
+        """
+        if command_name not in self.get_next_possible_tasks():
+            raise ValueError(
+                f"'{command_name}' cannot be inserted next to '{self.name()}'.\n"
+                "Please use 'get_next_possible_tasks()' to view list of allowed tasks."
+            )
+        return self._task.InsertNextTask(
+            CommandName=snake_to_camel_case(
+                command_name, self._task.GetNextPossibleTasks()
+            )
+        )
 
     def __call__(self, **kwds) -> Any:
         if kwds:
@@ -841,6 +880,10 @@ class CompositeTask(BaseTask):
         """
         return {}
 
+    def insert_composite_child_task(self, command_name: str):
+        """Insert a composite child task based on the command name passed as argument."""
+        return self._task.InsertCompositeChildTask(CommandName=command_name)
+
 
 class ConditionalTask(CommandTask):
     """Conditional task representation for wrapping a Workflow TaskObject instance of
@@ -1123,7 +1166,12 @@ class NewWorkflowWrapper:
                 )
             )
         )
-        unwanted = ["reset_workflow", "initialize_workflow", "load_workflow"]
+        unwanted = [
+            "reset_workflow",
+            "initialize_workflow",
+            "load_workflow",
+            "create_new_workflow",
+        ]
         dir_list = [e for e in dir_list if e not in unwanted]
         return dir_list
 
@@ -1203,6 +1251,22 @@ class NewWorkflowWrapper:
             "'reset_workflow' is not implemented in the new workflow structure."
         )
 
+    def create_new_workflow(self):
+        """Create a new workflow.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AttributeError
+            Not implemented in the new structure.
+        """
+        raise AttributeError(
+            "'create_new_workflow' is not implemented in the new workflow structure."
+        )
+
     def initialize_workflow(self, work_flow_type: str):
         """Initialize the current workflow.
 
@@ -1263,12 +1327,12 @@ class NewWorkflowWrapper:
                     del command_obj_instance
 
     def get_possible_tasks(self):
-        """Get list of allowed tasks that can be inserted in the current workflow."""
+        """Get the list of possible names of commands that can be inserted as tasks."""
         self._populate_help_string_command_id_map()
         return list(self._help_string_command_id_map.keys())
 
     def insert_new_task(self, command_name: str):
-        """Insert a new task to the current workflow.
+        """Insert a new task based on the command name passed as argument.
 
         Parameters
         ----------
@@ -1281,12 +1345,12 @@ class NewWorkflowWrapper:
 
         Raises
         ------
-        RuntimeError
+        ValueError
             If command_name does not match a task name.
         """
         self._populate_help_string_command_id_map()
         if command_name not in self._help_string_command_id_map:
-            raise RuntimeError(
+            raise ValueError(
                 f"'{command_name}' is not an allowed command task.\n"
                 "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
             )
