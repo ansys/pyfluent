@@ -12,6 +12,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
+    PyCommand,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -1002,6 +1003,7 @@ class NewWorkflowWrapper:
         self._main_thread_ident = None
         self._task_objects = {}
         self._dynamic_interface = False
+        self._help_string_command_id_map = {}
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -1109,7 +1111,7 @@ class NewWorkflowWrapper:
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
         the underlying workflow."""
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
-        return list(
+        dir_list = list(
             dict.fromkeys(
                 sorted(
                     set(
@@ -1121,6 +1123,9 @@ class NewWorkflowWrapper:
                 )
             )
         )
+        unwanted = ["reset_workflow", "initialize_workflow", "load_workflow"]
+        dir_list = [e for e in dir_list if e not in unwanted]
+        return dir_list
 
     def __call__(self):
         """Delegate calls to the underlying workflow."""
@@ -1177,6 +1182,181 @@ class NewWorkflowWrapper:
                 self._refreshing = False
 
             self.add_on_affected(refresh_after_sleep)
+
+    def save_workflow(self, file_path: str):
+        """Save the current workflow to the location provided."""
+        self._workflow.SaveWorkflow(FilePath=file_path)
+
+    def reset_workflow(self):
+        """Reset the current workflow.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AttributeError
+            Not implemented in the new structure.
+        """
+        raise AttributeError(
+            "'reset_workflow' is not implemented in the new workflow structure."
+        )
+
+    def initialize_workflow(self, work_flow_type: str):
+        """Initialize the current workflow.
+
+        Parameters
+        ----------
+        work_flow_type: str
+            Type of workflow
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AttributeError
+            Not implemented in the new structure.
+        """
+        raise AttributeError(
+            "'initialize_workflow' is not implemented in the new workflow structure."
+        )
+
+    def load_workflow(self, file_path: str):
+        """Load a workflow.
+
+        Parameters
+        ----------
+        file_path: str
+            Location of the workflow file.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        AttributeError
+            Not implemented in the new structure.
+        """
+        raise AttributeError(
+            "'load_workflow' is not implemented in the new workflow structure."
+        )
+
+    def load_state(self, list_of_roots: list):
+        """Load the state of the workflow."""
+        self._workflow.LoadState(ListOfRoots=list_of_roots)
+
+    def _populate_help_string_command_id_map(self):
+        if not self._help_string_command_id_map:
+            for command in dir(self._command_source):
+                if command in ["SwitchToSolution", "set_state"]:
+                    continue
+                command_obj = getattr(self._command_source, command)
+                if isinstance(command_obj, PyCommand):
+                    command_obj_instance = command_obj.create_instance()
+                    help_str = command_obj_instance.get_attr("helpString")
+                    if help_str and help_str.islower():
+                        self._help_string_command_id_map[help_str] = command
+                    del command_obj_instance
+
+    def get_possible_tasks(self):
+        """Get list of allowed tasks that can be inserted in the current workflow."""
+        self._populate_help_string_command_id_map()
+        return list(self._help_string_command_id_map.keys())
+
+    def insert_new_task(self, command_name: str):
+        """Insert a new task to the current workflow.
+
+        Parameters
+        ----------
+        command_name: str
+            Name of the new task.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        RuntimeError
+            If command_name does not match a task name.
+        """
+        self._populate_help_string_command_id_map()
+        if command_name not in self._help_string_command_id_map:
+            raise RuntimeError(
+                f"'{command_name}' is not an allowed command task.\n"
+                "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
+            )
+        return self._workflow.InsertNewTask(
+            CommandName=self._help_string_command_id_map[command_name]
+        )
+
+    def delete_tasks(self, list_of_tasks: list[str]):
+        """Delete the list of tasks passed as argument.
+
+        Parameters
+        ----------
+        list_of_tasks: list[str]
+            List of task items.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        RuntimeError
+            If command_name does not match a task name.
+        """
+        self._populate_help_string_command_id_map()
+        camel_case_list_of_tasks = []
+        for task_name in list_of_tasks:
+            try:
+                camel_case_list_of_tasks.append(
+                    self._help_string_command_id_map[task_name]
+                )
+            except KeyError:
+                raise RuntimeError(
+                    f"'{task_name}' is not an allowed command task.\n"
+                    "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
+                )
+
+        return self._workflow.DeleteTasks(ListOfTasks=camel_case_list_of_tasks)
+
+    def create_composite_task(self, list_of_tasks: list[str]):
+        """Create the list of tasks passed as argument.
+
+        Parameters
+        ----------
+        list_of_tasks: list[str]
+            List of task items.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        RuntimeError
+            If command_name does not match a task name.
+        """
+        self._populate_help_string_command_id_map()
+        camel_case_list_of_tasks = []
+        for task_name in list_of_tasks:
+            try:
+                camel_case_list_of_tasks.append(
+                    self._help_string_command_id_map[task_name]
+                )
+            except KeyError:
+                raise RuntimeError(
+                    f"'{task_name}' is not an allowed command task.\n"
+                    "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
+                )
+
+        return self._workflow.CreateCompositeTask(ListOfTasks=camel_case_list_of_tasks)
 
 
 class OldWorkflowWrapper:
