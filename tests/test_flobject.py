@@ -1047,7 +1047,7 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
         },
         "name": "hot-inlet",
         "turbulence": {
-            "turbulent_intensity": (0.05, None),
+            "turbulent_intensity": (0.05, ""),
             "turbulent_specification": "Intensity and Viscosity Ratio",
             "turbulent_viscosity_ratio": (10, None),
         },
