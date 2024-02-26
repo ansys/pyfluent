@@ -24,6 +24,7 @@ from ansys.fluent.core.solver.flobject import (
     Group,
     NamedObject,
     SettingsBase,
+    StateT,
     StateType,
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
@@ -243,8 +244,16 @@ class Solver(BaseSession):
         fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
         fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
 
-    def __call__(self):
+    def get_state(self) -> StateT:
+        """Get the state of the object."""
         return self._root.get_state()
+
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
+        """Set the state of the object."""
+        self._root.set_state(state, **kwargs)
+
+    def __call__(self):
+        return self.get_state()
 
     def _populate_settings_api_root(self):
         if not self._settings_api_root:

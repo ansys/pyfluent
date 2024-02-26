@@ -29,7 +29,21 @@ import pickle
 import string
 import sys
 import types
-from typing import Any, Dict, Generic, List, NewType, Optional, Tuple, TypeVar, Union
+from typing import (
+    Any,
+    Dict,
+    ForwardRef,
+    Generic,
+    List,
+    NewType,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+    _eval_type,
+    get_args,
+    get_origin,
+)
 import warnings
 import weakref
 
@@ -84,6 +98,42 @@ PrimitiveStateType = Union[
 DictStateType = Dict[str, "StateType"]
 ListStateType = List["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
+
+
+def check_type(val, tp):
+    if hasattr(tp, "__supertype__"):
+        return check_type(val, tp.__supertype__)
+    if isinstance(tp, ForwardRef):
+        return check_type(val, _eval_type(tp, globals(), locals()))
+    origin = get_origin(tp)
+    if origin == list:
+        return isinstance(val, list) and all(
+            check_type(x, get_args(tp)[0]) for x in val
+        )
+    elif origin == tuple:
+        return isinstance(val, tuple) and all(
+            check_type(x, t) for x, t in zip(val, get_args(tp))
+        )
+    elif origin == Union:
+        return any(check_type(val, t) for t in get_args(tp))
+    elif origin == dict:
+        k_t, k_v = get_args(tp)
+        return isinstance(val, dict) and all(
+            check_type(k, k_t) and check_type(v, k_v) for k, v in val.items()
+        )
+    elif origin is None:
+        try:
+            return isinstance(val, tp)
+        except TypeError:
+            return False
+    else:
+        return False
+
+
+def assert_type(val, tp):
+    if not check_type(val, tp):
+        raise TypeError(f"{val} is not of type {tp}.")
+
 
 _ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation), "?'")
 
@@ -152,9 +202,10 @@ class Base:
 
         Supports file upload and download.
         """
-        if self._remote_file_handler is None:
+        if self._remote_file_handler:
+            return self._remote_file_handler
+        elif self._parent:
             return self._parent.remote_file_handler
-        return self._remote_file_handler
 
     _name = None
     fluent_name = None
@@ -342,6 +393,87 @@ class Numerical(Property):
         return None if isinstance(val, bool) else val
 
 
+class RealNumerical(Numerical):
+    """A ``RealNumerical`` object representing a real value setting, including single
+    real values and containers of real values, such as lists.
+
+    Methods
+    -------
+    as_quantity()
+        Get the current state of the object as an ansys.units.Quantity.
+
+    set_state(state)
+        Set the state of the object.
+
+    units()
+        Get the units string.
+    """
+
+    def as_quantity(self) -> Optional[ansys_units.Quantity]:
+        """Get the state of the object as an ansys.units.Quantity."""
+        error = None
+        if not ansys_units:
+            error = "Code not configured to support units."
+        if not error:
+            quantity = self.get_attr("units-quantity")
+            units = get_si_unit_for_fluent_quantity(quantity)
+            if units is not None:
+                try:
+                    return ansys_units.Quantity(
+                        value=self.get_state(),
+                        units=units,
+                    )
+                except (TypeError, ValueError) as e:
+                    error = e
+            else:
+                error = "Could not determine units."
+        warnings.warn(f"Unable to construct 'Quantity'. {error}")
+
+    def set_state(self, state: Optional[StateT] = None, **kwargs):
+        """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            The type of state can be float, str (representing either
+            an expression or a value with units), or an ansys.units.Quantity.
+
+        Raises
+        ------
+        UnhandledQuantity
+            If the quantity object cannot be handled for the given path. This can
+            happen if the quantity attribute specifies an unsupported quantity, or if
+            the units specified for the quantity are not supported.
+        """
+        try:
+
+            def get_units():
+                units = self.units()
+                if units is None:
+                    raise UnhandledQuantity(self.path, state)
+                return units
+
+            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
+                state = (
+                    ansys_units.Quantity(*state) if isinstance(state, tuple) else state
+                )
+                state = state.to(get_units()).value
+            elif isinstance(state, tuple):
+                if state[1] == get_units():
+                    state = state[0]
+                else:
+                    raise UnhandledQuantity(self.path, state)
+        except Exception as ex:
+            raise UnhandledQuantity(self.path, state) from ex
+
+        return self.base_set_state(state=state, **kwargs)
+
+    def units(self) -> Optional[str]:
+        """Get the physical units of the object as a string."""
+        quantity = self.get_attr("units-quantity")
+        return get_si_unit_for_fluent_quantity(quantity)
+
+
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
@@ -488,6 +620,34 @@ class SettingsBase(Base, Generic[StateT]):
         out = sys.stdout if out is None else out
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
 
+    def state_with_units(self) -> StateT:
+        """Get the state of the object with units where available."""
+        state = self.get_state()
+        if isinstance(self, RealNumerical):
+            return (state, self.units())
+        elif isinstance(state, collections.abc.Mapping):
+            self._add_units_to_state(state)
+        return state
+
+    def _add_units_to_state(self, state):
+        if isinstance(state, collections.abc.Mapping):
+            for k, v in state.items():
+                child = None
+                if isinstance(self, collections.abc.Mapping):
+                    try:
+                        child = self[k]
+                    except KeyError:
+                        pass
+                child = child or getattr(self, k, None)
+                if child is None:
+                    raise RuntimeError(
+                        "Unexpected None child {k} encountered while getting units for state."
+                    )
+                elif isinstance(child, RealNumerical):
+                    state[k] = (state[k], child.units())
+                else:
+                    child._add_units_to_state(state[k])
+
 
 class Integer(SettingsBase[int], Numerical):
     """An ``Integer`` object representing an integer value setting."""
@@ -495,91 +655,15 @@ class Integer(SettingsBase[int], Numerical):
     _state_type = int
 
 
-class Real(SettingsBase[RealType], Numerical):
+class Real(SettingsBase[RealType], RealNumerical):
     """A ``Real`` object representing a real value setting.
 
     Some ``Real`` objects also accept string arguments representing
     expression values.
-
-    Methods
-    -------
-    as_quantity()
-        Get the current state of the object as an ansys.units.Quantity.
-
-    set_state(state)
-        Set the state of the object.
-
-    value_with_units()
-        Get a tuple containing the current value and units string.
-
-    units()
-        Get the units string.
     """
 
-    def as_quantity(self) -> Optional[ansys_units.Quantity]:
-        """Get the state of the object as an ansys.units.Quantity."""
-        error = None
-        if not ansys_units:
-            error = "Code not configured to support units."
-        if not error:
-            quantity = self.get_attr("units-quantity")
-            try:
-                return ansys_units.Quantity(
-                    value=self.get_state(),
-                    units=get_si_unit_for_fluent_quantity(quantity),
-                )
-            except (TypeError, ValueError) as e:
-                error = e
-        warnings.warn(f"Unable to construct 'Quantity'. {error}")
-
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
-        """Set the state of the object.
-
-        Parameters
-        ----------
-        state
-            The type of state can be float, str (representing either
-            an expression or a value with units), or an ansys.units.Quantity.
-
-        Raises
-        ------
-        UnhandledQuantity
-            If the quantity object cannot be handled for the given path. This can
-            happen if the quantity attribute specifies an unsupported quantity, or if
-            the units specified for the quantity are not supported.
-        """
-        try:
-            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
-                state = (
-                    ansys_units.Quantity(*state) if isinstance(state, tuple) else state
-                )
-                state = state.to(self.units()).value
-            elif isinstance(state, tuple):
-                if state[1] == self.units():
-                    state = state[0]
-                else:
-                    raise UnhandledQuantity(self.path, state)
-        except Exception as ex:
-            raise UnhandledQuantity(self.path, state) from ex
-
-        return super().set_state(state=state, **kwargs)
-
-    def value_with_units(self) -> Optional[tuple]:
-        """Get the value with physical units in a tuple."""
-        if ansys_units:
-            quantity = self.as_quantity()
-            if quantity is not None:
-                return (quantity.value, quantity.units.name)
-        units = self.units()
-        if units is not None:
-            value = self.get_state()
-            if isinstance(value, (float, int)):
-                return (value, units)
-
-    def units(self) -> Optional[str]:
-        """Get the physical units of the object as a string."""
-        quantity = self.get_attr("units-quantity")
-        return get_si_unit_for_fluent_quantity(quantity)
+    base_set_state = SettingsBase[RealType].set_state
+    set_state = RealNumerical.set_state
 
     _state_type = RealType
 
@@ -616,18 +700,14 @@ class FileName(Base):
 
 class _InputFile(FileName):
     def _do_before_execute(self, value):
-        try:
+        if self.remote_file_handler:
             self.remote_file_handler.upload(file_name=value)
-        except AttributeError:
-            pass
 
 
 class _OutputFile(FileName):
     def _do_after_execute(self, value):
-        try:
+        if self.remote_file_handler:
             self.remote_file_handler.download(file_name=value)
-        except AttributeError:
-            pass
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -640,8 +720,11 @@ class Boolean(SettingsBase[bool], Property):
     _state_type = bool
 
 
-class RealList(SettingsBase[RealListType], Numerical):
+class RealList(SettingsBase[RealListType], RealNumerical):
     """A ``RealList`` object representing a real list setting."""
+
+    base_set_state = SettingsBase[RealListType].set_state
+    set_state = RealNumerical.set_state
 
     _state_type = RealListType
 
@@ -1338,11 +1421,16 @@ class BaseCommand(Action):
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.before_execute(value)
-        cmd = self._execute_command(*args, **kwds)
+        ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.after_execute(value)
-        return cmd
+        return_t = getattr(self, "return_type", None)
+        if return_t:
+            base_t = _baseTypes.get(return_t)
+            if base_t:
+                assert_type(ret, base_t._state_type)
+            return ret
 
     def __call__(self, *args, **kwds):
         return self.execute_command(*args, **kwds)
@@ -1690,6 +1778,10 @@ def get_cls(name, info, parent=None, version=None):
             cls.argument_names = []
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
+
+        return_type = info.get("return-type") or info.get("return_type")
+        if return_type:
+            cls.return_type = return_type
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
