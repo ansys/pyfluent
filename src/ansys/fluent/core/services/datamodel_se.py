@@ -51,7 +51,7 @@ def _get_value_from_message_dict(
 
 
 class DisallowedFilePurpose(ValueError):
-    """Provides the error when the specified file purpose is not in allowed values."""
+    """Raised when the specified file purpose is not in allowed values."""
 
     def __init__(
         self,
