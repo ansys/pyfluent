@@ -393,7 +393,8 @@ class BaseTask:
         return self._task.InsertCompoundChildTask()
 
     def get_next_possible_tasks(self) -> str:
-        """Get the list of possible names of commands that can be inserted as tasks after this current task is executed."""
+        """Get the list of possible names of commands that can be inserted as tasks
+        after this current task is executed."""
         next_tasks = []
         for task in self._task.GetNextPossibleTasks():
             next_tasks.append(camel_to_snake_case(task))
@@ -401,7 +402,8 @@ class BaseTask:
         return next_tasks
 
     def insert_next_task(self, command_name: str):
-        """Insert a task based on the command name passed as argument after the current task is executed.
+        """Insert a task based on the command name passed as argument after the current
+        task is executed.
 
         Parameters
         ----------
@@ -881,7 +883,8 @@ class CompositeTask(BaseTask):
         return {}
 
     def insert_composite_child_task(self, command_name: str):
-        """Insert a composite child task based on the command name passed as argument."""
+        """Insert a composite child task based on the command name passed as
+        argument."""
         return self._task.InsertCompositeChildTask(CommandName=command_name)
 
 
