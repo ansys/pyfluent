@@ -454,8 +454,7 @@ def _populate_classes(parent_dir):
 
             return_type = getattr(cls, "return_type", None)
             if return_type:
-                f.write(f"{istr1}return_type = {return_type}\n")
-                f.write(f'{istr1}"""\n')
+                f.write(f'{istr1}return_type = "{return_type}"\n')
                 if stubf:
                     stubf.write(f"{istr1}{return_type} = ...\n")
 
