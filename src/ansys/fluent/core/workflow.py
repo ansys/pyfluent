@@ -376,6 +376,10 @@ class BaseTask:
         """Delete this task from the workflow."""
         self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
 
+    def rename(self, new_name: str):
+        """Rename the current task with the name passed as argument."""
+        return self._task.Rename(NewName=new_name)
+
     def add_child_to_task(self):
         """Add a child task."""
         return self._task.AddChildToTask()
