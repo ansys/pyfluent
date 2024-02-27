@@ -1334,7 +1334,7 @@ class ExtendedWorkflowWrapper:
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Please use 'get_possible_tasks()' to view list of allowed command tasks."
+                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
