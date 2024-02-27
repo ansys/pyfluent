@@ -938,7 +938,7 @@ class CompoundTask(CommandTask):
         command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
         task: str,
     ) -> None:
-        """Initialize CompoundTask.
+        """Initialize a compound task.
 
         Parameters
         ----------
