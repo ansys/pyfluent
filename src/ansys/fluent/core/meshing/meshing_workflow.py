@@ -23,9 +23,9 @@ class ClassicMeshingWorkflow(ClassicWorkflowWrapper):
         Parameters
         ----------
         workflow : PyMenuGeneric
-            The underlying workflow object.
+            Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
+            Meshing object.
         """
         super().__init__(workflow=workflow, command_source=meshing)
 
