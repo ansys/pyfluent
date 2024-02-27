@@ -1,9 +1,8 @@
 .. _ref_user_guide_meshing_workflows:
 
-Use meshing workflows
-=====================
-Fluent meshing guided workflows are designed to make it easier to generate a
-volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
+Classic Meshing Workflow
+========================
+Classic meshing workflow interface that appear in journals.
 
 Watertight geometry meshing workflow
 ------------------------------------
