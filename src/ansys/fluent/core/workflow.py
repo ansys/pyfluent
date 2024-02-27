@@ -1081,7 +1081,7 @@ class ExtendedWorkflowWrapper:
         }
 
     def task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
+        """Get a task object by name, in a ``BaseTask`` wrapper. The wrapper adds extra
         functionality.
 
         Parameters
