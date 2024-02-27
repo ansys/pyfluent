@@ -1,6 +1,6 @@
 .. _ref_user_guide_new_meshing_workflows:
 
-Enhanced Meshing Workflow
+Enhanced meshing workflow
 =========================
 Enhanced meshing workflow interface.
 
