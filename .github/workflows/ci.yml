@@ -11,6 +11,8 @@ on:
       - "*"
     branches:
       - main
+    paths-ignore:
+      - 'doc/**'
 
 concurrency:
   group: ${{ github.ref }}
@@ -443,6 +445,7 @@ jobs:
 
   test:
     name: Unit Testing
+    if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
