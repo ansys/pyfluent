@@ -211,7 +211,7 @@ class DockerLauncher:
                 launcher_args=self.argvals,
                 inside_container=True,
             ),
-            remote_file_handler=self.file_transfer_service,
+            file_transfer_service=self.file_transfer_service,
         )
 
         if self.start_watchdog is None and self.cleanup_on_exit:

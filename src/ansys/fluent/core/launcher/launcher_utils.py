@@ -615,12 +615,12 @@ def launch_remote_fluent(
         launcher_args=launcher_args,
     )
 
-    remote_file_handler = (
+    file_transfer_service = (
         file_transfer_service
         if file_transfer_service
         else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
     )
 
     return session_cls(
-        fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        fluent_connection=fluent_connection, file_transfer_service=file_transfer_service
     )

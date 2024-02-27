@@ -141,7 +141,7 @@ def test_file_purpose_on_remote_instance(
 
     solver_session = Solver(
         fluent_connection=solver.fluent_connection,
-        remote_file_handler=file_service,
+        file_transfer_service=file_service,
     )
 
     solver_session.file.read_case(file_name=import_file_name)
@@ -156,7 +156,7 @@ def test_file_purpose_on_remote_instance(
 
     meshing_session = PureMeshing(
         fluent_connection=meshing.fluent_connection,
-        remote_file_handler=file_service,
+        file_transfer_service=file_service,
     )
 
     meshing_session.meshing.File.ReadMesh(FileName=import_file_name)

@@ -173,7 +173,7 @@ class Base:
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
-        self._setattr("_remote_file_handler", None)
+        self._setattr("_file_transfer_service", None)
         if name is not None:
             self._setattr("_name", name)
 
@@ -181,9 +181,9 @@ class Base:
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
-    def set_remote_file_handler(self, remote_file_handler):
-        """Set remote_file_handler."""
-        self._setattr("_remote_file_handler", remote_file_handler)
+    def set_file_transfer_service(self, file_transfer_service):
+        """Set file_transfer_service."""
+        self._setattr("_file_transfer_service", file_transfer_service)
 
     @property
     def flproxy(self):
@@ -197,15 +197,15 @@ class Base:
         return self._flproxy
 
     @property
-    def remote_file_handler(self):
+    def file_transfer_service(self):
         """Remote file handler.
 
         Supports file upload and download.
         """
-        if self._remote_file_handler:
-            return self._remote_file_handler
+        if self._file_transfer_service:
+            return self._file_transfer_service
         elif self._parent:
-            return self._parent.remote_file_handler
+            return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
@@ -707,14 +707,14 @@ class FileName(Base):
 
 class _InputFile(FileName):
     def _do_before_execute(self, value):
-        if self.remote_file_handler:
-            self.remote_file_handler.upload(file_name=value)
+        if self.file_transfer_service:
+            self.file_transfer_service.upload(file_name=value)
 
 
 class _OutputFile(FileName):
     def _do_after_execute(self, value):
-        if self.remote_file_handler:
-            self.remote_file_handler.download(file_name=value)
+        if self.file_transfer_service:
+            self.file_transfer_service.download(file_name=value)
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -1824,7 +1824,7 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
-    remote_file_handler: Optional[Any] = None,
+    file_transfer_service: Optional[Any] = None,
     scheme_eval=None,
 ) -> Group:
     """Get the root settings object.
@@ -1856,10 +1856,10 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
-    root.set_remote_file_handler(remote_file_handler)
+    root.set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
-    root._setattr("_remote_file_handler", remote_file_handler)
+    root._setattr("_file_transfer_service", file_transfer_service)
     return root
 
 

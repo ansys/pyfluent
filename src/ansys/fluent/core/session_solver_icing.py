@@ -19,16 +19,17 @@ class SolverIcing(Solver):
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """SolverIcing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+            file_transfer_service: Supports file upload and download.
         """
         super(SolverIcing, self).__init__(
-            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+            fluent_connection=fluent_connection,
+            file_transfer_service=file_transfer_service,
         )
         self._flserver_root = None
         self._fluent_version = None
