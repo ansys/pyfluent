@@ -1301,7 +1301,7 @@ class ExtendedWorkflowWrapper:
         if command_name not in self._help_string_command_id_map:
             raise ValueError(
                 f"'{command_name}' is not an allowed command task.\n"
-                "Please use 'get_possible_tasks()' to view list of allowed command tasks."
+                "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
             )
         return self._workflow.InsertNewTask(
             CommandName=self._help_string_command_id_map[command_name]
