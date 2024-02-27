@@ -19,7 +19,7 @@ def watertight_workflow(geometry_file_name, **launch_args) -> ExtendedMeshingWor
     Returns
     -------
     ExtendedMeshingWorkflow
-        A meshing workflow wrapper
+        Meshing workflow wrapper.
     """
     dynamic_interface = True
     if "dynamic_interface" in launch_args:
