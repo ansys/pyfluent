@@ -448,5 +448,5 @@ def test_new_workflow_structure(new_mesh_session):
         watertight.TaskObject["Import Geometry"]
     assert (
         msg.value.args[0]
-        == "'ExtendedMeshingWorkflow' object has no attribute 'TaskObject'"
+        == "'EnhancedMeshingWorkflow' object has no attribute 'TaskObject'"
     )

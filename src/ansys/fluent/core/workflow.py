@@ -146,7 +146,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize the basetask.
@@ -719,7 +719,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -788,7 +788,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -816,7 +816,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -847,7 +847,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -900,7 +900,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -935,7 +935,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
+        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
         task: str,
     ) -> None:
         """Initialize a compound task.
@@ -1029,7 +1029,7 @@ def _makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class ExtendedWorkflowWrapper:
+class EnhancedWorkflowWrapper:
     """Wraps a workflow object, adding methods to discover more about the relationships
     between task objects.
 
