@@ -31,7 +31,7 @@ class ClassicMeshingWorkflow(ClassicWorkflowWrapper):
 
 
 class ExtendedMeshingWorkflow(ExtendedWorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper that extends the core functionality
+    """Provides meshing specialization of the workflow wrapper that extends the core functionality
     in an object-oriented manner."""
 
     def __init__(
