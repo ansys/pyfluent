@@ -1281,7 +1281,7 @@ class ExtendedWorkflowWrapper:
         return list(self._help_string_command_id_map)
 
     def insert_new_task(self, command_name: str):
-        """Insert a new task based on the command name passed as argument.
+        """Insert a new task based on the command name passed as an argument.
 
         Parameters
         ----------
