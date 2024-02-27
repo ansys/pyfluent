@@ -1030,8 +1030,8 @@ def _makeTask(command_source, name: str) -> BaseTask:
 
 
 class ExtendedWorkflowWrapper:
-    """Wrap a Workflow object, adding methods to discover more about the relationships
-    between TaskObjects.
+    """Wraps a workflow object, adding methods to discover more about the relationships
+    between task objects.
 
     Methods
     -------
