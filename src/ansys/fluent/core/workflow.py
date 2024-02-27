@@ -1164,7 +1164,7 @@ class ExtendedWorkflowWrapper:
         Parameters
         ----------
         attr : str
-            An attribute not defined in WorkflowWrapper
+            Attribute not defined in the ``WorkflowWrapper`` class.
         """
         _task_object = self._task_objects.get(attr)
         if _task_object:
