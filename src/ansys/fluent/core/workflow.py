@@ -413,7 +413,7 @@ class BaseTask:
         """
         if command_name not in self.get_next_possible_tasks():
             raise ValueError(
-                f"'{command_name}' cannot be inserted next to '{self.name()}'.\n"
+                f"'{command_name}' cannot be inserted next to '{self.python_name()}'. \n"
                 "Please use 'get_next_possible_tasks()' to view list of allowed tasks."
             )
         return self._task.InsertNextTask(
@@ -1052,13 +1052,13 @@ class NewWorkflowWrapper:
             "initialize_workflow",
             "load_workflow",
             "create_new_workflow",
-            "fault_tolerant",
-            "part_management",
-            "pm_file_management",
+            # "fault_tolerant",
+            # "part_management",
+            # "pm_file_management",
             "rules",
             "service",
             "task_object",
-            "watertight",
+            # "watertight",
             "workflow",
         }
 
