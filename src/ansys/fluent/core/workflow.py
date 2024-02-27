@@ -321,10 +321,6 @@ class BaseTask:
                 pass
         return self._python_name
 
-    def delete(self) -> None:
-        """Delete this task from the workflow."""
-        self._command_source.DeleteTasks(ListOfTasks=[self.name()])
-
     def _get_camel_case_arg_keys(self):
         _args = self.arguments
         _camel_args = []
@@ -375,6 +371,10 @@ class BaseTask:
                 arg_list.append(arg)
 
         return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+
+    def delete(self) -> None:
+        """Delete this task from the workflow."""
+        self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
 
     def add_child_to_task(self):
         """Add a child task."""
@@ -940,8 +940,12 @@ class CompoundTask(CommandTask):
             Optional state.
         """
         state = state or {}
-        state.update({"AddChild": "yes"})
-        self._task.Arguments.set_state(state)
+        if self._dynamic_interface:
+            state.update({"add_child": "yes"})
+            self.arguments.set_state(state)
+        else:
+            state.update({"AddChild": "yes"})
+            self._task.Arguments.set_state(state)
 
     def add_child_and_update(self, state=None):
         """Add a child to this CompoundTask and update.
@@ -1042,6 +1046,7 @@ class NewWorkflowWrapper:
         self._task_objects = {}
         self._dynamic_interface = False
         self._help_string_command_id_map = {}
+        self._help_string_display_text_map = {}
         self._unwanted_attrs = {
             "reset_workflow",
             "initialize_workflow",
@@ -1054,7 +1059,7 @@ class NewWorkflowWrapper:
             "service",
             "task_object",
             "watertight",
-            "workflow"]
+            "workflow",
         }
 
     def task(self, name: str) -> BaseTask:
@@ -1164,7 +1169,7 @@ class NewWorkflowWrapper:
         the underlying workflow."""
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
         dir_set = set(
-            list(self.__dict__.)
+            list(self.__dict__)
             + dir(type(self))
             + arg_list
             + self.child_task_python_names()
@@ -1247,6 +1252,9 @@ class NewWorkflowWrapper:
                     help_str = command_obj_instance.get_attr("helpString")
                     if help_str and help_str.islower():
                         self._help_string_command_id_map[help_str] = command
+                        self._help_string_display_text_map[
+                            help_str
+                        ] = command_obj_instance.get_attr("displayText")
                     del command_obj_instance
 
     def get_possible_tasks(self):
@@ -1275,7 +1283,7 @@ class NewWorkflowWrapper:
         if command_name not in self._help_string_command_id_map:
             raise ValueError(
                 f"'{command_name}' is not an allowed command task.\n"
-                "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
+                "Please use 'get_possible_tasks()' to view list of allowed command tasks."
             )
         return self._workflow.InsertNewTask(
             CommandName=self._help_string_command_id_map[command_name]
@@ -1299,19 +1307,19 @@ class NewWorkflowWrapper:
             If command_name does not match a task name. None of the tasks is deleted.
         """
         self._populate_help_string_command_id_map()
-        camel_case_list_of_tasks = []
+        list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
             try:
-                camel_case_list_of_tasks.append(
-                    self._help_string_command_id_map[task_name]
+                list_of_tasks_with_display_name.append(
+                    self._help_string_display_text_map[task_name]
                 )
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
+                    "Please use 'get_possible_tasks()' to view list of allowed command tasks."
                 ) from ex
 
-        return self._workflow.DeleteTasks(ListOfTasks=camel_case_list_of_tasks)
+        return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
 
     def create_composite_task(self, list_of_tasks: list[str]):
         """Create the list of tasks passed as argument.
@@ -1331,19 +1339,21 @@ class NewWorkflowWrapper:
             If command_name does not match a task name.
         """
         self._populate_help_string_command_id_map()
-        camel_case_list_of_tasks = []
+        list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
             try:
-                camel_case_list_of_tasks.append(
-                    self._help_string_command_id_map[task_name]
+                list_of_tasks_with_display_name.append(
+                    self._help_string_display_text_map[task_name]
                 )
             except KeyError:
                 raise RuntimeError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Please use 'get_allowed_task_list()' to view list of allowed command tasks."
+                    "Please use 'get_possible_tasks()' to view list of allowed command tasks."
                 )
 
-        return self._workflow.CreateCompositeTask(ListOfTasks=camel_case_list_of_tasks)
+        return self._workflow.CreateCompositeTask(
+            ListOfTasks=list_of_tasks_with_display_name
+        )
 
 
 class OldWorkflowWrapper:
