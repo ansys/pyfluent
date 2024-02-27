@@ -34,8 +34,7 @@ class PortNotProvided(ValueError):
 
 
 class UnsupportedRemoteFluentInstance(ValueError):
-    """Is raised when 'wait_process_finished' does not support remote Fluent
-    session."""
+    """Is raised when 'wait_process_finished' does not support remote Fluent session."""
 
     def __init__(self):
         super().__init__("Remote Fluent instance is unsupported.")

@@ -28,8 +28,7 @@ class InvalidArgument(ValueError):
 
 
 class SurfaceSpecificationError(ValueError):
-    """Is raised when both ``surface_ids`` and ``surface_names`` are
-    provided."""
+    """Is raised when both ``surface_ids`` and ``surface_names`` are provided."""
 
     def __init__(self):
         super().__init__("Provide either 'surface_ids' or 'surface_names'.")
