@@ -619,6 +619,8 @@ class SettingsBase(Base, Generic[StateT]):
                         else:
                             ret_alias[comp] = {}
                             ret_alias = ret_alias[comp]
+                else:
+                    ret[k] = cls.unalias(v)
             return ret
         else:
             return value
