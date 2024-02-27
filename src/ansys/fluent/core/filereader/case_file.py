@@ -194,7 +194,7 @@ class CaseVariable:
                 allowed_name_error_message(
                     context="config-vars",
                     trial_name=name,
-                    allowed_values=list(self._variables.keys()),
+                    allowed_values=list(self._variables),
                 )
             )
 
