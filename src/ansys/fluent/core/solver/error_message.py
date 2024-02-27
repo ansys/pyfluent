@@ -18,7 +18,7 @@ def allowed_name_error_message(
     """Provide an error message with the closest names matching the 'trial_name' from
     the 'allowed_values' list."""
     if not message:
-        message = f"'{context}' has no attribute '{trial_name}'."
+        message = f"'{context}' has no attribute '{trial_name}'"
     message += ".\n"
     matches = None
     if allowed_values:
