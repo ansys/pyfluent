@@ -706,6 +706,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
         == "'NewMeshingWorkflow' object has no attribute 'create_volume_mesh'"
     )
     watertight.insert_new_task(command_name="create_volume_mesh")
+    time.sleep(2.5)
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
 
