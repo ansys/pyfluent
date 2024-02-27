@@ -1366,7 +1366,7 @@ class ExtendedWorkflowWrapper:
             except KeyError:
                 raise RuntimeError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Please use 'get_possible_tasks()' to view list of allowed command tasks."
+                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
                 )
 
         return self._workflow.CreateCompositeTask(
