@@ -149,7 +149,7 @@ class BaseTask:
         command_source: Union[ClassicWorkflowWrapper, ExtendedWorkflowWrapper],
         task: str,
     ) -> None:
-        """Initialize BaseTask.
+        """Initialize the basetask.
 
         Parameters
         ----------
