@@ -1016,14 +1016,14 @@ class WildcardPath(Group):
                 child_settings_cls,
                 self,
             )
-        except KeyError:
+        except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
                     context="Settings objects",
                     trial_name=name,
                     allowed_values=self.get_active_child_names(),
                 )
-            )
+            ) from ex
 
     def items(self):
         """Items."""

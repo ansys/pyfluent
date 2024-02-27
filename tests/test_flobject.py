@@ -841,7 +841,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         solver.setup.models.viscous.model = "k_epsilon"
 
     assert (
-        msg.value.args[0] == "k_epsilon is not an allowed model name.\n"
+        msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
         "The most similar names are: k-epsilon."
     )
 
