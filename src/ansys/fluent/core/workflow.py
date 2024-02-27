@@ -1375,8 +1375,8 @@ class ExtendedWorkflowWrapper:
 
 
 class ClassicWorkflowWrapper:
-    """Wrap a Workflow object, adding methods to discover more about the relationships
-    between TaskObjects.
+    """Wraps a workflow object, adding methods to discover more about the relationships
+    between task objects.
 
     Methods
     -------
