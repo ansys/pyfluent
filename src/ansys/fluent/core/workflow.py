@@ -567,7 +567,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments.update_dict(args)
 
     def get_state(self, explicit_only=False) -> dict:
-        """Get arguments state.
+        """Get the argument's state.
 
         Parameters
         ----------
