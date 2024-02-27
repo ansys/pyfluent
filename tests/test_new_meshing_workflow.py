@@ -538,7 +538,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
             getattr(watertight, attr)
         assert (
             msg.value.args[0]
-            == f"'NewMeshingWorkflow' object has no attribute '{attr}'"
+            == f"'ExtendedMeshingWorkflow' object has no attribute '{attr}'"
         )
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
@@ -561,7 +561,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     assert len(watertight._task_list) == 14
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
@@ -634,7 +634,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
         watertight.create_volume_mesh
     assert (
         msg.value.args[0]
-        == "'NewMeshingWorkflow' object has no attribute 'create_volume_mesh'"
+        == "'ExtendedMeshingWorkflow' object has no attribute 'create_volume_mesh'"
     )
     watertight.insert_new_task(command_name="create_volume_mesh")
     time.sleep(2.5)
@@ -654,7 +654,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
         watertight.create_volume_mesh
     assert (
         msg.value.args[0]
-        == "'NewMeshingWorkflow' object has no attribute 'create_volume_mesh'"
+        == "'ExtendedMeshingWorkflow' object has no attribute 'create_volume_mesh'"
     )
 
 

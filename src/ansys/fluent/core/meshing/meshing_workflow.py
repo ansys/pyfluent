@@ -7,10 +7,10 @@ from __future__ import annotations
 from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.workflow import NewWorkflowWrapper, OldWorkflowWrapper
+from ansys.fluent.core.workflow import ClassicWorkflowWrapper, ExtendedWorkflowWrapper
 
 
-class OldMeshingWorkflow(OldWorkflowWrapper):
+class ClassicMeshingWorkflow(ClassicWorkflowWrapper):
     """Meshing specialization of the WorkflowWrapper."""
 
     def __init__(
@@ -30,7 +30,7 @@ class OldMeshingWorkflow(OldWorkflowWrapper):
         super().__init__(workflow=workflow, command_source=meshing)
 
 
-class NewMeshingWorkflow(NewWorkflowWrapper):
+class ExtendedMeshingWorkflow(ExtendedWorkflowWrapper):
     """Meshing specialization of the WorkflowWrapper that extends the core functionality
     in an object-oriented manner."""
 

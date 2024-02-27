@@ -423,7 +423,7 @@ def test_nonexistent_attrs(new_mesh_session):
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz
-    assert msg.value.args[0] == "'OldMeshingWorkflow' object has no attribute 'xyz'"
+    assert msg.value.args[0] == "'ClassicMeshingWorkflow' object has no attribute 'xyz'"
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -435,7 +435,7 @@ def test_old_workflow_structure(new_mesh_session):
         meshing.workflow.import_geometry
     assert (
         msg.value.args[0]
-        == "'OldMeshingWorkflow' object has no attribute 'import_geometry'"
+        == "'ClassicMeshingWorkflow' object has no attribute 'import_geometry'"
     )
 
 
@@ -447,5 +447,6 @@ def test_new_workflow_structure(new_mesh_session):
     with pytest.raises(AttributeError) as msg:
         watertight.TaskObject["Import Geometry"]
     assert (
-        msg.value.args[0] == "'NewMeshingWorkflow' object has no attribute 'TaskObject'"
+        msg.value.args[0]
+        == "'ExtendedMeshingWorkflow' object has no attribute 'TaskObject'"
     )

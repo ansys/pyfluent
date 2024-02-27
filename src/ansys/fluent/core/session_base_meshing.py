@@ -3,8 +3,8 @@ import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
-    NewMeshingWorkflow,
-    OldMeshingWorkflow,
+    ClassicMeshingWorkflow,
+    ExtendedMeshingWorkflow,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -139,7 +139,7 @@ class BaseMeshing:
     def workflow(self):
         """Datamodel root of workflow."""
         if not self._old_workflow:
-            self._old_workflow = OldMeshingWorkflow(
+            self._old_workflow = ClassicMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
             )
@@ -149,7 +149,7 @@ class BaseMeshing:
     def new_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._new_workflow:
-            self._new_workflow = NewMeshingWorkflow(
+            self._new_workflow = ExtendedMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
                 self.PartManagement,
