@@ -1155,14 +1155,14 @@ class NewWorkflowWrapper:
         """Override the behaviour of dir to include attributes in WorkflowWrapper and
         the underlying workflow."""
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
-        dir_list = set(
-            list(self.__dict__.keys())
+        dir_set = set(
+            list(self.__dict__.)
             + dir(type(self))
             + arg_list
             + self.child_task_python_names()
         )
-        dir_list = dir_list - self._unwanted_attrs
-        return sorted(dir_list)
+        dir_set = dir_set - self._unwanted_attrs
+        return sorted(filter(None, dir_set))
 
     def __call__(self):
         """Delegate calls to the underlying workflow."""
