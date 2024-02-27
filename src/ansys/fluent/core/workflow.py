@@ -572,8 +572,8 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         explicit_only : bool
-            Whether to only include explicitly set values,
-            otherwise all values are included.
+            Whether to only include explicitly set values.
+            Otherwise, all values are included.
         """
         state_dict = (
             self._task.Arguments() if explicit_only else self._task._command_arguments()
