@@ -1,6 +1,6 @@
 .. _ref_user_guide_meshing_workflows:
 
-Classic Meshing Workflow
+Classic meshing workflow
 ========================
 Classic meshing workflow interface that appear in journals.
 
