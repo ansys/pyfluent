@@ -10,11 +10,7 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.solver.flobject import (
-    InactiveObjectError,
-    UnhandledQuantity,
-    find_children,
-)
+from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
 import ansys.units
 
 
@@ -973,45 +969,46 @@ def _check_vector_units(obj, units):
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
-
     assert isinstance(solver._root.state_with_units(), dict)
-
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-
     hydraulic_diameter = turbulence.hydraulic_diameter
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
     assert hydraulic_diameter.as_quantity() == None
     assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
-
     turbulent_intensity = turbulence.turbulent_intensity
     turbulent_intensity.set_state(0.2)
     assert turbulent_intensity() == 0.2
-
-    # turbulent_intensity has a units-quantity attribute, 'percentage', but it
-    # is unsupported. So, 'percentage' cannot be converted to a Quantity.
-    assert turbulent_intensity.as_quantity() == None
-
-    # likewise, cannot set turbulent_intensity via a Quantity
-    with pytest.raises(UnhandledQuantity):
-        turbulent_intensity.set_state(ansys.units.Quantity(0.1, ""))
-
+    assert turbulent_intensity.as_quantity() == ansys.units.Quantity(0.2, "")
+    turbulent_intensity.set_state(ansys.units.Quantity(0.1, ""))
+    assert turbulent_intensity.state_with_units() == (0.1, "")
     hydraulic_diameter.set_state(1)
     assert hydraulic_diameter.as_quantity() == ansys.units.Quantity(1, "m")
     assert hydraulic_diameter.state_with_units() == (1.0, "m")
     assert hydraulic_diameter.units() == "m"
-
     hydraulic_diameter.set_state(ansys.units.Quantity(1, "in"))
     assert hydraulic_diameter.as_quantity() == ansys.units.Quantity(0.0254, "m")
     assert hydraulic_diameter.state_with_units() == (0.0254, "m")
     assert hydraulic_diameter.units() == "m"
     assert hydraulic_diameter() == 0.0254
-
-    # clip_factor has no units-quantity attribute because it is dimensionless
+    velocity = ansys.units.Quantity(
+        12.0, ansys.units.UnitRegistry().ft
+    ) / ansys.units.Quantity(3.0, ansys.units.UnitRegistry().s)
+    hot_inlet.momentum.velocity.value = velocity
+    assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
+    velocity = (1.0, "m s^-1")
+    hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value.state_with_units() == velocity
+    velocity = ansys.units.Quantity(12.0, "m s^-1")
+    hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
+    assert hot_inlet.momentum.velocity.state_with_units() == {
+        "option": "value",
+        "value": (12.0, "m s^-1"),
+    }
     clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
     clip_factor.set_state(1.2)
     assert clip_factor() == 1.2
@@ -1035,63 +1032,6 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     )
 
 
-@pytest.mark.fluent_version(">=24.1")
-def test_ansys_units_integration_no_pyansys_units(load_mixing_elbow_mesh):
-    solver = load_mixing_elbow_mesh
-    ansys_units = flobject.ansys_units
-    flobject.ansys_units = None
-
-    assert isinstance(solver._root.state_with_units(), dict)
-
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-
-    turbulence = hot_inlet.turbulence
-    turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
-
-    hydraulic_diameter = turbulence.hydraulic_diameter
-    hydraulic_diameter.set_state("1 [in]")
-    assert hydraulic_diameter() == "1 [in]"
-    assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
-    assert hydraulic_diameter.units() == "m"
-
-    turbulent_intensity = turbulence.turbulent_intensity
-    turbulent_intensity.set_state(0.2)
-    assert turbulent_intensity() == 0.2
-
-    # turbulent_intensity has a units-quantity attribute, 'percentage', but it
-    # is unsupported. So, 'percentage' cannot be converted to a Quantity.
-    assert turbulent_intensity.as_quantity() == None
-
-    hydraulic_diameter.set_state(1)
-    assert hydraulic_diameter.as_quantity() == None
-    assert hydraulic_diameter.state_with_units() == (1.0, "m")
-    assert hydraulic_diameter.units() == "m"
-    hydraulic_diameter.set_state((2.0, "m"))
-    assert hydraulic_diameter.state_with_units() == (2.0, "m")
-
-    # clip_factor has no units-quantity attribute because it is dimensionless
-    clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
-    clip_factor.set_state(1.2)
-    assert clip_factor() == 1.2
-    assert clip_factor.as_quantity() == None
-    assert clip_factor.state_with_units() == (1.2, "")
-    assert clip_factor.units() == ""
-
-    _check_vector_units(
-        solver.setup.general.operating_conditions.reference_pressure_location, "m"
-    )
-
-    _check_vector_units(
-        solver.setup.reference_frames[
-            "global"
-        ].initial_state.orientation.first_axis.axis_to.vector,
-        "",
-    )
-
-    flobject.ansys_units = ansys_units
-
-
 @pytest.mark.fluent_version(">=24.2")
 def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
@@ -1107,8 +1047,52 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
         },
         "name": "hot-inlet",
         "turbulence": {
-            "turbulent_intensity": (0.05, None),
+            "turbulent_intensity": (0.05, ""),
             "turbulent_specification": "Intensity and Viscosity Ratio",
             "turbulent_viscosity_ratio": (10, None),
         },
     }
+
+
+def test_assert_type():
+    types = [
+        bool,
+        int,
+        flobject.RealType,
+        str,
+        flobject.BoolListType,
+        flobject.IntListType,
+        flobject.RealListType,
+        flobject.StringListType,
+        flobject.RealVectorType,
+        flobject.DictStateType,
+    ]
+    vals = [
+        False,
+        1,
+        1.0,
+        "a",
+        [False, True],
+        [1, 2],
+        [1.0, 2.0],
+        ["a", "b"],
+        (1.0, 2.0, 3.0),
+        {"a": 1},
+    ]
+    subtypes = {
+        bool: (int,),
+        str: (flobject.RealType,),
+        flobject.BoolListType: (flobject.IntListType,),
+        flobject.StringListType: (flobject.RealListType,),
+    }
+    for i_t, tp in enumerate(types):
+        for i_v, val in enumerate(vals):
+            if i_t == i_v:
+                flobject.assert_type(val, tp)
+            else:
+                subtype = subtypes.get(types[i_v])
+                if subtype and types[i_t] in subtype:
+                    flobject.assert_type(val, tp)
+                else:
+                    with pytest.raises(TypeError):
+                        flobject.assert_type(val, tp)
