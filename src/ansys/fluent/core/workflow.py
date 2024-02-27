@@ -415,7 +415,7 @@ class BaseTask:
         Raises
         ------
         ValueError
-            If command_name does not match a task name.
+            If the command name does not match a task name.
         """
         if command_name not in self.get_next_possible_tasks():
             raise ValueError(
