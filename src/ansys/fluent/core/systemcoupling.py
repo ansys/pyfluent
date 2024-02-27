@@ -83,7 +83,7 @@ class SystemCoupling:
             local_scp_file_name = scp_file_name
             if self._solver.connection_properties.inside_container:
                 local_scp_file_name = os.path.join(os.getcwd(), "fluent.scp")
-                f.download(scp_file_name, local_scp_file_name)
+                self._solver.download(scp_file_name, local_scp_file_name)
 
             assert os.path.exists(
                 local_scp_file_name
