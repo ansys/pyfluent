@@ -379,7 +379,7 @@ class BaseTask:
         self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
 
     def rename(self, new_name: str):
-        """Rename the current task with the name passed as argument."""
+        """Rename the current task to a given name."""
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
