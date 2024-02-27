@@ -104,21 +104,23 @@ and ``NamedObject`` types, the state value is a dictionary. For the
   >>> solver.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
 
 
-You can also access the state of an object with the ``get_state`` method and
-modify it with the ``set_state`` method.
+You can also access the state of an object with the ``get_state()`` method and
+modify it with the ``set_state()`` method.
 
-Real parameter objects can have units as well as values. If a particular object
-supports units then you can obtain its value and units as an ``ansys.units.Quantity``
-object by calling the ``as_quantity`` method. You can obtain the same value 
-and units information as a tuple by calling the ``value_with_units`` method.
-That is especially useful if you do not wish to install the ansys.units package.
-Both ``ansys.units.Quantity`` objects and value-unit tuples can be passed to the
-``set_state`` method.
+``Real`` and ``RealList`` settings objects can incorporate units alongside values. If an object
+supports units, you can retrieve its value and units as an ``ansys.units.Quantity`` object using
+the ``as_quantity()`` method. Alternatively, you can obtain the same information as a tuple by
+calling the ``state_with_units()`` method. You can call the ``state_with_units()`` method on a
+container object. It returns a dictionary where relevant values are represented as tuples containing
+the value and units.
+
+Both ``ansys.units.Quantity`` objects and value-unit tuples can be used with the
+``set_state()`` method of ``Real`` or ``RealList`` objects.
 
 .. code-block::
 
   >>> diam_obj = hydraulic_diameter.as_quantity()
-  >>> diam_tup = hydraulic_diameter.value_with_units()
+  >>> diam_tup = hydraulic_diameter.state_with_units()
   >>> assert diam_tup == (diam_obj.value, diam_obj.units.name)
   >>> hydraulic_diameter.set_state(2.0 * diam_obj)
   >>> assert hydraulic_diameter.units == diam_obj.units
@@ -171,10 +173,10 @@ and can be of either primitive or container type.
 Additional metadata
 -------------------
 Settings object methods are provided to access some additional metadata. There are
-a number of explicit methods and two generic methods: ``get_attr`` and ``get_attrs``.
+a number of explicit methods and two generic methods: ``get_attr()`` and ``get_attrs()``.
 
 The following examples access the list of allowed values for a particular state of
-the viscous model. All string and string list objects have an ``allowed_values``
+the viscous model. All string and string list objects have an ``allowed_values()``
 method, which returns a list of allowed string values if such a constraint currently applies
 for that object or returns ``None`` otherwise.
 
@@ -240,7 +242,7 @@ Metadata name       Method              Can return None    Type applicability   
 ==================  ==================  =================  =====================  ====================
 
 
-Using the ``get_attr`` method requires knowledge of metadata names, their applicability, and
+Using the ``get_attr()`` method requires knowledge of metadata names, their applicability, and
 the ability to interpret the raw values of the metadata. You can avoid all these issues by
 using the explicitly named methods. Note also that the metadata is dynamic, which means
 values can change based on the application state. A ``None`` value signifies that no value
@@ -290,13 +292,13 @@ Objects and commands can be active or inactive based on the application state.
 The ``is_active()`` method returns ``True`` if an object or command
 is currently active.
 
-The ``get_active_child_names`` method returns a list of
+The ``get_active_child_names()`` method returns a list of
 active children::
 
   >>> solver.setup.models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
-The ``get_active_command_names`` method returns the list of active
+The ``get_active_command_names()`` method returns the list of active
 commands::
 
   >>> solver.solution.run_calculation.get_active_command_names()
