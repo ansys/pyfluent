@@ -1183,7 +1183,7 @@ class ExtendedWorkflowWrapper:
         return super().__getattribute__(attr)
 
     def __dir__(self):
-        """Override the behaviour of dir to include attributes in WorkflowWrapper and
+        """Override the behavior of ``dir`` to include attributes in the ``WorkflowWrapper`` class and
         the underlying workflow."""
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
         dir_set = set(
