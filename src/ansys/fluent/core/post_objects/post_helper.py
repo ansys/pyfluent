@@ -2,14 +2,14 @@ import re
 
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
-    """Provides the error when iso-surface definition is incomplete."""
+    """Is raised when iso-surface definition is incomplete."""
 
     def __init__(self):
         super().__init__("Iso surface definition is incomplete.")
 
 
 class SurfaceCreationError(RuntimeError):
-    """Provides the error when surface creation is unsuccessful."""
+    """Is raised when surface creation is unsuccessful."""
 
     def __init__(self):
         super().__init__("Surface creation is unsuccessful.")

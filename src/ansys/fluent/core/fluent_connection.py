@@ -25,7 +25,7 @@ logger = logging.getLogger("pyfluent.general")
 
 
 class PortNotProvided(ValueError):
-    """Provides the error when port is not provided."""
+    """Is raised when port is not provided."""
 
     def __init__(self):
         super().__init__(
@@ -34,7 +34,7 @@ class PortNotProvided(ValueError):
 
 
 class UnsupportedRemoteFluentInstance(ValueError):
-    """Provides the error when 'wait_process_finished' does not support remote Fluent
+    """Is raised when 'wait_process_finished' does not support remote Fluent
     session."""
 
     def __init__(self):
@@ -42,7 +42,7 @@ class UnsupportedRemoteFluentInstance(ValueError):
 
 
 class WaitTypeError(TypeError):
-    """Provides the error when invalid ``wait`` type is provided."""
+    """Is raised when invalid ``wait`` type is provided."""
 
     def __init__(self):
         super().__init__("Invalid 'wait' type.")

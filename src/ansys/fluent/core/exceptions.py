@@ -6,7 +6,7 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class DisallowedValuesError(ValueError):
-    """Provides the error when an argument value is not in allowed values."""
+    """Is raised when an argument value is not in the allowed values."""
 
     def __init__(
         self,
@@ -22,13 +22,13 @@ class DisallowedValuesError(ValueError):
 
 
 class InvalidArgument(ValueError):
-    """Provides the error when an argument value is inappropriate."""
+    """Is raised when an argument value is inappropriate."""
 
     pass
 
 
 class SurfaceSpecificationError(ValueError):
-    """Provides the error when both ``surface_ids`` and ``surface_names`` are
+    """Is raised when both ``surface_ids`` and ``surface_names`` are
     provided."""
 
     def __init__(self):

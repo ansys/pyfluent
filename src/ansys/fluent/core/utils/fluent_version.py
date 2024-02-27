@@ -8,13 +8,13 @@ from ansys.fluent.core._version import fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):
-    """Provides the error when Ansys version is not found."""
+    """Is raised when Ansys version is not found."""
 
     pass
 
 
 class ComparisonError(RuntimeError):
-    """Provides the error when a comparison can't be completed."""
+    """Is raised when a comparison can't be completed."""
 
     def __init__(self):
         super().__init__(
