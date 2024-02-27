@@ -1454,19 +1454,20 @@ class PyCommand:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
             file_purpose = arg_instance.get_attr("filePurpose")
-            if file_purpose == "input":
-                if _InputFile not in self.__class__.__bases__:
-                    self.__class__.__bases__ += (_InputFile,)
-            elif file_purpose == "output":
-                if _OutputFile not in self.__class__.__bases__:
-                    self.__class__.__bases__ += (_OutputFile,)
-            elif file_purpose == "inout":
-                if _InOutFile not in self.__class__.__bases__:
-                    self.__class__.__bases__ += (_InOutFile,)
-            else:
-                raise DisallowedFilePurpose(
-                    "File purpose", file_purpose, ["input", "output", "inout"]
-                )
+            if file_purpose:
+                if file_purpose == "input":
+                    if _InputFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_InputFile,)
+                elif file_purpose == "output":
+                    if _OutputFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_OutputFile,)
+                elif file_purpose == "inout":
+                    if _InOutFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_InOutFile,)
+                else:
+                    raise DisallowedFilePurpose(
+                        "File purpose", file_purpose, ["input", "output", "inout"]
+                    )
             del cmd_instance, arg_instance
             return file_purpose if file_purpose else None
         except AttributeError:
