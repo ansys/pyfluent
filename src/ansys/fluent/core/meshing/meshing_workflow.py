@@ -11,7 +11,7 @@ from ansys.fluent.core.workflow import ClassicWorkflowWrapper, ExtendedWorkflowW
 
 
 class ClassicMeshingWorkflow(ClassicWorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper."""
+    """Provides meshing specialization of the workflow wrapper."""
 
     def __init__(
         self,
