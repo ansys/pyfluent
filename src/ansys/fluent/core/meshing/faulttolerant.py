@@ -17,7 +17,7 @@ def fault_tolerant_workflow(**launch_args) -> ExtendedMeshingWorkflow:
     Returns
     -------
     ExtendedMeshingWorkflow
-        A meshing workflow wrapper
+        Meshing workflow wrapper.
     """
     # TODO share launch code with watertight
     dynamic_interface = True
