@@ -1047,6 +1047,14 @@ class NewWorkflowWrapper:
             "initialize_workflow",
             "load_workflow",
             "create_new_workflow",
+            "fault_tolerant",
+            "part_management",
+            "pm_file_management",
+            "rules",
+            "service",
+            "task_object",
+            "watertight",
+            "workflow"]
         }
 
     def task(self, name: str) -> BaseTask:
