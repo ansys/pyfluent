@@ -1308,7 +1308,7 @@ class ExtendedWorkflowWrapper:
         )
 
     def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the list of tasks passed as argument.
+        """Delete the list of tasks passed as an argument.
 
         Parameters
         ----------
