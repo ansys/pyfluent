@@ -1,4 +1,5 @@
 from functools import partial
+import time
 from time import sleep
 
 import pytest
@@ -601,15 +602,16 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    # new_mesh_session.workflow.TaskObject["Add Local Sizing"]._add_child(state={"BOIFaceLabelList": ["elbow-fluid"]})
+    add_local_sizing._add_child(state={"boi_face_label_list": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
 
     added_sizing = add_local_sizing.add_child_and_update(
-        state={"BOIFaceLabelList": ["elbow-fluid"]}
+        state={"boi_face_label_list": ["elbow-fluid"]}
     )
     assert len(add_local_sizing.ordered_children()) == 1
     assert added_sizing
-    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
+    assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
     # restart
     watertight = new_mesh_session.watertight()
     assert import_geometry.state() == "Out-of-date"
@@ -636,14 +638,14 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    add_local_sizing._add_child(state={"boi_face_label_list": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
     added_sizing = add_local_sizing.add_child_and_update(
-        state={"BOIFaceLabelList": ["elbow-fluid"]}
+        state={"boi_face_label_list": ["elbow-fluid"]}
     )
     assert len(add_local_sizing.ordered_children()) == 1
     assert added_sizing
-    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
+    assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -654,14 +656,14 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     )
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing._add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    add_local_sizing._add_child(state={"boi_face_label_list": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
     added_sizing = add_local_sizing.add_child_and_update(
-        state={"BOIFaceLabelList": ["elbow-fluid"]}
+        state={"boi_face_label_list": ["elbow-fluid"]}
     )
     assert len(add_local_sizing.ordered_children()) == 1
     assert added_sizing
-    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
+    assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
     assert added_sizing.name() == "facesize_1"
     assert len(added_sizing.arguments())
     added_sizing_by_name = add_local_sizing.compound_child("facesize_1")
@@ -681,7 +683,6 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
-@pytest.mark.skip(reason="Randomly hanging.")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
@@ -690,28 +691,39 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     )
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
-    watertight.DeleteTasks(ListOfTasks=["Generate the Volume Mesh"])
+    watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
     # I assume that what's going on here is that due to DeleteTasks we are triggering
     # change events in the server but those events are (still) being transmitted after
     # DeleteTasks has returned. Hence, the dynamic watertight Python interface
     # is still updating after the command has returned and the client can try to access
     # while it is in that update phase, leading to (difficult to understand) exceptions.
     # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
-    create_volume_mesh = watertight.create_volume_mesh
-    assert create_volume_mesh is None
-    watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
+    time.sleep(2.5)
+    with pytest.raises(AttributeError) as msg:
+        watertight.create_volume_mesh
+    assert (
+        msg.value.args[0]
+        == "'NewMeshingWorkflow' object has no attribute 'create_volume_mesh'"
+    )
+    watertight.insert_new_task(command_name="create_volume_mesh")
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
 
     watertight_geom = watertight.describe_geometry
-    assert watertight_geom.create_regions.arguments()["NumberOfFlowVolumes"] == 1
-    watertight.DeleteTasks(ListOfTasks=["Create Regions"])
+    assert watertight_geom.create_regions.arguments()["number_of_flow_volumes"] == 1
+    watertight.delete_tasks(list_of_tasks=["create_regions"])
     assert watertight_geom.create_regions is None
     assert watertight_geom.enclose_fluid_regions
     watertight_geom.enclose_fluid_regions.delete()
     assert watertight_geom.enclose_fluid_regions is None
     watertight.create_volume_mesh.delete()
-    assert watertight.create_volume_mesh is None
+    time.sleep(2.5)
+    with pytest.raises(AttributeError) as msg:
+        watertight.create_volume_mesh
+    assert (
+        msg.value.args[0]
+        == "'NewMeshingWorkflow' object has no attribute 'create_volume_mesh'"
+    )
 
 
 @pytest.mark.fluent_version("==23.2")
