@@ -561,7 +561,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     assert len(watertight._task_list) == 14
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
