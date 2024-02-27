@@ -1295,7 +1295,7 @@ class ExtendedWorkflowWrapper:
         Raises
         ------
         ValueError
-            If command_name does not match a task name.
+            If the command name does not match a task name.
         """
         self._populate_help_string_command_id_map()
         if command_name not in self._help_string_command_id_map:
