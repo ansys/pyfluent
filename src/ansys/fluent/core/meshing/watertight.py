@@ -7,7 +7,7 @@ from .meshing_workflow import ExtendedMeshingWorkflow
 
 
 def watertight_workflow(geometry_file_name, **launch_args) -> ExtendedMeshingWorkflow:
-    """A meshing workflow wrapper, initialized as watertight.
+    """Meshing workflow wrapper, initialized as watertight.
 
     Parameters
     ----------
