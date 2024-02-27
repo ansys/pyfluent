@@ -1354,7 +1354,7 @@ class ExtendedWorkflowWrapper:
         Raises
         ------
         RuntimeError
-            If command_name does not match a task name.
+            If the command name does not match a task name.
         """
         self._populate_help_string_command_id_map()
         list_of_tasks_with_display_name = []
