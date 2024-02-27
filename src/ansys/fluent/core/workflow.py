@@ -636,7 +636,7 @@ class ArgumentWrapper(PyCallableStateObject):
             )
         )
         if self._arg is None:
-            raise RuntimeError(f"{arg} is not an argument")
+            raise RuntimeError(f"{arg} is not an argument.")
 
     def set_state(self, value: Any) -> None:
         """Set the state of this argument.
