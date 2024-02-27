@@ -595,7 +595,14 @@ class SettingsBase(Base, Generic[StateT]):
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         with self.while_setting_state():
-            return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs or state))
+            if isinstance(state, (tuple, ansys_units.Quantity)) and hasattr(
+                self, "value"
+            ):
+                self.value.set_state(state, **kwargs)
+            else:
+                return self.flproxy.set_var(
+                    self.path, self.to_scheme_keys(kwargs or state)
+                )
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):

@@ -15,16 +15,27 @@ from ansys.units.quantity import get_si_value
 import re
 from pprint import pprint
 
-fl_unit_subs = {'deg': 'radian', 'rad':'radian'}
+fl_unit_re_subs = {
+    'deg': 'radian',
+    'rad': 'radian',
+    'Ohm': 'ohm'
+}
+
+fl_unit_subs = {'%': ''}
+
 def replace_units(match):
-    return fl_unit_subs[match.group(0)]
+    return fl_unit_re_subs[match.group(0)]
 
 def substitute_fl_units_with_py_units(fl_units_dict):
     subs = {}
     for k, v in fl_units_dict.items():
-        new_val = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in fl_unit_subs), replace_units, v)
+        new_val = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in fl_unit_re_subs), replace_units, v)
         if new_val != v:
             subs[k] = new_val
+        else:
+            new_val = fl_unit_subs.get(v, None)
+            if new_val is not None:
+                subs[k] = new_val
     print("Substitutions:")
     for k, v in subs.items():
         print(f"'{fl_units_dict[k]}' -> '{v}' for '{k}'")
@@ -57,17 +68,23 @@ def make_python_fl_unit_table(scheme_unit_table):
 Output from most recent run to generate the table below:
 
 >>> pprint(make_python_fl_unit_table(fl_scheme_unit_table))
+Substitutions:
+'deg' -> 'radian' for 'angle'
+'rad s^-1' -> 'radian s^-1' for 'angular-velocity'
+'Ohm m^3' -> 'ohm m^3' for 'contact-resistance-vol'
+'deg' -> 'radian' for 'crank-angle'
+'Ohm m^2' -> 'ohm m^2' for 'elec-contact-resistance'
+'Ohm m' -> 'ohm m' for 'elec-resistivity'
+'Ohm' -> 'ohm' for 'elec-resistance'
+'%' -> '' for 'percentage'
+'N m rad^-1' -> 'N m radian^-1' for 'spring-constant-angular'
 Not SI:
 {'concentration': 'kmol m^-3',
  'elec-charge': 'A h',
  'molec-wt': 'kg kmol^-1',
  'soot-sitespecies-concentration': 'kmol m^-3'}
 Unhandled:
-{'contact-resistance-vol': 'Ohm m^3',
- 'crank-angular-velocity': 'rev min^-1',
- 'elec-contact-resistance': 'Ohm m^2',
- 'elec-resistance': 'Ohm',
- 'elec-resistivity': 'Ohm m',
+{'crank-angular-velocity': 'rev min^-1',
  'energy-density': 'J/m2',
  'mole-con-henry-const': 'Pa m^3 kgmol^-1',
  'mole-specific-energy': 'J kgmol^-1',
@@ -75,7 +92,6 @@ Unhandled:
  'mole-transfer-rate': 'kgmol m^-3 s^-1',
  'particles-conc': '1.e15-particles/kg',
  'particles-rate': '1.e15 m^-3 s^-1',
- 'percentage': '%',
  'site-density': 'kgmol m^-2',
  'soot-limiting-nuclei-rate': '1e+15-particles/m3-s',
  'soot-oxidation-constant': 'kg m kgmol^-1 K^-0.5 s^-1',
@@ -97,6 +113,7 @@ _fl_unit_table = {
     "area-inverse": "m^-2",
     "collision-rate": "m^-3 s^-1",
     "contact-resistance": "m^2 K W^-1",
+    "contact-resistance-vol": "ohm m^3",
     "crank-angle": "radian",
     "current": "A",
     "current-density": "A m^-2",
@@ -110,8 +127,11 @@ _fl_unit_table = {
     "depth": "m",
     "elec-charge-density": "A s m^-3",
     "elec-conductivity": "S m^-1",
+    "elec-contact-resistance": "ohm m^2",
     "elec-field": "V m^-1",
     "elec-permittivity": "farad m^-1",
+    "elec-resistance": "ohm",
+    "elec-resistivity": "ohm m",
     "energy": "J",
     "force": "N",
     "force*time-per-volume": "N s m^-3",
@@ -140,6 +160,7 @@ _fl_unit_table = {
     "moment-of-inertia": "kg m^2",
     "nucleation-rate": "m^-3 s^-1",
     "number-density": "m^-3",
+    "percentage": "",
     "power": "W",
     "power-per-time": "W s^-1",
     "pressure": "Pa",
