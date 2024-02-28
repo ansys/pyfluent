@@ -500,7 +500,7 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Unit Testing
+      - name: Unit testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make unittest-dev-${{ matrix.version }}
         env:
