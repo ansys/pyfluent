@@ -33,34 +33,34 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 class InvalidPassword(ValueError):
-    """Provides the error when password is invalid."""
+    """Raised when password is invalid."""
 
     def __init__(self):
         super().__init__("Provide correct 'password'.")
 
 
 class GPUSolverSupportError(ValueError):
-    """Provides the error when an unsupported Fluent version is specified."""
+    """Raised when an unsupported Fluent version is specified."""
 
     def __init__(self):
         super().__init__("Fluent GPU Solver is only supported for 3D.")
 
 
 class IpPortNotProvided(ValueError):
-    """Provides the error when ip and port are not specified."""
+    """Raised when ip and port are not specified."""
 
     def __init__(self):
         super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
 
 
 class UnexpectedKeywordArgument(TypeError):
-    """Provides the error when a valid keyword argument is not specified."""
+    """Raised when a valid keyword argument is not specified."""
 
     pass
 
 
 class DockerContainerLaunchNotSupported(SystemError):
-    """Provides the error when docker container launch is not supported."""
+    """Raised when docker container launch is not supported."""
 
     def __init__(self):
         super().__init__("Python Docker SDK is unsupported on this system.")
@@ -615,12 +615,12 @@ def launch_remote_fluent(
         launcher_args=launcher_args,
     )
 
-    remote_file_handler = (
+    file_transfer_service = (
         file_transfer_service
         if file_transfer_service
         else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
     )
 
     return session_cls(
-        fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+        fluent_connection=fluent_connection, file_transfer_service=file_transfer_service
     )

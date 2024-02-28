@@ -22,6 +22,7 @@ from ansys.fluent.core.services.interceptors import (
     WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 Path = list[tuple[str, str]]
 _TValue = Union[None, bool, int, float, str, Sequence["_TValue"], dict[str, "_TValue"]]
@@ -49,22 +50,38 @@ def _get_value_from_message_dict(
     return d
 
 
+class DisallowedFilePurpose(ValueError):
+    """Is raised when the specified file purpose is not in the allowed values."""
+
+    def __init__(
+        self,
+        context: Optional[Any] = None,
+        name: Optional[Any] = None,
+        allowed_values: Optional[Any] = None,
+    ):
+        super().__init__(
+            allowed_name_error_message(
+                context=context, trial_name=name, allowed_values=allowed_values
+            )
+        )
+
+
 class InvalidNamedObject(RuntimeError):
-    """Provides the error when the object is not a named object."""
+    """Raised when the object is not a named object."""
 
     def __init__(self, class_name):
         super().__init__(f"{class_name} is not a named object class.")
 
 
 class SubscribeEventError(RuntimeError):
-    """Provides the error when server fails to subscribe from event."""
+    """Raised when server fails to subscribe from event."""
 
     def __init__(self, request):
         super().__init__(f"Failed to subscribe event: {request}!")
 
 
 class UnsubscribeEventError(RuntimeError):
-    """Provides the error when server fails to unsubscribe from event."""
+    """Raised when server fails to unsubscribe from event."""
 
     def __init__(self, request):
         super().__init__(f"Failed to unsubscribe event: {request}!")
@@ -113,7 +130,7 @@ class DatamodelServiceImpl:
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
@@ -126,7 +143,7 @@ class DatamodelServiceImpl:
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
-        self.remote_file_handler = remote_file_handler
+        self.file_transfer_service = file_transfer_service
 
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
@@ -351,7 +368,7 @@ class DatamodelService(StreamingService):
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -361,7 +378,7 @@ class DatamodelService(StreamingService):
         )
         self.event_streaming = None
         self.events = {}
-        self.remote_file_handler = remote_file_handler
+        self.file_transfer_service = file_transfer_service
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         request = DataModelProtoModule.GetAttributeValueRequest(
@@ -1437,12 +1454,20 @@ class PyCommand:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
             file_purpose = arg_instance.get_attr("filePurpose")
-            if file_purpose == "input":
-                if _InputFile not in self.__class__.__bases__:
-                    self.__class__.__bases__ += (_InputFile,)
-            elif file_purpose == "output":
-                if _OutputFile not in self.__class__.__bases__:
-                    self.__class__.__bases__ += (_OutputFile,)
+            if file_purpose:
+                if file_purpose == "input":
+                    if _InputFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_InputFile,)
+                elif file_purpose == "output":
+                    if _OutputFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_OutputFile,)
+                elif file_purpose == "inout":
+                    if _InOutFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_InOutFile,)
+                else:
+                    raise DisallowedFilePurpose(
+                        "File purpose", file_purpose, ["input", "output", "inout"]
+                    )
             del cmd_instance, arg_instance
             return file_purpose if file_purpose else None
         except AttributeError:
@@ -1534,7 +1559,7 @@ class PyCommand:
 class _InputFile:
     def _do_before_execute(self, value):
         try:
-            self.service.remote_file_handler.upload(file_name=value)
+            self.service.file_transfer_service.upload(file_name=value)
         except AttributeError:
             pass
 
@@ -1542,7 +1567,7 @@ class _InputFile:
 class _OutputFile:
     def _do_after_execute(self, value):
         try:
-            self.service.remote_file_handler.download(file_name=value)
+            self.service.file_transfer_service.download(file_name=value)
         except AttributeError:
             pass
 
