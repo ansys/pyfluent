@@ -1276,7 +1276,6 @@ class EnhancedWorkflow:
 
     def insert_new_task(self, command_name: str):
         """Insert a new task based on the command name passed as an argument.
----------------------------------------------------------------------------------- maint/refactor_workflow_wrappers
 
         Parameters
         ----------
@@ -1304,104 +1303,7 @@ class EnhancedWorkflow:
         )
 
     def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the list of tasks passed as an argument.
-
-        Parameters
-        ----------
-        list_of_tasks: list[str]
-            List of task items.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        ValueError
-            If command_name does not match a task name. None of the tasks is deleted.
-        """
-        self._populate_help_string_command_id_map()
-        list_of_tasks_with_display_name = []
-        for task_name in list_of_tasks:
-            try:
-                list_of_tasks_with_display_name.append(
-                    self._help_string_display_text_map[task_name]
-                )
-            except KeyError as ex:
-                raise ValueError(
-                    f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
-                ) from ex
-
-        return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
-
-    def create_composite_task(self, list_of_tasks: list[str]):
-        """Create the list of tasks passed as argument.
-
-        Parameters
-        ----------
-        list_of_tasks: list[str]
-            List of task items.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        RuntimeError
-            If the command name does not match a task name.
-        """
-        self._populate_help_string_command_id_map()
-        list_of_tasks_with_display_name = []
-        for task_name in list_of_tasks:
-            try:
-                list_of_tasks_with_display_name.append(
-                    self._help_string_display_text_map[task_name]
-                )
-            except KeyError:
-                raise RuntimeError(
-                    f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
-                )
-
-        return self._workflow.CreateCompositeTask(
-            ListOfTasks=list_of_tasks_with_display_name
-        )
-
-
-class ClassicWorkflowWrapper:
-    """Wraps a workflow object, adding methods to discover more about the relationships
-    between task objects.
----------------------------------------------------------------------------------------------------------------
-
-        Parameters
-        ----------
-        command_name: str
-            Name of the new task.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        ValueError
-            If the command name does not match a task name.
-            In this case, none of the tasks are deleted.
-        """
-        self._populate_help_string_command_id_map()
-        if command_name not in self._help_string_command_id_map:
-            raise ValueError(
-                f"'{command_name}' is not an allowed command task.\n"
-                "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
-            )
-        return self._workflow.InsertNewTask(
-            CommandName=self._help_string_command_id_map[command_name]
-        )
-
-    def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the list of tasks passed as an argument.
+        """Delete the list of tasks passed as argument.
 
         Parameters
         ----------
@@ -1468,8 +1370,7 @@ class ClassicWorkflowWrapper:
 
 
 class ClassicWorkflow:
-    """Wraps a meshing workflow object.
----------------------------------------------------------------------------- main
+    """Wraps meshing workflow object.
 
     Methods
     -------
@@ -1479,7 +1380,7 @@ class ClassicWorkflow:
     """
 
     def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
-        """Initialize WorkflowWrapper.
+        """Initialize ClassicWorkflow.
 
         Parameters
         ----------
