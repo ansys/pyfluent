@@ -16,14 +16,14 @@ from ansys.fluent.core.services.field_data import (
 
 
 class InvalidMultiPhaseFieldName(ValueError):
-    """Provides the error when multi-phase field name is inappropriate."""
+    """Raised when multi-phase field name is inappropriate."""
 
     def __init__(self):
         super().__init__("Multi-phase field name should start with 'phase-'.")
 
 
 class InvalidFieldName(ValueError):
-    """Provides the error when a field name is inappropriate."""
+    """Raised when a field name is inappropriate."""
 
     def __init__(self):
         super().__init__("The only allowed field is 'velocity'.")

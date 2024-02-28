@@ -50,21 +50,21 @@ def _get_value_from_message_dict(
 
 
 class InvalidNamedObject(RuntimeError):
-    """Provides the error when the object is not a named object."""
+    """Raised when the object is not a named object."""
 
     def __init__(self, class_name):
         super().__init__(f"{class_name} is not a named object class.")
 
 
 class SubscribeEventError(RuntimeError):
-    """Provides the error when server fails to subscribe from event."""
+    """Raised when server fails to subscribe from event."""
 
     def __init__(self, request):
         super().__init__(f"Failed to subscribe event: {request}!")
 
 
 class UnsubscribeEventError(RuntimeError):
-    """Provides the error when server fails to unsubscribe from event."""
+    """Raised when server fails to unsubscribe from event."""
 
     def __init__(self, request):
         super().__init__(f"Failed to unsubscribe event: {request}!")
