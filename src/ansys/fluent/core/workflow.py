@@ -10,7 +10,12 @@ import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
-from ansys.fluent.core.services.datamodel_se import PyCallableStateObject, PyMenuGeneric
+from ansys.fluent.core.services.datamodel_se import (
+    PyCallableStateObject,
+    PyCommand,
+    PyMenuGeneric,
+    PySingletonCommandArgumentsSubItem,
+)
 
 
 def camel_to_snake_case(camel_case_str: str) -> str:
@@ -140,16 +145,18 @@ class BaseTask:
     """
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize BaseTask.
 
         Parameters
         ----------
         command_source : WorkflowWrapper
-            The set of workflow commands.
+            Set of workflow commands.
         task : str
-            The name of this task.
+            Name of this task.
         """
         self.__dict__.update(
             dict(
@@ -316,14 +323,25 @@ class BaseTask:
                 pass
         return self._python_name
 
-    def delete(self) -> None:
-        """Delete this task from the workflow."""
-        self._command_source.DeleteTasks(ListOfTasks=[self.name()])
+    def _get_camel_case_arg_keys(self):
+        _args = self.arguments
+        _camel_args = []
+        for arg in _args().keys():
+            _camel_args.append(_args._snake_to_camel_map[arg])
+
+        return _camel_args
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            snake_attr = snake_to_camel_case(str(attr), self.arguments().keys())
-            attr = snake_attr if snake_attr else attr
+            if not attr.islower() and attr != "Arguments":
+                raise AttributeError(
+                    "Camel case attribute access is not supported. "
+                    f"Try using '{camel_to_snake_case(attr)}' instead."
+                )
+            camel_attr = snake_to_camel_case(
+                str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
+            )
+            attr = camel_attr if camel_attr else attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -340,33 +358,75 @@ class BaseTask:
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
+        elif attr in self.arguments():
+            getattr(self, attr).set_state(value)
         else:
             setattr(self._task, attr, value)
 
     def __dir__(self):
         arg_list = []
-        for arg in self.arguments():
-            arg_list.append(
-                camel_to_snake_case(arg) if self._dynamic_interface else arg
-            )
+        if self._dynamic_interface:
+            for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
+                arg_list.append(camel_to_snake_case(arg))
+        else:
+            for arg in [*self.arguments().keys(), *dir(self._task)]:
+                arg_list.append(arg)
 
-        return sorted(
-            set(
-                list(self.__dict__.keys())
-                + dir(type(self))
-                + dir(self._task)
-                + arg_list
-            )
-        )
+        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+
+    def delete(self) -> None:
+        """Delete this task from the workflow."""
+        self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
+
+    def rename(self, new_name: str):
+        """Rename the current task to a given name."""
+        return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
+        """Add a child task."""
         return self._task.AddChildToTask()
 
     def update_child_tasks(self, setup_type_changed: bool):
+        """Update child tasks."""
         self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
 
     def insert_compound_child_task(self):
+        """Insert a compound child task."""
         return self._task.InsertCompoundChildTask()
+
+    def get_next_possible_tasks(self) -> list[str]:
+        """Get the list of possible names of commands that can be inserted as tasks
+        after this current task is executed."""
+        return [camel_to_snake_case(task) for task in self._task.GetNextPossibleTasks()]
+
+    def insert_next_task(self, command_name: str):
+        """Insert a task based on the command name passed as argument after the current
+        task is executed.
+
+        Parameters
+        ----------
+        command_name: str
+            Name of the new task.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If the command name does not match a task name.
+        """
+        if command_name not in self.get_next_possible_tasks():
+            raise ValueError(
+                f"'{command_name}' cannot be inserted next to '{self.python_name()}'. \n"
+                "Please use 'get_next_possible_tasks()' to view list of allowed tasks."
+            )
+        return self._task.InsertNextTask(
+            CommandName=snake_to_camel_case(
+                command_name, self._task.GetNextPossibleTasks()
+            )
+        )
 
     def __call__(self, **kwds) -> Any:
         if kwds:
@@ -407,7 +467,7 @@ class TaskContainer(PyCallableStateObject):
     __dir__()
     """
 
-    def __init__(self, command_source: OldWorkflowWrapper) -> None:
+    def __init__(self, command_source: ClassicWorkflow) -> None:
         """Initialize TaskContainer.
 
         Parameters
@@ -462,11 +522,13 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         task : BaseTask
-            The task holding these arguments.
+            Task holding these arguments.
         """
         self.__dict__.update(
             dict(
                 _task=task,
+                _dynamic_interface=task._dynamic_interface,
+                _snake_to_camel_map={},
             )
         )
 
@@ -476,9 +538,16 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         args : dict
-            New argument state.
+            State of the arguments.
         """
-        self._task.Arguments.set_state(args)
+        if self._dynamic_interface:
+            self.get_state()
+            camel_args = {}
+            for key, val in args.items():
+                camel_args[self._snake_to_camel_map[key]] = val
+            self._task.Arguments.set_state(camel_args)
+        else:
+            self._task.Arguments.set_state(args)
 
     def update_dict(self, args: dict) -> None:
         """Merge with arguments.
@@ -486,22 +555,48 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         args : dict
-            new arguments state
+            State of the arguments.
         """
-        self._task.Arguments.update_dict(args)
+        if self._dynamic_interface:
+            self.get_state()
+            camel_args = {}
+            for key, val in args.items():
+                camel_args[self._snake_to_camel_map[key]] = val
+            self._task.Arguments.update_dict(camel_args)
+        else:
+            self._task.Arguments.update_dict(args)
 
     def get_state(self, explicit_only=False) -> dict:
-        """Get arguments state.
+        """Get the state of the arguments.
 
         Parameters
         ----------
         explicit_only : bool
-            Whether to only include explicitly set values,
-            otherwise all values are included.
+            Whether to only include explicitly set values.
+            Otherwise, all values are included.
         """
-        return (
+        state_dict = (
             self._task.Arguments() if explicit_only else self._task._command_arguments()
         )
+
+        if self._dynamic_interface:
+            snake_case_state_dict = {}
+            for key, val in state_dict.items():
+                nested_val = {}
+                if isinstance(
+                    getattr(self._task._command_arguments, key),
+                    PySingletonCommandArgumentsSubItem,
+                ):
+                    for k, v in val.items():
+                        self._snake_to_camel_map[camel_to_snake_case(k)] = k
+                        nested_val[camel_to_snake_case(k)] = v
+                else:
+                    nested_val = val
+                self._snake_to_camel_map[camel_to_snake_case(key)] = key
+                snake_case_state_dict[camel_to_snake_case(key)] = nested_val
+            return snake_case_state_dict
+
+        return state_dict
 
     def __getattr__(self, attr):
         return getattr(self._task._command_arguments, attr)
@@ -531,25 +626,30 @@ class ArgumentWrapper(PyCallableStateObject):
         arg: str
             Argument name.
         """
-        self._task = task
-        self._arg_name = arg
-        self._arg = getattr(task._command_arguments, arg)
+        self.__dict__.update(
+            dict(
+                _task=task,
+                _arg_name=arg,
+                _arg=getattr(task._command_arguments, arg),
+                _dynamic_interface=task._dynamic_interface,
+                _snake_to_camel_map={},
+            )
+        )
         if self._arg is None:
-            raise RuntimeError(f"{arg} is not an argument")
-        self._dynamic_interface = task._dynamic_interface
+            raise RuntimeError(f"{arg} is not an argument.")
 
     def set_state(self, value: Any) -> None:
-        """Set the state of this argument.
+        """Set the state of the argument.
 
         Parameters
         ----------
         value : Any
-            New argument value.
+            Value of the argument.
         """
         self._task.Arguments.update_dict({self._arg_name: value})
 
     def get_state(self, explicit_only: bool = False) -> Any:
-        """Get argument state.
+        """Get the state of this argument.
 
         Parameters
         ----------
@@ -557,13 +657,49 @@ class ArgumentWrapper(PyCallableStateObject):
             Whether to return the explicitly set value or the
             full derived value.
         """
-        return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
+
+        state_dict = (
+            self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
+        )
+
+        if self._dynamic_interface and isinstance(
+            self._arg, PySingletonCommandArgumentsSubItem
+        ):
+            snake_case_state_dict = {}
+            for key, val in state_dict.items():
+                self._snake_to_camel_map[camel_to_snake_case(key)] = key
+                snake_case_state_dict[camel_to_snake_case(key)] = val
+            return snake_case_state_dict
+
+        return state_dict
+
+    def _get_camel_case_arg_keys(self):
+        _args = self
+        _camel_args = []
+        for arg in _args().keys():
+            try:
+                _camel_args.append(self._snake_to_camel_map[arg])
+            except KeyError:
+                _camel_args.append(arg)
+
+        return _camel_args
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
-            snake_attr = snake_to_camel_case(str(attr), self().keys())
-            attr = snake_attr if snake_attr else attr
+            if not attr.islower():
+                raise AttributeError(
+                    "Camel case attribute access is not supported. "
+                    f"Try using '{camel_to_snake_case(attr)}' instead."
+                )
+            camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
+            attr = camel_attr if camel_attr else attr
         return getattr(self._arg, attr)
+
+    def __setattr__(self, attr, value):
+        if attr in self.__dict__:
+            self.__dict__[attr] = value
+        else:
+            getattr(self, attr).set_state(value)
 
     def __dir__(self):
         arg_list = []
@@ -582,7 +718,9 @@ class CommandTask(BaseTask):
     """
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize CommandTask.
 
@@ -596,7 +734,7 @@ class CommandTask(BaseTask):
         super().__init__(command_source, task)
 
     @property
-    def CommandArguments(self) -> ReadOnlyObject:
+    def command_arguments(self) -> ReadOnlyObject:
         """Get the task's arguments in read-only form (deprecated).
 
         Returns
@@ -649,7 +787,9 @@ class SimpleTask(CommandTask):
     TaskType Simple."""
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize SimpleTask.
 
@@ -675,7 +815,9 @@ class CompoundChild(SimpleTask):
     TaskType Compound Child."""
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize CompoundChild.
 
@@ -704,7 +846,9 @@ class CompositeTask(BaseTask):
     TaskType Composite."""
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize CompositeTask.
 
@@ -718,7 +862,7 @@ class CompositeTask(BaseTask):
         super().__init__(command_source, task)
 
     @property
-    def CommandArguments(self) -> ReadOnlyObject:
+    def command_arguments(self) -> ReadOnlyObject:
         """Get the task's arguments in read-only form (deprecated).
 
         Returns
@@ -744,13 +888,20 @@ class CompositeTask(BaseTask):
         """
         return {}
 
+    def insert_composite_child_task(self, command_name: str):
+        """Insert a composite child task based on the command name passed as
+        argument."""
+        return self._task.InsertCompositeChildTask(CommandName=command_name)
+
 
 class ConditionalTask(CommandTask):
     """Conditional task representation for wrapping a Workflow TaskObject instance of
     TaskType Conditional."""
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize ConditionalTask.
 
@@ -783,7 +934,9 @@ class CompoundTask(CommandTask):
     TaskType Compound."""
 
     def __init__(
-        self, command_source: Union[OldWorkflowWrapper, NewWorkflowWrapper], task: str
+        self,
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        task: str,
     ) -> None:
         """Initialize CompoundTask.
 
@@ -805,8 +958,12 @@ class CompoundTask(CommandTask):
             Optional state.
         """
         state = state or {}
-        state.update({"AddChild": "yes"})
-        self._task.Arguments.set_state(state)
+        if self._dynamic_interface:
+            state.update({"add_child": "yes"})
+            self.arguments.set_state(state)
+        else:
+            state.update({"AddChild": "yes"})
+            self._task.Arguments.set_state(state)
 
     def add_child_and_update(self, state=None):
         """Add a child to this CompoundTask and update.
@@ -872,9 +1029,9 @@ def _makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class NewWorkflowWrapper:
-    """Wrap a Workflow object, adding methods to discover more about the relationships
-    between TaskObjects.
+class EnhancedWorkflow:
+    """Wraps a workflow object, adding methods to discover more about the relationships
+    between task objects.
 
     Methods
     -------
@@ -906,9 +1063,25 @@ class NewWorkflowWrapper:
         self._main_thread_ident = None
         self._task_objects = {}
         self._dynamic_interface = False
+        self._help_string_command_id_map = {}
+        self._help_string_display_text_map = {}
+        self._unwanted_attrs = {
+            "reset_workflow",
+            "initialize_workflow",
+            "load_workflow",
+            "create_new_workflow",
+            # "fault_tolerant",
+            # "part_management",
+            # "pm_file_management",
+            "rules",
+            "service",
+            "task_object",
+            # "watertight",
+            "workflow",
+        }
 
     def task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
         functionality.
 
         Parameters
@@ -986,23 +1159,35 @@ class NewWorkflowWrapper:
         return []
 
     def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object.
-
-        Parameters
-        ----------
-        attr : str
-            An attribute not defined in WorkflowWrapper
-        """
-        if attr == "add_on_affected":
-            return self._attr_from_wrapped_workflow(attr)
-        return self._task_objects.get(attr) or super().__getattribute__(attr)
+        """Delegate attribute lookup to the wrapped workflow object."""
+        _task_object = self._task_objects.get(attr)
+        if _task_object:
+            return _task_object
+        if attr != "TaskObject" and attr not in self._unwanted_attrs:
+            if not attr.islower():
+                raise AttributeError(
+                    "Camel case attribute access is not supported. "
+                    f"Try using '{camel_to_snake_case(attr)}' instead."
+                )
+            camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
+            attr = camel_attr if camel_attr else attr
+            obj = self._attr_from_wrapped_workflow(attr)
+            if obj:
+                return obj
+        return super().__getattribute__(attr)
 
     def __dir__(self):
-        """Override the behaviour of dir to include attributes in WorkflowWrapper and
-        the underlying workflow."""
-        return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
+        """Override the behavior of ``dir`` to include attributes in the
+        ``WorkflowWrapper`` class and the underlying workflow."""
+        arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
+        dir_set = set(
+            list(self.__dict__)
+            + dir(type(self))
+            + arg_list
+            + self.child_task_python_names()
         )
+        dir_set = dir_set - self._unwanted_attrs
+        return sorted(filter(None, dir_set))
 
     def __call__(self):
         """Delegate calls to the underlying workflow."""
@@ -1060,10 +1245,132 @@ class NewWorkflowWrapper:
 
             self.add_on_affected(refresh_after_sleep)
 
+    def save_workflow(self, file_path: str):
+        """Save the current workflow to the location provided."""
+        self._workflow.SaveWorkflow(FilePath=file_path)
 
-class OldWorkflowWrapper:
-    """Wrap a Workflow object, adding methods to discover more about the relationships
-    between TaskObjects.
+    def load_state(self, list_of_roots: list):
+        """Load the state of the workflow."""
+        self._workflow.LoadState(ListOfRoots=list_of_roots)
+
+    def _populate_help_string_command_id_map(self):
+        if not self._help_string_command_id_map:
+            for command in dir(self._command_source):
+                if command in ["SwitchToSolution", "set_state"]:
+                    continue
+                command_obj = getattr(self._command_source, command)
+                if isinstance(command_obj, PyCommand):
+                    command_obj_instance = command_obj.create_instance()
+                    help_str = command_obj_instance.get_attr("helpString")
+                    if help_str and help_str.islower():
+                        self._help_string_command_id_map[help_str] = command
+                        self._help_string_display_text_map[
+                            help_str
+                        ] = command_obj_instance.get_attr("displayText")
+                    del command_obj_instance
+
+    def get_possible_tasks(self):
+        """Get the list of possible names of commands that can be inserted as tasks."""
+        self._populate_help_string_command_id_map()
+        return list(self._help_string_command_id_map)
+
+    def insert_new_task(self, command_name: str):
+        """Insert a new task based on the command name passed as an argument.
+
+        Parameters
+        ----------
+        command_name: str
+            Name of the new task.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If the command name does not match a task name.
+            In this case, none of the tasks are deleted.
+        """
+        self._populate_help_string_command_id_map()
+        if command_name not in self._help_string_command_id_map:
+            raise ValueError(
+                f"'{command_name}' is not an allowed command task.\n"
+                "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+            )
+        return self._workflow.InsertNewTask(
+            CommandName=self._help_string_command_id_map[command_name]
+        )
+
+    def delete_tasks(self, list_of_tasks: list[str]):
+        """Delete the list of tasks passed as an argument.
+
+        Parameters
+        ----------
+        list_of_tasks: list[str]
+            List of task items.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        ValueError
+            If command_name does not match a task name. None of the tasks is deleted.
+        """
+        self._populate_help_string_command_id_map()
+        list_of_tasks_with_display_name = []
+        for task_name in list_of_tasks:
+            try:
+                list_of_tasks_with_display_name.append(
+                    self._help_string_display_text_map[task_name]
+                )
+            except KeyError as ex:
+                raise ValueError(
+                    f"'{task_name}' is not an allowed command task.\n"
+                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                ) from ex
+
+        return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
+
+    def create_composite_task(self, list_of_tasks: list[str]):
+        """Create the list of tasks passed as argument.
+
+        Parameters
+        ----------
+        list_of_tasks: list[str]
+            List of task items.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        RuntimeError
+            If the command name does not match a task name.
+        """
+        self._populate_help_string_command_id_map()
+        list_of_tasks_with_display_name = []
+        for task_name in list_of_tasks:
+            try:
+                list_of_tasks_with_display_name.append(
+                    self._help_string_display_text_map[task_name]
+                )
+            except KeyError:
+                raise RuntimeError(
+                    f"'{task_name}' is not an allowed command task.\n"
+                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                )
+
+        return self._workflow.CreateCompositeTask(
+            ListOfTasks=list_of_tasks_with_display_name
+        )
+
+
+class ClassicWorkflow:
+    """Wraps a meshing workflow object.
 
     Methods
     -------
@@ -1099,13 +1406,7 @@ class OldWorkflowWrapper:
         return TaskContainer(self)
 
     def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object.
-
-        Parameters
-        ----------
-        attr : str
-            An attribute not defined in WorkflowWrapper
-        """
+        """Delegate attribute lookup to the wrapped workflow object."""
         obj = self._attr_from_wrapped_workflow(
             attr
         )  # or self._task_with_cmd_matching_help_string(attr)

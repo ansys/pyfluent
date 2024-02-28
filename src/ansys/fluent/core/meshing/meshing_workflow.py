@@ -7,11 +7,11 @@ from __future__ import annotations
 from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.workflow import NewWorkflowWrapper, OldWorkflowWrapper
+from ansys.fluent.core.workflow import ClassicWorkflow, EnhancedWorkflow
 
 
-class OldMeshingWorkflow(OldWorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper."""
+class ClassicMeshingWorkflow(ClassicWorkflow):
+    """Provides meshing specialization of the workflow wrapper."""
 
     def __init__(
         self,
@@ -23,20 +23,16 @@ class OldMeshingWorkflow(OldWorkflowWrapper):
         Parameters
         ----------
         workflow : PyMenuGeneric
-            The underlying workflow object.
+            Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
-        part_management : PyMenuGeneric
-            The part-management object.
-        pm_file_management : PyMenuGeneric
-            The part-management file-management object.
+            Meshing object.
         """
         super().__init__(workflow=workflow, command_source=meshing)
 
 
-class NewMeshingWorkflow(NewWorkflowWrapper):
-    """Meshing specialization of the WorkflowWrapper that extends the core functionality
-    in an object-oriented manner."""
+class EnhancedMeshingWorkflow(EnhancedWorkflow):
+    """Provides meshing specialization of the workflow wrapper that extends the core
+    functionality in an object-oriented manner."""
 
     def __init__(
         self,
@@ -50,13 +46,13 @@ class NewMeshingWorkflow(NewWorkflowWrapper):
         Parameters
         ----------
         workflow : PyMenuGeneric
-            The underlying workflow object.
+            Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
+            Meshing object.
         part_management : PyMenuGeneric
-            The part-management object.
+            Part-management object.
         pm_file_management : PyMenuGeneric
-            The part-management file-management object.
+            Part-management file-management object.
         """
         super().__init__(workflow=workflow, command_source=meshing)
         self._is_ftm = False

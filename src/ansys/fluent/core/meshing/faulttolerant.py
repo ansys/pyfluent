@@ -3,11 +3,11 @@
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.launcher.launcher_utils import FluentMode
 
-from .meshing_workflow import NewMeshingWorkflow
+from .meshing_workflow import EnhancedMeshingWorkflow
 
 
-def fault_tolerant_workflow(**launch_args) -> NewMeshingWorkflow:
-    """A meshing workflow wrapper, initialized as fault-tolerant.
+def fault_tolerant_workflow(**launch_args) -> EnhancedMeshingWorkflow:
+    """Meshing workflow wrapper, initialized as fault-tolerant.
 
     Parameters
     ----------
@@ -16,8 +16,8 @@ def fault_tolerant_workflow(**launch_args) -> NewMeshingWorkflow:
 
     Returns
     -------
-    NewMeshingWorkflow
-        A meshing workflow wrapper
+    EnhancedMeshingWorkflow
+        Meshing workflow wrapper.
     """
     # TODO share launch code with watertight
     dynamic_interface = True

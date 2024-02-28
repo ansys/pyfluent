@@ -3,11 +3,11 @@
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.launcher.launcher_utils import FluentMode
 
-from .meshing_workflow import NewMeshingWorkflow
+from .meshing_workflow import EnhancedMeshingWorkflow
 
 
-def watertight_workflow(geometry_file_name, **launch_args) -> NewMeshingWorkflow:
-    """A meshing workflow wrapper, initialized as watertight.
+def watertight_workflow(geometry_file_name, **launch_args) -> EnhancedMeshingWorkflow:
+    """Meshing workflow wrapper, initialized as watertight.
 
     Parameters
     ----------
@@ -18,8 +18,8 @@ def watertight_workflow(geometry_file_name, **launch_args) -> NewMeshingWorkflow
 
     Returns
     -------
-    NewMeshingWorkflow
-        A meshing workflow wrapper
+    EnhancedMeshingWorkflow
+        Meshing workflow wrapper.
     """
     dynamic_interface = True
     if "dynamic_interface" in launch_args:
@@ -41,6 +41,6 @@ def watertight_workflow(geometry_file_name, **launch_args) -> NewMeshingWorkflow
         # change it so we can do this:
         # import_geometry.arguments.FileName = geometry_file_name
         # or import_geometry.FileName = geometry_file_name
-        import_geometry.arguments.update_dict(dict(FileName=geometry_file_name))
-        import_geometry.Execute()
+        import_geometry.arguments.update_dict(dict(file_name=geometry_file_name))
+        import_geometry()
     return meshing_workflow
