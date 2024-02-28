@@ -5,7 +5,7 @@ import ansys.platform.instancemanagement as pypim
 
 
 class PyPIMConfigurationError(ConnectionError):
-    """Is raised when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
+    """Raised when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
