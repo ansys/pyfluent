@@ -1299,7 +1299,7 @@ class EnhancedWorkflow:
         )
 
     def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the list of tasks passed as argument.
+        """Delete the provided list of tasks.
 
         Parameters
         ----------
@@ -1366,7 +1366,7 @@ class EnhancedWorkflow:
 
 
 class ClassicWorkflow:
-    """Wraps meshing workflow object.
+    """Wraps a meshing workflow object.
 
     Methods
     -------
