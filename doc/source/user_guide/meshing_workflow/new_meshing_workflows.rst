@@ -2,7 +2,8 @@
 
 Enhanced meshing workflow
 =========================
-Enhanced meshing workflow interface.
+Provides sample usage of ``watertight`` and ``fault-tolerant`` meshing by using
+the enhanced meshing workflow interface.
 
 Watertight geometry meshing workflow
 ------------------------------------

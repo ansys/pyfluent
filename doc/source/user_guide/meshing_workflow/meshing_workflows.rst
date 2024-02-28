@@ -2,7 +2,8 @@
 
 Classic meshing workflow
 ========================
-Classic meshing workflow interface that appear in journals.
+Provides sample usage of ``watertight`` and ``fault-tolerant`` meshing by using
+the classic meshing workflow interface that appear in journals.
 
 Watertight geometry meshing workflow
 ------------------------------------

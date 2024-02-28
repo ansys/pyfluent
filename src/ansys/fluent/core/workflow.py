@@ -538,7 +538,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         args : dict
-            New argument state.
+            New argument's state..
         """
         if self._dynamic_interface:
             self.get_state()
@@ -555,7 +555,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         args : dict
-            new arguments state
+            New argument's state.
         """
         if self._dynamic_interface:
             self.get_state()
@@ -644,7 +644,7 @@ class ArgumentWrapper(PyCallableStateObject):
         Parameters
         ----------
         value : Any
-            New argument value.
+            New argument's value.
         """
         self._task.Arguments.update_dict({self._arg_name: value})
 
@@ -1296,6 +1296,7 @@ class EnhancedWorkflowWrapper:
         ------
         ValueError
             If the command name does not match a task name.
+            In this case, none of the tasks are deleted.
         """
         self._populate_help_string_command_id_map()
         if command_name not in self._help_string_command_id_map:
