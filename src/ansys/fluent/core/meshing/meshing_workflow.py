@@ -52,7 +52,7 @@ class EnhancedMeshingWorkflow(EnhancedWorkflow):
 
 
 class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
-    """Provides water-tight meshing specialization of the workflow wrapper."""
+    """Provides watertight meshing specialization of the workflow wrapper."""
 
     def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
         """Initialize WatertightMeshingWorkflow.
