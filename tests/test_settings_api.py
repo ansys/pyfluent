@@ -237,6 +237,9 @@ def test_deprecated_settings(new_solver_session):
         == 10
     )
 
+    # TODO: Enable after Fluent image is updated
+    # solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
+
 
 @pytest.mark.fluent_version(">=24.2")
 def test_command_return_type(new_solver_session):

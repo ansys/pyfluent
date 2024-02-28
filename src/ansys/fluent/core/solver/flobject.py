@@ -547,9 +547,13 @@ class _Alias:
         return self._print_newer_api()
 
 
-def _create_child(cls, name, parent: weakref.CallableProxyType, is_alias=False):
-    if is_alias or isinstance(parent, _Alias):
-        alias_cls = type(f"{cls.__name__}_alias", (_Alias, cls), dict(cls.__dict__))
+def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None):
+    if alias_path or isinstance(parent, _Alias):
+        alias_cls = type(
+            f"{cls.__name__}_alias",
+            (_Alias, cls),
+            dict(cls.__dict__) | {"alias_path": alias_path},
+        )
         return alias_cls(name, parent.__repr__.__self__)
     return cls(name, parent)
 
@@ -592,6 +596,35 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
+    @classmethod
+    def unalias(cls, value):
+        if isinstance(value, collections.abc.Mapping):
+            ret = {}
+            for k, v in value.items():
+                if k in cls._child_aliases:
+                    alias = cls._child_aliases[k]
+                    if not isinstance(alias, str):
+                        alias = alias.alias_path
+                    # TODO: handle ".." in alias path
+                    if ".." in alias:
+                        raise NotImplementedError(
+                            'Cannot handle ".." in alias path while setting state.'
+                        )
+                    ret_alias = ret
+                    comps = alias.split("/")
+                    for i, comp in enumerate(comps):
+                        cls = cls._child_classes[comp]
+                        if i == len(comps) - 1:
+                            ret_alias[comp] = cls.unalias(v)
+                        else:
+                            ret_alias[comp] = {}
+                            ret_alias = ret_alias[comp]
+                else:
+                    ret[k] = cls.unalias(v)
+            return ret
+        else:
+            return value
+
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         with self.while_setting_state():
@@ -600,9 +633,8 @@ class SettingsBase(Base, Generic[StateT]):
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                return self.flproxy.set_var(
-                    self.path, self.to_scheme_keys(kwargs or state)
-                )
+                state = self.unalias(kwargs or state)
+                return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -935,7 +967,7 @@ class Group(SettingsBase[DictStateType]):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1226,7 +1258,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1344,7 +1376,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1423,7 +1455,7 @@ class Action(Base):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1811,9 +1843,12 @@ def get_cls(name, info, parent=None, version=None):
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
         if child_aliases or command_aliases or query_aliases:
+            cls._child_aliases = {}
             # No need to differentiate in the Python implementation
             for k, v in (child_aliases | command_aliases | query_aliases).items():
-                cls._child_aliases[to_python_name(k)] = to_python_name(v)
+                cls._child_aliases[to_python_name(k)] = "/".join(
+                    to_python_name(x) for x in v.split("/")
+                )
 
     except Exception:
         print(
