@@ -51,11 +51,11 @@ class EnhancedMeshingWorkflow(EnhancedWorkflow):
         super().__init__(workflow=workflow, command_source=meshing)
 
 
-class WaterTightMeshingWorkflow(EnhancedMeshingWorkflow):
+class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
     """Provides water-tight meshing specialization of the workflow wrapper."""
 
     def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
-        """Initialize WaterTightMeshingWorkflow.
+        """Initialize WatertightMeshingWorkflow.
 
         Parameters
         ----------

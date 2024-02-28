@@ -5,7 +5,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     ClassicMeshingWorkflow,
     FaultTolerantMeshingWorkflow,
-    WaterTightMeshingWorkflow,
+    WatertightMeshingWorkflow,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -150,7 +150,7 @@ class BaseMeshing:
     def new_wt_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._new_workflow:
-            self._new_workflow = WaterTightMeshingWorkflow(
+            self._new_workflow = WatertightMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
             )
