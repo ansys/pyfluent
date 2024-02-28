@@ -73,7 +73,7 @@ class SystemCoupling:
 
     def __get_syc_setup(self) -> dict:
         def get_scp_string() -> str:
-            """Get SCP file contents in the form of the XML string."""
+            """Get the SCP file contents in the form of an XML string."""
 
             scp_file_name = "fluent.scp"
             self._solver.setup.models.system_coupling.write_scp_file(
