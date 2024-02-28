@@ -75,24 +75,22 @@ class SystemCoupling:
         def get_scp_string() -> str:
             """Get SCP file contents in the form of the XML string."""
 
-            fluent_cwd = self._solver.connection_properties.cortex_pwd
-            scp_file_name = os.path.join(fluent_cwd, "fluent.scp")
+            scp_file_name = "fluent.scp"
             self._solver.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name
             )
-            local_scp_file_name = scp_file_name
-            if self._solver.connection_properties.inside_container:
-                local_scp_file_name = os.path.join(os.getcwd(), "fluent.scp")
-                self._solver.download(scp_file_name, local_scp_file_name)
+
+            # download the file locally in case Fluent is in a container
+            self._solver.download(scp_file_name)
 
             assert os.path.exists(
-                local_scp_file_name
+                scp_file_name
             ), "ERROR: could not create System Coupling .scp file"
 
-            with open(local_scp_file_name, "r") as f:
+            with open(scp_file_name, "r") as f:
                 xml_string = f.read()
 
-            os.remove(local_scp_file_name)
+            os.remove(scp_file_name)
             return xml_string
 
         def get_name(xml_element) -> str:
