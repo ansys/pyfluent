@@ -40,16 +40,17 @@ class PureMeshing(BaseSession):
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """PureMeshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+            file_transfer_service: Supports file upload and download.
         """
         super(PureMeshing, self).__init__(
-            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+            fluent_connection=fluent_connection,
+            file_transfer_service=file_transfer_service,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,

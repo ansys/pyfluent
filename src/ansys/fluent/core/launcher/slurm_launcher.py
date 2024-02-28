@@ -238,7 +238,7 @@ class SlurmLauncher:
         )
         session = self._new_session.create_from_server_info_file(
             server_info_file_name=self._server_info_file_name,
-            remote_file_handler=None,
+            file_transfer_service=None,
             cleanup_on_exit=self._cleanup_on_exit,
             start_transcript=self._start_transcript,
             inside_container=False,
