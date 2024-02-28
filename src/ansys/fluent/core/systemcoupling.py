@@ -72,6 +72,7 @@ class SystemCoupling:
         self._solver.setup.models.system_coupling.init_and_solve()
 
     def __get_syc_setup(self) -> dict:
+
         def get_scp_string() -> str:
             """Get the SCP file contents in the form of an XML string."""
 
