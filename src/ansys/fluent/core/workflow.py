@@ -146,17 +146,17 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
-        """Initialize the basetask.
+        """Initialize BaseTask.
 
         Parameters
         ----------
         command_source : WorkflowWrapper
-            The set of workflow commands.
+            Set of workflow commands.
         task : str
-            The name of this task.
+            Name of this task.
         """
         self.__dict__.update(
             dict(
@@ -467,7 +467,7 @@ class TaskContainer(PyCallableStateObject):
     __dir__()
     """
 
-    def __init__(self, command_source: ClassicWorkflowWrapper) -> None:
+    def __init__(self, command_source: ClassicWorkflow) -> None:
         """Initialize TaskContainer.
 
         Parameters
@@ -522,7 +522,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         task : BaseTask
-            The task holding these arguments.
+            Task holding these arguments.
         """
         self.__dict__.update(
             dict(
@@ -538,7 +538,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         args : dict
-            New argument's state..
+            State of the arguments.
         """
         if self._dynamic_interface:
             self.get_state()
@@ -555,7 +555,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Parameters
         ----------
         args : dict
-            New argument's state.
+            State of the arguments.
         """
         if self._dynamic_interface:
             self.get_state()
@@ -567,7 +567,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments.update_dict(args)
 
     def get_state(self, explicit_only=False) -> dict:
-        """Get the argument's state.
+        """Get the state of the arguments.
 
         Parameters
         ----------
@@ -639,17 +639,17 @@ class ArgumentWrapper(PyCallableStateObject):
             raise RuntimeError(f"{arg} is not an argument.")
 
     def set_state(self, value: Any) -> None:
-        """Set the state of this argument.
+        """Set the state of the argument.
 
         Parameters
         ----------
         value : Any
-            New argument's value.
+            Value of the argument.
         """
         self._task.Arguments.update_dict({self._arg_name: value})
 
     def get_state(self, explicit_only: bool = False) -> Any:
-        """Get argument state.
+        """Get the state of this argument.
 
         Parameters
         ----------
@@ -719,7 +719,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -788,7 +788,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -816,7 +816,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -847,7 +847,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -900,7 +900,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -935,10 +935,10 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflowWrapper, EnhancedWorkflowWrapper],
+        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
         task: str,
     ) -> None:
-        """Initialize a compound task.
+        """Initialize CompoundTask.
 
         Parameters
         ----------
@@ -1029,7 +1029,7 @@ def _makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class EnhancedWorkflowWrapper:
+class EnhancedWorkflow:
     """Wraps a workflow object, adding methods to discover more about the relationships
     between task objects.
 
@@ -1081,7 +1081,7 @@ class EnhancedWorkflowWrapper:
         }
 
     def task(self, name: str) -> BaseTask:
-        """Get a task object by name, in a ``BaseTask`` wrapper. The wrapper adds extra
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
         functionality.
 
         Parameters
@@ -1369,9 +1369,8 @@ class EnhancedWorkflowWrapper:
         )
 
 
-class ClassicWorkflowWrapper:
-    """Wraps a workflow object, adding methods to discover more about the relationships
-    between task objects.
+class ClassicWorkflow:
+    """Wraps a meshing workflow object.
 
     Methods
     -------

@@ -14,8 +14,8 @@ from ansys.fluent.core.utils.fluent_version import (
 )
 from ansys.fluent.core.workflow import (
     BaseTask,
-    ClassicWorkflowWrapper,
-    EnhancedWorkflowWrapper,
+    ClassicWorkflow,
+    EnhancedWorkflow,
     TaskContainer,
 )
 
@@ -77,7 +77,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.extend(obj._path)
         version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
-    elif isinstance(obj, (ClassicWorkflowWrapper, EnhancedWorkflowWrapper)):
+    elif isinstance(obj, (ClassicWorkflow, EnhancedWorkflow)):
         path = ["<meshing_session>", obj.rules]
         module = obj._workflow.__class__.__module__
         module = _remove_suffix(module, ".workflow")
