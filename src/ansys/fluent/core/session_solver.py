@@ -77,16 +77,17 @@ class Solver(BaseSession):
     def __init__(
         self,
         fluent_connection,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Solver session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+            file_transfer_service: Supports file upload and download.
         """
         super(Solver, self).__init__(
-            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+            fluent_connection=fluent_connection,
+            file_transfer_service=file_transfer_service,
         )
         self._build_from_fluent_connection(fluent_connection)
 
@@ -198,7 +199,7 @@ class Solver(BaseSession):
             self._settings_root = flobject.get_root(
                 flproxy=self._settings_service,
                 version=self._version,
-                remote_file_handler=self._remote_file_handler,
+                file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.fluent_connection.scheme_eval.scheme_eval,
             )
         return self._settings_root
