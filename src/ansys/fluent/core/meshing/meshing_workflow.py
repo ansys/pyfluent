@@ -18,7 +18,7 @@ class ClassicMeshingWorkflow(ClassicWorkflowWrapper):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
     ) -> None:
-        """Initialize MeshingWorkflow.
+        """Initialize ClassicMeshingWorkflow.
 
         Parameters
         ----------
@@ -38,10 +38,59 @@ class EnhancedMeshingWorkflow(EnhancedWorkflowWrapper):
         self,
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
+    ) -> None:
+        """Initialize EnhancedMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The underlying workflow object.
+        meshing : PyMenuGeneric
+            The meshing object.
+        """
+        super().__init__(workflow=workflow, command_source=meshing)
+
+
+class WTMWorkflow(EnhancedMeshingWorkflow):
+    """Provides water-tight meshing specialization of the workflow wrapper."""
+
+    def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
+        """Initialize WTMWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The underlying workflow object.
+        meshing : PyMenuGeneric
+            The meshing object.
+        """
+        super().__init__(workflow=workflow, meshing=meshing)
+
+    def watertight(self, dynamic_interface: bool) -> None:
+        """Initialize a watertight workflow.
+
+        Parameters
+        ----------
+        dynamic_interface : bool
+            Flag to expose object-oriented behaviour.
+        """
+
+        self._new_workflow(
+            name="Watertight Geometry", dynamic_interface=dynamic_interface
+        )
+
+
+class FTMWorkflow(EnhancedMeshingWorkflow):
+    """Provides fault-tolerant meshing specialization of the workflow wrapper."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
         part_management: PyMenuGeneric,
         pm_file_management: PyMenuGeneric,
     ) -> None:
-        """Initialize MeshingWorkflow.
+        """Initialize FTMWorkflow.
 
         Parameters
         ----------
@@ -54,24 +103,9 @@ class EnhancedMeshingWorkflow(EnhancedWorkflowWrapper):
         pm_file_management : PyMenuGeneric
             The part-management file-management object.
         """
-        super().__init__(workflow=workflow, command_source=meshing)
-        self._is_ftm = False
+        super().__init__(workflow=workflow, meshing=meshing)
         self._part_management = part_management
         self._pm_file_management = pm_file_management
-
-    def watertight(self, dynamic_interface: bool) -> None:
-        """Initialize a watertight workflow.
-
-        Parameters
-        ----------
-        dynamic_interface : bool
-            xxx
-        """
-
-        self._new_workflow(
-            name="Watertight Geometry", dynamic_interface=dynamic_interface
-        )
-        self._is_ftm = False
 
     def fault_tolerant(self, dynamic_interface: bool):
         """Initialize a fault-tolerant workflow.
@@ -79,12 +113,11 @@ class EnhancedMeshingWorkflow(EnhancedWorkflowWrapper):
         Parameters
         ----------
         dynamic_interface : bool
-            xxx
+            Flag to expose object-oriented behaviour.
         """
         self._new_workflow(
             "Fault-tolerant Meshing", dynamic_interface=dynamic_interface
         )
-        self._is_ftm = True
 
     @property
     def part_management(self) -> Optional[PyMenuGeneric]:
@@ -95,8 +128,7 @@ class EnhancedMeshingWorkflow(EnhancedWorkflowWrapper):
         Optional[PyMenuGeneric]
             Part-management.
         """
-        if self._is_ftm:
-            return self._part_management
+        return self._part_management
 
     @property
     def pm_file_management(self):
@@ -107,5 +139,4 @@ class EnhancedMeshingWorkflow(EnhancedWorkflowWrapper):
         Optional[PyMenuGeneric]
             Part-management file-management object .
         """
-        if self._is_ftm:
-            return self._pm_file_management
+        return self._pm_file_management

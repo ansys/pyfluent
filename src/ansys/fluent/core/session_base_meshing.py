@@ -4,7 +4,8 @@ import logging
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     ClassicMeshingWorkflow,
-    EnhancedMeshingWorkflow,
+    FTMWorkflow,
+    WTMWorkflow,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -146,10 +147,20 @@ class BaseMeshing:
         return self._old_workflow
 
     @property
-    def new_workflow(self):
+    def new_wt_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._new_workflow:
-            self._new_workflow = EnhancedMeshingWorkflow(
+            self._new_workflow = WTMWorkflow(
+                self._workflow_se,
+                self.meshing,
+            )
+        return self._new_workflow
+
+    @property
+    def new_ft_workflow(self):
+        """Datamodel root of workflow exposed in object-oriented manner."""
+        if not self._new_workflow:
+            self._new_workflow = FTMWorkflow(
                 self._workflow_se,
                 self.meshing,
                 self.PartManagement,
