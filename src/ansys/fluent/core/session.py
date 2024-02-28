@@ -284,10 +284,11 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Name of the local file to upload to the server
+            Name of the local file to upload to the server.
         remote_file_name : str, optional
-            Rename the file to be created on the server, by default ``None`` which will not rename the file,
-            directory specification is not supported
+            Name of the file to be created on the server.
+            If omitted, will maintain the file name from parameter ``file_name``.
+            Directory specification is not supported.
         """
         return PimFileTransferService(
             self.fluent_connection._remote_instance
@@ -299,9 +300,9 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Name of the file to download from the server, directory specification is not supported
+            Name of the file to download from the server, directory specification is not supported.
         local_directory : str, optional
-            Local destination directory, by default current working directory
+            Local destination directory, by default current working directory.
         """
         return PimFileTransferService(
             self.fluent_connection._remote_instance
