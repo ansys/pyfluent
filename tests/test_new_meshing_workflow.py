@@ -920,3 +920,64 @@ def test_meshing_workflow_structure(new_mesh_session):
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
+    # Import geometry
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    watertight = new_mesh_session.watertight()
+    unwanted_attrs = {"fault_tolerant", "part_management", "pm_file_management"}
+    assert set(dir(watertight)) - unwanted_attrs == set(dir(watertight))
+
+    for attr in unwanted_attrs:
+        with pytest.raises(AttributeError) as msg:
+            getattr(watertight, attr)
+        assert (
+            msg.value.args[0]
+            == f"'WaterTightMeshingWorkflow' object has no attribute '{attr}'"
+        )
+
+    watertight.import_geometry.file_name.set_state(import_file_name)
+    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry()
+
+    assert watertight.import_geometry.file_name()
+    # Resets the workflow:
+    watertight.watertight(True)
+
+    assert not watertight.import_geometry.file_name()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
+    # Import CAD
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
+
+    fault_tolerant = new_mesh_session.fault_tolerant()
+    assert "watertight" not in dir(fault_tolerant)
+
+    with pytest.raises(AttributeError) as msg:
+        fault_tolerant.watertight()
+    assert (
+        msg.value.args[0]
+        == "'FaultTolerantMeshingWorkflow' object has no attribute 'watertight'"
+    )
+
+    fault_tolerant.import_cad_and_part_management.context.set_state(0)
+    fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
+    fault_tolerant.import_cad_and_part_management.fmd_file_name.set_state(
+        import_file_name
+    )
+
+    assert fault_tolerant.import_cad_and_part_management.fmd_file_name()
+    # Resets the workflow:
+    fault_tolerant.fault_tolerant(True)
+
+    assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
