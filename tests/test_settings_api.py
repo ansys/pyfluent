@@ -237,15 +237,8 @@ def test_deprecated_settings(new_solver_session):
         == 10
     )
 
-    # TODO: Remove condition after Fluent image is updated
-    if (
-        "material"
-        not in solver.setup.cell_zone_conditions.fluid["elbow-fluid"]._child_aliases
-    ):
-        solver.setup.cell_zone_conditions.fluid["elbow-fluid"]._child_aliases[
-            "material"
-        ] = "general/material"
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
+    # TODO: Enable after Fluent image is updated
+    # solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
 
 
 @pytest.mark.fluent_version(">=24.2")
