@@ -261,7 +261,9 @@ class SvarError(ValueError):
         self.solution_variable_name = solution_variable_name
         super().__init__(
             allowed_name_error_message(
-                "solution variable", solution_variable_name, allowed_values
+                context="solution variable",
+                trial_name=solution_variable_name,
+                allowed_values=allowed_values,
             )
         )
 
@@ -271,7 +273,11 @@ class ZoneError(ValueError):
 
     def __init__(self, zone_name: str, allowed_values: List[str]):
         self.zone_name = zone_name
-        super().__init__(allowed_name_error_message("zone", zone_name, allowed_values))
+        super().__init__(
+            allowed_name_error_message(
+                context="zone", trial_name=zone_name, allowed_values=allowed_values
+            )
+        )
 
 
 class _AllowedNames:

@@ -1,6 +1,6 @@
 import difflib
 from functools import partial
-from typing import Any, List
+from typing import Any, List, Optional
 
 
 def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
@@ -10,11 +10,16 @@ def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
 
 
 def allowed_name_error_message(
-    context: str, trial_name: str, allowed_values: Any
+    allowed_values: Any,
+    context: Optional[str] = None,
+    trial_name: Optional[str] = None,
+    message: Optional[str] = None,
 ) -> str:
     """Provide an error message with the closest names matching the 'trial_name' from
     the 'allowed_values' list."""
-    message = f"{trial_name} is not an allowed {context} name.\n"
+    if not message:
+        message = f"'{context}' has no attribute '{trial_name}'"
+    message += ".\n"
     matches = None
     if allowed_values:
         if isinstance(allowed_values, list) and isinstance(allowed_values[0], str):
@@ -30,4 +35,8 @@ def allowed_name_error_message(
 def allowed_values_error(
     context: str, trial_name: str, allowed_values: List[str]
 ) -> ValueError:
-    return ValueError(allowed_name_error_message(context, trial_name, allowed_values))
+    return ValueError(
+        allowed_name_error_message(
+            context=context, trial_name=trial_name, allowed_values=allowed_values
+        )
+    )
