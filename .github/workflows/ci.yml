@@ -105,7 +105,6 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
