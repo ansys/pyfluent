@@ -130,7 +130,7 @@ class DatamodelServiceImpl:
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
@@ -143,7 +143,7 @@ class DatamodelServiceImpl:
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
-        self.remote_file_handler = remote_file_handler
+        self.file_transfer_service = file_transfer_service
 
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
@@ -368,7 +368,7 @@ class DatamodelService(StreamingService):
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -378,7 +378,7 @@ class DatamodelService(StreamingService):
         )
         self.event_streaming = None
         self.events = {}
-        self.remote_file_handler = remote_file_handler
+        self.file_transfer_service = file_transfer_service
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         request = DataModelProtoModule.GetAttributeValueRequest(
@@ -1559,7 +1559,7 @@ class PyCommand:
 class _InputFile:
     def _do_before_execute(self, value):
         try:
-            self.service.remote_file_handler.upload(file_name=value)
+            self.service.file_transfer_service.upload(file_name=value)
         except AttributeError:
             pass
 
@@ -1567,7 +1567,7 @@ class _InputFile:
 class _OutputFile:
     def _do_after_execute(self, value):
         try:
-            self.service.remote_file_handler.download(file_name=value)
+            self.service.file_transfer_service.download(file_name=value)
         except AttributeError:
             pass
 
