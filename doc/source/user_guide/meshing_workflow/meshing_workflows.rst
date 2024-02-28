@@ -3,7 +3,7 @@
 Classic meshing workflow
 ========================
 You can use PyFluent to access the classic meshing workflows
-which align with the journaled syntax.
+which align with the journal syntax.
 
 Watertight geometry meshing workflow
 ------------------------------------
