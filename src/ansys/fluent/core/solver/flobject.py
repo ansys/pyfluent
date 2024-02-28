@@ -1019,7 +1019,7 @@ class WildcardPath(Group):
         except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
-                    context="Settings objects",
+                    context=self._state_cls.__name__,
                     trial_name=name,
                     allowed_values=self.get_active_child_names(),
                 )
@@ -1208,7 +1208,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             raise KeyError(
                 allowed_name_error_message(
-                    context="Settings objects",
+                    context=self.__class__.__name__,
                     trial_name=name,
                     allowed_values=self.get_object_names(),
                 )
