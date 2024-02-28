@@ -51,11 +51,11 @@ class EnhancedMeshingWorkflow(EnhancedWorkflowWrapper):
         super().__init__(workflow=workflow, command_source=meshing)
 
 
-class WTMWorkflow(EnhancedMeshingWorkflow):
+class WaterTightMeshingWorkflow(EnhancedMeshingWorkflow):
     """Provides water-tight meshing specialization of the workflow wrapper."""
 
     def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
-        """Initialize WTMWorkflow.
+        """Initialize WaterTightMeshingWorkflow.
 
         Parameters
         ----------
@@ -80,7 +80,7 @@ class WTMWorkflow(EnhancedMeshingWorkflow):
         )
 
 
-class FTMWorkflow(EnhancedMeshingWorkflow):
+class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
     """Provides fault-tolerant meshing specialization of the workflow wrapper."""
 
     def __init__(
@@ -90,7 +90,7 @@ class FTMWorkflow(EnhancedMeshingWorkflow):
         part_management: PyMenuGeneric,
         pm_file_management: PyMenuGeneric,
     ) -> None:
-        """Initialize FTMWorkflow.
+        """Initialize FaultTolerantMeshingWorkflow.
 
         Parameters
         ----------
