@@ -1159,13 +1159,7 @@ class EnhancedWorkflowWrapper:
         return []
 
     def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object.
-
-        Parameters
-        ----------
-        attr : str
-            Attribute not defined in the ``WorkflowWrapper`` class.
-        """
+        """Delegate attribute lookup to the wrapped workflow object."""
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1413,13 +1407,7 @@ class ClassicWorkflowWrapper:
         return TaskContainer(self)
 
     def __getattr__(self, attr):
-        """Delegate attribute lookup to the wrapped workflow object.
-
-        Parameters
-        ----------
-        attr : str
-            An attribute not defined in WorkflowWrapper
-        """
+        """Delegate attribute lookup to the wrapped workflow object."""
         obj = self._attr_from_wrapped_workflow(
             attr
         )  # or self._task_with_cmd_matching_help_string(attr)
