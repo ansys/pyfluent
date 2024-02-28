@@ -447,6 +447,7 @@ jobs:
 
   test:
     name: Unit Testing
+    if: ${{ always() }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -500,7 +501,7 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Unit testing
+      - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make unittest-dev-${{ matrix.version }}
         env:
