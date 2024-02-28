@@ -208,7 +208,7 @@ class FieldInfo:
 
 
 class FieldUnavailable(RuntimeError):
-    """Provides the error when field is unavailable."""
+    """Raised when field is unavailable."""
 
     pass
 
@@ -251,7 +251,9 @@ class _AllowedFieldNames(_AllowedNames):
             if not names.is_valid(field_name, respect_data_valid=False):
                 raise self._field_name_error(
                     allowed_name_error_message(
-                        "field", field_name, names(respect_data_valid=False)
+                        context="field",
+                        trial_name=field_name,
+                        allowed_values=names(respect_data_valid=False),
                     )
                 )
             if not names.is_valid(field_name, respect_data_valid=True):

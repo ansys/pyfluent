@@ -7,7 +7,7 @@ from .meshing_workflow import EnhancedMeshingWorkflow
 
 
 def fault_tolerant_workflow(**launch_args) -> EnhancedMeshingWorkflow:
-    """A meshing workflow wrapper, initialized as fault-tolerant.
+    """Meshing workflow wrapper, initialized as fault-tolerant.
 
     Parameters
     ----------

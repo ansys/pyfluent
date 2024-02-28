@@ -19,16 +19,17 @@ class Meshing(PureMeshing):
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Meshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+            file_transfer_service: Supports file upload and download.
         """
         super(Meshing, self).__init__(
-            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+            fluent_connection=fluent_connection,
+            file_transfer_service=file_transfer_service,
         )
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
@@ -37,7 +38,7 @@ class Meshing(PureMeshing):
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self.fluent_connection,
-            remote_file_handler=self._remote_file_handler,
+            file_transfer_service=self._file_transfer_service,
         )
         delattr(self, "switch_to_solver")
         self.switched = True

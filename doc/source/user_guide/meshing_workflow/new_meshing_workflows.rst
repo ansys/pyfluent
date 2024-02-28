@@ -2,8 +2,7 @@
 
 Enhanced meshing workflow
 =========================
-Provides sample usage of ``watertight`` and ``fault-tolerant`` meshing by using
-the enhanced meshing workflow interface.
+You can use PyFluent to access the new, enhanced meshing workflows.
 
 Watertight geometry meshing workflow
 ------------------------------------

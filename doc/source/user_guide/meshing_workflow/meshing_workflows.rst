@@ -2,8 +2,8 @@
 
 Classic meshing workflow
 ========================
-Provides sample usage of ``watertight`` and ``fault-tolerant`` meshing by using
-the classic meshing workflow interface that appear in journals.
+You can use PyFluent to access the classic meshing workflows
+which align with the journal syntax.
 
 Watertight geometry meshing workflow
 ------------------------------------
