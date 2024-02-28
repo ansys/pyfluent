@@ -293,7 +293,6 @@ def _populate_classes(parent_dir):
             f.write(f"{istr1}_HasAllowedValuesMixin,\n")
             f.write(f"{istr1}_InputFile,\n")
             f.write(f"{istr1}_OutputFile,\n")
-            f.write(f"{istr1}_InOutFile,\n")
             f.write(")\n\n")
 
             if children_hash:

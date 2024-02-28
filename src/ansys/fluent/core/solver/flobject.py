@@ -1712,12 +1712,10 @@ def get_cls(name, info, parent=None, version=None):
             bases += (_InputFile,)
         elif info.get("file_purpose") == "output":
             bases += (_OutputFile,)
-        elif info.get("file_purpose") == "inout":
-            bases += (_InOutFile,)
 
         original_pname = pname
         if any(
-            x in bases for x in (_InputFile, _OutputFile, _InOutFile)
+            x in bases for x in (_InputFile, _OutputFile)
         ):  # not generalizing for performance
             i = 0
             while pname in _bases_by_class and _bases_by_class[pname] != bases:
