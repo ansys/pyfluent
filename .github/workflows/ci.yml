@@ -514,7 +514,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload 24.1 Coverage Artifacts
-        if: matrix.image-tag == 'v24.1.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: matrix.image-tag == 'v24.1.0'
         uses: actions/upload-artifact@v4
         with:
           name: coverage_report
