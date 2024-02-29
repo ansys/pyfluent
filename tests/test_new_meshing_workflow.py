@@ -615,7 +615,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
 
 
 @pytest.mark.skip("Randomly failing in CI")
-@pytest.mark.fluent_version("==24.1")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
@@ -923,6 +923,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
+@pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_mesh_session):

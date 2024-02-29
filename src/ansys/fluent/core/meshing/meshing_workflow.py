@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import Optional
 
+import ansys.fluent.core.launcher as launcher
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.workflow import ClassicWorkflow, EnhancedWorkflow
 
@@ -49,6 +50,25 @@ class EnhancedMeshingWorkflow(EnhancedWorkflow):
             The meshing object.
         """
         super().__init__(workflow=workflow, command_source=meshing)
+
+    @staticmethod
+    def pyfluent_launch_code(is_ftm, **launch_args):
+        if "dynamic_interface" in launch_args:
+            del launch_args["dynamic_interface"]
+        if "session" in launch_args:
+            session = launch_args["session"]
+        else:
+            args = dict(mode=launcher.launcher_utils.FluentMode.PURE_MESHING_MODE)
+            args.update(launch_args)
+            try:
+                session = launcher.launcher.launch_fluent(**args)
+            except Exception:
+                args["mode"] = launcher.launcher_utils.FluentMode.MESHING_MODE
+                session = launcher.launcher.launch_fluent(**args)
+        if is_ftm:
+            return session.fault_tolerant()
+        else:
+            return session.watertight()
 
 
 class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
