@@ -285,27 +285,29 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            file name
+            Name of the local file to upload to the server.
         remote_file_name : str, optional
-            remote file name, by default None
+            Name of the file to be created on the server.
+            If omitted, will maintain the file name from parameter ``file_name``.
+            Directory specification is not supported.
         """
         return PimFileTransferService(
             self.fluent_connection._remote_instance
         ).upload_file(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_file_name: Optional[str] = "."):
+    def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
         file_name : str
-            file name
-        local_file_name : str, optional
-            local file path, by default current directory
+            Name of the file to download from the server, directory specification is not supported.
+        local_directory : str, optional
+            Local destination directory, by default current working directory.
         """
         return PimFileTransferService(
             self.fluent_connection._remote_instance
-        ).download_file(file_name, local_file_name)
+        ).download_file(file_name, local_directory)
 
     def __dir__(self):
         returned_list = sorted(set(list(self.__dict__.keys()) + dir(type(self))))
