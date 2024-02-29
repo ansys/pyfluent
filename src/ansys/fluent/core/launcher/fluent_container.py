@@ -48,6 +48,7 @@ config_dict =
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 """
+
 import logging
 import os
 from pathlib import Path, PurePosixPath

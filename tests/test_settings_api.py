@@ -151,9 +151,9 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.file.rcd(file_name=case_path)
 
-    solver.setup.boundary_conditions.wall[
-        "wall-inlet"
-    ].thermal.thermal_bc = "Temperature"
+    solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
+        "Temperature"
+    )
     assert (
         len(
             solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases

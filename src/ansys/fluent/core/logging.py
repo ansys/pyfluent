@@ -2,6 +2,7 @@
 
 For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`.
 """
+
 import logging.config
 import os
 from typing import Optional, Union

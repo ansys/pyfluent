@@ -1,6 +1,5 @@
 """Session to session data transfer, supporting Fluent in all modes."""
 
-
 from functools import partial
 import logging
 import os
@@ -135,16 +134,20 @@ def transfer_case(
             file_menu = source_instance.tui.file
             if inside_container:
                 writer = partial(
-                    file_menu.write_mesh
-                    if file_type == "mesh"
-                    else file_menu.write_case,
+                    (
+                        file_menu.write_mesh
+                        if file_type == "mesh"
+                        else file_menu.write_case
+                    ),
                     str(full_file_name_container),
                 )
             else:
                 writer = partial(
-                    file_menu.write_mesh
-                    if file_type == "mesh"
-                    else file_menu.write_case,
+                    (
+                        file_menu.write_mesh
+                        if file_type == "mesh"
+                        else file_menu.write_case
+                    ),
                     str(full_file_name),
                 )
             if os.path.isfile(full_file_name):

@@ -4,6 +4,7 @@ environments, including queueing systems.
 Currently supports UGE, LSF, PBS and SLURM by parsing the contents of the PE_HOSTFILE,
 LSB_MCPU_HOSTS, PBS_NODEFILE and SLURM_JOB_NODELIST variables, respectively.
 """
+
 import csv
 import os
 from pathlib import Path

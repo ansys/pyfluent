@@ -1,6 +1,5 @@
 """Module containing class encapsulating Fluent connection."""
 
-
 from asyncio import Future
 import functools
 import importlib

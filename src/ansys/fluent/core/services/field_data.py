@@ -1,4 +1,5 @@
 """Wrappers over FieldData gRPC service of Fluent."""
+
 from enum import IntEnum
 from functools import reduce
 from typing import Callable, Dict, List, Optional, Tuple, Union
@@ -313,9 +314,11 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         return (
             self._info
             if self._info
-            else self._field_info.get_vector_fields_info()
-            if (not respect_data_valid or self._is_data_valid())
-            else []
+            else (
+                self._field_info.get_vector_fields_info()
+                if (not respect_data_valid or self._is_data_valid())
+                else []
+            )
         )
 
     def is_valid(self, name, respect_data_valid=True):
@@ -498,9 +501,11 @@ class FieldTransaction:
                     scalarFieldName=self._allowed_scalar_field_names.valid_name(
                         field_name
                     ),
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     provideBoundaryValues=boundary_value,
                 )
                 for surface_id in surface_ids
@@ -614,9 +619,11 @@ class FieldTransaction:
                     field=field_name,
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     steps=steps,
                     stepSize=step_size,
                     skip=skip,
@@ -812,17 +819,23 @@ class ChunkParser:
                 payload_tag_id = (
                     _get_tag_for_surface_request()
                     if request_type == "surfaceRequest"
-                    else _get_tag_for_scalar_field_request(
-                        field_request_info.scalarFieldRequest
+                    else (
+                        _get_tag_for_scalar_field_request(
+                            field_request_info.scalarFieldRequest
+                        )
+                        if request_type == "scalarFieldRequest"
+                        else (
+                            _get_tag_for_vector_field_request()
+                            if request_type == "vectorFieldRequest"
+                            else (
+                                _get_tag_for_pathlines_field_request(
+                                    field_request_info.pathlinesFieldRequest
+                                )
+                                if request_type == "pathlinesFieldRequest"
+                                else None
+                            )
+                        )
                     )
-                    if request_type == "scalarFieldRequest"
-                    else _get_tag_for_vector_field_request()
-                    if request_type == "vectorFieldRequest"
-                    else _get_tag_for_pathlines_field_request(
-                        field_request_info.pathlinesFieldRequest
-                    )
-                    if request_type == "pathlinesFieldRequest"
-                    else None
                 )
             else:
                 if self._callbacks_provider is None:
@@ -1167,9 +1180,11 @@ class FieldData:
                     scalarFieldName=self._allowed_scalar_field_names.valid_name(
                         field_name
                     ),
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     provideBoundaryValues=boundary_value,
                 )
                 for surface_id in surface_ids
@@ -1435,9 +1450,11 @@ class FieldData:
                     field=field_name,
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     steps=steps,
                     stepSize=step_size,
                     skip=skip,
