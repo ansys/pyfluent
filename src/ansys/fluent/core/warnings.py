@@ -1,0 +1,2 @@
+class PyFluentDeprecationWarning(FutureWarning):
+    pass
