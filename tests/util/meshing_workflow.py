@@ -52,12 +52,6 @@ def reset_workflow(mesh_session):
 
 
 @pytest.fixture
-def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_ATTR_CACHE", False)
-
-
-@pytest.fixture
 def new_mesh_session():
     mesher = create_mesh_session()
     yield mesher
