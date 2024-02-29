@@ -621,7 +621,9 @@ def _sleep_with_condition(condition, timeout=30):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
+def test_watertight_workflow_dynamic_interface(
+    disable_datamodel_cache, mixing_elbow_geometry, new_mesh_session
+):
     watertight = watertight_workflow(
         geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
     )
@@ -922,7 +924,9 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
-def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
+def test_attrs_in_watertight_meshing_workflow(
+    disable_datamodel_cache, new_mesh_session
+):
     # Import geometry
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
@@ -949,7 +953,9 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
-def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
+def test_attrs_in_fault_tolerant_meshing_workflow(
+    disable_datamodel_cache, new_mesh_session
+):
     # Import CAD
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
