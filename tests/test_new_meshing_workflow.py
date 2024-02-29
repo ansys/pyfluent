@@ -534,12 +534,11 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     assert (set(dir(watertight)) - watertight._unwanted_attrs) == set(dir(watertight))
 
     for attr in watertight._unwanted_attrs:
-        with pytest.raises(AttributeError) as msg:
+        with pytest.raises(
+            AttributeError,
+            match=f"'WatertightMeshingWorkflow' object has no attribute '{attr}'",
+        ):
             getattr(watertight, attr)
-        assert (
-            msg.value.args[0]
-            == f"'WatertightMeshingWorkflow' object has no attribute '{attr}'"
-        )
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
     assert len(watertight._task_list) == 11
@@ -631,12 +630,12 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     # while it is in that update phase, leading to (difficult to understand) exceptions.
     # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
     time.sleep(2.5)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(
+        AttributeError,
+        match="'WatertightMeshingWorkflow' object has no attribute 'create_volume_mesh'",
+    ):
         watertight.create_volume_mesh
-    assert (
-        msg.value.args[0]
-        == "'WatertightMeshingWorkflow' object has no attribute 'create_volume_mesh'"
-    )
+
     watertight.insert_new_task(command_name="create_volume_mesh")
     time.sleep(2.5)
     create_volume_mesh = watertight.create_volume_mesh
@@ -651,12 +650,11 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     assert watertight_geom.enclose_fluid_regions is None
     watertight.create_volume_mesh.delete()
     time.sleep(2.5)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(
+        AttributeError,
+        match="'WatertightMeshingWorkflow' object has no attribute 'create_volume_mesh'",
+    ):
         watertight.create_volume_mesh
-    assert (
-        msg.value.args[0]
-        == "'WatertightMeshingWorkflow' object has no attribute 'create_volume_mesh'"
-    )
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -923,7 +921,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
-@pytest.mark.skip("Randomly failing in CI")
+# @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
@@ -936,12 +934,11 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
     assert set(dir(watertight)) - unwanted_attrs == set(dir(watertight))
 
     for attr in unwanted_attrs:
-        with pytest.raises(AttributeError) as msg:
+        with pytest.raises(
+            AttributeError,
+            match=f"'WatertightMeshingWorkflow' object has no attribute '{attr}'",
+        ):
             getattr(watertight, attr)
-        assert (
-            msg.value.args[0]
-            == f"'WatertightMeshingWorkflow' object has no attribute '{attr}'"
-        )
 
     watertight.import_geometry.file_name.set_state(import_file_name)
     watertight.import_geometry.length_unit = "in"
@@ -965,12 +962,11 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
     fault_tolerant = new_mesh_session.fault_tolerant()
     assert "watertight" not in dir(fault_tolerant)
 
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(
+        AttributeError,
+        match="'FaultTolerantMeshingWorkflow' object has no attribute 'watertight'",
+    ):
         fault_tolerant.watertight()
-    assert (
-        msg.value.args[0]
-        == "'FaultTolerantMeshingWorkflow' object has no attribute 'watertight'"
-    )
 
     fault_tolerant.import_cad_and_part_management.context.set_state(0)
     fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
