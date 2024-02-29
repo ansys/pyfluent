@@ -1,4 +1,5 @@
 """Wrapper over the events gRPC service of Fluent."""
+
 from typing import List, Tuple
 
 import grpc

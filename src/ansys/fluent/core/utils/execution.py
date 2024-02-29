@@ -1,4 +1,5 @@
 """Module providing additional execution methods."""
+
 from concurrent.futures import ThreadPoolExecutor
 import functools
 from multiprocessing.context import TimeoutError

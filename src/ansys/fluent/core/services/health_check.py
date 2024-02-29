@@ -1,4 +1,5 @@
 """Wrapper over the health check gRPC service of Fluent."""
+
 from enum import Enum
 import logging
 import sys

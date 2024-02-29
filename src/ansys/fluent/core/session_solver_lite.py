@@ -2,6 +2,7 @@
 
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
+
 from ansys.fluent.core.session_solver import Solver
 
 

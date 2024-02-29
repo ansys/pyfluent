@@ -1,6 +1,5 @@
 """Wrapper over the transcript gRPC service of Fluent."""
 
-
 import grpc
 
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule

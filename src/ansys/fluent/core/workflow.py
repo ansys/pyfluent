@@ -1260,9 +1260,9 @@ class EnhancedWorkflow:
                     help_str = command_obj_instance.get_attr("helpString")
                     if help_str and help_str.islower():
                         self._help_string_command_id_map[help_str] = command
-                        self._help_string_display_text_map[
-                            help_str
-                        ] = command_obj_instance.get_attr("displayText")
+                        self._help_string_display_text_map[help_str] = (
+                            command_obj_instance.get_attr("displayText")
+                        )
                     del command_obj_instance
 
     def get_possible_tasks(self):

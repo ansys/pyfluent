@@ -12,6 +12,7 @@ Example
 
     >>> reader = DataFile(data_file_name=data_file_name) # Instantiate a DataFile class
 """
+
 import os
 from os.path import dirname
 from pathlib import Path
