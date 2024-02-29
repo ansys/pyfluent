@@ -179,6 +179,33 @@ class FluentMode(Enum):
         return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
+class FluentEnum(Enum):
+    @classmethod
+    def _missing_(cls, value: str):
+        value = value.upper()
+        for member in cls:
+            if member.name == value:
+                return member
+        return None
+
+
+class FluentExposure(FluentEnum):
+    NO_GUI_OR_GRAPHICS = "g"
+    NO_GRAPHICS = "gr"
+    NO_GUI = "gu"
+    HIDDEN_GUI = "hidden"
+    GUI = ""
+
+
+class FluentGraphicsDriver(FluentEnum):
+    NULL = "null"
+    MSW = "msw"
+    DX11 = "dx11"
+    OPENGL2 = "opengl2"
+    OPENGL = "opengl"
+    AUTO = ""
+
+
 def _get_server_info_file_name(use_tmpdir=True):
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = (
@@ -268,6 +295,12 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         launch_args_string += " -gpu"
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
+    exposure = kwargs.get("exposure")
+    if exposure and exposure.value:
+        launch_args_string += f" -{exposure.value}"
+    graphics_driver = kwargs.get("graphics_driver")
+    if graphics_driver and graphics_driver.value:
+        launch_args_string += f" -driver={graphics_driver.value}"
     return launch_args_string
 
 
@@ -280,30 +313,6 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
         mode = FluentMode.get_mode(mode)
 
     return mode
-
-
-def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
-    """If -g or -gu is passed in Windows OS, the exception should be raised."""
-    additional_arg_list = additional_arguments.split()
-    if _is_windows() and (
-        ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
-    ):
-        raise InvalidArgument("Unsupported '-g' and '-gu' on windows platform.")
-
-
-def _update_launch_string_wrt_gui_options(
-    launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
-) -> str:
-    """Checks for all gui options in additional arguments and updates the launch string
-    with hidden, if none of the options are met."""
-
-    if (show_gui is False) or (
-        show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
-    ):
-        if not {"-g", "-gu"} & set(additional_arguments.split()):
-            launch_string += " -hidden"
-
-    return launch_string
 
 
 def _await_fluent_launch(
@@ -371,7 +380,6 @@ def _get_running_session_mode(
 def _generate_launch_string(
     argvals,
     mode: FluentMode,
-    show_gui: bool,
     additional_arguments: str,
     server_info_file_name: str,
 ):
@@ -394,9 +402,6 @@ def _generate_launch_string(
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
     launch_string += " -nm"
-    launch_string = _update_launch_string_wrt_gui_options(
-        launch_string, show_gui, additional_arguments
-    )
     return launch_string
 
 

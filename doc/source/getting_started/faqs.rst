@@ -186,7 +186,7 @@ processors and activate the Fluent user interface:
 
 .. code:: python
 
-   session=pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True)
+   session=pyfluent.launch_fluent(precision="double", processor_count=2, exposure="gui")
 
 
 For additional launch examples, see :ref:`ref_user_guide_launch`. For

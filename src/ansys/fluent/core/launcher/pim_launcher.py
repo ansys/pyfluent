@@ -5,6 +5,8 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentExposure,
+    FluentGraphicsDriver,
     FluentMode,
     _process_invalid_args,
     launch_remote_fluent,
@@ -22,6 +24,8 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode,
+        exposure: FluentExposure,
+        graphics_driver: FluentGraphicsDriver,
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -35,7 +39,6 @@ class PIMLauncher:
         dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -101,11 +104,6 @@ class PIMLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        show_gui : bool, optional
-            Whether to display the Fluent GUI. The default is ``None``, which does not
-            cause the GUI to be shown. If a value of ``False`` is
-            not explicitly provided, the GUI will also be shown if
-            the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
         case_file_name : str, optional
             If provided, the case file at ``case_file_name`` is read into the Fluent session.
         case_data_file_name : str, optional

@@ -7,11 +7,14 @@ with gRPC.
 import logging
 import os
 from typing import Any, Dict, Optional, Union
+import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentExposure,
+    FluentGraphicsDriver,
     FluentMode,
     GPUSolverSupportError,
     _confirm_watchdog_start,
@@ -30,6 +33,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -90,6 +94,8 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
+    exposure: Union[FluentExposure, str] = FluentExposure.HIDDEN_GUI,
+    graphics_driver: Union[FluentGraphicsDriver, str] = FluentGraphicsDriver.AUTO,
     show_gui: Optional[bool] = None,
     case_file_name: Optional[str] = None,
     case_data_file_name: Optional[str] = None,
@@ -234,6 +240,17 @@ def launch_fluent(
         raise GPUSolverSupportError()
     _process_kwargs(kwargs)
     del kwargs
+    if show_gui:
+        warnings.warn(
+            "show_gui is deprecated, use exposure instead", PyFluentDeprecationWarning
+        )
+    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == 1:
+        exposure = FluentExposure.GUI
+    del show_gui
+    if isinstance(exposure, str):
+        exposure = FluentExposure(exposure)
+    if isinstance(graphics_driver, str):
+        graphics_driver = FluentGraphicsDriver(graphics_driver)
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
         container_dict=container_dict,
