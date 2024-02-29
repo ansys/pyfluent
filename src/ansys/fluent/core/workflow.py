@@ -1219,7 +1219,7 @@ class EnhancedWorkflow:
         except AttributeError:
             pass
 
-    def _new_workflow(self, name: str, dynamic_interface: bool):
+    def _new_workflow(self, name: str, dynamic_interface: bool = True):
         self._dynamic_interface = dynamic_interface
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)

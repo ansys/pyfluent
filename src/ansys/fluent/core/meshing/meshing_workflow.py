@@ -66,18 +66,9 @@ class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
         """
         super().__init__(workflow=workflow, meshing=meshing)
 
-    def watertight(self, dynamic_interface: bool) -> None:
-        """Initialize a watertight workflow.
-
-        Parameters
-        ----------
-        dynamic_interface : bool
-            Flag to expose object-oriented behaviour.
-        """
-
-        self._new_workflow(
-            name="Watertight Geometry", dynamic_interface=dynamic_interface
-        )
+    def watertight(self) -> None:
+        """Initialize a watertight workflow."""
+        self._new_workflow(name="Watertight Geometry")
 
 
 class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
@@ -107,17 +98,9 @@ class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
         self._part_management = part_management
         self._pm_file_management = pm_file_management
 
-    def fault_tolerant(self, dynamic_interface: bool):
-        """Initialize a fault-tolerant workflow.
-
-        Parameters
-        ----------
-        dynamic_interface : bool
-            Flag to expose object-oriented behaviour.
-        """
-        self._new_workflow(
-            "Fault-tolerant Meshing", dynamic_interface=dynamic_interface
-        )
+    def fault_tolerant(self):
+        """Initialize a fault-tolerant workflow."""
+        self._new_workflow("Fault-tolerant Meshing")
 
     @property
     def part_management(self) -> Optional[PyMenuGeneric]:

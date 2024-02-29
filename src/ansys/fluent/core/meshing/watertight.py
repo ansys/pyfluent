@@ -21,9 +21,7 @@ def watertight_workflow(geometry_file_name, **launch_args) -> EnhancedMeshingWor
     EnhancedMeshingWorkflow
         Meshing workflow wrapper.
     """
-    dynamic_interface = True
     if "dynamic_interface" in launch_args:
-        dynamic_interface = launch_args["dynamic_interface"]
         del launch_args["dynamic_interface"]
     if "session" in launch_args:
         session = launch_args["session"]
@@ -35,7 +33,7 @@ def watertight_workflow(geometry_file_name, **launch_args) -> EnhancedMeshingWor
         except Exception:
             args["mode"] = FluentMode.MESHING_MODE
             session = launch_fluent(**args)
-    meshing_workflow = session.watertight(dynamic_interface=dynamic_interface)
+    meshing_workflow = session.watertight()
     if geometry_file_name:
         import_geometry = meshing_workflow.import_geometry
         # change it so we can do this:

@@ -107,14 +107,14 @@ class PureMeshing(BaseSession):
         """Datamodel root of workflow."""
         return self._base_meshing.workflow
 
-    def watertight(self, dynamic_interface=True):
+    def watertight(self):
         """Get a new watertight workflow."""
-        self._base_meshing.watertight_workflow.watertight(dynamic_interface)
+        self._base_meshing.watertight_workflow.watertight()
         return self._base_meshing.watertight_workflow
 
-    def fault_tolerant(self, dynamic_interface=True):
+    def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        self._base_meshing.fault_tolerant_workflow.fault_tolerant(dynamic_interface)
+        self._base_meshing.fault_tolerant_workflow.fault_tolerant()
         return self._base_meshing.fault_tolerant_workflow
 
     @property
