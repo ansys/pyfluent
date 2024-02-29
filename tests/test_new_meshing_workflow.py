@@ -949,6 +949,7 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
     # Resets the workflow:
     watertight.watertight(True)
 
+    time.sleep(2.5)
     assert not watertight.import_geometry.file_name()
 
 
@@ -980,4 +981,5 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
     # Resets the workflow:
     fault_tolerant.fault_tolerant(True)
 
+    time.sleep(2.5)
     assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
