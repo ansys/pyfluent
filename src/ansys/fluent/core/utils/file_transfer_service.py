@@ -14,9 +14,7 @@ class PyPIMConfigurationError(ConnectionError):
 class PimFileTransferService:
     """Instantiates a file uploader and downloader to have a seamless file reading /
     writing in the cloud particularly in Ansys lab . Here we are exposing upload and
-    download methods on session objects. These would be no- ops if PyPIM is not
-    configured or not authorized with the appropriate service. This will be used for
-    internal purpose only.
+    download methods on session objects. This will be used for internal purpose only.
 
     Attributes
     ----------
@@ -101,8 +99,7 @@ class PimFileTransferService:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
     def upload(self, file_name: Union[list[str], str]):
-        """Upload a file if it's unavailable on the server
-        supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        """Upload a file to the server.
 
         Parameters
         ----------
@@ -151,8 +148,7 @@ class PimFileTransferService:
         self,
         file_name: Union[list[str], str],
     ):
-        """Download a file if it's available to the server supported by
-        `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        """Download a file from the server.
 
         Parameters
         ----------
