@@ -293,6 +293,7 @@ def _populate_classes(parent_dir):
             f.write(f"{istr1}_HasAllowedValuesMixin,\n")
             f.write(f"{istr1}_InputFile,\n")
             f.write(f"{istr1}_OutputFile,\n")
+            f.write(f"{istr1}_InOutFile,\n")
             f.write(")\n\n")
 
             if children_hash:
@@ -362,7 +363,8 @@ def _populate_classes(parent_dir):
                     stubf.write(f"{istr1}child_names = ...\n")
 
                 for child in child_names:
-                    child_class_strings.append(f"{child}={child}_cls")
+                    child_cls = cls._child_classes[child]
+                    child_class_strings.append(f"{child}={child_cls.__name__}_cls")
                     if stubf:
                         stubf.write(f"{istr1}{child} = ...\n")
 
@@ -379,7 +381,8 @@ def _populate_classes(parent_dir):
 
                 commands_info = _get_commands_info(commands_hash)
                 for command in command_names:
-                    child_class_strings.append(f"{command}={command}_cls")
+                    command_cls = cls._child_classes[command]
+                    child_class_strings.append(f"{command}={command_cls.__name__}_cls")
                     # function annotation for commands
                     if stubf:
                         command_info = commands_info[command]
@@ -401,7 +404,8 @@ def _populate_classes(parent_dir):
 
                 queries_info = _get_commands_info(queries_hash)
                 for query in query_names:
-                    child_class_strings.append(f"{query}={query}_cls")
+                    query_cls = cls._child_classes[query]
+                    child_class_strings.append(f"{query}={query_cls.__name__}_cls")
                     # function annotation for queries
                     if stubf:
                         query_info = queries_info[query]

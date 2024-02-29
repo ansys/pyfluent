@@ -218,8 +218,8 @@ def test_get_cached_values_in_command_arguments(new_mesh_session):
     geo_import = new_mesh_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName="Bob")
     geo_import.Arguments = dict(FileName=None)
-    assert "FileName" in geo_import.CommandArguments()
-    assert geo_import.CommandArguments()["FileName"] is None
+    assert "FileName" in geo_import.command_arguments()
+    assert geo_import.command_arguments()["FileName"] is None
 
 
 @pytest.fixture

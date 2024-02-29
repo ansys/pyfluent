@@ -5,7 +5,7 @@ import ansys.platform.instancemanagement as pypim
 
 
 class PyPIMConfigurationError(ConnectionError):
-    """Provides the error when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
+    """Raised when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
@@ -34,7 +34,7 @@ class PimFileTransferService:
         Upload a file to the server.
 
     download(
-        file_name, local_file_name
+        file_name, local_directory
         )
         Download a file from the server.
     """
@@ -122,15 +122,15 @@ class PimFileTransferService:
                 elif not self.file_service.file_exist(os.path.basename(file)):
                     raise FileNotFoundError(f"{file} does not exist.")
 
-    def download_file(self, file_name: str, local_file_name: Optional[str] = None):
+    def download_file(self, file_name: str, local_directory: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
         file_name : str
             file name
-        local_file_name : str, optional
-            local file path, by default None
+        local_directory : str, optional
+            local directory, by default None
 
         Raises
         ------
@@ -143,7 +143,7 @@ class PimFileTransferService:
             raise PyPIMConfigurationError()
         elif self.file_service:
             if self.file_service.file_exist(file_name):
-                self.file_service.download_file(file_name, local_file_name)
+                self.file_service.download_file(file_name, local_directory)
             else:
                 raise FileNotFoundError("Remote file does not exist.")
 
@@ -166,7 +166,7 @@ class PimFileTransferService:
                     print(f"\nFile already exists. File path:\n{file}\n")
                 else:
                     self.download_file(
-                        file_name=os.path.basename(file), local_file_name="."
+                        file_name=os.path.basename(file), local_directory="."
                     )
 
     def __call__(self, pim_instance: Optional[Any] = None):

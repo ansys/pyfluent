@@ -16,14 +16,14 @@ from ansys.fluent.core.services.field_data import (
 
 
 class InvalidMultiPhaseFieldName(ValueError):
-    """Provides the error when multi-phase field name is inappropriate."""
+    """Raised when multi-phase field name is inappropriate."""
 
     def __init__(self):
         super().__init__("Multi-phase field name should start with 'phase-'.")
 
 
 class InvalidFieldName(ValueError):
-    """Provides the error when a field name is inappropriate."""
+    """Raised when a field name is inappropriate."""
 
     def __init__(self):
         super().__init__("The only allowed field is 'velocity'.")
@@ -259,10 +259,10 @@ class Transaction:
             field_data_surface = field_data[scalar_field_tag]
             for surface_id in transaction.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][
-                    transaction.field_name
-                ] = self._file_session._data_file.get_face_scalar_field_data(
-                    transaction.phase_name, transaction.field_name, surface_id
+                field_data_surface[surface_id][transaction.field_name] = (
+                    self._file_session._data_file.get_face_scalar_field_data(
+                        transaction.phase_name, transaction.field_name, surface_id
+                    )
                 )
 
         vector_field_tag = (("type", "vector-field"),)
@@ -275,10 +275,10 @@ class Transaction:
             field_data_surface = field_data[vector_field_tag]
             for surface_id in transaction.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][
-                    transaction.field_name
-                ] = self._file_session._data_file.get_face_vector_field_data(
-                    transaction.phase_name, surface_id
+                field_data_surface[surface_id][transaction.field_name] = (
+                    self._file_session._data_file.get_face_vector_field_data(
+                        transaction.phase_name, surface_id
+                    )
                 )
                 field_data_surface[surface_id]["vector-scale"] = np.array([0.1])
 

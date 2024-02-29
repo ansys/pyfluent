@@ -1,4 +1,5 @@
 """Unit tests for flobject module."""
+
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
@@ -820,6 +821,38 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         }
 
 
+@pytest.mark.fluent_version(">=24.1")
+def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
+    solver = new_solver_session_no_transcript
+
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.solution.initialization.hybrid_initialize()
+
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet["*1"].momentum.velocity.value()[
+            "inlet1"
+        ]["momentum"]["velocity"]["value"]
+        == solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].momentum.velocity.value()
+    )
+
+    assert solver.setup.boundary_conditions.wall["*"]()
+
+    with pytest.raises(AttributeError) as msg:
+        solver.setup.boundary_conditions.velocity_inlet["*1"].inlet1()
+    assert msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet1'.\n"
+
+    with pytest.raises(KeyError) as msg:
+        solver.setup.boundary_conditions.velocity_inlet["inlet-1"]
+    assert (
+        msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet-1'.\n"
+        "The most similar names are: inlet1, inlet2."
+    )
+
+
 @pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
@@ -833,7 +866,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         solver.setup.mod
 
     assert (
-        msg.value.args[0] == "mod is not an allowed Settings objects name.\n"
+        msg.value.args[0] == "'setup' object has no attribute 'mod'.\n"
         "The most similar names are: models."
     )
 
@@ -841,7 +874,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         solver.setup.models.viscous.model = "k_epsilon"
 
     assert (
-        msg.value.args[0] == "k_epsilon is not an allowed model name.\n"
+        msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
         "The most similar names are: k-epsilon."
     )
 

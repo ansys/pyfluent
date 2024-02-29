@@ -1,5 +1,6 @@
 """Module providing visualization objects to facilitate integration with libraries like
 Matplotlib and pyvista."""
+
 import inspect
 
 from ansys.fluent.core.meta import PyLocalContainer

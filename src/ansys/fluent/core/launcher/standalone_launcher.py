@@ -239,7 +239,7 @@ class StandaloneLauncher:
 
             session = self.new_session.create_from_server_info_file(
                 server_info_file_name=server_info_file_name,
-                remote_file_handler=self.file_transfer_service,
+                file_transfer_service=self.file_transfer_service,
                 cleanup_on_exit=self.cleanup_on_exit,
                 start_transcript=self.start_transcript,
                 launcher_args=self.argvals,

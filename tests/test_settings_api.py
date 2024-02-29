@@ -151,9 +151,9 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.file.rcd(file_name=case_path)
 
-    solver.setup.boundary_conditions.wall[
-        "wall-inlet"
-    ].thermal.thermal_bc = "Temperature"
+    solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
+        "Temperature"
+    )
     assert (
         len(
             solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
@@ -236,6 +236,9 @@ def test_deprecated_settings(new_solver_session):
         ].turbulence.hydraulic_diameter()
         == 10
     )
+
+    # TODO: Enable after Fluent image is updated
+    # solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
 
 
 @pytest.mark.fluent_version(">=24.2")

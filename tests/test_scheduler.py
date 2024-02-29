@@ -1,5 +1,6 @@
 """Provide a module to test the algorithms which parse job scheduler environments for
 machines to run on."""
+
 from builtins import range
 import os
 import socket
@@ -390,9 +391,9 @@ class TestLoadMachines(unittest.TestCase):
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
     def test_slurm_very_complex(self):
-        os.environ[
-            "SLURM_JOB_NODELIST"
-        ] = "M[2-3,4,5-7,8-11,12-14,15-16],MB,MC[008-009,010-011,012-014],MD[099-101]"
+        os.environ["SLURM_JOB_NODELIST"] = (
+            "M[2-3,4,5-7,8-11,12-14,15-16],MB,MC[008-009,010-011,012-014],MD[099-101]"
+        )
         os.environ["SLURM_NTASKS_PER_NODE"] = "24"
         hostList = os.environ.get("SLURM_JOB_NODELIST")
         machineList = _construct_machine_list_slurm(hostList)

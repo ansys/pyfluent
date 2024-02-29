@@ -95,10 +95,10 @@ class SolutionVariableInfo:
         def __init__(self, solution_variables_info):
             self._solution_variables_info = {}
             for solution_variable_info in solution_variables_info:
-                self._solution_variables_info[
-                    solution_variable_info.name
-                ] = SolutionVariableInfo.SolutionVariables.SolutionVariable(
-                    solution_variable_info
+                self._solution_variables_info[solution_variable_info.name] = (
+                    SolutionVariableInfo.SolutionVariables.SolutionVariable(
+                        solution_variable_info
+                    )
                 )
 
         def _filter(self, solution_variables_info):
@@ -261,7 +261,9 @@ class SvarError(ValueError):
         self.solution_variable_name = solution_variable_name
         super().__init__(
             allowed_name_error_message(
-                "solution variable", solution_variable_name, allowed_values
+                context="solution variable",
+                trial_name=solution_variable_name,
+                allowed_values=allowed_values,
             )
         )
 
@@ -271,7 +273,11 @@ class ZoneError(ValueError):
 
     def __init__(self, zone_name: str, allowed_values: List[str]):
         self.zone_name = zone_name
-        super().__init__(allowed_name_error_message("zone", zone_name, allowed_values))
+        super().__init__(
+            allowed_name_error_message(
+                context="zone", trial_name=zone_name, allowed_values=allowed_values
+            )
+        )
 
 
 class _AllowedNames:
@@ -642,27 +648,33 @@ class SolutionVariableData:
                 )
                 set_data_requests += [
                     SvarProtoModule.SetSvarDataRequest(
-                        payload=SvarProtoModule.Payload(
-                            floatPayload=FieldDataProtoModule.FloatPayload(
-                                payload=solution_variable_data
+                        payload=(
+                            SvarProtoModule.Payload(
+                                floatPayload=FieldDataProtoModule.FloatPayload(
+                                    payload=solution_variable_data
+                                )
                             )
-                        )
-                        if solution_variable_data.dtype.type == np.float32
-                        else SvarProtoModule.Payload(
-                            doublePayload=FieldDataProtoModule.DoublePayload(
-                                payload=solution_variable_data
-                            )
-                        )
-                        if solution_variable_data.dtype.type == np.float64
-                        else SvarProtoModule.Payload(
-                            intPayload=FieldDataProtoModule.IntPayload(
-                                payload=solution_variable_data
-                            )
-                        )
-                        if solution_variable_data.dtype.type == np.int32
-                        else SvarProtoModule.Payload(
-                            longPayload=FieldDataProtoModule.LongPayload(
-                                payload=solution_variable_data
+                            if solution_variable_data.dtype.type == np.float32
+                            else (
+                                SvarProtoModule.Payload(
+                                    doublePayload=FieldDataProtoModule.DoublePayload(
+                                        payload=solution_variable_data
+                                    )
+                                )
+                                if solution_variable_data.dtype.type == np.float64
+                                else (
+                                    SvarProtoModule.Payload(
+                                        intPayload=FieldDataProtoModule.IntPayload(
+                                            payload=solution_variable_data
+                                        )
+                                    )
+                                    if solution_variable_data.dtype.type == np.int32
+                                    else SvarProtoModule.Payload(
+                                        longPayload=FieldDataProtoModule.LongPayload(
+                                            payload=solution_variable_data
+                                        )
+                                    )
+                                )
                             )
                         )
                     )

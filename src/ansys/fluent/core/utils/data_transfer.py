@@ -1,6 +1,5 @@
 """Session to session data transfer, supporting Fluent in all modes."""
 
-
 from functools import partial
 import logging
 import os
@@ -16,7 +15,7 @@ network_logger = logging.getLogger("pyfluent.networking")
 
 
 class MeshWriteError(RuntimeError):
-    """Provides the error when mesh write is unsuccessful."""
+    """Raised when mesh write is unsuccessful."""
 
     def __init__(self):
         super().__init__("Could not write mesh from meshing session.")
@@ -26,7 +25,7 @@ class MeshWriteError(RuntimeError):
 def _read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Trying to read case: {file_name}")
     try:
-        solver._remote_file_handler.upload(file_name=file_name)
+        solver._file_transfer_service.upload(file_name=file_name)
     except AttributeError:
         pass
     if full_file_name_container:
@@ -135,16 +134,20 @@ def transfer_case(
             file_menu = source_instance.tui.file
             if inside_container:
                 writer = partial(
-                    file_menu.write_mesh
-                    if file_type == "mesh"
-                    else file_menu.write_case,
+                    (
+                        file_menu.write_mesh
+                        if file_type == "mesh"
+                        else file_menu.write_case
+                    ),
                     str(full_file_name_container),
                 )
             else:
                 writer = partial(
-                    file_menu.write_mesh
-                    if file_type == "mesh"
-                    else file_menu.write_case,
+                    (
+                        file_menu.write_mesh
+                        if file_type == "mesh"
+                        else file_menu.write_case
+                    ),
                     str(full_file_name),
                 )
             if os.path.isfile(full_file_name):
@@ -152,7 +155,9 @@ def transfer_case(
             else:
                 writer()
             try:
-                source_instance._remote_file_handler.download(file_name=full_file_name)
+                source_instance._file_transfer_service.download(
+                    file_name=full_file_name
+                )
             except AttributeError:
                 pass
             network_logger.info(f"Saved mesh from meshing session: {full_file_name}")

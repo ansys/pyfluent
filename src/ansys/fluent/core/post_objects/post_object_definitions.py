@@ -1,4 +1,5 @@
 """Module providing visualization objects definition."""
+
 from abc import abstractmethod
 import logging
 from typing import List, NamedTuple, Optional

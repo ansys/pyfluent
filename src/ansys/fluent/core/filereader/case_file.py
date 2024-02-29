@@ -14,6 +14,7 @@ Example
     >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
     >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 """
+
 import codecs
 import gzip
 import os
@@ -192,7 +193,9 @@ class CaseVariable:
         except KeyError:
             raise ValueError(
                 allowed_name_error_message(
-                    "config-vars", name, list(self._variables.keys())
+                    context="config-vars",
+                    trial_name=name,
+                    allowed_values=list(self._variables),
                 )
             )
 

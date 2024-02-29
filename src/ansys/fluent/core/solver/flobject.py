@@ -173,7 +173,7 @@ class Base:
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
-        self._setattr("_remote_file_handler", None)
+        self._setattr("_file_transfer_service", None)
         if name is not None:
             self._setattr("_name", name)
 
@@ -181,9 +181,9 @@ class Base:
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
-    def set_remote_file_handler(self, remote_file_handler):
-        """Set remote_file_handler."""
-        self._setattr("_remote_file_handler", remote_file_handler)
+    def set_file_transfer_service(self, file_transfer_service):
+        """Set file_transfer_service."""
+        self._setattr("_file_transfer_service", file_transfer_service)
 
     @property
     def flproxy(self):
@@ -197,15 +197,15 @@ class Base:
         return self._flproxy
 
     @property
-    def remote_file_handler(self):
+    def file_transfer_service(self):
         """Remote file handler.
 
         Supports file upload and download.
         """
-        if self._remote_file_handler:
-            return self._remote_file_handler
+        if self._file_transfer_service:
+            return self._file_transfer_service
         elif self._parent:
-            return self._parent.remote_file_handler
+            return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
@@ -547,9 +547,13 @@ class _Alias:
         return self._print_newer_api()
 
 
-def _create_child(cls, name, parent: weakref.CallableProxyType, is_alias=False):
-    if is_alias or isinstance(parent, _Alias):
-        alias_cls = type(f"{cls.__name__}_alias", (_Alias, cls), dict(cls.__dict__))
+def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None):
+    if alias_path or isinstance(parent, _Alias):
+        alias_cls = type(
+            f"{cls.__name__}_alias",
+            (_Alias, cls),
+            dict(cls.__dict__) | {"alias_path": alias_path},
+        )
         return alias_cls(name, parent.__repr__.__self__)
     return cls(name, parent)
 
@@ -592,6 +596,35 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
+    @classmethod
+    def unalias(cls, value):
+        if isinstance(value, collections.abc.Mapping):
+            ret = {}
+            for k, v in value.items():
+                if k in cls._child_aliases:
+                    alias = cls._child_aliases[k]
+                    if not isinstance(alias, str):
+                        alias = alias.alias_path
+                    # TODO: handle ".." in alias path
+                    if ".." in alias:
+                        raise NotImplementedError(
+                            'Cannot handle ".." in alias path while setting state.'
+                        )
+                    ret_alias = ret
+                    comps = alias.split("/")
+                    for i, comp in enumerate(comps):
+                        cls = cls._child_classes[comp]
+                        if i == len(comps) - 1:
+                            ret_alias[comp] = cls.unalias(v)
+                        else:
+                            ret_alias[comp] = {}
+                            ret_alias = ret_alias[comp]
+                else:
+                    ret[k] = cls.unalias(v)
+            return ret
+        else:
+            return value
+
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         with self.while_setting_state():
@@ -600,9 +633,8 @@ class SettingsBase(Base, Generic[StateT]):
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                return self.flproxy.set_var(
-                    self.path, self.to_scheme_keys(kwargs or state)
-                )
+                state = self.unalias(kwargs or state)
+                return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -707,14 +739,14 @@ class FileName(Base):
 
 class _InputFile(FileName):
     def _do_before_execute(self, value):
-        if self.remote_file_handler:
-            self.remote_file_handler.upload(file_name=value)
+        if self.file_transfer_service:
+            self.file_transfer_service.upload(file_name=value)
 
 
 class _OutputFile(FileName):
     def _do_after_execute(self, value):
-        if self.remote_file_handler:
-            self.remote_file_handler.download(file_name=value)
+        if self.file_transfer_service:
+            self.file_transfer_service.download(file_name=value)
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -935,7 +967,7 @@ class Group(SettingsBase[DictStateType]):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -944,7 +976,9 @@ class Group(SettingsBase[DictStateType]):
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
-                "Settings objects", name, super().__getattribute__("child_names")
+                trial_name=name,
+                allowed_values=super().__getattribute__("child_names"),
+                message=ex.args[0],
             )
             ex.args = (error_msg,)
             raise
@@ -955,7 +989,9 @@ class Group(SettingsBase[DictStateType]):
             attr = getattr(self, name)
         except AttributeError as ex:
             error_msg = allowed_name_error_message(
-                "Settings objects", name, super().__getattribute__("child_names")
+                trial_name=name,
+                allowed_values=super().__getattribute__("child_names"),
+                message=ex.args[0],
             )
             ex.args = (error_msg,)
             raise
@@ -1012,12 +1048,14 @@ class WildcardPath(Group):
                 child_settings_cls,
                 self,
             )
-        except KeyError:
+        except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
-                    "Settings objects", name, self.get_active_child_names()
+                    context=self._state_cls.__name__,
+                    trial_name=name,
+                    allowed_values=self.get_active_child_names(),
                 )
-            )
+            ) from ex
 
     def items(self):
         """Items."""
@@ -1202,7 +1240,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             raise KeyError(
                 allowed_name_error_message(
-                    "Settings objects", name, self.get_object_names()
+                    context=self.__class__.__name__,
+                    trial_name=name,
+                    allowed_values=self.get_object_names(),
                 )
             )
 
@@ -1218,7 +1258,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1336,7 +1376,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1415,7 +1455,7 @@ class Action(Base):
                 obj = self.find_object(alias)
                 # replacing aliased paths with alias objects in _child_aliases
                 alias_obj = self._child_aliases[name] = _create_child(
-                    obj.__class__, None, obj.parent, True
+                    obj.__class__, None, obj.parent, alias
                 )
                 return alias_obj
             return alias
@@ -1704,10 +1744,12 @@ def get_cls(name, info, parent=None, version=None):
             bases += (_InputFile,)
         elif info.get("file_purpose") == "output":
             bases += (_OutputFile,)
+        elif info.get("file_purpose") == "inout":
+            bases += (_InOutFile,)
 
         original_pname = pname
         if any(
-            x in bases for x in (_InputFile, _OutputFile)
+            x in bases for x in (_InputFile, _OutputFile, _InOutFile)
         ):  # not generalizing for performance
             i = 0
             while pname in _bases_by_class and _bases_by_class[pname] != bases:
@@ -1801,9 +1843,12 @@ def get_cls(name, info, parent=None, version=None):
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
         if child_aliases or command_aliases or query_aliases:
+            cls._child_aliases = {}
             # No need to differentiate in the Python implementation
             for k, v in (child_aliases | command_aliases | query_aliases).items():
-                cls._child_aliases[to_python_name(k)] = to_python_name(v)
+                cls._child_aliases[to_python_name(k)] = "/".join(
+                    to_python_name(x) for x in v.split("/")
+                )
 
     except Exception:
         print(
@@ -1824,7 +1869,7 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
-    remote_file_handler: Optional[Any] = None,
+    file_transfer_service: Optional[Any] = None,
     scheme_eval=None,
 ) -> Group:
     """Get the root settings object.
@@ -1856,10 +1901,10 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
-    root.set_remote_file_handler(remote_file_handler)
+    root.set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
-    root._setattr("_remote_file_handler", remote_file_handler)
+    root._setattr("_file_transfer_service", file_transfer_service)
     return root
 
 

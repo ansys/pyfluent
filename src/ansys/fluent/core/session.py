@@ -1,4 +1,5 @@
 """Module containing class encapsulating Fluent connection and the Base Session."""
+
 import importlib
 import json
 import logging
@@ -94,26 +95,26 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+            file_transfer_service: Supports file upload and download.
         """
         BaseSession.build_from_fluent_connection(
-            self, fluent_connection, remote_file_handler
+            self, fluent_connection, file_transfer_service
         )
 
     def build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
-        self._remote_file_handler = remote_file_handler
+        self._file_transfer_service = file_transfer_service
         self.error_state = self.fluent_connection.error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -138,7 +139,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self.error_state,
-            self._remote_file_handler,
+            self._file_transfer_service,
         )
 
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
@@ -226,7 +227,7 @@ class BaseSession:
     def create_from_server_info_file(
         cls,
         server_info_file_name: str,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -235,7 +236,7 @@ class BaseSession:
         ----------
         server_info_file_name : str
             Path to server-info file written out by Fluent server
-        remote_file_handler : Optional
+        file_transfer_service : Optional
             Support file upload and download.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
@@ -253,7 +254,7 @@ class BaseSession:
             fluent_connection=FluentConnection(
                 ip=ip, port=port, password=password, **connection_kwargs
             ),
-            remote_file_handler=remote_file_handler,
+            file_transfer_service=file_transfer_service,
         )
         return session
 
@@ -284,27 +285,29 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            file name
+            Name of the local file to upload to the server.
         remote_file_name : str, optional
-            remote file name, by default None
+            Name of the file to be created on the server.
+            If omitted, will maintain the file name from parameter ``file_name``.
+            Directory specification is not supported.
         """
         return PimFileTransferService(
             self.fluent_connection._remote_instance
         ).upload_file(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_file_name: Optional[str] = "."):
+    def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
         ----------
         file_name : str
-            file name
-        local_file_name : str, optional
-            local file path, by default current directory
+            Name of the file to download from the server, directory specification is not supported.
+        local_directory : str, optional
+            Local destination directory, by default current working directory.
         """
         return PimFileTransferService(
             self.fluent_connection._remote_instance
-        ).download_file(file_name, local_file_name)
+        ).download_file(file_name, local_directory)
 
     def __dir__(self):
         returned_list = sorted(set(list(self.__dict__.keys()) + dir(type(self))))

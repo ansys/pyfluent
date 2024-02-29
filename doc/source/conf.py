@@ -1,4 +1,5 @@
 """Sphinx documentation configuration file."""
+
 from datetime import datetime
 import os
 import platform
@@ -34,7 +35,10 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "sphinxemoji.sphinxemoji",
+    "sphinx_toggleprompt",
 ]
+
+toggleprompt_offset_right = 35
 
 skip_examples = int(os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC", 0))
 if skip_examples:
