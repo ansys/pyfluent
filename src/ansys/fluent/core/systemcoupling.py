@@ -86,7 +86,7 @@ class SystemCoupling:
 
             assert os.path.exists(
                 scp_file_name
-            ), "ERROR: could not create System Coupling .scp file"
+            ), "ERROR: could not create System Coupling SCP file"
 
             with open(scp_file_name, "r") as f:
                 xml_string = f.read()
