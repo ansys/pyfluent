@@ -1,10 +1,35 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = [
-    "setuptools>=45.0",
-    "wheel>=0.37.0",
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+# Check https://python-poetry.org/docs/pyproject/ for all available sections
+name = "ansys-fluent-core"
+version = "0.20.dev1"
+description = "PyFluent provides Pythonic access to Ansys Fluent"
+license = "MIT"
+authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
+maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]
+readme = "README.rst"
+repository = "https://github.com/ansys/pyfluent"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+packages = [
+    { include = "ansys", from = "src" },
 ]
 
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+importlib-metadata = {version = "^7.0.1", python = "<3.9"}
+
+[tool.poetry.urls]
+"Documentation" = "https://fluent.docs.pyansys.com/"
+"Source" = "https://github.com/ansys/pyfluent"
+"Tracker" = "https://github.com/ansys/pyfluent/issues"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
