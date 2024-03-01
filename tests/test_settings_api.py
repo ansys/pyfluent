@@ -53,10 +53,10 @@ def test_wildcard(new_solver_session):
         "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
+    assert cell_zone_conditions.fluid["*"].source_terms.sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "source_terms": {
+                "sources": {
                     "x-momentum": [{"option": "value", "value": 1}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 3}],
@@ -64,13 +64,13 @@ def test_wildcard(new_solver_session):
             }
         }
     }
-    cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"] = [
+    cell_zone_conditions.fluid["*"].source_terms.sources["*mom*"] = [
         {"option": "value", "value": 2}
     ]
-    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
+    assert cell_zone_conditions.fluid["*"].source_terms.sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "source_terms": {
+                "sources": {
                     "x-momentum": [{"option": "value", "value": 2}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 2}],
