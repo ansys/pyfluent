@@ -92,6 +92,35 @@ def check_docker_support():
     return True
 
 
+def _get_standalone_launch_fluent_version(
+    product_version: Union[FluentVersion, str, None]
+) -> Optional[FluentVersion]:
+    """Determine the Fluent version during launch_fluent in standalone mode. The version
+    is searched in the following order.
+
+    1. ``product_version`` parameter passed with ``launch_fluent``.
+    2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
+
+    Returns
+    -------
+    FluentVersion, optional
+        Fluent version or None
+    """
+
+    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
+    # determine the Fluent version, so returning None.
+    if os.getenv("PYFLUENT_FLUENT_ROOT"):
+        return None
+
+    # Look for Fluent version in the following order:
+    # 1. product_version parameter passed with launch_fluent
+    if product_version:
+        return FluentVersion(product_version)
+
+    # 2. the latest ANSYS version from AWP_ROOT environment variables
+    return FluentVersion.get_latest_installed()
+
+
 def get_fluent_exe_path(**launch_argvals) -> Path:
     """Get Fluent executable path. The path is searched in the following order.
 
@@ -352,6 +381,20 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
         mode = FluentMode.get_mode(mode)
 
     return mode
+
+
+def _raise_non_gui_exception_in_windows(
+    exposure: FluentExposure, product_version: FluentVersion
+) -> None:
+    """Exposure < hidden_gui is not supported in Windows in Fluent version < 24.1."""
+    if (
+        _is_windows()
+        and exposure < FluentExposure.HIDDEN_GUI
+        and product_version < FluentVersion.v241
+    ):
+        raise InvalidArgument(
+            f"'{exposure}' supported in Windows only for Fluent version 24.1 or later."
+        )
 
 
 def _await_fluent_launch(

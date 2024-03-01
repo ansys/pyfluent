@@ -173,7 +173,8 @@ def launch_fluent(
         ``FluentExposure`` enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``,
         ``"hidden_gui"``, ``"no_graphics"`` or ``"gui"``. The default is
         ``FluentExposure.HIDDEN_GUI`` in Windows and ``FluentExposure.NO_GUI`` in
-        Linux.
+        Linux. ``"no_gui_or_graphics"`` and ``"no_gui"`` exposure are supported in
+        Windows only for Fluent version 2024 R1 or later.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
         Sets the graphics driver of Fluent. In Windows, the possible values are either
         the values of the ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``,

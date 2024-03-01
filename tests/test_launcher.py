@@ -21,6 +21,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_fluent_launch_args_string,
     _build_journal_argument,
     _is_windows,
+    _raise_non_gui_exception_in_windows,
     check_docker_support,
     get_fluent_exe_path,
 )
@@ -63,21 +64,40 @@ def test_unsuccessful_fluent_connection():
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
 
 
-def test_additional_argument_g_gu():
+@pytest.mark.fluent_version("<24.1")
+def test_non_gui_in_windows_throws_exception():
     default_windows_flag = launcher_utils._is_windows()
     launcher_utils._is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
                 mode="solver",
-                show_gui=True,
-                additional_arguments="-g",
+                exposure=FluentExposure.NO_GUI,
                 start_container=False,
             )
         with pytest.raises(InvalidArgument) as msg:
             pyfluent.launch_fluent(
-                mode="solver", additional_arguments="-gu", start_container=False
+                mode="solver",
+                exposure=FluentExposure.NO_GUI_OR_GRAPHICS,
+                start_container=False,
             )
+    finally:
+        launcher_utils._is_windows = lambda: default_windows_flag
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_non_gui_in_windows_does_not_throw_exception():
+    default_windows_flag = launcher_utils._is_windows()
+    launcher_utils._is_windows = lambda: True
+    try:
+        _raise_non_gui_exception_in_windows(FluentExposure.NO_GUI, FluentVersion.v241)
+        _raise_non_gui_exception_in_windows(
+            FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v241
+        )
+        _raise_non_gui_exception_in_windows(FluentExposure.NO_GUI, FluentVersion.v242)
+        _raise_non_gui_exception_in_windows(
+            FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v242
+        )
     finally:
         launcher_utils._is_windows = lambda: default_windows_flag
 
@@ -273,36 +293,48 @@ def test_watchdog_launch(monkeypatch):
 
 
 def test_fluent_launchers():
+    kwargs = dict(
+        exposure=FluentExposure.NO_GUI,
+        graphics_driver=(
+            FluentWindowsGraphicsDriver.AUTO
+            if _is_windows()
+            else FluentLinuxGraphicsDriver.AUTO
+        ),
+    )
     if not check_docker_support() and not pypim.is_configured():
         standalone_meshing_launcher = create_launcher(
-            "standalone", mode=FluentMode.MESHING_MODE
+            "standalone", mode=FluentMode.MESHING_MODE, **kwargs
         )
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
 
         standalone_solver_launcher = create_launcher(
-            "standalone", mode=FluentMode.SOLVER
+            "standalone", mode=FluentMode.SOLVER, **kwargs
         )
         standalone_solver_session = standalone_solver_launcher()
         assert standalone_solver_session
 
     if check_docker_support():
         container_meshing_launcher = create_launcher(
-            "container", mode=FluentMode.MESHING_MODE
+            "container", mode=FluentMode.MESHING_MODE, **kwargs
         )
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
 
-        container_solver_launcher = create_launcher("container", mode=FluentMode.SOLVER)
+        container_solver_launcher = create_launcher(
+            "container", mode=FluentMode.SOLVER, **kwargs
+        )
         container_solver_session = container_solver_launcher()
         assert container_solver_session
 
     if pypim.is_configured():
-        pim_meshing_launcher = create_launcher("pim", mode=FluentMode.MESHING_MODE)
+        pim_meshing_launcher = create_launcher(
+            "pim", mode=FluentMode.MESHING_MODE, **kwargs
+        )
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
 
-        pim_solver_launcher = create_launcher("pim", mode=FluentMode.SOLVER)
+        pim_solver_launcher = create_launcher("pim", mode=FluentMode.SOLVER, **kwargs)
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
 

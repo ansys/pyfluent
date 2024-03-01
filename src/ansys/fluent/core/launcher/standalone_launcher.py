@@ -18,14 +18,14 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _generate_launch_string,
     _get_server_info,
     _get_server_info_file_name,
+    _get_standalone_launch_fluent_version,
     _get_subprocess_kwargs_for_fluent,
     _is_windows,
     _process_invalid_args,
+    _raise_non_gui_exception_in_windows,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 
-_THIS_DIR = os.path.dirname(__file__)
-_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
@@ -188,6 +188,9 @@ class StandaloneLauncher:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
             setattr(self, "lightweight_mode", False)
+        fluent_version = _get_standalone_launch_fluent_version(self.product_version)
+        if fluent_version:
+            _raise_non_gui_exception_in_windows(self.exposure, fluent_version)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
