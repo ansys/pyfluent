@@ -85,10 +85,22 @@ class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
             The meshing object.
         """
         super().__init__(workflow=workflow, meshing=meshing)
+        self._meshing = meshing
 
     def reinitialize(self) -> None:
         """Initialize a watertight workflow."""
         self._new_workflow(name="Watertight Geometry")
+
+    def __getattribute__(self, item: str):
+        if (
+            item != "reinitialize"
+            and not item.startswith("_")
+            and not self._meshing.GlobalSettings.EnableCleanCAD()
+        ):
+            raise RuntimeError(
+                "'Watertight' objects are inaccessible from 'Fault-tolerant' workflow."
+            )
+        return super().__getattribute__(item)
 
 
 class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
@@ -115,12 +127,25 @@ class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
             The part-management file-management object.
         """
         super().__init__(workflow=workflow, meshing=meshing)
+        self._meshing = meshing
         self._part_management = part_management
         self._pm_file_management = pm_file_management
 
     def reinitialize(self):
         """Initialize a fault-tolerant workflow."""
         self._new_workflow("Fault-tolerant Meshing")
+
+    def __getattribute__(self, item):
+        if (
+            item != "reinitialize"
+            and not item.startswith("_")
+            and not self._meshing.GlobalSettings.EnableComplexMeshing()
+        ):
+            print(item, "********")
+            raise RuntimeError(
+                "'Fault-tolerant' objects are inaccessible from 'Watertight' workflow."
+            )
+        return super().__getattribute__(item)
 
     @property
     def part_management(self) -> Optional[PyMenuGeneric]:

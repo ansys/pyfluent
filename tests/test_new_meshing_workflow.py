@@ -963,3 +963,56 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
     fault_tolerant.reinitialize()
 
     assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_switch_between_workflows(new_mesh_session):
+    meshing = new_mesh_session
+
+    # Initialize to watertight and store
+    watertight = meshing.watertight()
+
+    assert watertight.import_geometry.arguments()
+
+    # Wrong Attribute
+    with pytest.raises(AttributeError):
+        watertight.import_cad_and_part_management.arguments()
+
+    # Initialize to fault-tolerant and store
+    fault_tolerant = meshing.fault_tolerant()
+
+    assert fault_tolerant.import_cad_and_part_management.arguments()
+
+    # 'import_geometry' is a watertight workflow command which is not available now
+    # since we have changed to fault-tolerant in the backend.
+    with pytest.raises(RuntimeError):
+        watertight.import_geometry.arguments()
+
+    # Re-initialize watertight
+    watertight.reinitialize()
+
+    # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
+    # available now since we have changed to watertight in the backend.
+    with pytest.raises(RuntimeError):
+        fault_tolerant.import_cad_and_part_management.arguments()
+
+    assert watertight.import_geometry.arguments()
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+    # 'import_geometry' is a watertight workflow command which is not available now
+    # since we have changed to fault-tolerant in the backend.
+    with pytest.raises(RuntimeError):
+        watertight.import_geometry.arguments()
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
+    # available now since we have changed to watertight in the backend.
+    with pytest.raises(RuntimeError):
+        fault_tolerant.import_cad_and_part_management.arguments()
+
+    # Re-initialize fault-tolerant
+    fault_tolerant.reinitialize()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
