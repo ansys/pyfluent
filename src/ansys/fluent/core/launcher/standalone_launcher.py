@@ -8,8 +8,9 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentExposure,
-    FluentGraphicsDriver,
+    FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentWindowsGraphicsDriver,
     LaunchFluentError,
     _await_fluent_launch,
     _build_journal_argument,
@@ -35,7 +36,7 @@ class StandaloneLauncher:
         self,
         mode: FluentMode,
         exposure: FluentExposure,
-        graphics_driver: FluentGraphicsDriver,
+        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -66,6 +67,13 @@ class StandaloneLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
+        exposure : FluentExposure
+            Sets the exposure of Fluent. The possible values are the values of the
+            ``FluentExposure`` enum.
+        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+            Sets the graphics driver of Fluent. The possible values are the values of
+            the ``FluentWindowsGraphicsDriver`` enum in Windows or the values of
+            the ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : str, optional
             Select an installed version of ANSYS. The string must be in a format like
             ``"23.2.0"`` (for 2023 R2) matching the documented version format in the

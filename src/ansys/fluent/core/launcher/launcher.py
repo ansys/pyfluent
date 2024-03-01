@@ -14,8 +14,9 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentExposure,
-    FluentGraphicsDriver,
+    FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentWindowsGraphicsDriver,
     GPUSolverSupportError,
     _confirm_watchdog_start,
     _get_fluent_launch_mode,
@@ -96,7 +97,9 @@ def launch_fluent(
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     exposure: Union[FluentExposure, str, None] = None,
-    graphics_driver: Union[FluentGraphicsDriver, str] = FluentGraphicsDriver.AUTO,
+    graphics_driver: Union[
+        FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+    ] = None,
     show_gui: Optional[bool] = None,
     case_file_name: Optional[str] = None,
     case_data_file_name: Optional[str] = None,
@@ -165,6 +168,20 @@ def launch_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
+    exposure : FluentExposure or str, optional
+        Sets the exposure of Fluent. The possible values are either the values of the
+        ``FluentExposure`` enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``,
+        ``"hidden_gui"``, ``"no_graphics"`` or ``"gui"``. The default is
+        ``FluentExposure.HIDDEN_GUI`` in Windows or ``FluentExposure.NO_GUI`` in
+        Linux.
+    graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
+        Sets the graphics driver of Fluent. In Windows, the possible values are either
+        the values of the ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``,
+        ``"msw"``, ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, the
+        possible values are either the values of the ``FluentLinuxGraphicsDriver`` enum
+        or any of ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The
+        default is ``FluentWindowsGraphicsDriver.AUTO`` in Windows or
+        ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
     show_gui : bool, optional
         Whether to display the Fluent GUI. The default is ``None``, which does not
         cause the GUI to be shown. If a value of ``False`` is
@@ -254,8 +271,14 @@ def launch_fluent(
         exposure = FluentExposure.HIDDEN_GUI if _is_windows() else FluentExposure.NO_GUI
     if isinstance(exposure, str):
         exposure = FluentExposure(exposure)
-    if isinstance(graphics_driver, str):
-        graphics_driver = FluentGraphicsDriver(graphics_driver)
+    if graphics_driver is None:
+        graphics_driver = "auto"
+    graphics_driver = str(graphics_driver)
+    graphics_driver = (
+        FluentWindowsGraphicsDriver(graphics_driver)
+        if _is_windows()
+        else FluentLinuxGraphicsDriver(graphics_driver)
+    )
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
         container_dict=container_dict,

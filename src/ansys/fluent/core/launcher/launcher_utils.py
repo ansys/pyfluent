@@ -182,13 +182,22 @@ class FluentMode(Enum):
 
 @total_ordering
 class FluentEnum(Enum):
+    """Base class for Fluent-related enums. Accepts lowercase member names as values
+    and supports comparison operators.
+    """
+
     @classmethod
     def _missing_(cls, value: str):
-        value = value.upper()
         for member in cls:
-            if member.name == value:
+            if str(member) == value:
                 return member
-        return None
+        raise ValueError(
+            f"The specified value '{value}' is not supported."
+            f""" Supported values are: '{", '".join(str(member) for member in cls)}'."""
+        )
+
+    def __str__(self):
+        return self.name.lower()
 
     def __lt__(self, other):
         if not isinstance(other, type(self)):
@@ -205,20 +214,34 @@ class FluentEnum(Enum):
 
 
 class FluentExposure(FluentEnum):
-    NO_GUI_OR_GRAPHICS = "g"
-    NO_GUI = "gu"
-    HIDDEN_GUI = "hidden"
-    NO_GRAPHICS = "gr"
-    GUI = ""
+    """Supported UI or graphics exposure of Fluent."""
+
+    NO_GUI_OR_GRAPHICS = ("-g",)
+    NO_GRAPHICS = ("-gr",)
+    NO_GUI = ("-gu",)
+    HIDDEN_GUI = ("-hidden",)
+    GUI = ("",)
 
 
-class FluentGraphicsDriver(FluentEnum):
-    NULL = "null"
-    MSW = "msw"
-    DX11 = "dx11"
-    OPENGL2 = "opengl2"
-    OPENGL = "opengl"
-    AUTO = ""
+class FluentWindowsGraphicsDriver(FluentEnum):
+    """Supported graphics driver of Fluent in Windows."""
+
+    NULL = ("null",)
+    MSW = ("msw",)
+    DX11 = ("dx11",)
+    OPENGL2 = ("opengl2",)
+    OPENGL = ("opengl",)
+    AUTO = ("",)
+
+
+class FluentLinuxGraphicsDriver(FluentEnum):
+    """Supported graphics driver of Fluent in Linux."""
+
+    NULL = ("null",)
+    X11 = ("x11",)
+    OPENGL2 = ("opengl2",)
+    OPENGL = ("opengl",)
+    AUTO = ("",)
 
 
 def _get_server_info_file_name(use_tmpdir=True):
@@ -311,11 +334,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
     exposure = kwargs.get("exposure")
-    if exposure and exposure.value:
-        launch_args_string += f" -{exposure.value}"
+    if exposure and exposure.value[0]:
+        launch_args_string += f" -{exposure.value[0]}"
     graphics_driver = kwargs.get("graphics_driver")
-    if graphics_driver and graphics_driver.value:
-        launch_args_string += f" -driver={graphics_driver.value}"
+    if graphics_driver and graphics_driver.value[0]:
+        launch_args_string += f" -driver={graphics_driver.value[0]}"
     return launch_args_string
 
 
