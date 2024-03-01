@@ -172,7 +172,7 @@ def launch_fluent(
         Sets the exposure of Fluent. The possible values are either the values of the
         ``FluentExposure`` enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``,
         ``"hidden_gui"``, ``"no_graphics"`` or ``"gui"``. The default is
-        ``FluentExposure.HIDDEN_GUI`` in Windows or ``FluentExposure.NO_GUI`` in
+        ``FluentExposure.HIDDEN_GUI`` in Windows and ``FluentExposure.NO_GUI`` in
         Linux.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
         Sets the graphics driver of Fluent. In Windows, the possible values are either
@@ -180,7 +180,7 @@ def launch_fluent(
         ``"msw"``, ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, the
         possible values are either the values of the ``FluentLinuxGraphicsDriver`` enum
         or any of ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The
-        default is ``FluentWindowsGraphicsDriver.AUTO`` in Windows or
+        default is ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
         ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
     show_gui : bool, optional
         Whether to display the Fluent GUI. The default is ``None``, which does not
@@ -267,7 +267,7 @@ def launch_fluent(
     del show_gui
     if exposure is None:
         # Not using NO_GUI in windows as it opens a new cmd or
-        # shows Fluent output in the current cmd if start is not used
+        # shows Fluent output in the current cmd if start <launch_string> is not used
         exposure = FluentExposure.HIDDEN_GUI if _is_windows() else FluentExposure.NO_GUI
     if isinstance(exposure, str):
         exposure = FluentExposure(exposure)

@@ -182,8 +182,9 @@ class FluentMode(Enum):
 
 @total_ordering
 class FluentEnum(Enum):
-    """Base class for Fluent-related enums. Accepts lowercase member names as values
-    and supports comparison operators.
+    """Base class for Fluent-related enums.
+
+    Accepts lowercase member names as values and supports comparison operators.
     """
 
     @classmethod
