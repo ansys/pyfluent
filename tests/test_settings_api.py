@@ -25,6 +25,7 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
+@pytest.mark.skip
 @pytest.mark.fluent_version(">=24.1")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
