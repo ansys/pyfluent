@@ -52,7 +52,11 @@ def test_wildcard(new_solver_session):
         "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    assert cell_zone_conditions.fluid["*"].source_terms.sources["*mom*"]() == {
+    if solver.get_fluent_version() >= "24.2.0":
+        sources = cell_zone_conditions.fluid["*"].source_terms.sources
+    else:
+        sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
+    assert sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
                 "sources": {
@@ -63,10 +67,8 @@ def test_wildcard(new_solver_session):
             }
         }
     }
-    cell_zone_conditions.fluid["*"].source_terms.sources["*mom*"] = [
-        {"option": "value", "value": 2}
-    ]
-    assert cell_zone_conditions.fluid["*"].source_terms.sources["*mom*"]() == {
+    sources["*mom*"] = [{"option": "value", "value": 2}]
+    assert sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
                 "sources": {
