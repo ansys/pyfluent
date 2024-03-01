@@ -3,6 +3,7 @@
 Usage:
      write_settings_yaml.py [outfile]
 """
+
 import sys
 
 import ansys.fluent.core as pyfluent

@@ -57,9 +57,9 @@ def _test_area_average(solver):
     solver.solution.initialization.hybrid_initialize()
     solver_named_expressions = solver.setup.named_expressions
     solver_named_expressions["test_expr_1"] = {}
-    solver_named_expressions[
-        "test_expr_1"
-    ].definition = "AreaAve(AbsolutePressure, ['inlet1'])"
+    solver_named_expressions["test_expr_1"].definition = (
+        "AreaAve(AbsolutePressure, ['inlet1'])"
+    )
     expr_val = solver_named_expressions["test_expr_1"].get_value()
     assert type(expr_val) == float and expr_val != 0.0
     val = solver.reduction.area_average(
@@ -125,9 +125,9 @@ def _test_centroid(solver):
     expr_val_1 = solver_named_expressions["test_expr_1"].get_value()
     solver_named_expressions["test_expr_1"].definition = "Centroid(['inlet2'])"
     expr_val_2 = solver_named_expressions["test_expr_1"].get_value()
-    solver_named_expressions[
-        "test_expr_1"
-    ].definition = "Centroid(['inlet1', 'inlet2'])"
+    solver_named_expressions["test_expr_1"].definition = (
+        "Centroid(['inlet1', 'inlet2'])"
+    )
     expr_val_3 = solver_named_expressions["test_expr_1"].get_value()
     red_val_1 = solver.reduction.centroid(locations=[velocity_inlet["inlet1"]])
     red_val_2 = solver.reduction.centroid(locations=[velocity_inlet["inlet2"]])
@@ -147,18 +147,18 @@ def _test_area_integrated_average(solver1, solver2):
     solver2_named_expr = solver2.setup.named_expressions
 
     solver1_named_expr["test_expr_1"] = {}
-    solver1_named_expr[
-        "test_expr_1"
-    ].definition = "AreaInt(AbsolutePressure, ['inlet1'])"
+    solver1_named_expr["test_expr_1"].definition = (
+        "AreaInt(AbsolutePressure, ['inlet1'])"
+    )
     expr_val_1 = solver1_named_expr["test_expr_1"].get_value()
 
-    solver1_named_expr[
-        "test_expr_1"
-    ].definition = "AreaInt(AbsolutePressure, ['inlet2'])"
+    solver1_named_expr["test_expr_1"].definition = (
+        "AreaInt(AbsolutePressure, ['inlet2'])"
+    )
     expr_val_2 = solver1_named_expr["test_expr_1"].get_value()
-    solver1_named_expr[
-        "test_expr_1"
-    ].definition = "AreaInt(AbsolutePressure, ['inlet1', 'inlet2'])"
+    solver1_named_expr["test_expr_1"].definition = (
+        "AreaInt(AbsolutePressure, ['inlet1', 'inlet2'])"
+    )
     expr_val_3 = solver1_named_expr["test_expr_1"].get_value()
 
     assert expr_val_3 - (expr_val_1 + expr_val_2) <= 0.000000001
@@ -181,18 +181,18 @@ def _test_area_integrated_average(solver1, solver2):
     assert red_val_3 == expr_val_3
 
     solver2_named_expr["test_expr_1"] = {}
-    solver2_named_expr[
-        "test_expr_1"
-    ].definition = "AreaInt(AbsolutePressure, ['inlet1'])"
+    solver2_named_expr["test_expr_1"].definition = (
+        "AreaInt(AbsolutePressure, ['inlet1'])"
+    )
     expr_val_4 = solver2_named_expr["test_expr_1"].get_value()
 
-    solver2_named_expr[
-        "test_expr_1"
-    ].definition = "AreaInt(AbsolutePressure, ['inlet2'])"
+    solver2_named_expr["test_expr_1"].definition = (
+        "AreaInt(AbsolutePressure, ['inlet2'])"
+    )
     expr_val_5 = solver2_named_expr["test_expr_1"].get_value()
-    solver2_named_expr[
-        "test_expr_1"
-    ].definition = "AreaInt(AbsolutePressure, ['inlet1', 'inlet2'])"
+    solver2_named_expr["test_expr_1"].definition = (
+        "AreaInt(AbsolutePressure, ['inlet1', 'inlet2'])"
+    )
     expr_val_6 = solver2_named_expr["test_expr_1"].get_value()
 
     assert expr_val_6 - (expr_val_4 + expr_val_5) <= 0.000000001
@@ -269,9 +269,9 @@ def _test_moment(solver):
     solver_named_expressions = solver.setup.named_expressions
     location = solver.setup.boundary_conditions.wall
     solver_named_expressions["test_expr_1"] = {}
-    solver_named_expressions[
-        "test_expr_1"
-    ].definition = "Moment(Force(['wall']),['wall'])"
+    solver_named_expressions["test_expr_1"].definition = (
+        "Moment(Force(['wall']),['wall'])"
+    )
     expr_val_1 = solver_named_expressions["test_expr_1"].get_value()
 
     solver_named_expressions["test_expr_1"].definition = "Moment(['inlet1'],['wall'])"
@@ -298,9 +298,9 @@ def _test_moment(solver):
 def _test_sum(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions[
-        "test_expr_1"
-    ].definition = "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
+    solver.setup.named_expressions["test_expr_1"].definition = (
+        "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
+    )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert type(expr_val) == float and expr_val != 0.0
 
@@ -317,9 +317,7 @@ def _test_sum(solver):
 def _test_sum_if(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions[
-        "test_expr_1"
-    ].definition = (
+    solver.setup.named_expressions["test_expr_1"].definition = (
         "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()

@@ -58,6 +58,7 @@ Examples
 ...     ])
 19.28151
 """
+
 import numpy as np
 from numpy import array
 
@@ -108,9 +109,7 @@ def _root(obj):
     return (
         None
         if isinstance(obj, list)
-        else obj
-        if not getattr(obj, "obj_name", None)
-        else _root(obj._parent)
+        else obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
     )
 
 

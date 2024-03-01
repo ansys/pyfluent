@@ -1,4 +1,5 @@
 """Metaclasses used in various explicit classes in PyFluent."""
+
 from abc import ABCMeta
 from collections.abc import MutableMapping
 import inspect
