@@ -54,12 +54,14 @@ def test_wildcard(new_solver_session):
     cell_zone_conditions = solver.setup.cell_zone_conditions
     if solver.get_fluent_version() >= "24.2.0":
         sources = cell_zone_conditions.fluid["*"].source_terms.sources
+        key = "sources"
     else:
         sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
+        key = "source_terms"
     assert sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "sources": {
+                key: {
                     "x-momentum": [{"option": "value", "value": 1}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 3}],
@@ -71,7 +73,7 @@ def test_wildcard(new_solver_session):
     assert sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "sources": {
+                key: {
                     "x-momentum": [{"option": "value", "value": 2}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 2}],
