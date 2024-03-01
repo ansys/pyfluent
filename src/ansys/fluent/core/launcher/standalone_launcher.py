@@ -204,7 +204,11 @@ class StandaloneLauncher:
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
-            launch_cmd = launch_string
+            if self.exposure < FluentExposure.HIDDEN_GUI:
+                # Using nohup to hide Fluent output from the current terminal
+                launch_cmd = "nohup " + launch_string + " &"
+            else:
+                launch_cmd = launch_string
 
         try:
             logger.debug(f"Launching Fluent with command: {launch_cmd}")

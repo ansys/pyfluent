@@ -1,6 +1,7 @@
 """Provides a module for launching utilities."""
 
 from enum import Enum
+from functools import total_ordering
 import json
 import logging
 import os
@@ -179,6 +180,7 @@ class FluentMode(Enum):
         return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
+@total_ordering
 class FluentEnum(Enum):
     @classmethod
     def _missing_(cls, value: str):
@@ -188,12 +190,25 @@ class FluentEnum(Enum):
                 return member
         return None
 
+    def __lt__(self, other):
+        if not isinstance(other, type(self)):
+            raise RuntimeError(
+                f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
+            )
+        if self == other:
+            return False
+        for member in type(self):
+            if self == member:
+                return True
+            if other == member:
+                return False
+
 
 class FluentExposure(FluentEnum):
     NO_GUI_OR_GRAPHICS = "g"
-    NO_GRAPHICS = "gr"
     NO_GUI = "gu"
     HIDDEN_GUI = "hidden"
+    NO_GRAPHICS = "gr"
     GUI = ""
 
 

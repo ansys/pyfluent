@@ -22,6 +22,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _get_mode,
     _get_running_session_mode,
     _get_server_info,
+    _is_windows,
     _process_invalid_args,
     _process_kwargs,
 )
@@ -94,7 +95,7 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    exposure: Union[FluentExposure, str] = FluentExposure.HIDDEN_GUI,
+    exposure: Union[FluentExposure, str, None] = None,
     graphics_driver: Union[FluentGraphicsDriver, str] = FluentGraphicsDriver.AUTO,
     show_gui: Optional[bool] = None,
     case_file_name: Optional[str] = None,
@@ -247,6 +248,10 @@ def launch_fluent(
     if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == 1:
         exposure = FluentExposure.GUI
     del show_gui
+    if exposure is None:
+        # Not using NO_GUI in windows as it opens a new cmd or
+        # shows Fluent output in the current cmd if start is not used
+        exposure = FluentExposure.HIDDEN_GUI if _is_windows() else FluentExposure.NO_GUI
     if isinstance(exposure, str):
         exposure = FluentExposure(exposure)
     if isinstance(graphics_driver, str):
