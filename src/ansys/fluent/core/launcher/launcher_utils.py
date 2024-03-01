@@ -192,8 +192,8 @@ class FluentEnum(Enum):
             if str(member) == value:
                 return member
         raise ValueError(
-            f"The specified value '{value}' is not supported."
-            f""" Supported values are: '{", '".join(str(member) for member in cls)}'."""
+            f"The specified value '{value}' is a supported value of {cls.__name__}."
+            f""" The supported values are: '{", '".join(str(member) for member in cls)}'."""
         )
 
     def __str__(self):
@@ -216,10 +216,10 @@ class FluentEnum(Enum):
 class FluentExposure(FluentEnum):
     """Supported UI or graphics exposure of Fluent."""
 
-    NO_GUI_OR_GRAPHICS = ("-g",)
-    NO_GRAPHICS = ("-gr",)
-    NO_GUI = ("-gu",)
-    HIDDEN_GUI = ("-hidden",)
+    NO_GUI_OR_GRAPHICS = ("g",)
+    NO_GRAPHICS = ("gr",)
+    NO_GUI = ("gu",)
+    HIDDEN_GUI = ("hidden",)
     GUI = ("",)
 
 
