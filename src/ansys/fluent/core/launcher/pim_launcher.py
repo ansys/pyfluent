@@ -58,15 +58,14 @@ class PIMLauncher:
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
         exposure : FluentExposure
-            Sets the exposure of Fluent. The possible values are the values of the
-            ``FluentExposure`` enum.
+            Exposure of Fluent. Options are the values of the ``FluentExposure`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Sets the graphics driver of Fluent. The possible values are the values of
-            the ``FluentWindowsGraphicsDriver`` enum in Windows or the values of
-            the ``FluentLinuxGraphicsDriver`` enum in Linux.
+            Graphics driver of Fluent. Options are the values of the
+            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
+            ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : str, optional
-            Select an installed version of ANSYS. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+            Installed version of Ansys. The string must be in a format like
+            ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
             FluentVersion class. The default is ``None``, in which case the newest installed
             version is used.
         version : str, optional

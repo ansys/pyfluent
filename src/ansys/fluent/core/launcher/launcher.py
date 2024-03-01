@@ -120,8 +120,8 @@ def launch_fluent(
     Parameters
     ----------
     product_version : str, optional
-        Select an installed version of ANSYS. The string must be in a format like
-        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+        Installed version of ANSYS. The string must be in a format like
+        ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
         FluentVersion class. The default is ``None``, in which case the newest installed
         version is used.
     version : str, optional
@@ -169,20 +169,20 @@ def launch_fluent(
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
     exposure : FluentExposure or str, optional
-        Sets the exposure of Fluent. The possible values are either the values of the
-        ``FluentExposure`` enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``,
-        ``"hidden_gui"``, ``"no_graphics"`` or ``"gui"``. The default is
-        ``FluentExposure.HIDDEN_GUI`` in Windows and ``FluentExposure.NO_GUI`` in
-        Linux. ``"no_gui_or_graphics"`` and ``"no_gui"`` exposure are supported in
-        Windows only for Fluent version 2024 R1 or later.
+        Exposure of Fluent. Options are either the values of the ``FluentExposure`` enum
+        or any of ``"no_gui_or_graphics"``, ``"no_gui"``, ``"hidden_gui"``,
+        ``"no_graphics"`` or ``"gui"``. The default is ``FluentExposure.HIDDEN_GUI`` in
+        Windows and ``FluentExposure.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
+        ``"no_gui"`` exposure are supported in Windows only for Fluent version 2024 R1
+        or later.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
-        Sets the graphics driver of Fluent. In Windows, the possible values are either
-        the values of the ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``,
-        ``"msw"``, ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, the
-        possible values are either the values of the ``FluentLinuxGraphicsDriver`` enum
-        or any of ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The
-        default is ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
-        ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
+        Graphics driver of Fluent. In Windows, options are either the values of the
+        ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,
+        ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, options are
+        either the values of the ``FluentLinuxGraphicsDriver`` enum or any of
+       ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
+       ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
+       ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
     show_gui : bool, optional
         Whether to display the Fluent GUI. The default is ``None``, which does not
         cause the GUI to be shown. If a value of ``False`` is
@@ -261,7 +261,8 @@ def launch_fluent(
     del kwargs
     if show_gui is not None:
         warnings.warn(
-            "show_gui is deprecated, use exposure instead", PyFluentDeprecationWarning
+            "'show_gui' is deprecated, use 'exposure' instead",
+            PyFluentDeprecationWarning,
         )
     if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == 1:
         exposure = FluentExposure.GUI

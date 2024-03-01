@@ -95,16 +95,18 @@ def check_docker_support():
 def _get_standalone_launch_fluent_version(
     product_version: Union[FluentVersion, str, None]
 ) -> Optional[FluentVersion]:
-    """Determine the Fluent version during launch_fluent in standalone mode. The version
-    is searched in the following order.
+    """Determine the Fluent version during the execution of the ``launch_fluent()``
+    method in standalone mode.
 
-    1. ``product_version`` parameter passed with ``launch_fluent``.
-    2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
+    The search for the version is performed in this order.
+
+    1. The ``product_version`` parameter passed with the ``launch_fluent()`` method.
+    2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.
 
     Returns
     -------
     FluentVersion, optional
-        Fluent version or None
+        Fluent version or ``None``
     """
 
     # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
@@ -122,7 +124,9 @@ def _get_standalone_launch_fluent_version(
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
-    """Get Fluent executable path. The path is searched in the following order.
+    """Get the path for the Fluent executable file.
+
+    The search for the path is performed in this order:
 
     1. ``product_version`` parameter passed with ``launch_fluent``.
     2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
@@ -211,7 +215,7 @@ class FluentMode(Enum):
 
 @total_ordering
 class FluentEnum(Enum):
-    """Base class for Fluent-related enums.
+    """Provides the base class for Fluent-related enums.
 
     Accepts lowercase member names as values and supports comparison operators.
     """
@@ -244,7 +248,7 @@ class FluentEnum(Enum):
 
 
 class FluentExposure(FluentEnum):
-    """Supported UI or graphics exposure of Fluent."""
+    """Provides supported UI or graphics exposure of Fluent."""
 
     NO_GUI_OR_GRAPHICS = ("g",)
     NO_GRAPHICS = ("gr",)
@@ -254,7 +258,7 @@ class FluentExposure(FluentEnum):
 
 
 class FluentWindowsGraphicsDriver(FluentEnum):
-    """Supported graphics driver of Fluent in Windows."""
+    """Provides supported graphics driver of Fluent in Windows."""
 
     NULL = ("null",)
     MSW = ("msw",)
@@ -265,7 +269,7 @@ class FluentWindowsGraphicsDriver(FluentEnum):
 
 
 class FluentLinuxGraphicsDriver(FluentEnum):
-    """Supported graphics driver of Fluent in Linux."""
+    """Provides supported graphics driver of Fluent in Linux."""
 
     NULL = ("null",)
     X11 = ("x11",)
@@ -386,7 +390,8 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
 def _raise_non_gui_exception_in_windows(
     exposure: FluentExposure, product_version: FluentVersion
 ) -> None:
-    """Exposure < hidden_gui is not supported in Windows in Fluent version < 24.1."""
+    """Exposure lower than ``FluentExposure.HIDDEN_GUI`` is not supported in Windows in
+    Fluent versions lower than 2024 R1."""
     if (
         _is_windows()
         and exposure < FluentExposure.HIDDEN_GUI
