@@ -12,9 +12,7 @@ class PyPIMConfigurationError(ConnectionError):
 
 
 class PimFileTransferService:
-    """Instantiates a file uploader and downloader to have a seamless file reading /
-    writing in the cloud particularly in Ansys lab . Here we are exposing upload and
-    download methods on session objects. This will be used for internal purpose only.
+    """Provides a file transfer service based on PyPIM and simple_upload_server.
 
     Attributes
     ----------
