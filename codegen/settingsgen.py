@@ -33,6 +33,7 @@ import pickle
 import pprint
 import shutil
 
+from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
@@ -478,7 +479,7 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-def generate(version, pyfluent_path):
+def generate(version, pyfluent_path, sessions: dict):
     dirname = os.path.dirname(__file__)
     parent_dir = (
         (Path(pyfluent_path) if pyfluent_path else (Path(dirname) / ".." / "src"))
@@ -494,11 +495,11 @@ def generate(version, pyfluent_path):
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
-    from ansys.fluent.core.launcher.launcher import launch_fluent
-
-    session = launch_fluent()
+    if FluentMode.SOLVER not in sessions:
+        sessions[FluentMode.SOLVER] = launch_fluent()
+    session = sessions[FluentMode.SOLVER]
     sinfo = session._settings_service.get_static_info()
-    session.exit()
+    session.exit()  # exiting the solver session here as it won't be required during allapigen anymore
     cls, _ = flobject.get_cls("", sinfo, version=version)
 
     api_tree = {}
@@ -509,5 +510,6 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_file_name()
-    generate(version, None)
+    sessions = {FluentMode.SOLVER: launch_fluent()}
+    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
+    generate(version, None, sessions)

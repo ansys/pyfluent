@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 from typing import Any, Dict
 
+from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.session import BaseSession as Session
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -111,8 +112,9 @@ class DataModelStaticInfo:
 
 
 class DataModelGenerator:
-    def __init__(self, version, pyfluent_path):
+    def __init__(self, version, pyfluent_path, sessions: dict):
         self.version = version
+        self.sessions = sessions
         self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo(
                 pyfluent_path,
@@ -172,24 +174,32 @@ class DataModelGenerator:
         run_icing_mode = FluentVersion(self.version) >= FluentVersion.v231 and any(
             "flicing" in info.modes for _, info in self._static_info.items()
         )
-        import ansys.fluent.core as pyfluent
 
         if run_meshing_mode:
-            session = pyfluent.launch_fluent(mode="meshing")
+            if FluentMode.MESHING_MODE not in self.sessions:
+                self.sessions[FluentMode.MESHING_MODE] = launch_fluent(
+                    mode=FluentMode.MESHING_MODE
+                )
+            session = self.sessions[FluentMode.MESHING_MODE]
             for _, info in self._static_info.items():
                 if "meshing" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
-            session.exit()
+            session.exit()  # exiting the meshing session here as it won't be required during allapigen anymore
 
         if run_solver_mode:
-            session = pyfluent.launch_fluent(mode="solver")
+            if FluentMode.SOLVER not in self.sessions:
+                self.sessions[FluentMode.SOLVER] = launch_fluent(mode=FluentMode.SOLVER)
+            session = self.sessions[FluentMode.SOLVER]
             for _, info in self._static_info.items():
                 if "solver" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
-            session.exit()
 
         if run_icing_mode:
-            session = pyfluent.launch_fluent(mode="solver-icing")
+            if FluentMode.SOLVER_ICING not in self.sessions:
+                self.sessions[FluentMode.SOLVER_ICING] = launch_fluent(
+                    mode=FluentMode.SOLVER_ICING
+                )
+            session = self.sessions[FluentMode.SOLVER_ICING]
             for _, info in self._static_info.items():
                 if "flicing" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
@@ -209,7 +219,7 @@ class DataModelGenerator:
                         print(
                             "Information: Problem accessing flserver datamodel for icing settings\n"
                         )
-            session.exit()
+            session.exit()  # exiting the solver-icing session here as it won't be required during allapigen anymore
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}
@@ -453,10 +463,11 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version, pyfluent_path):
-    return DataModelGenerator(version, pyfluent_path).write_static_info()
+def generate(version, pyfluent_path, sessions: dict):
+    return DataModelGenerator(version, pyfluent_path, sessions).write_static_info()
 
 
 if __name__ == "__main__":
-    version = get_version_for_file_name()
-    generate(version, None)
+    sessions = {FluentMode.SOLVER: launch_fluent()}
+    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
+    generate(version, None, sessions)
