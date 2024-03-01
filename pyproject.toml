@@ -18,12 +18,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-include = [
-    { path = "tests", format = ["sdist", "wheel"] },
-    { path = "README.rst", format = ["sdist", "wheel"] }
-]
 packages = [
     { include = "ansys", from = "src" },
+    { include = "tests", to = "ansys/fluent" },
+    { include = "README.rst", to = "ansys/fluent/core/docs" },
 ]
 
 [tool.poetry.dependencies]
