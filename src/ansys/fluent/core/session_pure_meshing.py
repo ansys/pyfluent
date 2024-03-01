@@ -109,12 +109,12 @@ class PureMeshing(BaseSession):
 
     def watertight(self):
         """Get a new watertight workflow."""
-        self._base_meshing.watertight_workflow.watertight()
+        self._base_meshing.watertight_workflow.reinitialize()
         return self._base_meshing.watertight_workflow
 
     def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        self._base_meshing.fault_tolerant_workflow.fault_tolerant()
+        self._base_meshing.fault_tolerant_workflow.reinitialize()
         return self._base_meshing.fault_tolerant_workflow
 
     @property

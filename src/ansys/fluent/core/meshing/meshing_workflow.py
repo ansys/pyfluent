@@ -86,7 +86,7 @@ class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
         """
         super().__init__(workflow=workflow, meshing=meshing)
 
-    def watertight(self) -> None:
+    def reinitialize(self) -> None:
         """Initialize a watertight workflow."""
         self._new_workflow(name="Watertight Geometry")
 
@@ -118,7 +118,7 @@ class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
         self._part_management = part_management
         self._pm_file_management = pm_file_management
 
-    def fault_tolerant(self):
+    def reinitialize(self):
         """Initialize a fault-tolerant workflow."""
         self._new_workflow("Fault-tolerant Meshing")
 
