@@ -5,16 +5,22 @@ import pytest
 from util.fixture_fluent import download_input_file
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     DockerContainerLaunchNotSupported,
+    FluentExposure,
+    FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentWindowsGraphicsDriver,
     GPUSolverSupportError,
     LaunchFluentError,
     UnexpectedKeywordArgument,
+    _build_fluent_launch_args_string,
     _build_journal_argument,
+    _is_windows,
     check_docker_support,
     get_fluent_exe_path,
 )
@@ -322,3 +328,41 @@ def test_fluent_launchers():
 def test_build_journal_argument(topy, journal_file_names, result, raises):
     with raises:
         assert _build_journal_argument(topy, journal_file_names) == result
+
+
+@pytest.mark.filterwarnings("error::FutureWarning")
+def test_show_gui_raises_warning():
+    with pytest.raises(PyFluentDeprecationWarning):
+        pyfluent.launch_fluent(show_gui=True)
+
+
+def test_fluent_enums():
+    assert str(FluentExposure.GUI) == "gui"
+    assert FluentExposure("gui") == FluentExposure.GUI
+    with pytest.raises(ValueError):
+        FluentExposure("")
+    assert FluentExposure.NO_GUI < FluentExposure.GUI
+    with pytest.raises(TypeError):
+        FluentExposure.NO_GUI < FluentWindowsGraphicsDriver.AUTO
+
+
+def test_exposure_and_graphics_driver_arguments():
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(exposure="gu")
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(graphics_driver="x11" if _is_windows() else "dx11")
+    for m in FluentExposure:
+        assert (
+            _build_fluent_launch_args_string(exposure=m).strip()
+            == f"3ddp -{m.value[0]}"
+            if m.value[0]
+            else " 3ddp"
+        )
+    for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
+        for m in e:
+            assert (
+                _build_fluent_launch_args_string(graphics_driver=m).strip()
+                == f"3ddp -driver {m.value[0]}"
+                if m.value[0]
+                else " 3ddp"
+            )

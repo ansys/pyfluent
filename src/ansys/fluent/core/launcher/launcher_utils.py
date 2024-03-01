@@ -201,7 +201,7 @@ class FluentEnum(Enum):
 
     def __lt__(self, other):
         if not isinstance(other, type(self)):
-            raise RuntimeError(
+            raise TypeError(
                 f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
             )
         if self == other:
@@ -321,8 +321,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
-    addArgs = kwargs["additional_arguments"]
-    if "-t" not in addArgs and "-cnf=" not in addArgs:
+    addArgs = kwargs.get("additional_arguments")
+    if addArgs and "-t" not in addArgs and "-cnf=" not in addArgs:
         parallel_options = build_parallel_options(
             load_machines(ncores=kwargs["processor_count"])
         )
@@ -338,7 +338,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         launch_args_string += f" -{exposure.value[0]}"
     graphics_driver = kwargs.get("graphics_driver")
     if graphics_driver and graphics_driver.value[0]:
-        launch_args_string += f" -driver={graphics_driver.value[0]}"
+        launch_args_string += f" -driver {graphics_driver.value[0]}"
     return launch_args_string
 
 

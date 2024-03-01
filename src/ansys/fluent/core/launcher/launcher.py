@@ -258,7 +258,7 @@ def launch_fluent(
         raise GPUSolverSupportError()
     _process_kwargs(kwargs)
     del kwargs
-    if show_gui:
+    if show_gui is not None:
         warnings.warn(
             "show_gui is deprecated, use exposure instead", PyFluentDeprecationWarning
         )
