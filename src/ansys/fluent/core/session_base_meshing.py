@@ -43,7 +43,8 @@ class BaseMeshing:
         self._fluent_version = fluent_version
         self._meshing_utilities = None
         self._old_workflow = None
-        self._new_workflow = None
+        self._wt_workflow = None
+        self._ft_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -149,24 +150,24 @@ class BaseMeshing:
     @property
     def watertight_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
-        if not self._new_workflow:
-            self._new_workflow = WatertightMeshingWorkflow(
+        if not self._wt_workflow:
+            self._wt_workflow = WatertightMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
             )
-        return self._new_workflow
+        return self._wt_workflow
 
     @property
     def fault_tolerant_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
-        if not self._new_workflow:
-            self._new_workflow = FaultTolerantMeshingWorkflow(
+        if not self._ft_workflow:
+            self._ft_workflow = FaultTolerantMeshingWorkflow(
                 self._workflow_se,
                 self.meshing,
                 self.PartManagement,
                 self.PMFileManagement,
             )
-        return self._new_workflow
+        return self._ft_workflow
 
     @property
     def PartManagement(self):
