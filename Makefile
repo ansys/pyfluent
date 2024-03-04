@@ -3,7 +3,6 @@ style:
 	@pre-commit run --all-files --show-diff-on-failure
 
 install:
-	@poetry install --only main
 	@poetry build
 	@pip install -q --force-reinstall dist/*.whl
 
