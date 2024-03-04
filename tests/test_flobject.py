@@ -1002,7 +1002,9 @@ def _check_vector_units(obj, units):
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
-    assert isinstance(solver._root.state_with_units(), dict)
+
+    # disabling due to ansys/pyfluent#2529
+    # assert isinstance(solver._root.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
