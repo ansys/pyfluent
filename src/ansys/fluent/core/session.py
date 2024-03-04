@@ -297,7 +297,7 @@ class BaseSession:
         file_name : str
             Name of the file to download from the server, directory specification is not supported.
         local_directory : str, optional
-            Local destination directory, by default current working directory.
+            Local destination directory. The default is the current working directory.
         """
         return self._file_transfer_service.download_file(file_name, local_directory)
 
