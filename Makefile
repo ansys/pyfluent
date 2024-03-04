@@ -3,6 +3,7 @@ style:
 	@pre-commit run --all-files --show-diff-on-failure
 
 install:
+	@pip uninstall poetry
 	@pip install poetry>=1.8.2
 	@poetry --version 
 	@poetry build
