@@ -3,8 +3,7 @@ style:
 	@pre-commit run --all-files --show-diff-on-failure
 
 install:
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry build
 	@pip install -q --force-reinstall dist/*.whl
 
@@ -26,8 +25,7 @@ unittest: unittest-dev-241
 unittest-dev-222:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --fluent-version=22.2 $(PYTESTEXTRA)
 	@python -m pytest --fluent-version=22.2 $(PYTESTRERUN)
@@ -35,8 +33,7 @@ unittest-dev-222:
 unittest-dev-231:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --fluent-version=23.1 $(PYTESTEXTRA)
 	@python -m pytest --fluent-version=23.1 $(PYTESTRERUN)
@@ -44,8 +41,7 @@ unittest-dev-231:
 unittest-dev-232:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --fluent-version=23.2 $(PYTESTEXTRA)
 	@python -m pytest --fluent-version=23.2 $(PYTESTRERUN)
@@ -53,8 +49,7 @@ unittest-dev-232:
 unittest-dev-241:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --fluent-version=24.1 $(PYTESTEXTRA)
 	@python -m pytest --fluent-version=24.1 $(PYTESTRERUN)
@@ -62,8 +57,7 @@ unittest-dev-241:
 unittest-dev-242:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --fluent-version=24.2 $(PYTESTEXTRA)
 	@python -m pytest --fluent-version=24.2 $(PYTESTRERUN)
@@ -71,8 +65,7 @@ unittest-dev-242:
 unittest-all-222:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=22.2 $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=22.2 $(PYTESTRERUN)
@@ -80,8 +73,7 @@ unittest-all-222:
 unittest-all-222-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=22.2 -m "not codegen_required" $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=22.2 -m "not codegen_required" $(PYTESTRERUN)
@@ -89,8 +81,7 @@ unittest-all-222-no-codegen:
 unittest-all-231:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=23.1 $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=23.1 $(PYTESTRERUN)
@@ -98,8 +89,7 @@ unittest-all-231:
 unittest-all-231-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=23.1 -m "not codegen_required" $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=23.1 -m "not codegen_required" $(PYTESTRERUN)
@@ -107,8 +97,7 @@ unittest-all-231-no-codegen:
 unittest-all-232:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=23.2 $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=23.2 $(PYTESTRERUN)
@@ -116,8 +105,7 @@ unittest-all-232:
 unittest-all-232-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=23.2 -m "not codegen_required" $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=23.2 -m "not codegen_required" $(PYTESTRERUN)
@@ -125,8 +113,7 @@ unittest-all-232-no-codegen:
 unittest-all-241:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=24.1 $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=24.1 $(PYTESTRERUN)
@@ -134,8 +121,7 @@ unittest-all-241:
 unittest-all-241-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=24.1 -m "not codegen_required" $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=24.1 -m "not codegen_required" $(PYTESTRERUN)
@@ -143,8 +129,7 @@ unittest-all-241-no-codegen:
 unittest-all-242:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=24.2 $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=24.2 $(PYTESTRERUN)
@@ -152,8 +137,7 @@ unittest-all-242:
 unittest-solvermode-242:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --fluent-version=24.2 --solvermode $(PYTESTEXTRA)
 	@python -m pytest --fluent-version=24.2 --solvermode $(PYTESTRERUN)
@@ -161,8 +145,7 @@ unittest-solvermode-242:
 unittest-all-242-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only test
 	@python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required" $(PYTESTEXTRA)
 	@python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required" $(PYTESTRERUN)
@@ -182,16 +165,14 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/tui
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only docs
 	@xvfb-run make -C doc html
 
 build-all-docs:
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip uninstall poetry -y
-	@pip install poetry>=1.8.2
+	@pip install -r requirements/requirements_build.txt
 	@poetry install --only docs
 	@xvfb-run make -C doc html
 
