@@ -3,7 +3,7 @@ style:
 	@pre-commit run --all-files --show-diff-on-failure
 
 install:
-	@pip install poetry>=1.9.0
+	@pip install poetry>=1.8.2
 	@poetry build
 	@pip install -q --force-reinstall dist/*.whl
 
