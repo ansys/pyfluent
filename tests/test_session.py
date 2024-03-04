@@ -11,7 +11,7 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import (  # noqa: F401
     make_new_session,
     new_solver_session,
-    new_solver_session_scoped_solver,
+    new_solver_session_scoped_session,
 )
 
 from ansys.api.fluent.v0 import (
@@ -320,16 +320,16 @@ def test_start_transcript_file_write(new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_expected_interfaces_in_solver_session(new_solver_session_scoped_solver):
+def test_expected_interfaces_in_solver_session(new_solver_session_scoped_session):
     assert all(
-        intf in dir(new_solver_session_scoped_solver)
+        intf in dir(new_solver_session_scoped_session)
         for intf in ("preferences", "tui", "workflow")
     )
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_solverworkflow_not_in_solver_session(new_solver_session_scoped_solver):
-    assert "solverworkflow" not in dir(new_solver_session_scoped_solver)
+def test_solverworkflow_not_in_solver_session(new_solver_session_scoped_session):
+    assert "solverworkflow" not in dir(new_solver_session_scoped_session)
 
 
 @pytest.mark.standalone
@@ -356,8 +356,8 @@ def test_read_case_using_lightweight_mode():
     solver.exit()
 
 
-def test_help_does_not_throw(new_solver_session_scoped_solver):
-    help(new_solver_session_scoped_solver.file.read)
+def test_help_does_not_throw(new_solver_session_scoped_session):
+    help(new_solver_session_scoped_session.file.read)
 
 
 def test_build_from_fluent_connection(make_new_session):
@@ -396,8 +396,8 @@ def test_recover_grpc_error_from_connection_error():
     assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE
 
 
-def test_solver_methods(new_solver_session_scoped_solver):
-    solver = new_solver_session_scoped_solver
+def test_solver_methods(new_solver_session_scoped_session):
+    solver = new_solver_session_scoped_session
 
     if int(solver._version) == 222:
         api_keys = {

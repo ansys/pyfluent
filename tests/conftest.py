@@ -167,6 +167,7 @@ def pytest_collection_finish(session):
 
 
 def pytest_itemcollected(item):
-    for fixture in item.fixturenames:
-        if fixture in fixtures:
-            tests_by_fixture[fixture].append(item.nodeid)
+    if not item.nodeid.startswith("tests/test_solvermode/"):
+        for fixture in item.fixturenames:
+            if fixture in fixtures:
+                tests_by_fixture[fixture].append(item.nodeid)

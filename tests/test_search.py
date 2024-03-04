@@ -58,10 +58,10 @@ def test_search(capsys):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
-    new_watertight_workflow_session, new_solver_session_scoped_solver
+    new_watertight_workflow_session, new_solver_session_scoped_session
 ):
     meshing = new_watertight_workflow_session
-    solver = new_solver_session_scoped_solver
+    solver = new_solver_session_scoped_session
     version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
         version,
