@@ -184,7 +184,7 @@ class DataModelGenerator:
             for _, info in self._static_info.items():
                 if "meshing" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
-            session.exit()  # exiting the meshing session here as it won't be required during allapigen anymore
+            self.sessions.pop(FluentMode.MESHING_MODE)
 
         if run_solver_mode:
             if FluentMode.SOLVER not in self.sessions:
@@ -219,7 +219,7 @@ class DataModelGenerator:
                         print(
                             "Information: Problem accessing flserver datamodel for icing settings\n"
                         )
-            session.exit()  # exiting the solver-icing session here as it won't be required during allapigen anymore
+            self.sessions.pop(FluentMode.SOLVER_ICING)
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}

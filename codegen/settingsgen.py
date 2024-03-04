@@ -499,6 +499,7 @@ def generate(version, pyfluent_path, sessions: dict):
         sessions[FluentMode.SOLVER] = launch_fluent()
     session = sessions[FluentMode.SOLVER]
     sinfo = session._settings_service.get_static_info()
+    sessions.pop(FluentMode.SOLVER)
     session.exit()  # exiting the solver session here as it won't be required during allapigen anymore
     cls, _ = flobject.get_cls("", sinfo, version=version)
 
