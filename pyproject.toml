@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry-core>=1.8.2"]
+requires = ["poetry-core>=1.9.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
@@ -22,6 +22,21 @@ packages = [
     { include = "ansys", from = "src" },
     { include = "tests", to = "ansys/fluent" },
     { include = "README.rst", to = "ansys/fluent/core/docs" },
+    { include = "datamodel_222", from = "src/ansys/fluent/core", to = "ansys/fluent/core" },
+    { include = "datamodel_231", from = "src/ansys/fluent/core", to = "ansys/fluent/core" },
+    { include = "datamodel_232", from = "src/ansys/fluent/core", to = "ansys/fluent/core" },
+    { include = "datamodel_241", from = "src/ansys/fluent/core", to = "ansys/fluent/core" },
+    { include = "datamodel_242", from = "src/ansys/fluent/core", to = "ansys/fluent/core" },
+    { include = "tui_222", from = "src/ansys/fluent/core/meshing", to = "ansys/fluent/core/meshing" },
+    { include = "tui_231", from = "src/ansys/fluent/core/meshing", to = "ansys/fluent/core/meshing" },
+    { include = "tui_232", from = "src/ansys/fluent/core/meshing", to = "ansys/fluent/core/meshing" },
+    { include = "tui_241", from = "src/ansys/fluent/core/meshing", to = "ansys/fluent/core/meshing" },
+    { include = "tui_242", from = "src/ansys/fluent/core/meshing", to = "ansys/fluent/core/meshing" },
+    { include = "settings_222", from = "src/ansys/fluent/core/solver", to = "ansys/fluent/core/solver" },
+    { include = "settings_231", from = "src/ansys/fluent/core/solver", to = "ansys/fluent/core/solver" },
+    { include = "settings_232", from = "src/ansys/fluent/core/solver", to = "ansys/fluent/core/solver" },
+    { include = "settings_241", from = "src/ansys/fluent/core/solver", to = "ansys/fluent/core/solver" },
+    { include = "settings_242", from = "src/ansys/fluent/core/solver", to = "ansys/fluent/core/solver" },
 ]
 
 [tool.poetry.dependencies]
