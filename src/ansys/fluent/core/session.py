@@ -275,19 +275,15 @@ class BaseSession:
         """Terminate Docker container session."""
         self.fluent_connection.force_exit_container()
 
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
+    def upload(self, file_name: str):
         """Upload a file to the server.
 
         Parameters
         ----------
         file_name : str
             Name of the local file to upload to the server.
-        remote_file_name : str, optional
-            Name of the file to be created on the server.
-            If a filename is omitted, the filename from the ``file_name`` parameter
-            is used. Directory specification is not supported.
         """
-        return self._file_transfer_service.upload_file(file_name, remote_file_name)
+        return self._file_transfer_service.upload_file(file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server.
