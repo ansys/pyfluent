@@ -4,6 +4,7 @@ style:
 
 install:
 	@pip install poetry>=1.8.2
+	@poetry --version 
 	@poetry build
 	@pip install -q --force-reinstall dist/*.whl
 
