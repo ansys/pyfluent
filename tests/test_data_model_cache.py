@@ -1,7 +1,7 @@
 import pytest
 from util.meshing_workflow import (  # noqa: F401
     new_mesh_session,
-    new_watertight_workflow_session,
+    new_watertight_workflow_session_scoped_session,
 )
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
@@ -233,13 +233,13 @@ def display_names_as_keys_in_cache():
 
 
 def test_display_names_as_keys(
-    display_names_as_keys_in_cache, new_watertight_workflow_session
+    display_names_as_keys_in_cache, new_watertight_workflow_session_scoped_session
 ):
     assert "TaskObject:Import Geometry" in DataModelCache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" not in DataModelCache.rules_str_to_cache["workflow"]
 
 
-def test_internal_names_as_keys(new_watertight_workflow_session):
+def test_internal_names_as_keys(new_watertight_workflow_session_scoped_session):
     assert (
         "TaskObject:Import Geometry"
         not in DataModelCache.rules_str_to_cache["workflow"]
