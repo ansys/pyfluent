@@ -42,7 +42,8 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
     Parameters
     ----------
     fluent_launch_mode: str
-        Supported modes are "container", "pim", "standalone", "slurm".
+        Supported Fluent launch modes. Options are ``"container"``,
+        ``"pim"``, ``"slurm"``, and ``"standalone"``.
 
     Returns
     -------
