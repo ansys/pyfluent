@@ -8,6 +8,7 @@ import print_fluent_version
 import settingsgen
 import tuigen
 
+from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -49,11 +50,18 @@ if __name__ == "__main__":
             os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
-    version = get_version_for_file_name()
-    print_fluent_version.generate(version, args.pyfluent_path)
-    _update_first_level(api_tree, tuigen.generate(version, args.pyfluent_path))
-    _update_first_level(api_tree, datamodelgen.generate(version, args.pyfluent_path))
-    _update_first_level(api_tree, settingsgen.generate(version, args.pyfluent_path))
+    sessions = {FluentMode.SOLVER: launch_fluent()}
+    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
+    print_fluent_version.generate(args.pyfluent_path, sessions)
+    _update_first_level(
+        api_tree, tuigen.generate(version, args.pyfluent_path, sessions)
+    )
+    _update_first_level(
+        api_tree, datamodelgen.generate(version, args.pyfluent_path, sessions)
+    )
+    _update_first_level(
+        api_tree, settingsgen.generate(version, args.pyfluent_path, sessions)
+    )
     api_tree_file = get_api_tree_file_name(version, args.pyfluent_path)
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:

@@ -1,10 +1,10 @@
 Sphinx==7.2.6
 jupyter_sphinx==0.5.3
 numpydoc==1.6.0
-matplotlib==3.8.2
-ansys-sphinx-theme==0.13.2
-pypandoc==1.12
-pytest-sphinx==0.5.0
+matplotlib==3.8.3
+ansys-sphinx-theme==0.14.0
+pypandoc==1.13
+pytest-sphinx==0.6.0
 sphinx-autobuild==2024.2.4
 sphinx-autodoc-typehints==2.0.0
 sphinx-copybutton==0.5.2
