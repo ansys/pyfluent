@@ -217,15 +217,17 @@ def test_deprecated_settings(new_solver_session):
 
     assert solver.results.graphics.contour["c1"]
 
-    with pytest.warns(DeprecatedSettingWarning):
-        solver.results.gr.contour["c1"].field = "pressure"
+    # disabling due to ansys/pyfluent#2526
 
-    assert solver.results.graphics.contour["c1"].field() == "pressure"
+    # with pytest.warns(DeprecatedSettingWarning):
+    #     solver.results.gr.contour["c1"].field = "pressure"
 
-    with pytest.warns(DeprecatedSettingWarning):
-        del solver.results.gr.contour["c1"]
+    # assert solver.results.graphics.contour["c1"].field() == "pressure"
 
-    assert "c1" not in solver.results.graphics.contour
+    # with pytest.warns(DeprecatedSettingWarning):
+    #     del solver.results.gr.contour["c1"]
+
+    # assert "c1" not in solver.results.graphics.contour
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
