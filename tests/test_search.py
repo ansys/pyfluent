@@ -1,9 +1,9 @@
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
-from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
-from util.solver_workflow import (  # noqa: F401
+from util.fixture_fluent import (  # noqa: F401
     load_static_mixer_settings_only_scoped_session,
 )
+from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
+from util.solver_workflow import new_solver_session_scoped_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
