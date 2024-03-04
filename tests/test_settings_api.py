@@ -1,5 +1,8 @@
 import pytest
-from util.solver_workflow import new_solver_session  # noqa: F401
+from util.solver_workflow import (  # noqa: F401
+    new_solver_session,
+    new_solver_session_scoped_session,
+)
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
@@ -7,8 +10,8 @@ from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
-def test_setup_models_viscous_model_settings(new_solver_session) -> None:
-    solver_session = new_solver_session
+def test_setup_models_viscous_model_settings(new_solver_session_scoped_session) -> None:
+    solver_session = new_solver_session_scoped_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver_session.file.read(
         file_name=case_path, file_type="case", lightweight_setup=True
@@ -26,8 +29,8 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_wildcard(new_solver_session):
-    solver = new_solver_session
+def test_wildcard(new_solver_session_scoped_session):
+    solver = new_solver_session_scoped_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
     boundary_conditions = solver.setup.boundary_conditions
@@ -87,8 +90,8 @@ def test_wildcard(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_wildcard_fnmatch(new_solver_session):
-    solver = new_solver_session
+def test_wildcard_fnmatch(new_solver_session_scoped_session):
+    solver = new_solver_session_scoped_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
 
@@ -109,8 +112,8 @@ def test_wildcard_fnmatch(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_wildcard_path_is_iterable(new_solver_session):
-    solver = new_solver_session
+def test_wildcard_path_is_iterable(new_solver_session_scoped_session):
+    solver = new_solver_session_scoped_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
 
@@ -139,8 +142,8 @@ def test_wildcard_path_is_iterable(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_api_upgrade(new_solver_session, capsys):
-    solver = new_solver_session
+def test_api_upgrade(new_solver_session_scoped_session, capsys):
+    solver = new_solver_session_scoped_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
     "<solver_session>.file.read_case" in capsys.readouterr().out
@@ -246,8 +249,8 @@ def test_deprecated_settings(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_command_return_type(new_solver_session):
-    solver = new_solver_session
+def test_command_return_type(new_solver_session_scoped_session):
+    solver = new_solver_session_scoped_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     ret = solver.file.read_case_data(file_name=case_path)

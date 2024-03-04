@@ -14,6 +14,14 @@ def new_solver_session():
     solver.exit(timeout=5, timeout_force=True)
 
 
+# To use in tests which immediately reads a case after using the fixture
+@pytest.fixture
+def new_solver_session_read_case_session_scope():
+    solver = create_solver_session()
+    yield solver
+    solver.exit(timeout=5, timeout_force=True)
+
+
 @pytest.fixture(scope="session")
 def new_solver_session_scoped_session():
     solver = create_solver_session()

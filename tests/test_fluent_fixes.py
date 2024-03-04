@@ -1,13 +1,17 @@
 import pytest
-from util.solver_workflow import new_solver_session  # noqa: F401
+from util.solver_workflow import (  # noqa: F401
+    new_solver_session_read_case_session_scope,
+)
 
 from ansys.fluent.core import examples
 
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version("==23.2")
-def test_allowed_values_on_report_definitions_1364(new_solver_session):
-    solver = new_solver_session
+def test_allowed_values_on_report_definitions_1364(
+    new_solver_session_read_case_session_scope,
+):
+    solver = new_solver_session_read_case_session_scope
 
     import_file_name = examples.download_file(
         "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
@@ -36,8 +40,10 @@ def test_allowed_values_on_report_definitions_1364(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
-    solver_session = new_solver_session
+def test_monitors_list_set_data_637_974_1744_2188(
+    new_solver_session_read_case_session_scope,
+):
+    solver_session = new_solver_session_read_case_session_scope
 
     import_case = examples.download_file(
         file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
