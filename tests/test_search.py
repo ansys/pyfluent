@@ -1,7 +1,9 @@
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
-from util.solver_workflow import new_solver_session_scoped_solver  # noqa: F401
+from util.solver_workflow import (  # noqa: F401
+    load_static_mixer_settings_only_scoped_session,
+)
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
@@ -162,8 +164,10 @@ def test_search_from_root(capsys, new_watertight_workflow_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
-def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
-    solver = load_static_mixer_settings_only
+def test_search_settings_from_root(
+    capsys, load_static_mixer_settings_only_scoped_session
+):
+    solver = load_static_mixer_settings_only_scoped_session
     pyfluent.search("conduction", search_root=solver)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.tui.define.models.shell_conduction (Object)" in lines
