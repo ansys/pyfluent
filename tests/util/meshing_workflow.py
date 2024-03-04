@@ -58,6 +58,13 @@ def new_mesh_session():
     mesher.exit()
 
 
+@pytest.fixture(scope="session")
+def new_mesh_session_scoped_session():
+    mesher = create_mesh_session()
+    yield mesher
+    mesher.exit()
+
+
 @pytest.fixture
 def new_watertight_workflow_session(new_mesh_session):
     initialize_watertight(new_mesh_session)
