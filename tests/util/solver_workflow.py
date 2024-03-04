@@ -14,6 +14,13 @@ def new_solver_session():
     solver.exit(timeout=5, timeout_force=True)
 
 
+@pytest.fixture(scope="session")
+def new_solver_session_scoped_session():
+    solver = create_solver_session()
+    yield solver
+    solver.exit(timeout=5, timeout_force=True)
+
+
 @pytest.fixture
 def make_new_session():
     sessions = []

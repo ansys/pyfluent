@@ -1,7 +1,7 @@
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
-from util.solver_workflow import new_solver_session  # noqa: F401
+from util.solver_workflow import new_solver_session_scoped_solver  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
@@ -56,10 +56,10 @@ def test_search(capsys):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
-    new_watertight_workflow_session, new_solver_session
+    new_watertight_workflow_session, new_solver_session_scoped_solver
 ):
     meshing = new_watertight_workflow_session
-    solver = new_solver_session
+    solver = new_solver_session_scoped_solver
     version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
         version,

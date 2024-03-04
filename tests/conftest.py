@@ -1,3 +1,4 @@
+from collections import defaultdict
 from contextlib import nullcontext
 import functools
 import operator
@@ -119,3 +120,53 @@ pytest.wont_raise = nullcontext
 def pytest_sessionfinish(session, exitstatus):
     if exitstatus == 5:
         session.exitstatus = 0
+
+
+fixtures = [
+    "sample_solver_session",
+    "launch_fluent_pure_meshing",
+    "launch_fluent_solver_3ddp_t2",
+    "launch_fluent_solver_2ddp",
+    "launch_fluent_solver_2ddp_t2",
+    "exhaust_system_geometry",
+    "load_mixing_elbow_mesh",
+    "load_mixing_elbow_case_dat",
+    "load_mixing_elbow_settings_only",
+    "load_static_mixer_case",
+    "load_static_mixer_settings_only",
+    "load_mixing_elbow_param_case_dat",
+    "load_mixing_elbow_pure_meshing",
+    "load_mixing_elbow_meshing",
+    "load_periodic_rot_cas",
+    "load_periodic_rot_settings_only",
+    "load_disk_mesh",
+    "load_disk_settings_only",
+    "new_mesh_session",
+    "new_watertight_workflow_session",
+    "new_watertight_workflow",
+    "shared_mesh_session",
+    "shared_watertight_workflow_session",
+    "shared_watertight_workflow",
+    "mixing_elbow_geometry",
+    "new_fault_tolerant_workflow_session",
+    "new_fault_tolerant_workflow",
+    "shared_fault_tolerant_workflow_session",
+    "shared_fault_tolerant_workflow",
+    "exhaust_system_geometry",
+    "new_solver_session",
+    "make_new_session",
+    "new_solver_session_single_precision",
+    "new_solver_session_no_transcript",
+]
+tests_by_fixture = defaultdict(list)
+
+
+def pytest_collection_finish(session):
+    for k, v in sorted(tests_by_fixture.items(), key=lambda t: len(t[1]), reverse=True):
+        print(k, len(v))
+
+
+def pytest_itemcollected(item):
+    for fixture in item.fixturenames:
+        if fixture in fixtures:
+            tests_by_fixture[fixture].append(item.nodeid)
