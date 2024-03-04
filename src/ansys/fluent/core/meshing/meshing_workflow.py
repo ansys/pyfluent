@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.workflow import ClassicWorkflow, EnhancedWorkflow
+from ansys.fluent.core.workflow import ClassicWorkflow, Workflow
 
 
 class ClassicMeshingWorkflow(ClassicWorkflow):
@@ -29,7 +29,7 @@ class ClassicMeshingWorkflow(ClassicWorkflow):
         super().__init__(workflow=workflow, command_source=meshing)
 
 
-class EnhancedMeshingWorkflow(EnhancedWorkflow):
+class MeshingWorkflow(Workflow):
     """Provides meshing specialization of the workflow wrapper that extends the core
     functionality in an object-oriented manner."""
 
@@ -38,7 +38,7 @@ class EnhancedMeshingWorkflow(EnhancedWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
     ) -> None:
-        """Initialize EnhancedMeshingWorkflow.
+        """Initialize MeshingWorkflow.
 
         Parameters
         ----------
@@ -50,7 +50,7 @@ class EnhancedMeshingWorkflow(EnhancedWorkflow):
         super().__init__(workflow=workflow, command_source=meshing)
 
 
-class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
+class WatertightMeshingWorkflow(MeshingWorkflow):
     """Provides watertight meshing specialization of the workflow wrapper."""
 
     def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
@@ -82,7 +82,7 @@ class WatertightMeshingWorkflow(EnhancedMeshingWorkflow):
         return super().__getattribute__(item)
 
 
-class FaultTolerantMeshingWorkflow(EnhancedMeshingWorkflow):
+class FaultTolerantMeshingWorkflow(MeshingWorkflow):
     """Provides fault-tolerant meshing specialization of the workflow wrapper."""
 
     def __init__(
