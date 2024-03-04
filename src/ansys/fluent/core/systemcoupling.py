@@ -44,9 +44,10 @@ class SystemCoupling:
     def __init__(self, solver):
         self._solver = solver
         # version check - this requires Fluent 2024 R1 or newer.
-        if FluentVersion.get_latest_installed() < FluentVersion.v241:
+        current_fluent_version = FluentVersion(self._solver.get_fluent_version())
+        if current_fluent_version < FluentVersion.v241:
             raise RuntimeError(
-                f"Fluent version is {FluentVersion.get_latest_installed().value}. PySystemCoupling integration requires Fluent 24.1.0 or later."
+                f"Fluent version is {current_fluent_version.value}. PySystemCoupling integration requires Fluent 24.1.0 or later."
             )
 
     @property
@@ -72,15 +73,20 @@ class SystemCoupling:
 
     def __get_syc_setup(self) -> dict:
         def get_scp_string() -> str:
-            """Get SCP file contents in the form of the XML string."""
-            fluent_cwd = self._solver.connection_properties.cortex_pwd
-            scp_file_name = os.path.join(fluent_cwd, "fluent.scp")
+            """Get the SCP file contents in the form of an XML string."""
+
+            scp_file_name = "fluent.scp"
             self._solver.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name
             )
+
+            # download the file locally in case Fluent is in a container
+            if self._solver.fluent_connection._remote_instance != None:
+                self._solver.download(scp_file_name)
+
             assert os.path.exists(
                 scp_file_name
-            ), "ERROR: could not create System Coupling .scp file"
+            ), "ERROR: could not create System Coupling SCP file"
 
             with open(scp_file_name, "r") as f:
                 xml_string = f.read()
