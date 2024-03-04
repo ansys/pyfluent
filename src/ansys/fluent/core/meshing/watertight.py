@@ -1,46 +1,32 @@
 """Watertight workflow module."""
 
-from ansys.fluent.core.launcher.launcher import launch_fluent
-from ansys.fluent.core.launcher.launcher_utils import FluentMode
+from typing import Optional, Union
 
-from .meshing_workflow import EnhancedMeshingWorkflow
+from ..session_meshing import Meshing
+from ..session_pure_meshing import PureMeshing
+from .meshing_workflow import WatertightMeshingWorkflow
 
 
-def watertight_workflow(geometry_file_name, **launch_args) -> EnhancedMeshingWorkflow:
+def watertight_workflow(
+    session: Union[Meshing, PureMeshing], geometry_file_name: Optional[str] = None
+) -> WatertightMeshingWorkflow:
     """Meshing workflow wrapper, initialized as watertight.
 
     Parameters
     ----------
-    geometry_file_name : str
+    session: Union[Meshing, PureMeshing]
+        Meshing session object.
+    geometry_file_name : Optional[str]
         The path of a valid geometry file to import. Can be unset.
-    launch_args
-        Additional arguments forwarded to the launch_fluent function.
 
     Returns
     -------
-    EnhancedMeshingWorkflow
-        Meshing workflow wrapper.
+    WatertightMeshingWorkflow
+        Watertight meshing workflow wrapper.
     """
-    dynamic_interface = True
-    if "dynamic_interface" in launch_args:
-        dynamic_interface = launch_args["dynamic_interface"]
-        del launch_args["dynamic_interface"]
-    if "session" in launch_args:
-        session = launch_args["session"]
-    else:
-        args = dict(mode=FluentMode.PURE_MESHING_MODE)
-        args.update(launch_args)
-        try:
-            session = launch_fluent(**args)
-        except Exception:
-            args["mode"] = FluentMode.MESHING_MODE
-            session = launch_fluent(**args)
-    meshing_workflow = session.watertight(dynamic_interface=dynamic_interface)
+    watertight = session.watertight()
     if geometry_file_name:
-        import_geometry = meshing_workflow.import_geometry
-        # change it so we can do this:
-        # import_geometry.arguments.FileName = geometry_file_name
-        # or import_geometry.FileName = geometry_file_name
-        import_geometry.arguments.update_dict(dict(file_name=geometry_file_name))
+        import_geometry = watertight.import_geometry
+        import_geometry.file_name = geometry_file_name
         import_geometry()
-    return meshing_workflow
+    return watertight

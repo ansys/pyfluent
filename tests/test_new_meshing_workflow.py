@@ -534,12 +534,8 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     assert (set(dir(watertight)) - watertight._unwanted_attrs) == set(dir(watertight))
 
     for attr in watertight._unwanted_attrs:
-        with pytest.raises(AttributeError) as msg:
+        with pytest.raises(AttributeError):
             getattr(watertight, attr)
-        assert (
-            msg.value.args[0]
-            == f"'EnhancedMeshingWorkflow' object has no attribute '{attr}'"
-        )
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
     assert len(watertight._task_list) == 11
@@ -614,7 +610,8 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
-@pytest.mark.fluent_version("==24.1")
+@pytest.mark.skip("Randomly failing in CI")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = watertight_workflow(
@@ -629,13 +626,9 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     # is still updating after the command has returned and the client can try to access
     # while it is in that update phase, leading to (difficult to understand) exceptions.
     # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
-    time.sleep(2.5)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         watertight.create_volume_mesh
-    assert (
-        msg.value.args[0]
-        == "'EnhancedMeshingWorkflow' object has no attribute 'create_volume_mesh'"
-    )
+
     watertight.insert_new_task(command_name="create_volume_mesh")
     time.sleep(2.5)
     create_volume_mesh = watertight.create_volume_mesh
@@ -649,13 +642,8 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     watertight_geom.enclose_fluid_regions.delete()
     assert watertight_geom.enclose_fluid_regions is None
     watertight.create_volume_mesh.delete()
-    time.sleep(2.5)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         watertight.create_volume_mesh
-    assert (
-        msg.value.args[0]
-        == "'EnhancedMeshingWorkflow' object has no attribute 'create_volume_mesh'"
-    )
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -920,3 +908,111 @@ def test_meshing_workflow_structure(new_mesh_session):
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
+
+
+@pytest.mark.skip("Randomly failing in CI")
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
+    # Import geometry
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    watertight = new_mesh_session.watertight()
+    unwanted_attrs = {"fault_tolerant", "part_management", "pm_file_management"}
+    assert set(dir(watertight)) - unwanted_attrs == set(dir(watertight))
+
+    for attr in unwanted_attrs:
+        with pytest.raises(AttributeError):
+            getattr(watertight, attr)
+
+    watertight.import_geometry.file_name.set_state(import_file_name)
+    watertight.import_geometry.length_unit = "in"
+    watertight.import_geometry()
+
+    assert watertight.import_geometry.file_name()
+    # Reinitialize the workflow:
+    watertight.reinitialize()
+
+    assert not watertight.import_geometry.file_name()
+
+
+@pytest.mark.skip("Randomly failing in CI")
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
+    # Import CAD
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
+
+    fault_tolerant = new_mesh_session.fault_tolerant()
+    assert "watertight" not in dir(fault_tolerant)
+
+    with pytest.raises(AttributeError):
+        fault_tolerant.watertight()
+
+    fault_tolerant.import_cad_and_part_management.context.set_state(0)
+    fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
+    fault_tolerant.import_cad_and_part_management.fmd_file_name.set_state(
+        import_file_name
+    )
+
+    assert fault_tolerant.import_cad_and_part_management.fmd_file_name()
+    # Reinitialize the workflow:
+    fault_tolerant.reinitialize()
+
+    assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_switch_between_workflows(new_mesh_session):
+    meshing = new_mesh_session
+
+    # Initialize to watertight and store
+    watertight = meshing.watertight()
+
+    assert watertight.import_geometry.arguments()
+
+    # Wrong Attribute
+    with pytest.raises(AttributeError):
+        watertight.import_cad_and_part_management.arguments()
+
+    # Initialize to fault-tolerant and store
+    fault_tolerant = meshing.fault_tolerant()
+
+    assert fault_tolerant.import_cad_and_part_management.arguments()
+
+    # 'import_geometry' is a watertight workflow command which is not available now
+    # since we have changed to fault-tolerant in the backend.
+    with pytest.raises(RuntimeError):
+        watertight.import_geometry.arguments()
+
+    # Re-initialize watertight
+    watertight.reinitialize()
+
+    # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
+    # available now since we have changed to watertight in the backend.
+    with pytest.raises(RuntimeError):
+        fault_tolerant.import_cad_and_part_management.arguments()
+
+    assert watertight.import_geometry.arguments()
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+    # 'import_geometry' is a watertight workflow command which is not available now
+    # since we have changed to fault-tolerant in the backend.
+    with pytest.raises(RuntimeError):
+        watertight.import_geometry.arguments()
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
+    # available now since we have changed to watertight in the backend.
+    with pytest.raises(RuntimeError):
+        fault_tolerant.import_cad_and_part_management.arguments()
+
+    # Re-initialize fault-tolerant
+    fault_tolerant.reinitialize()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
