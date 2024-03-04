@@ -291,7 +291,7 @@ class BaseSession:
         Parameters
         ----------
         file_name : str
-            Name of the file to download from the server. Directory specification is not supported.
+            Name of the file to download from the server.
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
