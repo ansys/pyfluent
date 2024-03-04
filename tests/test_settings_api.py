@@ -25,7 +25,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-@pytest.mark.skip
 @pytest.mark.fluent_version(">=24.1")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
@@ -53,10 +52,16 @@ def test_wildcard(new_solver_session):
         "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
+    if solver.get_fluent_version() >= "24.2.0":
+        sources = cell_zone_conditions.fluid["*"].source_terms.sources
+        key = "sources"
+    else:
+        sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
+        key = "source_terms"
+    assert sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "source_terms": {
+                key: {
                     "x-momentum": [{"option": "value", "value": 1}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 3}],
@@ -64,13 +69,11 @@ def test_wildcard(new_solver_session):
             }
         }
     }
-    cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"] = [
-        {"option": "value", "value": 2}
-    ]
-    assert cell_zone_conditions.fluid["*"].source_terms.source_terms["*mom*"]() == {
+    sources["*mom*"] = [{"option": "value", "value": 2}]
+    assert sources["*mom*"]() == {
         "fluid": {
             "source_terms": {
-                "source_terms": {
+                key: {
                     "x-momentum": [{"option": "value", "value": 2}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 2}],

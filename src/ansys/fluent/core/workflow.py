@@ -146,7 +146,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize BaseTask.
@@ -719,7 +719,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -788,7 +788,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -816,7 +816,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -847,7 +847,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -900,7 +900,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -935,7 +935,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, EnhancedWorkflow],
+        command_source: Union[ClassicWorkflow, Workflow],
         task: str,
     ) -> None:
         """Initialize CompoundTask.
@@ -1029,7 +1029,7 @@ def _makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class EnhancedWorkflow:
+class Workflow:
     """Wraps a workflow object, adding methods to discover more about the relationships
     between task objects.
 
@@ -1070,13 +1070,9 @@ class EnhancedWorkflow:
             "initialize_workflow",
             "load_workflow",
             "create_new_workflow",
-            # "fault_tolerant",
-            # "part_management",
-            # "pm_file_management",
             "rules",
             "service",
             "task_object",
-            # "watertight",
             "workflow",
         }
 
@@ -1223,7 +1219,7 @@ class EnhancedWorkflow:
         except AttributeError:
             pass
 
-    def _new_workflow(self, name: str, dynamic_interface: bool):
+    def _new_workflow(self, name: str, dynamic_interface: bool = True):
         self._dynamic_interface = dynamic_interface
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)
@@ -1303,7 +1299,7 @@ class EnhancedWorkflow:
         )
 
     def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the list of tasks passed as an argument.
+        """Delete the provided list of tasks.
 
         Parameters
         ----------
@@ -1380,7 +1376,7 @@ class ClassicWorkflow:
     """
 
     def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
-        """Initialize WorkflowWrapper.
+        """Initialize ClassicWorkflow.
 
         Parameters
         ----------
