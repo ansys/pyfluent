@@ -12,7 +12,7 @@ class PyPIMConfigurationError(ConnectionError):
 
 
 class PimFileTransferService:
-    """Provides a file transfer service based on PyPIM and simple_upload_server.
+    """Provides a file transfer service based on ``PyPIM<https://pypim.docs.pyansys.com/version/stable/>`` and ``simple_upload_server()``.
 
     Attributes
     ----------

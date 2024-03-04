@@ -284,7 +284,7 @@ class BaseSession:
             Name of the local file to upload to the server.
         remote_file_name : str, optional
             Name of the file to be created on the server.
-            If a filename is ommitted, the filename from the ``file_name`` parameter
+            If a filename is omitted, the filename from the ``file_name`` parameter
             is used. Directory specification is not supported.
         """
         return self._file_transfer_service.upload_file(file_name, remote_file_name)
