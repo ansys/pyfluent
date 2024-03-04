@@ -27,7 +27,7 @@ import xml.etree.ElementTree as ET
 from data.fluent_gui_help_patch import XML_HELP_PATCH
 from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
@@ -168,7 +168,7 @@ class _TUIMenu:
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, pyfluent_path: str):
+    def __init__(self, mode: str, version: str, pyfluent_path: str, sessions: dict):
         self._mode = mode
         self._version = version
         self._tui_file = _get_tui_filepath(mode, version, pyfluent_path)
@@ -179,7 +179,10 @@ class TUIGenerator:
         self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
-        self.session = pyfluent.launch_fluent(mode=mode)
+        fluent_mode = FluentMode.get_mode(mode)
+        if fluent_mode not in sessions:
+            sessions[fluent_mode] = launch_fluent(mode=fluent_mode)
+        self.session = sessions[fluent_mode]
         self._service = self.session.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
@@ -315,7 +318,6 @@ class TUIGenerator:
                     self._service, self._version, self._mode, self._main_menu.path
                 ).get_static_info()
                 self._populate_menu(self._main_menu, info)
-            self.session.exit()
             self._write_code_to_tui_file(
                 f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
             )
@@ -340,16 +342,16 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version, pyfluent_path):
+def generate(version, pyfluent_path, sessions: dict):
     api_tree = {}
     if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
-        "meshing", version, pyfluent_path
+        "meshing", version, pyfluent_path, sessions
     ).generate()
     api_tree["<solver_session>"] = TUIGenerator(
-        "solver", version, pyfluent_path
+        "solver", version, pyfluent_path, sessions
     ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
@@ -362,5 +364,6 @@ def generate(version, pyfluent_path):
 
 
 if __name__ == "__main__":
-    version = get_version_for_file_name()
-    generate(version, None)
+    sessions = {FluentMode.SOLVER: launch_fluent()}
+    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
+    generate(version, None, sessions)
