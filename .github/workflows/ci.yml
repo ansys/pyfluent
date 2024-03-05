@@ -194,7 +194,6 @@ jobs:
         run: |
           pip install -r requirements/requirements_build.txt
           poetry install --only docs
-          poetry config virtualenvs.options.no-setuptools true
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
@@ -512,7 +511,10 @@ jobs:
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make unittest-dev-${{ matrix.version }}
+        run: |
+          pip install -r requirements/requirements_build.txt
+          poetry install --with test
+          make unittest-dev-${{ matrix.version }}
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
