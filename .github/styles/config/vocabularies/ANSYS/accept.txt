@@ -43,6 +43,7 @@ monitor
 MonitorsManager
 numpy
 postprocess
+Pim
 PyFluent
 Pythonic
 pyvista
