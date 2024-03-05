@@ -1,3 +1,4 @@
+from collections import defaultdict
 from contextlib import nullcontext
 import functools
 import operator
@@ -121,15 +122,15 @@ def pytest_sessionfinish(session, exitstatus):
         session.exitstatus = 0
 
 
-# tests_by_fixture = defaultdict(list)
+tests_by_fixture = defaultdict(list)
 
 
-# def pytest_collection_finish(session):
-#     for k, v in sorted(tests_by_fixture.items(), key=lambda t: len(t[1]), reverse=True):
-#         print(k, len(v))
+def pytest_collection_finish(session):
+    for k, v in sorted(tests_by_fixture.items(), key=lambda t: len(t[1]), reverse=True):
+        print(k, len(v))
 
 
-# def pytest_itemcollected(item):
-#     if not item.nodeid.startswith("tests/test_solvermode/"):
-#         for fixture in item.fixturenames:
-#             tests_by_fixture[fixture].append(item.nodeid)
+def pytest_itemcollected(item):
+    if not item.nodeid.startswith("tests/test_solvermode/"):
+        for fixture in item.fixturenames:
+            tests_by_fixture[fixture].append(item.nodeid)
