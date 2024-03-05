@@ -3,11 +3,11 @@
 Container launchers
 ===================
 
-==============================  ============================================================
+==============================  ==============================================================
 :ref:`ref_launcher_container`   | Launch Fluent in container mode using ``launch_fluent()``.
 
-:ref:`ref_container_launcher`   Launch Fluent in container mode using ``create_launcher()``.
-==============================  ============================================================
+:ref:`ref_container_launcher`   Create a callable Fluent launcher using ``create_launcher()``.
+==============================  ==============================================================
 
 .. toctree::
     :maxdepth: 1
