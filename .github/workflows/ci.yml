@@ -514,7 +514,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
           pip install -r requirements/requirements_build.txt
-          poetry install --only test
+          pip install pytest
           poetry config virtualenvs.options.no-setuptools true
           make unittest-dev-${{ matrix.version }}
         env:
