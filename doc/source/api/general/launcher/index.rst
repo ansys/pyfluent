@@ -17,6 +17,6 @@ Fluent launcher
 
     container_launcher/index
     pim_launcher
-    standalone_launcher
     slurm
+    standalone_launcher
     launcher_utils
