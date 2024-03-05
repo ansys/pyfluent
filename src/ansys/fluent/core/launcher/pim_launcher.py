@@ -64,7 +64,7 @@ class PIMLauncher:
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : str, optional
-            Installed version of Ansys. The string must be in a format like
+            Version of Ansys Fluent to launch. The string must be in a format like
             ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
             FluentVersion class. The default is ``None``, in which case the newest installed
             version is used.
