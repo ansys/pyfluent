@@ -1,7 +1,7 @@
 .. _ref_launcher_utils:
 
-Launcher utils
-==============
+Launcher utilities
+==================
 
 .. automodule:: ansys.fluent.core.launcher.launcher_utils
    :members:
