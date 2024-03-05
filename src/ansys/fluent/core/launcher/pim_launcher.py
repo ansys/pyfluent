@@ -29,7 +29,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 class PIMLauncher:
-    """Instantiates Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
+    """Instantiates Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode."""
 
     def __init__(
         self,
@@ -59,7 +59,7 @@ class PIMLauncher:
         scheduler_options: Optional[dict] = None,
         file_transfer_service: Optional[Any] = None,
     ):
-        """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode.
+        """Launch Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
         Parameters
         ----------

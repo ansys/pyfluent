@@ -1,7 +1,7 @@
 .. _ref_container_launcher:
 
-Container launcher
-==================
+Callable container launcher
+===========================
 
 .. automodule:: ansys.fluent.core.launcher.container_launcher
    :members:
