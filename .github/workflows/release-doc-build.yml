@@ -56,9 +56,9 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build All Documentation
-        run: 
+        run: |
           pip install -r requirements/requirements_build.txt
-          poetry install --with docs
+          poetry install --only docs
           poetry config virtualenvs.options.no-setuptools true
           make build-all-docs
         env:
