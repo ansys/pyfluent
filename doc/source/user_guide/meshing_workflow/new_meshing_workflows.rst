@@ -1,7 +1,7 @@
 .. _ref_user_guide_new_meshing_workflows:
 
-Enhanced meshing workflow
-=========================
+Meshing workflow
+================
 You can use PyFluent to access the new, enhanced meshing workflows.
 
 Watertight geometry meshing workflow
