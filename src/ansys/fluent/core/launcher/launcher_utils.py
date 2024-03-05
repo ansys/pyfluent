@@ -1,6 +1,7 @@
 """Provides a module for launching utilities."""
 
 from enum import Enum
+from functools import total_ordering
 import json
 import logging
 import os
@@ -91,8 +92,41 @@ def check_docker_support():
     return True
 
 
+def _get_standalone_launch_fluent_version(
+    product_version: Union[FluentVersion, str, None]
+) -> Optional[FluentVersion]:
+    """Determine the Fluent version during the execution of the ``launch_fluent()``
+    method in standalone mode.
+
+    The search for the version is performed in this order.
+
+    1. The ``product_version`` parameter passed with the ``launch_fluent()`` method.
+    2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.
+
+    Returns
+    -------
+    FluentVersion, optional
+        Fluent version or ``None``
+    """
+
+    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
+    # determine the Fluent version, so returning None.
+    if os.getenv("PYFLUENT_FLUENT_ROOT"):
+        return None
+
+    # Look for Fluent version in the following order:
+    # 1. product_version parameter passed with launch_fluent
+    if product_version:
+        return FluentVersion(product_version)
+
+    # 2. the latest ANSYS version from AWP_ROOT environment variables
+    return FluentVersion.get_latest_installed()
+
+
 def get_fluent_exe_path(**launch_argvals) -> Path:
-    """Get Fluent executable path. The path is searched in the following order.
+    """Get the path for the Fluent executable file.
+
+    The search for the path is performed in this order:
 
     1. ``product_version`` parameter passed with ``launch_fluent``.
     2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
@@ -179,6 +213,71 @@ class FluentMode(Enum):
         return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
 
+@total_ordering
+class FluentEnum(Enum):
+    """Provides the base class for Fluent-related enums.
+
+    Accepts lowercase member names as values and supports comparison operators.
+    """
+
+    @classmethod
+    def _missing_(cls, value: str):
+        for member in cls:
+            if str(member) == value:
+                return member
+        raise ValueError(
+            f"The specified value '{value}' is a supported value of {cls.__name__}."
+            f""" The supported values are: '{", '".join(str(member) for member in cls)}'."""
+        )
+
+    def __str__(self):
+        return self.name.lower()
+
+    def __lt__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(
+                f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
+            )
+        if self == other:
+            return False
+        for member in type(self):
+            if self == member:
+                return True
+            if other == member:
+                return False
+
+
+class FluentUI(FluentEnum):
+    """Provides supported user interface mode of Fluent."""
+
+    NO_GUI_OR_GRAPHICS = ("g",)
+    NO_GRAPHICS = ("gr",)
+    NO_GUI = ("gu",)
+    HIDDEN_GUI = ("hidden",)
+    GUI = ("",)
+
+
+class FluentWindowsGraphicsDriver(FluentEnum):
+    """Provides supported graphics driver of Fluent in Windows."""
+
+    NULL = ("null",)
+    MSW = ("msw",)
+    DX11 = ("dx11",)
+    OPENGL2 = ("opengl2",)
+    OPENGL = ("opengl",)
+    AUTO = ("",)
+
+
+class FluentLinuxGraphicsDriver(FluentEnum):
+    """Provides supported graphics driver of Fluent in Linux."""
+
+    NULL = ("null",)
+    X11 = ("x11",)
+    OPENGL2 = ("opengl2",)
+    OPENGL = ("opengl",)
+    AUTO = ("",)
+
+
 def _get_server_info_file_name(use_tmpdir=True):
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = (
@@ -256,8 +355,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
-    addArgs = kwargs["additional_arguments"]
-    if "-t" not in addArgs and "-cnf=" not in addArgs:
+    addArgs = kwargs.get("additional_arguments")
+    if addArgs and "-t" not in addArgs and "-cnf=" not in addArgs:
         parallel_options = build_parallel_options(
             load_machines(ncores=kwargs["processor_count"])
         )
@@ -268,6 +367,12 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         launch_args_string += " -gpu"
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
+    ui = kwargs.get("ui")
+    if ui and ui.value[0]:
+        launch_args_string += f" -{ui.value[0]}"
+    graphics_driver = kwargs.get("graphics_driver")
+    if graphics_driver and graphics_driver.value[0]:
+        launch_args_string += f" -driver {graphics_driver.value[0]}"
     return launch_args_string
 
 
@@ -282,28 +387,19 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
     return mode
 
 
-def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
-    """If -g or -gu is passed in Windows OS, the exception should be raised."""
-    additional_arg_list = additional_arguments.split()
-    if _is_windows() and (
-        ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
+def _raise_non_gui_exception_in_windows(
+    ui: FluentUI, product_version: FluentVersion
+) -> None:
+    """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
+    Windows in Fluent versions lower than 2024 R1."""
+    if (
+        _is_windows()
+        and ui < FluentUI.HIDDEN_GUI
+        and product_version < FluentVersion.v241
     ):
-        raise InvalidArgument("Unsupported '-g' and '-gu' on windows platform.")
-
-
-def _update_launch_string_wrt_gui_options(
-    launch_string: str, show_gui: Optional[bool] = None, additional_arguments: str = ""
-) -> str:
-    """Checks for all gui options in additional arguments and updates the launch string
-    with hidden, if none of the options are met."""
-
-    if (show_gui is False) or (
-        show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
-    ):
-        if not {"-g", "-gu"} & set(additional_arguments.split()):
-            launch_string += " -hidden"
-
-    return launch_string
+        raise InvalidArgument(
+            f"'{ui}' supported in Windows only for Fluent version 24.1 or later."
+        )
 
 
 def _await_fluent_launch(
@@ -371,7 +467,6 @@ def _get_running_session_mode(
 def _generate_launch_string(
     argvals,
     mode: FluentMode,
-    show_gui: bool,
     additional_arguments: str,
     server_info_file_name: str,
 ):
@@ -394,9 +489,6 @@ def _generate_launch_string(
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
     launch_string += " -nm"
-    launch_string = _update_launch_string_wrt_gui_options(
-        launch_string, show_gui, additional_arguments
-    )
     return launch_string
 
 
