@@ -390,7 +390,7 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
 def _raise_non_gui_exception_in_windows(
     ui: FluentUI, product_version: FluentVersion
 ) -> None:
-    """Exposure lower than ``FluentUI.HIDDEN_GUI`` is not supported in Windows in
+    """UI option lower than ``FluentUI.HIDDEN_GUI`` is not supported in Windows in
     Fluent versions lower than 2024 R1."""
     if (
         _is_windows()

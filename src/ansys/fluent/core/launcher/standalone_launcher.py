@@ -68,7 +68,7 @@ class StandaloneLauncher:
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
         ui : FluentUI
-            Exposure of Fluent. Options are the values of the ``FluentUI`` enum.
+            UI option of Fluent. Options are the values of the ``FluentUI`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
