@@ -7,9 +7,9 @@ import subprocess
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.launcher_utils import (
-    FluentExposure,
     FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
     FluentWindowsGraphicsDriver,
     LaunchFluentError,
     _await_fluent_launch,
@@ -35,7 +35,7 @@ class StandaloneLauncher:
     def __init__(
         self,
         mode: FluentMode,
-        exposure: FluentExposure,
+        ui: FluentUI,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
@@ -67,8 +67,8 @@ class StandaloneLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        exposure : FluentExposure
-            Exposure of Fluent. Options are the values of the ``FluentExposure`` enum.
+        ui : FluentUI
+            Exposure of Fluent. Options are the values of the ``FluentUI`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
@@ -189,7 +189,7 @@ class StandaloneLauncher:
             setattr(self, "lightweight_mode", False)
         fluent_version = _get_standalone_launch_fluent_version(self.product_version)
         if fluent_version:
-            _raise_non_gui_exception_in_windows(self.exposure, fluent_version)
+            _raise_non_gui_exception_in_windows(self.ui, fluent_version)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
@@ -214,7 +214,7 @@ class StandaloneLauncher:
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
-            if self.exposure < FluentExposure.HIDDEN_GUI:
+            if self.ui < FluentUI.HIDDEN_GUI:
                 # Using nohup to hide Fluent output from the current terminal
                 launch_cmd = "nohup " + launch_string + " &"
             else:

@@ -247,8 +247,8 @@ class FluentEnum(Enum):
                 return False
 
 
-class FluentExposure(FluentEnum):
-    """Provides supported UI or graphics exposure of Fluent."""
+class FluentUI(FluentEnum):
+    """Provides supported UI options of Fluent."""
 
     NO_GUI_OR_GRAPHICS = ("g",)
     NO_GRAPHICS = ("gr",)
@@ -367,9 +367,9 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         launch_args_string += " -gpu"
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
-    exposure = kwargs.get("exposure")
-    if exposure and exposure.value[0]:
-        launch_args_string += f" -{exposure.value[0]}"
+    ui = kwargs.get("ui")
+    if ui and ui.value[0]:
+        launch_args_string += f" -{ui.value[0]}"
     graphics_driver = kwargs.get("graphics_driver")
     if graphics_driver and graphics_driver.value[0]:
         launch_args_string += f" -driver {graphics_driver.value[0]}"
@@ -388,17 +388,17 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
 
 
 def _raise_non_gui_exception_in_windows(
-    exposure: FluentExposure, product_version: FluentVersion
+    ui: FluentUI, product_version: FluentVersion
 ) -> None:
-    """Exposure lower than ``FluentExposure.HIDDEN_GUI`` is not supported in Windows in
+    """Exposure lower than ``FluentUI.HIDDEN_GUI`` is not supported in Windows in
     Fluent versions lower than 2024 R1."""
     if (
         _is_windows()
-        and exposure < FluentExposure.HIDDEN_GUI
+        and ui < FluentUI.HIDDEN_GUI
         and product_version < FluentVersion.v241
     ):
         raise InvalidArgument(
-            f"'{exposure}' supported in Windows only for Fluent version 24.1 or later."
+            f"'{ui}' supported in Windows only for Fluent version 24.1 or later."
         )
 
 

@@ -13,9 +13,9 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import (
-    FluentExposure,
     FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
     FluentWindowsGraphicsDriver,
     GPUSolverSupportError,
     _confirm_watchdog_start,
@@ -96,7 +96,7 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    exposure: Union[FluentExposure, str, None] = None,
+    ui: Union[FluentUI, str, None] = None,
     graphics_driver: Union[
         FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
     ] = None,
@@ -168,12 +168,12 @@ def launch_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
-    exposure : FluentExposure or str, optional
-        Exposure of Fluent. Options are either the values of the ``FluentExposure`` enum
+    ui : FluentUI or str, optional
+        UI option of Fluent. Options are either the values of the ``FluentUI`` enum
         or any of ``"no_gui_or_graphics"``, ``"no_gui"``, ``"hidden_gui"``,
-        ``"no_graphics"`` or ``"gui"``. The default is ``FluentExposure.HIDDEN_GUI`` in
-        Windows and ``FluentExposure.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
-        ``"no_gui"`` exposure are supported in Windows only for Fluent version 2024 R1
+        ``"no_graphics"`` or ``"gui"``. The default is ``FluentUI.HIDDEN_GUI`` in
+        Windows and ``FluentUI.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
+        ``"no_gui"`` ui options are supported in Windows only for Fluent version 2024 R1
         or later.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
         Graphics driver of Fluent. In Windows, options are either the values of the
@@ -261,18 +261,18 @@ def launch_fluent(
     del kwargs
     if show_gui is not None:
         warnings.warn(
-            "'show_gui' is deprecated, use 'exposure' instead",
+            "'show_gui' is deprecated, use 'ui' instead",
             PyFluentDeprecationWarning,
         )
     if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == 1:
-        exposure = FluentExposure.GUI
+        ui = FluentUI.GUI
     del show_gui
-    if exposure is None:
+    if ui is None:
         # Not using NO_GUI in windows as it opens a new cmd or
         # shows Fluent output in the current cmd if start <launch_string> is not used
-        exposure = FluentExposure.HIDDEN_GUI if _is_windows() else FluentExposure.NO_GUI
-    if isinstance(exposure, str):
-        exposure = FluentExposure(exposure)
+        ui = FluentUI.HIDDEN_GUI if _is_windows() else FluentUI.NO_GUI
+    if isinstance(ui, str):
+        ui = FluentUI(ui)
     if graphics_driver is None:
         graphics_driver = "auto"
     graphics_driver = str(graphics_driver)

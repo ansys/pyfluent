@@ -10,9 +10,9 @@ from ansys.fluent.core.launcher.fluent_container import (
     start_fluent_container,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
-    FluentExposure,
     FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
     FluentWindowsGraphicsDriver,
     _build_fluent_launch_args_string,
     _process_invalid_args,
@@ -31,7 +31,7 @@ class DockerLauncher:
     def __init__(
         self,
         mode: FluentMode,
-        exposure: FluentExposure,
+        ui: FluentUI,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
@@ -63,8 +63,8 @@ class DockerLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        exposure : FluentExposure
-            Exposure of Fluent. Options are the values of the ``FluentExposure`` enum.
+        ui : FluentUI
+            UI option of Fluent. Options are the values of the ``FluentUI`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the

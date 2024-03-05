@@ -5,9 +5,9 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.launcher_utils import (
-    FluentExposure,
     FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
     FluentWindowsGraphicsDriver,
     _process_invalid_args,
     launch_remote_fluent,
@@ -25,7 +25,7 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode,
-        exposure: FluentExposure,
+        ui: FluentUI,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
@@ -57,8 +57,8 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        exposure : FluentExposure
-            Exposure of Fluent. Options are the values of the ``FluentExposure`` enum.
+        ui : FluentUI
+            Exposure of Fluent. Options are the values of the ``FluentUI`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the

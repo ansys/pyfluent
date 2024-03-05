@@ -11,9 +11,9 @@ from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     DockerContainerLaunchNotSupported,
-    FluentExposure,
     FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
     FluentWindowsGraphicsDriver,
     GPUSolverSupportError,
     LaunchFluentError,
@@ -70,28 +70,22 @@ def test_non_gui_in_windows_throws_exception():
     launcher_utils._is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v232)
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v231)
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v222)
+        with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(
-                FluentExposure.NO_GUI, FluentVersion.v232
+                FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v232
             )
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(
-                FluentExposure.NO_GUI, FluentVersion.v231
+                FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v231
             )
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(
-                FluentExposure.NO_GUI, FluentVersion.v222
-            )
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(
-                FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v232
-            )
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(
-                FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v231
-            )
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(
-                FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v222
+                FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v222
             )
     finally:
         launcher_utils._is_windows = lambda: default_windows_flag
@@ -102,13 +96,13 @@ def test_non_gui_in_windows_does_not_throw_exception():
     default_windows_flag = launcher_utils._is_windows()
     launcher_utils._is_windows = lambda: True
     try:
-        _raise_non_gui_exception_in_windows(FluentExposure.NO_GUI, FluentVersion.v241)
+        _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v241)
         _raise_non_gui_exception_in_windows(
-            FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v241
+            FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v241
         )
-        _raise_non_gui_exception_in_windows(FluentExposure.NO_GUI, FluentVersion.v242)
+        _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v242)
         _raise_non_gui_exception_in_windows(
-            FluentExposure.NO_GUI_OR_GRAPHICS, FluentVersion.v242
+            FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v242
         )
     finally:
         launcher_utils._is_windows = lambda: default_windows_flag
@@ -306,7 +300,7 @@ def test_watchdog_launch(monkeypatch):
 
 def test_fluent_launchers():
     kwargs = dict(
-        exposure=FluentExposure.NO_GUI,
+        ui=FluentUI.NO_GUI,
         graphics_driver=(
             FluentWindowsGraphicsDriver.AUTO
             if _is_windows()
@@ -381,24 +375,23 @@ def test_show_gui_raises_warning():
 
 
 def test_fluent_enums():
-    assert str(FluentExposure.GUI) == "gui"
-    assert FluentExposure("gui") == FluentExposure.GUI
+    assert str(FluentUI.GUI) == "gui"
+    assert FluentUI("gui") == FluentUI.GUI
     with pytest.raises(ValueError):
-        FluentExposure("")
-    assert FluentExposure.NO_GUI < FluentExposure.GUI
+        FluentUI("")
+    assert FluentUI.NO_GUI < FluentUI.GUI
     with pytest.raises(TypeError):
-        FluentExposure.NO_GUI < FluentWindowsGraphicsDriver.AUTO
+        FluentUI.NO_GUI < FluentWindowsGraphicsDriver.AUTO
 
 
 def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
-        pyfluent.launch_fluent(exposure="gu")
+        pyfluent.launch_fluent(ui="gu")
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if _is_windows() else "dx11")
-    for m in FluentExposure:
+    for m in FluentUI:
         assert (
-            _build_fluent_launch_args_string(exposure=m).strip()
-            == f"3ddp -{m.value[0]}"
+            _build_fluent_launch_args_string(ui=m).strip() == f"3ddp -{m.value[0]}"
             if m.value[0]
             else " 3ddp"
         )

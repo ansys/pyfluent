@@ -21,9 +21,9 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     launch_fluent,
 )
 from ansys.fluent.core.launcher.launcher_utils import (  # noqa: F401
-    FluentExposure,
     FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
     FluentWindowsGraphicsDriver,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
