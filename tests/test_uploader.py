@@ -1,5 +1,5 @@
 import pytest
-from util.meshing_workflow import new_mesh_session_scoped_session  # noqa: F401
+from util.meshing_workflow import new_mesh_session_scoped_module  # noqa: F401
 from util.solver_workflow import new_solver_session_scoped_session  # noqa: F401
 
 from ansys.fluent.core import examples
@@ -10,14 +10,14 @@ import_file_name = examples.download_file(
 )
 
 
-def test_meshing_session_upload(new_mesh_session_scoped_session):
-    session = new_mesh_session_scoped_session
+def test_meshing_session_upload(new_mesh_session_scoped_module):
+    session = new_mesh_session_scoped_module
     with pytest.raises(PyPIMConfigurationError) as e_info:
         session.upload(import_file_name)
 
 
-def test_meshing_session_download(new_mesh_session_scoped_session):
-    session = new_mesh_session_scoped_session
+def test_meshing_session_download(new_mesh_session_scoped_module):
+    session = new_mesh_session_scoped_module
     with pytest.raises(PyPIMConfigurationError) as e_info:
         session.download(import_file_name)
 

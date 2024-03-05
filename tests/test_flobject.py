@@ -8,7 +8,7 @@ import weakref
 import pytest
 from test_utils import count_key_recursive
 from util.solver_workflow import (  # noqa: F401
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 )
 
 from ansys.fluent.core.examples import download_file
@@ -833,9 +833,9 @@ def test_find_children_from_fluent_solver_session(
 
 @pytest.mark.fluent_version(">=24.1")
 def test_settings_wild_card_access(
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 ) -> None:
-    solver = new_solver_session_no_transcript_read_case_scoped_session
+    solver = new_solver_session_no_transcript_read_case_scoped_module
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
@@ -867,9 +867,9 @@ def test_settings_wild_card_access(
 
 @pytest.mark.fluent_version("latest")
 def test_settings_matching_names(
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 ) -> None:
-    solver = new_solver_session_no_transcript_read_case_scoped_session
+    solver = new_solver_session_no_transcript_read_case_scoped_module
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)

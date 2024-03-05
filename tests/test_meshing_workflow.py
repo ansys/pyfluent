@@ -7,7 +7,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     exhaust_system_geometry,
     mixing_elbow_geometry,
     new_mesh_session,
-    new_mesh_session_scoped_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )
@@ -419,8 +418,8 @@ def test_modified_workflow(new_mesh_session):
     assert set(task_display_names) == task_object_display_names
 
 
-def test_nonexistent_attrs(new_mesh_session_scoped_session):
-    meshing = new_mesh_session_scoped_session
+def test_nonexistent_attrs(new_mesh_session):
+    meshing = new_mesh_session
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz

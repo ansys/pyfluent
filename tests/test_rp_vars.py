@@ -1,6 +1,6 @@
 import pytest
 from util.solver_workflow import (  # noqa: F401
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 )
 
 from ansys.fluent.core.examples import download_file, path
@@ -8,10 +8,10 @@ from ansys.fluent.core.filereader.casereader import CaseReader
 
 
 def test_get_and_set_rp_vars(
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 ) -> None:
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver = new_solver_session_no_transcript_read_case_scoped_session
+    solver = new_solver_session_no_transcript_read_case_scoped_module
     solver.tui.file.read_case(case_path)
     rp_vars = solver.rp_vars
 
@@ -31,10 +31,10 @@ def test_get_and_set_rp_vars(
 
 @pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 ) -> None:
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver = new_solver_session_no_transcript_read_case_scoped_session
+    solver = new_solver_session_no_transcript_read_case_scoped_module
     solver.tui.file.read_case(case_path)
     rp_vars = solver.rp_vars
     # all vars
@@ -57,9 +57,9 @@ def test_get_all_rp_vars(
 
 @pytest.mark.fluent_version(">=23.2")
 def test_rp_vars_allowed_values(
-    new_solver_session_no_transcript_read_case_scoped_session,
+    new_solver_session_no_transcript_read_case_scoped_module,
 ) -> None:
-    solver = new_solver_session_no_transcript_read_case_scoped_session
+    solver = new_solver_session_no_transcript_read_case_scoped_module
     rp_vars = solver.rp_vars
 
     assert rp_vars("number-of-iterations") == 0
