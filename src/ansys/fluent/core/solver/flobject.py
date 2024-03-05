@@ -601,7 +601,7 @@ class SettingsBase(Base, Generic[StateT]):
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
-                if k in cls._child_aliases:
+                if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
                     if not isinstance(alias, str):
                         alias = alias.alias_path
@@ -620,7 +620,11 @@ class SettingsBase(Base, Generic[StateT]):
                             ret_alias[comp] = {}
                             ret_alias = ret_alias[comp]
                 else:
-                    ret[k] = cls.unalias(v)
+                    if issubclass(cls, Group):
+                        ccls = cls._child_classes[k]
+                        ret[k] = ccls.unalias(v)
+                    else:
+                        ret[k] = cls.unalias(v)
             return ret
         else:
             return value
