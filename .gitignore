@@ -140,11 +140,11 @@ dmypy.json
 .vscode
 
 # generated API files
-#src/ansys/fluent/core/fluent_version_*.py
-#src/ansys/fluent/core/meshing/tui_*.py
-#src/ansys/fluent/core/solver/tui_*.py
-#src/ansys/fluent/core/datamodel_*/
-#src/ansys/fluent/core/solver/settings_*/
+src/ansys/fluent/core/fluent_version_*.py
+src/ansys/fluent/core/meshing/tui_*.py
+src/ansys/fluent/core/solver/tui_*.py
+src/ansys/fluent/core/datamodel_*/
+src/ansys/fluent/core/solver/settings_*/
 
 # Fluent generated files
 *.trn
