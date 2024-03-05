@@ -68,5 +68,4 @@ transcript
 TUI
 UDFs
 Univa
-utils
 venv
