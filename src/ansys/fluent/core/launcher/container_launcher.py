@@ -64,7 +64,7 @@ class DockerLauncher:
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
         ui : FluentUI
-            UI option of Fluent. Options are the values of the ``FluentUI`` enum.
+            Fluent user interface mode. Options are the values of the ``FluentUI`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the

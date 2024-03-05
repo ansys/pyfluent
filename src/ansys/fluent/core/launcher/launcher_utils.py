@@ -248,7 +248,7 @@ class FluentEnum(Enum):
 
 
 class FluentUI(FluentEnum):
-    """Provides supported UI options of Fluent."""
+    """Provides supported user interface mode of Fluent."""
 
     NO_GUI_OR_GRAPHICS = ("g",)
     NO_GRAPHICS = ("gr",)
@@ -390,8 +390,8 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
 def _raise_non_gui_exception_in_windows(
     ui: FluentUI, product_version: FluentVersion
 ) -> None:
-    """UI option lower than ``FluentUI.HIDDEN_GUI`` is not supported in Windows in
-    Fluent versions lower than 2024 R1."""
+    """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
+    Windows in Fluent versions lower than 2024 R1."""
     if (
         _is_windows()
         and ui < FluentUI.HIDDEN_GUI
