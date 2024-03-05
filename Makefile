@@ -115,6 +115,7 @@ unittest-solvermode-242:
 unittest-all-242-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required" $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required" $(PYTESTRERUN)
 
 api-codegen:
