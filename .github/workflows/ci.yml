@@ -511,10 +511,7 @@ jobs:
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |
-          pip install -r requirements/requirements_build.txt
-          poetry install --only test
-          make unittest-dev-${{ matrix.version }}
+        run: make unittest-dev-${{ matrix.version }}
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
