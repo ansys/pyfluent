@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from util.solver_workflow import (  # noqa: F401
     new_solver_session_scoped_session,
-    new_solver_session_single_precision,
+    new_solver_session_single_precision_read_case_scoped_session,
 )
 
 from ansys.fluent.core import examples
@@ -121,8 +121,10 @@ def test_solution_variables(new_solver_session_scoped_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_solution_variables_single_precision(new_solver_session_single_precision):
-    solver = new_solver_session_single_precision
+def test_solution_variables_single_precision(
+    new_solver_session_single_precision_read_case_scoped_session,
+):
+    solver = new_solver_session_single_precision_read_case_scoped_session
     import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )
@@ -310,8 +312,10 @@ def test_svars(new_solver_session_scoped_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_svars_single_precision(new_solver_session_single_precision):
-    solver = new_solver_session_single_precision
+def test_svars_single_precision(
+    new_solver_session_single_precision_read_case_scoped_session,
+):
+    solver = new_solver_session_single_precision_read_case_scoped_session
     import_file_name = examples.download_file(
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )

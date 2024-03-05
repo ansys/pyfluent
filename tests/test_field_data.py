@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
-    new_solver_session_read_case_session_scope,
+    new_solver_session_read_case_scoped_session,
 )
 
 from ansys.fluent.core import examples
@@ -13,8 +13,8 @@ HOT_INLET_TEMPERATURE = 313.15
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_field_data(new_solver_session_read_case_session_scope) -> None:
-    solver = new_solver_session_read_case_session_scope
+def test_field_data(new_solver_session_read_case_scoped_session) -> None:
+    solver = new_solver_session_read_case_scoped_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
@@ -345,8 +345,8 @@ def test_field_data_errors(new_solver_session) -> None:
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_field_info_validators(new_solver_session_read_case_session_scope) -> None:
-    solver = new_solver_session_read_case_session_scope
+def test_field_info_validators(new_solver_session_read_case_scoped_session) -> None:
+    solver = new_solver_session_read_case_scoped_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
