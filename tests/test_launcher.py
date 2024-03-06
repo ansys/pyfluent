@@ -8,22 +8,26 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.launcher import create_launcher
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.launcher.custom_exceptions import (
     DockerContainerLaunchNotSupported,
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentUI,
-    FluentWindowsGraphicsDriver,
     GPUSolverSupportError,
     LaunchFluentError,
     UnexpectedKeywordArgument,
-    _build_fluent_launch_args_string,
-    _build_journal_argument,
-    _is_windows,
     _raise_non_gui_exception_in_windows,
-    check_docker_support,
+)
+from ansys.fluent.core.launcher.launch_string import _build_fluent_launch_args_string
+from ansys.fluent.core.launcher.launcher import create_launcher
+from ansys.fluent.core.launcher.launcher_arguments import (
+    FluentMode,
+    _is_windows,
     get_fluent_exe_path,
+)
+from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLinuxGraphicsDriver,
+    FluentUI,
+    FluentWindowsGraphicsDriver,
+    _build_journal_argument,
+    check_docker_support,
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 import ansys.platform.instancemanagement as pypim
