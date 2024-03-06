@@ -5,7 +5,10 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.launcher_arguments import FluentMode
+from ansys.fluent.core.launcher.launcher_arguments import (
+    FluentMode,
+    _process_invalid_args,
+)
 from ansys.fluent.core.launcher.launcher_utils import (
     FluentLinuxGraphicsDriver,
     FluentUI,

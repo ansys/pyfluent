@@ -7,7 +7,7 @@ from util.fixture_fluent import download_input_file
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher import launcher_utils
+from ansys.fluent.core.launcher import launcher_arguments
 from ansys.fluent.core.launcher.custom_exceptions import (
     DockerContainerLaunchNotSupported,
     GPUSolverSupportError,
@@ -70,8 +70,8 @@ def test_unsuccessful_fluent_connection():
 
 @pytest.mark.fluent_version("<24.1")
 def test_non_gui_in_windows_throws_exception():
-    default_windows_flag = launcher_utils._is_windows()
-    launcher_utils._is_windows = lambda: True
+    default_windows_flag = launcher_arguments._is_windows()
+    launcher_arguments._is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v232)
@@ -92,13 +92,13 @@ def test_non_gui_in_windows_throws_exception():
                 FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v222
             )
     finally:
-        launcher_utils._is_windows = lambda: default_windows_flag
+        launcher_arguments._is_windows = lambda: default_windows_flag
 
 
 @pytest.mark.fluent_version(">=24.1")
 def test_non_gui_in_windows_does_not_throw_exception():
-    default_windows_flag = launcher_utils._is_windows()
-    launcher_utils._is_windows = lambda: True
+    default_windows_flag = launcher_arguments._is_windows()
+    launcher_arguments._is_windows = lambda: True
     try:
         _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v241)
         _raise_non_gui_exception_in_windows(
@@ -109,7 +109,7 @@ def test_non_gui_in_windows_does_not_throw_exception():
             FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v242
         )
     finally:
-        launcher_utils._is_windows = lambda: default_windows_flag
+        launcher_arguments._is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
