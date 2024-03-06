@@ -1,7 +1,7 @@
 .. _ref_container_launchers:
 
-Container launchers
-===================
+Callable launchers
+==================
 
 ==============================  ==============================
 :ref:`ref_container_launcher`   | Callable container launcher.

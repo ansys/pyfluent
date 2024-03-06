@@ -1,7 +1,7 @@
 .. _ref_pim_launcher:
 
-`PIM <https://pypim.docs.pyansys.com/version/stable/>`_ launcher
-================================================================
+Callable `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ launcher
+=========================================================================
 
 .. automodule:: ansys.fluent.core.launcher.pim_launcher
    :members:
