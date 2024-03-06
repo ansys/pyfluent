@@ -4,6 +4,13 @@ style:
 
 install:
 	@pip install -r requirements/requirements_build.txt
+	@poetry env info
+	@poetry env info --path
+	@poetry env info --executable
+	@poetry env use system
+	@poetry install --all-extras
+	@poetry install --with test
+	@poetry env info --executable
 	@poetry build
 	@pip install -q --force-reinstall dist/*.whl
 
@@ -26,9 +33,13 @@ unittest-dev-222:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
 	@pip install -r requirements/requirements_build.txt
+	@poetry env info
+	@poetry env info --path
+	@poetry env info --executable
 	@poetry env use system
 	@poetry install --all-extras
 	@poetry install --with test
+	@poetry env info --executable
 	@python -m pytest --fluent-version=22.2 $(PYTESTEXTRA) || python -m pytest --fluent-version=22.2 $(PYTESTRERUN)
 
 unittest-dev-231:
