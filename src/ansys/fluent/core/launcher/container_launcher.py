@@ -22,7 +22,10 @@ from ansys.fluent.core.launcher.fluent_container import (
     start_fluent_container,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLinuxGraphicsDriver,
     FluentMode,
+    FluentUI,
+    FluentWindowsGraphicsDriver,
     _build_fluent_launch_args_string,
     _process_invalid_args,
 )
@@ -40,6 +43,8 @@ class DockerLauncher:
     def __init__(
         self,
         mode: FluentMode,
+        ui: FluentUI,
+        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -53,7 +58,6 @@ class DockerLauncher:
         dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -71,9 +75,15 @@ class DockerLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
+        ui : FluentUI
+            Fluent user interface mode. Options are the values of the ``FluentUI`` enum.
+        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+            Graphics driver of Fluent. Options are the values of the
+            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
+            ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : str, optional
-            Select an installed version of ANSYS. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+            Version of Ansys Fluent to launch. The string must be in a format like
+            ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
             FluentVersion class. The default is ``None``, in which case the newest installed
             version is used.
         version : str, optional
@@ -119,11 +129,6 @@ class DockerLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        show_gui : bool, optional
-            Whether to display the Fluent GUI. The default is ``None``, which does not
-            cause the GUI to be shown. If a value of ``False`` is
-            not explicitly provided, the GUI will also be shown if
-            the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
         case_file_name : str, optional
             If provided, the case file at ``case_file_name`` is read into the Fluent session.
         case_data_file_name : str, optional

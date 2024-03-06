@@ -478,7 +478,7 @@ class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
 
-class DeprecatedSettingWarning(DeprecationWarning):
+class DeprecatedSettingWarning(FutureWarning):
     pass
 
 
@@ -493,7 +493,6 @@ def _show_warning(message, category, *args, **kwargs):
 
 
 warnings.showwarning = _show_warning
-warnings.simplefilter("default", category=DeprecatedSettingWarning)
 
 
 class _Alias:
