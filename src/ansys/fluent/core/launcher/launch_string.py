@@ -17,7 +17,6 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 def _generate_launch_string(
     argvals,
     mode: FluentMode,
-    show_gui: bool,
     additional_arguments: str,
     server_info_file_name: str,
 ):
@@ -40,9 +39,6 @@ def _generate_launch_string(
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
     launch_string += " -nm"
-    launch_string = _update_launch_string_wrt_gui_options(
-        launch_string, show_gui, additional_arguments
-    )
     return launch_string
 
 

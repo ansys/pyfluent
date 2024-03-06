@@ -1,5 +1,5 @@
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.launcher_arguments import _is_windows
+import ansys.fluent.core.launcher.launcher_arguments as launch_args
 from ansys.fluent.core.launcher.launcher_utils import FluentUI
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -51,7 +51,7 @@ class LaunchFluentError(Exception):
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
     additional_arg_list = additional_arguments.split()
-    if _is_windows() and (
+    if launch_args._is_windows() and (
         ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
         raise InvalidArgument("Unsupported '-g' and '-gu' on windows platform.")
@@ -63,7 +63,7 @@ def _raise_non_gui_exception_in_windows(
     """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
     Windows in Fluent versions lower than 2024 R1."""
     if (
-        _is_windows()
+        launch_args._is_windows()
         and ui < FluentUI.HIDDEN_GUI
         and product_version < FluentVersion.v241
     ):

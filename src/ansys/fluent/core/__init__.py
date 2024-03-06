@@ -20,9 +20,9 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
+from ansys.fluent.core.launcher.launcher_arguments import FluentMode  # noqa: F401
 from ansys.fluent.core.launcher.launcher_utils import (  # noqa: F401
     FluentLinuxGraphicsDriver,
-    FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
 )

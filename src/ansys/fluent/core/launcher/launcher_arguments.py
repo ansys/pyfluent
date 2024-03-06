@@ -14,7 +14,7 @@ from ansys.fluent.core.launcher.custom_exceptions import (
     IpPortNotProvided,
     UnexpectedKeywordArgument,
 )
-from ansys.fluent.core.launcher.launcher_utils import logger
+from ansys.fluent.core.launcher.launcher_utils import check_docker_support, logger
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
