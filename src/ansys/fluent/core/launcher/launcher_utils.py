@@ -603,17 +603,17 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
     dry_run: bool
         If dry running a container start,
         ``launch_fluent()`` will return the configured ``container_dict``.
-    fluent_launch_mode: str
+    fluent_launch_mode: LaunchMode
         Fluent launch mode.
     argvals: dict
         Local arguments.
     """
-    if dry_run and fluent_launch_mode != "container":
+    if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
         logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
             "supported when starting containers."
         )
-    if fluent_launch_mode != "standalone":
+    if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
             "env",
             "cwd",
