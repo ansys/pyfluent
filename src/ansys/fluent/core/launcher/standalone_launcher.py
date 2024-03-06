@@ -8,26 +8,28 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.custom_exceptions import (
     LaunchFluentError,
-    _raise_exception_g_gu_in_windows_os,
+    _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.launcher_arguments import (
     FluentMode,
     _get_server_info,
     _get_server_info_file_name,
+    _get_standalone_launch_fluent_version,
     _get_subprocess_kwargs_for_fluent,
     _is_windows,
     _process_invalid_args,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLinuxGraphicsDriver,
+    FluentUI,
+    FluentWindowsGraphicsDriver,
     _await_fluent_launch,
     _build_journal_argument,
     _confirm_watchdog_start,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 
-_THIS_DIR = os.path.dirname(__file__)
-_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
@@ -37,6 +39,8 @@ class StandaloneLauncher:
     def __init__(
         self,
         mode: FluentMode,
+        ui: FluentUI,
+        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -50,7 +54,6 @@ class StandaloneLauncher:
         dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -68,9 +71,15 @@ class StandaloneLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
+        ui : FluentUI
+            Fluent user interface mode. Options are the values of the ``FluentUI`` enum.
+        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+            Graphics driver of Fluent. Options are the values of the
+            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
+            ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : str, optional
-            Select an installed version of ANSYS. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+            Version of Ansys Fluent to launch. The string must be in a format like
+            ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
             FluentVersion class. The default is ``None``, in which case the newest installed
             version is used.
         version : str, optional
@@ -116,11 +125,6 @@ class StandaloneLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        show_gui : bool, optional
-            Whether to display the Fluent GUI. The default is ``None``, which does not
-            cause the GUI to be shown. If a value of ``False`` is
-            not explicitly provided, the GUI will also be shown if
-            the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
         case_file_name : str, optional
             If provided, the case file at ``case_file_name`` is read into the Fluent session.
         case_data_file_name : str, optional
@@ -187,9 +191,9 @@ class StandaloneLauncher:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
             setattr(self, "lightweight_mode", False)
-
-        if self.additional_arguments:
-            _raise_exception_g_gu_in_windows_os(self.additional_arguments)
+        fluent_version = _get_standalone_launch_fluent_version(self.product_version)
+        if fluent_version:
+            _raise_non_gui_exception_in_windows(self.ui, fluent_version)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
@@ -198,7 +202,6 @@ class StandaloneLauncher:
         launch_string = _generate_launch_string(
             self.argvals,
             self.mode,
-            self.show_gui,
             self.additional_arguments,
             server_info_file_name,
         )
@@ -215,7 +218,11 @@ class StandaloneLauncher:
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
-            launch_cmd = launch_string
+            if self.ui < FluentUI.HIDDEN_GUI:
+                # Using nohup to hide Fluent output from the current terminal
+                launch_cmd = "nohup " + launch_string + " &"
+            else:
+                launch_cmd = launch_string
 
         try:
             logger.debug(f"Launching Fluent with command: {launch_cmd}")

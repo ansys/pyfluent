@@ -1,5 +1,7 @@
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launcher_arguments import _is_windows
+from ansys.fluent.core.launcher.launcher_utils import FluentUI
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class InvalidPassword(ValueError):
@@ -53,3 +55,18 @@ def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
         ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
         raise InvalidArgument("Unsupported '-g' and '-gu' on windows platform.")
+
+
+def _raise_non_gui_exception_in_windows(
+    ui: FluentUI, product_version: FluentVersion
+) -> None:
+    """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
+    Windows in Fluent versions lower than 2024 R1."""
+    if (
+        _is_windows()
+        and ui < FluentUI.HIDDEN_GUI
+        and product_version < FluentVersion.v241
+    ):
+        raise InvalidArgument(
+            f"'{ui}' supported in Windows only for Fluent version 24.1 or later."
+        )

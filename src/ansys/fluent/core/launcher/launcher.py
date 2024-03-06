@@ -7,6 +7,7 @@ with gRPC.
 import logging
 import os
 from typing import Any, Dict, Optional, Union
+import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -18,10 +19,16 @@ from ansys.fluent.core.launcher.launcher_arguments import (
     _get_mode,
     _get_running_session_mode,
     _get_server_info,
+    _is_windows,
     _process_invalid_args,
     _process_kwargs,
 )
-from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
+from ansys.fluent.core.launcher.launcher_utils import (
+    FluentLinuxGraphicsDriver,
+    FluentUI,
+    FluentWindowsGraphicsDriver,
+    _confirm_watchdog_start,
+)
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
@@ -30,6 +37,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -90,6 +98,10 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
+    ui: Union[FluentUI, str, None] = None,
+    graphics_driver: Union[
+        FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+    ] = None,
     show_gui: Optional[bool] = None,
     case_file_name: Optional[str] = None,
     case_data_file_name: Optional[str] = None,
@@ -110,8 +122,8 @@ def launch_fluent(
     Parameters
     ----------
     product_version : str, optional
-        Select an installed version of ANSYS. The string must be in a format like
-        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+        Version of Ansys Fluent to launch. The string must be in a format like
+        ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
         FluentVersion class. The default is ``None``, in which case the newest installed
         version is used.
     version : str, optional
@@ -158,6 +170,21 @@ def launch_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
+    ui : FluentUI or str, optional
+        Fluent user interface mode. Options are either the values of the ``FluentUI``
+        enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``, ``"hidden_gui"``,
+        ``"no_graphics"`` or ``"gui"``. The default is ``FluentUI.HIDDEN_GUI`` in
+        Windows and ``FluentUI.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
+        ``"no_gui"`` user interface modes are supported in Windows starting from Fluent
+        version 2024 R1.
+    graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
+        Graphics driver of Fluent. In Windows, options are either the values of the
+        ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,
+        ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, options are
+        either the values of the ``FluentLinuxGraphicsDriver`` enum or any of
+       ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
+       ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
+       ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
     show_gui : bool, optional
         Whether to display the Fluent GUI. The default is ``None``, which does not
         cause the GUI to be shown. If a value of ``False`` is
@@ -234,6 +261,28 @@ def launch_fluent(
         raise GPUSolverSupportError()
     _process_kwargs(kwargs)
     del kwargs
+    if show_gui is not None:
+        warnings.warn(
+            "'show_gui' is deprecated, use 'ui' instead",
+            PyFluentDeprecationWarning,
+        )
+    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == 1:
+        ui = FluentUI.GUI
+    del show_gui
+    if ui is None:
+        # Not using NO_GUI in windows as it opens a new cmd or
+        # shows Fluent output in the current cmd if start <launch_string> is not used
+        ui = FluentUI.HIDDEN_GUI if _is_windows() else FluentUI.NO_GUI
+    if isinstance(ui, str):
+        ui = FluentUI(ui)
+    if graphics_driver is None:
+        graphics_driver = "auto"
+    graphics_driver = str(graphics_driver)
+    graphics_driver = (
+        FluentWindowsGraphicsDriver(graphics_driver)
+        if _is_windows()
+        else FluentLinuxGraphicsDriver(graphics_driver)
+    )
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
         container_dict=container_dict,
