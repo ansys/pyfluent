@@ -9,9 +9,9 @@ from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.launcher.launch_string import _build_fluent_launch_args_string
+from ansys.fluent.core.launcher.launcher_arguments import (
     FluentMode,
-    _build_fluent_launch_args_string,
     _process_invalid_args,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog

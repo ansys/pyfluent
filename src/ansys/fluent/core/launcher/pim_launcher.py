@@ -4,12 +4,17 @@ import logging
 import os
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher_arguments import (
     FluentMode,
     _process_invalid_args,
-    launch_remote_fluent,
 )
+from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
+import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -200,3 +205,85 @@ class PIMLauncher:
             launcher_args=self.argvals,
             file_transfer_service=self.file_transfer_service,
         )
+
+
+def launch_remote_fluent(
+    session_cls,
+    start_transcript: bool,
+    product_version: Optional[str] = None,
+    cleanup_on_exit: bool = True,
+    mode: FluentMode = FluentMode.SOLVER,
+    dimensionality: Optional[str] = None,
+    launcher_args: Optional[Dict[str, Any]] = None,
+    file_transfer_service: Optional[Any] = None,
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
+
+    When calling this method, you must ensure that you are in an
+    environment where PyPIM is configured. You can use the :func:
+    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
+    method to verify that PyPIM is configured.
+
+    Parameters
+    ----------
+    session_cls: Union[type(Meshing), type(PureMeshing), type(Solver), type(SolverIcing)]
+        Session type.
+    start_transcript: bool
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
+    product_version : str, optional
+        Select an installed version of ANSYS. The string must be in a format like
+        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+        FluentVersion class. The default is ``None``, in which case the newest installed
+        version is used.
+    cleanup_on_exit : bool, optional
+        Whether to clean up and exit Fluent when Python exits or when garbage
+        is collected for the Fluent Python instance. The default is ``True``.
+    mode : FluentMode, optional
+        Whether to launch Fluent remotely in meshing mode. The default is
+        ``FluentMode.SOLVER``.
+    dimensionality : str, optional
+        Geometric dimensionality of the Fluent simulation. The default is ``None``,
+        in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
+
+    Returns
+    -------
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+        Session object.
+    """
+    pim = pypim.connect()
+    instance = pim.create_instance(
+        product_name=(
+            "fluent-meshing"
+            if FluentMode.is_meshing(mode)
+            else "fluent-2ddp" if dimensionality == "2d" else "fluent-3ddp"
+        ),
+        product_version=product_version,
+    )
+    instance.wait_for_ready()
+    # nb pymapdl sets max msg len here:
+    channel = instance.build_grpc_channel()
+
+    fluent_connection = FluentConnection(
+        channel=channel,
+        cleanup_on_exit=cleanup_on_exit,
+        remote_instance=instance,
+        start_transcript=start_transcript,
+        launcher_args=launcher_args,
+    )
+
+    file_transfer_service = (
+        file_transfer_service
+        if file_transfer_service
+        else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
+    )
+
+    return session_cls(
+        fluent_connection=fluent_connection, file_transfer_service=file_transfer_service
+    )

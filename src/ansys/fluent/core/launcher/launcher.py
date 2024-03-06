@@ -11,10 +11,9 @@ from typing import Any, Dict, Optional, Union
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.launcher.custom_exceptions import GPUSolverSupportError
+from ansys.fluent.core.launcher.launcher_arguments import (
     FluentMode,
-    GPUSolverSupportError,
-    _confirm_watchdog_start,
     _get_fluent_launch_mode,
     _get_mode,
     _get_running_session_mode,
@@ -22,6 +21,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _process_invalid_args,
     _process_kwargs,
 )
+from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher

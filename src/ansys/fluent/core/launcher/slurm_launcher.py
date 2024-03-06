@@ -36,14 +36,16 @@ import time
 from typing import Any, Callable, Union
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.launcher_utils import (
-    _await_fluent_launch,
-    _build_journal_argument,
-    _generate_launch_string,
+from ansys.fluent.core.launcher.launch_string import _generate_launch_string
+from ansys.fluent.core.launcher.launcher_arguments import (
     _get_mode,
     _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
     _process_invalid_args,
+)
+from ansys.fluent.core.launcher.launcher_utils import (
+    _await_fluent_launch,
+    _build_journal_argument,
 )
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
