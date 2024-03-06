@@ -486,7 +486,7 @@ jobs:
 
       - name: Install pyfluent
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: pip install -q --force-reinstall dist/*.whl[reader] > /dev/null
+        run: pip install -q --force-reinstall dist/*.whl > /dev/null
 
       - name: Retrieve PyFluent version
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}

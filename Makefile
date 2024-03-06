@@ -25,7 +25,10 @@ unittest: unittest-dev-241
 unittest-dev-222:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-	@pip install -r requirements/requirements_tests.txt
+	@pip install -r requirements/requirements_build.txt
+	@poetry env use system
+	@poetry install --all-extras
+	@poetry install --with test
 	@python -m pytest --fluent-version=22.2 $(PYTESTEXTRA) || python -m pytest --fluent-version=22.2 $(PYTESTRERUN)
 
 unittest-dev-231:
