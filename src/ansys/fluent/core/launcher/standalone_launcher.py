@@ -4,11 +4,12 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
 
->>> standalone_meshing_launcher = create_launcher("standalone", mode="meshing")
+>>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode="meshing")
 >>> standalone_meshing_session = standalone_meshing_launcher()
 
->>> standalone_solver_launcher = create_launcher("standalone")
+>>> standalone_solver_launcher = create_launcher(LaunchMode.STANDALONE)
 >>> standalone_solver_session = standalone_solver_launcher()
 """
 

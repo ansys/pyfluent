@@ -1,6 +1,6 @@
 .. _ref_standalone_launcher:
 
-Callable Standalone launcher
+Callable standalone launcher
 ============================
 
 .. automodule:: ansys.fluent.core.launcher.standalone_launcher

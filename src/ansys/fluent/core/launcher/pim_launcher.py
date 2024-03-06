@@ -4,11 +4,12 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
 
->>> pim_meshing_launcher = create_launcher("pim", mode="meshing")
+>>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode="meshing")
 >>> pim_meshing_session = pim_meshing_launcher()
 
->>> pim_solver_launcher = create_launcher("pim")
+>>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
 >>> pim_solver_session = pim_solver_launcher()
 """
 
