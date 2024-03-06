@@ -15,8 +15,7 @@ Fluent launcher
     :maxdepth: 2
     :hidden:
 
-    container_launcher/index
-    pim_launcher
+    fluent_container
     slurm
-    standalone_launcher
+    callable_launchers/index
     launcher_utils
