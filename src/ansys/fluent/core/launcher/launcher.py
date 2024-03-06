@@ -64,8 +64,8 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     """
     allowed_options = [mode for mode in LaunchMode]
     if (
-        not isinstance(fluent_launch_mode, str)
-        or str(fluent_launch_mode) not in allowed_options
+        not isinstance(fluent_launch_mode, LaunchMode)
+        or fluent_launch_mode not in allowed_options
     ):
         raise DisallowedValuesError(
             "fluent_launch_mode",
