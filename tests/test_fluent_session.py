@@ -10,6 +10,7 @@ from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
     new_solver_session_no_transcript,
+    new_solver_session_scoped_session,
 )
 
 import ansys.fluent.core as pyfluent
@@ -179,9 +180,9 @@ def test_exit_fluent_when_connected_to_running_fluent(
 
 
 def test_fluent_connection_properties(
-    new_solver_session,
+    new_solver_session_scoped_session,
 ) -> None:
-    connection_properties = new_solver_session.connection_properties
+    connection_properties = new_solver_session_scoped_session.connection_properties
     assert isinstance(connection_properties.ip, str)
     assert isinstance(connection_properties.port, int)
     assert isinstance(connection_properties.password, str)

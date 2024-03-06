@@ -163,6 +163,19 @@ def load_static_mixer_settings_only(sample_solver_session):
     solver.exit()
 
 
+@pytest.fixture(scope="session")
+def load_static_mixer_settings_only_scoped_session():
+    solver = pyfluent.launch_fluent(mode="solver")
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(
+        file_type="case",
+        file_name=case_path,
+        lightweight_setup=True,
+    )
+    yield solver
+    solver.exit(timeout=5, timeout_force=True)
+
+
 _mixing_elbow_geom_file_name = None
 
 

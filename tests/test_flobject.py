@@ -7,7 +7,9 @@ import weakref
 
 import pytest
 from test_utils import count_key_recursive
-from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
+from util.solver_workflow import (  # noqa: F401
+    new_solver_session_no_transcript_read_case_scoped_module,
+)
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
@@ -714,8 +716,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_only):
-    solver = load_static_mixer_settings_only
+def test_accessor_methods_on_settings_object_types(
+    load_static_mixer_settings_only_scoped_session,
+):
+    solver = load_static_mixer_settings_only_scoped_session
 
     assert solver.setup.general.solver.type.allowed_values() == [
         "pressure-based",
@@ -737,8 +741,10 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_on
 
 @pytest.mark.fluent_version("==23.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
-    setup_cls = load_static_mixer_settings_only.setup.__class__
+def test_find_children_from_settings_root_231(
+    load_static_mixer_settings_only_scoped_session,
+):
+    setup_cls = load_static_mixer_settings_only_scoped_session.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -762,8 +768,10 @@ def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
-    setup_cls = load_static_mixer_settings_only.setup.__class__
+def test_find_children_from_settings_root_232(
+    load_static_mixer_settings_only_scoped_session,
+):
+    setup_cls = load_static_mixer_settings_only_scoped_session.setup.__class__
     assert len(find_children(setup_cls())) >= 18514
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -783,9 +791,11 @@ def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version("latest")
-def test_find_children_from_fluent_solver_session(load_static_mixer_settings_only):
-    setup_children = find_children(load_static_mixer_settings_only.setup)
-    load_mixer = load_static_mixer_settings_only.setup
+def test_find_children_from_fluent_solver_session(
+    load_static_mixer_settings_only_scoped_session,
+):
+    setup_children = find_children(load_static_mixer_settings_only_scoped_session.setup)
+    load_mixer = load_static_mixer_settings_only_scoped_session.setup
     assert len(setup_children) >= 18514
 
     viscous = load_mixer.models.viscous
@@ -799,7 +809,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         if path.endswith("geom_dir_spec")
     )
 
-    if load_static_mixer_settings_only.get_fluent_version() < "24.2.0":
+    if load_static_mixer_settings_only_scoped_session.get_fluent_version() < "24.2.0":
         assert set(
             find_children(
                 load_mixer.materials.fluid["air"].density.piecewise_polynomial
@@ -822,8 +832,10 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
-    solver = new_solver_session_no_transcript
+def test_settings_wild_card_access(
+    new_solver_session_no_transcript_read_case_scoped_module,
+) -> None:
+    solver = new_solver_session_no_transcript_read_case_scoped_module
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
@@ -854,8 +866,10 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
 
 
 @pytest.mark.fluent_version("latest")
-def test_settings_matching_names(new_solver_session_no_transcript) -> None:
-    solver = new_solver_session_no_transcript
+def test_settings_matching_names(
+    new_solver_session_no_transcript_read_case_scoped_module,
+) -> None:
+    solver = new_solver_session_no_transcript_read_case_scoped_module
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
@@ -964,8 +978,8 @@ def get_child_nodes(node, nodes, type_list):
 
 
 @pytest.mark.fluent_version("latest")
-def test_strings_with_allowed_values(load_static_mixer_settings_only):
-    solver = load_static_mixer_settings_only
+def test_strings_with_allowed_values(load_static_mixer_settings_only_scoped_session):
+    solver = load_static_mixer_settings_only_scoped_session
 
     with pytest.raises(AttributeError) as e:
         string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
@@ -980,8 +994,8 @@ def test_strings_with_allowed_values(load_static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_parent_class_attributes(load_static_mixer_settings_only):
-    solver = load_static_mixer_settings_only
+def test_parent_class_attributes(load_static_mixer_settings_only_scoped_session):
+    solver = load_static_mixer_settings_only_scoped_session
     assert solver.setup.models.energy.enabled
     with pytest.raises(AttributeError):
         solver.setup.models.energy.__class__.enabled
