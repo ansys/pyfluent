@@ -18,6 +18,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     FluentUI,
     FluentWindowsGraphicsDriver,
     GPUSolverSupportError,
+    LaunchMode,
     _confirm_watchdog_start,
     _get_fluent_launch_mode,
     _get_mode,
@@ -42,14 +43,14 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: str = None, **kwargs):
+def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     """Factory function to create launcher for supported launch modes.
 
     Parameters
     ----------
-    fluent_launch_mode: str
-        Supported Fluent launch modes. Options are ``"container"``,
-        ``"pim"``, ``"slurm"``, and ``"standalone"``.
+    fluent_launch_mode: LaunchMode
+        Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
+        ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
 
     Returns
     -------
@@ -61,23 +62,23 @@ def create_launcher(fluent_launch_mode: str = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    allowed_options = ["container", "pim", "standalone", "slurm"]
+    allowed_options = [mode for mode in LaunchMode]
     if (
-        not isinstance(fluent_launch_mode, str)
-        or str(fluent_launch_mode) not in allowed_options
+        not isinstance(fluent_launch_mode, LaunchMode)
+        or fluent_launch_mode not in allowed_options
     ):
         raise DisallowedValuesError(
             "fluent_launch_mode",
             fluent_launch_mode,
             allowed_values=allowed_options,
         )
-    if fluent_launch_mode == "standalone":
+    if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(**kwargs)
-    elif fluent_launch_mode == "container":
+    elif fluent_launch_mode == LaunchMode.CONTAINER:
         return DockerLauncher(**kwargs)
-    elif fluent_launch_mode == "pim":
+    elif fluent_launch_mode == LaunchMode.PIM:
         return PIMLauncher(**kwargs)
-    elif fluent_launch_mode == "slurm":
+    elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
 
 

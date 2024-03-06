@@ -12,8 +12,10 @@ Fluent launcher
    :autosummary:
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
     :hidden:
 
     fluent_container
     slurm
+    callable_launchers/index
+    launcher_utils
