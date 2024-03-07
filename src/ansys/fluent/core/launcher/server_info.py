@@ -4,8 +4,8 @@ import tempfile
 from typing import Optional
 
 from ansys.fluent.core.fluent_connection import PortNotProvided
+from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.custom_exceptions import IpPortNotProvided
-from ansys.fluent.core.launcher.launcher_utils import logger
 from ansys.fluent.core.session import _parse_server_info_file
 
 
@@ -31,7 +31,7 @@ def _get_server_info(
     if not (ip and port) and not server_info_file_name:
         raise IpPortNotProvided()
     if (ip or port) and server_info_file_name:
-        logger.warning(
+        launcher_utils.logger.warning(
             "The IP address and port are extracted from the server-info file "
             "and their explicitly specified values are ignored."
         )

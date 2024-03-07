@@ -12,7 +12,6 @@ from typing import Any, Dict, Union
 from beartype import BeartypeConf, beartype
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -32,44 +31,6 @@ def check_docker_support():
     except docker.errors.DockerException:
         return False
     return True
-
-
-def get_fluent_exe_path(**launch_argvals) -> Path:
-    """Get the path for the Fluent executable file.
-    The search for the path is performed in this order:
-
-    1. ``product_version`` parameter passed with the ``launch_fluent`` method.
-    2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.
-
-    Returns
-    -------
-    Path
-        Fluent executable path
-    """
-
-    def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ[version.awp_var]
-        return Path(awp_root) / "fluent"
-
-    def get_exe_path(fluent_root: Path) -> Path:
-        if _is_windows():
-            return fluent_root / "ntbin" / "win64" / "fluent.exe"
-        else:
-            return fluent_root / "bin" / "fluent"
-
-    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
-    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
-    if fluent_root:
-        return get_exe_path(Path(fluent_root))
-
-    # Look for Fluent exe path in the following order:
-    # 1. product_version parameter passed with launch_fluent
-    product_version = launch_argvals.get("product_version")
-    if product_version:
-        return get_exe_path(get_fluent_root(FluentVersion(product_version)))
-
-    # 2. the latest ANSYS version from AWP_ROOT environment variables
-    return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:

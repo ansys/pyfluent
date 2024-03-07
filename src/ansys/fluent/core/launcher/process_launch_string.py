@@ -1,13 +1,11 @@
 import json
 import os
+from pathlib import Path
 
-from ansys.fluent.core.launcher.launcher_utils import (
-    _is_windows,
-    get_fluent_exe_path,
-    logger,
-)
+from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.pyfluent_enums import FluentMode
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -36,12 +34,12 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                 if default is not None:
                     old_argval = argval
                     argval = default
-                    logger.warning(
+                    launcher_utils.logger.warning(
                         f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values})."
                         f" Default value '{argval}' is going to be used instead."
                     )
                 else:
-                    logger.warning(
+                    launcher_utils.logger.warning(
                         f"{k} = {argval} is discarded as it is not an allowed value. Allowed values: {allowed_values}"
                     )
                     continue
@@ -81,7 +79,7 @@ def _generate_launch_string(
     server_info_file_name: str,
 ):
     """Generates the launch string to launch fluent."""
-    if _is_windows():
+    if launcher_utils._is_windows():
         exe_path = str(get_fluent_exe_path(**argvals))
         if " " in exe_path:
             exe_path = '"' + exe_path + '"'
@@ -100,3 +98,41 @@ def _generate_launch_string(
     launch_string += f" -sifile={server_info_file_name}"
     launch_string += " -nm"
     return launch_string
+
+
+def get_fluent_exe_path(**launch_argvals) -> Path:
+    """Get the path for the Fluent executable file.
+    The search for the path is performed in this order:
+
+    1. ``product_version`` parameter passed with the ``launch_fluent`` method.
+    2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.
+
+    Returns
+    -------
+    Path
+        Fluent executable path
+    """
+
+    def get_fluent_root(version: FluentVersion) -> Path:
+        awp_root = os.environ[version.awp_var]
+        return Path(awp_root) / "fluent"
+
+    def get_exe_path(fluent_root: Path) -> Path:
+        if launcher_utils._is_windows():
+            return fluent_root / "ntbin" / "win64" / "fluent.exe"
+        else:
+            return fluent_root / "bin" / "fluent"
+
+    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
+    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    if fluent_root:
+        return get_exe_path(Path(fluent_root))
+
+    # Look for Fluent exe path in the following order:
+    # 1. product_version parameter passed with launch_fluent
+    product_version = launch_argvals.get("product_version")
+    if product_version:
+        return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+
+    # 2. the latest ANSYS version from AWP_ROOT environment variables
+    return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))

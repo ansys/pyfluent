@@ -1,5 +1,5 @@
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.launcher_utils import _is_windows, logger
+from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.pyfluent_enums import FluentUI, LaunchMode
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -44,7 +44,7 @@ def _raise_non_gui_exception_in_windows(
     """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
     Windows in Fluent versions earlier than 2024 R1."""
     if (
-        _is_windows()
+        launcher_utils._is_windows()
         and ui < FluentUI.HIDDEN_GUI
         and product_version < FluentVersion.v241
     ):
@@ -101,7 +101,7 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
         Local arguments.
     """
     if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
-        logger.warning(
+        launcher_utils.logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
             "supported when starting containers."
         )
@@ -120,7 +120,7 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
         )
         if len(invalid_arg_names) != 0:
             invalid_str_names = ", ".join(invalid_arg_names)
-            logger.warning(
+            launcher_utils.logger.warning(
                 f"These specified arguments are only supported when starting "
                 f"local standalone Fluent clients: {invalid_str_names}."
             )

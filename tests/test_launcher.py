@@ -20,10 +20,10 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _is_windows,
     check_docker_support,
-    get_fluent_exe_path,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
+    get_fluent_exe_path,
 )
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
