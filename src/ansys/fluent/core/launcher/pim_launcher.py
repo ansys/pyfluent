@@ -17,13 +17,13 @@ import logging
 import os
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.launcher.custom_exceptions import _process_invalid_args
+from ansys.fluent.core.launcher.launcher_utils import launch_remote_fluent
+from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
-    _process_invalid_args,
-    launch_remote_fluent,
 )
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 
