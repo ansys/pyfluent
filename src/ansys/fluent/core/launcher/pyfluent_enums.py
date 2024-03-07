@@ -5,10 +5,7 @@ from typing import Optional, Union
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.custom_exceptions import (
-    DockerContainerLaunchNotSupported,
-    InvalidPassword,
-)
+import ansys.fluent.core.launcher.custom_exceptions as exceptions
 from ansys.fluent.core.launcher.launcher_utils import check_docker_support
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -158,8 +155,7 @@ def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
 def _get_running_session_mode(
     fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
 ):
-    """Get the mode of the running session if the mode has not been mentioned
-    explicitly."""
+    """Get the mode of the running session if the mode has not been explicitly given."""
     if mode:
         session_mode = mode
     else:
@@ -170,7 +166,7 @@ def _get_running_session_mode(
                 else "meshing"
             )
         except Exception as ex:
-            raise InvalidPassword() from ex
+            raise exceptions.InvalidPassword() from ex
     return session_mode.value[0]
 
 
@@ -180,7 +176,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     Parameters
     ----------
     start_container: bool
-        Specifies whether to launch a Fluent Docker container image.
+        Whether to launch a Fluent Docker container image.
     container_dict: dict
         Dictionary for Fluent Docker container configuration.
 
@@ -198,7 +194,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         if check_docker_support():
             fluent_launch_mode = LaunchMode.CONTAINER
         else:
-            raise DockerContainerLaunchNotSupported()
+            raise exceptions.DockerContainerLaunchNotSupported()
     elif scheduler_options and scheduler_options["scheduler"] == "slurm":
         fluent_launch_mode = LaunchMode.SLURM
     else:

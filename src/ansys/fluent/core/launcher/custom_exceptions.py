@@ -69,7 +69,7 @@ def _process_kwargs(kwargs):
     Parameters
     ----------
     kwargs: Any
-        Provided keyword arguments.
+        Keyword arguments.
 
     Raises
     ------
@@ -93,8 +93,8 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
     Parameters
     ----------
     dry_run: bool
-        If dry running a container start,
-        ``launch_fluent()`` will return the configured ``container_dict``.
+        Whether to dry run a container start.
+         If ``True``, the ``launch_fluent()`` will return the configured ``container_dict``.
     fluent_launch_mode: LaunchMode
         Fluent launch mode.
     argvals: dict

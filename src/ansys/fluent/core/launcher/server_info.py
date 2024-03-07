@@ -32,8 +32,8 @@ def _get_server_info(
         raise IpPortNotProvided()
     if (ip or port) and server_info_file_name:
         logger.warning(
-            "The ip and port will be extracted from the server-info file "
-            "and their explicitly specified values will be ignored."
+            "The IP address and port are extracted from the server-info file "
+            "and their explicitly specified values are ignored."
         )
     else:
         if server_info_file_name:
