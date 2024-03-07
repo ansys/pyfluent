@@ -37,7 +37,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     old_argval = argval
                     argval = default
                     logger.warning(
-                        f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values}), default value '{argval}' is going to be used instead."
+                        f"Specified value '{old_argval}' for argument '{k}' is not an allowed value ({allowed_values})."
+                        f" Default value '{argval}' is going to be used instead."
                     )
                 else:
                     logger.warning(

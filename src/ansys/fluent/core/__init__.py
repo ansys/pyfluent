@@ -20,7 +20,7 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
-from ansys.fluent.core.launcher.launcher_utils import (  # noqa: F401
+from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,

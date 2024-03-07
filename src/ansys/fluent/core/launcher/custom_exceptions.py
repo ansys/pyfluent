@@ -19,7 +19,7 @@ class GPUSolverSupportError(ValueError):
 
 
 class IpPortNotProvided(ValueError):
-    """Raised when ip and port are not specified."""
+    """Raised when IP address and port are not specified."""
 
     def __init__(self):
         super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
@@ -32,7 +32,7 @@ class UnexpectedKeywordArgument(TypeError):
 
 
 class DockerContainerLaunchNotSupported(SystemError):
-    """Raised when docker container launch is not supported."""
+    """Raised when Docker container launch is not supported."""
 
     def __init__(self):
         super().__init__("Python Docker SDK is unsupported on this system.")
@@ -42,7 +42,7 @@ def _raise_non_gui_exception_in_windows(
     ui: FluentUI, product_version: FluentVersion
 ) -> None:
     """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
-    Windows in Fluent versions lower than 2024 R1."""
+    Windows in Fluent versions earlier than 2024 R1."""
     if (
         _is_windows()
         and ui < FluentUI.HIDDEN_GUI

@@ -6,17 +6,14 @@ from pathlib import Path
 import platform
 import socket
 import subprocess
-import tempfile
 import time
 from typing import Any, Dict, Optional, Union
 
 from beartype import BeartypeConf, beartype
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
-from ansys.fluent.core.launcher.custom_exceptions import IpPortNotProvided
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.pyfluent_enums import FluentMode
-from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -35,7 +32,7 @@ def _is_windows():
 
 
 def check_docker_support():
-    """Checks whether Python Docker SDK is supported by the current system."""
+    """Check whether Python Docker SDK is supported by the current system."""
     import docker
 
     try:
@@ -47,11 +44,10 @@ def check_docker_support():
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
     """Get the path for the Fluent executable file.
-
     The search for the path is performed in this order:
 
-    1. ``product_version`` parameter passed with ``launch_fluent``.
-    2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
+    1. ``product_version`` parameter passed with the ``launch_fluent`` method.
+    2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.
 
     Returns
     -------
@@ -82,18 +78,6 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
-
-
-def _get_server_info_file_name(use_tmpdir=True):
-    server_info_dir = os.getenv("SERVER_INFO_DIR")
-    dir_ = (
-        Path(server_info_dir)
-        if server_info_dir
-        else tempfile.gettempdir() if use_tmpdir else Path.cwd()
-    )
-    fd, file_name = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=str(dir_))
-    os.close(fd)
-    return file_name
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
@@ -138,32 +122,6 @@ def _await_fluent_launch(
         logger.info("Waiting for Fluent to launch...")
         if start_timeout >= 0:
             logger.info(f"...{start_timeout} seconds remaining")
-
-
-def _get_server_info(
-    server_info_file_name: str,
-    ip: Optional[str] = None,
-    port: Optional[int] = None,
-    password: Optional[str] = None,
-):
-    """Get server connection information of an already running session."""
-    if not (ip and port) and not server_info_file_name:
-        raise IpPortNotProvided()
-    if (ip or port) and server_info_file_name:
-        logger.warning(
-            "The ip and port will be extracted from the server-info file "
-            "and their explicitly specified values will be ignored."
-        )
-    else:
-        if server_info_file_name:
-            ip, port, password = _parse_server_info_file(server_info_file_name)
-        ip = ip or os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
-        port = port or os.getenv("PYFLUENT_FLUENT_PORT")
-
-    if not port:
-        raise PortNotProvided()
-
-    return ip, port, password
 
 
 def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
@@ -229,8 +187,8 @@ def launch_remote_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via method calls on the session object.
     product_version : str, optional
-        Select an installed version of ANSYS. The string must be in a format like
-        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
+        Ansys version to use. The string must be in a format like
+        ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
         FluentVersion class. The default is ``None``, in which case the newest installed
         version is used.
     cleanup_on_exit : bool, optional
@@ -243,7 +201,7 @@ def launch_remote_fluent(
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
     file_transfer_service : optional
-        File transfer service. Uploads/downloads files to/from the server.
+        File transfer service for uploading or downloading files to or from the server.
 
     Returns
     -------

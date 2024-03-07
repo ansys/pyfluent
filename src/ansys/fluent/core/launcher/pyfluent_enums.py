@@ -19,7 +19,7 @@ import ansys.platform.instancemanagement as pypim
 
 
 class LaunchMode(Enum):
-    """An enumeration over supported Fluent launch modes."""
+    """Enumerates over supported Fluent launch modes."""
 
     STANDALONE = 1
     PIM = 2
@@ -28,7 +28,7 @@ class LaunchMode(Enum):
 
 
 class FluentMode(Enum):
-    """An enumeration over supported Fluent modes."""
+    """Enumerates over supported Fluent modes."""
 
     MESHING_MODE = (Meshing, "meshing")
     PURE_MESHING_MODE = (PureMeshing, "pure-meshing")
@@ -37,17 +37,17 @@ class FluentMode(Enum):
 
     @staticmethod
     def get_mode(mode: str) -> "FluentMode":
-        """Returns the FluentMode based on the provided mode string.
+        """Get the FluentMode based on the provided mode string.
 
         Parameters
         ----------
         mode : str
-            mode
+            Mode
 
         Returns
         -------
         FluentMode
-            Fluent mode
+            Fluent mode.
 
         Raises
         ------
@@ -63,7 +63,7 @@ class FluentMode(Enum):
 
     @staticmethod
     def is_meshing(mode: "FluentMode") -> bool:
-        """Returns whether the current mode is meshing.
+        """Check if the current mode is meshing.
 
         Parameters
         ----------
@@ -72,8 +72,9 @@ class FluentMode(Enum):
 
         Returns
         -------
-        True if mode is FluentMode.MESHING_MODE or FluentMode.PURE_MESHING_MODE else False
-            bool
+        bool
+            ``True`` if the mode is ``FluentMode.MESHING_MODE`` or ``FluentMode.PURE_MESHING_MODE``,
+            ``False`` otherwise.
         """
         return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
 
@@ -144,7 +145,7 @@ class FluentLinuxGraphicsDriver(FluentEnum):
 
 
 def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
-    """Updates the session information."""
+    """Update the session information."""
     if mode is None:
         mode = FluentMode.SOLVER
 
@@ -174,7 +175,7 @@ def _get_running_session_mode(
 
 
 def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
-    """Get Fluent launch mode.
+    """Get the Fluent launch mode.
 
     Parameters
     ----------
@@ -211,9 +212,9 @@ def _get_standalone_launch_fluent_version(
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
 
-    The search for the version is performed in this order.
+    The search for the version is performed in this order:
 
-    1. The ``product_version`` parameter passed with the ``launch_fluent()`` method.
+    1. The ``product_version`` parameter passed with the ``launch_fluent`` method.
     2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.
 
     Returns

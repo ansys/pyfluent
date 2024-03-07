@@ -28,8 +28,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _confirm_watchdog_start,
-    _get_server_info,
-    _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
     _is_windows,
 )
@@ -40,6 +38,10 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentUI,
     FluentWindowsGraphicsDriver,
     _get_standalone_launch_fluent_version,
+)
+from ansys.fluent.core.launcher.server_info import (
+    _get_server_info,
+    _get_server_info_file_name,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 
