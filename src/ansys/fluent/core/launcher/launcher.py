@@ -49,6 +49,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     """Factory function to create launcher for supported launch modes.
+
     Parameters
     ----------
     fluent_launch_mode: LaunchMode
