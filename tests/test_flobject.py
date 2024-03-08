@@ -10,9 +10,9 @@ from test_utils import count_key_recursive
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.units
 
 

@@ -11,8 +11,8 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow_session,
 )
 
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version(">=23.1")

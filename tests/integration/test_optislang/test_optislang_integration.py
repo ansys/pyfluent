@@ -7,7 +7,7 @@ from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly

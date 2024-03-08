@@ -2,8 +2,8 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly

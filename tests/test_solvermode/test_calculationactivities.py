@@ -1,6 +1,6 @@
 import pytest
 
-from ansys.fluent.core.launcher.launcher_utils import FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version("latest")
