@@ -1037,6 +1037,7 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     assert hot_inlet.momentum.velocity.value.state_with_units() == velocity
     velocity = ansys.units.Quantity(12.0, "m s^-1")
     hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value() == velocity.value
     assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
     assert hot_inlet.momentum.velocity.state_with_units() == {
         "option": "value",
@@ -1085,6 +1086,30 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
             "turbulent_viscosity_ratio": (10, None),
         },
     }
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_bug_1001124_quantity_assignment(load_mixing_elbow_mesh):
+    speed = ansys.units.Quantity(100, "m s^-1")
+    solver = load_mixing_elbow_mesh
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity.value = speed.value
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.value()
+        == speed.value
+    )
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = (
+        speed
+    )
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.value()
+        == speed.value
+    )
 
 
 def test_assert_type():
