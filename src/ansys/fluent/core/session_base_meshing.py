@@ -10,7 +10,10 @@ from ansys.fluent.core.meshing.meshing_workflow import (
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -54,7 +57,7 @@ class BaseMeshing:
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
         pyfluent_logger.debug("Fluent version = " + str(self._fluent_version))
-        return self._fluent_version
+        return FluentVersion(self._fluent_version)
 
     @property
     def _version(self):
@@ -103,7 +106,7 @@ class BaseMeshing:
     def _meshing_utilities_root(self):
         """Datamodel root of meshing_utilities."""
         try:
-            if self.get_fluent_version() >= "24.2.0":
+            if self.get_fluent_version().value >= "24.2.0":
                 meshing_utilities_module = importlib.import_module(
                     f"ansys.fluent.core.datamodel_{self._version}.MeshingUtilities"
                 )
@@ -112,7 +115,7 @@ class BaseMeshing:
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            if self.get_fluent_version() >= "24.2.0":
+            if self.get_fluent_version().value >= "24.2.0":
                 meshing_utilities_root = PyMenuGeneric(
                     self._se_service, "meshing_utilities"
                 )

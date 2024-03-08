@@ -55,7 +55,7 @@ class PureMeshing(BaseSession):
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
-            self.get_fluent_version(),
+            self.get_fluent_version().value,
             self.datamodel_service_tui,
             self.datamodel_service_se,
         )
@@ -93,13 +93,13 @@ class PureMeshing(BaseSession):
     @property
     def meshing_queries(self):
         """Datamodel root of meshing_queries."""
-        if float(self.get_fluent_version()[:-2]) >= 23.2:
+        if float(self.get_fluent_version().value[:-2]) >= 23.2:
             return MeshingQueries(self.meshing_queries_service)
 
     @property
     def meshing_utilities(self):
         """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version() >= "24.2.0":
+        if self.get_fluent_version().value >= "24.2.0":
             return self._base_meshing.meshing_utilities
 
     @property

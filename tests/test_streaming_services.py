@@ -47,7 +47,7 @@ def test_transcript(new_solver_session):
         total_checked_transcripts += int(transcript_checked)
         total_passed_transcripts += int(transcript_passed)
 
-    if solver.get_fluent_version() >= "23.2.0":
+    if solver.get_fluent_version().value >= "23.2.0":
         assert total_checked_transcripts == total_passed_transcripts
     else:
         assert total_checked_transcripts >= total_passed_transcripts

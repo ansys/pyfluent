@@ -22,7 +22,7 @@ class ApiNames:
 
     @property
     def initial_gauge_pressure(self):
-        if self.session.get_fluent_version() == "22.2.0":
+        if self.session.get_fluent_version().value == "22.2.0":
             return "p_sup"
         else:
             return "initial_gauge_pressure"

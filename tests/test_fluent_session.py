@@ -21,7 +21,7 @@ from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 def _read_case(session, lightweight_setup=True):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    fluent_version_str = session.get_fluent_version()[:-2]
+    fluent_version_str = session.get_fluent_version().value[:-2]
     # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
     if float(fluent_version_str) < 23.1:
         session.file.read(file_name=case_path, file_type="case")

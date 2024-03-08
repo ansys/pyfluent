@@ -52,7 +52,7 @@ def test_wildcard(new_solver_session):
         "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    if solver.get_fluent_version() >= "24.2.0":
+    if solver.get_fluent_version().value >= "24.2.0":
         sources = cell_zone_conditions.fluid["*"].source_terms.sources
         key = "sources"
     else:

@@ -11,7 +11,7 @@ def print_fluent_version(pyfluent_path, sessions: dict):
     if FluentMode.SOLVER not in sessions:
         sessions[FluentMode.SOLVER] = launch_fluent()
     session = sessions[FluentMode.SOLVER]
-    fluent_version = session.get_fluent_version()
+    fluent_version = session.get_fluent_version().value
     version_for_filename = get_version_for_file_name(fluent_version)
     eval = session.scheme_eval.scheme_eval
     version_file = (

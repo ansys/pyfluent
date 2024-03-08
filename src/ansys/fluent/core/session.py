@@ -21,6 +21,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
 
@@ -260,7 +261,7 @@ class BaseSession:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return self.scheme_eval.version
+        return FluentVersion(self.scheme_eval.version)
 
     def exit(self, **kwargs) -> None:
         """Exit session."""

@@ -44,7 +44,7 @@ class SystemCoupling:
     def __init__(self, solver):
         self._solver = solver
         # version check - this requires Fluent 2024 R1 or newer.
-        current_fluent_version = FluentVersion(self._solver.get_fluent_version())
+        current_fluent_version = FluentVersion(self._solver.get_fluent_version().value)
         if current_fluent_version < FluentVersion.v241:
             raise RuntimeError(
                 f"Fluent version is {current_fluent_version.value}. PySystemCoupling integration requires Fluent 24.1.0 or later."

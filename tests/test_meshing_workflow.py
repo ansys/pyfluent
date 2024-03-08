@@ -120,7 +120,7 @@ def test_mixing_elbow_meshing_workflow(
     ###############################################################################
     # Check the mesh in Meshing mode
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+    if float(meshing_session.get_fluent_version().value[:-2]) < 23.0:
         meshing_session.tui.mesh.check_mesh()
 
 
