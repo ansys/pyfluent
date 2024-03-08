@@ -54,7 +54,7 @@ class BaseMeshing:
         self._session_execute_tui = session_execute_tui
         self._product_version = None
 
-    def get_fluent_version(self):
+    def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
         pyfluent_logger.debug("Fluent version = " + str(self._fluent_version))
         return FluentVersion(self._fluent_version)
@@ -106,7 +106,7 @@ class BaseMeshing:
     def _meshing_utilities_root(self):
         """Datamodel root of meshing_utilities."""
         try:
-            if self.get_fluent_version().value >= "24.2.0":
+            if self.get_fluent_version() >= FluentVersion.v242:
                 meshing_utilities_module = importlib.import_module(
                     f"ansys.fluent.core.datamodel_{self._version}.MeshingUtilities"
                 )
@@ -115,7 +115,7 @@ class BaseMeshing:
                 )
         except ImportError:
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            if self.get_fluent_version().value >= "24.2.0":
+            if self.get_fluent_version() >= FluentVersion.v242:
                 meshing_utilities_root = PyMenuGeneric(
                     self._se_service, "meshing_utilities"
                 )

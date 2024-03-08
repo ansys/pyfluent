@@ -6,6 +6,7 @@ from typing import Any, Optional
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 from ansys.fluent.core.services.meshing_queries import (
     MeshingQueries,
     MeshingQueriesService,
@@ -55,7 +56,6 @@ class PureMeshing(BaseSession):
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
-            self.get_fluent_version().value,
             self.datamodel_service_tui,
             self.datamodel_service_se,
         )
@@ -93,13 +93,13 @@ class PureMeshing(BaseSession):
     @property
     def meshing_queries(self):
         """Datamodel root of meshing_queries."""
-        if float(self.get_fluent_version().value[:-2]) >= 23.2:
+        if self.get_fluent_version() >= FluentVersion.v232:
             return MeshingQueries(self.meshing_queries_service)
 
     @property
     def meshing_utilities(self):
         """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version().value >= "24.2.0":
+        if self.get_fluent_version() >= FluentVersion.v242:
             return self._base_meshing.meshing_utilities
 
     @property

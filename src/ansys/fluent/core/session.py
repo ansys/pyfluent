@@ -259,7 +259,7 @@ class BaseSession:
         """Executes a tui command."""
         self.scheme_eval.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
 
-    def get_fluent_version(self):
+    def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
         return FluentVersion(self.scheme_eval.version)
 

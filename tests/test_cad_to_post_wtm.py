@@ -27,6 +27,8 @@ from util.meshing_workflow import (  # noqa: F401
 )
 from util.solver import check_report_definition_result
 
+from ansys.fluent.core.launcher.launcher_utils import FluentVersion
+
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
@@ -129,7 +131,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     ###############################################################################
     # Check the mesh in Meshing mode
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing_session.get_fluent_version().value[:-2]) < 23.0:
+    if meshing_session.get_fluent_version() < FluentVersion.v231:
         meshing_session.tui.mesh.check_mesh()
 
     ###############################################################################
@@ -157,7 +159,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     # Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
     # water-liquid from the Material list.
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(solver_session.get_fluent_version().value[:-2]) < 23.0:
+    if solver_session.get_fluent_version() < FluentVersion.v231:
         define.boundary_conditions.fluid(
             "elbow-fluid",
             "yes",

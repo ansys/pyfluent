@@ -11,6 +11,7 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow_session,
 )
 
+from ansys.fluent.core.launcher.launcher_utils import FluentVersion
 from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
 
 
@@ -120,7 +121,7 @@ def test_mixing_elbow_meshing_workflow(
     ###############################################################################
     # Check the mesh in Meshing mode
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing_session.get_fluent_version().value[:-2]) < 23.0:
+    if meshing_session.get_fluent_version() < FluentVersion.v231:
         meshing_session.tui.mesh.check_mesh()
 
 
