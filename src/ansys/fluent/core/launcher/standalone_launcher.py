@@ -4,7 +4,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
 
 >>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode="meshing")
 >>> standalone_meshing_session = standalone_meshing_launcher()

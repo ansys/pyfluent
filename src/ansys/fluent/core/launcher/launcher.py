@@ -9,7 +9,9 @@ import os
 from typing import Any, Dict, Optional, Union
 import warnings
 
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
     _process_invalid_args,
@@ -19,17 +21,20 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
     is_windows,
 )
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     _get_fluent_launch_mode,
     _get_mode,
     _get_running_session_mode,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info
-from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture
+from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
+from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -40,6 +45,42 @@ from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
+
+
+def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+    """Factory function to create launcher for supported launch modes.
+    Parameters
+    ----------
+    fluent_launch_mode: LaunchMode
+        Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
+        ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+    Returns
+    -------
+    launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
+        Session launcher.
+    Raises
+    ------
+    DisallowedValuesError
+        If an unknown Fluent launch mode is passed.
+    """
+    allowed_options = [mode for mode in LaunchMode]
+    if (
+        not isinstance(fluent_launch_mode, LaunchMode)
+        or fluent_launch_mode not in allowed_options
+    ):
+        raise DisallowedValuesError(
+            "fluent_launch_mode",
+            fluent_launch_mode,
+            allowed_values=allowed_options,
+        )
+    if fluent_launch_mode == LaunchMode.STANDALONE:
+        return StandaloneLauncher(**kwargs)
+    elif fluent_launch_mode == LaunchMode.CONTAINER:
+        return DockerLauncher(**kwargs)
+    elif fluent_launch_mode == LaunchMode.PIM:
+        return PIMLauncher(**kwargs)
+    elif fluent_launch_mode == LaunchMode.SLURM:
+        return SlurmLauncher(**kwargs)
 
 
 #   pylint: disable=unused-argument
