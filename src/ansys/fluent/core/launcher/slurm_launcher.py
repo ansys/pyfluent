@@ -36,7 +36,7 @@ import time
 from typing import Any, Callable, Union
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.custom_exceptions import _process_invalid_args
+from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,

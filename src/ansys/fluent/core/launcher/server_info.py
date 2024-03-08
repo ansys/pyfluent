@@ -5,7 +5,7 @@ from typing import Optional
 
 from ansys.fluent.core.fluent_connection import PortNotProvided
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.custom_exceptions import IpPortNotProvided
+from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.session import _parse_server_info_file
 
 

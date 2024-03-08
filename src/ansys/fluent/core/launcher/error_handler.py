@@ -38,21 +38,6 @@ class DockerContainerLaunchNotSupported(SystemError):
         super().__init__("Python Docker SDK is unsupported on this system.")
 
 
-def _raise_non_gui_exception_in_windows(
-    ui: FluentUI, product_version: FluentVersion
-) -> None:
-    """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
-    Windows in Fluent versions earlier than 2024 R1."""
-    if (
-        launcher_utils._is_windows()
-        and ui < FluentUI.HIDDEN_GUI
-        and product_version < FluentVersion.v241
-    ):
-        raise InvalidArgument(
-            f"'{ui}' supported in Windows only for Fluent version 24.1 or later."
-        )
-
-
 # pylint: disable=missing-raises-doc
 class LaunchFluentError(Exception):
     """Exception class representing launch errors."""
@@ -61,6 +46,21 @@ class LaunchFluentError(Exception):
         """__init__ method of LaunchFluentError class."""
         details = "\n" + "Fluent Launch string: " + launch_string
         super().__init__(details)
+
+
+def _raise_non_gui_exception_in_windows(
+    ui: FluentUI, product_version: FluentVersion
+) -> None:
+    """Fluent user interface mode lower than ``FluentUI.HIDDEN_GUI`` is not supported in
+    Windows in Fluent versions earlier than 2024 R1."""
+    if (
+        launcher_utils.is_windows()
+        and ui < FluentUI.HIDDEN_GUI
+        and product_version < FluentVersion.v241
+    ):
+        raise InvalidArgument(
+            f"'{ui}' supported in Windows only for Fluent version 24.1 or later."
+        )
 
 
 def _process_kwargs(kwargs):

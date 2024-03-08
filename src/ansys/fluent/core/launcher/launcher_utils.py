@@ -11,15 +11,59 @@ from typing import Any, Dict, Union
 
 from beartype import BeartypeConf, beartype
 
-from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
+from ansys.fluent.core.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
+from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+from ansys.fluent.core.launcher.slurm_launcher import SlurmLauncher
+from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def _is_windows():
+def is_windows():
     """Check if the current operating system is Windows."""
     return platform.system() == "Windows"
+
+
+def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+    """Factory function to create launcher for supported launch modes.
+
+    Parameters
+    ----------
+    fluent_launch_mode: LaunchMode
+        Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
+        ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+
+    Returns
+    -------
+    launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
+        Session launcher.
+
+    Raises
+    ------
+    DisallowedValuesError
+        If an unknown Fluent launch mode is passed.
+    """
+    allowed_options = [mode for mode in LaunchMode]
+    if (
+        not isinstance(fluent_launch_mode, LaunchMode)
+        or fluent_launch_mode not in allowed_options
+    ):
+        raise DisallowedValuesError(
+            "fluent_launch_mode",
+            fluent_launch_mode,
+            allowed_values=allowed_options,
+        )
+    if fluent_launch_mode == LaunchMode.STANDALONE:
+        return StandaloneLauncher(**kwargs)
+    elif fluent_launch_mode == LaunchMode.CONTAINER:
+        return DockerLauncher(**kwargs)
+    elif fluent_launch_mode == LaunchMode.PIM:
+        return PIMLauncher(**kwargs)
+    elif fluent_launch_mode == LaunchMode.SLURM:
+        return SlurmLauncher(**kwargs)
 
 
 def check_docker_support():
@@ -39,7 +83,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     kwargs: Dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
-    if _is_windows():
+    if is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
         kwargs.update(shell=True, start_new_session=True)

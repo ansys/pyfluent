@@ -18,7 +18,7 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.custom_exceptions import _process_invalid_args
+from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,

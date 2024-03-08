@@ -19,7 +19,7 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core.launcher.custom_exceptions import (
+from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _process_invalid_args,
     _raise_non_gui_exception_in_windows,
@@ -29,7 +29,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
-    _is_windows,
+    is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -229,7 +229,7 @@ class StandaloneLauncher:
             kwargs.update(cwd=self.cwd)
         launch_string += _build_journal_argument(self.topy, self.journal_file_names)
 
-        if _is_windows():
+        if is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
@@ -249,7 +249,7 @@ class StandaloneLauncher:
                     server_info_file_name, self.start_timeout, sifile_last_mtime
                 )
             except TimeoutError as ex:
-                if _is_windows():
+                if is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
                     launch_cmd = launch_string.replace('"', "", 2)
                     kwargs.update(shell=False)

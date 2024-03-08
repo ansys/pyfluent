@@ -15,7 +15,7 @@ from util.solver_workflow import (  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
-from ansys.fluent.core.launcher.custom_exceptions import IpPortNotProvided
+from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 
 

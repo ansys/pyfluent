@@ -79,7 +79,7 @@ def _generate_launch_string(
     server_info_file_name: str,
 ):
     """Generates the launch string to launch fluent."""
-    if launcher_utils._is_windows():
+    if launcher_utils.is_windows():
         exe_path = str(get_fluent_exe_path(**argvals))
         if " " in exe_path:
             exe_path = '"' + exe_path + '"'
@@ -118,7 +118,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return Path(awp_root) / "fluent"
 
     def get_exe_path(fluent_root: Path) -> Path:
-        if launcher_utils._is_windows():
+        if launcher_utils.is_windows():
             return fluent_root / "ntbin" / "win64" / "fluent.exe"
         else:
             return fluent_root / "bin" / "fluent"
