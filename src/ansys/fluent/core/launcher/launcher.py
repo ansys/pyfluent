@@ -12,23 +12,27 @@ import warnings
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.launcher.error_handler import (
+    GPUSolverSupportError,
+    _process_invalid_args,
+    _process_kwargs,
+)
 from ansys.fluent.core.launcher.launcher_utils import (
+    _confirm_watchdog_start,
+    is_windows,
+)
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
+from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
-    GPUSolverSupportError,
     LaunchMode,
-    _confirm_watchdog_start,
     _get_fluent_launch_mode,
     _get_mode,
     _get_running_session_mode,
-    _get_server_info,
-    _is_windows,
-    _process_invalid_args,
-    _process_kwargs,
 )
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
+from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
@@ -51,12 +55,10 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     fluent_launch_mode: LaunchMode
         Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
         ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
-
     Returns
     -------
     launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
         Session launcher.
-
     Raises
     ------
     DisallowedValuesError
@@ -271,7 +273,7 @@ def launch_fluent(
     if ui is None:
         # Not using NO_GUI in windows as it opens a new cmd or
         # shows Fluent output in the current cmd if start <launch_string> is not used
-        ui = FluentUI.HIDDEN_GUI if _is_windows() else FluentUI.NO_GUI
+        ui = FluentUI.HIDDEN_GUI if is_windows() else FluentUI.NO_GUI
     if isinstance(ui, str):
         ui = FluentUI(ui)
     if graphics_driver is None:
@@ -279,7 +281,7 @@ def launch_fluent(
     graphics_driver = str(graphics_driver)
     graphics_driver = (
         FluentWindowsGraphicsDriver(graphics_driver)
-        if _is_windows()
+        if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
     fluent_launch_mode = _get_fluent_launch_mode(
