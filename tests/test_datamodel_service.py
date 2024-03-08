@@ -10,6 +10,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
+    ReadOnlyObjectError,
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
@@ -472,3 +473,13 @@ def test_command_creation_inside_singleton(new_mesh_session):
     meshing = new_mesh_session
     read_mesh = meshing.meshing.File.ReadMesh.create_instance()
     assert read_mesh.FileName is not None
+
+
+def test_read_ony_set_state(new_mesh_session):
+    meshing = new_mesh_session
+    assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
+    with pytest.raises(ReadOnlyObjectError):
+        meshing.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"
+    meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = False
+    assert not meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
+    meshing.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"

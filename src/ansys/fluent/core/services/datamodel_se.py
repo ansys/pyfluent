@@ -88,6 +88,13 @@ class UnsubscribeEventError(RuntimeError):
         super().__init__(f"Failed to unsubscribe event: {request}!")
 
 
+class ReadOnlyObjectError(RuntimeError):
+    """Raised when readonly object is mutated."""
+
+    def __init__(self, obj_name):
+        super().__init__(f"{obj_name} is readonly!")
+
+
 class Attribute(Enum):
     """Contains the standard names of data model attributes associated with the data
     model service."""
@@ -760,7 +767,20 @@ class PyStateContainer(PyCallableStateObject):
     fixState = fix_state
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
-        """Set state of the current object."""
+        """Set state of the current object.
+
+        Parameters
+        ----------
+        state : Any, optional
+            state
+
+        Raises
+        ------
+        ReadOnlyObjectError
+            If the object is readonly.
+        """
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            raise ReadOnlyObjectError(type(self).__name__)
         self.service.set_state(
             self.rules, convert_path_to_se_path(self.path), kwargs or state
         )
