@@ -56,6 +56,7 @@ class PureMeshing(BaseSession):
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
+            self.get_fluent_version().value,
             self.datamodel_service_tui,
             self.datamodel_service_se,
         )
