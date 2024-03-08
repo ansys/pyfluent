@@ -4,7 +4,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
 
 >>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode="meshing")
 >>> standalone_meshing_session = standalone_meshing_launcher()
@@ -19,23 +19,29 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict, Optional, Union
 
+from ansys.fluent.core.launcher.error_handler import (
+    LaunchFluentError,
+    _process_invalid_args,
+    _raise_non_gui_exception_in_windows,
+)
 from ansys.fluent.core.launcher.launcher_utils import (
+    _await_fluent_launch,
+    _build_journal_argument,
+    _confirm_watchdog_start,
+    _get_subprocess_kwargs_for_fluent,
+    is_windows,
+)
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
+from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
-    LaunchFluentError,
-    _await_fluent_launch,
-    _build_journal_argument,
-    _confirm_watchdog_start,
-    _generate_launch_string,
+    _get_standalone_launch_fluent_version,
+)
+from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_name,
-    _get_standalone_launch_fluent_version,
-    _get_subprocess_kwargs_for_fluent,
-    _is_windows,
-    _process_invalid_args,
-    _raise_non_gui_exception_in_windows,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 
@@ -223,7 +229,7 @@ class StandaloneLauncher:
             kwargs.update(cwd=self.cwd)
         launch_string += _build_journal_argument(self.topy, self.journal_file_names)
 
-        if _is_windows():
+        if is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
@@ -243,7 +249,7 @@ class StandaloneLauncher:
                     server_info_file_name, self.start_timeout, sifile_last_mtime
                 )
             except TimeoutError as ex:
-                if _is_windows():
+                if is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
                     launch_cmd = launch_string.replace('"', "", 2)
                     kwargs.update(shell=False)

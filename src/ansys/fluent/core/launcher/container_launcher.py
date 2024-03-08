@@ -4,7 +4,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
 
 >>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode="meshing")
 >>> container_meshing_session = container_meshing_launcher()
@@ -18,17 +18,19 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
+from ansys.fluent.core.launcher.process_launch_string import (
+    _build_fluent_launch_args_string,
+)
+from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
-    _build_fluent_launch_args_string,
-    _process_invalid_args,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService

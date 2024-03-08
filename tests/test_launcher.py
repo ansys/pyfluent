@@ -8,23 +8,29 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
+from ansys.fluent.core.launcher.error_handler import (
+    DockerContainerLaunchNotSupported,
+    GPUSolverSupportError,
+    LaunchFluentError,
+    UnexpectedKeywordArgument,
+    _raise_non_gui_exception_in_windows,
+)
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
-    DockerContainerLaunchNotSupported,
+    _build_journal_argument,
+    check_docker_support,
+    is_windows,
+)
+from ansys.fluent.core.launcher.process_launch_string import (
+    _build_fluent_launch_args_string,
+    get_fluent_exe_path,
+)
+from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentUI,
     FluentWindowsGraphicsDriver,
-    GPUSolverSupportError,
-    LaunchFluentError,
     LaunchMode,
-    UnexpectedKeywordArgument,
-    _build_fluent_launch_args_string,
-    _build_journal_argument,
-    _is_windows,
-    _raise_non_gui_exception_in_windows,
-    check_docker_support,
-    get_fluent_exe_path,
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 import ansys.platform.instancemanagement as pypim
@@ -67,8 +73,8 @@ def test_unsuccessful_fluent_connection():
 
 @pytest.mark.fluent_version("<24.1")
 def test_non_gui_in_windows_throws_exception():
-    default_windows_flag = launcher_utils._is_windows()
-    launcher_utils._is_windows = lambda: True
+    default_windows_flag = launcher_utils.is_windows()
+    launcher_utils.is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v232)
@@ -89,13 +95,13 @@ def test_non_gui_in_windows_throws_exception():
                 FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v222
             )
     finally:
-        launcher_utils._is_windows = lambda: default_windows_flag
+        launcher_utils.is_windows = lambda: default_windows_flag
 
 
 @pytest.mark.fluent_version(">=24.1")
 def test_non_gui_in_windows_does_not_throw_exception():
-    default_windows_flag = launcher_utils._is_windows()
-    launcher_utils._is_windows = lambda: True
+    default_windows_flag = launcher_utils.is_windows()
+    launcher_utils.is_windows = lambda: True
     try:
         _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v241)
         _raise_non_gui_exception_in_windows(
@@ -106,7 +112,7 @@ def test_non_gui_in_windows_does_not_throw_exception():
             FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v242
         )
     finally:
-        launcher_utils._is_windows = lambda: default_windows_flag
+        launcher_utils.is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
@@ -304,7 +310,7 @@ def test_fluent_launchers():
         ui=FluentUI.NO_GUI,
         graphics_driver=(
             FluentWindowsGraphicsDriver.AUTO
-            if _is_windows()
+            if is_windows()
             else FluentLinuxGraphicsDriver.AUTO
         ),
     )
@@ -391,7 +397,7 @@ def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(ui="gu")
     with pytest.raises(ValueError):
-        pyfluent.launch_fluent(graphics_driver="x11" if _is_windows() else "dx11")
+        pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in FluentUI:
         assert (
             _build_fluent_launch_args_string(ui=m).strip() == f"3ddp -{m.value[0]}"
