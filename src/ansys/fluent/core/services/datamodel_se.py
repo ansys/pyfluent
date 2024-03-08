@@ -89,7 +89,7 @@ class UnsubscribeEventError(RuntimeError):
 
 
 class ReadOnlyObjectError(RuntimeError):
-    """Raised when readonly object is mutated."""
+    """Raised when a read-only object is mutated."""
 
     def __init__(self, obj_name):
         super().__init__(f"{obj_name} is readonly!")
@@ -777,7 +777,7 @@ class PyStateContainer(PyCallableStateObject):
         Raises
         ------
         ReadOnlyObjectError
-            If the object is readonly.
+            If the object is read-only.
         """
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
