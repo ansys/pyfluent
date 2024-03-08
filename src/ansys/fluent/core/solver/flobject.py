@@ -1121,6 +1121,13 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         for query in self.query_names:
             cls = self.__class__._child_classes[query]
             self._setattr(query, _create_child(cls, None, self))
+        if not hasattr(
+            self, "rename"
+        ):  # if rename command is not available from settings API
+            self._setattr(
+                "rename",
+                types.MethodType(lambda obj, new, old: _rename(obj, new, old), self),
+            )
 
     @classmethod
     def to_scheme_keys(cls, value):
