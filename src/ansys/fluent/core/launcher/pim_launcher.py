@@ -1,4 +1,17 @@
-"""Provides a module for launching Fluent in pim mode."""
+"""Provides a module for launching Fluent in pim mode.
+
+Examples
+--------
+
+>>> from ansys.fluent.core.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
+
+>>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode="meshing")
+>>> pim_meshing_session = pim_meshing_launcher()
+
+>>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
+>>> pim_solver_session = pim_solver_launcher()
+"""
 
 import logging
 import os
@@ -20,7 +33,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 class PIMLauncher:
-    """Instantiates Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode."""
+    """Instantiates Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode."""
 
     def __init__(
         self,
@@ -51,7 +64,7 @@ class PIMLauncher:
         scheduler_options: Optional[dict] = None,
         file_transfer_service: Optional[Any] = None,
     ):
-        """Launch Fluent session in `PIM<https://pypim.docs.pyansys.com/version/stable/>` mode.
+        """Launch Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
         Parameters
         ----------

@@ -1,4 +1,17 @@
-"""Provides a module for launching Fluent in container mode."""
+"""Provides a module for launching Fluent in container mode.
+
+Examples
+--------
+
+>>> from ansys.fluent.core.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.launcher.launcher_utils import LaunchMode
+
+>>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode="meshing")
+>>> container_meshing_session = container_meshing_launcher()
+
+>>> container_solver_launcher = create_launcher(LaunchMode.CONTAINER)
+>>> container_solver_session = container_solver_launcher()
+"""
 
 import logging
 import os

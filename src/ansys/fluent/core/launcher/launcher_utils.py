@@ -575,23 +575,23 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 
     Returns
     -------
-    fluent_launch_mode: str
+    fluent_launch_mode: LaunchMode
         Fluent launch mode.
     """
     if pypim.is_configured():
-        fluent_launch_mode = "pim"
+        fluent_launch_mode = LaunchMode.PIM
     elif start_container is True or (
         start_container is None
         and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
         if check_docker_support():
-            fluent_launch_mode = "container"
+            fluent_launch_mode = LaunchMode.CONTAINER
         else:
             raise DockerContainerLaunchNotSupported()
     elif scheduler_options and scheduler_options["scheduler"] == "slurm":
-        fluent_launch_mode = "slurm"
+        fluent_launch_mode = LaunchMode.SLURM
     else:
-        fluent_launch_mode = "standalone"
+        fluent_launch_mode = LaunchMode.STANDALONE
     return fluent_launch_mode
 
 
@@ -603,17 +603,17 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
     dry_run: bool
         If dry running a container start,
         ``launch_fluent()`` will return the configured ``container_dict``.
-    fluent_launch_mode: str
+    fluent_launch_mode: LaunchMode
         Fluent launch mode.
     argvals: dict
         Local arguments.
     """
-    if dry_run and fluent_launch_mode != "container":
+    if dry_run and fluent_launch_mode != LaunchMode.CONTAINER:
         logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
             "supported when starting containers."
         )
-    if fluent_launch_mode != "standalone":
+    if fluent_launch_mode != LaunchMode.STANDALONE:
         arg_names = [
             "env",
             "cwd",
