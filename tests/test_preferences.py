@@ -14,7 +14,7 @@ def test_solver_preferences(new_solver_session):
 
     with pytest.raises(ReadOnlyObjectError):
         preferred_meshing.CheckpointingOption = "Write into memory"
-    assert preferred_meshing.CheckpointingOption() == "Write into memory"
+    assert preferred_meshing.CheckpointingOption() == "Write mesh files"
 
     preferred_drawing = preferred_meshing.DrawSettings
     preferred_drawing.FacetLimit = 6000000
@@ -48,7 +48,7 @@ def test_meshing_preferences(new_mesh_session):
 
     with pytest.raises(ReadOnlyObjectError):
         preferred_meshing.CheckpointingOption = "Write into memory"
-    assert preferred_meshing.CheckpointingOption() == "Write into memory"
+    assert preferred_meshing.CheckpointingOption() == "Write mesh files"
 
     preferred_drawing = preferred_meshing.DrawSettings
     preferred_drawing.FacetLimit = 6000000
