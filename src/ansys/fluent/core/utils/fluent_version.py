@@ -123,3 +123,7 @@ class FluentVersion(Enum):
         if isinstance(other, FluentVersion):
             return self.value < other.value
         raise ComparisonError()
+
+    def __repr__(self) -> str:
+        """Return a string representation for the Fluent version."""
+        self.value
