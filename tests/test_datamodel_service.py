@@ -477,6 +477,7 @@ def test_command_creation_inside_singleton(new_mesh_session):
 
 def test_read_ony_set_state(new_mesh_session):
     meshing = new_mesh_session
+    meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
     assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
     with pytest.raises(ReadOnlyObjectError):
         meshing.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"

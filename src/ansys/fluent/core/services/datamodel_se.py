@@ -89,7 +89,7 @@ class UnsubscribeEventError(RuntimeError):
 
 
 class ReadOnlyObjectError(RuntimeError):
-    """Raised when a read-only object is mutated."""
+    """Raised on an attempt to mutate a read-only object."""
 
     def __init__(self, obj_name):
         super().__init__(f"{obj_name} is readonly!")
