@@ -30,7 +30,7 @@ def get_version(session=None):
             return image_tag.lstrip("v")
         session = pyfluent.launch_fluent(mode="solver")
 
-    return session.get_fluent_version()
+    return session.get_fluent_version().value
 
 
 def get_version_for_file_name(version: Optional[str] = None, session=None):
@@ -123,3 +123,7 @@ class FluentVersion(Enum):
         if isinstance(other, FluentVersion):
             return self.value < other.value
         raise ComparisonError()
+
+    def __repr__(self) -> str:
+        """Return a string representation for the Fluent version."""
+        return self.value

@@ -3,6 +3,7 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
@@ -52,7 +53,7 @@ def test_wildcard(new_solver_session):
         "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    if solver.get_fluent_version() >= "24.2.0":
+    if solver.get_fluent_version() >= FluentVersion.v242:
         sources = cell_zone_conditions.fluid["*"].source_terms.sources
         key = "sources"
     else:

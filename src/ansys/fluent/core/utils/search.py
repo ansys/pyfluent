@@ -60,11 +60,11 @@ def _get_version_path_prefix_from_obj(obj: Any):
     prefix = None
     if isinstance(obj, PureMeshing):
         path = ["<meshing_session>"]
-        version = get_version_for_file_name(obj.get_fluent_version())
+        version = get_version_for_file_name(obj.get_fluent_version().value)
         prefix = "<search_root>"
     elif isinstance(obj, Solver):
         path = ["<solver_session>"]
-        version = get_version_for_file_name(obj.get_fluent_version())
+        version = get_version_for_file_name(obj.get_fluent_version().value)
         prefix = "<search_root>"
     elif isinstance(obj, TUIMenu):
         module = obj.__class__.__module__
