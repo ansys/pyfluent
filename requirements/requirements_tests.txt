@@ -1,4 +1,0 @@
-pytest
-pytest-mock
-pytest-cov
-h5py>=3.8.0
