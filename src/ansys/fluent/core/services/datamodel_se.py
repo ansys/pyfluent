@@ -897,6 +897,13 @@ class PyStateContainer(PyCallableStateObject):
             self.rules, convert_path_to_se_path(self.path), command, attribute, self, cb
         )
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_list = dir_list - {"setState", "set_state"}
+
+        return sorted(dir_list)
+
 
 class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use this class

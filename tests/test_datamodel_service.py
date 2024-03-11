@@ -480,3 +480,7 @@ def test_read_ony_set_state(new_mesh_session):
     assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
     with pytest.raises(ReadOnlyObjectError):
         meshing.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"
+
+    assert "set_state" not in dir(
+        meshing.preferences.MeshingWorkflow.CheckpointingOption
+    )
