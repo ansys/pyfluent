@@ -1220,7 +1220,14 @@ class PyDictionary(PyParameter):
         ----------
         dict_state : dict[str, Any]
             Incoming dict state
+
+        Raises
+        ------
+        ReadOnlyObjectError
+            If the object is read-only.
         """
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            raise ReadOnlyObjectError(type(self).__name__)
         self.service.update_dict(
             self.rules, convert_path_to_se_path(self.path), dict_state
         )
