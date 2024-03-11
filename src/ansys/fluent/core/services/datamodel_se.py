@@ -1234,6 +1234,13 @@ class PyDictionary(PyParameter):
 
     updateDict = update_dict
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_list = dir_list - {"updateDict", "update_dict"}
+
+        return sorted(dir_list)
+
 
 class PyNamedObjectContainer:
     """Container class using the StateEngine-based DatamodelService as the backend. Use
