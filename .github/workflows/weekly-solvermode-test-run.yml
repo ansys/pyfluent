@@ -71,4 +71,6 @@ jobs:
           make install > /dev/null
 
       - name: 24.2 Unit Testing
-        run: make unittest-solvermode-242
+        run: |
+          make install-test
+          make unittest-solvermode-242

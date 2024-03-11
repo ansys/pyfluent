@@ -114,7 +114,9 @@ jobs:
           python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: 24.1 Unit Testing
-        run: make unittest-all-241
+        run: |
+          make install-test
+          make unittest-all-241
         env:
           FLUENT_IMAGE_TAG: v24.1.0
 
@@ -131,16 +133,22 @@ jobs:
           path: ./htmlcov
 
       - name: 23.2 Unit Testing
-        run: make unittest-all-232
+        run: |
+          make install-test
+          make unittest-all-232
         env:
           FLUENT_IMAGE_TAG: v23.2.0
 
       - name: 23.1 Unit Testing
-        run: make unittest-all-231
+        run: |
+          make install-test
+          make unittest-all-231
         env:
           FLUENT_IMAGE_TAG: v23.1.0
 
       - name: 22.2 Unit Testing
-        run: make unittest-all-222
+        run: |
+          make install-test
+          make unittest-all-222
         env:
           FLUENT_IMAGE_TAG: v22.2.0

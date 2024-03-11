@@ -74,7 +74,9 @@ jobs:
           make install > /dev/null
 
       - name: 24.2 Unit Testing
-        run: make unittest-all-242
+        run: |
+          make install-test
+          make unittest-all-242
         env:
           FLUENT_IMAGE_TAG: v24.2.0
 
