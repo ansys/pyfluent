@@ -126,4 +126,4 @@ class FluentVersion(Enum):
 
     def __repr__(self) -> str:
         """Return a string representation for the Fluent version."""
-        self.value
+        return self.value
