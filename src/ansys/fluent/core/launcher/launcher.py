@@ -267,7 +267,7 @@ def launch_fluent(
             "'show_gui' is deprecated, use 'ui' instead",
             PyFluentDeprecationWarning,
         )
-    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == 1:
+    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
         ui = FluentUI.GUI
     del show_gui
     if ui is None:

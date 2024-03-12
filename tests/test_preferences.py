@@ -2,6 +2,8 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
+from ansys.fluent.core.services.datamodel_se import ReadOnlyObjectError
+
 
 @pytest.mark.codegen_required
 def test_solver_preferences(new_solver_session):
@@ -10,8 +12,9 @@ def test_solver_preferences(new_solver_session):
     preferred_meshing.Verbosity = "off"
     assert preferred_meshing.Verbosity() == "off"
 
-    preferred_meshing.CheckpointingOption = "Write into memory"
-    assert preferred_meshing.CheckpointingOption() == "Write into memory"
+    with pytest.raises(ReadOnlyObjectError):
+        preferred_meshing.CheckpointingOption = "Write into memory"
+    assert preferred_meshing.CheckpointingOption() == "Write mesh files"
 
     preferred_drawing = preferred_meshing.DrawSettings
     preferred_drawing.FacetLimit = 6000000
@@ -43,8 +46,9 @@ def test_meshing_preferences(new_mesh_session):
     preferred_meshing.Verbosity = "off"
     assert preferred_meshing.Verbosity() == "off"
 
-    preferred_meshing.CheckpointingOption = "Write into memory"
-    assert preferred_meshing.CheckpointingOption() == "Write into memory"
+    with pytest.raises(ReadOnlyObjectError):
+        preferred_meshing.CheckpointingOption = "Write into memory"
+    assert preferred_meshing.CheckpointingOption() == "Write mesh files"
 
     preferred_drawing = preferred_meshing.DrawSettings
     preferred_drawing.FacetLimit = 6000000
