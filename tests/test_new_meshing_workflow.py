@@ -937,6 +937,25 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
     assert not watertight.import_geometry.file_name()
 
 
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
+    watertight = new_mesh_session.watertight()
+    assert set([repr(x) for x in watertight.ordered_children()]) == {
+        "Generate the Surface Mesh Task",
+        "Update Boundaries Task",
+        "Generate the Volume Mesh Task",
+        "Enclose Fluid Regions (Capping) Task",
+        "Add Boundary Layers Task",
+        "Create Regions Task",
+        "Update Regions Task",
+        "Apply Share Topology Task",
+        "Add Local Sizing Task",
+        "Describe Geometry Task",
+        "Import Geometry Task",
+    }
+
+
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
