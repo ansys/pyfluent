@@ -27,17 +27,6 @@ class PureMeshing(BaseSession):
     in this mode.
     """
 
-    rules = [
-        "workflow",
-        "meshing",
-        "MeshingUtilities",
-        "PartManagement",
-        "PMFileManagement",
-    ]
-
-    for r in rules:
-        DataModelCache.set_config(r, "name_key", NameKey.INTERNAL)
-
     def __init__(
         self,
         fluent_connection: FluentConnection,
@@ -68,14 +57,14 @@ class PureMeshing(BaseSession):
         datamodel_service_se = self.datamodel_service_se
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:
-            for rules in self.__class__.rules:
+            for _rules in rules:
                 stream = DatamodelStream(datamodel_service_se)
                 stream.register_callback(
-                    functools.partial(DataModelCache.update_cache, rules=rules)
+                    functools.partial(DataModelCache.update_cache, rules=_rules)
                 )
-                self.datamodel_streams[rules] = stream
+                self.datamodel_streams[_rules] = stream
                 stream.start(
-                    rules=rules,
+                    rules=_rules,
                     no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
                 )
                 self.fluent_connection.register_finalizer_cb(stream.stop)
@@ -173,3 +162,15 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
+
+
+rules = [
+    "workflow",
+    "meshing",
+    "MeshingUtilities",
+    "PartManagement",
+    "PMFileManagement",
+]
+
+for r in rules:
+    DataModelCache.set_config(r, "name_key", NameKey.INTERNAL)
