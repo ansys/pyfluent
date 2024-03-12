@@ -404,7 +404,8 @@ class FluentConnection:
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
 
     def force_exit(self):
-        """Immediately terminates the Fluent client, losing unsaved progress and data.
+        """Immediately terminates the Fluent client (stand-alone or running inside a container),
+        losing unsaved progress and data.
 
         Notes
         -----
@@ -417,11 +418,7 @@ class FluentConnection:
         >>> session.force_exit()
         """
         if self.connection_properties.inside_container:
-            logger.error(
-                "Cannot execute cleanup script, Fluent running inside container. "
-                "Use force_exit_container() instead."
-            )
-            return
+            self._force_exit_container()
         if self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
             return
@@ -465,28 +462,10 @@ class FluentConnection:
         else:
             logger.error("Could not find cleanup file.")
 
-    def force_exit_container(self):
+    def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
-        unsaved progress and data.
-
-        Notes
-        -----
-        By default, Fluent does not run in a container,
-        in that case use :func:`force_exit()`.
-        If the Fluent session is responsive, prefer using :func:`exit()` instead.
-        """
-        if self._remote_instance is not None:
-            logger.error(
-                "Fluent is running remotely, cannot terminate Fluent container."
-            )
-            return
+        unsaved progress and data."""
         container = self.connection_properties.inside_container
-        if not container:
-            logger.error(
-                "Session is not inside a container, cannot terminate Fluent container. "
-                "Try force_exit() instead."
-            )
-            return
         container_id = self.connection_properties.cortex_host
         pid = self.connection_properties.fluent_host_pid
         cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
@@ -668,7 +647,7 @@ class FluentConnection:
                     logger.debug(
                         "Fluent running inside container, cleaning up Fluent inside container..."
                     )
-                    self.force_exit_container()
+                    self.force_exit()
                 else:
                     logger.debug(
                         "Fluent running locally, cleaning up Fluent processes..."

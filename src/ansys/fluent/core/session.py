@@ -269,12 +269,8 @@ class BaseSession:
         self.fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Terminate session."""
+        """Terminate session (Both stand-alone and Docker container)."""
         self.fluent_connection.force_exit()
-
-    def force_exit_container(self) -> None:
-        """Terminate Docker container session."""
-        self.fluent_connection.force_exit_container()
 
     def upload(self, file_name: str):
         """Upload a file to the server.
