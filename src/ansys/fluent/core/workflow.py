@@ -466,7 +466,7 @@ class BaseTask:
         return self._name_()
 
     def __repr__(self):
-        return self.display_name() + " Task"
+        return f"<Task '{self.display_name()}'>"
 
 
 class TaskContainer(PyCallableStateObject):
