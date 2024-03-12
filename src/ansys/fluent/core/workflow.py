@@ -73,7 +73,7 @@ def _init_task_accessors(obj):
     logger.debug("_init_task_accessors")
     logger.debug(f"thread ID in _init_task_accessors {threading.get_ident()}")
     for task in obj.ordered_children(recompute=True):
-        py_name = task._python_name()
+        py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
         with obj._lock:
             obj._python_task_names.append(py_name)
@@ -93,7 +93,7 @@ def _refresh_task_accessors(obj):
         old_task_names = set(obj._python_task_names)
     logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)
-    current_task_names = [task._python_name() for task in tasks]
+    current_task_names = [task.python_name() for task in tasks]
     logger.debug(f"current_task_names: {current_task_names}")
     current_task_name_set = set(current_task_names)
     created_task_names = current_task_name_set - old_task_names
@@ -115,7 +115,7 @@ def _refresh_task_accessors(obj):
         obj._python_task_names = current_task_names
         logger.debug(f"updated_task_names: {obj._python_task_names}")
     for task in tasks:
-        logger.debug(f"next task {task._python_name()} {id(task)}")
+        logger.debug(f"next task {task.python_name()} {id(task)}")
         _refresh_task_accessors(task)
 
 
@@ -316,7 +316,7 @@ class BaseTask:
         """
         return int(self.get_id()[len("TaskObject") :])
 
-    def _python_name(self) -> str:
+    def python_name(self) -> str:
         """Get the Pythonic name of this task, as it is in the underlying application.
 
         Returns
@@ -386,7 +386,7 @@ class BaseTask:
 
     def delete(self) -> None:
         """Delete this task from the workflow."""
-        self._command_source.delete_tasks(list_of_tasks=[self._python_name()])
+        self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
@@ -429,7 +429,7 @@ class BaseTask:
         """
         if command_name not in self.get_next_possible_tasks():
             raise ValueError(
-                f"'{command_name}' cannot be inserted next to '{self._python_name()}'. \n"
+                f"'{command_name}' cannot be inserted next to '{self.python_name()}'. \n"
                 "Please use 'get_next_possible_tasks()' to view list of allowed tasks."
             )
         return self._task.InsertNextTask(
@@ -843,7 +843,7 @@ class CompoundChild(SimpleTask):
         """
         super().__init__(command_source, task)
 
-    def _python_name(self) -> str:
+    def python_name(self) -> str:
         """Get the Pythonic name of this task, as it is in the underlying application.
 
         Returns
