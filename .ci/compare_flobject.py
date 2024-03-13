@@ -1,9 +1,18 @@
+"""Provides a module to compare flobject.py"""
+
 import platform
 import subprocess
 import uuid
 
 
 def compare_flobject():
+    """Compare flobject.py.
+
+    Raises
+    ------
+    RuntimeError
+        If flobject.py is inconsistent in Fluent and PyFluent.
+    """
     image_name = f"ghcr.io/ansys/pyfluent:v24.1.0"
     container_name = uuid.uuid4().hex
     is_linux = platform.system() == "Linux"

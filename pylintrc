@@ -2,7 +2,7 @@
 load-plugins = pylint.extensions.docparams
 disable = all
 enable = missing-raises-doc, missing-module-docstring, missing-class-docstring, missing-function-docstring
-ignore-paths = tests
+ignore-paths = codegen, tests
 
 [BASIC]
 accept-no-raise-doc = no
