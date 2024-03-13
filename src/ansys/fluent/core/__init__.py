@@ -85,5 +85,6 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
 
 def wrap_api_call(f, *args, **kwargs):
+    """Wrap API call."""
     # overwritten in PyConsole
     return f(*args, **kwargs)
