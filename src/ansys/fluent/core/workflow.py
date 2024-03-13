@@ -13,7 +13,6 @@ from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
-    PyMenu,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -126,13 +125,10 @@ def _convert_task_list_to_display_names(workflow_root, task_list):
     else:
         _display_names = []
         for _task_name in task_list:
-            _display_names.append(
-                PyMenu(
-                    workflow_root.service,
-                    workflow_root.rules,
-                    [("TaskObject", _task_name), ("_name_", "")],
-                )()
-            )
+            _org_path = workflow_root.path
+            workflow_root.path = [("TaskObject", _task_name), ("_name_", "")]
+            _display_names.append(workflow_root())
+            workflow_root.path = _org_path
         return _display_names
 
 
