@@ -124,11 +124,11 @@ def _convert_task_list_to_display_names(workflow_root, task_list):
         return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
     else:
         _display_names = []
+        _org_path = workflow_root.path
         for _task_name in task_list:
-            _org_path = workflow_root.path
             workflow_root.path = [("TaskObject", _task_name), ("_name_", "")]
             _display_names.append(workflow_root())
-            workflow_root.path = _org_path
+        workflow_root.path = _org_path
         return _display_names
 
 
