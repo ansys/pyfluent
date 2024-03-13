@@ -45,6 +45,6 @@ def fix_definition_list_in_class_doc(doc: str):
 
 
 def fix_settings_doc(doc: str):
-    "Fix settings docstring." ""
+    """Fix settings docstring."""
     doc = escape_wildcards(doc)
     return fix_definition_list_in_class_doc(doc)

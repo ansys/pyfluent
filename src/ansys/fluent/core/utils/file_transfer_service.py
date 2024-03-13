@@ -68,7 +68,7 @@ class PimFileTransferService:
         return self.file_service
 
     def is_configured(self):
-        "Check pypim configuration."
+        """Check pypim configuration."""
         return pypim.is_configured()
 
     def upload_file(self, file_name: str, remote_file_name: Optional[str] = None):

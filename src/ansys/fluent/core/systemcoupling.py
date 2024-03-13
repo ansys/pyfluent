@@ -10,7 +10,8 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @dataclass
 class Variable:
-    "Provides variable data."
+    """Provides variable data."""
+
     name: str
     display_name: str
     tensor_type: str
@@ -21,7 +22,8 @@ class Variable:
 
 @dataclass
 class Region:
-    "Provides region data."
+    """Provides region data."""
+
     name: str
     display_name: str
     topology: str
