@@ -199,16 +199,19 @@ class FieldInfo:
         return info
 
     def validate_scalar_fields(self, field_name: str):
+        """Validate scalar fields."""
         _AllowedScalarFieldNames(
             self._is_data_valid, info=self.get_scalar_fields_info()
         ).valid_name(field_name)
 
     def validate_vector_fields(self, field_name: str):
+        """Validate vector fields."""
         _AllowedVectorFieldNames(
             self._is_data_valid, info=self.get_vector_fields_info()
         ).valid_name(field_name)
 
     def validate_surfaces(self, surfaces: List[str]):
+        """Validate surfaces."""
         for surface in surfaces:
             _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
 
