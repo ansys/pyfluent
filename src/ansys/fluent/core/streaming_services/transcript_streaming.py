@@ -1,4 +1,4 @@
-"""Provides a module for transcript streaming"""
+"""Provides a module for transcript streaming."""
 
 import os
 from pathlib import Path

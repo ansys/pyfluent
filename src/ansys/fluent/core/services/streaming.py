@@ -1,4 +1,7 @@
-"""Wrapper over the streaming gRPC services of Fluent."""
+"""Provides a module for streaming.
+
+This module is a wrapper over the streaming gRPC services of Fluent.
+"""
 
 from typing import Generator, List, Tuple
 
