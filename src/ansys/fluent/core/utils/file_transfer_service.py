@@ -1,3 +1,5 @@
+"""Provides a module for file transfer service."""
+
 import os
 from typing import Any, Callable, Optional, Union  # noqa: F401
 
@@ -66,6 +68,7 @@ class PimFileTransferService:
         return self.file_service
 
     def is_configured(self):
+        "Check pypim configuration."
         return pypim.is_configured()
 
     def upload_file(self, file_name: str, remote_file_name: Optional[str] = None):

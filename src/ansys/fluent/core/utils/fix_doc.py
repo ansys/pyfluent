@@ -1,7 +1,10 @@
+"""Provides a module to fix text documentation for a data object."""
+
 from io import StringIO
 
 
 def escape_wildcards(doc: str):
+    """Escape wildcards."""
     new_doc = StringIO()
     prev_c = None
     for i, c in enumerate(doc):
@@ -17,6 +20,7 @@ def escape_wildcards(doc: str):
 
 
 def fix_definition_list_in_class_doc(doc: str):
+    """Fix definition list in class docstring."""
     old_lines = doc.splitlines(keepends=True)
     new_lines = []
     for i, line in enumerate(old_lines):
@@ -41,5 +45,6 @@ def fix_definition_list_in_class_doc(doc: str):
 
 
 def fix_settings_doc(doc: str):
+    "Fix settings docstring." ""
     doc = escape_wildcards(doc)
     return fix_definition_list_in_class_doc(doc)
