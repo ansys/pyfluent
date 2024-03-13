@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Module for accessing Fluent units labels per quantity type.
 
 Example
@@ -102,6 +100,8 @@ Unhandled:
  'viscosity-consistency-index': 'kg s^n-2 m^-1',
  'wave-length': 'Angstrom'}
 """
+
+from __future__ import annotations
 
 from typing import Optional
 
@@ -219,6 +219,8 @@ _fl_unit_table = {
 
 
 class InvalidQuantityType(TypeError):
+    """Raised on an attempt to get a Quantity with invalid type."""
+
     def __init__(
         self,
         quantity,
@@ -229,6 +231,8 @@ class InvalidQuantityType(TypeError):
 
 
 class UnitsNotDefinedForQuantity(ValueError):
+    """Raised on an attempt to get undefined units for the specified Quantity."""
+
     def __init__(
         self,
         quantity: str,
@@ -239,6 +243,8 @@ class UnitsNotDefinedForQuantity(ValueError):
 
 
 class UnhandledQuantity(RuntimeError):
+    """Raised on an attempt to get an unhandled Quantity."""
+
     def __init__(
         self,
         path: str,
