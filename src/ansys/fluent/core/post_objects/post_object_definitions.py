@@ -230,6 +230,7 @@ class SurfaceDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
+                """Check whether current object is active or not."""
                 return self._parent.type() == "plane-surface"
 
             class creation_method(metaclass=PyLocalPropertyMeta):
@@ -247,6 +248,7 @@ class SurfaceDefn(GraphicsDefn):
 
                 @Attribute
                 def is_active(self):
+                    """Check whether current object is active or not."""
                     return self._parent.creation_method() == "xy-plane"
 
                 class z(metaclass=PyLocalPropertyMeta):
@@ -266,6 +268,7 @@ class SurfaceDefn(GraphicsDefn):
 
                 @Attribute
                 def is_active(self):
+                    """Check whether current object is active or not."""
                     return self._parent.creation_method() == "yz-plane"
 
                 class x(metaclass=PyLocalPropertyMeta):
@@ -285,6 +288,7 @@ class SurfaceDefn(GraphicsDefn):
 
                 @Attribute
                 def is_active(self):
+                    """Check whether current object is active or not."""
                     return self._parent.creation_method() == "zx-plane"
 
                 class y(metaclass=PyLocalPropertyMeta):
@@ -304,6 +308,7 @@ class SurfaceDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
+                """Check whether current object is active or not."""
                 return self._parent.type() == "iso-surface"
 
             class field(metaclass=PyLocalPropertyMeta):
@@ -444,6 +449,7 @@ class ContourDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
+                """Check whether current object is active or not."""
                 return self._parent.option() == "auto-range-on"
 
             class global_range(metaclass=PyLocalPropertyMeta):
@@ -456,6 +462,7 @@ class ContourDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
+                """Check whether current object is active or not."""
                 return self._parent.option() == "auto-range-off"
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
@@ -595,6 +602,7 @@ class VectorDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
+                """Check whether current object is active or not."""
                 return self._parent.option() == "auto-range-on"
 
             class global_range(metaclass=PyLocalPropertyMeta):
@@ -607,6 +615,7 @@ class VectorDefn(GraphicsDefn):
 
             @Attribute
             def is_active(self):
+                """Check whether current object is active or not."""
                 return self._parent.option() == "auto-range-off"
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
