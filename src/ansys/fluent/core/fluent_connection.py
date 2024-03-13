@@ -1,3 +1,5 @@
+"""Provides a module for Fluent connection functionality."""
+
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
@@ -130,10 +132,12 @@ class ErrorState:
 
     @property
     def name(self):
+        """Get name."""
         return self._name
 
     @property
     def details(self):
+        """Get details."""
         return self._details
 
     def __init__(self, name: str = "", details: str = ""):
@@ -394,6 +398,7 @@ class FluentConnection:
 
     @property
     def fluent_build_info(self) -> str:
+        """Get Fluent build info."""
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
         rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")

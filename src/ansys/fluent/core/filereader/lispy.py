@@ -1,3 +1,5 @@
+"""Provides a module for Scheme Interpreter in Python."""
+
 ################ Scheme Interpreter in Python
 
 ## (c) Peter Norvig, 2010; See http://norvig.com/lispy2.html
@@ -15,6 +17,8 @@ import sys
 
 
 class Symbol(str):
+    """Symbol."""
+
     pass
 
 
@@ -65,6 +69,7 @@ eof_object = Symbol("#<eof-object>")  # Note: uninterned; can't be read
 
 
 def count_unescaped_quotes(line):
+    """Get count of unescaped quotes."""
     count = 0
     escaped = False
     for c in line:
@@ -275,10 +280,12 @@ class Env(dict):
 
 
 def is_pair(x):
+    """Check whether given value type is pair or not."""
     return x != [] and isa(x, list)
 
 
 def cons(x, y):
+    """Form a pair."""
     return [x] + y
 
 
@@ -505,6 +512,7 @@ def expand_quasiquote(x):
 
 
 def let(*args):
+    """Get variable values."""
     args = list(args)
     x = cons(_let, args)
     require(x, len(args) > 1)
