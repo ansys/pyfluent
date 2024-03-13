@@ -212,7 +212,7 @@ class BaseSession:
 
     @property
     def field_info(self):
-        """Return the SolutionVariableData handle."""
+        """Provides access to Fluent field information."""
         warnings.warn(
             "field_info is deprecated, use fields.field_info instead",
             DeprecationWarning,
@@ -221,7 +221,7 @@ class BaseSession:
 
     @property
     def field_data(self):
-        """Return the SolutionVariableData handle."""
+        """Provides access to Fluent field data on surfaces."""
         warnings.warn(
             "field_data is deprecated, use fields.field_data instead",
             DeprecationWarning,
@@ -230,7 +230,7 @@ class BaseSession:
 
     @property
     def field_data_streaming(self):
-        """Return the SolutionVariableData handle."""
+        """Field gRPC streaming service of Fluent."""
         warnings.warn(
             "field_data_streaming is deprecated, use fields.field_data_streaming instead",
             DeprecationWarning,
