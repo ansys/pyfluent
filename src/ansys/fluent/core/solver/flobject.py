@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Module for accessing and modifying hierarchy of Fluent settings.
 
 The only useful method is '`get_root``, which returns the root object for
@@ -17,6 +15,8 @@ Example
 >>> r.setup.models.energy.enabled = True
 >>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
+
+from __future__ import annotations
 
 import collections
 from contextlib import contextmanager, nullcontext
@@ -101,6 +101,7 @@ StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
 def check_type(val, tp):
+    """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
     if isinstance(tp, ForwardRef):
@@ -131,6 +132,13 @@ def check_type(val, tp):
 
 
 def assert_type(val, tp):
+    """Assert type.
+
+    Raises
+    ------
+    TypeError
+        If the given value is not of the given type.
+    """
     if not check_type(val, tp):
         raise TypeError(f"{val} is not of type {tp}.")
 
@@ -333,6 +341,7 @@ class Base:
         super().__setattr__(name, value)
 
     def find_object(self, relative_path):
+        """Find object."""
         obj = self
         for comp in relative_path.split("/"):
             if comp == "..":
@@ -342,29 +351,37 @@ class Base:
         return obj
 
     def before_execute(self, value):
+        """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
             self._do_before_execute(value)
 
     def after_execute(self, value):
+        """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
             self._do_after_execute(value)
 
     def while_setting_state(self):
+        """Avoid additional processing while setting state."""
         return nullcontext()
 
     def while_renaming(self):
+        """Avoid additional processing while renaming."""
         return nullcontext()
 
     def while_deleting(self):
+        """Avoid additional processing while deleting."""
         return nullcontext()
 
     def while_creating(self):
+        """Avoid additional processing while creating."""
         return nullcontext()
 
     def while_resizing(self):
+        """Avoid additional processing while resizing."""
         return nullcontext()
 
     def while_executing_command(self):
+        """Avoid additional processing while executing a command."""
         return nullcontext()
 
 
@@ -479,6 +496,8 @@ class Textual(Property):
 
 
 class DeprecatedSettingWarning(FutureWarning):
+    """Provides deprecated settings warning."""
+
     pass
 
 
@@ -528,21 +547,27 @@ class _Alias:
                     _Alias.once = True
 
     def while_setting_state(self):
+        """Print newer API while setting state."""
         return self._print_newer_api()
 
     def while_renaming(self):
+        """Print newer API while renaming."""
         return self._print_newer_api()
 
     def while_deleting(self):
+        """Print newer API while deleting."""
         return self._print_newer_api()
 
     def while_creating(self):
+        """Print newer API while creating."""
         return self._print_newer_api()
 
     def while_resizing(self):
+        """Print newer API while resizing."""
         return self._print_newer_api()
 
     def while_executing_command(self):
+        """Print newer API while executing a command."""
         return self._print_newer_api()
 
 
@@ -597,6 +622,13 @@ class SettingsBase(Base, Generic[StateT]):
 
     @classmethod
     def unalias(cls, value):
+        """Unalias the given value.
+
+        Raises
+        ------
+        NotImplementedError
+            If '..' is present in the alias path.
+        """
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
@@ -737,6 +769,8 @@ class FilenameList(SettingsBase[StringListType], Textual):
 
 
 class FileName(Base):
+    """Resolves MRO for child classes."""
+
     pass
 
 
@@ -1479,7 +1513,10 @@ class Action(Base):
 
 
 class BaseCommand(Action):
+    """Executes command."""
+
     def execute_command(self, *args, **kwds):
+        """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.before_execute(value)

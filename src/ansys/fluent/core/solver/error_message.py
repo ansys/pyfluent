@@ -1,3 +1,5 @@
+"""Provides a module to customize exception messages."""
+
 import difflib
 from functools import partial
 from typing import Any, List, Optional
@@ -35,6 +37,7 @@ def allowed_name_error_message(
 def allowed_values_error(
     context: str, trial_name: str, allowed_values: List[str]
 ) -> ValueError:
+    """Provide an error message for disallowed values."""
     return ValueError(
         allowed_name_error_message(
             context=context, trial_name=trial_name, allowed_values=allowed_values
