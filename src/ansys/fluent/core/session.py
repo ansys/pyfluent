@@ -145,11 +145,11 @@ class BaseSession:
         self._batch_ops_service = service_creator("batch_ops").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.events_service = service_creator("events").create(
+        self._events_service = service_creator("events").create(
             fluent_connection._channel, fluent_connection._metadata
         )
         self.events_manager = EventsManager(
-            self.events_service, self.error_state, self.fluent_connection._id
+            self._events_service, self.error_state, self.fluent_connection._id
         )
 
         self._monitors_service = service_creator("monitors").create(
@@ -171,20 +171,25 @@ class BaseSession:
         self._field_data_service = self.fluent_connection.create_grpc_service(
             FieldDataService, self.error_state
         )
-        self.field_info = service_creator("field_info").create(
-            self._field_data_service, _IsDataValid(self.scheme_eval)
-        )
-        self.field_data = service_creator("field_data").create(
-            self._field_data_service,
-            self.field_info,
-            _IsDataValid(self.scheme_eval),
-            self.scheme_eval,
-        )
-        self.field_data_streaming = FieldDataStreaming(
-            self.fluent_connection._id, self._field_data_service
-        )
 
-        self.settings_service = service_creator("settings").create(
+        class Fields:
+            def __init__(self, _session):
+                self.field_info = service_creator("field_info").create(
+                    _session._field_data_service, _IsDataValid(_session.scheme_eval)
+                )
+                self.field_data = service_creator("field_data").create(
+                    _session._field_data_service,
+                    self.field_info,
+                    _IsDataValid(_session.scheme_eval),
+                    _session.scheme_eval,
+                )
+                self.field_data_streaming = FieldDataStreaming(
+                    _session.fluent_connection._id, _session._field_data_service
+                )
+
+        self.fields = Fields(self)
+
+        self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.scheme_eval,
@@ -206,6 +211,33 @@ class BaseSession:
             self.fluent_connection.register_finalizer_cb(obj.stop)
 
     @property
+    def field_info(self):
+        """Return the SolutionVariableData handle."""
+        warnings.warn(
+            "field_info is deprecated, use fields.field_info instead",
+            DeprecationWarning,
+        )
+        return self.fields.field_info
+
+    @property
+    def field_data(self):
+        """Return the SolutionVariableData handle."""
+        warnings.warn(
+            "field_data is deprecated, use fields.field_data instead",
+            DeprecationWarning,
+        )
+        return self.fields.field_data
+
+    @property
+    def field_data_streaming(self):
+        """Return the SolutionVariableData handle."""
+        warnings.warn(
+            "field_data_streaming is deprecated, use fields.field_data_streaming instead",
+            DeprecationWarning,
+        )
+        return self.fields.field_data_streaming
+
+    @property
     def id(self) -> str:
         """Return the session ID."""
         return self.fluent_connection._id
@@ -221,7 +253,7 @@ class BaseSession:
         self.journal.stop()
 
     @classmethod
-    def create_from_server_info_file(
+    def _create_from_server_info_file(
         cls,
         server_info_file_name: str,
         file_transfer_service: Optional[Any] = None,

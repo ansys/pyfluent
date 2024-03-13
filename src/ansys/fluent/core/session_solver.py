@@ -93,7 +93,7 @@ class Solver(BaseSession):
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
         self._se_service = self.datamodel_service_se
-        self._settings_service = self.settings_service
+        self._settings_service = self._settings_service
         self._tui = None
         self._workflow = None
         self._system_coupling = None
@@ -103,7 +103,7 @@ class Solver(BaseSession):
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.solution_variable_info = SolutionVariableInfo(
+        self.fields.solution_variable_info = SolutionVariableInfo(
             self._solution_variable_service
         )
         self._reduction_service = self.fluent_connection.create_grpc_service(
@@ -116,36 +116,54 @@ class Solver(BaseSession):
         else:
             self.reduction = reduction_old
         self._settings_api_root = None
+        self.fields.solution_variable_data = self._solution_variable_data()
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
-    @property
-    def solution_variable_data(self) -> SolutionVariableData:
+    def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
         return service_creator("svar_data").create(
-            self._solution_variable_service, self.solution_variable_info
+            self._solution_variable_service, self.fields.solution_variable_info
         )
 
     @property
     def svar_data(self):
         """Return the SolutionVariableData handle."""
         warnings.warn(
-            "svar_data is deprecated, use solution_variable_data instead",
+            "svar_data is deprecated, use fields.solution_variable_data instead",
             DeprecationWarning,
         )
-        return self.solution_variable_data
+        return self.fields.solution_variable_data
 
     @property
     def svar_info(self):
         """Return the SolutionVariableInfo handle."""
         warnings.warn(
-            "svar_info is deprecated, use solution_variable_info instead",
+            "svar_info is deprecated, use fields.solution_variable_info instead",
             DeprecationWarning,
         )
-        return self.solution_variable_info
+        return self.fields.solution_variable_info
+
+    @property
+    def solution_variable_data(self):
+        """Return the SolutionVariableData handle."""
+        warnings.warn(
+            "solution_variable_data is deprecated, use fields.solution_variable_data instead",
+            DeprecationWarning,
+        )
+        return self.fields.solution_variable_data
+
+    @property
+    def solution_variable_info(self):
+        """Return the SolutionVariableInfo handle."""
+        warnings.warn(
+            "solution_variable_info is deprecated, use fields.solution_variable_info instead",
+            DeprecationWarning,
+        )
+        return self.fields.solution_variable_info
 
     @property
     def _version(self):
@@ -265,10 +283,7 @@ class Solver(BaseSession):
 
     def __dir__(self):
         self._populate_settings_api_root()
-        return sorted(
-            set(
-                list(self.__dict__.keys())
-                + dir(type(self))
-                + dir(self._settings_api_root)
-            )
-        )
+        dir_list = set(
+            list(self.__dict__.keys()) + dir(type(self)) + dir(self._settings_api_root)
+        ) - {"svar_data", "svar_info"}
+        return sorted(dir_list)

@@ -171,7 +171,7 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
-    session = BaseSession.create_from_server_info_file(
+    session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
     assert session.health_check_service.is_serving
@@ -195,7 +195,7 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError) as ex:
-        session = BaseSession.create_from_server_info_file(
+        session = BaseSession._create_from_server_info_file(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
         )

@@ -263,7 +263,7 @@ class StandaloneLauncher:
                 else:
                     raise ex
 
-            session = self.new_session.create_from_server_info_file(
+            session = self.new_session._create_from_server_info_file(
                 server_info_file_name=server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
                 cleanup_on_exit=self.cleanup_on_exit,
