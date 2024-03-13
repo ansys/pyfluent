@@ -112,7 +112,7 @@ class BaseSession:
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
-        self.error_state = self.fluent_connection.error_state
+        self._error_state = self.fluent_connection._error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
@@ -128,14 +128,14 @@ class BaseSession:
         self.datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.error_state,
+            self._error_state,
             self.scheme_eval,
         )
 
         self.datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.error_state,
+            self._error_state,
             self._file_transfer_service,
         )
 
@@ -149,11 +149,11 @@ class BaseSession:
             fluent_connection._channel, fluent_connection._metadata
         )
         self.events_manager = EventsManager(
-            self._events_service, self.error_state, self.fluent_connection._id
+            self._events_service, self._error_state, self.fluent_connection._id
         )
 
         self._monitors_service = service_creator("monitors").create(
-            fluent_connection._channel, fluent_connection._metadata, self.error_state
+            fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service
@@ -169,7 +169,7 @@ class BaseSession:
         self.events_manager.start()
 
         self._field_data_service = self.fluent_connection.create_grpc_service(
-            FieldDataService, self.error_state
+            FieldDataService, self._error_state
         )
 
         class Fields:
@@ -193,7 +193,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self.scheme_eval,
-            self.error_state,
+            self._error_state,
         )
 
         self.health_check_service = fluent_connection.health_check_service

@@ -107,7 +107,7 @@ class Solver(BaseSession):
             self._solution_variable_service
         )
         self._reduction_service = self.fluent_connection.create_grpc_service(
-            ReductionService, self.error_state
+            ReductionService, self._error_state
         )
         if FluentVersion(self._version) >= FluentVersion.v241:
             self.reduction = service_creator("reduction").create(
