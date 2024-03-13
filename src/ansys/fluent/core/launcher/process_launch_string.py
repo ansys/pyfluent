@@ -1,3 +1,5 @@
+"""Provides a module to process launch string."""
+
 import json
 import os
 from pathlib import Path

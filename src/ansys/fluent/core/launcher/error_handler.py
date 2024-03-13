@@ -1,3 +1,5 @@
+"""Provides a module for customized error handling."""
+
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.pyfluent_enums import FluentUI, LaunchMode

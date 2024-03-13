@@ -13,6 +13,8 @@ from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 
 
 class Attribute:
+    """Attributes."""
+
     VALID_NAMES = [
         "range",
         "allowed_values",
@@ -57,6 +59,8 @@ class Attribute:
 
 
 class Command:
+    """Executes command."""
+
     def __init__(self, method):
         self.arguments_attrs = {}
         cmd_args = inspect.signature(method).parameters
@@ -137,6 +141,8 @@ class Command:
 
 
 def CommandArgs(command_object, argument_name):
+    """Command arguments"""
+
     def wrapper(attribute):
         if argument_name in command_object.arguments_attrs:
             command_object.arguments_attrs[argument_name].update(
@@ -150,6 +156,8 @@ def CommandArgs(command_object, argument_name):
 
 
 class PyLocalBaseMeta(type):
+    """Local base metaclass."""
+
     @classmethod
     def __create_get_ancestors_by_type(cls):
         def wrapper(self, obj_type, obj=None):
@@ -613,6 +621,8 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
 
 class PyLocalCommandMeta(PyLocalObjectMeta):
+    """Local object metaclass."""
+
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent, api_helper, name=""):
@@ -720,6 +730,8 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
 
 
 class PyLocalNamedObjectMetaAbstract(ABCMeta, PyLocalNamedObjectMeta):
+    """Local named object abstract metaclass."""
+
     pass
 
 
@@ -830,6 +842,7 @@ class PyLocalContainer(MutableMapping):
         return self.get_session_handle()
 
     def get_root(self, obj=None):
+        """Get root object."""
         obj = self if obj is None else obj
         parent = obj
         if getattr(obj, "_parent", None):
@@ -837,20 +850,24 @@ class PyLocalContainer(MutableMapping):
         return parent
 
     def get_session(self, obj=None):
+        """Get session object."""
         root = self.get_root(obj)
         return root.session
 
     def get_path(self):
+        """Get parent path."""
         if getattr(self, "_parent", None):
             return self._parent.get_path() + "/" + self._name
         return self._name
 
     @property
     def path(self):
+        """Get path."""
         return self.get_path()
 
     @property
     def session(self):
+        """Get session object."""
         return self.get_session()
 
     def __iter__(self):
@@ -893,18 +910,25 @@ class PyLocalContainer(MutableMapping):
         return unique_name
 
     class Delete(metaclass=PyLocalCommandMeta):
+        """Local delete command."""
+
         def _exe_cmd(self, names):
             for item in names:
                 self._parent.__delitem__(item)
 
         class names(metaclass=PyLocalPropertyMeta):
+            """Local names property."""
+
             value: List[str] = []
 
             @Attribute
             def allowed_values(self):
+                """Get allowed values."""
                 return list(self._parent._parent)
 
     class Create(metaclass=PyLocalCommandMeta):
+        """Local create command."""
+
         def _exe_cmd(self, name=None):
             if name is None:
                 name = self._parent._get_unique_chid_name()
@@ -912,4 +936,6 @@ class PyLocalContainer(MutableMapping):
             return new_object._name
 
         class name(metaclass=PyLocalPropertyMeta):
+            """Local name property."""
+
             value: str = None

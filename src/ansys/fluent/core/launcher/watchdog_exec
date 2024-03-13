@@ -39,6 +39,7 @@ if __name__ == "__main__":
             ).handlers  # using same handlers as already defined
 
         def got_sig(signum, _):
+            """Warns about received signal."""
             logger.warning(f"Received {signal.Signals(signum).name}, ignoring it")
 
         signals = signal.valid_signals()
@@ -102,6 +103,7 @@ if __name__ == "__main__":
         down = []
 
         def check_pid_down(pid, name):
+            """Check whether pid is down or not."""
             if not psutil.pid_exists(pid):
                 logger.debug(name + " down")
                 down.append(name)
