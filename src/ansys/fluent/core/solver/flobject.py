@@ -177,11 +177,11 @@ class Base:
         if name is not None:
             self._setattr("_name", name)
 
-    def set_flproxy(self, flproxy):
+    def _set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
-    def set_file_transfer_service(self, file_transfer_service):
+    def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
         self._setattr("_file_transfer_service", file_transfer_service)
 
@@ -197,7 +197,7 @@ class Base:
         return self._flproxy
 
     @property
-    def file_transfer_service(self):
+    def _file_transfer_service(self):
         """Remote file handler.
 
         Supports file upload and download.
@@ -205,7 +205,7 @@ class Base:
         if self._file_transfer_service:
             return self._file_transfer_service
         elif self._parent:
-            return self._parent.file_transfer_service
+            return self._parent._file_transfer_service
 
     _name = None
     fluent_name = None
@@ -349,22 +349,22 @@ class Base:
         if hasattr(self, "_do_after_execute"):
             self._do_after_execute(value)
 
-    def while_setting_state(self):
+    def _while_setting_state(self):
         return nullcontext()
 
-    def while_renaming(self):
+    def _while_renaming(self):
         return nullcontext()
 
-    def while_deleting(self):
+    def _while_deleting(self):
         return nullcontext()
 
-    def while_creating(self):
+    def _while_creating(self):
         return nullcontext()
 
-    def while_resizing(self):
+    def _while_resizing(self):
         return nullcontext()
 
-    def while_executing_command(self):
+    def _while_executing_command(self):
         return nullcontext()
 
 
@@ -527,22 +527,22 @@ class _Alias:
                     )
                     _Alias.once = True
 
-    def while_setting_state(self):
+    def _while_setting_state(self):
         return self._print_newer_api()
 
-    def while_renaming(self):
+    def _while_renaming(self):
         return self._print_newer_api()
 
-    def while_deleting(self):
+    def _while_deleting(self):
         return self._print_newer_api()
 
-    def while_creating(self):
+    def _while_creating(self):
         return self._print_newer_api()
 
-    def while_resizing(self):
+    def _while_resizing(self):
         return self._print_newer_api()
 
-    def while_executing_command(self):
+    def _while_executing_command(self):
         return self._print_newer_api()
 
 
@@ -596,7 +596,7 @@ class SettingsBase(Base, Generic[StateT]):
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
     @classmethod
-    def unalias(cls, value):
+    def _unalias(cls, value):
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
@@ -614,29 +614,29 @@ class SettingsBase(Base, Generic[StateT]):
                     for i, comp in enumerate(comps):
                         cls = cls._child_classes[comp]
                         if i == len(comps) - 1:
-                            ret_alias[comp] = cls.unalias(v)
+                            ret_alias[comp] = cls._unalias(v)
                         else:
                             ret_alias[comp] = {}
                             ret_alias = ret_alias[comp]
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
-                        ret[k] = ccls.unalias(v)
+                        ret[k] = ccls._unalias(v)
                     else:
-                        ret[k] = cls.unalias(v)
+                        ret[k] = cls._unalias(v)
             return ret
         else:
             return value
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        with self.while_setting_state():
+        with self._while_setting_state():
             if isinstance(state, (tuple, ansys_units.Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                state = self.unalias(kwargs or state)
+                state = self._unalias(kwargs or state)
                 return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
@@ -742,14 +742,14 @@ class FileName(Base):
 
 class _InputFile(FileName):
     def _do_before_execute(self, value):
-        if self.file_transfer_service:
-            self.file_transfer_service.upload(file_name=value)
+        if self._file_transfer_service:
+            self._file_transfer_service.upload(file_name=value)
 
 
 class _OutputFile(FileName):
     def _do_after_execute(self, value):
-        if self.file_transfer_service:
-            self.file_transfer_service.download(file_name=value)
+        if self._file_transfer_service:
+            self._file_transfer_service.download(file_name=value)
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -1178,7 +1178,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 self._create_child_object(name)
 
     def __delitem__(self, name: str):
-        with self.while_deleting():
+        with self._while_deleting():
             self.flproxy.delete(self.path, name)
         if name in self._objects:
             del self._objects[name]
@@ -1288,7 +1288,7 @@ def _rename(obj: Union[NamedObject, _Alias], new: str, old: str):
     old : str
         Current name.
     """
-    with obj.while_renaming():
+    with obj._while_renaming():
         obj.flproxy.rename(obj.path, new, old)
     if old in obj._objects:
         del obj._objects[old]
@@ -1512,7 +1512,7 @@ class Command(BaseCommand):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        with self.while_executing_command():
+        with self._while_executing_command():
             return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
     def __call__(self, **kwds):
@@ -1539,7 +1539,7 @@ class CommandWithPositionalArgs(BaseCommand):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        with self.while_executing_command():
+        with self._while_executing_command():
             return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
     def __call__(self, *args, **kwds):
@@ -1659,13 +1659,13 @@ class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTy
         Object
             Object that has been created.
         """
-        with self.while_creating():
+        with self._while_creating():
             self.flproxy.create(self.path, name)
         return self._create_child_object(name)
 
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            with self.while_creating():
+            with self._while_creating():
                 self.flproxy.create(self.path, name)
         child = self._objects.get(name)
         if not child:
@@ -1910,8 +1910,8 @@ def get_root(
     except Exception:
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
-    root.set_flproxy(flproxy)
-    root.set_file_transfer_service(file_transfer_service)
+    root._set_flproxy(flproxy)
+    root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
     root._setattr("_file_transfer_service", file_transfer_service)

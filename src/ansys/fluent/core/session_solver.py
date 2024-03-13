@@ -210,7 +210,7 @@ class Solver(BaseSession):
         return self._workflow
 
     @property
-    def _root(self):
+    def root(self):
         """Root settings object."""
         if self._settings_root is None:
             self._settings_root = flobject.get_root(
@@ -240,10 +240,10 @@ class Solver(BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            state = self._root.get_state()
+            state = self.root.get_state()
             self.build_from_fluent_connection(fut_session.fluent_connection)
             # TODO temporary fix till set_state at settings root is fixed
-            _set_state_safe(self._root, state)
+            _set_state_safe(self.root, state)
 
     def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
@@ -264,18 +264,18 @@ class Solver(BaseSession):
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
-        return self._root.get_state()
+        return self.root.get_state()
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        self._root.set_state(state, **kwargs)
+        self.root.set_state(state, **kwargs)
 
     def __call__(self):
         return self.get_state()
 
     def _populate_settings_api_root(self):
         if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self._root)
+            self._settings_api_root = _import_settings_root(self.root)
 
     def __getattr__(self, attr):
         self._populate_settings_api_root()
