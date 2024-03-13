@@ -1,3 +1,5 @@
+"""Provides a module for streaming services."""
+
 import itertools
 import logging
 import threading
