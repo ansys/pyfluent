@@ -1,3 +1,5 @@
+"""Provides a module to get base Meshing session."""
+
 import importlib
 import logging
 
@@ -98,6 +100,7 @@ class BaseMeshing:
 
     @property
     def meshing(self):
+        """Meshing object."""
         if self._meshing is None:
             self._meshing = self._meshing_root
         return self._meshing
@@ -123,6 +126,7 @@ class BaseMeshing:
 
     @property
     def meshing_utilities(self):
+        """A wrapper over the Fluent's meshing queries."""
         if self._meshing_utilities is None:
             self._meshing_utilities = self._meshing_utilities_root
         return self._meshing_utilities
