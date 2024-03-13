@@ -269,7 +269,7 @@ class BaseSession:
         self.fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Terminate session (Both stand-alone and Docker container)."""
+        """Immediately terminates the Fluent client, losing unsaved progress and data."""
         self.fluent_connection.force_exit()
 
     def upload(self, file_name: str):

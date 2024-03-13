@@ -404,8 +404,7 @@ class FluentConnection:
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
 
     def force_exit(self):
-        """Immediately terminates the Fluent client (stand-alone or running inside a
-        container), losing unsaved progress and data.
+        """Immediately terminates the Fluent client, losing unsaved progress and data.
 
         Notes
         -----
