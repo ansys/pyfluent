@@ -258,9 +258,14 @@ class Env(dict):
                 )
             self.update(zip(params, args))
 
-    # pylint: disable=missing-raises-doc
     def find(self, var):
-        """Find the innermost Env where var appears."""
+        """Find the innermost Env where var appears.
+
+        Raises
+        ------
+        LookupError
+            If a key or index used on a mapping or sequence is invalid.
+        """
         if var in self:
             return self
         elif self.outer is None:
@@ -277,9 +282,14 @@ def cons(x, y):
     return [x] + y
 
 
-# pylint: disable=missing-raises-doc
 def callcc(proc):
-    """Call proc with current continuation; escape only."""
+    """Call proc with current continuation; escape only.
+
+    Raises
+    ------
+    RuntimeWarning
+        If continuation can't be continued.
+    """
     ball = RuntimeWarning("Sorry, can't continue this continuation any longer.")
 
     def throw(retval):
@@ -464,9 +474,14 @@ def expand(x, toplevel=False):
         return list(map(expand, x))  # (f arg...) => expand each
 
 
-# pylint: disable=missing-raises-doc
 def require(x, predicate, msg="wrong length"):
-    """Signal a syntax error if predicate is false."""
+    """Signal a syntax error if predicate is false.
+
+    Raises
+    ------
+    SyntaxError
+        If syntax is invalid.
+    """
     if not predicate:
         raise SyntaxError(to_string(x) + ": " + msg)
 

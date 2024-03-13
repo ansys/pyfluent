@@ -286,10 +286,15 @@ class SettingsService:
 
         return ret
 
-    # pylint: disable=missing-raises-doc
     @_trace
     def get_static_info(self) -> dict[str, Any]:
-        """Get static-info for settings."""
+        """Get static-info for settings.
+
+        Raises
+        ------
+        RuntimeError
+            If type is empty.
+        """
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)

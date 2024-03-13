@@ -38,7 +38,6 @@ class DockerContainerLaunchNotSupported(SystemError):
         super().__init__("Python Docker SDK is unsupported on this system.")
 
 
-# pylint: disable=missing-raises-doc
 class LaunchFluentError(Exception):
     """Exception class representing launch errors."""
 

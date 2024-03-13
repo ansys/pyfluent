@@ -850,10 +850,15 @@ class Group(SettingsBase[DictStateType]):
         else:
             return self.get_state()
 
-    # pylint: disable=missing-raises-doc
     @classmethod
     def to_scheme_keys(cls, value):
-        """Convert value to have keys with scheme names."""
+        """Convert value to have keys with scheme names.
+
+        Raises
+        ------
+        RuntimeError
+            If key is invalid.
+        """
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
@@ -1875,7 +1880,6 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
-# pylint: disable=missing-raises-doc
 def get_root(
     flproxy,
     version: str = "",
@@ -1888,6 +1892,11 @@ def get_root(
     ----------
     flproxy: Proxy
         Object that interfaces with the Fluent backend.
+
+    Raises
+    ------
+    RuntimeError
+        If hash values are inconsistent.
 
     Returns
     -------

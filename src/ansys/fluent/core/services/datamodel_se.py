@@ -233,11 +233,16 @@ class DatamodelServiceImpl:
         """createCommandArguments RPC of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    # pylint: disable=missing-raises-doc
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments RPC of DataModel service."""
+        """deleteCommandArguments RPC of DataModel service.
+
+        Raises
+        ------
+        RuntimeError
+            If command instancing is not supported.
+        """
         try:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
