@@ -46,6 +46,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Print Detailsssssss
+        run: echo ${{ vars.FLUENT_STABLE_IMAGE }}
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
