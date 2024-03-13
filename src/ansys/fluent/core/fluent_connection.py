@@ -419,48 +419,48 @@ class FluentConnection:
         """
         if self.connection_properties.inside_container:
             self._force_exit_container()
-        if self._remote_instance is not None:
+        elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
             return
-
-        pwd = self.connection_properties.cortex_pwd
-        pid = self.connection_properties.fluent_host_pid
-        host = self.connection_properties.cortex_host
-        if host != socket.gethostname():
-            logger.error(
-                "Fluent host is not the current host, cancelling forced exit..."
-            )
-            return
-        if os.name == "nt":
-            cleanup_file_ext = "bat"
-            cmd_list = []
-        elif os.name == "posix":
-            cleanup_file_ext = "sh"
-            cmd_list = ["bash"]
         else:
-            logger.error(
-                "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
-            )
-            return
-        cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
-        logger.debug(f"Looking for {cleanup_file_name}...")
-        cleanup_file_name = Path(pwd, cleanup_file_name)
-        if cleanup_file_name.is_file():
-            logger.info(
-                f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
-            )
-            cmd_list.append(cleanup_file_name)
-            logger.debug(f"Cleanup command list = {cmd_list}")
-            subprocess.Popen(
-                cmd_list,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-        elif self._slurm_job_id:
-            logger.debug("Fluent running inside Slurm, closing Slurm session...")
-            self._close_slurm()
-        else:
-            logger.error("Could not find cleanup file.")
+            pwd = self.connection_properties.cortex_pwd
+            pid = self.connection_properties.fluent_host_pid
+            host = self.connection_properties.cortex_host
+            if host != socket.gethostname():
+                logger.error(
+                    "Fluent host is not the current host, cancelling forced exit..."
+                )
+                return
+            if os.name == "nt":
+                cleanup_file_ext = "bat"
+                cmd_list = []
+            elif os.name == "posix":
+                cleanup_file_ext = "sh"
+                cmd_list = ["bash"]
+            else:
+                logger.error(
+                    "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
+                )
+                return
+            cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+            logger.debug(f"Looking for {cleanup_file_name}...")
+            cleanup_file_name = Path(pwd, cleanup_file_name)
+            if cleanup_file_name.is_file():
+                logger.info(
+                    f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
+                )
+                cmd_list.append(cleanup_file_name)
+                logger.debug(f"Cleanup command list = {cmd_list}")
+                subprocess.Popen(
+                    cmd_list,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            elif self._slurm_job_id:
+                logger.debug("Fluent running inside Slurm, closing Slurm session...")
+                self._close_slurm()
+            else:
+                logger.error("Could not find cleanup file.")
 
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
