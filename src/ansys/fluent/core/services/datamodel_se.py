@@ -531,7 +531,7 @@ class DatamodelService(StreamingService):
         )
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
-        """Get static info"""
+        """Get static info."""
         request = DataModelProtoModule.GetStaticInfoRequest(rules=rules)
         return MessageToDict(
             self._impl.get_static_info(request).info, use_integers_for_enums=True

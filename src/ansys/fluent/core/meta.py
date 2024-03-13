@@ -141,7 +141,7 @@ class Command:
 
 
 def CommandArgs(command_object, argument_name):
-    """Command arguments"""
+    """Command arguments."""
 
     def wrapper(attribute):
         if argument_name in command_object.arguments_attrs:

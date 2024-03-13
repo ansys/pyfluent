@@ -1,4 +1,4 @@
-"""Provides a module to compare flobject.py"""
+"""Provides a module to compare flobject.py."""
 
 import platform
 import subprocess
