@@ -177,7 +177,7 @@ class Base:
         if name is not None:
             self._setattr("_name", name)
 
-    def _set_flproxy(self, flproxy):
+    def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
@@ -197,7 +197,7 @@ class Base:
         return self._flproxy
 
     @property
-    def _file_transfer_service(self):
+    def file_transfer_service(self):
         """Remote file handler.
 
         Supports file upload and download.
@@ -205,7 +205,7 @@ class Base:
         if self._file_transfer_service:
             return self._file_transfer_service
         elif self._parent:
-            return self._parent._file_transfer_service
+            return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
@@ -742,14 +742,14 @@ class FileName(Base):
 
 class _InputFile(FileName):
     def _do_before_execute(self, value):
-        if self._file_transfer_service:
-            self._file_transfer_service.upload(file_name=value)
+        if self.file_transfer_service:
+            self.file_transfer_service.upload(file_name=value)
 
 
 class _OutputFile(FileName):
     def _do_after_execute(self, value):
-        if self._file_transfer_service:
-            self._file_transfer_service.download(file_name=value)
+        if self.file_transfer_service:
+            self.file_transfer_service.download(file_name=value)
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -1910,7 +1910,7 @@ def get_root(
     except Exception:
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
-    root._set_flproxy(flproxy)
+    root.set_flproxy(flproxy)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
