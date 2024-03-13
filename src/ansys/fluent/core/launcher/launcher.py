@@ -25,9 +25,9 @@ from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentUI,
     FluentWindowsGraphicsDriver,
     LaunchMode,
+    UIMode,
     _get_fluent_launch_mode,
     _get_mode,
     _get_running_session_mode,
@@ -99,7 +99,7 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    ui: Union[FluentUI, str, None] = None,
+    ui_mode: Union[UIMode, str, None] = None,
     graphics_driver: Union[
         FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
     ] = None,
@@ -171,11 +171,11 @@ def launch_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
-    ui : FluentUI or str, optional
-        Fluent user interface mode. Options are either the values of the ``FluentUI``
+    ui_mode : UIMode or str, optional
+        Fluent user interface mode. Options are either the values of the ``UIMode``
         enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``, ``"hidden_gui"``,
-        ``"no_graphics"`` or ``"gui"``. The default is ``FluentUI.HIDDEN_GUI`` in
-        Windows and ``FluentUI.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
+        ``"no_graphics"`` or ``"gui"``. The default is ``UIMode.HIDDEN_GUI`` in
+        Windows and ``UIMode.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
         ``"no_gui"`` user interface modes are supported in Windows starting from Fluent
         version 2024 R1.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
@@ -264,18 +264,18 @@ def launch_fluent(
     del kwargs
     if show_gui is not None:
         warnings.warn(
-            "'show_gui' is deprecated, use 'ui' instead",
+            "'show_gui' is deprecated, use 'ui_mode' instead",
             PyFluentDeprecationWarning,
         )
     if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
-        ui = FluentUI.GUI
+        ui_mode = UIMode.GUI
     del show_gui
-    if ui is None:
+    if ui_mode is None:
         # Not using NO_GUI in windows as it opens a new cmd or
         # shows Fluent output in the current cmd if start <launch_string> is not used
-        ui = FluentUI.HIDDEN_GUI if is_windows() else FluentUI.NO_GUI
-    if isinstance(ui, str):
-        ui = FluentUI(ui)
+        ui_mode = UIMode.HIDDEN_GUI if is_windows() else UIMode.NO_GUI
+    if isinstance(ui_mode, str):
+        ui_mode = UIMode(ui_mode)
     if graphics_driver is None:
         graphics_driver = "auto"
     graphics_driver = str(graphics_driver)

@@ -110,7 +110,7 @@ class FluentEnum(Enum):
                 return False
 
 
-class FluentUI(FluentEnum):
+class UIMode(FluentEnum):
     """Provides supported user interface mode of Fluent."""
 
     NO_GUI_OR_GRAPHICS = ("g",)
