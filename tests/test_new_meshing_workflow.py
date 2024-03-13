@@ -5,6 +5,7 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.meshing.watertight import watertight_workflow
+from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
 @pytest.mark.nightly
@@ -1035,3 +1036,43 @@ def test_switch_between_workflows(new_mesh_session):
     # Re-initialize fault-tolerant
     fault_tolerant.reinitialize()
     assert fault_tolerant.import_cad_and_part_management.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_new_meshing_workflow_without_dm_caching(
+    disable_datamodel_cache, new_mesh_session
+):
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+
+    watertight = new_mesh_session.watertight()
+    watertight.import_geometry.file_name = import_file_name
+    watertight.import_geometry.length_unit.set_state("in")
+    watertight.import_geometry()
+
+    watertight.add_local_sizing.add_child_to_task()
+    watertight.add_local_sizing()
+
+    watertight.create_volume_mesh()
+
+    watertight.import_geometry.rename(new_name="import_geom_wtm")
+    assert watertight.task("import_geom_wtm").arguments()
+
+    watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
+    with pytest.raises(AttributeError):
+        watertight.add_local_sizing
+    watertight.insert_new_task(command_name="add_local_sizing")
+    time.sleep(2.5)
+    assert watertight.add_local_sizing
+
+    fault_tolerant = new_mesh_session.fault_tolerant()
+    with pytest.raises(RuntimeError):
+        watertight.import_geometry.arguments()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
+
+    watertight.reinitialize()
+    with pytest.raises(RuntimeError):
+        fault_tolerant.import_cad_and_part_management.arguments()
+    assert watertight.import_geometry.arguments()
