@@ -69,6 +69,7 @@ class InactiveObjectError(RuntimeError):
 
 class _InlineConstants:
     is_active = "active?"
+    is_stable = "webui-release-active?"
     is_read_only = "read-only?"
     default_value = "default"
     min = "min"
@@ -326,6 +327,18 @@ class Base:
         """Whether the object is active."""
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
+
+    def _is_stable(self) -> bool:
+        """Whether the object is stable."""
+        attr = self.get_attr(_InlineConstants.is_stable)
+        attr = False if attr is False else True
+        if attr is False:
+            warnings.warn(
+                f"The API feature at {self.path} is not stable. "
+                f"It is not guaranteed that it is fully validated and "
+                f"there is no commitment to its backwards compatibility."
+            )
+        return attr
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -1010,7 +1023,10 @@ class Group(SettingsBase[DictStateType]):
                 return alias_obj
             return alias
         try:
-            return super().__getattribute__(name)
+            attr = super().__getattribute__(name)
+            if isinstance(attr, Base):
+                attr._is_stable()
+            return attr
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
