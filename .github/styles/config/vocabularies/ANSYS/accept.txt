@@ -65,6 +65,7 @@ SVARs
 solution_variable_data
 solution_variable_info
 transcript
+tui
 TUI
 UDFs
 Univa
