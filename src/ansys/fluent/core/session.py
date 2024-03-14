@@ -35,7 +35,8 @@ logger = logging.getLogger("pyfluent.general")
 
 
 class UnconfiguredFileTransferService(ConnectionError):
-    """Raised on an attempt to upload/download using an unconfigured file transfer service."""
+    """Raised on an attempt to upload/download using an unconfigured file transfer
+    service."""
 
     def __init__(self):
         super().__init__("File transfer service is not configured.")
