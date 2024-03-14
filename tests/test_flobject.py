@@ -886,7 +886,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
-    root = solver.root
+    root = solver.settings
 
     nodes = {}
     expected_type_list = [
@@ -1002,7 +1002,7 @@ def _check_vector_units(obj, units):
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
-    assert isinstance(solver.root.state_with_units(), dict)
+    assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"

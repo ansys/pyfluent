@@ -173,7 +173,10 @@ class BaseSession:
         )
 
         class Fields:
+            """Container for field and solution variables."""
+
             def __init__(self, _session):
+                """Initialize Fields."""
                 self.field_info = service_creator("field_info").create(
                     _session._field_data_service, _IsDataValid(_session.scheme_eval)
                 )
