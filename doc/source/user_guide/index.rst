@@ -119,11 +119,11 @@ familiar to existing Fluent users:
 
 .. code:: python
 
-    tui = meshing_session.tui
+    meshing_tui = meshing_session.tui
 
-    tui.mesh.prepare_for_solve("yes")
+    meshing_tui.mesh.prepare_for_solve("yes")
 
-    tui.file.write_case("pipe.cas.h5")
+    meshing_tui.file.write_case("pipe.cas.h5")
 
 For the full hierarchy under the meshing ``tui`` object, see
 :ref:`ref_meshing_tui`. For general guidance on using TUI commands, see
