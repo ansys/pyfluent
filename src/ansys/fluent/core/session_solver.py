@@ -110,11 +110,11 @@ class Solver(BaseSession):
             ReductionService, self._error_state
         )
         if FluentVersion(self._version) >= FluentVersion.v241:
-            self.reduction = service_creator("reduction").create(
+            self.fields.reduction = service_creator("reduction").create(
                 self._reduction_service, self
             )
         else:
-            self.reduction = reduction_old
+            self.fields.reduction = reduction_old
         self._settings_api_root = None
         self.fields.solution_variable_data = self._solution_variable_data()
 
@@ -148,22 +148,13 @@ class Solver(BaseSession):
         return self.fields.solution_variable_info
 
     @property
-    def solution_variable_data(self):
-        """Return the SolutionVariableData handle."""
+    def reduction(self):
+        """Reduction"""
         warnings.warn(
-            "solution_variable_data is deprecated, use fields.solution_variable_data instead",
+            "reduction is deprecated, use fields.reduction instead",
             DeprecationWarning,
         )
-        return self.fields.solution_variable_data
-
-    @property
-    def solution_variable_info(self):
-        """Return the SolutionVariableInfo handle."""
-        warnings.warn(
-            "solution_variable_info is deprecated, use fields.solution_variable_info instead",
-            DeprecationWarning,
-        )
-        return self.fields.solution_variable_info
+        return self.fields.reduction
 
     @property
     def _version(self):
@@ -285,6 +276,6 @@ class Solver(BaseSession):
     def __dir__(self):
         self._populate_settings_api_root()
         dir_list = set(
-            list(self.__dict__.keys()) + dir(type(self)) + dir(self._settings_api_root)
-        ) - {"svar_data", "svar_info"}
+            list(self.__dict__.keys()) + dir(super()) + dir(self._settings_api_root)
+        ) - {"svar_data", "svar_info", "reduction"}
         return sorted(dir_list)

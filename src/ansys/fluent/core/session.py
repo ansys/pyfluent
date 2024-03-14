@@ -339,3 +339,11 @@ class BaseSession:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self.exit()
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(super())) - {
+            "field_data",
+            "field_info",
+            "field_data_streaming",
+        }
+        return sorted(dir_list)
