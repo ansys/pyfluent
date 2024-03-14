@@ -144,7 +144,7 @@ if __name__ == "__main__":
             logger.info(
                 "Running Fluent cleanup scripts inside container if they are still available..."
             )
-            fluent.force_exit_container()
+            fluent.force_exit()
             response = timeout_loop(
                 get_container,
                 IDLE_PERIOD * 3,
