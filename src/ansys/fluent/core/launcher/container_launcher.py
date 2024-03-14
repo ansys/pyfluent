@@ -29,8 +29,8 @@ from ansys.fluent.core.launcher.process_launch_string import (
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentUI,
     FluentWindowsGraphicsDriver,
+    UIMode,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
@@ -46,7 +46,7 @@ class DockerLauncher:
     def __init__(
         self,
         mode: FluentMode,
-        ui: FluentUI,
+        ui_mode: UIMode,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
@@ -78,8 +78,8 @@ class DockerLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        ui : FluentUI
-            Fluent user interface mode. Options are the values of the ``FluentUI`` enum.
+        ui_mode : UIMode
+            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
