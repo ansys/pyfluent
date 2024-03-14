@@ -149,7 +149,7 @@ class Solver(BaseSession):
 
     @property
     def reduction(self):
-        """Reduction"""
+        """Reduction."""
         warnings.warn(
             "reduction is deprecated, use fields.reduction instead",
             DeprecationWarning,
