@@ -13,6 +13,7 @@ indent_factor = 2
 
 
 def write_yaml(out, obj, indent=0):
+    """Write a yaml file."""
     type = obj["type"]
     out.write(f"{' '*indent*indent_factor}type: {type}\n")
     for ctype in ["children", "commands", "arguments"]:

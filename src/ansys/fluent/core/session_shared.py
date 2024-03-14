@@ -1,3 +1,5 @@
+"""Provides a module for codegen messages."""
+
 _CODEGEN_MSG_DATAMODEL = (
     "Currently calling the datamodel API in a generic manner. "
     "Please run `python codegen/allapigen.py` from the top-level pyfluent "

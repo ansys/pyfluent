@@ -1,3 +1,5 @@
+"""Provides a module for file session."""
+
 from typing import List, Optional
 
 import numpy as np
@@ -297,6 +299,8 @@ class Transaction:
 
 
 class FileFieldData:
+    """File field data."""
+
     def __init__(self, file_session, field_info):
         self._file_session = file_session
         self._field_info = field_info
@@ -585,6 +589,8 @@ class FileFieldData:
 
 
 class FileFieldInfo:
+    """File field info."""
+
     def __init__(self, file_session):
         self._file_session = file_session
 
@@ -707,6 +713,8 @@ class FileFieldInfo:
 
 
 class FileSession:
+    """File session to read case and data file."""
+
     def __init__(self):
         """__init__ method of FileSession class."""
         self._case_file = None

@@ -1,3 +1,5 @@
+"""Provides a module for enums used in the PyFluent."""
+
 from enum import Enum
 from functools import total_ordering
 import os
@@ -110,7 +112,7 @@ class FluentEnum(Enum):
                 return False
 
 
-class FluentUI(FluentEnum):
+class UIMode(FluentEnum):
     """Provides supported user interface mode of Fluent."""
 
     NO_GUI_OR_GRAPHICS = ("g",)

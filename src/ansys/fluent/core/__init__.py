@@ -23,8 +23,8 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
 from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
     FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentUI,
     FluentWindowsGraphicsDriver,
+    UIMode,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
@@ -85,5 +85,6 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
 
 def wrap_api_call(f, *args, **kwargs):
+    """Wrap API call."""
     # overwritten in PyConsole
     return f(*args, **kwargs)

@@ -233,11 +233,16 @@ class DatamodelServiceImpl:
         """createCommandArguments RPC of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    # pylint: disable=missing-raises-doc
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments RPC of DataModel service."""
+        """deleteCommandArguments RPC of DataModel service.
+
+        Raises
+        ------
+        RuntimeError
+            If command instancing is not supported.
+        """
         try:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
@@ -389,6 +394,7 @@ class DatamodelService(StreamingService):
         self.file_transfer_service = file_transfer_service
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
+        """Get attribute value."""
         request = DataModelProtoModule.GetAttributeValueRequest(
             rules=rules, path=path, attribute=attribute
         )
@@ -396,11 +402,13 @@ class DatamodelService(StreamingService):
         return _convert_variant_to_value(response.result)
 
     def get_state(self, rules: str, path: str) -> _TValue:
+        """Get state."""
         request = DataModelProtoModule.GetStateRequest(rules=rules, path=path)
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
     def get_object_names(self, rules: str, path: str) -> list[str]:
+        """Get object names."""
         request = DataModelProtoModule.GetObjectNamesRequest()
         request.rules = rules
         request.path = path
@@ -408,6 +416,7 @@ class DatamodelService(StreamingService):
         return response.names
 
     def rename(self, rules: str, path: str, new_name: str) -> None:
+        """Rename an object."""
         request = DataModelProtoModule.RenameRequest()
         request.rules = rules
         request.path = path
@@ -418,6 +427,7 @@ class DatamodelService(StreamingService):
     def delete_child_objects(
         self, rules: str, path: str, obj_type: str, child_names: list[str]
     ) -> None:
+        """Delete child objects."""
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
         request.path = path + "/" + obj_type
@@ -427,6 +437,7 @@ class DatamodelService(StreamingService):
         self._impl.delete_child_objects(request)
 
     def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
+        """Delete all child objects."""
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
         request.path = path + "/" + obj_type
@@ -435,6 +446,7 @@ class DatamodelService(StreamingService):
         self._impl.delete_child_objects(request)
 
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
+        """Set state."""
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
         )
@@ -442,6 +454,7 @@ class DatamodelService(StreamingService):
         self._impl.set_state(request)
 
     def fix_state(self, rules, path) -> None:
+        """Fix state."""
         request = DataModelProtoModule.FixStateRequest()
         request.rules = rules
         request.path = convert_path_to_se_path(path)
@@ -450,6 +463,7 @@ class DatamodelService(StreamingService):
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
     ) -> None:
+        """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
             rules=rules, path=path, wait=True
         )
@@ -457,6 +471,7 @@ class DatamodelService(StreamingService):
         self._impl.update_dict(request)
 
     def delete_object(self, rules: str, path: str) -> None:
+        """Delete an object."""
         request = DataModelProtoModule.DeleteObjectRequest(
             rules=rules, path=path, wait=True
         )
@@ -465,6 +480,7 @@ class DatamodelService(StreamingService):
     def execute_command(
         self, rules: str, path: str, command: str, args: dict[str, _TValue]
     ) -> _TValue:
+        """Execute the command."""
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
         )
@@ -475,6 +491,7 @@ class DatamodelService(StreamingService):
     def execute_query(
         self, rules: str, path: str, query: str, args: dict[str, _TValue]
     ) -> _TValue:
+        """Execute the query."""
         request = DataModelProtoModule.ExecuteQueryRequest(
             rules=rules, path=path, query=query
         )
@@ -483,6 +500,7 @@ class DatamodelService(StreamingService):
         return _convert_variant_to_value(response.result)
 
     def create_command_arguments(self, rules: str, path: str, command: str) -> str:
+        """Create command arguments."""
         request = DataModelProtoModule.CreateCommandArgumentsRequest(
             rules=rules, path=path, command=command
         )
@@ -492,6 +510,7 @@ class DatamodelService(StreamingService):
     def delete_command_arguments(
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
+        """Delete command arguments."""
         request = DataModelProtoModule.DeleteCommandArgumentsRequest(
             rules=rules, path=path, command=command, commandid=commandid
         )
@@ -502,6 +521,7 @@ class DatamodelService(StreamingService):
         rules: str,
         path: str,
     ) -> dict[str, Any]:
+        """Get specifications."""
         request = DataModelProtoModule.GetSpecsRequest(
             rules=rules,
             path=path,
@@ -511,12 +531,14 @@ class DatamodelService(StreamingService):
         )
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
+        """Get static info."""
         request = DataModelProtoModule.GetStaticInfoRequest(rules=rules)
         return MessageToDict(
             self._impl.get_static_info(request).info, use_integers_for_enums=True
         )
 
     def subscribe_events(self, request_dict: dict[str, Any]) -> dict[str, Any]:
+        """Subscribe events."""
         request = DataModelProtoModule.SubscribeEventsRequest()
         ParseDict(request_dict, request)
         return [
@@ -525,6 +547,7 @@ class DatamodelService(StreamingService):
         ]
 
     def unsubscribe_events(self, tags: list[str]) -> dict[str, Any]:
+        """Unsubscribe events."""
         request = DataModelProtoModule.UnsubscribeEventsRequest()
         request.tag[:] = tags
         return [
@@ -541,6 +564,7 @@ class DatamodelService(StreamingService):
     def add_on_child_created(
         self, rules: str, path: str, child_type: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on child created."""
         request_dict = {
             "eventrequest": [
                 {
@@ -559,6 +583,7 @@ class DatamodelService(StreamingService):
     def add_on_deleted(
         self, rules: str, path: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on deleted."""
         request_dict = {
             "eventrequest": [
                 {
@@ -574,6 +599,7 @@ class DatamodelService(StreamingService):
     def add_on_changed(
         self, rules: str, path: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on changed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -589,6 +615,7 @@ class DatamodelService(StreamingService):
     def add_on_affected(
         self, rules: str, path: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on affected."""
         request_dict = {
             "eventrequest": [
                 {
@@ -604,6 +631,7 @@ class DatamodelService(StreamingService):
     def add_on_affected_at_type_path(
         self, rules: str, path: str, child_type: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on affected at type path."""
         request_dict = {
             "eventrequest": [
                 {
@@ -622,6 +650,7 @@ class DatamodelService(StreamingService):
     def add_on_command_executed(
         self, rules: str, path: str, command: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on command executed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -640,6 +669,7 @@ class DatamodelService(StreamingService):
     def add_on_attribute_changed(
         self, rules: str, path: str, attribute: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on attribute changed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -658,6 +688,7 @@ class DatamodelService(StreamingService):
     def add_on_command_attribute_changed(
         self, rules: str, path: str, command: str, attribute: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on command attribute changed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -751,6 +782,7 @@ class PyStateContainer(PyCallableStateObject):
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
     def get_state(self) -> Any:
+        """Get state."""
         if pyfluent.DATAMODEL_USE_STATE_CACHE:
             state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
             if DataModelCache.is_unassigned(state):
@@ -762,6 +794,7 @@ class PyStateContainer(PyCallableStateObject):
     getState = get_state
 
     def fix_state(self) -> None:
+        """Fix state."""
         self.service.fix_state(self.rules, self.path)
 
     fixState = fix_state
@@ -773,6 +806,8 @@ class PyStateContainer(PyCallableStateObject):
         ----------
         state : Any, optional
             state
+        kwargs : Any
+            Keyword arguments.
 
         Raises
         ------
@@ -961,6 +996,7 @@ class PyMenu(PyStateContainer):
         raise AttributeError("This method is yet to be implemented in pyfluent.")
 
     def delete_child(self) -> None:
+        """Delete child object."""
         self._raise_method_not_yet_implemented_exception()
 
     def rename(self, new_name: str) -> None:
@@ -1179,6 +1215,7 @@ class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
 
     def allowed_values(self) -> list[str]:
+        """Get allowed values."""
         return self.get_attr(Attribute.ALLOWED_VALUES.value)
 
 
@@ -1516,10 +1553,12 @@ class PyCommand:
             pass
 
     def before_execute(self, value):
+        """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
             self._do_before_execute(value)
 
     def after_execute(self, value):
+        """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
             self._do_after_execute(value)
 
@@ -1673,6 +1712,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     getAttribValue = get_attr
 
     def help(self) -> None:
+        """Get help."""
         pass
 
 

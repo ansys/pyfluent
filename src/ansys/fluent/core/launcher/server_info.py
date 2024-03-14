@@ -1,3 +1,5 @@
+"""Provides a module for server information."""
+
 import os
 from pathlib import Path
 import tempfile

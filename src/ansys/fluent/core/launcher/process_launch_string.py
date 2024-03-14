@@ -1,3 +1,5 @@
+"""Provides a module to process launch string."""
+
 import json
 import os
 from pathlib import Path
@@ -63,9 +65,9 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         launch_args_string += " -gpu"
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
-    ui = kwargs.get("ui")
-    if ui and ui.value[0]:
-        launch_args_string += f" -{ui.value[0]}"
+    ui_mode = kwargs.get("ui_mode")
+    if ui_mode and ui_mode.value[0]:
+        launch_args_string += f" -{ui_mode.value[0]}"
     graphics_driver = kwargs.get("graphics_driver")
     if graphics_driver and graphics_driver.value[0]:
         launch_args_string += f" -driver {graphics_driver.value[0]}"

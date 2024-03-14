@@ -22,8 +22,8 @@ from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentUI,
     FluentWindowsGraphicsDriver,
+    UIMode,
 )
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -43,7 +43,7 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode,
-        ui: FluentUI,
+        ui_mode: UIMode,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
         product_version: Optional[str] = None,
         version: Optional[str] = None,
@@ -75,8 +75,8 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        ui : FluentUI
-            Fluent user interface mode. Options are the values of the ``FluentUI`` enum.
+        ui_mode : UIMode
+            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
@@ -266,6 +266,8 @@ def launch_remote_fluent(
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
     file_transfer_service : optional
         File transfer service for uploading or downloading files to or from the server.
+    launcher_args : Any
+        Launcher arguments.
 
     Returns
     -------

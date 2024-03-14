@@ -223,6 +223,7 @@ class Solver(BaseSession):
 
     @property
     def system_coupling(self):
+        """System coupling object."""
         if self._system_coupling is None:
             self._system_coupling = SystemCoupling(self)
         return self._system_coupling

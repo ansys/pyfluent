@@ -301,12 +301,9 @@ class BaseSession:
         self.fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Terminate session."""
+        """Immediately terminates the Fluent session, losing unsaved progress and
+        data."""
         self.fluent_connection.force_exit()
-
-    def force_exit_container(self) -> None:
-        """Terminate Docker container session."""
-        self.fluent_connection.force_exit_container()
 
     def upload(self, file_name: str):
         """Upload a file to the server.
@@ -316,7 +313,8 @@ class BaseSession:
         file_name : str
             Name of the local file to upload to the server.
         """
-        return self._file_transfer_service.upload_file(file_name)
+        if self._file_transfer_service:
+            return self._file_transfer_service.upload_file(file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server.
@@ -328,7 +326,8 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        return self._file_transfer_service.download_file(file_name, local_directory)
+        if self._file_transfer_service:
+            return self._file_transfer_service.download_file(file_name, local_directory)
 
     def __enter__(self):
         return self

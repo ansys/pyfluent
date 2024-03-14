@@ -1,3 +1,5 @@
+"""Provides a module for transcript streaming."""
+
 import os
 from pathlib import Path
 from typing import Optional
