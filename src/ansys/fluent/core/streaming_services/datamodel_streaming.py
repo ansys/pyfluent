@@ -1,3 +1,5 @@
+"""Provides a module for datamodel streaming."""
+
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 

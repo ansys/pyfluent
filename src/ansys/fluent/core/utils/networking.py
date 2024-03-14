@@ -1,3 +1,5 @@
+"""Provides a module to get networking functionality."""
+
 from concurrent import futures
 import logging
 import socket
@@ -25,6 +27,7 @@ def get_free_port() -> int:
 
 class _HealthServicer(health_pb2_grpc.HealthServicer):
     def Check(self, request, context: grpc.ServicerContext):
+        """Check the status of service."""
         return health_pb2.HealthCheckResponse(
             status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
         )

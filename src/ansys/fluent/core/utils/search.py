@@ -1,3 +1,5 @@
+"""Provides a module to search a word through the Fluent's object hierarchy.."""
+
 from collections.abc import Mapping
 from pathlib import Path
 import pickle
@@ -21,6 +23,7 @@ from ansys.fluent.core.workflow import (
 
 
 def get_api_tree_file_name(version: str, pyfluent_path: str) -> Path:
+    """Get API tree file name."""
     return (
         (
             (Path(pyfluent_path) / "ansys" / "fluent" / "core")

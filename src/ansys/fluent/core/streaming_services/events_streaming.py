@@ -85,9 +85,12 @@ class EventsManager(StreamingService):
         ----------
         event_name : str
             Event name to register the callback to.
-
         callback : Callable
             Callback to register.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------

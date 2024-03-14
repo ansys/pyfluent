@@ -7,6 +7,7 @@ from ansys.fluent.core._version import __version__
 
 
 def get_build_version():
+    """Get build version."""
     build_details = OrderedDict()
     try:
         last_commit_time = (
@@ -36,4 +37,5 @@ def get_build_version():
 
 
 def get_build_version_string():
+    """Get build version string."""
     return "  ".join([f"{k}: {v}" for k, v in get_build_version().items()])

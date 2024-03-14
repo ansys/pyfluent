@@ -1,3 +1,5 @@
+"""Provides a module for Fluent connection functionality."""
+
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
@@ -130,10 +132,12 @@ class ErrorState:
 
     @property
     def name(self):
+        """Get name."""
         return self._name
 
     @property
     def details(self):
+        """Get details."""
         return self._details
 
     def __init__(self, name: str = "", details: str = ""):
@@ -394,6 +398,7 @@ class FluentConnection:
 
     @property
     def fluent_build_info(self) -> str:
+        """Get Fluent build info."""
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
         rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
@@ -417,76 +422,54 @@ class FluentConnection:
         >>> session.force_exit()
         """
         if self.connection_properties.inside_container:
-            logger.error(
-                "Cannot execute cleanup script, Fluent running inside container. "
-                "Use force_exit_container() instead."
-            )
-            return
-        if self._remote_instance is not None:
+            self._force_exit_container()
+        elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
             return
-
-        pwd = self.connection_properties.cortex_pwd
-        pid = self.connection_properties.fluent_host_pid
-        host = self.connection_properties.cortex_host
-        if host != socket.gethostname():
-            logger.error(
-                "Fluent host is not the current host, cancelling forced exit..."
-            )
-            return
-        if os.name == "nt":
-            cleanup_file_ext = "bat"
-            cmd_list = []
-        elif os.name == "posix":
-            cleanup_file_ext = "sh"
-            cmd_list = ["bash"]
         else:
-            logger.error(
-                "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
-            )
-            return
-        cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
-        logger.debug(f"Looking for {cleanup_file_name}...")
-        cleanup_file_name = Path(pwd, cleanup_file_name)
-        if cleanup_file_name.is_file():
-            logger.info(
-                f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
-            )
-            cmd_list.append(cleanup_file_name)
-            logger.debug(f"Cleanup command list = {cmd_list}")
-            subprocess.Popen(
-                cmd_list,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-        elif self._slurm_job_id:
-            logger.debug("Fluent running inside Slurm, closing Slurm session...")
-            self._close_slurm()
-        else:
-            logger.error("Could not find cleanup file.")
+            pwd = self.connection_properties.cortex_pwd
+            pid = self.connection_properties.fluent_host_pid
+            host = self.connection_properties.cortex_host
+            if host != socket.gethostname():
+                logger.error(
+                    "Fluent host is not the current host, cancelling forced exit..."
+                )
+                return
+            if os.name == "nt":
+                cleanup_file_ext = "bat"
+                cmd_list = []
+            elif os.name == "posix":
+                cleanup_file_ext = "sh"
+                cmd_list = ["bash"]
+            else:
+                logger.error(
+                    "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
+                )
+                return
+            cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+            logger.debug(f"Looking for {cleanup_file_name}...")
+            cleanup_file_name = Path(pwd, cleanup_file_name)
+            if cleanup_file_name.is_file():
+                logger.info(
+                    f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
+                )
+                cmd_list.append(cleanup_file_name)
+                logger.debug(f"Cleanup command list = {cmd_list}")
+                subprocess.Popen(
+                    cmd_list,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            elif self._slurm_job_id:
+                logger.debug("Fluent running inside Slurm, closing Slurm session...")
+                self._close_slurm()
+            else:
+                logger.error("Could not find cleanup file.")
 
-    def force_exit_container(self):
+    def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
-        unsaved progress and data.
-
-        Notes
-        -----
-        By default, Fluent does not run in a container,
-        in that case use :func:`force_exit()`.
-        If the Fluent session is responsive, prefer using :func:`exit()` instead.
-        """
-        if self._remote_instance is not None:
-            logger.error(
-                "Fluent is running remotely, cannot terminate Fluent container."
-            )
-            return
+        unsaved progress and data."""
         container = self.connection_properties.inside_container
-        if not container:
-            logger.error(
-                "Session is not inside a container, cannot terminate Fluent container. "
-                "Try force_exit() instead."
-            )
-            return
         container_id = self.connection_properties.cortex_host
         pid = self.connection_properties.fluent_host_pid
         cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
@@ -668,7 +651,7 @@ class FluentConnection:
                     logger.debug(
                         "Fluent running inside container, cleaning up Fluent inside container..."
                     )
-                    self.force_exit_container()
+                    self.force_exit()
                 else:
                     logger.debug(
                         "Fluent running locally, cleaning up Fluent processes..."

@@ -107,8 +107,8 @@ A meshing mode session has an active ``meshing`` object that provides two
 distinct interfaces to the mesher:
 
 - ``tui`` object
-- meshing workflow, which consists of ``meshing`` and ``workflow`` properties and the
-  ``PartManagement`` and ``PMFileMangement`` classes
+- meshing workflow, which consists of :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties and the
+  :ref:`PartManagement <ref_meshing_datamodel_PartManagement>` and :ref:`PMFileMangement <ref_meshing_datamodel_PMFileManagement>` classes
 
 Meshing ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -131,7 +131,7 @@ For the full hierarchy under the meshing ``tui`` object, see
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``meshing`` object has ``meshing`` and ``workflow`` properties that together
+The ``meshing`` object has :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties that together
 provide access to Fluent's meshing workflows. This interface is consistent with
 the Python meshing workflow interface that Fluent meshing exposes directly:
 

@@ -10,6 +10,8 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @dataclass
 class Variable:
+    """Provides variable data."""
+
     name: str
     display_name: str
     tensor_type: str
@@ -20,6 +22,8 @@ class Variable:
 
 @dataclass
 class Region:
+    """Provides region data."""
+
     name: str
     display_name: str
     topology: str
@@ -51,23 +55,29 @@ class SystemCoupling:
 
     @property
     def participant_type(self) -> str:
+        """Get participant type."""
         return "FLUENT"
 
     def get_variables(self) -> List[Variable]:
+        """Get variables."""
         return self.__get_syc_setup()["variables"]
 
     def get_regions(self) -> List[Region]:
+        """Get regions."""
         return self.__get_syc_setup()["regions"]
 
     def get_analysis_type(self) -> str:
+        """Get analysis type."""
         return self.__get_syc_setup()["analysis-type"]
 
     def connect(self, host: str, port: int, name: str) -> None:
+        """Connect parallelly."""
         self._solver.setup.models.system_coupling.connect_parallel(
             schost=host, scport=port, scname=name
         )
 
     def solve(self) -> None:
+        """Initialize and solve."""
         self._solver.setup.models.system_coupling.init_and_solve()
 
     def __get_syc_setup(self) -> dict:

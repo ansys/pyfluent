@@ -117,10 +117,12 @@ class SolutionVariableInfo:
 
         @property
         def solution_variables(self) -> List[str]:
+            """Solution variables."""
             return list(self._solution_variables_info.keys())
 
         @property
         def svars(self) -> List[str]:
+            """Solution variables."""
             warnings.warn(
                 "svars is deprecated, use solution_variables instead",
                 DeprecationWarning,
@@ -155,6 +157,7 @@ class SolutionVariableInfo:
 
             @property
             def count(self) -> int:
+                """Get zone count."""
                 return sum(
                     [partition_info.count for partition_info in self.partitions_info]
                 )
@@ -178,13 +181,16 @@ class SolutionVariableInfo:
 
         @property
         def zones(self) -> List[str]:
+            """Get zone names."""
             return list(self._zones_info.keys())
 
         @property
         def domains(self) -> List[str]:
+            """Get domain names."""
             return list(self._domains_info.keys())
 
         def domain_id(self, domain_name) -> int:
+            """Get domain id."""
             return self._domains_info.get(domain_name, None)
 
     def __init__(
@@ -231,6 +237,7 @@ class SolutionVariableInfo:
     def get_svars_info(
         self, zone_names: List[str], domain_name: str = "mixture"
     ) -> SolutionVariables:
+        """Get solution variables info."""
         warnings.warn(
             "get_svars_info is deprecated, use get_variables_info instead",
             DeprecationWarning,
@@ -282,6 +289,7 @@ class ZoneError(ValueError):
 
 class _AllowedNames:
     def is_valid(self, name):
+        """Check whether a given name is valid or not."""
         return name in self()
 
 
@@ -302,6 +310,7 @@ class _AllowedSvarNames:
         zone_names: List[str],
         domain_name: str = "mixture",
     ):
+        """Check whether solution variable name is valid or not."""
         return solution_variable_name in self(
             zone_names=zone_names, domain_name=domain_name
         )
@@ -312,6 +321,13 @@ class _AllowedSvarNames:
         zone_names: List[str],
         domain_name: str = "mixture",
     ):
+        """Get a valid solution variable name.
+
+        Raises
+        ------
+        SvarError
+            If the given solution variable name is invalid.
+        """
         if not self.is_valid(
             solution_variable_name, zone_names=zone_names, domain_name=domain_name
         ):
@@ -330,6 +346,13 @@ class _AllowedZoneNames(_AllowedNames):
         return self._zones_info.zones
 
     def valid_name(self, zone_name):
+        """Get a valid zone name.
+
+        Raises
+        ------
+        ZoneError
+            If the given zone name is invalid.
+        """
         if not self.is_valid(zone_name):
             raise ZoneError(
                 zone_name=zone_name,
@@ -346,6 +369,13 @@ class _AllowedDomainNames(_AllowedNames):
         return self._zones_info.domains
 
     def valid_name(self, domain_name):
+        """Get a valid domain name.
+
+        Raises
+        ------
+        ZoneError
+            If the given domain name is invalid.
+        """
         if not self.is_valid(domain_name):
             raise ZoneError(
                 domain_name=domain_name,
@@ -360,6 +390,7 @@ class _SvarMethod:
             self._accessor = accessor
 
         def allowed_values(self):
+            """Get allowed values."""
             return sorted(self._accessor())
 
     def __init__(self, svar_accessor, args_allowed_values_accessors):
@@ -456,6 +487,8 @@ class SolutionVariableData:
     """
 
     class Data:
+        """Solution variable data."""
+
         def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
             self._domain_name = domain_name
             self._data = {
@@ -465,14 +498,17 @@ class SolutionVariableData:
 
         @property
         def domain(self):
+            """Domain name."""
             return self._domain_name
 
         @property
         def zones(self):
+            """Zone name."""
             return list(self._data.keys())
 
         @property
         def data(self):
+            """Solution variable data."""
             return self._data
 
         def __getitem__(self, name):
@@ -577,6 +613,7 @@ class SolutionVariableData:
         zone_names: List[str],
         domain_name: Optional[str] = "mixture",
     ) -> Data:
+        """Get solution variable data."""
         warnings.warn(
             "get_svar_data is deprecated, use get_data instead",
             DeprecationWarning,
@@ -693,6 +730,7 @@ class SolutionVariableData:
         zone_names_to_svar_data: List[str],
         domain_name: Optional[str] = "mixture",
     ) -> Data:
+        """Set solution variable data."""
         warnings.warn(
             "set_svar_data is deprecated, use set_data instead",
             DeprecationWarning,

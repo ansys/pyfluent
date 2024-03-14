@@ -56,6 +56,8 @@ logger = logging.getLogger("pyfluent.datamodel")
 
 def _new_command_for_task(task, session):
     class NewCommandError(Exception):
+        """Raised on an attempt to create command for a given task."""
+
         def __init__(self, task_name):
             super().__init__(f"Could not create command for task {task_name}")
 
@@ -459,6 +461,7 @@ class BaseTask:
         return matches
 
     def display_name(self):
+        """Display name."""
         return self._name_()
 
     def __repr__(self):
@@ -513,9 +516,11 @@ class TaskContainer(PyCallableStateObject):
         )
 
     def items(self):
+        """Get state items."""
         return self._task_container.get_state().items()
 
     def get_state(self):
+        """Get state."""
         return self._task_container.get_state()
 
     def __call__(self):

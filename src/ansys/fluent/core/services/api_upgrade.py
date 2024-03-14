@@ -1,3 +1,5 @@
+"""Provides a module for the API upgrade advisor."""
+
 import os
 from typing import TypeVar
 
@@ -8,6 +10,8 @@ _TApiUpgradeAdvisor = TypeVar("_TApiUpgradeAdvisor", bound="ApiUpgradeAdvisor")
 
 
 class ApiUpgradeAdvisor:
+    """API upgrade advisor."""
+
     def __init__(self, scheme_eval: SchemeEval, version: str, mode: str) -> None:
         self._scheme_eval = scheme_eval.scheme_eval
         self._version = version
