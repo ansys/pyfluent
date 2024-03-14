@@ -34,14 +34,6 @@ datamodel_logger = logging.getLogger("pyfluent.datamodel")
 logger = logging.getLogger("pyfluent.general")
 
 
-class UnconfiguredFileTransferService(ConnectionError):
-    """Raised on an attempt to upload/download using an unconfigured file transfer
-    service."""
-
-    def __init__(self):
-        super().__init__("File transfer service is not configured.")
-
-
 def _parse_server_info_file(file_name: str):
     with open(file_name, encoding="utf-8") as f:
         lines = f.readlines()
@@ -288,14 +280,7 @@ class BaseSession:
         ----------
         file_name : str
             Name of the local file to upload to the server.
-
-        Raises
-        ------
-        UnconfiguredFileTransferService
-            If a file transfer service is not configured.
         """
-        if not self._file_transfer_service:
-            raise UnconfiguredFileTransferService()
         return self._file_transfer_service.upload_file(file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
@@ -307,14 +292,7 @@ class BaseSession:
             Name of the file to download from the server.
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
-
-        Raises
-        ------
-        UnconfiguredFileTransferService
-            If a file transfer service is not configured.
         """
-        if not self._file_transfer_service:
-            raise UnconfiguredFileTransferService()
         return self._file_transfer_service.download_file(file_name, local_directory)
 
     def __enter__(self):
