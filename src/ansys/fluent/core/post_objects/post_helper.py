@@ -1,3 +1,5 @@
+"""Provides a module for post objects."""
+
 import re
 
 

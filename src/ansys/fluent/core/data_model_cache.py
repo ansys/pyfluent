@@ -22,6 +22,8 @@ StateType = Union[
 
 
 class NameKey(Enum):
+    """Name key."""
+
     INTERNAL = "__iname__"
     DISPLAY = "_name_"
 
@@ -36,6 +38,7 @@ class _CacheImpl:
 
     @staticmethod
     def add_missing_name_keys(k: str, v: dict[str, Any]):
+        """Add missing name keys in dict."""
         if ":" in k:
             name_in_key = k.split(":")[1]
             if NameKey.DISPLAY.value in v and v[NameKey.DISPLAY.value] != name_in_key:
@@ -44,6 +47,7 @@ class _CacheImpl:
                 v[NameKey.DISPLAY.value] = name_in_key
 
     def find(self, d: dict[str, Any], key: str, default: Any) -> tuple[str, Any]:
+        """Find in dict."""
         if key in d:
             return key, d[key]
         if ":" in key:
@@ -60,6 +64,7 @@ class _CacheImpl:
         return key, default
 
     def transform(self, d_in: dict[str, Any], add_missing_name_keys=False):
+        """Transform dict."""
         d_out = {}
         for k_in, v_in in d_in.items():
             if isinstance(v_in, abc.Mapping):
@@ -77,6 +82,7 @@ class _CacheImpl:
         return d_out
 
     def update(self, d: dict[str, Any], d1: dict[str, Any]):
+        """Update dict."""
         for k1, v1 in d1.items():
             k, v = self.find(d, k1, None)
             if isinstance(v, abc.Mapping) and isinstance(v1, abc.Mapping):

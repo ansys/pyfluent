@@ -1,3 +1,5 @@
+"""Provides a module for enums used in the PyFluent."""
+
 from enum import Enum
 from functools import total_ordering
 import os

@@ -266,6 +266,8 @@ def launch_remote_fluent(
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
     file_transfer_service : optional
         File transfer service for uploading or downloading files to or from the server.
+    launcher_args : Any
+        Launcher arguments.
 
     Returns
     -------

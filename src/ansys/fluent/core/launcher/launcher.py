@@ -55,6 +55,8 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     fluent_launch_mode: LaunchMode
         Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
         ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+    kwargs : Any
+        Keyword arguments.
     Returns
     -------
     launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
@@ -236,6 +238,8 @@ def launch_fluent(
         specified in a similar manner to Fluent's scheduler options.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
+    kwargs : Any
+        Keyword arguments.
 
     Returns
     -------

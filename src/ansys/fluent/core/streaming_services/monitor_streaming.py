@@ -75,6 +75,10 @@ class MonitorsManager(StreamingService):
         ----------
         monitor_set_name : str
             Name of the monitor.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------

@@ -1,3 +1,5 @@
+"""Provides a module for streaming services."""
+
 import itertools
 import logging
 import threading
@@ -36,6 +38,10 @@ class StreamingService:
         ----------
         callback : Callable
             Callback to register.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------

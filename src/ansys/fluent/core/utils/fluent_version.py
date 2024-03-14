@@ -1,3 +1,5 @@
+"""Provides a module to get Fluent version."""
+
 from enum import Enum
 from functools import total_ordering
 import os
@@ -23,6 +25,7 @@ class ComparisonError(RuntimeError):
 
 
 def get_version(session=None):
+    """Get Fluent version."""
     if session is None:
         # for CI runs, get the version statically from env var set within CI
         image_tag = os.getenv("FLUENT_IMAGE_TAG")
@@ -34,6 +37,7 @@ def get_version(session=None):
 
 
 def get_version_for_file_name(version: Optional[str] = None, session=None):
+    """Get Fluent version for file name."""
     if version is None:
         version = get_version(session)
 

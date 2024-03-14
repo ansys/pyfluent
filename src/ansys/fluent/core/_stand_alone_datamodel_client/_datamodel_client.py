@@ -13,6 +13,7 @@ from tests.run_stateengine_server import kill_server, run_server
 
 
 def run_datamodel_server(batch_file_name: Union[str, Path], rules):
+    """Run the datamodel server."""
     run_command = str(batch_file_name) + " " + rules
     run_server(run_command)
     _channel = grpc.insecure_channel("localhost:50055")
@@ -22,6 +23,7 @@ def run_datamodel_server(batch_file_name: Union[str, Path], rules):
 
 
 def close_server():
+    """Close the server."""
     grpc.insecure_channel("localhost:50055").close()
     try:
         kill_server()

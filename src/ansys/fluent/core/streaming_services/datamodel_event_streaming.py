@@ -1,3 +1,5 @@
+"""Provides a module for datamodel event streaming."""
+
 import logging
 import os
 import threading
