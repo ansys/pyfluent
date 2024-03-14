@@ -293,11 +293,6 @@ class BaseSession:
             Name of the file to download from the server.
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
-
-        Raises
-        ------
-        UnconfiguredFileTransferService
-            If a file transfer service is not configured.
         """
         if self._file_transfer_service:
             return self._file_transfer_service.download_file(file_name, local_directory)
