@@ -2,8 +2,8 @@ API reference
 =============
 
 This section describes the core Pythonic interfaces for Fluent. Here, you can find the application programming
-interfaces for such things as launching Fluent, assorted utilities, as well as the interfaces for the meshing and
-solver components of Fluent.
+interfaces for such things as launching Fluent, assorted utilities, as well as the interfaces for the :ref:`meshing <ref_meshing>` and
+:ref:`solver <ref_solver>` components of Fluent.
 
 General
 #######

@@ -103,17 +103,17 @@ For additional interface features, see :ref:`ref_settings`.
 
 Meshing mode session
 --------------------
-A meshing mode session has an active ``meshing`` object that provides two
+A :ref:`meshing <ref_meshing>` mode session has an active ``meshing`` object that provides two
 distinct interfaces to the mesher:
 
-- ``tui`` object
-- meshing workflow, which consists of ``meshing`` and ``workflow`` properties and the
-  ``PartManagement`` and ``PMFileMangement`` classes
+- :ref:`tui <ref_meshing_tui>` object
+- meshing workflow, which consists of :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties and the
+  :ref:`PartManagement <ref_meshing_datamodel_PartManagement>` and :ref:`PMFileMangement <ref_meshing_datamodel_PMFileManagement>` classes
 
 Meshing ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~~
-The meshing ``tui`` object is a complete Python exposure of the Fluent meshing
-TUI (text user interface). This object allows straightforward execution of
+The :ref:`tui <ref_meshing_tui>` object is a complete Python exposure of the Fluent meshing
+TUI (text user interface). This object allows the straightforward execution of
 meshing commands and modification of meshing settings in a manner that is
 familiar to existing Fluent users:
 
@@ -131,7 +131,7 @@ For the full hierarchy under the meshing ``tui`` object, see
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``meshing`` object has ``meshing`` and ``workflow`` properties that together
+The :ref:`meshing <ref_meshing>` object has :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties that together
 provide access to Fluent's meshing workflows. This interface is consistent with
 the Python meshing workflow interface that Fluent meshing exposes directly:
 
@@ -152,8 +152,8 @@ the Python meshing workflow interface that Fluent meshing exposes directly:
     meshing.GlobalSettings.LengthUnit.set_state("mm")
 
 For additional examples, see :ref:`ref_user_guide_meshing_workflows` for
-classic meshing workflow interface that appear in journals or
-:ref:`ref_user_guide_new_meshing_workflows` for the new object oriented
+classic meshing workflow interface that appears in journals or
+:ref:`ref_user_guide_new_meshing_workflows` for the new object-oriented
 meshing workflow interface.
 For information on the full interface, see :ref:`ref_meshing_datamodel`.
 

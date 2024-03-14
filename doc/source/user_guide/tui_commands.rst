@@ -5,7 +5,7 @@ Use TUI commands
 
 TUI commands refer to a programming interface that mirrors the Fluent TUI (text
 user interface). There is a TUI command hierarchy defined for each of the two
-modes: meshing and solution. The hierarchy that is active depends on the current
+modes: :ref:`meshing <ref_meshing_tui>` and :ref:`solution <ref_solver_tui>`. The hierarchy that is active depends on the current
 Fluent mode. The guidance in this topic applies to both modes.
 
 The PyFluent TUI commands allow you to automate workflows. Everything that's in
