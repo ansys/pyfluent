@@ -29,8 +29,8 @@ Fluent also enables you to refine or coarsen your mesh based on the flow
 solution.
 
 You can read your mesh into Fluent or, for 3D geometries, create your mesh using
-Fluent's :ref:`meshing <ref_meshing>` mode. All other operations are performed within Fluent's
-:ref:`solver <ref_solver>` mode, including:
+Fluent's meshing mode. All other operations are performed within Fluent's
+solver mode, including:
 
 - Setting boundary conditions
 - Defining fluid properties

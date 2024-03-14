@@ -22,7 +22,7 @@ actions such as these:
 
 - Launch Fluent using a local Ansys installation.
 - Connect to a Fluent instance running on a remote machine.
-- Use Fluent's TUI (text user interface) commands for both :ref:`meshing <ref_meshing_tui>` and :ref:`solver <ref_solver_tui>` features.
+- Use Fluent's TUI (text user interface) commands for both meshing and solver features.
 - Use Fluent's built-in postprocessing capabilities.
 
 PyFluent is bundled with the Fluent installation. You can also download and install PyFluent

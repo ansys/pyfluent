@@ -2,8 +2,8 @@ API reference
 =============
 
 This section describes the core Pythonic interfaces for Fluent. Here, you can find the application programming
-interfaces for such things as launching Fluent, assorted utilities, as well as the interfaces for the :ref:`meshing <ref_meshing>` and
-:ref:`solver <ref_solver>` components of Fluent.
+interfaces for such things as launching Fluent, assorted utilities, as well as the interfaces for the meshing and
+solver components of Fluent.
 
 General
 #######
@@ -26,7 +26,7 @@ Solver
 ######
 
 The :ref:`ref_solver` mode is dedicated to capturing the power of the Fluent solver. This component consists of a
-:ref:`ref_settings`-based interface and a :ref:`ref_solver_tui`-based interface that is derived from the Fluent
+:ref:`ref_settings`-based interface and a :ref:`ref_solver_tui` based interface that is derived from the Fluent
 Solver TUI, as well as access to surface data and scalar and vector field data.
 
 

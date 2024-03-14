@@ -40,7 +40,7 @@ Fluent within the Python ecosystem and broad access to native Fluent features, i
 ability to:
 
 - Launch Fluent using a local Ansys installation
-- Use Fluent's TUI (text user interface) commands for both :ref:`meshing <ref_meshing>` and :ref:`solver <ref_solver>` features
+- Use Fluent's TUI (text user interface) commands for both meshing and solver features
 - Use Fluent's built-in postprocessing capabilities
 
 Documentation and issues
