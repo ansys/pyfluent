@@ -1,7 +1,7 @@
 [MAIN]
 load-plugins = pylint.extensions.docparams
 disable = all
-enable = missing-raises-doc, missing-module-docstring, missing-class-docstring, missing-function-docstring
+enable = missing-raises-doc, missing-module-docstring, missing-class-docstring, missing-function-docstring, missing-param-doc
 ignore-paths = codegen, tests
 
 [BASIC]

@@ -606,7 +606,9 @@ class FieldTransaction:
         skip: int, optional
             Pathlines to skip. The default is ``0``.
         reverse: bool, optional
-            Whether to draw pathlines in reverse direction. The default is ``False``.
+            Whether to draw pathlines in a reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
         tolerance: float, optional
             Pathlines tolerance. The default is ``0.001``.
         coarsen: int, optional
@@ -1434,6 +1436,8 @@ class FieldData:
             Pathlines to skip. The default is ``0``.
         reverse: bool, optional
             Whether to draw pathlines in reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
         tolerance: float, optional
             Pathlines tolerance. The default is ``0.001``.
         coarsen: int, optional

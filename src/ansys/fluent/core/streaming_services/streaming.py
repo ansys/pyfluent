@@ -38,6 +38,10 @@ class StreamingService:
         ----------
         callback : Callable
             Callback to register.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------

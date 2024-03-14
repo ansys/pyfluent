@@ -806,6 +806,8 @@ class PyStateContainer(PyCallableStateObject):
         ----------
         state : Any, optional
             state
+        kwargs : Any
+            Keyword arguments.
 
         Raises
         ------

@@ -454,6 +454,8 @@ class RealNumerical(Numerical):
         state
             The type of state can be float, str (representing either
             an expression or a value with units), or an ansys.units.Quantity.
+        kwargs : Any
+            Keyword arguments.
 
         Raises
         ------
@@ -1929,6 +1931,12 @@ def get_root(
     ----------
     flproxy: Proxy
         Object that interfaces with the Fluent backend.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
+    scheme_eval : Any
+        A gRPC service to execute Scheme code.
+    version : str
+        Fluent version.
 
     Raises
     ------
