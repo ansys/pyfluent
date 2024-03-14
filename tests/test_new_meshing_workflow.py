@@ -5,8 +5,8 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.meshing.watertight import watertight_workflow
-from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
 @pytest.mark.nightly
