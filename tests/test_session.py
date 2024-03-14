@@ -439,3 +439,20 @@ def test_get_set_state_on_solver(new_solver_session):
     state = solver.get_state()
     assert state
     solver.set_state(state)
+
+
+def test_solver_structure(new_solver_session):
+    solver = new_solver_session
+    with pytest.warns(DeprecationWarning):
+        solver.field_data
+    with pytest.warns(DeprecationWarning):
+        solver.svar_data
+
+    assert {
+        "field_data",
+        "field_info",
+        "field_data_streaming",
+        "solution_variable_data",
+        "solution_variable_info",
+        "reduction",
+    }.issubset(set(dir(solver.fields)))
