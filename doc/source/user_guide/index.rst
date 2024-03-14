@@ -106,7 +106,7 @@ Meshing mode session
 A :ref:`meshing <ref_meshing>` mode session has an active ``meshing`` object that provides two
 distinct interfaces to the mesher:
 
-- :ref:`tui <ref_meshing_tui>` object
+- The :ref:`TUI <ref_meshing_tui>` object
 - meshing workflow, which consists of :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties and the
   :ref:`PartManagement <ref_meshing_datamodel_PartManagement>` and :ref:`PMFileMangement <ref_meshing_datamodel_PMFileManagement>` classes
 
