@@ -5,6 +5,7 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.meshing.watertight import watertight_workflow
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
@@ -544,12 +545,23 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     watertight.task("import_geom_wtm").file_name = import_file_name
     watertight.task("import_geom_wtm").length_unit = "in"
     watertight.task("import_geom_wtm")()
-    assert watertight.task("import_geom_wtm").get_next_possible_tasks() == [
+    _next_possible_tasks = [
         "import_body_of_influence_geometry",
         "set_up_periodic_boundaries",
         "create_local_refinement_regions",
+        "load_cad_geometry",
         "run_custom_journal",
     ]
+    if meshing.get_fluent_version() >= FluentVersion.v242:
+        assert (
+            watertight.task("import_geom_wtm").get_next_possible_tasks()
+            == _next_possible_tasks
+        )
+    else:
+        assert (
+            set(watertight.task("import_geom_wtm").get_next_possible_tasks())
+            == set(_next_possible_tasks) - "load_cad_geometry"
+        )
     watertight.task("import_geom_wtm").insert_next_task(
         "import_body_of_influence_geometry"
     )
