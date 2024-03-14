@@ -73,12 +73,12 @@ setting, and iterates the solver:
   solver.tui.solve.initialize.initialize_flow()
   solver.tui.solve.dual_time_iterate(2, 3)
 
-If you want to interact with the Fluent GUI (graphical user interface), pass ``ui="gui"``
+If you want to interact with the Fluent GUI (graphical user interface), pass ``ui_mode="gui"``
 to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method:
 
 .. code:: python
 
-  session = pyfluent.launch_fluent(precision="double", processor_count=2, ui="gui", mode="solver")
+  session = pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui", mode="solver")
 
 If you want to look at PyFluent's debug logging, use the following command:
 
