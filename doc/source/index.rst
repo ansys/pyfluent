@@ -30,7 +30,7 @@ solution.
 
 You can read your mesh into Fluent or, for 3D geometries, create your mesh using
 Fluent's meshing mode. All other operations are performed within Fluent's
-solver mode, including:
+solution mode, including:
 
 - Setting boundary conditions
 - Defining fluid properties
