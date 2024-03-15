@@ -235,7 +235,7 @@ class SlurmLauncher:
         _await_fluent_launch(
             self._server_info_file_name, self._start_timeout, self._sifile_last_mtime
         )
-        session = self._new_session.create_from_server_info_file(
+        session = self._new_session._create_from_server_info_file(
             server_info_file_name=self._server_info_file_name,
             file_transfer_service=None,
             cleanup_on_exit=self._cleanup_on_exit,
