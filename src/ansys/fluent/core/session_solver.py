@@ -276,6 +276,13 @@ class Solver(BaseSession):
     def __dir__(self):
         self._populate_settings_api_root()
         dir_list = set(
-            list(self.__dict__.keys()) + dir(super()) + dir(self._settings_api_root)
-        ) - {"svar_data", "svar_info", "reduction"}
+            list(self.__dict__.keys()) + dir(type(self)) + dir(self._settings_api_root)
+        ) - {
+            "svar_data",
+            "svar_info",
+            "reduction",
+            "field_data",
+            "field_info",
+            "field_data_streaming",
+        }
         return sorted(dir_list)

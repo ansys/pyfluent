@@ -341,7 +341,7 @@ class BaseSession:
         self.exit()
 
     def __dir__(self):
-        dir_list = set(list(self.__dict__.keys()) + dir(super())) - {
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
             "field_data_streaming",
