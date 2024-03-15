@@ -112,7 +112,7 @@ class BaseSession:
         """Build a BaseSession object from fluent_connection object."""
         self.fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
-        self.error_state = self.fluent_connection.error_state
+        self._error_state = self.fluent_connection._error_state
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
@@ -128,14 +128,14 @@ class BaseSession:
         self.datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.error_state,
+            self._error_state,
             self.scheme_eval,
         )
 
         self.datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.error_state,
+            self._error_state,
             self._file_transfer_service,
         )
 
@@ -145,15 +145,15 @@ class BaseSession:
         self._batch_ops_service = service_creator("batch_ops").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.events_service = service_creator("events").create(
+        self._events_service = service_creator("events").create(
             fluent_connection._channel, fluent_connection._metadata
         )
         self.events_manager = EventsManager(
-            self.events_service, self.error_state, self.fluent_connection._id
+            self._events_service, self._error_state, self.fluent_connection._id
         )
 
         self._monitors_service = service_creator("monitors").create(
-            fluent_connection._channel, fluent_connection._metadata, self.error_state
+            fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         self.monitors_manager = MonitorsManager(
             self.fluent_connection._id, self._monitors_service
@@ -169,26 +169,34 @@ class BaseSession:
         self.events_manager.start()
 
         self._field_data_service = self.fluent_connection.create_grpc_service(
-            FieldDataService, self.error_state
-        )
-        self.field_info = service_creator("field_info").create(
-            self._field_data_service, _IsDataValid(self.scheme_eval)
-        )
-        self.field_data = service_creator("field_data").create(
-            self._field_data_service,
-            self.field_info,
-            _IsDataValid(self.scheme_eval),
-            self.scheme_eval,
-        )
-        self.field_data_streaming = FieldDataStreaming(
-            self.fluent_connection._id, self._field_data_service
+            FieldDataService, self._error_state
         )
 
-        self.settings_service = service_creator("settings").create(
+        class Fields:
+            """Container for field and solution variables."""
+
+            def __init__(self, _session):
+                """Initialize Fields."""
+                self.field_info = service_creator("field_info").create(
+                    _session._field_data_service, _IsDataValid(_session.scheme_eval)
+                )
+                self.field_data = service_creator("field_data").create(
+                    _session._field_data_service,
+                    self.field_info,
+                    _IsDataValid(_session.scheme_eval),
+                    _session.scheme_eval,
+                )
+                self.field_data_streaming = FieldDataStreaming(
+                    _session.fluent_connection._id, _session._field_data_service
+                )
+
+        self.fields = Fields(self)
+
+        self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.scheme_eval,
-            self.error_state,
+            self._error_state,
         )
 
         self.health_check_service = fluent_connection.health_check_service
@@ -206,6 +214,33 @@ class BaseSession:
             self.fluent_connection.register_finalizer_cb(obj.stop)
 
     @property
+    def field_info(self):
+        """Provides access to Fluent field information."""
+        warnings.warn(
+            "field_info is deprecated. Use fields.field_info instead.",
+            DeprecationWarning,
+        )
+        return self.fields.field_info
+
+    @property
+    def field_data(self):
+        """Fluent field data on surfaces."""
+        warnings.warn(
+            "field_data is deprecated. Use fields.field_data instead.",
+            DeprecationWarning,
+        )
+        return self.fields.field_data
+
+    @property
+    def field_data_streaming(self):
+        """Field gRPC streaming service of Fluent."""
+        warnings.warn(
+            "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
+            DeprecationWarning,
+        )
+        return self.fields.field_data_streaming
+
+    @property
     def id(self) -> str:
         """Return the session ID."""
         return self.fluent_connection._id
@@ -221,7 +256,7 @@ class BaseSession:
         self.journal.stop()
 
     @classmethod
-    def create_from_server_info_file(
+    def _create_from_server_info_file(
         cls,
         server_info_file_name: str,
         file_transfer_service: Optional[Any] = None,
@@ -269,12 +304,9 @@ class BaseSession:
         self.fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Terminate session."""
+        """Immediately terminates the Fluent session, losing unsaved progress and
+        data."""
         self.fluent_connection.force_exit()
-
-    def force_exit_container(self) -> None:
-        """Terminate Docker container session."""
-        self.fluent_connection.force_exit_container()
 
     def upload(self, file_name: str):
         """Upload a file to the server.
@@ -284,7 +316,8 @@ class BaseSession:
         file_name : str
             Name of the local file to upload to the server.
         """
-        return self._file_transfer_service.upload_file(file_name)
+        if self._file_transfer_service:
+            return self._file_transfer_service.upload_file(file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server.
@@ -296,7 +329,8 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        return self._file_transfer_service.download_file(file_name, local_directory)
+        if self._file_transfer_service:
+            return self._file_transfer_service.download_file(file_name, local_directory)
 
     def __enter__(self):
         return self
@@ -305,3 +339,11 @@ class BaseSession:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self.exit()
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
+            "field_data",
+            "field_info",
+            "field_data_streaming",
+        }
+        return sorted(dir_list)

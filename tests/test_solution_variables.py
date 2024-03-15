@@ -15,8 +15,8 @@ def test_solution_variables(new_solver_session):
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
 
-    solution_variable_info = solver.solution_variable_info
-    solution_variable_data = solver.solution_variable_data
+    solution_variable_info = solver.fields.solution_variable_info
+    solution_variable_data = solver.fields.solution_variable_data
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
@@ -127,8 +127,8 @@ def test_solution_variables_single_precision(new_solver_session_single_precision
         "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
     )
 
-    solution_variable_info = solver.solution_variable_info
-    solution_variable_data = solver.solution_variable_data
+    solution_variable_info = solver.fields.solution_variable_info
+    solution_variable_data = solver.fields.solution_variable_data
 
     solver.file.read(file_type="case", file_name=import_file_name)
 

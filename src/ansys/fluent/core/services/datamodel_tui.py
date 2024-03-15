@@ -136,6 +136,7 @@ class DatamodelService:
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
     ) -> Any:
+        """Get the attribute value."""
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.Value(attribute.upper())
@@ -145,6 +146,7 @@ class DatamodelService:
         return _convert_gvalue_to_value(response.value)
 
     def execute_command(self, path: str, *args, **kwargs) -> Any:
+        """Execute the command."""
         request = DataModelProtoModule.ExecuteCommandRequest()
         request.path = path
         if kwargs:
@@ -155,6 +157,7 @@ class DatamodelService:
         return self._impl.execute_command(request)
 
     def execute_query(self, path: str, *args, **kwargs) -> Any:
+        """Execute the query."""
         request = DataModelProtoModule.ExecuteQueryRequest()
         request.path = path
         if kwargs:
@@ -165,6 +168,7 @@ class DatamodelService:
         return self._impl.execute_query(request)
 
     def get_static_info(self, path: str):
+        """Get static info."""
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.path = path
         response = self._impl.get_static_info(request)

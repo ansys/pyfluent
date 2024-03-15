@@ -33,61 +33,73 @@ class _SettingsServiceImpl:
     def set_var(
         self, request: SettingsModule.SetVarRequest
     ) -> SettingsModule.SetVarResponse:
+        """Set a variable."""
         return self.__stub.SetVar(request, metadata=self.__metadata)
 
     def get_var(
         self, request: SettingsModule.GetVarRequest
     ) -> SettingsModule.GetVarResponse:
+        """Get a variable."""
         return self.__stub.GetVar(request, metadata=self.__metadata)
 
     def rename(
         self, request: SettingsModule.RenameRequest
     ) -> SettingsModule.RenameResponse:
+        """Rename an object."""
         return self.__stub.Rename(request, metadata=self.__metadata)
 
     def create(
         self, request: SettingsModule.CreateRequest
     ) -> SettingsModule.CreateResponse:
+        """Create an object."""
         return self.__stub.Create(request, metadata=self.__metadata)
 
     def delete(
         self, request: SettingsModule.DeleteRequest
     ) -> SettingsModule.DeleteResponse:
+        """Delete an object."""
         return self.__stub.Delete(request, metadata=self.__metadata)
 
     def get_object_names(
         self, request: SettingsModule.GetObjectNamesRequest
     ) -> SettingsModule.GetObjectNamesResponse:
+        """Get object names."""
         return self.__stub.GetObjectNames(request, metadata=self.__metadata)
 
     def get_list_size(
         self, request: SettingsModule.GetListSizeRequest
     ) -> SettingsModule.GetListSizeResponse:
+        """Get list size."""
         return self.__stub.GetListSize(request, metadata=self.__metadata)
 
     def resize_list_object(
         self, request: SettingsModule.ResizeListObjectRequest
     ) -> SettingsModule.ResizeListObjectResponse:
+        """Resize list object."""
         return self.__stub.ResizeListObject(request, metadata=self.__metadata)
 
     def get_static_info(
         self, request: SettingsModule.GetStaticInfoRequest
     ) -> SettingsModule.GetStaticInfoResponse:
+        """Get static info."""
         return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
 
     def execute_cmd(
         self, request: SettingsModule.ExecuteCommandRequest
     ) -> SettingsModule.ExecuteCommandResponse:
+        """Execute the command."""
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
     def execute_query(
         self, request: SettingsModule.ExecuteQueryRequest
     ) -> SettingsModule.ExecuteQueryResponse:
+        """Execute the query."""
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 
     def get_attrs(
         self, request: SettingsModule.GetAttrsRequest
     ) -> SettingsModule.GetAttrsResponse:
+        """Get attributes."""
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
 
@@ -286,10 +298,15 @@ class SettingsService:
 
         return ret
 
-    # pylint: disable=missing-raises-doc
     @_trace
     def get_static_info(self) -> dict[str, Any]:
-        """Get static-info for settings."""
+        """Get static-info for settings.
+
+        Raises
+        ------
+        RuntimeError
+            If type is empty.
+        """
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)

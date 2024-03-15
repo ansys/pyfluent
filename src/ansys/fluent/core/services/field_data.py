@@ -70,9 +70,14 @@ class FieldDataService(StreamingService):
         """GetSurfacesInfo RPC of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
-    # pylint: disable=missing-raises-doc
     def get_fields(self, request):
-        """GetFields RPC of FieldData service."""
+        """GetFields RPC of FieldData service.
+
+        Raises
+        ------
+        RuntimeError
+            If an empty chunk encountered during field extraction.
+        """
         chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)
         if not chunk_iterator.is_active():
             raise RuntimeError(
@@ -194,16 +199,19 @@ class FieldInfo:
         return info
 
     def validate_scalar_fields(self, field_name: str):
+        """Validate scalar fields."""
         _AllowedScalarFieldNames(
             self._is_data_valid, info=self.get_scalar_fields_info()
         ).valid_name(field_name)
 
     def validate_vector_fields(self, field_name: str):
+        """Validate vector fields."""
         _AllowedVectorFieldNames(
             self._is_data_valid, info=self.get_vector_fields_info()
         ).valid_name(field_name)
 
     def validate_surfaces(self, surfaces: List[str]):
+        """Validate surfaces."""
         for surface in surfaces:
             _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
 
@@ -268,9 +276,14 @@ class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return self._info if self._info else self._field_info.get_surfaces_info()
 
-    # pylint: disable=missing-raises-doc
     def valid_name(self, surface_name: str) -> str:
-        """Returns valid names."""
+        """Returns valid names.
+
+        Raises
+        ------
+        DisallowedValuesError
+            If surface name is invalid.
+        """
         if validate_inputs and not self.is_valid(surface_name):
             raise DisallowedValuesError("surface", surface_name, self())
         return surface_name
@@ -593,7 +606,9 @@ class FieldTransaction:
         skip: int, optional
             Pathlines to skip. The default is ``0``.
         reverse: bool, optional
-            Whether to draw pathlines in reverse direction. The default is ``False``.
+            Whether to draw pathlines in a reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
         tolerance: float, optional
             Pathlines tolerance. The default is ``0.001``.
         coarsen: int, optional
@@ -1421,6 +1436,8 @@ class FieldData:
             Pathlines to skip. The default is ``0``.
         reverse: bool, optional
             Whether to draw pathlines in reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
         tolerance: float, optional
             Pathlines tolerance. The default is ``0.001``.
         coarsen: int, optional

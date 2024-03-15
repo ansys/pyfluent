@@ -47,6 +47,7 @@ class Container:
         )
 
     def get_path(self):
+        """Get container path."""
         return self._path
 
     @property
@@ -55,6 +56,7 @@ class Container:
         return "object"
 
     def update(self, value):
+        """Update the value."""
         for name, val in value.items():
             o = getattr(self, name)
             o.update(val)

@@ -64,6 +64,8 @@ from numpy import array
 
 
 class BadReductionRequest(Exception):
+    """Raised on an attempt to make a bad reduction request."""
+
     def __init__(self, err):
         """__init__ method of BadReductionRequest class."""
         super().__init__(f"Could not complete reduction function request: {err}")
@@ -258,14 +260,17 @@ class _Vector:
 
     @property
     def x(self):
+        """Get X vector."""
         return self.array[0]
 
     @property
     def y(self):
+        """Get Y vector."""
         return self.array[1]
 
     @property
     def z(self):
+        """Get Z vector."""
         return self.array[2]
 
 

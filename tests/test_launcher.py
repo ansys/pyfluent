@@ -28,9 +28,9 @@ from ansys.fluent.core.launcher.process_launch_string import (
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentUI,
     FluentWindowsGraphicsDriver,
     LaunchMode,
+    UIMode,
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 import ansys.platform.instancemanagement as pypim
@@ -77,22 +77,22 @@ def test_non_gui_in_windows_throws_exception():
     launcher_utils.is_windows = lambda: True
     try:
         with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v232)
+            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v232)
         with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v231)
+            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v231)
         with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v222)
+            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v222)
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(
-                FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v232
+                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v232
             )
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(
-                FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v231
+                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v231
             )
         with pytest.raises(InvalidArgument):
             _raise_non_gui_exception_in_windows(
-                FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v222
+                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v222
             )
     finally:
         launcher_utils.is_windows = lambda: default_windows_flag
@@ -103,13 +103,13 @@ def test_non_gui_in_windows_does_not_throw_exception():
     default_windows_flag = launcher_utils.is_windows()
     launcher_utils.is_windows = lambda: True
     try:
-        _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v241)
+        _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v241)
         _raise_non_gui_exception_in_windows(
-            FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v241
+            UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v241
         )
-        _raise_non_gui_exception_in_windows(FluentUI.NO_GUI, FluentVersion.v242)
+        _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v242)
         _raise_non_gui_exception_in_windows(
-            FluentUI.NO_GUI_OR_GRAPHICS, FluentVersion.v242
+            UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v242
         )
     finally:
         launcher_utils.is_windows = lambda: default_windows_flag
@@ -305,7 +305,7 @@ def test_watchdog_launch(monkeypatch):
 
 def test_fluent_launchers():
     kwargs = dict(
-        ui=FluentUI.NO_GUI,
+        ui_mode=UIMode.NO_GUI,
         graphics_driver=(
             FluentWindowsGraphicsDriver.AUTO
             if is_windows()
@@ -382,23 +382,23 @@ def test_show_gui_raises_warning():
 
 
 def test_fluent_enums():
-    assert str(FluentUI.GUI) == "gui"
-    assert FluentUI("gui") == FluentUI.GUI
+    assert str(UIMode.GUI) == "gui"
+    assert UIMode("gui") == UIMode.GUI
     with pytest.raises(ValueError):
-        FluentUI("")
-    assert FluentUI.NO_GUI < FluentUI.GUI
+        UIMode("")
+    assert UIMode.NO_GUI < UIMode.GUI
     with pytest.raises(TypeError):
-        FluentUI.NO_GUI < FluentWindowsGraphicsDriver.AUTO
+        UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
 
 
 def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
-        pyfluent.launch_fluent(ui="gu")
+        pyfluent.launch_fluent(ui_mode="gu")
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
-    for m in FluentUI:
+    for m in UIMode:
         assert (
-            _build_fluent_launch_args_string(ui=m).strip() == f"3ddp -{m.value[0]}"
+            _build_fluent_launch_args_string(ui_mode=m).strip() == f"3ddp -{m.value[0]}"
             if m.value[0]
             else " 3ddp"
         )
