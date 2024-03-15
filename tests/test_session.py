@@ -223,9 +223,9 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
         password="12345",
     )
     # check a few dir elements
-    session_dir = dir(session)
+    fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
-        assert attr in session_dir
+        assert attr in fields_dir
     assert session.health_check_service.is_serving
     server.stop(None)
     session.exit()
@@ -251,9 +251,9 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
         cleanup_on_exit=False, ip=ip, port=port, password="12345"
     )
     # check a few dir elements
-    session_dir = dir(session)
+    fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
-        assert attr in session_dir
+        assert attr in fields_dir
     assert session.health_check_service.is_serving
     server.stop(None)
     session.exit()
