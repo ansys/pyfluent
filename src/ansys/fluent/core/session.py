@@ -224,7 +224,7 @@ class BaseSession:
 
     @property
     def field_data(self):
-        """Provides access to Fluent field data on surfaces."""
+        """Fluent field data on surfaces."""
         warnings.warn(
             "field_data is deprecated, use fields.field_data instead",
             DeprecationWarning,
