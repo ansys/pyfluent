@@ -377,7 +377,7 @@ class Base:
             self._do_after_execute(value)
 
     def _while_setting_state(self):
-        """Avoid additional processing while setting state."""
+        """Avoid additional processing while setting the state."""
         return nullcontext()
 
     def _while_renaming(self):
