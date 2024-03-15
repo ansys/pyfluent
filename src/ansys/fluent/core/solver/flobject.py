@@ -330,10 +330,7 @@ class Base:
 
     def _is_stable(self) -> bool:
         """Whether the object is stable."""
-        if self.is_active():
-            attr = self.get_attr(_InlineConstants.is_stable)
-        else:
-            attr = True
+        attr = self.get_attr(_InlineConstants.is_stable)
         attr = False if attr is False else True
         if attr is False:
             warnings.warn(
@@ -1026,7 +1023,10 @@ class Group(SettingsBase[DictStateType]):
                 return alias_obj
             return alias
         try:
-            return super().__getattribute__(name)
+            attr = super().__getattribute__(name)
+            if isinstance(attr, Base):
+                attr._is_stable()
+            return attr
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
