@@ -713,7 +713,12 @@ class ArgumentWrapper(PyCallableStateObject):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
-            getattr(self, attr).set_state(value)
+            if self._dynamic_interface:
+                camel_attr = snake_to_camel_case(
+                    str(attr), self._get_camel_case_arg_keys()
+                )
+                attr = camel_attr if camel_attr else attr
+            self.set_state({attr: value})
 
     def __dir__(self):
         arg_list = []
