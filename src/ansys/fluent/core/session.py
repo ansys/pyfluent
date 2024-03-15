@@ -217,7 +217,7 @@ class BaseSession:
     def field_info(self):
         """Provides access to Fluent field information."""
         warnings.warn(
-            "field_info is deprecated, use fields.field_info instead",
+            "field_info is deprecated. Use fields.field_info instead.",
             DeprecationWarning,
         )
         return self.fields.field_info

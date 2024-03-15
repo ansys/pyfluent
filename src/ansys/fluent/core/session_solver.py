@@ -131,27 +131,27 @@ class Solver(BaseSession):
 
     @property
     def svar_data(self):
-        """Return the SolutionVariableData handle."""
+        """``SolutionVariableData`` handle."""
         warnings.warn(
-            "svar_data is deprecated, use fields.solution_variable_data instead",
+            "svar_data is deprecated. Use fields.solution_variable_data instead.",
             DeprecationWarning,
         )
         return self.fields.solution_variable_data
 
     @property
     def svar_info(self):
-        """SolutionVariableInfo handle."""
+        """``SolutionVariableInfo`` handle."""
         warnings.warn(
-            "svar_info is deprecated, use fields.solution_variable_info instead",
+            "svar_info is deprecated. Use fields.solution_variable_info instead.",
             DeprecationWarning,
         )
         return self.fields.solution_variable_info
 
     @property
     def reduction(self):
-        """Reduction."""
+        """``Reduction`` handle."""
         warnings.warn(
-            "reduction is deprecated, use fields.reduction instead",
+            "reduction is deprecated. Use fields.reduction instead.",
             DeprecationWarning,
         )
         return self.fields.reduction
