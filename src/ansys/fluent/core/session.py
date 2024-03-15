@@ -226,7 +226,7 @@ class BaseSession:
     def field_data(self):
         """Fluent field data on surfaces."""
         warnings.warn(
-            "field_data is deprecated, use fields.field_data instead",
+            "field_data is deprecated. Use fields.field_data instead.",
             DeprecationWarning,
         )
         return self.fields.field_data
