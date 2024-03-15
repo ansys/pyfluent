@@ -140,7 +140,7 @@ class Solver(BaseSession):
 
     @property
     def svar_info(self):
-        """Return the SolutionVariableInfo handle."""
+        """SolutionVariableInfo handle."""
         warnings.warn(
             "svar_info is deprecated, use fields.solution_variable_info instead",
             DeprecationWarning,
