@@ -235,7 +235,7 @@ class BaseSession:
     def field_data_streaming(self):
         """Field gRPC streaming service of Fluent."""
         warnings.warn(
-            "field_data_streaming is deprecated, use fields.field_data_streaming instead",
+            "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
             DeprecationWarning,
         )
         return self.fields.field_data_streaming
