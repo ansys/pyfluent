@@ -120,13 +120,13 @@ class ErrorState:
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> session = pyfluent.launch_fluent()
-    >>> session.fluent_connection.error_state.set("test", "test details")
-    >>> session.fluent_connection.error_state.name
+    >>> session.fluent_connection._error_state.set("test", "test details")
+    >>> session.fluent_connection._error_state.name
     'test'
-    >>> session.fluent_connection.error_state.details
+    >>> session.fluent_connection._error_state.details
     'test details'
-    >>> session.fluent_connection.error_state.clear()
-    >>> session.fluent_connection.error_state.name
+    >>> session.fluent_connection._error_state.clear()
+    >>> session.fluent_connection._error_state.name
     ''
     """
 
@@ -269,7 +269,7 @@ class FluentConnection:
         PortNotProvided
             If port is not provided.
         """
-        self.error_state = ErrorState()
+        self._error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
         self._slurm_job_id = None
@@ -298,7 +298,7 @@ class FluentConnection:
         )
 
         self.health_check_service = service_creator("health_check").create(
-            self._channel, self._metadata, self.error_state
+            self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
@@ -315,7 +315,7 @@ class FluentConnection:
         # Move this service later.
         # Currently, required by launcher to connect to a running session.
         self._scheme_eval_service = self.create_grpc_service(
-            SchemeEvalService, self.error_state
+            SchemeEvalService, self._error_state
         )
         self.scheme_eval = service_creator("scheme_eval").create(
             self._scheme_eval_service
