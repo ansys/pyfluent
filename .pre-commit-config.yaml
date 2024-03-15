@@ -64,7 +64,7 @@ repos:
     - id: check-yaml
 
 - repo: https://github.com/PyCQA/pylint
-  rev: v3.0.3
+  rev: v3.1.0
   hooks:
     - id: pylint
       args:
