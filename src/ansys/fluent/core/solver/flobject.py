@@ -330,6 +330,8 @@ class Base:
 
     def _is_stable(self) -> bool:
         """Whether the object is stable."""
+        if not self.is_active():
+            return
         attr = self.get_attr(_InlineConstants.is_stable)
         attr = False if attr is False else True
         if attr is False:
