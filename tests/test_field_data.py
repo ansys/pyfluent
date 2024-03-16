@@ -3,6 +3,7 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.field_data import FieldUnavailable, SurfaceDataType
 
@@ -369,3 +370,17 @@ def test_field_info_validators(new_solver_session) -> None:
 
     with pytest.raises(DisallowedValuesError) as surface_error:
         solver.fields.field_info.validate_surfaces(["out"])
+
+
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
+def test_field_data_does_not_modify_case(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+    solver.scheme_eval.scheme_eval("(%save-case-id)")
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.field_data.get_scalar_field_data(
+        field_name="absolute-pressure", surface_name="cold-inlet"
+    )
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")

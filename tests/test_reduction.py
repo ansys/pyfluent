@@ -351,3 +351,13 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_moment(solver1)
     _test_sum(solver1)
     _test_sum_if(solver1)
+
+
+def test_reduction_does_not_modify_case(load_static_mixer_case):
+    solver = load_static_mixer_case
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.reduction.area_average(
+        expression="AbsolutePressure",
+        locations=solver.setup.boundary_conditions.velocity_inlet,
+    )
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
