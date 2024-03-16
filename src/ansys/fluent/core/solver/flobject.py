@@ -647,12 +647,10 @@ class SettingsBase(Base, Generic[StateT]):
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
-                    if not isinstance(alias, str):
-                        alias = alias.alias_path
                     # TODO: handle ".." in alias path
                     if ".." in alias:
                         raise NotImplementedError(
-                            'Cannot handle ".." in alias path while setting state.'
+                            'Cannot handle ".." in alias path while setting dictionary state.'
                         )
                     ret_alias = ret
                     comps = alias.split("/")
