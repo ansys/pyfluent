@@ -38,6 +38,7 @@ class Setting:
 
     attrs = {
         "active?": lambda self: True,
+        "webui-release-active?": lambda self: True,
     }
 
 
@@ -294,6 +295,7 @@ class Root(Group):
             attrs = {
                 "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
+                "webui-release-active?": lambda self: True,
             }
 
         children = {
