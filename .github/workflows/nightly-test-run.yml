@@ -113,6 +113,11 @@ jobs:
           cat src/ansys/fluent/core/fluent_version_241.py
           python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
       - name: 24.1 Unit Testing
         run: |
           make install-test
