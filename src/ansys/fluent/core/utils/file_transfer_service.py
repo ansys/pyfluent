@@ -1,9 +1,13 @@
 """Provides a module for file transfer service."""
 
 import os
+from pathlib import Path
+import subprocess
 from typing import Any, Callable, Optional, Union  # noqa: F401
 
+from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
+import ansys.tools.filetransfer as ft
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -11,6 +15,67 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
+
+
+class AnsysFileTransferService:
+    """Provides a file transfer service based on ``gRPC client<https://filetransfer.tools.docs.pyansys.com/version/stable/>``
+    and ``gRPC server<https://filetransfer-server.tools.docs.pyansys.com/version/stable/>``
+    """
+
+    def __init__(self):
+        self.server_path = str(
+            Path(os.path.dirname(os.path.realpath(__file__))) / "server.exe"
+        )
+        self.fluent_cwd = Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
+        self.server = subprocess.Popen(
+            f"{self.server_path} --server-address localhost:{id(self)}",
+            cwd=self.fluent_cwd,
+        )
+        self.client = ft.Client.from_server_address(f"localhost:{id(self)}")
+
+    def upload(self, file_name: Union[list[str], str]):
+        """Upload a file to the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name
+        Raises
+        ------
+        FileNotFoundError
+            If a file does not exist.
+        """
+        files = [file_name] if isinstance(file_name, str) else file_name
+        if self.client:
+            for file in files:
+                if os.path.isfile(file):
+                    self.client.upload_file(
+                        local_filename=file, remote_filename=os.path.basename(file)
+                    )
+                else:
+                    raise FileNotFoundError(f"{file} does not exist.")
+
+    def download(
+        self,
+        file_name: Union[list[str], str],
+    ):
+        """Download a file from the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name
+        """
+        files = [file_name] if isinstance(file_name, str) else file_name
+        if self.client:
+            for file in files:
+                if os.path.isfile(file):
+                    print(f"\nFile already exists. File path:\n{file}\n")
+                else:
+                    self.client.download_file(
+                        remote_filename=os.path.basename(file),
+                        local_filename=os.path.basename(file),
+                    )
 
 
 class PimFileTransferService:
