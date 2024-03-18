@@ -1629,7 +1629,7 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                static_info["args"],
+                static_info.get("args"),
             )
         except RuntimeError:
             logger.warning(

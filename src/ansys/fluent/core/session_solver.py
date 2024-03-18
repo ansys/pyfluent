@@ -93,7 +93,7 @@ class Solver(BaseSession):
     def _build_from_fluent_connection(self, fluent_connection):
         self._tui_service = self.datamodel_service_tui
         self._se_service = self.datamodel_service_se
-        self._settings_service = self.settings_service
+        self._settings_service = self._settings_service
         self._tui = None
         self._workflow = None
         self._system_coupling = None
@@ -103,49 +103,58 @@ class Solver(BaseSession):
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.solution_variable_info = SolutionVariableInfo(
+        self.fields.solution_variable_info = SolutionVariableInfo(
             self._solution_variable_service
         )
         self._reduction_service = self.fluent_connection.create_grpc_service(
-            ReductionService, self.error_state
+            ReductionService, self._error_state
         )
         if FluentVersion(self._version) >= FluentVersion.v241:
-            self.reduction = service_creator("reduction").create(
+            self.fields.reduction = service_creator("reduction").create(
                 self._reduction_service, self
             )
         else:
-            self.reduction = reduction_old
+            self.fields.reduction = reduction_old
         self._settings_api_root = None
+        self.fields.solution_variable_data = self._solution_variable_data()
 
     def build_from_fluent_connection(self, fluent_connection):
         """Build a solver session object from fluent_connection object."""
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
-    @property
-    def solution_variable_data(self) -> SolutionVariableData:
+    def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
         return service_creator("svar_data").create(
-            self._solution_variable_service, self.solution_variable_info
+            self._solution_variable_service, self.fields.solution_variable_info
         )
 
     @property
     def svar_data(self):
-        """Return the SolutionVariableData handle."""
+        """``SolutionVariableData`` handle."""
         warnings.warn(
-            "svar_data is deprecated, use solution_variable_data instead",
+            "svar_data is deprecated. Use fields.solution_variable_data instead.",
             DeprecationWarning,
         )
-        return self.solution_variable_data
+        return self.fields.solution_variable_data
 
     @property
     def svar_info(self):
-        """Return the SolutionVariableInfo handle."""
+        """``SolutionVariableInfo`` handle."""
         warnings.warn(
-            "svar_info is deprecated, use solution_variable_info instead",
+            "svar_info is deprecated. Use fields.solution_variable_info instead.",
             DeprecationWarning,
         )
-        return self.solution_variable_info
+        return self.fields.solution_variable_info
+
+    @property
+    def reduction(self):
+        """``Reduction`` handle."""
+        warnings.warn(
+            "reduction is deprecated. Use fields.reduction instead.",
+            DeprecationWarning,
+        )
+        return self.fields.reduction
 
     @property
     def _version(self):
@@ -192,7 +201,7 @@ class Solver(BaseSession):
         return self._workflow
 
     @property
-    def _root(self):
+    def settings(self):
         """Root settings object."""
         if self._settings_root is None:
             self._settings_root = flobject.get_root(
@@ -223,10 +232,10 @@ class Solver(BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            state = self._root.get_state()
+            state = self.settings.get_state()
             self.build_from_fluent_connection(fut_session.fluent_connection)
             # TODO temporary fix till set_state at settings root is fixed
-            _set_state_safe(self._root, state)
+            _set_state_safe(self.settings, state)
 
     def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
@@ -247,18 +256,18 @@ class Solver(BaseSession):
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
-        return self._root.get_state()
+        return self.settings.get_state()
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        self._root.set_state(state, **kwargs)
+        self.settings.set_state(state, **kwargs)
 
     def __call__(self):
         return self.get_state()
 
     def _populate_settings_api_root(self):
         if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self._root)
+            self._settings_api_root = _import_settings_root(self.settings)
 
     def __getattr__(self, attr):
         self._populate_settings_api_root()
@@ -266,10 +275,14 @@ class Solver(BaseSession):
 
     def __dir__(self):
         self._populate_settings_api_root()
-        return sorted(
-            set(
-                list(self.__dict__.keys())
-                + dir(type(self))
-                + dir(self._settings_api_root)
-            )
-        )
+        dir_list = set(
+            list(self.__dict__.keys()) + dir(type(self)) + dir(self._settings_api_root)
+        ) - {
+            "svar_data",
+            "svar_info",
+            "reduction",
+            "field_data",
+            "field_info",
+            "field_data_streaming",
+        }
+        return sorted(dir_list)

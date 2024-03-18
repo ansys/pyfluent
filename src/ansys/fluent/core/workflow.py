@@ -123,9 +123,15 @@ def _refresh_task_accessors(obj):
 def _convert_task_list_to_display_names(workflow_root, task_list):
     if pyfluent.DATAMODEL_USE_STATE_CACHE:
         workflow_state = DataModelCache.get_state("workflow", workflow_root)
+        return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
     else:
-        workflow_state = workflow_root.get_remote_state()
-    return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
+        _display_names = []
+        _org_path = workflow_root.path
+        for _task_name in task_list:
+            workflow_root.path = [("TaskObject", _task_name), ("_name_", "")]
+            _display_names.append(workflow_root())
+        workflow_root.path = _org_path
+        return _display_names
 
 
 class BaseTask:
@@ -458,6 +464,9 @@ class BaseTask:
         """Display name."""
         return self._name_()
 
+    def __repr__(self):
+        return f"<Task '{self.display_name()}'>"
+
 
 class TaskContainer(PyCallableStateObject):
     """Wrap a workflow TaskObject container.
@@ -704,7 +713,12 @@ class ArgumentWrapper(PyCallableStateObject):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
-            getattr(self, attr).set_state(value)
+            if self._dynamic_interface:
+                camel_attr = snake_to_camel_case(
+                    str(attr), self._get_camel_case_arg_keys()
+                )
+                attr = camel_attr if camel_attr else attr
+            self.set_state({attr: value})
 
     def __dir__(self):
         arg_list = []
