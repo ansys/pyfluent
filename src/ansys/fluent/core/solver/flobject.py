@@ -69,6 +69,7 @@ class InactiveObjectError(RuntimeError):
 
 class _InlineConstants:
     is_active = "active?"
+    is_stable = "webui-release-active?"
     is_read_only = "read-only?"
     default_value = "default"
     min = "min"
@@ -189,7 +190,7 @@ class Base:
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
-    def set_file_transfer_service(self, file_transfer_service):
+    def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
         self._setattr("_file_transfer_service", file_transfer_service)
 
@@ -327,6 +328,21 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
+    def _is_stable(self) -> bool:
+        """Whether the object is stable."""
+        if self.is_active():
+            attr = self.get_attr(_InlineConstants.is_stable)
+        else:
+            attr = True
+        attr = False if attr is False else True
+        if attr is False:
+            warnings.warn(
+                f"The API feature at {self.path} is not stable. "
+                f"It is not guaranteed that it is fully validated and "
+                f"there is no commitment to its backwards compatibility."
+            )
+        return attr
+
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
         attr = self.get_attr(_InlineConstants.is_read_only)
@@ -360,27 +376,27 @@ class Base:
         if hasattr(self, "_do_after_execute"):
             self._do_after_execute(value)
 
-    def while_setting_state(self):
-        """Avoid additional processing while setting state."""
+    def _while_setting_state(self):
+        """Avoid additional processing while setting the state."""
         return nullcontext()
 
-    def while_renaming(self):
+    def _while_renaming(self):
         """Avoid additional processing while renaming."""
         return nullcontext()
 
-    def while_deleting(self):
+    def _while_deleting(self):
         """Avoid additional processing while deleting."""
         return nullcontext()
 
-    def while_creating(self):
+    def _while_creating(self):
         """Avoid additional processing while creating."""
         return nullcontext()
 
-    def while_resizing(self):
+    def _while_resizing(self):
         """Avoid additional processing while resizing."""
         return nullcontext()
 
-    def while_executing_command(self):
+    def _while_executing_command(self):
         """Avoid additional processing while executing a command."""
         return nullcontext()
 
@@ -548,28 +564,22 @@ class _Alias:
                     )
                     _Alias.once = True
 
-    def while_setting_state(self):
-        """Print newer API while setting state."""
+    def _while_setting_state(self):
         return self._print_newer_api()
 
-    def while_renaming(self):
-        """Print newer API while renaming."""
+    def _while_renaming(self):
         return self._print_newer_api()
 
-    def while_deleting(self):
-        """Print newer API while deleting."""
+    def _while_deleting(self):
         return self._print_newer_api()
 
-    def while_creating(self):
-        """Print newer API while creating."""
+    def _while_creating(self):
         return self._print_newer_api()
 
-    def while_resizing(self):
-        """Print newer API while resizing."""
+    def _while_resizing(self):
         return self._print_newer_api()
 
-    def while_executing_command(self):
-        """Print newer API while executing a command."""
+    def _while_executing_command(self):
         return self._print_newer_api()
 
 
@@ -623,7 +633,7 @@ class SettingsBase(Base, Generic[StateT]):
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
     @classmethod
-    def unalias(cls, value):
+    def _unalias(cls, value):
         """Unalias the given value.
 
         Raises
@@ -648,29 +658,29 @@ class SettingsBase(Base, Generic[StateT]):
                     for i, comp in enumerate(comps):
                         cls = cls._child_classes[comp]
                         if i == len(comps) - 1:
-                            ret_alias[comp] = cls.unalias(v)
+                            ret_alias[comp] = cls._unalias(v)
                         else:
                             ret_alias[comp] = {}
                             ret_alias = ret_alias[comp]
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
-                        ret[k] = ccls.unalias(v)
+                        ret[k] = ccls._unalias(v)
                     else:
-                        ret[k] = cls.unalias(v)
+                        ret[k] = cls._unalias(v)
             return ret
         else:
             return value
 
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
-        with self.while_setting_state():
+        with self._while_setting_state():
             if isinstance(state, (tuple, ansys_units.Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                state = self.unalias(kwargs or state)
+                state = self._unalias(kwargs or state)
                 return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
@@ -1219,7 +1229,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 self._create_child_object(name)
 
     def __delitem__(self, name: str):
-        with self.while_deleting():
+        with self._while_deleting():
             self.flproxy.delete(self.path, name)
         if name in self._objects:
             del self._objects[name]
@@ -1329,7 +1339,7 @@ def _rename(obj: Union[NamedObject, _Alias], new: str, old: str):
     old : str
         Current name.
     """
-    with obj.while_renaming():
+    with obj._while_renaming():
         obj.flproxy.rename(obj.path, new, old)
     if old in obj._objects:
         del obj._objects[old]
@@ -1556,7 +1566,7 @@ class Command(BaseCommand):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        with self.while_executing_command():
+        with self._while_executing_command():
             return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
     def __call__(self, **kwds):
@@ -1583,7 +1593,7 @@ class CommandWithPositionalArgs(BaseCommand):
                         print("Enter y[es]/n[o]")
                 if response in ["n", "N", "no"]:
                     return
-        with self.while_executing_command():
+        with self._while_executing_command():
             return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
     def __call__(self, *args, **kwds):
@@ -1703,13 +1713,13 @@ class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTy
         Object
             Object that has been created.
         """
-        with self.while_creating():
+        with self._while_creating():
             self.flproxy.create(self.path, name)
         return self._create_child_object(name)
 
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            with self.while_creating():
+            with self._while_creating():
                 self.flproxy.create(self.path, name)
         child = self._objects.get(name)
         if not child:
@@ -1965,7 +1975,7 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
-    root.set_file_transfer_service(file_transfer_service)
+    root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
     root._setattr("_file_transfer_service", file_transfer_service)

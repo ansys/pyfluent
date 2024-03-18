@@ -59,7 +59,7 @@ class SolutionVariableInfo:
 
     .. code-block:: python
 
-        >>> solution_variable_info = solver_session.solution_variable_info
+        >>> solution_variable_info = solver_session.fields.solution_variable_info
         >>>
         >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
         >>> wall_fluid_info.solution_variables
@@ -460,9 +460,9 @@ class SolutionVariableData:
     -------
     .. code-block:: python
         >>>
-        >>> solution_variable_data = solver_session.solution_variable_data
+        >>> solution_variable_data = solver_session.fields.solution_variable_data
         >>>
-        >>> sv_t_wall_fluid=solver_session.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
+        >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
         >>>
         >>> sv_t_wall_fluid.domain
         >>> 'mixture'

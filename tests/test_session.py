@@ -171,7 +171,7 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
-    session = BaseSession.create_from_server_info_file(
+    session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
     assert session.health_check_service.is_serving
@@ -195,7 +195,7 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError) as ex:
-        session = BaseSession.create_from_server_info_file(
+        session = BaseSession._create_from_server_info_file(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
         )
@@ -223,9 +223,9 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
         password="12345",
     )
     # check a few dir elements
-    session_dir = dir(session)
+    fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
-        assert attr in session_dir
+        assert attr in fields_dir
     assert session.health_check_service.is_serving
     server.stop(None)
     session.exit()
@@ -251,9 +251,9 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
         cleanup_on_exit=False, ip=ip, port=port, password="12345"
     )
     # check a few dir elements
-    session_dir = dir(session)
+    fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
-        assert attr in session_dir
+        assert attr in fields_dir
     assert session.health_check_service.is_serving
     server.stop(None)
     session.exit()
@@ -439,3 +439,20 @@ def test_get_set_state_on_solver(new_solver_session):
     state = solver.get_state()
     assert state
     solver.set_state(state)
+
+
+def test_solver_structure(new_solver_session):
+    solver = new_solver_session
+    with pytest.warns(DeprecationWarning):
+        solver.field_data
+    with pytest.warns(DeprecationWarning):
+        solver.svar_data
+
+    assert {
+        "field_data",
+        "field_info",
+        "field_data_streaming",
+        "solution_variable_data",
+        "solution_variable_info",
+        "reduction",
+    }.issubset(set(dir(solver.fields)))
