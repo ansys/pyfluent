@@ -6,6 +6,7 @@ from util.solver_workflow import (  # noqa: F401
 )
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.examples.downloads import download_file
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -388,3 +389,19 @@ def test_svars_single_precision(new_solver_session_single_precision):
     fluid_temp = sv_p_wall_fluid["tank"]
     assert fluid_temp.size == 183424
     assert str(fluid_temp.dtype) == "float32"
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_solution_variable_does_not_modify_case(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+    solver.scheme_eval.scheme_eval("(%save-case-id)")
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.fields.solution_variable_data.get_data(
+        solution_variable_name="SV_P",
+        zone_names=["elbow-fluid", "wall-elbow"],
+        domain_name="mixture",
+    )
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
