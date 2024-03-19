@@ -328,7 +328,7 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
-    def _is_stable(self) -> bool:
+    def _is_stable(self) -> None:
         """Whether the object is stable."""
         if not self.is_active():
             return
@@ -336,11 +336,10 @@ class Base:
         attr = False if attr is False else True
         if attr is False:
             warnings.warn(
-                f"The API feature at {self.path} is not stable. "
+                f"The API feature at '{self.path}' is not stable. "
                 f"It is not guaranteed that it is fully validated and "
                 f"there is no commitment to its backwards compatibility."
             )
-        return attr
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
