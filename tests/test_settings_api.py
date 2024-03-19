@@ -2,7 +2,11 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
+from ansys.fluent.core.solver.flobject import (
+    DeprecatedSettingWarning,
+    UnstableSettingWarning,
+    _Alias,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -275,3 +279,23 @@ def test_command_return_type(new_solver_session):
     )
     ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
     assert ret is not None
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_unstable_settings_warning(new_solver_session, recwarn):
+    solver = new_solver_session
+    solver.file.export
+    assert len(recwarn) == 0
+    solver.file.export.__class__._webui_release_active = False
+    solver.file.export
+    assert len(recwarn) == 1
+    assert recwarn.pop().category == UnstableSettingWarning
+    solver.file.export.abaqus.__class__._webui_release_active = False
+    try:
+        solver.file.exp
+    except AttributeError:
+        pass
+    assert len(recwarn) == 0
+    solver.file.export
+    assert len(recwarn) == 1
+    assert recwarn.pop().category == UnstableSettingWarning

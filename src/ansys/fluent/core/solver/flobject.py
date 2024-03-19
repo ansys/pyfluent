@@ -329,20 +329,15 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
-    def _is_stable(self) -> bool:
+    def _check_stable(self) -> None:
         """Whether the object is stable."""
-        if self.is_active():
-            attr = self.get_attr(_InlineConstants.is_stable)
-        else:
-            attr = True
-        attr = False if attr is False else True
-        if attr is False:
+        if not self._webui_release_active:
             warnings.warn(
-                f"The API feature at {self.path} is not stable. "
+                f"The API feature at '{self.path}' is not stable. "
                 f"It is not guaranteed that it is fully validated and "
-                f"there is no commitment to its backwards compatibility."
+                f"there is no commitment to its backwards compatibility.",
+                UnstableSettingWarning,
             )
-        return attr
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -516,6 +511,12 @@ class Textual(Property):
 
 class DeprecatedSettingWarning(FutureWarning):
     """Provides deprecated settings warning."""
+
+    pass
+
+
+class UnstableSettingWarning(UserWarning):
+    """Provides unstable settings warning."""
 
     pass
 
@@ -991,24 +992,26 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def _get_parent_of_active_child_names(self, name):
-        parents = ""
-        path_list = []
-        for parent in self.get_active_child_names():
-            try:
-                if hasattr(getattr(self, parent), str(name)):
-                    path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
-                    if len(parents) != 0:
-                        parents += ", " + parent
-                    else:
-                        parents += parent
-            except AttributeError:
-                pass
-        if len(path_list):
-            print(f"\n {str(name)} can be accessed from the following paths: \n")
-            for path in path_list:
-                print(path)
-        if len(parents):
-            return f"\n {name} is a child of {parents} \n"
+        with warnings.catch_warnings(category=UnstableSettingWarning):
+            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
+            parents = ""
+            path_list = []
+            for parent in self.get_active_child_names():
+                try:
+                    if hasattr(getattr(self, parent), str(name)):
+                        path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
+                        if len(parents) != 0:
+                            parents += ", " + parent
+                        else:
+                            parents += parent
+                except AttributeError:
+                    pass
+            if len(path_list):
+                print(f"\n {str(name)} can be accessed from the following paths: \n")
+                for path in path_list:
+                    print(path)
+            if len(parents):
+                return f"\n {name} is a child of {parents} \n"
 
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
@@ -1024,7 +1027,10 @@ class Group(SettingsBase[DictStateType]):
                 )
             return alias_obj
         try:
-            return super().__getattribute__(name)
+            attr = super().__getattribute__(name)
+            if isinstance(attr, Base):
+                attr._check_stable()
+            return attr
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
@@ -1890,6 +1896,13 @@ def get_cls(name, info, parent=None, version=None):
         return_type = info.get("return-type") or info.get("return_type")
         if return_type:
             cls.return_type = return_type
+
+        webui_release_active = info.get("webui-release-active?")
+        if webui_release_active is None:
+            webui_release_active = info.get("webui_release_active")
+        cls._webui_release_active = (
+            True if webui_release_active is None else webui_release_active
+        )
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:

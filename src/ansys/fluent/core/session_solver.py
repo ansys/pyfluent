@@ -60,7 +60,7 @@ def _import_settings_root(root):
         api_keys = root.child_names
 
     for root_item in api_keys:
-        _class_dict[root_item] = getattr(root, root_item)
+        _class_dict[root_item] = root.__dict__[root_item]
 
     settings_api_root = type("SettingsRoot", (object,), _class_dict)
     return settings_api_root()
