@@ -1025,8 +1025,8 @@ class Group(SettingsBase[DictStateType]):
             return alias
         try:
             attr = super().__getattribute__(name)
-            if isinstance(attr, Base):
-                attr._is_stable()
+            # if isinstance(attr, Base):
+            #     attr._is_stable()
             return attr
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
