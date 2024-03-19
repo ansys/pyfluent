@@ -185,6 +185,7 @@ class Base:
         self._setattr("_file_transfer_service", None)
         if name is not None:
             self._setattr("_name", name)
+        self._setattr("_child_alias_objs", {})
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
@@ -646,12 +647,10 @@ class SettingsBase(Base, Generic[StateT]):
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
-                    if not isinstance(alias, str):
-                        alias = alias.alias_path
                     # TODO: handle ".." in alias path
                     if ".." in alias:
                         raise NotImplementedError(
-                            'Cannot handle ".." in alias path while setting state.'
+                            'Cannot handle ".." in alias path while setting dictionary state.'
                         )
                     ret_alias = ret
                     comps = alias.split("/")
@@ -1017,14 +1016,13 @@ class Group(SettingsBase[DictStateType]):
                 raise InactiveObjectError(self.python_path)
         alias = super().__getattribute__("_child_aliases").get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -1315,14 +1313,13 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         else:
             return getattr(super(), name)
 
@@ -1433,14 +1430,13 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         else:
             return getattr(super(), name)
 
@@ -1512,14 +1508,13 @@ class Action(Base):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         else:
             return getattr(super(), name)
 
