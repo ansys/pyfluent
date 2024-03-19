@@ -367,7 +367,10 @@ class Proxy:
             return self.r
         obj = self.r
         for c in path.split("/"):
-            obj = obj.get_child(c)
+            try:
+                obj = obj.get_child(c)
+            except KeyError:
+                obj = obj.get_command(c)
         return obj
 
     def get_var(self, path):
