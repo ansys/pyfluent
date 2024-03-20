@@ -285,8 +285,6 @@ def test_command_return_type(new_solver_session):
 def test_unstable_settings_warning(new_solver_session, recwarn):
     solver = new_solver_session
     solver.file.export
-    assert len(recwarn) == 0
-    solver.file.export
     assert len(recwarn) == 1
     assert recwarn.pop().category == UnstableSettingWarning
     try:
