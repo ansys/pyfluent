@@ -329,20 +329,19 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
-    def _is_stable(self) -> bool:
+    def _check_stable(self) -> None:
         """Whether the object is stable."""
-        if self.is_active():
-            attr = self.get_attr(_InlineConstants.is_stable)
-        else:
-            attr = True
-        attr = False if attr is False else True
-        if attr is False:
+        if not self.is_active():
+            return
+        attr = self.get_attr(_InlineConstants.is_stable)
+        attr = True if attr is None else attr
+        if not attr:
             warnings.warn(
-                f"The API feature at {self.path} is not stable. "
+                f"The API feature at '{self.path}' is not stable. "
                 f"It is not guaranteed that it is fully validated and "
-                f"there is no commitment to its backwards compatibility."
+                f"there is no commitment to its backwards compatibility.",
+                UnstableSettingWarning,
             )
-        return attr
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -516,6 +515,12 @@ class Textual(Property):
 
 class DeprecatedSettingWarning(FutureWarning):
     """Provides deprecated settings warning."""
+
+    pass
+
+
+class UnstableSettingWarning(UserWarning):
+    """Provides unstable settings warning."""
 
     pass
 
@@ -991,24 +996,26 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def _get_parent_of_active_child_names(self, name):
-        parents = ""
-        path_list = []
-        for parent in self.get_active_child_names():
-            try:
-                if hasattr(getattr(self, parent), str(name)):
-                    path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
-                    if len(parents) != 0:
-                        parents += ", " + parent
-                    else:
-                        parents += parent
-            except AttributeError:
-                pass
-        if len(path_list):
-            print(f"\n {str(name)} can be accessed from the following paths: \n")
-            for path in path_list:
-                print(path)
-        if len(parents):
-            return f"\n {name} is a child of {parents} \n"
+        with warnings.catch_warnings():
+            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
+            parents = ""
+            path_list = []
+            for parent in self.get_active_child_names():
+                try:
+                    if hasattr(getattr(self, parent), str(name)):
+                        path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
+                        if len(parents) != 0:
+                            parents += ", " + parent
+                        else:
+                            parents += parent
+                except AttributeError:
+                    pass
+            if len(path_list):
+                print(f"\n {str(name)} can be accessed from the following paths: \n")
+                for path in path_list:
+                    print(path)
+            if len(parents):
+                return f"\n {name} is a child of {parents} \n"
 
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
@@ -1024,7 +1031,10 @@ class Group(SettingsBase[DictStateType]):
                 )
             return alias_obj
         try:
-            return super().__getattribute__(name)
+            attr = super().__getattribute__(name)
+            if name in super().__getattribute__("_child_classes"):
+                attr._check_stable()
+            return attr
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(

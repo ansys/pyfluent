@@ -38,6 +38,7 @@ class Setting:
 
     attrs = {
         "active?": lambda self: True,
+        "webui-release-active?": lambda self: True,
     }
 
 
@@ -294,6 +295,7 @@ class Root(Group):
             attrs = {
                 "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
+                "webui-release-active?": lambda self: True,
             }
 
         children = {
@@ -365,7 +367,10 @@ class Proxy:
             return self.r
         obj = self.r
         for c in path.split("/"):
-            obj = obj.get_child(c)
+            try:
+                obj = obj.get_child(c)
+            except KeyError:
+                obj = obj.get_command(c)
         return obj
 
     def get_var(self, path):
