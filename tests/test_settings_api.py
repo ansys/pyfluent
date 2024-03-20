@@ -156,6 +156,26 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.file.rcd(file_name=case_path)
 
+    solver.setup.boundary_conditions.velocity_inlet.child_object_type._child_aliases[
+        "mom"
+    ] = "momentum"
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].mom.velocity = 20
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.value()
+        == 20
+    )
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].mom.velocity = 2
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "cold-inlet"
+        ].momentum.velocity.value()
+        == 2
+    )
+
     solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
         "Temperature"
     )
@@ -182,7 +202,7 @@ def test_deprecated_settings(new_solver_session):
         > 0
     )
     assert isinstance(
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_alias_objs[
             "constant"
         ],
         _Alias,
@@ -216,17 +236,15 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour.create("c1")
 
-    # disabling due to ansys/pyfluent#2526
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.results.gr.contour["c1"].field = "pressure"
 
-    # with pytest.warns(DeprecatedSettingWarning):
-    #     solver.results.gr.contour["c1"].field = "pressure"
+    assert solver.results.graphics.contour["c1"].field() == "pressure"
 
-    # assert solver.results.graphics.contour["c1"].field() == "pressure"
+    with pytest.warns(DeprecatedSettingWarning):
+        del solver.results.gr.contour["c1"]
 
-    # with pytest.warns(DeprecatedSettingWarning):
-    #     del solver.results.gr.contour["c1"]
-
-    # assert "c1" not in solver.results.graphics.contour
+    assert "c1" not in solver.results.graphics.contour
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
@@ -242,8 +260,7 @@ def test_deprecated_settings(new_solver_session):
         == 10
     )
 
-    # TODO: Enable after Fluent image is updated
-    # solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
 
 
 @pytest.mark.fluent_version(">=24.2")
