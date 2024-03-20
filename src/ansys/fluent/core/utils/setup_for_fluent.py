@@ -12,7 +12,7 @@ def setup_for_fluent(*args, **kwargs):
         globals["meshing"] = session
         globals["PartManagement"] = session.PartManagement
         globals["PMFileManagement"] = session.PMFileManagement
-        globals["solver"] = Solver(fluent_connection=session.fluent_connection)
+        globals["solver"] = Solver(fluent_connection=session._fluent_connection)
     else:
         globals["solver"] = session
 

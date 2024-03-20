@@ -110,10 +110,10 @@ class BaseSession:
         file_transfer_service: Optional[Any] = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
-        self.fluent_connection = fluent_connection
+        self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
-        self._error_state = self.fluent_connection._error_state
-        self.scheme_eval = self.fluent_connection.scheme_eval
+        self._error_state = fluent_connection._error_state
+        self.scheme_eval = fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
@@ -149,14 +149,14 @@ class BaseSession:
             fluent_connection._channel, fluent_connection._metadata
         )
         self.events_manager = EventsManager(
-            self._events_service, self._error_state, self.fluent_connection._id
+            self._events_service, self._error_state, fluent_connection._id
         )
 
         self._monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         self.monitors_manager = MonitorsManager(
-            self.fluent_connection._id, self._monitors_service
+            fluent_connection._id, self._monitors_service
         )
 
         self.events_manager.register_callback(
@@ -168,7 +168,7 @@ class BaseSession:
 
         self.events_manager.start()
 
-        self._field_data_service = self.fluent_connection.create_grpc_service(
+        self._field_data_service = self._fluent_connection.create_grpc_service(
             FieldDataService, self._error_state
         )
 
@@ -187,7 +187,7 @@ class BaseSession:
                     _session.scheme_eval,
                 )
                 self.field_data_streaming = FieldDataStreaming(
-                    _session.fluent_connection._id, _session._field_data_service
+                    _session._fluent_connection._id, _session._field_data_service
                 )
 
         self.fields = Fields(self)
@@ -202,7 +202,7 @@ class BaseSession:
         self.health_check_service = fluent_connection.health_check_service
         self.connection_properties = fluent_connection.connection_properties
 
-        self.fluent_connection.register_finalizer_cb(
+        self._fluent_connection.register_finalizer_cb(
             self.datamodel_service_se.unsubscribe_all_events
         )
         for obj in (
@@ -211,7 +211,7 @@ class BaseSession:
             self.events_manager,
             self.monitors_manager,
         ):
-            self.fluent_connection.register_finalizer_cb(obj.stop)
+            self._fluent_connection.register_finalizer_cb(obj.stop)
 
     @property
     def field_info(self):
@@ -243,7 +243,7 @@ class BaseSession:
     @property
     def id(self) -> str:
         """Return the session ID."""
-        return self.fluent_connection._id
+        return self._fluent_connection._id
 
     def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
@@ -301,12 +301,12 @@ class BaseSession:
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
-        self.fluent_connection.exit(**kwargs)
+        self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
         """Immediately terminates the Fluent session, losing unsaved progress and
         data."""
-        self.fluent_connection.force_exit()
+        self._fluent_connection.force_exit()
 
     def upload(self, file_name: str):
         """Upload a file to the server.

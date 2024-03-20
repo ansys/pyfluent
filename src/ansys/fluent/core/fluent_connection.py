@@ -120,13 +120,13 @@ class ErrorState:
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> session = pyfluent.launch_fluent()
-    >>> session.fluent_connection._error_state.set("test", "test details")
-    >>> session.fluent_connection._error_state.name
+    >>> session._fluent_connection._error_state.set("test", "test details")
+    >>> session._fluent_connection._error_state.name
     'test'
-    >>> session.fluent_connection._error_state.details
+    >>> session._fluent_connection._error_state.details
     'test details'
-    >>> session.fluent_connection._error_state.clear()
-    >>> session.fluent_connection._error_state.name
+    >>> session._fluent_connection._error_state.clear()
+    >>> session._fluent_connection._error_state.name
     ''
     """
 
