@@ -341,6 +341,7 @@ class Base:
                 f"It is not guaranteed that it is fully validated and "
                 f"there is no commitment to its backwards compatibility."
             )
+        return attr
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
