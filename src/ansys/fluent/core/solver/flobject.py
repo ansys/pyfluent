@@ -328,15 +328,16 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
-    def _is_stable(self) -> None:
+    def _is_stable(self) -> bool:
         """Whether the object is stable."""
-        if not self.is_active():
-            return
-        attr = self.get_attr(_InlineConstants.is_stable)
+        if self.is_active():
+            attr = self.get_attr(_InlineConstants.is_stable)
+        else:
+            attr = True
         attr = False if attr is False else True
         if attr is False:
             warnings.warn(
-                f"The API feature at '{self.path}' is not stable. "
+                f"The API feature at {self.path} is not stable. "
                 f"It is not guaranteed that it is fully validated and "
                 f"there is no commitment to its backwards compatibility."
             )
@@ -1024,10 +1025,7 @@ class Group(SettingsBase[DictStateType]):
                 return alias_obj
             return alias
         try:
-            attr = super().__getattribute__(name)
-            # if isinstance(attr, Base):
-            #     attr._is_stable()
-            return attr
+            return super().__getattribute__(name)
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
