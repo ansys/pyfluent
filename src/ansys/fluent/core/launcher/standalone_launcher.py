@@ -272,7 +272,7 @@ class StandaloneLauncher:
                 inside_container=False,
             )
             start_watchdog = _confirm_watchdog_start(
-                self.start_watchdog, self.cleanup_on_exit, session.fluent_connection
+                self.start_watchdog, self.cleanup_on_exit, session._fluent_connection
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")

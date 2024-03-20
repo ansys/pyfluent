@@ -349,7 +349,7 @@ class BaseTask:
             camel_attr = snake_to_camel_case(
                 str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
             )
-            attr = camel_attr if camel_attr else attr
+            attr = camel_attr or attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -706,7 +706,7 @@ class ArgumentWrapper(PyCallableStateObject):
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
             camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
-            attr = camel_attr if camel_attr else attr
+            attr = camel_attr or attr
         return getattr(self._arg, attr)
 
     def __setattr__(self, attr, value):
@@ -717,7 +717,7 @@ class ArgumentWrapper(PyCallableStateObject):
                 camel_attr = snake_to_camel_case(
                     str(attr), self._get_camel_case_arg_keys()
                 )
-                attr = camel_attr if camel_attr else attr
+                attr = camel_attr or attr
             self.set_state({attr: value})
 
     def __dir__(self):
@@ -1185,7 +1185,7 @@ class Workflow:
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
             camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
-            attr = camel_attr if camel_attr else attr
+            attr = camel_attr or attr
             obj = self._attr_from_wrapped_workflow(attr)
             if obj:
                 return obj

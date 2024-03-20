@@ -90,7 +90,7 @@ class SystemCoupling:
             )
 
             # download the file locally in case Fluent is in a container
-            if self._solver.fluent_connection._remote_instance != None:
+            if self._solver._fluent_connection._remote_instance != None:
                 self._solver.download(scp_file_name)
 
             assert os.path.exists(

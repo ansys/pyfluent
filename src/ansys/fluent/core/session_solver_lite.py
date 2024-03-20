@@ -32,5 +32,5 @@ class SolverLite(Solver):
 
     def switch_to_full_solver(self):
         """A switch to move to the full-solver session from solver-lite."""
-        solver_session = Solver(fluent_connection=self.fluent_connection)
+        solver_session = Solver(fluent_connection=self._fluent_connection)
         return solver_session

@@ -214,7 +214,7 @@ def test_fluent_freeze_kill(
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    assert session.fluent_connection.wait_process_finished(wait=5)
+    assert session._fluent_connection.wait_process_finished(wait=5)
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -254,15 +254,15 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
     session1.exit()
-    assert not session1.fluent_connection.wait_process_finished(wait=0)
+    assert not session1._fluent_connection.wait_process_finished(wait=0)
 
     session2 = pyfluent.launch_fluent()
     session2.exit(wait=60)
-    assert session2.fluent_connection.wait_process_finished(wait=0)
+    assert session2._fluent_connection.wait_process_finished(wait=0)
 
     session3 = pyfluent.launch_fluent()
     session3.exit(wait=True)
-    assert session3.fluent_connection.wait_process_finished(wait=0)
+    assert session3._fluent_connection.wait_process_finished(wait=0)
 
     with pytest.raises(WaitTypeError) as msg:
         session4 = pyfluent.launch_fluent()

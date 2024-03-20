@@ -67,7 +67,7 @@ class PureMeshing(BaseSession):
                     rules=_rules,
                     no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
                 )
-                self.fluent_connection.register_finalizer_cb(stream.stop)
+                self._fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
     def tui(self):
