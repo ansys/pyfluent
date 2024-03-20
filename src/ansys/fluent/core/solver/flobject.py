@@ -992,7 +992,7 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def _get_parent_of_active_child_names(self, name):
-        with warnings.catch_warnings(category=UnstableSettingWarning):
+        with warnings.catch_warnings():
             warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
             parents = ""
             path_list = []
