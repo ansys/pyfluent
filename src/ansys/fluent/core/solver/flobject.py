@@ -331,7 +331,11 @@ class Base:
 
     def _check_stable(self) -> None:
         """Whether the object is stable."""
-        if not self._webui_release_active:
+        if not self.is_active():
+            return
+        attr = self.get_attr(_InlineConstants.is_stable)
+        attr = True if attr is None else attr
+        if not attr:
             warnings.warn(
                 f"The API feature at '{self.path}' is not stable. "
                 f"It is not guaranteed that it is fully validated and "
@@ -1028,7 +1032,7 @@ class Group(SettingsBase[DictStateType]):
             return alias_obj
         try:
             attr = super().__getattribute__(name)
-            if isinstance(attr, Base):
+            if name in super().__getattribute__("_child_classes"):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
@@ -1896,13 +1900,6 @@ def get_cls(name, info, parent=None, version=None):
         return_type = info.get("return-type") or info.get("return_type")
         if return_type:
             cls.return_type = return_type
-
-        webui_release_active = info.get("webui-release-active?")
-        if webui_release_active is None:
-            webui_release_active = info.get("webui_release_active")
-        cls._webui_release_active = (
-            True if webui_release_active is None else webui_release_active
-        )
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:

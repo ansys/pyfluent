@@ -463,8 +463,6 @@ def _populate_classes(parent_dir):
                 if stubf:
                     stubf.write(f"{istr1}return_type = ...\n")
 
-            f.write(f"{istr1}_webui_release_active = {cls._webui_release_active}\n")
-
 
 def _populate_init(parent_dir, sinfo):
     hash = _gethash(sinfo)

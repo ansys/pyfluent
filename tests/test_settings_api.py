@@ -286,11 +286,9 @@ def test_unstable_settings_warning(new_solver_session, recwarn):
     solver = new_solver_session
     solver.file.export
     assert len(recwarn) == 0
-    solver.file.export.__class__._webui_release_active = False
     solver.file.export
     assert len(recwarn) == 1
     assert recwarn.pop().category == UnstableSettingWarning
-    solver.file.export.abaqus.__class__._webui_release_active = False
     try:
         solver.file.exp
     except AttributeError:
