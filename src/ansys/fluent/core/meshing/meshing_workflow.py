@@ -77,7 +77,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
             and not self._meshing.GlobalSettings.EnableCleanCAD()
         ):
             raise RuntimeError(
-                "'Watertight' objects are inaccessible from 'Fault-tolerant' workflow."
+                "'Watertight' objects are inaccessible from other workflows."
             )
         return super().__getattribute__(item)
 
@@ -121,7 +121,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             and not self._meshing.GlobalSettings.EnableComplexMeshing()
         ):
             raise RuntimeError(
-                "'Fault-tolerant' objects are inaccessible from 'Watertight' workflow."
+                "'Fault-tolerant' objects are inaccessible from other workflows."
             )
         return super().__getattribute__(item)
 
@@ -168,13 +168,13 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         """Initialize a 2D meshing workflow."""
         self._new_workflow(name="2D Meshing")
 
-    # def __getattribute__(self, item: str):
-    #     if (
-    #         item != "reinitialize"
-    #         and not item.startswith("_")
-    #         and not self._meshing.GlobalSettings.EnablePrime2dMeshing()
-    #     ):
-    #         raise RuntimeError(
-    #             "'Watertight' objects are inaccessible from 'Fault-tolerant' workflow."
-    #         )
-    #     return super().__getattribute__(item)
+    def __getattribute__(self, item: str):
+        if (
+            item != "reinitialize"
+            and not item.startswith("_")
+            and not self._meshing.GlobalSettings.EnablePrime2dMeshing()
+        ):
+            raise RuntimeError(
+                "'2D Meshing' objects are inaccessible from other workflows."
+            )
+        return super().__getattribute__(item)
