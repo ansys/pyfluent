@@ -7,11 +7,16 @@ import weakref
 
 import pytest
 from test_utils import count_key_recursive
+from util.solver_workflow import new_solver_session  # noqa: F401
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
+from ansys.fluent.core.solver.flobject import (
+    InactiveObjectError,
+    _gethash,
+    find_children,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.units
 
@@ -1159,3 +1164,10 @@ def test_assert_type():
                 else:
                     with pytest.raises(TypeError):
                         flobject.assert_type(val, tp)
+
+
+def test_static_info_hash_identity(new_solver_session):
+    solver = new_solver_session
+    hash1 = _gethash(solver._settings_service.get_static_info())
+    hash2 = _gethash(solver._settings_service.get_static_info())
+    assert hash1 == hash2
