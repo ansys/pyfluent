@@ -113,7 +113,7 @@ class PureMeshing(BaseSession):
         return self._base_meshing.two_dimensional_meshing_workflow
 
     def topology_based(self):
-        """Get a new topology based meshing workflow.
+        """Get a new topology-based meshing workflow.
 
         Raises
         ------
