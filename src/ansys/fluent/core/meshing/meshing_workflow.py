@@ -181,7 +181,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
 
 
 class TopologyBasedMeshingWorkflow(MeshingWorkflow):
-    """Provides topology based meshing specialization of the workflow wrapper."""
+    """Provides topology-based meshing specialization of the workflow wrapper."""
 
     def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
         """Initialize TopologyBasedMeshingWorkflow.
