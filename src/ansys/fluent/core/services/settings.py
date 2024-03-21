@@ -255,10 +255,11 @@ class SettingsService:
         if info.has_allowed_values:
             ret["has-allowed-values"] = info.has_allowed_values
         if info.children:
-            ret["children"] = {
-                child.name: self._extract_static_info(child.value)
-                for child in info.children
-            }
+            ret["children"] = {}
+            for child in info.children:
+                # TODO: resolve the case when multiple children under same parent have identical python name
+                if child.name not in ("fensapice-drop-vrh?", "fensapice-drop-vrh"):
+                    ret["children"][child.name] = self._extract_static_info(child.value)
         if info.commands:
             ret["commands"] = {
                 child.name: self._extract_static_info(child.value)
