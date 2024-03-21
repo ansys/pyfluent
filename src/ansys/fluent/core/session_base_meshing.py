@@ -7,6 +7,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     ClassicMeshingWorkflow,
     FaultTolerantMeshingWorkflow,
+    TopologyBasedMeshingWorkflow,
     TwoDimensionalMeshingWorkflow,
     WatertightMeshingWorkflow,
 )
@@ -52,6 +53,7 @@ class BaseMeshing:
         self._wt_workflow = None
         self._ft_workflow = None
         self._2dm_workflow = None
+        self._tb_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -187,6 +189,16 @@ class BaseMeshing:
                 self.meshing,
             )
         return self._2dm_workflow
+
+    @property
+    def topology_based_meshing_workflow(self):
+        """Datamodel root of workflow exposed in object-oriented manner."""
+        if not self._tb_workflow:
+            self._tb_workflow = TopologyBasedMeshingWorkflow(
+                self._workflow_se,
+                self.meshing,
+            )
+        return self._tb_workflow
 
     @property
     def PartManagement(self):
