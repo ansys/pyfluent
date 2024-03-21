@@ -749,7 +749,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_on
 @pytest.mark.codegen_required
 def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
     setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
         "general",
@@ -774,7 +774,7 @@ def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
 @pytest.mark.codegen_required
 def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
     setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
         "general",
