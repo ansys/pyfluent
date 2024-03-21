@@ -310,7 +310,7 @@ class BaseSession:
 
     def _warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
-        f"You have directly called the {method_name} method of the session. \
+        return f"You have directly called the {method_name} method of the session. \
         Please be advised that for the current version of Fluent, many API methods \
         automatically handle file uploads and downloads internally. You may not \
         need to explicitly call `upload()` or `download()` in most cases. \
