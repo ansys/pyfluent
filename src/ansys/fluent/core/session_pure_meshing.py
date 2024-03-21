@@ -107,6 +107,24 @@ class PureMeshing(BaseSession):
         self._base_meshing.fault_tolerant_workflow.reinitialize()
         return self._base_meshing.fault_tolerant_workflow
 
+    def two_dimensional_meshing(self):
+        """Get a new 2D meshing workflow."""
+        self._base_meshing.two_dimensional_meshing_workflow.reinitialize()
+        return self._base_meshing.two_dimensional_meshing_workflow
+
+    def topology_based(self):
+        """Get a new topology-based meshing workflow.
+
+        Raises
+        ------
+        RuntimeError
+            If beta features are not enabled in Fluent.
+        """
+        if not self.scheme_eval.scheme_eval("(is-beta-feature-available?)"):
+            raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
+        self._base_meshing.topology_based_meshing_workflow.reinitialize()
+        return self._base_meshing.topology_based_meshing_workflow
+
     @property
     def PartManagement(self):
         """Datamodel root of PartManagement."""
