@@ -316,6 +316,16 @@ class BaseSession:
         file_name : str
             Name of the local file to upload to the server.
         """
+        warnings.warn(
+            "You have directly called the `upload()` method of the session. \
+            Please be advised that for the current version of Fluent, many API methods \
+            automatically handle file uploads and downloads internally. You may not \
+            need to explicitly call `upload()` or `download()` in most cases. \
+            However, there are exceptions, particularly in PMFileManagement, where complex \
+            file interactions require explicit use of `upload()` and `download()` methods \
+            for relevant files.",
+            UserWarning,
+        )
         if self._file_transfer_service:
             return self._file_transfer_service.upload_file(file_name)
 
@@ -329,6 +339,16 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
+        warnings.warn(
+            "You have directly called the `upload()` method of the session. \
+            Please be advised that for the current version of Fluent, many API methods \
+            automatically handle file uploads and downloads internally. You may not \
+            need to explicitly call `upload()` or `download()` in most cases. \
+            However, there are exceptions, particularly in PMFileManagement, where complex \
+            file interactions require explicit use of `upload()` and `download()` methods \
+            for relevant files.",
+            UserWarning,
+        )
         if self._file_transfer_service:
             return self._file_transfer_service.download_file(file_name, local_directory)
 
