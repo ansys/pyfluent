@@ -107,6 +107,11 @@ class PureMeshing(BaseSession):
         self._base_meshing.fault_tolerant_workflow.reinitialize()
         return self._base_meshing.fault_tolerant_workflow
 
+    def two_dimensional_meshing(self):
+        """Get a new 2D meshing workflow."""
+        self._base_meshing.two_dimensional_meshing_workflow.reinitialize()
+        return self._base_meshing.two_dimensional_meshing_workflow
+
     @property
     def PartManagement(self):
         """Datamodel root of PartManagement."""

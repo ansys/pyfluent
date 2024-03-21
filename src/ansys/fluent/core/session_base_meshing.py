@@ -7,6 +7,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     ClassicMeshingWorkflow,
     FaultTolerantMeshingWorkflow,
+    TwoDimensionalMeshingWorkflow,
     WatertightMeshingWorkflow,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
@@ -50,6 +51,7 @@ class BaseMeshing:
         self._old_workflow = None
         self._wt_workflow = None
         self._ft_workflow = None
+        self._2dm_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -175,6 +177,16 @@ class BaseMeshing:
                 self.PMFileManagement,
             )
         return self._ft_workflow
+
+    @property
+    def two_dimensional_meshing_workflow(self):
+        """Datamodel root of workflow exposed in object-oriented manner."""
+        if not self._2dm_workflow:
+            self._2dm_workflow = TwoDimensionalMeshingWorkflow(
+                self._workflow_se,
+                self.meshing,
+            )
+        return self._2dm_workflow
 
     @property
     def PartManagement(self):

@@ -146,3 +146,35 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             Part-management file-management object .
         """
         return self._pm_file_management
+
+
+class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
+    """Provides 2D meshing specialization of the workflow wrapper."""
+
+    def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
+        """Initialize TwoDimensionalMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The underlying workflow object.
+        meshing : PyMenuGeneric
+            The meshing object.
+        """
+        super().__init__(workflow=workflow, meshing=meshing)
+        self._meshing = meshing
+
+    def reinitialize(self) -> None:
+        """Initialize a 2D meshing workflow."""
+        self._new_workflow(name="2D Meshing")
+
+    # def __getattribute__(self, item: str):
+    #     if (
+    #         item != "reinitialize"
+    #         and not item.startswith("_")
+    #         and not self._meshing.GlobalSettings.EnablePrime2dMeshing()
+    #     ):
+    #         raise RuntimeError(
+    #             "'Watertight' objects are inaccessible from 'Fault-tolerant' workflow."
+    #         )
+    #     return super().__getattribute__(item)
