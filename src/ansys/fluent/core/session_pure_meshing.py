@@ -121,7 +121,7 @@ class PureMeshing(BaseSession):
             If beta features are not enabled in Fluent.
         """
         if not self.scheme_eval.scheme_eval("(is-beta-feature-available?)"):
-            raise RuntimeError("Topology Based Meshing is a fluent beta feature.")
+            raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
         self._base_meshing.topology_based_meshing_workflow.reinitialize()
         return self._base_meshing.topology_based_meshing_workflow
 
