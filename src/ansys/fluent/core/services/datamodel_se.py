@@ -342,12 +342,14 @@ class EventSubscription:
         SubscribeEventError
             If server fails to subscribe from event.
         """
+        self.is_subscribed = False
         self._service = service
         response = service.subscribe_events(request_dict)
         response = response[0]
         if response["status"] != DataModelProtoModule.STATUS_SUBSCRIBED:
             raise SubscribeEventError(request_dict)
-        self.status = response["status"]
+        else:
+            self.is_subscribed = True
         self.tag = response["tag"]
         self._service.events[self.tag] = self
 
@@ -359,13 +361,14 @@ class EventSubscription:
         UnsubscribeEventError
             If server fails to unsubscribe from event.
         """
-        if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
+        if self.is_subscribed:
             self._service.event_streaming.unregister_callback(self.tag)
             response = self._service.unsubscribe_events([self.tag])
             response = response[0]
             if response["status"] != DataModelProtoModule.STATUS_UNSUBSCRIBED:
                 raise UnsubscribeEventError(self.tag)
-            self.status = response["status"]
+            else:
+                self.is_subscribed = False
             self._service.events.pop(self.tag, None)
 
     def __del__(self) -> None:
