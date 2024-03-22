@@ -102,9 +102,7 @@ def test_empty_vector_field_data_2339(new_solver_session):
         "mixing_elbow.dat.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
     )
 
-    solver.file.read_case(file_name=import_case)
-
-    solver.file.read_data(file_name=import_data)
+    solver.file.read_case_data(file_name=import_case)
 
     assert [
         a.x
