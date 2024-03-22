@@ -135,6 +135,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
 
     cls_tuple = (
         name,
+        cls.__name__,
         cls.__bases__,
         info["type"],
         info.get("help"),
