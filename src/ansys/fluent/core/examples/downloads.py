@@ -16,7 +16,7 @@ logger = logging.getLogger("pyfluent.networking")
 
 
 class RemoteFileNotFoundError(FileNotFoundError):
-    """Raised on an attempt to download a non-existing remote file."""
+    """Raised on an attempt to download a non-existent remote file."""
 
     def __init__(self, url):
         super().__init__(f"{url} does not exist.")
