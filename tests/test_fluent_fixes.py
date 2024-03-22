@@ -94,15 +94,16 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
 def test_empty_vector_field_data_2339(new_solver_session):
     solver = new_solver_session
 
-    import_case = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
-    )
+    import_case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
-    import_data = examples.download_file(
-        "mixing_elbow.dat.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
-    )
+    import_data = examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
 
-    solver.file.read_case_data(file_name=import_case)
+    assert import_case
+    assert import_data
+
+    solver.file.read_case(file_name=import_case)
+
+    solver.file.read_data(file_name=import_data)
 
     assert [
         a.x
