@@ -984,17 +984,22 @@ class CompoundTask(CommandTask):
             state.update({"AddChild": "yes"})
             self._task.Arguments.set_state(state)
 
-    def add_child_and_update(self, state=None):
+    def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
 
         Parameters
         ----------
         state : Optional[dict]
             Optional state.
+        defer_update: Optional[bool]
+            Flag to defer update.
         """
-        self._add_child(state)
-        self._task.AddChildAndUpdate()
-        return self.last_child()
+        if defer_update is None:
+            self._add_child(state)
+            self._task.AddChildAndUpdate()
+            return self.last_child()
+        else:
+            return self._task.AddChildAndUpdate(DeferUpdate=defer_update)
 
     def last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask.
