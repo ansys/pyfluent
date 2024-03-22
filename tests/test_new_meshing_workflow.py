@@ -474,6 +474,126 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
     assert solver
 
 
+@pytest.mark.nightly
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_new_2d_meshing_workflow(new_mesh_session):
+    # Import geometry
+    # import_file_name = examples.download_file(
+    #     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    # )
+    import_file_name = r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\NACA0012.fmd"
+    two_dim_mesh = new_mesh_session.two_dimensional_meshing()
+
+    two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
+    two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
+    two_dim_mesh.load_cad_geometry_2d.refaceting.refacet = False
+    two_dim_mesh.load_cad_geometry_2d()
+
+    # Set regions and boundaries
+    two_dim_mesh.update_regions_2d()
+    two_dim_mesh.update_boundaries_2d.selection_type = "zone"
+    two_dim_mesh.update_boundaries_2d()
+
+    # Define global sizing
+    two_dim_mesh.define_global_sizing_2d.curvature_normal_angle = 20
+    two_dim_mesh.define_global_sizing_2d.max_size = 2000.0
+    two_dim_mesh.define_global_sizing_2d.min_size = 5.0
+    two_dim_mesh.define_global_sizing_2d.size_functions = "Curvature"
+    two_dim_mesh.define_global_sizing_2d()
+
+    # Add local sizing
+    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
+    two_dim_mesh.add_local_sizing_2d.boi_control_name = "boi_1"
+    two_dim_mesh.add_local_sizing_2d.boi_execution = "Body Of Influence"
+    two_dim_mesh.add_local_sizing_2d.boi_face_label_list = ["boi"]
+    two_dim_mesh.add_local_sizing_2d.boi_size = 50.0
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
+    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
+    two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
+
+    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
+    two_dim_mesh.add_local_sizing_2d.boi_control_name = "edgesize_1"
+    two_dim_mesh.add_local_sizing_2d.boi_execution = "Edge Size"
+    two_dim_mesh.add_local_sizing_2d.boi_size = 5.0
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
+    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
+    two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil-te"]
+    two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
+
+    two_dim_mesh.add_local_sizing_2d.add_child = "yes"
+    two_dim_mesh.add_local_sizing_2d.boi_control_name = "curvature_1"
+    two_dim_mesh.add_local_sizing_2d.boi_curvature_normal_angle = 10
+    two_dim_mesh.add_local_sizing_2d.boi_execution = "Curvature"
+    two_dim_mesh.add_local_sizing_2d.boi_max_size = 2
+    two_dim_mesh.add_local_sizing_2d.boi_min_size = 1.5
+    two_dim_mesh.add_local_sizing_2d.boi_scope_to = "edges"
+    two_dim_mesh.add_local_sizing_2d.boi_zoneor_label = "label"
+    two_dim_mesh.add_local_sizing_2d.draw_size_control = True
+    two_dim_mesh.add_local_sizing_2d.edge_label_list = ["airfoil"]
+    two_dim_mesh.add_local_sizing_2d.add_child_and_update(defer_update=False)
+
+    # Add boundary layer
+    two_dim_mesh.add_2d_boundary_layers.add_child = "yes"
+    two_dim_mesh.add_2d_boundary_layers.bl_control_name = "aspect-ratio_1"
+    two_dim_mesh.add_2d_boundary_layers.number_of_layers = 4
+    two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
+    two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
+
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+        "no"
+    )
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+        "no"
+    )
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+        True
+    )
+    two_dim_mesh.generate_initial_surface_mesh()
+
+    two_dim_mesh.task("aspect-ratio_1").revert()
+    two_dim_mesh.task("aspect-ratio_1").add_child = "yes"
+    two_dim_mesh.task("aspect-ratio_1").bl_control_name = "uniform_1"
+    two_dim_mesh.task("aspect-ratio_1").first_layer_height = 2
+    two_dim_mesh.task("aspect-ratio_1").number_of_layers = 4
+    two_dim_mesh.task("aspect-ratio_1").offset_method_type = "uniform"
+    two_dim_mesh.task("aspect-ratio_1")()
+
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+        "no"
+    )
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+        "no"
+    )
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+        True
+    )
+    two_dim_mesh.generate_initial_surface_mesh()
+
+    two_dim_mesh.task("uniform_1").revert()
+    two_dim_mesh.task("uniform_1").add_child = "yes"
+    two_dim_mesh.task("uniform_1").bl_control_name = "smooth-transition_1"
+    two_dim_mesh.task("uniform_1").first_layer_height = 2
+    two_dim_mesh.task("uniform_1").number_of_layers = 7
+    two_dim_mesh.task("uniform_1").offset_method_type = "smooth-transition"
+    two_dim_mesh.task("uniform_1")()
+
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+        "no"
+    )
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+        "no"
+    )
+    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+        True
+    )
+    two_dim_mesh.generate_initial_surface_mesh()
+
+    # Switch to solution mode
+    solver = new_mesh_session.switch_to_solver()
+    assert not solver
+
+
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_updating_state_in_new_meshing_workflow(new_mesh_session):

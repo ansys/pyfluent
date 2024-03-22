@@ -451,3 +451,164 @@ def test_new_workflow_structure(new_mesh_session):
         msg.value.args[0]
         == "'WatertightMeshingWorkflow' object has no attribute 'TaskObject'"
     )
+
+
+@pytest.mark.nightly
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_new_2d_meshing_workflow(new_mesh_session):
+    # Import geometry
+    # import_file_name = examples.download_file(
+    #     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    # )
+    import_file_name = r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\NACA0012.fmd"
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
+    meshing.workflow.TaskObject["Load CAD Geometry"].Arguments.set_state(
+        {
+            r"FileName": import_file_name,
+            r"LengthUnit": r"mm",
+            r"Refaceting": {
+                r"Refacet": False,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Load CAD Geometry"].Execute()
+
+    meshing.workflow.TaskObject["Update Regions"].Execute()
+    meshing.workflow.TaskObject["Update Boundaries"].Arguments.set_state(
+        {
+            r"SelectionType": r"zone",
+        }
+    )
+    meshing.workflow.TaskObject["Update Boundaries"].Execute()
+
+    meshing.workflow.TaskObject["Define Global Sizing"].Arguments.set_state(
+        {
+            r"CurvatureNormalAngle": 20,
+            r"MaxSize": 2000,
+            r"MinSize": 5,
+            r"SizeFunctions": r"Curvature",
+        }
+    )
+    meshing.workflow.TaskObject["Define Global Sizing"].Execute()
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"boi_1",
+            r"BOIExecution": r"Body Of Influence",
+            r"BOIFaceLabelList": [r"boi"],
+            r"BOISize": 50,
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"edgesize_1",
+            r"BOIExecution": r"Edge Size",
+            r"BOISize": 5,
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+            r"EdgeLabelList": [r"airfoil-te"],
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"curvature_1",
+            r"BOICurvatureNormalAngle": 10,
+            r"BOIExecution": r"Curvature",
+            r"BOIMaxSize": 2,
+            r"BOIMinSize": 1.5,
+            r"BOIScopeTo": r"edges",
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+            r"EdgeLabelList": [r"airfoil"],
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+    meshing.workflow.TaskObject["Add 2D Boundary Layers"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"aspect-ratio_1",
+            r"NumberOfLayers": 4,
+            r"OffsetMethodType": r"aspect-ratio",
+        }
+    )
+    meshing.workflow.TaskObject["Add 2D Boundary Layers"].AddChildAndUpdate(
+        DeferUpdate=False
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+    meshing.workflow.TaskObject["aspect-ratio_1"].Revert()
+    meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"uniform_1",
+            r"FirstLayerHeight": 2,
+            r"NumberOfLayers": 4,
+            r"OffsetMethodType": r"uniform",
+        }
+    )
+    meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(None)
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+    meshing.workflow.TaskObject["uniform_1"].Revert()
+    meshing.workflow.TaskObject["uniform_1"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"smooth-transition_1",
+            r"FirstLayerHeight": 2,
+            r"NumberOfLayers": 7,
+            r"OffsetMethodType": r"smooth-transition",
+        }
+    )
+    meshing.workflow.TaskObject["uniform_1"].Execute()
+
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(None)
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+    meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Arguments.set_state(
+        {
+            r"FileName": r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\out\case1.msh.h5",
+        }
+    )
+    meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Execute()
+
+    # Switch to solution mode
+    solver = meshing.switch_to_solver()
+    assert not solver
