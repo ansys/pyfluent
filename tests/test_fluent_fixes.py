@@ -88,3 +88,26 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
         "point-vel-rplot",
         "sample-report-plot",
     ]
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_empty_vector_field_data_2339(new_solver_session):
+    solver = new_solver_session
+
+    import_case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
+    import_data = examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+
+    assert import_case
+    assert import_data
+
+    solver.file.read_case(file_name=import_case)
+
+    solver.file.read_data(file_name=import_data)
+
+    assert [
+        a.x
+        for a in solver.field_data.get_vector_field_data(
+            field_name="velocity", surface_ids=[1]
+        )[1].data
+    ][:5]
