@@ -177,7 +177,8 @@ class SettingsService:
             return [self._get_state_from_value(v) for v in state.value_list.lst]
         elif t == "value_map":
             return {
-                k: self._get_state_from_value(v) for k, v in state.value_map.m.items()
+                k: self._get_state_from_value(v)
+                for k, v in sorted(state.value_map.m.items())
             }
         else:
             return None
@@ -258,6 +259,8 @@ class SettingsService:
             ret["children"] = {
                 child.name: self._extract_static_info(child.value)
                 for child in info.children
+                # TODO: resolve the case when multiple children under same parent have identical python name
+                if child.name not in ("fensapice-drop-vrh?", "fensapice-drop-vrh")
             }
         if info.commands:
             ret["commands"] = {
