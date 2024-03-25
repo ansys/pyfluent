@@ -979,10 +979,10 @@ class CompoundTask(CommandTask):
         state = state or {}
         if self._dynamic_interface:
             state.update({"add_child": "yes"})
-            self.arguments.set_state(state)
+            self.arguments.update_dict(state)
         else:
             state.update({"AddChild": "yes"})
-            self._task.Arguments.set_state(state)
+            self._task.Arguments.update_dict(state)
 
     def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
@@ -994,12 +994,12 @@ class CompoundTask(CommandTask):
         defer_update: Optional[bool]
             Flag to defer update.
         """
+        self._add_child(state)
         if defer_update is None:
-            self._add_child(state)
             self._task.AddChildAndUpdate()
-            return self.last_child()
         else:
             return self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+        return self.last_child()
 
     def last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask.
