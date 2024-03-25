@@ -518,6 +518,7 @@ def test_new_2d_meshing_workflow(new_mesh_session):
         }
     )
     meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
     meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
         {
             r"AddChild": r"yes",
