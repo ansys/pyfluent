@@ -306,6 +306,7 @@ def test_unstable_settings_warning(new_solver_session, recwarn):
     img_path = "a.png"
     Path(img_path).unlink(missing_ok=True)
     solver.results.graphics.picture.save_picture(file_name=img_path)
+    assert len(recwarn) == 0
 
 
 @pytest.mark.fluent_version(">=24.2")
