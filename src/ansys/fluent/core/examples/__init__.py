@@ -1,3 +1,3 @@
 """Provides a module to download a file."""
 
-from .downloads import download_file, path  # noqa: F401
+from .downloads import RemoteFileNotFoundError, download_file, path  # noqa: F401
