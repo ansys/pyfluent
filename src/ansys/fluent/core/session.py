@@ -3,7 +3,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Optional
+from typing import Any, Optional, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -318,17 +318,21 @@ class BaseSession:
         file interactions require explicit use of `upload()` and `download()` methods \
         for relevant files."
 
-    def upload(self, file_name: str):
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ):
         """Upload a file to the server.
 
         Parameters
         ----------
         file_name : str
             Name of the local file to upload to the server.
+        remote_file_name : str, optional
+            remote file name, by default None
         """
         warnings.warn(self._warning("upload()"), UserWarning)
         if self._file_transfer_service:
-            return self._file_transfer_service.upload_file(file_name)
+            return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server.
@@ -342,7 +346,7 @@ class BaseSession:
         """
         warnings.warn(self._warning("download()"), UserWarning)
         if self._file_transfer_service:
-            return self._file_transfer_service.download_file(file_name, local_directory)
+            return self._file_transfer_service.download(file_name, local_directory)
 
     def __enter__(self):
         return self
