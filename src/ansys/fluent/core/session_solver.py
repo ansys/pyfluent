@@ -271,13 +271,15 @@ class Solver(BaseSession):
 
     def __getattr__(self, attr):
         self._populate_settings_api_root()
+        if attr in [x for x in dir(self._settings_api_root) if not x.startswith("_")]:
+            warnings.warn(
+                f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
+                DeprecationWarning,
+            )
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
-        self._populate_settings_api_root()
-        dir_list = set(
-            list(self.__dict__.keys()) + dir(type(self)) + dir(self._settings_api_root)
-        ) - {
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "svar_data",
             "svar_info",
             "reduction",
