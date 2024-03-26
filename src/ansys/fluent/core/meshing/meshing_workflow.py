@@ -3,6 +3,7 @@ core functionality."""
 
 from __future__ import annotations
 
+from enum import Enum
 from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
@@ -37,6 +38,8 @@ class MeshingWorkflow(Workflow):
         self,
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
+        name: str,
+        identifier: str,
     ) -> None:
         """Initialize MeshingWorkflow.
 
@@ -46,8 +49,30 @@ class MeshingWorkflow(Workflow):
             Underlying workflow object.
         meshing : PyMenuGeneric
             The meshing object.
+        name: str
+            Workflow name to initialize it.
+        identifier: str
+            Workflow name to identify it from global settings.
         """
         super().__init__(workflow=workflow, command_source=meshing)
+        self._meshing = meshing
+        self._name = name
+        self._identifier = identifier
+
+    def reinitialize(self) -> None:
+        """Initialize a workflow."""
+        self._new_workflow(name=self._name)
+
+    def __getattribute__(self, item: str):
+        if (
+            item != "reinitialize"
+            and not item.startswith("_")
+            and not getattr(self._meshing.GlobalSettings, self._global_settings_name)()
+        ):
+            raise RuntimeError(
+                f"'{self._name}' objects are inaccessible from other workflows."
+            )
+        return super().__getattribute__(item)
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow):
@@ -63,23 +88,12 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         meshing : PyMenuGeneric
             The meshing object.
         """
-        super().__init__(workflow=workflow, meshing=meshing)
-        self._meshing = meshing
-
-    def reinitialize(self) -> None:
-        """Initialize a watertight workflow."""
-        self._new_workflow(name="Watertight Geometry")
-
-    def __getattribute__(self, item: str):
-        if (
-            item != "reinitialize"
-            and not item.startswith("_")
-            and not self._meshing.GlobalSettings.EnableCleanCAD()
-        ):
-            raise RuntimeError(
-                "'Watertight' objects are inaccessible from other workflows."
-            )
-        return super().__getattribute__(item)
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="Watertight Geometry",
+            identifier="EnableCleanCAD",
+        )
 
 
 class FaultTolerantMeshingWorkflow(MeshingWorkflow):
@@ -105,25 +119,14 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         pm_file_management : PyMenuGeneric
             The part-management file-management object.
         """
-        super().__init__(workflow=workflow, meshing=meshing)
-        self._meshing = meshing
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="Fault-tolerant Meshing",
+            identifier="EnableComplexMeshing",
+        )
         self._part_management = part_management
         self._pm_file_management = pm_file_management
-
-    def reinitialize(self):
-        """Initialize a fault-tolerant workflow."""
-        self._new_workflow("Fault-tolerant Meshing")
-
-    def __getattribute__(self, item):
-        if (
-            item != "reinitialize"
-            and not item.startswith("_")
-            and not self._meshing.GlobalSettings.EnableComplexMeshing()
-        ):
-            raise RuntimeError(
-                "'Fault-tolerant' objects are inaccessible from other workflows."
-            )
-        return super().__getattribute__(item)
 
     @property
     def part_management(self) -> Optional[PyMenuGeneric]:
@@ -161,23 +164,12 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         meshing : PyMenuGeneric
             The meshing object.
         """
-        super().__init__(workflow=workflow, meshing=meshing)
-        self._meshing = meshing
-
-    def reinitialize(self) -> None:
-        """Initialize a 2D meshing workflow."""
-        self._new_workflow(name="2D Meshing")
-
-    def __getattribute__(self, item: str):
-        if (
-            item != "reinitialize"
-            and not item.startswith("_")
-            and not self._meshing.GlobalSettings.EnablePrime2dMeshing()
-        ):
-            raise RuntimeError(
-                "'2D Meshing' objects are inaccessible from other workflows."
-            )
-        return super().__getattribute__(item)
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="2D Meshing",
+            identifier="EnablePrime2dMeshing",
+        )
 
 
 class TopologyBasedMeshingWorkflow(MeshingWorkflow):
@@ -193,20 +185,19 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
         meshing : PyMenuGeneric
             The meshing object.
         """
-        super().__init__(workflow=workflow, meshing=meshing)
-        self._meshing = meshing
+        super().__init__(
+            workflow=workflow,
+            meshing=meshing,
+            name="Topology Based Meshing",
+            identifier="EnablePrimeMeshing",
+        )
 
-    def reinitialize(self) -> None:
-        """Initialize a topology based meshing workflow."""
-        self._new_workflow(name="Topology Based Meshing")
 
-    def __getattribute__(self, item: str):
-        if (
-            item != "reinitialize"
-            and not item.startswith("_")
-            and not self._meshing.GlobalSettings.EnablePrimeMeshing()
-        ):
-            raise RuntimeError(
-                "'Topology Based Meshing' objects are inaccessible from other workflows."
-            )
-        return super().__getattribute__(item)
+class WorkflowMode(Enum):
+    """Enumerates over supported Fluent meshing workflow modes."""
+
+    CLASSIC_MESHING_MODE = ClassicMeshingWorkflow
+    WATERTIGHT_MESHING_MODE = WatertightMeshingWorkflow
+    FAULT_TOLERANT_MESHING_MODE = FaultTolerantMeshingWorkflow
+    TWO_DIMENSIONAL_MESHING_MODE = TwoDimensionalMeshingWorkflow
+    TOPOLOGY_BASED_MESHING_MODE = TopologyBasedMeshingWorkflow
