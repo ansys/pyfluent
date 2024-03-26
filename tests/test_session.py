@@ -410,7 +410,7 @@ def test_solver_methods(new_solver_session):
             "parametric_studies",
             "current_parametric_study",
         }
-        assert api_keys.issubset(set(dir(solver)))
+        assert api_keys.issubset(set(dir(solver.settings)))
     if int(solver._version) == 232:
         api_keys = {
             "file",
@@ -424,7 +424,7 @@ def test_solver_methods(new_solver_session):
             "parallel",
             "report",
         }
-        assert api_keys.issubset(set(dir(solver)))
+        assert api_keys.issubset(set(dir(solver.settings)))
     if int(solver._version) >= 241:
         api_keys = {
             "file",
@@ -437,7 +437,7 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
             "parallel",
         }
-        assert api_keys.issubset(set(dir(solver)))
+        assert api_keys.issubset(set(dir(solver.settings)))
 
 
 @pytest.mark.fluent_version(">=23.2")
