@@ -56,7 +56,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     addArgs = kwargs.get("additional_arguments")
     if "-t" not in addArgs and "-cnf=" not in addArgs:
         parallel_options = build_parallel_options(
-            load_machines(ncores=kwargs.get("processor_count"))
+            load_machines(ncores=kwargs["processor_count"])
         )
         if parallel_options:
             launch_args_string += " " + parallel_options
