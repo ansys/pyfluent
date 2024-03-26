@@ -478,10 +478,7 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_mesh_session):
     # Import geometry
-    # import_file_name = examples.download_file(
-    #     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-    # )
-    import_file_name = r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\NACA0012.fmd"
+    import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     two_dim_mesh = new_mesh_session.two_dimensional_meshing()
 
     two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
@@ -590,7 +587,7 @@ def test_new_2d_meshing_workflow(new_mesh_session):
 
     # Switch to solution mode
     solver = new_mesh_session.switch_to_solver()
-    assert not solver
+    assert solver
 
 
 @pytest.mark.codegen_required
