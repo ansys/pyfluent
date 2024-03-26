@@ -67,7 +67,7 @@ class MeshingWorkflow(Workflow):
         if (
             item != "reinitialize"
             and not item.startswith("_")
-            and not getattr(self._meshing.GlobalSettings, self._global_settings_name)()
+            and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):
             raise RuntimeError(
                 f"'{self._name}' objects are inaccessible from other workflows."
