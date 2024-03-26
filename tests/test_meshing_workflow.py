@@ -419,6 +419,7 @@ def test_modified_workflow(new_mesh_session):
     assert set(task_display_names) == task_object_display_names
 
 
+@pytest.mark.codegen_required
 def test_nonexistent_attrs(new_mesh_session):
     meshing = new_mesh_session
     assert not hasattr(meshing.workflow, "xyz")
@@ -427,6 +428,7 @@ def test_nonexistent_attrs(new_mesh_session):
     assert msg.value.args[0] == "'ClassicMeshingWorkflow' object has no attribute 'xyz'"
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_old_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
