@@ -21,6 +21,7 @@ class SolverIcing(Solver):
         self,
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
     ):
         """SolverIcing session.
 
@@ -31,6 +32,7 @@ class SolverIcing(Solver):
         super(SolverIcing, self).__init__(
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
         )
         self._flserver_root = None
         self._fluent_version = None

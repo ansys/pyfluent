@@ -14,6 +14,7 @@ class SolverLite(Solver):
     def __init__(
         self,
         fluent_connection=None,
+        start_transcript: bool = True,
     ):
         """SolverLite session.
 
@@ -22,6 +23,7 @@ class SolverLite(Solver):
         """
         super().__init__(
             fluent_connection=fluent_connection,
+            start_transcript=start_transcript,
         )
         self._tui_service = self.datamodel_service_tui
         self._settings_service = self.settings_service

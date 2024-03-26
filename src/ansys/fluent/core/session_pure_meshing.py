@@ -31,6 +31,7 @@ class PureMeshing(BaseSession):
         self,
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
     ):
         """PureMeshing session.
 
@@ -41,6 +42,7 @@ class PureMeshing(BaseSession):
         super(PureMeshing, self).__init__(
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
