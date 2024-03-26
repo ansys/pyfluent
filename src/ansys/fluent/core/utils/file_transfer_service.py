@@ -170,7 +170,7 @@ class PimFileTransferService:
                         self.download_file(
                             file_name=os.path.basename(file), local_directory="."
                         )
-                bar()
+                    bar()
 
     def __call__(self, pim_instance: Optional[Any] = None):
         self.pim_instance = pim_instance
