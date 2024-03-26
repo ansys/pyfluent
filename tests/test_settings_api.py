@@ -299,6 +299,14 @@ def test_unstable_settings_warning(new_solver_session, recwarn):
     assert len(recwarn) == 1
     assert recwarn.pop().category == UnstableSettingWarning
 
+    # Issue in running in CI (probably due to -gu mode)
+    # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    # solver.file.read_case_data(file_name=case_path)
+    # img_path = "a.png"
+    # Path(img_path).unlink(missing_ok=True)
+    # solver.results.graphics.picture.save_picture(file_name=img_path)
+    # assert len(recwarn) == 0
+
 
 @pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
