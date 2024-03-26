@@ -224,7 +224,6 @@ class FluentConnection:
         password: Optional[str] = None,
         channel: Optional[grpc.Channel] = None,
         cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
         remote_instance: Optional[Instance] = None,
         launcher_args: Optional[Dict[str, Any]] = None,
         inside_container: Optional[bool] = None,
@@ -252,10 +251,6 @@ class FluentConnection:
             When True, the connected Fluent session will be shut down
             when PyFluent is exited or exit() is called on the session
             instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
         remote_instance : ansys.platform.instancemanagement.Instance
             The corresponding remote instance when Fluent is launched through
             PyPIM. This instance will be deleted when calling
@@ -322,7 +317,6 @@ class FluentConnection:
         )
 
         self._cleanup_on_exit = cleanup_on_exit
-        self.start_transcript = start_transcript
         from grpc._channel import _InactiveRpcError
 
         try:

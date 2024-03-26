@@ -227,11 +227,11 @@ class DockerLauncher:
                 port=port,
                 password=password,
                 cleanup_on_exit=self.cleanup_on_exit,
-                start_transcript=self.start_transcript,
                 launcher_args=self.argvals,
                 inside_container=True,
             ),
             file_transfer_service=self.file_transfer_service,
+            start_transcript=self.start_transcript,
         )
 
         if self.start_watchdog is None and self.cleanup_on_exit:

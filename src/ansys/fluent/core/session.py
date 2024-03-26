@@ -93,13 +93,22 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
     ):
         """BaseSession.
 
-        Args:
-            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            file_transfer_service: Supports file upload and download.
+        Parameters
+        ----------
+        fluent_connection (:ref:`ref_fluent_connection`):
+            Encapsulates a Fluent connection.
+        file_transfer_service:
+            Supports file upload and download.
+        start_transcript : bool, optional
+            The Fluent transcript is started in the client only when
+            start_transcript is True. It can be started and stopped
+            subsequently via method calls on the Session object.
         """
+        self._start_transcript = start_transcript
         BaseSession.build_from_fluent_connection(
             self, fluent_connection, file_transfer_service
         )
@@ -122,7 +131,7 @@ class BaseSession:
             fluent_connection._channel, fluent_connection._metadata
         )
         self.transcript = Transcript(self._transcript_service)
-        if fluent_connection.start_transcript:
+        if self._start_transcript:
             self.transcript.start()
 
         self.datamodel_service_tui = service_creator("tui").create(
@@ -260,6 +269,7 @@ class BaseSession:
         cls,
         server_info_file_name: str,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -270,9 +280,13 @@ class BaseSession:
             Path to server-info file written out by Fluent server
         file_transfer_service : Optional
             Support file upload and download.
+        start_transcript : bool, optional
+            The Fluent transcript is started in the client only when
+            start_transcript is True. It can be started and stopped
+            subsequently via method calls on the Session object.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
-            being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
+            being initialized. For example, ``cleanup_on_exit = True``.
             See :func:`FluentConnection initialization <ansys.fluent.core.fluent_connection.FluentConnection.__init__>`
             for more details and possible arguments.
 
@@ -287,6 +301,7 @@ class BaseSession:
                 ip=ip, port=port, password=password, **connection_kwargs
             ),
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
         )
         return session
 

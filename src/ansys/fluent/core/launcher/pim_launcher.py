@@ -294,7 +294,6 @@ def launch_remote_fluent(
         channel=channel,
         cleanup_on_exit=cleanup_on_exit,
         remote_instance=instance,
-        start_transcript=start_transcript,
         launcher_args=launcher_args,
     )
 
@@ -305,5 +304,7 @@ def launch_remote_fluent(
     )
 
     return session_cls(
-        fluent_connection=fluent_connection, file_transfer_service=file_transfer_service
+        fluent_connection=fluent_connection,
+        file_transfer_service=file_transfer_service,
+        start_transcript=start_transcript,
     )
