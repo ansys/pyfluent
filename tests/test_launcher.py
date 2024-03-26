@@ -410,3 +410,13 @@ def test_exposure_and_graphics_driver_arguments():
                 if m.value[0]
                 else " 3ddp"
             )
+
+
+def test_processor_count():
+    def get_processor_count(solver):
+        return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
+
+    with pyfluent.launch_fluent(processor_count=2) as solver:
+        assert get_processor_count(solver) == 2
+    with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
+        assert get_processor_count(solver) == 2
