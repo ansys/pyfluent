@@ -135,6 +135,7 @@ def _populate_hash_dict(name, info, cls, api_tree):
 
     cls_tuple = (
         name,
+        cls.__name__,
         cls.__bases__,
         info["type"],
         info.get("help"),
@@ -455,13 +456,13 @@ def _populate_classes(parent_dir):
                 f.write(f"{istr1}child_object_type of {cls_name}.")
                 f.write(f'\n{istr1}"""\n')
                 if stubf:
-                    stubf.write(f"{istr1}{child_object_type} = ...\n")
+                    stubf.write(f"{istr1}child_object_type = ...\n")
 
             return_type = getattr(cls, "return_type", None)
             if return_type:
                 f.write(f'{istr1}return_type = "{return_type}"\n')
                 if stubf:
-                    stubf.write(f"{istr1}{return_type} = ...\n")
+                    stubf.write(f"{istr1}return_type = ...\n")
 
 
 def _populate_init(parent_dir, sinfo):

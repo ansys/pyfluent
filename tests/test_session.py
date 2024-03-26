@@ -93,6 +93,13 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
+def test_download_file():
+    with pytest.raises(examples.RemoteFileNotFoundError):
+        import_case = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+        )
+
+
 def test_create_mock_session_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
@@ -337,9 +344,9 @@ def test_read_case_using_lightweight_mode():
         case_file_name=import_file_name, lightweight_mode=True
     )
     solver.setup.models.energy.enabled = False
-    old_fluent_connection_id = id(solver.fluent_connection)
+    old_fluent_connection_id = id(solver._fluent_connection)
     timeout_loop(
-        id(solver.fluent_connection) != old_fluent_connection_id,
+        id(solver._fluent_connection) != old_fluent_connection_id,
         timeout=60,
         idle_period=1,
     )
@@ -361,13 +368,13 @@ def test_build_from_fluent_connection(make_new_session):
     assert solver1.health_check_service.is_serving
     assert solver2.health_check_service.is_serving
     health_check_service1 = solver1.health_check_service
-    cortex_pid2 = solver2.fluent_connection.connection_properties.cortex_pid
-    solver1.build_from_fluent_connection(solver2.fluent_connection)
+    cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
+    solver1.build_from_fluent_connection(solver2._fluent_connection)
     assert solver1.health_check_service.is_serving
     assert solver2.health_check_service.is_serving
     assert not health_check_service1.is_serving
-    assert solver1.fluent_connection.connection_properties.cortex_pid == cortex_pid2
-    assert solver2.fluent_connection.connection_properties.cortex_pid == cortex_pid2
+    assert solver1._fluent_connection.connection_properties.cortex_pid == cortex_pid2
+    assert solver2._fluent_connection.connection_properties.cortex_pid == cortex_pid2
 
 
 @pytest.mark.standalone

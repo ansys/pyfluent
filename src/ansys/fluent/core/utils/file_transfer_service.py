@@ -6,6 +6,8 @@ import subprocess
 from typing import Any, Callable, Optional, Union  # noqa: F401
 
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
+from alive_progress import alive_bar
+
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 
@@ -164,13 +166,17 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def upload(self, file_name: Union[list[str], str]):
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ):
         """Upload a file to the server.
 
         Parameters
         ----------
         file_name : str
             File name
+        remote_file_name : str, optional
+            remote file name, by default None
         Raises
         ------
         FileNotFoundError
@@ -178,12 +184,18 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            for file in files:
-                if os.path.isfile(file):
-                    if not self.file_service.file_exist(os.path.basename(file)):
-                        self.upload_file(file_name=file)
-                elif not self.file_service.file_exist(os.path.basename(file)):
-                    raise FileNotFoundError(f"{file} does not exist.")
+            with alive_bar(len(files), title="Uploading...") as bar:
+                for file in files:
+                    if os.path.isfile(file):
+                        if not self.file_service.file_exist(os.path.basename(file)):
+                            self.upload_file(
+                                file_name=file, remote_file_name=remote_file_name
+                            )
+                            bar()
+                        else:
+                            print(f"\n{file} already uploaded.\n")
+                    elif not self.file_service.file_exist(os.path.basename(file)):
+                        raise FileNotFoundError(f"{file} does not exist.")
 
     def download_file(self, file_name: str, local_directory: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -211,8 +223,7 @@ class PimFileTransferService:
                 raise FileNotFoundError("Remote file does not exist.")
 
     def download(
-        self,
-        file_name: Union[list[str], str],
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = "."
     ):
         """Download a file from the server.
 
@@ -220,16 +231,21 @@ class PimFileTransferService:
         ----------
         file_name : str
             File name
+        local_directory : str, optional
+            local directory, by default None
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            for file in files:
-                if os.path.isfile(file):
-                    print(f"\nFile already exists. File path:\n{file}\n")
-                else:
-                    self.download_file(
-                        file_name=os.path.basename(file), local_directory="."
-                    )
+            with alive_bar(len(files), title="Downloading...") as bar:
+                for file in files:
+                    if os.path.isfile(file):
+                        print(f"\nFile already exists. File path:\n{file}\n")
+                    else:
+                        self.download_file(
+                            file_name=os.path.basename(file),
+                            local_directory=local_directory,
+                        )
+                        bar()
 
     def __call__(self, pim_instance: Optional[Any] = None):
         self.pim_instance = pim_instance

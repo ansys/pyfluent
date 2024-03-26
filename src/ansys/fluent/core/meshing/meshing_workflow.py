@@ -77,7 +77,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
             and not self._meshing.GlobalSettings.EnableCleanCAD()
         ):
             raise RuntimeError(
-                "'Watertight' objects are inaccessible from 'Fault-tolerant' workflow."
+                "'Watertight' objects are inaccessible from other workflows."
             )
         return super().__getattribute__(item)
 
@@ -121,7 +121,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             and not self._meshing.GlobalSettings.EnableComplexMeshing()
         ):
             raise RuntimeError(
-                "'Fault-tolerant' objects are inaccessible from 'Watertight' workflow."
+                "'Fault-tolerant' objects are inaccessible from other workflows."
             )
         return super().__getattribute__(item)
 
@@ -146,3 +146,67 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             Part-management file-management object .
         """
         return self._pm_file_management
+
+
+class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
+    """Provides 2D meshing specialization of the workflow wrapper."""
+
+    def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
+        """Initialize TwoDimensionalMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The underlying workflow object.
+        meshing : PyMenuGeneric
+            The meshing object.
+        """
+        super().__init__(workflow=workflow, meshing=meshing)
+        self._meshing = meshing
+
+    def reinitialize(self) -> None:
+        """Initialize a 2D meshing workflow."""
+        self._new_workflow(name="2D Meshing")
+
+    def __getattribute__(self, item: str):
+        if (
+            item != "reinitialize"
+            and not item.startswith("_")
+            and not self._meshing.GlobalSettings.EnablePrime2dMeshing()
+        ):
+            raise RuntimeError(
+                "'2D Meshing' objects are inaccessible from other workflows."
+            )
+        return super().__getattribute__(item)
+
+
+class TopologyBasedMeshingWorkflow(MeshingWorkflow):
+    """Provides topology-based meshing specialization of the workflow wrapper."""
+
+    def __init__(self, workflow: PyMenuGeneric, meshing: PyMenuGeneric) -> None:
+        """Initialize TopologyBasedMeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            The underlying workflow object.
+        meshing : PyMenuGeneric
+            The meshing object.
+        """
+        super().__init__(workflow=workflow, meshing=meshing)
+        self._meshing = meshing
+
+    def reinitialize(self) -> None:
+        """Initialize a topology based meshing workflow."""
+        self._new_workflow(name="Topology Based Meshing")
+
+    def __getattribute__(self, item: str):
+        if (
+            item != "reinitialize"
+            and not item.startswith("_")
+            and not self._meshing.GlobalSettings.EnablePrimeMeshing()
+        ):
+            raise RuntimeError(
+                "'Topology Based Meshing' objects are inaccessible from other workflows."
+            )
+        return super().__getattribute__(item)

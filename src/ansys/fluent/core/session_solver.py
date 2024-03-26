@@ -60,7 +60,7 @@ def _import_settings_root(root):
         api_keys = root.child_names
 
     for root_item in api_keys:
-        _class_dict[root_item] = getattr(root, root_item)
+        _class_dict[root_item] = root.__dict__[root_item]
 
     settings_api_root = type("SettingsRoot", (object,), _class_dict)
     return settings_api_root()
@@ -106,7 +106,7 @@ class Solver(BaseSession):
         self.fields.solution_variable_info = SolutionVariableInfo(
             self._solution_variable_service
         )
-        self._reduction_service = self.fluent_connection.create_grpc_service(
+        self._reduction_service = self._fluent_connection.create_grpc_service(
             ReductionService, self._error_state
         )
         if FluentVersion(self._version) >= FluentVersion.v241:
@@ -208,7 +208,7 @@ class Solver(BaseSession):
                 flproxy=self._settings_service,
                 version=self._version,
                 file_transfer_service=self._file_transfer_service,
-                scheme_eval=self.fluent_connection.scheme_eval.scheme_eval,
+                scheme_eval=self._fluent_connection.scheme_eval.scheme_eval,
             )
         return self._settings_root
 
@@ -233,7 +233,7 @@ class Solver(BaseSession):
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
             state = self.settings.get_state()
-            self.build_from_fluent_connection(fut_session.fluent_connection)
+            self.build_from_fluent_connection(fut_session._fluent_connection)
             # TODO temporary fix till set_state at settings root is fixed
             _set_state_safe(self.settings, state)
 
@@ -248,7 +248,7 @@ class Solver(BaseSession):
         import ansys.fluent.core as pyfluent
 
         self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
-        launcher_args = dict(self.fluent_connection.launcher_args)
+        launcher_args = dict(self._fluent_connection.launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
         fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
