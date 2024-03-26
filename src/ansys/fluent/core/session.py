@@ -308,14 +308,14 @@ class BaseSession:
         data."""
         self._fluent_connection.force_exit()
 
-    def _warning(self, method_name: str) -> str:
+    def _file_transfer_api_warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
         return f"You have directly called the {method_name} method of the session. \
         Please be advised that for the current version of Fluent, many API methods \
         automatically handle file uploads and downloads internally. You may not \
-        need to explicitly call `upload()` or `download()` in most cases. \
+        need to explicitly call {method_name} in most cases. \
         However, there are exceptions, particularly in PMFileManagement, where complex \
-        file interactions require explicit use of `upload()` and `download()` methods \
+        file interactions require explicit use of {method_name}  method \
         for relevant files."
 
     def upload(
@@ -330,7 +330,7 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        warnings.warn(self._warning("upload()"), UserWarning)
+        warnings.warn(self._file_transfer_api_warning("upload()"), UserWarning)
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
@@ -344,7 +344,7 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        warnings.warn(self._warning("download()"), UserWarning)
+        warnings.warn(self._file_transfer_api_warning("download()"), UserWarning)
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 
