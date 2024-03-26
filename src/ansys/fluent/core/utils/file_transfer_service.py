@@ -5,9 +5,9 @@ from pathlib import Path
 import subprocess
 from typing import Any, Callable, Optional, Union  # noqa: F401
 
-from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 from alive_progress import alive_bar
 
+from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 
