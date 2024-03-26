@@ -11,7 +11,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow_session,
 )
 
-from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -362,29 +361,6 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
     tasks = [task for task in workflow.TaskObject]
     assert len(tasks) == 11
     assert tasks[0].name() == "Import Geometry"
-
-
-@pytest.mark.fluent_version("==23.2")
-@pytest.mark.codegen_required
-def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
-    fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
-    part_management = fault_tolerant.part_management
-    file_name = exhaust_system_geometry
-    part_management.LoadFmdFile(FilePath=file_name)
-    part_management.MoveCADComponentsToNewObject(
-        Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
-    )
-    part_management.Node["Object"].Rename(NewName=r"Engine")
-    import_cad = fault_tolerant.task("Import CAD and Part Management")
-    import_cad.Arguments.setState(
-        {
-            r"CreateObjectPer": r"Custom",
-            r"FMDFileName": file_name,
-            r"FileLoaded": r"yes",
-            r"ObjectSetting": r"DefaultObjectSetting",
-        }
-    )
-    import_cad()
 
 
 @pytest.mark.codegen_required
