@@ -37,16 +37,13 @@ class Meshing(PureMeshing):
 
     def _switch_to_solver(self) -> Any:
         self.tui.switch_to_solution_mode("yes")
-        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
-            solver_session = Solver(
-                fluent_connection=self._fluent_connection,
-                file_transfer_service=self._file_transfer_service,
-            )
-            delattr(self, "switch_to_solver")
-            self.switched = True
-            return solver_session
-        else:
-            return
+        solver_session = Solver(
+            fluent_connection=self._fluent_connection,
+            file_transfer_service=self._file_transfer_service,
+        )
+        delattr(self, "switch_to_solver")
+        self.switched = True
+        return solver_session
 
     @property
     def tui(self):
