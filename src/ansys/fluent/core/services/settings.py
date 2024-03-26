@@ -177,7 +177,8 @@ class SettingsService:
             return [self._get_state_from_value(v) for v in state.value_list.lst]
         elif t == "value_map":
             return {
-                k: self._get_state_from_value(v) for k, v in state.value_map.m.items()
+                k: self._get_state_from_value(v)
+                for k, v in sorted(state.value_map.m.items())
             }
         else:
             return None

@@ -212,10 +212,12 @@ class Base:
 
         Supports file upload and download.
         """
-        if self._file_transfer_service:
-            return self._file_transfer_service
-        elif self._parent:
-            return self._parent.file_transfer_service
+        with warnings.catch_warnings():
+            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
+            if self._file_transfer_service:
+                return self._file_transfer_service
+            elif self._parent:
+                return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
@@ -1757,7 +1759,7 @@ _bases_by_class = {}
 
 
 # pylint: disable=missing-raises-doc
-def get_cls(name, info, parent=None, version=None):
+def get_cls(name, info, parent=None, version=None, parent_taboo=None):
     """Create a class for the object identified by "path"."""
     try:
         if name == "":
@@ -1817,16 +1819,19 @@ def get_cls(name, info, parent=None, version=None):
             bases += (_InOutFile,)
 
         original_pname = pname
-        if any(
-            x in bases for x in (_InputFile, _OutputFile, _InOutFile)
-        ):  # not generalizing for performance
-            i = 0
-            while pname in _bases_by_class and _bases_by_class[pname] != bases:
-                if i > 0:
-                    pname = pname[: pname.rfind("_")]
+        i = 1
+        if parent_taboo:
+            while pname in parent_taboo:
+                pname = f"{original_pname}_{i}"
                 i += 1
-                pname += f"_{str(i)}"
+        parent_attr_name = pname
+        if info.get("file_purpose"):  # not generalizing for performance
+            while pname in _bases_by_class and _bases_by_class[pname] != bases:
+                pname = f"{original_pname}_{i}"
+                i += 1
             _bases_by_class[pname] = bases
+        if parent_taboo:
+            parent_taboo.add(pname)
 
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
@@ -1849,10 +1854,10 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls, original_pname = get_cls(cname, cinfo, cls, version=version)
-                ccls_name = ccls.__name__
+                ccls, parent_attr_name = get_cls(
+                    cname, cinfo, cls, version=version, parent_taboo=taboo
+                )
 
-                i = 0
                 if write_doc:
                     nonlocal doc
                     th = ccls._state_type
@@ -1860,16 +1865,9 @@ def get_cls(name, info, parent=None, version=None):
                     doc += f"    {ccls.__name__} : {th}\n"
                     doc += f"        {ccls.__doc__}\n"
 
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-
-                ccls.__name__ = ccls_name
-                names.append(ccls.__name__ if i > 0 else original_pname)
-                taboo.add(ccls_name)
-                cls._child_classes[ccls.__name__ if i > 0 else original_pname] = ccls
+                names.append(parent_attr_name)
+                taboo.add(ccls.__name__)
+                cls._child_classes[parent_attr_name] = ccls
 
         children = info.get("children")
         if children:
@@ -1925,7 +1923,7 @@ def get_cls(name, info, parent=None, version=None):
             f"'{parent.fluent_name if parent else None}'"
         )
         raise
-    return cls, original_pname
+    return cls, parent_attr_name
 
 
 def _gethash(obj_info):

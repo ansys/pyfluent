@@ -93,6 +93,13 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
+def test_download_file():
+    with pytest.raises(examples.RemoteFileNotFoundError):
+        import_case = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+        )
+
+
 def test_create_mock_session_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"

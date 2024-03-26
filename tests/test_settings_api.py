@@ -6,6 +6,9 @@ from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
     UnstableSettingWarning,
     _Alias,
+    _InputFile,
+    _OutputFile,
+    to_python_name,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -295,3 +298,41 @@ def test_unstable_settings_warning(new_solver_session, recwarn):
     solver.file.export
     assert len(recwarn) == 1
     assert recwarn.pop().category == UnstableSettingWarning
+
+    # Issue in running in CI (probably due to -gu mode)
+    # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    # solver.file.read_case_data(file_name=case_path)
+    # img_path = "a.png"
+    # Path(img_path).unlink(missing_ok=True)
+    # solver.results.graphics.picture.save_picture(file_name=img_path)
+    # assert len(recwarn) == 0
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_generated_code_special_cases(new_solver_session):
+    solver = new_solver_session
+    icing_cls = solver.setup.boundary_conditions._child_classes[
+        "velocity_inlet"
+    ].child_object_type._child_classes["icing"]
+    fensapice_drop_vrh_cls = icing_cls._child_classes["fensapice_drop_vrh"]
+    fensapice_drop_vrh_1_cls = icing_cls._child_classes["fensapice_drop_vrh_1"]
+    assert fensapice_drop_vrh_cls.fluent_name != fensapice_drop_vrh_1_cls.fluent_name
+    assert to_python_name(fensapice_drop_vrh_cls.fluent_name) == to_python_name(
+        fensapice_drop_vrh_1_cls.fluent_name
+    )
+    assert fensapice_drop_vrh_cls.__name__ != fensapice_drop_vrh_1_cls.__name__
+
+    assert (
+        solver.file.read_case.file_name.fluent_name
+        == solver.file.write_case.file_name.fluent_name
+    )
+    assert (
+        solver.file.read_case.file_name.__class__.__name__
+        != solver.file.write_case.file_name.__class__.__name__
+    )
+    read_file_bases = solver.file.read_case.file_name.__class__.__bases__
+    assert _InputFile in read_file_bases
+    assert _OutputFile not in read_file_bases
+    write_file_bases = solver.file.write_case.file_name.__class__.__bases__
+    assert _InputFile not in write_file_bases
+    assert _OutputFile in write_file_bases
