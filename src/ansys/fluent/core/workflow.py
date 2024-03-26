@@ -984,7 +984,7 @@ class CompoundTask(CommandTask):
             state.update({"AddChild": "yes"})
             self._task.Arguments.update_dict(state)
 
-    def add_child_and_update(self, state=None, defer_update=None):
+    def add_child_and_update(self, state=None, defer_update=False):
         """Add a child to this CompoundTask and update.
 
         Parameters
@@ -995,10 +995,7 @@ class CompoundTask(CommandTask):
             Flag to defer update.
         """
         self._add_child(state)
-        if defer_update is None:
-            self._task.AddChildAndUpdate()
-        else:
-            return self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+        self._task.AddChildAndUpdate(DeferUpdate=defer_update)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
