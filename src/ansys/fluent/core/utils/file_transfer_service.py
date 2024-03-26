@@ -3,7 +3,7 @@
 import os
 from typing import Any, Callable, Optional, Union  # noqa: F401
 
-from alive_progress import alive_bar
+import progressbar
 
 import ansys.platform.instancemanagement as pypim
 
@@ -13,6 +13,33 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
+
+
+def _get_progressbar(label: str, total_files: int) -> progressbar.ProgressBar:
+    bar = progressbar.ProgressBar(
+        widgets=[
+            progressbar.FormatLabel(f"{label}..."),
+            " ",
+            progressbar.Bar(),
+            " ",
+            progressbar.RotatingMarker(),
+            " [File Count: ",
+            progressbar.Counter(),
+            "] ",
+            progressbar.Percentage(),
+            " [",
+            progressbar.ETA(),
+            "]",
+            " [Data Processed/Transferred:",
+            progressbar.DataSize(),
+            "] ",
+            "[File Transfer Speed:",
+            progressbar.FileTransferSpeed(),
+            "]",
+        ],
+        term_width=150,
+    )
+    return bar(range(total_files))
 
 
 class PimFileTransferService:
@@ -119,18 +146,17 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            with alive_bar(len(files), title="Uploading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        if not self.file_service.file_exist(os.path.basename(file)):
+            for file in files:
+                if os.path.isfile(file):
+                    if not self.file_service.file_exist(os.path.basename(file)):
+                        for i in _get_progressbar("Uploading", len(files)):
                             self.upload_file(
                                 file_name=file, remote_file_name=remote_file_name
                             )
-                            bar()
-                        else:
-                            print(f"\n{file} already uploaded.\n")
-                    elif not self.file_service.file_exist(os.path.basename(file)):
-                        raise FileNotFoundError(f"{file} does not exist.")
+                    else:
+                        print(f"\n{file} already uploaded.\n")
+                elif not self.file_service.file_exist(os.path.basename(file)):
+                    raise FileNotFoundError(f"{file} does not exist.")
 
     def download_file(self, file_name: str, local_directory: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -171,16 +197,15 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            with alive_bar(len(files), title="Downloading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        print(f"\nFile already exists. File path:\n{file}\n")
-                    else:
+            for file in files:
+                if os.path.isfile(file):
+                    print(f"\nFile already exists. File path:\n{file}\n")
+                else:
+                    for i in _get_progressbar("Downloading", len(files)):
                         self.download_file(
                             file_name=os.path.basename(file),
                             local_directory=local_directory,
                         )
-                        bar()
 
     def __call__(self, pim_instance: Optional[Any] = None):
         self.pim_instance = pim_instance
