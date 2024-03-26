@@ -3,6 +3,8 @@
 import os
 from typing import Any, Callable, Optional, Union  # noqa: F401
 
+from alive_progress import alive_bar
+
 import ansys.platform.instancemanagement as pypim
 
 
@@ -113,12 +115,14 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            for file in files:
-                if os.path.isfile(file):
-                    if not self.file_service.file_exist(os.path.basename(file)):
-                        self.upload_file(file_name=file)
-                elif not self.file_service.file_exist(os.path.basename(file)):
-                    raise FileNotFoundError(f"{file} does not exist.")
+            with alive_bar(len(files), title="Uploading...") as bar:
+                for file in files:
+                    if os.path.isfile(file):
+                        if not self.file_service.file_exist(os.path.basename(file)):
+                            self.upload_file(file_name=file)
+                    elif not self.file_service.file_exist(os.path.basename(file)):
+                        raise FileNotFoundError(f"{file} does not exist.")
+                    bar()
 
     def download_file(self, file_name: str, local_directory: Optional[str] = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -158,13 +162,15 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            for file in files:
-                if os.path.isfile(file):
-                    print(f"\nFile already exists. File path:\n{file}\n")
-                else:
-                    self.download_file(
-                        file_name=os.path.basename(file), local_directory="."
-                    )
+            with alive_bar(len(files), title="Downloading...") as bar:
+                for file in files:
+                    if os.path.isfile(file):
+                        print(f"\nFile already exists. File path:\n{file}\n")
+                    else:
+                        self.download_file(
+                            file_name=os.path.basename(file), local_directory="."
+                        )
+                bar()
 
     def __call__(self, pim_instance: Optional[Any] = None):
         self.pim_instance = pim_instance
