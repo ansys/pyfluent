@@ -9,7 +9,7 @@ from util.fixture_fluent import download_input_file
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
-    assert pure_meshing_session.health_check_service.is_serving
+    assert pure_meshing_session.health_check.is_serving
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)

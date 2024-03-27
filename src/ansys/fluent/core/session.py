@@ -125,21 +125,21 @@ class BaseSession:
         if fluent_connection.start_transcript:
             self.transcript.start()
 
-        self.datamodel_service_tui = service_creator("tui").create(
+        self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
             self.scheme_eval,
         )
 
-        self.datamodel_service_se = service_creator("datamodel").create(
+        self._datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
             self._file_transfer_service,
         )
 
-        self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
+        self.datamodel_events = DatamodelEvents(self._datamodel_service_se)
         self.datamodel_events.start()
 
         self._batch_ops_service = service_creator("batch_ops").create(
@@ -148,25 +148,19 @@ class BaseSession:
         self._events_service = service_creator("events").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.events_manager = EventsManager(
+        self.events = EventsManager(
             self._events_service, self._error_state, fluent_connection._id
         )
 
         self._monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
-        self.monitors_manager = MonitorsManager(
-            fluent_connection._id, self._monitors_service
-        )
+        self.monitors = MonitorsManager(fluent_connection._id, self._monitors_service)
 
-        self.events_manager.register_callback(
-            "InitializedEvent", self.monitors_manager.refresh
-        )
-        self.events_manager.register_callback(
-            "DataReadEvent", self.monitors_manager.refresh
-        )
+        self.events.register_callback("InitializedEvent", self.monitors.refresh)
+        self.events.register_callback("DataReadEvent", self.monitors.refresh)
 
-        self.events_manager.start()
+        self.events.start()
 
         self._field_data_service = self._fluent_connection.create_grpc_service(
             FieldDataService, self._error_state
@@ -199,17 +193,17 @@ class BaseSession:
             self._error_state,
         )
 
-        self.health_check_service = fluent_connection.health_check_service
+        self.health_check = fluent_connection.health_check
         self.connection_properties = fluent_connection.connection_properties
 
         self._fluent_connection.register_finalizer_cb(
-            self.datamodel_service_se.unsubscribe_all_events
+            self._datamodel_service_se.unsubscribe_all_events
         )
         for obj in (
             self.datamodel_events,
             self.transcript,
-            self.events_manager,
-            self.monitors_manager,
+            self.events,
+            self.monitors,
         ):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
