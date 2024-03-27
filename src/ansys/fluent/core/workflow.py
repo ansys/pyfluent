@@ -181,6 +181,7 @@ class BaseTask:
                 _task_list=[],
                 _task_objects={},
                 _dynamic_interface=command_source._dynamic_interface,
+                _fluent_version=command_source._fluent_version,
             )
         )
 
@@ -996,14 +997,15 @@ class CompoundTask(CommandTask):
             Flag to defer update.
         """
         self._add_child(state)
-        if self.get_fluent_version() >= FluentVersion.v241:
+        if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
                 defer_update = False
             self._task.AddChildAndUpdate(DeferUpdate=defer_update)
         else:
             if defer_update is not None:
                 warnings.warn(
-                    "'defer_update' is supported for Fluent versions 24.1 onwards."
+                    "'defer_update' is supported for Fluent versions 24.1 onwards.",
+                    UserWarning,
                 )
             self._task.AddChildAndUpdate()
         return self.last_child()
@@ -1072,7 +1074,12 @@ class Workflow:
     __call__()
     """
 
-    def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        command_source: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
         """Initialize WorkflowWrapper.
 
         Parameters
@@ -1106,6 +1113,7 @@ class Workflow:
             "task_object",
             "workflow",
         }
+        self._fluent_version = fluent_version
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
@@ -1406,7 +1414,12 @@ class ClassicWorkflow:
     __call__()
     """
 
-    def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        command_source: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
         """Initialize ClassicWorkflow.
 
         Parameters
@@ -1422,6 +1435,7 @@ class ClassicWorkflow:
             threading.RLock()
         )  # TODO: sort out issues with these un-used variables.
         self._dynamic_interface = False
+        self._fluent_version = fluent_version
 
     @property
     def TaskObject(self) -> TaskContainer:

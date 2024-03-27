@@ -149,6 +149,7 @@ class BaseMeshing:
             self._old_workflow = WorkflowMode.CLASSIC_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
+                self.get_fluent_version(),
             )
         return self._old_workflow
 
@@ -159,6 +160,7 @@ class BaseMeshing:
             self._wt_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
+                self.get_fluent_version(),
             )
         return self._wt_workflow
 
@@ -171,6 +173,7 @@ class BaseMeshing:
                 self.meshing,
                 self.PartManagement,
                 self.PMFileManagement,
+                self.get_fluent_version(),
             )
         return self._ft_workflow
 
@@ -181,6 +184,7 @@ class BaseMeshing:
             self._2dm_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
+                self.get_fluent_version(),
             )
         return self._2dm_workflow
 
@@ -191,6 +195,7 @@ class BaseMeshing:
             self._tb_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
+                self.get_fluent_version(),
             )
         return self._tb_workflow
 
