@@ -16,6 +16,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def camel_to_snake_case(camel_case_str: str) -> str:
@@ -984,7 +985,7 @@ class CompoundTask(CommandTask):
             state.update({"AddChild": "yes"})
             self._task.Arguments.update_dict(state)
 
-    def add_child_and_update(self, state=None, defer_update=False):
+    def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
 
         Parameters
@@ -995,7 +996,16 @@ class CompoundTask(CommandTask):
             Flag to defer update.
         """
         self._add_child(state)
-        self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+        if self.get_fluent_version() >= FluentVersion.v241:
+            if defer_update is None:
+                defer_update = False
+            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+        else:
+            if defer_update is not None:
+                warnings.warn(
+                    "'defer_update' is supported for Fluent versions 24.1 onwards."
+                )
+            self._task.AddChildAndUpdate()
         return self.last_child()
 
     def last_child(self) -> BaseTask:
