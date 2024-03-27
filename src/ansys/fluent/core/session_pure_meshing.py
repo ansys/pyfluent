@@ -81,7 +81,7 @@ class PureMeshing(BaseSession):
         return self._base_meshing.meshing
 
     @property
-    def meshing_queries(self):
+    def meshing_queries(self) -> MeshingQueries:
         """Datamodel root of meshing_queries."""
         if self.get_fluent_version() >= FluentVersion.v232:
             return MeshingQueries(self.meshing_queries_service)

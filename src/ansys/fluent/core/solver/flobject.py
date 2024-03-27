@@ -212,10 +212,12 @@ class Base:
 
         Supports file upload and download.
         """
-        if self._file_transfer_service:
-            return self._file_transfer_service
-        elif self._parent:
-            return self._parent.file_transfer_service
+        with warnings.catch_warnings():
+            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
+            if self._file_transfer_service:
+                return self._file_transfer_service
+            elif self._parent:
+                return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
