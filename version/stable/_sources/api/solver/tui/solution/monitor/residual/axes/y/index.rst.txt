@@ -1,0 +1,18 @@
+.. _ref_solver_tui_solution_monitor_residual_axes_y:
+
+y
+=
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.monitor.residual.axes.y
+   :members: label, log_scale, auto_range, min, max, show_major_gridlines, show_minor_gridlines
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   number_format/index
+   major_gridlines/index
+   minor_gridlines/index

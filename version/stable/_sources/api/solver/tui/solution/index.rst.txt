@@ -1,0 +1,23 @@
+.. _ref_solver_tui_solution:
+
+solution
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   run_calculation/index
+   controls/index
+   cell_registers/index
+   methods/index
+   initialization/index
+   report_definitions/index
+   calculation_activity/index
+   monitor/index

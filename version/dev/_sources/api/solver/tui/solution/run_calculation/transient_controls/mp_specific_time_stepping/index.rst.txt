@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_run_calculation_transient_controls_mp_specific_time_stepping:
+
+mp_specific_time_stepping
+=========================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.run_calculation.transient_controls.mp_specific_time_stepping
+   :members: enabled, global_courant_number, min_time_step_size, max_step_change_factor, min_step_change_factor, update_interval, max_time_step_size, fixed_time_step_size, initial_time_step_size
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

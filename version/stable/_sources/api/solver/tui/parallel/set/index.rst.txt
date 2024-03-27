@@ -1,0 +1,12 @@
+.. _ref_solver_tui_parallel_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parallel.set
+   :members: verbosity, partition_mask, time_out, fast_io
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

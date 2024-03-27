@@ -1,0 +1,24 @@
+.. _ref_solver_tui_solve_set_multiphase_numerics:
+
+multiphase_numerics
+===================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.set.multiphase_numerics
+   :members: stable_vof_settings
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   compressible_flow/index
+   default_controls/index
+   viscous_flow/index
+   advanced_stability_controls/index
+   solution_stabilization/index
+   boiling_parameters/index
+   face_pressure_controls/index
+   porous_media/index
+   heat_mass_transfer/index

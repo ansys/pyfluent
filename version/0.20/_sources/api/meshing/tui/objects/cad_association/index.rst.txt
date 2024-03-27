@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_objects_cad_association:
+
+cad_association
+===============
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.cad_association
+   :members: unlock_cad, attach_cad, update_objects, query_object_association, restore_cad, detach_objects, update_all_objects, detach_all_objects
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,16 @@
+.. _ref_meshing_tui_objects_volumetric_regions_hexcore_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.volumetric_regions.hexcore.set
+   :members: non_fluid_type, smooth_relaxation, maximum_initial_cells, print_region_based_sizing, maximum_cell_length, maximum_subdivisions, smooth_iterations, skip_tet_refinement, peel_layers, buffer_layers, define_hexcore_extents, set_region_based_sizing, octree_hexcore, only_hexcore, island_thresholds, delete_dead_zones, avoid_1_by_8_cell_jump_in_hexcore, keep_hex_tet_separate, merge_tets_to_pyramids, smooth_interface, compute_max_cell_length
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   outer_domain_params/index

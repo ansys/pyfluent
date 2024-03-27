@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_phases_set_domain_properties_interaction_domain_heat_mass_reactions_interphase_discretization:
+
+interphase_discretization
+=========================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization
+   :members: wall_adhesion, cavitation, lift, slope_limiter, vmass_coeff, jump_adhesion, lift_montoya, vmass_implicit_options, interphase_discr, sfc_modeling, interphase_visc_disp, sfc_model_type, lift_shaver_podowski, visc_disp_factor, sfc_tension_coeff, virtual_mass, vmass_implicit
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_raytracer_background:
+
+background
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.raytracer.background
+   :members: vertical, env_light_dirvec, show_backplate, backplate_image, hide_environment_keep_effects, env_light_upvec, env_intensity, backplate_color, spin, environment_image, view_zoom, horizontal, env_color
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

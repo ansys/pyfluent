@@ -1,0 +1,16 @@
+.. _ref_solver_tui_parallel_partition_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parallel.partition.set
+   :members: origin, solid_thread_weight, layering, all_off, particle_weight, model_weighted_partition, pre_test, stretched_mesh_enhancement, across_zones, print_verbosity, across_zone_boundaries, laplace_smoothing, cell_function, load_distribution, all_on, fluid_solid_rebalance_after_read_case, dpm_load_balancing, nfaces_as_weights, merge, vof_free_surface_weight, smooth, face_area_as_weights, isat_weight
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   partition_origin_vector/index

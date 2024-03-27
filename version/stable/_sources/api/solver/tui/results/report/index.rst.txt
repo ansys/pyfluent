@@ -1,0 +1,25 @@
+.. _ref_solver_tui_results_report:
+
+report
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.report
+   :members: forces, particle_summary, multiphase_summary, pathline_summary, aero_optical_distortions, vbm, summary, projected_surface_area
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   discrete_phase/index
+   surface_integrals/index
+   heat_exchanger/index
+   simulation_reports/index
+   population_balance/index
+   system/index
+   volume_integrals/index
+   fluxes/index
+   modified_setting_options/index
+   flow/index

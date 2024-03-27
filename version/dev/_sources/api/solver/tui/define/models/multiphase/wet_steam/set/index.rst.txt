@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_multiphase_wet_steam_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.multiphase.wet_steam.set
+   :members: max_liquid_mass_fraction, zonal_phase_change, droplet_growth_rate, stagnation_conditions, rgp_tables, virial_equation
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

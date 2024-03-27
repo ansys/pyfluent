@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_operating_conditions:
+
+operating_conditions
+====================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.operating_conditions
+   :members: operating_density, reference_pressure_method, gravity, operating_temperature, reference_pressure_location, set_state, use_inlet_temperature_for_operating_density, used_ref_pressure_location, gravity_mrf_behavior, operating_pressure
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

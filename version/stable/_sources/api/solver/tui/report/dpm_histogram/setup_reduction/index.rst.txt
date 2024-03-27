@@ -1,0 +1,12 @@
+.. _ref_solver_tui_report_dpm_histogram_setup_reduction:
+
+setup_reduction
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.report.dpm_histogram.setup_reduction
+   :members: maximum, number_of_bins, make_steady_from_unsteady_file, weighting_variable, minimum, reset_min_and_max, use_weighting, all_variables_number_of_bins, logarithmic, list_settings
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

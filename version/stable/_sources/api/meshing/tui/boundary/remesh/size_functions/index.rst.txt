@@ -1,0 +1,17 @@
+.. _ref_meshing_tui_boundary_remesh_size_functions:
+
+size_functions
+==============
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.boundary.remesh.size_functions
+   :members: list, compute, reset_global_controls, create_defaults, set_global_controls, triangulate_quad_faces, set_prox_gap_tolerance, use_cad_imported_curvature, delete, set_scaling_filter, create, disable_periodicity_filter, delete_all, list_periodicity_filter, enable_periodicity_filter
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   controls/index
+   contours/index

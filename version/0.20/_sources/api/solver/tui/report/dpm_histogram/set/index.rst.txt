@@ -1,0 +1,12 @@
+.. _ref_solver_tui_report_dpm_histogram_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.report.dpm_histogram.set
+   :members: maximum, minimum, diameter_statistics, cumulation_curve, number_of_bins, correlation, percentage, weighting, histogram_mode, logarithmic, variable_power_3, auto_range
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

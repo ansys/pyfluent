@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_report_plots:
+
+report_plots
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.report_plots
+   :members: clear_data, delete_all, list, add, delete, axes, curves, list_properties, get_window_id, plot, edit
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+.. _ref_solver_tui_display_set_windows:
+
+windows
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.windows
+   :members: ruler, aspect_ratio, logo, open_window, set_window, set_window_by_name, logo_color, close_window, close_window_by_name
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   video/index
+   text/index
+   main/index
+   axes/index
+   scale/index
+   xy/index

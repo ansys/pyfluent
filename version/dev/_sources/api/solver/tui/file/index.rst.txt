@@ -1,0 +1,27 @@
+.. _ref_solver_tui_file:
+
+file
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.file
+   :members: cff_files, show_configuration, stop_journal, write_selected_defined_profiles, write_settings, close_without_save, define_macro, set_error_on_invalid_command, write_macros, write_injections, read_data, write_isat_table, read_pdf, read_injections, write_case_data, read_field_functions, replace_mesh, read_case_data, read_profile, async_optimize, set_target_reference_frame_for_write_profiles, write_data, stop_macro, read_macros, write_gpu_restart, write_field_functions, read_case_info, write_profile, write_flamelet, read_viewfactors, set_maximum_simultaneous_files, write_pdf, load_act_tool, set_batch_options, start_journal, write_pdat, binary_legacy_files, stop_transcript, read_case_settings, confirm_overwrite, set_tui_version, write_circumferential_averaged_profile, write_cleanup_script, start_transcript, read_rays, read_surface_clusters, read_settings, write_merge_profiles, read_gpu_restart, read_case, write_case, write_currently_defined_profiles, write_boundary_mesh, execute_macro, export_to_cfd_post, read_journal, sync_workbench, data_file_options, set_idle_timeout, read_isat_table, single_precision_coordinates, convert_hanging_nodes_during_read, write_fan_profile, read_transient_table, reload_setup
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   interpolate/index
+   project_beta/index
+   import_/index
+   parametric_project/index
+   em_mapping/index
+   transient_export/index
+   auto_save/index
+   export/index
+   fsi/index
+   table_manager/index
+   solution_files/index
+   cffio_options/index

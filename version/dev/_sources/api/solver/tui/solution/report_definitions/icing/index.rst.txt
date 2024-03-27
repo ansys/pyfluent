@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_report_definitions_icing:
+
+icing
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.report_definitions.icing
+   :members: list_properties, list, create, rename, make_a_copy, delete, edit
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

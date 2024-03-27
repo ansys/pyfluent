@@ -1,0 +1,12 @@
+.. _ref_solver_tui_server:
+
+server
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.server
+   :members: start_client, print_server_address, start_server, print_web_server_info, print_connected_clients, start_web_server, stop_web_server, write_or_reset_server_info, shutdown_server
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,17 @@
+.. _ref_solver_tui_results_graphics_colors:
+
+colors
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.colors
+   :members: overset_faces, color_by_type, inlet_faces, automatic_skip, internal_faces, outlet_faces, interior_faces, far_field_faces, interface_faces, foreground, symmetry_faces, rans_les_interface_faces, surface, periodic_faces, skip_label, axis_faces, wall_faces, list_colors, background, traction_faces, free_surface_faces, reset_colors
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   by_surface/index
+   by_type/index

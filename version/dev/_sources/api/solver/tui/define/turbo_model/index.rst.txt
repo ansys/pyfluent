@@ -1,0 +1,19 @@
+.. _ref_solver_tui_define_turbo_model:
+
+turbo_model
+===========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.turbo_model
+   :members: delete_phaselag_spectral_content, export_boundary_mesh, list_phaselag_state, list_graphics_spectral_content, create_graphics_spectral_content, create_turbomachine_description, list_turbomachine_description, separate_nonoverlapping_interface_boundary, append_phaselag_spectral_content, phaselag_extra_settings, delete_turbomachine_description, make_phaselag_from_boundaries, append_graphics_spectral_content, blade_flutter_row, delete_graphics_spectral_content, turbo_create, turbo_interface_check, create_phaselag_spectral_content, enable_turbo_model, make_phaselag_from_periodic, graphics_extra_settings
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   general_turbo_interface_settings/index
+   legacy_models/index
+   blade_flutter_harmonics/index
+   turbo_topology/index

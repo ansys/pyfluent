@@ -1,0 +1,17 @@
+.. _ref_solver_tui_solve_animate_pulse_hardcopy:
+
+hardcopy
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.animate.pulse.hardcopy
+   :members: invert_background, dpi, x_resolution, use_window_resolution, landscape, preview, set_standard_resolution, raytracer_image, jpeg_hardcopy_quality, y_resolution
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   driver/index
+   color_mode/index

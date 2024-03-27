@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_run_calculation_data_sampling:
+
+data_sampling
+=============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.run_calculation.data_sampling
+   :members: flow_shear_stresses, force_statistics, statistics_mixture_fraction, wall_statistics, enabled, statistics_reaction_progress, dpm_variables, species_list, flow_heat_fluxes, sampling_interval, enable_custom_field_functions, custom_field_functions
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

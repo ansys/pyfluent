@@ -1,0 +1,12 @@
+.. _ref_solver_tui_preferences_graphics_colormap_settings:
+
+colormap_settings
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.graphics.colormap_settings
+   :members: max_size_scale_factor, type, preserve_aspect_ratio_for_hardcopy, number_format_type, isolines_position_offset, major_length_to_screen_ratio_when_horizontal, use_no_sub_windows, major_length_to_screen_ratio_when_vertical, alignment, aspect_ratio_when_horizontal, text_truncation_limit_for_vertical_colormaps, text_font_automatic_units, automatic_resize, levels, text_font_automatic_horizontal_size, skip_value, text_font_fixed_size, aspect_ratio_when_vertical, text_truncation_limit_for_horizontal_colormaps, auto_refit_on_resize, margin_from_edge_to_screen_ratio, text_font_automatic_size, colormap, min_size_scale_factor, text_behavior, labels, text_font_name, number_format_precision, show_colormap, text_font_fixed_horizontal_size, text_font_automatic_vertical_size, text_font_fixed_units, text_font_fixed_vertical_size, border_style, log_scale
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

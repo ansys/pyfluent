@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_dynamic_mesh_controls_in_cylinder_parameters:
+
+in_cylinder_parameters
+======================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.dynamic_mesh.controls.in_cylinder_parameters
+   :members: piston_stroke_cutoff, starting_crank_angle, minimum_lift, max_crank_angle_step, position_starting_mesh, piston_data, crank_period, crank_angle_step, modify_lift, print_plot_lift
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

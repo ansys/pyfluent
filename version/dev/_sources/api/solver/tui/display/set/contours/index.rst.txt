@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_set_contours:
+
+contours
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.contours
+   :members: n_contour, filled_contours, global_range, node_values, render_mesh, surfaces, clip_to_range, auto_range, coloring, log_scale, line_contours
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,16 @@
+.. _ref_solver_tui_results_graphics_picture:
+
+picture
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.picture
+   :members: dpi, invert_background, y_resolution, color_mode, list_color_mode, preview, raytracer_image, jpeg_hardcopy_quality, save_picture, standard_resolution, x_resolution, landscape, use_window_resolution
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   driver_options/index

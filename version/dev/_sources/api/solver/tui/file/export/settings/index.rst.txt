@@ -1,0 +1,12 @@
+.. _ref_solver_tui_file_export_settings:
+
+settings
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.file.export.settings
+   :members: cgns_mesh_type, cgns_enhance_poly_export_performance, cgns_default_cellsize_changes, set_cgns_export_filetype, cgns_polyhedral_cpu_threads, cgns_merge_ngons_to_single_ngon
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

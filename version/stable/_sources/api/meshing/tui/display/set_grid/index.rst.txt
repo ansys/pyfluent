@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_display_set_grid:
+
+set_grid
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.display.set_grid
+   :members: all_cells, x_range, labels, normals, refine, list, face_quality, all_faces, unused, cell_quality, label_scale, label_alignment, tagged, default, free, marked, left_handed, z_range, all_nodes, unmeshed, node_size, normal_scale, node_symbol, label_font, multi, y_range, neighborhood
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

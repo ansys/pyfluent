@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_scene:
+
+scene
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.scene
+   :members: make_a_copy, clear_history, delete, list_properties, list, copy, create, edit, add_to_graphics, display, rename
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

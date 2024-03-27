@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_mesh_pyramid_controls:
+
+controls
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.mesh.pyramid.controls
+   :members: vertex_method, offset_factor, offset_scaling, neighbor_angle
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

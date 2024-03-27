@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_report_definitions_mesh:
+
+mesh
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.report_definitions.mesh
+   :members: edit, create, make_a_copy, rename, delete, list_properties, list
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

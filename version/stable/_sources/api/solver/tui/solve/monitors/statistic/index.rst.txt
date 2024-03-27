@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_monitors_statistic:
+
+statistic
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.monitors.statistic
+   :members: print, plot, file_basename, window, x_axis, write, monitors
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

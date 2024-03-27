@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_report_simulation_reports:
+
+simulation_reports
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.report.simulation_reports
+   :members: list_simulation_reports, duplicate_simulation_report, export_simulation_report_as_pdf, add_histogram_to_report, delete_simulation_report, read_simulation_report_template_file, reset_report_to_defaults, write_simulation_report_names_to_file, export_simulation_report_as_pptx, rename_simulation_report, write_simulation_report_template_file, view_simulation_report, generate_simulation_report, export_simulation_report_as_html
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

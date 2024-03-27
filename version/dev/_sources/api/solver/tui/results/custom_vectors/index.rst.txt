@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_custom_vectors:
+
+custom_vectors
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.custom_vectors
+   :members: create, rename, delete, edit, list, list_properties, make_a_copy
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

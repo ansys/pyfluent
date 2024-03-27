@@ -1,0 +1,12 @@
+.. _ref_solver_tui_turbo_post:
+
+turbo_post
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.turbo_post
+   :members: avg_contours, write_report, two_d_contours, compute_report, xy_plot_avg, current_topology
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

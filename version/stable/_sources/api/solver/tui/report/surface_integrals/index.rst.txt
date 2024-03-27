@@ -1,0 +1,12 @@
+.. _ref_solver_tui_report_surface_integrals:
+
+surface_integrals
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.report.surface_integrals
+   :members: volume_flow_rate, vertex_min, integral, standard_deviation, vector_based_flux, area_weighted_avg, facet_avg, uniformity_index_area_weighted, sum, vertex_max, vector_flux, mass_flow_rate, flow_rate, area, facet_max, vertex_avg, vector_weighted_average, uniformity_index_mass_weighted, facet_min, mass_weighted_avg
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

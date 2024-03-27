@@ -1,0 +1,12 @@
+.. _ref_solver_tui_file_project_beta:
+
+project_beta
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.file.project_beta
+   :members: new, archive, save_as, open, save_as_copy, save
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_graphics_volumes:
+
+volumes
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.volumes
+   :members: clear_history, list, display, rename, make_a_copy, edit, list_properties, create, add_to_graphics, delete, copy
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_mesh_adapt_cell_registers:
+
+cell_registers
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.mesh.adapt.cell_registers
+   :members: refine, edit, list_properties, list, delete, apply_poor_mesh_numerics, coarsen, display, adapt, add
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

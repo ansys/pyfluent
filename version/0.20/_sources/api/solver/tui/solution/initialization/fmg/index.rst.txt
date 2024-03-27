@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_initialization_fmg:
+
+fmg
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.initialization.fmg
+   :members: enable_fmg_verbose, turbulent_viscosity_ratio, reset_to_defaults, viscous_terms, fmg_initialize, species_reactions, customize, fmg_courant_number
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_mesh_hexcore_local_regions:
+
+local_regions
+=============
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.mesh.hexcore.local_regions
+   :members: delete, deactivate, init, define, ideal_quad_area, list_all_regions, ideal_hex_vol, activate
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

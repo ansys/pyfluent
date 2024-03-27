@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_methods_multiphase_numerics_heat_mass_transfer_cavitation:
+
+cavitation
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation
+   :members: p_limit_method, max_vapor_pressure_ratio, schnerr_cond_coeff, schnerr_evap_coeff, old_treatment_for_turbulent_diffusion, display_clipped_pressure, turbulent_diffusion, min_vapor_pressure
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

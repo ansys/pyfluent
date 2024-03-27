@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_embedded_windows:
+
+embedded_windows
+================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.embedded_windows
+   :members: move_out, close, close_all, update_dimensions, embed_in, move_out_all
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,23 @@
+.. _ref_solver_tui_mesh:
+
+mesh
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.mesh
+   :members: adjacency, rotate, check_verbosity, show_periodic_shadow_zones, memory_usage, check, quality, scale, smooth_mesh, enhanced_orthogonal_quality, translate, size_info, wall_distance_method, swap_mesh_faces, mesh_info, replace, check_before_solve, redistribute_boundary_layer
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   geometry/index
+   surface_mesh/index
+   anisotropic_adaption/index
+   polyhedra/index
+   adapt/index
+   reorder/index
+   repair_improve/index
+   modify_zones/index

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_file_import_cgns:
+
+cgns
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.file.import_.cgns
+   :members: data, mesh, mesh_data
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

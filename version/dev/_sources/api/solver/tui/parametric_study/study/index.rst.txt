@@ -1,0 +1,12 @@
+.. _ref_solver_tui_parametric_study_study:
+
+study
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parametric_study.study
+   :members: list, delete, set_as_current, initialize, use_base_data, duplicate, rename, read_case_before_each_dp_update, use_data_of_previous_dp
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

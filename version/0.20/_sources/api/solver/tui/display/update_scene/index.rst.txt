@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_update_scene:
+
+update_scene
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.update_scene
+   :members: select_geometry, overlays, display, pathline, delete, draw_frame, set_frame, iso_sweep, transform, time
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

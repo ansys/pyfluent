@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_parameters_output_parameters:
+
+output_parameters
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.parameters.output_parameters
+   :members: write_all_to_file, print_to_console, print_all_to_console, edit, delete, rename, write_to_file, create
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

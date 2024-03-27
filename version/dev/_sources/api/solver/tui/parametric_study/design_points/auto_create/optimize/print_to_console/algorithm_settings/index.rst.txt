@@ -1,0 +1,12 @@
+.. _ref_solver_tui_parametric_study_design_points_auto_create_optimize_print_to_console_algorithm_settings:
+
+algorithm_settings
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parametric_study.design_points.auto_create.optimize.print_to_console.algorithm_settings
+   :members: max_iterations, refinement_sampling_type, number_of_designs_in_parallel, consider_failed_designs, stagnation_iterations, use_start_designs_only, imp_of_local_cop, imp_of_sample_density, imp_of_criteria, iteration_sampling_type, iteration_number_of_samples, refinement_type, target_cop, number_of_stagnation_iterations, max_number_of_samples, refinement_number_of_samples, seed_value, use_mop
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

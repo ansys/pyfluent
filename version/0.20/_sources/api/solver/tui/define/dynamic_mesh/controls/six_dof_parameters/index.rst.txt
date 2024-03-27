@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_dynamic_mesh_controls_six_dof_parameters:
+
+six_dof_parameters
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.dynamic_mesh.controls.six_dof_parameters
+   :members: motion_history_file_name, second_order, z_component_of_gravity, delete_properties, y_component_of_gravity, create_properties, list_properties, x_component_of_gravity, motion_history
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

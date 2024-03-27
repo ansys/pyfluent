@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_methods_multiphase_numerics_compressible_flow:
+
+compressible_flow
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.methods.multiphase_numerics.compressible_flow
+   :members: enhanced_numerics, analytical_thermodynamic_derivatives, alternate_bc_formulation
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

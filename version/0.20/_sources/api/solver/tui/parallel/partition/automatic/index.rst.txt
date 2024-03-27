@@ -1,0 +1,12 @@
+.. _ref_solver_tui_parallel_partition_automatic:
+
+automatic
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parallel.partition.automatic
+   :members: across_zones, use_case_file_method, pre_test, load_vector, method
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

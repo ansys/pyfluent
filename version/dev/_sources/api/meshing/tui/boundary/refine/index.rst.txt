@@ -1,0 +1,16 @@
+.. _ref_meshing_tui_boundary_refine:
+
+refine
+======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.boundary.refine
+   :members: limits, count, refine, mark, auto_refine, clear
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   local_regions/index

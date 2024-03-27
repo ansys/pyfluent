@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_surfaces_plane_slice:
+
+plane_slice
+===========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.surfaces.plane_slice
+   :members: edit, make_a_copy, create, delete, list_properties, rename, list
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

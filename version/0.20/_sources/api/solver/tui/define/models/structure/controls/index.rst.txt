@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_structure_controls:
+
+controls
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.structure.controls
+   :members: enhanced_strain, max_iter, numerical_damping_factor, amg_stabilization, unsteady_damping_rayleigh
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

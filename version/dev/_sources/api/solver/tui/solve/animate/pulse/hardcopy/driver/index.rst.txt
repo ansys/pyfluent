@@ -1,0 +1,16 @@
+.. _ref_solver_tui_solve_animate_pulse_hardcopy_driver:
+
+driver
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.animate.pulse.hardcopy.driver
+   :members: post_script, list, options, tiff, dump_window, vrml, hsf, jpeg, avz, glb, png, eps, ppm
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   post_format/index

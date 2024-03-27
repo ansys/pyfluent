@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_viscous_geko_options:
+
+geko_options
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.viscous.geko_options
+   :members: wall_distance_free, cbf_lam, geko_defaults, cnw, cnw_sub, cmix, cjet, creal, cjet_aux, cbf_tur, csep, blending_function
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

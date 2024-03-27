@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_graphics_windows_scale:
+
+scale
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.windows.scale
+   :members: clear, font_size, border, bottom, left, visible, right, format, top, margin
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

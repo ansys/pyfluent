@@ -1,0 +1,12 @@
+.. _ref_solver_tui_file_auto_save:
+
+auto_save
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.file.auto_save
+   :members: data_frequency, case_frequency, append_file_name_with, max_files, retain_most_recent_files, save_data_file_every, root_name
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

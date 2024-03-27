@@ -1,0 +1,17 @@
+.. _ref_solver_tui_preferences_appearance_charts:
+
+charts
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.appearance.charts
+   :members: threshold, modern_plots_enabled, curve_colors, modern_plots_points_threshold, print_residuals_data, plots_behavior, legend_alignment, enable_open_glfor_modern_plots, legend_visibility, print_plot_data, tooltip_interpolation
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   text_color/index
+   font/index

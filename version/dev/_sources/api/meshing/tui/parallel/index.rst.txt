@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_parallel:
+
+parallel
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.parallel
+   :members: thread_number_control, auto_partition, spawn_solver_processes, agglomerate, print_partition_info
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

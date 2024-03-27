@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_report_definitions_lift:
+
+lift
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.report_definitions.lift
+   :members: list_properties, rename, edit, delete, create, list, make_a_copy
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

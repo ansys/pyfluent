@@ -1,0 +1,23 @@
+.. _ref_solver_tui_solve_set_multiphase_numerics_advanced_stability_controls:
+
+advanced_stability_controls
+===========================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.set.multiphase_numerics.advanced_stability_controls
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   hybrid_nita/index
+   pseudo_time/index
+   p_v_coupling/index
+   pseudo_transient/index
+   anti_diffusion/index
+   equation_order/index
+   num_ventilation/index
+   velocity_limiting/index

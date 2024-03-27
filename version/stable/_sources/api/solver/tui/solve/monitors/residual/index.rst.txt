@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_monitors_residual:
+
+residual
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.monitors.residual
+   :members: print, normalization_factors, scale_by_coefficient, enhanced_continuity_residual, n_save, criterion_type, window, re_normalize, monitor, n_maximize_norms, plot, check_convergence, reset, relative_conv_criteria, normalize, n_display, convergence_criteria
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

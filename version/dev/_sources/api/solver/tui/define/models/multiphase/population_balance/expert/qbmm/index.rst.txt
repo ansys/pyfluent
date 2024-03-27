@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_multiphase_population_balance_expert_qbmm:
+
+qbmm
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.multiphase.population_balance.expert.qbmm
+   :members: advection_int_scheme, zero_moment_plus, solve_advection, source_int_scheme, source_ode_factor, advection_cfl, verbosity_level, source_ode_factor_max, source_min_dt, zero_zeta_minus, zero_zeta_plus, source_ode_err_rel, source_ode_err_abs, sort_abscissas, zero_moment_minus, exit_on_non_real, source_ode_factor_min
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

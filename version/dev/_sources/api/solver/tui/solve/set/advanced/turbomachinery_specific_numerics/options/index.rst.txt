@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_set_advanced_turbomachinery_specific_numerics_options:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.set.advanced.turbomachinery_specific_numerics.options
+   :members: pseudo_time_scale_type, gradient_limiter_combination
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

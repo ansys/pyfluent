@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_surfaces_iso_clip:
+
+iso_clip
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.surfaces.iso_clip
+   :members: delete, rename, list_properties, make_a_copy, list, edit, create
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

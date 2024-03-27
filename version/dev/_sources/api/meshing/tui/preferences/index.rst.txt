@@ -1,0 +1,25 @@
+.. _ref_meshing_tui_preferences:
+
+preferences
+===========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   navigation/index
+   meshing_workflow/index
+   parametric_study/index
+   gpuapp/index
+   graphics/index
+   appearance/index
+   general/index
+   turbo_workflow/index
+   mat_pro_app/index
+   simulation/index

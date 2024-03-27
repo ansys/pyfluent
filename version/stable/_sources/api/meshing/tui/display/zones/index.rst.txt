@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_display_zones:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.display.zones
+   :members: show_all, display_neighborhood, toggle_color_mode, isolate_zones, hide_zones, display_similar_area, make_transparent, toggle_color_palette, select_all_visible
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

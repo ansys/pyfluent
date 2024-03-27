@@ -1,0 +1,25 @@
+.. _ref_solver_tui_preferences:
+
+preferences
+===========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   mat_pro_app/index
+   gpuapp/index
+   general/index
+   simulation/index
+   turbo_workflow/index
+   navigation/index
+   appearance/index
+   meshing_workflow/index
+   graphics/index
+   parametric_study/index

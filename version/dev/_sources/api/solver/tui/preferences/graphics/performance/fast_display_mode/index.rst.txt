@@ -1,0 +1,12 @@
+.. _ref_solver_tui_preferences_graphics_performance_fast_display_mode:
+
+fast_display_mode
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.graphics.performance.fast_display_mode
+   :members: markers_decimation, faces_shown, silhouette_shown, nodes_shown, culling, status, perimeter_edges_shown, transparency
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

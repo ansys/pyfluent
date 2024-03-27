@@ -1,0 +1,16 @@
+.. _ref_solver_tui_solution_monitor_residual_options:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.monitor.residual.options
+   :members: print, n_display, plot, n_maximize_norms, enhanced_continuity_residual, normalize, n_save, criterion_type
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   residual_values/index

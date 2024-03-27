@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_viscous_transition_model_options:
+
+transition_model_options
+========================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.viscous.transition_model_options
+   :members: ctu_hightu, critical_reynolds_number_correlation, crossflow_transition, capg_hightu, rec_c1, cbubble_c1, capg_lowtu, cfpg_hightu, rec_max, rec_c2, clambda_scale, rv1_switch, cfpg_lowtu, cbubble_c2, ctu_lowtu
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

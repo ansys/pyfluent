@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_graphics_particle_track:
+
+particle_track
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.particle_track
+   :members: display, edit, copy, list, list_properties, rename, clear_history, add_to_graphics, make_a_copy, create, delete
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

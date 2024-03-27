@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_overset_interfaces_adapt_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.overset_interfaces.adapt.set
+   :members: automatic, length_ratio_max, mark_gaps, adaption_sweeps, buffer_layers, mark_orphans, mark_coarsening, mark_fixed_orphans, maximum_refinement_level, prismatic, gap_resolution, mark_size
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

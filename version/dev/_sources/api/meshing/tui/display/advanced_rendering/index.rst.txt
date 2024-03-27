@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_display_advanced_rendering:
+
+advanced_rendering
+==================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.display.advanced_rendering
+   :members: edge_color, max_extent_culling, static_model, simple_shadow, fast_silhouette_edges
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

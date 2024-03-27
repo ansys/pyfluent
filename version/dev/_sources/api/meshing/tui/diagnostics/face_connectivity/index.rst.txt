@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_diagnostics_face_connectivity:
+
+face_connectivity
+=================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.diagnostics.face_connectivity
+   :members: remove_label_from_small_islands, fix_multi_faces, fix_steps, fix_self_intersections, fix_spikes, fix_deviations, fix_point_contacts, fix_free_faces, fix_islands, add_label_to_small_neighbors, fix_duplicate_faces, fix_slivers, fix_invalid_normals
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

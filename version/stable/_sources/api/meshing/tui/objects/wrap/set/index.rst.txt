@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_objects_wrap_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.wrap.set
+   :members: include_thin_cut_edges_and_faces, minimum_relative_topo_count, use_ray_tracing, report_holes, resolution_factor, delete_far_edges, relative_feature_tolerance, minimum_topo_area, minimum_relative_topo_area, zone_name_prefix, use_smooth_folded_faces, list_zones_geometry_recovery_levels, shrink_wrap_rezone_parameters, minimum_topo_count, add_geometry_recovery_level_to_zones, max_free_edges_for_hole_patching
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

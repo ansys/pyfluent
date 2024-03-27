@@ -1,0 +1,29 @@
+.. _ref_solver_tui_results_surfaces:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.surfaces
+   :members: set_rendering_priority, ungroup_surfaces, reset_zone_surfaces, create_multiple_zone_surfaces, create_multiple_iso_surfaces, create_group_surfaces
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   quadric_surface/index
+   iso_surface/index
+   rake_surface/index
+   iso_clip/index
+   surface_cells/index
+   point_surface/index
+   plane_surface/index
+   transform_surface/index
+   line_surface/index
+   plane_slice/index
+   zone_surface/index
+   partition_surface/index
+   imprint_surface/index
+   sphere_slice/index

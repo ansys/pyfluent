@@ -1,0 +1,20 @@
+.. _ref_meshing_tui_display_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.display.set
+   :members: highlight_tree_selection, windows, quick_moves_algorithm, edges, title, line_weight, filled_grid, remote_display_defaults, overlays, re_render, reset_graphics, shrink_factor, native_display_defaults
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   picture/index
+   styles/index
+   colors/index
+   rendering_options/index
+   lights/index

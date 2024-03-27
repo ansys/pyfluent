@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_objects_volumetric_regions_scoped_prism_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.volumetric_regions.scoped_prism.set
+   :members: tet_prism_stairstep_exposed_quads, read, modify, set_overset_prism_controls, list, set_advanced_controls, set_no_imprint_zones, create, growth_options, delete, write, poly_keep_nlayer_prism_characteristics
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

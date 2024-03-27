@@ -1,0 +1,17 @@
+.. _ref_solver_tui_solution_methods_flux_type:
+
+flux_type
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.methods.flux_type
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   pbns_cases/index
+   dbns_cases/index

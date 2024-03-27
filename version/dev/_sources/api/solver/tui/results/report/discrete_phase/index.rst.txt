@@ -1,0 +1,17 @@
+.. _ref_solver_tui_results_report_discrete_phase:
+
+discrete_phase
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.report.discrete_phase
+   :members: summary, zone_summaries_per_injection, evap_mass_details_in_dpm_summ_rep, extended_summary
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   histogram/index
+   sample_trajectories/index

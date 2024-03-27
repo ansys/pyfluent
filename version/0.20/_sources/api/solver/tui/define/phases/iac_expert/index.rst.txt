@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_phases_iac_expert:
+
+iac_expert
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.phases.iac_expert
+   :members: iac_pseudo_time_step, ishii_kim_model, yao_morel_model, hibiki_ishii_model
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,17 @@
+.. _ref_solver_tui_parallel_partition:
+
+partition
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parallel.partition
+   :members: use_stored_partitions, merge_clusters, reorder_partitions, method, print_stored_partitions, print_partitions, combine_partition, print_active_partitions, smooth_partition, reorder_partitions_to_architecture
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   set/index
+   automatic/index

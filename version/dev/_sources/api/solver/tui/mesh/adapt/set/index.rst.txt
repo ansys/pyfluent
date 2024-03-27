@@ -1,0 +1,12 @@
+.. _ref_solver_tui_mesh_adapt_set:
+
+set
+===
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.mesh.adapt.set
+   :members: prismatic_boundary_zones, encapsulate_children, minimum_edge_length, display_settings, prismatic_adaption, additional_refinement_layers, minimum_cell_quality, cell_zones, maximum_cell_count, dynamic_adaption_frequency, prismatic_split_ratio, maximum_refinement_level, dynamic_adaption, method, verbosity, overset_adapt_dead_cells, minimum_cell_volume
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,17 @@
+.. _ref_meshing_tui_preferences_appearance_charts:
+
+charts
+======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.appearance.charts
+   :members: tooltip_interpolation, threshold, legend_visibility, modern_plots_points_threshold, print_residuals_data, print_plot_data, legend_alignment, modern_plots_enabled, curve_colors, plots_behavior, enable_open_glfor_modern_plots
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   text_color/index
+   font/index

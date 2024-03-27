@@ -1,0 +1,16 @@
+.. _ref_meshing_tui_boundary_remesh_controls:
+
+controls
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.boundary.remesh.controls
+   :members: delete_overlapped, remesh_method, tolerance, spacing, quadratic_recon, proximity_local_search, project_method, direction
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   intersect/index

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_calculation_activity_solution_animations:
+
+solution_animations
+===================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.calculation_activity.solution_animations
+   :members: rename, copy, add_to_graphics, clear_history, delete, list_properties, create, make_a_copy, display, list, edit
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

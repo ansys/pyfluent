@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_objects_remove_gaps:
+
+remove_gaps
+===========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.remove_gaps
+   :members: ignore_orientation, show_gaps, remove_gaps
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

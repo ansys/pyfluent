@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_mesh_modify:
+
+modify
+======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.mesh.modify
+   :members: extract_unused_nodes, clear_selections, list_skewed_cells, neighborhood_skew, auto_improve_warp, deselect_last, repair_negative_volume_cells, auto_node_move, mesh_node, refine_cell, delete_isolated_cells, mesh_nodes_on_zone, list_selections, smooth_node, select_entity
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,16 @@
+.. _ref_solver_tui_preferences_general:
+
+general
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.general
+   :members: automatic_transcript, import_physics_volume_definitions, utlmode, skip_creation_of_groups_pointing_to_single_entity, default_ioformat, initial_physics_volume_definitions, idle_timeout, utlcreate_physics_on_mode_change, flow_model, dock_editor, advanced_partition
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   startup_messages/index

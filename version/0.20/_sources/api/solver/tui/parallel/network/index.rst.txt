@@ -1,0 +1,12 @@
+.. _ref_solver_tui_parallel_network:
+
+network
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parallel.network
+   :members: spawn_node, save_hosts, shell_script_path, kill_node, kill_all_nodes, load_hosts
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

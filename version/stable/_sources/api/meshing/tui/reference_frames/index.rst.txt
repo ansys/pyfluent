@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_reference_frames:
+
+reference_frames
+================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.reference_frames
+   :members: display_edit, list, add, edit, display, list_properties, delete, hide
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

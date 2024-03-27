@@ -1,0 +1,16 @@
+.. _ref_solver_tui_results_graphics_contours:
+
+contours
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.contours
+   :members: auto_scale, filled_contours, surfaces, node_values, log_scale, n_contour, line_contours, render_mesh, clip_to_range, global_range
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   coloring/index

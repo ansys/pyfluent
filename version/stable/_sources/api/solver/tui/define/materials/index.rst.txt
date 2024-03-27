@@ -1,0 +1,16 @@
+.. _ref_solver_tui_define_materials:
+
+materials
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.materials
+   :members: list_properties, copy_by_formula, copy, delete, list_materials, change_create
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   data_base/index

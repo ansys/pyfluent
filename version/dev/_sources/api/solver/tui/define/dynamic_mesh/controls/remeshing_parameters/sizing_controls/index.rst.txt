@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_dynamic_mesh_controls_remeshing_parameters_sizing_controls:
+
+sizing_controls
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls
+   :members: edit, add, delete, list, list_properties
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

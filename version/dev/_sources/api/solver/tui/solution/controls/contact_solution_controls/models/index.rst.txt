@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_controls_contact_solution_controls_models:
+
+models
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.controls.contact_solution_controls.models
+   :members: model_ramping, ramp_scalars, ramp_turbulence, ramp_flow
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

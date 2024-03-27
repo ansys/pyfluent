@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_objects_volumetric_regions_tet_set_advanced:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.volumetric_regions.tet.set.advanced
+   :members: max_nodes, node_tolerance, max_cells, report_unmeshed_nodes, freeze_boundary_cells, report_max_unmeshed, report_unmeshed_faces, progress_reports, sliver_size, keep_virtual_entities, defaults
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

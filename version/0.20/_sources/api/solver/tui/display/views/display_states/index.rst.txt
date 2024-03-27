@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_views_display_states:
+
+display_states
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.views.display_states
+   :members: use_active, list_properties, list, make_a_copy, write, read, edit, restore_state, delete, rename, new, copy
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_calculation_activity_poor_mesh_numerics_register_based:
+
+register_based
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.calculation_activity.poor_mesh_numerics.register_based
+   :members: set, create, make_a_copy, edit, rename, delete, list, list_properties
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_scoped_sizing:
+
+scoped_sizing
+=============
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.scoped_sizing
+   :members: create, delete_size_field, compute, list_zones_uncovered_by_controls, delete, write, list, delete_all, read, modify, validate
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_preferences_graphics_lighting:
+
+lighting
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.graphics.lighting
+   :members: ambient_light_intensity, headlight_intensity, lighting_method, headlight
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,16 @@
+.. _ref_solver_tui_solve_animate_playback_video:
+
+video
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.animate.playback.video
+   :members: height, name, format, quality, scale, set_standard_resolution, width, use_original_resolution, fps
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   advance_quality/index

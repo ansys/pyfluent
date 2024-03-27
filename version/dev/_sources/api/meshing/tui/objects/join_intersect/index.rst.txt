@@ -1,0 +1,16 @@
+.. _ref_meshing_tui_objects_join_intersect:
+
+join_intersect
+==============
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.objects.join_intersect
+   :members: merge_regions, rename_region, list_regions, intersect, change_region_type, compute_regions, add_objects_to_mesh_object, join, create_mesh_object, delete_region
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   controls/index

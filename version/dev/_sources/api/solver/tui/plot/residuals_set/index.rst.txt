@@ -1,0 +1,12 @@
+.. _ref_solver_tui_plot_residuals_set:
+
+residuals_set
+=============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.plot.residuals_set
+   :members: key, auto_scale, get_residuals_window, markers, file_lines, lines, background_color, end_plot_to_file, rules, file_markers, numbers, log, labels, plot_to_file, windows, xy_percent_y
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

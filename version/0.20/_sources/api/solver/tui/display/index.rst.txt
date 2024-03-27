@@ -1,0 +1,29 @@
+.. _ref_solver_tui_display:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display
+   :members: grid_outline, velocity_vector, zone_mesh, mesh_outline, surface_mesh, reacting_channel_curves, add_custom_vector, display_custom_vector, graphics_window_layout, re_scale, surface_cells, switch_to_post_processing_volume, profile, transient_post_processing, annotate, multigrid_coarsening, set_window_by_name, hsf_file, clear_annotations, mesh_partition_boundary, switch_to_primary_volume, save_picture, contour, close_window_by_name, set_list_tree_separator, grid, update_layout, mesh, close_window, set_window, vector, re_render, open_window
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   flamelet_data/index
+   define/index
+   path_lines/index
+   objects/index
+   view_sync/index
+   pdf_data/index
+   views/index
+   raytracer/index
+   surface/index
+   set/index
+   update_scene/index
+   embedded_windows/index
+   particle_tracks/index
+   display_states/index

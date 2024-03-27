@@ -1,0 +1,28 @@
+.. _ref_solver_tui_report:
+
+report
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.report
+   :members: dpm_sample_sort_file, evap_mass_details_in_dpm_summ_rep, summary, aero_optical_distortions, dpm_zone_summaries_per_injection, particle_summary, dpm_extended_summary, dpm_sample, dpm_summary, element_mass_flow, mphase_summary, uds_flow, path_line_summary, dpm_sample_output_udf, print_histogram, projected_surface_area, write_histogram, species_mass_flow, virtual_blade_model
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   efficiency/index
+   reference_values/index
+   simulation_reports/index
+   heat_exchanger/index
+   surface_integrals/index
+   population_balance/index
+   dpm_histogram/index
+   forces/index
+   modified_setting/index
+   fluxes/index
+   volume_integrals/index
+   icing/index
+   system/index

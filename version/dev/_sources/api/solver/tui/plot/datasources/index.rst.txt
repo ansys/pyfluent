@@ -1,0 +1,12 @@
+.. _ref_solver_tui_plot_datasources:
+
+datasources
+===========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.plot.datasources
+   :members: add_xy_plot, load_file, list_legend_names, remove_data_source, rename_legend, properties, list_data_sources, list_curve_information, add_report_plot, plot
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,37 @@
+.. _ref_solver_tui_define:
+
+define
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define
+   :members: boundary_conditions, set_unit_system, units, geometry, beta_feature_access, injections, physics, enable_mesh_morpher_optimizer, enable_expressions
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   motion_definitions/index
+   materials/index
+   profiles/index
+   named_expressions/index
+   periodic_conditions/index
+   reference_frames/index
+   parameters/index
+   operating_conditions/index
+   phases/index
+   mixing_planes/index
+   mesh_interfaces/index
+   dynamic_mesh/index
+   custom_field_functions/index
+   overset_interfaces/index
+   curvilinear_coordinate_system/index
+   virtual_boundary/index
+   user_defined/index
+   spectral/index
+   solution_strategy/index
+   gap_model/index
+   turbo_model/index
+   models/index

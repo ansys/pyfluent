@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_preferences_graphics_performance_fast_display_mode:
+
+fast_display_mode
+=================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.graphics.performance.fast_display_mode
+   :members: perimeter_edges_shown, faces_shown, nodes_shown, culling, status, markers_decimation, silhouette_shown, transparency
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

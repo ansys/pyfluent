@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_soot_parameters:
+
+soot_parameters
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.soot_parameters
+   :members: soot_model_parameters, soot_turbulence_interaction, modify_schmidt_number, soot_radiation_interaction, soot_model_udfs, soot_process_parameters, inlet_diffusion
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

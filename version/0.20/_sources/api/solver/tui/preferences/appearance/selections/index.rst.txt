@@ -1,0 +1,12 @@
+.. _ref_solver_tui_preferences_appearance_selections:
+
+selections
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.appearance.selections
+   :members: mouse_over_highlight_enabled, mouse_hover_probe_values_enabled, highlight_transparency, probe_tooltip_show_delay_timer, general_displacement, highlight_specular_component, highlight_edge_weight, probe_tooltip_hide_delay_timer, enable_highlight_edge_transparency, highlight_gloss, highlight_face_color, highlight_edge_color
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

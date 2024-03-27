@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_set_lights:
+
+lights
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.lights
+   :members: headlight_on, set_light, set_ambient_color, lighting_interpolation, lights_on
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

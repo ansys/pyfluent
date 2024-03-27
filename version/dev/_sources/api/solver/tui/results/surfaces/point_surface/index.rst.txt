@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_surfaces_point_surface:
+
+point_surface
+=============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.surfaces.point_surface
+   :members: list, make_a_copy, create, rename, delete, list_properties, edit
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

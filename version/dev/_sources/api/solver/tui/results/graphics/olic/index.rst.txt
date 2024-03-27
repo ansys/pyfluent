@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_graphics_olic:
+
+olic
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.olic
+   :members: make_a_copy, add_to_graphics, delete, clear_history, edit, list, list_properties, copy, create, display, rename
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

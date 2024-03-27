@@ -1,0 +1,28 @@
+.. _ref_solver_tui_preferences_graphics:
+
+graphics
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.graphics
+   :members: animation_option, graphics_window_line_width, show_hidden_lines, lower_resolution_graphics_window_line_width, double_buffering, hidden_surface_removal_method, show_hidden_surfaces, set_camera_normal_to_surface_increments, switch_to_open_glfor_remote_visualization, min_graphics_text_size, force_key_frame_animation_markers_to_off, rotation_centerpoint_visible, marker_drawing_mode, backface_cull, event_poll_interval, event_poll_timeout, plot_legend_margin, enable_non_object_based_workflow, remove_partition_lines_tolerance, remove_partition_lines, point_tool_size, surface_general_displacement, max_graphics_text_size, graphics_window_point_symbol, scroll_wheel_event_end_timer, higher_resolution_graphics_window_line_width, test_use_external_function, text_window_line_width
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   boundary_markers/index
+   graphics_effects/index
+   transparency/index
+   vector_settings/index
+   export_video_settings/index
+   meshing_mode/index
+   embedded_windows/index
+   lighting/index
+   colormap_settings/index
+   manage_hoops_memory/index
+   material_effects/index
+   hardcopy_settings/index
+   performance/index

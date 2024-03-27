@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_flamelet_data:
+
+flamelet_data
+=============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.flamelet_data
+   :members: carpet_plot, draw_number_box, write_to_file, plot_1d_slice
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

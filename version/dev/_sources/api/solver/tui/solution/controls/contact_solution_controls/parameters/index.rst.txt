@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_controls_contact_solution_controls_parameters:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.controls.contact_solution_controls.parameters
+   :members: solution_stabilization_persistence, iter_count, extrapolation_method, persistence_fixed_duration, persistence_fixed_time_steps
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

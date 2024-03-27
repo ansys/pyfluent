@@ -1,0 +1,12 @@
+.. _ref_solver_tui_file_table_manager:
+
+table_manager
+=============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.file.table_manager
+   :members: rename, delete, store_in_case_file, read_rgp_file, list_tables, list_properties, read_matrix_data_file, list_matrix_data
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

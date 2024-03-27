@@ -1,0 +1,17 @@
+.. _ref_solver_tui_define_models_eulerian_wallfilm:
+
+eulerian_wallfilm
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.eulerian_wallfilm
+   :members: enable_film_nci_support, initialize_wallfilm_model, list_film_walls, solve_wallfilm_equation, film_material, solution_options, enable_wallfilm_model, enable_film_vof_transition_message, model_options
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   implicit_options/index
+   coupled_solution/index

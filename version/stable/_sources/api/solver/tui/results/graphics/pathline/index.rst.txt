@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_graphics_pathline:
+
+pathline
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.pathline
+   :members: add_to_graphics, clear_history, list, copy, display, list_properties, edit, make_a_copy, delete, rename, create
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

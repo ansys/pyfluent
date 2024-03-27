@@ -1,0 +1,12 @@
+.. _ref_solver_tui_plot_flamelet_curves:
+
+flamelet_curves
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.plot.flamelet_curves
+   :members: plot_curves, write_to_file
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_views_camera:
+
+camera
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.views.camera
+   :members: pan_camera, roll_camera, position, dolly_camera, orbit_camera, up_vector, target, field, projection, zoom_camera
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,32 @@
+.. _ref_solver_tui_results_graphics:
+
+graphics
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   raytracing_options/index
+   lic/index
+   pulse/index
+   views/index
+   particle_tracks/index
+   picture/index
+   mesh/index
+   olic/index
+   particle_track/index
+   pathline/index
+   colors/index
+   volumes/index
+   contour/index
+   windows/index
+   vector/index
+   contours/index
+   lighting/index

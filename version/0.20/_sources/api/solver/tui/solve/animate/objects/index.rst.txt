@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_animate_objects:
+
+objects
+=======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.animate.objects
+   :members: create, copy, edit, clear_history, delete, get_window_id
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

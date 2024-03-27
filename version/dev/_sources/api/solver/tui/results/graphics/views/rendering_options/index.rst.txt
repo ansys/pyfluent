@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_graphics_views_rendering_options:
+
+rendering_options
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.views.rendering_options
+   :members: double_buffering, set_rendering_options, show_colormap, front_faces_transparent, color_map_alignment, hidden_surfaces, hidden_surface_method, device_info, face_displacement, auto_spin, driver, animation_option
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

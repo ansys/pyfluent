@@ -1,0 +1,16 @@
+.. _ref_meshing_tui_mesh_hexcore_controls:
+
+controls
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.mesh.hexcore.controls
+   :members: define_hexcore_extents, maximum_initial_cells, skip_tet_refinement, compute_max_cell_length, non_fluid_type, smooth_relaxation, merge_tets_to_pyramids, print_region_based_sizing, maximum_cell_length, smooth_interface, octree_hexcore, maximum_subdivisions, delete_dead_zones, buffer_layers, only_hexcore, smooth_iterations, set_region_based_sizing, avoid_1_by_8_cell_jump_in_hexcore, keep_hex_tet_separate, island_thresholds, peel_layers
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   outer_domain_params/index

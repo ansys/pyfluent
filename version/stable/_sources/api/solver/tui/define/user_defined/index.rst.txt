@@ -1,0 +1,16 @@
+.. _ref_solver_tui_define_user_defined:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.user_defined
+   :members: fan_model, user_defined_memory, use_zone_based_udm, enable_udf_on_gpu, user_defined_scalars, use_built_in_compiler, execute_on_demand, use_contributed_cpp, auto_compile_compiled_udfs, interpreted_functions, compiled_functions, one_D_coupling, user_defined_node_memory, function_hooks, compile_customized_addon_module
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   real_gas_models/index

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_set_particle_tracks_sphere_settings:
+
+sphere_settings
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.particle_tracks.sphere_settings
+   :members: smooth_parameter, minimum, diameter, scale_factor, auto_range, maximum, size_variable, vary_diameter
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

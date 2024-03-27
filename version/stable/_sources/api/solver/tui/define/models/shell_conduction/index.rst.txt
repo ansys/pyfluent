@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_shell_conduction:
+
+shell_conduction
+================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.shell_conduction
+   :members: settings, enhanced_encapsulation, write_csv, save_shell_zones, read_csv, multi_layer_shell
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

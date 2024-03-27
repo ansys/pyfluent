@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_report_files:
+
+report_files
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.report_files
+   :members: edit, delete_all, add, list, list_properties, delete, clear_data
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

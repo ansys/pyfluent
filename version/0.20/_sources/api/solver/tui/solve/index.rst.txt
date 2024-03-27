@@ -1,0 +1,25 @@
+.. _ref_solver_tui_solve:
+
+solve
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve
+   :members: update_physical_time, dual_time_iterate, iterate, convergence_conditions, multistage_time_iterate, max_iterations_per_time_step, dpm_update, mesh_motion, patch, iterate_steady_2way_fsi
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   report_files/index
+   report_definitions/index
+   cell_registers/index
+   report_plots/index
+   execute_commands/index
+   cell_register_operations/index
+   initialize/index
+   set/index
+   animate/index
+   monitors/index

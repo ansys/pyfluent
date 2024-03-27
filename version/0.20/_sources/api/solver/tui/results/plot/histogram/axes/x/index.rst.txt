@@ -1,0 +1,18 @@
+.. _ref_solver_tui_results_plot_histogram_axes_x:
+
+x
+=
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.plot.histogram.axes.x
+   :members: max, show_minor_gridlines, log_scale, min, label, auto_range, show_major_gridlines
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   major_gridlines/index
+   number_format/index
+   minor_gridlines/index

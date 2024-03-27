@@ -1,0 +1,22 @@
+.. _ref_solver_tui_parallel:
+
+parallel
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parallel
+   :members: check_verbosity, thread_number_control, check, show_connectivity, bandwidth, latency
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   set/index
+   load_balance/index
+   gpgpu/index
+   multidomain/index
+   timer/index
+   network/index
+   partition/index

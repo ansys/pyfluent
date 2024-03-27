@@ -1,0 +1,36 @@
+.. _ref_solver_tui:
+
+solver.tui
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu
+   :members: switch_to_meshing_mode, close_fluent, exit, print_license_usage
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   setup/index
+   preferences/index
+   mesh/index
+   icing/index
+   turbo_workflow/index
+   display/index
+   plot/index
+   turbo_post/index
+   parameters/index
+   adjoint/index
+   results/index
+   parallel/index
+   solve/index
+   file/index
+   views/index
+   parametric_study/index
+   define/index
+   surface/index
+   server/index
+   report/index
+   solution/index

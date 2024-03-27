@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_preferences_appearance_selections:
+
+selections
+==========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.appearance.selections
+   :members: highlight_gloss, probe_tooltip_show_delay_timer, highlight_face_color, mouse_over_highlight_enabled, highlight_transparency, highlight_edge_color, probe_tooltip_hide_delay_timer, general_displacement, highlight_specular_component, highlight_edge_weight, enable_highlight_edge_transparency, mouse_hover_probe_values_enabled
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

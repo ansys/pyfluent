@@ -1,0 +1,23 @@
+.. _ref_meshing_tui_display:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.display
+   :members: boundary_cells, clear, annotate, views, set_list_tree_separator, redisplay, draw_face_zones_using_entities, draw_cells_using_nodes, update_layout, all_grid, save_picture, center_view_on, draw_cells_using_faces, show_hide_clipping_plane_triad, clear_annotation, draw_zones, boundary_grid
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   advanced_rendering/index
+   set/index
+   xy_plot/index
+   zones/index
+   objects/index
+   update_scene/index
+   set_grid/index
+   display_states/index

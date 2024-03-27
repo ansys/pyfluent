@@ -1,0 +1,34 @@
+.. _ref_solver_tui_define_models:
+
+models
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models
+   :members: unsteady_1st_order, solidification_melting, unsteady_2nd_order, energy, potential_and_li_ion_battery, unsteady_structure_euler, addon_module, unsteady_2nd_order_bounded, crevice_model, battery_model, unsteady_global_time, unsteady_structure_newmark, soot, nox, crevice_model_controls, steady, axisymmetric, frozen_flux, swirl, ablation, noniterative_time_advance
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   nox_parameters/index
+   virtual_blade_model/index
+   optics/index
+   two_temperature/index
+   shell_conduction/index
+   eulerian_wallfilm/index
+   acoustics/index
+   electrolysis_setup/index
+   dpm/index
+   cht/index
+   solver/index
+   structure/index
+   radiation/index
+   system_coupling_settings/index
+   heat_exchanger/index
+   species/index
+   soot_parameters/index
+   viscous/index
+   multiphase/index

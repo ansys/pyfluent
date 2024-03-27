@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_set_path_lines:
+
+path_lines
+==========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.path_lines
+   :members: twist_factor, display_steps, maximum_error, marker_size, line_width, maximum_steps, arrow_scale, arrow_space, error_control, relative_pathlines, sphere_attrib, style, track_in_phase, reverse, step_size, radius
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

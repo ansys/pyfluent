@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_preferences_graphics_lighting:
+
+lighting
+========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.graphics.lighting
+   :members: lighting_method, headlight, headlight_intensity, ambient_light_intensity
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

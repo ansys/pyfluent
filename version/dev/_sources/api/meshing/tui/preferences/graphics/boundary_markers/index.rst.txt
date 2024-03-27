@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_preferences_graphics_boundary_markers:
+
+boundary_markers
+================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.graphics.boundary_markers
+   :members: marker_size_limiting_scale_multiplier, marker_fraction, color_option, outlet_color, markers_limit, scale_marker, show_inlet_markers, enabled, inlet_color, show_outlet_markers, exclude_from_bounding
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

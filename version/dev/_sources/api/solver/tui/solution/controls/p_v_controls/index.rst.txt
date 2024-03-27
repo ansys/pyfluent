@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_controls_p_v_controls:
+
+p_v_controls
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.controls.p_v_controls
+   :members: explicit_pressure_under_relaxation, flow_courant_number, vof_correction_itr_count, explicit_volume_fraction_under_relaxation, skewness_neighbor_coupling, neighbor_correction_itr_count, volume_fraction_courant_number, explicit_momentum_under_relaxation, skewness_correction_itr_count
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

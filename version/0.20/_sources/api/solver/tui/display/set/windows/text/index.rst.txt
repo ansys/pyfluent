@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_set_windows_text:
+
+text
+====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.windows.text
+   :members: bottom, date, company, alignment, top, left, right, visible, application, clear, border
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

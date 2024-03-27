@@ -1,0 +1,12 @@
+.. _ref_solver_tui_mesh_geometry:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.mesh.geometry
+   :members: display, list, list_properties, edit, display_options, delete, add
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

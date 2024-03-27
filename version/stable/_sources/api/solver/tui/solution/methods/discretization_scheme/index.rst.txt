@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_methods_discretization_scheme:
+
+discretization_scheme
+=====================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.methods.discretization_scheme
+   :members: list_properties, rename, create, edit, make_a_copy, list, delete
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

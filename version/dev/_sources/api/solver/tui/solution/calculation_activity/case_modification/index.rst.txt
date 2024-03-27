@@ -1,0 +1,17 @@
+.. _ref_solver_tui_solution_calculation_activity_case_modification:
+
+case_modification
+=================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.calculation_activity.case_modification
+   :members: delete_modification, copy_modification, continue_strategy_execution, automatic_initialization, execute_strategy, export_modifications, disable_modification, import_modifications, enable_modification, enable_strategy, enabled
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   case_modification/index
+   initialization_method/index

@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_models_multiphase_population_balance_phenomena:
+
+phenomena
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.multiphase.population_balance.phenomena
+   :members: breakage_factor, aggregation, nucleation, aggregation_factor, breakage, breakage_aggregation_vof_cutoff, growth
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

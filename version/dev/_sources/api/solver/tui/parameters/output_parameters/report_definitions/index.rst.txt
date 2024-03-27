@@ -1,0 +1,12 @@
+.. _ref_solver_tui_parameters_output_parameters_report_definitions:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.parameters.output_parameters.report_definitions
+   :members: make_a_copy, list_properties, write_to_file, list, print_to_console, edit, create, delete, rename
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

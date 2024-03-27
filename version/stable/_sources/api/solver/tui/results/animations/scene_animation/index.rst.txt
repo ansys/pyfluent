@@ -1,0 +1,16 @@
+.. _ref_solver_tui_results_animations_scene_animation:
+
+scene_animation
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.animations.scene_animation
+   :members: read_animation, delete_all_keyframes, write_animation, add_keyframe, delete_keyframe, play
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   set_custom_frames/index

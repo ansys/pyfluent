@@ -1,0 +1,12 @@
+.. _ref_solver_tui_define_materials_data_base:
+
+data_base
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.materials.data_base
+   :members: list_materials, edit, database_type, list_properties, new, save
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,16 @@
+.. _ref_solver_tui_report_reference_values:
+
+reference_values
+================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.report.reference_values
+   :members: zone, enthalpy, pressure, density, velocity, temperature, length, yplus, area, list, depth, viscosity
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   compute/index

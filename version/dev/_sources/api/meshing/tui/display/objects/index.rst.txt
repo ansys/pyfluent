@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_display_objects:
+
+objects
+=======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.display.objects
+   :members: implode, isolate_objects, select_all_visible, display_neighborhood, explode, show_all, make_transparent, toggle_color_palette, toggle_color_mode, display_similar_area, hide_objects
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

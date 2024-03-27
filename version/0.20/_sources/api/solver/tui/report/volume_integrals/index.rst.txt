@@ -1,0 +1,12 @@
+.. _ref_solver_tui_report_volume_integrals:
+
+volume_integrals
+================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.report.volume_integrals
+   :members: volume_integral, sum, volume_avg, mass, mass_integral, minimum, maximum, volume, mass_avg, twopisum
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

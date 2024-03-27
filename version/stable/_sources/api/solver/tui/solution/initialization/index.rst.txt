@@ -1,0 +1,21 @@
+.. _ref_solver_tui_solution_initialization:
+
+initialization
+==============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.initialization
+   :members: levelset_auto_init, show_iterations_sampled, init_lwf, init_flow_statistics, standard_initialize, init_turb_vel_fluctuations, initialization_type, init_acoustics_options, dpm_reset, lwf_reset, hybrid_initialize, initialize, compute_defaults, list_defaults, reference_frame, show_time_sampled
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   hybrid_init_options/index
+   defaults/index
+   patch/index
+   open_channel_auto_init/index
+   localized_turb_init/index
+   fmg/index

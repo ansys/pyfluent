@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solve_report_definitions:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.report_definitions
+   :members: rename, compute, copy, delete, edit, list, delete_all, convert_monitors_to_report_defns, add, list_properties
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

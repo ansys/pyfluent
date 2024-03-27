@@ -1,0 +1,12 @@
+.. _ref_solver_tui_plot_file_set:
+
+file_set
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.plot.file_set
+   :members: markers, rules, numbers, key, get_residuals_window, plot_to_file, auto_scale, end_plot_to_file, log, xy_percent_y, labels, lines, file_lines, windows, file_markers, background_color
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,17 @@
+.. _ref_solver_tui_solve_animate_pulse:
+
+pulse
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.animate.pulse
+   :members: pulse_mode, write
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   video/index
+   hardcopy/index

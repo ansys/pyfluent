@@ -1,0 +1,12 @@
+.. _ref_solver_tui_display_set_particle_tracks_vector_settings:
+
+vector_settings
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.display.set.particle_tracks.vector_settings
+   :members: length_variable, scale_factor, vector_length_variable, constant_color, style, length_to_head_ratio, color_variable, vector_length, vector_variable
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,18 @@
+.. _ref_solver_tui_results_graphics_views:
+
+views
+=====
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.graphics.views
+   :members: save_view, reset_to_default_view, read_views, list_views, delete_view, auto_scale, last_view, next_view, write_views, restore_view
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   rendering_options/index
+   display_states/index
+   camera/index

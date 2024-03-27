@@ -1,0 +1,30 @@
+.. _ref_meshing_tui:
+
+meshing.tui
+===========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu
+   :members: print_license_usage, exit, beta_feature_access, close_fluent, switch_to_solution_mode
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   diagnostics/index
+   scoped_sizing/index
+   display/index
+   size_functions/index
+   objects/index
+   reference_frames/index
+   material_point/index
+   openmp_controls/index
+   file/index
+   report/index
+   mesh/index
+   preferences/index
+   parallel/index
+   cad_assemblies/index
+   boundary/index

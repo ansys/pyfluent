@@ -1,0 +1,17 @@
+.. _ref_solver_tui_results_plot_histogram:
+
+histogram
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.plot.histogram
+   :members: write, auto_range, zones, num_divisions, maximum, minimum, print, plot, all_zones, cell_function
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   curves/index
+   axes/index

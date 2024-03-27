@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_methods_multiphase_numerics_viscous_flow_interfacial_artificial_viscosity:
+
+interfacial_artificial_viscosity
+================================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.methods.multiphase_numerics.viscous_flow.interfacial_artificial_viscosity
+   :members: near_wall_treatment, sm_relax_factor, exponent_density_func, density_func_options, exponent_smoothing_func, boundry_treatment, viscous_func_options, n_smooth_for_interfacial_regims
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

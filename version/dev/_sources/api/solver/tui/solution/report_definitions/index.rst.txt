@@ -1,0 +1,31 @@
+.. _ref_solver_tui_solution_report_definitions:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.report_definitions
+   :members: copy, compute
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   drag/index
+   time/index
+   user_defined/index
+   expression/index
+   single_valued_expression/index
+   surface/index
+   lift/index
+   force/index
+   injection/index
+   moment/index
+   mesh/index
+   flux/index
+   custom/index
+   volume/index
+   icing/index
+   aeromechanics/index

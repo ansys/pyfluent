@@ -1,0 +1,16 @@
+.. _ref_solver_tui_define_gap_model:
+
+gap_model
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.gap_model
+   :members: render_gap_regions, edit, list_gap_face_zones, enable, create, list_gap_regions, delete, list_gap_cell_zones, delete_all
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   advanced_options/index

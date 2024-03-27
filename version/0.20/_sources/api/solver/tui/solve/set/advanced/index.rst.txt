@@ -1,0 +1,19 @@
+.. _ref_solver_tui_solve_set_advanced:
+
+advanced
+========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solve.set.advanced
+   :members: linearized_mass_transfer_udf, retain_cell_residuals, retain_temporary_solver_mem, energy_numerical_noise_filter, anisotropic_heat_flux, singhal_et_al_cavitation_model, bcd_weights_freeze, energy_reconstruction_gradient_limiting, show_all_discretization_schemes, bcd_scheme_type, explicit_under_relaxation_value, volume_flux_for_single_phase, bcd_boundedness, correction_form, alternate_wall_temp_formulation, skewness_correction_enhanced
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   turbomachinery_specific_numerics/index
+   non_reflecting_boundary_treatment/index
+   secondary_gradient_limiting/index
+   anisotropic_solid_heat_transfer/index

@@ -1,0 +1,17 @@
+.. _ref_meshing_tui_diagnostics:
+
+diagnostics
+===========
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.diagnostics
+   :members: modify_defaults, perform_summary, set_scope, manage_summary
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   face_connectivity/index
+   quality/index

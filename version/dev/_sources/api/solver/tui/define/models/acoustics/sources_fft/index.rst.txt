@@ -1,0 +1,16 @@
+.. _ref_solver_tui_define_models_acoustics_sources_fft:
+
+sources_fft
+===========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.models.acoustics.sources_fft
+   :members: clean_up_storage_area, compute_fft_fields, read_asd_files, write_cgns_files
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   fft_surface_variables/index

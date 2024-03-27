@@ -1,0 +1,12 @@
+.. _ref_solver_tui_preferences_graphics_transparency:
+
+transparency
+============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.preferences.graphics.transparency
+   :members: depth_peeling_preference, zsort_options, algorithm_for_modern_drivers, depth_peeling_layers, quick_moves
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

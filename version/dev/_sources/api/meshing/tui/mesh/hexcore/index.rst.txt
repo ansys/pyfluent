@@ -1,0 +1,17 @@
+.. _ref_meshing_tui_mesh_hexcore:
+
+hexcore
+=======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.mesh.hexcore
+   :members: merge_tets_to_pyramids, create
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   controls/index
+   local_regions/index

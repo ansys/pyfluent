@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_mesh_prism_controls_improve:
+
+improve
+=======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.mesh.prism.controls.improve
+   :members: node_smooth_converged, node_smooth_local, layer_by_layer_smoothing, node_smooth_rings, face_smooth, check_allowable_skew, edge_smooth_angle, post_adjust_height, left_hand_check, face_smooth_skew, node_smooth, edge_swap, face_smooth_rings, shrink_left_handed_cap, node_smooth_angle, check_size, max_allowable_cap_skew, smooth_improve_prism_cells, node_smooth_iter, corner_height_weight, swap_smooth_skew, identify_feature_line, max_allowable_cell_skew, edge_swap_cap_angle, face_smooth_converged, edge_swap_base_angle, edge_smooth, improve_warp
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

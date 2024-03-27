@@ -1,0 +1,12 @@
+.. _ref_solver_tui_solution_monitor_residual_equations:
+
+equations
+=========
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.solution.monitor.residual.equations
+   :members: list, rename, edit, list_properties, create, delete, make_a_copy
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

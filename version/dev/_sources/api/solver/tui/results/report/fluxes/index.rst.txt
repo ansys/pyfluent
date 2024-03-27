@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_report_fluxes:
+
+fluxes
+======
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.report.fluxes
+   :members: viscous_work, heat_transfer_sensible, film_mass_flow, heat_transfer, mass_flow, pressure_work, radiation_heat_transfer, electric_current, film_heat_transfer
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

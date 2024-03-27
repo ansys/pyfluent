@@ -1,0 +1,12 @@
+.. _ref_meshing_tui_preferences_graphics_graphics_effects:
+
+graphics_effects
+================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.graphics.graphics_effects
+   :members: ambient_occlusion_enabled, update_after_mouse_release, plane_direction, grid_plane_offset, bloom_blur, bloom_strength, grid_color, anti_aliasing, bloom_enabled, grid_plane_size_factor, ambient_occlusion_quality, show_marker_reflections, grid_plane_count, shadow_map_enabled, show_edge_reflections, ambient_occlusion_strength, simple_shadows_enabled, reflections_enabled, grid_plane_enabled
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

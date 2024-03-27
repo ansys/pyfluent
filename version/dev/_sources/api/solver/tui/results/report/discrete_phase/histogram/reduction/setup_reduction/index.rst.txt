@@ -1,0 +1,12 @@
+.. _ref_solver_tui_results_report_discrete_phase_histogram_reduction_setup_reduction:
+
+setup_reduction
+===============
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.results.report.discrete_phase.histogram.reduction.setup_reduction
+   :members: set_minimum, reset_min_and_max, number_of_bins, use_logarithmic, weighting_variable, all_variables_number_of_bins, set_maximum, use_weighting, list_settings, make_steady_from_unsteady_file
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+

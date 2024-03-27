@@ -1,0 +1,16 @@
+.. _ref_solver_tui_define_dynamic_mesh_controls_contact_parameters:
+
+contact_parameters
+==================
+
+.. autoclass:: ansys.fluent.core.solver.tui_241.main_menu.define.dynamic_mesh.controls.contact_parameters
+   :members: contact_method, render_contact_cells, contact_udf, flow_control, update_contact_marks, verbosity, contact_face_zones, contact_threshold
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   flow_control_parameters/index

@@ -1,0 +1,16 @@
+.. _ref_meshing_tui_preferences_general:
+
+general
+=======
+
+.. autoclass:: ansys.fluent.core.meshing.tui_241.main_menu.preferences.general
+   :members: default_ioformat, flow_model, initial_physics_volume_definitions, utlmode, dock_editor, advanced_partition, idle_timeout, automatic_transcript, skip_creation_of_groups_pointing_to_single_entity, import_physics_volume_definitions, utlcreate_physics_on_mode_change
+   :show-inheritance:
+   :undoc-members:
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   startup_messages/index
