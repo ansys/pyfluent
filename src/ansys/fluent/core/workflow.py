@@ -991,7 +991,7 @@ class CompoundTask(CommandTask):
         ----------
         state : Optional[dict]
             Optional state.
-        defer_update: Optional[bool]
+        defer_update: bool, default False
             Flag to defer update.
         """
         self._add_child(state)
