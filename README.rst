@@ -120,7 +120,7 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
 
   import ansys.fluent.core as pyfluent
   solver_session = pyfluent.launch_fluent(mode="solver")
-  solver_session.health_check_service.is_serving
+  solver_session.health_check.is_serving
 
 Basic usage
 ~~~~~~~~~~~

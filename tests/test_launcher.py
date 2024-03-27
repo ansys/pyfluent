@@ -131,7 +131,7 @@ def test_container_launcher():
 
         # test run with configuration dict
         session = pyfluent.launch_fluent(container_dict=container_dict)
-        assert session.health_check_service.is_serving
+        assert session.health_check.is_serving
 
 
 @pytest.mark.standalone

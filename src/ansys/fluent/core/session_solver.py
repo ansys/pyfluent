@@ -20,6 +20,7 @@ from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_prefer
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
+    DeprecatedSettingWarning,
     Group,
     NamedObject,
     SettingsBase,
@@ -91,8 +92,8 @@ class Solver(BaseSession):
         self._build_from_fluent_connection(fluent_connection)
 
     def _build_from_fluent_connection(self, fluent_connection):
-        self._tui_service = self.datamodel_service_tui
-        self._se_service = self.datamodel_service_se
+        self._tui_service = self._datamodel_service_tui
+        self._se_service = self._datamodel_service_se
         self._settings_service = self._settings_service
         self._tui = None
         self._workflow = None
@@ -271,18 +272,27 @@ class Solver(BaseSession):
 
     def __getattr__(self, attr):
         self._populate_settings_api_root()
+        if attr in [x for x in dir(self._settings_api_root) if not x.startswith("_")]:
+            if self.get_fluent_version() > FluentVersion.v242:
+                warnings.warn(
+                    f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
+                    DeprecatedSettingWarning,
+                )
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
-        self._populate_settings_api_root()
-        dir_list = set(
-            list(self.__dict__.keys()) + dir(type(self)) + dir(self._settings_api_root)
-        ) - {
+        settings_dir = []
+        if self.get_fluent_version() <= FluentVersion.v242:
+            self._populate_settings_api_root()
+            settings_dir = dir(self._settings_api_root)
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)) + settings_dir) - {
             "svar_data",
             "svar_info",
             "reduction",
             "field_data",
             "field_info",
             "field_data_streaming",
+            "start_journal",
+            "stop_journal",
         }
         return sorted(dir_list)

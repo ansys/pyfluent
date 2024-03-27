@@ -183,7 +183,7 @@ class TUIGenerator:
         if fluent_mode not in sessions:
             sessions[fluent_mode] = launch_fluent(mode=fluent_mode)
         self.session = sessions[fluent_mode]
-        self._service = self.session.datamodel_service_tui
+        self._service = self.session._datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):

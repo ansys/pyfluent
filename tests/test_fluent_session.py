@@ -144,16 +144,16 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
-    assert session2.health_check_service.is_serving
+    assert session2.health_check.is_serving
     session2.exit()
 
     timeout_loop(
-        session1.health_check_service.is_serving,
+        session1.health_check.is_serving,
         5.0,
         expected="truthy",
     )
 
-    assert session1.health_check_service.is_serving
+    assert session1.health_check.is_serving
     session1.exit()
 
 
@@ -170,12 +170,12 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.health_check_service.is_serving,
+        session1.health_check.is_serving,
         5.0,
         expected="falsy",
     )
 
-    assert not session1.health_check_service.is_serving
+    assert not session1.health_check.is_serving
 
 
 def test_fluent_connection_properties(
