@@ -287,15 +287,15 @@ def test_command_return_type(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_unstable_settings_warning(new_solver_session, recwarn):
     solver = new_solver_session
-    solver.settings.file.export
+    solver.file.export
     assert len(recwarn) == 1
     assert recwarn.pop().category == UnstableSettingWarning
     try:
-        solver.settings.file.exp
+        solver.file.exp
     except AttributeError:
         pass
     assert len(recwarn) == 0
-    solver.settings.file.export
+    solver.file.export
     assert len(recwarn) == 1
     assert recwarn.pop().category == UnstableSettingWarning
 
