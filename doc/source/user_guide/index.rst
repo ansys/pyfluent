@@ -207,7 +207,7 @@ The connection status of any session can be verified with:
 
 .. code:: python
 
-    health = solver.health_check_service.status()
+    health = solver.health_check.status()
 
 ``"SERVING"`` is returned if and only if the connection is healthy.
 
@@ -223,11 +223,11 @@ stop and start the streaming of a transcript manually with:
     solver.transcript.start()
 
 You can enable and disable the streaming of events pertaining to various solver
-event types via the ``events_manager`` attribute of a solution mode session:
+event types via the ``events`` attribute of a solution mode session:
 
 .. code:: python
 
-    solver.events_manager.start()
+    solver.events.start()
 
 For more information, see :ref:`ref_events`.
 
