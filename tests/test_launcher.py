@@ -398,15 +398,32 @@ def test_exposure_and_graphics_driver_arguments():
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in UIMode:
         assert (
-            _build_fluent_launch_args_string(ui_mode=m).strip() == f"3ddp -{m.value[0]}"
+            _build_fluent_launch_args_string(
+                ui_mode=m, additional_arguments="", processor_count=None
+            ).strip()
+            == f"3ddp -{m.value[0]}"
             if m.value[0]
             else " 3ddp"
         )
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
             assert (
-                _build_fluent_launch_args_string(graphics_driver=m).strip()
+                _build_fluent_launch_args_string(
+                    graphics_driver=m, additional_arguments="", processor_count=None
+                ).strip()
                 == f"3ddp -driver {m.value[0]}"
                 if m.value[0]
                 else " 3ddp"
             )
+
+
+def test_processor_count():
+    def get_processor_count(solver):
+        return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
+
+    with pyfluent.launch_fluent(processor_count=2) as solver:
+        assert get_processor_count(solver) == 2
+    # The following check is not yet supported for container launch
+    # https://github.com/ansys/pyfluent/issues/2624
+    # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
+    #     assert get_processor_count(solver) == 2
