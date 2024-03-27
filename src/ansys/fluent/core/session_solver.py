@@ -292,5 +292,7 @@ class Solver(BaseSession):
             "field_data",
             "field_info",
             "field_data_streaming",
+            "start_journal",
+            "stop_journal",
         }
         return sorted(dir_list)
