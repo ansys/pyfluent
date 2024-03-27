@@ -362,3 +362,19 @@ def test_reduction_does_not_modify_case(load_static_mixer_case):
         locations=solver.setup.boundary_conditions.velocity_inlet,
     )
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_fix_for_invalid_location_inputs(load_static_mixer_case):
+    solver = load_static_mixer_case
+    solver.solution.initialization.hybrid_initialize()
+
+    assert solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.area(locations=["inlet-1"], ctxt=solver)
+
+    assert solver.fields.reduction.area(locations=["inlet1"])
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.area(locations=["inlet-1"])
