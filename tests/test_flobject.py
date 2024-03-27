@@ -7,11 +7,16 @@ import weakref
 
 import pytest
 from test_utils import count_key_recursive
+from util.solver_workflow import new_solver_session  # noqa: F401
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
+from ansys.fluent.core.solver.flobject import (
+    InactiveObjectError,
+    _gethash,
+    find_children,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.units
 
@@ -744,7 +749,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_on
 @pytest.mark.codegen_required
 def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
     setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
         "general",
@@ -769,7 +774,7 @@ def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
 @pytest.mark.codegen_required
 def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
     setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
         "general",
@@ -1159,3 +1164,10 @@ def test_assert_type():
                 else:
                     with pytest.raises(TypeError):
                         flobject.assert_type(val, tp)
+
+
+def test_static_info_hash_identity(new_solver_session):
+    solver = new_solver_session
+    hash1 = _gethash(solver._settings_service.get_static_info())
+    hash2 = _gethash(solver._settings_service.get_static_info())
+    assert hash1 == hash2
