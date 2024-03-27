@@ -77,6 +77,7 @@ class Solver(BaseSession):
         self,
         fluent_connection,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
     ):
         """Solver session.
 
@@ -87,6 +88,7 @@ class Solver(BaseSession):
         super(Solver, self).__init__(
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
         )
         self._build_from_fluent_connection(fluent_connection)
 
