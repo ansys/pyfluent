@@ -84,9 +84,10 @@ def _retrieve_file(
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
-    content = requests.get(url).content
+    request = requests.get(url)
+    request.raise_for_status()  # Throw 404 error if file not found
     with open(local_path, "wb") as f:
-        f.write(content)
+        f.write(request.content)
 
     if local_path.endswith(".zip"):
         _decompress(local_path)
@@ -117,6 +118,15 @@ def download_file(
         in the root directory of the repository.
     save_path : str, optional
         Path to download the specified file to.
+
+        If not specified, downloads the file to a subfolder in the
+        examples directory (specified by ``pyfluent.EXAMPLES_PATH``) named after last folder name specified in the
+        argument to ``directory``. For example, if ``directory = 'pyfluent/mixing elbow'``, the file will be
+        downloaded to a subfolder called ``mixing elbow`` in the examples directory.
+
+        If neither ``save_path`` nor ``directory`` are specified, downloads the file to a subfolder with the same
+        name in the examples directory. For example, if ``file_name = 'mixing_elbow.cas.h5'``, the file will be
+        downloaded to a subfolder called ``mixing_elbow`` in the examples directory.
     return_without_path : bool, optional
         When unspecified, defaults to False, unless the PYFLUENT_LAUNCH_CONTAINER=1 environment variable is specified,
         in which case defaults to True.
@@ -141,7 +151,7 @@ def download_file(
     >>> from ansys.fluent.core import examples
     >>> file_path = examples.download_file("bracket.iges", "geometry")
     >>> file_path
-    '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
+    '/home/user/.local/share/ansys_fluent_core/examples/geometry/bracket.iges'
     >>> file_name = examples.download_file("bracket.iges", "geometry", return_without_path=True)
     >>> file_name
     'bracket.iges'
@@ -162,6 +172,15 @@ def download_file(
             return_without_path = True
         else:
             return_without_path = False
+
+    if save_path is None:
+        if directory:
+            # Get name of last folder in directory
+            directory_tip = os.path.basename(directory)
+        else:
+            # Strip all suffixes from file name
+            directory_tip = file_name.split(".")[0]
+        save_path = os.path.join(pyfluent.EXAMPLES_PATH, directory_tip)
 
     url = _get_file_url(file_name, directory)
     head = requests.head(f"{url}")
