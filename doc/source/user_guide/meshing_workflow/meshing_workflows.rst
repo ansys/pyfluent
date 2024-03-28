@@ -780,14 +780,14 @@ Export Fluent 2D mesh
     )
     meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Execute()
 
-Switch to solution mode
-~~~~~~~~~~~~~~~~~~~~~~~
+Switch to solver mode
+~~~~~~~~~~~~~~~~~~~~~
 
-Switching to solver is not allowed in 2D Meshing mode.
+Switching to solver mode is not allowed in 2D Meshing mode.
 
 
-Sample use of ``CommandArguments`` arguments
---------------------------------------------
+Sample use of ``CommandArguments``
+----------------------------------
 This simple example shows how to use the ``CommandArgument`` attributes and explicit
 attribute access methods in a watertight geometry meshing workflow.
 
