@@ -55,7 +55,7 @@ class MeshingWorkflow(Workflow):
         workflow : PyMenuGeneric
             Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
+            Meshing object.
         name: str
             Workflow name to initialize it.
         identifier: str
