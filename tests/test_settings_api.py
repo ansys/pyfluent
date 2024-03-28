@@ -154,7 +154,6 @@ def test_api_upgrade(new_solver_session, capsys):
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
 
-@pytest.mark.skip
 @pytest.mark.fluent_version(">=24.2")
 def test_deprecated_settings(new_solver_session):
     solver = new_solver_session
@@ -189,56 +188,76 @@ def test_deprecated_settings(new_solver_session):
     )
     assert (
         len(
-            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+            solver.setup.boundary_conditions.wall[
+                "wall-inlet"
+            ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert (
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
-            "constant"
-        ]
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature._child_aliases["constant"]
         == "value"
     )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature.constant = 400
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 400
+    )
     assert (
         len(
-            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+            solver.setup.boundary_conditions.wall[
+                "wall-inlet"
+            ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert isinstance(
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_alias_objs[
-            "constant"
-        ],
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature._child_alias_objs["constant"],
         _Alias,
     )
-    solver.setup.boundary_conditions.wall["wall-inlet"].thermal._setattr(
-        "_child_aliases", {"temp": "t"}
-    )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temp.value = 410
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value = 410
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 410
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 410
+    )
 
     solver.setup.boundary_conditions._setattr("_child_aliases", {"w": "wall"})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.w["wall-inlet"].thermal.t.value = 420
+        solver.setup.boundary_conditions.w["wall-inlet"].thermal.temperature.value = 420
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 420
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 420
+    )
 
     solver.setup._setattr("_child_aliases", {"bc": "boundary_conditions"})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.bc.wall["wall-inlet"].thermal.t.value = 430
+        solver.setup.bc.wall["wall-inlet"].thermal.temperature.value = 430
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 430
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 430
+    )
 
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature.constant = 400
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 400
+    )
 
     solver.results._setattr("_child_aliases", {"gr": "graphics"})
     with pytest.warns(DeprecatedSettingWarning):
@@ -269,6 +288,10 @@ def test_deprecated_settings(new_solver_session):
     )
 
     solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
+
+    solver.setup.boundary_conditions.wall["wall-inlet"] = {
+        "thermal": {"q_dot": {"value": 2000000000}, "wall_thickness": {"value": 0.002}}
+    }
 
 
 @pytest.mark.fluent_version(">=24.2")
