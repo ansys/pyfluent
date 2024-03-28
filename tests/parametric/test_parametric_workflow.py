@@ -207,3 +207,34 @@ def test_parametric_workflow():
     solver_session.file.parametric_project.archive(archive_name=write_archive_name)
     assert archive_name.exists()
     solver_session.exit()
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_parameters_list_function(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+    solver.tui.define.parameters.enable_in_TUI("yes")
+
+    velocity_inlet = solver.tui.define.boundary_conditions.set.velocity_inlet
+    velocity_inlet("inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit")
+    velocity_inlet("inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit")
+    velocity_inlet("inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit")
+    velocity_inlet("inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit")
+
+    solver.solution.report_definitions.surface["outlet-temp-avg"] = {}
+    outlet_temp_avg = solver.solution.report_definitions.surface["outlet-temp-avg"]
+    outlet_temp_avg.report_type = "surface-areaavg"
+    outlet_temp_avg.field = "temperature"
+    outlet_temp_avg.surface_names = ["outlet"]
+
+    solver.solution.report_definitions.surface["outlet-vel-avg"] = {}
+    outlet_vel_avg = solver.solution.report_definitions.surface["outlet-vel-avg"]
+    outlet_vel_avg.report_type = "surface-areaavg"
+    outlet_vel_avg.field = "velocity-magnitude"
+    outlet_vel_avg.surface_names = ["outlet"]
+
+    create_output_param = solver.tui.define.parameters.output_parameters.create
+    create_output_param("report-definition", "outlet-temp-avg")
+    create_output_param("report-definition", "outlet-vel-avg")
+
+    assert len(solver.parameters.input_parameters.list()) == 4
+    assert len(solver.parameters.output_parameters.list()) == 2

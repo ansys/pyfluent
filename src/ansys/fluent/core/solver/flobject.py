@@ -661,10 +661,11 @@ class SettingsBase(Base, Generic[StateT]):
                         )
                     ret_alias = ret
                     comps = alias.split("/")
+                    aliased_cls = cls
                     for i, comp in enumerate(comps):
-                        cls = cls._child_classes[comp]
+                        aliased_cls = aliased_cls._child_classes[comp]
                         if i == len(comps) - 1:
-                            ret_alias[comp] = cls._unalias(v)
+                            ret_alias[comp] = aliased_cls._unalias(v)
                         else:
                             ret_alias[comp] = {}
                             ret_alias = ret_alias[comp]
