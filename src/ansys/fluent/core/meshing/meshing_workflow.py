@@ -188,9 +188,9 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         Parameters
         ----------
         workflow : PyMenuGeneric
-            The underlying workflow object.
+            Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
+            Meshing object.
         fluent_version: FluentVersion
             Version information of the current fluent session.
         """
