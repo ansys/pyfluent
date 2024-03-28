@@ -630,8 +630,8 @@ Define global sizing
     )
     meshing.workflow.TaskObject["Define Global Sizing"].Execute()
 
-Adding BOI
-~~~~~~~~~~
+Add body of influence
+~~~~~~~~~~~~~~
 
 .. code:: python
 
