@@ -179,7 +179,7 @@ class BaseMeshing:
 
     @property
     def two_dimensional_meshing_workflow(self):
-        """Datamodel root of workflow exposed in object-oriented manner."""
+        """Data model root of the workflow exposed in an object-oriented manner."""
         if not self._2dm_workflow:
             self._2dm_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
                 self._workflow_se,
