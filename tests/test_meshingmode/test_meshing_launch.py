@@ -13,7 +13,7 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)
-    for attr in ("field_data", "field_info", "meshing", "workflow"):
+    for attr in ("fields", "meshing", "workflow"):
         assert attr in session_dir
     workflow = pure_meshing_session.workflow
     workflow.TaskObject["Import Geometry"].Execute()
