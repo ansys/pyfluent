@@ -4,7 +4,6 @@ from typing import Iterable
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
@@ -666,11 +665,8 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
         "import_body_of_influence_geometry",
         "set_up_periodic_boundaries",
         "create_local_refinement_regions",
-        "load_cad_geometry",
         "run_custom_journal",
     ]
-    if meshing.get_fluent_version() < FluentVersion.v242:
-        _next_possible_tasks.remove("load_cad_geometry")
     assert (
         watertight.task("import_geom_wtm").get_next_possible_tasks()
         == _next_possible_tasks
