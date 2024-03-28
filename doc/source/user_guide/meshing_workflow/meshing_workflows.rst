@@ -704,8 +704,8 @@ Add boundary layer
         DeferUpdate=False
     )
 
-Generate the surface mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate surface mesh
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
