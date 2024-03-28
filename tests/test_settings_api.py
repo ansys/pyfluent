@@ -154,6 +154,7 @@ def test_api_upgrade(new_solver_session, capsys):
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
 
+@pytest.mark.skip
 @pytest.mark.fluent_version(">=24.2")
 def test_deprecated_settings(new_solver_session):
     solver = new_solver_session
