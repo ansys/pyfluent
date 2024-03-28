@@ -3,7 +3,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Optional
+from typing import Any, Optional, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -323,16 +323,31 @@ class BaseSession:
         data."""
         self._fluent_connection.force_exit()
 
-    def upload(self, file_name: str):
+    def _file_transfer_api_warning(self, method_name: str) -> str:
+        """User warning for upload/download methods."""
+        return f"You have directly called the {method_name} method of the session. \
+        Please be advised that for the current version of Fluent, many API methods \
+        automatically handle file uploads and downloads internally. You may not \
+        need to explicitly call {method_name} in most cases. \
+        However, there are exceptions, particularly in PMFileManagement, where complex \
+        file interactions require explicit use of {method_name}  method \
+        for relevant files."
+
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ):
         """Upload a file to the server.
 
         Parameters
         ----------
         file_name : str
             Name of the local file to upload to the server.
+        remote_file_name : str, optional
+            remote file name, by default None
         """
+        warnings.warn(self._file_transfer_api_warning("upload()"), UserWarning)
         if self._file_transfer_service:
-            return self._file_transfer_service.upload_file(file_name)
+            return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server.
@@ -344,8 +359,9 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
+        warnings.warn(self._file_transfer_api_warning("download()"), UserWarning)
         if self._file_transfer_service:
-            return self._file_transfer_service.download_file(file_name, local_directory)
+            return self._file_transfer_service.download(file_name, local_directory)
 
     def __enter__(self):
         return self

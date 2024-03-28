@@ -199,7 +199,9 @@ class Solver(BaseSession):
     def workflow(self):
         """Datamodel root for workflow."""
         if not self._workflow:
-            self._workflow = ClassicWorkflow(self._workflow_se, Solver)
+            self._workflow = ClassicWorkflow(
+                self._workflow_se, Solver, self.get_fluent_version()
+            )
         return self._workflow
 
     @property
