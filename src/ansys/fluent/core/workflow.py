@@ -993,8 +993,8 @@ class CompoundTask(CommandTask):
         ----------
         state : Optional[dict]
             Optional state.
-        defer_update: bool, default False
-            Flag to defer update.
+        defer_update : bool, default: False
+            Whether to defer the update.
         """
         self._add_child(state)
         if self._fluent_version >= FluentVersion.v241:
