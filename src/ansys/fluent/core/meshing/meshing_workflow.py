@@ -29,7 +29,7 @@ class ClassicMeshingWorkflow(ClassicWorkflow):
         meshing : PyMenuGeneric
             Meshing object.
         fluent_version: FluentVersion
-            Version information of the current fluent session.
+            Version of Fluent in this session.
         """
         super().__init__(
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
@@ -61,7 +61,7 @@ class MeshingWorkflow(Workflow):
         identifier: str
             Workflow name to identify it from global settings.
         fluent_version: FluentVersion
-            Version information of the current fluent session.
+            Version of Fluent in this session.
         """
         super().__init__(
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
@@ -100,11 +100,11 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         Parameters
         ----------
         workflow : PyMenuGeneric
-            The underlying workflow object.
+            Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
+            Meshing object.
         fluent_version: FluentVersion
-            Version information of the current fluent session.
+            Version of Fluent in this session.
         """
         super().__init__(
             workflow=workflow,
@@ -131,15 +131,15 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         Parameters
         ----------
         workflow : PyMenuGeneric
-            The underlying workflow object.
+            Underlying workflow object.
         meshing : PyMenuGeneric
-            The meshing object.
+            Meshing object.
         part_management : PyMenuGeneric
             Part management object.
         pm_file_management : PyMenuGeneric
-            The part-management file-management object.
+            File management object in the part management object.
         fluent_version: FluentVersion
-            Version information of the current fluent session.
+            Version of Fluent in this session.
         """
         super().__init__(
             workflow=workflow,
@@ -169,7 +169,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         Returns
         -------
         Optional[PyMenuGeneric]
-            Part-management file-management object .
+            File management object in the part management object.
         """
         return self._pm_file_management
 
@@ -192,7 +192,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         meshing : PyMenuGeneric
             Meshing object.
         fluent_version: FluentVersion
-            Version information of the current fluent session.
+            Version of Fluent in this session.
         """
         super().__init__(
             workflow=workflow,
@@ -221,7 +221,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
         meshing : PyMenuGeneric
             Meshing object.
         fluent_version: FluentVersion
-            Version information of the current fluent session.
+            Version of Fluent in this session.
         """
         super().__init__(
             workflow=workflow,
@@ -233,7 +233,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 
 
 class WorkflowMode(Enum):
-    """Enumerates over supported Fluent meshing workflow modes."""
+    """Provides an enum of supported Fluent meshing workflow modes."""
 
     CLASSIC_MESHING_MODE = ClassicMeshingWorkflow
     WATERTIGHT_MESHING_MODE = WatertightMeshingWorkflow
