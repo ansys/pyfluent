@@ -135,7 +135,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         meshing : PyMenuGeneric
             The meshing object.
         part_management : PyMenuGeneric
-            The part-management object.
+            Part management object.
         pm_file_management : PyMenuGeneric
             The part-management file-management object.
         fluent_version: FluentVersion
