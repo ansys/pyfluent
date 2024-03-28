@@ -786,8 +786,8 @@ Switch to solution mode
 Switching to solver is not allowed in 2D Meshing mode.
 
 
-Sample use of CommandArguments
-------------------------------
+Sample use of ``CommandArguments`` arguments
+--------------------------------------------
 This simple example shows how to use the ``CommandArgument`` attributes and explicit
 attribute access methods in a watertight geometry meshing workflow.
 
