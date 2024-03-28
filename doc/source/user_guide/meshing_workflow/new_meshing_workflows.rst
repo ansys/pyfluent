@@ -555,8 +555,8 @@ Add boundary layer
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
-Generate the surface mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate surface mesh
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
