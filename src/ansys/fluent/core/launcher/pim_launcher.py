@@ -292,7 +292,7 @@ def launch_remote_fluent(
         channel=channel,
         cleanup_on_exit=cleanup_on_exit,
         remote_instance=instance,
-        launcher_args=launcher_args,
+        slurm_job_id=launcher_args and launcher_args.get("slurm_job_id"),
     )
 
     file_transfer_service = (

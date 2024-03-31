@@ -3,6 +3,8 @@
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
 
+from typing import Any, Dict, Optional
+
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -15,6 +17,7 @@ class SolverLite(Solver):
         self,
         fluent_connection=None,
         start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """SolverLite session.
 
@@ -24,6 +27,7 @@ class SolverLite(Solver):
         super().__init__(
             fluent_connection=fluent_connection,
             start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self._tui_service = self.datamodel_service_tui
         self._settings_service = self.settings_service

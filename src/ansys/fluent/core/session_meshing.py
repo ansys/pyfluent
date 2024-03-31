@@ -1,6 +1,6 @@
 """Module containing class encapsulating Fluent connection."""
 
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -22,6 +22,7 @@ class Meshing(PureMeshing):
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """Meshing session.
 
@@ -33,6 +34,7 @@ class Meshing(PureMeshing):
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False

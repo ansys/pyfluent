@@ -1,7 +1,7 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
@@ -32,6 +32,7 @@ class PureMeshing(BaseSession):
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """PureMeshing session.
 
@@ -43,6 +44,7 @@ class PureMeshing(BaseSession):
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
