@@ -9,7 +9,7 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Callable, List, Optional, Tuple, Union
 import warnings
 import weakref
 
@@ -225,7 +225,7 @@ class FluentConnection:
         channel: Optional[grpc.Channel] = None,
         cleanup_on_exit: bool = True,
         remote_instance: Optional[Instance] = None,
-        launcher_args: Optional[Dict[str, Any]] = None,
+        slurm_job_id: Optional[str] = None,
         inside_container: Optional[bool] = None,
     ):
         """Initialize a Session.
@@ -299,7 +299,7 @@ class FluentConnection:
         # throws, we should not proceed.
         self.health_check_service.check_health()
 
-        self._slurm_job_id = launcher_args and launcher_args.get("slurm_job_id")
+        self._slurm_job_id = slurm_job_id
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
@@ -365,7 +365,6 @@ class FluentConnection:
         )
 
         self._remote_instance = remote_instance
-        self.launcher_args = launcher_args
 
         self._exit_event = threading.Event()
 

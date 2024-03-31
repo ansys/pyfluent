@@ -4,7 +4,7 @@
 """
 
 import importlib
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_solver import Solver
@@ -22,6 +22,7 @@ class SolverIcing(Solver):
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """SolverIcing session.
 
@@ -33,6 +34,7 @@ class SolverIcing(Solver):
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self._flserver_root = None
         self._fluent_version = None

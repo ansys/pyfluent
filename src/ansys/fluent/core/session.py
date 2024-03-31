@@ -3,7 +3,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Optional, Union
+from typing import Any, Dict, Optional, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -94,6 +94,7 @@ class BaseSession:
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """BaseSession.
 
@@ -109,6 +110,7 @@ class BaseSession:
             subsequently via method calls on the Session object.
         """
         self._start_transcript = start_transcript
+        self._launcher_args = launcher_args
         BaseSession.build_from_fluent_connection(
             self, fluent_connection, file_transfer_service
         )
@@ -270,6 +272,7 @@ class BaseSession:
         server_info_file_name: str,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -302,6 +305,7 @@ class BaseSession:
             ),
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         return session
 
