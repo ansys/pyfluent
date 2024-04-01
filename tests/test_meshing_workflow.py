@@ -436,6 +436,7 @@ def test_new_workflow_structure(new_mesh_session):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_mesh_session):
+    # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
@@ -587,4 +588,4 @@ def test_new_2d_meshing_workflow(new_mesh_session):
 
     # Switch to solution mode
     solver = meshing.switch_to_solver()
-    assert not solver
+    assert solver
