@@ -1,13 +1,14 @@
 """Provides a module for file transfer service."""
 
 import os
-from pathlib import Path
+import pathlib
+import shutil
 import subprocess
-from typing import Any, Callable, Optional, Union  # noqa: F401
+from typing import Any, Callable, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
+import platformdirs
 
-from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 
@@ -19,29 +20,64 @@ class PyPIMConfigurationError(ConnectionError):
         super().__init__("PyPIM is not configured.")
 
 
-class AnsysFileTransferService:
+def _get_host_path():
+    user_data_path = platformdirs.user_data_dir(
+        appname="ansys_fluent_core", appauthor="Ansys"
+    )
+    return os.path.join(user_data_path, "examples")
+
+
+class FiletransferStrategy(Protocol):
+    """File transfer strategy."""
+
+    def upload_file(self, local_directory: str) -> str:
+        """Upload file to the server."""
+        ...
+
+    def download_file(self, remote_file_name: str, local_directory: str) -> None:
+        """Download file from the server."""
+        ...
+
+
+class LocalFileTransferStrategy(FiletransferStrategy):
+    """Local file transfer strategy."""
+
+    def upload_file(self, local_directory: str) -> str:
+        return str(pathlib.Path(local_directory))
+
+    def download_file(self, remote_file_name: str, local_directory: str) -> None:
+        remote_file_name = pathlib.Path(remote_file_name)
+        local_filename = pathlib.Path(local_directory)
+        if local_filename.exists() and local_filename.samefile(remote_file_name):
+            return
+        shutil.copyfile(remote_file_name, local_directory)
+
+
+class RemoteFileTransferStrategy(FiletransferStrategy):
     """Provides a file transfer service based on ``gRPC client<https://filetransfer.tools.docs.pyansys.com/version/stable/>``
     and ``gRPC server<https://filetransfer-server.tools.docs.pyansys.com/version/stable/>``
     """
 
     def __init__(self):
-        self.server_path = str(
-            Path(os.path.dirname(os.path.realpath(__file__))) / "server.exe"
-        )
-        self.fluent_cwd = Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
+        self.host_port = int(str(id(self))[-5:])
         self.server = subprocess.Popen(
-            f"{self.server_path} --server-address localhost:{id(self)}",
-            cwd=self.fluent_cwd,
+            f"docker run -p {self.host_port}:50000 -v {_get_host_path()}:/home/container/workdir/ ghcr.io/ansys/tools-filetransfer:latest",
+            shell=True,
         )
-        self.client = ft.Client.from_server_address(f"localhost:{id(self)}")
+        self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
-    def upload(self, file_name: Union[list[str], str]):
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ):
         """Upload a file to the server.
 
         Parameters
         ----------
         file_name : str
             File name
+        remote_file_name : str, optional
+            remote file name, by default None
+
         Raises
         ------
         FileNotFoundError
@@ -52,14 +88,18 @@ class AnsysFileTransferService:
             for file in files:
                 if os.path.isfile(file):
                     self.client.upload_file(
-                        local_filename=file, remote_filename=os.path.basename(file)
+                        local_filename=file,
+                        remote_filename=(
+                            remote_file_name
+                            if remote_file_name
+                            else os.path.basename(file)
+                        ),
                     )
                 else:
                     raise FileNotFoundError(f"{file} does not exist.")
 
     def download(
-        self,
-        file_name: Union[list[str], str],
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ):
         """Download a file from the server.
 
@@ -67,6 +107,8 @@ class AnsysFileTransferService:
         ----------
         file_name : str
             File name
+        local_directory : str, optional
+            local directory, by default None.
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.client:
@@ -76,7 +118,11 @@ class AnsysFileTransferService:
                 else:
                     self.client.download_file(
                         remote_filename=os.path.basename(file),
-                        local_filename=os.path.basename(file),
+                        local_filename=(
+                            local_directory
+                            if local_directory
+                            else os.path.basename(file)
+                        ),
                     )
 
 
@@ -147,6 +193,7 @@ class PimFileTransferService:
             file name
         remote_file_name : str, optional
             remote file name, by default None
+
         Raises
         ------
         FileNotFoundError
@@ -177,6 +224,7 @@ class PimFileTransferService:
             File name
         remote_file_name : str, optional
             remote file name, by default None
+
         Raises
         ------
         FileNotFoundError
@@ -232,7 +280,7 @@ class PimFileTransferService:
         file_name : str
             File name
         local_directory : str, optional
-            local directory, by default None
+            local directory, by default current working directory.
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
