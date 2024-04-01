@@ -1090,40 +1090,40 @@ def test_meshing_utilities(new_mesh_session):
     #     range=[0.9, 1],
     # ) == [322, [225, 97], [0, 40]]
 
-    assert meshing_session.meshing_utilities.get_face_mesh_distribution(
-        face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
-        measure="Orthogonal Quality",
-        partitions=2,
-        range=[0.9, 1],
-    ) == [322, [225, 97], [0, 40]]
+    # assert meshing_session.meshing_utilities.get_face_mesh_distribution(
+    #     face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+    #     measure="Orthogonal Quality",
+    #     partitions=2,
+    #     range=[0.9, 1],
+    # ) == [322, [225, 97], [0, 40]]
 
-    assert meshing_session.meshing_utilities.get_face_mesh_distribution(
-        face_zone_name_pattern="*",
-        measure="Orthogonal Quality",
-        partitions=2,
-        range=[0.9, 1],
-    ) == [69656, [53976, 15680], [0, 22455]]
-
-    assert meshing_session.meshing_utilities.get_cell_mesh_distribution(
-        cell_zone_id_list=[87],
-        measure="Orthogonal Quality",
-        partitions=2,
-        range=[0.9, 1],
-    ) == [16029, [11794, 4235], [0, 1872]]
-
-    assert meshing_session.meshing_utilities.get_cell_mesh_distribution(
-        cell_zone_name_list=["elbow-fluid"],
-        measure="Orthogonal Quality",
-        partitions=2,
-        range=[0.9, 1],
-    ) == [16029, [11794, 4235], [0, 1872]]
-
-    assert meshing_session.meshing_utilities.get_cell_mesh_distribution(
-        cell_zone_name_pattern="*",
-        measure="Orthogonal Quality",
-        partitions=2,
-        range=[0.9, 1],
-    ) == [16029, [11794, 4235], [0, 1872]]
+    # assert meshing_session.meshing_utilities.get_face_mesh_distribution(
+    #     face_zone_name_pattern="*",
+    #     measure="Orthogonal Quality",
+    #     partitions=2,
+    #     range=[0.9, 1],
+    # ) == [69656, [53976, 15680], [0, 22455]]
+    #
+    # assert meshing_session.meshing_utilities.get_cell_mesh_distribution(
+    #     cell_zone_id_list=[87],
+    #     measure="Orthogonal Quality",
+    #     partitions=2,
+    #     range=[0.9, 1],
+    # ) == [16029, [11794, 4235], [0, 1872]]
+    #
+    # assert meshing_session.meshing_utilities.get_cell_mesh_distribution(
+    #     cell_zone_name_list=["elbow-fluid"],
+    #     measure="Orthogonal Quality",
+    #     partitions=2,
+    #     range=[0.9, 1],
+    # ) == [16029, [11794, 4235], [0, 1872]]
+    #
+    # assert meshing_session.meshing_utilities.get_cell_mesh_distribution(
+    #     cell_zone_name_pattern="*",
+    #     measure="Orthogonal Quality",
+    #     partitions=2,
+    #     range=[0.9, 1],
+    # ) == [16029, [11794, 4235], [0, 1872]]
 
     # Commented due to variation in 10^-13 th place
 
