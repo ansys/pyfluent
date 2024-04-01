@@ -1297,10 +1297,11 @@ class Workflow:
                 if isinstance(command_obj, PyCommand):
                     command_obj_instance = command_obj.create_instance()
                     help_str = command_obj_instance.get_attr("helpString")
-                    display_name = command_obj_instance.get_attr("displayText")
                     if help_str in self.child_task_python_names():
                         self._help_string_command_id_map[help_str] = command
-                        self._help_string_display_text_map[help_str] = display_name
+                        self._help_string_display_text_map[help_str] = (
+                            command_obj_instance.get_attr("displayText")
+                        )
                     del command_obj_instance
 
     def get_possible_tasks(self):
