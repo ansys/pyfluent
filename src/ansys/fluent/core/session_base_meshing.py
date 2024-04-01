@@ -4,11 +4,7 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.meshing.meshing_workflow import (
-    ClassicMeshingWorkflow,
-    FaultTolerantMeshingWorkflow,
-    WatertightMeshingWorkflow,
-)
+from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
@@ -50,6 +46,8 @@ class BaseMeshing:
         self._old_workflow = None
         self._wt_workflow = None
         self._ft_workflow = None
+        self._2dm_workflow = None
+        self._tb_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -148,9 +146,10 @@ class BaseMeshing:
     def workflow(self):
         """Datamodel root of workflow."""
         if not self._old_workflow:
-            self._old_workflow = ClassicMeshingWorkflow(
+            self._old_workflow = WorkflowMode.CLASSIC_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
+                self.get_fluent_version(),
             )
         return self._old_workflow
 
@@ -158,9 +157,10 @@ class BaseMeshing:
     def watertight_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._wt_workflow:
-            self._wt_workflow = WatertightMeshingWorkflow(
+            self._wt_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
+                self.get_fluent_version(),
             )
         return self._wt_workflow
 
@@ -168,13 +168,36 @@ class BaseMeshing:
     def fault_tolerant_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._ft_workflow:
-            self._ft_workflow = FaultTolerantMeshingWorkflow(
+            self._ft_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
                 self._workflow_se,
                 self.meshing,
                 self.PartManagement,
                 self.PMFileManagement,
+                self.get_fluent_version(),
             )
         return self._ft_workflow
+
+    @property
+    def two_dimensional_meshing_workflow(self):
+        """Data model root of the workflow exposed in an object-oriented manner."""
+        if not self._2dm_workflow:
+            self._2dm_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
+                self._workflow_se,
+                self.meshing,
+                self.get_fluent_version(),
+            )
+        return self._2dm_workflow
+
+    @property
+    def topology_based_meshing_workflow(self):
+        """Datamodel root of workflow exposed in object-oriented manner."""
+        if not self._tb_workflow:
+            self._tb_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
+                self._workflow_se,
+                self.meshing,
+                self.get_fluent_version(),
+            )
+        return self._tb_workflow
 
     @property
     def PartManagement(self):

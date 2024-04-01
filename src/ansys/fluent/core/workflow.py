@@ -16,6 +16,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def camel_to_snake_case(camel_case_str: str) -> str:
@@ -180,6 +181,7 @@ class BaseTask:
                 _task_list=[],
                 _task_objects={},
                 _dynamic_interface=command_source._dynamic_interface,
+                _fluent_version=command_source._fluent_version,
             )
         )
 
@@ -349,7 +351,7 @@ class BaseTask:
             camel_attr = snake_to_camel_case(
                 str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
             )
-            attr = camel_attr if camel_attr else attr
+            attr = camel_attr or attr
         try:
             result = getattr(self._task, attr)
             if result:
@@ -706,7 +708,7 @@ class ArgumentWrapper(PyCallableStateObject):
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
             camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
-            attr = camel_attr if camel_attr else attr
+            attr = camel_attr or attr
         return getattr(self._arg, attr)
 
     def __setattr__(self, attr, value):
@@ -717,7 +719,7 @@ class ArgumentWrapper(PyCallableStateObject):
                 camel_attr = snake_to_camel_case(
                     str(attr), self._get_camel_case_arg_keys()
                 )
-                attr = camel_attr if camel_attr else attr
+                attr = camel_attr or attr
             self.set_state({attr: value})
 
     def __dir__(self):
@@ -979,21 +981,33 @@ class CompoundTask(CommandTask):
         state = state or {}
         if self._dynamic_interface:
             state.update({"add_child": "yes"})
-            self.arguments.set_state(state)
+            self.arguments.update_dict(state)
         else:
             state.update({"AddChild": "yes"})
-            self._task.Arguments.set_state(state)
+            self._task.Arguments.update_dict(state)
 
-    def add_child_and_update(self, state=None):
+    def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
 
         Parameters
         ----------
         state : Optional[dict]
             Optional state.
+        defer_update : bool, default: False
+            Whether to defer the update.
         """
         self._add_child(state)
-        self._task.AddChildAndUpdate()
+        if self._fluent_version >= FluentVersion.v241:
+            if defer_update is None:
+                defer_update = False
+            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+        else:
+            if defer_update is not None:
+                warnings.warn(
+                    " The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
+                    UserWarning,
+                )
+            self._task.AddChildAndUpdate()
         return self.last_child()
 
     def last_child(self) -> BaseTask:
@@ -1060,7 +1074,12 @@ class Workflow:
     __call__()
     """
 
-    def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        command_source: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
         """Initialize WorkflowWrapper.
 
         Parameters
@@ -1094,6 +1113,7 @@ class Workflow:
             "task_object",
             "workflow",
         }
+        self._fluent_version = fluent_version
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
@@ -1185,7 +1205,7 @@ class Workflow:
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
             camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
-            attr = camel_attr if camel_attr else attr
+            attr = camel_attr or attr
             obj = self._attr_from_wrapped_workflow(attr)
             if obj:
                 return obj
@@ -1394,7 +1414,12 @@ class ClassicWorkflow:
     __call__()
     """
 
-    def __init__(self, workflow: PyMenuGeneric, command_source: PyMenuGeneric) -> None:
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        command_source: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
         """Initialize ClassicWorkflow.
 
         Parameters
@@ -1410,6 +1435,7 @@ class ClassicWorkflow:
             threading.RLock()
         )  # TODO: sort out issues with these un-used variables.
         self._dynamic_interface = False
+        self._fluent_version = fluent_version
 
     @property
     def TaskObject(self) -> TaskContainer:

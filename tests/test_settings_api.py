@@ -2,7 +2,14 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning, _Alias
+from ansys.fluent.core.solver.flobject import (
+    DeprecatedSettingWarning,
+    UnstableSettingWarning,
+    _Alias,
+    _InputFile,
+    _OutputFile,
+    to_python_name,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -156,77 +163,115 @@ def test_deprecated_settings(new_solver_session):
     with pytest.warns(DeprecatedSettingWarning):
         solver.file.rcd(file_name=case_path)
 
+    solver.setup.boundary_conditions.velocity_inlet.child_object_type._child_aliases[
+        "mom"
+    ] = "momentum"
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].mom.velocity = 20
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.value()
+        == 20
+    )
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].mom.velocity = 2
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "cold-inlet"
+        ].momentum.velocity.value()
+        == 2
+    )
+
     solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
         "Temperature"
     )
     assert (
         len(
-            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+            solver.setup.boundary_conditions.wall[
+                "wall-inlet"
+            ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert (
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
-            "constant"
-        ]
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature._child_aliases["constant"]
         == "value"
     )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature.constant = 400
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 400
+    )
     assert (
         len(
-            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+            solver.setup.boundary_conditions.wall[
+                "wall-inlet"
+            ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert isinstance(
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
-            "constant"
-        ],
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature._child_alias_objs["constant"],
         _Alias,
     )
-    solver.setup.boundary_conditions.wall["wall-inlet"].thermal._setattr(
-        "_child_aliases", {"temp": "t"}
-    )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temp.value = 410
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value = 410
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 410
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 410
+    )
 
     solver.setup.boundary_conditions._setattr("_child_aliases", {"w": "wall"})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.w["wall-inlet"].thermal.t.value = 420
+        solver.setup.boundary_conditions.w["wall-inlet"].thermal.temperature.value = 420
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 420
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 420
+    )
 
     solver.setup._setattr("_child_aliases", {"bc": "boundary_conditions"})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.bc.wall["wall-inlet"].thermal.t.value = 430
+        solver.setup.bc.wall["wall-inlet"].thermal.temperature.value = 430
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 430
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 430
+    )
 
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature.constant = 400
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 400
+    )
 
     solver.results._setattr("_child_aliases", {"gr": "graphics"})
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour.create("c1")
 
-    # disabling due to ansys/pyfluent#2526
+    with pytest.warns(DeprecatedSettingWarning):
+        solver.results.gr.contour["c1"].field = "pressure"
 
-    # with pytest.warns(DeprecatedSettingWarning):
-    #     solver.results.gr.contour["c1"].field = "pressure"
+    assert solver.results.graphics.contour["c1"].field() == "pressure"
 
-    # assert solver.results.graphics.contour["c1"].field() == "pressure"
+    with pytest.warns(DeprecatedSettingWarning):
+        del solver.results.gr.contour["c1"]
 
-    # with pytest.warns(DeprecatedSettingWarning):
-    #     del solver.results.gr.contour["c1"]
-
-    # assert "c1" not in solver.results.graphics.contour
+    assert "c1" not in solver.results.graphics.contour
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
@@ -242,8 +287,11 @@ def test_deprecated_settings(new_solver_session):
         == 10
     )
 
-    # TODO: Enable after Fluent image is updated
-    # solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
+
+    solver.setup.boundary_conditions.wall["wall-inlet"] = {
+        "thermal": {"q_dot": {"value": 2000000000}, "wall_thickness": {"value": 0.002}}
+    }
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -258,3 +306,57 @@ def test_command_return_type(new_solver_session):
     )
     ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
     assert ret is not None
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_unstable_settings_warning(new_solver_session, recwarn):
+    solver = new_solver_session
+    solver.file.export
+    assert len(recwarn) == 1
+    assert recwarn.pop().category == UnstableSettingWarning
+    try:
+        solver.file.exp
+    except AttributeError:
+        pass
+    assert len(recwarn) == 0
+    solver.file.export
+    assert len(recwarn) == 1
+    assert recwarn.pop().category == UnstableSettingWarning
+
+    # Issue in running in CI (probably due to -gu mode)
+    # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    # solver.file.read_case_data(file_name=case_path)
+    # img_path = "a.png"
+    # Path(img_path).unlink(missing_ok=True)
+    # solver.results.graphics.picture.save_picture(file_name=img_path)
+    # assert len(recwarn) == 0
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_generated_code_special_cases(new_solver_session):
+    solver = new_solver_session
+    icing_cls = solver.setup.boundary_conditions._child_classes[
+        "velocity_inlet"
+    ].child_object_type._child_classes["icing"]
+    fensapice_drop_vrh_cls = icing_cls._child_classes["fensapice_drop_vrh"]
+    fensapice_drop_vrh_1_cls = icing_cls._child_classes["fensapice_drop_vrh_1"]
+    assert fensapice_drop_vrh_cls.fluent_name != fensapice_drop_vrh_1_cls.fluent_name
+    assert to_python_name(fensapice_drop_vrh_cls.fluent_name) == to_python_name(
+        fensapice_drop_vrh_1_cls.fluent_name
+    )
+    assert fensapice_drop_vrh_cls.__name__ != fensapice_drop_vrh_1_cls.__name__
+
+    assert (
+        solver.file.read_case.file_name.fluent_name
+        == solver.file.write_case.file_name.fluent_name
+    )
+    assert (
+        solver.file.read_case.file_name.__class__.__name__
+        != solver.file.write_case.file_name.__class__.__name__
+    )
+    read_file_bases = solver.file.read_case.file_name.__class__.__bases__
+    assert _InputFile in read_file_bases
+    assert _OutputFile not in read_file_bases
+    write_file_bases = solver.file.write_case.file_name.__class__.__bases__
+    assert _InputFile not in write_file_bases
+    assert _OutputFile in write_file_bases

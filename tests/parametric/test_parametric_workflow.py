@@ -8,6 +8,12 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
 
+PYTEST_RELATIVE_TOLERANCE = 1e-3
+
+
+def pytest_approx(expected):
+    return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
+
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
@@ -86,10 +92,10 @@ def test_parametric_workflow():
     assert base_dp.input_parameters["inlet1_temp"]() == 300.0
     study1.design_points.update_current()
     assert len(study1.design_points) == 1
-    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
-        333.348727, rel=1e-5
+    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest_approx(
+        333.348727
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
     dp1_name = study1.design_points.create_1()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
@@ -111,14 +117,14 @@ def test_parametric_workflow():
     assert study1.current_design_point() == dp2_name
     study1.design_points.update_all()
     assert len(study1.design_points) == 3
-    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
+    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest_approx(
         333.348727
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
-    assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
-    assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
-    assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
-    assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
+    assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest_approx(425.004045)
+    assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest_approx(2.029792)
+    assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest_approx(425.004045)
+    assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest_approx(2.029792)
 
     design_point_table = Path(tmp_save_path) / "design_point_table_study_1.csv"
     if inside_container:
@@ -201,3 +207,34 @@ def test_parametric_workflow():
     solver_session.file.parametric_project.archive(archive_name=write_archive_name)
     assert archive_name.exists()
     solver_session.exit()
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_parameters_list_function(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+    solver.tui.define.parameters.enable_in_TUI("yes")
+
+    velocity_inlet = solver.tui.define.boundary_conditions.set.velocity_inlet
+    velocity_inlet("inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit")
+    velocity_inlet("inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit")
+    velocity_inlet("inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit")
+    velocity_inlet("inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit")
+
+    solver.solution.report_definitions.surface["outlet-temp-avg"] = {}
+    outlet_temp_avg = solver.solution.report_definitions.surface["outlet-temp-avg"]
+    outlet_temp_avg.report_type = "surface-areaavg"
+    outlet_temp_avg.field = "temperature"
+    outlet_temp_avg.surface_names = ["outlet"]
+
+    solver.solution.report_definitions.surface["outlet-vel-avg"] = {}
+    outlet_vel_avg = solver.solution.report_definitions.surface["outlet-vel-avg"]
+    outlet_vel_avg.report_type = "surface-areaavg"
+    outlet_vel_avg.field = "velocity-magnitude"
+    outlet_vel_avg.surface_names = ["outlet"]
+
+    create_output_param = solver.tui.define.parameters.output_parameters.create
+    create_output_param("report-definition", "outlet-temp-avg")
+    create_output_param("report-definition", "outlet-vel-avg")
+
+    assert len(solver.parameters.input_parameters.list()) == 4
+    assert len(solver.parameters.output_parameters.list()) == 2

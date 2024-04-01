@@ -15,6 +15,13 @@ import ansys.fluent.core as pyfluent
 logger = logging.getLogger("pyfluent.networking")
 
 
+class RemoteFileNotFoundError(FileNotFoundError):
+    """Raised on an attempt to download a non-existent remote file."""
+
+    def __init__(self, url):
+        super().__init__(f"{url} does not exist.")
+
+
 def delete_downloads():
     """Delete all downloaded examples from the default examples folder to free space or
     update the files.
@@ -119,6 +126,11 @@ def download_file(
         the host, and that the example files are being made available by the host through this same path,
         only the file name is required for Fluent to find and open the file.
 
+    Raises
+    ------
+    RemoteFileNotFoundError
+        If remote file does not exist.
+
     Returns
     -------
     str
@@ -152,6 +164,9 @@ def download_file(
             return_without_path = False
 
     url = _get_file_url(file_name, directory)
+    head = requests.head(f"{url}")
+    if not head.ok:
+        raise RemoteFileNotFoundError(url)
     return _retrieve_file(url, file_name, save_path, return_without_path)
 
 

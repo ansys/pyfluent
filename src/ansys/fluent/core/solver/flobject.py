@@ -185,6 +185,7 @@ class Base:
         self._setattr("_file_transfer_service", None)
         if name is not None:
             self._setattr("_name", name)
+        self._setattr("_child_alias_objs", {})
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
@@ -211,10 +212,12 @@ class Base:
 
         Supports file upload and download.
         """
-        if self._file_transfer_service:
-            return self._file_transfer_service
-        elif self._parent:
-            return self._parent.file_transfer_service
+        with warnings.catch_warnings():
+            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
+            if self._file_transfer_service:
+                return self._file_transfer_service
+            elif self._parent:
+                return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
@@ -328,20 +331,19 @@ class Base:
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
-    def _is_stable(self) -> bool:
+    def _check_stable(self) -> None:
         """Whether the object is stable."""
-        if self.is_active():
-            attr = self.get_attr(_InlineConstants.is_stable)
-        else:
-            attr = True
-        attr = False if attr is False else True
-        if attr is False:
+        if not self.is_active():
+            return
+        attr = self.get_attr(_InlineConstants.is_stable)
+        attr = True if attr is None else attr
+        if not attr:
             warnings.warn(
-                f"The API feature at {self.path} is not stable. "
+                f"The API feature at '{self.path}' is not stable. "
                 f"It is not guaranteed that it is fully validated and "
-                f"there is no commitment to its backwards compatibility."
+                f"there is no commitment to its backwards compatibility.",
+                UnstableSettingWarning,
             )
-        return attr
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -519,6 +521,12 @@ class DeprecatedSettingWarning(FutureWarning):
     pass
 
 
+class UnstableSettingWarning(UserWarning):
+    """Provides unstable settings warning."""
+
+    pass
+
+
 _show_warning_orig = warnings.showwarning
 
 
@@ -646,19 +654,18 @@ class SettingsBase(Base, Generic[StateT]):
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
-                    if not isinstance(alias, str):
-                        alias = alias.alias_path
                     # TODO: handle ".." in alias path
                     if ".." in alias:
                         raise NotImplementedError(
-                            'Cannot handle ".." in alias path while setting state.'
+                            'Cannot handle ".." in alias path while setting dictionary state.'
                         )
                     ret_alias = ret
                     comps = alias.split("/")
+                    aliased_cls = cls
                     for i, comp in enumerate(comps):
-                        cls = cls._child_classes[comp]
+                        aliased_cls = aliased_cls._child_classes[comp]
                         if i == len(comps) - 1:
-                            ret_alias[comp] = cls._unalias(v)
+                            ret_alias[comp] = aliased_cls._unalias(v)
                         else:
                             ret_alias[comp] = {}
                             ret_alias = ret_alias[comp]
@@ -992,24 +999,26 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def _get_parent_of_active_child_names(self, name):
-        parents = ""
-        path_list = []
-        for parent in self.get_active_child_names():
-            try:
-                if hasattr(getattr(self, parent), str(name)):
-                    path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
-                    if len(parents) != 0:
-                        parents += ", " + parent
-                    else:
-                        parents += parent
-            except AttributeError:
-                pass
-        if len(path_list):
-            print(f"\n {str(name)} can be accessed from the following paths: \n")
-            for path in path_list:
-                print(path)
-        if len(parents):
-            return f"\n {name} is a child of {parents} \n"
+        with warnings.catch_warnings():
+            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
+            parents = ""
+            path_list = []
+            for parent in self.get_active_child_names():
+                try:
+                    if hasattr(getattr(self, parent), str(name)):
+                        path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
+                        if len(parents) != 0:
+                            parents += ", " + parent
+                        else:
+                            parents += parent
+                except AttributeError:
+                    pass
+            if len(path_list):
+                print(f"\n {str(name)} can be accessed from the following paths: \n")
+                for path in path_list:
+                    print(path)
+            if len(parents):
+                return f"\n {name} is a child of {parents} \n"
 
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
@@ -1017,16 +1026,18 @@ class Group(SettingsBase[DictStateType]):
                 raise InactiveObjectError(self.python_path)
         alias = super().__getattribute__("_child_aliases").get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         try:
-            return super().__getattribute__(name)
+            attr = super().__getattribute__(name)
+            if name in super().__getattribute__("_child_classes"):
+                attr._check_stable()
+            return attr
         except AttributeError as ex:
             self._get_parent_of_active_child_names(name)
             error_msg = allowed_name_error_message(
@@ -1315,14 +1326,13 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         else:
             return getattr(super(), name)
 
@@ -1433,14 +1443,13 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         else:
             return getattr(super(), name)
 
@@ -1512,14 +1521,13 @@ class Action(Base):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
-            if isinstance(alias, str):
+            alias_obj = self._child_alias_objs.get(name)
+            if alias_obj is None:
                 obj = self.find_object(alias)
-                # replacing aliased paths with alias objects in _child_aliases
-                alias_obj = self._child_aliases[name] = _create_child(
+                alias_obj = self._child_alias_objs[name] = _create_child(
                     obj.__class__, None, obj.parent, alias
                 )
-                return alias_obj
-            return alias
+            return alias_obj
         else:
             return getattr(super(), name)
 
@@ -1752,7 +1760,7 @@ _bases_by_class = {}
 
 
 # pylint: disable=missing-raises-doc
-def get_cls(name, info, parent=None, version=None):
+def get_cls(name, info, parent=None, version=None, parent_taboo=None):
     """Create a class for the object identified by "path"."""
     try:
         if name == "":
@@ -1812,16 +1820,19 @@ def get_cls(name, info, parent=None, version=None):
             bases += (_InOutFile,)
 
         original_pname = pname
-        if any(
-            x in bases for x in (_InputFile, _OutputFile, _InOutFile)
-        ):  # not generalizing for performance
-            i = 0
-            while pname in _bases_by_class and _bases_by_class[pname] != bases:
-                if i > 0:
-                    pname = pname[: pname.rfind("_")]
+        i = 1
+        if parent_taboo:
+            while pname in parent_taboo:
+                pname = f"{original_pname}_{i}"
                 i += 1
-                pname += f"_{str(i)}"
+        parent_attr_name = pname
+        if info.get("file_purpose"):  # not generalizing for performance
+            while pname in _bases_by_class and _bases_by_class[pname] != bases:
+                pname = f"{original_pname}_{i}"
+                i += 1
             _bases_by_class[pname] = bases
+        if parent_taboo:
+            parent_taboo.add(pname)
 
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
@@ -1844,10 +1855,10 @@ def get_cls(name, info, parent=None, version=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls, original_pname = get_cls(cname, cinfo, cls, version=version)
-                ccls_name = ccls.__name__
+                ccls, parent_attr_name = get_cls(
+                    cname, cinfo, cls, version=version, parent_taboo=taboo
+                )
 
-                i = 0
                 if write_doc:
                     nonlocal doc
                     th = ccls._state_type
@@ -1855,16 +1866,9 @@ def get_cls(name, info, parent=None, version=None):
                     doc += f"    {ccls.__name__} : {th}\n"
                     doc += f"        {ccls.__doc__}\n"
 
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-
-                ccls.__name__ = ccls_name
-                names.append(ccls.__name__ if i > 0 else original_pname)
-                taboo.add(ccls_name)
-                cls._child_classes[ccls.__name__ if i > 0 else original_pname] = ccls
+                names.append(parent_attr_name)
+                taboo.add(ccls.__name__)
+                cls._child_classes[parent_attr_name] = ccls
 
         children = info.get("children")
         if children:
@@ -1920,7 +1924,7 @@ def get_cls(name, info, parent=None, version=None):
             f"'{parent.fluent_name if parent else None}'"
         )
         raise
-    return cls, original_pname
+    return cls, parent_attr_name
 
 
 def _gethash(obj_info):
