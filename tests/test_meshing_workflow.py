@@ -588,4 +588,4 @@ def test_new_2d_meshing_workflow(new_mesh_session):
 
     # Switch to solution mode
     solver = meshing.switch_to_solver()
-    assert not solver
+    assert solver
