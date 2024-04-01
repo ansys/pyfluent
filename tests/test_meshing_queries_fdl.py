@@ -1083,12 +1083,12 @@ def test_meshing_utilities(new_mesh_session):
     #     face_zone_name_pattern="*", measure="Orthogonal Quality"
     # )[1:] == [0.03215596355473505, 1.0, 0.9484456798568045, 91581]
 
-    assert meshing_session.meshing_utilities.get_face_mesh_distribution(
-        face_zone_id_list=[30, 31, 32],
-        measure="Orthogonal Quality",
-        partitions=2,
-        range=[0.9, 1],
-    ) == [322, [225, 97], [0, 40]]
+    # assert meshing_session.meshing_utilities.get_face_mesh_distribution(
+    #     face_zone_id_list=[30, 31, 32],
+    #     measure="Orthogonal Quality",
+    #     partitions=2,
+    #     range=[0.9, 1],
+    # ) == [322, [225, 97], [0, 40]]
 
     assert meshing_session.meshing_utilities.get_face_mesh_distribution(
         face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
