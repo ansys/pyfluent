@@ -468,6 +468,7 @@ def test_named_object_specific_methods(new_mesh_session):
     assert not meshing.workflow.TaskObject.get_object_names()
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_command_creation_inside_singleton(new_mesh_session):
     meshing = new_mesh_session
@@ -475,6 +476,7 @@ def test_command_creation_inside_singleton(new_mesh_session):
     assert read_mesh.FileName is not None
 
 
+@pytest.mark.codegen_required
 def test_read_ony_set_state(new_mesh_session):
     meshing = new_mesh_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
