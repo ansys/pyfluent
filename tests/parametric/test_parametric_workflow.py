@@ -96,7 +96,9 @@ def test_parametric_workflow():
         333.348727
     )
     assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
-    dp1_name = study1.design_points.create_1()
+    dp_names = set([*study1.design_points.keys()])
+    study1.design_points.create_1()
+    dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
     dp1.input_parameters["inlet1_vel"] = 1
