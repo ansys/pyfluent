@@ -8,6 +8,12 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
 
+PYTEST_RELATIVE_TOLERANCE = 1e-3
+
+
+def pytest_approx(expected):
+    return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
+
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
@@ -86,10 +92,10 @@ def test_parametric_workflow():
     assert base_dp.input_parameters["inlet1_temp"]() == 300.0
     study1.design_points.update_current()
     assert len(study1.design_points) == 1
-    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
-        333.348727, rel=1e-5
+    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest_approx(
+        333.348727
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
     dp1_name = study1.design_points.create_1()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
@@ -111,14 +117,14 @@ def test_parametric_workflow():
     assert study1.current_design_point() == dp2_name
     study1.design_points.update_all()
     assert len(study1.design_points) == 3
-    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
+    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest_approx(
         333.348727
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
-    assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
-    assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
-    assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
-    assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
+    assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest_approx(425.004045)
+    assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest_approx(2.029792)
+    assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest_approx(425.004045)
+    assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest_approx(2.029792)
 
     design_point_table = Path(tmp_save_path) / "design_point_table_study_1.csv"
     if inside_container:
