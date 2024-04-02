@@ -119,11 +119,6 @@ class Solver(BaseSession):
         self._settings_api_root = None
         self.fields.solution_variable_data = self._solution_variable_data()
 
-    def build_from_fluent_connection(self, fluent_connection):
-        """Build a solver session object from fluent_connection object."""
-        super(Solver, self).build_from_fluent_connection(fluent_connection)
-        self._build_from_fluent_connection(fluent_connection)
-
     def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
         return service_creator("svar_data").create(
@@ -236,7 +231,10 @@ class Solver(BaseSession):
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
             state = self.settings.get_state()
-            self.build_from_fluent_connection(fut_session._fluent_connection)
+            super(Solver, self)._build_from_fluent_connection(
+                fut_session._fluent_connection
+            )
+            self._build_from_fluent_connection(fut_session._fluent_connection)
             # TODO temporary fix till set_state at settings root is fixed
             _set_state_safe(self.settings, state)
 

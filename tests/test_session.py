@@ -369,7 +369,7 @@ def test_build_from_fluent_connection(make_new_session):
     assert solver2.health_check.is_serving
     health_check_service1 = solver1.health_check
     cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
-    solver1.build_from_fluent_connection(solver2._fluent_connection)
+    solver1._build_from_fluent_connection(solver2._fluent_connection)
     assert solver1.health_check.is_serving
     assert solver2.health_check.is_serving
     assert not health_check_service1.is_serving

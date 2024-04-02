@@ -100,11 +100,11 @@ class BaseSession:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             file_transfer_service: Supports file upload and download.
         """
-        BaseSession.build_from_fluent_connection(
+        BaseSession._build_from_fluent_connection(
             self, fluent_connection, file_transfer_service
         )
 
-    def build_from_fluent_connection(
+    def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
