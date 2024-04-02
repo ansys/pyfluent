@@ -139,8 +139,8 @@ class BaseSession:
             self._file_transfer_service,
         )
 
-        self.datamodel_events = DatamodelEvents(self._datamodel_service_se)
-        self.datamodel_events.start()
+        self._datamodel_events = DatamodelEvents(self._datamodel_service_se)
+        self._datamodel_events.start()
 
         self._batch_ops_service = service_creator("batch_ops").create(
             fluent_connection._channel, fluent_connection._metadata
@@ -200,7 +200,7 @@ class BaseSession:
             self._datamodel_service_se.unsubscribe_all_events
         )
         for obj in (
-            self.datamodel_events,
+            self._datamodel_events,
             self.transcript,
             self.events,
             self.monitors,
