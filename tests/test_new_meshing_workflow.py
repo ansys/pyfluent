@@ -9,7 +9,7 @@ from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_new_watertight_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -81,7 +81,7 @@ def test_new_watertight_workflow(new_mesh_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_new_fault_tolerant_workflow(new_mesh_session):
     meshing = new_mesh_session
 
