@@ -74,7 +74,6 @@ class LocalFileTransferStrategy(FiletransferStrategy):
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ) -> None:
-        file_name = pathlib.Path(file_name)
         local_file_name = pathlib.Path(local_directory)
         if local_file_name.exists() and local_file_name.samefile(file_name):
             return
