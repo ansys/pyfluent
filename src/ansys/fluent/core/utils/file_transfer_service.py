@@ -8,8 +8,8 @@ import subprocess
 from typing import Any, Callable, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
+import platformdirs
 
-from ansys.fluent.core import EXAMPLES_PATH
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 
@@ -19,6 +19,13 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
+
+
+def _get_host_path():
+    user_data_path = platformdirs.user_data_dir(
+        appname="ansys_fluent_core", appauthor="Ansys"
+    )
+    return os.path.join(user_data_path, "examples")
 
 
 class FiletransferStrategy(Protocol):
@@ -53,9 +60,9 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
     """
 
     def __init__(self):
-        self.host_port = random.randint(50000, 60000)
+        self.host_port = random.randint(50000, 50100)
         self.server = subprocess.Popen(
-            f"docker run -p {self.host_port}:50000 -v {EXAMPLES_PATH}:/home/container/workdir/ ghcr.io/ansys/tools-filetransfer:latest",
+            f"docker run -p {self.host_port}:50000 -v {_get_host_path()}:/home/container/workdir/ ghcr.io/ansys/tools-filetransfer:latest",
             shell=True,
         )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
