@@ -67,7 +67,7 @@ class LocalFileTransferStrategy(FiletransferStrategy):
         local_file_name = pathlib.Path(file_name)
         if local_file_name.exists() and local_file_name.is_file():
             if remote_file_name:
-                local_file_name.rename(str(self.fluent_cwd / f"{remote_file_name}"))
+                shutil.copyfile(file_name, str(self.fluent_cwd / f"{remote_file_name}"))
             else:
                 shutil.copyfile(file_name, str(self.fluent_cwd / f"{file_name}"))
 
