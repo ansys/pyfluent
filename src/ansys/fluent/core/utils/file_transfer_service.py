@@ -111,7 +111,7 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
     def __init__(self):
         self.host_port = _get_host_port()
         self.server = subprocess.Popen(
-            f"docker run -p {self.host_port}:50000 -v {_get_host_path()}:/home/container/workdir/ ghcr.io/ansys/tools-filetransfer:latest",
+            f"docker run -p {self.host_port}:50000 -v {_get_host_path()}:/home/container/workdir/ -w {_get_host_path()} ghcr.io/ansys/tools-filetransfer:latest",
             shell=True,
         )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
