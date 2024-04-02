@@ -74,16 +74,29 @@ class LocalFileTransferStrategy(FiletransferStrategy):
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ) -> None:
-        local_file_name = pathlib.Path(local_directory)
+        dest_path = pathlib.Path(os.getcwd()) / f"{file_name}"
+        local_file_name = (
+            pathlib.Path(local_directory) if local_directory else dest_path
+        )
         if local_file_name.exists() and local_file_name.samefile(file_name):
             return
-        shutil.copyfile(file_name, local_directory)
+        shutil.copyfile(file_name, str(local_file_name))
 
 
 def _get_files(file_name: str):
     if isinstance(file_name, str):
         files = [file_name]
-    elif isinstance(file_name, pathlib.Path):
+    elif isinstance(
+        file_name,
+        (
+            pathlib.Path,
+            pathlib.PurePath,
+            pathlib.PosixPath,
+            pathlib.PurePosixPath,
+            pathlib.WindowsPath,
+            pathlib.PureWindowsPath,
+        ),
+    ):
         files = [str(file_name)]
     elif isinstance(file_name, list):
         files = [str(file) for file in file_name]
