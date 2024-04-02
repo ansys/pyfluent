@@ -80,6 +80,16 @@ class LocalFileTransferStrategy(FiletransferStrategy):
         shutil.copyfile(file_name, local_directory)
 
 
+def _get_files(file_name: str):
+    if isinstance(file_name, str):
+        files = [file_name]
+    elif isinstance(file_name, pathlib.Path):
+        files = [str(file_name)]
+    elif isinstance(file_name, list):
+        files = [str(file) for file in file_name]
+    return files
+
+
 class RemoteFileTransferStrategy(FiletransferStrategy):
     """Provides a file transfer service based on ``gRPC client<https://filetransfer.tools.docs.pyansys.com/version/stable/>``
     and ``gRPC server<https://filetransfer-server.tools.docs.pyansys.com/version/stable/>``
@@ -110,7 +120,7 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
         FileNotFoundError
             If a file does not exist.
         """
-        files = [file_name] if isinstance(file_name, str) else file_name
+        files = _get_files(file_name)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
@@ -137,7 +147,7 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
         local_directory : str, optional
             local directory, by default None.
         """
-        files = [file_name] if isinstance(file_name, str) else file_name
+        files = _get_files(file_name)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
