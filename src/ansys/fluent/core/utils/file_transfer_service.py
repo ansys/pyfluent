@@ -2,7 +2,6 @@
 
 import os
 import pathlib
-import random
 import shutil
 import subprocess
 from typing import Any, Callable, Optional, Protocol, Union  # noqa: F401
@@ -19,6 +18,15 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
+
+
+HOST_PORT = 50000
+
+
+def _get_host_port():
+    global HOST_PORT
+    HOST_PORT += 1
+    return HOST_PORT
 
 
 def _get_host_path():
@@ -60,7 +68,7 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
     """
 
     def __init__(self):
-        self.host_port = random.randint(50000, 50100)
+        self.host_port = _get_host_port()
         self.server = subprocess.Popen(
             f"docker run -p {self.host_port}:50000 -v {_get_host_path()}:/home/container/workdir/ ghcr.io/ansys/tools-filetransfer:latest",
             shell=True,
