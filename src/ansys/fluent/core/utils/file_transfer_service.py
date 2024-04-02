@@ -9,6 +9,7 @@ from typing import Any, Callable, Optional, Protocol, Union  # noqa: F401
 from alive_progress import alive_bar
 import platformdirs
 
+from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 
@@ -39,11 +40,15 @@ def _get_host_path():
 class FiletransferStrategy(Protocol):
     """File transfer strategy."""
 
-    def upload_file(self, local_directory: str) -> str:
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ) -> None:
         """Upload file to the server."""
         ...
 
-    def download_file(self, remote_file_name: str, local_directory: str) -> None:
+    def download(
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
+    ) -> None:
         """Download file from the server."""
         ...
 
@@ -51,15 +56,28 @@ class FiletransferStrategy(Protocol):
 class LocalFileTransferStrategy(FiletransferStrategy):
     """Local file transfer strategy."""
 
-    def upload_file(self, local_directory: str) -> str:
-        return str(pathlib.Path(local_directory))
+    def __init__(self):
+        self.fluent_cwd = str(
+            pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
+        )
 
-    def download_file(self, remote_file_name: str, local_directory: str) -> None:
-        remote_file_name = pathlib.Path(remote_file_name)
-        local_filename = pathlib.Path(local_directory)
-        if local_filename.exists() and local_filename.samefile(remote_file_name):
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ) -> None:
+        local_file_name = pathlib.Path(file_name)
+        if local_file_name.exists() and local_file_name.is_file():
+            os.rename(
+                file_name, str(pathlib.Path(self.fluent_cwd) / f"{remote_file_name}")
+            )
+
+    def download(
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
+    ) -> None:
+        file_name = pathlib.Path(file_name)
+        local_file_name = pathlib.Path(local_directory)
+        if local_file_name.exists() and local_file_name.samefile(file_name):
             return
-        shutil.copyfile(remote_file_name, local_directory)
+        shutil.copyfile(file_name, local_directory)
 
 
 class RemoteFileTransferStrategy(FiletransferStrategy):
