@@ -57,7 +57,7 @@ class LocalFileTransferStrategy(FiletransferStrategy):
     """Local file transfer strategy."""
 
     def __init__(self):
-        self.fluent_cwd = str(
+        self.fluent_cwd = (
             pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
         )
 
@@ -66,9 +66,10 @@ class LocalFileTransferStrategy(FiletransferStrategy):
     ) -> None:
         local_file_name = pathlib.Path(file_name)
         if local_file_name.exists() and local_file_name.is_file():
-            os.rename(
-                file_name, str(pathlib.Path(self.fluent_cwd) / f"{remote_file_name}")
-            )
+            if remote_file_name:
+                local_file_name.rename(str(self.fluent_cwd / f"{remote_file_name}"))
+            else:
+                shutil.copyfile(file_name, str(self.fluent_cwd / f"{file_name}"))
 
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
