@@ -36,6 +36,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     UIMode,
     _get_standalone_launch_fluent_version,
 )
@@ -173,10 +174,9 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        del start_container
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(dry_run, "standalone", argvals)
+        _process_invalid_args(False, LaunchMode.STANDALONE, argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():

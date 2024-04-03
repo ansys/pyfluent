@@ -23,6 +23,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     UIMode,
 )
 from ansys.fluent.core.session_meshing import Meshing
@@ -162,10 +163,9 @@ class PIMLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        del start_container
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(dry_run, "pim", argvals)
+        _process_invalid_args(False, LaunchMode.PIM, argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
