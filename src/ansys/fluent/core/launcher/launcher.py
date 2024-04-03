@@ -9,7 +9,6 @@ import os
 from typing import Any, Dict, Optional, Union
 import warnings
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.error_handler import (
@@ -82,13 +81,6 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    allowed_options = [mode for mode in LaunchMode]
-    if fluent_launch_mode not in allowed_options:
-        raise DisallowedValuesError(
-            "fluent_launch_mode",
-            fluent_launch_mode,
-            allowed_values=allowed_options,
-        )
     if fluent_launch_mode == LaunchMode.STANDALONE:
         kwargs = _remove_unused_args(fluent_launch_mode, **kwargs)
         return StandaloneLauncher(**kwargs)
