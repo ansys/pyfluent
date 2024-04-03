@@ -283,7 +283,7 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
+            image_tag = os.getenv("FLUENT_IMAGE_TAG", "latest")
         if not image_name:
             image_name = os.getenv("FLUENT_IMAGE_NAME", "ghcr.io/ansys/pyfluent")
         if not image_tag or not image_name:
