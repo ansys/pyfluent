@@ -201,6 +201,28 @@ class FluentConnectionProperties:
         return vars(self)
 
 
+def _get_channel_str(ip: Optional[str] = None, port: Optional[int] = None) -> str:
+    if not ip:
+        ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+    if not port:
+        port = os.getenv("PYFLUENT_FLUENT_PORT")
+    if not port:
+        raise PortNotProvided()
+    return f"{ip}:{port}"
+
+
+def _get_channel(ip: Optional[str] = None, port: Optional[int] = None):
+    # Same maximum message length is used in the server
+    max_message_length = _get_max_c_int_limit()
+    return grpc.insecure_channel(
+        _get_channel_str(ip, port),
+        options=[
+            ("grpc.max_send_message_length", max_message_length),
+            ("grpc.max_receive_message_length", max_message_length),
+        ],
+    )
+
+
 class FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -274,22 +296,8 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
-            if not ip:
-                ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
-            if not port:
-                port = os.getenv("PYFLUENT_FLUENT_PORT")
-            self._channel_str = f"{ip}:{port}"
-            if not port:
-                raise PortNotProvided()
-            # Same maximum message length is used in the server
-            max_message_length = _get_max_c_int_limit()
-            self._channel = grpc.insecure_channel(
-                f"{ip}:{port}",
-                options=[
-                    ("grpc.max_send_message_length", max_message_length),
-                    ("grpc.max_receive_message_length", max_message_length),
-                ],
-            )
+            self._channel = _get_channel(ip, port)
+            self._channel_str = _get_channel_str(ip, port)
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
