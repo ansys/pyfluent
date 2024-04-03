@@ -49,11 +49,14 @@ logger = logging.getLogger("pyfluent.launcher")
 
 def _remove_unused_args(fluent_launch_mode: LaunchMode = None, **kwargs):
 
-    def _remove_key(unused_args, **kwargs):
+    print(f"\n kwargs - {kwargs} \n")
+
+    def _remove_key(unused_args, **kargs):
         for arg in unused_args:
             if arg in kwargs:
-                kwargs.pop(arg)
-        return kwargs
+                kargs.pop(arg)
+        print(f"\n kargs - {kargs} \n")
+        return kargs
 
     if fluent_launch_mode == LaunchMode.STANDALONE or LaunchMode.PIM:
         _remove_key(
