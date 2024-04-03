@@ -1297,7 +1297,7 @@ class Workflow:
                 if isinstance(command_obj, PyCommand):
                     command_obj_instance = command_obj.create_instance()
                     help_str = command_obj_instance.get_attr("helpString")
-                    if help_str and help_str.islower():
+                    if help_str in self.child_task_python_names():
                         self._help_string_command_id_map[help_str] = command
                         self._help_string_display_text_map[help_str] = (
                             command_obj_instance.get_attr("displayText")
