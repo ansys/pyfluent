@@ -48,18 +48,20 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 def _remove_unused_args(fluent_launch_mode: LaunchMode = None, **kwargs):
+
+    def _remove_key(unused_args, **kwargs):
+        for arg in unused_args:
+            if arg in kwargs:
+                kwargs.pop(arg)
+        return kwargs
+
     if fluent_launch_mode == LaunchMode.STANDALONE or LaunchMode.PIM:
-        for key in [
-            "start_container",
-            "container_dict",
-            "dry_run",
-            "scheduler_options",
-        ]:
-            kwargs.pop(key)
+        _remove_key(
+            ["start_container", "container_dict", "dry_run", "scheduler_options"],
+            **kwargs,
+        )
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        for key in ["start_container", "scheduler_options"]:
-            kwargs.pop(key)
-    return kwargs
+        _remove_key(["start_container", "scheduler_options"], **kwargs)
 
 
 def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
