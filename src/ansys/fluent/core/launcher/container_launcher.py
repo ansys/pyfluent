@@ -30,6 +30,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     UIMode,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
@@ -56,7 +57,6 @@ class DockerLauncher:
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
         env: Optional[Dict[str, Any]] = None,
-        start_container: Optional[bool] = None,
         container_dict: Optional[dict] = None,
         dry_run: bool = False,
         cleanup_on_exit: bool = True,
@@ -69,7 +69,6 @@ class DockerLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
-        scheduler_options: Optional[dict] = None,
         file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in container mode.
@@ -111,12 +110,8 @@ class DockerLauncher:
         env : dict[str, str], optional
             Mapping to modify environment variables in Fluent. The default
             is ``None``.
-        start_container : bool, optional
-            Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
         container_dict : dict, optional
-            Dictionary for Fluent Docker container configuration. If specified,
-            setting ``start_container = True`` as well is redundant.
+            Dictionary for Fluent Docker container configuration.
             Will launch Fluent inside a Docker container using the configuration changes specified.
             See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
         dry_run : bool, optional
@@ -181,10 +176,9 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        del start_container
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(dry_run, "container", argvals)
+        _process_invalid_args(dry_run, LaunchMode.CONTAINER, argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
