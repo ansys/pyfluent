@@ -745,34 +745,9 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_on
     assert max_refinements.get_attr("max") == 1000000
 
 
-@pytest.mark.fluent_version("==23.1")
+@pytest.mark.fluent_version("==24.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
-    setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 10000
-    assert len(find_children(setup_cls(), "gen*")) >= 9
-    assert set(find_children(setup_cls(), "general*")) >= {
-        "general",
-        "models/discrete_phase/general_settings",
-        "models/virtual_blade_model/disk/general",
-    }
-    assert set(find_children(setup_cls(), "general")) >= {
-        "general",
-        "models/virtual_blade_model/disk/general",
-    }
-    assert set(find_children(setup_cls(), "*gen")) >= {
-        "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
-        "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
-        "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
-        "boundary_conditions/outlet_vent/p_backflow_spec_gen",
-        "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
-        "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
-    }
-
-
-@pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
-def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
+def test_find_children_from_settings_root(load_static_mixer_settings_only):
     setup_cls = load_static_mixer_settings_only.setup.__class__
     assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
