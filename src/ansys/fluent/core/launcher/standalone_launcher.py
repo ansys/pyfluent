@@ -21,7 +21,6 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _process_invalid_args,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -36,7 +35,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
-    LaunchMode,
     UIMode,
     _get_standalone_launch_fluent_version,
 )
@@ -176,7 +174,6 @@ class StandaloneLauncher:
         """
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(False, LaunchMode.STANDALONE, argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():

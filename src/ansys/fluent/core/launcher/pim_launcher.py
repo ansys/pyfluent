@@ -18,12 +18,10 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
-    LaunchMode,
     UIMode,
 )
 from ansys.fluent.core.session_meshing import Meshing
@@ -165,7 +163,6 @@ class PIMLauncher:
         """
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(False, LaunchMode.PIM, argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():

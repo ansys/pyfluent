@@ -18,7 +18,6 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
@@ -30,7 +29,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
-    LaunchMode,
     UIMode,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
@@ -178,7 +176,6 @@ class DockerLauncher:
         """
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(dry_run, LaunchMode.CONTAINER, argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
