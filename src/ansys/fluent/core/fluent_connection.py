@@ -201,26 +201,81 @@ class FluentConnectionProperties:
         return vars(self)
 
 
-def _get_channel_str(ip: Optional[str] = None, port: Optional[int] = None) -> str:
+def _get_ip_and_port(
+    ip: Optional[str] = None, port: Optional[int] = None
+) -> (str, int):
     if not ip:
         ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
     if not port:
         port = os.getenv("PYFLUENT_FLUENT_PORT")
     if not port:
         raise PortNotProvided()
-    return f"{ip}:{port}"
+    return ip, port
 
 
-def _get_channel(ip: Optional[str] = None, port: Optional[int] = None):
+def _get_channel(ip: str, port: int):
     # Same maximum message length is used in the server
     max_message_length = _get_max_c_int_limit()
     return grpc.insecure_channel(
-        _get_channel_str(ip, port),
+        f"{ip}:{port}",
         options=[
             ("grpc.max_send_message_length", max_message_length),
             ("grpc.max_receive_message_length", max_message_length),
         ],
     )
+
+
+class _ConnectionProperties:
+    def __init__(self, scheme_eval):
+        self.scheme_eval = scheme_eval
+
+    @property
+    def fluent_build_info(self) -> str:
+        """Get Fluent build info."""
+        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
+        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
+        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
+        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
+
+    def get_cortex_connection_properties(
+        self,
+        ip: str,
+        port: int,
+        password: Optional[str] = None,
+        inside_container: Optional[bool] = None,
+    ):
+        """Get connection properties of Fluent."""
+        from grpc._channel import _InactiveRpcError
+
+        try:
+            logger.info(self.fluent_build_info)
+            logger.debug("Obtaining Cortex connection properties...")
+            fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
+            cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
+            cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
+            cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+            logger.debug("Cortex connection properties successfully obtained.")
+        except _InactiveRpcError:
+            logger.warning(
+                "Fluent Cortex properties unobtainable, force exit and other"
+                "methods are not going to work properly, proceeding..."
+            )
+            fluent_host_pid = None
+            cortex_host = None
+            cortex_pid = None
+            cortex_pwd = None
+
+        return cortex_host, FluentConnectionProperties(
+            ip,
+            port,
+            password,
+            cortex_pwd,
+            cortex_pid,
+            cortex_host,
+            fluent_host_pid,
+            inside_container,
+        )
 
 
 class FluentConnection:
@@ -296,8 +351,9 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
+            ip, port = _get_ip_and_port(ip, port)
             self._channel = _get_channel(ip, port)
-            self._channel_str = _get_channel_str(ip, port)
+            self._channel_str = f"{ip}:{port}"
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
@@ -325,27 +381,10 @@ class FluentConnection:
         self.scheme_eval = service_creator("scheme_eval").create(
             self._scheme_eval_service
         )
-
+        cortex_host, self.connection_properties = _ConnectionProperties(
+            self.scheme_eval
+        ).get_cortex_connection_properties(ip, port, password, inside_container)
         self._cleanup_on_exit = cleanup_on_exit
-        from grpc._channel import _InactiveRpcError
-
-        try:
-            logger.info(self.fluent_build_info)
-            logger.debug("Obtaining Cortex connection properties...")
-            fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
-            cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
-            cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
-            cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
-            logger.debug("Cortex connection properties successfully obtained.")
-        except _InactiveRpcError:
-            logger.warning(
-                "Fluent Cortex properties unobtainable, force exit and other"
-                "methods are not going to work properly, proceeding..."
-            )
-            cortex_host = None
-            cortex_pid = None
-            cortex_pwd = None
-            fluent_host_pid = None
 
         if (
             (inside_container is None or inside_container is True)
@@ -362,17 +401,6 @@ class FluentConnection:
                     "The current system does not support Docker containers. "
                     "Assuming Fluent is not inside a container."
                 )
-
-        self.connection_properties = FluentConnectionProperties(
-            ip,
-            port,
-            password,
-            cortex_pwd,
-            cortex_pid,
-            cortex_host,
-            fluent_host_pid,
-            inside_container,
-        )
 
         self._remote_instance = remote_instance
 
@@ -398,15 +426,6 @@ class FluentConnection:
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
-
-    @property
-    def fluent_build_info(self) -> str:
-        """Get Fluent build info."""
-        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
-        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
-        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
-        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
-        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
 
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
