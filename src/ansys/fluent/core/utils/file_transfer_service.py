@@ -38,7 +38,7 @@ def _get_host_path():
 
 
 class FiletransferStrategy(Protocol):
-    """File transfer strategy."""
+    """Provides the file transfer strategy."""
 
     def upload(
         self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
@@ -54,7 +54,7 @@ class FiletransferStrategy(Protocol):
 
 
 class LocalFileTransferStrategy(FiletransferStrategy):
-    """Local file transfer strategy."""
+    """Provides the local file transfer strategy."""
 
     def __init__(self):
         self.fluent_cwd = (
@@ -104,8 +104,8 @@ def _get_files(file_name: str):
 
 
 class RemoteFileTransferStrategy(FiletransferStrategy):
-    """Provides a file transfer service based on ``gRPC client<https://filetransfer.tools.docs.pyansys.com/version/stable/>``
-    and ``gRPC server<https://filetransfer-server.tools.docs.pyansys.com/version/stable/>``
+    """Provides a file transfer service based on the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_
+    and ``gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
     """
 
     def __init__(self):
@@ -124,9 +124,9 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
         Parameters
         ----------
         file_name : str
-            File name
+            File name.
         remote_file_name : str, optional
-            remote file name, by default None
+            Remote file name. The default is ``None``.
 
         Raises
         ------
@@ -156,9 +156,9 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
         Parameters
         ----------
         file_name : str
-            File name
+            File name.
         local_directory : str, optional
-            local directory, by default None.
+            Local directory. The default is ``None``.
         """
         files = _get_files(file_name)
         if self.client:
@@ -177,7 +177,7 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
 
 
 class PimFileTransferService:
-    """Provides a file transfer service based on ``PyPIM<https://pypim.docs.pyansys.com/version/stable/>`` and ``simple_upload_server()``.
+    """Provides a file transfer service based on `PyPIM <https://pypim.docs.pyansys.com/version/stable/>`_ and the ``simple_upload_server()`` method.
 
     Attributes
     ----------
@@ -240,9 +240,9 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            file name
+            File name.
         remote_file_name : str, optional
-            remote file name, by default None
+            Remote file name. The default is ``None``.
 
         Raises
         ------
@@ -271,9 +271,9 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            File name
+            File name.
         remote_file_name : str, optional
-            remote file name, by default None
+            Remote file name. The default is ``None``.
 
         Raises
         ------
@@ -301,7 +301,7 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            file name
+            File name.
         local_directory : str, optional
             local directory, by default None
 
@@ -328,9 +328,9 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            File name
+            File name.
         local_directory : str, optional
-            local directory, by default current working directory.
+            Local directory. The default is the current working directory.
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
