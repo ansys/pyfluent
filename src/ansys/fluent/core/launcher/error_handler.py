@@ -2,7 +2,7 @@
 
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
-import ansys.fluent.core.launcher.pyfluent_enums as enums
+from ansys.fluent.core.launcher.pyfluent_enums import UIMode
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -50,13 +50,13 @@ class LaunchFluentError(Exception):
 
 
 def _raise_non_gui_exception_in_windows(
-    ui_mode: enums.UIMode, product_version: FluentVersion
+    ui_mode: UIMode, product_version: FluentVersion
 ) -> None:
     """Fluent user interface mode lower than ``UIMode.HIDDEN_GUI`` is not supported in
     Windows in Fluent versions earlier than 2024 R1."""
     if (
         launcher_utils.is_windows()
-        and ui_mode < enums.UIMode.HIDDEN_GUI
+        and ui_mode < UIMode.HIDDEN_GUI
         and product_version < FluentVersion.v241
     ):
         raise InvalidArgument(
@@ -101,6 +101,8 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
     argvals: dict
         Local arguments.
     """
+    import ansys.fluent.core.launcher.pyfluent_enums as enums
+
     if dry_run and fluent_launch_mode != enums.LaunchMode.CONTAINER:
         launcher_utils.logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
