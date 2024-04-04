@@ -46,24 +46,8 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def _remove_unused_args(fluent_launch_mode: LaunchMode = None, **kwargs):
-
-    def _remove_keys(unused_args, **kargs):
-        for arg in unused_args:
-            kargs.pop(arg, None)
-        return kargs
-
-    if fluent_launch_mode == LaunchMode.STANDALONE or LaunchMode.PIM:
-        return _remove_keys(
-            ["start_container", "container_dict", "dry_run", "scheduler_options"],
-            **kwargs,
-        )
-    elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return _remove_keys(["start_container", "scheduler_options"], **kwargs)
-
-
 def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
-    """Factory function to create launcher for supported launch modes.
+    """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
     ----------
@@ -82,13 +66,10 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         If an unknown Fluent launch mode is passed.
     """
     if fluent_launch_mode == LaunchMode.STANDALONE:
-        kwargs = _remove_unused_args(fluent_launch_mode, **kwargs)
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        kwargs = _remove_unused_args(fluent_launch_mode, **kwargs)
         return DockerLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.PIM:
-        kwargs = _remove_unused_args(fluent_launch_mode, **kwargs)
         return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)

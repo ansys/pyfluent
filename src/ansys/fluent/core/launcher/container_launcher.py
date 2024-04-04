@@ -68,6 +68,7 @@ class DockerLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         file_transfer_service: Optional[Any] = None,
+        **kwargs,
     ):
         """Launch Fluent session in container mode.
 
@@ -109,8 +110,8 @@ class DockerLauncher:
             Mapping to modify environment variables in Fluent. The default
             is ``None``.
         container_dict : dict, optional
-            Dictionary for Fluent Docker container configuration.
-            Will launch Fluent inside a Docker container using the configuration changes specified.
+            Dictionary for Fluent Docker container configuration. The configuration settings specified in this
+            dictionary are used to launch Fluent inside a Docker container.
             See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
         dry_run : bool, optional
             Defaults to False. If True, will not launch Fluent, and will instead print configuration information
@@ -152,6 +153,8 @@ class DockerLauncher:
             when the current Python process ends.
         file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------

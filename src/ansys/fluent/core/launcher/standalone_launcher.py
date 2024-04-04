@@ -74,6 +74,7 @@ class StandaloneLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         file_transfer_service: Optional[Any] = None,
+        **kwargs,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -150,6 +151,8 @@ class StandaloneLauncher:
             when the current Python process ends.
         file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------
