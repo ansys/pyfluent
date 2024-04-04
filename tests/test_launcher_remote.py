@@ -134,6 +134,7 @@ class TransferRequestRecorder:
         return True
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_file_purpose_on_remote_instance(
     monkeypatch, new_solver_session, new_mesh_session
