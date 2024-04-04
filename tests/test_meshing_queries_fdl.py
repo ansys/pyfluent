@@ -11,7 +11,6 @@ def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/2634")
 @pytest.mark.codegen_required
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.2")
