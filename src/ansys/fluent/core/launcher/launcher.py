@@ -9,7 +9,6 @@ import os
 from typing import Any, Dict, Optional, Union
 import warnings
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.error_handler import (
@@ -48,7 +47,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
-    """Factory function to create launcher for supported launch modes.
+    """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
     ----------
@@ -66,16 +65,6 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    allowed_options = [mode for mode in LaunchMode]
-    if (
-        not isinstance(fluent_launch_mode, LaunchMode)
-        or fluent_launch_mode not in allowed_options
-    ):
-        raise DisallowedValuesError(
-            "fluent_launch_mode",
-            fluent_launch_mode,
-            allowed_values=allowed_options,
-        )
     if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
@@ -255,6 +244,9 @@ def launch_fluent(
         If an unexpected keyword argument is provided.
     DockerContainerLaunchNotSupported
         If a Fluent Docker container launch is not supported.
+    GPUSolverSupportError
+        If Fluent GPU Solver is not supported.
+
 
     Notes
     -----

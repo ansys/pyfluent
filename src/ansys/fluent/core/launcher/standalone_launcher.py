@@ -21,7 +21,6 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _process_invalid_args,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -64,9 +63,6 @@ class StandaloneLauncher:
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
         env: Optional[Dict[str, Any]] = None,
-        start_container: Optional[bool] = None,
-        container_dict: Optional[dict] = None,
-        dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         case_file_name: Optional[str] = None,
@@ -77,8 +73,8 @@ class StandaloneLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
-        scheduler_options: Optional[dict] = None,
         file_transfer_service: Optional[Any] = None,
+        **kwargs,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -119,18 +115,6 @@ class StandaloneLauncher:
         env : dict[str, str], optional
             Mapping to modify environment variables in Fluent. The default
             is ``None``.
-        start_container : bool, optional
-            Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
-        container_dict : dict, optional
-            Dictionary for Fluent Docker container configuration. If specified,
-            setting ``start_container = True`` as well is redundant.
-            Will launch Fluent inside a Docker container using the configuration changes specified.
-            See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
-        dry_run : bool, optional
-            Defaults to False. If True, will not launch Fluent, and will instead print configuration information
-            that would be used as if Fluent was being launched. If dry running a container start,
-            ``launch_fluent()`` will return the configured ``container_dict``.
         cleanup_on_exit : bool, optional
             Whether to shut down the connected Fluent session when PyFluent is
             exited, or the ``exit()`` method is called on the session instance,
@@ -167,6 +151,8 @@ class StandaloneLauncher:
             when the current Python process ends.
         file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------
