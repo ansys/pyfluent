@@ -226,8 +226,11 @@ def _get_channel(ip: str, port: int):
 
 
 class _ConnectionProperties:
-    def __init__(self, scheme_eval):
-        self.scheme_eval = scheme_eval
+    def __init__(self, create_grpc_service, error_state):
+        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
+        self.scheme_eval = service_creator("scheme_eval").create(
+            self._scheme_eval_service
+        )
 
     @property
     def fluent_build_info(self) -> str:
@@ -358,15 +361,8 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        # Move this service later.
-        # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = self.create_grpc_service(
-            SchemeEvalService, self._error_state
-        )
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
-        con_props = _ConnectionProperties(self.scheme_eval)
+        con_props = _ConnectionProperties(self.create_grpc_service, self._error_state)
+        self.scheme_eval = con_props.scheme_eval
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
             con_props.get_cortex_connection_properties()
         )
