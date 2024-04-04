@@ -1054,7 +1054,20 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
-@pytest.mark.skip("Randomly failing in CI")
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_new_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    watertight = meshing.watertight()
+    assert watertight.import_geometry.arguments()
+    with pytest.raises(AttributeError) as msg:
+        watertight.TaskObject["Import Geometry"]
+    assert (
+        msg.value.args[0]
+        == "'WatertightMeshingWorkflow' object has no attribute 'TaskObject'"
+    )
+
+
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
