@@ -225,7 +225,7 @@ def _get_channel(ip: str, port: int):
     )
 
 
-class _ConnectionProperties:
+class _ConnectionInterface:
     def __init__(self, create_grpc_service, error_state):
         self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
         self.scheme_eval = service_creator("scheme_eval").create(
@@ -264,6 +264,10 @@ class _ConnectionProperties:
             cortex_pwd = None
 
         return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
+
+    def server_exit(self):
+        """Scheme call to exit the server."""
+        self.scheme_eval.exec(("(exit-server)",))
 
 
 class FluentConnection:
@@ -361,10 +365,11 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        con_props = _ConnectionProperties(self.create_grpc_service, self._error_state)
-        self.scheme_eval = con_props.scheme_eval
+        self._connection_interface = _ConnectionInterface(
+            self.create_grpc_service, self._error_state
+        )
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
-            con_props.get_cortex_connection_properties()
+            self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
 
@@ -413,7 +418,7 @@ class FluentConnection:
             FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
-            self.scheme_eval,
+            self._connection_interface,
             self.finalizer_cbs,
             self._remote_instance,
             self._exit_event,
@@ -680,7 +685,7 @@ class FluentConnection:
     def _exit(
         channel,
         cleanup_on_exit,
-        scheme_eval,
+        connection_interface,
         finalizer_cbs,
         remote_instance,
         exit_event,
@@ -691,7 +696,7 @@ class FluentConnection:
                 cb()
             if cleanup_on_exit:
                 try:
-                    scheme_eval.exec(("(exit-server)",))
+                    connection_interface.server_exit()
                 except Exception:
                     pass
             channel.close()

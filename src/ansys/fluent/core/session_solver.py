@@ -214,7 +214,7 @@ class Solver(BaseSession):
                 flproxy=self._settings_service,
                 version=self._version,
                 file_transfer_service=self._file_transfer_service,
-                scheme_eval=self._fluent_connection.scheme_eval.scheme_eval,
+                scheme_eval=self._fluent_connection._connection_interface.scheme_eval.scheme_eval,
             )
         return self._settings_root
 

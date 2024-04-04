@@ -124,7 +124,7 @@ class BaseSession:
         self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
-        self.scheme_eval = fluent_connection.scheme_eval
+        self.scheme_eval = fluent_connection._connection_interface.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
