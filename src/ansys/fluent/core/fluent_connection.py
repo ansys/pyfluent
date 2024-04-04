@@ -238,7 +238,7 @@ class _ConnectionProperties:
         branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
         return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
 
-    def get_cortex_connection_properties(self):
+    def get_cortex_connection_properties(self, ip, port, password, inside_container):
         """Get connection properties of Fluent."""
         from grpc._channel import _InactiveRpcError
 
@@ -260,18 +260,16 @@ class _ConnectionProperties:
             cortex_pid = None
             cortex_pwd = None
 
-        return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
-        #
-        # return cortex_host, FluentConnectionProperties(
-        #     ip,
-        #     port,
-        #     password,
-        #     cortex_pwd,
-        #     cortex_pid,
-        #     cortex_host,
-        #     fluent_host_pid,
-        #     inside_container,
-        # )
+        return cortex_host, FluentConnectionProperties(
+            ip,
+            port,
+            password,
+            cortex_pwd,
+            cortex_pid,
+            cortex_host,
+            fluent_host_pid,
+            inside_container,
+        )
 
 
 class FluentConnection:
@@ -378,8 +376,10 @@ class FluentConnection:
             self._scheme_eval_service
         )
         con_props = _ConnectionProperties(self.scheme_eval)
-        fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
-            con_props.get_cortex_connection_properties()
+        cortex_host, self.connection_properties = (
+            con_props.get_cortex_connection_properties(
+                ip, port, password, inside_container
+            )
         )
         self._cleanup_on_exit = cleanup_on_exit
 
@@ -398,17 +398,6 @@ class FluentConnection:
                     "The current system does not support Docker containers. "
                     "Assuming Fluent is not inside a container."
                 )
-
-        self.connection_properties = FluentConnectionProperties(
-            ip,
-            port,
-            password,
-            cortex_pwd,
-            cortex_pid,
-            cortex_host,
-            fluent_host_pid,
-            inside_container,
-        )
 
         self._remote_instance = remote_instance
 
