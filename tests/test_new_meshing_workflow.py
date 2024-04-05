@@ -4,6 +4,7 @@ from typing import Iterable
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.workflow import camel_to_snake_case
 from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
@@ -1219,3 +1220,10 @@ def test_new_meshing_workflow_without_dm_caching(
     with pytest.raises(RuntimeError):
         fault_tolerant.import_cad_and_part_management.arguments()
     assert watertight.import_geometry.arguments()
+
+
+def test_camel_to_snake_case_convertor():
+    assert camel_to_snake_case("ImportGeometry") == "import_geometry"
+    assert camel_to_snake_case("Prism2dPreferences") == "prism_2d_preferences"
+    assert camel_to_snake_case("Abc2DDef") == "abc_2d_def"
+    assert camel_to_snake_case("Abc2d") == "abc_2d"
