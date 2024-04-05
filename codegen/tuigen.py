@@ -329,6 +329,7 @@ class TUIGenerator:
                         self._service, self._version, self._mode, self._main_menu.path
                     ).get_static_info()
                     self._populate_menu(self._main_menu, info)
+
                 self._write_code_to_tui_file(
                     f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
                 )
