@@ -175,6 +175,7 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        del kwargs
         argvals = locals().copy()
         del argvals["self"]
         if argvals["start_timeout"] is None:
