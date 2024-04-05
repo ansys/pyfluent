@@ -343,15 +343,15 @@ class TUIGenerator:
                 )
                 self._main_menu.name = "main_menu"
                 api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
-            if self.generate_rst:
-                self._main_menu.name = "main_menu"
-                self._write_doc_for_menu(
-                    self._main_menu,
-                    Path(self._tui_doc_dir),
-                    self._tui_heading,
-                    self._main_menu.name,
-                    False,
-                )
+        if self.generate_rst:
+            self._main_menu.name = "main_menu"
+            self._write_doc_for_menu(
+                self._main_menu,
+                Path(self._tui_doc_dir),
+                self._tui_heading,
+                self._main_menu.name,
+                False,
+            )
         return api_tree
 
 
