@@ -113,7 +113,12 @@ class DataModelStaticInfo:
 
 class DataModelGenerator:
     def __init__(
-        self, version, pyfluent_path, sessions: dict, generate_rst, generate_py
+        self,
+        version: str,
+        pyfluent_path: str,
+        sessions: dict,
+        generate_rst: bool,
+        generate_py: bool,
     ):
         self.version = version
         self.sessions = sessions
@@ -474,7 +479,13 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version, pyfluent_path, sessions: dict, generate_rst, generate_py):
+def generate(
+    version: str,
+    pyfluent_path: str,
+    sessions: dict,
+    generate_rst: bool,
+    generate_py: bool,
+):
     return DataModelGenerator(
         version, pyfluent_path, sessions, generate_rst, generate_py
     ).write_static_info()
