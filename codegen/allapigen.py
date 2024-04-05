@@ -57,7 +57,8 @@ if __name__ == "__main__":
         api_tree, tuigen.generate(version, args.pyfluent_path, sessions)
     )
     _update_first_level(
-        api_tree, datamodelgen.generate(version, args.pyfluent_path, sessions)
+        api_tree,
+        datamodelgen.generate(version, args.pyfluent_path, sessions, False, True),
     )
     _update_first_level(
         api_tree, settingsgen.generate(version, args.pyfluent_path, sessions)
