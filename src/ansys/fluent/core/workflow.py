@@ -25,7 +25,7 @@ def camel_to_snake_case(camel_case_str: str) -> str:
         return camel_to_snake_case.cache[camel_case_str]
     except KeyError:
         _snake_case_str = re.sub(
-            "((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", r"_\1", camel_case_str
+            "((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z]))", r"_\1", camel_case_str
         ).lower()
         camel_to_snake_case.cache[camel_case_str] = _snake_case_str
         return _snake_case_str
