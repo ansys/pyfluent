@@ -161,7 +161,6 @@ class DataModelGenerator:
             )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
-        self._delete_generated_files()
         self._populate_static_info()
 
     def _get_static_info(self, rules: str, session: Session):
@@ -392,24 +391,6 @@ class DataModelGenerator:
 
     def write_static_info(self) -> None:
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
-        if self.generate_rst:
-            for mode in ["meshing", "solver"]:
-                doc_dir = Path(
-                    _MESHING_DM_DOC_DIR if mode == "meshing" else _SOLVER_DM_DOC_DIR
-                )
-                doc_dir.mkdir(exist_ok=True)
-                index_file = doc_dir / "index.rst"
-                with open(index_file, "w", encoding="utf8") as f:
-                    f.write(f".. _ref_{mode}_datamodel:\n\n")
-                    heading = mode + ".datamodel"
-                    f.write(f"{heading}\n")
-                    f.write(f"{'=' * len(heading)}\n")
-                    f.write("\n")
-                    f.write(f".. currentmodule:: ansys.fluent.core.datamodel\n\n")
-                    f.write(".. autosummary::\n")
-                    f.write("   :toctree: _autosummary\n\n")
-                    f.write(".. toctree::\n")
-                    f.write("   :hidden:\n\n")
 
         if self.generate_py:
             for name, info in self._static_info.items():
@@ -433,30 +414,54 @@ class DataModelGenerator:
                     api_tree_val = {
                         name: self._write_static_info("Root", info.static_info, f)
                     }
-                    mode_to_dir = dict(
-                        meshing=_MESHING_DM_DOC_DIR,
-                        solver=_SOLVER_DM_DOC_DIR,
-                        flicing=_SOLVER_DM_DOC_DIR,
-                    )
                     for mode in info.modes:
                         if mode in ("solver", "meshing"):
                             key = f"<{mode}_session>"
                             api_tree[key].update(api_tree_val)
-                        dir_type = mode_to_dir.get(mode)
-                        first_heading = "solver" if mode == "flicing" else mode
-                        if dir_type:
-                            doc_dir = Path(dir_type)
-                            index_file = doc_dir / "index.rst"
-                            with open(index_file, "a", encoding="utf8") as f:
-                                f.write(f"   {name}/index\n")
-                            self._write_doc_for_model_object(
-                                info=info.static_info,
-                                doc_dir=doc_dir / name,
-                                heading=f"{first_heading}.datamodel.{name}",
-                                module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
-                                class_name="Root",
-                                noindex=len(info.modes) > 1 and mode != "solver",
-                            )
+
+        if self.generate_rst:
+            for mode in ["meshing", "solver"]:
+                doc_dir = Path(
+                    _MESHING_DM_DOC_DIR if mode == "meshing" else _SOLVER_DM_DOC_DIR
+                )
+                doc_dir.mkdir(exist_ok=True)
+                index_file = doc_dir / "index.rst"
+                with open(index_file, "w", encoding="utf8") as f:
+                    f.write(f".. _ref_{mode}_datamodel:\n\n")
+                    heading = mode + ".datamodel"
+                    f.write(f"{heading}\n")
+                    f.write(f"{'=' * len(heading)}\n")
+                    f.write("\n")
+                    f.write(f".. currentmodule:: ansys.fluent.core.datamodel\n\n")
+                    f.write(".. autosummary::\n")
+                    f.write("   :toctree: _autosummary\n\n")
+                    f.write(".. toctree::\n")
+                    f.write("   :hidden:\n\n")
+
+            for name, info in self._static_info.items():
+                if info.static_info == None:
+                    continue
+                mode_to_dir = dict(
+                    meshing=_MESHING_DM_DOC_DIR,
+                    solver=_SOLVER_DM_DOC_DIR,
+                    flicing=_SOLVER_DM_DOC_DIR,
+                )
+                for mode in info.modes:
+                    dir_type = mode_to_dir.get(mode)
+                    first_heading = "solver" if mode == "flicing" else mode
+                    if dir_type:
+                        doc_dir = Path(dir_type)
+                        index_file = doc_dir / "index.rst"
+                        with open(index_file, "a", encoding="utf8") as f:
+                            f.write(f"   {name}/index\n")
+                        self._write_doc_for_model_object(
+                            info=info.static_info,
+                            doc_dir=doc_dir / name,
+                            heading=f"{first_heading}.datamodel.{name}",
+                            module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
+                            class_name="Root",
+                            noindex=len(info.modes) > 1 and mode != "solver",
+                        )
         return api_tree
 
     def _delete_generated_files(self):
