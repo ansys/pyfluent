@@ -166,6 +166,8 @@ class DataModelGenerator:
             )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
+        if self.generate_py:
+            self._delete_generated_files()
         self._populate_static_info()
 
     def _get_static_info(self, rules: str, session: Session):
