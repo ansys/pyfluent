@@ -1,8 +1,16 @@
+from pathlib import Path
+import shutil
+
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.services.datamodel_se import ReadOnlyObjectError
+
+
+@pytest.fixture
+def reset_preferences():
+    shutil.rmtree(Path.home() / ".fluentconf")
 
 
 @pytest.mark.codegen_required
@@ -72,3 +80,19 @@ def test_meshing_preferences(new_mesh_session):
     assert preferred_graphics.AnimationOption() == "wireframe"
 
     meshing.exit()
+
+
+@pytest.mark.codegen_required
+def test_read_only_preferences(reset_preferences, new_solver_session):
+    solver = new_solver_session
+    m = solver.preferences.MeshingWorkflow
+    assert m.SaveCheckpointFiles() == True
+    assert m.CheckpointingOption() == "Write mesh files"
+    assert m.CheckpointingOption.is_read_only() == True
+    with pytest.raises(RuntimeError):
+        m.CheckpointingOption = "Write into memory"
+    m.SaveCheckpointFiles = False
+    assert m.SaveCheckpointFiles() == False
+    assert m.CheckpointingOption.is_read_only() == False
+    m.CheckpointingOption = "Write into memory"
+    assert m.CheckpointingOption() == "Write into memory"
