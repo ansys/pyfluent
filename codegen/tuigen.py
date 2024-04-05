@@ -24,8 +24,12 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-from data.fluent_gui_help_patch import XML_HELP_PATCH
-from data.tui_menu_descriptions import MENU_DESCRIPTIONS
+try:
+    from .data.fluent_gui_help_patch import XML_HELP_PATCH
+    from .data.tui_menu_descriptions import MENU_DESCRIPTIONS
+except ImportError:
+    from data.fluent_gui_help_patch import XML_HELP_PATCH
+    from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.services.datamodel_tui import (
