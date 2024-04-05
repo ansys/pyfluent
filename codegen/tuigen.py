@@ -168,16 +168,26 @@ class _TUIMenu:
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, pyfluent_path: str, sessions: dict):
+    def __init__(
+        self,
+        mode: str,
+        version: str,
+        pyfluent_path: str,
+        sessions: dict,
+        generate_rst: bool,
+        generate_py: bool,
+    ):
         self._mode = mode
         self._version = version
+        self.generate_rst = generate_rst
+        self.generate_py = generate_py
         self._tui_file = _get_tui_filepath(mode, version, pyfluent_path)
-        if Path(self._tui_file).exists():
+        if Path(self._tui_file).exists() and self.generate_py:
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
         self._tui_heading = mode + ".tui"
         self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
-        if Path(self._tui_doc_dir).exists():
+        if Path(self._tui_doc_dir).exists() and self.generate_rst:
             shutil.rmtree(Path(self._tui_doc_dir))
         fluent_mode = FluentMode.get_mode(mode)
         if fluent_mode not in sessions:
@@ -301,57 +311,66 @@ class TUIGenerator:
 
     def generate(self) -> None:
         api_tree = {}
-        Path(self._tui_file).parent.mkdir(exist_ok=True)
-        with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if FluentVersion(self._version) == FluentVersion.v222:
-                with open(
-                    os.path.join(
-                        _THIS_DIRNAME,
-                        "data",
-                        f"static_info_{self._version}_{self._mode}.pickle",
-                    ),
-                    "rb",
-                ) as f:
-                    self._main_menu = pickle.load(f)
-            else:
-                info = PyMenu(
-                    self._service, self._version, self._mode, self._main_menu.path
-                ).get_static_info()
-                self._populate_menu(self._main_menu, info)
-            self._write_code_to_tui_file(
-                f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
-            )
-            self._main_menu.doc = f"Fluent {self._mode} main menu."
-            self._write_code_to_tui_file(
-                "#\n"
-                "# This is an auto-generated file.  DO NOT EDIT!\n"
-                "#\n"
-                "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.core.services.datamodel_tui "
-                "import PyMenu, TUIMenu, TUIMethod\n\n\n"
-            )
-            self._main_menu.name = "main_menu"
-            api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
-            self._write_doc_for_menu(
-                self._main_menu,
-                Path(self._tui_doc_dir),
-                self._tui_heading,
-                self._main_menu.name,
-                False,
-            )
+        if self.generate_py:
+            Path(self._tui_file).parent.mkdir(exist_ok=True)
+            with open(self._tui_file, "w", encoding="utf8") as self.__writer:
+                if FluentVersion(self._version) == FluentVersion.v222:
+                    with open(
+                        os.path.join(
+                            _THIS_DIRNAME,
+                            "data",
+                            f"static_info_{self._version}_{self._mode}.pickle",
+                        ),
+                        "rb",
+                    ) as f:
+                        self._main_menu = pickle.load(f)
+                else:
+                    info = PyMenu(
+                        self._service, self._version, self._mode, self._main_menu.path
+                    ).get_static_info()
+                    self._populate_menu(self._main_menu, info)
+                self._write_code_to_tui_file(
+                    f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
+                )
+                self._main_menu.doc = f"Fluent {self._mode} main menu."
+                self._write_code_to_tui_file(
+                    "#\n"
+                    "# This is an auto-generated file.  DO NOT EDIT!\n"
+                    "#\n"
+                    "# pylint: disable=line-too-long\n\n"
+                    "from ansys.fluent.core.services.datamodel_tui "
+                    "import PyMenu, TUIMenu, TUIMethod\n\n\n"
+                )
+                self._main_menu.name = "main_menu"
+                api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
+            if self.generate_rst:
+                self._main_menu.name = "main_menu"
+                self._write_doc_for_menu(
+                    self._main_menu,
+                    Path(self._tui_doc_dir),
+                    self._tui_heading,
+                    self._main_menu.name,
+                    False,
+                )
         return api_tree
 
 
-def generate(version, pyfluent_path, sessions: dict):
+def generate(
+    version: str,
+    pyfluent_path: str,
+    sessions: dict,
+    generate_rst: bool,
+    generate_py: bool,
+):
     api_tree = {}
     if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
-        "meshing", version, pyfluent_path, sessions
+        "meshing", version, pyfluent_path, sessions, generate_rst, generate_py
     ).generate()
     api_tree["<solver_session>"] = TUIGenerator(
-        "solver", version, pyfluent_path, sessions
+        "solver", version, pyfluent_path, sessions, generate_rst, generate_py
     ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
@@ -366,4 +385,4 @@ def generate(version, pyfluent_path, sessions: dict):
 if __name__ == "__main__":
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, None, sessions)
+    generate(version, None, sessions, False, True)
