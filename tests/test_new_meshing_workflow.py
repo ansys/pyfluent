@@ -1067,6 +1067,7 @@ def test_new_workflow_structure(new_mesh_session):
         == "'WatertightMeshingWorkflow' object has no attribute 'TaskObject'"
     )
 
+
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
