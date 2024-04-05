@@ -265,7 +265,11 @@ class _ConnectionInterface:
 
         return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
 
-    def server_exit(self):
+    def is_solver_mode(self):
+        """Returns ``True`` if the"""
+        return self.scheme_eval.scheme_eval("(cx-solver-mode?)")
+
+    def exit_server(self):
         """Scheme call to exit the server."""
         self.scheme_eval.exec(("(exit-server)",))
 
@@ -696,7 +700,7 @@ class FluentConnection:
                 cb()
             if cleanup_on_exit:
                 try:
-                    connection_interface.server_exit()
+                    connection_interface.exit_server()
                 except Exception:
                     pass
             channel.close()
