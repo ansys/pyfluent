@@ -35,6 +35,10 @@ goto end
 :clean
 rmdir /s /q %BUILDDIR% > /NUL 2>&1
 rmdir /s /q %SOURCEDIR%\examples > /NUL 2>&1
+rmdir /s /q %SOURCEDIR%\api\meshing\datamodel > /NUL 2>&1
+rmdir /s /q %SOURCEDIR%\api\meshing\tui > /NUL 2>&1
+rmdir /s /q %SOURCEDIR%\api\solver\datamodel > /NUL 2>&1
+rmdir /s /q %SOURCEDIR%\api\solver\tui > /NUL 2>&1
 for /d /r %SOURCEDIR% %%d in (_autosummary) do @if exist "%%d" rmdir /s /q "%%d"
 del build_errors.txt > /NUL 2>&1
 goto end
