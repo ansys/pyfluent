@@ -119,10 +119,10 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
     session = BaseSession(
         FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
     )
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_by_setting_ip_port_env_var(
@@ -140,10 +140,10 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
     session = BaseSession(FluentConnection(password="12345", cleanup_on_exit=False))
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_by_passing_grpc_channel() -> None:
@@ -160,10 +160,10 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     session = BaseSession(
         FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
     )
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
@@ -181,10 +181,10 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_from_server_info_file_with_wrong_password(
@@ -233,10 +233,10 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -261,10 +261,10 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
@@ -365,13 +365,17 @@ def test_help_does_not_throw(new_solver_session):
 def test_build_from_fluent_connection(make_new_session):
     solver1 = make_new_session()
     solver2 = make_new_session()
-    assert solver1.health_check_service.is_serving
-    assert solver2.health_check_service.is_serving
-    health_check_service1 = solver1.health_check_service
+    assert solver1.health_check.is_serving
+    assert solver2.health_check.is_serving
+    health_check_service1 = solver1.health_check
     cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
-    solver1.build_from_fluent_connection(solver2._fluent_connection)
-    assert solver1.health_check_service.is_serving
-    assert solver2.health_check_service.is_serving
+    # The below hack is performed to check the base class method
+    # (child class has a method with same name)
+    solver1.__class__.__bases__[0]._build_from_fluent_connection(
+        solver1, fluent_connection=solver2._fluent_connection
+    )
+    assert solver1.health_check.is_serving
+    assert solver2.health_check.is_serving
     assert not health_check_service1.is_serving
     assert solver1._fluent_connection.connection_properties.cortex_pid == cortex_pid2
     assert solver2._fluent_connection.connection_properties.cortex_pid == cortex_pid2

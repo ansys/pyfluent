@@ -122,7 +122,7 @@ class PostAPIHelper:
         self.obj = obj
         self.field_info = lambda: obj.get_root().session.field_info
         self.field_data = lambda: obj.get_root().session.field_data
-        self.monitors_manager = lambda: obj.get_root().session.monitors_manager
+        self.monitors_manager = lambda: obj.get_root().session.monitors
         self.id = lambda: obj.get_root().session.id
         if obj.__class__.__name__ == "Surface":
             self.surface_api = PostAPIHelper._SurfaceAPI(obj)
