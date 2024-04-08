@@ -61,15 +61,16 @@ def test_wildcard(new_solver_session):
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
     if solver.get_fluent_version() >= FluentVersion.v242:
-        sources = cell_zone_conditions.fluid["*"].source_terms.sources
-        key = "sources"
+        sources = cell_zone_conditions.fluid["*"].sources.terms
+        sources_key = "sources"
+        terms_key = "terms"
     else:
         sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
-        key = "source_terms"
+        sources_key = terms_key = "source_terms"
     assert sources["*mom*"]() == {
         "fluid": {
-            "source_terms": {
-                key: {
+            sources_key: {
+                terms_key: {
                     "x-momentum": [{"option": "value", "value": 1}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 3}],
@@ -80,8 +81,8 @@ def test_wildcard(new_solver_session):
     sources["*mom*"] = [{"option": "value", "value": 2}]
     assert sources["*mom*"]() == {
         "fluid": {
-            "source_terms": {
-                key: {
+            sources_key: {
+                terms_key: {
                     "x-momentum": [{"option": "value", "value": 2}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 2}],
