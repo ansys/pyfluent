@@ -1,4 +1,4 @@
-"""Provides a module to generate the Fluent Datamodel rst files."""
+"""Provides a module for generating the Fluent datamodel result files."""
 
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
