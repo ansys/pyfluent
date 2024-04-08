@@ -4,7 +4,7 @@ import time
 
 
 def timing(func):
-    """Timing function decorator."""
+    """Decorates timing function."""
 
     def wrapper(*args, **kwargs):
         t1 = time.time()

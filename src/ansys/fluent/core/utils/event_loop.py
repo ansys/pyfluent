@@ -7,7 +7,7 @@ loop = asyncio.get_event_loop()
 
 
 def execute_in_event_loop_threadsafe(f):
-    """Decorator to execute function in an event loop from another thread."""
+    """Decorates function to be executed in an event loop from another thread."""
 
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
@@ -17,7 +17,7 @@ def execute_in_event_loop_threadsafe(f):
 
 
 def execute_in_event_loop(f):
-    """Decorator to execute function in an event loop."""
+    """Decorates function to be executed in an event loop."""
 
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
