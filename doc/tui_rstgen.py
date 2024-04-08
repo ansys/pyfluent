@@ -45,7 +45,7 @@ def _get_tui_file_name(mode: str):
 
 
 def generate():
-    """Generates TUI .rst files"""
+    """Generates TUI .rst files."""
     for mode in ["meshing", "solver"]:
         if Path(_get_tui_docdir(mode)).exists():
             shutil.rmtree(Path(_get_tui_docdir(mode)))
