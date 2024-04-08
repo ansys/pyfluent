@@ -4,7 +4,7 @@ from abc import ABCMeta
 
 
 class SingletonMeta(type):
-    """Meta class for singleton type."""
+    """Provides the metaclass for the singleton type."""
 
     _single_instance = None
 
