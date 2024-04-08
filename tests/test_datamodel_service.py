@@ -55,14 +55,14 @@ def test_event_subscription(new_mesh_session):
     e8 = request.eventrequest.add(rules="workflow")
     e8.commandExecutedEventRequest.path = ""
     e8.commandExecutedEventRequest.command = "InitializeWorkflow"
-    response = session.datamodel_service_se.subscribe_events(MessageToDict(request))
+    response = session._datamodel_service_se.subscribe_events(MessageToDict(request))
     assert all(
         [
             r["status"] == datamodel_se_pb2.STATUS_SUBSCRIBED and r["tag"] == t
             for r, t in zip(response, tags)
         ]
     )
-    response = session.datamodel_service_se.unsubscribe_events(tags)
+    response = session._datamodel_service_se.unsubscribe_events(tags)
     assert all(
         [
             r["status"] == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r["tag"] == t
@@ -233,7 +233,7 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
-    datamodel_service_se = meshing.datamodel_service_se
+    datamodel_service_se = meshing._datamodel_service_se
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=False)
 
@@ -261,7 +261,7 @@ def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_mesh_session
 ):
     meshing = new_mesh_session
-    datamodel_service_se = meshing.datamodel_service_se
+    datamodel_service_se = meshing._datamodel_service_se
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=True)
 
@@ -353,7 +353,7 @@ def test_task_object_keys_are_display_names(new_mesh_session):
 def test_generic_datamodel(new_solver_session):
     solver = new_solver_session
     solver.scheme_eval.scheme_eval("(init-flserver)")
-    flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
+    flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
 
 
@@ -407,7 +407,7 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
         "wall-inlet",
     )
 
-    flserver = PyMenuGeneric(solver.datamodel_service_se, "flserver")
+    flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
 
     assert set(flserver.Case.Results.Graphics.Contour.get_object_names()) == {
         "contour-z1",
