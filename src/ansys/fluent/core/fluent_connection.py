@@ -225,12 +225,15 @@ def _get_channel(ip: str, port: int):
     )
 
 
-class _ConnectionProperties:
-    def __init__(self, scheme_eval):
-        self.scheme_eval = scheme_eval
+class _ConnectionInterface:
+    def __init__(self, create_grpc_service, error_state):
+        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
+        self.scheme_eval = service_creator("scheme_eval").create(
+            self._scheme_eval_service
+        )
 
     @property
-    def fluent_build_info(self) -> str:
+    def product_build_info(self) -> str:
         """Get Fluent build info."""
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
@@ -243,7 +246,7 @@ class _ConnectionProperties:
         from grpc._channel import _InactiveRpcError
 
         try:
-            logger.info(self.fluent_build_info)
+            logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
             fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
             cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
@@ -261,6 +264,19 @@ class _ConnectionProperties:
             cortex_pwd = None
 
         return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
+
+    def is_solver_mode(self):
+        """Checks if the Fluent session is in solver mode.
+
+        Returns
+        --------
+            ``True`` if the Fluent session is in solver mode, ``False`` otherwise.
+        """
+        return self.scheme_eval.scheme_eval("(cx-solver-mode?)")
+
+    def exit_server(self):
+        """Exits the server."""
+        self.scheme_eval.exec(("(exit-server)",))
 
 
 class FluentConnection:
@@ -358,17 +374,11 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        # Move this service later.
-        # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = self.create_grpc_service(
-            SchemeEvalService, self._error_state
+        self._connection_interface = _ConnectionInterface(
+            self.create_grpc_service, self._error_state
         )
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
-        con_props = _ConnectionProperties(self.scheme_eval)
         fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
-            con_props.get_cortex_connection_properties()
+            self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
 
@@ -417,7 +427,7 @@ class FluentConnection:
             FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
-            self.scheme_eval,
+            self._connection_interface,
             self.finalizer_cbs,
             self._remote_instance,
             self._exit_event,
@@ -684,7 +694,7 @@ class FluentConnection:
     def _exit(
         channel,
         cleanup_on_exit,
-        scheme_eval,
+        connection_interface,
         finalizer_cbs,
         remote_instance,
         exit_event,
@@ -695,7 +705,7 @@ class FluentConnection:
                 cb()
             if cleanup_on_exit:
                 try:
-                    scheme_eval.exec(("(exit-server)",))
+                    connection_interface.exit_server()
                 except Exception:
                     pass
             channel.close()
