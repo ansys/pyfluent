@@ -102,7 +102,7 @@ class BaseSession:
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        file_transfer_service:
+        file_transfer_service :
             Supports file upload and download.
         start_transcript : bool, optional
             The Fluent transcript is started in the client only when
