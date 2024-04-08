@@ -1,8 +1,8 @@
-"""Provides a module to check if application is running in notebook."""
+"""Provides a module to check if the application is running in notebook."""
 
 
 def in_notebook():
-    """Function to check if application is running in notebook."""
+    """Checks if the application is running in notebook."""
     try:
         from IPython import get_ipython
 

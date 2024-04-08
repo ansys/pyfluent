@@ -1,10 +1,10 @@
-"""Provides a module for Metaclasses."""
+"""Provides a module for metaclasses."""
 
 from abc import ABCMeta
 
 
 class SingletonMeta(type):
-    """Meta class for singleton type."""
+    """Provides the metaclass for the singleton type."""
 
     _single_instance = None
 
@@ -15,6 +15,6 @@ class SingletonMeta(type):
 
 
 class AbstractSingletonMeta(ABCMeta, SingletonMeta):
-    """Meta class for abstract singleton type."""
+    """Provides the metaclass for the abstract singleton type."""
 
     pass
