@@ -275,7 +275,7 @@ class _ConnectionInterface:
         return self.scheme_eval.scheme_eval("(cx-solver-mode?)")
 
     def exit_server(self):
-        """Scheme call to exit the server."""
+        """Exits the server."""
         self.scheme_eval.exec(("(exit-server)",))
 
 
