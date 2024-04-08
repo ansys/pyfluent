@@ -267,7 +267,7 @@ class _ConnectionInterface:
 
     def is_solver_mode(self):
         """Checks if the Fluent session is in solver mode.
-        
+
         Returns
         --------
             ``True`` if the Fluent session is in solver mode, ``False`` otherwise.
