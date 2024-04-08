@@ -24,12 +24,7 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-try:
-    from data.fluent_gui_help_patch import XML_HELP_PATCH
-    from data.tui_menu_descriptions import MENU_DESCRIPTIONS
-except ImportError:
-    from .data.fluent_gui_help_patch import XML_HELP_PATCH
-    from .data.tui_menu_descriptions import MENU_DESCRIPTIONS
+from data.fluent_gui_help_patch import XML_HELP_PATCH
 
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.services.datamodel_tui import (
@@ -183,15 +178,13 @@ class TUIGenerator:
     ):
         self._mode = mode
         self._version = version
-        self.generate_rst = generate_rst
-        self.generate_py = generate_py
         self._tui_file = _get_tui_filepath(mode, version, pyfluent_path)
-        if Path(self._tui_file).exists() and self.generate_py:
+        if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
         self._tui_heading = mode + ".tui"
         self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
-        if Path(self._tui_doc_dir).exists() and self.generate_rst:
+        if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         fluent_mode = FluentMode.get_mode(mode)
         if fluent_mode not in sessions:
@@ -265,53 +258,6 @@ class TUIGenerator:
             else:
                 api_tree[k] = self._write_menu_to_tui_file(v, indent)
         return api_tree
-
-    def _write_doc_for_menu(
-        self, menu, doc_dir: Path, heading, class_name, noindex=True
-    ) -> None:
-        doc_dir.mkdir(exist_ok=True)
-        index_file = doc_dir / "index.rst"
-        with open(index_file, "w", encoding="utf8") as f:
-            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
-            f.write(f".. {ref}:\n\n")
-            if class_name == "main_menu":
-                heading_ = heading
-            else:
-                heading_ = class_name.split(".")[-1]
-            f.write(f"{heading_}\n")
-            f.write(f"{'=' * len(heading_)}\n")
-            desc = MENU_DESCRIPTIONS.get(heading)
-            if desc:
-                f.write(desc)
-            f.write("\n")
-
-            command_names = [v.name for _, v in menu.children.items() if v.is_command]
-            child_menu_names = [
-                v.name for _, v in menu.children.items() if not v.is_command
-            ]
-            f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
-            if noindex:
-                f.write("   :noindex:\n")
-            f.write(f"   :members: {', '.join(command_names)}\n")
-            f.write("   :show-inheritance:\n")
-            f.write("   :undoc-members:\n")
-            f.write("   :autosummary:\n")
-            f.write("   :autosummary-members:\n\n")
-
-            if child_menu_names:
-                f.write(".. toctree::\n")
-                f.write("   :hidden:\n\n")
-
-                for _, v in menu.children.items():
-                    if not v.is_command:
-                        f.write(f"   {v.name}/index\n")
-                        self._write_doc_for_menu(
-                            v,
-                            doc_dir / v.name,
-                            heading + "." + v.name,
-                            class_name + "." + v.name,
-                            False,
-                        )
 
     def generate(self) -> None:
         api_tree = {}

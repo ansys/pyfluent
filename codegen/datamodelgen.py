@@ -122,8 +122,6 @@ class DataModelGenerator:
     ):
         self.version = version
         self.sessions = sessions
-        self.generate_rst = generate_rst
-        self.generate_py = generate_py
         self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo(
                 pyfluent_path,
@@ -166,8 +164,7 @@ class DataModelGenerator:
             )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
-        if self.generate_py:
-            self._delete_generated_files()
+        self._delete_generated_files()
         self._populate_static_info()
 
     def _get_static_info(self, rules: str, session: Session):
@@ -338,63 +335,6 @@ class DataModelGenerator:
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Query"
         return api_tree
-
-    def _write_doc_for_model_object(
-        self, info, doc_dir: Path, heading, module_name, class_name, noindex=True
-    ) -> None:
-        doc_dir.mkdir(exist_ok=True)
-        index_file = doc_dir / "index.rst"
-        with open(index_file, "w", encoding="utf8") as f:
-            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
-            f.write(f".. {ref}:\n\n")
-            if class_name == "Root":
-                heading_ = heading
-            else:
-                heading_ = class_name.split(".")[-1]
-            f.write(f"{heading_}\n")
-            f.write(f"{'=' * len(heading_)}\n")
-            f.write("\n")
-
-            named_objects = sorted(info.get("namedobjects", []))
-            singletons = sorted(info.get("singletons", []))
-            parameters = sorted(info.get("parameters", []))
-            commands = sorted(info.get("commands", []))
-            queries = sorted(info.get("queries", []))
-
-            f.write(f".. autoclass:: {module_name}.{class_name}\n")
-            if noindex:
-                f.write("   :noindex:\n")
-            f.write("   :members:\n")
-            f.write("   :show-inheritance:\n")
-            f.write("   :undoc-members:\n")
-            f.write('   :exclude-members: "__weakref__, __dict__"\n')
-            f.write('   :special-members: " __init__"\n')
-            f.write("   :autosummary:\n\n")
-
-            if singletons or named_objects:
-                f.write(".. toctree::\n")
-                f.write("   :hidden:\n\n")
-
-                for k in singletons:
-                    if k.isidentifier():
-                        f.write(f"   {k}/index\n")
-                        self._write_doc_for_model_object(
-                            info["singletons"][k],
-                            doc_dir / k,
-                            heading + "." + k,
-                            module_name,
-                            class_name + "." + k,
-                        )
-
-                for k in named_objects:
-                    f.write(f"   {k}/index\n")
-                    self._write_doc_for_model_object(
-                        info["namedobjects"][k],
-                        doc_dir / k,
-                        heading + "." + k,
-                        module_name,
-                        f"{class_name}.{k}._{k}",
-                    )
 
     def write_static_info(self) -> None:
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
