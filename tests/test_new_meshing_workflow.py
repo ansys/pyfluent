@@ -675,6 +675,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
         "import_body_of_influence_geometry"
     )
     watertight.task("import_geom_wtm").insert_next_task("set_up_periodic_boundaries")
+    assert len(watertight.ordered_children()) == 14
     assert len(watertight._task_list) == 14
 
 
