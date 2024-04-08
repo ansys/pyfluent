@@ -102,7 +102,7 @@ class BaseSession:
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
-        file_transfer_service :
+        file_transfer_service : Optional
             Supports file upload and download.
         start_transcript : bool, optional
             Whether to start the Fluent transcript in the client.
@@ -279,9 +279,10 @@ class BaseSession:
         file_transfer_service : Optional
             Support file upload and download.
         start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
             being initialized. For example, ``cleanup_on_exit = True``.
