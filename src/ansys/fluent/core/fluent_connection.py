@@ -255,8 +255,8 @@ class _ConnectionInterface:
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
-                "Fluent Cortex properties unobtainable, force exit and other"
-                "methods are not going to work properly, proceeding..."
+                "Fluent Cortex properties unobtainable. 'force exit()' and other"
+                "methods are not going to work properly. Proceeding..."
             )
             fluent_host_pid = None
             cortex_host = None
