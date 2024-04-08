@@ -105,9 +105,10 @@ class BaseSession:
         file_transfer_service :
             Supports file upload and download.
         start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         """
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
