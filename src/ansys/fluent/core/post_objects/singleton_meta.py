@@ -1,4 +1,4 @@
-"""Provides a module for Metaclasses."""
+"""Provides a module for metaclasses."""
 
 from abc import ABCMeta
 
