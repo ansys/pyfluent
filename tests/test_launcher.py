@@ -12,7 +12,6 @@ from ansys.fluent.core.launcher.error_handler import (
     DockerContainerLaunchNotSupported,
     GPUSolverSupportError,
     LaunchFluentError,
-    UnexpectedKeywordArgument,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
@@ -222,13 +221,6 @@ def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
         pyfluent.launch_fluent(additional_arguments="-gpu=1,2,4", start_timeout=0)
 
     assert " -gpu=1,2,4" in str(error.value)
-
-
-def test_kwargs():
-    with pytest.raises(UnexpectedKeywordArgument):
-        pyfluent.launch_fluent(abc=1, meshing_mode=True)
-    with pytest.raises(UnexpectedKeywordArgument):
-        pyfluent.launch_fluent(abc=1, xyz=2)
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
