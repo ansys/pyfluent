@@ -117,8 +117,6 @@ class DataModelGenerator:
         version: str,
         pyfluent_path: str,
         sessions: dict,
-        generate_rst: bool,
-        generate_py: bool,
     ):
         self.version = version
         self.sessions = sessions

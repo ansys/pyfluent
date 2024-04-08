@@ -173,8 +173,6 @@ class TUIGenerator:
         version: str,
         pyfluent_path: str,
         sessions: dict,
-        generate_rst: bool,
-        generate_py: bool,
     ):
         self._mode = mode
         self._version = version
