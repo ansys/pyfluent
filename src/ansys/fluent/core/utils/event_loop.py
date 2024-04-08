@@ -1,4 +1,4 @@
-"""Provides a module for event loop."""
+"""Provides a module for the event loop."""
 
 import asyncio
 from functools import partial
