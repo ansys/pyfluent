@@ -58,7 +58,9 @@ if __name__ == "__main__":
     )
     _update_first_level(
         api_tree,
-        datamodelgen.generate(version, args.pyfluent_path, sessions, generate_rst=False, generate_py=True),
+        datamodelgen.generate(
+            version, args.pyfluent_path, sessions, generate_rst=False, generate_py=True
+        ),
     )
     _update_first_level(
         api_tree, settingsgen.generate(version, args.pyfluent_path, sessions)
