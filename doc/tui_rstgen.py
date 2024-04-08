@@ -5,8 +5,6 @@ import os
 from pathlib import Path
 import shutil
 
-_THIS_DIR = Path(__file__).parent
-
 _THIS_DIRNAME = os.path.dirname(__file__)
 
 
