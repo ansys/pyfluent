@@ -337,7 +337,7 @@ class FluentConnection:
             Job ID of a Fluent session running within a Slurm environment.
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
-            is running inside a docker container.
+            is running inside a Docker container.
 
         Raises
         ------
