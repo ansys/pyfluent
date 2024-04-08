@@ -15,6 +15,6 @@ class SingletonMeta(type):
 
 
 class AbstractSingletonMeta(ABCMeta, SingletonMeta):
-    """Meta class for abstract singleton type."""
+    """Provides the metaclass for the abstract singleton type."""
 
     pass
