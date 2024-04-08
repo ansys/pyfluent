@@ -117,9 +117,13 @@ class DataModelGenerator:
         version: str,
         pyfluent_path: str,
         sessions: dict,
+        generate_rst: bool,
+        generate_py: bool,
     ):
         self.version = version
         self.sessions = sessions
+        self.generate_rst = generate_rst
+        self.generate_py = generate_py
         self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo(
                 pyfluent_path,
@@ -162,7 +166,8 @@ class DataModelGenerator:
             )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
-        self._delete_generated_files()
+        if self.generate_py:
+            self._delete_generated_files()
         self._populate_static_info()
 
     def _get_static_info(self, rules: str, session: Session):
@@ -334,33 +339,136 @@ class DataModelGenerator:
             api_tree[k] = "Query"
         return api_tree
 
+    def _write_doc_for_model_object(
+        self, info, doc_dir: Path, heading, module_name, class_name, noindex=True
+    ) -> None:
+        doc_dir.mkdir(exist_ok=True)
+        index_file = doc_dir / "index.rst"
+        with open(index_file, "w", encoding="utf8") as f:
+            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
+            f.write(f".. {ref}:\n\n")
+            if class_name == "Root":
+                heading_ = heading
+            else:
+                heading_ = class_name.split(".")[-1]
+            f.write(f"{heading_}\n")
+            f.write(f"{'=' * len(heading_)}\n")
+            f.write("\n")
+
+            named_objects = sorted(info.get("namedobjects", []))
+            singletons = sorted(info.get("singletons", []))
+            parameters = sorted(info.get("parameters", []))
+            commands = sorted(info.get("commands", []))
+            queries = sorted(info.get("queries", []))
+
+            f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            if noindex:
+                f.write("   :noindex:\n")
+            f.write("   :members:\n")
+            f.write("   :show-inheritance:\n")
+            f.write("   :undoc-members:\n")
+            f.write('   :exclude-members: "__weakref__, __dict__"\n')
+            f.write('   :special-members: " __init__"\n')
+            f.write("   :autosummary:\n\n")
+
+            if singletons or named_objects:
+                f.write(".. toctree::\n")
+                f.write("   :hidden:\n\n")
+
+                for k in singletons:
+                    if k.isidentifier():
+                        f.write(f"   {k}/index\n")
+                        self._write_doc_for_model_object(
+                            info["singletons"][k],
+                            doc_dir / k,
+                            heading + "." + k,
+                            module_name,
+                            class_name + "." + k,
+                        )
+
+                for k in named_objects:
+                    f.write(f"   {k}/index\n")
+                    self._write_doc_for_model_object(
+                        info["namedobjects"][k],
+                        doc_dir / k,
+                        heading + "." + k,
+                        module_name,
+                        f"{class_name}.{k}._{k}",
+                    )
+
     def write_static_info(self) -> None:
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
-        for name, info in self._static_info.items():
-            if info.static_info == None:
-                continue
-            with open(info.file_name, "w", encoding="utf8") as f:
-                f.write("#\n")
-                f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-                f.write("#\n")
-                f.write("# pylint: disable=line-too-long\n\n")
-                f.write("from ansys.fluent.core.services.datamodel_se import (\n")
-                f.write("    PyMenu,\n")
-                f.write("    PyParameter,\n")
-                f.write("    PyTextual,\n")
-                f.write("    PyNumerical,\n")
-                f.write("    PyDictionary,\n")
-                f.write("    PyNamedObjectContainer,\n")
-                f.write("    PyCommand,\n")
-                f.write("    PyQuery\n")
-                f.write(")\n\n\n")
-                api_tree_val = {
-                    name: self._write_static_info("Root", info.static_info, f)
-                }
+
+        if self.generate_py:
+            for name, info in self._static_info.items():
+                if info.static_info == None:
+                    continue
+                with open(info.file_name, "w", encoding="utf8") as f:
+                    f.write("#\n")
+                    f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+                    f.write("#\n")
+                    f.write("# pylint: disable=line-too-long\n\n")
+                    f.write("from ansys.fluent.core.services.datamodel_se import (\n")
+                    f.write("    PyMenu,\n")
+                    f.write("    PyParameter,\n")
+                    f.write("    PyTextual,\n")
+                    f.write("    PyNumerical,\n")
+                    f.write("    PyDictionary,\n")
+                    f.write("    PyNamedObjectContainer,\n")
+                    f.write("    PyCommand,\n")
+                    f.write("    PyQuery\n")
+                    f.write(")\n\n\n")
+                    api_tree_val = {
+                        name: self._write_static_info("Root", info.static_info, f)
+                    }
+                    for mode in info.modes:
+                        if mode in ("solver", "meshing"):
+                            key = f"<{mode}_session>"
+                            api_tree[key].update(api_tree_val)
+
+        if self.generate_rst:
+            for mode in ["meshing", "solver"]:
+                doc_dir = Path(
+                    _MESHING_DM_DOC_DIR if mode == "meshing" else _SOLVER_DM_DOC_DIR
+                )
+                doc_dir.mkdir(exist_ok=True)
+                index_file = doc_dir / "index.rst"
+                with open(index_file, "w", encoding="utf8") as f:
+                    f.write(f".. _ref_{mode}_datamodel:\n\n")
+                    heading = mode + ".datamodel"
+                    f.write(f"{heading}\n")
+                    f.write(f"{'=' * len(heading)}\n")
+                    f.write("\n")
+                    f.write(f".. currentmodule:: ansys.fluent.core.datamodel\n\n")
+                    f.write(".. autosummary::\n")
+                    f.write("   :toctree: _autosummary\n\n")
+                    f.write(".. toctree::\n")
+                    f.write("   :hidden:\n\n")
+
+            for name, info in self._static_info.items():
+                if info.static_info == None:
+                    continue
+                mode_to_dir = dict(
+                    meshing=_MESHING_DM_DOC_DIR,
+                    solver=_SOLVER_DM_DOC_DIR,
+                    flicing=_SOLVER_DM_DOC_DIR,
+                )
                 for mode in info.modes:
-                    if mode in ("solver", "meshing"):
-                        key = f"<{mode}_session>"
-                        api_tree[key].update(api_tree_val)
+                    dir_type = mode_to_dir.get(mode)
+                    first_heading = "solver" if mode == "flicing" else mode
+                    if dir_type:
+                        doc_dir = Path(dir_type)
+                        index_file = doc_dir / "index.rst"
+                        with open(index_file, "a", encoding="utf8") as f:
+                            f.write(f"   {name}/index\n")
+                        self._write_doc_for_model_object(
+                            info=info.static_info,
+                            doc_dir=doc_dir / name,
+                            heading=f"{first_heading}.datamodel.{name}",
+                            module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
+                            class_name="Root",
+                            noindex=len(info.modes) > 1 and mode != "solver",
+                        )
         return api_tree
 
     def _delete_generated_files(self):
@@ -377,6 +485,8 @@ def generate(
     version: str,
     pyfluent_path: str,
     sessions: dict,
+    generate_rst: bool,
+    generate_py: bool,
 ):
     """Generates datamodel codegen files.
 
@@ -388,6 +498,10 @@ def generate(
         File generation path.
     sessions: dict
         Fluent sessions.
+    generate_rst: bool
+        If ``True`` then generates .rst files.
+    generate_py: bool
+        If ``True`` then generates .py files.
 
     Returns
     -------
@@ -395,13 +509,11 @@ def generate(
         Datamodel files.
     """
     return DataModelGenerator(
-        version,
-        pyfluent_path,
-        sessions,
+        version, pyfluent_path, sessions, generate_rst, generate_py
     ).write_static_info()
 
 
 if __name__ == "__main__":
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, None, sessions)
+    generate(version, None, sessions, False, True)
