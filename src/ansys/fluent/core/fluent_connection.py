@@ -233,7 +233,7 @@ class _ConnectionInterface:
         )
 
     @property
-    def fluent_build_info(self) -> str:
+    def product_build_info(self) -> str:
         """Get Fluent build info."""
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
@@ -246,7 +246,7 @@ class _ConnectionInterface:
         from grpc._channel import _InactiveRpcError
 
         try:
-            logger.info(self.fluent_build_info)
+            logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
             fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
             cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
