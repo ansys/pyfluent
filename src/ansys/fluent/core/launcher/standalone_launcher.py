@@ -74,7 +74,6 @@ class StandaloneLauncher:
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         file_transfer_service: Optional[Any] = None,
-        **kwargs,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -151,8 +150,6 @@ class StandaloneLauncher:
             when the current Python process ends.
         file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
-        kwargs : Any
-            Keyword arguments.
 
         Returns
         -------
@@ -175,7 +172,6 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        del kwargs
         argvals = locals().copy()
         del argvals["self"]
         if argvals["start_timeout"] is None:

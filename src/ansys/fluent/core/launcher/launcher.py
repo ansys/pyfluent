@@ -14,7 +14,6 @@ from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
     _process_invalid_args,
-    _process_kwargs,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
@@ -66,11 +65,82 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         If an unknown Fluent launch mode is passed.
     """
     if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher(**kwargs)
+        return StandaloneLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            journal_file_names=kwargs["journal_file_names"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            env=kwargs["env"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            case_file_name=kwargs["case_file_name"],
+            case_data_file_name=kwargs["case_data_file_name"],
+            lightweight_mode=kwargs["lightweight_mode"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            cwd=kwargs["cwd"],
+            topy=kwargs["topy"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher(**kwargs)
+        return DockerLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            journal_file_names=kwargs["journal_file_names"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            env=kwargs["env"],
+            container_dict=kwargs["container_dict"],
+            dry_run=kwargs["dry_run"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            case_file_name=kwargs["case_file_name"],
+            case_data_file_name=kwargs["case_data_file_name"],
+            lightweight_mode=kwargs["lightweight_mode"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            cwd=kwargs["cwd"],
+            topy=kwargs["topy"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
     elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher(**kwargs)
+        return PIMLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            journal_file_names=kwargs["journal_file_names"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            env=kwargs["env"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            case_file_name=kwargs["case_file_name"],
+            case_data_file_name=kwargs["case_data_file_name"],
+            lightweight_mode=kwargs["lightweight_mode"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            cwd=kwargs["cwd"],
+            topy=kwargs["topy"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
 
@@ -106,7 +176,6 @@ def launch_fluent(
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
     file_transfer_service: Optional[Any] = None,
-    **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -227,8 +296,6 @@ def launch_fluent(
         specified in a similar manner to Fluent's scheduler options.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-    kwargs : Any
-        Keyword arguments.
 
     Returns
     -------
@@ -253,8 +320,6 @@ def launch_fluent(
     """
     if version != "3d" and gpu:
         raise GPUSolverSupportError()
-    _process_kwargs(kwargs)
-    del kwargs
     if show_gui is not None:
         warnings.warn(
             "'show_gui' is deprecated, use 'ui_mode' instead",
