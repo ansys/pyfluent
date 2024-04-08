@@ -16,7 +16,6 @@ from ansys.fluent.core.solver.tui_241 import main_menu
 from ansys.fluent.core.systemcoupling import SystemCoupling
 
 class Solver:
-    def build_from_fluent_connection(self, fluent_connection): ...
     @property
     def version(self): ...
     @property
