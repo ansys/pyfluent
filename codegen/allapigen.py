@@ -54,11 +54,11 @@ if __name__ == "__main__":
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
     print_fluent_version.generate(args.pyfluent_path, sessions)
     _update_first_level(
-        api_tree, tuigen.generate(version, args.pyfluent_path, sessions, False, True)
+        api_tree, tuigen.generate(version, args.pyfluent_path, sessions)
     )
     _update_first_level(
         api_tree,
-        datamodelgen.generate(version, args.pyfluent_path, sessions, False, True),
+        datamodelgen.generate(version, args.pyfluent_path, sessions),
     )
     _update_first_level(
         api_tree, settingsgen.generate(version, args.pyfluent_path, sessions)
