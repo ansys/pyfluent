@@ -166,7 +166,7 @@ class DataModelGenerator:
         self._populate_static_info()
 
     def _get_static_info(self, rules: str, session: Session):
-        response = session.datamodel_service_se.get_static_info(rules)
+        response = session._datamodel_service_se.get_static_info(rules)
         return response
 
     def _populate_static_info(self):

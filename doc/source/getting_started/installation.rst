@@ -47,7 +47,7 @@ method:
 
   import ansys.fluent.core as pyfluent
   solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
-  solver.health_check_service.is_serving
+  solver.health_check.is_serving
 
 To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
 environment variable, where ``<ver>`` is the three-digit format for the release.
