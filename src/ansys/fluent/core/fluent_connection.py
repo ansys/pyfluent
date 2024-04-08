@@ -234,7 +234,7 @@ class _ConnectionInterface:
 
     @property
     def product_build_info(self) -> str:
-        """Get Fluent build info."""
+        """Get Fluent build information."""
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
         rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
