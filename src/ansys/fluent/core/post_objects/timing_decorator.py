@@ -1,4 +1,4 @@
-"""Provides a module for timing function decorator."""
+"""Provides a module for the timing function decorator."""
 
 import time
 
