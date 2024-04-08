@@ -128,7 +128,7 @@ if __name__ == "__main__":
                 "Fluent processes remain. Checking if Fluent gRPC service is healthy..."
             )
             is_serving = timeout_exec(
-                fluent.health_check_service.is_serving, timeout=IDLE_PERIOD * 3
+                fluent.health_check.is_serving, timeout=IDLE_PERIOD * 3
             )
 
             if is_serving:

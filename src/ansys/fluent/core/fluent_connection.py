@@ -359,12 +359,12 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check_service = service_creator("health_check").create(
+        self.health_check = service_creator("health_check").create(
             self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
-        self.health_check_service.check_health()
+        self.health_check.check_health()
 
         self._slurm_job_id = slurm_job_id
 
@@ -537,8 +537,8 @@ class FluentConnection:
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
-        warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
-        return self.health_check_service.status()
+        warnings.warn("Use -> health_check.status()", DeprecationWarning)
+        return self.health_check.status()
 
     def wait_process_finished(self, wait: Union[float, int, bool] = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
@@ -657,7 +657,7 @@ class FluentConnection:
             if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
-            if not self.health_check_service.is_serving:
+            if not self.health_check.is_serving:
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
                 logger.info("Attempting to send exit request to Fluent...")
