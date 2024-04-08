@@ -334,7 +334,7 @@ class FluentConnection:
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
         slurm_job_id: bool, optional
-            The job id of a Fluent session running within a Slurm environment.
+            Job ID of a Fluent session running within a Slurm environment.
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a docker container.
