@@ -266,7 +266,12 @@ class _ConnectionInterface:
         return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
 
     def is_solver_mode(self):
-        """Returns ``True`` if the Fluent session is in solver mode."""
+        """Checks if the Fluent session is in solver mode.
+        
+        Returns
+        --------
+            ``True`` if the Fluent session is in solver mode, ``False`` otherwise.
+        """
         return self.scheme_eval.scheme_eval("(cx-solver-mode?)")
 
     def exit_server(self):
