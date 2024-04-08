@@ -3,7 +3,7 @@ Matplotlib and pyvista."""
 
 import inspect
 
-from ansys.fluent.core.meta import PyLocalContainer
+from ansys.fluent.core.post_objects.meta import PyLocalContainer
 
 
 class Container:
