@@ -1228,3 +1228,7 @@ def test_camel_to_snake_case_convertor():
     assert camel_to_snake_case("Prism2dPreferences") == "prism_2d_preferences"
     assert camel_to_snake_case("Abc2DDef") == "abc_2d_def"
     assert camel_to_snake_case("Abc2d") == "abc_2d"
+    assert camel_to_snake_case("abc2d") == "abc2d"
+    assert camel_to_snake_case("AbC2d5Cb") == "ab_c2d_5_cb"
+    assert camel_to_snake_case("abC2d5Cb") == "ab_c2d_5_cb"
+    assert camel_to_snake_case("abC2d5Cb555klOp") == "ab_c2d_5_cb_555kl_op"
