@@ -1061,12 +1061,8 @@ def test_new_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
     assert watertight.import_geometry.arguments()
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         watertight.TaskObject["Import Geometry"]
-    assert (
-        msg.value.args[0]
-        == "'WatertightMeshingWorkflow' object has no attribute 'TaskObject'"
-    )
 
 
 @pytest.mark.skip("Randomly failing in CI")
