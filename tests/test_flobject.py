@@ -1166,5 +1166,5 @@ def test_default_argument_names_for_commands(load_static_mixer_settings_only):
 
     assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
-    # The below is the default behaviour when no arguments are associated with the command.
+    # The following is the default behavior when no arguments are associated with the command.
     assert solver.results.graphics.contour.list.argument_names == []
