@@ -60,11 +60,13 @@ class DatamodelEvents(StreamingService):
                                 childname = response.createdEventResponse.childname
                                 child = getattr(cb[0], childtype)[childname]
                                 cb[1](child)
+                            elif response.HasField("attributeChangedEventResponse"):
+                                value = response.attributeChangedEventResponse.value
+                                cb[1](_convert_variant_to_value(value))
                             elif (
                                 response.HasField("modifiedEventResponse")
                                 or response.HasField("deletedEventResponse")
                                 or response.HasField("affectedEventResponse")
-                                or response.HasField("attributeChangedEventResponse")
                                 or response.HasField(
                                     "commandAttributeChangedEventResponse"
                                 )
