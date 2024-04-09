@@ -862,7 +862,7 @@ class PyStateContainer(PyCallableStateObject):
             cached_val = self._get_remote_attr(attrib)
             logger.debug(f"In _get_cached_attr, got value {cached_val} from remote")
             try:  # will fail for Fluent 23.1 or before
-                print("in _get_cached_attr, register the callback")
+                logger.debug("in _get_cached_attr, register the callback")
                 self.add_on_attribute_changed(
                     attrib, _AttrCacheCallback(self.cached_attrs, attrib)
                 )
