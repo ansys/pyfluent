@@ -1,7 +1,6 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 
 from enum import Enum
-import functools
 import itertools
 import logging
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
@@ -34,6 +33,28 @@ member_specs_oneof_fields = [
     x.name
     for x in DataModelProtoModule.MemberSpecs.DESCRIPTOR.oneofs_by_name["as"].fields
 ]
+
+
+class _AttrCacheCallback:
+    def __init__(self, cached_attrs, attrib) -> None:
+        logger.debug(f"In _AttrCacheCallback.__init__ for {cached_attrs} and {attrib}")
+        self.cached_attrs = cached_attrs
+        self.attrib = attrib
+
+    def __call__(self, obj) -> None:
+        logger.debug(
+            f"In _AttrCacheCallback.__call__, erase the cache item {self.attrib} from {self.cached_attrs}"
+        )
+        try:
+            del self.cached_attrs[self.attrib]
+        except KeyError:
+            logger.debug(
+                f"In _AttrCacheCallback.__call__, item {self.attrib} already absent from from {self.cached_attrs}"
+            )
+        else:
+            logger.debug(
+                f"In _AttrCacheCallback.__call__, updated cache {self.cached_attrs}"
+            )
 
 
 def _get_value_from_message_dict(
@@ -831,15 +852,25 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def _get_cached_attr(self, attrib: str) -> Any:
+        logger.debug(
+            f"Entering _get_cached_attr for {self.path} and {attrib} ({self.cached_attrs})"
+        )
         cached_val = self.cached_attrs.get(attrib)
+        logger.debug(f"In _get_cached_attr, got value {cached_val} from cache")
         if cached_val is None:
+            logger.debug("In _get_cached_attr, get value from remote")
             cached_val = self._get_remote_attr(attrib)
+            logger.debug(f"In _get_cached_attr, got value {cached_val} from remote")
             try:  # will fail for Fluent 23.1 or before
+                print("in _get_cached_attr, register the callback")
                 self.add_on_attribute_changed(
-                    attrib,
-                    functools.partial(dict.__setitem__, self.cached_attrs, attrib),
+                    attrib, _AttrCacheCallback(self.cached_attrs, attrib)
                 )
+                logger.debug("in _get_cached_attr, update the cache")
                 self.cached_attrs[attrib] = cached_val
+                logger.debug(
+                    f"in _get_cached_attr, updated the cache {self.cached_attrs}"
+                )
             except Exception:
                 pass
         return cached_val
