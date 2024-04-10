@@ -2,6 +2,7 @@
 
 import os
 import pathlib
+import random
 import shutil
 import subprocess
 from typing import Any, Callable, Optional, Protocol, Union  # noqa: F401
@@ -19,15 +20,6 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
-
-
-HOST_PORT = 50000
-
-
-def _get_host_port():
-    global HOST_PORT
-    HOST_PORT += 1
-    return HOST_PORT
 
 
 def _get_host_path():
@@ -60,6 +52,21 @@ class LocalFileTransferStrategy(FiletransferStrategy):
         self.fluent_cwd = (
             pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
         )
+
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        full_file_name = pathlib.Path(self.fluent_cwd) / os.path.basename(file_name)
+        return full_file_name.is_file()
 
     def upload(
         self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
@@ -108,13 +115,38 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
     and ``gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
     """
 
-    def __init__(self):
-        self.host_port = _get_host_port()
+    def __init__(
+        self,
+        container_mount_path: Optional[str] = None,
+        host_mount_path: Optional[str] = None,
+    ):
+        self.host_port = random.randint(5000, 6000)
+        self.container_mount_path = (
+            container_mount_path if container_mount_path else "/home/container/workdir/"
+        )
+        self.host_mount_path = host_mount_path if host_mount_path else "/mnt/pyfluent"
         self.server = subprocess.Popen(
-            f"docker run -p {self.host_port}:50000 -v /mnt/pyfluent:/home/container/workdir/ ghcr.io/ansys/tools-filetransfer:latest",
+            f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
             shell=True,
         )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
+
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        full_file_name = pathlib.Path(self.container_mount_path) / os.path.basename(
+            file_name
+        )
+        return full_file_name.is_file()
 
     def upload(
         self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
@@ -225,10 +257,19 @@ class PimFileTransferService:
             except ModuleNotFoundError:
                 pass
 
-    @property
-    def pim_service(self):
-        """PIM file transfer service."""
-        return self.file_service
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        return self.file_service.file_exist(os.path.basename(file_name))
 
     def is_configured(self):
         """Check pypim configuration."""

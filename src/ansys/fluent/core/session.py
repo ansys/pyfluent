@@ -308,6 +308,21 @@ class BaseSession:
         data."""
         self._fluent_connection.force_exit()
 
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        if self._file_transfer_service:
+            return self._file_transfer_service.file_exists_on_remote(file_name)
+
     def _file_transfer_api_warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
         return f"You have directly called the {method_name} method of the session. \
