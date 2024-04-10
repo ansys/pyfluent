@@ -555,8 +555,18 @@ class ArgumentsWrapper(PyCallableStateObject):
         ----------
         args : dict
             State of the arguments.
+
+        Raises
+        ------
+        Exception
+            If operation fails.
         """
+        old_state = self._task.Arguments.get_state()
         if self._dynamic_interface:
+            # why call get_state here?
+            # add a comment to clarify
+            # run tests without this line
+            # similar issue in update_dict
             self.get_state()
             camel_args = {}
             for key, val in args.items():
@@ -564,6 +574,17 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments.set_state(camel_args)
         else:
             self._task.Arguments.set_state(args)
+        # implicitly refresh the command arguments
+        # - adding a safety net
+        try:
+            self._command_arguments()
+        except Exception as ex:
+            self._task.Arguments.set_state(old_state)
+            try:
+                self._command_arguments()
+            except Exception:
+                pass
+            raise ex
 
     def update_dict(self, args: dict) -> None:
         """Merge with arguments.
@@ -572,7 +593,13 @@ class ArgumentsWrapper(PyCallableStateObject):
         ----------
         args : dict
             State of the arguments.
+
+        Raises
+        ------
+        Exception
+            If operation fails.
         """
+        old_state = self._task.Arguments.get_state()
         if self._dynamic_interface:
             self.get_state()
             camel_args = {}
@@ -581,6 +608,17 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments.update_dict(camel_args)
         else:
             self._task.Arguments.update_dict(args)
+        # implicitly refresh the command arguments
+        # - adding a safety net
+        try:
+            self._command_arguments()
+        except Exception as ex:
+            self._task.Arguments.set_state(old_state)
+            try:
+                self._command_arguments()
+            except Exception:
+                pass
+            raise ex
 
     def get_state(self, explicit_only=False) -> dict:
         """Get the state of the arguments.

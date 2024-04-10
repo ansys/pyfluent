@@ -1220,3 +1220,25 @@ def test_new_meshing_workflow_without_dm_caching(
     with pytest.raises(RuntimeError):
         fault_tolerant.import_cad_and_part_management.arguments()
     assert watertight.import_geometry.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_new_meshing_workflow_validate_arguments(new_mesh_session):
+    watertight = new_mesh_session.watertight()
+    watertight.create_regions.number_of_flow_volumes = 1
+    with pytest.raises(Exception):
+        watertight.create_regions.number_of_flow_volumes = 1.2
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_new_meshing_workflow_validate_arguments2(new_mesh_session):
+    watertight = new_mesh_session.watertight()
+    watertight.create_regions.number_of_flow_volumes = 1
+    with pytest.raises(Exception):
+        watertight.create_regions.arguments.update_dict(
+            dict(number_of_flow_volumes=1.2)
+        )
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
