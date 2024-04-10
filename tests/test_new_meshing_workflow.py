@@ -4,6 +4,7 @@ from typing import Iterable
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.workflow import camel_to_snake_case
 from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
@@ -535,13 +536,13 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
         True
     )
     two_dim_mesh.generate_initial_surface_mesh()
@@ -554,13 +555,13 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     two_dim_mesh.task("aspect-ratio_1").offset_method_type = "uniform"
     two_dim_mesh.task("aspect-ratio_1")()
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
         True
     )
     two_dim_mesh.generate_initial_surface_mesh()
@@ -573,13 +574,13 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     two_dim_mesh.task("uniform_1").offset_method_type = "smooth-transition"
     two_dim_mesh.task("uniform_1")()
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
         True
     )
     two_dim_mesh.generate_initial_surface_mesh()
@@ -1055,6 +1056,16 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_new_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    watertight = meshing.watertight()
+    assert watertight.import_geometry.arguments()
+    with pytest.raises(AttributeError):
+        watertight.TaskObject["Import Geometry"]
+
+
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
@@ -1220,3 +1231,22 @@ def test_new_meshing_workflow_without_dm_caching(
     with pytest.raises(RuntimeError):
         fault_tolerant.import_cad_and_part_management.arguments()
     assert watertight.import_geometry.arguments()
+
+
+def test_camel_to_snake_case_convertor():
+    assert camel_to_snake_case("ImportGeometry") == "import_geometry"
+    assert camel_to_snake_case("Prism2dPreferences") == "prism_2d_preferences"
+    assert camel_to_snake_case("Abc2DDef") == "abc_2d_def"
+    assert camel_to_snake_case("Abc2d") == "abc_2d"
+    assert camel_to_snake_case("abc2d") == "abc2d"
+    assert camel_to_snake_case("AbC2d5Cb") == "ab_c2d_5_cb"
+    assert camel_to_snake_case("abC2d5Cb") == "ab_c2d_5_cb"
+    assert camel_to_snake_case("abC2d5Cb555klOp") == "ab_c2d_5_cb_555kl_op"
+    assert camel_to_snake_case("a") == "a"
+    assert camel_to_snake_case("A") == "a"
+    assert camel_to_snake_case("a5$c") == "a5$c"
+    assert camel_to_snake_case("A5$C") == "a5$c"
+    assert camel_to_snake_case("A5Dc$") == "a5_dc$"
+    assert camel_to_snake_case("Abc2DDc$") == "abc_2d_dc$"
+    assert camel_to_snake_case("A2DDc$") == "a2d_dc$"
+    assert camel_to_snake_case("") == ""

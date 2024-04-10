@@ -4,7 +4,7 @@ from abc import abstractmethod
 import logging
 from typing import List, NamedTuple, Optional
 
-from ansys.fluent.core.meta import (
+from ansys.fluent.core.post_objects.meta import (
     Attribute,
     PyLocalNamedObjectMetaAbstract,
     PyLocalObjectMeta,

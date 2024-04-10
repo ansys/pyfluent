@@ -74,8 +74,7 @@ if __name__ == "__main__":
             "ip": ip,
             "port": int(port),
             "password": password,
-            "launcher_args": None,
-            "start_transcript": False,
+            "slurm_job_id": None,
             "cleanup_on_exit": True,
         }
 
