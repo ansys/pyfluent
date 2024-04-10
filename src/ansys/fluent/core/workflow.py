@@ -585,7 +585,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task._command_arguments()
         except Exception as ex:
             if old_state is not None:
-                self._task.Arguments.set_state(old_state)
+                self.set_state(dict(number_of_flow_volumes=1))  # (old_state)
                 try:
                     self._task._command_arguments()
                 except Exception:
@@ -613,7 +613,9 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._build_naming_map_for_state_assign_method()
             camel_args = {}
             for key, val in args.items():
-                camel_args[_global_snake_to_camel_map[key]] = val
+                camel_args[
+                    _global_snake_to_camel_map[key] if key.islower() else key
+                ] = val
             self._task.Arguments.update_dict(camel_args)
         else:
             self._task.Arguments.update_dict(args)
@@ -623,7 +625,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task._command_arguments()
         except Exception as ex:
             if old_state is not None:
-                self._task.Arguments.set_state(old_state)
+                self.set_state(dict(number_of_flow_volumes=1))  # (old_state)
                 try:
                     self._task._command_arguments()
                 except Exception:
@@ -716,7 +718,7 @@ class ArgumentWrapper(PyCallableStateObject):
         value : Any
             Value of the argument.
         """
-        self._task.Arguments.update_dict({self._arg_name: value})
+        self._task.arguments.update_dict({self._arg_name: value})
 
     def get_state(self, explicit_only: bool = False) -> Any:
         """Get the state of this argument.
