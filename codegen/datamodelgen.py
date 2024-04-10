@@ -501,7 +501,7 @@ def generate(
     generate_rst: bool
         Whether to generate result (RST) files.
     generate_py: bool
-        If ``True`` then generates .py files.
+        Whether to generate Python (PY) files.
 
     Returns
     -------
