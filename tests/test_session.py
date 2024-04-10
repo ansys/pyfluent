@@ -113,12 +113,20 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
     server.start()
 
     with pytest.raises(PortNotProvided) as msg:
+        fluent_connection = FluentConnection(
+            ip=ip, password="12345", cleanup_on_exit=False
+        )
         session = BaseSession(
-            FluentConnection(ip=ip, password="12345", cleanup_on_exit=False)
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
 
+    fluent_connection = FluentConnection(
+        ip=ip, port=port, password="12345", cleanup_on_exit=False
+    )
     session = BaseSession(
-        FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
     assert session.health_check.is_serving
     server.stop(None)
@@ -140,7 +148,11 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = BaseSession(FluentConnection(password="12345", cleanup_on_exit=False))
+    fluent_connection = FluentConnection(password="12345", cleanup_on_exit=False)
+    session = BaseSession(
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+    )
     assert session.health_check.is_serving
     server.stop(None)
     session.exit()
@@ -158,8 +170,12 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     )
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
+    fluent_connection = FluentConnection(
+        channel=channel, cleanup_on_exit=False, password="12345"
+    )
     session = BaseSession(
-        FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
     assert session.health_check.is_serving
     server.stop(None)
@@ -373,7 +389,9 @@ def test_build_from_fluent_connection(make_new_session):
     # The below hack is performed to check the base class method
     # (child class has a method with same name)
     solver1.__class__.__bases__[0]._build_from_fluent_connection(
-        solver1, fluent_connection=solver2._fluent_connection
+        solver1,
+        fluent_connection=solver2._fluent_connection,
+        scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
     )
     assert solver1.health_check.is_serving
     assert solver2.health_check.is_serving

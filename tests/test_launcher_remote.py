@@ -100,14 +100,16 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     server.start()
 
     with pytest.raises(UnsupportedRemoteFluentInstance) as msg:
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password="12345",
+            remote_instance=mock_instance,
+            cleanup_on_exit=False,
+        )
         session = BaseSession(
-            FluentConnection(
-                ip=ip,
-                port=port,
-                password="12345",
-                remote_instance=mock_instance,
-                cleanup_on_exit=False,
-            )
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
         session.exit(wait=60)
         session._fluent_connection.wait_process_finished(wait=60)
