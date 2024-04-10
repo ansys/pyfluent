@@ -1117,6 +1117,7 @@ class Workflow:
             "workflow",
         }
         self._fluent_version = fluent_version
+        self._populate_help_string_command_id_map()
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
@@ -1300,7 +1301,7 @@ class Workflow:
                 if isinstance(command_obj, PyCommand):
                     command_obj_instance = command_obj.create_instance()
                     help_str = command_obj_instance.get_attr("helpString")
-                    if help_str in self.child_task_python_names():
+                    if help_str and help_str.islower():
                         self._help_string_command_id_map[help_str] = command
                         self._help_string_display_text_map[help_str] = (
                             command_obj_instance.get_attr("displayText")
@@ -1309,8 +1310,7 @@ class Workflow:
 
     def get_possible_tasks(self):
         """Get the list of possible names of commands that can be inserted as tasks."""
-        self._populate_help_string_command_id_map()
-        return list(self._help_string_command_id_map)
+        return self.child_task_python_names()
 
     def insert_new_task(self, command_name: str):
         """Insert a new task based on the command name passed as an argument.
@@ -1330,8 +1330,7 @@ class Workflow:
             If the command name does not match a task name.
             In this case, none of the tasks are deleted.
         """
-        self._populate_help_string_command_id_map()
-        if command_name not in self._help_string_command_id_map:
+        if command_name not in self.get_possible_tasks():
             raise ValueError(
                 f"'{command_name}' is not an allowed command task.\n"
                 "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
@@ -1357,7 +1356,6 @@ class Workflow:
         ValueError
             If command_name does not match a task name. None of the tasks is deleted.
         """
-        self._populate_help_string_command_id_map()
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
             try:
@@ -1389,7 +1387,6 @@ class Workflow:
         RuntimeError
             If the command name does not match a task name.
         """
-        self._populate_help_string_command_id_map()
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
             try:
