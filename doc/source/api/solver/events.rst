@@ -26,7 +26,7 @@ The following code triggers a callback at the end of every iteration.
     def callback_executed_at_end_of_iteration(session_id, event_info):
         print("Iteration ended index", event_info.index)
 
-    cb_itr_id = session.events_manager.register_callback('IterationEndedEvent', callback_executed_at_end_of_iteration)        
+    cb_itr_id = session.events.register_callback('IterationEndedEvent', callback_executed_at_end_of_iteration)
 
 .. currentmodule:: ansys.fluent.core.streaming_services.events_streaming
 
