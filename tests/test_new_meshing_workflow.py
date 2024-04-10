@@ -1056,6 +1056,16 @@ def test_meshing_workflow_structure(new_mesh_session):
     ]
 
 
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_new_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    watertight = meshing.watertight()
+    assert watertight.import_geometry.arguments()
+    with pytest.raises(AttributeError):
+        watertight.TaskObject["Import Geometry"]
+
+
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
