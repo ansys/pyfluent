@@ -32,7 +32,8 @@ class Meshing(PureMeshing):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             scheme_eval: SchemeEval
                 Instance of ``SchemeEval`` to execute Fluent's scheme code on.
-            file_transfer_service: Supports file upload and download.
+            file_transfer_service: Optional
+                Service for uploading and downloading files.
             start_transcript : bool, optional
                 Whether to start the Fluent transcript in the client.
                 The default is ``True``, in which case the Fluent transcript can be subsequently
