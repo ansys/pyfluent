@@ -18,6 +18,8 @@ from ansys.fluent.core.services.datamodel_se import (
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+_global_snake_to_camel_map = {}
+
 
 def camel_to_snake_case(camel_case_str: str) -> str:
     """Convert camel case input string to snake case output string."""
@@ -337,7 +339,7 @@ class BaseTask:
         _args = self.arguments
         _camel_args = []
         for arg in _args().keys():
-            _camel_args.append(_args._snake_to_camel_map[arg])
+            _camel_args.append(_global_snake_to_camel_map[arg])
 
         return _camel_args
 
@@ -348,8 +350,12 @@ class BaseTask:
                     "Camel case attribute access is not supported. "
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
-            camel_attr = snake_to_camel_case(
-                str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
+            camel_attr = (
+                snake_to_camel_case(
+                    str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
+                )
+                if attr.islower()
+                else attr
             )
             attr = camel_attr or attr
         try:
@@ -561,29 +567,29 @@ class ArgumentsWrapper(PyCallableStateObject):
         Exception
             If operation fails.
         """
-        old_state = self._task.Arguments.get_state()
+        try:
+            old_state = self._task.Arguments.get_state()
+        except Exception:
+            old_state = None
         if self._dynamic_interface:
-            # why call get_state here?
-            # add a comment to clarify
-            # run tests without this line
-            # similar issue in update_dict
-            self.get_state()
+            self._build_naming_map_for_state_assign_method()
             camel_args = {}
             for key, val in args.items():
-                camel_args[self._snake_to_camel_map[key]] = val
+                camel_args[_global_snake_to_camel_map[key]] = val
             self._task.Arguments.set_state(camel_args)
         else:
             self._task.Arguments.set_state(args)
         # implicitly refresh the command arguments
         # - adding a safety net
         try:
-            self._command_arguments()
+            self._task._command_arguments()
         except Exception as ex:
-            self._task.Arguments.set_state(old_state)
-            try:
-                self._command_arguments()
-            except Exception:
-                pass
+            if old_state is not None:
+                self._task.Arguments.set_state(old_state)
+                try:
+                    self._task._command_arguments()
+                except Exception:
+                    pass
             raise ex
 
     def update_dict(self, args: dict) -> None:
@@ -599,25 +605,29 @@ class ArgumentsWrapper(PyCallableStateObject):
         Exception
             If operation fails.
         """
-        old_state = self._task.Arguments.get_state()
+        try:
+            old_state = self._task.Arguments.get_state()
+        except Exception:
+            old_state = None
         if self._dynamic_interface:
-            self.get_state()
+            self._build_naming_map_for_state_assign_method()
             camel_args = {}
             for key, val in args.items():
-                camel_args[self._snake_to_camel_map[key]] = val
+                camel_args[_global_snake_to_camel_map[key]] = val
             self._task.Arguments.update_dict(camel_args)
         else:
             self._task.Arguments.update_dict(args)
         # implicitly refresh the command arguments
         # - adding a safety net
         try:
-            self._command_arguments()
+            self._task._command_arguments()
         except Exception as ex:
-            self._task.Arguments.set_state(old_state)
-            try:
-                self._command_arguments()
-            except Exception:
-                pass
+            if old_state is not None:
+                self._task.Arguments.set_state(old_state)
+                try:
+                    self._task._command_arguments()
+                except Exception:
+                    pass
             raise ex
 
     def get_state(self, explicit_only=False) -> dict:
@@ -642,15 +652,21 @@ class ArgumentsWrapper(PyCallableStateObject):
                     PySingletonCommandArgumentsSubItem,
                 ):
                     for k, v in val.items():
-                        self._snake_to_camel_map[camel_to_snake_case(k)] = k
+                        _global_snake_to_camel_map[camel_to_snake_case(k)] = k
                         nested_val[camel_to_snake_case(k)] = v
                 else:
                     nested_val = val
-                self._snake_to_camel_map[camel_to_snake_case(key)] = key
+                _global_snake_to_camel_map[camel_to_snake_case(key)] = key
                 snake_case_state_dict[camel_to_snake_case(key)] = nested_val
             return snake_case_state_dict
 
         return state_dict
+
+    def _build_naming_map_for_state_assign_method(self):
+        try:
+            self.get_state()
+        except Exception:
+            pass
 
     def __getattr__(self, attr):
         return getattr(self._task._command_arguments, attr)
@@ -721,7 +737,7 @@ class ArgumentWrapper(PyCallableStateObject):
         ):
             snake_case_state_dict = {}
             for key, val in state_dict.items():
-                self._snake_to_camel_map[camel_to_snake_case(key)] = key
+                _global_snake_to_camel_map[camel_to_snake_case(key)] = key
                 snake_case_state_dict[camel_to_snake_case(key)] = val
             return snake_case_state_dict
 
@@ -732,7 +748,7 @@ class ArgumentWrapper(PyCallableStateObject):
         _camel_args = []
         for arg in _args().keys():
             try:
-                _camel_args.append(self._snake_to_camel_map[arg])
+                _camel_args.append(_global_snake_to_camel_map[arg])
             except KeyError:
                 _camel_args.append(arg)
 
