@@ -328,12 +328,18 @@ class BaseTask:
             The Pythonic name of this task.
         """
         if not self._python_name:
-            try:
-                this_command = self._command()
-                # temp reuse helpString
-                self._python_name = this_command.get_attr("helpString")
-            except Exception:
-                pass
+            display_name_map = self._command_source._help_string_display_text_map
+            if self.display_name() not in display_name_map.values():
+                try:
+                    this_command = self._command()
+                    # temp reuse helpString
+                    self._python_name = this_command.get_attr("helpString")
+                except Exception:
+                    pass
+            else:
+                self._python_name = list(display_name_map.keys())[
+                    list(display_name_map.values()).index(self.display_name())
+                ]
         return self._python_name
 
     def _get_camel_case_arg_keys(self):
