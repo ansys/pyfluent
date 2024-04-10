@@ -10,6 +10,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.field_data import FieldDataService
+from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -80,7 +81,7 @@ class BaseSession:
 
     Methods
     -------
-    create_from_server_info_file(
+    _create_from_server_info_file(
         server_info_file_name, cleanup_on_exit, start_transcript
         )
         Create a Session instance from server-info file
@@ -92,6 +93,7 @@ class BaseSession:
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
         launcher_args: Optional[Dict[str, Any]] = None,
@@ -102,6 +104,9 @@ class BaseSession:
         ----------
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
+        scheme_eval: SchemeEval
+            Instance of SchemeEval on which Fluent's scheme code can be
+            executed.
         file_transfer_service : Optional
             Supports file upload and download.
         start_transcript : bool, optional
@@ -113,19 +118,23 @@ class BaseSession:
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
         BaseSession._build_from_fluent_connection(
-            self, fluent_connection, file_transfer_service
+            self,
+            fluent_connection,
+            scheme_eval,
+            file_transfer_service,
         )
 
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
+        scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
-        self.scheme_eval = fluent_connection._connection_interface.scheme_eval
+        self.scheme_eval = scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
@@ -295,10 +304,12 @@ class BaseSession:
             Session instance
         """
         ip, port, password = _parse_server_info_file(server_info_file_name)
+        fluent_connection = FluentConnection(
+            ip=ip, port=port, password=password, **connection_kwargs
+        )
         session = cls(
-            fluent_connection=FluentConnection(
-                ip=ip, port=port, password=password, **connection_kwargs
-            ),
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
