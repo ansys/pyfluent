@@ -499,7 +499,7 @@ def generate(
     sessions: dict
         Fluent sessions.
     generate_rst: bool
-        If ``True`` then generates .rst files.
+        Whether to generate result (RST) files.
     generate_py: bool
         If ``True`` then generates .py files.
 
