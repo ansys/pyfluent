@@ -8,7 +8,6 @@ import subprocess
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
-import platformdirs
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
@@ -21,13 +20,6 @@ class PyPIMConfigurationError(ConnectionError):
 
     def __init__(self):
         super().__init__("PyPIM is not configured.")
-
-
-def _get_host_path():
-    user_data_path = platformdirs.user_data_dir(
-        appname="ansys_fluent_core", appauthor="Ansys"
-    )
-    return os.path.join(user_data_path, "examples")
 
 
 class FiletransferStrategy(Protocol):
