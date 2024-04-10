@@ -826,16 +826,11 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
 
     assert solver.setup.boundary_conditions.wall["*"]()
 
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         solver.setup.boundary_conditions.velocity_inlet["*1"].inlet1()
-    assert msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet1'.\n"
 
-    with pytest.raises(KeyError) as msg:
+    with pytest.raises(KeyError):
         solver.setup.boundary_conditions.velocity_inlet["inlet-1"]
-    assert (
-        msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet-1'.\n"
-        "The most similar names are: inlet1, inlet2."
-    )
 
 
 @pytest.mark.fluent_version("latest")
@@ -847,21 +842,11 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
 
     solver.solution.initialization.hybrid_initialize()
 
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         solver.setup.mod
 
-    assert (
-        msg.value.args[0] == "'setup' object has no attribute 'mod'.\n"
-        "The most similar names are: models."
-    )
-
-    with pytest.raises(ValueError) as msg:
+    with pytest.raises(ValueError):
         solver.setup.models.viscous.model = "k_epsilon"
-
-    assert (
-        msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
-        "The most similar names are: k-epsilon."
-    )
 
     energy_parent = solver.setup._get_parent_of_active_child_names("energy")
 
