@@ -1112,6 +1112,7 @@ class Workflow:
         self._dynamic_interface = False
         self._help_string_command_id_map = {}
         self._help_string_display_text_map = {}
+        self._repeated_task_help_string_display_text_map = {}
         self._unwanted_attrs = {
             "reset_workflow",
             "initialize_workflow",
@@ -1203,8 +1204,15 @@ class Workflow:
         """
         return []
 
+    def __getattribute__(self, item):
+        if item != "task" and not item.startswith("_"):
+            self._populate_map_for_repeated_tasks()
+        return super().__getattribute__(item)
+
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
+        if attr in self._repeated_task_help_string_display_text_map:
+            return self.task(self._repeated_task_help_string_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1224,12 +1232,14 @@ class Workflow:
     def __dir__(self):
         """Override the behavior of ``dir`` to include attributes in the
         ``WorkflowWrapper`` class and the underlying workflow."""
+        self._populate_map_for_repeated_tasks()
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
         dir_set = set(
             list(self.__dict__)
             + dir(type(self))
             + arg_list
             + self.child_task_python_names()
+            + list(self._repeated_task_help_string_display_text_map)
         )
         dir_set = dir_set - self._unwanted_attrs
         return sorted(filter(None, dir_set))
@@ -1313,6 +1323,18 @@ class Workflow:
                             command_obj_instance.get_attr("displayText")
                         )
                     del command_obj_instance
+
+    def _populate_map_for_repeated_tasks(self):
+        for task in self._task_list:
+            if task.split()[-1].isdigit():
+                if task in self._repeated_task_help_string_display_text_map.values():
+                    continue
+                new_task = "".join(task.rsplit(f" {task.split()[-1]}", 1))
+                if new_task in self._task_list:
+                    print(task)
+                    help_str = self.task(task).python_name() + f"_{task.split()[-1]}"
+                    self._help_string_display_text_map[help_str] = task
+                    self._repeated_task_help_string_display_text_map[help_str] = task
 
     def get_possible_tasks(self):
         """Get the list of possible names of commands that can be inserted as tasks."""
