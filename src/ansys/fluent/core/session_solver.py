@@ -5,7 +5,7 @@ import functools
 import importlib
 import logging
 import threading
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 import warnings
 
 from ansys.fluent.core.services import service_creator
@@ -78,6 +78,8 @@ class Solver(BaseSession):
         self,
         fluent_connection,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """Solver session.
 
@@ -88,6 +90,8 @@ class Solver(BaseSession):
         super(Solver, self).__init__(
             fluent_connection=fluent_connection,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self._build_from_fluent_connection(fluent_connection)
 
@@ -206,7 +210,7 @@ class Solver(BaseSession):
                 flproxy=self._settings_service,
                 version=self._version,
                 file_transfer_service=self._file_transfer_service,
-                scheme_eval=self._fluent_connection.scheme_eval.scheme_eval,
+                scheme_eval=self.scheme_eval.scheme_eval,
             )
         return self._settings_root
 
@@ -249,7 +253,7 @@ class Solver(BaseSession):
         import ansys.fluent.core as pyfluent
 
         self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
-        launcher_args = dict(self._fluent_connection.launcher_args)
+        launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
         fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
