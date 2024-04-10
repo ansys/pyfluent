@@ -25,7 +25,7 @@ class SolverLite(Solver):
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             scheme_eval: SchemeEval
-                Instance of SchemeEval on which Fluent's scheme code can be executed.
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
             start_transcript : bool, optional
                 Whether to start the Fluent transcript in the client.
                 The default is ``True``, in which case the Fluent transcript can be subsequently

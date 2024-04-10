@@ -76,8 +76,7 @@ class BaseSession:
     Attributes
     ----------
     scheme_eval: SchemeEval
-        Instance of SchemeEval on which Fluent's scheme code can be
-        executed.
+        Instance of ``SchemeEval`` to execute Fluent's scheme code on.
 
     Methods
     -------
@@ -105,8 +104,7 @@ class BaseSession:
         fluent_connection (:ref:`ref_fluent_connection`):
             Encapsulates a Fluent connection.
         scheme_eval: SchemeEval
-            Instance of SchemeEval on which Fluent's scheme code can be
-            executed.
+            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
         file_transfer_service : Optional
             Supports file upload and download.
         start_transcript : bool, optional
