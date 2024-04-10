@@ -5,11 +5,12 @@ import pathlib
 import random
 import shutil
 import subprocess
-from typing import Any, Callable, Optional, Protocol, Union  # noqa: F401
+from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
 import platformdirs
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
@@ -90,23 +91,44 @@ class LocalFileTransferStrategy(FiletransferStrategy):
         shutil.copyfile(file_name, str(local_file_name))
 
 
-def _get_files(file_name: str):
-    if isinstance(file_name, str):
-        files = [file_name]
-    elif isinstance(
-        file_name,
-        (
-            pathlib.Path,
-            pathlib.PurePath,
-            pathlib.PosixPath,
-            pathlib.PurePosixPath,
-            pathlib.WindowsPath,
-            pathlib.PureWindowsPath,
-        ),
-    ):
-        files = [str(file_name)]
-    elif isinstance(file_name, list):
-        files = [str(file) for file in file_name]
+def _get_files(file_name: Any):
+    path = "/home/runner/.local/share/ansys_fluent_core/examples"
+    if os.path.exists(path):
+        if isinstance(file_name, str):
+            files = [str(os.path.join(path, os.path.basename(file_name)))]
+        elif isinstance(
+            file_name,
+            (
+                pathlib.Path,
+                pathlib.PurePath,
+                pathlib.PosixPath,
+                pathlib.PurePosixPath,
+                pathlib.WindowsPath,
+                pathlib.PureWindowsPath,
+            ),
+        ):
+            files = [str(os.path.join(path, file_name.name))]
+        elif isinstance(file_name, list):
+            files = [
+                str(os.path.join(path, os.path.basename(file))) for file in file_name
+            ]
+    else:
+        if isinstance(file_name, str):
+            files = [file_name]
+        elif isinstance(
+            file_name,
+            (
+                pathlib.Path,
+                pathlib.PurePath,
+                pathlib.PosixPath,
+                pathlib.PurePosixPath,
+                pathlib.WindowsPath,
+                pathlib.PureWindowsPath,
+            ),
+        ):
+            files = [str(file_name)]
+        elif isinstance(file_name, list):
+            files = [str(file) for file in file_name]
     return files
 
 
@@ -124,7 +146,9 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
-        self.host_mount_path = host_mount_path if host_mount_path else "/mnt/pyfluent"
+        self.host_mount_path = (
+            host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
+        )
         self.server = subprocess.Popen(
             f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
             shell=True,
@@ -143,7 +167,7 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
         -------
             Whether file exists.
         """
-        full_file_name = pathlib.Path(self.container_mount_path) / os.path.basename(
+        full_file_name = pathlib.Path(self.host_mount_path) / os.path.basename(
             file_name
         )
         return full_file_name.is_file()
@@ -206,6 +230,35 @@ class RemoteFileTransferStrategy(FiletransferStrategy):
                             else os.path.basename(file)
                         ),
                     )
+
+    def _get_active_containers(self, file_name: str, port: int) -> List[str]:
+        results = []
+        with open(f"{file_name}", "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if line.find(f"{port}") != -1:
+                    results.append(line)
+        return results
+
+    def exit(self):
+        """Stop the container."""
+        write_file = subprocess.Popen(f"docker ps > id_ports.txt", shell=True)
+        active_containers = self._get_active_docker_containers(
+            "id_ports.txt", self.host_port
+        )
+        active_container_ids = [
+            container.split(" ")[0] for container in active_containers
+        ]
+        for container_id in active_container_ids:
+            try:
+                stop_container = subprocess.Popen(
+                    f"docker kill {container_id}", shell=True
+                )
+            except Exception:
+                pass
+
+    def __del__(self):
+        self.exit()
 
 
 class PimFileTransferService:
