@@ -3,7 +3,7 @@
 import importlib
 import json
 import logging
-from typing import Any, Optional, Union
+from typing import Any, Dict, Optional, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -93,13 +93,25 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """BaseSession.
 
-        Args:
-            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            file_transfer_service: Supports file upload and download.
+        Parameters
+        ----------
+        fluent_connection (:ref:`ref_fluent_connection`):
+            Encapsulates a Fluent connection.
+        file_transfer_service : Optional
+            Supports file upload and download.
+        start_transcript : bool, optional
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         """
+        self._start_transcript = start_transcript
+        self._launcher_args = launcher_args
         BaseSession._build_from_fluent_connection(
             self, fluent_connection, file_transfer_service
         )
@@ -113,7 +125,7 @@ class BaseSession:
         self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
-        self.scheme_eval = fluent_connection.scheme_eval
+        self.scheme_eval = fluent_connection._connection_interface.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
@@ -122,7 +134,7 @@ class BaseSession:
             fluent_connection._channel, fluent_connection._metadata
         )
         self.transcript = Transcript(self._transcript_service)
-        if fluent_connection.start_transcript:
+        if self._start_transcript:
             self.transcript.start()
 
         self._datamodel_service_tui = service_creator("tui").create(
@@ -254,6 +266,8 @@ class BaseSession:
         cls,
         server_info_file_name: str,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -264,9 +278,14 @@ class BaseSession:
             Path to server-info file written out by Fluent server
         file_transfer_service : Optional
             Support file upload and download.
+        start_transcript : bool, optional
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
-            being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
+            being initialized. For example, ``cleanup_on_exit = True``.
             See :func:`FluentConnection initialization <ansys.fluent.core.fluent_connection.FluentConnection.__init__>`
             for more details and possible arguments.
 
@@ -281,6 +300,8 @@ class BaseSession:
                 ip=ip, port=port, password=password, **connection_kwargs
             ),
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         return session
 
