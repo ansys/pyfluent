@@ -145,6 +145,7 @@ def test_file_purpose_on_remote_instance(
 
     solver_session = Solver(
         fluent_connection=solver._fluent_connection,
+        scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_service,
     )
 
@@ -160,6 +161,7 @@ def test_file_purpose_on_remote_instance(
 
     meshing_session = PureMeshing(
         fluent_connection=meshing._fluent_connection,
+        scheme_eval=meshing._fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_service,
     )
 

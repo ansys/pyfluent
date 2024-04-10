@@ -23,6 +23,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvide
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 
 
@@ -405,7 +406,7 @@ def test_recover_grpc_error_from_connection_error():
 def test_solver_methods(new_solver_session):
     solver = new_solver_session
 
-    if int(solver._version) == 222:
+    if solver.get_fluent_version() == FluentVersion.v222:
         api_keys = {
             "file",
             "setup",
@@ -415,7 +416,7 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver._version) == 232:
+    if solver.get_fluent_version() == FluentVersion.v232:
         api_keys = {
             "file",
             "mesh",
@@ -429,7 +430,7 @@ def test_solver_methods(new_solver_session):
             "report",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver._version) >= 241:
+    if solver.get_fluent_version() >= FluentVersion.v241:
         api_keys = {
             "file",
             "mesh",
