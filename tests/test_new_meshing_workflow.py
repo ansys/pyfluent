@@ -536,13 +536,13 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
         True
     )
     two_dim_mesh.generate_initial_surface_mesh()
@@ -555,13 +555,13 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     two_dim_mesh.task("aspect-ratio_1").offset_method_type = "uniform"
     two_dim_mesh.task("aspect-ratio_1")()
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
         True
     )
     two_dim_mesh.generate_initial_surface_mesh()
@@ -574,13 +574,13 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     two_dim_mesh.task("uniform_1").offset_method_type = "smooth-transition"
     two_dim_mesh.task("uniform_1")()
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
     )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
         True
     )
     two_dim_mesh.generate_initial_surface_mesh()
