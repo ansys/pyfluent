@@ -260,7 +260,7 @@ def launch_remote_fluent(
             if FluentMode.is_meshing(mode)
             else "fluent-2ddp" if dimensionality == "2d" else "fluent-3ddp"
         ),
-        product_version=product_version.value,
+        product_version=product_version.value if product_version else None,
     )
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:

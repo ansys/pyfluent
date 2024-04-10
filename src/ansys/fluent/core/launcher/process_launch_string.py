@@ -54,12 +54,13 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
     addArgs = kwargs["additional_arguments"]
-    if "-t" not in addArgs and "-cnf=" not in addArgs:
-        parallel_options = build_parallel_options(
-            load_machines(ncores=kwargs["processor_count"])
-        )
-        if parallel_options:
-            launch_args_string += " " + parallel_options
+    if addArgs:
+        if "-t" not in addArgs and "-cnf=" not in addArgs:
+            parallel_options = build_parallel_options(
+                load_machines(ncores=kwargs["processor_count"])
+            )
+            if parallel_options:
+                launch_args_string += " " + parallel_options
     gpu = kwargs.get("gpu")
     if gpu is True:
         launch_args_string += " -gpu"
