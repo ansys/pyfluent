@@ -205,7 +205,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 
 
 def _get_standalone_launch_fluent_version(
-    product_version: Union[FluentVersion, str, None]
+    product_version: Union[FluentVersion, None]
 ) -> Optional[FluentVersion]:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.

@@ -29,6 +29,7 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -44,7 +45,7 @@ class PIMLauncher:
         mode: FluentMode,
         ui_mode: UIMode,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
-        product_version: Optional[str] = None,
+        product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -76,11 +77,9 @@ class PIMLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : str, optional
-            Version of Ansys Fluent to launch. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
-            FluentVersion class. The default is ``None``, in which case the newest installed
-            version is used.
+        product_version : FluentVersion, optional
+            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+            The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
             in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -188,7 +187,7 @@ class PIMLauncher:
             "Starting Fluent remotely. The startup configuration will be ignored."
         )
         if self.product_version:
-            fluent_product_version = "".join(self.product_version.split("."))[:-1]
+            fluent_product_version = str(self.product_version.number)
         else:
             fluent_product_version = None
 
@@ -207,7 +206,7 @@ class PIMLauncher:
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
-    product_version: Optional[str] = None,
+    product_version: Optional[FluentVersion] = None,
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Optional[str] = None,
@@ -229,11 +228,9 @@ def launch_remote_fluent(
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via method calls on the session object.
-    product_version : str, optional
-        Ansys version to use. The string must be in a format like
-        ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
-        FluentVersion class. The default is ``None``, in which case the newest installed
-        version is used.
+    product_version : FluentVersion, optional
+        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        The default is ``None``, in which case the newest installed version is used.
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
@@ -263,7 +260,7 @@ def launch_remote_fluent(
             if FluentMode.is_meshing(mode)
             else "fluent-2ddp" if dimensionality == "2d" else "fluent-3ddp"
         ),
-        product_version=product_version,
+        product_version=product_version.value,
     )
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:

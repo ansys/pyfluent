@@ -43,6 +43,7 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_name,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -55,7 +56,7 @@ class StandaloneLauncher:
         mode: FluentMode,
         ui_mode: UIMode,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
-        product_version: Optional[str] = None,
+        product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -87,11 +88,9 @@ class StandaloneLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : str, optional
-            Version of Ansys Fluent to launch. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
-            FluentVersion class. The default is ``None``, in which case the newest installed
-            version is used.
+        product_version : FluentVersion, optional
+            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+            The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
             in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
