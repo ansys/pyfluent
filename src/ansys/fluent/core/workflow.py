@@ -12,7 +12,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
-    PyCommand,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -360,6 +359,9 @@ class BaseTask:
                         self._command_source._help_string_display_text_map[
                             self._python_name
                         ] = self.display_name()
+                    self._command_source._help_string_command_id_map[
+                        self._python_name
+                    ] = this_command.command
                 except Exception:
                     pass
             else:
@@ -1150,7 +1152,6 @@ class Workflow:
             "workflow",
         }
         self._fluent_version = fluent_version
-        self._populate_help_string_command_id_map()
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper.
@@ -1330,22 +1331,6 @@ class Workflow:
     def load_state(self, list_of_roots: list):
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
-
-    def _populate_help_string_command_id_map(self):
-        if not self._help_string_command_id_map:
-            for command in dir(self._command_source):
-                if command in ["SwitchToSolution", "set_state"]:
-                    continue
-                command_obj = getattr(self._command_source, command)
-                if isinstance(command_obj, PyCommand):
-                    command_obj_instance = command_obj.create_instance()
-                    help_str = command_obj_instance.get_attr("helpString")
-                    if help_str and help_str.islower():
-                        self._help_string_command_id_map[help_str] = command
-                        # self._help_string_display_text_map[help_str] = (
-                        #     command_obj_instance.get_attr("displayText")
-                        # )
-                    del command_obj_instance
 
     def get_possible_tasks(self):
         """Get the list of possible names of commands that can be inserted as tasks."""
