@@ -83,7 +83,9 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         shutil.copyfile(file_name, str(local_file_name))
 
 
-def _get_files(file_name: Union[str, pathlib.PurePath, List[str, pathlib.PurePath]]):
+def _get_files(
+    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]]
+):
     path = "/home/runner/.local/share/ansys_fluent_core/examples"
     if os.path.exists(path):
         if isinstance(file_name, str):
