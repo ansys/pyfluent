@@ -478,7 +478,7 @@ class FieldTransaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
         node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
+        boundary_value: Optional[bool] = True,
     ) -> None:
         """Add request to get scalar field data on surfaces.
 
@@ -495,7 +495,7 @@ class FieldTransaction:
             ``False``, the element location is provided.
         boundary_value : bool, optional
             Whether to provide the slip velocity at the wall boundaries. The default
-            is ``False``. When ``True``, no slip velocity is provided.
+            is ``True``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
@@ -1155,7 +1155,7 @@ class FieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
         node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
+        boundary_value: Optional[bool] = True,
     ) -> Union[ScalarFieldData, Dict[int, ScalarFieldData]]:
         """Get scalar field data on a surface.
 
@@ -1172,7 +1172,7 @@ class FieldData:
             When ``False``, data is provided for the element location.
         boundary_value : bool, optional
             Whether to provide slip velocity at the wall boundaries. The default is
-            ``False``. When ``True``, no slip velocity is provided.
+            ``True``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
