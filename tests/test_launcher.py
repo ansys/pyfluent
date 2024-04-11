@@ -327,7 +327,7 @@ def test_fluent_launchers():
             processor_count=None,
             journal_file_names=None,
             start_timeout=None,
-            additional_arguments=None,
+            additional_arguments="",
             env=None,
             container_dict=None,
             dry_run=None,
