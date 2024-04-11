@@ -319,13 +319,19 @@ def test_fluent_launchers():
 
     if check_docker_support():
         container_meshing_launcher = create_launcher(
-            LaunchMode.CONTAINER, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.CONTAINER,
+            mode=FluentMode.MESHING_MODE,
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
         )
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
 
         container_solver_launcher = create_launcher(
-            LaunchMode.CONTAINER, mode=FluentMode.SOLVER, **kwargs
+            LaunchMode.CONTAINER,
+            mode=FluentMode.SOLVER,
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
         )
         container_solver_session = container_solver_launcher()
         assert container_solver_session
