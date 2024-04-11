@@ -1486,6 +1486,7 @@ class Action(Base):
 
     _child_classes = {}
     _child_aliases = {}
+    argument_names = []
 
     def __init__(self, name: Optional[str] = None, parent=None):
         """__init__ of Action class."""
