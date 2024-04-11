@@ -213,9 +213,10 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                     )
 
     def _get_active_containers(self, file_name: str, port: int) -> List[str]:
+        print(f"\nport = {port}\n")
         results = []
         print(f"\nfile_name = {file_name}\n")
-        with open(f"{file_name}", "r") as f:
+        with open(str(file_name), "r") as f:
             lines = f.readlines()
             for line in lines:
                 if line.find(f"{port}") != -1:
