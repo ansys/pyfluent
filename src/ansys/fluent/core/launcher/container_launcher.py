@@ -224,14 +224,17 @@ class DockerLauncher:
 
         port, password = start_fluent_container(args, self.container_dict)
 
+        fluent_connection = FluentConnection(
+            port=port,
+            password=password,
+            cleanup_on_exit=self.cleanup_on_exit,
+            slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
+            inside_container=True,
+        )
+
         session = self.new_session(
-            fluent_connection=FluentConnection(
-                port=port,
-                password=password,
-                cleanup_on_exit=self.cleanup_on_exit,
-                slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
-                inside_container=True,
-            ),
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.start_transcript,
         )
