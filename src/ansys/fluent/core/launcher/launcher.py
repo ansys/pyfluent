@@ -359,7 +359,6 @@ def connect_to_fluent(
         port=port,
         password=password,
         cleanup_on_exit=cleanup_on_exit,
-        start_transcript=start_transcript,
     )
     new_session = _get_running_session_mode(fluent_connection)
 
@@ -374,4 +373,6 @@ def connect_to_fluent(
 
     return new_session(
         fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        start_transcript=start_transcript,
     )

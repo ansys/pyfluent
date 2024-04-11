@@ -1,8 +1,9 @@
 """Module containing class encapsulating Fluent connection."""
 
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 
@@ -20,17 +21,30 @@ class Meshing(PureMeshing):
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """Meshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            file_transfer_service: Supports file upload and download.
+            scheme_eval: SchemeEval
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+            file_transfer_service: Optional
+                Service for uploading and downloading files.
+            start_transcript : bool, optional
+                Whether to start the Fluent transcript in the client.
+                The default is ``True``, in which case the Fluent transcript can be subsequently
+                started and stopped using method calls on the ``Session`` object.
         """
         super(Meshing, self).__init__(
             fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
@@ -39,6 +53,7 @@ class Meshing(PureMeshing):
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self._fluent_connection,
+            scheme_eval=self.scheme_eval,
             file_transfer_service=self._file_transfer_service,
         )
         delattr(self, "switch_to_solver")

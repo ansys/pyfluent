@@ -164,7 +164,7 @@ def _get_running_session_mode(
         try:
             session_mode = FluentMode.get_mode(
                 "solver"
-                if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
+                if fluent_connection._connection_interface.is_solver_mode()
                 else "meshing"
             )
         except Exception as ex:

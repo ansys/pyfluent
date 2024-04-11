@@ -5,10 +5,10 @@ import functools
 import importlib
 import logging
 import threading
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 import warnings
 
-from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
@@ -77,21 +77,38 @@ class Solver(BaseSession):
     def __init__(
         self,
         fluent_connection,
+        scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """Solver session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            scheme_eval: SchemeEval
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
             file_transfer_service: Supports file upload and download.
+            start_transcript : bool, optional
+                Whether to start the Fluent transcript in the client.
+                The default is ``True``, in which case the Fluent transcript can be subsequently
+                started and stopped using method calls on the ``Session`` object.
         """
         super(Solver, self).__init__(
             fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
-        self._build_from_fluent_connection(fluent_connection)
+        self._build_from_fluent_connection(fluent_connection, scheme_eval)
 
-    def _build_from_fluent_connection(self, fluent_connection):
+    def _build_from_fluent_connection(
+        self,
+        fluent_connection,
+        scheme_eval: SchemeEval,
+        file_transfer_service: Optional[Any] = None,
+    ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
         self._settings_service = self._settings_service
@@ -206,7 +223,7 @@ class Solver(BaseSession):
                 flproxy=self._settings_service,
                 version=self._version,
                 file_transfer_service=self._file_transfer_service,
-                scheme_eval=self._fluent_connection.scheme_eval.scheme_eval,
+                scheme_eval=self.scheme_eval.scheme_eval,
             )
         return self._settings_root
 
@@ -232,9 +249,13 @@ class Solver(BaseSession):
                 raise RuntimeError("Unable to read mesh") from ex
             state = self.settings.get_state()
             super(Solver, self)._build_from_fluent_connection(
-                fut_session._fluent_connection
+                fut_session._fluent_connection,
+                fut_session._fluent_connection._connection_interface.scheme_eval,
             )
-            self._build_from_fluent_connection(fut_session._fluent_connection)
+            self._build_from_fluent_connection(
+                fut_session._fluent_connection,
+                fut_session._fluent_connection._connection_interface.scheme_eval,
+            )
             # TODO temporary fix till set_state at settings root is fixed
             _set_state_safe(self.settings, state)
 
@@ -249,7 +270,7 @@ class Solver(BaseSession):
         import ansys.fluent.core as pyfluent
 
         self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
-        launcher_args = dict(self._fluent_connection.launcher_args)
+        launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
         fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)

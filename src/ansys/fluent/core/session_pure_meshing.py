@@ -1,11 +1,12 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.services.meshing_queries import (
     MeshingQueries,
     MeshingQueriesService,
@@ -30,17 +31,29 @@ class PureMeshing(BaseSession):
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """PureMeshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            scheme_eval: SchemeEval
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
             file_transfer_service: Supports file upload and download.
+            start_transcript : bool, optional
+                Whether to start the Fluent transcript in the client.
+                The default is ``True``, in which case the Fluent transcript can be subsequently
+                started and stopped using method calls on the ``Session`` object.
         """
         super(PureMeshing, self).__init__(
             fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
