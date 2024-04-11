@@ -107,10 +107,7 @@ def _get_files(file_name: Any):
     else:
         if isinstance(file_name, str):
             files = [file_name]
-        elif isinstance(
-            file_name,
-            pathlib.PurePath
-        ):
+        elif isinstance(file_name, pathlib.PurePath):
             files = [str(file_name)]
         elif isinstance(file_name, list):
             files = [str(file) for file in file_name]
