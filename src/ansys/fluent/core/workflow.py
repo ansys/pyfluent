@@ -656,12 +656,6 @@ class ArgumentsWrapper(PyCallableStateObject):
                 pass
             raise ValueError("Invalid task argument state") from ex
 
-    def _build_naming_map_for_state_assign_method(self):
-        try:
-            self.get_state()
-        except Exception:
-            pass
-
     def _just_set_state(self, args):
         if self._dynamic_interface:
             camel_args = {}
