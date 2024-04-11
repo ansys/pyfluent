@@ -252,6 +252,7 @@ def launch_remote_fluent(
 
     return session_cls(
         fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_transfer_service,
         start_transcript=start_transcript,
     )

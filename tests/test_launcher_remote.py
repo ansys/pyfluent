@@ -100,14 +100,16 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     server.start()
 
     with pytest.raises(UnsupportedRemoteFluentInstance) as msg:
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password="12345",
+            remote_instance=mock_instance,
+            cleanup_on_exit=False,
+        )
         session = BaseSession(
-            FluentConnection(
-                ip=ip,
-                port=port,
-                password="12345",
-                remote_instance=mock_instance,
-                cleanup_on_exit=False,
-            )
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
         session.exit(wait=60)
         session._fluent_connection.wait_process_finished(wait=60)
@@ -145,6 +147,7 @@ def test_file_purpose_on_remote_instance(
 
     solver_session = Solver(
         fluent_connection=solver._fluent_connection,
+        scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_service,
     )
 
@@ -160,6 +163,7 @@ def test_file_purpose_on_remote_instance(
 
     meshing_session = PureMeshing(
         fluent_connection=meshing._fluent_connection,
+        scheme_eval=meshing._fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_service,
     )
 
