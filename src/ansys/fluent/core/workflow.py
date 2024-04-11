@@ -1382,7 +1382,7 @@ class Workflow:
         Raises
         ------
         ValueError
-            If command_name does not match a task name. None of the tasks is deleted.
+            If 'command_name' does not match a task name, no tasks are deleted.
         """
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
