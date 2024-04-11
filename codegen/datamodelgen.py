@@ -488,7 +488,7 @@ def generate(
     generate_rst: bool,
     generate_py: bool,
 ):
-    """Generates datamodel codegen files.
+    """Generate datamodel files.
 
     Parameters
     ----------
