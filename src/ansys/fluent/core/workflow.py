@@ -618,11 +618,19 @@ class ArgumentsWrapper(PyCallableStateObject):
 
     def _assign(self, args: dict, fn) -> None:
         try:
+            # We get the initial state for exception safety, but this also
+            # has the positive side effect of populating the name map.
+            # So, if this initial state access is removed then we must ensure
+            # that we populate that map. But we can also optimise by keeping
+            # a global map and only fetching the remote state for unpopulated
+            # paths. Furthermore we can generate all name information statically,
+            # avoiding remote trips. In order to avoid the initial get_state for
+            # exception safety, we could optionally return the current state from
+            # set_state.
             old_state = self.get_state()
         except Exception:
             old_state = None
         if self._dynamic_interface:
-            self._build_naming_map_for_state_assign_method()
             camel_args = {}
             for key, val in args.items():
                 camel_args[
