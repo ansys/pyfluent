@@ -319,6 +319,8 @@ def test_fluent_launchers():
 
     if check_docker_support():
         kargs = dict(
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
             product_version=None,
             version=None,
             precision=None,
@@ -344,8 +346,6 @@ def test_fluent_launchers():
         container_meshing_launcher = create_launcher(
             LaunchMode.CONTAINER,
             mode=FluentMode.MESHING_MODE,
-            ui_mode=kwargs["ui_mode"],
-            graphics_driver=kwargs["graphics_driver"],
             **kargs,
         )
         container_meshing_session = container_meshing_launcher()
@@ -354,8 +354,6 @@ def test_fluent_launchers():
         container_solver_launcher = create_launcher(
             LaunchMode.CONTAINER,
             mode=FluentMode.SOLVER,
-            ui_mode=kwargs["ui_mode"],
-            graphics_driver=kwargs["graphics_driver"],
             **kargs,
         )
         container_solver_session = container_solver_launcher()
