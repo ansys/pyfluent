@@ -318,11 +318,35 @@ def test_fluent_launchers():
         assert standalone_solver_session
 
     if check_docker_support():
+        kargs = dict(
+            product_version=None,
+            version=None,
+            precision=None,
+            processor_count=None,
+            journal_file_names=None,
+            start_timeout=None,
+            additional_arguments=None,
+            env=None,
+            container_dict=None,
+            dry_run=None,
+            cleanup_on_exit=None,
+            start_transcript=None,
+            case_file_name=None,
+            case_data_file_name=None,
+            lightweight_mode=None,
+            py=None,
+            gpu=None,
+            cwd=None,
+            topy=None,
+            start_watchdog=None,
+            file_transfer_service=None,
+        )
         container_meshing_launcher = create_launcher(
             LaunchMode.CONTAINER,
             mode=FluentMode.MESHING_MODE,
             ui_mode=kwargs["ui_mode"],
             graphics_driver=kwargs["graphics_driver"],
+            **kargs,
         )
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
@@ -332,6 +356,7 @@ def test_fluent_launchers():
             mode=FluentMode.SOLVER,
             ui_mode=kwargs["ui_mode"],
             graphics_driver=kwargs["graphics_driver"],
+            **kargs,
         )
         container_solver_session = container_solver_launcher()
         assert container_solver_session
