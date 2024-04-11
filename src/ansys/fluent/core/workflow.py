@@ -568,7 +568,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             If operation fails.
         """
         try:
-            old_state = self._task.Arguments.get_state()
+            old_state = self.get_state()  # self._task.Arguments.get_state()
         except Exception:
             old_state = None
         if self._dynamic_interface:
@@ -584,8 +584,10 @@ class ArgumentsWrapper(PyCallableStateObject):
         try:
             self._task._command_arguments()
         except Exception as ex:
-            if old_state is not None:
-                self.set_state(dict(number_of_flow_volumes=1))  # (old_state)
+            if True:  # old_state is not None:
+                self._just_set_state(
+                    old_state
+                )  # (dict(number_of_flow_volumes=1))  # (old_state)
                 try:
                     self._task._command_arguments()
                 except Exception:
@@ -606,7 +608,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             If operation fails.
         """
         try:
-            old_state = self._task.Arguments.get_state()
+            old_state = self.get_state()  # self._task.Arguments.get_state()
         except Exception:
             old_state = None
         if self._dynamic_interface:
@@ -624,8 +626,10 @@ class ArgumentsWrapper(PyCallableStateObject):
         try:
             self._task._command_arguments()
         except Exception as ex:
-            if old_state is not None:
-                self.set_state(dict(number_of_flow_volumes=1))  # (old_state)
+            if True:  # old_state is not None:
+                self._just_set_state(
+                    old_state
+                )  # (dict(number_of_flow_volumes=1))  # (old_state)
                 try:
                     self._task._command_arguments()
                 except Exception:
@@ -669,6 +673,16 @@ class ArgumentsWrapper(PyCallableStateObject):
             self.get_state()
         except Exception:
             pass
+
+    def _just_set_state(self, args):
+        if self._dynamic_interface:
+            camel_args = {}
+            if isinstance(args, dict):
+                for key, val in args.items():
+                    camel_args[_global_snake_to_camel_map[key]] = val
+            self._task.Arguments.set_state(camel_args)
+        else:
+            self._task.Arguments.set_state(args)
 
     def __getattr__(self, attr):
         return getattr(self._task._command_arguments, attr)
@@ -854,6 +868,8 @@ class CommandTask(BaseTask):
         return cmd
 
     def _command(self):
+        cmd = self._cmd
+        del cmd
         self._cmd = None
         if not self._cmd:
             self._cmd = _new_command_for_task(self._task, self._source)
