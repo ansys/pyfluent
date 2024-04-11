@@ -562,8 +562,8 @@ class ArgumentsWrapper(PyCallableStateObject):
 
         Raises
         ------
-        Exception
-            If operation fails.
+        ValueError
+            If input is invalid.
         """
         self._assign(args, "set_state")
 
@@ -577,8 +577,8 @@ class ArgumentsWrapper(PyCallableStateObject):
 
         Raises
         ------
-        Exception
-            If operation fails.
+        ValueError
+            If input is invalid.
         """
         self._assign(args, "update_dict")
 
@@ -643,7 +643,10 @@ class ArgumentsWrapper(PyCallableStateObject):
             getattr(self._task.Arguments, fn)(camel_args)
         else:
             getattr(self._task.Arguments, fn)(args)
-        self._refresh_command_after_changing_args(old_state)
+        try:
+            self._refresh_command_after_changing_args(old_state)
+        except Exception as ex:
+            raise ValueError("Invalid task arguments, {args} for '{self._task.python_name()}'.") from ex
 
     def _refresh_command_after_changing_args(self, recovery_state) -> None:
         try:
@@ -654,7 +657,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 self._task._refreshed_command()()
             except Exception:
                 pass
-            raise ValueError("Invalid task argument state") from ex
+            raise ex
 
     def _just_set_state(self, args):
         if self._dynamic_interface:
