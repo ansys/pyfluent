@@ -607,7 +607,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Exception
             If operation fails.
         """
-        self._assign(args)
+        self._assign(args, "update_dict")
 
     def get_state(self, explicit_only=False) -> dict:
         """Get the state of the arguments.
@@ -641,7 +641,7 @@ class ArgumentsWrapper(PyCallableStateObject):
 
         return state_dict
 
-    def _assign(self, args: dict) -> None:
+    def _assign(self, args: dict, fn) -> None:
         try:
             old_state = self.get_state()
         except Exception:
@@ -653,9 +653,9 @@ class ArgumentsWrapper(PyCallableStateObject):
                 camel_args[
                     _global_snake_to_camel_map[key] if key.islower() else key
                 ] = val
-            self._task.Arguments.update_dict(camel_args)
+            getattr(self._task.Arguments, fn)(camel_args)
         else:
-            self._task.Arguments.update_dict(args)
+            getattr(self._task.Arguments, fn)(args)
         # implicitly refresh the command arguments
         # - adding a safety net
         try:
