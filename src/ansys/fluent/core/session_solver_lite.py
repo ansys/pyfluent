@@ -16,6 +16,7 @@ class SolverLite(Solver):
     def __init__(
         self,
         fluent_connection=None,
+        scheme_eval=None,
         start_transcript: bool = True,
         launcher_args: Optional[Dict[str, Any]] = None,
     ):
@@ -23,9 +24,16 @@ class SolverLite(Solver):
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            scheme_eval: SchemeEval
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+            start_transcript : bool, optional
+                Whether to start the Fluent transcript in the client.
+                The default is ``True``, in which case the Fluent transcript can be subsequently
+                started and stopped using method calls on the ``Session`` object.
         """
         super().__init__(
             fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
         )
@@ -38,5 +46,7 @@ class SolverLite(Solver):
 
     def switch_to_full_solver(self):
         """A switch to move to the full-solver session from solver-lite."""
-        solver_session = Solver(fluent_connection=self._fluent_connection)
+        solver_session = Solver(
+            fluent_connection=self._fluent_connection, scheme_eval=self.scheme_eval
+        )
         return solver_session
