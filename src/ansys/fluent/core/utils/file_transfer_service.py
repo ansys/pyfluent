@@ -22,7 +22,7 @@ class PyPIMConfigurationError(ConnectionError):
         super().__init__("PyPIM is not configured.")
 
 
-class FiletransferStrategy(Protocol):
+class FileTransferStrategy(Protocol):
     """Provides the file transfer strategy."""
 
     def upload(
@@ -38,7 +38,7 @@ class FiletransferStrategy(Protocol):
         ...
 
 
-class LocalFileTransferStrategy(FiletransferStrategy):
+class LocalFileTransferStrategy(FileTransferStrategy):
     """Provides the local file transfer strategy."""
 
     def __init__(self):
@@ -83,22 +83,12 @@ class LocalFileTransferStrategy(FiletransferStrategy):
         shutil.copyfile(file_name, str(local_file_name))
 
 
-def _get_files(file_name: Any):
+def _get_files(file_name: Union[str, pathlib.PurePath, List[str, pathlib.PurePath]]):
     path = "/home/runner/.local/share/ansys_fluent_core/examples"
     if os.path.exists(path):
         if isinstance(file_name, str):
             files = [str(os.path.join(path, os.path.basename(file_name)))]
-        elif isinstance(
-            file_name,
-            (
-                pathlib.Path,
-                pathlib.PurePath,
-                pathlib.PosixPath,
-                pathlib.PurePosixPath,
-                pathlib.WindowsPath,
-                pathlib.PureWindowsPath,
-            ),
-        ):
+        elif isinstance(file_name, pathlib.PurePath):
             files = [str(os.path.join(path, file_name.name))]
         elif isinstance(file_name, list):
             files = [
@@ -107,17 +97,14 @@ def _get_files(file_name: Any):
     else:
         if isinstance(file_name, str):
             files = [file_name]
-        elif isinstance(
-            file_name,
-            pathlib.PurePath
-        ):
+        elif isinstance(file_name, pathlib.PurePath):
             files = [str(file_name)]
         elif isinstance(file_name, list):
             files = [str(file) for file in file_name]
     return files
 
 
-class RemoteFileTransferStrategy(FiletransferStrategy):
+class RemoteFileTransferStrategy(FileTransferStrategy):
     """Provides a file transfer service based on the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_
     and ``gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
     """
