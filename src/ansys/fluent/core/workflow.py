@@ -868,9 +868,6 @@ class CommandTask(BaseTask):
         return cmd
 
     def _command(self):
-        cmd = self._cmd
-        del cmd
-        self._cmd = None
         if not self._cmd:
             self._cmd = _new_command_for_task(self._task, self._source)
         return self._cmd
