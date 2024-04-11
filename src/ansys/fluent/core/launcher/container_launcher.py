@@ -88,18 +88,12 @@ class DockerLauncher:
             Number of processors. The default is ``None``, in which case ``1``
             processor is used.  In job scheduler environments the total number of
             allocated cores is clamped to value of ``processor_count``.
-        journal_file_names : str or list of str, optional
-            The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
-            journal(s). The default is ``None``.
         start_timeout : int, optional
             Maximum allowable time in seconds for connecting to the Fluent
             server. The default is ``60``.
         additional_arguments : str, optional
             Additional arguments to send to Fluent as a string in the same
             format they are normally passed to Fluent on the command line.
-        env : dict[str, str], optional
-            Mapping to modify environment variables in Fluent. The default
-            is ``None``.
         container_dict : dict, optional
             Dictionary for Fluent Docker container configuration. The configuration settings specified in this
             dictionary are used to launch Fluent inside a Docker container.
@@ -117,26 +111,10 @@ class DockerLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        case_file_name : str, optional
-            If provided, the case file at ``case_file_name`` is read into the Fluent session.
-        case_data_file_name : str, optional
-            If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
-        lightweight_mode : bool, optional
-            Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
-            current Fluent solver session. The mesh is read into a background Fluent solver session which will
-            replace the current Fluent solver session once the mesh read is complete and the lightweight settings
-            made by the user in the current Fluent solver session have been applied in the background Fluent
-            solver session. This is all orchestrated by PyFluent and requires no special usage.
-            This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
         py : bool, optional
             If True, Fluent will run in Python mode. Default is None.
         gpu : bool, optional
             If True, Fluent will start with GPU Solver.
-        cwd : str, Optional
-            Working directory for the Fluent client.
-        topy : bool or str, optional
-            A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
-            Can optionally take the file name of the new python journal file.
         start_watchdog : bool, optional
             When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
             which means an independent watchdog process is run to ensure
