@@ -615,6 +615,12 @@ class ArgumentsWrapper(PyCallableStateObject):
         return state_dict
 
     def _assign(self, args: dict, fn) -> None:
+        # this function sets the task arguments' state, either via update_dict
+        # or set_state. Datamodel dicts are not subject to rules at the
+        # key-value level. In order to trigger rules validation, it's necessary
+        # to apply the arguments' state to the actual command, and that is what
+        # we do here. If the introduced arguments' state is invalid, we leave the
+        # target state unaffected (by repairing it) and throw an exception.
         try:
             # We get the initial state for exception safety, but this also
             # has the positive side effect of populating the name map.
@@ -648,7 +654,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 self._task._refreshed_command()()
             except Exception:
                 pass
-            raise ex
+            raise ValueError("Invalid task argument state") from ex
 
     def _build_naming_map_for_state_assign_method(self):
         try:
