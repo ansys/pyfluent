@@ -109,14 +109,7 @@ def _get_files(file_name: Any):
             files = [file_name]
         elif isinstance(
             file_name,
-            (
-                pathlib.Path,
-                pathlib.PurePath,
-                pathlib.PosixPath,
-                pathlib.PurePosixPath,
-                pathlib.WindowsPath,
-                pathlib.PureWindowsPath,
-            ),
+            pathlib.PurePath
         ):
             files = [str(file_name)]
         elif isinstance(file_name, list):
