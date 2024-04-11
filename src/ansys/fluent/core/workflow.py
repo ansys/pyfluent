@@ -607,34 +607,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         Exception
             If operation fails.
         """
-        try:
-            old_state = self.get_state()  # self._task.Arguments.get_state()
-        except Exception:
-            old_state = None
-        if self._dynamic_interface:
-            self._build_naming_map_for_state_assign_method()
-            camel_args = {}
-            for key, val in args.items():
-                camel_args[
-                    _global_snake_to_camel_map[key] if key.islower() else key
-                ] = val
-            self._task.Arguments.update_dict(camel_args)
-        else:
-            self._task.Arguments.update_dict(args)
-        # implicitly refresh the command arguments
-        # - adding a safety net
-        try:
-            self._task._command_arguments()
-        except Exception as ex:
-            if True:  # old_state is not None:
-                self._just_set_state(
-                    old_state
-                )  # (dict(number_of_flow_volumes=1))  # (old_state)
-                try:
-                    self._task._command_arguments()
-                except Exception:
-                    pass
-            raise ex
+        self._assign(args)
 
     def get_state(self, explicit_only=False) -> dict:
         """Get the state of the arguments.
@@ -667,6 +640,33 @@ class ArgumentsWrapper(PyCallableStateObject):
             return snake_case_state_dict
 
         return state_dict
+
+    def _assign(self, args: dict) -> None:
+        try:
+            old_state = self.get_state()
+        except Exception:
+            old_state = None
+        if self._dynamic_interface:
+            self._build_naming_map_for_state_assign_method()
+            camel_args = {}
+            for key, val in args.items():
+                camel_args[
+                    _global_snake_to_camel_map[key] if key.islower() else key
+                ] = val
+            self._task.Arguments.update_dict(camel_args)
+        else:
+            self._task.Arguments.update_dict(args)
+        # implicitly refresh the command arguments
+        # - adding a safety net
+        try:
+            self._task._command_arguments()
+        except Exception as ex:
+            self._just_set_state(old_state)
+            try:
+                self._task._command_arguments()
+            except Exception:
+                pass
+            raise ex
 
     def _build_naming_map_for_state_assign_method(self):
         try:
