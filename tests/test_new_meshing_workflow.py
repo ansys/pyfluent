@@ -1285,4 +1285,3 @@ def test_camel_to_snake_case_convertor():
     assert camel_to_snake_case("Abc2DDc$") == "abc_2d_dc$"
     assert camel_to_snake_case("A2DDc$") == "a2d_dc$"
     assert camel_to_snake_case("") == ""
-
