@@ -18,8 +18,6 @@ from ansys.fluent.core.services.datamodel_se import (
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-_global_snake_to_camel_map = {}
-
 
 def camel_to_snake_case(camel_case_str: str) -> str:
     """Convert camel case input string to snake case output string."""
@@ -339,7 +337,7 @@ class BaseTask:
         _args = self.arguments
         _camel_args = []
         for arg in _args().keys():
-            _camel_args.append(_global_snake_to_camel_map[arg])
+            _camel_args.append(_args._snake_to_camel_map[arg])
 
         return _camel_args
 
@@ -606,11 +604,11 @@ class ArgumentsWrapper(PyCallableStateObject):
                     PySingletonCommandArgumentsSubItem,
                 ):
                     for k, v in val.items():
-                        _global_snake_to_camel_map[camel_to_snake_case(k)] = k
+                        self._snake_to_camel_map[camel_to_snake_case(k)] = k
                         nested_val[camel_to_snake_case(k)] = v
                 else:
                     nested_val = val
-                _global_snake_to_camel_map[camel_to_snake_case(key)] = key
+                self._snake_to_camel_map[camel_to_snake_case(key)] = key
                 snake_case_state_dict[camel_to_snake_case(key)] = nested_val
             return snake_case_state_dict
 
@@ -633,9 +631,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         if self._dynamic_interface:
             camel_args = {}
             for key, val in args.items():
-                camel_args[
-                    _global_snake_to_camel_map[key] if key.islower() else key
-                ] = val
+                camel_args[self._snake_to_camel_map[key] if key.islower() else key] = (
+                    val
+                )
             getattr(self._task.Arguments, fn)(camel_args)
         else:
             getattr(self._task.Arguments, fn)(args)
@@ -663,7 +661,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             camel_args = {}
             if isinstance(args, dict):
                 for key, val in args.items():
-                    camel_args[_global_snake_to_camel_map[key]] = val
+                    camel_args[self._snake_to_camel_map[key]] = val
             self._task.Arguments.set_state(camel_args)
         else:
             self._task.Arguments.set_state(args)
@@ -737,7 +735,7 @@ class ArgumentWrapper(PyCallableStateObject):
         ):
             snake_case_state_dict = {}
             for key, val in state_dict.items():
-                _global_snake_to_camel_map[camel_to_snake_case(key)] = key
+                self._snake_to_camel_map[camel_to_snake_case(key)] = key
                 snake_case_state_dict[camel_to_snake_case(key)] = val
             return snake_case_state_dict
 
@@ -748,7 +746,7 @@ class ArgumentWrapper(PyCallableStateObject):
         _camel_args = []
         for arg in _args().keys():
             try:
-                _camel_args.append(_global_snake_to_camel_map[arg])
+                _camel_args.append(self._snake_to_camel_map[arg])
             except KeyError:
                 _camel_args.append(arg)
 
