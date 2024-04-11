@@ -615,8 +615,8 @@ class ArgumentsWrapper(PyCallableStateObject):
         return state_dict
 
     def _assign(self, args: dict, fn) -> None:
-        # this function sets the task arguments' state, either via update_dict
-        # or set_state. Datamodel dicts are not subject to rules at the
+        # This function sets the task arguments' state, either via update_dict()
+        # or set_state(). Datamodel dicts are not subject to rules at the
         # key-value level. In order to trigger rules validation, it's necessary
         # to apply the arguments' state to the actual command, and that is what
         # we do here. If the introduced arguments' state is invalid, we leave the
@@ -625,12 +625,12 @@ class ArgumentsWrapper(PyCallableStateObject):
             # We get the initial state for exception safety, but this also
             # has the positive side effect of populating the name map.
             # So, if this initial state access is removed then we must ensure
-            # that we populate that map. But we can also optimise by keeping
+            # that we still populate that map. But we can also optimise by keeping
             # a global map and only fetching the remote state for unpopulated
             # paths. Furthermore we can generate all name information statically,
-            # avoiding remote trips. In order to avoid the initial get_state for
-            # exception safety, we could optionally return the current state from
-            # set_state.
+            # avoiding remote trips for such purposes. In order to avoid the initial
+            # get_state (to support exception safety), we could optionally return the
+            # current state from the prior set_state invocation.
             old_state = self.get_state()
         except Exception:
             old_state = None
