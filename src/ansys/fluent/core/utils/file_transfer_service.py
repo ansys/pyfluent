@@ -216,16 +216,12 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         results = []
         with open(str(file_name), "r") as f:
             lines = f.readlines()
-            for line in lines:
-                print(f"\n {line} \n")
-                if line.find(f"{port}") != -1:
-                    results.append(line)
-        print(f"\nresults = {results}\n")
+        results = [line for line in lines if line.find(f"{port}") != -1]
         return results
 
     def exit(self):
         """Stop the container."""
-        write_file = subprocess.Popen(f"docker ps > id_ports.txt", shell=True)
+        subprocess.Popen(f"docker ps > id_ports.txt", shell=True).wait()
         file_name = str(os.path.join(os.getcwd(), "id_ports.txt"))
         active_containers = self._get_active_containers(file_name, self.host_port)
         active_container_ids = [
