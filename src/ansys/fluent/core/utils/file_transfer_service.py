@@ -218,6 +218,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             lines = f.readlines()
             for line in lines:
                 if line.find(f"{port}") != -1:
+                    print(f"\n {line} \n")
                     results.append(line)
         print(f"\nresults = {results}\n")
         return results
