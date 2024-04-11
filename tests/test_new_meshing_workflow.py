@@ -656,9 +656,9 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
             getattr(watertight, attr)
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
-    assert len(watertight._task_list) == 11
+    assert len(watertight.ordered_children()) == 11
     watertight.insert_new_task("import_geometry")
-    assert len(watertight._task_list) == 12
+    assert len(watertight.ordered_children()) == 12
     watertight.task("import_geom_wtm").file_name = import_file_name
     watertight.task("import_geom_wtm").length_unit = "in"
     watertight.task("import_geom_wtm")()
@@ -677,7 +677,6 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     )
     watertight.task("import_geom_wtm").insert_next_task("set_up_periodic_boundaries")
     assert len(watertight.ordered_children()) == 14
-    assert len(watertight._task_list) == 14
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -1112,6 +1111,56 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
     }
 
 
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
+    watertight = new_mesh_session.watertight()
+    watertight.insert_new_task(command_name="import_geometry")
+    watertight.insert_new_task(command_name="import_geometry")
+
+    watertight.insert_new_task(command_name="add_local_sizing")
+    watertight.insert_new_task(command_name="add_boundary_layer")
+
+    assert set(watertight.get_possible_tasks()) == {
+        "import_geometry",
+        "add_local_sizing",
+        "create_surface_mesh",
+        "describe_geometry",
+        "apply_share_topology",
+        "enclose_fluid_regions",
+        "update_boundaries",
+        "create_regions",
+        "update_regions",
+        "add_boundary_layer",
+        "create_volume_mesh",
+    }
+
+    assert {child.python_name() for child in watertight.ordered_children()} == {
+        "import_geometry",
+        "add_local_sizing",
+        "create_surface_mesh",
+        "describe_geometry",
+        "apply_share_topology",
+        "enclose_fluid_regions",
+        "update_boundaries",
+        "create_regions",
+        "update_regions",
+        "add_boundary_layer",
+        "create_volume_mesh",
+        "import_geometry_1",
+        "import_geometry_2",
+        "add_local_sizing_1",
+        "add_boundary_layer_1",
+    }
+
+    assert watertight.import_geometry_2
+
+    with pytest.raises(AttributeError):
+        watertight.import_geometry_3
+
+    assert "add_boundary_layer_1" in dir(watertight)
+
+
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
@@ -1250,3 +1299,7 @@ def test_camel_to_snake_case_convertor():
     assert camel_to_snake_case("Abc2DDc$") == "abc_2d_dc$"
     assert camel_to_snake_case("A2DDc$") == "a2d_dc$"
     assert camel_to_snake_case("") == ""
+    assert camel_to_snake_case("BOIZoneorLabel") == "boi_zoneor_label"
+    assert camel_to_snake_case("BOIZoneOrLabel") == "boi_zone_or_label"
+    assert camel_to_snake_case("NumberofLayers") == "numberof_layers"
+    assert camel_to_snake_case("NumberOfLayers") == "number_of_layers"

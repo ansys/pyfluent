@@ -362,6 +362,9 @@ class BaseTask:
                     self._command_source._help_string_command_id_map[
                         self._python_name
                     ] = this_command.command
+                    self._command_source._help_string_display_id_map[
+                        self._python_name
+                    ] = this_command.get_attr("displayText")
                 except Exception:
                     pass
             else:
@@ -1139,6 +1142,7 @@ class Workflow:
         self._task_objects = {}
         self._dynamic_interface = False
         self._help_string_command_id_map = {}
+        self._help_string_display_id_map = {}
         self._help_string_display_text_map = {}
         self._repeated_task_help_string_display_text_map = {}
         self._unwanted_attrs = {
@@ -1336,7 +1340,7 @@ class Workflow:
         """Get the list of possible names of commands that can be inserted as tasks."""
         return [
             item
-            for item in self.child_task_python_names()
+            for item in self._help_string_command_id_map.keys()
             if item not in self._repeated_task_help_string_display_text_map.keys()
         ]
 
@@ -1388,8 +1392,10 @@ class Workflow:
         for task_name in list_of_tasks:
             try:
                 list_of_tasks_with_display_name.append(
-                    self._help_string_display_text_map[task_name]
+                    self._help_string_display_id_map[task_name]
                 )
+                self._help_string_display_text_map.pop(task_name, None)
+                self._repeated_task_help_string_display_text_map.pop(task_name, None)
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed command task.\n"
@@ -1419,7 +1425,7 @@ class Workflow:
         for task_name in list_of_tasks:
             try:
                 list_of_tasks_with_display_name.append(
-                    self._help_string_display_text_map[task_name]
+                    self._help_string_display_id_map[task_name]
                 )
             except KeyError:
                 raise RuntimeError(
