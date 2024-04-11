@@ -320,6 +320,22 @@ class BaseTask:
         """
         return int(self.get_id()[len("TaskObject") :])
 
+    def _populate_duplicate_task_list(self):
+        disp_text = self.display_name()
+        if disp_text.split()[-1].isdigit():
+            new_task = "".join(disp_text.rsplit(f" {disp_text.split()[-1]}", 1))
+            if (
+                new_task
+                == self._command_source._help_string_display_text_map[self._python_name]
+            ):
+                self._python_name = self._python_name + f"_{disp_text.split()[-1]}"
+                self._command_source._help_string_display_text_map[
+                    self._python_name
+                ] = disp_text
+                self._command_source._repeated_task_help_string_display_text_map[
+                    self._python_name
+                ] = disp_text
+
     def python_name(self) -> str:
         """Get the Pythonic name of this task, from the underlying application.
 
@@ -335,6 +351,15 @@ class BaseTask:
                     this_command = self._command()
                     # temp reuse helpString
                     self._python_name = this_command.get_attr("helpString")
+                    if (
+                        self._python_name
+                        in self._command_source._help_string_display_text_map
+                    ):
+                        self._populate_duplicate_task_list()
+                    else:
+                        self._command_source._help_string_display_text_map[
+                            self._python_name
+                        ] = self.display_name()
                 except Exception:
                     pass
             else:
@@ -1208,11 +1233,6 @@ class Workflow:
         """
         return []
 
-    def __getattribute__(self, item):
-        if item != "task" and not item.startswith("_"):
-            self._populate_map_for_repeated_tasks()
-        return super().__getattribute__(item)
-
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
         if attr in self._repeated_task_help_string_display_text_map:
@@ -1236,7 +1256,6 @@ class Workflow:
     def __dir__(self):
         """Override the behavior of ``dir`` to include attributes in the
         ``WorkflowWrapper`` class and the underlying workflow."""
-        self._populate_map_for_repeated_tasks()
         arg_list = [camel_to_snake_case(arg) for arg in dir(self._workflow)]
         dir_set = set(
             list(self.__dict__)
@@ -1323,22 +1342,10 @@ class Workflow:
                     help_str = command_obj_instance.get_attr("helpString")
                     if help_str and help_str.islower():
                         self._help_string_command_id_map[help_str] = command
-                        self._help_string_display_text_map[help_str] = (
-                            command_obj_instance.get_attr("displayText")
-                        )
+                        # self._help_string_display_text_map[help_str] = (
+                        #     command_obj_instance.get_attr("displayText")
+                        # )
                     del command_obj_instance
-
-    def _populate_map_for_repeated_tasks(self):
-        for task in self._task_list:
-            if task.split()[-1].isdigit():
-                if task in self._repeated_task_help_string_display_text_map.values():
-                    continue
-                new_task = "".join(task.rsplit(f" {task.split()[-1]}", 1))
-                if new_task in self._task_list:
-                    print(task)
-                    help_str = self.task(task).python_name() + f"_{task.split()[-1]}"
-                    self._help_string_display_text_map[help_str] = task
-                    self._repeated_task_help_string_display_text_map[help_str] = task
 
     def get_possible_tasks(self):
         """Get the list of possible names of commands that can be inserted as tasks."""
