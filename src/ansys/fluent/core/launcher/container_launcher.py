@@ -15,7 +15,7 @@ Examples
 
 import logging
 import os
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -52,21 +52,14 @@ class DockerLauncher:
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
-        journal_file_names: Union[None, str, list[str]] = None,
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
-        env: Optional[Dict[str, Any]] = None,
         container_dict: Optional[dict] = None,
         dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        case_file_name: Optional[str] = None,
-        case_data_file_name: Optional[str] = None,
-        lightweight_mode: Optional[bool] = None,
         py: Optional[bool] = None,
         gpu: Optional[bool] = None,
-        cwd: Optional[str] = None,
-        topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         file_transfer_service: Optional[Any] = None,
     ):
