@@ -1334,7 +1334,11 @@ class Workflow:
 
     def get_possible_tasks(self):
         """Get the list of possible names of commands that can be inserted as tasks."""
-        return self.child_task_python_names()
+        return [
+            item
+            for item in self.child_task_python_names()
+            if item not in self._repeated_task_help_string_display_text_map.keys()
+        ]
 
     def insert_new_task(self, command_name: str):
         """Insert a new task based on the command name passed as an argument.
