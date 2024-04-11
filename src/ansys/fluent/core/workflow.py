@@ -646,7 +646,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         try:
             self._refresh_command_after_changing_args(old_state)
         except Exception as ex:
-            raise ValueError("Invalid task arguments, {args} for '{self._task.python_name()}'.") from ex
+            raise ValueError(
+                "Invalid task arguments, {args} for '{self._task.python_name()}'."
+            ) from ex
 
     def _refresh_command_after_changing_args(self, recovery_state) -> None:
         try:
