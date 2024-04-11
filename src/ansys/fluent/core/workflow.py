@@ -228,9 +228,10 @@ class BaseTask:
         )
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by this task. Sorting is in terms of the
-        workflow order and only includes this task's top-level tasks, while other tasks
-        can be obtained by calling ordered_children() on a parent task.
+        """Get the ordered task list held by this task.
+
+        Sort tasks in terms of the workflow order and only includes this task's top-level tasks,
+        while other tasks can be obtained by calling ordered_children() on a parent task.
 
         Given the workflow::
 
@@ -320,12 +321,12 @@ class BaseTask:
         return int(self.get_id()[len("TaskObject") :])
 
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, as it is in the underlying application.
+        """Get the Pythonic name of this task, from the underlying application.
 
         Returns
         -------
         str
-            The Pythonic name of this task.
+            Pythonic name of the task.
         """
         if not self._python_name:
             display_name_map = self._command_source._help_string_display_text_map
@@ -1127,8 +1128,9 @@ class Workflow:
         self._populate_help_string_command_id_map()
 
     def task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
-        functionality.
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
+
+        The wrapper adds extra functionality.
 
         Parameters
         ----------
@@ -1142,10 +1144,12 @@ class Workflow:
         return _makeTask(self, name)
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow. Sorting is in terms of the
-        workflow order and only includes the top-level tasks, while other tasks can be
-        obtained by calling ordered_children() on a parent task. Consider the following
-        workflow.
+        """Get the ordered task list held by the workflow.
+
+        Sort tasks in terms of the workflow order and only include the top-level tasks,
+        while other tasks can be obtained by calling ordered_children() on a parent task.
+
+        Consider the following workflow.
 
         Given the workflow::
 
