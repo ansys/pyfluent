@@ -219,7 +219,6 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             for line in lines:
                 if line.find(f"{port}") != -1:
                     results.append(line)
-        os.remove(file_name)
         return results
 
     def exit(self):
