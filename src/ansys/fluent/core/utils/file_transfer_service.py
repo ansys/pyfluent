@@ -217,9 +217,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         with open(str(file_name), "r") as f:
             lines = f.readlines()
             for line in lines:
-                if f"{port}" in str(line):
-                    results.append(str(line))
-        print(f"\nresults = {results}\n")
+                results.append(line)
+        print(f"\n results = {results} \n")
         return results
 
     def exit(self):
@@ -231,12 +230,13 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             container.split(" ")[0] for container in active_containers
         ]
         for container_id in active_container_ids:
-            try:
-                stop_container = subprocess.Popen(
-                    f"docker kill {container_id}", shell=True
-                )
-            except Exception:
-                pass
+            if container_id == self.host_port:
+                try:
+                    stop_container = subprocess.Popen(
+                        f"docker kill {container_id}", shell=True
+                    )
+                except Exception:
+                    pass
 
     def __del__(self):
         self.exit()
