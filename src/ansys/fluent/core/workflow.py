@@ -430,6 +430,27 @@ class BaseTask:
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
+        if self.python_name() in self._repeated_task_help_string_display_text_map:
+            self._help_string_command_id_map[new_name] = (
+                self._help_string_command_id_map.pop(self.python_name(), None)
+            )
+            self._help_string_display_id_map[new_name] = (
+                self._help_string_display_id_map.pop(self.python_name(), None)
+            )
+            self._help_string_display_text_map.pop(self.python_name(), None)
+            self._repeated_task_help_string_display_text_map.pop(
+                self.python_name(), None
+            )
+        else:
+            self._help_string_command_id_map[new_name] = (
+                self._help_string_command_id_map[self.python_name()]
+            )
+            self._help_string_display_id_map[new_name] = (
+                self._help_string_display_id_map[self.python_name()]
+            )
+
+        self._help_string_display_text_map[new_name] = new_name
+        self._repeated_task_help_string_display_text_map[new_name] = new_name
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
@@ -1337,12 +1358,16 @@ class Workflow:
         self._workflow.LoadState(ListOfRoots=list_of_roots)
 
     def get_possible_tasks(self):
-        """Get the list of possible names of commands that can be inserted as tasks."""
+        """Get the list of possible command names that can be inserted as tasks."""
         return [
             item
             for item in self._help_string_command_id_map.keys()
             if item not in self._repeated_task_help_string_display_text_map.keys()
         ]
+
+    def get_possible_task_names(self):
+        """Get the list of possible python names of command that can be inserted as tasks."""
+        return [item for item in self._help_string_command_id_map.keys()]
 
     def insert_new_task(self, command_name: str):
         """Insert a new task based on the command name passed as an argument.
@@ -1395,11 +1420,14 @@ class Workflow:
                     self._help_string_display_id_map[task_name]
                 )
                 self._help_string_display_text_map.pop(task_name, None)
+                if task_name in self._repeated_task_help_string_display_text_map:
+                    self._help_string_command_id_map.pop(task_name, None)
+                    self._help_string_display_id_map.pop(task_name, None)
                 self._repeated_task_help_string_display_text_map.pop(task_name, None)
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                    "Use the 'get_possible_task_names()' method to view a list of allowed command tasks."
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
@@ -1430,7 +1458,7 @@ class Workflow:
             except KeyError:
                 raise RuntimeError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                    "Use the 'get_possible_task_names()' method to view a list of allowed command tasks."
                 )
 
         return self._workflow.CreateCompositeTask(
