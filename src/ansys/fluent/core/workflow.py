@@ -631,14 +631,15 @@ class ArgumentsWrapper(PyCallableStateObject):
             getattr(self._task.Arguments, fn)(camel_args)
         else:
             getattr(self._task.Arguments, fn)(args)
-        # implicitly refresh the command arguments
-        # - adding a safety net
+        self._refresh_command_after_changing_args(old_state)
+
+    def _refresh_command_after_changing_args(self, recovery_state) -> None:
         try:
-            self._task._command_arguments()
+            self._task._refreshed_command()()
         except Exception as ex:
-            self._just_set_state(old_state)
+            self._just_set_state(recovery_state)
             try:
-                self._task._command_arguments()
+                self._task._refreshed_command()()
             except Exception:
                 pass
             raise ex
