@@ -123,10 +123,17 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.host_mount_path = (
             host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
         )
-        self.server = subprocess.Popen(
-            f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
-            shell=True,
-        )
+        try:
+            self.server = subprocess.Popen(
+                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
+                shell=True,
+            )
+        except Exception:
+            self.host_port = random.randint(6000, 7000)
+            self.server = subprocess.Popen(
+                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
+                shell=True,
+            )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
     def file_exists_on_remote(self, file_name: str) -> bool:
@@ -217,9 +224,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
     def exit(self):
         """Stop the container."""
         write_file = subprocess.Popen(f"docker ps > id_ports.txt", shell=True)
-        active_containers = self._get_active_docker_containers(
-            "id_ports.txt", self.host_port
-        )
+        active_containers = self._get_active_containers("id_ports.txt", self.host_port)
         active_container_ids = [
             container.split(" ")[0] for container in active_containers
         ]
