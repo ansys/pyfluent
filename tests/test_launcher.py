@@ -12,7 +12,6 @@ from ansys.fluent.core.launcher.error_handler import (
     DockerContainerLaunchNotSupported,
     GPUSolverSupportError,
     LaunchFluentError,
-    UnexpectedKeywordArgument,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
@@ -201,11 +200,14 @@ def test_gpu_launch_arg(helpers, monkeypatch):
     # (which is available in the error message) is generated correctly.
     helpers.mock_awp_vars()
     monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(GPUSolverSupportError) as error:
+    with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(gpu=True, start_timeout=0)
 
-    with pytest.raises(GPUSolverSupportError) as error:
+    with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(gpu=[1, 2, 4], start_timeout=0)
+
+    with pytest.raises(GPUSolverSupportError):
+        pyfluent.launch_fluent(gpu=True, version="2d")
 
 
 def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
@@ -222,13 +224,6 @@ def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
         pyfluent.launch_fluent(additional_arguments="-gpu=1,2,4", start_timeout=0)
 
     assert " -gpu=1,2,4" in str(error.value)
-
-
-def test_kwargs():
-    with pytest.raises(UnexpectedKeywordArgument):
-        pyfluent.launch_fluent(abc=1, meshing_mode=True)
-    with pytest.raises(UnexpectedKeywordArgument):
-        pyfluent.launch_fluent(abc=1, xyz=2)
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
@@ -285,7 +280,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
@@ -295,7 +290,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
 
 
 def test_watchdog_launch(monkeypatch):
@@ -326,14 +321,43 @@ def test_fluent_launchers():
         assert standalone_solver_session
 
     if check_docker_support():
+        kargs = dict(
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=None,
+            version=None,
+            precision=None,
+            processor_count=None,
+            journal_file_names=None,
+            start_timeout=None,
+            additional_arguments="",
+            env=None,
+            container_dict=None,
+            dry_run=None,
+            cleanup_on_exit=None,
+            start_transcript=None,
+            case_file_name=None,
+            case_data_file_name=None,
+            lightweight_mode=None,
+            py=None,
+            gpu=None,
+            cwd=None,
+            topy=None,
+            start_watchdog=None,
+            file_transfer_service=None,
+        )
         container_meshing_launcher = create_launcher(
-            LaunchMode.CONTAINER, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.CONTAINER,
+            mode=FluentMode.MESHING_MODE,
+            **kargs,
         )
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
 
         container_solver_launcher = create_launcher(
-            LaunchMode.CONTAINER, mode=FluentMode.SOLVER, **kwargs
+            LaunchMode.CONTAINER,
+            mode=FluentMode.SOLVER,
+            **kargs,
         )
         container_solver_session = container_solver_launcher()
         assert container_solver_session

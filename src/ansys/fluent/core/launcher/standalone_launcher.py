@@ -21,7 +21,6 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _process_invalid_args,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -44,6 +43,7 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_name,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -56,7 +56,7 @@ class StandaloneLauncher:
         mode: FluentMode,
         ui_mode: UIMode,
         graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
-        product_version: Optional[str] = None,
+        product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -64,9 +64,6 @@ class StandaloneLauncher:
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
         env: Optional[Dict[str, Any]] = None,
-        start_container: Optional[bool] = None,
-        container_dict: Optional[dict] = None,
-        dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         case_file_name: Optional[str] = None,
@@ -77,7 +74,6 @@ class StandaloneLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
-        scheduler_options: Optional[dict] = None,
         file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in standalone mode.
@@ -92,11 +88,9 @@ class StandaloneLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : str, optional
-            Version of Ansys Fluent to launch. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
-            FluentVersion class. The default is ``None``, in which case the newest installed
-            version is used.
+        product_version : FluentVersion, optional
+            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+            The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
             in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -119,18 +113,6 @@ class StandaloneLauncher:
         env : dict[str, str], optional
             Mapping to modify environment variables in Fluent. The default
             is ``None``.
-        start_container : bool, optional
-            Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
-        container_dict : dict, optional
-            Dictionary for Fluent Docker container configuration. If specified,
-            setting ``start_container = True`` as well is redundant.
-            Will launch Fluent inside a Docker container using the configuration changes specified.
-            See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
-        dry_run : bool, optional
-            Defaults to False. If True, will not launch Fluent, and will instead print configuration information
-            that would be used as if Fluent was being launched. If dry running a container start,
-            ``launch_fluent()`` will return the configured ``container_dict``.
         cleanup_on_exit : bool, optional
             Whether to shut down the connected Fluent session when PyFluent is
             exited, or the ``exit()`` method is called on the session instance,
@@ -189,10 +171,8 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        del start_container
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(dry_run, "standalone", argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
