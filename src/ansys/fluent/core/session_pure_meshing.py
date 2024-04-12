@@ -7,10 +7,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
-from ansys.fluent.core.services.meshing_queries import (
-    MeshingQueries,
-    MeshingQueriesService,
-)
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -63,10 +59,6 @@ class PureMeshing(BaseSession):
             self._datamodel_service_se,
         )
 
-        self.meshing_queries_service = fluent_connection.create_grpc_service(
-            MeshingQueriesService, self._error_state
-        )
-
         datamodel_service_se = self._datamodel_service_se
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:
@@ -92,12 +84,6 @@ class PureMeshing(BaseSession):
     def meshing(self):
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
-
-    @property
-    def meshing_queries(self) -> MeshingQueries:
-        """Datamodel root of meshing_queries."""
-        if self.get_fluent_version() >= FluentVersion.v232:
-            return MeshingQueries(self.meshing_queries_service)
 
     @property
     def meshing_utilities(self):
