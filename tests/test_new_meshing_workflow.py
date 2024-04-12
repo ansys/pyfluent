@@ -1233,6 +1233,41 @@ def test_new_meshing_workflow_without_dm_caching(
     assert watertight.import_geometry.arguments()
 
 
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_new_meshing_workflow_validate_arguments(new_mesh_session):
+    watertight = new_mesh_session.watertight()
+    watertight.create_regions.number_of_flow_volumes = 1
+    with pytest.raises(ValueError):
+        watertight.create_regions.number_of_flow_volumes = 1.2
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
+    with pytest.raises(ValueError):
+        watertight.create_regions.arguments.update_dict(
+            dict(number_of_flow_volumes=1.2)
+        )
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
+
+    watertight.create_regions.number_of_flow_volumes = 2
+    with pytest.raises(ValueError):
+        watertight.create_regions.number_of_flow_volumes = 1.2
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
+    with pytest.raises(ValueError):
+        watertight.create_regions.arguments.update_dict(
+            dict(number_of_flow_volumes=1.2)
+        )
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
+
+    watertight.create_regions.number_of_flow_volumes = None
+    with pytest.raises(ValueError):
+        watertight.create_regions.number_of_flow_volumes = 1.2
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
+    with pytest.raises(ValueError):
+        watertight.create_regions.arguments.update_dict(
+            dict(number_of_flow_volumes=1.2)
+        )
+    assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
+
+
 def test_camel_to_snake_case_convertor():
     assert camel_to_snake_case("ImportGeometry") == "import_geometry"
     assert camel_to_snake_case("Prism2dPreferences") == "prism_2d_preferences"
