@@ -16,9 +16,6 @@ Services
 
 :ref:`ref_interceptors`         Intercepts batch gRPC calls and provides access to batch computation information.
 
-:ref:`ref_meshing_queries`      Query and utility functions that extracts information of particular labels, types,
-                                group of zones involved in series of various meshing operations.
-
 :ref:`ref_monitor`              Begins and ends monitor streaming service of Fluent also gives monitors information.
 
 :ref:`ref_scheme_eval`          Evaluates and executes Fluent's scheme code.
@@ -40,7 +37,6 @@ Services
     field_data
     health_check
     interceptors
-    meshing_queries
     monitor
     scheme_eval
     settings
