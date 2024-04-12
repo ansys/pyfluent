@@ -303,7 +303,7 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    if version != "3d" and gpu:
+    if version == "2d" and gpu:
         raise GPUSolverSupportError()
     if show_gui is not None:
         warnings.warn(
