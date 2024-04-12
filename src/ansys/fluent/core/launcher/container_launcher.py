@@ -32,7 +32,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
