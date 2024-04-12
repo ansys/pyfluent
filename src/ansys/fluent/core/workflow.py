@@ -434,28 +434,41 @@ class BaseTask:
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
-        if self._dynamic_interface:
-            if self.python_name() in self._repeated_task_help_string_display_text_map:
-                self._help_string_command_id_map[new_name] = (
-                    self._help_string_command_id_map.pop(self.python_name(), None)
-                )
-                self._help_string_display_id_map[new_name] = (
-                    self._help_string_display_id_map.pop(self.python_name(), None)
-                )
-                self._help_string_display_text_map.pop(self.python_name(), None)
-                self._repeated_task_help_string_display_text_map.pop(
+        if (
+            self.python_name()
+            in self._command_source._repeated_task_help_string_display_text_map
+        ):
+            self._command_source._help_string_command_id_map[new_name] = (
+                self._command_source._help_string_command_id_map.pop(
                     self.python_name(), None
                 )
-            else:
-                self._help_string_command_id_map[new_name] = (
-                    self._help_string_command_id_map[self.python_name()]
+            )
+            self._command_source._help_string_display_id_map[new_name] = (
+                self._command_source._help_string_display_id_map.pop(
+                    self.python_name(), None
                 )
-                self._help_string_display_id_map[new_name] = (
-                    self._help_string_display_id_map[self.python_name()]
-                )
+            )
+            self._command_source._help_string_display_text_map.pop(
+                self.python_name(), None
+            )
+            self._command_source._repeated_task_help_string_display_text_map.pop(
+                self.python_name(), None
+            )
+        else:
+            self._command_source._help_string_command_id_map[new_name] = (
+                self._command_source._help_string_command_id_map[self.python_name()]
+            )
+            self._command_source._help_string_display_id_map[new_name] = (
+                self._command_source._help_string_display_id_map[self.python_name()]
+            )
+            self._command_source._help_string_display_text_map.pop(
+                self.python_name(), None
+            )
 
-            self._help_string_display_text_map[new_name] = new_name
-            self._repeated_task_help_string_display_text_map[new_name] = new_name
+        self._command_source._help_string_display_text_map[new_name] = new_name
+        self._command_source._repeated_task_help_string_display_text_map[new_name] = (
+            new_name
+        )
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
@@ -1425,7 +1438,7 @@ class Workflow:
 
     def get_possible_task_names(self):
         """Get the list of possible python names of command that can be inserted as tasks."""
-        return [item for item in self._help_string_command_id_map.keys()]
+        return [child.python_name() for child in self.ordered_children()]
 
     def insert_new_task(self, command_name: str):
         """Insert a new task based on the command name passed as an argument.
