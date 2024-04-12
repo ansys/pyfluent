@@ -751,7 +751,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     with pytest.raises(AttributeError):
         watertight.create_volume_mesh
 
-    watertight.insert_new_task(command_name="create_volume_mesh")
+    watertight.insert_new_task(task="create_volume_mesh")
     time.sleep(2.5)
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
@@ -1145,7 +1145,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     assert "import_geometry" not in watertight.get_available_task_names()
 
-    watertight.insert_new_task(command_name="import_geometry")
+    watertight.insert_new_task(task="import_geometry")
 
     possible_task_names = possible_task_names + ["import_geometry"]
 
@@ -1153,7 +1153,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     assert watertight.import_geometry
 
-    watertight.insert_new_task(command_name="import_geometry")
+    watertight.insert_new_task(task="import_geometry")
 
     possible_task_names = possible_task_names + ["import_geometry_1"]
 
@@ -1169,13 +1169,13 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
         possible_task_names
     )
 
-    watertight.insert_new_task(command_name="add_local_sizing")
-    watertight.insert_new_task(command_name="add_boundary_layer")
+    watertight.insert_new_task(task="add_local_sizing")
+    watertight.insert_new_task(task="add_boundary_layer")
 
     assert "import_geometry_1" not in watertight.get_available_task_names()
 
-    watertight.insert_new_task(command_name="import_geometry")
-    watertight.insert_new_task(command_name="import_geometry")
+    watertight.insert_new_task(task="import_geometry")
+    watertight.insert_new_task(task="import_geometry")
 
     possible_task_names = possible_task_names + [
         "import_geometry_1",
@@ -1299,7 +1299,7 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
     assert "add_local_sizing" not in watertight.get_available_task_names()
 
-    watertight.insert_new_task(command_name="add_local_sizing")
+    watertight.insert_new_task(task="add_local_sizing")
     assert "add_local_sizing" in watertight.get_available_task_names()
     assert watertight.add_local_sizing
 

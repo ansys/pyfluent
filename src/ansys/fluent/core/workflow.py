@@ -434,41 +434,42 @@ class BaseTask:
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
-        if (
-            self.python_name()
-            in self._command_source._repeated_task_help_string_display_text_map
-        ):
-            self._command_source._help_string_command_id_map[new_name] = (
-                self._command_source._help_string_command_id_map.pop(
+        if self._dynamic_interface:
+            if (
+                self.python_name()
+                in self._command_source._repeated_task_help_string_display_text_map
+            ):
+                self._command_source._help_string_command_id_map[new_name] = (
+                    self._command_source._help_string_command_id_map.pop(
+                        self.python_name(), None
+                    )
+                )
+                self._command_source._help_string_display_id_map[new_name] = (
+                    self._command_source._help_string_display_id_map.pop(
+                        self.python_name(), None
+                    )
+                )
+                self._command_source._help_string_display_text_map.pop(
                     self.python_name(), None
                 )
-            )
-            self._command_source._help_string_display_id_map[new_name] = (
-                self._command_source._help_string_display_id_map.pop(
+                self._command_source._repeated_task_help_string_display_text_map.pop(
                     self.python_name(), None
                 )
-            )
-            self._command_source._help_string_display_text_map.pop(
-                self.python_name(), None
-            )
-            self._command_source._repeated_task_help_string_display_text_map.pop(
-                self.python_name(), None
-            )
-        else:
-            self._command_source._help_string_command_id_map[new_name] = (
-                self._command_source._help_string_command_id_map[self.python_name()]
-            )
-            self._command_source._help_string_display_id_map[new_name] = (
-                self._command_source._help_string_display_id_map[self.python_name()]
-            )
-            self._command_source._help_string_display_text_map.pop(
-                self.python_name(), None
-            )
+            else:
+                self._command_source._help_string_command_id_map[new_name] = (
+                    self._command_source._help_string_command_id_map[self.python_name()]
+                )
+                self._command_source._help_string_display_id_map[new_name] = (
+                    self._command_source._help_string_display_id_map[self.python_name()]
+                )
+                self._command_source._help_string_display_text_map.pop(
+                    self.python_name(), None
+                )
 
-        self._command_source._help_string_display_text_map[new_name] = new_name
-        self._command_source._repeated_task_help_string_display_text_map[new_name] = (
-            new_name
-        )
+            self._command_source._help_string_display_text_map[new_name] = new_name
+            self._command_source._repeated_task_help_string_display_text_map[
+                new_name
+            ] = new_name
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
