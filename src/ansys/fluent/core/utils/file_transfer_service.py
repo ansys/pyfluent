@@ -41,9 +41,25 @@ class FileTransferStrategy(Protocol):
 class LocalFileTransferStrategy(FileTransferStrategy):
     """Provides the local file transfer strategy."""
 
-    def __init__(self):
+    def __init__(
+        self, client_cwd: Optional[str] = None, server_cwd: Optional[str] = None
+    ):
+        """Local File Transfer Service.
+
+        Parameters
+        ----------
+        client_cwd: str
+            Current working directory of Client/PyFluent.
+        server_cwd: str
+            Current working directory of server/Fluent.
+        """
+        self.pyfluent_cwd = client_cwd
         self.fluent_cwd = (
-            pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
+            pathlib.Path(str(server_cwd))
+            if server_cwd
+            else (
+                pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
+            )
         )
 
     def file_exists_on_remote(self, file_name: str) -> bool:
@@ -67,9 +83,14 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         local_file_name = pathlib.Path(file_name)
         if local_file_name.exists() and local_file_name.is_file():
             if remote_file_name:
-                shutil.copyfile(file_name, str(self.fluent_cwd / f"{remote_file_name}"))
+                shutil.copyfile(
+                    file_name,
+                    str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
+                )
             else:
-                shutil.copyfile(file_name, str(self.fluent_cwd / f"{file_name}"))
+                shutil.copyfile(
+                    file_name, str(self.fluent_cwd / f"{os.path.basename(file_name)}")
+                )
 
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
@@ -82,7 +103,10 @@ class LocalFileTransferStrategy(FileTransferStrategy):
             elif not pathlib.Path(local_directory).is_dir():
                 local_file_name = pathlib.Path(local_directory)
         else:
-            local_file_name = pathlib.Path(os.getcwd()) / file_name
+            if self.pyfluent_cwd:
+                local_file_name = pathlib.Path(self.pyfluent_cwd) / file_name
+            else:
+                local_file_name = pathlib.Path(os.getcwd()) / file_name
         if local_file_name.exists() and local_file_name.samefile(remote_file_name):
             return
         shutil.copyfile(remote_file_name, str(local_file_name))
