@@ -388,8 +388,12 @@ class BaseTask:
                     "Camel case attribute access is not supported. "
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
-            camel_attr = snake_to_camel_case(
-                str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
+            camel_attr = (
+                snake_to_camel_case(
+                    str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
+                )
+                if attr.islower()
+                else attr
             )
             attr = camel_attr or attr
         try:
@@ -616,15 +620,13 @@ class ArgumentsWrapper(PyCallableStateObject):
         ----------
         args : dict
             State of the arguments.
+
+        Raises
+        ------
+        ValueError
+            If input is invalid.
         """
-        if self._dynamic_interface:
-            self.get_state()
-            camel_args = {}
-            for key, val in args.items():
-                camel_args[self._snake_to_camel_map[key]] = val
-            self._task.Arguments.set_state(camel_args)
-        else:
-            self._task.Arguments.set_state(args)
+        self._assign(args, "set_state")
 
     def update_dict(self, args: dict) -> None:
         """Merge with arguments.
@@ -633,15 +635,13 @@ class ArgumentsWrapper(PyCallableStateObject):
         ----------
         args : dict
             State of the arguments.
+
+        Raises
+        ------
+        ValueError
+            If input is invalid.
         """
-        if self._dynamic_interface:
-            self.get_state()
-            camel_args = {}
-            for key, val in args.items():
-                camel_args[self._snake_to_camel_map[key]] = val
-            self._task.Arguments.update_dict(camel_args)
-        else:
-            self._task.Arguments.update_dict(args)
+        self._assign(args, "update_dict")
 
     def get_state(self, explicit_only=False) -> dict:
         """Get the state of the arguments.
@@ -674,6 +674,63 @@ class ArgumentsWrapper(PyCallableStateObject):
             return snake_case_state_dict
 
         return state_dict
+
+    def _assign(self, args: dict, fn) -> None:
+        # This function sets the task arguments' state, either via update_dict()
+        # or set_state(). Datamodel dicts are not subject to rules at the
+        # key-value level. In order to trigger rules validation, it's necessary
+        # to apply the arguments' state to the actual command, and that is what
+        # we do here. If the introduced arguments' state is invalid, we leave the
+        # target state unaffected (by repairing it) and throw an exception.
+        try:
+            # We get the initial state for exception safety, but this also
+            # has the positive side effect of populating the name map.
+            # So, if this initial state access is removed then we must ensure
+            # that we still populate that map. But we can also optimise by keeping
+            # a global map and only fetching the remote state for unpopulated
+            # paths. Furthermore we can generate all name information statically,
+            # avoiding remote trips for such purposes. In order to avoid the initial
+            # get_state (to support exception safety), we could optionally return the
+            # current state from the prior set_state invocation.
+            old_state = self.get_state()
+        except Exception:
+            old_state = None
+        if self._dynamic_interface:
+            camel_args = {}
+            for key, val in args.items():
+                camel_args[self._snake_to_camel_map[key] if key.islower() else key] = (
+                    val
+                )
+            getattr(self._task.Arguments, fn)(camel_args)
+        else:
+            getattr(self._task.Arguments, fn)(args)
+        try:
+            self._refresh_command_after_changing_args(old_state)
+        except Exception as ex:
+            raise ValueError(
+                "Invalid task arguments, {args} for '{self._task.python_name()}'."
+            ) from ex
+
+    def _refresh_command_after_changing_args(self, recovery_state) -> None:
+        try:
+            self._task._refreshed_command()()
+        except Exception as ex:
+            self._just_set_state(recovery_state)
+            try:
+                self._task._refreshed_command()()
+            except Exception:
+                pass
+            raise ex
+
+    def _just_set_state(self, args):
+        if self._dynamic_interface:
+            camel_args = {}
+            if isinstance(args, dict):
+                for key, val in args.items():
+                    camel_args[self._snake_to_camel_map[key]] = val
+            self._task.Arguments.set_state(camel_args)
+        else:
+            self._task.Arguments.set_state(args)
 
     def __getattr__(self, attr):
         return getattr(self._task._command_arguments, attr)
@@ -723,7 +780,7 @@ class ArgumentWrapper(PyCallableStateObject):
         value : Any
             Value of the argument.
         """
-        self._task.Arguments.update_dict({self._arg_name: value})
+        self._task.arguments.update_dict({self._arg_name: value})
 
     def get_state(self, explicit_only: bool = False) -> Any:
         """Get the state of this argument.
