@@ -200,11 +200,14 @@ def test_gpu_launch_arg(helpers, monkeypatch):
     # (which is available in the error message) is generated correctly.
     helpers.mock_awp_vars()
     monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(GPUSolverSupportError) as error:
+    with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(gpu=True, start_timeout=0)
 
-    with pytest.raises(GPUSolverSupportError) as error:
+    with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(gpu=[1, 2, 4], start_timeout=0)
+
+    with pytest.raises(GPUSolverSupportError):
+        pyfluent.launch_fluent(gpu=True, version="2d")
 
 
 def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
