@@ -336,7 +336,7 @@ class BaseTask:
                 ] = disp_text
 
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, from the underlying application.
+        """Get the Pythonic name of this task from the underlying application.
 
         Returns
         -------
@@ -985,7 +985,7 @@ class CompoundChild(SimpleTask):
         super().__init__(command_source, task)
 
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, as it is in the underlying application.
+        """Get the Pythonic name of this task from the underlying application.
 
         Returns
         -------
