@@ -9,13 +9,11 @@ import os
 from typing import Any, Dict, Optional, Union
 import warnings
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
     _process_invalid_args,
-    _process_kwargs,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
@@ -40,6 +38,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -48,7 +47,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
-    """Factory function to create launcher for supported launch modes.
+    """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
     ----------
@@ -66,29 +65,76 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    allowed_options = [mode for mode in LaunchMode]
-    if (
-        not isinstance(fluent_launch_mode, LaunchMode)
-        or fluent_launch_mode not in allowed_options
-    ):
-        raise DisallowedValuesError(
-            "fluent_launch_mode",
-            fluent_launch_mode,
-            allowed_values=allowed_options,
-        )
     if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher(**kwargs)
+        return StandaloneLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            journal_file_names=kwargs["journal_file_names"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            env=kwargs["env"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            case_file_name=kwargs["case_file_name"],
+            case_data_file_name=kwargs["case_data_file_name"],
+            lightweight_mode=kwargs["lightweight_mode"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            cwd=kwargs["cwd"],
+            topy=kwargs["topy"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher(**kwargs)
+        return DockerLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            container_dict=kwargs["container_dict"],
+            dry_run=kwargs["dry_run"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
     elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher(**kwargs)
+        return PIMLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
 
 
 #   pylint: disable=unused-argument
 def launch_fluent(
-    product_version: Optional[str] = None,
+    product_version: Optional[FluentVersion] = None,
     version: Optional[str] = None,
     precision: Optional[str] = None,
     processor_count: Optional[int] = None,
@@ -117,18 +163,15 @@ def launch_fluent(
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
     file_transfer_service: Optional[Any] = None,
-    **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
     Parameters
     ----------
-    product_version : str, optional
-        Version of Ansys Fluent to launch. The string must be in a format like
-        ``"23.2.0"`` (for 2023 R2), matching the documented version format in the
-        FluentVersion class. The default is ``None``, in which case the newest installed
-        version is used.
+    product_version : FluentVersion, optional
+        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        The default is ``None``, in which case the newest installed version is used.
     version : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -238,8 +281,6 @@ def launch_fluent(
         specified in a similar manner to Fluent's scheduler options.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-    kwargs : Any
-        Keyword arguments.
 
     Returns
     -------
@@ -262,10 +303,8 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    if version != "3d" and gpu:
+    if version == "2d" and gpu:
         raise GPUSolverSupportError()
-    _process_kwargs(kwargs)
-    del kwargs
     if show_gui is not None:
         warnings.warn(
             "'show_gui' is deprecated, use 'ui_mode' instead",
