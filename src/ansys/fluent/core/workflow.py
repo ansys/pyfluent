@@ -1437,7 +1437,7 @@ class Workflow:
         ]
 
     def get_available_task_names(self):
-        """Get the list of possible python names of command that can be inserted as tasks."""
+        """Get the list of python names of available tasks."""
         return [child.python_name() for child in self.ordered_children()]
 
     def insert_new_task(self, task: str):
