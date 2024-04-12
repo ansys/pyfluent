@@ -74,13 +74,18 @@ class LocalFileTransferStrategy(FileTransferStrategy):
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ) -> None:
-        dest_path = pathlib.Path(os.getcwd()) / f"{file_name}"
-        local_file_name = (
-            pathlib.Path(local_directory) if local_directory else dest_path
-        )
-        if local_file_name.exists() and local_file_name.samefile(file_name):
+        remote_file_name = str(self.fluent_cwd / f"{file_name}")
+        local_file_name = None
+        if local_directory:
+            if pathlib.Path(local_directory).is_dir():
+                local_file_name = pathlib.Path(local_directory) / file_name
+            elif not pathlib.Path(local_directory).is_dir():
+                local_file_name = pathlib.Path(local_directory)
+        else:
+            local_file_name = pathlib.Path(os.getcwd()) / file_name
+        if local_file_name.exists() and local_file_name.samefile(remote_file_name):
             return
-        shutil.copyfile(file_name, str(local_file_name))
+        shutil.copyfile(remote_file_name, str(local_file_name))
 
 
 def _get_files(
