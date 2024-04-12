@@ -1133,7 +1133,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     watertight.import_geometry.rename("xyz")
 
-    assert set(watertight.get_possible_tasks()) == set(possible_tasks)
+    assert set(watertight.get_insertable_tasks()) == set(possible_tasks)
 
     possible_task_names.remove("import_geometry")
     possible_task_names = possible_task_names + ["xyz"]
@@ -1143,13 +1143,13 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     assert watertight.xyz
 
-    assert "import_geometry" not in watertight.get_possible_task_names()
+    assert "import_geometry" not in watertight.get_available_task_names()
 
     watertight.insert_new_task(command_name="import_geometry")
 
     possible_task_names = possible_task_names + ["import_geometry"]
 
-    assert set(watertight.get_possible_task_names()) == set(possible_task_names)
+    assert set(watertight.get_available_task_names()) == set(possible_task_names)
 
     assert watertight.import_geometry
 
@@ -1157,7 +1157,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     possible_task_names = possible_task_names + ["import_geometry_1"]
 
-    assert set(watertight.get_possible_task_names()) == set(possible_task_names)
+    assert set(watertight.get_available_task_names()) == set(possible_task_names)
 
     assert watertight.import_geometry_1
 
@@ -1172,7 +1172,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
     watertight.insert_new_task(command_name="add_local_sizing")
     watertight.insert_new_task(command_name="add_boundary_layer")
 
-    assert "import_geometry_1" not in watertight.get_possible_task_names()
+    assert "import_geometry_1" not in watertight.get_available_task_names()
 
     watertight.insert_new_task(command_name="import_geometry")
     watertight.insert_new_task(command_name="import_geometry")
@@ -1184,11 +1184,11 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
         "add_boundary_layer_1",
     ]
 
-    assert set(watertight.get_possible_task_names()) == set(possible_task_names)
+    assert set(watertight.get_available_task_names()) == set(possible_task_names)
 
     assert watertight.import_geometry_2
 
-    assert "import_geometry_3" not in watertight.get_possible_task_names()
+    assert "import_geometry_3" not in watertight.get_available_task_names()
 
     assert "add_boundary_layer_1" in dir(watertight)
 
@@ -1297,10 +1297,10 @@ def test_new_meshing_workflow_without_dm_caching(
     assert watertight.task("import_geom_wtm").arguments()
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
-    assert "add_local_sizing" not in watertight.get_possible_task_names()
+    assert "add_local_sizing" not in watertight.get_available_task_names()
 
     watertight.insert_new_task(command_name="add_local_sizing")
-    assert "add_local_sizing" in watertight.get_possible_task_names()
+    assert "add_local_sizing" in watertight.get_available_task_names()
     assert watertight.add_local_sizing
 
     fault_tolerant = new_mesh_session.fault_tolerant()

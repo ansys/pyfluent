@@ -1428,7 +1428,7 @@ class Workflow:
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
 
-    def get_possible_tasks(self):
+    def get_insertable_tasks(self):
         """Get the list of possible command names that can be inserted as tasks."""
         return [
             item
@@ -1436,16 +1436,16 @@ class Workflow:
             if item not in self._repeated_task_help_string_display_text_map.keys()
         ]
 
-    def get_possible_task_names(self):
+    def get_available_task_names(self):
         """Get the list of possible python names of command that can be inserted as tasks."""
         return [child.python_name() for child in self.ordered_children()]
 
-    def insert_new_task(self, command_name: str):
+    def insert_new_task(self, task: str):
         """Insert a new task based on the command name passed as an argument.
 
         Parameters
         ----------
-        command_name: str
+        task: str
             Name of the new task.
 
         Returns
@@ -1458,13 +1458,13 @@ class Workflow:
             If the command name does not match a task name.
             In this case, none of the tasks are deleted.
         """
-        if command_name not in self.get_possible_tasks():
+        if task not in self.get_insertable_tasks():
             raise ValueError(
-                f"'{command_name}' is not an allowed command task.\n"
-                "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                f"'{task}' is not an allowed command task.\n"
+                "Use the 'get_insertable_tasks()' method to view a list of allowed command tasks."
             )
         return self._workflow.InsertNewTask(
-            CommandName=self._help_string_command_id_map[command_name]
+            CommandName=self._help_string_command_id_map[task]
         )
 
     def delete_tasks(self, list_of_tasks: list[str]):
@@ -1482,7 +1482,7 @@ class Workflow:
         Raises
         ------
         ValueError
-            If 'command_name' does not match a task name, no tasks are deleted.
+            If 'task' does not match a task name, no tasks are deleted.
         """
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
@@ -1498,7 +1498,7 @@ class Workflow:
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_task_names()' method to view a list of allowed command tasks."
+                    "Use the 'get_available_task_names()' method to view a list of allowed command tasks."
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
@@ -1529,7 +1529,7 @@ class Workflow:
             except KeyError:
                 raise RuntimeError(
                     f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_task_names()' method to view a list of allowed command tasks."
+                    "Use the 'get_available_task_names()' method to view a list of allowed command tasks."
                 )
 
         return self._workflow.CreateCompositeTask(
