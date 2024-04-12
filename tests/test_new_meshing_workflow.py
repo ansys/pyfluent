@@ -1112,7 +1112,7 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
     watertight = new_mesh_session.watertight()
     possible_tasks = [
