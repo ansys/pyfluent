@@ -1269,8 +1269,8 @@ class Workflow:
     def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow.
 
-        Sort tasks in terms of the workflow order and only include the top-level tasks,
-        while other tasks can be obtained by calling ordered_children() on a parent task.
+        This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
+        You can obtain other tasks by calling the ``ordered_children()`` method on a parent task.
 
         Consider the following workflow.
 
