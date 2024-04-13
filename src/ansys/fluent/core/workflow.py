@@ -658,6 +658,21 @@ class ArgumentsWrapper(PyCallableStateObject):
         """
         self._assign(args, "update_dict")
 
+    def _camel_snake_arguments_map(self, input_dict):
+        snake_case_state_dict = {}
+        for key, val in input_dict.items():
+            self._snake_to_camel_map[camel_to_snake_case(key)] = key
+            if isinstance(
+                getattr(self._task._command_arguments, key),
+                PySingletonCommandArgumentsSubItem,
+            ):
+                snake_case_state_dict[camel_to_snake_case(key)] = (
+                    self._camel_snake_arguments_map(val)
+                )
+            else:
+                snake_case_state_dict[camel_to_snake_case(key)] = val
+        return snake_case_state_dict
+
     def get_state(self, explicit_only=False) -> dict:
         """Get the state of the arguments.
 
@@ -672,21 +687,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         )
 
         if self._dynamic_interface:
-            snake_case_state_dict = {}
-            for key, val in state_dict.items():
-                nested_val = {}
-                if isinstance(
-                    getattr(self._task._command_arguments, key),
-                    PySingletonCommandArgumentsSubItem,
-                ):
-                    for k, v in val.items():
-                        self._snake_to_camel_map[camel_to_snake_case(k)] = k
-                        nested_val[camel_to_snake_case(k)] = v
-                else:
-                    nested_val = val
-                self._snake_to_camel_map[camel_to_snake_case(key)] = key
-                snake_case_state_dict[camel_to_snake_case(key)] = nested_val
-            return snake_case_state_dict
+            return self._camel_snake_arguments_map(state_dict)
 
         return state_dict
 
