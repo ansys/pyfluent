@@ -443,9 +443,9 @@ class SubscriptionList:
     def unsubscribe_all(self) -> None:
         """Unsubscribe all subscription objects."""
         with self._lock:
-            for v in reversed(self._subscriptions.values()):
+            while self._subscriptions:
+                v = next(reversed(self._subscriptions.values()))
                 v.unsubscribe()
-            self._subscriptions.clear()
 
 
 class DatamodelService(StreamingService):
