@@ -1133,13 +1133,13 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     watertight.import_geometry.rename("xyz")
 
-    assert set(watertight.get_insertable_tasks()) == set(possible_tasks)
+    assert sorted(watertight.get_insertable_tasks()) == sorted(possible_tasks)
 
     possible_task_names.remove("import_geometry")
     possible_task_names = possible_task_names + ["xyz"]
-    assert {child.python_name() for child in watertight.ordered_children()} == set(
-        possible_task_names
-    )
+    assert sorted(
+        child.python_name() for child in watertight.ordered_children()
+    ) == sorted(possible_task_names)
 
     assert watertight.xyz
 
@@ -1149,7 +1149,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     possible_task_names = possible_task_names + ["import_geometry"]
 
-    assert set(watertight.get_available_task_names()) == set(possible_task_names)
+    assert sorted(watertight.get_available_task_names()) == sorted(possible_task_names)
 
     assert watertight.import_geometry
 
@@ -1157,7 +1157,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     possible_task_names = possible_task_names + ["import_geometry_1"]
 
-    assert set(watertight.get_available_task_names()) == set(possible_task_names)
+    assert sorted(watertight.get_available_task_names()) == sorted(possible_task_names)
 
     assert watertight.import_geometry_1
 
@@ -1165,9 +1165,9 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
 
     possible_task_names.remove("import_geometry_1")
     possible_task_names = possible_task_names + ["igm_1"]
-    assert {child.python_name() for child in watertight.ordered_children()} == set(
-        possible_task_names
-    )
+    assert sorted(
+        [child.python_name() for child in watertight.ordered_children()]
+    ) == sorted(possible_task_names)
 
     watertight.insert_new_task(task="add_local_sizing")
     watertight.insert_new_task(task="add_boundary_layer")
@@ -1184,7 +1184,7 @@ def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
         "add_boundary_layer_1",
     ]
 
-    assert set(watertight.get_available_task_names()) == set(possible_task_names)
+    assert sorted(watertight.get_available_task_names()) == sorted(possible_task_names)
 
     assert watertight.import_geometry_2
 

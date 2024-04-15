@@ -485,13 +485,12 @@ class BaseTask:
         return self._task.InsertCompoundChildTask()
 
     def get_next_possible_tasks(self) -> list[str]:
-        """Get the list of possible names of commands that can be inserted as tasks
+        """Get the list of possible Python names that can be inserted as tasks
         after this current task is executed."""
         return [camel_to_snake_case(task) for task in self._task.GetNextPossibleTasks()]
 
     def insert_next_task(self, command_name: str):
-        """Insert a task based on the command name passed as argument after the current
-        task is executed.
+        """Insert a task based on the Python name after the current task is executed.
 
         Parameters
         ----------
@@ -1044,8 +1043,7 @@ class CompositeTask(BaseTask):
         return {}
 
     def insert_composite_child_task(self, command_name: str):
-        """Insert a composite child task based on the command name passed as
-        argument."""
+        """Insert a composite child task based on the Python name."""
         return self._task.InsertCompositeChildTask(CommandName=command_name)
 
 
@@ -1431,7 +1429,7 @@ class Workflow:
         self._workflow.LoadState(ListOfRoots=list_of_roots)
 
     def get_insertable_tasks(self):
-        """Get the list of possible command names that can be inserted as tasks."""
+        """Get the list of possible Python names that can be inserted as tasks."""
         return [
             item
             for item in self._help_string_command_id_map.keys()
@@ -1443,7 +1441,7 @@ class Workflow:
         return [child.python_name() for child in self.ordered_children()]
 
     def insert_new_task(self, task: str):
-        """Insert a new task based on the command name passed as an argument.
+        """Insert a new task based on the Python name.
 
         Parameters
         ----------
@@ -1457,13 +1455,12 @@ class Workflow:
         Raises
         ------
         ValueError
-            If the command name does not match a task name.
-            In this case, none of the tasks are deleted.
+            If 'task' does not match a task name.
         """
         if task not in self.get_insertable_tasks():
             raise ValueError(
-                f"'{task}' is not an allowed command task.\n"
-                "Use the 'get_insertable_tasks()' method to view a list of allowed command tasks."
+                f"'{task}' is not an allowed task.\n"
+                "Use the 'get_insertable_tasks()' method to view a list of allowed tasks."
             )
         return self._workflow.InsertNewTask(
             CommandName=self._help_string_command_id_map[task]
@@ -1499,14 +1496,14 @@ class Workflow:
                 self._repeated_task_help_string_display_text_map.pop(task_name, None)
             except KeyError as ex:
                 raise ValueError(
-                    f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_available_task_names()' method to view a list of allowed command tasks."
+                    f"'{task_name}' is not an allowed task.\n"
+                    "Use the 'get_available_task_names()' method to view a list of allowed tasks."
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
 
     def create_composite_task(self, list_of_tasks: list[str]):
-        """Create the list of tasks passed as argument.
+        """Create the list of tasks based on the Python names.
 
         Parameters
         ----------
@@ -1520,7 +1517,7 @@ class Workflow:
         Raises
         ------
         RuntimeError
-            If the command name does not match a task name.
+            If the 'task' does not match a task name.
         """
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
@@ -1530,8 +1527,8 @@ class Workflow:
                 )
             except KeyError:
                 raise RuntimeError(
-                    f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_available_task_names()' method to view a list of allowed command tasks."
+                    f"'{task_name}' is not an allowed task.\n"
+                    "Use the 'get_available_task_names()' method to view a list of allowed tasks."
                 )
 
         return self._workflow.CreateCompositeTask(
