@@ -485,8 +485,8 @@ class BaseTask:
         return self._task.InsertCompoundChildTask()
 
     def get_next_possible_tasks(self) -> list[str]:
-        """Get the list of possible Python names that can be inserted as tasks
-        after this current task is executed."""
+        """Get the list of possible Python names that can be inserted as tasks after
+        this current task is executed."""
         return [camel_to_snake_case(task) for task in self._task.GetNextPossibleTasks()]
 
     def insert_next_task(self, command_name: str):
