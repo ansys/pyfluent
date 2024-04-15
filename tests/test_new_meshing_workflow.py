@@ -1297,9 +1297,11 @@ def test_new_meshing_workflow_without_dm_caching(
     assert watertight.task("import_geom_wtm").arguments()
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
+    time.sleep(1)
     assert "add_local_sizing" not in watertight.get_available_task_names()
 
     watertight.insert_new_task(task="add_local_sizing")
+    time.sleep(1)
     assert "add_local_sizing" in watertight.get_available_task_names()
     assert watertight.add_local_sizing
 
