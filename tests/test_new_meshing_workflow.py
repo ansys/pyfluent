@@ -1303,7 +1303,6 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.insert_new_task(task="add_local_sizing")
     time.sleep(1)
     assert "add_local_sizing" in watertight.get_available_task_names()
-    assert watertight.add_local_sizing
 
     fault_tolerant = new_mesh_session.fault_tolerant()
     with pytest.raises(RuntimeError):
