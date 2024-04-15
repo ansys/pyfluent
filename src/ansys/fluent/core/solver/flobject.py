@@ -25,6 +25,7 @@ import hashlib
 import importlib
 import keyword
 import logging
+import os.path
 import pickle
 import string
 import sys
@@ -1541,6 +1542,7 @@ class BaseCommand(Action):
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             argument.before_execute(value)
+            kwds[f"{arg}"] = os.path.basename(value)
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)

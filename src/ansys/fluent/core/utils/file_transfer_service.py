@@ -41,19 +41,15 @@ class FileTransferStrategy(Protocol):
 class LocalFileTransferStrategy(FileTransferStrategy):
     """Provides the local file transfer strategy."""
 
-    def __init__(
-        self, client_cwd: Optional[str] = None, server_cwd: Optional[str] = None
-    ):
+    def __init__(self, server_cwd: Optional[str] = None):
         """Local File Transfer Service.
 
         Parameters
         ----------
-        client_cwd: str
-            Current working directory of Client/PyFluent.
-        server_cwd: str
+        server_cwd: str, Optional
             Current working directory of server/Fluent.
         """
-        self.pyfluent_cwd = client_cwd
+        self.pyfluent_cwd = pathlib.Path(str(os.getcwd()))
         self.fluent_cwd = (
             pathlib.Path(str(server_cwd))
             if server_cwd
@@ -95,18 +91,19 @@ class LocalFileTransferStrategy(FileTransferStrategy):
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ) -> None:
-        remote_file_name = str(self.fluent_cwd / f"{file_name}")
+        remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file_name)}")
         local_file_name = None
         if local_directory:
             if pathlib.Path(local_directory).is_dir():
-                local_file_name = pathlib.Path(local_directory) / file_name
+                local_file_name = pathlib.Path(local_directory) / os.path.basename(
+                    file_name
+                )
             elif not pathlib.Path(local_directory).is_dir():
                 local_file_name = pathlib.Path(local_directory)
         else:
-            if self.pyfluent_cwd:
-                local_file_name = pathlib.Path(self.pyfluent_cwd) / file_name
-            else:
-                local_file_name = pathlib.Path(os.getcwd()) / file_name
+            local_file_name = pathlib.Path(self.pyfluent_cwd) / os.path.basename(
+                file_name
+            )
         if local_file_name.exists() and local_file_name.samefile(remote_file_name):
             return
         shutil.copyfile(remote_file_name, str(local_file_name))

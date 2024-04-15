@@ -183,7 +183,7 @@ class StandaloneLauncher:
         self.file_transfer_service = (
             file_transfer_service
             if file_transfer_service
-            else LocalFileTransferStrategy(server_cwd=argvals.get("cwd"))
+            else LocalFileTransferStrategy(server_cwd=argvals["cwd"])
         )
 
     def __call__(self):
