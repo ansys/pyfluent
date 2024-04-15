@@ -314,20 +314,21 @@ def test_command_return_type(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_unstable_settings_warning(new_solver_session):
-    with pytest.warns(UnstableSettingWarning) as record:
-        solver = new_solver_session
-        solver.file.export
-        assert len(record) == 1
-        assert record.pop().category == UnstableSettingWarning
-        try:
-            solver.file.exp
-        except AttributeError:
-            pass
-        assert len(record) == 0
-        solver.file.export
-        assert len(record) == 1
-        assert record.pop().category == UnstableSettingWarning
+def test_unstable_settings_warning(new_solver_session, recwarn):
+    solver = new_solver_session
+    solver.file.export
+    assert len(recwarn) == 3
+    assert recwarn.pop().category == UnstableSettingWarning
+    assert recwarn.pop().category == ResourceWarning
+    try:
+        solver.file.exp
+    except AttributeError:
+        pass
+    assert len(recwarn) == 0
+    solver.file.export
+    assert len(recwarn) == 3
+    assert recwarn.pop().category == UnstableSettingWarning
+    assert recwarn.pop().category == ResourceWarning
 
     # Issue in running in CI (probably due to -gu mode)
     # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
