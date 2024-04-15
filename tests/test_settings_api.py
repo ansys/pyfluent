@@ -1,3 +1,5 @@
+import warnings
+
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
@@ -11,6 +13,8 @@ from ansys.fluent.core.solver.flobject import (
     to_python_name,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+warnings.simplefilter("ignore", ResourceWarning)
 
 
 @pytest.mark.nightly
