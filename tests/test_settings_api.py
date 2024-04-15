@@ -1,9 +1,8 @@
-import warnings
-
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.launcher.launcher_utils import check_docker_support
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
     UnstableSettingWarning,
@@ -13,8 +12,6 @@ from ansys.fluent.core.solver.flobject import (
     to_python_name,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-warnings.simplefilter("ignore", ResourceWarning)
 
 
 @pytest.mark.nightly
@@ -315,20 +312,34 @@ def test_command_return_type(new_solver_session):
 
 @pytest.mark.fluent_version(">=24.2")
 def test_unstable_settings_warning(new_solver_session, recwarn):
-    solver = new_solver_session
-    solver.file.export
-    assert len(recwarn) == 3
-    assert recwarn.pop().category == UnstableSettingWarning
-    assert recwarn.pop().category == ResourceWarning
-    try:
-        solver.file.exp
-    except AttributeError:
-        pass
-    assert len(recwarn) == 0
-    solver.file.export
-    assert len(recwarn) == 3
-    assert recwarn.pop().category == UnstableSettingWarning
-    assert recwarn.pop().category == ResourceWarning
+    if check_docker_support():
+        solver = new_solver_session
+        solver.file.export
+        assert len(recwarn) == 3
+        assert recwarn.pop().category == UnstableSettingWarning
+        assert recwarn.pop().category == ResourceWarning
+        try:
+            solver.file.exp
+        except AttributeError:
+            pass
+        assert len(recwarn) == 0
+        solver.file.export
+        assert len(recwarn) == 3
+        assert recwarn.pop().category == UnstableSettingWarning
+        assert recwarn.pop().category == ResourceWarning
+    else:
+        solver = new_solver_session
+        solver.file.export
+        assert len(recwarn) == 1
+        assert recwarn.pop().category == UnstableSettingWarning
+        try:
+            solver.file.exp
+        except AttributeError:
+            pass
+        assert len(recwarn) == 0
+        solver.file.export
+        assert len(recwarn) == 1
+        assert recwarn.pop().category == UnstableSettingWarning
 
     # Issue in running in CI (probably due to -gu mode)
     # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
