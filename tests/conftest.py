@@ -1,6 +1,4 @@
 from contextlib import nullcontext
-import functools
-import operator
 import os
 
 from packaging.specifiers import SpecifierSet
@@ -11,6 +9,7 @@ from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_release_version = FluentVersion.current_release().value
+_fluent_develop_version = next(iter(FluentVersion)).value
 
 
 def pytest_addoption(parser):
@@ -44,24 +43,35 @@ def pytest_runtest_setup(item):
     if is_solvermode_option ^ is_solvermode_path:
         pytest.skip()
 
-    version_specs = []
-    for mark in item.iter_markers(name="fluent_version"):
-        spec = mark.args[0]
-        # if a test is marked as fluent_version("latest")
-        # run with dev and release Fluent versions in nightly
-        # run with release Fluent versions in PRs
+    fluent_version_spec = None
+    fluent_version_markers = list(item.iter_markers(name="fluent_version"))
+    if fluent_version_markers:
+        spec = fluent_version_markers[0].args[0]
+        # Tests which depend on the current development Fluent version or tracking
+        # Fluent API change are marked as fluent_version("latest"). They are run only
+        # with the development Fluent version.
         if spec == "latest":
-            spec = (
-                f">={_fluent_release_version}"
-                if is_nightly or is_solvermode_option
-                else f"=={_fluent_release_version}"
-            )
-        version_specs.append(SpecifierSet(spec))
-    if version_specs:
-        combined_spec = functools.reduce(operator.and_, version_specs)
-        version = item.config.getoption("--fluent-version")
-        if version and Version(version) not in combined_spec:
-            pytest.skip()
+            fluent_version_spec = f"=={_fluent_develop_version}"
+        # Tests which depend on a specific released Fluent version are marked as
+        # fluent_version("==<version>"). They are run only with that specific Fluent
+        # version.
+        else:
+            fluent_version_spec = spec
+    else:
+        # Tests which do not require to run Fluent at all or can be run with any stable
+        # Fluent version are not marked. They are run only with the latest released
+        # Fluent version during PRs and with the latest released and the current
+        # development Fluent versions during nightly.
+        fluent_version_spec = (
+            f">={_fluent_release_version}"
+            if is_nightly
+            else f"=={_fluent_release_version}"
+        )
+    fluent_version = item.config.getoption("--fluent-version")
+    if fluent_version and Version(fluent_version) not in SpecifierSet(
+        fluent_version_spec
+    ):
+        pytest.skip()
 
 
 pytest_plugins = [

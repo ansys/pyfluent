@@ -16,7 +16,6 @@ def pytest_approx(expected):
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version("latest")
 def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
@@ -211,7 +210,7 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_parameters_list_function(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
     solver.tui.define.parameters.enable_in_TUI("yes")

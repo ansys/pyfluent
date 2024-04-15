@@ -660,7 +660,6 @@ class root(Group):
     )  # noqa: W293
 
 
-@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
 
@@ -723,7 +722,6 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     assert solver.results.graphics.mesh.get_object_names() == ["mesh_242"]
 
 
-@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
 
@@ -767,7 +765,6 @@ def test_find_children_from_settings_root(load_static_mixer_settings_only):
     )
 
 
-@pytest.mark.fluent_version("latest")
 def test_find_children_from_fluent_solver_session(load_static_mixer_settings_only):
     setup_children = find_children(load_static_mixer_settings_only.setup)
     load_mixer = load_static_mixer_settings_only.setup
@@ -806,7 +803,6 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         }
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
@@ -838,7 +834,6 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
     )
 
 
-@pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
@@ -868,7 +863,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     root = solver.settings
@@ -948,7 +943,6 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
-@pytest.mark.fluent_version("latest")
 def test_strings_with_allowed_values(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
 
@@ -964,7 +958,7 @@ def test_strings_with_allowed_values(load_static_mixer_settings_only):
     ]
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_parent_class_attributes(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
     assert solver.setup.models.energy.enabled
@@ -984,7 +978,6 @@ def _check_vector_units(obj, units):
         assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     assert isinstance(solver.settings.state_with_units(), dict)
@@ -1051,7 +1044,7 @@ def test_ansys_units_integration(load_mixing_elbow_mesh):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
 
@@ -1073,7 +1066,7 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
     }
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_bug_1001124_quantity_assignment(load_mixing_elbow_mesh):
     speed = ansys.units.Quantity(100, "m s^-1")
     solver = load_mixing_elbow_mesh
@@ -1148,7 +1141,7 @@ def test_static_info_hash_identity(new_solver_session):
     assert hash1 == hash2
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_default_argument_names_for_commands(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
 

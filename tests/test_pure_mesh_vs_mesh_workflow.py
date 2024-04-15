@@ -4,7 +4,6 @@ from ansys.fluent.core.examples import download_file
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     # check a few dir elements
@@ -26,7 +25,6 @@ def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_meshing_mode(load_mixing_elbow_meshing):
     meshing_session = load_mixing_elbow_meshing
     # check a few dir elements
@@ -42,7 +40,6 @@ def test_meshing_mode(load_mixing_elbow_meshing):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_meshing_and_solver_mode_exit(load_mixing_elbow_meshing):
     meshing_session = load_mixing_elbow_meshing
     solver_session = meshing_session.switch_to_solver()
@@ -52,7 +49,6 @@ def test_meshing_and_solver_mode_exit(load_mixing_elbow_meshing):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.1")
 def test_meshing_mode_post_switching_to_solver(load_mixing_elbow_meshing):
     meshing_session = load_mixing_elbow_meshing
     meshing_session.switch_to_solver()

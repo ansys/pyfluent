@@ -70,7 +70,7 @@ def test_unsuccessful_fluent_connection():
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
 
 
-@pytest.mark.fluent_version("<24.1")
+@pytest.mark.fluent_version("==23.2")
 def test_non_gui_in_windows_throws_exception():
     default_windows_flag = launcher_utils.is_windows()
     launcher_utils.is_windows = lambda: True
@@ -97,7 +97,6 @@ def test_non_gui_in_windows_throws_exception():
         launcher_utils.is_windows = lambda: default_windows_flag
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_non_gui_in_windows_does_not_throw_exception():
     default_windows_flag = launcher_utils.is_windows()
     launcher_utils.is_windows = lambda: True
@@ -154,7 +153,6 @@ def test_case_load():
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
     _, cas_path = download_input_file(

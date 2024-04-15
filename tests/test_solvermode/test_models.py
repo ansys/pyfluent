@@ -2,7 +2,6 @@ import pytest
 
 
 @pytest.mark.settings_only
-@pytest.mark.fluent_version("latest")
 def test_solver_models(load_mixing_elbow_settings_only):
     solver_session = load_mixing_elbow_settings_only
     models = solver_session.setup.models
@@ -22,7 +21,6 @@ def test_solver_models(load_mixing_elbow_settings_only):
 
 
 @pytest.mark.settings_only
-@pytest.mark.fluent_version("latest")
 def test_disk_2d_models(load_disk_settings_only):
     solver_session = load_disk_settings_only
     models = solver_session.setup.models

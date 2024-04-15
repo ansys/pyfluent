@@ -17,7 +17,6 @@ from ansys.fluent.core.services.datamodel_se import (
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_event_subscription(new_mesh_session):
     session = new_mesh_session
@@ -71,7 +70,6 @@ def test_event_subscription(new_mesh_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_child_created(new_mesh_session):
     meshing = new_mesh_session
@@ -90,7 +88,6 @@ def test_add_on_child_created(new_mesh_session):
     assert child_paths == []
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_deleted(new_mesh_session):
     meshing = new_mesh_session
@@ -105,7 +102,6 @@ def test_add_on_deleted(new_mesh_session):
     assert len(data) > 0
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_changed(new_mesh_session):
     meshing = new_mesh_session
@@ -126,7 +122,6 @@ def test_add_on_changed(new_mesh_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_affected(new_mesh_session):
     meshing = new_mesh_session
@@ -180,7 +175,6 @@ def test_add_on_affected(new_mesh_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_affected_at_type_path(new_mesh_session):
     meshing = new_mesh_session
@@ -200,7 +194,6 @@ def test_add_on_affected_at_type_path(new_mesh_session):
     assert data == []
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_add_on_command_executed(new_mesh_session):
     meshing = new_mesh_session
@@ -229,7 +222,6 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
@@ -255,7 +247,6 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_mesh_session
@@ -283,7 +274,7 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session
@@ -309,7 +300,6 @@ def test_get_object_names_wtm(new_mesh_session):
     assert meshing.workflow.TaskObject.get_object_names() == child_object_names
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
     meshing = new_mesh_session
@@ -357,7 +347,7 @@ def test_generic_datamodel(new_solver_session):
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_named_object_specific_methods_using_flserver(new_solver_session):
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -438,7 +428,7 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
     assert not flserver.Case.Results.Graphics.Contour.get_object_names()
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_named_object_specific_methods(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -469,7 +459,6 @@ def test_named_object_specific_methods(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_command_creation_inside_singleton(new_mesh_session):
     meshing = new_mesh_session
     read_mesh = meshing.meshing.File.ReadMesh.create_instance()

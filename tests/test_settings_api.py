@@ -14,7 +14,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -33,7 +32,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -95,7 +93,6 @@ def test_wildcard(new_solver_session):
         boundary_conditions.velocity_inlet["inl*"].moment
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -117,7 +114,6 @@ def test_wildcard_fnmatch(new_solver_session):
     assert sorted(mesh["mesh-[!2-5]"]()) == sorted(["mesh-1", "mesh-a"])
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -147,7 +143,6 @@ def test_wildcard_path_is_iterable(new_solver_session):
     assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -155,7 +150,7 @@ def test_api_upgrade(new_solver_session, capsys):
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_deprecated_settings(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -295,7 +290,7 @@ def test_deprecated_settings(new_solver_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -309,7 +304,7 @@ def test_command_return_type(new_solver_session):
     assert ret is not None
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_unstable_settings_warning(new_solver_session, recwarn):
     solver = new_solver_session
     solver.file.export
@@ -333,7 +328,7 @@ def test_unstable_settings_warning(new_solver_session, recwarn):
     # assert len(recwarn) == 0
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
     icing_cls = solver.setup.boundary_conditions._child_classes[

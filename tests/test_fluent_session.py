@@ -217,7 +217,6 @@ def test_fluent_freeze_kill(
     assert session._fluent_connection.wait_process_finished(wait=5)
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_interrupt(load_static_mixer_case):
     solver = load_static_mixer_case
     solver.setup.general.solver.time = "unsteady-2nd-order"

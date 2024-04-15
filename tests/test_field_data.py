@@ -10,7 +10,6 @@ from ansys.fluent.core.services.field_data import FieldUnavailable, SurfaceDataT
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -167,7 +166,6 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert expected_allowed_args == allowed_args
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -238,7 +236,6 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert all(path_lines_data["lines"][100].node_indices == [100, 101])
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_2d(load_disk_mesh) -> None:
     solver = load_disk_mesh
 
@@ -344,7 +341,6 @@ def test_field_data_errors(new_solver_session) -> None:
         )
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_field_info_validators(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -373,7 +369,7 @@ def test_field_info_validators(new_solver_session) -> None:
 
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

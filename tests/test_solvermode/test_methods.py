@@ -2,7 +2,6 @@ import pytest
 
 
 @pytest.mark.settings_only
-@pytest.mark.fluent_version("latest")
 def test_methods(load_mixing_elbow_settings_only):
     solver = load_mixing_elbow_settings_only
     solver.setup.models.multiphase.models = "vof"

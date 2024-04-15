@@ -1,8 +1,6 @@
-import pytest
 from util.fixture_fluent import load_static_mixer_settings_only  # noqa: F401
 
 
-@pytest.mark.fluent_version("latest")
 def test_creatable(load_static_mixer_settings_only) -> None:
     setup = load_static_mixer_settings_only.setup
     has_not = (

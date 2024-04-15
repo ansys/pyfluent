@@ -71,7 +71,6 @@ def test_initialization_settings(launch_fluent_solver_3ddp_t2):
     }
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(

@@ -54,7 +54,6 @@ def test_search(capsys):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
     new_watertight_workflow_session, new_solver_session
 ):
@@ -126,7 +125,6 @@ def test_get_version_path_prefix_from_obj(
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("latest")
 def test_search_from_root(capsys, new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     pyfluent.search("display", search_root=meshing)

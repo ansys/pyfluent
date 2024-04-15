@@ -285,7 +285,6 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
-@pytest.mark.fluent_version(">=23.2")
 def test_journal_creation(file_format, new_mesh_session):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
@@ -314,7 +313,6 @@ def test_journal_creation(file_format, new_mesh_session):
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_start_transcript_file_write(new_mesh_session):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
@@ -339,20 +337,17 @@ def test_start_transcript_file_write(new_mesh_session):
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
 
-@pytest.mark.fluent_version(">=23.1")
 def test_expected_interfaces_in_solver_session(new_solver_session):
     assert all(
         intf in dir(new_solver_session) for intf in ("preferences", "tui", "workflow")
     )
 
 
-@pytest.mark.fluent_version(">=24.1")
 def test_solverworkflow_not_in_solver_session(new_solver_session):
     assert "solverworkflow" not in dir(new_solver_session)
 
 
 @pytest.mark.standalone
-@pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -464,7 +459,6 @@ def test_solver_methods(new_solver_session):
 
 
 @pytest.mark.skip("github issue: https://github.com/ansys/pyfluent/issues/2684")
-@pytest.mark.fluent_version(">=23.2")
 def test_get_set_state_on_solver(new_solver_session):
     solver = new_solver_session
     state = solver.get_state()

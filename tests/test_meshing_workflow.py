@@ -15,7 +15,6 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
@@ -188,7 +187,6 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_command_args_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
@@ -200,7 +198,6 @@ def test_command_args_datamodel_se(new_mesh_session):
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
@@ -213,7 +210,6 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_attribute_query_list_types(new_mesh_session):
     session_new = new_mesh_session
@@ -223,7 +219,6 @@ def test_attribute_query_list_types(new_mesh_session):
     assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_mesh_session):
     session_new = new_mesh_session
@@ -305,7 +300,6 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
 
 @pytest.mark.skip("Wait for later implementation.")
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     session_new = new_mesh_session
@@ -324,7 +318,6 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     assert "set_state" in dir(m().NumParts)
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
@@ -406,7 +399,6 @@ def test_nonexistent_attrs(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_old_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -421,7 +413,7 @@ def test_old_workflow_structure(new_mesh_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_new_2d_meshing_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")

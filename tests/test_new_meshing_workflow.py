@@ -10,7 +10,6 @@ from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_watertight_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -82,7 +81,6 @@ def test_new_watertight_workflow(new_mesh_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_fault_tolerant_workflow(new_mesh_session):
     meshing = new_mesh_session
 
@@ -475,7 +473,7 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_new_2d_meshing_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
@@ -591,7 +589,6 @@ def test_new_2d_meshing_workflow(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_updating_state_in_new_meshing_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -621,7 +618,6 @@ def _assert_snake_case_attrs(attrs: Iterable):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -639,7 +635,6 @@ def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     # Import geometry
     meshing = new_mesh_session
@@ -680,7 +675,6 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     assert len(watertight._task_list) == 14
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight = new_mesh_session.watertight()
@@ -698,7 +692,6 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     watertight = new_mesh_session.watertight()
@@ -734,7 +727,6 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
 
 
 @pytest.mark.skip("Randomly failing in CI")
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = new_mesh_session.watertight()
@@ -792,7 +784,6 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
     import_cad()
 
 
-@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     watertight = new_mesh_session.watertight()
@@ -839,7 +830,6 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert len(import_geometry_state) > 2
 
 
-@pytest.mark.fluent_version(">=23.1")
 @pytest.mark.skip
 def test_meshing_workflow_structure(new_mesh_session):
     """
@@ -1057,7 +1047,6 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_new_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
@@ -1068,7 +1057,6 @@ def test_new_workflow_structure(new_mesh_session):
 
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -1094,7 +1082,6 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
     watertight = new_mesh_session.watertight()
     assert set([repr(x) for x in watertight.ordered_children()]) == {
@@ -1114,7 +1101,6 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
 
 @pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
     # Import CAD
     import_file_name = examples.download_file(
@@ -1141,7 +1127,6 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
 def test_switch_between_workflows(new_mesh_session):
     meshing = new_mesh_session
 
@@ -1194,7 +1179,6 @@ def test_switch_between_workflows(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
 def test_new_meshing_workflow_without_dm_caching(
     disable_datamodel_cache, new_mesh_session
 ):
@@ -1234,7 +1218,7 @@ def test_new_meshing_workflow_without_dm_caching(
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_new_meshing_workflow_validate_arguments(new_mesh_session):
     watertight = new_mesh_session.watertight()
     watertight.create_regions.number_of_flow_volumes = 1

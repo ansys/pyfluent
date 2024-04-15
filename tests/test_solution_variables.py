@@ -9,7 +9,6 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_solution_variables(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -121,7 +120,6 @@ def test_solution_variables(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_solution_variables_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
     import_file_name = examples.download_file(
@@ -202,7 +200,6 @@ def test_solution_variables_single_precision(new_solver_session_single_precision
     assert str(fluid_temp.dtype) == "float32"
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_svars(new_solver_session):
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -310,7 +307,6 @@ def test_svars(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.fluent_version(">=23.2")
 def test_svars_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
     import_file_name = examples.download_file(
@@ -391,7 +387,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
     assert str(fluid_temp.dtype) == "float32"
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("latest")
 def test_solution_variable_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

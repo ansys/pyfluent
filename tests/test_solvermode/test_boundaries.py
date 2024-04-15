@@ -8,7 +8,6 @@ from util.solver import SettingsValDict as D
 from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 
 
-@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.settings_only
 @pytest.mark.codegen_required
 def test_boundaries_elbow(load_mixing_elbow_settings_only):
@@ -75,7 +74,6 @@ def test_boundaries_elbow(load_mixing_elbow_settings_only):
 
 
 @pytest.mark.settings_only
-@pytest.mark.fluent_version("latest")
 def test_boundaries_periodic(load_periodic_rot_settings_only):
     solver_session = load_periodic_rot_settings_only
     print(__file__)
