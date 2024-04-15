@@ -210,7 +210,7 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_parameters_list_function(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
     solver.tui.define.parameters.enable_in_TUI("yes")

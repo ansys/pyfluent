@@ -387,7 +387,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
     assert str(fluid_temp.dtype) == "float32"
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_solution_variable_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

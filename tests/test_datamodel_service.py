@@ -274,7 +274,7 @@ def test_datamodel_streaming_no_commands_diff_state(
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 @pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session
@@ -347,7 +347,7 @@ def test_generic_datamodel(new_solver_session):
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_named_object_specific_methods_using_flserver(new_solver_session):
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -428,7 +428,7 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
     assert not flserver.Case.Results.Graphics.Contour.get_object_names()
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_named_object_specific_methods(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")

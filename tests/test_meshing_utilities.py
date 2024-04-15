@@ -13,7 +13,7 @@ def pytest_approx(expected):
 
 @pytest.mark.codegen_required
 @pytest.mark.nightly
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_meshing_utilities(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)

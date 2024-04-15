@@ -5,7 +5,7 @@ def test_dev_fluent_any():
     pass
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_dev_fluent_latest():
     pass
 
@@ -41,7 +41,7 @@ def test_nightly_fluent_any():
 
 
 @pytest.mark.nightly
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_nightly_fluent_latest():
     pass
 

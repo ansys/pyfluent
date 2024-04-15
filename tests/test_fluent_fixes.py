@@ -87,7 +87,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     ]
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_empty_vector_field_data_2339(new_solver_session):
     solver = new_solver_session
 

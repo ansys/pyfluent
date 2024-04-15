@@ -369,7 +369,7 @@ def test_field_info_validators(new_solver_session) -> None:
 
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

@@ -48,9 +48,9 @@ def pytest_runtest_setup(item):
     if fluent_version_markers:
         spec = fluent_version_markers[0].args[0]
         # Tests which depend on the current development Fluent version or tracking
-        # Fluent API change are marked as fluent_version("latest"). They are run only
+        # Fluent API change are marked as fluent_version("develop"). They are run only
         # with the development Fluent version.
-        if spec == "latest":
+        if spec == "develop":
             fluent_version_spec = f"=={_fluent_develop_version}"
         # Tests which depend on a specific released Fluent version are marked as
         # fluent_version("==<version>"). They are run only with that specific Fluent

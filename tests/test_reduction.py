@@ -352,7 +352,7 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_sum_if(solver1)
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_reduction_does_not_modify_case(load_static_mixer_case):
     solver = load_static_mixer_case
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
@@ -363,7 +363,7 @@ def test_reduction_does_not_modify_case(load_static_mixer_case):
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_fix_for_invalid_location_inputs(load_static_mixer_case):
     solver = load_static_mixer_case
     solver.solution.initialization.hybrid_initialize()

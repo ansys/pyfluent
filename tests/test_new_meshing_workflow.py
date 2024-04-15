@@ -473,7 +473,7 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_new_2d_meshing_workflow(new_mesh_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
@@ -1218,7 +1218,7 @@ def test_new_meshing_workflow_without_dm_caching(
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_new_meshing_workflow_validate_arguments(new_mesh_session):
     watertight = new_mesh_session.watertight()
     watertight.create_regions.number_of_flow_volumes = 1

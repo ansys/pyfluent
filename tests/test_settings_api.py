@@ -150,7 +150,7 @@ def test_api_upgrade(new_solver_session, capsys):
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_deprecated_settings(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -290,7 +290,7 @@ def test_deprecated_settings(new_solver_session):
     }
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -304,7 +304,7 @@ def test_command_return_type(new_solver_session):
     assert ret is not None
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_unstable_settings_warning(new_solver_session, recwarn):
     solver = new_solver_session
     solver.file.export
@@ -328,7 +328,7 @@ def test_unstable_settings_warning(new_solver_session, recwarn):
     # assert len(recwarn) == 0
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version("develop")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
     icing_cls = solver.setup.boundary_conditions._child_classes[
