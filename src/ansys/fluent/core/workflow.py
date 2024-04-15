@@ -12,7 +12,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
-    PyCommand,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -228,9 +227,10 @@ class BaseTask:
         )
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by this task. Sorting is in terms of the
-        workflow order and only includes this task's top-level tasks, while other tasks
-        can be obtained by calling ordered_children() on a parent task.
+        """Get the ordered task list held by this task.
+
+        This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
+        You can obtain other tasks by calling the ``ordered_children()`` method on a parent task.
 
         Given the workflow::
 
@@ -319,21 +319,58 @@ class BaseTask:
         """
         return int(self.get_id()[len("TaskObject") :])
 
+    def _populate_duplicate_task_list(self):
+        disp_text = self.display_name()
+        if disp_text.split()[-1].isdigit():
+            new_task = "".join(disp_text.rsplit(f" {disp_text.split()[-1]}", 1))
+            if (
+                new_task
+                == self._command_source._help_string_display_text_map[self._python_name]
+            ):
+                self._python_name = self._python_name + f"_{disp_text.split()[-1]}"
+                self._command_source._help_string_display_text_map[
+                    self._python_name
+                ] = disp_text
+                self._command_source._repeated_task_help_string_display_text_map[
+                    self._python_name
+                ] = disp_text
+
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, as it is in the underlying application.
+        """Get the Pythonic name of this task from the underlying application.
 
         Returns
         -------
         str
-            The Pythonic name of this task.
+            Pythonic name of the task.
         """
         if not self._python_name:
-            try:
-                this_command = self._command()
-                # temp reuse helpString
-                self._python_name = this_command.get_attr("helpString")
-            except Exception:
-                pass
+            display_name_map = self._command_source._help_string_display_text_map
+            if self.display_name() not in display_name_map.values():
+                try:
+                    this_command = self._command()
+                    # temp reuse helpString
+                    self._python_name = this_command.get_attr("helpString")
+                    if (
+                        self._python_name
+                        in self._command_source._help_string_display_text_map
+                    ):
+                        self._populate_duplicate_task_list()
+                    else:
+                        self._command_source._help_string_display_text_map[
+                            self._python_name
+                        ] = self.display_name()
+                    self._command_source._help_string_command_id_map[
+                        self._python_name
+                    ] = this_command.command
+                    self._command_source._help_string_display_id_map[
+                        self._python_name
+                    ] = this_command.get_attr("displayText")
+                except Exception:
+                    pass
+            else:
+                self._python_name = list(display_name_map.keys())[
+                    list(display_name_map.values()).index(self.display_name())
+                ]
         return self._python_name
 
     def _get_camel_case_arg_keys(self):
@@ -397,6 +434,42 @@ class BaseTask:
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
+        if self._dynamic_interface:
+            if (
+                self.python_name()
+                in self._command_source._repeated_task_help_string_display_text_map
+            ):
+                self._command_source._help_string_command_id_map[new_name] = (
+                    self._command_source._help_string_command_id_map.pop(
+                        self.python_name(), None
+                    )
+                )
+                self._command_source._help_string_display_id_map[new_name] = (
+                    self._command_source._help_string_display_id_map.pop(
+                        self.python_name(), None
+                    )
+                )
+                self._command_source._help_string_display_text_map.pop(
+                    self.python_name(), None
+                )
+                self._command_source._repeated_task_help_string_display_text_map.pop(
+                    self.python_name(), None
+                )
+            else:
+                self._command_source._help_string_command_id_map[new_name] = (
+                    self._command_source._help_string_command_id_map[self.python_name()]
+                )
+                self._command_source._help_string_display_id_map[new_name] = (
+                    self._command_source._help_string_display_id_map[self.python_name()]
+                )
+                self._command_source._help_string_display_text_map.pop(
+                    self.python_name(), None
+                )
+
+            self._command_source._help_string_display_text_map[new_name] = new_name
+            self._command_source._repeated_task_help_string_display_text_map[
+                new_name
+            ] = new_name
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
@@ -412,13 +485,12 @@ class BaseTask:
         return self._task.InsertCompoundChildTask()
 
     def get_next_possible_tasks(self) -> list[str]:
-        """Get the list of possible names of commands that can be inserted as tasks
-        after this current task is executed."""
+        """Get the list of possible Python names that can be inserted as tasks after
+        this current task is executed."""
         return [camel_to_snake_case(task) for task in self._task.GetNextPossibleTasks()]
 
     def insert_next_task(self, command_name: str):
-        """Insert a task based on the command name passed as argument after the current
-        task is executed.
+        """Insert a task based on the Python name after the current task is executed.
 
         Parameters
         ----------
@@ -585,6 +657,21 @@ class ArgumentsWrapper(PyCallableStateObject):
         """
         self._assign(args, "update_dict")
 
+    def _camel_snake_arguments_map(self, input_dict):
+        snake_case_state_dict = {}
+        for key, val in input_dict.items():
+            self._snake_to_camel_map[camel_to_snake_case(key)] = key
+            if isinstance(
+                getattr(self._task._command_arguments, key),
+                PySingletonCommandArgumentsSubItem,
+            ):
+                snake_case_state_dict[camel_to_snake_case(key)] = (
+                    self._camel_snake_arguments_map(val)
+                )
+            else:
+                snake_case_state_dict[camel_to_snake_case(key)] = val
+        return snake_case_state_dict
+
     def get_state(self, explicit_only=False) -> dict:
         """Get the state of the arguments.
 
@@ -599,21 +686,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         )
 
         if self._dynamic_interface:
-            snake_case_state_dict = {}
-            for key, val in state_dict.items():
-                nested_val = {}
-                if isinstance(
-                    getattr(self._task._command_arguments, key),
-                    PySingletonCommandArgumentsSubItem,
-                ):
-                    for k, v in val.items():
-                        self._snake_to_camel_map[camel_to_snake_case(k)] = k
-                        nested_val[camel_to_snake_case(k)] = v
-                else:
-                    nested_val = val
-                self._snake_to_camel_map[camel_to_snake_case(key)] = key
-                snake_case_state_dict[camel_to_snake_case(key)] = nested_val
-            return snake_case_state_dict
+            return self._camel_snake_arguments_map(state_dict)
 
         return state_dict
 
@@ -912,7 +985,7 @@ class CompoundChild(SimpleTask):
         super().__init__(command_source, task)
 
     def python_name(self) -> str:
-        """Get the Pythonic name of this task, as it is in the underlying application.
+        """Get the Pythonic name of this task from the underlying application.
 
         Returns
         -------
@@ -970,8 +1043,7 @@ class CompositeTask(BaseTask):
         return {}
 
     def insert_composite_child_task(self, command_name: str):
-        """Insert a composite child task based on the command name passed as
-        argument."""
+        """Insert a composite child task based on the Python name."""
         return self._task.InsertCompositeChildTask(CommandName=command_name)
 
 
@@ -1162,7 +1234,9 @@ class Workflow:
         self._task_objects = {}
         self._dynamic_interface = False
         self._help_string_command_id_map = {}
+        self._help_string_display_id_map = {}
         self._help_string_display_text_map = {}
+        self._repeated_task_help_string_display_text_map = {}
         self._unwanted_attrs = {
             "reset_workflow",
             "initialize_workflow",
@@ -1176,8 +1250,9 @@ class Workflow:
         self._fluent_version = fluent_version
 
     def task(self, name: str) -> BaseTask:
-        """Get a TaskObject by name, in a ``BaseTask`` wrapper. The wrapper adds extra
-        functionality.
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
+
+        The wrapper adds extra functionality.
 
         Parameters
         ----------
@@ -1191,10 +1266,12 @@ class Workflow:
         return _makeTask(self, name)
 
     def ordered_children(self, recompute=True) -> list:
-        """Get the ordered task list held by the workflow. Sorting is in terms of the
-        workflow order and only includes the top-level tasks, while other tasks can be
-        obtained by calling ordered_children() on a parent task. Consider the following
-        workflow.
+        """Get the ordered task list held by the workflow.
+
+        This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
+        You can obtain other tasks by calling the ``ordered_children()`` method on a parent task.
+
+        Consider the following workflow.
 
         Given the workflow::
 
@@ -1255,6 +1332,8 @@ class Workflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
+        if attr in self._repeated_task_help_string_display_text_map:
+            return self.task(self._repeated_task_help_string_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1280,6 +1359,7 @@ class Workflow:
             + dir(type(self))
             + arg_list
             + self.child_task_python_names()
+            + list(self._repeated_task_help_string_display_text_map)
         )
         dir_set = dir_set - self._unwanted_attrs
         return sorted(filter(None, dir_set))
@@ -1348,33 +1428,24 @@ class Workflow:
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
 
-    def _populate_help_string_command_id_map(self):
-        if not self._help_string_command_id_map:
-            for command in dir(self._command_source):
-                if command in ["SwitchToSolution", "set_state"]:
-                    continue
-                command_obj = getattr(self._command_source, command)
-                if isinstance(command_obj, PyCommand):
-                    command_obj_instance = command_obj.create_instance()
-                    help_str = command_obj_instance.get_attr("helpString")
-                    if help_str in self.child_task_python_names():
-                        self._help_string_command_id_map[help_str] = command
-                        self._help_string_display_text_map[help_str] = (
-                            command_obj_instance.get_attr("displayText")
-                        )
-                    del command_obj_instance
+    def get_insertable_tasks(self):
+        """Get the list of possible Python names that can be inserted as tasks."""
+        return [
+            item
+            for item in self._help_string_command_id_map.keys()
+            if item not in self._repeated_task_help_string_display_text_map.keys()
+        ]
 
-    def get_possible_tasks(self):
-        """Get the list of possible names of commands that can be inserted as tasks."""
-        self._populate_help_string_command_id_map()
-        return list(self._help_string_command_id_map)
+    def get_available_task_names(self):
+        """Get the list of the Python names for the available tasks."""
+        return [child.python_name() for child in self.ordered_children()]
 
-    def insert_new_task(self, command_name: str):
-        """Insert a new task based on the command name passed as an argument.
+    def insert_new_task(self, task: str):
+        """Insert a new task based on the Python name.
 
         Parameters
         ----------
-        command_name: str
+        task: str
             Name of the new task.
 
         Returns
@@ -1384,17 +1455,15 @@ class Workflow:
         Raises
         ------
         ValueError
-            If the command name does not match a task name.
-            In this case, none of the tasks are deleted.
+            If 'task' does not match a task name.
         """
-        self._populate_help_string_command_id_map()
-        if command_name not in self._help_string_command_id_map:
+        if task not in self.get_insertable_tasks():
             raise ValueError(
-                f"'{command_name}' is not an allowed command task.\n"
-                "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                f"'{task}' is not an allowed task.\n"
+                "Use the 'get_insertable_tasks()' method to view a list of allowed tasks."
             )
         return self._workflow.InsertNewTask(
-            CommandName=self._help_string_command_id_map[command_name]
+            CommandName=self._help_string_command_id_map[task]
         )
 
     def delete_tasks(self, list_of_tasks: list[str]):
@@ -1412,25 +1481,29 @@ class Workflow:
         Raises
         ------
         ValueError
-            If command_name does not match a task name. None of the tasks is deleted.
+            If 'task' does not match a task name, no tasks are deleted.
         """
-        self._populate_help_string_command_id_map()
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
             try:
                 list_of_tasks_with_display_name.append(
-                    self._help_string_display_text_map[task_name]
+                    self._help_string_display_id_map[task_name]
                 )
+                self._help_string_display_text_map.pop(task_name, None)
+                if task_name in self._repeated_task_help_string_display_text_map:
+                    self._help_string_command_id_map.pop(task_name, None)
+                    self._help_string_display_id_map.pop(task_name, None)
+                self._repeated_task_help_string_display_text_map.pop(task_name, None)
             except KeyError as ex:
                 raise ValueError(
-                    f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                    f"'{task_name}' is not an allowed task.\n"
+                    "Use the 'get_available_task_names()' method to view a list of allowed tasks."
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
 
     def create_composite_task(self, list_of_tasks: list[str]):
-        """Create the list of tasks passed as argument.
+        """Create the list of tasks based on the Python names.
 
         Parameters
         ----------
@@ -1444,19 +1517,18 @@ class Workflow:
         Raises
         ------
         RuntimeError
-            If the command name does not match a task name.
+            If the 'task' does not match a task name.
         """
-        self._populate_help_string_command_id_map()
         list_of_tasks_with_display_name = []
         for task_name in list_of_tasks:
             try:
                 list_of_tasks_with_display_name.append(
-                    self._help_string_display_text_map[task_name]
+                    self._help_string_display_id_map[task_name]
                 )
             except KeyError:
                 raise RuntimeError(
-                    f"'{task_name}' is not an allowed command task.\n"
-                    "Use the 'get_possible_tasks()' method to view a list of allowed command tasks."
+                    f"'{task_name}' is not an allowed task.\n"
+                    "Use the 'get_available_task_names()' method to view a list of allowed tasks."
                 )
 
         return self._workflow.CreateCompositeTask(
