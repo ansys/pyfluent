@@ -1240,7 +1240,8 @@ class Workflow:
         self._unwanted_attrs = {
             "reset_workflow",
             "initialize_workflow",
-            "load_workflow",
+            "insert_new_task",
+            "create_composite_task",
             "create_new_workflow",
             "rules",
             "service",
@@ -1440,32 +1441,6 @@ class Workflow:
         """Get the list of the Python names for the available tasks."""
         return [child.python_name() for child in self.ordered_children()]
 
-    def insert_new_task(self, task: str):
-        """Insert a new task based on the Python name.
-
-        Parameters
-        ----------
-        task: str
-            Name of the new task.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        ValueError
-            If 'task' does not match a task name.
-        """
-        if task not in self.get_insertable_tasks():
-            raise ValueError(
-                f"'{task}' is not an allowed task.\n"
-                "Use the 'get_insertable_tasks()' method to view a list of allowed tasks."
-            )
-        return self._workflow.InsertNewTask(
-            CommandName=self._help_string_command_id_map[task]
-        )
-
     def delete_tasks(self, list_of_tasks: list[str]):
         """Delete the provided list of tasks.
 
@@ -1501,39 +1476,6 @@ class Workflow:
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
-
-    def create_composite_task(self, list_of_tasks: list[str]):
-        """Create the list of tasks based on the Python names.
-
-        Parameters
-        ----------
-        list_of_tasks: list[str]
-            List of task items.
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        RuntimeError
-            If the 'task' does not match a task name.
-        """
-        list_of_tasks_with_display_name = []
-        for task_name in list_of_tasks:
-            try:
-                list_of_tasks_with_display_name.append(
-                    self._help_string_display_id_map[task_name]
-                )
-            except KeyError:
-                raise RuntimeError(
-                    f"'{task_name}' is not an allowed task.\n"
-                    "Use the 'get_available_task_names()' method to view a list of allowed tasks."
-                )
-
-        return self._workflow.CreateCompositeTask(
-            ListOfTasks=list_of_tasks_with_display_name
-        )
 
 
 class ClassicWorkflow:
