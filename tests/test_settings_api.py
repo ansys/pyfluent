@@ -312,6 +312,7 @@ def test_command_return_type(new_solver_session):
     assert ret is not None
 
 
+@pytest.fixture
 def warning_record():
     wrec = WarningsRecorder(_ispytest=True)
     with wrec:
