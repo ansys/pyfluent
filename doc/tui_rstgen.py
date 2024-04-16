@@ -73,6 +73,9 @@ def generate():
 if __name__ == "__main__":
     from ansys.fluent.core.solver.tui_242 import main_menu
 
+    def _create_dir():
+        return
+
     def _get_members(class_name):
         return [member for member in dir(class_name) if not member.startswith("__")]
 
@@ -150,5 +153,5 @@ if __name__ == "__main__":
             if menu_with_members:
                 f.write(".. toctree::\n")
                 f.write("   :hidden:\n\n")
-            for member in menu_with_members:
-                f.write(f"   {member}/index\n")
+                for member in menu_with_members:
+                    f.write(f"   {member}/index\n")
