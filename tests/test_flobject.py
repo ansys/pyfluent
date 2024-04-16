@@ -1131,3 +1131,25 @@ def test_static_info_hash_identity(new_solver_session):
     hash1 = _gethash(solver._settings_service.get_static_info())
     hash2 = _gethash(solver._settings_service.get_static_info())
     assert hash1 == hash2
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_default_argument_names_for_commands(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+
+    assert solver.results.graphics.contour.command_names == [
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "copy",
+        "add_to_graphics",
+        "clear_history",
+    ]
+
+    assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
+    assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    # The following is the default behavior when no arguments are associated with the command.
+    assert solver.results.graphics.contour.list.argument_names == []

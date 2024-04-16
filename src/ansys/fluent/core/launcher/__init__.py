@@ -1,5 +1,6 @@
 """Public objects and functions under launcher."""
 
+from ..utils.fluent_version import FluentVersion  # noqa: F401
 from .fluent_container import (  # noqa: F401
     configure_container_dict,
     start_fluent_container,
