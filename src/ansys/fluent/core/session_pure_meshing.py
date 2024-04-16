@@ -6,10 +6,7 @@ from typing import Any, Dict, Optional
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.meshing_queries import (
-    MeshingQueries,
-    MeshingQueriesService,
-)
+from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -30,6 +27,7 @@ class PureMeshing(BaseSession):
     def __init__(
         self,
         fluent_connection: FluentConnection,
+        scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
         launcher_args: Optional[Dict[str, Any]] = None,
@@ -38,10 +36,17 @@ class PureMeshing(BaseSession):
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+            scheme_eval: SchemeEval
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
             file_transfer_service: Supports file upload and download.
+            start_transcript : bool, optional
+                Whether to start the Fluent transcript in the client.
+                The default is ``True``, in which case the Fluent transcript can be subsequently
+                started and stopped using method calls on the ``Session`` object.
         """
         super(PureMeshing, self).__init__(
             fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
@@ -52,10 +57,6 @@ class PureMeshing(BaseSession):
             self.get_fluent_version().value,
             self._datamodel_service_tui,
             self._datamodel_service_se,
-        )
-
-        self.meshing_queries_service = fluent_connection.create_grpc_service(
-            MeshingQueriesService, self._error_state
         )
 
         datamodel_service_se = self._datamodel_service_se
@@ -83,12 +84,6 @@ class PureMeshing(BaseSession):
     def meshing(self):
         """Datamodel root of meshing."""
         return self._base_meshing.meshing
-
-    @property
-    def meshing_queries(self) -> MeshingQueries:
-        """Datamodel root of meshing_queries."""
-        if self.get_fluent_version() >= FluentVersion.v232:
-            return MeshingQueries(self.meshing_queries_service)
 
     @property
     def meshing_utilities(self):
