@@ -48,17 +48,6 @@ def _get_tui_file_name(mode: str):
             return file
 
 
-from ansys.fluent.core.solver.tui_242 import main_menu
-
-# def get_members(class_name):
-#     return [member for member in dir(class_name) if not member.startswith('__')]
-#
-# main_menu_members = get_members(main_menu)
-# Path(_get_tui_docdir("solver_test")).mkdir(exist_ok=True)
-# for member in main_menu_members:
-#     Path(_get_tui_docdir("solver_test", member)).mkdir(exist_ok=True)
-
-
 def generate():
     """Generate TUI result (RST) files."""
     for mode in ["meshing", "solver"]:
