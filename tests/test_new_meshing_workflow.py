@@ -1371,3 +1371,7 @@ def test_camel_to_snake_case_convertor():
     assert camel_to_snake_case("BOIZoneOrLabel") == "boi_zone_or_label"
     assert camel_to_snake_case("NumberofLayers") == "numberof_layers"
     assert camel_to_snake_case("NumberOfLayers") == "number_of_layers"
+    assert (
+        camel_to_snake_case("Set_Up_Rotational_Periodic_Boundaries")
+        == "set_up_rotational_periodic_boundaries"
+    )
