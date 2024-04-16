@@ -130,5 +130,36 @@ if __name__ == "__main__":
             if menu_with_members:
                 f.write(".. toctree::\n")
                 f.write("   :hidden:\n\n")
-                for member in menu_with_members:
-                    f.write(f"   {member}/index\n")
+                for menu_member in menu_with_members:
+                    f.write(f"   {menu_member}/index\n")
+
+                for menu_member in menu_with_members:
+                    Path(
+                        Path(_get_tui_docdir("solver_test", member)) / menu_member
+                    ).mkdir(exist_ok=True)
+                    menu_member_index_file = (
+                        Path(Path(_get_tui_docdir("solver_test", member)) / menu_member)
+                        / "index.rst"
+                    )
+                    with open(menu_member_index_file, "w", encoding="utf8") as f:
+                        f.write(f".. _ref_{mode}_tui_{member}_{menu_member}:\n\n")
+                        f.write(f"{menu_member}\n")
+                        f.write(f"{'=' * len(menu_member)}\n\n")
+                        f.write(
+                            f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode)}.main_menu.{member}.{menu_member}\n"
+                        )
+                        sub_menu_member = getattr(sub_menu, menu_member)
+                        menu_with_members, menu_without_members = (
+                            _get_sub_menus_with_and_without_members(
+                                sub_menu, sub_menu_member
+                            )
+                        )
+                        f.write(f"   :members: {', '.join(menu_without_members)}\n")
+                        f.write("   :show-inheritance:\n")
+                        f.write("   :undoc-members:\n")
+                        f.write("   :autosummary:\n")
+                        f.write("   :autosummary-members:\n\n")
+
+                        if menu_with_members:
+                            f.write(".. toctree::\n")
+                            f.write("   :hidden:\n\n")
