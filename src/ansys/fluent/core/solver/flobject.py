@@ -1462,6 +1462,13 @@ class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
 
+_deleted_keywards = {
+    "results/report/fluxes/*": ["all_boundary_zones"],
+    "results/report/forces": ["all_wall_zones"],
+    "results/plot/histogram": ["all_zones"],
+}
+
+
 def _get_new_keywords(obj, args, kwds):
     newkwds = {}
     argNames = []
@@ -1476,12 +1483,19 @@ def _get_new_keywords(obj, args, kwds):
         argumentNames = obj.argument_names[:]
         if argNames:
             argumentNames = argNames
+    unknown_keywords = set()
     for k, v in kwds.items():
         if k in argumentNames:
             ccls = getattr(obj, k)
             newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
         else:
-            raise RuntimeError("Argument '" + str(k) + "' is invalid")
+            unknown_keywords.add(k)
+    deleted_keywords = set()
+    for k, v in _deleted_keywards.items():
+        if fnmatch.fnmatch(obj.path, k):
+            deleted_keywords = set(v)
+    for k in unknown_keywords - deleted_keywords:
+        raise RuntimeError("Argument '" + str(k) + "' is invalid")
     return newkwds
 
 
@@ -1543,13 +1557,14 @@ class BaseCommand(Action):
     def execute_command(self, *args, **kwds):
         """Execute command."""
         for arg, value in kwds.items():
-            argument = getattr(self, arg)
-            if argument.before_execute(value):
+            argument = getattr(self, arg, None)
+            if argument and argument.before_execute(value):
                 kwds[f"{arg}"] = os.path.basename(value)
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
-            argument = getattr(self, arg)
-            argument.after_execute(value)
+            argument = getattr(self, arg, None)
+            if argument:
+                argument.after_execute(value)
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
