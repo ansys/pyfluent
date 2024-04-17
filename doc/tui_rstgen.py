@@ -2,6 +2,7 @@
 
 import fnmatch
 import os
+import pathlib
 from pathlib import Path
 from typing import Optional
 
@@ -41,10 +42,13 @@ def _get_tui_filepath(mode: str):
     )
 
 
-def _get_tui_file_name(mode: str):
+def _get_tui_file_name(mode: str, stem: bool):
     for file in os.listdir(_get_tui_filepath(mode)):
         if fnmatch.fnmatch(file, "tui_*.py"):
-            return file
+            if stem:
+                return pathlib.Path(file).stem
+            else:
+                return file
 
 
 if __name__ == "__main__":
@@ -91,7 +95,7 @@ if __name__ == "__main__":
         f.write(f"{mode}.tui\n")
         f.write(f"{'=' * len(f'{mode}.tui')}\n\n")
         f.write(
-            f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode)}.main_menu\n"
+            f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode, stem=True)}.main_menu\n"
         )
         main_menu_with_members, main_menu_without_members = (
             _get_sub_menus_with_and_without_members(main_menu)
@@ -115,7 +119,7 @@ if __name__ == "__main__":
             f.write(f"{member}\n")
             f.write(f"{'=' * len(member)}\n\n")
             f.write(
-                f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode)}.main_menu.{member}\n"
+                f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode, stem=True)}.main_menu.{member}\n"
             )
             sub_menu = getattr(main_menu, member)
             menu_with_members, menu_without_members = (
@@ -146,7 +150,7 @@ if __name__ == "__main__":
                         f.write(f"{menu_member}\n")
                         f.write(f"{'=' * len(menu_member)}\n\n")
                         f.write(
-                            f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode)}.main_menu.{member}.{menu_member}\n"
+                            f".. autoclass:: ansys.fluent.core.solver.{_get_tui_file_name(mode, stem=True)}.main_menu.{member}.{menu_member}\n"
                         )
                         sub_menu_member = getattr(sub_menu, menu_member)
                         menu_with_members, menu_without_members = (
