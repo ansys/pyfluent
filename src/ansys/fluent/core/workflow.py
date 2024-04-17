@@ -495,15 +495,15 @@ class BaseTask:
         return self._task.InsertCompoundChildTask()
 
     def _get_next_python_task_names(self) -> list[str]:
-        if not self._python_task_names_map:
-            for command_name in self._task.GetNextPossibleTasks():
-                self._python_task_names_map[
-                    camel_to_snake_case(
-                        getattr(self._command_source._command_source, command_name)
-                        .create_instance()
-                        .get_attr("helpString")
-                    )
-                ] = command_name
+        self._python_task_names_map = {}
+        for command_name in self._task.GetNextPossibleTasks():
+            self._python_task_names_map[
+                camel_to_snake_case(
+                    getattr(self._command_source._command_source, command_name)
+                    .create_instance()
+                    .get_attr("helpString")
+                )
+            ] = command_name
         return list(self._python_task_names_map.keys())
 
     def get_next_possible_tasks(self) -> list[str]:
