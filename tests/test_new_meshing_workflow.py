@@ -656,6 +656,9 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
             getattr(watertight, attr)
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
+    time.sleep(1)
+    assert "import_geometry" not in watertight.get_available_task_names()
+    assert "import_geom_wtm" in watertight.get_available_task_names()
     assert len(watertight.ordered_children()) == 11
     watertight.import_geom_wtm.file_name = import_file_name
     watertight.import_geom_wtm.length_unit = "in"
@@ -668,6 +671,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     ]
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
     watertight.import_geom_wtm.insert_next_task("import_body_of_influence_geometry")
+    assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
     watertight.import_geom_wtm.insert_next_task("set_up_periodic_boundaries")
     assert len(watertight.ordered_children()) == 13
 
@@ -1209,7 +1213,13 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.create_volume_mesh()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
+    time.sleep(1)
+    assert "import_geometry" not in watertight.get_available_task_names()
+    assert "import_geom_wtm" in watertight.get_available_task_names()
     assert watertight.import_geom_wtm.arguments()
+
+    with pytest.raises(AttributeError):
+        watertight.import_geometry
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
     time.sleep(1)

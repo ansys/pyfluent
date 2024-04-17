@@ -476,6 +476,7 @@ class BaseTask:
             self._command_source._repeated_task_help_string_display_text_map[
                 new_name
             ] = new_name
+            self._python_name = new_name
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
