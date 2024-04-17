@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import FluentMode
+from ansys.fluent.core.launcher.pyfluent_enums import FluentMode, UIMode
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -66,6 +66,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
     ui_mode = kwargs.get("ui_mode")
+    if isinstance(ui_mode, str):
+        ui_mode = UIMode(ui_mode)
     if ui_mode and ui_mode.value[0]:
         launch_args_string += f" -{ui_mode.value[0]}"
     graphics_driver = kwargs.get("graphics_driver")

@@ -266,6 +266,7 @@ def _get_ui_mode(
     ui_mode: UIMode
         Fluent GUI mode.
     """
+    ui_mode = None
     if show_gui is not None:
         warnings.warn(
             "'show_gui' is deprecated, use 'ui_mode' instead",
