@@ -1,9 +1,13 @@
-name: Test Run WO Codegen
+
+name: Test Run Custom
 
 on:
-  schedule:  # UTC at 0900 on Sunday
-    - cron:  '0 9 * * SUN'
+  #pull_request:
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -14,9 +18,24 @@ env:
   PYFLUENT_HIDE_LOG_SECRETS: 1
 
 jobs:
-  test:
-    name: Unit Testing
+
+  build_test:
+    name: Build and Test
     runs-on: [self-hosted, pyfluent]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image-tag: v22.2.0
+            version: 222
+          - image-tag: v23.1.0
+            version: 231
+          - image-tag: v23.2.0
+            version: 232
+          - image-tag: v24.1.0
+            version: 241
+          - image-tag: v24.2.0
+            version: 242
 
     steps:
       - uses: actions/checkout@v4
@@ -53,62 +72,30 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 22.2 Fluent docker image
+      - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Pull 23.1 Fluent docker image
-        run: make docker-pull
+      - name: Run API codegen
+        run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v23.1.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Pull 23.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
-      - name: Pull 24.1 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
-
-      - name: Pull 24.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.2.0
-
-      - name: 24.2 Unit Testing
+      - name: Print Fluent version info
         run: |
-          make install-test
-          make unittest-all-242-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          cat src/ansys/fluent/core/fluent_version_${{ matrix.version }}.py
 
-      - name: 24.1 Unit Testing
+      - name: Install again after codegen
         run: |
-          make install-test
-          make unittest-all-241-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
+          rm -rf dist
+          make install > /dev/null
 
-      - name: 23.2 Unit Testing
+      - name: Unit Testing
         run: |
-          make install-test
-          make unittest-all-232-no-codegen
+            echo "Running custom unittest"
+            sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+            make install-test
+            poetry python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
         env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
-      - name: 23.1 Unit Testing
-        run: |
-          make install-test
-          make unittest-all-231-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: 22.2 Unit Testing
-        run: |
-          make install-test
-          make unittest-all-222-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
