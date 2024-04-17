@@ -356,7 +356,9 @@ class BaseTask:
                 try:
                     this_command = self._command()
                     # temp reuse helpString
-                    self._python_name = this_command.get_attr("helpString")
+                    self._python_name = camel_to_snake_case(
+                        this_command.get_attr("helpString")
+                    )
                     if (
                         self._python_name
                         in self._command_source._help_string_display_text_map
@@ -496,9 +498,11 @@ class BaseTask:
         if not self._python_task_names_map:
             for command_name in self._task.GetNextPossibleTasks():
                 self._python_task_names_map[
-                    getattr(self._command_source._command_source, command_name)
-                    .create_instance()
-                    .get_attr("helpString")
+                    camel_to_snake_case(
+                        getattr(self._command_source._command_source, command_name)
+                        .create_instance()
+                        .get_attr("helpString")
+                    )
                 ] = command_name
         return list(self._python_task_names_map.keys())
 

@@ -665,14 +665,14 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     watertight.import_geom_wtm()
     _next_possible_tasks = [
         "import_boi_geometry",
-        "Set_Up_Rotational_Periodic_Boundaries",
+        "set_up_rotational_periodic_boundaries",
         "create_local_refinement_regions",
         "custom_journal_task",
     ]
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
     watertight.import_geom_wtm.insert_next_task("import_boi_geometry")
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
-    watertight.import_geom_wtm.insert_next_task("Set_Up_Rotational_Periodic_Boundaries")
+    watertight.import_geom_wtm.insert_next_task("set_up_rotational_periodic_boundaries")
     assert len(watertight.ordered_children()) == 13
 
 
@@ -743,7 +743,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     assert watertight.add_boundary_layer.get_next_possible_tasks() == [
         "add_boundary_type",
         "update_boundaries",
-        "Set_Up_Rotational_Periodic_Boundaries",
+        "set_up_rotational_periodic_boundaries",
         "modify_mesh_refinement",
         "improve_surface_mesh",
         "create_volume_mesh",
@@ -1229,7 +1229,7 @@ def test_new_meshing_workflow_without_dm_caching(
     assert watertight.import_geom_wtm.get_next_possible_tasks() == [
         "add_local_sizing",
         "import_boi_geometry",
-        "Set_Up_Rotational_Periodic_Boundaries",
+        "set_up_rotational_periodic_boundaries",
         "create_local_refinement_regions",
         "custom_journal_task",
     ]
