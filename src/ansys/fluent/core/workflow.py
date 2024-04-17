@@ -1246,6 +1246,7 @@ class Workflow:
         self._unwanted_attrs = {
             "reset_workflow",
             "initialize_workflow",
+            "load_workflow",
             "insert_new_task",
             "create_composite_task",
             "create_new_workflow",
@@ -1434,14 +1435,6 @@ class Workflow:
     def load_state(self, list_of_roots: list):
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
-
-    def get_insertable_tasks(self):
-        """Get the list of possible Python names that can be inserted as tasks."""
-        return [
-            item
-            for item in self._help_string_command_id_map.keys()
-            if item not in self._repeated_task_help_string_display_text_map.keys()
-        ]
 
     def get_available_task_names(self):
         """Get the list of the Python names for the available tasks."""

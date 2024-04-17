@@ -657,26 +657,19 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
     assert len(watertight.ordered_children()) == 11
-    watertight.insert_new_task("import_geometry")
-    assert len(watertight.ordered_children()) == 12
-    watertight.task("import_geom_wtm").file_name = import_file_name
-    watertight.task("import_geom_wtm").length_unit = "in"
-    watertight.task("import_geom_wtm")()
+    watertight.import_geom_wtm.file_name = import_file_name
+    watertight.import_geom_wtm.length_unit = "in"
+    watertight.import_geom_wtm()
     _next_possible_tasks = [
         "import_body_of_influence_geometry",
         "set_up_periodic_boundaries",
         "create_local_refinement_regions",
         "run_custom_journal",
     ]
-    assert (
-        watertight.task("import_geom_wtm").get_next_possible_tasks()
-        == _next_possible_tasks
-    )
-    watertight.task("import_geom_wtm").insert_next_task(
-        "import_body_of_influence_geometry"
-    )
-    watertight.task("import_geom_wtm").insert_next_task("set_up_periodic_boundaries")
-    assert len(watertight.ordered_children()) == 14
+    assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
+    watertight.import_geom_wtm.insert_next_task("import_body_of_influence_geometry")
+    watertight.import_geom_wtm.insert_next_task("set_up_periodic_boundaries")
+    assert len(watertight.ordered_children()) == 13
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -732,7 +725,6 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
-@pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
@@ -742,30 +734,37 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
     watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
-    # I assume that what's going on here is that due to DeleteTasks we are triggering
-    # change events in the server but those events are (still) being transmitted after
-    # DeleteTasks has returned. Hence, the dynamic watertight Python interface
-    # is still updating after the command has returned and the client can try to access
-    # while it is in that update phase, leading to (difficult to understand) exceptions.
-    # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
-    with pytest.raises(AttributeError):
-        watertight.create_volume_mesh
+    assert "create_volume_mesh" not in watertight.get_available_task_names()
 
-    watertight.insert_new_task(task="create_volume_mesh")
-    time.sleep(2.5)
+    assert watertight.add_boundary_layer.get_next_possible_tasks() == [
+        "add_boundary_type",
+        "update_boundaries",
+        "set_up_periodic_boundaries",
+        "modify_mesh_refinement",
+        "improve_surface_mesh",
+        "generate_the_volume_mesh_wtm",
+        "manage_zones",
+        "update_regions",
+        "run_custom_journal",
+    ]
+    watertight.add_boundary_layer.insert_next_task("generate_the_volume_mesh_wtm")
+    assert "create_volume_mesh" in watertight.get_available_task_names()
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
 
-    watertight_geom = watertight.describe_geometry
-    assert watertight_geom.create_regions.arguments()["number_of_flow_volumes"] == 1
+    assert (
+        watertight.describe_geometry.create_regions.arguments()[
+            "number_of_flow_volumes"
+        ]
+        == 1
+    )
     watertight.delete_tasks(list_of_tasks=["create_regions"])
-    assert watertight_geom.create_regions is None
-    assert watertight_geom.enclose_fluid_regions
-    watertight_geom.enclose_fluid_regions.delete()
-    assert watertight_geom.enclose_fluid_regions is None
+    assert "create_regions" not in watertight.get_available_task_names()
+    assert watertight.describe_geometry.enclose_fluid_regions
+    watertight.describe_geometry.enclose_fluid_regions.delete()
+    assert "enclose_fluid_regions" not in watertight.get_available_task_names()
     watertight.create_volume_mesh.delete()
-    with pytest.raises(AttributeError):
-        watertight.create_volume_mesh
+    assert "create_volume_mesh" not in watertight.get_available_task_names()
 
 
 @pytest.mark.fluent_version("==23.2")
@@ -1065,7 +1064,6 @@ def test_new_workflow_structure(new_mesh_session):
         watertight.TaskObject["Import Geometry"]
 
 
-@pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
@@ -1111,89 +1109,6 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
     }
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
-def test_duplicate_tasks_in_enhanced_meshing_workflow(new_mesh_session):
-    watertight = new_mesh_session.watertight()
-    possible_tasks = [
-        "import_geometry",
-        "add_local_sizing",
-        "create_surface_mesh",
-        "describe_geometry",
-        "apply_share_topology",
-        "enclose_fluid_regions",
-        "update_boundaries",
-        "create_regions",
-        "update_regions",
-        "add_boundary_layer",
-        "create_volume_mesh",
-    ]
-
-    possible_task_names = possible_tasks
-
-    watertight.import_geometry.rename("xyz")
-
-    assert sorted(watertight.get_insertable_tasks()) == sorted(possible_tasks)
-
-    possible_task_names.remove("import_geometry")
-    possible_task_names = possible_task_names + ["xyz"]
-    assert sorted(
-        child.python_name() for child in watertight.ordered_children()
-    ) == sorted(possible_task_names)
-
-    assert watertight.xyz
-
-    assert "import_geometry" not in watertight.get_available_task_names()
-
-    watertight.insert_new_task(task="import_geometry")
-
-    possible_task_names = possible_task_names + ["import_geometry"]
-
-    assert sorted(watertight.get_available_task_names()) == sorted(possible_task_names)
-
-    assert watertight.import_geometry
-
-    watertight.insert_new_task(task="import_geometry")
-
-    possible_task_names = possible_task_names + ["import_geometry_1"]
-
-    assert sorted(watertight.get_available_task_names()) == sorted(possible_task_names)
-
-    assert watertight.import_geometry_1
-
-    watertight.import_geometry_1.rename("igm_1")
-
-    possible_task_names.remove("import_geometry_1")
-    possible_task_names = possible_task_names + ["igm_1"]
-    assert sorted(
-        [child.python_name() for child in watertight.ordered_children()]
-    ) == sorted(possible_task_names)
-
-    watertight.insert_new_task(task="add_local_sizing")
-    watertight.insert_new_task(task="add_boundary_layer")
-
-    assert "import_geometry_1" not in watertight.get_available_task_names()
-
-    watertight.insert_new_task(task="import_geometry")
-    watertight.insert_new_task(task="import_geometry")
-
-    possible_task_names = possible_task_names + [
-        "import_geometry_1",
-        "import_geometry_2",
-        "add_local_sizing_1",
-        "add_boundary_layer_1",
-    ]
-
-    assert sorted(watertight.get_available_task_names()) == sorted(possible_task_names)
-
-    assert watertight.import_geometry_2
-
-    assert "import_geometry_3" not in watertight.get_available_task_names()
-
-    assert "add_boundary_layer_1" in dir(watertight)
-
-
-@pytest.mark.skip("Randomly failing in CI")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
@@ -1294,13 +1209,21 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.create_volume_mesh()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
-    assert watertight.task("import_geom_wtm").arguments()
+    assert watertight.import_geom_wtm.arguments()
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
     time.sleep(1)
     assert "add_local_sizing" not in watertight.get_available_task_names()
 
-    watertight.insert_new_task(task="add_local_sizing")
+    assert watertight.import_geom_wtm.get_next_possible_tasks() == [
+        "add_local_sizing_wtm",
+        "import_body_of_influence_geometry",
+        "set_up_periodic_boundaries",
+        "create_local_refinement_regions",
+        "run_custom_journal",
+    ]
+
+    watertight.import_geom_wtm.insert_next_task("add_local_sizing_wtm")
     time.sleep(1)
     assert "add_local_sizing" in watertight.get_available_task_names()
 
