@@ -1,4 +1,7 @@
+import warnings
+
 import pytest
+from pytest import WarningsRecorder
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
@@ -309,20 +312,28 @@ def test_command_return_type(new_solver_session):
     assert ret is not None
 
 
+@pytest.fixture
+def warning_record():
+    wrec = WarningsRecorder(_ispytest=True)
+    with wrec:
+        warnings.simplefilter("ignore", ResourceWarning)
+        yield wrec
+
+
 @pytest.mark.fluent_version(">=24.2")
-def test_unstable_settings_warning(new_solver_session, recwarn):
+def test_unstable_settings_warning(new_solver_session, warning_record):
     solver = new_solver_session
     solver.file.export
-    assert len(recwarn) == 1
-    assert recwarn.pop().category == UnstableSettingWarning
+    assert len(warning_record) == 1
+    assert warning_record.pop().category == UnstableSettingWarning
     try:
         solver.file.exp
     except AttributeError:
         pass
-    assert len(recwarn) == 0
+    assert len(warning_record) == 0
     solver.file.export
-    assert len(recwarn) == 1
-    assert recwarn.pop().category == UnstableSettingWarning
+    assert len(warning_record) == 1
+    assert warning_record.pop().category == UnstableSettingWarning
 
     # Issue in running in CI (probably due to -gu mode)
     # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

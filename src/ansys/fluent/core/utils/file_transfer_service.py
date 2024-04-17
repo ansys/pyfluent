@@ -1,11 +1,18 @@
 """Provides a module for file transfer service."""
 
 import os
-from typing import Any, Callable, Optional, Union  # noqa: F401
+import pathlib
+import random
+import shutil
+import subprocess
+from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
 
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
+import ansys.tools.filetransfer as ft
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -15,8 +22,245 @@ class PyPIMConfigurationError(ConnectionError):
         super().__init__("PyPIM is not configured.")
 
 
+class FileTransferStrategy(Protocol):
+    """Provides the file transfer strategy."""
+
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ) -> None:
+        """Upload file to the server."""
+        ...
+
+    def download(
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
+    ) -> None:
+        """Download file from the server."""
+        ...
+
+
+class LocalFileTransferStrategy(FileTransferStrategy):
+    """Provides the local file transfer strategy."""
+
+    def __init__(self, server_cwd: Optional[str] = None):
+        """Local File Transfer Service.
+
+        Parameters
+        ----------
+        server_cwd: str, Optional
+            Current working directory of server/Fluent.
+        """
+        self.pyfluent_cwd = pathlib.Path(str(os.getcwd()))
+        self.fluent_cwd = (
+            pathlib.Path(str(server_cwd))
+            if server_cwd
+            else (
+                pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
+            )
+        )
+
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        full_file_name = pathlib.Path(self.fluent_cwd) / os.path.basename(file_name)
+        return full_file_name.is_file()
+
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ) -> None:
+        local_file_name = pathlib.Path(file_name)
+        if local_file_name.exists() and local_file_name.is_file():
+            if remote_file_name:
+                shutil.copyfile(
+                    file_name,
+                    str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
+                )
+            else:
+                shutil.copyfile(
+                    file_name, str(self.fluent_cwd / f"{os.path.basename(file_name)}")
+                )
+
+    def download(
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
+    ) -> None:
+        remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file_name)}")
+        local_file_name = None
+        if local_directory:
+            if pathlib.Path(local_directory).is_dir():
+                local_file_name = pathlib.Path(local_directory) / os.path.basename(
+                    file_name
+                )
+            elif not pathlib.Path(local_directory).is_dir():
+                local_file_name = pathlib.Path(local_directory)
+        else:
+            local_file_name = pathlib.Path(self.pyfluent_cwd) / os.path.basename(
+                file_name
+            )
+        if local_file_name.exists() and local_file_name.samefile(remote_file_name):
+            return
+        shutil.copyfile(remote_file_name, str(local_file_name))
+
+
+def _get_files(
+    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]]
+):
+    path = "/home/runner/.local/share/ansys_fluent_core/examples"
+    if os.path.exists(path):
+        if isinstance(file_name, str):
+            files = [str(os.path.join(path, os.path.basename(file_name)))]
+        elif isinstance(file_name, pathlib.PurePath):
+            files = [str(os.path.join(path, file_name.name))]
+        elif isinstance(file_name, list):
+            files = [
+                str(os.path.join(path, os.path.basename(file))) for file in file_name
+            ]
+    else:
+        if isinstance(file_name, str):
+            files = [file_name]
+        elif isinstance(file_name, pathlib.PurePath):
+            files = [str(file_name)]
+        elif isinstance(file_name, list):
+            files = [str(file) for file in file_name]
+    return files
+
+
+class RemoteFileTransferStrategy(FileTransferStrategy):
+    """Provides a file transfer service based on the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_
+    and ``gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
+    """
+
+    def __init__(
+        self,
+        container_mount_path: Optional[str] = None,
+        host_mount_path: Optional[str] = None,
+    ):
+        self.host_port = random.randint(5000, 6000)
+        self.container_mount_path = (
+            container_mount_path if container_mount_path else "/home/container/workdir/"
+        )
+        self.host_mount_path = (
+            host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
+        )
+        try:
+            self.server = subprocess.Popen(
+                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
+                shell=True,
+            )
+        except Exception:
+            self.host_port = random.randint(6000, 7000)
+            self.server = subprocess.Popen(
+                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
+                shell=True,
+            )
+        self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
+
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        full_file_name = pathlib.Path(self.host_mount_path) / os.path.basename(
+            file_name
+        )
+        return full_file_name.is_file()
+
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ):
+        """Upload a file to the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name.
+        remote_file_name : str, optional
+            Remote file name. The default is ``None``.
+
+        Raises
+        ------
+        FileNotFoundError
+            If a file does not exist.
+        """
+        files = _get_files(file_name)
+        if self.client:
+            for file in files:
+                if os.path.isfile(file):
+                    self.client.upload_file(
+                        local_filename=file,
+                        remote_filename=(
+                            remote_file_name
+                            if remote_file_name
+                            else os.path.basename(file)
+                        ),
+                    )
+                else:
+                    raise FileNotFoundError(f"{file} does not exist.")
+
+    def download(
+        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
+    ):
+        """Download a file from the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name.
+        local_directory : str, optional
+            Local directory. The default is ``None``.
+        """
+        files = _get_files(file_name)
+        if self.client:
+            for file in files:
+                if os.path.isfile(file):
+                    print(f"\nFile already exists. File path:\n{file}\n")
+                else:
+                    self.client.download_file(
+                        remote_filename=os.path.basename(file),
+                        local_filename=(
+                            local_directory
+                            if local_directory
+                            else os.path.basename(file)
+                        ),
+                    )
+
+    def exit(self):
+        """Stop the container."""
+        id_ports_info = subprocess.run(
+            [f"docker ps"], shell=True, stdout=subprocess.PIPE
+        )
+        id_ports = str(id_ports_info).split("\\n")
+        active_container_ids = [
+            id_port.split(" ")[0]
+            for id_port in id_ports
+            if str(self.host_port) in id_port
+        ]
+        for container_id in active_container_ids:
+            try:
+                subprocess.Popen(f"docker kill {container_id}", shell=True)
+            except Exception:
+                pass
+
+    def __del__(self):
+        self.exit()
+
+
 class PimFileTransferService:
-    """Provides a file transfer service based on ``PyPIM<https://pypim.docs.pyansys.com/version/stable/>`` and ``simple_upload_server()``.
+    """Provides a file transfer service based on `PyPIM <https://pypim.docs.pyansys.com/version/stable/>`_ and the ``simple_upload_server()`` method.
 
     Attributes
     ----------
@@ -64,10 +308,19 @@ class PimFileTransferService:
             except ModuleNotFoundError:
                 pass
 
-    @property
-    def pim_service(self):
-        """PIM file transfer service."""
-        return self.file_service
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        return self.file_service.file_exist(os.path.basename(file_name))
 
     def is_configured(self):
         """Check pypim configuration."""
@@ -79,9 +332,10 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            file name
+            File name.
         remote_file_name : str, optional
-            remote file name, by default None
+            Remote file name. The default is ``None``.
+
         Raises
         ------
         FileNotFoundError
@@ -109,9 +363,10 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            File name
+            File name.
         remote_file_name : str, optional
-            remote file name, by default None
+            Remote file name. The default is ``None``.
+
         Raises
         ------
         FileNotFoundError
@@ -138,7 +393,7 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            file name
+            File name.
         local_directory : str, optional
             local directory, by default None
 
@@ -165,9 +420,9 @@ class PimFileTransferService:
         Parameters
         ----------
         file_name : str
-            File name
+            File name.
         local_directory : str, optional
-            local directory, by default None
+            Local directory. The default is the current working directory.
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
