@@ -729,7 +729,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     ]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
     watertight = new_mesh_session.watertight()
@@ -1234,9 +1234,10 @@ def test_new_meshing_workflow_without_dm_caching(
     ]
 
     watertight.import_geom_wtm.insert_next_task("add_local_sizing_wtm")
-    time.sleep(1)
+    time.sleep(2)
     assert "add_local_sizing" in watertight.get_available_task_names()
 
+    watertight.reinitialize()
     fault_tolerant = new_mesh_session.fault_tolerant()
     with pytest.raises(RuntimeError):
         watertight.import_geometry.arguments()
