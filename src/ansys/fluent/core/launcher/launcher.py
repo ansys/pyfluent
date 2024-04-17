@@ -259,7 +259,6 @@ def launch_fluent(
         clamped to the value of ``processor_count``. Please refer to
         *Starting the Fluent GPU Solver* section in *Fluent's User Guide* for more
         information like how to determine the GPU IDs.
-
     cwd : str, Optional
         Working directory for the Fluent client.
     topy : bool or str, optional

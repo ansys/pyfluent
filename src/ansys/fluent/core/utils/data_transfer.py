@@ -4,7 +4,6 @@ from functools import partial
 import logging
 import os
 from pathlib import Path, PurePosixPath
-import tempfile
 from typing import Optional
 
 import ansys.fluent.core as pyfluent
@@ -110,15 +109,15 @@ def transfer_case(
             container_workdir = PurePosixPath(container_workdir)
     for idx in range(num_files_to_try):
         file_name_tmp = (file_name_stem or "temp_case_file") + "_" + str(idx)
-        folder = Path(tempfile.mkdtemp(prefix="temp_store-", dir=workdir))
-        file_name = folder / file_name_tmp
         if inside_container:
-            file_name_container = container_workdir / folder.name / file_name_tmp
-            network_logger.debug(f"file_name: {file_name}")
+            file_name_container = container_workdir / file_name_tmp
+            network_logger.debug(f"file_name: {file_name_tmp}")
             network_logger.debug(f"file_name_container: {file_name_container}")
-        network_logger.info(f"Trying to save mesh from meshing session: {file_name}")
+        network_logger.info(
+            f"Trying to save mesh from meshing session: {file_name_tmp}"
+        )
         full_file_name = Path(
-            str(file_name) + "." + ("msh.h5" if file_type == "mesh" else "cas.h5")
+            str(file_name_tmp) + "." + ("msh.h5" if file_type == "mesh" else "cas.h5")
         )
         if inside_container:
             full_file_name_container = PurePosixPath(
@@ -130,7 +129,7 @@ def transfer_case(
                 f"full_file_name_container: {full_file_name_container}"
             )
         if overwrite_previous or not os.path.isfile(full_file_name):
-            network_logger.info(f"Saving mesh from meshing session: {file_name}")
+            network_logger.info(f"Saving mesh from meshing session: {file_name_tmp}")
             file_menu = source_instance.tui.file
             if inside_container:
                 writer = partial(

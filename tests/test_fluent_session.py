@@ -234,15 +234,15 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("PYFLUENT_LOGGING")
     monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
     inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
-    script = (
-        "import ansys.fluent.core as pyfluent;"
-        "solver = pyfluent.launch_fluent(start_watchdog=False);"
-        f'{"print(solver.connection_properties.cortex_host);" if inside_container else "print(solver.connection_properties.cortex_pid);"}'
-        "exit()"
+    import ansys.fluent.core as pyfluent
+
+    solver = pyfluent.launch_fluent(start_watchdog=False)
+    cortex = (
+        solver.connection_properties.cortex_host
+        if inside_container
+        else solver.connection_properties.cortex_pid
     )
-    output = subprocess.check_output(f'python -c "{script}"', shell=True)
-    cortex = output.decode().strip()
-    cortex = cortex if inside_container else int(cortex)
+    solver.exit()
     assert timeout_loop(
         lambda: (inside_container and not get_container(cortex))
         or (not inside_container and not psutil.pid_exists(cortex)),

@@ -4,6 +4,7 @@ from enum import Enum
 import functools
 import itertools
 import logging
+import os
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -1576,6 +1577,7 @@ class PyCommand:
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 self.before_execute(value)
+                kwds[f"{arg}"] = os.path.basename(value)
         command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
