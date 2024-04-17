@@ -20,6 +20,7 @@ import subprocess
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.error_handler import (
+    GPUSolverSupportError,
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
@@ -36,7 +37,10 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_graphics_driver,
+    _get_mode,
     _get_standalone_launch_fluent_version,
+    _get_ui_mode,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -67,6 +71,7 @@ class StandaloneLauncher:
         env: Optional[Dict[str, Any]] = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -123,6 +128,11 @@ class StandaloneLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
+        show_gui : bool, optional
+            Whether to display the Fluent GUI. The default is ``None``, which does not
+            cause the GUI to be shown. If a value of ``False`` is
+            not explicitly provided, the GUI will also be shown if
+            the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
         case_file_name : str, optional
             If provided, the case file at ``case_file_name`` is read into the Fluent session.
         case_data_file_name : str, optional
@@ -172,6 +182,12 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        if version == "2d" and gpu:
+            raise GPUSolverSupportError()
+        graphics_driver = _get_graphics_driver(graphics_driver)
+        ui_mode = _get_ui_mode(show_gui)
+        del show_gui
+        mode = _get_mode(mode)
         argvals = locals().copy()
         del argvals["self"]
         if argvals["start_timeout"] is None:
