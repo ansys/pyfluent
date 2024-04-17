@@ -664,15 +664,15 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     watertight.import_geom_wtm.length_unit = "in"
     watertight.import_geom_wtm()
     _next_possible_tasks = [
-        "import_body_of_influence_geometry",
-        "set_up_periodic_boundaries",
+        "import_boi_geometry",
+        "Set_Up_Rotational_Periodic_Boundaries",
         "create_local_refinement_regions",
-        "run_custom_journal",
+        "custom_journal_task",
     ]
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
-    watertight.import_geom_wtm.insert_next_task("import_body_of_influence_geometry")
+    watertight.import_geom_wtm.insert_next_task("import_boi_geometry")
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
-    watertight.import_geom_wtm.insert_next_task("set_up_periodic_boundaries")
+    watertight.import_geom_wtm.insert_next_task("Set_Up_Rotational_Periodic_Boundaries")
     assert len(watertight.ordered_children()) == 13
 
 
@@ -743,15 +743,16 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     assert watertight.add_boundary_layer.get_next_possible_tasks() == [
         "add_boundary_type",
         "update_boundaries",
-        "set_up_periodic_boundaries",
+        "Set_Up_Rotational_Periodic_Boundaries",
         "modify_mesh_refinement",
         "improve_surface_mesh",
-        "generate_the_volume_mesh_wtm",
-        "manage_zones",
+        "create_volume_mesh",
+        "manage_zones_ftm",
         "update_regions",
-        "run_custom_journal",
+        "custom_journal_task",
     ]
-    watertight.add_boundary_layer.insert_next_task("generate_the_volume_mesh_wtm")
+
+    watertight.add_boundary_layer.insert_next_task("create_volume_mesh")
     assert "create_volume_mesh" in watertight.get_available_task_names()
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
@@ -1213,7 +1214,7 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.create_volume_mesh()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
-    time.sleep(1)
+    time.sleep(2)
     assert "import_geometry" not in watertight.get_available_task_names()
     assert "import_geom_wtm" in watertight.get_available_task_names()
     assert watertight.import_geom_wtm.arguments()
@@ -1222,22 +1223,29 @@ def test_new_meshing_workflow_without_dm_caching(
         watertight.import_geometry
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
-    time.sleep(1)
+    time.sleep(2)
     assert "add_local_sizing" not in watertight.get_available_task_names()
 
     assert watertight.import_geom_wtm.get_next_possible_tasks() == [
-        "add_local_sizing_wtm",
-        "import_body_of_influence_geometry",
-        "set_up_periodic_boundaries",
+        "add_local_sizing",
+        "import_boi_geometry",
+        "Set_Up_Rotational_Periodic_Boundaries",
         "create_local_refinement_regions",
-        "run_custom_journal",
+        "custom_journal_task",
     ]
 
-    watertight.import_geom_wtm.insert_next_task("add_local_sizing_wtm")
+    watertight.import_geom_wtm.insert_next_task("add_local_sizing")
     time.sleep(2)
     assert "add_local_sizing" in watertight.get_available_task_names()
 
-    watertight.reinitialize()
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_new_meshing_workflow_switching_without_dm_caching(
+    disable_datamodel_cache, new_mesh_session
+):
+    watertight = new_mesh_session.watertight()
+
     fault_tolerant = new_mesh_session.fault_tolerant()
     with pytest.raises(RuntimeError):
         watertight.import_geometry.arguments()
