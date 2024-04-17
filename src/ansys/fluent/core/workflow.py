@@ -184,6 +184,7 @@ class BaseTask:
                 _cmd=None,
                 _python_name=None,
                 _python_task_names=[],
+                _python_task_names_map={},
                 _lock=command_source._lock,
                 _ordered_children=[],
                 _task_list=[],
@@ -491,18 +492,28 @@ class BaseTask:
         """Insert a compound child task."""
         return self._task.InsertCompoundChildTask()
 
+    def _get_next_python_task_names(self) -> list[str]:
+        if not self._python_task_names_map:
+            for command_name in self._task.GetNextPossibleTasks():
+                self._python_task_names_map[
+                    getattr(self._command_source._command_source, command_name)
+                    .create_instance()
+                    .get_attr("helpString")
+                ] = command_name
+        return list(self._python_task_names_map.keys())
+
     def get_next_possible_tasks(self) -> list[str]:
         """Get the list of possible Python names that can be inserted as tasks after
         this current task is executed."""
-        return [camel_to_snake_case(task) for task in self._task.GetNextPossibleTasks()]
+        return self._get_next_python_task_names()
 
-    def insert_next_task(self, command_name: str):
+    def insert_next_task(self, task_name: str):
         """Insert a task based on the Python name after the current task is executed.
 
         Parameters
         ----------
-        command_name: str
-            Name of the new task.
+        task_name: str
+            Python name of the new task.
 
         Returns
         -------
@@ -511,17 +522,17 @@ class BaseTask:
         Raises
         ------
         ValueError
-            If the command name does not match a task name.
+            If the python name does not match the next possible task names.
         """
-        if command_name not in self.get_next_possible_tasks():
+        # The next line populates the python name map for next possible task
+        self._get_next_python_task_names()
+        if task_name not in self.get_next_possible_tasks():
             raise ValueError(
-                f"'{command_name}' cannot be inserted next to '{self.python_name()}'. \n"
+                f"'{task_name}' cannot be inserted next to '{self.python_name()}'. \n"
                 "Please use 'get_next_possible_tasks()' to view list of allowed tasks."
             )
         return self._task.InsertNextTask(
-            CommandName=snake_to_camel_case(
-                command_name, self._task.GetNextPossibleTasks()
-            )
+            CommandName=self._python_task_names_map[task_name]
         )
 
     def __call__(self, **kwds) -> Any:
