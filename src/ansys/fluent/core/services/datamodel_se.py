@@ -4,8 +4,8 @@ from enum import Enum
 import functools
 import itertools
 import logging
-from threading import RLock
 import os
+from threading import RLock
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -393,9 +393,9 @@ class SubscriptionList:
         Parameters
         ----------
         tag : str
-            Subscription tag
+            Subscription tag.
         subscription : EventSubscription
-            Subscription object
+            Subscription object.
         """
         with self._lock:
             self._subscriptions[tag] = subscription
@@ -406,7 +406,7 @@ class SubscriptionList:
         Parameters
         ----------
         tag : str
-            Subscription tag
+            Subscription tag.
         """
         with self._lock:
             self._subscriptions.pop(tag, None)
@@ -420,9 +420,9 @@ class SubscriptionList:
         Parameters
         ----------
         rules : str
-            Datamodel object rules
+            Datamodel object rules.
         path : str
-            Datamodel object path
+            Datamodel object path.
         deletion_stage : {"before", "after"}
             All subscription objects except those of on-deleted type are unsubscribed
             before the datamodel object is deleted. On-deleted subscription objects are
