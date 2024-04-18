@@ -4,7 +4,6 @@ import os
 import pathlib
 import random
 import shutil
-import subprocess
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
@@ -13,6 +12,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
+import docker
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -141,10 +141,13 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
     def __init__(
         self,
+        image: Optional[str] = None,
+        ports: Optional[dict] = None,
         container_mount_path: Optional[str] = None,
         host_mount_path: Optional[str] = None,
     ):
-        self.host_port = random.randint(5000, 6000)
+        self.docker_client = docker.from_env()
+        self.image = image if image else "ghcr.io/ansys/tools-filetransfer:latest"
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
@@ -152,15 +155,32 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
         )
         try:
-            self.server = subprocess.Popen(
-                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
-                shell=True,
+            self.host_port = random.randint(5000, 6000)
+            self.ports = ports if ports else {"50000/tcp": self.host_port}
+            self.server = self.docker_client.containers.run(
+                image=self.image,
+                ports=self.ports,
+                detach=True,
+                volumes={
+                    self.host_mount_path: {
+                        "bind": self.container_mount_path,
+                        "mode": "rw",
+                    }
+                },
             )
         except Exception:
             self.host_port = random.randint(6000, 7000)
-            self.server = subprocess.Popen(
-                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
-                shell=True,
+            self.ports = ports if ports else {"50000/tcp": self.host_port}
+            self.server = self.docker_client.containers.run(
+                image=self.image,
+                ports=self.ports,
+                detach=True,
+                volumes={
+                    self.host_mount_path: {
+                        "bind": self.container_mount_path,
+                        "mode": "rw",
+                    }
+                },
             )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
@@ -242,20 +262,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
     def exit(self):
         """Stop the container."""
-        id_ports_info = subprocess.run(
-            [f"docker ps"], shell=True, stdout=subprocess.PIPE
-        )
-        id_ports = str(id_ports_info).split("\\n")
-        active_container_ids = [
-            id_port.split(" ")[0]
-            for id_port in id_ports
-            if str(self.host_port) in id_port
-        ]
-        for container_id in active_container_ids:
-            try:
-                subprocess.Popen(f"docker stop {container_id}", shell=True)
-            except Exception:
-                pass
+        self.server.kill()
 
     def __del__(self):
         self.exit()
