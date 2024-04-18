@@ -257,7 +257,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         ]
         for container_id in active_container_ids:
             try:
-                subprocess.Popen(f"docker kill {container_id}", shell=True)
+                subprocess.Popen(f"docker stop {container_id}", shell=True)
             except Exception:
                 pass
 
