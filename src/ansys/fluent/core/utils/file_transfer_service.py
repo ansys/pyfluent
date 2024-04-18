@@ -114,26 +114,27 @@ def _get_files(
     path: Optional[str],
 ):
     if isinstance(file_name, str):
+        file_path_check = os.path.join(path, os.path.basename(file_name))
         files = (
-            [str(os.path.join(path, os.path.basename(file_name)))]
-            if os.path.isfile(os.path.join(path, os.path.basename(file_name)))
-            else [file_name]
+            [str(file_path_check)] if os.path.isfile(file_path_check) else [file_name]
         )
     elif isinstance(file_name, pathlib.PurePath):
+        file_path_check = os.path.join(path, file_name.name)
         files = (
-            [str(os.path.join(path, file_name.name))]
-            if os.path.isfile(os.path.join(path, file_name.name))
+            [str(file_path_check)]
+            if os.path.isfile(file_path_check)
             else [str(file_name)]
         )
     elif isinstance(file_name, list):
-        if os.path.exists(path):
-            files = [
-                str(os.path.join(path, os.path.basename(file)))
-                for file in file_name
-                if os.path.isfile(os.path.join(path, os.path.basename(file)))
-            ]
-        else:
-            files = [str(file) for file in file_name]
+        files = []
+        for file in file_name:
+            file_path_check = os.path.join(path, os.path.basename(file))
+            if os.path.isfile(file_path_check) and os.path.samefile(
+                file_path_check, file
+            ):
+                files.append(str(file_path_check))
+            else:
+                files.append(str(file))
     return files
 
 
