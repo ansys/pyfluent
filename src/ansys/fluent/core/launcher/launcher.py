@@ -57,6 +57,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         If an unknown Fluent launch mode is passed.
     """
     if fluent_launch_mode == LaunchMode.STANDALONE:
+        _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
         return StandaloneLauncher(
             mode=kwargs["mode"],
             ui_mode=kwargs["ui_mode"],
@@ -83,6 +84,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
             file_transfer_service=kwargs["file_transfer_service"],
         )
     elif fluent_launch_mode == LaunchMode.CONTAINER:
+        _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
         return DockerLauncher(
             mode=kwargs["mode"],
             ui_mode=kwargs["ui_mode"],
@@ -103,6 +105,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
             file_transfer_service=kwargs["file_transfer_service"],
         )
     elif fluent_launch_mode == LaunchMode.PIM:
+        _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
         return PIMLauncher(
             mode=kwargs["mode"],
             ui_mode=kwargs["ui_mode"],
@@ -301,7 +304,6 @@ def launch_fluent(
     )
     del start_container
     argvals = locals().copy()
-    _process_invalid_args(dry_run, fluent_launch_mode, argvals)
     fluent_launch_mode = argvals.pop("fluent_launch_mode")
     launcher = create_launcher(fluent_launch_mode, **argvals)
     return launcher()
