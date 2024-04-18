@@ -135,7 +135,8 @@ class StandaloneLauncher:
             the ``PYFLUENT_SHOW_SERVER_GUI`` environment
             variable is set to 1.
         case_file_name : str, optional
-            If provided, the case file at ``case_file_name`` is read into the Fluent session.
+            Name of the case file to read into the
+            Fluent session. The default is ``None``.
         case_data_file_name : str, optional
             If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
         lightweight_mode : bool, optional
