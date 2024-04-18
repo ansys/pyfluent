@@ -110,24 +110,29 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
 
 def _get_files(
-    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]]
+    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
+    path: Optional[str],
 ):
-    path = "/home/runner/.local/share/ansys_fluent_core/examples"
-    if os.path.exists(path):
-        if isinstance(file_name, str):
-            files = [str(os.path.join(path, os.path.basename(file_name)))]
-        elif isinstance(file_name, pathlib.PurePath):
-            files = [str(os.path.join(path, file_name.name))]
-        elif isinstance(file_name, list):
+    if isinstance(file_name, str):
+        files = (
+            [str(os.path.join(path, os.path.basename(file_name)))]
+            if os.path.isfile(os.path.join(path, os.path.basename(file_name)))
+            else [file_name]
+        )
+    elif isinstance(file_name, pathlib.PurePath):
+        files = (
+            [str(os.path.join(path, file_name.name))]
+            if os.path.isfile(os.path.join(path, file_name.name))
+            else [str(file_name)]
+        )
+    elif isinstance(file_name, list):
+        if os.path.exists(path):
             files = [
-                str(os.path.join(path, os.path.basename(file))) for file in file_name
+                str(os.path.join(path, os.path.basename(file)))
+                for file in file_name
+                if os.path.isfile(os.path.join(path, os.path.basename(file)))
             ]
-    else:
-        if isinstance(file_name, str):
-            files = [file_name]
-        elif isinstance(file_name, pathlib.PurePath):
-            files = [str(file_name)]
-        elif isinstance(file_name, list):
+        else:
             files = [str(file) for file in file_name]
     return files
 
@@ -196,7 +201,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         FileNotFoundError
             If a file does not exist.
         """
-        files = _get_files(file_name)
+        files = _get_files(file_name, self.host_mount_path)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
@@ -223,7 +228,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         local_directory : str, optional
             Local directory. The default is ``None``.
         """
-        files = _get_files(file_name)
+        files = _get_files(file_name, self.host_mount_path)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
