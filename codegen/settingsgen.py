@@ -277,18 +277,21 @@ def _populate_classes(parent_dir):
                 stubf.write("\n\n")
 
             # write imports to py file
-            f.write("from ansys.fluent.core.solver.flobject import *\n\n")
-            if stubf:
-                stubf.write("from typing import Union, List, Tuple\n\n")
-            f.write("from ansys.fluent.core.solver.flobject import (\n")
-            f.write(f"{istr1}_ChildNamedObjectAccessorMixin,\n")
-            f.write(f"{istr1}_CreatableNamedObjectMixin,\n")
-            f.write(f"{istr1}_NonCreatableNamedObjectMixin,\n")
-            f.write(f"{istr1}_HasAllowedValuesMixin,\n")
-            f.write(f"{istr1}_InputFile,\n")
-            f.write(f"{istr1}_OutputFile,\n")
-            f.write(f"{istr1}_InOutFile,\n")
-            f.write(")\n\n")
+            import_str = (
+                "from ansys.fluent.core.solver.flobject import *\n\n"
+                "from ansys.fluent.core.solver.flobject import (\n"
+                f"{istr1}_ChildNamedObjectAccessorMixin,\n"
+                f"{istr1}_CreatableNamedObjectMixin,\n"
+                f"{istr1}_NonCreatableNamedObjectMixin,\n"
+                f"{istr1}_HasAllowedValuesMixin,\n"
+                f"{istr1}_InputFile,\n"
+                f"{istr1}_OutputFile,\n"
+                f"{istr1}_InOutFile,\n"
+                ")\n\n"
+            )
+            f.write(import_str)
+            stubf.write(import_str)
+            stubf.write("from typing import Union, List, Tuple\n\n")
 
             if children_hash:
                 for child in children_hash:
@@ -327,12 +330,12 @@ def _populate_classes(parent_dir):
                 stubf.write(import_str)
 
             # class name
-            f.write(
-                f"{istr}class {cls_name}"
+            class_def_str = (
+                f"\n{istr}class {cls_name}"
                 f'({", ".join(f"{c.__name__}[{hash_dict.get(object_hash)[0].__name__}]" if object_hash else c.__name__ for c in cls.__bases__)}):\n'
             )
-            if stubf:
-                stubf.write(f"{istr}class {cls_name}:\n")
+            f.write(class_def_str)
+            stubf.write(class_def_str)
 
             doc = fix_settings_doc(cls.__doc__)
             # Custom doc for child object type
@@ -344,8 +347,7 @@ def _populate_classes(parent_dir):
 
             _write_doc_string(doc, istr1, f)
             f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
-            if stubf:
-                stubf.write(f"{istr1}fluent_name = ...\n")
+            stubf.write(f"{istr1}fluent_name = ...\n")
 
             child_class_strings = []
 
@@ -357,14 +359,12 @@ def _populate_classes(parent_dir):
                 pprint.pprint(child_names, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
-                if stubf:
-                    stubf.write(f"{istr1}child_names = ...\n")
+                stubf.write(f"{istr1}child_names = ...\n")
 
                 for child in child_names:
                     child_cls = cls._child_classes[child]
                     child_class_strings.append(f"{child}={child_cls.__name__}_cls")
-                    if stubf:
-                        stubf.write(f"{istr1}{child}: {child_cls.__name__}_cls = ...\n")
+                    stubf.write(f"{istr1}{child}: {child_cls.__name__}_cls = ...\n")
 
             # write command objects
             command_names = getattr(cls, "command_names", None)
@@ -374,20 +374,18 @@ def _populate_classes(parent_dir):
                 pprint.pprint(command_names, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
-                if stubf:
-                    stubf.write(f"{istr1}command_names = ...\n\n")
+                stubf.write(f"{istr1}command_names = ...\n\n")
 
                 commands_info = _get_commands_info(commands_hash)
                 for command in command_names:
                     command_cls = cls._child_classes[command]
                     child_class_strings.append(f"{command}={command_cls.__name__}_cls")
                     # function annotation for commands
-                    if stubf:
-                        command_info = commands_info[command]
-                        stubf.write(f"{istr1}def {command}(self, ")
-                        stubf.write(", ".join(command_info.args_info))
-                        stubf.write("):\n")
-                        _write_doc_string(command_info.doc, istr2, stubf)
+                    command_info = commands_info[command]
+                    stubf.write(f"{istr1}def {command}(self, ")
+                    stubf.write(", ".join(command_info.args_info))
+                    stubf.write("):\n")
+                    _write_doc_string(command_info.doc, istr2, stubf)
 
             # write query objects
             query_names = getattr(cls, "query_names", None)
@@ -397,20 +395,18 @@ def _populate_classes(parent_dir):
                 pprint.pprint(query_names, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
-                if stubf:
-                    stubf.write(f"{istr1}query_names = ...\n\n")
+                stubf.write(f"{istr1}query_names = ...\n\n")
 
                 queries_info = _get_commands_info(queries_hash)
                 for query in query_names:
                     query_cls = cls._child_classes[query]
                     child_class_strings.append(f"{query}={query_cls.__name__}_cls")
                     # function annotation for queries
-                    if stubf:
-                        query_info = queries_info[query]
-                        stubf.write(f"{istr1}def {query}(self, ")
-                        stubf.write(", ".join(query_info.args_info))
-                        stubf.write("):\n")
-                        _write_doc_string(query_info.doc, istr2, stubf)
+                    query_info = queries_info[query]
+                    stubf.write(f"{istr1}def {query}(self, ")
+                    stubf.write(", ".join(query_info.args_info))
+                    stubf.write("):\n")
+                    _write_doc_string(query_info.doc, istr2, stubf)
 
             # write arguments
             arguments = getattr(cls, "argument_names", None)
@@ -420,18 +416,16 @@ def _populate_classes(parent_dir):
                 pprint.pprint(arguments, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
-                if stubf:
-                    stubf.write(f"{istr1}argument_names = ...\n")
+                stubf.write(f"{istr1}argument_names = ...\n")
 
                 for argument in arguments:
                     argument_cls = cls._child_classes[argument]
                     child_class_strings.append(
                         f"{argument}={argument_cls.__name__}_cls"
                     )
-                    if stubf:
-                        stubf.write(
-                            f"{istr1}{argument}: {argument_cls.__name__}_cls = ...\n"
-                        )
+                    stubf.write(
+                        f"{istr1}{argument}: {argument_cls.__name__}_cls = ...\n"
+                    )
 
             if child_class_strings:
                 f.write(f"{istr1}_child_classes = dict(\n")
@@ -453,14 +447,12 @@ def _populate_classes(parent_dir):
                 f.write(f'{istr1}"""\n')
                 f.write(f"{istr1}child_object_type of {cls_name}.")
                 f.write(f'\n{istr1}"""\n')
-                if stubf:
-                    stubf.write(f"{istr1}child_object_type = ...\n")
+                stubf.write(f"{istr1}child_object_type = ...\n")
 
             return_type = getattr(cls, "return_type", None)
             if return_type:
                 f.write(f'{istr1}return_type = "{return_type}"\n')
-                if stubf:
-                    stubf.write(f"{istr1}return_type = ...\n")
+                stubf.write(f"{istr1}return_type = ...\n")
 
 
 def _populate_init(parent_dir, sinfo):
