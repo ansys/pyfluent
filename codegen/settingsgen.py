@@ -24,7 +24,6 @@ Usage
 python <path to settingsgen.py>
 """
 
-import contextlib
 import hashlib
 import io
 import os
@@ -263,15 +262,8 @@ def _populate_classes(parent_dir):
         file_name = files_dict.get(key)
         cls_name = cls.__name__
         file_name = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
-        generate_stub = getattr(cls, "command_names", None) or getattr(
-            cls, "query_names", None
-        )
-        stub_file_name = file_name + "i" if generate_stub else None
-        stub_cm = (
-            open(stub_file_name, "w")
-            if generate_stub
-            else contextlib.nullcontext(stub_file_name)
-        )
+        stub_file_name = file_name + "i"
+        stub_cm = open(stub_file_name, "w")
         with open(file_name, "w") as f, stub_cm as stubf:
             # disclaimer to py file
             f.write("#\n")
@@ -301,34 +293,38 @@ def _populate_classes(parent_dir):
             if children_hash:
                 for child in children_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    )
+                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    f.write(import_str)
+                    stubf.write(import_str)
 
             if commands_hash:
                 for child in commands_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    )
+                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    f.write(import_str)
+                    stubf.write(import_str)
 
             if queries_hash:
                 for child in queries_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    )
+                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    f.write(import_str)
+                    stubf.write(import_str)
 
             if arguments_hash:
                 for child in arguments_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    )
+                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    f.write(import_str)
+                    stubf.write(import_str)
 
             if object_hash:
                 pchild_name = hash_dict.get(object_hash)[0].__name__
-                f.write(f"from .{files_dict.get(object_hash)} import {pchild_name}\n\n")
+                import_str = (
+                    f"from .{files_dict.get(object_hash)} import {pchild_name}\n\n"
+                )
+                f.write(import_str)
+                stubf.write(import_str)
 
             # class name
             f.write(
@@ -368,7 +364,7 @@ def _populate_classes(parent_dir):
                     child_cls = cls._child_classes[child]
                     child_class_strings.append(f"{child}={child_cls.__name__}_cls")
                     if stubf:
-                        stubf.write(f"{istr1}{child} = ...\n")
+                        stubf.write(f"{istr1}{child}: {child_cls.__name__}_cls = ...\n")
 
             # write command objects
             command_names = getattr(cls, "command_names", None)
@@ -433,7 +429,9 @@ def _populate_classes(parent_dir):
                         f"{argument}={argument_cls.__name__}_cls"
                     )
                     if stubf:
-                        stubf.write(f"{istr1}{argument} = ...\n")
+                        stubf.write(
+                            f"{istr1}{argument}: {argument_cls.__name__}_cls = ...\n"
+                        )
 
             if child_class_strings:
                 f.write(f"{istr1}_child_classes = dict(\n")
