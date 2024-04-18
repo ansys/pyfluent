@@ -240,3 +240,37 @@ class WorkflowMode(Enum):
     FAULT_TOLERANT_MESHING_MODE = FaultTolerantMeshingWorkflow
     TWO_DIMENSIONAL_MESHING_MODE = TwoDimensionalMeshingWorkflow
     TOPOLOGY_BASED_MESHING_MODE = TopologyBasedMeshingWorkflow
+
+
+class LoadWorkflow(Workflow):
+    """...."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        file_path: str,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize MeshingWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        file_path: str
+            Path to the saved workflow.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._file_path = file_path
+
+    def load(self) -> None:
+        """Initialize a workflow."""
+        self._load_workflow(file_path=self._file_path)

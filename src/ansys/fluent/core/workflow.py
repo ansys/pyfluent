@@ -567,7 +567,7 @@ class BaseTask:
 
             def insert(self):
                 """Inserts a task in the workflow."""
-                self._base_task.insert_next_task(task_name=self._name)
+                return self._base_task.insert_next_task(task_name=self._name)
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
@@ -1458,6 +1458,11 @@ class Workflow:
     def _new_workflow(self, name: str, dynamic_interface: bool = True):
         self._dynamic_interface = dynamic_interface
         self._workflow.InitializeWorkflow(WorkflowType=name)
+        self._initialize_methods(dynamic_interface=dynamic_interface)
+
+    def _load_workflow(self, file_path: str, dynamic_interface: bool = True):
+        self._dynamic_interface = dynamic_interface
+        self._workflow.LoadWorkflow(FilePath=file_path)
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _initialize_methods(self, dynamic_interface: bool):

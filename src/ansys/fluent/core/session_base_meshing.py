@@ -4,7 +4,7 @@ import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
+from ansys.fluent.core.meshing.meshing_workflow import LoadWorkflow, WorkflowMode
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
@@ -48,6 +48,7 @@ class BaseMeshing:
         self._ft_workflow = None
         self._2dm_workflow = None
         self._tb_workflow = None
+        self._loaded_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -198,6 +199,17 @@ class BaseMeshing:
                 self.get_fluent_version(),
             )
         return self._tb_workflow
+
+    def load_workflow(self, file_path):
+        """Datamodel root of workflow exposed in object-oriented manner."""
+        if not self._loaded_workflow:
+            self._loaded_workflow = LoadWorkflow(
+                self._workflow_se,
+                self.meshing,
+                file_path,
+                self.get_fluent_version(),
+            )
+        return self._loaded_workflow
 
     @property
     def PartManagement(self):

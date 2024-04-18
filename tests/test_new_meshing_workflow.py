@@ -1399,3 +1399,20 @@ def test_object_oriented_task_inserting_in_workflows(new_mesh_session):
     time.sleep(1)
     assert watertight.import_boi_geometry.arguments()
     assert watertight.import_boi_geometry_1.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_loaded_workflow(new_mesh_session):
+    meshing = new_mesh_session
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
+    loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
+    assert (
+        "set_up_rotational_periodic_boundaries"
+        in loaded_workflow.get_available_task_names()
+    )
+    time.sleep(1)
+    assert "import_boi_geometry" in loaded_workflow.get_available_task_names()
+    assert loaded_workflow.import_boi_geometry_1.arguments()
