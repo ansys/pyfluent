@@ -11,11 +11,9 @@ pytest.mark.codegen_required
 
 
 def test_settings_stub():
-    """
-    The type-stub files, which are generated for settings API, are parsed by the
-    intellisence engine while typing in editors like vecode. This test validates the
-    information contained in a type-stub file.
-    """
+    # The type-stub files, which are generated for settings API, are parsed by the
+    # intellisense engine while typing in editors like vscode. This test validates the
+    # information contained in a type-stub file.
     version = FluentVersion(fluent_release_version).number
     stub_file = (
         Path(pyfluent.__file__).parent / "solver" / f"settings_{version}" / "export.pyi"
