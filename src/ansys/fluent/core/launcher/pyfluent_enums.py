@@ -259,7 +259,7 @@ def _get_ui_mode(
     Parameters
     ----------
     show_gui: bool
-        Whether to show Fluent GUI.
+        Whether to show the Fluent GUI.
 
     Returns
     -------
