@@ -1360,3 +1360,40 @@ def test_duplicate_tasks_in_workflow(new_mesh_session):
         "import_boi_geometry_2",
     ]
     assert watertight.import_boi_geometry_1.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_object_oriented_task_inserting_in_workflows(new_mesh_session):
+    meshing = new_mesh_session
+    watertight = meshing.watertight()
+    assert sorted([repr(x) for x in watertight.import_geometry.next_tasks()]) == sorted(
+        [
+            "<Insertable 'import_boi_geometry' task>",
+            "<Insertable 'set_up_rotational_periodic_boundaries' task>",
+            "<Insertable 'create_local_refinement_regions' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
+    assert (
+        "set_up_rotational_periodic_boundaries"
+        not in watertight.get_available_task_names()
+    )
+    watertight.import_geometry.next_tasks.set_up_rotational_periodic_boundaries.insert()
+    assert (
+        "set_up_rotational_periodic_boundaries" in watertight.get_available_task_names()
+    )
+    assert sorted([repr(x) for x in watertight.import_geometry.next_tasks()]) == sorted(
+        [
+            "<Insertable 'import_boi_geometry' task>",
+            "<Insertable 'create_local_refinement_regions' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
+    watertight.import_geometry.next_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.next_tasks.import_boi_geometry.insert()
+    assert "import_boi_geometry" in watertight.get_available_task_names()
+    assert "import_boi_geometry_1" in watertight.get_available_task_names()
+    time.sleep(1)
+    assert watertight.import_boi_geometry.arguments()
+    assert watertight.import_boi_geometry_1.arguments()

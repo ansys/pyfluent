@@ -539,6 +539,39 @@ class BaseTask:
             CommandName=self._python_task_names_map[task_name]
         )
 
+    @property
+    def next_tasks(self):
+        """Tasks that can be inserted after this current task."""
+        return self._NextTask(self)
+
+    class _NextTask:
+        def __init__(self, base_task):
+            """Initialize _NextTask."""
+            self._base_task = base_task
+            self._insertable_tasks = []
+            for item in self._base_task.get_next_possible_tasks():
+                insertable_task = type("Insert", (self._Insert,), {})(
+                    self._base_task, item
+                )
+                setattr(self, item, insertable_task)
+                self._insertable_tasks.append(insertable_task)
+
+        def __call__(self):
+            return self._insertable_tasks
+
+        class _Insert:
+            def __init__(self, base_task, name):
+                """Initialize _Insert."""
+                self._base_task = base_task
+                self._name = name
+
+            def insert(self):
+                """Inserts a task in the workflow."""
+                self._base_task.insert_next_task(task_name=self._name)
+
+            def __repr__(self):
+                return f"<Insertable '{self._name}' task>"
+
     def __call__(self, **kwds) -> Any:
         if kwds:
             self._task.Arguments.set_state(**kwds)
