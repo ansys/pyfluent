@@ -129,12 +129,14 @@ class StandaloneLauncher:
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
         show_gui : bool, optional
-            Whether to display the Fluent GUI. The default is ``None``, which does not
-            cause the GUI to be shown. If a value of ``False`` is
-            not explicitly provided, the GUI will also be shown if
-            the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
+            Whether to display the Fluent GUI. The default is ``None``,
+            in which case the GUI is not shown. If ``False`` is
+            not explicitly provided, the GUI will be shown if
+            the ``PYFLUENT_SHOW_SERVER_GUI`` environment
+            variable is set to 1.
         case_file_name : str, optional
-            If provided, the case file at ``case_file_name`` is read into the Fluent session.
+            Name of the case file to read into the
+            Fluent session. The default is ``None``.
         case_data_file_name : str, optional
             If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
         lightweight_mode : bool, optional
