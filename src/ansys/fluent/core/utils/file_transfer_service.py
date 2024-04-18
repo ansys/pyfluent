@@ -120,11 +120,7 @@ def _get_files(
         )
     elif isinstance(file_name, pathlib.PurePath):
         file_path_check = os.path.join(path, file_name.name)
-        files = (
-            [str(file_path_check)]
-            if os.path.isfile(file_path_check)
-            else [str(file_name)]
-        )
+        files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
     elif isinstance(file_name, list):
         files = []
         for file in file_name:
