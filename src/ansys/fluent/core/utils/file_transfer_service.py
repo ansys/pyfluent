@@ -111,12 +111,19 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
 def _get_files(
     file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
-    path: Optional[str],
+    path: str,
 ):
     if isinstance(file_name, (str, pathlib.PurePath)):
         file_name = pathlib.Path(file_name)
         file_path_check = os.path.join(path, file_name.name)
-        files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
+        files = (
+            [file_path_check]
+            if (
+                os.path.isfile(file_path_check)
+                and os.path.samefile(file_path_check, file_name)
+            )
+            else [file_name]
+        )
     elif isinstance(file_name, list):
         files = []
         for file in file_name:
