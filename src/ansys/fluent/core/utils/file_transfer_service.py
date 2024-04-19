@@ -49,9 +49,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
             Current working directory of server/Fluent.
         """
         self.pyfluent_cwd = pathlib.Path(str(os.getcwd()))
-        self.fluent_cwd = (
-            pathlib.Path(str(server_cwd)) if server_cwd else self.pyfluent_cwd
-        )
+        self.fluent_cwd = pathlib.Path(server_cwd) if server_cwd else self.pyfluent_cwd
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
