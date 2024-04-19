@@ -329,7 +329,7 @@ class BaseSession:
         self._file_transfer_service.exit()
 
     def force_exit(self) -> None:
-        """Immediately terminates the Fluent session, losing unsaved progress and
+        """Immediately terminate the Fluent session, losing unsaved progress and
         data."""
         self._fluent_connection.force_exit()
         self._file_transfer_service.exit()
