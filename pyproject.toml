@@ -25,6 +25,7 @@ include = [
     { path = "src/ansys/fluent/core/solver/tui_*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/datamodel_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/solver/settings_*/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
 ]
 
 packages = [
