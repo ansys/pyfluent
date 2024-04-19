@@ -561,7 +561,7 @@ class BaseTask:
 
         class _Insert:
             def __init__(self, base_task, name):
-                """Initialize _Insert."""
+                """Initialize an ``_Insert`` instance."""
                 self._base_task = base_task
                 self._name = name
 
