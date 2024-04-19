@@ -326,13 +326,11 @@ class BaseSession:
         """Exit session."""
         logger.debug("session.exit() called")
         self._fluent_connection.exit(**kwargs)
-        self._file_transfer_service.exit()
 
     def force_exit(self) -> None:
         """Immediately terminate the Fluent session, losing unsaved progress and
         data."""
         self._fluent_connection.force_exit()
-        self._file_transfer_service.exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.

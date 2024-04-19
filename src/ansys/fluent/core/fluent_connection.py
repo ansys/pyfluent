@@ -9,7 +9,7 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-from typing import Callable, List, Optional, Tuple, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 import warnings
 import weakref
 
@@ -20,6 +20,7 @@ import psutil
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.platform.instancemanagement import Instance
 import docker
 
@@ -303,6 +304,7 @@ class FluentConnection:
         channel: Optional[grpc.Channel] = None,
         cleanup_on_exit: bool = True,
         remote_instance: Optional[Instance] = None,
+        file_transfer_service: Optional[Any] = None,
         slurm_job_id: Optional[str] = None,
         inside_container: Optional[bool] = None,
     ):
@@ -333,6 +335,8 @@ class FluentConnection:
             The corresponding remote instance when Fluent is launched through
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
+        file_transfer_service : optional
+            File transfer service. Uploads/downloads files to/from the server.
         slurm_job_id: bool, optional
             Job ID of a Fluent session running within a Slurm environment.
         inside_container: bool, optional
@@ -411,6 +415,8 @@ class FluentConnection:
 
         self._remote_instance = remote_instance
 
+        self._file_transfer_service = file_transfer_service
+
         self._exit_event = threading.Event()
 
         # session.exit() is handled in the daemon thread (MonitorThread) which ensures
@@ -430,6 +436,7 @@ class FluentConnection:
             self._connection_interface,
             self.finalizer_cbs,
             self._remote_instance,
+            self._file_transfer_service,
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
@@ -697,6 +704,7 @@ class FluentConnection:
         connection_interface,
         finalizer_cbs,
         remote_instance,
+        file_transfer_service,
         exit_event,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
@@ -713,5 +721,10 @@ class FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+        if file_transfer_service and isinstance(
+            file_transfer_service, RemoteFileTransferStrategy
+        ):
+            file_transfer_service.container.stop()
 
         exit_event.set()
