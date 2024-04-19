@@ -157,7 +157,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         try:
             self.host_port = random.randint(5000, 6000)
             self.ports = ports if ports else {"50000/tcp": self.host_port}
-            self.server = self.docker_client.containers.run(
+            self.container = self.docker_client.containers.run(
                 image=self.image,
                 ports=self.ports,
                 detach=True,
@@ -171,14 +171,13 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         except Exception:
             self.host_port = random.randint(6000, 7000)
             self.ports = ports if ports else {"50000/tcp": self.host_port}
-            self.server = self.docker_client.containers.run(
+            self.container = self.docker_client.containers.run(
                 image=self.image,
                 ports=self.ports,
                 detach=True,
                 volumes={
                     self.host_mount_path: {
                         "bind": self.container_mount_path,
-                        "mode": "rw",
                     }
                 },
             )
@@ -262,7 +261,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
     def exit(self):
         """Stop the container."""
-        self.server.kill()
+        self.server.sto
 
     def __del__(self):
         self.exit()
