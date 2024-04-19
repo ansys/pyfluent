@@ -140,6 +140,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
     def __init__(
         self,
         image_name: Optional[str] = None,
+        image_tag: Optional[str] = None,
         port: Optional[int] = None,
         container_mount_path: Optional[str] = None,
         host_mount_path: Optional[str] = None,
@@ -150,17 +151,20 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         ----------
         image_name: str
             Name of the image.
+        image_tag : str, optional
+            Tag of the image.
         port: int, optional
-            Port for file transfer service to use.
+            Port for the file transfer service to use.
         container_mount_path: Union[str, Path], optional
             Path inside the container where host mount path will be mounted to.
         host_mount_path: Union[str, Path], optional
             Existing path in the host operating system that will be available inside the container.
         """
         self.docker_client = docker.from_env()
-        self.image = (
-            image_name if image_name else "ghcr.io/ansys/tools-filetransfer:latest"
+        self.image_name = (
+            image_name if image_name else "ghcr.io/ansys/tools-filetransfer"
         )
+        self.image_tag = image_tag if image_tag else "latest"
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
@@ -168,19 +172,19 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
         )
         try:
-            self.host_port = random.randint(5000, 6000)
-            self.ports = {"50000/tcp": port} if port else {"50000/tcp": self.host_port}
+            self.host_port = port if port else random.randint(5000, 6000)
+            self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
-                image=self.image,
+                image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
                 volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
         except docker.errors.DockerException:
-            self.host_port = random.randint(6000, 7000)
-            self.ports = {"50000/tcp": port} if port else {"50000/tcp": self.host_port}
+            self.host_port = port if port else random.randint(6000, 7000)
+            self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
-                image=self.image,
+                image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
                 volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
