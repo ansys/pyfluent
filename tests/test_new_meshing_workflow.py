@@ -1413,7 +1413,7 @@ def test_loaded_workflow(new_mesh_session):
         "set_up_rotational_periodic_boundaries"
         in loaded_workflow.get_available_task_names()
     )
-    time.sleep(1)
+    time.sleep(2.5)
     assert "import_boi_geometry" in loaded_workflow.get_available_task_names()
     assert loaded_workflow.import_boi_geometry_1.arguments()
 
@@ -1422,7 +1422,23 @@ def test_loaded_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=24.1")
 def test_created_workflow(new_mesh_session):
     meshing = new_mesh_session
-    created_workflow = meshing.create_workflow(first_task="import_geometry")
+    created_workflow = meshing.create_workflow()
+
+    assert sorted([repr(x) for x in created_workflow.first_tasks()]) == sorted(
+        [
+            "<Insertable 'import_geometry' task>",
+            "<Insertable 'load_cad_geometry' task>",
+            "<Insertable 'import_cad_and_part_management' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
+
+    created_workflow.first_tasks.import_geometry.insert()
+
+    assert created_workflow.first_tasks() == []
+
+    time.sleep(2.5)
+
     assert "<Insertable 'add_local_sizing' task>" in [
         repr(x) for x in created_workflow.import_geometry.next_tasks()
     ]

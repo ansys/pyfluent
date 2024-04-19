@@ -1479,6 +1479,46 @@ class Workflow:
         self._workflow.CreateNewWorkflow()
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
+    @property
+    def first_tasks(self):
+        """Tasks that can be inserted on a blank workflow."""
+        return self._FirstTask(self)
+
+    class _FirstTask:
+        def __init__(self, workflow):
+            """Initialize _FirstTask."""
+            self._workflow = workflow
+            self._insertable_tasks = []
+            if len(self._workflow.get_available_task_names()) == 0:
+                for (
+                    item
+                ) in self._workflow.get_initial_task_list_while_creating_new_workflow():
+                    insertable_task = type("Insert", (self._Insert,), {})(
+                        self._workflow, item
+                    )
+                    setattr(self, item, insertable_task)
+                    self._insertable_tasks.append(insertable_task)
+
+        def __call__(self):
+            return self._insertable_tasks
+
+        class _Insert:
+            def __init__(self, workflow, name):
+                """Initialize an ``_Insert`` instance."""
+                self._workflow = workflow
+                self._name = name
+
+            def insert(self):
+                """Insert a task in the workflow."""
+                return self._workflow._workflow.InsertNewTask(
+                    CommandName=self._workflow._initial_task_python_names_map[
+                        self._name
+                    ]
+                )
+
+            def __repr__(self):
+                return f"<Insertable '{self._name}' task>"
+
     def _get_first_tasks_help_string_command_id_map(self):
         if not self._initial_task_python_names_map:
             for command in dir(self._command_source):
