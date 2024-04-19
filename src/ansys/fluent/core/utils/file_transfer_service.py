@@ -113,12 +113,8 @@ def _get_files(
     file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
     path: Optional[str],
 ):
-    if isinstance(file_name, str):
-        file_path_check = os.path.join(path, os.path.basename(file_name))
-        files = (
-            [str(file_path_check)] if os.path.isfile(file_path_check) else [file_name]
-        )
-    elif isinstance(file_name, pathlib.PurePath):
+    if isinstance(file_name, (str, pathlib.PurePath)):
+        file_name = pathlib.Path(file_name)
         file_path_check = os.path.join(path, file_name.name)
         files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
     elif isinstance(file_name, list):
