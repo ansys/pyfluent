@@ -541,7 +541,7 @@ class BaseTask:
 
     @property
     def next_tasks(self):
-        """Tasks that can be inserted after this current task."""
+        """Tasks that can be inserted after the current task."""
         return self._NextTask(self)
 
     class _NextTask:
