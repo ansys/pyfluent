@@ -243,7 +243,7 @@ class WorkflowMode(Enum):
 
 
 class LoadWorkflow(Workflow):
-    """...."""
+    """Provides a specialization of the workflow wrapper for a loaded workflow."""
 
     def __init__(
         self,
@@ -252,7 +252,7 @@ class LoadWorkflow(Workflow):
         file_path: str,
         fluent_version: FluentVersion,
     ) -> None:
-        """Initialize MeshingWorkflow.
+        """Initialize LoadWorkflow.
 
         Parameters
         ----------
@@ -272,5 +272,5 @@ class LoadWorkflow(Workflow):
         self._file_path = file_path
 
     def load(self) -> None:
-        """Initialize a workflow."""
+        """Load a workflow."""
         self._load_workflow(file_path=self._file_path)
