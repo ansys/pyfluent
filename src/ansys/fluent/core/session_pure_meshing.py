@@ -116,6 +116,11 @@ class PureMeshing(BaseSession):
         self._base_meshing.load_workflow(file_path=file_path).load()
         return self._base_meshing.load_workflow(file_path=file_path)
 
+    def create_workflow(self, first_task: str):
+        """Create a new meshing workflow."""
+        self._base_meshing.create_workflow(first_task=first_task).create()
+        return self._base_meshing.create_workflow(first_task=first_task)
+
     def topology_based(self):
         """Get a new topology-based meshing workflow.
 

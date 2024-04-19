@@ -1416,3 +1416,20 @@ def test_loaded_workflow(new_mesh_session):
     time.sleep(1)
     assert "import_boi_geometry" in loaded_workflow.get_available_task_names()
     assert loaded_workflow.import_boi_geometry_1.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_created_workflow(new_mesh_session):
+    meshing = new_mesh_session
+    created_workflow = meshing.create_workflow(first_task="ImportGeometry")
+    assert "<Insertable 'add_local_sizing' task>" in [
+        repr(x) for x in created_workflow.import_geometry.next_tasks()
+    ]
+    created_workflow.import_geometry.next_tasks.add_local_sizing.insert()
+    assert "<Insertable 'add_local_sizing' task>" not in [
+        repr(x) for x in created_workflow.import_geometry.next_tasks()
+    ]
+    assert sorted(created_workflow.get_available_task_names()) == sorted(
+        ["import_geometry", "add_local_sizing"]
+    )

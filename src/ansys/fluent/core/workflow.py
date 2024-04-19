@@ -1455,15 +1455,22 @@ class Workflow:
         except AttributeError:
             pass
 
-    def _new_workflow(self, name: str, dynamic_interface: bool = True):
+    def _activate_dynamic_interface(self, dynamic_interface: bool):
         self._dynamic_interface = dynamic_interface
-        self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
+    def _new_workflow(self, name: str, dynamic_interface: bool = True):
+        self._workflow.InitializeWorkflow(WorkflowType=name)
+        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
+
     def _load_workflow(self, file_path: str, dynamic_interface: bool = True):
-        self._dynamic_interface = dynamic_interface
         self._workflow.LoadWorkflow(FilePath=file_path)
-        self._initialize_methods(dynamic_interface=dynamic_interface)
+        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
+
+    def _create_workflow(self, first_task: str, dynamic_interface: bool = True):
+        self._workflow.CreateNewWorkflow()
+        self._workflow.InsertNewTask(CommandName=first_task)
+        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     def _initialize_methods(self, dynamic_interface: bool):
         _init_task_accessors(self)
