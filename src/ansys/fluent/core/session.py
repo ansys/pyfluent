@@ -303,7 +303,11 @@ class BaseSession:
         """
         ip, port, password = _parse_server_info_file(server_info_file_name)
         fluent_connection = FluentConnection(
-            ip=ip, port=port, password=password, **connection_kwargs
+            ip=ip,
+            port=port,
+            password=password,
+            file_transfer_service=file_transfer_service,
+            **connection_kwargs,
         )
         session = cls(
             fluent_connection=fluent_connection,

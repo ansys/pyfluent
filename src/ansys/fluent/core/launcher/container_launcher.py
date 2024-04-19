@@ -188,6 +188,7 @@ class DockerLauncher:
         fluent_connection = FluentConnection(
             port=port,
             password=password,
+            file_transfer_service=self.file_transfer_service,
             cleanup_on_exit=self.cleanup_on_exit,
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
