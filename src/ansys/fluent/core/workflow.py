@@ -526,9 +526,9 @@ class BaseTask:
         Raises
         ------
         ValueError
-            If the python name does not match the next possible task names.
+            If the Python name does not match the next possible task names.
         """
-        # The next line populates the python name map for next possible task
+        # The next line populates the Python name map for next possible task
         self._get_next_python_task_names()
         if task_name not in self.get_next_possible_tasks():
             raise ValueError(
@@ -541,7 +541,7 @@ class BaseTask:
 
     @property
     def next_tasks(self):
-        """Tasks that can be inserted after this current task."""
+        """Tasks that can be inserted after the current task."""
         return self._NextTask(self)
 
     class _NextTask:
@@ -561,12 +561,12 @@ class BaseTask:
 
         class _Insert:
             def __init__(self, base_task, name):
-                """Initialize _Insert."""
+                """Initialize an ``_Insert`` instance."""
                 self._base_task = base_task
                 self._name = name
 
             def insert(self):
-                """Inserts a task in the workflow."""
+                """Insert a task in the workflow."""
                 return self._base_task.insert_next_task(task_name=self._name)
 
             def __repr__(self):

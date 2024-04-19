@@ -5,6 +5,7 @@ import functools
 import itertools
 import logging
 import os
+from threading import RLock
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -334,6 +335,7 @@ class EventSubscription:
     def __init__(
         self,
         service,
+        path,
         request_dict: dict[str, Any],
     ) -> None:
         """Subscribe to a datamodel event.
@@ -343,16 +345,17 @@ class EventSubscription:
         SubscribeEventError
             If server fails to subscribe from event.
         """
-        self.is_subscribed = False
-        self._service = service
+        self.is_subscribed: bool = False
+        self._service: DatamodelService = service
+        self.path: str = path
         response = service.subscribe_events(request_dict)
         response = response[0]
         if response["status"] != DataModelProtoModule.STATUS_SUBSCRIBED:
             raise SubscribeEventError(request_dict)
         else:
             self.is_subscribed = True
-        self.tag = response["tag"]
-        self._service.events[self.tag] = self
+        self.tag: str = response["tag"]
+        self._service.subscriptions.add(self.tag, self)
 
     def unsubscribe(self) -> None:
         """Unsubscribe the datamodel event.
@@ -370,11 +373,79 @@ class EventSubscription:
                 raise UnsubscribeEventError(self.tag)
             else:
                 self.is_subscribed = False
-            self._service.events.pop(self.tag, None)
+            self._service.subscriptions.remove(self.tag)
 
-    def __del__(self) -> None:
-        """Unsubscribe the datamodel event."""
-        self.unsubscribe()
+
+class SubscriptionList:
+    """Stores subscription objects by tag."""
+
+    def __init__(self):
+        self._subscriptions = {}
+        self._lock = RLock()
+
+    def __contains__(self, tag: str) -> bool:
+        with self._lock:
+            return tag in self._subscriptions
+
+    def add(self, tag: str, subscription: EventSubscription) -> None:
+        """Add a subscription object.
+
+        Parameters
+        ----------
+        tag : str
+            Subscription tag.
+        subscription : EventSubscription
+            Subscription object.
+        """
+        with self._lock:
+            self._subscriptions[tag] = subscription
+
+    def remove(self, tag: str) -> None:
+        """Remove a subscription object.
+
+        Parameters
+        ----------
+        tag : str
+            Subscription tag.
+        """
+        with self._lock:
+            self._subscriptions.pop(tag, None)
+
+    def unsubscribe_while_deleting(
+        self, rules: str, path: str, deletion_stage: str
+    ) -> None:
+        """Unsubscribe corresponding subscription objects while the datamodel object is
+        being deleted.
+
+        Parameters
+        ----------
+        rules : str
+            Datamodel object rules.
+        path : str
+            Datamodel object path.
+        deletion_stage : {"before", "after"}
+            All subscription objects except those of on-deleted type are unsubscribed
+            before the datamodel object is deleted. On-deleted subscription objects are
+            unsubscribed after the datamodel object is deleted.
+        """
+        with self._lock:
+            delete_tag = f"/{rules}/deleted"
+            after = deletion_stage == "after"
+            keys_to_unsubscribe = []
+            for k, v in self._subscriptions.items():
+                if v.path.startswith(path) and not (
+                    after ^ v.tag.startswith(delete_tag)
+                ):
+                    keys_to_unsubscribe.append(k)
+            for k in reversed(keys_to_unsubscribe):
+                self._subscriptions[k].unsubscribe()
+
+    def unsubscribe_all(self) -> None:
+        """Unsubscribe all subscription objects."""
+        with self._lock:
+            while self._subscriptions:
+                v = next(reversed(self._subscriptions.values()))
+                v.unsubscribe()
 
 
 class DatamodelService(StreamingService):
@@ -394,7 +465,7 @@ class DatamodelService(StreamingService):
             metadata=metadata,
         )
         self.event_streaming = None
-        self.events = {}
+        self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
@@ -561,9 +632,7 @@ class DatamodelService(StreamingService):
 
     def unsubscribe_all_events(self) -> None:
         """Unsubscribe all subscribed events."""
-        for event in list(self.events.values()):
-            event.unsubscribe()
-        self.events.clear()
+        self.subscriptions.unsubscribe_all()
 
     def add_on_child_created(
         self, rules: str, path: str, child_type: str, obj, cb: Callable
@@ -580,7 +649,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -596,7 +665,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -612,7 +681,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -628,7 +697,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -647,7 +716,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -666,7 +735,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -685,7 +754,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -705,7 +774,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -1023,6 +1092,14 @@ class PyMenu(PyStateContainer):
         child_names : List[str]
             List of named objects.
         """
+        for child_name in child_names:
+            child_path = f"{convert_path_to_se_path(self.path)}/{obj_type}:{child_name}"
+            # delete_child_objects doesn't stream back on-deleted events. Thus
+            # unsubscribing all subscription objects before the deletion.
+            for stage in ["before", "after"]:
+                self.service.subscriptions.unsubscribe_while_deleting(
+                    self.rules, child_path, stage
+                )
         self.service.delete_child_objects(
             self.rules, convert_path_to_se_path(self.path), obj_type, child_names
         )
@@ -1037,6 +1114,13 @@ class PyMenu(PyStateContainer):
         obj_type: str
             Type of the named object container.
         """
+        child_path = f"{convert_path_to_se_path(self.path)}/{obj_type}:"
+        # delete_all_child_objects doesn't stream back on-deleted events. Thus
+        # unsubscribing all subscription objects before the deletion.
+        for stage in ["before", "after"]:
+            self.service.subscriptions.unsubscribe_while_deleting(
+                self.rules, child_path, stage
+            )
         self.service.delete_all_child_objects(
             self.rules, convert_path_to_se_path(self.path), obj_type
         )
@@ -1387,7 +1471,20 @@ class PyNamedObjectContainer:
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
-            self.service.delete_object(self.rules, convert_path_to_se_path(child_path))
+            se_path = convert_path_to_se_path(child_path)
+            # All subscription objects except those of on-deleted type are unsubscribed
+            # before the datamodel object is deleted.
+            self.service.subscriptions.unsubscribe_while_deleting(
+                self.rules, se_path, "before"
+            )
+            # On-deleted subscription objects are unsubscribed after the datamodel
+            # object is deleted.
+            self[key].add_on_deleted(
+                lambda _: self.service.subscriptions.unsubscribe_while_deleting(
+                    self.rules, se_path, "after"
+                )
+            )
+            self.service.delete_object(self.rules, se_path)
         else:
             raise LookupError(
                 f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
