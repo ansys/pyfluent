@@ -16,6 +16,8 @@ Examples
 import logging
 import os
 from pathlib import Path
+import random
+import string
 import subprocess
 from typing import Any, Dict, Optional, Union
 
@@ -29,6 +31,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
     _get_subprocess_kwargs_for_fluent,
     is_windows,
+    is_WSL,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -47,6 +50,19 @@ from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrat
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
+
+
+def _write_wsl_launch_file(launch_cmd: str) -> str:
+    """Writes Fluent BAT launch file for WSL"""
+    random_string = "".join(
+        random.choices(
+            string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
+        )
+    )
+    launch_file_name = f"launch_fluent_{random_string}.bat"
+    with open(launch_file_name, "w") as f:
+        f.write(launch_cmd)
+    return launch_file_name
 
 
 class StandaloneLauncher:
@@ -198,7 +214,12 @@ class StandaloneLauncher:
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
 
-        server_info_file_name = _get_server_info_file_name()
+        if is_WSL():
+            # write server info file to working directory, let the OS handle pwd, it should match for PyFluent and Fluent
+            server_info_file_name = Path(_get_server_info_file_name(False)).name
+        else:
+            server_info_file_name = _get_server_info_file_name()
+
         launch_string = _generate_launch_string(
             self.argvals,
             self.mode,
@@ -216,7 +237,7 @@ class StandaloneLauncher:
 
         if is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
-            launch_cmd = 'start "" ' + launch_string
+            launch_cmd = 'start "Fluent Launch" ' + launch_string
         else:
             if self.ui_mode < UIMode.HIDDEN_GUI:
                 # Using nohup to hide Fluent output from the current terminal
@@ -225,16 +246,27 @@ class StandaloneLauncher:
                 launch_cmd = launch_string
 
         try:
-            logger.debug(f"Launching Fluent with command: {launch_cmd}")
-
-            subprocess.Popen(launch_cmd, **kwargs)
+            if is_WSL():
+                logger.warning(
+                    "Launching Fluent from Windows Subsystem for Linux (experimental feature)"
+                )
+                launch_file_name = _write_wsl_launch_file(launch_cmd)
+                wsl_launch_cmd = ["cmd.exe /c " + launch_file_name + " >nul 2>&1"]
+                logger.debug(f"{launch_file_name}: {launch_cmd}")
+                logger.debug(
+                    f"Launching Fluent from WSL with command: {wsl_launch_cmd}"
+                )
+                subprocess.Popen(wsl_launch_cmd, shell=True)
+            else:
+                logger.debug(f"Launching Fluent with command: {launch_cmd}")
+                subprocess.Popen(launch_cmd, **kwargs)
 
             try:
                 _await_fluent_launch(
                     server_info_file_name, self.start_timeout, sifile_last_mtime
                 )
             except TimeoutError as ex:
-                if is_windows():
+                if is_windows() and not is_WSL():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
                     launch_cmd = launch_string.replace('"', "", 2)
                     kwargs.update(shell=False)
@@ -292,3 +324,6 @@ class StandaloneLauncher:
             server_info_file = Path(server_info_file_name)
             if server_info_file.exists():
                 server_info_file.unlink()
+            if is_WSL():
+                if Path(launch_file_name).exists():
+                    Path(launch_file_name).unlink()

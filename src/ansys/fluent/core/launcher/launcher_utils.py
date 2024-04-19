@@ -17,9 +17,17 @@ from ansys.fluent.core.utils.networking import find_remoting_ip
 logger = logging.getLogger("pyfluent.launcher")
 
 
+def is_WSL():
+    """Check if PyFluent is running inside a Windows Subsystem for Linux."""
+    return platform.system() == "Linux" and "microsoft" in platform.release().lower()
+
+
 def is_windows():
     """Check if the current operating system is Windows."""
-    return platform.system() == "Windows"
+    if is_WSL():
+        return True
+    else:
+        return platform.system() == "Windows"
 
 
 def check_docker_support():
@@ -39,7 +47,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     kwargs: Dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
-    if is_windows():
+    if is_windows() and not is_WSL():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
         kwargs.update(shell=True, start_new_session=True)
@@ -82,7 +90,7 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
     started."""
     if start_watchdog is None and cleanup_on_exit:
         host = fluent_connection.connection_properties.cortex_host
-        if host == socket.gethostname():
+        if host == socket.gethostname() and not is_WSL():
             logger.debug(
                 "Fluent running on the host machine and 'cleanup_on_exit' activated, will launch Watchdog."
             )

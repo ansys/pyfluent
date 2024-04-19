@@ -2,7 +2,7 @@
 
 import json
 import os
-from pathlib import Path
+from pathlib import PurePath, PureWindowsPath
 
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.pyfluent_enums import FluentMode
@@ -102,7 +102,7 @@ def _generate_launch_string(
     return launch_string
 
 
-def get_fluent_exe_path(**launch_argvals) -> Path:
+def get_fluent_exe_path(**launch_argvals) -> PurePath:
     """Get the path for the Fluent executable file.
     The search for the path is performed in this order:
 
@@ -111,15 +111,19 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
 
     Returns
     -------
-    Path
+    PurePath
         Fluent executable path
     """
+    if launcher_utils.is_WSL():
+        path_handler = PureWindowsPath
+    else:
+        path_handler = PurePath
 
-    def get_fluent_root(version: FluentVersion) -> Path:
+    def get_fluent_root(version: FluentVersion) -> PurePath:
         awp_root = os.environ[version.awp_var]
-        return Path(awp_root) / "fluent"
+        return path_handler(awp_root) / "fluent"
 
-    def get_exe_path(fluent_root: Path) -> Path:
+    def get_exe_path(fluent_root: PurePath) -> PurePath:
         if launcher_utils.is_windows():
             return fluent_root / "ntbin" / "win64" / "fluent.exe"
         else:
@@ -128,7 +132,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
     fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
     if fluent_root:
-        return get_exe_path(Path(fluent_root))
+        return get_exe_path(path_handler(fluent_root))
 
     # Look for Fluent exe path in the following order:
     # 1. product_version parameter passed with launch_fluent
