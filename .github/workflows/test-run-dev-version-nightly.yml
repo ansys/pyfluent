@@ -1,4 +1,4 @@
-name: Nightly Test Run (Develop)
+name: Test Run Dev Version Nightly
 
 on:
   schedule:  # UTC at 0300
