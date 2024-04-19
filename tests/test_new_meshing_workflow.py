@@ -628,7 +628,9 @@ def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     watertight = new_mesh_session.watertight()
-    _assert_snake_case_attrs(dir(watertight))
+    dir_watertight = dir(watertight)
+    dir_watertight.remove("_FirstTask")
+    _assert_snake_case_attrs(dir_watertight)
     dir_watertight_import_geometry = dir(watertight.import_geometry)
     dir_watertight_import_geometry.remove("_NextTask")
     _assert_snake_case_attrs(dir_watertight_import_geometry)
