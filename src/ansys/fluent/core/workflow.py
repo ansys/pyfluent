@@ -566,7 +566,7 @@ class BaseTask:
                 self._name = name
 
             def insert(self):
-                """Inserts a task in the workflow."""
+                """Insert a task in the workflow."""
                 self._base_task.insert_next_task(task_name=self._name)
 
             def __repr__(self):
