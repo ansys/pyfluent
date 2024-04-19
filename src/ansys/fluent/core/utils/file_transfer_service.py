@@ -137,13 +137,28 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
     def __init__(
         self,
-        image: Optional[str] = None,
-        ports: Optional[dict] = None,
+        image_name: Optional[str] = None,
+        port: Optional[int] = None,
         container_mount_path: Optional[str] = None,
         host_mount_path: Optional[str] = None,
     ):
+        """Provides gRPC-based remote file transfer strategy.
+
+        Parameters
+        ----------
+        image_name: str
+            Name of the image.
+        port: int, optional
+            Port for file transfer service to use.
+        container_mount_path: Union[str, Path], optional
+            Path inside the container where host mount path will be mounted to.
+        host_mount_path: Union[str, Path], optional
+            Existing path in the host operating system that will be available inside the container.
+        """
         self.docker_client = docker.from_env()
-        self.image = image if image else "ghcr.io/ansys/tools-filetransfer:latest"
+        self.image = (
+            image_name if image_name else "ghcr.io/ansys/tools-filetransfer:latest"
+        )
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
@@ -152,30 +167,21 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         )
         try:
             self.host_port = random.randint(5000, 6000)
-            self.ports = ports if ports else {"50000/tcp": self.host_port}
+            self.ports = {"50000/tcp": port} if port else {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=self.image,
                 ports=self.ports,
                 detach=True,
-                volumes={
-                    self.host_mount_path: {
-                        "bind": self.container_mount_path,
-                        "mode": "rw",
-                    }
-                },
+                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
-        except Exception:
+        except docker.errors.DockerException:
             self.host_port = random.randint(6000, 7000)
-            self.ports = ports if ports else {"50000/tcp": self.host_port}
+            self.ports = {"50000/tcp": port} if port else {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=self.image,
                 ports=self.ports,
                 detach=True,
-                volumes={
-                    self.host_mount_path: {
-                        "bind": self.container_mount_path,
-                    }
-                },
+                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
@@ -257,7 +263,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
     def exit(self):
         """Stop the container."""
-        self.server.sto
+        self.container.stop()
 
     def __del__(self):
         self.exit()
