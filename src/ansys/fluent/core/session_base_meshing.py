@@ -216,13 +216,13 @@ class BaseMeshing:
             )
         return self._loaded_workflow
 
-    def create_workflow(self, first_task: str):
+    @property
+    def create_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._created_workflow:
             self._created_workflow = CreateWorkflow(
                 self._workflow_se,
                 self.meshing,
-                first_task,
                 self.get_fluent_version(),
             )
         return self._created_workflow

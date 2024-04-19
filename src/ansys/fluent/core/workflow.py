@@ -1475,17 +1475,8 @@ class Workflow:
         self._get_first_tasks_help_string_command_id_map()
         return list(self._initial_task_python_names_map)
 
-    def _create_workflow(self, first_task: str, dynamic_interface: bool = True):
-        self._get_first_tasks_help_string_command_id_map()
-        if first_task not in self._initial_task_python_names_map:
-            raise RuntimeError(
-                f"'{first_task}' is not an allowed task to be inserted at this level."
-                f" Allowed tasks are: {list(self._initial_task_python_names_map)}"
-            )
+    def _create_workflow(self, dynamic_interface: bool = True):
         self._workflow.CreateNewWorkflow()
-        self._workflow.InsertNewTask(
-            CommandName=self._initial_task_python_names_map[first_task]
-        )
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     def _get_first_tasks_help_string_command_id_map(self):

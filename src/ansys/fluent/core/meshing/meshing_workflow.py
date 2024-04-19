@@ -283,7 +283,6 @@ class CreateWorkflow(Workflow):
         self,
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
-        first_task: str,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize CreateWorkflow.
@@ -294,8 +293,6 @@ class CreateWorkflow(Workflow):
             Underlying workflow object.
         meshing : PyMenuGeneric
             Meshing object.
-        first_task: str
-            The first task to be inserted in the created workflow.
         fluent_version: FluentVersion
             Version of Fluent in this session.
         """
@@ -303,8 +300,7 @@ class CreateWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
-        self._first_task = first_task
 
     def create(self) -> None:
         """Create a workflow."""
-        self._create_workflow(first_task=self._first_task)
+        self._create_workflow()
