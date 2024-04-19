@@ -10,7 +10,10 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.error_handler import _process_invalid_args
+from ansys.fluent.core.launcher.error_handler import (
+    GPUSolverSupportError,
+    _process_invalid_args,
+)
 from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -20,6 +23,8 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     LaunchMode,
     UIMode,
     _get_fluent_launch_mode,
+    _get_graphics_driver,
+    _get_mode,
     _get_running_session_mode,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info
@@ -57,6 +62,12 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         If an unknown Fluent launch mode is passed.
     """
     _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
+    if kwargs["version"] == "2d" and kwargs["gpu"]:
+        raise GPUSolverSupportError()
+    graphics_driver = _get_graphics_driver(kwargs["graphics_driver"])
+    kwargs["graphics_driver"] = graphics_driver
+    mode = _get_mode(kwargs["mode"])
+    kwargs["mode"] = mode
     if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(
             mode=kwargs["mode"],
