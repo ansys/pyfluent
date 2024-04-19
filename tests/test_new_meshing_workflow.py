@@ -1422,7 +1422,7 @@ def test_loaded_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=24.1")
 def test_created_workflow(new_mesh_session):
     meshing = new_mesh_session
-    created_workflow = meshing.create_workflow(first_task="ImportGeometry")
+    created_workflow = meshing.create_workflow(first_task="import_geometry")
     assert "<Insertable 'add_local_sizing' task>" in [
         repr(x) for x in created_workflow.import_geometry.next_tasks()
     ]
