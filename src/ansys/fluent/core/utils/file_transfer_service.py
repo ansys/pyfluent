@@ -258,13 +258,6 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                         ),
                     )
 
-    def exit(self):
-        """Stop the container."""
-        self.container.stop()
-
-    def __del__(self):
-        self.exit()
-
 
 class PimFileTransferService:
     """Provides a file transfer service based on `PyPIM <https://pypim.docs.pyansys.com/version/stable/>`_ and the ``simple_upload_server()`` method.
