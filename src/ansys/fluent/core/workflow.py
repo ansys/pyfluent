@@ -12,6 +12,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
+    PyCommand,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -567,7 +568,7 @@ class BaseTask:
 
             def insert(self):
                 """Insert a task in the workflow."""
-                self._base_task.insert_next_task(task_name=self._name)
+                return self._base_task.insert_next_task(task_name=self._name)
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
@@ -1292,6 +1293,7 @@ class Workflow:
         self._help_string_display_id_map = {}
         self._help_string_display_text_map = {}
         self._repeated_task_help_string_display_text_map = {}
+        self._initial_task_python_names_map = {}
         self._unwanted_attrs = {
             "reset_workflow",
             "initialize_workflow",
@@ -1455,10 +1457,81 @@ class Workflow:
         except AttributeError:
             pass
 
-    def _new_workflow(self, name: str, dynamic_interface: bool = True):
+    def _activate_dynamic_interface(self, dynamic_interface: bool):
         self._dynamic_interface = dynamic_interface
-        self._workflow.InitializeWorkflow(WorkflowType=name)
         self._initialize_methods(dynamic_interface=dynamic_interface)
+
+    def _new_workflow(self, name: str, dynamic_interface: bool = True):
+        self._workflow.InitializeWorkflow(WorkflowType=name)
+        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
+
+    def _load_workflow(self, file_path: str, dynamic_interface: bool = True):
+        self._workflow.LoadWorkflow(FilePath=file_path)
+        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
+
+    def get_initial_task_list_while_creating_new_workflow(self):
+        """Get list of independent tasks that can be inserted at initial level while
+        creating a new workflow."""
+        self._get_first_tasks_help_string_command_id_map()
+        return list(self._initial_task_python_names_map)
+
+    def _create_workflow(self, dynamic_interface: bool = True):
+        self._workflow.CreateNewWorkflow()
+        self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
+
+    @property
+    def first_tasks(self):
+        """Tasks that can be inserted on a blank workflow."""
+        return self._FirstTask(self)
+
+    class _FirstTask:
+        def __init__(self, workflow):
+            """Initialize _FirstTask."""
+            self._workflow = workflow
+            self._insertable_tasks = []
+            if len(self._workflow.get_available_task_names()) == 0:
+                for (
+                    item
+                ) in self._workflow.get_initial_task_list_while_creating_new_workflow():
+                    insertable_task = type("Insert", (self._Insert,), {})(
+                        self._workflow, item
+                    )
+                    setattr(self, item, insertable_task)
+                    self._insertable_tasks.append(insertable_task)
+
+        def __call__(self):
+            return self._insertable_tasks
+
+        class _Insert:
+            def __init__(self, workflow, name):
+                """Initialize an ``_Insert`` instance."""
+                self._workflow = workflow
+                self._name = name
+
+            def insert(self):
+                """Insert a task in the workflow."""
+                return self._workflow._workflow.InsertNewTask(
+                    CommandName=self._workflow._initial_task_python_names_map[
+                        self._name
+                    ]
+                )
+
+            def __repr__(self):
+                return f"<Insertable '{self._name}' task>"
+
+    def _get_first_tasks_help_string_command_id_map(self):
+        if not self._initial_task_python_names_map:
+            for command in dir(self._command_source):
+                if command in ["SwitchToSolution", "set_state"]:
+                    continue
+                command_obj = getattr(self._command_source, command)
+                if isinstance(command_obj, PyCommand):
+                    command_obj_instance = command_obj.create_instance()
+                    if not command_obj_instance.get_attr("requiredInputs"):
+                        help_str = command_obj_instance.get_attr("helpString")
+                        if help_str:
+                            self._initial_task_python_names_map[help_str] = command
+                    del command_obj_instance
 
     def _initialize_methods(self, dynamic_interface: bool):
         _init_task_accessors(self)
