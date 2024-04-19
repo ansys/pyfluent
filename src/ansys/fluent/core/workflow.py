@@ -526,7 +526,7 @@ class BaseTask:
         Raises
         ------
         ValueError
-            If the python name does not match the next possible task names.
+            If the Python name does not match the next possible task names.
         """
         # The next line populates the python name map for next possible task
         self._get_next_python_task_names()
