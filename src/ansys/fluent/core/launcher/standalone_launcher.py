@@ -128,7 +128,7 @@ class StandaloneLauncher:
         show_gui : bool, optional
             Whether to display the Fluent GUI. The default is ``None``,
             in which case the GUI is not shown. If ``False`` is
-            not explicitly provided, the GUI will be shown if
+            not explicitly provided, the GUI is shown if
             the ``PYFLUENT_SHOW_SERVER_GUI`` environment
             variable is set to 1.
         case_file_name : str, optional
