@@ -274,3 +274,33 @@ class LoadWorkflow(Workflow):
     def load(self) -> None:
         """Load a workflow."""
         self._load_workflow(file_path=self._file_path)
+
+
+class CreateWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for newly created workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize CreateWorkflow.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+
+    def create(self) -> None:
+        """Create a workflow."""
+        self._create_workflow()
