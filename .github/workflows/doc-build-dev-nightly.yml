@@ -1,11 +1,9 @@
-name: Release Documentation Build
+name: Doc Build Dev Nightly
 
 on:
+  schedule:  # UTC at 0500
+    - cron:  '0 5 * * *'
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
-      - '!*dev*'
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
@@ -19,7 +17,7 @@ env:
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
 
 jobs:
-  build_release_docs:
+  build_dev_docs:
     runs-on: [self-hosted, pyfluent]
 
     steps:
@@ -77,12 +75,13 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
-  deploy_release_docs:
+  deploy_dev_docs:
     runs-on: ubuntu-latest
-    needs: [build_release_docs]
+    needs: [build_dev_docs]
+    if: github.ref == 'refs/heads/main'
     steps:
-      - name: "Deploy release documentation"
-        uses: ansys/actions/doc-deploy-stable@v5
+      - name: "Deploy development documentation"
+        uses: ansys/actions/doc-deploy-dev@v5
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
             decompress-artifact: true
