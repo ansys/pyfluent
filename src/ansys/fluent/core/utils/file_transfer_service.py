@@ -10,7 +10,6 @@ from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 from alive_progress import alive_bar
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.process_launch_string import get_fluent_exe_path
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 
@@ -51,11 +50,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         """
         self.pyfluent_cwd = pathlib.Path(str(os.getcwd()))
         self.fluent_cwd = (
-            pathlib.Path(str(server_cwd))
-            if server_cwd
-            else (
-                pathlib.Path(str(get_fluent_exe_path()).split("fluent")[0]) / "fluent"
-            )
+            pathlib.Path(str(server_cwd)) if server_cwd else self.pyfluent_cwd
         )
 
     def file_exists_on_remote(self, file_name: str) -> bool:
