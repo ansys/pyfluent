@@ -320,6 +320,7 @@ def warning_record():
         yield wrec
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2712")
 @pytest.mark.fluent_version(">=24.2")
 def test_unstable_settings_warning(new_solver_session, warning_record):
     solver = new_solver_session
