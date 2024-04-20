@@ -218,7 +218,7 @@ class BaseMeshing:
 
     @property
     def create_workflow(self):
-        """Datamodel root of workflow exposed in object-oriented manner."""
+        """Datamodel root of the workflow exposed in an object-oriented manner."""
         if not self._created_workflow:
             self._created_workflow = CreateWorkflow(
                 self._workflow_se,
