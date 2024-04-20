@@ -269,7 +269,7 @@ def _get_ui_mode(
     ui_mode = None
     if show_gui is not None:
         warnings.warn(
-            "'show_gui' is deprecated, use 'ui_mode' instead",
+            "'show_gui' is deprecated. Use 'ui_mode' instead.",
             PyFluentDeprecationWarning,
         )
     if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
