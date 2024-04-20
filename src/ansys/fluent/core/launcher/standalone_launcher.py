@@ -138,7 +138,7 @@ class StandaloneLauncher:
             Name of the case file to read into the
             Fluent session. The default is ``None``.
         case_data_file_name : str, optional
-            If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
+            Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
         lightweight_mode : bool, optional
             Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
             current Fluent solver session. The mesh is read into a background Fluent solver session which will
