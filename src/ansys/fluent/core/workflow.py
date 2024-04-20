@@ -507,11 +507,6 @@ class BaseTask:
             ] = command_name
         return list(self._python_task_names_map.keys())
 
-    def get_next_possible_tasks(self) -> list[str]:
-        """Get the list of possible Python names that can be inserted as tasks after
-        this current task is executed."""
-        return self._get_next_python_task_names()
-
     def _insert_next_task(self, task_name: str):
         """Insert a task based on the Python name after the current task is executed.
 
@@ -529,12 +524,9 @@ class BaseTask:
         ValueError
             If the Python name does not match the next possible task names.
         """
-        # The next line populates the Python name map for next possible task
-        self._get_next_python_task_names()
-        if task_name not in self.get_next_possible_tasks():
+        if task_name not in self._get_next_python_task_names():
             raise ValueError(
-                f"'{task_name}' cannot be inserted next to '{self.python_name()}'. \n"
-                "Use 'get_next_possible_tasks()' to view list of allowed tasks."
+                f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
             )
         return self._task.InsertNextTask(
             CommandName=self._python_task_names_map[task_name]
@@ -550,7 +542,7 @@ class BaseTask:
             """Initialize an ``_NextTask`` instance."""
             self._base_task = base_task
             self._insertable_tasks = []
-            for item in self._base_task.get_next_possible_tasks():
+            for item in self._base_task._get_next_python_task_names():
                 insertable_task = type("Insert", (self._Insert,), {})(
                     self._base_task, item
                 )

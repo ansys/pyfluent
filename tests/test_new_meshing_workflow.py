@@ -673,9 +673,9 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
         "create_local_refinement_regions",
         "custom_journal_task",
     ]
-    assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
+    assert watertight.import_geom_wtm.insertable_tasks() == _next_possible_tasks
     watertight.import_geom_wtm.insertable_tasks.import_boi_geometry.insert()
-    assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
+    assert watertight.import_geom_wtm.insertable_tasks() == _next_possible_tasks
     watertight.import_geom_wtm.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
     assert len(watertight.tasks()) == 13
 
@@ -744,7 +744,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
     assert "create_volume_mesh" not in watertight.task_names()
 
-    assert watertight.add_boundary_layer.get_next_possible_tasks() == [
+    assert watertight.add_boundary_layer.insertable_tasks() == [
         "add_boundary_type",
         "update_boundaries",
         "set_up_rotational_periodic_boundaries",
@@ -1230,7 +1230,7 @@ def test_new_meshing_workflow_without_dm_caching(
     time.sleep(2)
     assert "add_local_sizing" not in watertight.task_names()
 
-    assert watertight.import_geom_wtm.get_next_possible_tasks() == [
+    assert watertight.import_geom_wtm.insertable_tasks() == [
         "add_local_sizing",
         "import_boi_geometry",
         "set_up_rotational_periodic_boundaries",
@@ -1330,7 +1330,7 @@ def test_duplicate_tasks_in_workflow(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
 
-    assert watertight.import_geometry.get_next_possible_tasks() == [
+    assert watertight.import_geometry.insertable_tasks() == [
         "import_boi_geometry",
         "set_up_rotational_periodic_boundaries",
         "create_local_refinement_regions",
@@ -1339,11 +1339,9 @@ def test_duplicate_tasks_in_workflow(new_mesh_session):
     assert "add_local_sizing" in watertight.task_names()
     watertight.add_local_sizing.delete()
     assert "add_local_sizing" not in watertight.task_names()
-    assert "add_local_sizing" in watertight.import_geometry.get_next_possible_tasks()
+    assert "add_local_sizing" in watertight.import_geometry.insertable_tasks()
     watertight.import_geometry.insertable_tasks.add_local_sizing.insert()
-    assert (
-        "add_local_sizing" not in watertight.import_geometry.get_next_possible_tasks()
-    )
+    assert "add_local_sizing" not in watertight.import_geometry.insertable_tasks()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
