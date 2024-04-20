@@ -1,8 +1,8 @@
-name: Weekly solvermode test run
+name: Test Run Solvermode Weekly
 
 on:
-  schedule:  # UTC at 0400 on Monday
-    - cron:  '0 4 * * MON'
+  schedule:  # UTC at 0800 on Sunday
+    - cron:  '0 8 * * SUN'
   workflow_dispatch:
 
 env:

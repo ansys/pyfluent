@@ -1,8 +1,8 @@
-name: Nightly Test Run (No Codegen)
+name: Test Run WO Codegen
 
 on:
-  schedule:  # UTC at 0400 on Monday and Thursday
-    - cron:  '0 4 * * MON,THU'
+  schedule:  # UTC at 0900 on Sunday
+    - cron:  '0 9 * * SUN'
   workflow_dispatch:
 
 env:
@@ -14,8 +14,8 @@ env:
   PYFLUENT_HIDE_LOG_SECRETS: 1
 
 jobs:
-  test:
-    name: Unit Testing
+  build:
+    name: Build package
     runs-on: [self-hosted, pyfluent]
 
     steps:
@@ -46,6 +46,63 @@ jobs:
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
         id: version
 
+      - name: Check package
+        run: |
+          pip install twine
+          twine check dist/*
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: PyFluent-packages
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+          retention-days: 7
+
+  test:
+    name: Unit Testing
+    needs: build
+    runs-on: [self-hosted, pyfluent]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image-tag: v22.2.0
+            version: 222
+          - image-tag: v23.1.0
+            version: 231
+          - image-tag: v23.2.0
+            version: 232
+          - image-tag: v24.1.0
+            version: 241
+          - image-tag: v24.2.0
+            version: 242
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: PyFluent-packages
+          path: dist
+
+      - name: Install pyfluent
+        run: pip install -q --force-reinstall dist/*.whl > /dev/null
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -53,62 +110,14 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 22.2 Fluent docker image
+      - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Pull 23.1 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: Pull 23.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
-      - name: Pull 24.1 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
-
-      - name: Pull 24.2 Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.2.0
-
-      - name: 24.2 Unit Testing
+      - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-242-no-codegen
+          make unittest-all-${{ matrix.version }}-no-codegen
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
-
-      - name: 24.1 Unit Testing
-        run: |
-          make install-test
-          make unittest-all-241-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v24.1.0
-
-      - name: 23.2 Unit Testing
-        run: |
-          make install-test
-          make unittest-all-232-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.2.0
-
-      - name: 23.1 Unit Testing
-        run: |
-          make install-test
-          make unittest-all-231-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v23.1.0
-
-      - name: 22.2 Unit Testing
-        run: |
-          make install-test
-          make unittest-all-222-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
