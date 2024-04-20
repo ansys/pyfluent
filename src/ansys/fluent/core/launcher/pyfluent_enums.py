@@ -281,3 +281,17 @@ def _get_ui_mode(
     if isinstance(ui_mode, str):
         ui_mode = UIMode(ui_mode)
     return ui_mode
+
+
+def _validate_gpu(gpu: Union[bool, list], version: str):
+    """Raise an exception if the GPU Solver is unsupported.
+
+    Parameters
+    ----------
+    gpu : bool or list, optional
+        This option will start Fluent with the GPU Solver.
+    version : str, optional
+        Geometric dimensionality of the Fluent simulation.
+    """
+    if version == "2d" and gpu:
+        raise exceptions.GPUSolverSupportError()

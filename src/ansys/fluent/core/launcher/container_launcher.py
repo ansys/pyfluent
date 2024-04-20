@@ -18,7 +18,6 @@ import os
 from typing import Any, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.error_handler import GPUSolverSupportError
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
@@ -33,6 +32,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_graphics_driver,
     _get_mode,
+    _validate_gpu,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
@@ -147,8 +147,7 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        if version == "2d" and gpu:
-            raise GPUSolverSupportError()
+        _validate_gpu(gpu, version)
         graphics_driver = _get_graphics_driver(graphics_driver)
         mode = _get_mode(mode)
         argvals = locals().copy()

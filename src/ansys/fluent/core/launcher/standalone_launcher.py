@@ -20,7 +20,6 @@ import subprocess
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.launcher.error_handler import (
-    GPUSolverSupportError,
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
@@ -41,6 +40,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_mode,
     _get_standalone_launch_fluent_version,
     _get_ui_mode,
+    _validate_gpu,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -184,8 +184,7 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        if version == "2d" and gpu:
-            raise GPUSolverSupportError()
+        _validate_gpu(gpu, version)
         graphics_driver = _get_graphics_driver(graphics_driver)
         ui_mode = _get_ui_mode(show_gui)
         del show_gui
