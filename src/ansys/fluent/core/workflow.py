@@ -1470,8 +1470,8 @@ class Workflow:
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     def get_initial_task_list_while_creating_new_workflow(self):
-        """Get list of independent tasks that can be inserted at initial level while
-        creating a new workflow."""
+        """Get a list of independent tasks that can be inserted at the initial level while
+        creating a workflow."""
         self._get_first_tasks_help_string_command_id_map()
         return list(self._initial_task_python_names_map)
 
