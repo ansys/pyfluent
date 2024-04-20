@@ -285,7 +285,7 @@ class CreateWorkflow(Workflow):
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
     ) -> None:
-        """Initialize CreateWorkflow.
+        """Initialize a ``CreateWorkflow`` instance.
 
         Parameters
         ----------
