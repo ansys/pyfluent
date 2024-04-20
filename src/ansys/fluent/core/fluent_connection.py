@@ -725,6 +725,6 @@ class FluentConnection:
         if file_transfer_service and isinstance(
             file_transfer_service, RemoteFileTransferStrategy
         ):
-            file_transfer_service.container.stop()
+            file_transfer_service.container.kill()
 
         exit_event.set()
