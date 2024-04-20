@@ -332,7 +332,7 @@ class BaseSession:
         self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Immediately terminate the Fluent session, losing unsaved progress and
+        """Forces the Fluent session to exit, losing unsaved progress and
         data."""
         self._fluent_connection.force_exit()
 
