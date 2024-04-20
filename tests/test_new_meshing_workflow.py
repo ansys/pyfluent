@@ -1371,7 +1371,9 @@ def test_duplicate_tasks_in_workflow(new_mesh_session):
 def test_object_oriented_task_inserting_in_workflows(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
-    assert sorted([repr(x) for x in watertight.import_geometry.next_tasks()]) == sorted(
+    assert sorted(
+        [repr(x) for x in watertight.import_geometry.insertable_tasks()]
+    ) == sorted(
         [
             "<Insertable 'import_boi_geometry' task>",
             "<Insertable 'set_up_rotational_periodic_boundaries' task>",
@@ -1383,19 +1385,21 @@ def test_object_oriented_task_inserting_in_workflows(new_mesh_session):
         "set_up_rotational_periodic_boundaries"
         not in watertight.get_available_task_names()
     )
-    watertight.import_geometry.next_tasks.set_up_rotational_periodic_boundaries.insert()
+    watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
     assert (
         "set_up_rotational_periodic_boundaries" in watertight.get_available_task_names()
     )
-    assert sorted([repr(x) for x in watertight.import_geometry.next_tasks()]) == sorted(
+    assert sorted(
+        [repr(x) for x in watertight.import_geometry.insertable_tasks()]
+    ) == sorted(
         [
             "<Insertable 'import_boi_geometry' task>",
             "<Insertable 'create_local_refinement_regions' task>",
             "<Insertable 'custom_journal_task' task>",
         ]
     )
-    watertight.import_geometry.next_tasks.import_boi_geometry.insert()
-    watertight.import_geometry.next_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     assert "import_boi_geometry" in watertight.get_available_task_names()
     assert "import_boi_geometry_1" in watertight.get_available_task_names()
     time.sleep(1)
@@ -1426,7 +1430,7 @@ def test_created_workflow(new_mesh_session):
     meshing = new_mesh_session
     created_workflow = meshing.create_workflow()
 
-    assert sorted([repr(x) for x in created_workflow.first_tasks()]) == sorted(
+    assert sorted([repr(x) for x in created_workflow.insertable_tasks()]) == sorted(
         [
             "<Insertable 'import_geometry' task>",
             "<Insertable 'load_cad_geometry' task>",
@@ -1435,18 +1439,18 @@ def test_created_workflow(new_mesh_session):
         ]
     )
 
-    created_workflow.first_tasks.import_geometry.insert()
+    created_workflow.insertable_tasks.import_geometry.insert()
 
-    assert created_workflow.first_tasks() == []
+    assert created_workflow.insertable_tasks() == []
 
     time.sleep(2.5)
 
     assert "<Insertable 'add_local_sizing' task>" in [
-        repr(x) for x in created_workflow.import_geometry.next_tasks()
+        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
     ]
-    created_workflow.import_geometry.next_tasks.add_local_sizing.insert()
+    created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
     assert "<Insertable 'add_local_sizing' task>" not in [
-        repr(x) for x in created_workflow.import_geometry.next_tasks()
+        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
     ]
     assert sorted(created_workflow.get_available_task_names()) == sorted(
         ["import_geometry", "add_local_sizing"]

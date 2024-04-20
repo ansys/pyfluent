@@ -541,7 +541,7 @@ class BaseTask:
         )
 
     @property
-    def next_tasks(self):
+    def insertable_tasks(self):
         """Tasks that can be inserted after the current task."""
         return self._NextTask(self)
 
@@ -1480,7 +1480,7 @@ class Workflow:
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     @property
-    def first_tasks(self):
+    def insertable_tasks(self):
         """Tasks that can be inserted on a blank workflow."""
         return self._FirstTask(self)
 

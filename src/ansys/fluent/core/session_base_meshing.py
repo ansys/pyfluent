@@ -229,7 +229,7 @@ class BaseMeshing:
 
     @property
     def PartManagement(self):
-        """Datamdoel root of PartManagement."""
+        """Datamodel root of ``PartManagement``."""
         if self._part_management is None:
             try:
                 pm_module = importlib.import_module(
