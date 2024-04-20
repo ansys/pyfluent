@@ -7,6 +7,7 @@ with gRPC.
 import logging
 import os
 from typing import Any, Dict, Optional, Union
+import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
@@ -14,7 +15,10 @@ from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
     _process_invalid_args,
 )
-from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
+from ansys.fluent.core.launcher.launcher_utils import (
+    _confirm_watchdog_start,
+    is_windows,
+)
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
@@ -23,7 +27,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     LaunchMode,
     UIMode,
     _get_fluent_launch_mode,
-    _get_graphics_driver,
     _get_mode,
     _get_running_session_mode,
 )
@@ -36,6 +39,7 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -61,13 +65,6 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
-    if kwargs["version"] == "2d" and kwargs["gpu"]:
-        raise GPUSolverSupportError()
-    graphics_driver = _get_graphics_driver(kwargs["graphics_driver"])
-    kwargs["graphics_driver"] = graphics_driver
-    mode = _get_mode(kwargs["mode"])
-    kwargs["mode"] = mode
     if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(
             mode=kwargs["mode"],
@@ -83,7 +80,6 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
             env=kwargs["env"],
             cleanup_on_exit=kwargs["cleanup_on_exit"],
             start_transcript=kwargs["start_transcript"],
-            show_gui=kwargs["show_gui"],
             case_file_name=kwargs["case_file_name"],
             case_data_file_name=kwargs["case_data_file_name"],
             lightweight_mode=kwargs["lightweight_mode"],
@@ -306,13 +302,39 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
+    if version == "2d" and gpu:
+        raise GPUSolverSupportError()
+    if show_gui is not None:
+        warnings.warn(
+            "'show_gui' is deprecated, use 'ui_mode' instead",
+            PyFluentDeprecationWarning,
+        )
+    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+        ui_mode = UIMode.GUI
+    del show_gui
+    if ui_mode is None:
+        # Not using NO_GUI in windows as it opens a new cmd or
+        # shows Fluent output in the current cmd if start <launch_string> is not used
+        ui_mode = UIMode.HIDDEN_GUI if is_windows() else UIMode.NO_GUI
+    if isinstance(ui_mode, str):
+        ui_mode = UIMode(ui_mode)
+    if graphics_driver is None:
+        graphics_driver = "auto"
+    graphics_driver = str(graphics_driver)
+    graphics_driver = (
+        FluentWindowsGraphicsDriver(graphics_driver)
+        if is_windows()
+        else FluentLinuxGraphicsDriver(graphics_driver)
+    )
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
         container_dict=container_dict,
         scheduler_options=scheduler_options,
     )
     del start_container
+    mode = _get_mode(mode)
     argvals = locals().copy()
+    _process_invalid_args(dry_run, fluent_launch_mode, argvals)
     fluent_launch_mode = argvals.pop("fluent_launch_mode")
     launcher = create_launcher(fluent_launch_mode, **argvals)
     return launcher()

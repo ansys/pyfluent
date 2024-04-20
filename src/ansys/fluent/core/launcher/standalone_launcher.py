@@ -37,7 +37,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentWindowsGraphicsDriver,
     UIMode,
     _get_standalone_launch_fluent_version,
-    _get_ui_mode,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -68,7 +67,6 @@ class StandaloneLauncher:
         env: Optional[Dict[str, Any]] = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -125,15 +123,8 @@ class StandaloneLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        show_gui : bool, optional
-            Whether to display the Fluent GUI. The default is ``None``,
-            in which case the GUI is not shown. If ``False`` is
-            not explicitly provided, the GUI is shown if
-            the ``PYFLUENT_SHOW_SERVER_GUI`` environment
-            variable is set to 1.
         case_file_name : str, optional
-            Name of the case file to read into the
-            Fluent session. The default is ``None``.
+            If provided, the case file at ``case_file_name`` is read into the Fluent session.
         case_data_file_name : str, optional
             If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
         lightweight_mode : bool, optional
@@ -181,8 +172,6 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        ui_mode = _get_ui_mode(show_gui)
-        del show_gui
         argvals = locals().copy()
         del argvals["self"]
         if argvals["start_timeout"] is None:
