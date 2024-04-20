@@ -140,7 +140,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         container_mount_path: Optional[str] = None,
         host_mount_path: Optional[str] = None,
     ):
-        """Provides gRPC-based remote file transfer strategy.
+        """Provides the gRPC-based remote file transfer strategy.
 
         Parameters
         ----------
