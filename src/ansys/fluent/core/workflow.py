@@ -1488,7 +1488,7 @@ class Workflow:
             """Initialize an ``_FirstTask`` instance."""
             self._workflow = workflow
             self._insertable_tasks = []
-            if len(self._workflow.get_available_task_names()) == 0:
+            if len(self._workflow.task_names()) == 0:
                 for (
                     item
                 ) in self._workflow.get_initial_task_list_while_creating_new_workflow():
@@ -1557,7 +1557,7 @@ class Workflow:
         """Load the state of the workflow."""
         self._workflow.LoadState(ListOfRoots=list_of_roots)
 
-    def get_available_task_names(self):
+    def task_names(self):
         """Get the list of the Python names for the available tasks."""
         return [child.python_name() for child in self.tasks()]
 
@@ -1592,7 +1592,7 @@ class Workflow:
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed task.\n"
-                    "Use the 'get_available_task_names()' method to view a list of allowed tasks."
+                    "Use the 'task_names()' method to view a list of allowed tasks."
                 ) from ex
 
         return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
