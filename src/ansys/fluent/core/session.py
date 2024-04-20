@@ -332,8 +332,7 @@ class BaseSession:
         self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Forces the Fluent session to exit, losing unsaved progress and
-        data."""
+        """Forces the Fluent session to exit, losing unsaved progress and data."""
         self._fluent_connection.force_exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:
