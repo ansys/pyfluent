@@ -117,7 +117,7 @@ class PureMeshing(BaseSession):
         return self._base_meshing.load_workflow(file_path=file_path)
 
     def create_workflow(self):
-        """Create a new meshing workflow."""
+        """Create a meshing workflow."""
         self._base_meshing.create_workflow.create()
         return self._base_meshing.create_workflow
 
