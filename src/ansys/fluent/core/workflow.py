@@ -534,7 +534,7 @@ class BaseTask:
         if task_name not in self.get_next_possible_tasks():
             raise ValueError(
                 f"'{task_name}' cannot be inserted next to '{self.python_name()}'. \n"
-                "Please use 'get_next_possible_tasks()' to view list of allowed tasks."
+                "Use 'get_next_possible_tasks()' to view list of allowed tasks."
             )
         return self._task.InsertNextTask(
             CommandName=self._python_task_names_map[task_name]
