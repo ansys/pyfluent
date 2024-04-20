@@ -547,7 +547,7 @@ class BaseTask:
 
     class _NextTask:
         def __init__(self, base_task):
-            """Initialize _NextTask."""
+            """Initialize an ``_NextTask`` instance."""
             self._base_task = base_task
             self._insertable_tasks = []
             for item in self._base_task.get_next_possible_tasks():
