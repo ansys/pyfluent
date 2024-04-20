@@ -83,7 +83,7 @@ def _new_command_for_task(task, session):
 def _init_task_accessors(obj):
     logger.debug("_init_task_accessors")
     logger.debug(f"thread ID in _init_task_accessors {threading.get_ident()}")
-    for task in obj.ordered_children(recompute=True):
+    for task in obj.tasks(recompute=True):
         py_name = task.python_name()
         logger.debug(f"py_name: {py_name}")
         with obj._lock:
@@ -103,7 +103,7 @@ def _refresh_task_accessors(obj):
     with obj._lock:
         old_task_names = set(obj._python_task_names)
     logger.debug(f"_refresh_task_accessors old_task_names: {old_task_names}")
-    tasks = obj.ordered_children(recompute=True)
+    tasks = obj.tasks(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
     logger.debug(f"current_task_names: {current_task_names}")
     current_task_name_set = set(current_task_names)
@@ -152,8 +152,8 @@ class BaseTask:
     -------
     get_direct_upstream_tasks()
     get_direct_downstream_tasks()
-    ordered_children()
-    inactive_ordered_children()
+    tasks()
+    inactive_tasks()
     get_id()
     get_idx()
     __getattr__(attr)
@@ -234,11 +234,11 @@ class BaseTask:
             attr="outputs", other_attr="requiredInputs"
         )
 
-    def ordered_children(self, recompute=True) -> list:
+    def tasks(self, recompute=True) -> list:
         """Get the ordered task list held by this task.
 
         This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
-        You can obtain other tasks by calling the ``ordered_children()`` method on a parent task.
+        You can obtain other tasks by calling the ``tasks()`` method on a parent task.
 
         Given the workflow::
 
@@ -281,7 +281,7 @@ class BaseTask:
                 self._task_list = task_list
         return self._ordered_children
 
-    def inactive_ordered_children(self) -> list:
+    def inactive_tasks(self) -> list:
         """Get the inactive ordered child list.
 
         Returns
@@ -585,9 +585,7 @@ class BaseTask:
             return []
         attrs = set(attrs)
         tasks = [
-            task
-            for task in self._command_source.ordered_children()
-            if task.name() != self.name()
+            task for task in self._command_source.tasks() if task.name() != self.name()
         ]
         matches = []
         for task in tasks:
@@ -1012,7 +1010,7 @@ class SimpleTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def ordered_children(self, recompute=True) -> list:
+    def tasks(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow.
 
         SimpleTasks have no TaskList.
@@ -1123,7 +1121,7 @@ class ConditionalTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def inactive_ordered_children(self) -> list:
+    def inactive_tasks(self) -> list:
         """Get the inactive ordered task list held by this task.
 
         Returns
@@ -1206,7 +1204,7 @@ class CompoundTask(CommandTask):
         BaseTask
             the last child of this CompoundTask
         """
-        children = self.ordered_children()
+        children = self.tasks()
         if children:
             return children[-1]
 
@@ -1224,7 +1222,7 @@ class CompoundTask(CommandTask):
             the named child of this CompoundTask
         """
         try:
-            return next(filter(lambda t: t.name() == name, self.ordered_children()))
+            return next(filter(lambda t: t.name() == name, self.tasks()))
         except StopIteration:
             pass
 
@@ -1256,7 +1254,7 @@ class Workflow:
 
     Methods
     -------
-    ordered_children()
+    tasks()
     __getattr__(attr)
     __dir__()
     __call__()
@@ -1324,11 +1322,11 @@ class Workflow:
         """
         return _makeTask(self, name)
 
-    def ordered_children(self, recompute=True) -> list:
+    def tasks(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow.
 
         This method sort tasks in terms of the workflow order and only includes this task's top-level tasks.
-        You can obtain other tasks by calling the ``ordered_children()`` method on a parent task.
+        You can obtain other tasks by calling the ``tasks()`` method on a parent task.
 
         Consider the following workflow.
 
@@ -1379,7 +1377,8 @@ class Workflow:
         with self._lock:
             return self._python_task_names
 
-    def inactive_ordered_children(self) -> list:
+    @staticmethod
+    def inactive_tasks() -> list:
         """Get the inactive ordered task list held by this task.
 
         Returns
@@ -1470,8 +1469,8 @@ class Workflow:
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     def get_initial_task_list_while_creating_new_workflow(self):
-        """Get a list of independent tasks that can be inserted at the initial level while
-        creating a workflow."""
+        """Get a list of independent tasks that can be inserted at the initial level
+        while creating a workflow."""
         self._get_first_tasks_help_string_command_id_map()
         return list(self._initial_task_python_names_map)
 
@@ -1560,7 +1559,7 @@ class Workflow:
 
     def get_available_task_names(self):
         """Get the list of the Python names for the available tasks."""
-        return [child.python_name() for child in self.ordered_children()]
+        return [child.python_name() for child in self.tasks()]
 
     def delete_tasks(self, list_of_tasks: list[str]):
         """Delete the provided list of tasks.

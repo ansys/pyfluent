@@ -663,7 +663,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     time.sleep(1)
     assert "import_geometry" not in watertight.get_available_task_names()
     assert "import_geom_wtm" in watertight.get_available_task_names()
-    assert len(watertight.ordered_children()) == 11
+    assert len(watertight.tasks()) == 11
     watertight.import_geom_wtm.file_name = import_file_name
     watertight.import_geom_wtm.length_unit = "in"
     watertight.import_geom_wtm()
@@ -677,7 +677,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     watertight.import_geom_wtm.insert_next_task("import_boi_geometry")
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
     watertight.import_geom_wtm.insert_next_task("set_up_rotational_periodic_boundaries")
-    assert len(watertight.ordered_children()) == 13
+    assert len(watertight.tasks()) == 13
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -687,13 +687,13 @@ def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
     watertight.import_geometry.file_name = mixing_elbow_geometry
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing
-    assert not add_local_sizing.ordered_children()
+    assert not add_local_sizing.tasks()
     add_local_sizing._add_child(state={"boi_face_label_list": ["cold-inlet"]})
-    assert not add_local_sizing.ordered_children()
+    assert not add_local_sizing.tasks()
     added_sizing = add_local_sizing.add_child_and_update(
         state={"boi_face_label_list": ["elbow-fluid"]}
     )
-    assert len(add_local_sizing.ordered_children()) == 1
+    assert len(add_local_sizing.tasks()) == 1
     assert added_sizing
     assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
 
@@ -705,13 +705,13 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     watertight.import_geometry.file_name = mixing_elbow_geometry
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing
-    assert not add_local_sizing.ordered_children()
+    assert not add_local_sizing.tasks()
     add_local_sizing._add_child(state={"boi_face_label_list": ["cold-inlet"]})
-    assert not add_local_sizing.ordered_children()
+    assert not add_local_sizing.tasks()
     added_sizing = add_local_sizing.add_child_and_update(
         state={"boi_face_label_list": ["elbow-fluid"]}
     )
-    assert len(add_local_sizing.ordered_children()) == 1
+    assert len(add_local_sizing.tasks()) == 1
     assert added_sizing
     assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
     assert added_sizing.name() == "facesize_1"
@@ -722,7 +722,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     assert added_sizing.arguments() == added_sizing_by_pos.arguments()
     assert not added_sizing.python_name()
     describe_geometry = watertight.describe_geometry
-    describe_geometry_children = describe_geometry.ordered_children()
+    describe_geometry_children = describe_geometry.tasks()
     assert len(describe_geometry_children) == 2
     describe_geometry_child_task_python_names = (
         describe_geometry.child_task_python_names()
@@ -826,15 +826,15 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     import_geometry.file_name.set_state(mixing_elbow_geometry)
     import_geometry()
     add_local_sizing = watertight.add_local_sizing
-    assert not add_local_sizing.ordered_children()
+    assert not add_local_sizing.tasks()
     # new_mesh_session.workflow.TaskObject["Add Local Sizing"]._add_child(state={"BOIFaceLabelList": ["elbow-fluid"]})
     add_local_sizing._add_child(state={"boi_face_label_list": ["cold-inlet"]})
-    assert not add_local_sizing.ordered_children()
+    assert not add_local_sizing.tasks()
 
     added_sizing = add_local_sizing.add_child_and_update(
         state={"boi_face_label_list": ["elbow-fluid"]}
     )
-    assert len(add_local_sizing.ordered_children()) == 1
+    assert len(add_local_sizing.tasks()) == 1
     assert added_sizing
     assert added_sizing.boi_face_label_list() == ["elbow-fluid"]
     # restart
@@ -973,7 +973,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     assert downstream_names(gen_vol_mesh) == set()
 
     for task in all_tasks:
-        assert {sub_task.name() for sub_task in task.ordered_children()} == (
+        assert {sub_task.name() for sub_task in task.tasks()} == (
             {
                 "Enclose Fluid Regions (Capping)",
                 "Create Regions",
@@ -983,7 +983,7 @@ def test_meshing_workflow_structure(new_mesh_session):
         )
 
     for task in all_tasks:
-        assert {sub_task.name() for sub_task in task.inactive_ordered_children()} == (
+        assert {sub_task.name() for sub_task in task.inactive_tasks()} == (
             {
                 "Apply Share Topology",
                 "Update Boundaries",
@@ -1019,7 +1019,7 @@ def test_meshing_workflow_structure(new_mesh_session):
         "RunCustomJournal",
     }
 
-    children = w.ordered_children()
+    children = w.tasks()
     expected_task_order = (
         "Import Geometry",
         "Add Local Sizing",
@@ -1034,14 +1034,14 @@ def test_meshing_workflow_structure(new_mesh_session):
 
     assert actual_task_order == expected_task_order
 
-    assert [child.name() for child in children[3].ordered_children()] == [
+    assert [child.name() for child in children[3].tasks()] == [
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
 
     gen_surf_mesh.InsertNextTask(CommandName="AddBoundaryType")
 
-    children = w.ordered_children()
+    children = w.tasks()
     expected_task_order = (
         "Import Geometry",
         "Add Local Sizing",
@@ -1057,7 +1057,7 @@ def test_meshing_workflow_structure(new_mesh_session):
 
     assert actual_task_order == expected_task_order
 
-    assert [child.name() for child in children[4].ordered_children()] == [
+    assert [child.name() for child in children[4].tasks()] == [
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
@@ -1103,7 +1103,7 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
     watertight = new_mesh_session.watertight()
-    assert set([repr(x) for x in watertight.ordered_children()]) == {
+    assert set([repr(x) for x in watertight.tasks()]) == {
         "<Task 'Add Boundary Layers'>",
         "<Task 'Add Local Sizing'>",
         "<Task 'Apply Share Topology'>",
