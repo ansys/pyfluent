@@ -153,7 +153,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         container_mount_path: Union[str, Path], optional
             Path inside the container where host mount path will be mounted to.
         host_mount_path: Union[str, Path], optional
-            Existing path in the host operating system that will be available inside the container.
+            Existing path in the host operating system to be available inside the container.
         """
         self.docker_client = docker.from_env()
         self.image_name = (
