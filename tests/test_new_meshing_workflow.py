@@ -674,9 +674,9 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
         "custom_journal_task",
     ]
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
-    watertight.import_geom_wtm.insert_next_task("import_boi_geometry")
+    watertight.import_geom_wtm.insertable_tasks.import_boi_geometry.insert()
     assert watertight.import_geom_wtm.get_next_possible_tasks() == _next_possible_tasks
-    watertight.import_geom_wtm.insert_next_task("set_up_rotational_periodic_boundaries")
+    watertight.import_geom_wtm.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
     assert len(watertight.tasks()) == 13
 
 
@@ -756,7 +756,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
         "custom_journal_task",
     ]
 
-    watertight.add_boundary_layer.insert_next_task("create_volume_mesh")
+    watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
     assert "create_volume_mesh" in watertight.task_names()
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
@@ -1238,7 +1238,7 @@ def test_new_meshing_workflow_without_dm_caching(
         "custom_journal_task",
     ]
 
-    watertight.import_geom_wtm.insert_next_task("add_local_sizing")
+    watertight.import_geom_wtm.insertable_tasks.add_local_sizing.insert()
     time.sleep(2)
     assert "add_local_sizing" in watertight.task_names()
 
@@ -1340,13 +1340,13 @@ def test_duplicate_tasks_in_workflow(new_mesh_session):
     watertight.add_local_sizing.delete()
     assert "add_local_sizing" not in watertight.task_names()
     assert "add_local_sizing" in watertight.import_geometry.get_next_possible_tasks()
-    watertight.import_geometry.insert_next_task("add_local_sizing")
+    watertight.import_geometry.insertable_tasks.add_local_sizing.insert()
     assert (
         "add_local_sizing" not in watertight.import_geometry.get_next_possible_tasks()
     )
-    watertight.import_geometry.insert_next_task("import_boi_geometry")
-    watertight.import_geometry.insert_next_task("import_boi_geometry")
-    watertight.import_geometry.insert_next_task("import_boi_geometry")
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     assert watertight.task_names() == [
         "import_geometry",
         "create_surface_mesh",

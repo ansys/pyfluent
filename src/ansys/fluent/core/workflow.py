@@ -512,7 +512,7 @@ class BaseTask:
         this current task is executed."""
         return self._get_next_python_task_names()
 
-    def insert_next_task(self, task_name: str):
+    def _insert_next_task(self, task_name: str):
         """Insert a task based on the Python name after the current task is executed.
 
         Parameters
@@ -568,7 +568,7 @@ class BaseTask:
 
             def insert(self):
                 """Insert a task in the workflow."""
-                return self._base_task.insert_next_task(task_name=self._name)
+                return self._base_task._insert_next_task(task_name=self._name)
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
