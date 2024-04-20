@@ -111,7 +111,11 @@ def _get_files(
     if isinstance(file_name, (str, pathlib.PurePath)):
         file_name = pathlib.Path(file_name)
         file_path_check = os.path.join(path, file_name.name)
-        files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
+        files = (
+            [str(file_path_check)]
+            if os.path.isfile(file_path_check)
+            else [str(file_name)]
+        )
     elif isinstance(file_name, list):
         files = []
         for file in file_name:
