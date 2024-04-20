@@ -336,7 +336,8 @@ class FluentConnection:
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
         file_transfer_service : optional
-            File transfer service. Uploads/downloads files to/from the server.
+            File transfer service for uploading files to and
+            downloading files from the server.
         slurm_job_id: bool, optional
             Job ID of a Fluent session running within a Slurm environment.
         inside_container: bool, optional
