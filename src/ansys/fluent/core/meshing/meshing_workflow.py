@@ -277,7 +277,7 @@ class LoadWorkflow(Workflow):
 
 
 class CreateWorkflow(Workflow):
-    """Provides a specialization of the workflow wrapper for newly created workflow."""
+    """Provides a specialization of the workflow wrapper for a newly created workflow."""
 
     def __init__(
         self,
