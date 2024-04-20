@@ -252,7 +252,7 @@ class LoadWorkflow(Workflow):
         file_path: str,
         fluent_version: FluentVersion,
     ) -> None:
-        """Initialize LoadWorkflow.
+        """Initialize a ``LoadWorkflow`` instance.
 
         Parameters
         ----------
