@@ -668,14 +668,18 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     watertight.import_geom_wtm.length_unit = "in"
     watertight.import_geom_wtm()
     _next_possible_tasks = [
-        "import_boi_geometry",
-        "set_up_rotational_periodic_boundaries",
-        "create_local_refinement_regions",
-        "custom_journal_task",
+        "<Insertable 'import_boi_geometry' task>",
+        "<Insertable 'set_up_rotational_periodic_boundaries' task>",
+        "<Insertable 'create_local_refinement_regions' task>",
+        "<Insertable 'custom_journal_task' task>",
     ]
-    assert watertight.import_geom_wtm.insertable_tasks() == _next_possible_tasks
+    assert sorted(
+        [repr(x) for x in watertight.import_geom_wtm.insertable_tasks()]
+    ) == sorted(_next_possible_tasks)
     watertight.import_geom_wtm.insertable_tasks.import_boi_geometry.insert()
-    assert watertight.import_geom_wtm.insertable_tasks() == _next_possible_tasks
+    assert sorted(
+        [repr(x) for x in watertight.import_geom_wtm.insertable_tasks()]
+    ) == sorted(_next_possible_tasks)
     watertight.import_geom_wtm.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
     assert len(watertight.tasks()) == 13
 
@@ -744,17 +748,21 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_s
     watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
     assert "create_volume_mesh" not in watertight.task_names()
 
-    assert watertight.add_boundary_layer.insertable_tasks() == [
-        "add_boundary_type",
-        "update_boundaries",
-        "set_up_rotational_periodic_boundaries",
-        "modify_mesh_refinement",
-        "improve_surface_mesh",
-        "create_volume_mesh",
-        "manage_zones_ftm",
-        "update_regions",
-        "custom_journal_task",
-    ]
+    assert sorted(
+        [repr(x) for x in watertight.add_boundary_layer.insertable_tasks()]
+    ) == sorted(
+        [
+            "<Insertable 'add_boundary_type' task>",
+            "<Insertable 'update_boundaries' task>",
+            "<Insertable 'set_up_rotational_periodic_boundaries' task>",
+            "<Insertable 'modify_mesh_refinement' task>",
+            "<Insertable 'improve_surface_mesh' task>",
+            "<Insertable 'create_volume_mesh' task>",
+            "<Insertable 'manage_zones_ftm' task>",
+            "<Insertable 'update_regions' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
 
     watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
     assert "create_volume_mesh" in watertight.task_names()
@@ -1230,13 +1238,17 @@ def test_new_meshing_workflow_without_dm_caching(
     time.sleep(2)
     assert "add_local_sizing" not in watertight.task_names()
 
-    assert watertight.import_geom_wtm.insertable_tasks() == [
-        "add_local_sizing",
-        "import_boi_geometry",
-        "set_up_rotational_periodic_boundaries",
-        "create_local_refinement_regions",
-        "custom_journal_task",
-    ]
+    assert sorted(
+        [repr(x) for x in watertight.import_geom_wtm.insertable_tasks()]
+    ) == sorted(
+        [
+            "<Insertable 'add_local_sizing' task>",
+            "<Insertable 'import_boi_geometry' task>",
+            "<Insertable 'set_up_rotational_periodic_boundaries' task>",
+            "<Insertable 'create_local_refinement_regions' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
 
     watertight.import_geom_wtm.insertable_tasks.add_local_sizing.insert()
     time.sleep(2)
@@ -1330,18 +1342,26 @@ def test_duplicate_tasks_in_workflow(new_mesh_session):
     meshing = new_mesh_session
     watertight = meshing.watertight()
 
-    assert watertight.import_geometry.insertable_tasks() == [
-        "import_boi_geometry",
-        "set_up_rotational_periodic_boundaries",
-        "create_local_refinement_regions",
-        "custom_journal_task",
-    ]
+    assert sorted(
+        [repr(x) for x in watertight.import_geometry.insertable_tasks()]
+    ) == sorted(
+        [
+            "<Insertable 'import_boi_geometry' task>",
+            "<Insertable 'set_up_rotational_periodic_boundaries' task>",
+            "<Insertable 'create_local_refinement_regions' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
     assert "add_local_sizing" in watertight.task_names()
     watertight.add_local_sizing.delete()
     assert "add_local_sizing" not in watertight.task_names()
-    assert "add_local_sizing" in watertight.import_geometry.insertable_tasks()
+    assert "<Insertable 'add_local_sizing' task>" in [
+        repr(x) for x in watertight.import_geometry.insertable_tasks()
+    ]
     watertight.import_geometry.insertable_tasks.add_local_sizing.insert()
-    assert "add_local_sizing" not in watertight.import_geometry.insertable_tasks()
+    assert "<Insertable 'add_local_sizing' task>" not in [
+        repr(x) for x in watertight.import_geometry.insertable_tasks()
+    ]
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
