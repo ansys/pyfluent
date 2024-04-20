@@ -1486,7 +1486,7 @@ class Workflow:
 
     class _FirstTask:
         def __init__(self, workflow):
-            """Initialize _FirstTask."""
+            """Initialize an ``_FirstTask`` instance."""
             self._workflow = workflow
             self._insertable_tasks = []
             if len(self._workflow.get_available_task_names()) == 0:
