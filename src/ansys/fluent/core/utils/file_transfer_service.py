@@ -151,7 +151,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         port: int, optional
             Port for the file transfer service to use.
         container_mount_path: Union[str, Path], optional
-            Path inside the container where host mount path will be mounted to.
+            Path inside the container for the host mount path.
         host_mount_path: Union[str, Path], optional
             Existing path in the host operating system to be available inside the container.
         """
