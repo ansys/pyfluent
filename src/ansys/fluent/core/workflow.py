@@ -1460,7 +1460,7 @@ class Workflow:
         self._workflow.LoadWorkflow(FilePath=file_path)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
-    def get_initial_task_list_while_creating_new_workflow(self):
+    def _get_initial_task_list_while_creating_new_workflow(self):
         """Get a list of independent tasks that can be inserted at the initial level
         while creating a workflow."""
         self._get_first_tasks_help_string_command_id_map()
@@ -1483,7 +1483,9 @@ class Workflow:
             if len(self._workflow.task_names()) == 0:
                 for (
                     item
-                ) in self._workflow.get_initial_task_list_while_creating_new_workflow():
+                ) in (
+                    self._workflow._get_initial_task_list_while_creating_new_workflow()
+                ):
                     insertable_task = type("Insert", (self._Insert,), {})(
                         self._workflow, item
                     )
