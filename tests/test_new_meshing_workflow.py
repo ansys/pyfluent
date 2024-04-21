@@ -522,7 +522,7 @@ def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
     watertight.import_geometry()
 
 
-@pytest.skip.mark("disabling for release")
+@pytest.mark.skip("disabling for release")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
