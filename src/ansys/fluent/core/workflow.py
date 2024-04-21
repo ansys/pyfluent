@@ -281,6 +281,10 @@ class BaseTask:
                 self._task_list = task_list
         return self._ordered_children
 
+    def task_names(self):
+        """Get the list of the Python names for the available tasks."""
+        return [child.python_name() for child in self.tasks()]
+
     def inactive_tasks(self) -> list:
         """Get the inactive ordered child list.
 
