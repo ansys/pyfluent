@@ -7,9 +7,8 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-pytest.mark.codegen_required
 
-
+@pytest.mark.codegen_required
 def test_settings_stub():
     # The type-stub files, which are generated for settings API, are parsed by the
     # intellisense engine while typing in editors like vscode. This test validates the
