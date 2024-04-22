@@ -467,6 +467,7 @@ class DatamodelService(StreamingService):
         self.event_streaming = None
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
+        self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         """Get attribute value."""
@@ -856,9 +857,9 @@ class PyStateContainer(PyCallableStateObject):
 
     def get_state(self) -> Any:
         """Get state."""
-        if pyfluent.DATAMODEL_USE_STATE_CACHE:
-            state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
-            if DataModelCache.is_unassigned(state):
+        if self.service.cache is not None:
+            state = self.service.cache.get_state(self.rules, self, NameKey.DISPLAY)
+            if self.service.cache.is_unassigned(state):
                 state = self.get_remote_state()
         else:
             state = self.get_remote_state()
