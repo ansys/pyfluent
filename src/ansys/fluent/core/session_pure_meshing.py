@@ -111,6 +111,16 @@ class PureMeshing(BaseSession):
         self._base_meshing.two_dimensional_meshing_workflow.reinitialize()
         return self._base_meshing.two_dimensional_meshing_workflow
 
+    def load_workflow(self, file_path: str):
+        """Load a saved workflow."""
+        self._base_meshing.load_workflow(file_path=file_path).load()
+        return self._base_meshing.load_workflow(file_path=file_path)
+
+    def create_workflow(self):
+        """Create a meshing workflow."""
+        self._base_meshing.create_workflow.create()
+        return self._base_meshing.create_workflow
+
     def topology_based(self):
         """Get a new topology-based meshing workflow.
 
