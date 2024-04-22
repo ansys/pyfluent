@@ -1467,7 +1467,7 @@ class Workflow:
     def _get_initial_task_list_while_creating_new_workflow(self):
         """Get a list of independent tasks that can be inserted at the initial level
         while creating a workflow."""
-        self._get_first_tasks_help_string_command_id_map()
+        self._populate_first_tasks_help_string_command_id_map()
         return list(self._initial_task_python_names_map)
 
     def _create_workflow(self, dynamic_interface: bool = True):
@@ -1516,7 +1516,7 @@ class Workflow:
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
 
-    def _get_first_tasks_help_string_command_id_map(self):
+    def _populate_first_tasks_help_string_command_id_map(self):
         if not self._initial_task_python_names_map:
             for command in dir(self._command_source):
                 if command in ["SwitchToSolution", "set_state"]:
