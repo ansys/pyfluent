@@ -1,10 +1,10 @@
 """Provides a module for file transfer service."""
 
+import logging
 import os
 import pathlib
 import random
 import shutil
-import subprocess
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 
 from alive_progress import alive_bar
@@ -12,6 +12,9 @@ from alive_progress import alive_bar
 import ansys.fluent.core as pyfluent
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
+import docker
+
+logger = logging.getLogger("pyfluent.file_transfer_service")
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -105,25 +108,28 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
 
 def _get_files(
-    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]]
+    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
+    path: str,
 ):
-    path = "/home/runner/.local/share/ansys_fluent_core/examples"
-    if os.path.exists(path):
-        if isinstance(file_name, str):
-            files = [str(os.path.join(path, os.path.basename(file_name)))]
-        elif isinstance(file_name, pathlib.PurePath):
-            files = [str(os.path.join(path, file_name.name))]
-        elif isinstance(file_name, list):
-            files = [
-                str(os.path.join(path, os.path.basename(file))) for file in file_name
-            ]
-    else:
-        if isinstance(file_name, str):
-            files = [file_name]
-        elif isinstance(file_name, pathlib.PurePath):
-            files = [str(file_name)]
-        elif isinstance(file_name, list):
-            files = [str(file) for file in file_name]
+    if isinstance(file_name, (str, pathlib.PurePath)):
+        file_name = pathlib.Path(file_name)
+        file_path_check = os.path.join(path, file_name.name)
+        files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
+        logger.debug(f"\n pyfluent.EXAMPLES_PATH = {pyfluent.EXAMPLES_PATH} \n")
+        logger.debug(f"\n host_mount_path = {path} \n")
+        logger.debug(f"\n file_name = {file_name} \n")
+        logger.debug(f"\n file_name.name = {file_name.name} \n")
+        logger.debug(f"\n file_path_check = {file_path_check} \n")
+        logger.debug(f"\n is_file_path_check = {os.path.isfile(file_path_check)} \n")
+        logger.debug(f"\n files = {files} \n")
+    elif isinstance(file_name, list):
+        files = []
+        for file in file_name:
+            file_path_check = os.path.join(path, os.path.basename(file))
+            if os.path.isfile(file_path_check):
+                files.append(file_path_check)
+            else:
+                files.append(file)
     return files
 
 
@@ -134,10 +140,32 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
     def __init__(
         self,
+        image_name: Optional[str] = None,
+        image_tag: Optional[str] = None,
+        port: Optional[int] = None,
         container_mount_path: Optional[str] = None,
         host_mount_path: Optional[str] = None,
     ):
-        self.host_port = random.randint(5000, 6000)
+        """Provides the gRPC-based remote file transfer strategy.
+
+        Parameters
+        ----------
+        image_name: str
+            Name of the image.
+        image_tag : str, optional
+            Tag of the image.
+        port: int, optional
+            Port for the file transfer service to use.
+        container_mount_path: Union[str, Path], optional
+            Path inside the container for the host mount path.
+        host_mount_path: Union[str, Path], optional
+            Existing path in the host operating system to be available inside the container.
+        """
+        self.docker_client = docker.from_env()
+        self.image_name = (
+            image_name if image_name else "ghcr.io/ansys/tools-filetransfer"
+        )
+        self.image_tag = image_tag if image_tag else "latest"
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
@@ -145,15 +173,22 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
         )
         try:
-            self.server = subprocess.Popen(
-                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
-                shell=True,
+            self.host_port = port if port else random.randint(5000, 6000)
+            self.ports = {"50000/tcp": self.host_port}
+            self.container = self.docker_client.containers.run(
+                image=f"{self.image_name}:{self.image_tag}",
+                ports=self.ports,
+                detach=True,
+                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
-        except Exception:
-            self.host_port = random.randint(6000, 7000)
-            self.server = subprocess.Popen(
-                f"docker run -p {self.host_port}:50000 -v {self.host_mount_path}:{self.container_mount_path} ghcr.io/ansys/tools-filetransfer:latest",
-                shell=True,
+        except docker.errors.DockerException:
+            self.host_port = port if port else random.randint(6000, 7000)
+            self.ports = {"50000/tcp": self.host_port}
+            self.container = self.docker_client.containers.run(
+                image=f"{self.image_name}:{self.image_tag}",
+                ports=self.ports,
+                detach=True,
+                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
@@ -191,7 +226,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         FileNotFoundError
             If a file does not exist.
         """
-        files = _get_files(file_name)
+        files = _get_files(file_name, self.host_mount_path)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
@@ -218,7 +253,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         local_directory : str, optional
             Local directory. The default is ``None``.
         """
-        files = _get_files(file_name)
+        files = _get_files(file_name, self.host_mount_path)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
@@ -232,26 +267,6 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                             else os.path.basename(file)
                         ),
                     )
-
-    def exit(self):
-        """Stop the container."""
-        id_ports_info = subprocess.run(
-            [f"docker ps"], shell=True, stdout=subprocess.PIPE
-        )
-        id_ports = str(id_ports_info).split("\\n")
-        active_container_ids = [
-            id_port.split(" ")[0]
-            for id_port in id_ports
-            if str(self.host_port) in id_port
-        ]
-        for container_id in active_container_ids:
-            try:
-                subprocess.Popen(f"docker kill {container_id}", shell=True)
-            except Exception:
-                pass
-
-    def __del__(self):
-        self.exit()
 
 
 class PimFileTransferService:
