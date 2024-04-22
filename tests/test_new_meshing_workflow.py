@@ -1450,7 +1450,7 @@ def test_created_workflow(new_mesh_session):
         ]
     )
 
-    created_workflow.insertable_tasks.import_geometry.insert()
+    created_workflow.insertable_tasks()[0].insert()
 
     assert created_workflow.insertable_tasks() == []
 
