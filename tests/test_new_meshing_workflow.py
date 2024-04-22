@@ -1483,11 +1483,8 @@ def test_independent_meshing_sessions(new_mesh_session, new_mesh_session_1):
     watertight = meshing_1.watertight()
     assert watertight.import_geometry.arguments()
 
-    with pytest.raises(RuntimeError):
-        # This will no longer raise runtime error after the
-        # session specific data-model cache fix
-        fault_tolerant = meshing_2.fault_tolerant()
-        assert fault_tolerant.import_cad_and_part_management.arguments()
+    fault_tolerant = meshing_2.fault_tolerant()
+    assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
 @pytest.mark.codegen_required
