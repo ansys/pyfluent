@@ -1466,3 +1466,40 @@ def test_created_workflow(new_mesh_session):
     assert sorted(created_workflow.task_names()) == sorted(
         ["import_geometry", "add_local_sizing"]
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_independent_meshing_sessions(new_mesh_session, new_mesh_session_1):
+    meshing_1 = new_mesh_session
+    meshing_2 = new_mesh_session_1
+
+    watertight = meshing_1.watertight()
+    assert watertight.import_geometry.arguments()
+
+    ft = meshing_1.fault_tolerant()
+    assert ft.import_cad_and_part_management.arguments()
+
+    watertight = meshing_1.watertight()
+    assert watertight.import_geometry.arguments()
+
+    with pytest.raises(RuntimeError):
+        # This will no longer raise runtime error after the
+        # session specific data-model cache fix
+        fault_tolerant = meshing_2.fault_tolerant()
+        assert fault_tolerant.import_cad_and_part_management.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_independent_meshing_sessions_without_dm_caching(
+    disable_datamodel_cache, new_mesh_session, new_mesh_session_1
+):
+    meshing_1 = new_mesh_session
+    meshing_2 = new_mesh_session_1
+
+    watertight = meshing_1.watertight()
+    assert watertight.import_geometry.arguments()
+
+    fault_tolerant = meshing_2.fault_tolerant()
+    assert fault_tolerant.import_cad_and_part_management.arguments()

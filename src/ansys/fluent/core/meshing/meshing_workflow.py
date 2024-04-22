@@ -77,6 +77,7 @@ class MeshingWorkflow(Workflow):
     def __getattribute__(self, item: str):
         if (
             item != "reinitialize"
+            and item not in dir(Workflow)
             and not item.startswith("_")
             and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):
