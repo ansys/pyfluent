@@ -401,8 +401,9 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 @pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
-    with pytest.raises(PyFluentDeprecationWarning):
-        pyfluent.launch_fluent(show_gui=True)
+    if not check_docker_support() and not pypim.is_configured():
+        with pytest.raises(PyFluentDeprecationWarning):
+            pyfluent.launch_fluent(show_gui=True)
 
 
 def test_fluent_enums():

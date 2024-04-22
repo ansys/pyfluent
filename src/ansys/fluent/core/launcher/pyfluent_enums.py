@@ -4,16 +4,18 @@ from enum import Enum
 from functools import total_ordering
 import os
 from typing import Optional, Union
+import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
-from ansys.fluent.core.launcher.launcher_utils import check_docker_support
+from ansys.fluent.core.launcher.launcher_utils import check_docker_support, is_windows
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 import ansys.platform.instancemanagement as pypim
 
 
@@ -143,35 +145,6 @@ class FluentLinuxGraphicsDriver(FluentEnum):
     AUTO = ("",)
 
 
-def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
-    """Update the session information."""
-    if mode is None:
-        mode = FluentMode.SOLVER
-
-    if isinstance(mode, str):
-        mode = FluentMode.get_mode(mode)
-
-    return mode
-
-
-def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
-):
-    """Get the mode of the running session if the mode has not been explicitly given."""
-    if mode:
-        session_mode = mode
-    else:
-        try:
-            session_mode = FluentMode.get_mode(
-                "solver"
-                if fluent_connection._connection_interface.is_solver_mode()
-                else "meshing"
-            )
-        except Exception as ex:
-            raise exceptions.InvalidPassword() from ex
-    return session_mode.value[0]
-
-
 def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     """Get the Fluent launch mode.
 
@@ -204,6 +177,49 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     return fluent_launch_mode
 
 
+def _get_graphics_driver(
+    graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str]
+):
+    if graphics_driver is None:
+        graphics_driver = "auto"
+    graphics_driver = str(graphics_driver)
+    graphics_driver = (
+        FluentWindowsGraphicsDriver(graphics_driver)
+        if is_windows()
+        else FluentLinuxGraphicsDriver(graphics_driver)
+    )
+    return graphics_driver
+
+
+def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
+    """Update the session information."""
+    if mode is None:
+        mode = FluentMode.SOLVER
+
+    if isinstance(mode, str):
+        mode = FluentMode.get_mode(mode)
+
+    return mode
+
+
+def _get_running_session_mode(
+    fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
+):
+    """Get the mode of the running session if the mode has not been explicitly given."""
+    if mode:
+        session_mode = mode
+    else:
+        try:
+            session_mode = FluentMode.get_mode(
+                "solver"
+                if fluent_connection._connection_interface.is_solver_mode()
+                else "meshing"
+            )
+        except Exception as ex:
+            raise exceptions.InvalidPassword() from ex
+    return session_mode.value[0]
+
+
 def _get_standalone_launch_fluent_version(
     product_version: Union[FluentVersion, None]
 ) -> Optional[FluentVersion]:
@@ -233,3 +249,49 @@ def _get_standalone_launch_fluent_version(
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return FluentVersion.get_latest_installed()
+
+
+def _get_ui_mode(
+    show_gui: Optional[bool] = None,
+):
+    """Get the graphics driver.
+
+    Parameters
+    ----------
+    show_gui: bool
+        Whether to show the Fluent GUI.
+
+    Returns
+    -------
+    ui_mode: UIMode
+        Fluent GUI mode.
+    """
+    ui_mode = None
+    if show_gui is not None:
+        warnings.warn(
+            "'show_gui' is deprecated. Use 'ui_mode' instead.",
+            PyFluentDeprecationWarning,
+        )
+    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+        ui_mode = UIMode.GUI
+    if ui_mode is None:
+        # Not using NO_GUI in windows as it opens a new cmd or
+        # shows Fluent output in the current cmd if start <launch_string> is not used
+        ui_mode = UIMode.HIDDEN_GUI if is_windows() else UIMode.NO_GUI
+    if isinstance(ui_mode, str):
+        ui_mode = UIMode(ui_mode)
+    return ui_mode
+
+
+def _validate_gpu(gpu: Union[bool, list], version: str):
+    """Raise an exception if the GPU Solver is unsupported.
+
+    Parameters
+    ----------
+    gpu : bool or list, optional
+        This option will start Fluent with the GPU Solver.
+    version : str, optional
+        Geometric dimensionality of the Fluent simulation.
+    """
+    if version == "2d" and gpu:
+        raise exceptions.GPUSolverSupportError()
