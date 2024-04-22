@@ -424,6 +424,7 @@ def test_cache_set_state(
     assert final_cache == cache_rules[rules]
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_cache_per_session():
     with (
         pyfluent.launch_fluent(mode="meshing") as m1,
