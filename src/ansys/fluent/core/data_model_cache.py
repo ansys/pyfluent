@@ -102,6 +102,12 @@ class _CacheImpl:
 class DataModelCache:
     """Class to manage datamodel cache."""
 
+    use_display_name = False
+
+    def __init__(self):
+        self.rules_str_to_cache = defaultdict(dict)
+        self.rules_str_to_config = {}
+
     class Empty:
         """Class representing unassigned cached state."""
 
@@ -121,11 +127,7 @@ class DataModelCache:
         """
         return state is DataModelCache.Empty
 
-    rules_str_to_cache = defaultdict(dict)
-    rules_str_to_config = {}
-
-    @staticmethod
-    def get_config(rules: str, name: str) -> Any:
+    def get_config(self, rules: str, name: str) -> Any:
         """Get datamodel cache configuration value.
 
         Parameters
@@ -140,10 +142,9 @@ class DataModelCache:
         Any
             configuration value
         """
-        return DataModelCache.rules_str_to_config.get(rules, {}).get(name, False)
+        return self.rules_str_to_config.get(rules, {}).get(name, False)
 
-    @staticmethod
-    def set_config(rules: str, name: str, value: Any):
+    def set_config(self, rules: str, name: str, value: Any):
         """Set datamodel cache configuration value.
 
         Parameters
@@ -155,13 +156,17 @@ class DataModelCache:
         value : Any
             configuration value
         """
-        if rules not in DataModelCache.rules_str_to_config:
-            DataModelCache.rules_str_to_config[rules] = {}
-        DataModelCache.rules_str_to_config[rules][name] = value
+        if rules not in self.rules_str_to_config:
+            self.rules_str_to_config[rules] = {}
+        self.rules_str_to_config[rules][name] = value
 
-    @staticmethod
     def _update_cache_from_variant_state(
-        rules: str, source: Dict[str, StateType], key: str, state: Variant, updaterFn
+        self,
+        rules: str,
+        source: Dict[str, StateType],
+        key: str,
+        state: Variant,
+        updaterFn,
     ):
         if state.HasField("bool_state"):
             updaterFn(source, key, state.bool_state)
@@ -182,12 +187,12 @@ class DataModelCache:
         elif state.HasField("variant_vector_state"):
             updaterFn(source, key, [])
             for item in state.variant_vector_state.item:
-                DataModelCache._update_cache_from_variant_state(
+                self._update_cache_from_variant_state(
                     rules, source, key, item, lambda d, k, v: d[k].append(v)
                 )
         elif state.HasField("variant_map_state"):
             internal_names_as_keys = (
-                DataModelCache.get_config(rules, "name_key") == NameKey.INTERNAL
+                self.get_config(rules, "name_key") == NameKey.INTERNAL
             )
             if ":" in key:
                 type_, iname = key.split(":", maxsplit=1)
@@ -213,14 +218,13 @@ class DataModelCache:
                     source[key] = {}
             source = source[key]
             for k, v in state.variant_map_state.item.items():
-                DataModelCache._update_cache_from_variant_state(
+                self._update_cache_from_variant_state(
                     rules, source, k, v, dict.__setitem__
                 )
         else:
             updaterFn(source, key, None)
 
-    @staticmethod
-    def update_cache(rules: str, state: Variant, deleted_paths: List[str]):
+    def update_cache(self, rules: str, state: Variant, deleted_paths: List[str]):
         """Update datamodel cache from streamed state.
 
         Parameters
@@ -232,10 +236,8 @@ class DataModelCache:
         deleted_paths : List[str]
             list of deleted paths
         """
-        cache = DataModelCache.rules_str_to_cache[rules]
-        internal_names_as_keys = (
-            DataModelCache.get_config(rules, "name_key") == NameKey.INTERNAL
-        )
+        cache = self.rules_str_to_cache[rules]
+        internal_names_as_keys = self.get_config(rules, "name_key") == NameKey.INTERNAL
         for deleted_path in deleted_paths:
             comps = [x for x in deleted_path.split("/") if x]
             sub_cache = cache
@@ -264,9 +266,7 @@ class DataModelCache:
                     else:
                         break
         for k, v in state.variant_map_state.item.items():
-            DataModelCache._update_cache_from_variant_state(
-                rules, cache, k, v, dict.__setitem__
-            )
+            self._update_cache_from_variant_state(rules, cache, k, v, dict.__setitem__)
 
     @staticmethod
     def _dm_path_comp(comp):
@@ -276,8 +276,9 @@ class DataModelCache:
     def _dm_path_comp_list(obj):
         return [DataModelCache._dm_path_comp(comp) for comp in obj.path]
 
-    @staticmethod
-    def get_state(rules: str, obj: object, name_key: Optional[NameKey] = None) -> Any:
+    def get_state(
+        self, rules: str, obj: object, name_key: Optional[NameKey] = None
+    ) -> Any:
         """Retrieve state from datamodel cache.
 
         Parameters
@@ -296,10 +297,10 @@ class DataModelCache:
         state : Any
             cached state
         """
-        name_key_in_config = DataModelCache.get_config(rules, "name_key")
+        name_key_in_config = self.get_config(rules, "name_key")
         if name_key == None:
             name_key = name_key_in_config
-        cache = DataModelCache.rules_str_to_cache[rules]
+        cache = self.rules_str_to_cache[rules]
         if not len(cache):
             return DataModelCache.Empty
         comps = DataModelCache._dm_path_comp_list(obj)
@@ -318,8 +319,7 @@ class DataModelCache:
                 return DataModelCache.Empty
             return _CacheImpl(name_key_in_config).transform(cache)
 
-    @staticmethod
-    def set_state(rules: str, obj: object, value: Any):
+    def set_state(self, rules: str, obj: object, value: Any):
         """Set datamodel cache state.
 
         Parameters
@@ -331,8 +331,8 @@ class DataModelCache:
         value : Any
             state
         """
-        name_key_in_config = DataModelCache.get_config(rules, "name_key")
-        cache = DataModelCache.rules_str_to_cache[rules]
+        name_key_in_config = self.get_config(rules, "name_key")
+        cache = self.rules_str_to_cache[rules]
         comps = DataModelCache._dm_path_comp_list(obj)
         for i, comp in enumerate(comps):
             key, next_cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
