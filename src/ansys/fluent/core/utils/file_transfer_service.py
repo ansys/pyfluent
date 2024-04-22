@@ -122,6 +122,7 @@ def _get_files(
         print(f"\n file_name.name = {file_name.name} \n")
         print(f"\n file_path_check = {file_path_check} \n")
         print(f"\n is_file_path_check = {os.path.isfile(file_path_check)} \n")
+        print(f"\n files = {files} \n")
 
         logger.debug(f"\n pyfluent.EXAMPLES_PATH = {pyfluent.EXAMPLES_PATH} \n")
         logger.debug(f"\n host_mount_path = {path} \n")
