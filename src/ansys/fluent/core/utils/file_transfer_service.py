@@ -1,5 +1,6 @@
 """Provides a module for file transfer service."""
 
+import logging
 import os
 import pathlib
 import random
@@ -12,6 +13,8 @@ import ansys.fluent.core as pyfluent
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 import docker
+
+logger = logging.getLogger("pyfluent.file_transfer_service")
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -111,11 +114,14 @@ def _get_files(
     if isinstance(file_name, (str, pathlib.PurePath)):
         file_name = pathlib.Path(file_name)
         file_path_check = os.path.join(path, file_name.name)
-        files = (
-            [str(file_path_check)]
-            if os.path.isfile(file_path_check)
-            else [str(file_name)]
-        )
+        files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
+        logger.debug(f"\n pyfluent.EXAMPLES_PATH = {pyfluent.EXAMPLES_PATH} \n")
+        logger.debug(f"\n host_mount_path = {path} \n")
+        logger.debug(f"\n file_name = {file_name} \n")
+        logger.debug(f"\n file_name.name = {file_name.name} \n")
+        logger.debug(f"\n file_path_check = {file_path_check} \n")
+        logger.debug(f"\n is_file_path_check = {os.path.isfile(file_path_check)} \n")
+        logger.debug(f"\n files = {files} \n")
     elif isinstance(file_name, list):
         files = []
         for file in file_name:
