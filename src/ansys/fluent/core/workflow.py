@@ -356,16 +356,27 @@ class BaseTask:
             Pythonic name of the task.
         """
         if not self._python_name:
-            try:
-                this_command = self._command()
-                # temp reuse helpString
-                self._python_name = camel_to_snake_case(
-                    this_command.get_attr("helpString")
-                )
-                self._cache_data(this_command)
-            except Exception:
-                pass
+            if self._command_source._renaming:
+                display_name_map = self._command_source._help_string_display_text_map
+                if self.display_name() not in display_name_map.values():
+                    self._set_python_name()
+                else:
+                    self._python_name = list(display_name_map.keys())[
+                        list(display_name_map.values()).index(self.display_name())
+                    ]
+            else:
+                self._set_python_name()
+
         return self._python_name
+
+    def _set_python_name(self):
+        try:
+            this_command = self._command()
+            # temp reuse helpString
+            self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+            self._cache_data(this_command)
+        except Exception:
+            pass
 
     def _cache_data(self, command):
         _disp_text = command.get_attr("displayText")
@@ -373,7 +384,7 @@ class BaseTask:
             self._populate_duplicate_task_list()
         else:
             self._command_source._help_string_display_text_map[self._python_name] = (
-                _disp_text
+                self.display_name() if self._command_source._renaming else _disp_text
             )
         self._command_source._help_string_command_id_map[self._python_name] = (
             command.command
@@ -442,6 +453,7 @@ class BaseTask:
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
         if self._dynamic_interface:
+            self._command_source._renaming = True
             if (
                 self.python_name()
                 in self._command_source._repeated_task_help_string_display_text_map
@@ -1269,6 +1281,7 @@ class Workflow:
         self._python_task_names = []
         self._lock = threading.RLock()
         self._refreshing = False
+        self._renaming = False
         self._refresh_count = 0
         self._ordered_children = []
         self._task_list = []
