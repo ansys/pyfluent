@@ -495,7 +495,7 @@ def generate(
     version: str
         Fluent version.
     pyfluent_path: str
-        File generation path.
+        Path to save generated datamodel files to.
     sessions: dict
         Fluent sessions.
     generate_rst: bool

@@ -25,6 +25,7 @@ include = [
     { path = "src/ansys/fluent/core/solver/tui_*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/datamodel_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/solver/settings_*/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
 ]
 
 packages = [
@@ -38,6 +39,7 @@ python = ">=3.9,<4.0"
 importlib-metadata = {version = "^7.0.1", python = "<3.9"}
 ansys-api-fluent = "^0.3.22"
 ansys-platform-instancemanagement = "^1.0"
+ansys-tools-filetransfer = "^0.1.0"
 ansys-units = "^0.3.2"
 alive-progress = "^3.1.5"
 beartype = "^0.17"

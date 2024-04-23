@@ -466,6 +466,7 @@ jobs:
             version: 241
           - image-tag: v24.2.0
             version: 242
+    timeout-minutes: 120
 
     steps:
 

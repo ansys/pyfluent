@@ -25,6 +25,7 @@ import hashlib
 import importlib
 import keyword
 import logging
+import os.path
 import pickle
 import string
 import sys
@@ -372,6 +373,9 @@ class Base:
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
             self._do_before_execute(value)
+            return True
+        else:
+            return False
 
     def after_execute(self, value):
         """Executes after command execution."""
@@ -1540,7 +1544,8 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.before_execute(value)
+            if argument.before_execute(value):
+                kwds[f"{arg}"] = os.path.basename(value)
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)

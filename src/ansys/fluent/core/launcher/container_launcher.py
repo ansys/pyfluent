@@ -32,7 +32,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -153,7 +153,9 @@ class DockerLauncher:
         self.argvals = argvals
         self.new_session = self.mode.value[0]
         self.file_transfer_service = (
-            file_transfer_service if file_transfer_service else PimFileTransferService()
+            file_transfer_service
+            if file_transfer_service
+            else RemoteFileTransferStrategy()
         )
 
     def __call__(self):
