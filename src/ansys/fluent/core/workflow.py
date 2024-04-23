@@ -356,35 +356,29 @@ class BaseTask:
             Pythonic name of the task.
         """
         if not self._python_name:
-            display_name_map = self._command_source._help_string_display_text_map
-            if self.display_name() not in display_name_map.values():
-                try:
-                    this_command = self._command()
-                    # temp reuse helpString
-                    self._python_name = camel_to_snake_case(
-                        this_command.get_attr("helpString")
-                    )
-                    if (
+            try:
+                this_command = self._command()
+                _help_string = camel_to_snake_case(this_command.get_attr("helpString"))
+                _disp_text = this_command.get_attr("displayText")
+                # temp reuse helpString
+                self._python_name = _help_string
+                if (
+                    self._python_name
+                    in self._command_source._help_string_display_text_map
+                ):
+                    self._populate_duplicate_task_list()
+                else:
+                    self._command_source._help_string_display_text_map[
                         self._python_name
-                        in self._command_source._help_string_display_text_map
-                    ):
-                        self._populate_duplicate_task_list()
-                    else:
-                        self._command_source._help_string_display_text_map[
-                            self._python_name
-                        ] = self.display_name()
-                    self._command_source._help_string_command_id_map[
-                        self._python_name
-                    ] = this_command.command
-                    self._command_source._help_string_display_id_map[
-                        self._python_name
-                    ] = this_command.get_attr("displayText")
-                except Exception:
-                    pass
-            else:
-                self._python_name = list(display_name_map.keys())[
-                    list(display_name_map.values()).index(self.display_name())
-                ]
+                    ] = _disp_text
+                self._command_source._help_string_command_id_map[self._python_name] = (
+                    this_command.command
+                )
+                self._command_source._help_string_display_id_map[self._python_name] = (
+                    _disp_text
+                )
+            except Exception:
+                pass
         return self._python_name
 
     def _get_camel_case_arg_keys(self):
