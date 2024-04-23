@@ -358,28 +358,27 @@ class BaseTask:
         if not self._python_name:
             try:
                 this_command = self._command()
-                _help_string = camel_to_snake_case(this_command.get_attr("helpString"))
-                _disp_text = this_command.get_attr("displayText")
                 # temp reuse helpString
-                self._python_name = _help_string
-                if (
-                    self._python_name
-                    in self._command_source._help_string_display_text_map
-                ):
-                    self._populate_duplicate_task_list()
-                else:
-                    self._command_source._help_string_display_text_map[
-                        self._python_name
-                    ] = _disp_text
-                self._command_source._help_string_command_id_map[self._python_name] = (
-                    this_command.command
+                self._python_name = camel_to_snake_case(
+                    this_command.get_attr("helpString")
                 )
-                self._command_source._help_string_display_id_map[self._python_name] = (
-                    _disp_text
-                )
+                self._cache_data(this_command)
             except Exception:
                 pass
         return self._python_name
+
+    def _cache_data(self, command):
+        _disp_text = command.get_attr("displayText")
+        if self._python_name in self._command_source._help_string_display_text_map:
+            self._populate_duplicate_task_list()
+        else:
+            self._command_source._help_string_display_text_map[self._python_name] = (
+                _disp_text
+            )
+        self._command_source._help_string_command_id_map[self._python_name] = (
+            command.command
+        )
+        self._command_source._help_string_display_id_map[self._python_name] = _disp_text
 
     def _get_camel_case_arg_keys(self):
         _args = self.arguments
