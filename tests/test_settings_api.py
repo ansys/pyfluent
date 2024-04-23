@@ -1,4 +1,7 @@
+import warnings
+
 import pytest
+from pytest import WarningsRecorder
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
@@ -61,15 +64,16 @@ def test_wildcard(new_solver_session):
     }
     cell_zone_conditions = solver.setup.cell_zone_conditions
     if solver.get_fluent_version() >= FluentVersion.v242:
-        sources = cell_zone_conditions.fluid["*"].source_terms.sources
-        key = "sources"
+        sources = cell_zone_conditions.fluid["*"].sources.terms
+        sources_key = "sources"
+        terms_key = "terms"
     else:
         sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
-        key = "source_terms"
+        sources_key = terms_key = "source_terms"
     assert sources["*mom*"]() == {
         "fluid": {
-            "source_terms": {
-                key: {
+            sources_key: {
+                terms_key: {
                     "x-momentum": [{"option": "value", "value": 1}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 3}],
@@ -80,8 +84,8 @@ def test_wildcard(new_solver_session):
     sources["*mom*"] = [{"option": "value", "value": 2}]
     assert sources["*mom*"]() == {
         "fluid": {
-            "source_terms": {
-                key: {
+            sources_key: {
+                terms_key: {
                     "x-momentum": [{"option": "value", "value": 2}],
                     "y-momentum": [{"option": "value", "value": 2}],
                     "z-momentum": [{"option": "value", "value": 2}],
@@ -188,56 +192,76 @@ def test_deprecated_settings(new_solver_session):
     )
     assert (
         len(
-            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+            solver.setup.boundary_conditions.wall[
+                "wall-inlet"
+            ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert (
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases[
-            "constant"
-        ]
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature._child_aliases["constant"]
         == "value"
     )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature.constant = 400
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 400
+    )
     assert (
         len(
-            solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_aliases
+            solver.setup.boundary_conditions.wall[
+                "wall-inlet"
+            ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert isinstance(
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t._child_alias_objs[
-            "constant"
-        ],
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature._child_alias_objs["constant"],
         _Alias,
     )
-    solver.setup.boundary_conditions.wall["wall-inlet"].thermal._setattr(
-        "_child_aliases", {"temp": "t"}
-    )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temp.value = 410
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value = 410
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 410
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 410
+    )
 
     solver.setup.boundary_conditions._setattr("_child_aliases", {"w": "wall"})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.w["wall-inlet"].thermal.t.value = 420
+        solver.setup.boundary_conditions.w["wall-inlet"].thermal.temperature.value = 420
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 420
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 420
+    )
 
     solver.setup._setattr("_child_aliases", {"bc": "boundary_conditions"})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.bc.wall["wall-inlet"].thermal.t.value = 430
+        solver.setup.bc.wall["wall-inlet"].thermal.temperature.value = 430
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 430
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 430
+    )
 
     with pytest.warns(DeprecatedSettingWarning):
-        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.constant = 400
+        solver.setup.boundary_conditions.wall[
+            "wall-inlet"
+        ].thermal.temperature.constant = 400
 
-    assert solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value() == 400
+    assert (
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
+        == 400
+    )
 
     solver.results._setattr("_child_aliases", {"gr": "graphics"})
     with pytest.warns(DeprecatedSettingWarning):
@@ -284,21 +308,29 @@ def test_command_return_type(new_solver_session):
     assert ret is not None
 
 
+@pytest.fixture
+def warning_record():
+    wrec = WarningsRecorder(_ispytest=True)
+    with wrec:
+        warnings.simplefilter("ignore", ResourceWarning)
+        yield wrec
+
+
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2712")
 @pytest.mark.fluent_version(">=24.2")
-def test_unstable_settings_warning(new_solver_session, recwarn):
+def test_unstable_settings_warning(new_solver_session, warning_record):
     solver = new_solver_session
     solver.file.export
-    assert len(recwarn) == 1
-    assert recwarn.pop().category == UnstableSettingWarning
+    assert len(warning_record) == 1
+    assert warning_record.pop().category == UnstableSettingWarning
     try:
         solver.file.exp
     except AttributeError:
         pass
-    assert len(recwarn) == 0
+    assert len(warning_record) == 0
     solver.file.export
-    assert len(recwarn) == 1
-    assert recwarn.pop().category == UnstableSettingWarning
+    assert len(warning_record) == 1
+    assert warning_record.pop().category == UnstableSettingWarning
 
     # Issue in running in CI (probably due to -gu mode)
     # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
