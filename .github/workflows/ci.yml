@@ -72,7 +72,7 @@ jobs:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/commit-style@v5.0
+      - uses: ansys/actions/commit-style@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -80,7 +80,7 @@ jobs:
     name: "Run branch name style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/branch-name-style@v5.0
+      - uses: ansys/actions/branch-name-style@v6
 
   test-import:
     name: Build and Smoke tests
