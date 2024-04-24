@@ -126,10 +126,15 @@ def _get_files(
         files = []
         for file in file_name:
             file_path_check = os.path.join(path, os.path.basename(file))
+            logger.debug(f"\n file_path_check = {file_path_check} \n")
+            logger.debug(
+                f"\n is_file_path_check = {os.path.isfile(file_path_check)} \n"
+            )
             if os.path.isfile(file_path_check):
                 files.append(file_path_check)
             else:
                 files.append(file)
+        logger.debug(f"\n files = {files} \n")
     return files
 
 
@@ -229,7 +234,12 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         files = _get_files(file_name, self.host_mount_path)
         if self.client:
             for file in files:
-                if os.path.isfile(file):
+                is_file_exists_on_remote = self.file_exists_on_remote(
+                    os.path.basename(file)
+                )
+                if is_file_exists_on_remote:
+                    print(f"\n{file} already uploaded.\n")
+                elif os.path.isfile(file) and not is_file_exists_on_remote:
                     self.client.upload_file(
                         local_filename=file,
                         remote_filename=(
