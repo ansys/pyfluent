@@ -6,6 +6,7 @@ import pathlib
 import random
 import shutil
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
+import warnings
 
 from alive_progress import alive_bar
 
@@ -236,8 +237,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             for file in files:
                 is_file_on_remote = self.file_exists_on_remote(os.path.basename(file))
                 if is_file_on_remote:
-                    print(
-                        f"\n{file} with the same name exists at the remote location.\n"
+                    warnings.warn(
+                        f"\n{file} with the same name exists at the remote location.\n",
+                        UserWarning,
                     )
                 elif os.path.isfile(file) and not is_file_on_remote:
                     self.client.upload_file(
@@ -267,7 +269,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         if self.client:
             for file in files:
                 if os.path.isfile(file):
-                    print(f"\nFile already exists. File path:\n{file}\n")
+                    warnings.warn(
+                        f"\nFile already exists. File path:\n{file}\n", UserWarning
+                    )
                 else:
                     self.client.download_file(
                         remote_filename=os.path.basename(file),
@@ -403,7 +407,10 @@ class PimFileTransferService:
                             )
                             bar()
                         else:
-                            print(f"\n{file} already uploaded.\n")
+                            warnings.warn(
+                                f"\n{file} with the same name exists at the remote location.\n",
+                                UserWarning,
+                            )
                     elif not self.file_service.file_exist(os.path.basename(file)):
                         raise FileNotFoundError(f"{file} does not exist.")
 
@@ -449,7 +456,9 @@ class PimFileTransferService:
             with alive_bar(len(files), title="Downloading...") as bar:
                 for file in files:
                     if os.path.isfile(file):
-                        print(f"\nFile already exists. File path:\n{file}\n")
+                        warnings.warn(
+                            f"\nFile already exists. File path:\n{file}\n", UserWarning
+                        )
                     else:
                         self.download_file(
                             file_name=os.path.basename(file),
