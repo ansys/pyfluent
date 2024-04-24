@@ -34,7 +34,7 @@ goto end
 
 :clean
 rmdir /s /q %BUILDDIR% > /NUL 2>&1
-rmdir /s /q %SOURCEDIR%\examples > /NUL 2>&1
+del /q %SOURCEDIR%\examples\* > /NUL 2>&1
 for /d /r %SOURCEDIR% %%d in (_autosummary) do @if exist "%%d" rmdir /s /q "%%d"
 del build_errors.txt > /NUL 2>&1
 goto end
