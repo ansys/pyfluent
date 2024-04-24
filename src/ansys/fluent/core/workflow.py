@@ -356,7 +356,7 @@ class BaseTask:
             Pythonic name of the task.
         """
         if not self._python_name:
-            if self._command_source._renaming:
+            if self._command_source._dynamic_python_names:
                 display_name_map = self._command_source._python_name_display_text_map
                 if self.display_name() not in display_name_map.values():
                     self._set_python_name()
@@ -384,7 +384,9 @@ class BaseTask:
             self._populate_duplicate_task_list()
         else:
             self._command_source._python_name_display_text_map[self._python_name] = (
-                self.display_name() if self._command_source._renaming else _disp_text
+                self.display_name()
+                if self._command_source._dynamic_python_names
+                else _disp_text
             )
         self._command_source._python_name_command_id_map[self._python_name] = (
             command.command
@@ -453,7 +455,7 @@ class BaseTask:
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
         if self._dynamic_interface:
-            self._command_source._renaming = True
+            self._command_source._dynamic_python_names = True
             if (
                 self.python_name()
                 in self._command_source._repeated_task_python_name_display_text_map
@@ -533,6 +535,7 @@ class BaseTask:
         ValueError
             If the Python name does not match the next possible task names.
         """
+        self._command_source._dynamic_python_names = True
         if task_name not in self._get_next_python_task_names():
             raise ValueError(
                 f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
@@ -1281,7 +1284,7 @@ class Workflow:
         self._python_task_names = []
         self._lock = threading.RLock()
         self._refreshing = False
-        self._renaming = False
+        self._dynamic_python_names = False
         self._refresh_count = 0
         self._ordered_children = []
         self._task_list = []
@@ -1522,7 +1525,7 @@ class Workflow:
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
 
-    def _populate_first_tasks_help_string_command_id_map(self):
+    def _populate_first_tasks_python_name_command_id_map(self):
         if not self._initial_task_python_names_map:
             for command in dir(self._command_source):
                 if command in ["SwitchToSolution", "set_state"]:
