@@ -1,3 +1,11 @@
+ci:
+  autofix_commit_msg: |
+      ci: auto fixes from pre-commit.com hooks
+
+      for more information, see https://pre-commit.ci
+  autoupdate_commit_msg: 'ci: pre-commit autoupdate'
+  autoupdate_schedule: monthly
+
 repos:
 
 - repo: https://github.com/psf/black
