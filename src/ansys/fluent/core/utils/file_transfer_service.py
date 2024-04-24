@@ -236,7 +236,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             for file in files:
                 is_file_on_remote = self.file_exists_on_remote(os.path.basename(file))
                 if is_file_on_remote:
-                    print(f"\n{file} already uploaded.\n")
+                    print(
+                        f"\n{file} with the same name exists at the remote location.\n"
+                    )
                 elif os.path.isfile(file) and not is_file_on_remote:
                     self.client.upload_file(
                         local_filename=file,
