@@ -14,6 +14,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
+from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -361,9 +362,9 @@ class BaseTask:
                 if self.display_name() not in display_name_map.values():
                     self._set_python_name()
                 else:
-                    self._python_name = list(display_name_map.keys())[
-                        list(display_name_map.values()).index(self.display_name())
-                    ]
+                    self._python_name = get_first_dict_key_for_value(
+                        display_name_map, self.display_name()
+                    )
             else:
                 self._set_python_name()
 
