@@ -240,3 +240,68 @@ class WorkflowMode(Enum):
     FAULT_TOLERANT_MESHING_MODE = FaultTolerantMeshingWorkflow
     TWO_DIMENSIONAL_MESHING_MODE = TwoDimensionalMeshingWorkflow
     TOPOLOGY_BASED_MESHING_MODE = TopologyBasedMeshingWorkflow
+
+
+class LoadWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for a loaded workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        file_path: str,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize a ``LoadWorkflow`` instance.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        file_path: str
+            Path to the saved workflow.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._file_path = file_path
+
+    def load(self) -> None:
+        """Load a workflow."""
+        self._load_workflow(file_path=self._file_path)
+
+
+class CreateWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for a newly created
+    workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize a ``CreateWorkflow`` instance.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+
+    def create(self) -> None:
+        """Create a workflow."""
+        self._create_workflow()

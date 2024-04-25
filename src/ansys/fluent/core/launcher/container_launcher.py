@@ -30,6 +30,9 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_graphics_driver,
+    _get_mode,
+    _validate_gpu,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
@@ -144,6 +147,9 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        _validate_gpu(gpu, version)
+        graphics_driver = _get_graphics_driver(graphics_driver)
+        mode = _get_mode(mode)
         argvals = locals().copy()
         del argvals["self"]
         if argvals["start_timeout"] is None:
@@ -188,6 +194,7 @@ class DockerLauncher:
         fluent_connection = FluentConnection(
             port=port,
             password=password,
+            file_transfer_service=self.file_transfer_service,
             cleanup_on_exit=self.cleanup_on_exit,
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,

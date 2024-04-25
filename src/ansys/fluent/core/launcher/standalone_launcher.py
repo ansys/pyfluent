@@ -36,7 +36,11 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_graphics_driver,
+    _get_mode,
     _get_standalone_launch_fluent_version,
+    _get_ui_mode,
+    _validate_gpu,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -67,6 +71,7 @@ class StandaloneLauncher:
         env: Optional[Dict[str, Any]] = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -123,10 +128,17 @@ class StandaloneLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
+        show_gui : bool, optional
+            Whether to display the Fluent GUI. The default is ``None``,
+            in which case the GUI is not shown. If ``False`` is
+            not explicitly provided, the GUI is shown if
+            the ``PYFLUENT_SHOW_SERVER_GUI`` environment
+            variable is set to 1.
         case_file_name : str, optional
-            If provided, the case file at ``case_file_name`` is read into the Fluent session.
+            Name of the case file to read into the
+            Fluent session. The default is ``None``.
         case_data_file_name : str, optional
-            If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
+            Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
         lightweight_mode : bool, optional
             Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
             current Fluent solver session. The mesh is read into a background Fluent solver session which will
@@ -172,6 +184,11 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        _validate_gpu(gpu, version)
+        graphics_driver = _get_graphics_driver(graphics_driver)
+        ui_mode = _get_ui_mode(show_gui)
+        del show_gui
+        mode = _get_mode(mode)
         argvals = locals().copy()
         del argvals["self"]
         if argvals["start_timeout"] is None:

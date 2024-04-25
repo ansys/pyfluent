@@ -303,7 +303,11 @@ class BaseSession:
         """
         ip, port, password = _parse_server_info_file(server_info_file_name)
         fluent_connection = FluentConnection(
-            ip=ip, port=port, password=password, **connection_kwargs
+            ip=ip,
+            port=port,
+            password=password,
+            file_transfer_service=file_transfer_service,
+            **connection_kwargs,
         )
         session = cls(
             fluent_connection=fluent_connection,
@@ -328,8 +332,7 @@ class BaseSession:
         self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Immediately terminates the Fluent session, losing unsaved progress and
-        data."""
+        """Forces the Fluent session to exit, losing unsaved progress and data."""
         self._fluent_connection.force_exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:
