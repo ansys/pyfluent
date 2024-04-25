@@ -274,7 +274,7 @@ def _generate_doc(Menus, mode):
         _write_doc(menu_attr, mode)
 
 
-def _generate(main_menu, mode):
+def generate(main_menu, mode):
     """Generate .rst files.
 
     Parameters
@@ -298,8 +298,8 @@ if __name__ == "__main__":
     meshing_tui = importlib.import_module(
         f"ansys.fluent.core.meshing.{_get_tui_file_name('meshing')}"
     )
-    _generate(meshing_tui.main_menu, "meshing")
+    generate(meshing_tui.main_menu, "meshing")
     solver_tui = importlib.import_module(
         f"ansys.fluent.core.solver.{_get_tui_file_name('solver')}"
     )
-    _generate(solver_tui.main_menu, "solver")
+    generate(solver_tui.main_menu, "solver")
