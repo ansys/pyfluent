@@ -371,36 +371,32 @@ class BaseTask:
         return self._python_name
 
     def _set_python_name(self):
-        try:
-            this_command = self._command()
-            # temp reuse helpString
-            self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
-            self._cache_data(this_command)
-        except Exception:
-            pass
+        this_command = self._command()
+        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._cache_data(this_command)
 
     def _cache_data(self, command):
-        _disp_text = command.get_attr("displayText")
+        disp_text = command.get_attr("displayText")
         if self._python_name in self._command_source._python_name_display_text_map:
             self._populate_duplicate_task_list()
         else:
             self._command_source._python_name_display_text_map[self._python_name] = (
                 self.display_name()
                 if self._command_source._dynamic_python_names
-                else _disp_text
+                else disp_text
             )
         self._command_source._python_name_command_id_map[self._python_name] = (
             command.command
         )
-        self._command_source._python_name_display_id_map[self._python_name] = _disp_text
+        self._command_source._python_name_display_id_map[self._python_name] = disp_text
 
     def _get_camel_case_arg_keys(self):
-        _args = self.arguments
-        _camel_args = []
-        for arg in _args().keys():
-            _camel_args.append(_args._snake_to_camel_map[arg])
+        args = self.arguments
+        camel_args = []
+        for arg in args().keys():
+            camel_args.append(args._snake_to_camel_map[arg])
 
-        return _camel_args
+        return camel_args
 
     def __getattr__(self, attr):
         if self._dynamic_interface:

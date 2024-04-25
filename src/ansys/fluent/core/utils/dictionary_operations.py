@@ -1,4 +1,4 @@
-"""Performs some operations on python dictionaries."""
+"""Performs some operations on Python dictionaries."""
 
 
 def get_first_dict_key_for_value(input_dict, value):
