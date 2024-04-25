@@ -235,7 +235,8 @@ def _write_doc(menu, mode):
 
 
 def _generate_all_attribute_classes(Menus, main_menu):
-    """Set all attribute classes with and without members as attributes to ``Menus`` class.
+    """Set all attribute classes with and without members as attributes to ``Menus``
+    class.
 
     Parameters
     ----------
