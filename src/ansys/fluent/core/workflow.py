@@ -359,11 +359,12 @@ class BaseTask:
         if not self._python_name:
             if self._command_source._dynamic_python_names:
                 display_name_map = self._command_source._python_name_display_text_map
-                self._python_name = get_first_dict_key_for_value(
-                    display_name_map, self.display_name()
-                )
-                if not self._python_name:
+                if self.display_name() not in display_name_map.values():
                     self._set_python_name()
+                else:
+                    self._python_name = get_first_dict_key_for_value(
+                        display_name_map, self.display_name()
+                    )
             else:
                 self._set_python_name()
 

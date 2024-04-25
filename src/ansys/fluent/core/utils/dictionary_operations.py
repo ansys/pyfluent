@@ -4,9 +4,8 @@ from typing import Any
 
 
 def get_first_dict_key_for_value(input_dict: dict, value: Any):
-    """Get the first dictionary key that matches a value. Typical
-    usage is where the value is known to be unique in the input
-    dictionary.
+    """Get the first dictionary key that matches a value. Typical usage is where the
+    value is known to be unique in the input dictionary.
 
     Parameters
     ----------
