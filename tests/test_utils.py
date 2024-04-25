@@ -3,7 +3,6 @@ import time
 import pytest
 
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
-
 from ansys.fluent.core.utils.execution import (
     InvalidArgument,
     timeout_exec,
@@ -70,7 +69,7 @@ def count_key_recursive(dictionary, key):
 
 
 def test_get_first_dict_key_for_value():
-    assert get_first_dict_key_for_value({1:2}, 2) == 1
-    assert get_first_dict_key_for_value({1:2, 3:4}, 2) == 1
+    assert get_first_dict_key_for_value({1: 2}, 2) == 1
+    assert get_first_dict_key_for_value({1: 2, 3: 4}, 2) == 1
     with pytest.raises(ValueError):
-        get_first_dict_key_for_value({1:2}, 1)
+        get_first_dict_key_for_value({1: 2}, 1)
