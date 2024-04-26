@@ -11,7 +11,7 @@ from typing import Optional
 _THIS_DIRNAME = os.path.dirname(__file__)
 
 
-def _get_attribute_classes(menu):
+def _get_attribute_classes(menu: type):
     """Get attribute classes.
 
     Parameters
@@ -32,7 +32,7 @@ def _get_attribute_classes(menu):
     return attribute_classes
 
 
-def _get_attribute_classes_with_and_without_members(menu=None):
+def _get_attribute_classes_with_and_without_members(menu: type):
     """Get classes with and without sub members as attributes.
 
     Parameters
@@ -58,56 +58,58 @@ def _get_attribute_classes_with_and_without_members(menu=None):
     return with_members, without_members
 
 
-def _set_with_without_members(with_member, Menus):
+def _set_with_without_members(with_member: type, all_menus: list):
     """Set both with and without members as attributes to ``Menus`` class.
 
     Parameters
     ----------
     with_member: type
         Attribute of ``menu`` with sub ``menu``.
+    all_menus: list
+        ``all_menus`` list.
 
     Returns
     -------
     with_members: list
         Attributes of ``menu`` with sub ``menu``.
-    Menus: type
-        ``Menus`` class.
+    all_menus: list
+        ``all_menus`` list.
     """
     with_members, without_members = _get_attribute_classes_with_and_without_members(
         with_member
     )
-    setattr(
-        Menus,
-        with_member.__name__,
+    all_menus.append(
         dict(
             name=with_member, with_members=with_members, without_members=without_members
-        ),
+        )
     )
-    return with_members, Menus
+    return with_members, all_menus
 
 
-def _get_attribute_classes_recursively(with_member, Menus):
+def _get_attribute_classes_recursively(with_member: type, all_menus: list):
     """Generate all attribute classes with and without members recursively.
 
     Parameters
     ----------
     with_member: type
         Attribute of ``menu`` with sub ``menu``.
-    Menus: type
-        ``Menus`` class.
+    all_menus: list
+        ``all_menus`` list.
     """
-    with_members, Menus = _set_with_without_members(with_member, Menus)
+    with_members, all_menus = _set_with_without_members(with_member, all_menus)
     for with_member in with_members:
-        _get_attribute_classes_recursively(with_member, Menus)
+        _get_attribute_classes_recursively(with_member, all_menus)
 
 
-def _get_menu_name_path(menu):
+def _get_menu_name_path(menu: type, is_datamodel: bool):
     """Get menu name and path to generate .rst file and folder respectively.
 
     Parameters
     ----------
     menu: type
         TUIMenu, TUIMethod
+    is_datamodel: bool
+        Whether to select datamodel menu.
 
     Returns
     -------
@@ -118,13 +120,19 @@ def _get_menu_name_path(menu):
     """
     name_string = re.findall("ansys.*", str(menu))
     full_name = name_string[0][0:-2]
-    path_string = re.findall("main_menu.*", full_name)
-    path = path_string[0].lstrip("main_menu.")
+    if is_datamodel:
+        path_string = re.findall("Root.*", full_name)
+        path = path_string[0].lstrip("Root.")
+    else:
+        path_string = re.findall("main_menu.*", full_name)
+        path = path_string[0].lstrip("main_menu.")
     full_path = path.replace(".", "/")
     return full_name, full_path
 
 
-def _get_tui_docdir(mode: str, path: Optional[str] = None):
+def _get_docdir(
+    mode: str, path: Optional[str] = None, is_datamodel: Optional[bool] = None
+):
     """Get tui doc directory to generate all .rst files.
 
     Parameters
@@ -140,56 +148,81 @@ def _get_tui_docdir(mode: str, path: Optional[str] = None):
         TUI doc directory.
     """
     doc_path = pathlib.Path(os.path.normpath(os.path.join(_THIS_DIRNAME, "..")))
-    return (
-        doc_path / f"doc/source/api/{mode}/tui/{path}"
-        if path
-        else doc_path / f"doc/source/api/{mode}/tui"
-    )
-
-
-def _get_tui_file_path(mode: str):
-    """Get tui_*.py file path.
-
-    Parameters
-    ----------
-    mode: str
-        Fluent session mode either ``meshing`` or ``solver``.
-
-    Returns
-    -------
-        TUI file path.
-    """
-    return os.path.normpath(
-        os.path.join(
-            _THIS_DIRNAME,
-            "..",
-            "src",
-            "ansys",
-            "fluent",
-            "core",
-            f"{mode}",
+    if is_datamodel:
+        return (
+            doc_path / f"doc/source/api/{mode}/datamodel/{path}"
+            if path
+            else doc_path / f"doc/source/api/{mode}/datamodel"
         )
-    )
+    else:
+        return (
+            doc_path / f"doc/source/api/{mode}/tui/{path}"
+            if path
+            else doc_path / f"doc/source/api/{mode}/tui"
+        )
 
 
-def _get_tui_file_name(mode: str):
-    """Get tui_*.py file name.
+def _get_path(mode: str, is_datamodel: Optional[bool] = None):
+    """Get datamodel_* or tui_*.py file path.
 
     Parameters
     ----------
     mode: str
         Fluent session mode either ``meshing`` or ``solver``.
+    is_datamodel: bool
+        Whether to get datamodel path.
 
     Returns
     -------
-        TUI file name.
+        Datamodel or TUI path.
     """
-    for file in os.listdir(_get_tui_file_path(mode)):
-        if fnmatch.fnmatch(file, "tui_*.py"):
+    if is_datamodel:
+        return os.path.normpath(
+            os.path.join(
+                _THIS_DIRNAME,
+                "..",
+                "src",
+                "ansys",
+                "fluent",
+                "core",
+            )
+        )
+    else:
+        return os.path.normpath(
+            os.path.join(
+                _THIS_DIRNAME,
+                "..",
+                "src",
+                "ansys",
+                "fluent",
+                "core",
+                f"{mode}",
+            )
+        )
+
+
+def _get_file_or_folder(mode: str, is_datamodel: bool):
+    """Get datamodel_* folder or tui_*.py file name.
+
+    Parameters
+    ----------
+    mode: str
+        Fluent session mode either ``meshing`` or ``solver``.
+    is_datamodel: bool
+        Whether to get datamodel folder.
+
+    Returns
+    -------
+        Datamodel or TUI file name.
+    """
+    for file in os.listdir(_get_path(mode, is_datamodel)):
+        if is_datamodel and fnmatch.fnmatch(file, "datamodel_*"):
+            return pathlib.Path(file).stem
+        if not is_datamodel and fnmatch.fnmatch(file, "tui_*.py"):
             return pathlib.Path(file).stem
 
 
-def _get_sorted_members(members):
+def _get_sorted_members(members: list):
     """Sort members alphabetically.
 
     Parameters
@@ -200,7 +233,7 @@ def _get_sorted_members(members):
     return sorted([member.__name__ for member in members])
 
 
-def _write_doc(menu, mode):
+def _write_doc(menu: type, mode: str, is_datamodel: bool):
     """Write .rst file for each menu.
 
     Parameters
@@ -209,9 +242,11 @@ def _write_doc(menu, mode):
         TUIMenu, TUIMethod
     mode: str
         Fluent session mode either ``meshing`` or ``solver``.
+    is_datamodel: bool
+        Whether to generate datamodel .rst files.
     """
-    menu_name, menu_path = _get_menu_name_path(menu["name"])
-    full_folder_path = _get_tui_docdir(mode, menu_path)
+    menu_name, menu_path = _get_menu_name_path(menu["name"], is_datamodel)
+    full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
     Path(full_folder_path).mkdir(parents=True, exist_ok=True)
     index_file = Path(full_folder_path) / "index.rst"
     with open(index_file, "w", encoding="utf8") as f:
@@ -234,48 +269,44 @@ def _write_doc(menu, mode):
                 f.write(f"   {member}/index\n")
 
 
-def _generate_all_attribute_classes(Menus, main_menu):
-    """Set all attribute classes with and without members as attributes to ``Menus``
+def _generate_all_attribute_classes(all_menus: list, main_menu: type):
+    """Store all attribute classes with and without members as attributes into ``all_menus``
     class.
 
     Parameters
     ----------
-    Menus: type
-        ``Menus`` class.
+    all_menus: list
+        ``all_menus`` list.
     main_menu: type
         ``main_menu`` class.
     """
     with_members, without_members = _get_attribute_classes_with_and_without_members(
         main_menu
     )
-    setattr(
-        Menus,
-        main_menu.__name__,
-        dict(
-            name=main_menu, with_members=with_members, without_members=without_members
-        ),
+    all_menus.append(
+        dict(name=main_menu, with_members=with_members, without_members=without_members)
     )
     for member in with_members:
-        _get_attribute_classes_recursively(member, Menus)
+        _get_attribute_classes_recursively(member, all_menus)
 
 
-def _generate_doc(Menus, mode):
+def _generate_doc(all_menus: list, mode: str, is_datamodel: bool):
     """Write .rst file for each attribute class.
 
     Parameters
     ----------
-    Menus: type
-        ``Menus`` class.
+    all_menus: list
+        ``all_menus`` list.
     mode: str
         Fluent session mode either ``meshing`` or ``solver``.
+    is_datamodel: bool
+        Whether to generate datamodel .rst files.
     """
-    all_menus_attrs = [attr for attr in dir(Menus) if not attr.startswith("__")]
-    for attr in all_menus_attrs:
-        menu_attr = getattr(Menus, attr)
-        _write_doc(menu_attr, mode)
+    for menu in all_menus:
+        _write_doc(menu, mode, is_datamodel)
 
 
-def generate(main_menu, mode):
+def generate(main_menu: type, mode: str, is_datamodel: bool):
     """Generate .rst files.
 
     Parameters
@@ -284,23 +315,21 @@ def generate(main_menu, mode):
         ``main_menu`` class.
     mode: str
         Fluent session mode either ``meshing`` or ``solver``.
+    is_datamodel: bool
+        Whether to generate datamodel .rst files.
     """
 
-    class Menus:
-        """Sets all sub classes as attributes."""
-
-        pass
-
-    _generate_all_attribute_classes(Menus, main_menu)
-    _generate_doc(Menus, mode)
+    all_menus = []
+    _generate_all_attribute_classes(all_menus, main_menu)
+    _generate_doc(all_menus, mode, is_datamodel)
 
 
 if __name__ == "__main__":
     meshing_tui = importlib.import_module(
-        f"ansys.fluent.core.meshing.{_get_tui_file_name('meshing')}"
+        f"ansys.fluent.core.meshing.{_get_file_or_folder(mode='meshing', is_datamodel=False)}"
     )
-    generate(meshing_tui.main_menu, "meshing")
+    generate(main_menu=meshing_tui.main_menu, mode="meshing", is_datamodel=False)
     solver_tui = importlib.import_module(
-        f"ansys.fluent.core.solver.{_get_tui_file_name('solver')}"
+        f"ansys.fluent.core.solver.{_get_file_or_folder(mode='solver', is_datamodel=False)}"
     )
-    generate(solver_tui.main_menu, "solver")
+    generate(main_menu=solver_tui.main_menu, mode="solver", is_datamodel=False)
