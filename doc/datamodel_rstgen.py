@@ -2,7 +2,7 @@
 
 import importlib
 
-from tui_rstgen import _get_file_or_folder, generate
+from rstgen import _get_file_or_folder, generate
 
 
 def generate_meshing_datamodels():
