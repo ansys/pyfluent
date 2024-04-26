@@ -314,7 +314,7 @@ def generate(main_menu: type, mode: str, is_datamodel: bool):
     main_menu: type
         ``main_menu`` class.
     mode: str
-        Fluent session mode either ``meshing`` or ``solver``.
+        Fluent session mode. Options are ``meshing`` and ``solver``.
     is_datamodel: bool
         Whether to generate datamodel .rst files.
     """
