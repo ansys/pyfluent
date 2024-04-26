@@ -14,6 +14,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
+from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -337,13 +338,13 @@ class BaseTask:
             new_task = "".join(disp_text.rsplit(f" {disp_text.split()[-1]}", 1))
             if (
                 new_task
-                == self._command_source._help_string_display_text_map[self._python_name]
+                == self._command_source._python_name_display_text_map[self._python_name]
             ):
                 self._python_name = self._python_name + f"_{disp_text.split()[-1]}"
-                self._command_source._help_string_display_text_map[
+                self._command_source._python_name_display_text_map[
                     self._python_name
                 ] = disp_text
-                self._command_source._repeated_task_help_string_display_text_map[
+                self._command_source._repeated_task_python_name_display_text_map[
                     self._python_name
                 ] = disp_text
 
@@ -356,44 +357,46 @@ class BaseTask:
             Pythonic name of the task.
         """
         if not self._python_name:
-            display_name_map = self._command_source._help_string_display_text_map
-            if self.display_name() not in display_name_map.values():
-                try:
-                    this_command = self._command()
-                    # temp reuse helpString
-                    self._python_name = camel_to_snake_case(
-                        this_command.get_attr("helpString")
+            if self._command_source._dynamic_python_names:
+                display_name_map = self._command_source._python_name_display_text_map
+                if self.display_name() not in display_name_map.values():
+                    self._set_python_name()
+                else:
+                    self._python_name = get_first_dict_key_for_value(
+                        display_name_map, self.display_name()
                     )
-                    if (
-                        self._python_name
-                        in self._command_source._help_string_display_text_map
-                    ):
-                        self._populate_duplicate_task_list()
-                    else:
-                        self._command_source._help_string_display_text_map[
-                            self._python_name
-                        ] = self.display_name()
-                    self._command_source._help_string_command_id_map[
-                        self._python_name
-                    ] = this_command.command
-                    self._command_source._help_string_display_id_map[
-                        self._python_name
-                    ] = this_command.get_attr("displayText")
-                except Exception:
-                    pass
             else:
-                self._python_name = list(display_name_map.keys())[
-                    list(display_name_map.values()).index(self.display_name())
-                ]
+                self._set_python_name()
+
         return self._python_name
 
-    def _get_camel_case_arg_keys(self):
-        _args = self.arguments
-        _camel_args = []
-        for arg in _args().keys():
-            _camel_args.append(_args._snake_to_camel_map[arg])
+    def _set_python_name(self):
+        this_command = self._command()
+        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._cache_data(this_command)
 
-        return _camel_args
+    def _cache_data(self, command):
+        disp_text = command.get_attr("displayText")
+        if self._python_name in self._command_source._python_name_display_text_map:
+            self._populate_duplicate_task_list()
+        else:
+            self._command_source._python_name_display_text_map[self._python_name] = (
+                self.display_name()
+                if self._command_source._dynamic_python_names
+                else disp_text
+            )
+        self._command_source._python_name_command_id_map[self._python_name] = (
+            command.command
+        )
+        self._command_source._python_name_display_id_map[self._python_name] = disp_text
+
+    def _get_camel_case_arg_keys(self):
+        args = self.arguments
+        camel_args = []
+        for arg in args().keys():
+            camel_args.append(args._snake_to_camel_map[arg])
+
+        return camel_args
 
     def __getattr__(self, attr):
         if self._dynamic_interface:
@@ -449,39 +452,40 @@ class BaseTask:
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
         if self._dynamic_interface:
+            self._command_source._dynamic_python_names = True
             if (
                 self.python_name()
-                in self._command_source._repeated_task_help_string_display_text_map
+                in self._command_source._repeated_task_python_name_display_text_map
             ):
-                self._command_source._help_string_command_id_map[new_name] = (
-                    self._command_source._help_string_command_id_map.pop(
+                self._command_source._python_name_command_id_map[new_name] = (
+                    self._command_source._python_name_command_id_map.pop(
                         self.python_name(), None
                     )
                 )
-                self._command_source._help_string_display_id_map[new_name] = (
-                    self._command_source._help_string_display_id_map.pop(
+                self._command_source._python_name_display_id_map[new_name] = (
+                    self._command_source._python_name_display_id_map.pop(
                         self.python_name(), None
                     )
                 )
-                self._command_source._help_string_display_text_map.pop(
+                self._command_source._python_name_display_text_map.pop(
                     self.python_name(), None
                 )
-                self._command_source._repeated_task_help_string_display_text_map.pop(
+                self._command_source._repeated_task_python_name_display_text_map.pop(
                     self.python_name(), None
                 )
             else:
-                self._command_source._help_string_command_id_map[new_name] = (
-                    self._command_source._help_string_command_id_map[self.python_name()]
+                self._command_source._python_name_command_id_map[new_name] = (
+                    self._command_source._python_name_command_id_map[self.python_name()]
                 )
-                self._command_source._help_string_display_id_map[new_name] = (
-                    self._command_source._help_string_display_id_map[self.python_name()]
+                self._command_source._python_name_display_id_map[new_name] = (
+                    self._command_source._python_name_display_id_map[self.python_name()]
                 )
-                self._command_source._help_string_display_text_map.pop(
+                self._command_source._python_name_display_text_map.pop(
                     self.python_name(), None
                 )
 
-            self._command_source._help_string_display_text_map[new_name] = new_name
-            self._command_source._repeated_task_help_string_display_text_map[
+            self._command_source._python_name_display_text_map[new_name] = new_name
+            self._command_source._repeated_task_python_name_display_text_map[
                 new_name
             ] = new_name
             self._python_name = new_name
@@ -528,6 +532,7 @@ class BaseTask:
         ValueError
             If the Python name does not match the next possible task names.
         """
+        self._command_source._dynamic_python_names = True
         if task_name not in self._get_next_python_task_names():
             raise ValueError(
                 f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
@@ -1276,6 +1281,7 @@ class Workflow:
         self._python_task_names = []
         self._lock = threading.RLock()
         self._refreshing = False
+        self._dynamic_python_names = False
         self._refresh_count = 0
         self._ordered_children = []
         self._task_list = []
@@ -1283,10 +1289,10 @@ class Workflow:
         self._main_thread_ident = None
         self._task_objects = {}
         self._dynamic_interface = False
-        self._help_string_command_id_map = {}
-        self._help_string_display_id_map = {}
-        self._help_string_display_text_map = {}
-        self._repeated_task_help_string_display_text_map = {}
+        self._python_name_command_id_map = {}
+        self._python_name_display_id_map = {}
+        self._python_name_display_text_map = {}
+        self._repeated_task_python_name_display_text_map = {}
         self._initial_task_python_names_map = {}
         self._unwanted_attrs = {
             "reset_workflow",
@@ -1386,8 +1392,8 @@ class Workflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
-        if attr in self._repeated_task_help_string_display_text_map:
-            return self.task(self._repeated_task_help_string_display_text_map[attr])
+        if attr in self._repeated_task_python_name_display_text_map:
+            return self.task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1413,7 +1419,7 @@ class Workflow:
             + dir(type(self))
             + arg_list
             + self.child_task_python_names()
-            + list(self._repeated_task_help_string_display_text_map)
+            + list(self._repeated_task_python_name_display_text_map)
         )
         dir_set = dir_set - self._unwanted_attrs
         return sorted(filter(None, dir_set))
@@ -1467,7 +1473,7 @@ class Workflow:
     def _get_initial_task_list_while_creating_new_workflow(self):
         """Get a list of independent tasks that can be inserted at the initial level
         while creating a workflow."""
-        self._populate_first_tasks_help_string_command_id_map()
+        self._populate_first_tasks_python_name_command_id_map()
         return list(self._initial_task_python_names_map)
 
     def _create_workflow(self, dynamic_interface: bool = True):
@@ -1516,7 +1522,7 @@ class Workflow:
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
 
-    def _populate_first_tasks_help_string_command_id_map(self):
+    def _populate_first_tasks_python_name_command_id_map(self):
         if not self._initial_task_python_names_map:
             for command in dir(self._command_source):
                 if command in ["SwitchToSolution", "set_state"]:
@@ -1580,13 +1586,13 @@ class Workflow:
         for task_name in list_of_tasks:
             try:
                 list_of_tasks_with_display_name.append(
-                    self._help_string_display_id_map[task_name]
+                    self._python_name_display_id_map[task_name]
                 )
-                self._help_string_display_text_map.pop(task_name, None)
-                if task_name in self._repeated_task_help_string_display_text_map:
-                    self._help_string_command_id_map.pop(task_name, None)
-                    self._help_string_display_id_map.pop(task_name, None)
-                self._repeated_task_help_string_display_text_map.pop(task_name, None)
+                self._python_name_display_text_map.pop(task_name, None)
+                if task_name in self._repeated_task_python_name_display_text_map:
+                    self._python_name_command_id_map.pop(task_name, None)
+                    self._python_name_display_id_map.pop(task_name, None)
+                self._repeated_task_python_name_display_text_map.pop(task_name, None)
             except KeyError as ex:
                 raise ValueError(
                     f"'{task_name}' is not an allowed task.\n"
