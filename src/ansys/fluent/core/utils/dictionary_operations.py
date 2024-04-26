@@ -15,7 +15,7 @@ def get_first_dict_key_for_value(input_dict: dict, value: Any):
     Returns
     -------
     Any
-        The key associated with the first match.
+        Key associated with the first match.
 
     Raises
     ------
