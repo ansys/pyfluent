@@ -207,7 +207,7 @@ def _get_file_or_folder(mode: str, is_datamodel: bool):
     Parameters
     ----------
     mode: str
-        Fluent session mode either ``meshing`` or ``solver``.
+        Fluent session mode. Options are ``meshing`` and ``solver``.
     is_datamodel: bool
         Whether to get datamodel folder.
 
