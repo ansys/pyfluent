@@ -1,4 +1,4 @@
-"""Provides a module for generating Fluent TUI .rst files."""
+"""Provides a module for generating Fluent TUI result files."""
 
 import fnmatch
 import importlib
