@@ -298,7 +298,7 @@ def _generate_doc(all_menus: list, mode: str, is_datamodel: bool):
     all_menus: list
         ``all_menus`` list.
     mode: str
-        Fluent session mode either ``meshing`` or ``solver``.
+        Fluent session mode. Options are ``meshing`` and ``solver``.
     is_datamodel: bool
         Whether to generate datamodel .rst files.
     """
