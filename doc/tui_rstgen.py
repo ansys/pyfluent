@@ -270,15 +270,14 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
 
 
 def _generate_all_attribute_classes(all_menus: list, main_menu: type):
-    """Store all attribute classes with and without members as attributes into ``all_menus``
-    class.
+    """Store all attribute classes with and without members into ``all_menus`` list.
 
     Parameters
     ----------
     all_menus: list
         ``all_menus`` list.
     main_menu: type
-        ``main_menu`` class.
+        ``main_menu`` or ``Root`` class.
     """
     with_members, without_members = _get_attribute_classes_with_and_without_members(
         main_menu
@@ -312,7 +311,7 @@ def generate(main_menu: type, mode: str, is_datamodel: bool):
     Parameters
     ----------
     main_menu: type
-        ``main_menu`` class.
+        ``main_menu`` or ``Root`` class.
     mode: str
         Fluent session mode. Options are ``meshing`` and ``solver``.
     is_datamodel: bool
