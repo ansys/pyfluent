@@ -110,32 +110,11 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
 def _get_files(
     file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
-    path: str,
 ):
     if isinstance(file_name, (str, pathlib.PurePath)):
-        file_name = pathlib.Path(file_name)
-        file_path_check = os.path.join(path, file_name.name)
-        files = [file_path_check] if os.path.isfile(file_path_check) else [file_name]
-        logger.debug(f"\n pyfluent.EXAMPLES_PATH = {pyfluent.EXAMPLES_PATH} \n")
-        logger.debug(f"\n host_mount_path = {path} \n")
-        logger.debug(f"\n file_name = {file_name} \n")
-        logger.debug(f"\n file_name.name = {file_name.name} \n")
-        logger.debug(f"\n file_path_check = {file_path_check} \n")
-        logger.debug(f"\n is_file_path_check = {os.path.isfile(file_path_check)} \n")
-        logger.debug(f"\n files = {files} \n")
-    elif isinstance(file_name, list):
-        files = []
-        for file in file_name:
-            file_path_check = os.path.join(path, os.path.basename(file))
-            logger.debug(f"\n file_path_check = {file_path_check} \n")
-            logger.debug(
-                f"\n is_file_path_check = {os.path.isfile(file_path_check)} \n"
-            )
-            if os.path.isfile(file_path_check):
-                files.append(file_path_check)
-            else:
-                files.append(file)
-        logger.debug(f"\n files = {files} \n")
+        files = [pathlib.Path(file_name)]
+    if isinstance(file_name, list):
+        files = [pathlib.Path(file) for file in file_name]
     return files
 
 
@@ -234,7 +213,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         FileNotFoundError
             If a file does not exist.
         """
-        files = _get_files(file_name, self.host_mount_path)
+        files = _get_files(file_name)
         if self.client:
             for file in files:
                 is_file_on_remote = self.file_exists_on_remote(os.path.basename(file))
@@ -267,7 +246,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         local_directory : str, optional
             Local directory. The default is ``None``.
         """
-        files = _get_files(file_name, self.host_mount_path)
+        files = _get_files(file_name)
         if self.client:
             for file in files:
                 if os.path.isfile(file):
