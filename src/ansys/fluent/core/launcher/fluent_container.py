@@ -55,7 +55,6 @@ from pathlib import Path, PurePosixPath
 import tempfile
 from typing import List, Optional, Union
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -179,9 +178,7 @@ def configure_container_dict(
     else:
         logger.debug(f"container_dict before processing: {container_dict}")
 
-    if not host_mount_path:
-        host_mount_path = pyfluent.EXAMPLES_PATH
-    elif "volumes" in container_dict:
+    if "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
             "it is going to be overwritten by specified 'host_mount_path'."
@@ -203,7 +200,13 @@ def configure_container_dict(
         container_dict.pop("volumes")
 
     if "volumes" not in container_dict:
-        container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
+        container_dict.update(
+            volumes=(
+                [f"{host_mount_path}:{container_mount_path}"]
+                if host_mount_path
+                else [f"pyfluent_data:{container_mount_path}"]
+            )
+        )
     else:
         logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
         if len(container_dict["volumes"]) != 1:

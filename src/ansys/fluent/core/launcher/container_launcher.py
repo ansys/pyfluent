@@ -48,9 +48,11 @@ class DockerLauncher:
 
     def __init__(
         self,
-        mode: FluentMode,
-        ui_mode: UIMode,
-        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
+        mode: Optional[Union[FluentMode, str, None]] = None,
+        ui_mode: Union[UIMode, str, None] = None,
+        graphics_driver: Union[
+            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+        ] = None,
         product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
