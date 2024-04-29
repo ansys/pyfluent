@@ -1,4 +1,4 @@
-"""Provides a module for generating Fluent Datamodel and TUI result files."""
+"""Provides a module for generating Fluent Datamodel and TUI RST files."""
 
 import fnmatch
 import os
@@ -57,8 +57,8 @@ def _get_attribute_classes_with_and_without_members(menu: type):
     return with_members, without_members
 
 
-def _set_with_without_members(with_member: type, all_menus: list):
-    """Set both with and without members as attributes to ``Menus`` class.
+def _add_with_without_members(with_member: type, all_menus: list):
+    """Add both with and without members to ``all_menus`` list.
 
     Parameters
     ----------
@@ -95,7 +95,7 @@ def _get_attribute_classes_recursively(with_member: type, all_menus: list):
     all_menus: list
         ``all_menus`` list.
     """
-    with_members, all_menus = _set_with_without_members(with_member, all_menus)
+    with_members, all_menus = _add_with_without_members(with_member, all_menus)
     for with_member in with_members:
         _get_attribute_classes_recursively(with_member, all_menus)
 
@@ -138,7 +138,7 @@ def _process_tui_path(full_name: str):
 
 
 def _get_menu_name_path(menu: type, is_datamodel: bool):
-    """Get menu name and path to generate .rst file and folder respectively.
+    """Get menu name and path to generate RST file and folder respectively.
 
     Parameters
     ----------
@@ -167,7 +167,7 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
 def _get_docdir(
     mode: str, path: Optional[str] = None, is_datamodel: Optional[bool] = None
 ):
-    """Get tui doc directory to generate all .rst files.
+    """Get tui doc directory to generate all RST files.
 
     Parameters
     ----------
@@ -268,7 +268,7 @@ def _get_sorted_members(members: list):
 
 
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
-    """Write .rst file for each menu.
+    """Write RST file for each menu.
 
     Parameters
     ----------
@@ -277,7 +277,7 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     mode: str
         Fluent session mode either ``meshing`` or ``solver``.
     is_datamodel: bool
-        Whether to generate datamodel .rst files.
+        Whether to generate datamodel RST files.
     """
     menu_name, menu_path = _get_menu_name_path(menu["name"], is_datamodel)
     full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
@@ -324,7 +324,7 @@ def _generate_all_attribute_classes(all_menus: list, main_menu: type):
 
 
 def _generate_doc(all_menus: list, mode: str, is_datamodel: bool):
-    """Write .rst file for each attribute class.
+    """Write RST file for each attribute class.
 
     Parameters
     ----------
@@ -333,14 +333,14 @@ def _generate_doc(all_menus: list, mode: str, is_datamodel: bool):
     mode: str
         Fluent session mode. Options are ``meshing`` and ``solver``.
     is_datamodel: bool
-        Whether to generate datamodel .rst files.
+        Whether to generate datamodel RST files.
     """
     for menu in all_menus:
         _write_doc(menu, mode, is_datamodel)
 
 
 def generate(main_menu: type, mode: str, is_datamodel: bool):
-    """Generate .rst files.
+    """Generate RST files.
 
     Parameters
     ----------
@@ -349,7 +349,7 @@ def generate(main_menu: type, mode: str, is_datamodel: bool):
     mode: str
         Fluent session mode. Options are ``meshing`` and ``solver``.
     is_datamodel: bool
-        Whether to generate datamodel .rst files.
+        Whether to generate datamodel RST files.
     """
 
     all_menus = []

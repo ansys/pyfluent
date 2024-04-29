@@ -1,4 +1,4 @@
-"""Provides a module for generating Fluent datamodel result files."""
+"""Provides a module for generating Fluent datamodel RST files."""
 
 import importlib
 

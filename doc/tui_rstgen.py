@@ -1,4 +1,4 @@
-"""Provides a module for generating Fluent result files."""
+"""Provides a module for generating Fluent RST files."""
 
 import importlib
 
