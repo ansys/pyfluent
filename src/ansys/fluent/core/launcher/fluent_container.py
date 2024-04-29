@@ -55,7 +55,6 @@ from pathlib import Path, PurePosixPath
 import tempfile
 from typing import List, Optional, Union
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -281,7 +280,7 @@ def configure_container_dict(
         fd, sifile = tempfile.mkstemp(
             suffix=".txt",
             prefix="serverinfo-",
-            dir=host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH,
+            dir=host_mount_path if host_mount_path else "/home",
         )
         os.close(fd)
         container_server_info_file = (
@@ -315,9 +314,7 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    server_info_file_path = (
-        Path(host_mount_path) if host_mount_path else pyfluent.USER_DATA_PATH
-    )
+    server_info_file_path = Path(host_mount_path) if host_mount_path else "/home"
 
     host_server_info_file = (
         Path(server_info_file_path) / container_server_info_file.name
