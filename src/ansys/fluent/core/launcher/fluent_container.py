@@ -180,7 +180,7 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
-        host_mount_path = pyfluent.EXAMPLES_PATH
+        host_mount_path = pyfluent.USER_DATA_PATH
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
