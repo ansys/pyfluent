@@ -194,7 +194,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         full_file_name = pathlib.Path(self.host_mount_path) / os.path.basename(
             file_name
         )
-        return full_file_name.is_file()
+        return full_file_name, full_file_name.is_file()
 
     def upload(
         self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
@@ -216,11 +216,33 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         files = _get_files(file_name)
         if self.client:
             for file in files:
-                is_file_on_remote = self.file_exists_on_remote(os.path.basename(file))
-                if is_file_on_remote:
+                full_file_name, is_file_on_remote = self.file_exists_on_remote(
+                    os.path.basename(file)
+                )
+                if is_file_on_remote and full_file_name.samefile(file):
                     warnings.warn(
                         f"\n{file} with the same name exists at the remote location.\n",
                         UserWarning,
+                    )
+                    return
+                elif (
+                    is_file_on_remote
+                    and os.path.isfile(file)
+                    and not full_file_name.samefile(file)
+                ):
+                    warnings.warn(
+                        f"\n{file} with the same name and different content exists at the remote location. "
+                        f"It's replaced with the given file.\n",
+                        UserWarning,
+                    )
+                    full_file_name.unlink()
+                    self.client.upload_file(
+                        local_filename=file,
+                        remote_filename=(
+                            remote_file_name
+                            if remote_file_name
+                            else os.path.basename(file)
+                        ),
                     )
                 elif os.path.isfile(file) and not is_file_on_remote:
                     self.client.upload_file(
