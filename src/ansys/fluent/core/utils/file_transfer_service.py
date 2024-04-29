@@ -112,6 +112,7 @@ def _get_files(
     file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
     path: str,
 ):
+    path = path if path else pyfluent.EXAMPLES_PATH
     if isinstance(file_name, (str, pathlib.PurePath)):
         file_name = pathlib.Path(file_name)
         file_path_check = os.path.join(path, file_name.name)
