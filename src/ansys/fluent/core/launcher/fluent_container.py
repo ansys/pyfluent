@@ -318,8 +318,6 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    Path(pyfluent.USER_DATA_PATH).mkdir(parents=True, exist_ok=True)
-
     server_info_file_path = (
         host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH
     )
