@@ -173,7 +173,9 @@ def test_add_on_affected(new_mesh_session):
     calls = []
     subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
     geom = examples.download_file(
-        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        file_name="mixing_elbow.pmdb",
+        directory="pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
@@ -241,7 +243,9 @@ def test_add_on_command_executed(new_mesh_session):
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_file_name = examples.download_file(
-        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+        "mixing_elbow.pmdb",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
@@ -278,7 +282,9 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_file_name = examples.download_file(
-        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+        "mixing_elbow.pmdb",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
@@ -306,7 +312,9 @@ def test_datamodel_streaming_no_commands_diff_state(
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_file_name = examples.download_file(
-        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+        "mixing_elbow.pmdb",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
@@ -390,7 +398,9 @@ def test_generic_datamodel(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_named_object_specific_methods_using_flserver(new_solver_session):
     import_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     solver = new_solver_session
     solver.file.read(file_type="case", file_name=import_file_name)

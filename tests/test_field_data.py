@@ -14,7 +14,9 @@ HOT_INLET_TEMPERATURE = 313.15
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.tui.mesh.check()
@@ -115,7 +117,9 @@ def test_field_data(new_solver_session) -> None:
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
 
     field_data = solver.fields.field_data
@@ -171,7 +175,9 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
 
     field_data = solver.fields.field_data
@@ -299,7 +305,9 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 def test_field_data_errors(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
 
     with pytest.raises(DisallowedValuesError) as fne:
@@ -348,7 +356,9 @@ def test_field_data_errors(new_solver_session) -> None:
 def test_field_info_validators(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.solution.initialization.hybrid_initialize()

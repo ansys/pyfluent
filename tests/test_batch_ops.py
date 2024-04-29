@@ -10,7 +10,9 @@ def test_batch_ops_create_mesh(new_solver_session):
     solver = new_solver_session
     mesh = solver.results.graphics.mesh
     case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     with pyfluent.BatchOps(solver):
         solver.file.read(
@@ -28,7 +30,9 @@ def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     solver = new_solver_session
     mesh = solver.results.graphics.mesh
     case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
     with pytest.raises(KeyError):
         with pyfluent.BatchOps(solver):

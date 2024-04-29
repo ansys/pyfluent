@@ -26,7 +26,9 @@ from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
 import_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    "mixing_elbow.msh.h5",
+    "pyfluent/mixing_elbow",
+    return_without_path=False,
 )
 
 

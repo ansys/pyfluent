@@ -22,7 +22,10 @@ def test_parametric_workflow():
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     import_file_name = examples.download_file(
-        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
+        "Static_Mixer_main.cas.h5",
+        "pyfluent/static_mixer",
+        save_path=tmp_save_path,
+        return_without_path=False,
     )
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         inside_container = True

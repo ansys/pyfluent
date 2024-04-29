@@ -13,7 +13,9 @@ import_case_file_name = examples.download_file(
     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
 )
 import_mesh_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    "mixing_elbow.msh.h5",
+    "pyfluent/mixing_elbow",
+    return_without_path=False,
 )
 
 

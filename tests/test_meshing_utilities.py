@@ -2,7 +2,11 @@ import pytest
 
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+import_filename = examples.download_file(
+    "mixing_elbow.msh.h5",
+    "pyfluent/mixing_elbow",
+    return_without_path=False,
+)
 
 PYTEST_RELATIVE_TOLERANCE = 0.2
 
