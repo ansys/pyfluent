@@ -1232,6 +1232,7 @@ def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
     task_type = task.TaskType()
     kinds = {
+        None: SimpleTask,
         "Simple": SimpleTask,
         "Compound Child": CompoundChild,
         "Compound": CompoundTask,
