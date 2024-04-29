@@ -100,6 +100,43 @@ def _get_attribute_classes_recursively(with_member: type, all_menus: list):
         _get_attribute_classes_recursively(with_member, all_menus)
 
 
+def _process_datamodel_path(full_name: str):
+    """Get path for datamodel files.
+
+    Parameters
+    ----------
+    full_name: str
+        Full name of class.
+
+    Returns:
+    path: str
+        Path of datamodel class.
+    """
+    path_string = re.findall("core.*", full_name)
+    path = path_string[0].lstrip("core.")
+    path = path.replace("Root.", "")
+    path = re.sub("[0-9]", "", path)
+    path = path.lstrip("datamodel_.")
+    return path
+
+
+def _process_tui_path(full_name: str):
+    """Get path for tui files.
+
+    Parameters
+    ----------
+    full_name: str
+        Full name of class.
+
+    Returns:
+    path: str
+        Path of tui class.
+    """
+    path_string = re.findall("main_menu.*", full_name)
+    path = path_string[0].lstrip("main_menu.")
+    return path
+
+
 def _get_menu_name_path(menu: type, is_datamodel: bool):
     """Get menu name and path to generate .rst file and folder respectively.
 
@@ -120,11 +157,9 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
     name_string = re.findall("ansys.*", str(menu))
     full_name = name_string[0][0:-2]
     if is_datamodel:
-        path_string = re.findall("Root.*", full_name)
-        path = path_string[0].lstrip("Root.")
+        path = _process_datamodel_path(full_name)
     else:
-        path_string = re.findall("main_menu.*", full_name)
-        path = path_string[0].lstrip("main_menu.")
+        path = _process_tui_path(full_name)
     full_path = path.replace(".", "/")
     return full_name, full_path
 
