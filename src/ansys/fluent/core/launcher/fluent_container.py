@@ -179,7 +179,7 @@ def configure_container_dict(
     else:
         logger.debug(f"container_dict before processing: {container_dict}")
 
-    if "volumes" in container_dict:
+    if host_mount_path and "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
             "it is going to be overwritten by specified 'host_mount_path'."
