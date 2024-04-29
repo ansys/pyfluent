@@ -185,8 +185,8 @@ def configure_container_dict(
         )
         container_dict.pop("volumes")
 
-    if not os.path.exists(host_mount_path):
-        os.makedirs(host_mount_path)
+    if host_mount_path and not os.path.exists(host_mount_path):
+        Path(host_mount_path).mkdir(parents=True, exist_ok=True)
 
     if not container_mount_path:
         container_mount_path = os.getenv(
