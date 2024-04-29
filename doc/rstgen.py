@@ -293,6 +293,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         )
         f.write("   :show-inheritance:\n")
         f.write("   :undoc-members:\n")
+        f.write("   :exclude-members: '__weakref__, __dict__'\n")
+        f.write("   :special-members: '__init__'\n")
         f.write("   :autosummary:\n")
         f.write("   :autosummary-members:\n\n")
 

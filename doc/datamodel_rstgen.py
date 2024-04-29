@@ -10,7 +10,8 @@ def generate_meshing_datamodels():
     meshing_datamodel_roots = []
     meshing_datamodels = [
         "meshing",
-        "MeshingUtilities" "PartManagement",
+        "MeshingUtilities",
+        "PartManagement",
         "PMFileManagement",
         "preferences",
         "workflow",
