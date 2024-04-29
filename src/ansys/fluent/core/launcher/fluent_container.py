@@ -279,9 +279,7 @@ def configure_container_dict(
         )
     else:
         fd, sifile = tempfile.mkstemp(
-            suffix=".txt",
-            prefix="serverinfo-",
-            dir=host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH,
+            suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
         os.close(fd)
         container_server_info_file = (
