@@ -6,7 +6,7 @@ from rstgen import _get_file_or_folder, generate
 
 
 def generate_meshing_datamodels():
-    """Generate meshing datamodel result files."""
+    """Generate meshing datamodel RST files."""
     meshing_datamodel_roots = []
     meshing_datamodels = [
         "meshing",
@@ -25,7 +25,7 @@ def generate_meshing_datamodels():
 
 
 def generate_solver_datamodels():
-    """Generate solver datamodel result files."""
+    """Generate solver datamodel RST files."""
     solver_datamodel_roots = []
     solver_datamodels = ["flicing", "preferences", "solverworkflow", "workflow"]
     for solver_datamodel in solver_datamodels:
