@@ -55,7 +55,6 @@ from pathlib import Path, PurePosixPath
 import tempfile
 from typing import List, Optional, Union
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -313,11 +312,7 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    host_server_info_file = (
-        (Path(host_mount_path) / container_server_info_file.name)
-        if host_mount_path
-        else (Path(pyfluent.EXAMPLES_PATH) / container_server_info_file.name)
-    )
+    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
     return (
         container_dict,
