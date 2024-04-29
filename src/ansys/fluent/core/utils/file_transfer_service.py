@@ -175,9 +175,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
-        self.host_mount_path = (
-            host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
-        )
+        self.host_mount_path = host_mount_path
         try:
             self.host_port = port if port else random.randint(5000, 6000)
             self.ports = {"50000/tcp": self.host_port}
@@ -185,7 +183,11 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
+                volumes=(
+                    [f"{self.host_mount_path}:{self.container_mount_path}"]
+                    if host_mount_path
+                    else [f"pyfluent_data:{container_mount_path}"]
+                ),
             )
         except docker.errors.DockerException:
             self.host_port = port if port else random.randint(6000, 7000)
@@ -194,7 +196,11 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
+                volumes=(
+                    [f"{self.host_mount_path}:{self.container_mount_path}"]
+                    if host_mount_path
+                    else [f"pyfluent_data:{container_mount_path}"]
+                ),
             )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
