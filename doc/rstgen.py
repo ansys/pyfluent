@@ -26,7 +26,7 @@ def _get_attribute_classes(menu: type):
     attribute_classes = []
     attributes_dict = dict(vars(menu))
     for attr_name, attr_value in attributes_dict.items():
-        if not attr_name.startswith("__"):
+        if not (attr_name.startswith("__") or attr_name.startswith("_")):
             attribute_classes.append(attributes_dict[attr_name])
     return attribute_classes
 
