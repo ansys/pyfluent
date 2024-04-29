@@ -7,6 +7,7 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
@@ -16,11 +17,34 @@ from ansys.fluent.core.services.datamodel_se import (
     PyNamedObjectContainer,
     PyTextual,
     ReadOnlyObjectError,
+    _convert_value_to_variant,
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.execution import timeout_loop
+
+
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        (None, None),
+        (False, False),
+        (True, True),
+        (1, 1),
+        (1.0, 1.0),
+        ("abc", "abc"),
+        ((1, 2, 3), [1, 2, 3]),
+        ([1, 2, 3], [1, 2, 3]),
+        ({"a": 5}, {"a": 5}),
+        ({"a": [1, 2, 3]}, {"a": [1, 2, 3]}),
+        ({"a": {"b": 5}}, {"a": {"b": 5}}),
+    ],
+)
+def test_convert_value_to_variant_to_value(value, expected):
+    variant = Variant()
+    _convert_value_to_variant(value, variant)
+    assert expected == _convert_variant_to_value(variant)
 
 
 @pytest.mark.fluent_version(">=23.2")

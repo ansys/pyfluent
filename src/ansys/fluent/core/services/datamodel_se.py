@@ -295,6 +295,7 @@ def _convert_value_to_variant(val: _TValue, var: Variant) -> None:
             item_var = var.variant_vector_state.item.add()
             _convert_value_to_variant(item, item_var)
     elif isinstance(val, dict):
+        var.variant_map_state.SetInParent()
         for k, v in val.items():
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
