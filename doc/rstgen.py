@@ -113,10 +113,11 @@ def _process_datamodel_path(full_name: str):
         Path of datamodel class.
     """
     path_string = re.findall("core.*", full_name)
-    path = path_string[0].lstrip("core.")
-    path = path.replace("Root.", "")
+    path = path_string[0].replace("core.", "")
     path = re.sub("[0-9]", "", path)
-    path = path.lstrip("datamodel_.")
+    path = path.replace("Root", "")
+    path = path.replace("datamodel_.", "")
+    path = path.replace(".", "/")
     return path
 
 
@@ -133,7 +134,8 @@ def _process_tui_path(full_name: str):
         Path of tui class.
     """
     path_string = re.findall("main_menu.*", full_name)
-    path = path_string[0].lstrip("main_menu.")
+    path = path_string[0].replace("main_menu", "")
+    path = path.replace(".", "/")
     return path
 
 
@@ -157,10 +159,9 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
     name_string = re.findall("ansys.*", str(menu))
     full_name = name_string[0][0:-2]
     if is_datamodel:
-        path = _process_datamodel_path(full_name)
+        full_path = _process_datamodel_path(full_name)
     else:
-        path = _process_tui_path(full_name)
-    full_path = path.replace(".", "/")
+        full_path = _process_tui_path(full_name)
     return full_name, full_path
 
 
@@ -183,17 +184,9 @@ def _get_docdir(
     """
     doc_path = pathlib.Path(os.path.normpath(os.path.join(_THIS_DIRNAME, "..")))
     if is_datamodel:
-        return (
-            doc_path / f"doc/source/api/{mode}/datamodel/{path}"
-            if path
-            else doc_path / f"doc/source/api/{mode}/datamodel"
-        )
+        return doc_path / f"doc/source/api/{mode}/datamodel/{path}"
     else:
-        return (
-            doc_path / f"doc/source/api/{mode}/tui/{path}"
-            if path
-            else doc_path / f"doc/source/api/{mode}/tui"
-        )
+        return doc_path / f"doc/source/api/{mode}/tui/{path}"
 
 
 def _get_path(mode: str, is_datamodel: Optional[bool] = None):
@@ -357,3 +350,22 @@ def generate(main_menu: type, mode: str, is_datamodel: bool):
     all_menus = []
     _generate_all_attribute_classes(all_menus, main_menu)
     _generate_doc(all_menus, mode, is_datamodel)
+
+
+if __name__ == "__main__":
+    print(_THIS_DIRNAME)
+    import fnmatch
+    import os
+    import pathlib
+    from pathlib import Path
+    import re
+    from typing import Optional
+
+    from ansys.fluent.core.solver.tui_242 import main_menu
+
+    _THIS_DIRNAME = "D:\Repos\pyfluent\doc"
+    with_members, without_members = _get_attribute_classes_with_and_without_members(
+        main_menu
+    )
+    menu_name, menu_path = _get_menu_name_path(with_members[9], False)
+    full_folder_path = _get_docdir("solver", menu_path, False)
