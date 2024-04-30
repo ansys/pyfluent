@@ -1430,6 +1430,7 @@ def test_loaded_workflow(new_mesh_session):
     loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
     assert "set_up_rotational_periodic_boundaries" in loaded_workflow.task_names()
     assert "import_boi_geometry" in loaded_workflow.task_names()
+    time.sleep(2)
     # The below snippet is randomly failing in CI
     assert loaded_workflow.import_boi_geometry_1.arguments()
 
