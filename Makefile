@@ -126,6 +126,8 @@ build-doc-source:
 	@xvfb-run make -C doc html
 
 build-all-docs:
+	@python doc/datamodel_rstgen.py
+	@python doc/tui_rstgen.py
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@xvfb-run make -C doc html

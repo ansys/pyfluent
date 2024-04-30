@@ -23,4 +23,8 @@ clean:
 	rm -rf build_errors.txt
 	rm -rf $(BUILDDIR)/*
 	rm -rf $(SOURCEDIR)/examples/*
-	find . -type d -name "_autosummary" -exec rm -rf {} +
+	rm -rf $(SOURCEDIR)/api/meshing/datamodel
+	rm -rf $(SOURCEDIR)/api/meshing/tui
+	rm -rf $(SOURCEDIR)/api/solver/datamodel
+	rm -rf $(SOURCEDIR)/api/solver/tui
+	find . -type d -name "_autosummary" "datamodel" -exec rm -rf {} +
