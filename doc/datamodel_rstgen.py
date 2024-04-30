@@ -2,7 +2,7 @@
 
 import importlib
 
-from rstgen import _get_file_or_folder, generate
+from rstgen import _get_file_or_folder, _write_datamodel_index_doc, generate
 
 
 def generate_meshing_datamodels():
@@ -21,6 +21,7 @@ def generate_meshing_datamodels():
             f"ansys.fluent.core.{_get_file_or_folder(mode='meshing', is_datamodel=True)}.{meshing_datamodel}"
         )
         meshing_datamodel_roots.append(datamodel.Root)
+        _write_datamodel_index_doc(meshing_datamodels, "meshing")
     for root in meshing_datamodel_roots:
         generate(main_menu=root, mode="meshing", is_datamodel=True)
 
@@ -34,6 +35,7 @@ def generate_solver_datamodels():
             f"ansys.fluent.core.{_get_file_or_folder(mode='solver', is_datamodel=True)}.{solver_datamodel}"
         )
         solver_datamodel_roots.append(datamodel.Root)
+        _write_datamodel_index_doc(solver_datamodels, "solver")
     for root in solver_datamodel_roots:
         generate(main_menu=root, mode="solver", is_datamodel=True)
 

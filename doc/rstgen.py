@@ -26,7 +26,7 @@ def _get_attribute_classes(menu: type):
     attribute_classes = []
     attributes_dict = dict(vars(menu))
     for attr_name, attr_value in attributes_dict.items():
-        if not (attr_name.startswith("__") or attr_name.startswith("_")):
+        if not attr_name.startswith("__"):
             attribute_classes.append(attributes_dict[attr_name])
     return attribute_classes
 
@@ -260,6 +260,33 @@ def _get_sorted_members(members: list):
     return sorted([member.__name__ for member in members])
 
 
+def _write_datamodel_index_doc(datamodels: list, mode: str):
+    """Write RST file for each datamodel.
+
+    Parameters
+    ----------
+    datamodels: list
+        Meshing and Solver datamodels.
+    mode: str
+        Fluent session mode either ``meshing`` or ``solver``.
+    """
+    full_folder_path = _get_docdir(mode, "", True)
+    Path(full_folder_path).mkdir(parents=True, exist_ok=True)
+    index_file = Path(full_folder_path) / "index.rst"
+    datamodel_mode = f"{mode}.datamodel"
+    with open(index_file, "w", encoding="utf8") as f:
+        f.write(f".. _ref_{mode}_datamodel:\n\n")
+        f.write(f"{datamodel_mode}\n")
+        f.write(f"{'=' * len(datamodel_mode)}\n\n")
+        f.write(f".. automodule:: ansys.fluent.core.datamodel\n")
+        f.write("   :autosummary:\n\n")
+        f.write("   :autosummary-members:\n\n")
+        f.write(".. toctree::\n")
+        f.write("   :hidden:\n\n")
+        for datamodel in datamodels:
+            f.write(f"   {datamodel}/index\n")
+
+
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
     """Write RST file for each menu.
 
@@ -286,8 +313,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         )
         f.write("   :show-inheritance:\n")
         f.write("   :undoc-members:\n")
-        f.write("   :exclude-members: '__weakref__, __dict__'\n")
-        f.write("   :special-members: '__init__'\n")
+        f.write("   :exclude-members: __weakref__, __dict__\n")
+        f.write("   :special-members: __init__\n")
         f.write("   :autosummary:\n")
         f.write("   :autosummary-members:\n\n")
 
@@ -350,22 +377,3 @@ def generate(main_menu: type, mode: str, is_datamodel: bool):
     all_menus = []
     _generate_all_attribute_classes(all_menus, main_menu)
     _generate_doc(all_menus, mode, is_datamodel)
-
-
-if __name__ == "__main__":
-    print(_THIS_DIRNAME)
-    import fnmatch
-    import os
-    import pathlib
-    from pathlib import Path
-    import re
-    from typing import Optional
-
-    from ansys.fluent.core.solver.tui_242 import main_menu
-
-    _THIS_DIRNAME = "D:\Repos\pyfluent\doc"
-    with_members, without_members = _get_attribute_classes_with_and_without_members(
-        main_menu
-    )
-    menu_name, menu_path = _get_menu_name_path(with_members[9], False)
-    full_folder_path = _get_docdir("solver", menu_path, False)
