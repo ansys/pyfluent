@@ -27,7 +27,6 @@ def generate_meshing_datamodels():
                 available_datamodels.append(meshing_datamodel)
         except ModuleNotFoundError:
             pass
-    print(available_datamodels)
     _write_datamodel_index_doc(available_datamodels, "meshing")
     for root in meshing_datamodel_roots:
         generate(main_menu=root, mode="meshing", is_datamodel=True)
@@ -36,6 +35,7 @@ def generate_meshing_datamodels():
 def generate_solver_datamodels():
     """Generate solver datamodel RST files."""
     solver_datamodel_roots = []
+    available_datamodels = []
     solver_datamodels = ["flicing", "preferences", "solverworkflow", "workflow"]
     for solver_datamodel in solver_datamodels:
         try:
@@ -44,11 +44,10 @@ def generate_solver_datamodels():
             )
             if datamodel:
                 solver_datamodel_roots.append(datamodel.Root)
-            else:
-                solver_datamodels.remove(solver_datamodel)
+                available_datamodels.append(solver_datamodel)
         except ModuleNotFoundError:
             pass
-    _write_datamodel_index_doc(solver_datamodels, "solver")
+    _write_datamodel_index_doc(available_datamodels, "solver")
     for root in solver_datamodel_roots:
         generate(main_menu=root, mode="solver", is_datamodel=True)
 
