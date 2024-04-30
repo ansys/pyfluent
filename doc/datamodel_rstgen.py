@@ -8,6 +8,7 @@ from rstgen import _get_file_or_folder, _write_datamodel_index_doc, generate
 def generate_meshing_datamodels():
     """Generate meshing datamodel RST files."""
     meshing_datamodel_roots = []
+    available_datamodels = []
     meshing_datamodels = [
         "meshing",
         "MeshingUtilities",
@@ -23,12 +24,11 @@ def generate_meshing_datamodels():
             )
             if datamodel:
                 meshing_datamodel_roots.append(datamodel.Root)
-            else:
-                meshing_datamodels.remove(meshing_datamodel)
+                available_datamodels.append(meshing_datamodel)
         except ModuleNotFoundError:
             pass
-            meshing_datamodel_roots.append(datamodel.Root)
-    _write_datamodel_index_doc(meshing_datamodels, "meshing")
+    print(available_datamodels)
+    _write_datamodel_index_doc(available_datamodels, "meshing")
     for root in meshing_datamodel_roots:
         generate(main_menu=root, mode="meshing", is_datamodel=True)
 
