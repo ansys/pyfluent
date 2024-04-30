@@ -21,7 +21,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def _read_case(session, lightweight_setup=True):
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    case_path = download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", return_without_path=False
+    )
     # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
     if session.get_fluent_version() < FluentVersion.v231:
         session.file.read(file_name=case_path, file_type="case")

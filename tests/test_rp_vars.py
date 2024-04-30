@@ -6,7 +6,9 @@ from ansys.fluent.core.filereader.casereader import CaseReader
 
 
 def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    case_path = download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", return_without_path=False
+    )
     solver = new_solver_session_no_transcript
     solver.tui.file.read_case(case_path)
     rp_vars = solver.rp_vars
@@ -27,7 +29,9 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
 
 @pytest.mark.fluent_version(">=23.1, !=24.1")
 def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    case_path = download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", return_without_path=False
+    )
     solver = new_solver_session_no_transcript
     solver.tui.file.read_case(case_path)
     rp_vars = solver.rp_vars

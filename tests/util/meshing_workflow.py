@@ -107,7 +107,9 @@ def mixing_elbow_geometry():
     global _mixing_elbow_geometry_file_name
     if not _mixing_elbow_geometry_file_name:
         _mixing_elbow_geometry_file_name = download_file(
-            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+            file_name="mixing_elbow.pmdb",
+            directory="pyfluent/mixing_elbow",
+            return_without_path=False,
         )
     return _mixing_elbow_geometry_file_name
 
@@ -147,7 +149,9 @@ def exhaust_system_geometry():
     global _exhaust_system_geometry_file_name
     if not _exhaust_system_geometry_file_name:
         _exhaust_system_geometry_file_name = download_file(
-            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+            file_name="exhaust_system.fmd",
+            directory="pyfluent/exhaust_system",
+            return_without_path=False,
         )
     return _exhaust_system_geometry_file_name
 

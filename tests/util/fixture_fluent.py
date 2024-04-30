@@ -25,6 +25,7 @@ def download_input_file(directory_name, full_file_name, data_file_name=None):
         globals()[file_name] = download_file(
             file_name=full_file_name,
             directory=directory_name,
+            return_without_path=False,
         )
     file_name = globals()[file_name]
     if data_file_name:
@@ -35,6 +36,7 @@ def download_input_file(directory_name, full_file_name, data_file_name=None):
             globals()[dat_name] = download_file(
                 file_name=data_file_name,
                 directory=directory_name,
+                return_without_path=False,
             )
         file_type = "case-data"
     return file_type, file_name
@@ -99,7 +101,9 @@ def exhaust_system_geometry():
     global _exhaust_system_geometry_file_name
     if not _exhaust_system_geometry_file_name:
         _exhaust_system_geometry_file_name = download_file(
-            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+            file_name="exhaust_system.fmd",
+            directory="pyfluent/exhaust_system",
+            return_without_path=False,
         )
     return _exhaust_system_geometry_file_name
 

@@ -810,7 +810,9 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
 def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
-    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file(
+        "elbow_source_terms.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
     solver.file.read_case(file_name=case_path)
 
     solver.solution.initialization.hybrid_initialize()
@@ -842,7 +844,9 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
-    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file(
+        "elbow_source_terms.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
     solver.file.read_case(file_name=case_path)
 
     solver.solution.initialization.hybrid_initialize()

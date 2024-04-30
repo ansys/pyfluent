@@ -10,7 +10,9 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core import examples
 
 import_case_file_name = examples.download_file(
-    "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    "mixing_elbow.cas.h5",
+    "pyfluent/mixing_elbow",
+    return_without_path=False,
 )
 import_mesh_file_name = examples.download_file(
     "mixing_elbow.msh.h5",
