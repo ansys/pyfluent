@@ -18,11 +18,11 @@ from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-class CommandInstanceCreationError(Exception):
+class CommandInstanceCreationError(RuntimeError):
     """Raised when an attempt to create an instance of a task command fails."""
 
     def __init__(self, task_name):
-        super().__init__(f"Could not create command instance for task {task_name}")
+        super().__init__(f"Could not create command instance for task {task_name}.")
 
 
 def camel_to_snake_case(camel_case_str: str) -> str:
