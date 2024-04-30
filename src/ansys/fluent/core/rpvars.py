@@ -56,8 +56,8 @@ class RPVars:
         """
         return (
             self._set_var(var, val)
-            if val
-            else (self._get_var(var) if var else self._get_vars())
+            if val is not None
+            else (self._get_var(var) if var is not None else self._get_vars())
         )
 
     def allowed_values(self) -> List[str]:
