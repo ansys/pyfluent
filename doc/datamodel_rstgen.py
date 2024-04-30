@@ -17,11 +17,18 @@ def generate_meshing_datamodels():
         "workflow",
     ]
     for meshing_datamodel in meshing_datamodels:
-        datamodel = importlib.import_module(
-            f"ansys.fluent.core.{_get_file_or_folder(mode='meshing', is_datamodel=True)}.{meshing_datamodel}"
-        )
-        meshing_datamodel_roots.append(datamodel.Root)
-        _write_datamodel_index_doc(meshing_datamodels, "meshing")
+        try:
+            datamodel = importlib.import_module(
+                f"ansys.fluent.core.{_get_file_or_folder(mode='meshing', is_datamodel=True)}.{meshing_datamodel}"
+            )
+            if datamodel:
+                meshing_datamodel_roots.append(datamodel.Root)
+            else:
+                meshing_datamodels.remove(meshing_datamodel)
+        except ModuleNotFoundError:
+            pass
+            meshing_datamodel_roots.append(datamodel.Root)
+    _write_datamodel_index_doc(meshing_datamodels, "meshing")
     for root in meshing_datamodel_roots:
         generate(main_menu=root, mode="meshing", is_datamodel=True)
 
@@ -31,11 +38,17 @@ def generate_solver_datamodels():
     solver_datamodel_roots = []
     solver_datamodels = ["flicing", "preferences", "solverworkflow", "workflow"]
     for solver_datamodel in solver_datamodels:
-        datamodel = importlib.import_module(
-            f"ansys.fluent.core.{_get_file_or_folder(mode='solver', is_datamodel=True)}.{solver_datamodel}"
-        )
-        solver_datamodel_roots.append(datamodel.Root)
-        _write_datamodel_index_doc(solver_datamodels, "solver")
+        try:
+            datamodel = importlib.import_module(
+                f"ansys.fluent.core.{_get_file_or_folder(mode='solver', is_datamodel=True)}.{solver_datamodel}"
+            )
+            if datamodel:
+                solver_datamodel_roots.append(datamodel.Root)
+            else:
+                solver_datamodels.remove(solver_datamodel)
+        except ModuleNotFoundError:
+            pass
+    _write_datamodel_index_doc(solver_datamodels, "solver")
     for root in solver_datamodel_roots:
         generate(main_menu=root, mode="solver", is_datamodel=True)
 
