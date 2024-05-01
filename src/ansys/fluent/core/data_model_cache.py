@@ -3,6 +3,7 @@
 from collections import abc, defaultdict
 import copy
 from enum import Enum
+from threading import RLock
 from typing import Any, Dict, List, Optional, Union
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
@@ -107,6 +108,7 @@ class DataModelCache:
     def __init__(self):
         self.rules_str_to_cache = defaultdict(dict)
         self.rules_str_to_config = {}
+        self._lock = RLock()
 
     class Empty:
         """Class representing unassigned cached state."""
@@ -236,37 +238,42 @@ class DataModelCache:
         deleted_paths : List[str]
             list of deleted paths
         """
-        cache = self.rules_str_to_cache[rules]
-        internal_names_as_keys = self.get_config(rules, "name_key") == NameKey.INTERNAL
-        for deleted_path in deleted_paths:
-            comps = [x for x in deleted_path.split("/") if x]
-            sub_cache = cache
-            for i, comp in enumerate(comps):
-                if ":" in comp:
-                    _, iname = comp.split(":", maxsplit=1)
-                    key_to_del = None
-                    for k, v in sub_cache.items():
-                        if (internal_names_as_keys and k == comp) or (
-                            (not internal_names_as_keys)
-                            and isinstance(v, dict)
-                            and v.get(NameKey.INTERNAL.value) == iname
-                        ):
-                            if i == len(comps) - 1:
-                                key_to_del = k
-                            else:
-                                sub_cache = v
+        with self._lock:
+            cache = self.rules_str_to_cache[rules]
+            internal_names_as_keys = (
+                self.get_config(rules, "name_key") == NameKey.INTERNAL
+            )
+            for deleted_path in deleted_paths:
+                comps = [x for x in deleted_path.split("/") if x]
+                sub_cache = cache
+                for i, comp in enumerate(comps):
+                    if ":" in comp:
+                        _, iname = comp.split(":", maxsplit=1)
+                        key_to_del = None
+                        for k, v in sub_cache.items():
+                            if (internal_names_as_keys and k == comp) or (
+                                (not internal_names_as_keys)
+                                and isinstance(v, dict)
+                                and v.get(NameKey.INTERNAL.value) == iname
+                            ):
+                                if i == len(comps) - 1:
+                                    key_to_del = k
+                                else:
+                                    sub_cache = v
+                                break
+                        else:
                             break
+                        if key_to_del:
+                            del sub_cache[key_to_del]
                     else:
-                        break
-                    if key_to_del:
-                        del sub_cache[key_to_del]
-                else:
-                    if comp in sub_cache:
-                        sub_cache = sub_cache[comp]
-                    else:
-                        break
-        for k, v in state.variant_map_state.item.items():
-            self._update_cache_from_variant_state(rules, cache, k, v, dict.__setitem__)
+                        if comp in sub_cache:
+                            sub_cache = sub_cache[comp]
+                        else:
+                            break
+            for k, v in state.variant_map_state.item.items():
+                self._update_cache_from_variant_state(
+                    rules, cache, k, v, dict.__setitem__
+                )
 
     @staticmethod
     def _dm_path_comp(comp):
@@ -297,27 +304,28 @@ class DataModelCache:
         state : Any
             cached state
         """
-        name_key_in_config = self.get_config(rules, "name_key")
-        if name_key == None:
-            name_key = name_key_in_config
-        cache = self.rules_str_to_cache[rules]
-        if not len(cache):
-            return DataModelCache.Empty
-        comps = DataModelCache._dm_path_comp_list(obj)
-        for comp in comps:
-            if name_key == name_key_in_config:
-                cache = cache.get(comp, None)
-            else:
-                _, cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
-            if cache is None:
+        with self._lock:
+            name_key_in_config = self.get_config(rules, "name_key")
+            if name_key == None:
+                name_key = name_key_in_config
+            cache = self.rules_str_to_cache[rules]
+            if not len(cache):
                 return DataModelCache.Empty
+            comps = DataModelCache._dm_path_comp_list(obj)
+            for comp in comps:
+                if name_key == name_key_in_config:
+                    cache = cache.get(comp, None)
+                else:
+                    _, cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
+                if cache is None:
+                    return DataModelCache.Empty
 
-        if not isinstance(cache, abc.Mapping) or name_key == name_key_in_config:
-            return copy.deepcopy(cache)
-        else:
-            if not cache:
-                return DataModelCache.Empty
-            return _CacheImpl(name_key_in_config).transform(cache)
+            if not isinstance(cache, abc.Mapping) or name_key == name_key_in_config:
+                return copy.deepcopy(cache)
+            else:
+                if not cache:
+                    return DataModelCache.Empty
+                return _CacheImpl(name_key_in_config).transform(cache)
 
     def set_state(self, rules: str, obj: object, value: Any):
         """Set datamodel cache state.
@@ -331,17 +339,18 @@ class DataModelCache:
         value : Any
             state
         """
-        name_key_in_config = self.get_config(rules, "name_key")
-        cache = self.rules_str_to_cache[rules]
-        comps = DataModelCache._dm_path_comp_list(obj)
-        for i, comp in enumerate(comps):
-            key, next_cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
-            if i == len(comps) - 1 and not isinstance(value, abc.Mapping):
-                cache[key] = value
-                return
-            if isinstance(next_cache, abc.Mapping):
-                cache = next_cache
-            else:
-                cache[key] = {}
-                cache = cache[key]
-        _CacheImpl(name_key_in_config).update(cache, value)
+        with self._lock:
+            name_key_in_config = self.get_config(rules, "name_key")
+            cache = self.rules_str_to_cache[rules]
+            comps = DataModelCache._dm_path_comp_list(obj)
+            for i, comp in enumerate(comps):
+                key, next_cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
+                if i == len(comps) - 1 and not isinstance(value, abc.Mapping):
+                    cache[key] = value
+                    return
+                if isinstance(next_cache, abc.Mapping):
+                    cache = next_cache
+                else:
+                    cache[key] = {}
+                    cache = cache[key]
+            _CacheImpl(name_key_in_config).update(cache, value)
