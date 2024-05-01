@@ -85,7 +85,7 @@ DATAMODEL_USE_ATTR_CACHE = True
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
 # Parent directory where codegen writes out API files
-GENERATED_API_DIR = Path(__file__) / ".." / "generated"
+GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
 
 
 # TODO: cleanup the following and related code
