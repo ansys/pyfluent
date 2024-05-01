@@ -60,3 +60,19 @@ def test_rp_vars_allowed_values(new_solver_session_no_transcript) -> None:
         rp_vars("number-of-iterat")
 
     assert "number-of-iterations" in rp_vars.allowed_values()
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_rp_vars_boolean(new_solver_session_no_transcript) -> None:
+    solver = new_solver_session_no_transcript
+
+    var_name = "rp-lam?"
+    rp_vars = solver.rp_vars
+
+    var_val = rp_vars(var_name)
+    assert isinstance(var_val, bool)
+
+    for i in range(10):
+        var_val = not var_val
+        rp_vars(var_name, var_val)
+        assert rp_vars(var_name) == var_val
