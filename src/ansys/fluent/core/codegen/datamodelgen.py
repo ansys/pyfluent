@@ -84,7 +84,7 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
 
 
 class DataModelStaticInfo:
-    """Datamodel static information."""
+    """Stores datamodel static information."""
 
     _noindices = []
 
@@ -109,7 +109,7 @@ class DataModelStaticInfo:
 
 
 class DataModelGenerator:
-    """Datamodel API class generator."""
+    """Provides the datamodel API class generator."""
 
     def __init__(self, version, sessions: dict):
         self.version = version

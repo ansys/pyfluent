@@ -49,7 +49,7 @@ def _get_tui_filepath(mode: str, version: str):
 _INDENT_STEP = 4
 
 
-# TODO: Move doc specific variables to docgen
+# TODO: Move doc-specific variables to docgen
 
 
 def _get_tui_docdir(mode: str):
@@ -168,7 +168,7 @@ class _RenameModuleUnpickler(pickle.Unpickler):
 
 
 class TUIGenerator:
-    """Class to generate explicit TUI menu classes."""
+    """Generates explicit TUI menu classes."""
 
     def __init__(self, mode: str, version: str, sessions: dict):
         self._mode = mode

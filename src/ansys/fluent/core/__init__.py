@@ -88,7 +88,7 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
 
 
-# TODO: cleanup the following and related code
+# TODO: clean up the following and related code
 def wrap_api_call(f, *args, **kwargs):
     """Wrap API call."""
     # overwritten in PyConsole

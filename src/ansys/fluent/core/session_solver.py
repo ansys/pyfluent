@@ -198,7 +198,7 @@ class Solver(BaseSession):
         """Datamodel root for workflow."""
         try:
             workflow_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self._version}.workflow"
+                f"ansys.fluent.core.generated.datamodel_{self._version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except ImportError:

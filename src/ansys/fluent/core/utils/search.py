@@ -68,7 +68,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path = [
             (
                 "<meshing_session>"
-                if module.startswith("ansys.fluent.core.meshing")
+                if module.startswith("ansys.fluent.core.generated.meshing")
                 else "<solver_session>"
             ),
             "tui",
