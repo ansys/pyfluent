@@ -214,6 +214,7 @@ def _get_path(mode: str, is_datamodel: Optional[bool] = None):
                 "ansys",
                 "fluent",
                 "core",
+                "generated",
             )
         )
     else:
@@ -225,6 +226,7 @@ def _get_path(mode: str, is_datamodel: Optional[bool] = None):
                 "ansys",
                 "fluent",
                 "core",
+                "generated",
                 f"{mode}",
             )
         )

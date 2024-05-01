@@ -472,7 +472,7 @@ def _populate_init(parent_dir, sinfo):
 
 def generate(version, sessions: dict):
     """Generate settings API classes."""
-    parent_dir = (GENERATED_API_DIR / f"settings_{version}").resolve()
+    parent_dir = (GENERATED_API_DIR / "solver" / f"settings_{version}").resolve()
 
     # Clear previously generated data
     if os.path.exists(parent_dir):

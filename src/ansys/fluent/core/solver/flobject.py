@@ -1970,7 +1970,7 @@ def get_root(
     obj_info = flproxy.get_static_info()
     try:
         settings = importlib.import_module(
-            f"ansys.fluent.core.solver.settings_{version}"
+            f"ansys.fluent.core.generated.solver.settings_{version}"
         )
 
         if settings.SHASH != _gethash(obj_info):

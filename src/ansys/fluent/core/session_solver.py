@@ -183,7 +183,7 @@ class Solver(BaseSession):
         if self._tui is None:
             try:
                 tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self._version}"
+                    f"ansys.fluent.core.generated.solver.tui_{self._version}"
                 )
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "solver", []

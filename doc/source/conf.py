@@ -76,9 +76,10 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 numpydoc_validation_exclude = {
-    "ansys.fluent.core.solver.settings_231.",
-    "ansys.fluent.core.solver.settings_232.",
-    "ansys.fluent.core.solver.settings_241.",
+    "ansys.fluent.core.generated.solver.settings_231.",
+    "ansys.fluent.core.generated.solver.settings_232.",
+    "ansys.fluent.core.generated.solver.settings_241.",
+    "ansys.fluent.core.generated.solver.settings_242.",
     "ansys.fluent.core.services.batch_ops.BatchOps.__init__",
 }
 
