@@ -4,8 +4,9 @@ import argparse
 import os
 from pathlib import Path
 import pickle
+import shutil
 
-from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
 from ansys.fluent.core.codegen import (
     datamodelgen,
     print_fluent_version,
@@ -49,6 +50,8 @@ def generate():
             os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
+    shutil.rmtree(GENERATED_API_DIR, ignore_errors=True)
+    GENERATED_API_DIR.mkdir(exist_ok=True)
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
     print_fluent_version.generate(sessions)
