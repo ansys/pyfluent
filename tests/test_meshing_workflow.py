@@ -586,7 +586,7 @@ def test_high_level_objects(new_mesh_session):
     meshing.GlobalSettings.EnableOversetMeshing.set_state(True)
     assert meshing.GlobalSettings.EnableOversetMeshing()
 
-    meshing.GlobalSettings.set_state({"EnableOversetMeshing": False})
+    meshing.GlobalSettings.set_state(EnableOversetMeshing=False)
     assert not meshing.GlobalSettings.EnableOversetMeshing()
     with pytest.raises(TypeError):
         meshing.GlobalSettings.set_state()
