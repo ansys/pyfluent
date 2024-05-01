@@ -315,7 +315,9 @@ def test_field_data_errors(new_solver_session) -> None:
     solver.file.read(file_type="case", file_name=import_file_name)
 
     with pytest.raises(FieldUnavailable) as fnu:
-        solver.field_data.get_scalar_field_data(field_name="density", surface_ids=[0])
+        solver.fields.field_data.get_scalar_field_data(
+            field_name="density", surface_ids=[0]
+        )
 
     y_face_area = solver.fields.field_data.get_scalar_field_data(
         field_name="y-face-area", surface_ids=[0]
@@ -381,7 +383,7 @@ def test_field_data_does_not_modify_case(new_solver_session):
     solver.file.read_case_data(file_name=case_path)
     solver.scheme_eval.scheme_eval("(%save-case-id)")
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
-    solver.field_data.get_scalar_field_data(
+    solver.fields.field_data.get_scalar_field_data(
         field_name="absolute-pressure", surface_name="cold-inlet"
     )
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
