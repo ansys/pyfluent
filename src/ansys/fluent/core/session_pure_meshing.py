@@ -93,6 +93,10 @@ class PureMeshing(BaseSession):
                 )
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 
+        for child_name in self._base_meshing.meshing().keys():
+            child = getattr(self._base_meshing.meshing, child_name)
+            self.__dict__[child_name] = child
+
     @property
     def tui(self):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be

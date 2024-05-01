@@ -576,3 +576,12 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     # Switch to solution mode
     solver = meshing.switch_to_solver()
     assert solver
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_high_level_objects(new_mesh_session):
+    meshing = new_mesh_session
+    assert "GlobalSettings" in dir(meshing)
+    assert not meshing.GlobalSettings.EnableOversetMeshing()
+    meshing.GlobalSettings.EnableOversetMeshing.set_state(True)
+    assert meshing.GlobalSettings.EnableOversetMeshing()
