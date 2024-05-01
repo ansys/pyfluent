@@ -185,9 +185,9 @@ def search(
     if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
-            if get_api_tree_file_name(version, None).exists():
+            if get_api_tree_file_name(version).exists():
                 break
-    api_tree_file = get_api_tree_file_name(version, None)
+    api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
 
