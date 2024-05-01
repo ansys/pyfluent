@@ -154,7 +154,7 @@ jobs:
             doc/source/api/meshing/datamodel
             doc/source/api/solver/tui
             doc/source/api/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Login to GitHub Container Registry
@@ -261,7 +261,7 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0
 
       - name: Login to GitHub Container Registry
@@ -303,7 +303,7 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0
 
       - name: Pull 23.1 Fluent docker image
@@ -338,7 +338,7 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
 
       - name: Pull 23.2 Fluent docker image
@@ -373,7 +373,7 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0
 
       - name: Pull 24.1 Fluent docker image
@@ -408,7 +408,7 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
 
       - name: Pull 24.2 Fluent docker image

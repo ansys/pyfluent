@@ -37,7 +37,7 @@ repos:
       --max-complexity, "10",
       --max-line-length, "88",
       --extend-ignore, E203 E501,
-      ansys, codegen, doc, examples, tests
+      ansys, doc, examples, tests
     ]
 
 - repo: https://github.com/codespell-project/codespell

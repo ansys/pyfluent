@@ -1,13 +1,15 @@
-import os
+"""Module to write Fluent version information."""
+
 from pathlib import Path
 
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
-_THIS_DIR = os.path.dirname(__file__)
+_ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def print_fluent_version(pyfluent_path, sessions: dict):
+    """Write Fluent version information to file."""
     if FluentMode.SOLVER not in sessions:
         sessions[FluentMode.SOLVER] = launch_fluent()
     session = sessions[FluentMode.SOLVER]
@@ -15,7 +17,7 @@ def print_fluent_version(pyfluent_path, sessions: dict):
     version_for_filename = get_version_for_file_name(_fluent_version)
     eval = session.scheme_eval.scheme_eval
     version_file = (
-        (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIR) / ".." / "src"))
+        (Path(pyfluent_path) if pyfluent_path else (Path(_ROOT_DIR) / "src"))
         / "ansys"
         / "fluent"
         / "core"
@@ -30,6 +32,7 @@ def print_fluent_version(pyfluent_path, sessions: dict):
 
 
 def generate(pyfluent_path, sessions: dict):
+    """Write Fluent version information."""
     print_fluent_version(pyfluent_path, sessions)
 
 

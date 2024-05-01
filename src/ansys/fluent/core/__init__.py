@@ -1,6 +1,7 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
+from pathlib import Path
 import pydoc
 
 import platformdirs
@@ -83,7 +84,11 @@ DATAMODEL_USE_ATTR_CACHE = True
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
+# Parent directory where codegen writes out API files
+GENERATED_API_DIR = Path(__file__) / ".." / "generated"
 
+
+# TODO: cleanup the following and related code
 def wrap_api_call(f, *args, **kwargs):
     """Wrap API call."""
     # overwritten in PyConsole

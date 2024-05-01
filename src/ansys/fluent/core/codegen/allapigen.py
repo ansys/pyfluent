@@ -1,14 +1,17 @@
+"""Module to generate Fluent API classes."""
+
 import argparse
 import os
 from pathlib import Path
 import pickle
 
-import datamodelgen
-import print_fluent_version
-import settingsgen
-import tuigen
-
 from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core.codegen import (
+    datamodelgen,
+    print_fluent_version,
+    settingsgen,
+    tuigen,
+)
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -21,7 +24,8 @@ def _update_first_level(d, u):
         d[k].update(u.get(k, {}))
 
 
-if __name__ == "__main__":
+def generate():
+    """Generate Fluent API classes."""
     api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
     parser = argparse.ArgumentParser(
         description="Generate python code from Fluent APIs"
@@ -66,3 +70,7 @@ if __name__ == "__main__":
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)
+
+
+if __name__ == "__main__":
+    generate()

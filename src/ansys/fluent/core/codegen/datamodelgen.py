@@ -1,3 +1,5 @@
+"""Module to generate Fluent datamodel API classes."""
+
 from io import FileIO
 import os
 from pathlib import Path
@@ -11,7 +13,7 @@ from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
 
-_THIS_DIR = Path(__file__).parent
+_ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
@@ -36,10 +38,11 @@ _PY_TYPE_BY_DM_TYPE = {
     "None": "None",
 }
 
+# TODO: Move doc specific variables to docgen
+
 _MESHING_DM_DOC_DIR = os.path.normpath(
     os.path.join(
-        _THIS_DIR,
-        "..",
+        _ROOT_DIR,
         "doc",
         "source",
         "api",
@@ -49,8 +52,7 @@ _MESHING_DM_DOC_DIR = os.path.normpath(
 )
 _SOLVER_DM_DOC_DIR = os.path.normpath(
     os.path.join(
-        _THIS_DIR,
-        "..",
+        _ROOT_DIR,
         "doc",
         "source",
         "api",
@@ -82,6 +84,8 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
 
 
 class DataModelStaticInfo:
+    """Datamodel static information."""
+
     _noindices = []
 
     def __init__(
@@ -98,7 +102,7 @@ class DataModelStaticInfo:
         if rules_save_name == "":
             rules_save_name = rules
         datamodel_dir = (
-            (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIR) / ".." / "src"))
+            (Path(pyfluent_path) if pyfluent_path else (Path(_ROOT_DIR) / "src"))
             / "ansys"
             / "fluent"
             / "core"
@@ -112,6 +116,8 @@ class DataModelStaticInfo:
 
 
 class DataModelGenerator:
+    """Datamodel API class generator."""
+
     def __init__(self, version, pyfluent_path, sessions: dict):
         self.version = version
         self.sessions = sessions
@@ -330,6 +336,7 @@ class DataModelGenerator:
         return api_tree
 
     def write_static_info(self) -> None:
+        """Write API classes to files."""
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
         for name, info in self._static_info.items():
             if info.static_info == None:
@@ -369,6 +376,7 @@ class DataModelGenerator:
 
 
 def generate(version, pyfluent_path, sessions: dict):
+    """Generate datamodel API classes."""
     return DataModelGenerator(version, pyfluent_path, sessions).write_static_info()
 
 

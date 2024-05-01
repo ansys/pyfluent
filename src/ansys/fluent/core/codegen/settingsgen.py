@@ -471,9 +471,10 @@ def _populate_init(parent_dir, sinfo):
 
 
 def generate(version, pyfluent_path, sessions: dict):
-    dirname = os.path.dirname(__file__)
+    """Generate settings API classes."""
+    root_dir = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
     parent_dir = (
-        (Path(pyfluent_path) if pyfluent_path else (Path(dirname) / ".." / "src"))
+        (Path(pyfluent_path) if pyfluent_path else (root_dir / "src"))
         / "ansys"
         / "fluent"
         / "core"

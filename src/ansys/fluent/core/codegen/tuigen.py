@@ -24,9 +24,8 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-from data.fluent_gui_help_patch import XML_HELP_PATCH
-
 from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
@@ -40,12 +39,12 @@ from ansys.fluent.core.utils.fluent_version import (
 
 logger = logging.getLogger("pyfluent.tui")
 
-_THIS_DIRNAME = os.path.dirname(__file__)
+_ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str, pyfluent_path: str):
     return (
-        (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIRNAME) / ".." / "src"))
+        (Path(pyfluent_path) if pyfluent_path else (Path(_ROOT_DIR) / "src"))
         / "ansys"
         / "fluent"
         / "core"
@@ -57,11 +56,13 @@ def _get_tui_filepath(mode: str, version: str, pyfluent_path: str):
 _INDENT_STEP = 4
 
 
+# TODO: Move doc specific variables to docgen
+
+
 def _get_tui_docdir(mode: str):
     return os.path.normpath(
         os.path.join(
-            _THIS_DIRNAME,
-            "..",
+            _ROOT_DIR,
             "doc",
             "source",
             "api",
@@ -71,9 +72,7 @@ def _get_tui_docdir(mode: str):
     )
 
 
-_XML_HELP_FILE = os.path.normpath(
-    os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
-)
+_XML_HELP_FILE = (Path(__file__) / ".." / "data" / "fluent_gui_help.xml").resolve()
 _XML_HELPSTRINGS = {}
 
 
@@ -89,7 +88,8 @@ def _copy_tui_help_xml_file(version: str):
         )
         xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         subprocess.run(
-            f"docker cp {container_name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
+            f"docker cp {container_name}:{xml_source} {str(_XML_HELP_FILE)}",
+            shell=is_linux,
         )
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
@@ -161,6 +161,7 @@ class _TUIMenu:
         self.children = {}
 
     def get_command_path(self, command: str) -> str:
+        """Get the full path to a command."""
         return convert_path_to_grpc_path(self.path + [command])
 
 
@@ -252,16 +253,18 @@ class TUIGenerator:
         return api_tree
 
     def generate(self) -> None:
+        """Generate TUI API classes."""
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             if FluentVersion(self._version) == FluentVersion.v222:
                 with open(
-                    os.path.join(
-                        _THIS_DIRNAME,
-                        "data",
-                        f"static_info_{self._version}_{self._mode}.pickle",
-                    ),
+                    (
+                        Path(__file__)
+                        / ".."
+                        / "data"
+                        / f"static_info_{self._version}_{self._mode}.pickle"
+                    ).resolve(),
                     "rb",
                 ) as f:
                     self._main_menu = pickle.load(f)
@@ -288,6 +291,7 @@ class TUIGenerator:
 
 
 def generate(version, pyfluent_path, sessions: dict):
+    """Generate TUI API classes."""
     api_tree = {}
     if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
