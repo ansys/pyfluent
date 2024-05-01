@@ -26,6 +26,7 @@ include = [
     { path = "src/ansys/fluent/core/generated/datamodel_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
 ]
 
 packages = [
