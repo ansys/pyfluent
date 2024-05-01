@@ -1,14 +1,10 @@
 """Module to write Fluent version information."""
 
-from pathlib import Path
-
-from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
-_ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
-
-def print_fluent_version(pyfluent_path, sessions: dict):
+def print_fluent_version(sessions: dict):
     """Write Fluent version information to file."""
     if FluentMode.SOLVER not in sessions:
         sessions[FluentMode.SOLVER] = launch_fluent()
@@ -17,11 +13,7 @@ def print_fluent_version(pyfluent_path, sessions: dict):
     version_for_filename = get_version_for_file_name(_fluent_version)
     eval = session.scheme_eval.scheme_eval
     version_file = (
-        (Path(pyfluent_path) if pyfluent_path else (Path(_ROOT_DIR) / "src"))
-        / "ansys"
-        / "fluent"
-        / "core"
-        / f"fluent_version_{version_for_filename}.py"
+        GENERATED_API_DIR / f"fluent_version_{version_for_filename}.py"
     ).resolve()
     with open(version_file, "w", encoding="utf8") as f:
         f.write(f'FLUENT_VERSION = "{_fluent_version}"\n')
@@ -31,9 +23,9 @@ def print_fluent_version(pyfluent_path, sessions: dict):
         f.write(f'FLUENT_BRANCH = "{eval("(inquire-src-vcs-branch)")}"\n')
 
 
-def generate(pyfluent_path, sessions: dict):
+def generate(sessions: dict):
     """Write Fluent version information."""
-    print_fluent_version(pyfluent_path, sessions)
+    print_fluent_version(sessions)
 
 
 if __name__ == "__main__":

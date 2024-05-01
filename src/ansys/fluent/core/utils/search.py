@@ -5,6 +5,7 @@ from pathlib import Path
 import pickle
 from typing import Any, Optional
 
+from ansys.fluent.core import GENERATED_API_DIR
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -22,17 +23,9 @@ from ansys.fluent.core.workflow import (
 )
 
 
-def get_api_tree_file_name(version: str, pyfluent_path: str) -> Path:
+def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    return (
-        (
-            (Path(pyfluent_path) / "ansys" / "fluent" / "core")
-            if pyfluent_path
-            else (Path(__file__) / ".." / "..")
-        )
-        / "data"
-        / f"api_tree_{version}.pickle"
-    ).resolve()
+    return (GENERATED_API_DIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):

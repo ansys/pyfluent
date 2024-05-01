@@ -30,11 +30,6 @@ def generate():
     parser = argparse.ArgumentParser(
         description="Generate python code from Fluent APIs"
     )
-    parser.add_argument(
-        "--pyfluent-path",
-        dest="pyfluent_path",
-        help="Specify the pyfluent installation folder to patch, with full path.  Such as /my-venv/Lib/site-packages",
-    )
     if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
         parser.add_argument(
             "--ansys-version",
@@ -56,17 +51,11 @@ def generate():
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    print_fluent_version.generate(args.pyfluent_path, sessions)
-    _update_first_level(
-        api_tree, tuigen.generate(version, args.pyfluent_path, sessions)
-    )
-    _update_first_level(
-        api_tree, datamodelgen.generate(version, args.pyfluent_path, sessions)
-    )
-    _update_first_level(
-        api_tree, settingsgen.generate(version, args.pyfluent_path, sessions)
-    )
-    api_tree_file = get_api_tree_file_name(version, args.pyfluent_path)
+    print_fluent_version.generate(sessions)
+    _update_first_level(api_tree, tuigen.generate(version, sessions))
+    _update_first_level(api_tree, datamodelgen.generate(version, sessions))
+    _update_first_level(api_tree, settingsgen.generate(version, sessions))
+    api_tree_file = get_api_tree_file_name(version)
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)

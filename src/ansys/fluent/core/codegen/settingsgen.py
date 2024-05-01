@@ -32,7 +32,7 @@ import pickle
 import pprint
 import shutil
 
-from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
@@ -470,17 +470,9 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-def generate(version, pyfluent_path, sessions: dict):
+def generate(version, sessions: dict):
     """Generate settings API classes."""
-    root_dir = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
-    parent_dir = (
-        (Path(pyfluent_path) if pyfluent_path else (root_dir / "src"))
-        / "ansys"
-        / "fluent"
-        / "core"
-        / "solver"
-        / f"settings_{version}"
-    ).resolve()
+    parent_dir = (GENERATED_API_DIR / f"settings_{version}").resolve()
 
     # Clear previously generated data
     if os.path.exists(parent_dir):
@@ -505,4 +497,4 @@ def generate(version, pyfluent_path, sessions: dict):
 if __name__ == "__main__":
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, None, sessions)
+    generate(version, sessions)

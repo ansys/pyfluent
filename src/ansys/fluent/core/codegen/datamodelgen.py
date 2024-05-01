@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 from typing import Any, Dict
 
-from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
 from ansys.fluent.core.session import BaseSession as Session
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -90,7 +90,6 @@ class DataModelStaticInfo:
 
     def __init__(
         self,
-        pyfluent_path: str,
         rules: str,
         modes: tuple,
         version: str,
@@ -101,13 +100,7 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (
-            (Path(pyfluent_path) if pyfluent_path else (Path(_ROOT_DIR) / "src"))
-            / "ansys"
-            / "fluent"
-            / "core"
-            / f"datamodel_{version}"
-        ).resolve()
+        datamodel_dir = (GENERATED_API_DIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
@@ -118,12 +111,11 @@ class DataModelStaticInfo:
 class DataModelGenerator:
     """Datamodel API class generator."""
 
-    def __init__(self, version, pyfluent_path, sessions: dict):
+    def __init__(self, version, sessions: dict):
         self.version = version
         self.sessions = sessions
         self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo(
-                pyfluent_path,
                 "workflow",
                 (
                     "meshing",
@@ -131,35 +123,30 @@ class DataModelGenerator:
                 ),
                 self.version,
             ),
-            "meshing": DataModelStaticInfo(
-                pyfluent_path, "meshing", ("meshing",), self.version
-            ),
+            "meshing": DataModelStaticInfo("meshing", ("meshing",), self.version),
             "PartManagement": DataModelStaticInfo(
-                pyfluent_path, "PartManagement", ("meshing",), self.version
+                "PartManagement", ("meshing",), self.version
             ),
             "PMFileManagement": DataModelStaticInfo(
-                pyfluent_path, "PMFileManagement", ("meshing",), self.version
+                "PMFileManagement", ("meshing",), self.version
             ),
             "flicing": DataModelStaticInfo(
-                pyfluent_path, "flserver", ("flicing",), self.version, "flicing"
+                "flserver", ("flicing",), self.version, "flicing"
             ),
             "preferences": DataModelStaticInfo(
-                pyfluent_path,
                 "preferences",
                 ("meshing", "solver", "flicing,"),
                 self.version,
             ),
             "solverworkflow": (
-                DataModelStaticInfo(
-                    pyfluent_path, "solverworkflow", ("solver",), self.version
-                )
+                DataModelStaticInfo("solverworkflow", ("solver",), self.version)
                 if FluentVersion(self.version) >= FluentVersion.v231
                 else None
             ),
         }
         if FluentVersion(self.version) >= FluentVersion.v242:
             self._static_info["meshing_utilities"] = DataModelStaticInfo(
-                pyfluent_path, "MeshingUtilities", ("meshing",), self.version
+                "MeshingUtilities", ("meshing",), self.version
             )
         if not self._static_info["solverworkflow"]:
             del self._static_info["solverworkflow"]
@@ -375,12 +362,12 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version, pyfluent_path, sessions: dict):
+def generate(version, sessions: dict):
     """Generate datamodel API classes."""
-    return DataModelGenerator(version, pyfluent_path, sessions).write_static_info()
+    return DataModelGenerator(version, sessions).write_static_info()
 
 
 if __name__ == "__main__":
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, None, sessions)
+    generate(version, sessions)

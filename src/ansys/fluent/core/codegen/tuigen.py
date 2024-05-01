@@ -24,7 +24,7 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-from ansys.fluent.core import FluentMode, launch_fluent
+from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
@@ -42,15 +42,8 @@ logger = logging.getLogger("pyfluent.tui")
 _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
-def _get_tui_filepath(mode: str, version: str, pyfluent_path: str):
-    return (
-        (Path(pyfluent_path) if pyfluent_path else (Path(_ROOT_DIR) / "src"))
-        / "ansys"
-        / "fluent"
-        / "core"
-        / mode
-        / f"tui_{version}.py"
-    ).resolve()
+def _get_tui_filepath(mode: str, version: str):
+    return (GENERATED_API_DIR / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -168,10 +161,10 @@ class _TUIMenu:
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, pyfluent_path: str, sessions: dict):
+    def __init__(self, mode: str, version: str, sessions: dict):
         self._mode = mode
         self._version = version
-        self._tui_file = _get_tui_filepath(mode, version, pyfluent_path)
+        self._tui_file = _get_tui_filepath(mode, version)
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
@@ -290,18 +283,16 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version, pyfluent_path, sessions: dict):
+def generate(version, sessions: dict):
     """Generate TUI API classes."""
     api_tree = {}
     if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
-        "meshing", version, pyfluent_path, sessions
+        "meshing", version, sessions
     ).generate()
-    api_tree["<solver_session>"] = TUIGenerator(
-        "solver", version, pyfluent_path, sessions
-    ).generate()
+    api_tree["<solver_session>"] = TUIGenerator("solver", version, sessions).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
@@ -315,4 +306,4 @@ def generate(version, pyfluent_path, sessions: dict):
 if __name__ == "__main__":
     sessions = {FluentMode.SOLVER: launch_fluent()}
     version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, None, sessions)
+    generate(version, sessions)
