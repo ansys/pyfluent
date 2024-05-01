@@ -1,6 +1,7 @@
 """Module to manage datamodel cache."""
 
 from collections import abc, defaultdict
+from contextlib import contextmanager
 import copy
 from enum import Enum
 from threading import RLock
@@ -108,7 +109,14 @@ class DataModelCache:
     def __init__(self):
         self.rules_str_to_cache = defaultdict(dict)
         self.rules_str_to_config = {}
-        self._lock = RLock()
+        self._locks = {}
+
+    @contextmanager
+    def _with_lock(self, rules: str):
+        if rules not in self._locks:
+            self._locks[rules] = RLock()
+        with self._locks[rules]:
+            yield
 
     class Empty:
         """Class representing unassigned cached state."""
@@ -238,8 +246,8 @@ class DataModelCache:
         deleted_paths : List[str]
             list of deleted paths
         """
-        with self._lock:
-            cache = self.rules_str_to_cache[rules]
+        cache = self.rules_str_to_cache[rules]
+        with self._with_lock(rules):
             internal_names_as_keys = (
                 self.get_config(rules, "name_key") == NameKey.INTERNAL
             )
@@ -304,11 +312,11 @@ class DataModelCache:
         state : Any
             cached state
         """
-        with self._lock:
-            name_key_in_config = self.get_config(rules, "name_key")
-            if name_key == None:
-                name_key = name_key_in_config
-            cache = self.rules_str_to_cache[rules]
+        name_key_in_config = self.get_config(rules, "name_key")
+        if name_key == None:
+            name_key = name_key_in_config
+        cache = self.rules_str_to_cache[rules]
+        with self._with_lock(rules):
             if not len(cache):
                 return DataModelCache.Empty
             comps = DataModelCache._dm_path_comp_list(obj)
@@ -339,9 +347,9 @@ class DataModelCache:
         value : Any
             state
         """
-        with self._lock:
-            name_key_in_config = self.get_config(rules, "name_key")
-            cache = self.rules_str_to_cache[rules]
+        name_key_in_config = self.get_config(rules, "name_key")
+        cache = self.rules_str_to_cache[rules]
+        with self._with_lock(rules):
             comps = DataModelCache._dm_path_comp_list(obj)
             for i, comp in enumerate(comps):
                 key, next_cache = _CacheImpl(name_key_in_config).find(cache, comp, None)
