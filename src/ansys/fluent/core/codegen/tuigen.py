@@ -158,6 +158,15 @@ class _TUIMenu:
         return convert_path_to_grpc_path(self.path + [command])
 
 
+class _RenameModuleUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        renamed_module = module
+        if module == "tuigen":
+            renamed_module = "ansys.fluent.core.codegen.tuigen"
+
+        return super(_RenameModuleUnpickler, self).find_class(renamed_module, name)
+
+
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
@@ -260,7 +269,7 @@ class TUIGenerator:
                     ).resolve(),
                     "rb",
                 ) as f:
-                    self._main_menu = pickle.load(f)
+                    self._main_menu = _RenameModuleUnpickler(f).load()
             else:
                 info = PyMenu(
                     self._service, self._version, self._mode, self._main_menu.path
