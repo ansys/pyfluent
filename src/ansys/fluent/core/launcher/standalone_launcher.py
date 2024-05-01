@@ -185,7 +185,7 @@ class StandaloneLauncher:
         """
         _validate_gpu(gpu, version)
         graphics_driver = _get_graphics_driver(graphics_driver)
-        ui_mode = _get_ui_mode(show_gui)
+        ui_mode = _get_ui_mode(show_gui, ui_mode)
         del show_gui
         mode = _get_mode(mode)
         argvals = locals().copy()
