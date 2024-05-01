@@ -115,8 +115,9 @@ def _process_datamodel_path(full_name: str):
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.", "")
     path = re.sub("[0-9]", "", path)
-    path = path.replace("Root", "")
+    path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
+    path = path.rstrip(".")
     path = path.replace(".", "/")
     return path
 
@@ -135,6 +136,7 @@ def _process_tui_path(full_name: str):
     """
     path_string = re.findall("main_menu.*", full_name)
     path = path_string[0].replace("main_menu", "")
+    path = path.lstrip(".")
     path = path.replace(".", "/")
     return path
 
@@ -287,6 +289,62 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
             f.write(f"   {datamodel}/index\n")
 
 
+def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
+    """Get reference for RST file.
+
+    Parameters
+    ----------
+    menu: type
+        TUIMenu, TUIMethod
+    menu_path: str
+        Menu folder path.
+    mode: str
+        Fluent session mode either ``meshing`` or ``solver``.
+    is_datamodel: bool
+        Whether the menu is of datamodel.
+    """
+    if is_datamodel:
+        if menu["name"].__name__ == "Root":
+            reference = f".. _ref_{mode}_datamodel_{menu_path}:\n\n"
+        else:
+            reference = f".. _ref_{mode}_datamodel_{menu_path.rstrip('/').replace('/', '_')}:\n\n"
+    else:
+        if menu["name"].__name__ == "main_menu":
+            reference = f".. _ref_{mode}_tui:\n\n"
+        else:
+            reference = f".. _ref_{mode}_tui_{menu_path.replace('/', '_')}:\n\n"
+    return reference
+
+
+def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
+    """Get title for RST.
+
+    Parameters
+    ----------
+    mode: str
+        Fluent session mode either ``meshing`` or ``solver``.
+    menu_path: str
+        Menu folder path.
+    menu: type
+        TUIMenu, TUIMethod
+    is_datamodel: bool
+        Whether the menu is of datamodel.
+    """
+    if is_datamodel:
+        title = (
+            f"{mode}.datamodel.{menu_path}"
+            if menu["name"].__name__ == "Root"
+            else menu["name"].__name__
+        )
+    else:
+        title = (
+            f"{mode}.tui"
+            if menu["name"].__name__ == "main_menu"
+            else menu["name"].__name__
+        )
+    return title
+
+
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
     """Write RST file for each menu.
 
@@ -303,10 +361,11 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
     Path(full_folder_path).mkdir(parents=True, exist_ok=True)
     index_file = Path(full_folder_path) / "index.rst"
+    title = _get_title(mode, menu_path, menu, is_datamodel)
     with open(index_file, "w", encoding="utf8") as f:
-        f.write(f".. _ref_{mode}_tui_{menu['name'].__name__}:\n\n")
-        f.write(f"{menu['name'].__name__}\n")
-        f.write(f"{'=' * len(menu['name'].__name__)}\n\n")
+        f.write(_get_reference(menu, menu_path, mode, is_datamodel))
+        f.write(f"{title}\n")
+        f.write(f"{'=' * len(title)}\n\n")
         f.write(f".. autoclass:: {menu_name}\n")
         f.write(
             f"   :members: {', '.join(_get_sorted_members(menu['without_members']))}\n"
