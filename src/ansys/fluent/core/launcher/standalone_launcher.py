@@ -47,7 +47,6 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_name,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -197,11 +196,7 @@ class StandaloneLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
-        self.file_transfer_service = (
-            file_transfer_service
-            if file_transfer_service
-            else LocalFileTransferStrategy(server_cwd=argvals["cwd"])
-        )
+        self.file_transfer_service = file_transfer_service
 
     def __call__(self):
         if self.lightweight_mode is None:
