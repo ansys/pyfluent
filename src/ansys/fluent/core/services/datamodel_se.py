@@ -891,7 +891,7 @@ class PyStateContainer(PyCallableStateObject):
         ReadOnlyObjectError
             If the object is read-only.
         """
-        if not state and not kwargs:
+        if state is None and not kwargs:
             raise TypeError(
                 "The `set_state()` method requires either 'state' or 'kwargs' arguments."
             )
