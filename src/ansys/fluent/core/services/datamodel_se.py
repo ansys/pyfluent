@@ -893,7 +893,7 @@ class PyStateContainer(PyCallableStateObject):
         """
         if not state and not kwargs:
             raise TypeError(
-                "set_state() requires either 'state' or 'kwargs' arguments."
+                "The `set_state()` method requires either 'state' or 'kwargs' arguments."
             )
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
