@@ -579,16 +579,15 @@ def test_new_2d_meshing_workflow(new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_high_level_objects(new_mesh_session):
+def test_set_state_behavior(new_mesh_session):
     meshing = new_mesh_session
-    assert "GlobalSettings" in dir(meshing)
-    assert not meshing.GlobalSettings.EnableOversetMeshing()
-    meshing.GlobalSettings.EnableOversetMeshing.set_state(True)
-    assert meshing.GlobalSettings.EnableOversetMeshing()
+    assert not meshing.meshing.GlobalSettings.EnableOversetMeshing()
+    meshing.meshing.GlobalSettings.EnableOversetMeshing.set_state(True)
+    assert meshing.meshing.GlobalSettings.EnableOversetMeshing()
 
-    meshing.GlobalSettings.set_state(EnableOversetMeshing=False)
-    assert not meshing.GlobalSettings.EnableOversetMeshing()
+    meshing.meshing.GlobalSettings.set_state(EnableOversetMeshing=False)
+    assert not meshing.meshing.GlobalSettings.EnableOversetMeshing()
     with pytest.raises(TypeError):
-        meshing.GlobalSettings.set_state()
+        meshing.meshing.GlobalSettings.set_state()
     with pytest.raises(TypeError):
-        meshing.GlobalSettings.EnableOversetMeshing.set_state()
+        meshing.meshing.GlobalSettings.EnableOversetMeshing.set_state()
