@@ -116,7 +116,7 @@ class SystemCoupling:
 
             ext_vars = {
                 "force",
-                "lortentz-force",
+                "lorentz-force",
                 "heatrate",
                 "heatflow",
                 "mass-flow-rate",
