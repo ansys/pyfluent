@@ -119,7 +119,7 @@ def test_empty_vector_field_data_2339(new_solver_session):
 
     assert [
         a.x
-        for a in solver.field_data.get_vector_field_data(
+        for a in solver.fields.field_data.get_vector_field_data(
             field_name="velocity", surface_ids=[1]
         )[1].data
     ][:5]

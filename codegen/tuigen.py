@@ -25,7 +25,6 @@ import uuid
 import xml.etree.ElementTree as ET
 
 from data.fluent_gui_help_patch import XML_HELP_PATCH
-from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.services.datamodel_tui import (
@@ -252,53 +251,6 @@ class TUIGenerator:
                 api_tree[k] = self._write_menu_to_tui_file(v, indent)
         return api_tree
 
-    def _write_doc_for_menu(
-        self, menu, doc_dir: Path, heading, class_name, noindex=True
-    ) -> None:
-        doc_dir.mkdir(exist_ok=True)
-        index_file = doc_dir / "index.rst"
-        with open(index_file, "w", encoding="utf8") as f:
-            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
-            f.write(f".. {ref}:\n\n")
-            if class_name == "main_menu":
-                heading_ = heading
-            else:
-                heading_ = class_name.split(".")[-1]
-            f.write(f"{heading_}\n")
-            f.write(f"{'=' * len(heading_)}\n")
-            desc = MENU_DESCRIPTIONS.get(heading)
-            if desc:
-                f.write(desc)
-            f.write("\n")
-
-            command_names = [v.name for _, v in menu.children.items() if v.is_command]
-            child_menu_names = [
-                v.name for _, v in menu.children.items() if not v.is_command
-            ]
-            f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
-            if noindex:
-                f.write("   :noindex:\n")
-            f.write(f"   :members: {', '.join(command_names)}\n")
-            f.write("   :show-inheritance:\n")
-            f.write("   :undoc-members:\n")
-            f.write("   :autosummary:\n")
-            f.write("   :autosummary-members:\n\n")
-
-            if child_menu_names:
-                f.write(".. toctree::\n")
-                f.write("   :hidden:\n\n")
-
-                for _, v in menu.children.items():
-                    if not v.is_command:
-                        f.write(f"   {v.name}/index\n")
-                        self._write_doc_for_menu(
-                            v,
-                            doc_dir / v.name,
-                            heading + "." + v.name,
-                            class_name + "." + v.name,
-                            False,
-                        )
-
     def generate(self) -> None:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
@@ -332,13 +284,6 @@ class TUIGenerator:
             )
             self._main_menu.name = "main_menu"
             api_tree["tui"] = self._write_menu_to_tui_file(self._main_menu)
-            self._write_doc_for_menu(
-                self._main_menu,
-                Path(self._tui_doc_dir),
-                self._tui_heading,
-                self._main_menu.name,
-                False,
-            )
         return api_tree
 
 
