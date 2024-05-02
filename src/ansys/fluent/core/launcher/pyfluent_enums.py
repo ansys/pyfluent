@@ -252,17 +252,17 @@ def _get_standalone_launch_fluent_version(
 
 
 def _get_ui_mode(
+    show_gui: bool,
     ui_mode: UIMode,
-    show_gui: Optional[bool] = None,
 ):
     """Get the graphics driver.
 
     Parameters
     ----------
-    ui_mode: UIMode
-        Fluent GUI mode.
     show_gui: bool
         Whether to show the Fluent GUI.
+    ui_mode: UIMode
+        Fluent GUI mode.
 
     Returns
     -------
