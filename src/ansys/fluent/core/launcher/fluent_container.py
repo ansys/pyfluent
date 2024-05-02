@@ -179,14 +179,16 @@ def configure_container_dict(
     else:
         logger.debug(f"container_dict before processing: {container_dict}")
 
-    if host_mount_path and "volumes" in container_dict:
+    if not host_mount_path:
+        host_mount_path = pyfluent.USER_DATA_PATH
+    elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
             "it is going to be overwritten by specified 'host_mount_path'."
         )
         container_dict.pop("volumes")
 
-    if host_mount_path and not os.path.exists(host_mount_path):
+    if not os.path.exists(host_mount_path):
         os.makedirs(host_mount_path)
 
     if not container_mount_path:
@@ -201,16 +203,7 @@ def configure_container_dict(
         container_dict.pop("volumes")
 
     if "volumes" not in container_dict:
-        container_dict.update(
-            volumes=[
-                (
-                    f"{host_mount_path}:{container_mount_path}"
-                    if host_mount_path
-                    else "pyfluent_data:/mnt/pfluent"
-                ),
-                f"{pyfluent.USER_DATA_PATH}:{container_mount_path}",
-            ]
-        )
+        container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
     else:
         logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
         if len(container_dict["volumes"]) != 1:
@@ -282,18 +275,11 @@ def configure_container_dict(
         )
     else:
         fd, sifile = tempfile.mkstemp(
-            suffix=".txt",
-            prefix="serverinfo-",
-            dir=host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH,
+            suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
         os.close(fd)
         container_server_info_file = (
-            PurePosixPath(
-                container_mount_path
-                if container_mount_path
-                else DEFAULT_CONTAINER_MOUNT_PATH
-            )
-            / Path(sifile).name
+            PurePosixPath(container_mount_path) / Path(sifile).name
         )
 
     if not fluent_image:
@@ -323,12 +309,7 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    host_server_info_file = (
-        host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH
-    )
-    host_server_info_file = (
-        Path(host_server_info_file) / container_server_info_file.name
-    )
+    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
 
     return (
         container_dict,
@@ -423,7 +404,7 @@ def start_fluent_container(
         else:
             _, _, password = _parse_server_info_file(str(host_server_info_file))
 
-        return port, password
+            return port, password
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()

@@ -154,9 +154,10 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.container_mount_path = (
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
-        self.host_mount_path = host_mount_path
-
-        if self.host_mount_path and not pathlib.Path(self.host_mount_path).exists():
+        self.host_mount_path = (
+            host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH
+        )
+        if not pathlib.Path(self.host_mount_path).exists():
             pathlib.Path(self.host_mount_path).mkdir(parents=True, exist_ok=True)
         try:
             self.host_port = port if port else random.randint(5000, 6000)
@@ -165,13 +166,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[
-                    (
-                        f"{self.host_mount_path}:{self.container_mount_path}"
-                        if self.host_mount_path
-                        else f"pyfluent_data:{self.container_mount_path}"
-                    )
-                ],
+                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
         except docker.errors.DockerException:
             self.host_port = port if port else random.randint(6000, 7000)
@@ -180,14 +175,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[
-                    (
-                        f"{self.host_mount_path}:{self.container_mount_path}"
-                        if self.host_mount_path
-                        else f"pyfluent_data:{self.container_mount_path}"
-                    ),
-                    f"{pyfluent.USER_DATA_PATH}:{self.container_mount_path}",
-                ],
+                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
