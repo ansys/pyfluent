@@ -20,12 +20,13 @@ classifiers = [
 ]
 
 include = [
-    { path = "src/ansys/fluent/core/fluent_version_*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/meshing/tui_*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/solver/tui_*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/datamodel_*/*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/solver/settings_*/*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/fluent_version_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/meshing/tui_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/tui_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/datamodel_*/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
 ]
 
 packages = [
@@ -119,23 +120,18 @@ force_sort_within_sections = true
 line_length = 88
 default_section = "THIRDPARTY"
 skip_glob = [
-    "src/ansys/fluent/core/meshing/tui",
-    "src/ansys/fluent/core/solver/tui",
-    "src/ansys/fluent/core/datamodel_222",
-    "src/ansys/fluent/core/datamodel_231",
-    "src/ansys/fluent/core/datamodel_232",
-    "src/ansys/fluent/core/datamodel_241",
-    "src/ansys/fluent/core/solver/settings_222",
-    "src/ansys/fluent/core/solver/settings_231",
-    "src/ansys/fluent/core/solver/settings_232",
-    "src/ansys/fluent/core/solver/settings_241"
+    "src/ansys/fluent/core/generated"
 ]
 filter_files = "true"
 known_first_party = ["ansys"]
 
 
 [tool.codespell]
-skip = "*.xml,./src/ansys/fluent/core/meshing/tui*,./src/ansys/fluent/core/solver/tui*,./src/ansys/fluent/core/datamodel_222/*,./src/ansys/fluent/core/datamodel_231/*,./src/ansys/fluent/core/datamodel_232/*,./src/ansys/fluent/core/datamodel_241/*,./codegen/data/fluent_gui_help.xml,./src/ansys/fluent/core/solver/settings_222/*,./src/ansys/fluent/core/solver/settings_231/*,./src/ansys/fluent/core/solver/settings_232/*,./src/ansys/fluent/core/solver/settings_241/*"
+skip = """
+    *.xml,
+    ./src/ansys/fluent/core/generated/*,
+    ./src/ansys/fluent/core/codegen/data/fluent_gui_help.xml,
+    """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 
 
@@ -143,22 +139,7 @@ ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 in-place = "true"
 exclude = [
     "tests/",
-    "src/ansys/fluent/core/meshing/tui_222.py",
-    "src/ansys/fluent/core/solver/tui_222.py",
-    "src/ansys/fluent/core/solver/settings_222/",
-    "src/ansys/fluent/core/datamodel_222/",
-    "src/ansys/fluent/core/meshing/tui_231.py",
-    "src/ansys/fluent/core/solver/tui_231.py",
-    "src/ansys/fluent/core/solver/settings_231/",
-    "src/ansys/fluent/core/datamodel_231/",
-    "src/ansys/fluent/core/meshing/tui_232.py",
-    "src/ansys/fluent/core/solver/tui_232.py",
-    "src/ansys/fluent/core/solver/settings_232/",
-    "src/ansys/fluent/core/datamodel_232/",
-    "src/ansys/fluent/core/meshing/tui_241.py",
-    "src/ansys/fluent/core/solver/tui_241.py",
-    "src/ansys/fluent/core/solver/settings_241/",
-    "src/ansys/fluent/core/datamodel_241/"
+    "src/ansys/fluent/core/generated/",
 ]
 black = "true"
 non-cap = [
@@ -181,11 +162,7 @@ non-cap = [
 [tool.coverage.run]
 source = ["ansys/fluent"]
 omit = [
-    "*/ansys/fluent/core/fluent_version_*",
-    "*/ansys/fluent/core/meshing/tui_*",
-    "*/ansys/fluent/core/solver/tui_*",
-    "*/ansys/fluent/core/solver/settings_*/*",
-    "*/ansys/fluent/core/datamodel_*/*"
+    "*/ansys/fluent/core/generated/*",
 ]
 
 [tool.coverage.report]

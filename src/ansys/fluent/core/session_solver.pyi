@@ -1,18 +1,22 @@
-from ansys.fluent.core.datamodel_241.preferences import Root as preferences_root
-from ansys.fluent.core.datamodel_241.workflow import Root as workflow_root
-from ansys.fluent.core.solver.settings_241.current_parametric_study import (
+from ansys.fluent.core.generated.datamodel_241.preferences import (
+    Root as preferences_root,
+)
+from ansys.fluent.core.generated.datamodel_241.workflow import Root as workflow_root
+from ansys.fluent.core.generated.solver.settings_241.current_parametric_study import (
     current_parametric_study,
 )
-from ansys.fluent.core.solver.settings_241.file import file
-from ansys.fluent.core.solver.settings_241.mesh import mesh
-from ansys.fluent.core.solver.settings_241.parallel import parallel
-from ansys.fluent.core.solver.settings_241.parameters import parameters
-from ansys.fluent.core.solver.settings_241.parametric_studies import parametric_studies
-from ansys.fluent.core.solver.settings_241.results import results
-from ansys.fluent.core.solver.settings_241.server import server
-from ansys.fluent.core.solver.settings_241.setup import setup
-from ansys.fluent.core.solver.settings_241.solution import solution
-from ansys.fluent.core.solver.tui_241 import main_menu
+from ansys.fluent.core.generated.solver.settings_241.file import file
+from ansys.fluent.core.generated.solver.settings_241.mesh import mesh
+from ansys.fluent.core.generated.solver.settings_241.parallel import parallel
+from ansys.fluent.core.generated.solver.settings_241.parameters import parameters
+from ansys.fluent.core.generated.solver.settings_241.parametric_studies import (
+    parametric_studies,
+)
+from ansys.fluent.core.generated.solver.settings_241.results import results
+from ansys.fluent.core.generated.solver.settings_241.server import server
+from ansys.fluent.core.generated.solver.settings_241.setup import setup
+from ansys.fluent.core.generated.solver.settings_241.solution import solution
+from ansys.fluent.core.generated.solver.tui_241 import main_menu
 from ansys.fluent.core.systemcoupling import SystemCoupling
 
 class Solver:
