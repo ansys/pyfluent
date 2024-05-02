@@ -31,15 +31,15 @@ def dump_session_data(
     session_data = {
         "scalar_fields_info": {
             k: v
-            for k, v in session.field_info.get_scalar_fields_info().items()
+            for k, v in session.fields.field_info.get_scalar_fields_info().items()
             if (not fields or k in fields)
         },
         "surfaces_info": {
             k: v
-            for k, v in session.field_info.get_surfaces_info().items()
+            for k, v in session.fields.field_info.get_surfaces_info().items()
             if (not surfaces or k in surfaces)
         },
-        "vector_fields_info": session.field_info.get_vector_fields_info(),
+        "vector_fields_info": session.fields.field_info.get_vector_fields_info(),
     }
     if not fields:
         fields = [
@@ -52,13 +52,15 @@ def dump_session_data(
         for surface in surfaces_id:
             session_data["range"][field][surface] = {}
             session_data["range"][field][surface]["node_value"] = (
-                session.field_info.get_scalar_field_range(field, True, [surface])
+                session.fields.field_info.get_scalar_field_range(field, True, [surface])
             )
             session_data["range"][field][surface]["cell_value"] = (
-                session.field_info.get_scalar_field_range(field, False, [surface])
+                session.fields.field_info.get_scalar_field_range(
+                    field, False, [surface]
+                )
             )
 
-    transaction = session.field_data.new_transaction()
+    transaction = session.fields.field_data.new_transaction()
     transaction.add_surfaces_request(
         surface_ids=surfaces_id, provide_faces_centroid=True, provide_faces_normal=True
     )
