@@ -586,6 +586,9 @@ def test_high_level_objects(new_mesh_session):
     meshing.GlobalSettings.EnableOversetMeshing.set_state(True)
     assert meshing.GlobalSettings.EnableOversetMeshing()
 
-    # This part will start failing with the datamodel set-state fix.
-    meshing.GlobalSettings.EnableOversetMeshing.set_state()
+    meshing.GlobalSettings.set_state(EnableOversetMeshing=False)
     assert not meshing.GlobalSettings.EnableOversetMeshing()
+    with pytest.raises(TypeError):
+        meshing.GlobalSettings.set_state()
+    with pytest.raises(TypeError):
+        meshing.GlobalSettings.EnableOversetMeshing.set_state()
