@@ -22,17 +22,11 @@ from ansys.fluent.core.workflow import (
 )
 
 
-def get_api_tree_file_name(version: str, pyfluent_path: str) -> Path:
+def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    return (
-        (
-            (Path(pyfluent_path) / "ansys" / "fluent" / "core")
-            if pyfluent_path
-            else (Path(__file__) / ".." / "..")
-        )
-        / "data"
-        / f"api_tree_{version}.pickle"
-    ).resolve()
+    from ansys.fluent.core import GENERATED_API_DIR
+
+    return (GENERATED_API_DIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
@@ -74,7 +68,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path = [
             (
                 "<meshing_session>"
-                if module.startswith("ansys.fluent.core.meshing")
+                if module.startswith("ansys.fluent.core.generated.meshing")
                 else "<solver_session>"
             ),
             "tui",
@@ -191,9 +185,9 @@ def search(
     if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
-            if get_api_tree_file_name(version, None).exists():
+            if get_api_tree_file_name(version).exists():
                 break
-    api_tree_file = get_api_tree_file_name(version, None)
+    api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
 

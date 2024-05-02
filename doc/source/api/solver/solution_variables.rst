@@ -22,12 +22,12 @@ Launch the fluent solver, and make solution variable objects available
   >>> solver.file.read(file_type="case", file_name=import_filename)
 
 
-The solution_variable_info and solution_variable_data objects are attributes of the solver object:
+The ``solution_variable_info`` and ``solution_variable_data`` objects are attributes of the ``solver.fields`` object:
 
 .. code-block:: python
 
-  >>> solution_variable_info = solver.solution_variable_info
-  >>> solution_variable_data = solver.solution_variable_data
+  >>> solution_variable_info = solver.fields.solution_variable_info
+  >>> solution_variable_data = solver.fields.solution_variable_data
 
 
 Solution variable info

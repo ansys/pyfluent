@@ -148,7 +148,7 @@ def test_case_load():
     if not session.get_fluent_version() < FluentVersion.v231:
         assert session.mesh.quality.is_active()
     # Data not loaded
-    assert not session.field_data.is_data_valid()
+    assert not session.fields.field_data.is_data_valid()
 
     session.exit()
 
@@ -171,7 +171,7 @@ def test_case_lightweight_setup():
     # Mesh not available because lightweight
     assert not session.mesh.quality.is_active()
     # Data not loaded
-    assert not session.field_data.is_data_valid()
+    assert not session.fields.field_data.is_data_valid()
 
 
 @pytest.mark.standalone
@@ -190,7 +190,7 @@ def test_case_data_load():
     if not session.get_fluent_version() < FluentVersion.v231:
         assert session.mesh.quality.is_active()
     # Data loaded
-    assert session.field_data.is_data_valid()
+    assert session.fields.field_data.is_data_valid()
 
     session.exit()
 

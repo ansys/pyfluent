@@ -126,7 +126,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
         r.write(
-            f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n"
+            f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{file_name}.{cls_name}\n"
         )
         r.write(f"{istr1}:show-inheritance:\n\n")
 
@@ -218,6 +218,8 @@ if __name__ == "__main__":
 
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v24.1.0")
     version = get_version_for_file_name(image_tag.lstrip("v"))
-    settings = importlib.import_module(f"ansys.fluent.core.solver.settings_{version}")
+    settings = importlib.import_module(
+        f"ansys.fluent.core.generated.solver.settings_{version}"
+    )
     _populate_parents_list(settings.root)
     _populate_rst_from_settings(rst_dir, settings.root, version)

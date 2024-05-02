@@ -145,16 +145,16 @@ jobs:
         id: cache-api-code
         with:
           path: |
-            src/ansys/fluent/core/datamodel_231
-            src/ansys/fluent/core/fluent_version_231.py
-            src/ansys/fluent/core/meshing/tui_231.py
-            src/ansys/fluent/core/solver/settings_231
-            src/ansys/fluent/core/solver/tui_231.py
+            src/ansys/fluent/core/generated/datamodel_231
+            src/ansys/fluent/core/generated/fluent_version_231.py
+            src/ansys/fluent/core/generated/meshing/tui_231.py
+            src/ansys/fluent/core/generated/solver/settings_231
+            src/ansys/fluent/core/generated/solver/tui_231.py
             doc/source/api/meshing/tui
             doc/source/api/meshing/datamodel
             doc/source/api/solver/tui
             doc/source/api/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Login to GitHub Container Registry
@@ -251,17 +251,17 @@ jobs:
         id: cache-222-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_222
-            src/ansys/fluent/core/fluent_version_222.py
-            src/ansys/fluent/core/meshing/tui_222.py
-            src/ansys/fluent/core/solver/settings_222
-            src/ansys/fluent/core/solver/tui_222.py
-            src/ansys/fluent/core/data/api_tree_222.pickle
+            src/ansys/fluent/core/generated/datamodel_222
+            src/ansys/fluent/core/generated/fluent_version_222.py
+            src/ansys/fluent/core/generated/meshing/tui_222.py
+            src/ansys/fluent/core/generated/solver/settings_222
+            src/ansys/fluent/core/generated/solver/tui_222.py
+            src/ansys/fluent/core/generated/data/api_tree_222.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0
 
       - name: Login to GitHub Container Registry
@@ -285,25 +285,25 @@ jobs:
 
       - name: Print 22.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_222.py
-          python -c "from ansys.fluent.core.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_222.py
+          python -c "from ansys.fluent.core.generated.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 23.1 API Code
         uses: actions/cache@v4
         id: cache-231-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_231
-            src/ansys/fluent/core/fluent_version_231.py
-            src/ansys/fluent/core/meshing/tui_231.py
-            src/ansys/fluent/core/solver/settings_231
-            src/ansys/fluent/core/solver/tui_231.py
-            src/ansys/fluent/core/data/api_tree_231.pickle
+            src/ansys/fluent/core/generated/datamodel_231
+            src/ansys/fluent/core/generated/fluent_version_231.py
+            src/ansys/fluent/core/generated/meshing/tui_231.py
+            src/ansys/fluent/core/generated/solver/settings_231
+            src/ansys/fluent/core/generated/solver/tui_231.py
+            src/ansys/fluent/core/generated/data/api_tree_231.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0
 
       - name: Pull 23.1 Fluent docker image
@@ -320,25 +320,25 @@ jobs:
 
       - name: Print 23.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_231.py
-          python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_231.py
+          python -c "from ansys.fluent.core.generated.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 23.2 API Code
         uses: actions/cache@v4
         id: cache-232-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_232
-            src/ansys/fluent/core/fluent_version_232.py
-            src/ansys/fluent/core/meshing/tui_232.py
-            src/ansys/fluent/core/solver/settings_232
-            src/ansys/fluent/core/solver/tui_232.py
-            src/ansys/fluent/core/data/api_tree_232.pickle
+            src/ansys/fluent/core/generated/datamodel_232
+            src/ansys/fluent/core/generated/fluent_version_232.py
+            src/ansys/fluent/core/generated/meshing/tui_232.py
+            src/ansys/fluent/core/generated/solver/settings_232
+            src/ansys/fluent/core/generated/solver/tui_232.py
+            src/ansys/fluent/core/generated/data/api_tree_232.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
 
       - name: Pull 23.2 Fluent docker image
@@ -355,25 +355,25 @@ jobs:
 
       - name: Print 23.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_232.py
-          python -c "from ansys.fluent.core.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_232.py
+          python -c "from ansys.fluent.core.generated.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 24.1 API Code
         uses: actions/cache@v4
         id: cache-241-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_241
-            src/ansys/fluent/core/fluent_version_241.py
-            src/ansys/fluent/core/meshing/tui_241.py
-            src/ansys/fluent/core/solver/settings_241
-            src/ansys/fluent/core/solver/tui_241.py
-            src/ansys/fluent/core/data/api_tree_241.pickle
+            src/ansys/fluent/core/generated/datamodel_241
+            src/ansys/fluent/core/generated/fluent_version_241.py
+            src/ansys/fluent/core/generated/meshing/tui_241.py
+            src/ansys/fluent/core/generated/solver/settings_241
+            src/ansys/fluent/core/generated/solver/tui_241.py
+            src/ansys/fluent/core/generated/data/api_tree_241.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0
 
       - name: Pull 24.1 Fluent docker image
@@ -390,25 +390,25 @@ jobs:
 
       - name: Print 24.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_241.py
-          python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_241.py
+          python -c "from ansys.fluent.core.generated.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 24.2 API Code
         uses: actions/cache@v4
         id: cache-242-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_242
-            src/ansys/fluent/core/fluent_version_242.py
-            src/ansys/fluent/core/meshing/tui_242.py
-            src/ansys/fluent/core/solver/settings_242
-            src/ansys/fluent/core/solver/tui_242.py
-            src/ansys/fluent/core/data/api_tree_242.pickle
+            src/ansys/fluent/core/generated/datamodel_242
+            src/ansys/fluent/core/generated/fluent_version_242.py
+            src/ansys/fluent/core/generated/meshing/tui_242.py
+            src/ansys/fluent/core/generated/solver/settings_242
+            src/ansys/fluent/core/generated/solver/tui_242.py
+            src/ansys/fluent/core/generated/data/api_tree_242.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
 
       - name: Pull 24.2 Fluent docker image
@@ -425,8 +425,8 @@ jobs:
 
       - name: Print 24.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_242.py
-          python -c "from ansys.fluent.core.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_242.py
+          python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
