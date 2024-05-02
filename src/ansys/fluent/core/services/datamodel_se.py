@@ -887,7 +887,7 @@ class PyStateContainer(PyCallableStateObject):
         Raises
         ------
         TypeError
-            If no arguments are provided to set_state.
+            If no arguments are provided to the ``set_state()`` method.
         ReadOnlyObjectError
             If the object is read-only.
         """
