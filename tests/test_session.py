@@ -355,10 +355,10 @@ def test_solverworkflow_not_in_solver_session(new_solver_session):
 @pytest.mark.standalone
 @pytest.mark.fluent_version(">=23.2")
 def test_read_case_using_lightweight_mode():
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
     if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         solver = pyfluent.launch_fluent(
@@ -368,9 +368,6 @@ def test_read_case_using_lightweight_mode():
             file_transfer_service=file_transfer_service,
         )
     else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-        )
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name, lightweight_mode=True
         )
