@@ -1067,11 +1067,12 @@ class Group(SettingsBase[DictStateType]):
         try:
             return attr.set_state(value)
         except Exception as ex:
-            allowed = attr.allowed_values()
-            if allowed and value not in allowed:
-                raise allowed_values_error(name, value, allowed) from ex
-            else:
-                raise ex
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
+                else:
+                    raise ex
 
 
 class WildcardPath(Group):
