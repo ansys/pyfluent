@@ -691,7 +691,6 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
             getattr(watertight, attr)
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
-    time.sleep(1)
     assert "import_geometry" not in watertight.task_names()
     assert "import_geom_wtm" in watertight.task_names()
     assert len(watertight.tasks()) == 11
@@ -1272,7 +1271,6 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.create_volume_mesh()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
-    time.sleep(2)
     assert "import_geometry" not in watertight.task_names()
     assert "import_geom_wtm" in watertight.task_names()
     assert watertight.import_geom_wtm.arguments()
@@ -1281,7 +1279,6 @@ def test_new_meshing_workflow_without_dm_caching(
         watertight.import_geometry
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
-    time.sleep(2)
     assert "add_local_sizing" not in watertight.task_names()
 
     assert sorted(
@@ -1297,7 +1294,6 @@ def test_new_meshing_workflow_without_dm_caching(
     )
 
     watertight.import_geom_wtm.insertable_tasks.add_local_sizing.insert()
-    time.sleep(2)
     assert "add_local_sizing" in watertight.task_names()
 
 
@@ -1461,7 +1457,6 @@ def test_object_oriented_task_inserting_in_workflows(new_mesh_session):
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     assert "import_boi_geometry" in watertight.task_names()
     assert "import_boi_geometry_1" in watertight.task_names()
-    time.sleep(1)
     assert watertight.import_boi_geometry.arguments()
     assert watertight.import_boi_geometry_1.arguments()
 
@@ -1503,8 +1498,6 @@ def test_created_workflow(new_mesh_session):
     created_workflow.insertable_tasks()[0].insert()
 
     assert created_workflow.insertable_tasks() == []
-
-    time.sleep(2.5)
 
     assert "<Insertable 'add_local_sizing' task>" in [
         repr(x) for x in created_workflow.import_geometry.insertable_tasks()
