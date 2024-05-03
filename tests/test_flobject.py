@@ -867,6 +867,17 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
+@pytest.mark.codegen_required
+def test_settings_api_names_exception(new_solver_session_no_transcript):
+    solver = new_solver_session_no_transcript
+
+    case_path = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    with pytest.raises(RuntimeError):
+        solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
+
+
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
