@@ -1072,7 +1072,7 @@ class Group(SettingsBase[DictStateType]):
                 if allowed and value not in allowed:
                     raise allowed_values_error(name, value, allowed) from ex
             else:
-                raise ex
+                raise
 
 
 class WildcardPath(Group):
