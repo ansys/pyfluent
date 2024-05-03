@@ -26,20 +26,34 @@ def download_input_file(directory_name, full_file_name, data_file_name=None):
     file_name = f'_{full_file_name.split(".")[0]}_{file_type}_file_name'
     globals()[file_name] = None
     if not globals()[file_name]:
-        globals()[file_name] = download_file(
-            file_name=full_file_name,
-            directory=directory_name,
-        )
+        if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+            globals()[file_name] = download_file(
+                file_name=full_file_name,
+                directory=directory_name,
+                return_without_path=False,
+            )
+        else:
+            globals()[file_name] = download_file(
+                file_name=full_file_name,
+                directory=directory_name,
+            )
     file_name = globals()[file_name]
     if data_file_name:
         dat_file_type = get_file_type(data_file_name)
         dat_name = f'_{data_file_name.split(".")[0]}_{dat_file_type}_file_name'
         globals()[dat_name] = None
         if not globals()[dat_name]:
-            globals()[dat_name] = download_file(
-                file_name=data_file_name,
-                directory=directory_name,
-            )
+            if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+                globals()[dat_name] = download_file(
+                    file_name=data_file_name,
+                    directory=directory_name,
+                    return_without_path=False,
+                )
+            else:
+                globals()[dat_name] = download_file(
+                    file_name=data_file_name,
+                    directory=directory_name,
+                )
         file_type = "case-data"
     return file_type, file_name
 
@@ -144,9 +158,16 @@ _exhaust_system_geometry_file_name = None
 def exhaust_system_geometry():
     global _exhaust_system_geometry_file_name
     if not _exhaust_system_geometry_file_name:
-        _exhaust_system_geometry_file_name = download_file(
-            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
-        )
+        if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+            _exhaust_system_geometry_file_name = download_file(
+                file_name="exhaust_system.fmd",
+                directory="pyfluent/exhaust_system",
+                return_without_path=False,
+            )
+        else:
+            _exhaust_system_geometry_file_name = download_file(
+                file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+            )
     return _exhaust_system_geometry_file_name
 
 
@@ -190,7 +211,14 @@ def load_mixing_elbow_settings_only(sample_solver_session):
 @pytest.fixture
 def load_static_mixer_case(sample_solver_session):
     solver = sample_solver_session
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        case_path = download_file(
+            "Static_Mixer_main.cas.h5",
+            "pyfluent/static_mixer",
+            return_without_path=False,
+        )
+    else:
+        case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(file_type="case", file_name=case_path)
     yield solver
     solver.exit()
@@ -199,7 +227,14 @@ def load_static_mixer_case(sample_solver_session):
 @pytest.fixture
 def load_static_mixer_settings_only(sample_solver_session):
     solver = sample_solver_session
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        case_path = download_file(
+            "Static_Mixer_main.cas.h5",
+            "pyfluent/static_mixer",
+            return_without_path=False,
+        )
+    else:
+        case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(
         file_type="case",
         file_name=case_path,
@@ -279,8 +314,7 @@ def load_mixing_elbow_meshing():
             _mixing_elbow_geom_file_name = download_file(
                 file_name="mixing_elbow.pmdb",
                 directory="pyfluent/mixing_elbow",
-                container_dict=container_dict,
-                file_transfer_service=file_transfer_service,
+                return_without_path=False,
             )
         else:
             _mixing_elbow_geom_file_name = download_file(

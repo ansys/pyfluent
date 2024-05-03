@@ -7,14 +7,23 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_case_file_name = examples.download_file(
-    "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-)
-import_mesh_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-)
+if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    import_case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
+    import_mesh_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
+else:
+    import_case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    import_mesh_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
 
 
 def file_downloaded_to_the_client(file_name: str) -> bool:

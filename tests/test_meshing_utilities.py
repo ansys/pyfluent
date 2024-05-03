@@ -1,8 +1,16 @@
 import pytest
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
+else:
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
 
 PYTEST_RELATIVE_TOLERANCE = 0.2
 

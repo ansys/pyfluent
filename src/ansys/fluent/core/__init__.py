@@ -85,7 +85,7 @@ DATAMODEL_USE_ATTR_CACHE = True
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
 # Whether to use remote gRPC file transfer service
-REMOTE_GRPC_FILE_TRANSFER_SERVICE = None
+REMOTE_GRPC_FILE_TRANSFER_SERVICE = False
 
 # Parent directory where codegen writes out API files
 GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()

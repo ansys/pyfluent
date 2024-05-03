@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
@@ -13,9 +14,14 @@ HOT_INLET_TEMPERATURE = 313.15
 @pytest.mark.fluent_version(">=24.1")
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        )
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.tui.mesh.check()
 
@@ -114,9 +120,14 @@ def test_field_data(new_solver_session) -> None:
 
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        )
 
     field_data = solver.fields.field_data
     field_info = solver.fields.field_info
@@ -170,9 +181,14 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        )
 
     field_data = solver.fields.field_data
 
@@ -298,9 +314,14 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
 def test_field_data_errors(new_solver_session) -> None:
     solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        )
 
     with pytest.raises(DisallowedValuesError) as fne:
         solver.fields.field_data.get_scalar_field_data(
@@ -349,9 +370,14 @@ def test_field_data_errors(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=23.2")
 def test_field_info_validators(new_solver_session) -> None:
     solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_file_name = examples.download_file(
+            "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        )
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.solution.initialization.hybrid_initialize()
 
@@ -378,8 +404,16 @@ def test_field_info_validators(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
-    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        case_path = download_file(
+            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+        download_file(
+            "mixing_elbow.dat.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+        download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file.read_case_data(file_name=case_path)
     solver.scheme_eval.scheme_eval("(%save-case-id)")
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")

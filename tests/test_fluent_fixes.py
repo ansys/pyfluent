@@ -1,6 +1,7 @@
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
@@ -8,10 +9,16 @@ from ansys.fluent.core import examples
 @pytest.mark.fluent_version("==23.2")
 def test_allowed_values_on_report_definitions_1364(new_solver_session):
     solver = new_solver_session
-
-    import_file_name = examples.download_file(
-        "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_file_name = examples.download_file(
+            "elbow.cas.h5",
+            "pyfluent/examples/DOE-ML-Mixing-Elbow",
+            return_without_path=False,
+        )
+    else:
+        import_file_name = examples.download_file(
+            "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+        )
 
     solver.file.read(
         file_name=import_file_name, file_type="case", lightweight_setup=True
@@ -39,13 +46,27 @@ def test_allowed_values_on_report_definitions_1364(new_solver_session):
 def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     solver_session = new_solver_session
 
-    import_case = examples.download_file(
-        file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_case = examples.download_file(
+            file_name="exhaust_system.cas.h5",
+            directory="pyfluent/exhaust_system",
+            return_without_path=False,
+        )
+    else:
+        import_case = examples.download_file(
+            file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
+        )
 
-    import_data = examples.download_file(
-        file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_data = examples.download_file(
+            file_name="exhaust_system.dat.h5",
+            directory="pyfluent/exhaust_system",
+            return_without_path=False,
+        )
+    else:
+        import_data = examples.download_file(
+            file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
+        )
 
     solver_session.tui.file.read_case(import_case)
 
@@ -92,9 +113,23 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
 def test_empty_vector_field_data_2339(new_solver_session):
     solver = new_solver_session
 
-    import_case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_case = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_case = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+        )
 
-    import_data = examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        import_data = examples.download_file(
+            "mixing_elbow.dat.h5", "pyfluent/mixing_elbow", return_without_path=False
+        )
+    else:
+        import_data = examples.download_file(
+            "mixing_elbow.dat.h5", "pyfluent/mixing_elbow"
+        )
 
     assert import_case
     assert import_data

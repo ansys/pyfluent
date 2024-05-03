@@ -9,9 +9,16 @@ from ansys.fluent.core import examples
 def test_batch_ops_create_mesh(new_solver_session):
     solver = new_solver_session
     mesh = solver.results.graphics.mesh
-    case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        case_file_name = examples.download_file(
+            "mixing_elbow.cas.h5",
+            "pyfluent/mixing_elbow",
+            return_without_path=False,
+        )
+    else:
+        case_file_name = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+        )
     with pyfluent.BatchOps(solver):
         solver.file.read(
             file_name=case_file_name, file_type="case", lightweight_setup=True
@@ -27,9 +34,16 @@ def test_batch_ops_create_mesh(new_solver_session):
 def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     solver = new_solver_session
     mesh = solver.results.graphics.mesh
-    case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
+    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        case_file_name = examples.download_file(
+            "mixing_elbow.cas.h5",
+            "pyfluent/mixing_elbow",
+            return_without_path=False,
+        )
+    else:
+        case_file_name = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+        )
     with pytest.raises(KeyError):
         with pyfluent.BatchOps(solver):
             solver.file.read(
