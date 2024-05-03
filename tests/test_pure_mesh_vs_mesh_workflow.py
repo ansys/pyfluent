@@ -1,6 +1,5 @@
 import pytest
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 
 
@@ -86,12 +85,7 @@ def test_meshing_mode_post_switching_to_solver(load_mixing_elbow_meshing):
 def test_transfer_case_to_solvers(
     launch_fluent_pure_meshing, launch_fluent_solver_3ddp_t2
 ):
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_file_name = download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     pure_meshing_session = launch_fluent_pure_meshing
     pure_meshing_session.tui.file.read_case(case_file_name)
     pure_meshing_session.tui.mesh.check_mesh()

@@ -172,16 +172,9 @@ def test_add_on_affected(new_mesh_session):
 
     calls = []
     subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        geom = examples.download_file(
-            file_name="mixing_elbow.pmdb",
-            directory="pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        geom = examples.download_file(
-            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-        )
+    geom = examples.download_file(
+        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    )
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
     assert "FileName" not in import_geom.Arguments()
     assert import_geom.command_arguments()["FileName"] is None
@@ -247,14 +240,9 @@ def test_add_on_command_executed(new_mesh_session):
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert len(data) > 0
@@ -289,14 +277,9 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
     stream.register_callback(cb)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
@@ -322,14 +305,9 @@ def test_datamodel_streaming_no_commands_diff_state(
     stream.register_callback(cb)
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
@@ -411,14 +389,9 @@ def test_generic_datamodel(new_solver_session):
 
 @pytest.mark.fluent_version(">=24.2")
 def test_named_object_specific_methods_using_flserver(new_solver_session):
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
     solver = new_solver_session
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.solution.initialization.hybrid_initialize()

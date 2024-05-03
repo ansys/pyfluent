@@ -21,17 +21,9 @@ def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "Static_Mixer_main.cas.h5",
-            "pyfluent/static_mixer",
-            save_path=tmp_save_path,
-            return_without_path=False,
-        )
-    else:
-        import_file_name = examples.download_file(
-            "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
-        )
+    import_file_name = examples.download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
+    )
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         inside_container = True
         config_dict = {}

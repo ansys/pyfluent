@@ -9,7 +9,6 @@ from test_utils import count_key_recursive
 from util.solver_workflow import new_solver_session  # noqa: F401
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
@@ -810,14 +809,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
 def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "elbow_source_terms.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
 
     solver.solution.initialization.hybrid_initialize()
@@ -849,14 +841,7 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
 
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "elbow_source_terms.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
 
     solver.solution.initialization.hybrid_initialize()

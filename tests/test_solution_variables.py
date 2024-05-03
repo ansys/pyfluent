@@ -5,7 +5,6 @@ from util.solver_workflow import (  # noqa: F401
     new_solver_session_single_precision,
 )
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
 
@@ -13,16 +12,9 @@ from ansys.fluent.core.examples.downloads import download_file
 @pytest.mark.fluent_version(">=23.2")
 def test_solution_variables(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
@@ -132,16 +124,9 @@ def test_solution_variables(new_solver_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_solution_variables_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "vortex_init.cas.h5",
-            "pyfluent/examples/Steady-Vortex-VOF",
-            return_without_path=False,
-        )
-    else:
-        import_file_name = examples.download_file(
-            "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
-        )
+    import_file_name = examples.download_file(
+        "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
+    )
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
@@ -220,16 +205,9 @@ def test_solution_variables_single_precision(new_solver_session_single_precision
 @pytest.mark.fluent_version(">=23.2")
 def test_svars(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
 
     svar_info = solver.svar_info
     svar_data = solver.svar_data
@@ -335,16 +313,9 @@ def test_svars(new_solver_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_svars_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "vortex_init.cas.h5",
-            "pyfluent/examples/Steady-Vortex-VOF",
-            return_without_path=False,
-        )
-    else:
-        import_file_name = examples.download_file(
-            "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
-        )
+    import_file_name = examples.download_file(
+        "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
+    )
 
     svar_info = solver.svar_info
     svar_data = solver.svar_data
@@ -423,16 +394,8 @@ def test_svars_single_precision(new_solver_session_single_precision):
 @pytest.mark.fluent_version(">=24.2")
 def test_solution_variable_does_not_modify_case(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-        download_file(
-            "mixing_elbow.dat.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-        download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file.read_case_data(file_name=case_path)
     solver.scheme_eval.scheme_eval("(%save-case-id)")
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")

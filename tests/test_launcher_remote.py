@@ -11,7 +11,6 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
@@ -26,14 +25,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
-if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-    import_filename = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", return_without_path=False
-    )
-else:
-    import_filename = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
+import_file_name = examples.download_file(
+    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+)
 
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):

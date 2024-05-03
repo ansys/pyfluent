@@ -3,7 +3,6 @@ from typing import Iterable
 
 import pytest
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.workflow import camel_to_snake_case
 from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
@@ -14,14 +13,9 @@ from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 @pytest.mark.fluent_version(">=24.1")
 def test_new_watertight_workflow(new_mesh_session):
     # Import geometry
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     watertight = new_mesh_session.watertight()
     watertight.import_geometry.file_name.set_state(import_file_name)
     assert watertight.import_geometry.length_unit() == "mm"
@@ -93,14 +87,9 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
     meshing = new_mesh_session
 
     # Import CAD and part management
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "exhaust_system.fmd", "pyfluent/exhaust_system", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "exhaust_system.fmd", "pyfluent/exhaust_system"
-        )
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
     fault_tolerant = meshing.fault_tolerant()
     meshing.PartManagement.InputFileChanged(
         FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
@@ -489,12 +478,7 @@ def test_new_fault_tolerant_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_mesh_session):
     # Import geometry
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "NACA0012.fmd", "pyfluent/airfoils", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
+    import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     two_dim_mesh = new_mesh_session.two_dimensional_meshing()
 
     two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
@@ -610,14 +594,9 @@ def test_new_2d_meshing_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_updating_state_in_new_meshing_workflow(new_mesh_session):
     # Import geometry
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     watertight = new_mesh_session.watertight()
     watertight.import_geometry.file_name.set_state(import_file_name)
     assert watertight.import_geometry.length_unit() == "mm"
@@ -645,14 +624,9 @@ def _assert_snake_case_attrs(attrs: Iterable):
 @pytest.mark.fluent_version(">=23.2")
 def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
     # Import geometry
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     watertight = new_mesh_session.watertight()
     dir_watertight = dir(watertight)
     dir_watertight.remove("_FirstTask")
@@ -673,14 +647,9 @@ def test_snake_case_attrs_in_new_meshing_workflow(new_mesh_session):
 def test_workflow_and_data_model_methods_new_meshing_workflow(new_mesh_session):
     # Import geometry
     meshing = new_mesh_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     watertight = meshing.watertight()
 
     # Checks if any of the unwanted attrs are present in dir call
@@ -1116,14 +1085,9 @@ def test_new_workflow_structure(new_mesh_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
     # Import geometry
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
     watertight = new_mesh_session.watertight()
     unwanted_attrs = {"fault_tolerant", "part_management", "pm_file_management"}
     assert set(dir(watertight)) - unwanted_attrs == set(dir(watertight))
@@ -1166,14 +1130,9 @@ def test_ordered_children_in_enhanced_meshing_workflow(new_mesh_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
     # Import CAD
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "exhaust_system.fmd", "pyfluent/exhaust_system"
-        )
-    else:
-        import_file_name = examples.download_file(
-            "exhaust_system.fmd", "pyfluent/exhaust_system"
-        )
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
 
     fault_tolerant = new_mesh_session.fault_tolerant()
     assert "watertight" not in dir(fault_tolerant)
@@ -1252,14 +1211,9 @@ def test_switch_between_workflows(new_mesh_session):
 def test_new_meshing_workflow_without_dm_caching(
     disable_datamodel_cache, new_mesh_session
 ):
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        import_file_name = examples.download_file(
-            "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-        )
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
 
     watertight = new_mesh_session.watertight()
     watertight.import_geometry.file_name = import_file_name
@@ -1470,14 +1424,9 @@ def test_object_oriented_task_inserting_in_workflows(new_mesh_session):
 @pytest.mark.fluent_version(">=24.1")
 def test_loaded_workflow(new_mesh_session):
     meshing = new_mesh_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        saved_workflow_path = examples.download_file(
-            "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
-        )
-    else:
-        saved_workflow_path = examples.download_file(
-            "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
-        )
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
     loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
     assert "set_up_rotational_periodic_boundaries" in loaded_workflow.task_names()
     assert "import_boi_geometry" in loaded_workflow.task_names()

@@ -4,7 +4,6 @@ import pytest
 from pytest import WarningsRecorder
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -21,14 +20,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.fluent_version(">=23.1")
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "elbow_source_terms.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver_session.file.read(
         file_name=case_path, file_type="case", lightweight_setup=True
     )
@@ -47,14 +39,7 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=24.1")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "elbow_source_terms.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
     boundary_conditions = solver.setup.boundary_conditions
     assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
@@ -116,14 +101,7 @@ def test_wildcard(new_solver_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "elbow_source_terms.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
 
     solver.solution.initialization.hybrid_initialize()
@@ -145,14 +123,7 @@ def test_wildcard_fnmatch(new_solver_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "elbow_source_terms.cas.h5",
-            "pyfluent/mixing_elbow",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
 
     velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
@@ -182,14 +153,7 @@ def test_wildcard_path_is_iterable(new_solver_session):
 @pytest.mark.fluent_version(">=23.1")
 def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "Static_Mixer_main.cas.h5",
-            "pyfluent/static_mixer",
-            return_without_path=False,
-        )
-    else:
-        case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
@@ -197,16 +161,8 @@ def test_api_upgrade(new_solver_session, capsys):
 @pytest.mark.fluent_version(">=24.2")
 def test_deprecated_settings(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-        download_file(
-            "mixing_elbow.dat.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-        download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file._setattr("_child_aliases", {"rcd": "read_case_data"})
     with pytest.warns(DeprecatedSettingWarning):
         solver.file.rcd(file_name=case_path)
@@ -345,16 +301,8 @@ def test_deprecated_settings(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
-        case_path = download_file(
-            "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-        download_file(
-            "mixing_elbow.dat.h5", "pyfluent/mixing_elbow", return_without_path=False
-        )
-    else:
-        case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-        download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     ret = solver.file.read_case_data(file_name=case_path)
     assert ret is None
     solver.solution.report_definitions.surface["surface-1"] = dict(
