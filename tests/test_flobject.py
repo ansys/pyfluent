@@ -837,6 +837,7 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
     )
 
 
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
@@ -868,6 +869,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
 
 
 @pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
 def test_settings_api_names_exception(new_solver_session_no_transcript):
     solver = new_solver_session_no_transcript
 
