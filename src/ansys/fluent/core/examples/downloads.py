@@ -64,6 +64,7 @@ def _retrieve_file(
         save_path = pyfluent.EXAMPLES_PATH
     else:
         save_path = os.path.abspath(save_path)
+    os.makedirs(save_path, exist_ok=True)
     local_path = os.path.join(save_path, file_name)
     local_path_no_zip = re.sub(".zip$", "", local_path)
     file_name_no_zip = re.sub(".zip$", "", file_name)
@@ -80,10 +81,6 @@ def _retrieve_file(
             return local_path_no_zip
 
     logger.info("File does not exist. Downloading specified file...")
-
-    # Check if save path exists
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
