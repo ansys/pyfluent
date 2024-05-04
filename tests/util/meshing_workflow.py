@@ -44,7 +44,7 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
 
 
 def create_mesh_session():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         return pyfluent.launch_fluent(
             mode="meshing",
             precision="double",

@@ -56,7 +56,7 @@ def get_name_info(allnamesdict, namescheck):
 
 @pytest.fixture
 def sample_solver_session():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         solver_session = pyfluent.launch_fluent(
             mode="solver",
             container_dict=container_dict,
@@ -70,7 +70,7 @@ def sample_solver_session():
 
 @pytest.fixture
 def launch_fluent_pure_meshing():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         pure_meshing_session = pyfluent.launch_fluent(
             mode="pure-meshing",
             container_dict=container_dict,
@@ -84,7 +84,7 @@ def launch_fluent_pure_meshing():
 
 @pytest.fixture
 def launch_fluent_solver_3ddp_t2():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         solver_session = pyfluent.launch_fluent(
             precision="double",
             processor_count=2,
@@ -102,7 +102,7 @@ def launch_fluent_solver_3ddp_t2():
 
 @pytest.fixture
 def launch_fluent_solver_2ddp():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         solver_session = pyfluent.launch_fluent(
             version="2d",
             precision="double",
@@ -120,7 +120,7 @@ def launch_fluent_solver_2ddp():
 
 @pytest.fixture
 def launch_fluent_solver_2ddp_t2():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         solver_session = pyfluent.launch_fluent(
             version="2d",
             precision="double",
@@ -225,7 +225,7 @@ def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
 
 @pytest.fixture
 def load_mixing_elbow_pure_meshing():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         pure_meshing_session = pyfluent.launch_fluent(
             precision="double",
             processor_count=2,
@@ -239,7 +239,7 @@ def load_mixing_elbow_pure_meshing():
         )
     global _mixing_elbow_geom_file_name
     if not _mixing_elbow_geom_file_name:
-        if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
             _mixing_elbow_geom_file_name = download_file(
                 file_name="mixing_elbow.pmdb",
                 directory="pyfluent/mixing_elbow",
@@ -261,7 +261,7 @@ def load_mixing_elbow_pure_meshing():
 
 @pytest.fixture
 def load_mixing_elbow_meshing():
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         meshing_session = pyfluent.launch_fluent(
             precision="double",
             processor_count=2,
@@ -275,7 +275,7 @@ def load_mixing_elbow_meshing():
         )
     global _mixing_elbow_geom_file_name
     if not _mixing_elbow_geom_file_name:
-        if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
             _mixing_elbow_geom_file_name = download_file(
                 file_name="mixing_elbow.pmdb",
                 directory="pyfluent/mixing_elbow",

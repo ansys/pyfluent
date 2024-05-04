@@ -358,7 +358,7 @@ def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         solver = pyfluent.launch_fluent(

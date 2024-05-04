@@ -81,8 +81,9 @@ def _retrieve_file(
 
     logger.info("File does not exist. Downloading specified file...")
 
-    # Create save path folder
-    Path(save_path).mkdir(parents=True, exist_ok=True)
+    # Check if save path exists
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
@@ -161,7 +162,7 @@ def download_file(
     """
     if return_without_path is None:
         if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+            if pyfluent.USE_FILE_TRANSFER_SERVICE:
                 return_without_path = False
             else:
                 return_without_path = True

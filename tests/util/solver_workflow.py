@@ -8,7 +8,7 @@ file_transfer_service = RemoteFileTransferStrategy()
 
 
 def create_solver_session(*args, **kwargs):
-    if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -30,7 +30,7 @@ def make_new_session():
     sessions = []
 
     def _make_new_session(**kwargs):
-        if pyfluent.REMOTE_GRPC_FILE_TRANSFER_SERVICE:
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
             session = pyfluent.launch_fluent(
                 container_dict=container_dict,
                 file_transfer_service=file_transfer_service,
