@@ -380,9 +380,9 @@ def start_fluent_container(
 
     try:
         if not host_server_info_file.exists():
-            host_server_info_file.parents[0].mkdir(exist_ok=True)
+            os.makedirs(host_server_info_file.parents[0], exist_ok=True)
 
-        host_server_info_file.touch(exist_ok=True)
+        host_server_info_file.touch(mode=0o777, exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
 
         docker_client = docker.from_env()
