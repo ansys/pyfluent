@@ -180,13 +180,19 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
-        host_mount_path = pyfluent.EXAMPLES_PATH
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            host_mount_path = pyfluent.USER_DATA_PATH
+        else:
+            host_mount_path = pyfluent.EXAMPLES_PATH
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
             "it is going to be overwritten by specified 'host_mount_path'."
         )
         container_dict.pop("volumes")
+
+    if not os.path.exists(host_mount_path):
+        os.makedirs(host_mount_path)
 
     if not container_mount_path:
         container_mount_path = os.getenv(
@@ -271,7 +277,6 @@ def configure_container_dict(
             / PurePosixPath(container_server_info_file).name
         )
     else:
-        os.makedirs(host_mount_path, exist_ok=True)
         fd, sifile = tempfile.mkstemp(
             suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
@@ -380,9 +385,9 @@ def start_fluent_container(
 
     try:
         if not host_server_info_file.exists():
-            os.makedirs(host_server_info_file.parents[0], exist_ok=True)
+            host_server_info_file.parents[0].mkdir(exist_ok=True)
 
-        host_server_info_file.touch(mode=0o777, exist_ok=True)
+        host_server_info_file.touch(exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
 
         docker_client = docker.from_env()
