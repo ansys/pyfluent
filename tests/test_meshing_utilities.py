@@ -2,8 +2,6 @@ import pytest
 
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-
 PYTEST_RELATIVE_TOLERANCE = 0.2
 
 
@@ -16,6 +14,9 @@ def pytest_approx(expected):
 @pytest.mark.fluent_version(">=24.2")
 def test_meshing_utilities(new_mesh_session):
     meshing_session = new_mesh_session
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
     meshing_session.tui.file.read_case(import_filename)
 
     assert meshing_session.meshing_utilities._cell_zones_labels_fdl() == ["elbow-fluid"]

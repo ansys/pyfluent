@@ -87,6 +87,9 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 # Parent directory where codegen writes out API files
 GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
 
+# Whether to use remote gRPC file transfer service
+USE_FILE_TRANSFER_SERVICE = False
+
 
 # TODO: clean up the following and related code
 def wrap_api_call(f, *args, **kwargs):

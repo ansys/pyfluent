@@ -4,6 +4,10 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+file_transfer_service = RemoteFileTransferStrategy()
 
 
 def get_file_type(full_file_name):
@@ -52,41 +56,83 @@ def get_name_info(allnamesdict, namescheck):
 
 @pytest.fixture
 def sample_solver_session():
-    solver_session = pyfluent.launch_fluent(mode="solver")
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        solver_session = pyfluent.launch_fluent(
+            mode="solver",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver_session = pyfluent.launch_fluent(mode="solver")
     yield solver_session
     solver_session.exit()
 
 
 @pytest.fixture
 def launch_fluent_pure_meshing():
-    pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        pure_meshing_session = pyfluent.launch_fluent(
+            mode="pure-meshing",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
     yield pure_meshing_session
     pure_meshing_session.exit()
 
 
 @pytest.fixture
 def launch_fluent_solver_3ddp_t2():
-    solver_session = pyfluent.launch_fluent(
-        precision="double", processor_count=2, mode="solver"
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        solver_session = pyfluent.launch_fluent(
+            precision="double",
+            processor_count=2,
+            mode="solver",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver_session = pyfluent.launch_fluent(
+            precision="double", processor_count=2, mode="solver"
+        )
     yield solver_session
     solver_session.exit()
 
 
 @pytest.fixture
 def launch_fluent_solver_2ddp():
-    solver_session = pyfluent.launch_fluent(
-        version="2d", precision="double", mode="solver"
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        solver_session = pyfluent.launch_fluent(
+            version="2d",
+            precision="double",
+            mode="solver",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver_session = pyfluent.launch_fluent(
+            version="2d", precision="double", mode="solver"
+        )
     yield solver_session
     solver_session.exit()
 
 
 @pytest.fixture
 def launch_fluent_solver_2ddp_t2():
-    solver_session = pyfluent.launch_fluent(
-        version="2d", precision="double", processor_count=2, mode="solver"
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        solver_session = pyfluent.launch_fluent(
+            version="2d",
+            precision="double",
+            processor_count=2,
+            mode="solver",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver_session = pyfluent.launch_fluent(
+            version="2d", precision="double", processor_count=2, mode="solver"
+        )
     yield solver_session
     solver_session.exit()
 
@@ -179,14 +225,30 @@ def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
 
 @pytest.fixture
 def load_mixing_elbow_pure_meshing():
-    pure_meshing_session = pyfluent.launch_fluent(
-        precision="double", processor_count=2, mode="pure-meshing"
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        pure_meshing_session = pyfluent.launch_fluent(
+            precision="double",
+            processor_count=2,
+            mode="pure-meshing",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        pure_meshing_session = pyfluent.launch_fluent(
+            precision="double", processor_count=2, mode="pure-meshing"
+        )
     global _mixing_elbow_geom_file_name
     if not _mixing_elbow_geom_file_name:
-        _mixing_elbow_geom_file_name = download_file(
-            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-        )
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            _mixing_elbow_geom_file_name = download_file(
+                file_name="mixing_elbow.pmdb",
+                directory="pyfluent/mixing_elbow",
+                return_without_path=False,
+            )
+        else:
+            _mixing_elbow_geom_file_name = download_file(
+                file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+            )
 
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
@@ -199,14 +261,31 @@ def load_mixing_elbow_pure_meshing():
 
 @pytest.fixture
 def load_mixing_elbow_meshing():
-    meshing_session = pyfluent.launch_fluent(
-        precision="double", processor_count=2, mode="meshing"
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        meshing_session = pyfluent.launch_fluent(
+            precision="double",
+            processor_count=2,
+            mode="meshing",
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        meshing_session = pyfluent.launch_fluent(
+            precision="double", processor_count=2, mode="meshing"
+        )
     global _mixing_elbow_geom_file_name
     if not _mixing_elbow_geom_file_name:
-        _mixing_elbow_geom_file_name = download_file(
-            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-        )
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            _mixing_elbow_geom_file_name = download_file(
+                file_name="mixing_elbow.pmdb",
+                directory="pyfluent/mixing_elbow",
+                container_dict=container_dict,
+                file_transfer_service=file_transfer_service,
+            )
+        else:
+            _mixing_elbow_geom_file_name = download_file(
+                file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+            )
 
     meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(

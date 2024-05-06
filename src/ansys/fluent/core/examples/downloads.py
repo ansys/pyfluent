@@ -162,9 +162,10 @@ def download_file(
     """
     if return_without_path is None:
         if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            return_without_path = True
-        else:
-            return_without_path = False
+            if pyfluent.USE_FILE_TRANSFER_SERVICE:
+                return_without_path = False
+            else:
+                return_without_path = True
 
     url = _get_file_url(file_name, directory)
     head = requests.head(f"{url}")
