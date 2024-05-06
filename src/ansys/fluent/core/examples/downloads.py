@@ -81,12 +81,8 @@ def _retrieve_file(
 
     logger.info("File does not exist. Downloading specified file...")
 
-    # Check if save path exists
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-        os.chmod(save_path, mode=0o777)
-    else:
-        os.chmod(save_path, mode=0o777)
+    # Create save path directory
+    os.makedirs(save_path, exist_ok=True)
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
