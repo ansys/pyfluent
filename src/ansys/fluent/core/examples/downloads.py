@@ -82,7 +82,7 @@ def _retrieve_file(
     logger.info("File does not exist. Downloading specified file...")
 
     # Create save path directory
-    os.makedirs(save_path, exist_ok=True)
+    Path(save_path).mkdir(mode=0o777, parents=True, exist_ok=True)
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')

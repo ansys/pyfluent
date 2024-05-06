@@ -274,7 +274,7 @@ def configure_container_dict(
             / PurePosixPath(container_server_info_file).name
         )
     else:
-        os.makedirs(host_mount_path, exist_ok=True)
+        Path(host_mount_path).mkdir(mode=0o777, parents=True, exist_ok=True)
         fd, sifile = tempfile.mkstemp(
             suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
@@ -383,7 +383,9 @@ def start_fluent_container(
 
     try:
         if not host_server_info_file.exists():
-            os.makedirs(host_server_info_file.parents[0], exist_ok=True)
+            Path(host_server_info_file.parents[0]).mkdir(
+                mode=0o777, parents=True, exist_ok=True
+            )
 
         host_server_info_file.touch(mode=0o777, exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
