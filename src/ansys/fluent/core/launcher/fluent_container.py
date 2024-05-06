@@ -191,6 +191,8 @@ def configure_container_dict(
         )
         container_dict.pop("volumes")
 
+    Path(host_mount_path).mkdir(mode=0o777, parents=True, exist_ok=True)
+
     if not container_mount_path:
         container_mount_path = os.getenv(
             "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
@@ -274,7 +276,6 @@ def configure_container_dict(
             / PurePosixPath(container_server_info_file).name
         )
     else:
-        Path(host_mount_path).mkdir(mode=0o777, parents=True, exist_ok=True)
         fd, sifile = tempfile.mkstemp(
             suffix=".txt", prefix="serverinfo-", dir=host_mount_path
         )
