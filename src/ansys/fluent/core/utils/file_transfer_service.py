@@ -176,7 +176,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             container_mount_path if container_mount_path else "/home/container/workdir/"
         )
         self.host_mount_path = (
-            host_mount_path if host_mount_path else pyfluent.EXAMPLES_PATH
+            host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH
         )
         try:
             self.host_port = port if port else random.randint(5000, 6000)

@@ -35,7 +35,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _validate_gpu,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -158,11 +157,7 @@ class DockerLauncher:
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
-        self.file_transfer_service = (
-            file_transfer_service
-            if file_transfer_service
-            else RemoteFileTransferStrategy()
-        )
+        self.file_transfer_service = file_transfer_service
 
     def __call__(self):
         if self.mode == FluentMode.SOLVER_ICING:
