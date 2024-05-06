@@ -1225,6 +1225,7 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.create_volume_mesh()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
+    time.sleep(2)
     assert "import_geometry" not in watertight.task_names()
     assert "import_geom_wtm" in watertight.task_names()
     assert watertight.import_geom_wtm.arguments()
@@ -1233,6 +1234,7 @@ def test_new_meshing_workflow_without_dm_caching(
         watertight.import_geometry
 
     watertight.delete_tasks(list_of_tasks=["add_local_sizing"])
+    time.sleep(2)
     assert "add_local_sizing" not in watertight.task_names()
 
     assert sorted(
