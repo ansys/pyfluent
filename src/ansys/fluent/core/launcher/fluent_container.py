@@ -191,7 +191,8 @@ def configure_container_dict(
         )
         container_dict.pop("volumes")
 
-    Path(host_mount_path).mkdir(mode=0o777, parents=True, exist_ok=True)
+    if not os.path.exists(host_mount_path):
+        os.makedirs(host_mount_path)
 
     if not container_mount_path:
         container_mount_path = os.getenv(
@@ -384,11 +385,9 @@ def start_fluent_container(
 
     try:
         if not host_server_info_file.exists():
-            Path(host_server_info_file.parents[0]).mkdir(
-                mode=0o777, parents=True, exist_ok=True
-            )
+            host_server_info_file.parents[0].mkdir(exist_ok=True)
 
-        host_server_info_file.touch(mode=0o777, exist_ok=True)
+        host_server_info_file.touch(exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
 
         docker_client = docker.from_env()
