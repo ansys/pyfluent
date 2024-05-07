@@ -7,6 +7,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
 PYTEST_RELATIVE_TOLERANCE = 1e-3
 
@@ -21,6 +22,10 @@ def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        file_transfer_service = RemoteFileTransferStrategy(
+            host_mount_path=tmp_save_path
+        )
     import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
@@ -28,9 +33,17 @@ def test_parametric_workflow():
         inside_container = True
         config_dict = {}
         config_dict.update(host_mount_path=tmp_save_path)
-        solver_session = pyfluent.launch_fluent(
-            processor_count=2, container_dict=config_dict
-        )
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+                file_transfer_service=file_transfer_service,
+            )
+        else:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+            )
         container_workdir = PurePosixPath(DEFAULT_CONTAINER_MOUNT_PATH)
     else:
         inside_container = False
@@ -164,9 +177,17 @@ def test_parametric_workflow():
     solver_session.exit()
 
     if inside_container:
-        solver_session = pyfluent.launch_fluent(
-            processor_count=2, container_dict=config_dict
-        )
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+                file_transfer_service=file_transfer_service,
+            )
+        else:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+            )
     else:
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 

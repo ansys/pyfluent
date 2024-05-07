@@ -9,13 +9,6 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
 
-import_case_file_name = examples.download_file(
-    "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-)
-import_mesh_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-)
-
 
 def file_downloaded_to_the_client(file_name: str) -> bool:
     """Check if client file exists.
@@ -39,6 +32,12 @@ def file_downloaded_to_the_client(file_name: str) -> bool:
 @pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_session):
     solver = new_solver_session
+    import_case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    import_mesh_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
     solver.file.read_case(file_name=import_case_file_name)
     if solver._file_transfer_service:
         solver.file.write_case(file_name="downloaded_solver_mixing_elbow.cas.h5")
