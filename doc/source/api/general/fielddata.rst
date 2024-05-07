@@ -26,7 +26,7 @@ The field data object is an attribute of the solver object:
 
 .. code-block:: python
 
-  >>> field_data = solver.field_data
+  >>> field_data = solver.fields.field_data
 
 
 Simple requests
@@ -156,7 +156,7 @@ First create transaction object for field data.
 
 .. code-block:: python
 
-  >>> transaction = solver.field_data.new_transaction()
+  >>> transaction = solver.fields.field_data.new_transaction()
 
 Then combine requests for multiple fields using ``add_<items>_request`` methods in a single transaction:
 
