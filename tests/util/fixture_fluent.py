@@ -6,10 +6,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
-if pyfluent.USE_FILE_TRANSFER_SERVICE:
-    container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-    file_transfer_service = RemoteFileTransferStrategy()
-
 
 def get_file_type(full_file_name):
     if ".msh" in full_file_name:
@@ -58,6 +54,8 @@ def get_name_info(allnamesdict, namescheck):
 @pytest.fixture
 def sample_solver_session():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
             mode="solver",
             container_dict=container_dict,
@@ -72,6 +70,8 @@ def sample_solver_session():
 @pytest.fixture
 def launch_fluent_pure_meshing():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         pure_meshing_session = pyfluent.launch_fluent(
             mode="pure-meshing",
             container_dict=container_dict,
@@ -86,6 +86,8 @@ def launch_fluent_pure_meshing():
 @pytest.fixture
 def launch_fluent_solver_3ddp_t2():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
             precision="double",
             processor_count=2,
@@ -104,6 +106,8 @@ def launch_fluent_solver_3ddp_t2():
 @pytest.fixture
 def launch_fluent_solver_2ddp():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
             version="2d",
             precision="double",
@@ -122,6 +126,8 @@ def launch_fluent_solver_2ddp():
 @pytest.fixture
 def launch_fluent_solver_2ddp_t2():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
             version="2d",
             precision="double",
@@ -227,6 +233,8 @@ def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
 @pytest.fixture
 def load_mixing_elbow_pure_meshing():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         pure_meshing_session = pyfluent.launch_fluent(
             precision="double",
             processor_count=2,
@@ -256,6 +264,8 @@ def load_mixing_elbow_pure_meshing():
 @pytest.fixture
 def load_mixing_elbow_meshing():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         meshing_session = pyfluent.launch_fluent(
             precision="double",
             processor_count=2,
