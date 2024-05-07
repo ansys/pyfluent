@@ -2,6 +2,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
 
 def assign_task_arguments(
@@ -40,7 +41,20 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
 
 
 def create_mesh_session():
-    return pyfluent.launch_fluent(mode="meshing", precision="double", processor_count=2)
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        return pyfluent.launch_fluent(
+            mode="meshing",
+            precision="double",
+            processor_count=2,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        return pyfluent.launch_fluent(
+            mode="meshing", precision="double", processor_count=2
+        )
 
 
 def initialize_watertight(mesh_session):

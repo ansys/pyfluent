@@ -25,10 +25,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
-import_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-)
-
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     fluent = new_solver_session
@@ -149,6 +145,10 @@ def test_file_purpose_on_remote_instance(
         fluent_connection=solver._fluent_connection,
         scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_service,
+    )
+
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
     solver_session.file.read_case(file_name=import_file_name)
