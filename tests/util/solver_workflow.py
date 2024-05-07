@@ -3,12 +3,11 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
-container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-file_transfer_service = RemoteFileTransferStrategy()
-
 
 def create_solver_session(*args, **kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -31,6 +30,8 @@ def make_new_session():
 
     def _make_new_session(**kwargs):
         if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+            file_transfer_service = RemoteFileTransferStrategy()
             session = pyfluent.launch_fluent(
                 container_dict=container_dict,
                 file_transfer_service=file_transfer_service,

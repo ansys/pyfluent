@@ -6,8 +6,9 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
-container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-file_transfer_service = RemoteFileTransferStrategy()
+if pyfluent.USE_FILE_TRANSFER_SERVICE:
+    container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+    file_transfer_service = RemoteFileTransferStrategy()
 
 
 def get_file_type(full_file_name):
@@ -239,16 +240,9 @@ def load_mixing_elbow_pure_meshing():
         )
     global _mixing_elbow_geom_file_name
     if not _mixing_elbow_geom_file_name:
-        if pyfluent.USE_FILE_TRANSFER_SERVICE:
-            _mixing_elbow_geom_file_name = download_file(
-                file_name="mixing_elbow.pmdb",
-                directory="pyfluent/mixing_elbow",
-                return_without_path=False,
-            )
-        else:
-            _mixing_elbow_geom_file_name = download_file(
-                file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-            )
+        _mixing_elbow_geom_file_name = download_file(
+            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        )
 
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
@@ -275,17 +269,9 @@ def load_mixing_elbow_meshing():
         )
     global _mixing_elbow_geom_file_name
     if not _mixing_elbow_geom_file_name:
-        if pyfluent.USE_FILE_TRANSFER_SERVICE:
-            _mixing_elbow_geom_file_name = download_file(
-                file_name="mixing_elbow.pmdb",
-                directory="pyfluent/mixing_elbow",
-                container_dict=container_dict,
-                file_transfer_service=file_transfer_service,
-            )
-        else:
-            _mixing_elbow_geom_file_name = download_file(
-                file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-            )
+        _mixing_elbow_geom_file_name = download_file(
+            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        )
 
     meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
