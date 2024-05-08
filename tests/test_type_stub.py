@@ -8,6 +8,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.codegen_required
+@pytest.mark.fluent_version("==24.1")
 def test_settings_stub():
     # The type-stub files, which are generated for settings API, are parsed by the
     # intellisense engine while typing in editors like vscode. This test validates the
