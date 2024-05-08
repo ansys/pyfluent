@@ -886,15 +886,9 @@ class PyStateContainer(PyCallableStateObject):
 
         Raises
         ------
-        TypeError
-            If no arguments are provided to the ``set_state()`` method.
         ReadOnlyObjectError
             If the object is read-only.
         """
-        if state is None and not kwargs:
-            raise TypeError(
-                "The `set_state()` method requires either 'state' or 'kwargs' arguments."
-            )
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
         self.service.set_state(
