@@ -1,4 +1,4 @@
-"""Deprecates old argument and replaces them with corresponding new argument."""
+"""Module that provides a method to handle deprecated arguments."""
 
 import functools
 import warnings
