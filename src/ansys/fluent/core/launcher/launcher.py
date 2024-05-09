@@ -133,7 +133,7 @@ def deprecate(old_arg, new_arg, converter):
         """Holds the original method to perform operations on it."""
 
         def wrapper(*args, **kwargs):
-            """Performs the deprecation operation on the arguments of the original method."""
+            """Performs deprecation operation on the arguments of the original method."""
             if old_arg in kwargs:
                 converter(old_arg, new_arg, kwargs)
                 kwargs.pop(old_arg)
