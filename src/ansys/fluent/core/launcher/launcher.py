@@ -130,7 +130,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
 @deprecate_arguments(
     old_arg="show_gui",
     new_arg="ui_mode",
-    converter=lambda old_arg_val: UIMode.GUI if old_arg_val else None,
+    converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
     deprecation_class=PyFluentDeprecationWarning,
 )
 def launch_fluent(
