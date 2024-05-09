@@ -4,7 +4,6 @@ from enum import Enum
 from functools import total_ordering
 import os
 from typing import Optional, Union
-import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -15,7 +14,6 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 import ansys.platform.instancemanagement as pypim
 
 
@@ -252,15 +250,12 @@ def _get_standalone_launch_fluent_version(
 
 
 def _get_ui_mode(
-    show_gui: bool,
     ui_mode: UIMode,
 ):
     """Get the graphics driver.
 
     Parameters
     ----------
-    show_gui: bool
-        Whether to show the Fluent GUI.
     ui_mode: UIMode
         Fluent GUI mode.
 
@@ -269,12 +264,7 @@ def _get_ui_mode(
     ui_mode: UIMode
         Fluent GUI mode.
     """
-    if show_gui is not None:
-        warnings.warn(
-            "'show_gui' is deprecated. Use 'ui_mode' instead.",
-            PyFluentDeprecationWarning,
-        )
-    if show_gui or os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+    if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
         ui_mode = UIMode.GUI
     if ui_mode is None:
         # Not using NO_GUI in windows as it opens a new cmd or

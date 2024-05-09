@@ -7,6 +7,7 @@ with gRPC.
 import logging
 import os
 from typing import Any, Dict, Optional, Union
+import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
@@ -31,6 +32,7 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -72,7 +74,6 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
             env=kwargs["env"],
             cleanup_on_exit=kwargs["cleanup_on_exit"],
             start_transcript=kwargs["start_transcript"],
-            show_gui=kwargs["show_gui"],
             case_file_name=kwargs["case_file_name"],
             case_data_file_name=kwargs["case_data_file_name"],
             lightweight_mode=kwargs["lightweight_mode"],
@@ -125,7 +126,37 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
+def deprecate(old_arg, new_arg, converter):
+    """Deprecates old argument and replaces them with corresponding new argument."""
+
+    def decorator(func):
+        """Holds the original method to perform operations on it."""
+
+        def wrapper(*args, **kwargs):
+            """Performs the deprecation operation on the arguments of the original method."""
+            if old_arg in kwargs:
+                converter(old_arg, new_arg, kwargs)
+                kwargs.pop(old_arg)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def _show_gui_to_ui_mode_converter_func(old_arg, new_arg, kwargs):
+    warnings.warn(
+        "'show_gui' is deprecated. Use 'ui_mode' instead.",
+        PyFluentDeprecationWarning,
+    )
+    if kwargs[old_arg]:
+        kwargs[new_arg] = UIMode.GUI
+
+
 #   pylint: disable=unused-argument
+@deprecate(
+    old_arg="show_gui", new_arg="ui_mode", converter=_show_gui_to_ui_mode_converter_func
+)
 def launch_fluent(
     product_version: Optional[FluentVersion] = None,
     version: Optional[str] = None,
@@ -144,7 +175,6 @@ def launch_fluent(
     graphics_driver: Union[
         FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
     ] = None,
-    show_gui: Optional[bool] = None,
     case_file_name: Optional[str] = None,
     case_data_file_name: Optional[str] = None,
     lightweight_mode: Optional[bool] = None,
@@ -224,11 +254,6 @@ def launch_fluent(
        ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
        ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
        ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
-    show_gui : bool, optional
-        Whether to display the Fluent GUI. The default is ``None``, which does not
-        cause the GUI to be shown. If a value of ``False`` is
-        not explicitly provided, the GUI will also be shown if
-        the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
     case_file_name : str, optional
         If provided, the case file at ``case_file_name`` is read into the Fluent session.
     case_data_file_name : str, optional
