@@ -7,7 +7,7 @@ import warnings
 def deprecate_arguments(
     old_arg, new_arg, converter, deprecation_class=DeprecationWarning
 ):
-    """Warns user that the argument provided is deprecated, and automatically replaces the 
+    """Warns user that the argument provided is deprecated, and automatically replaces the
     deprecated argument with the appropriate new argument."""
 
     def decorator(func):
