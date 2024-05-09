@@ -30,7 +30,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate_args import deprecate_arguments
+from ansys.fluent.core.utils.deprecate_args import deprecate_argument
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
@@ -127,7 +127,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
 
 
 #   pylint: disable=unused-argument
-@deprecate_arguments(
+@deprecate_argument(
     old_arg="show_gui",
     new_arg="ui_mode",
     converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
