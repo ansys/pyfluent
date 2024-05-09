@@ -26,7 +26,7 @@ test-import:
 PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 PYTESTRERUN = --last-failed --last-failed-no-failures none
 
-unittest: unittest-dev-241
+unittest: unittest-dev-242
 
 unittest-dev-222:
 	@echo "Running unittests"
@@ -52,6 +52,11 @@ unittest-dev-242:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@poetry run python -m pytest --fluent-version=24.2 $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=24.2 $(PYTESTRERUN)
+
+unittest-dev-251:
+	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@poetry run python -m pytest --fluent-version=25.1 $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.1 $(PYTESTRERUN)
 
 unittest-all-222:
 	@echo "Running all unittests"
@@ -98,15 +103,25 @@ unittest-all-242:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@poetry run python -m pytest --nightly --fluent-version=24.2 $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=24.2 $(PYTESTRERUN)
 
-unittest-solvermode-242:
-	@echo "Running all unittests"
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
-	@poetry run python -m pytest --fluent-version=24.2 --solvermode $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=24.2 --solvermode $(PYTESTRERUN)
-
 unittest-all-242-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@poetry run python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required" $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=24.2 -m "not codegen_required" $(PYTESTRERUN)
+
+unittest-all-251:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@poetry run python -m pytest --nightly --fluent-version=25.1 $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=25.1 $(PYTESTRERUN)
+
+unittest-solvermode-251:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@poetry run python -m pytest --fluent-version=25.1 --solvermode $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.1 --solvermode $(PYTESTRERUN)
+
+unittest-all-251-no-codegen:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@poetry run python -m pytest --nightly --fluent-version=25.1 -m "not codegen_required" $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=25.1 -m "not codegen_required" $(PYTESTRERUN)
 
 api-codegen:
 	@echo "Running API codegen"
