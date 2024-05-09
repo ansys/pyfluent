@@ -7,7 +7,6 @@ with gRPC.
 import logging
 import os
 from typing import Any, Dict, Optional, Union
-import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
@@ -127,18 +126,12 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
-def _show_gui_to_ui_mode_converter_func(old_arg, new_arg, kwargs):
-    warnings.warn(
-        "'show_gui' is deprecated. Use 'ui_mode' instead.",
-        PyFluentDeprecationWarning,
-    )
-    if kwargs[old_arg] is True and kwargs[new_arg] is None:
-        kwargs[new_arg] = UIMode.GUI
-
-
 #   pylint: disable=unused-argument
 @deprecate_arguments(
-    old_arg="show_gui", new_arg="ui_mode", converter=_show_gui_to_ui_mode_converter_func
+    old_arg="show_gui",
+    new_arg="ui_mode",
+    converter=lambda old_arg_val: UIMode.GUI if old_arg_val else None,
+    deprecation_class=PyFluentDeprecationWarning,
 )
 def launch_fluent(
     product_version: Optional[FluentVersion] = None,
