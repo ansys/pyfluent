@@ -21,7 +21,7 @@ def deprecate_arguments(
                     deprecation_class,
                 )
                 val = converter(kwargs[old_arg])
-                if val is not None:
+                if val is not None and kwargs[new_arg] is None:
                     kwargs[new_arg] = val
                 kwargs.pop(old_arg)
             return func(*args, **kwargs)
