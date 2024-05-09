@@ -31,6 +31,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.deprecate_args import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
@@ -126,35 +127,17 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
-def deprecate(old_arg, new_arg, converter):
-    """Deprecates old argument and replaces them with corresponding new argument."""
-
-    def decorator(func):
-        """Holds the original method to perform operations on it."""
-
-        def wrapper(*args, **kwargs):
-            """Performs deprecation operation on arguments of the original method."""
-            if old_arg in kwargs:
-                converter(old_arg, new_arg, kwargs)
-                kwargs.pop(old_arg)
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
-
 def _show_gui_to_ui_mode_converter_func(old_arg, new_arg, kwargs):
     warnings.warn(
         "'show_gui' is deprecated. Use 'ui_mode' instead.",
         PyFluentDeprecationWarning,
     )
-    if kwargs[old_arg]:
+    if kwargs[old_arg] is True and kwargs[new_arg] is None:
         kwargs[new_arg] = UIMode.GUI
 
 
 #   pylint: disable=unused-argument
-@deprecate(
+@deprecate_arguments(
     old_arg="show_gui", new_arg="ui_mode", converter=_show_gui_to_ui_mode_converter_func
 )
 def launch_fluent(
