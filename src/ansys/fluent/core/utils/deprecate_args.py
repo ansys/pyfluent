@@ -15,7 +15,7 @@ def deprecate_arguments(
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            """Performs deprecation operation on arguments of the original method."""
+            """Warns about the deprecated argument and replaces it with the new argument."""
             if old_arg in kwargs:
                 warnings.warn(
                     f"'{old_arg}' is deprecated. Use '{new_arg}' instead.",
