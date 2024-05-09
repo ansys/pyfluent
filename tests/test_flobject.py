@@ -837,6 +837,7 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
     )
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2792")
 @pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
