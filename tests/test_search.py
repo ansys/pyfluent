@@ -9,7 +9,7 @@ from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
 
 @pytest.mark.codegen_required
 def test_search(capsys):
-    pyfluent.search("display")
+    pyfluent._search("display")
     lines = capsys.readouterr().out.splitlines()
     assert "<meshing_session>.tui.display (Object)" in lines
     assert "<meshing_session>.tui.display.update_scene.display (Command)" in lines
@@ -23,7 +23,7 @@ def test_search(capsys):
         in lines
     )
 
-    pyfluent.search("display", match_whole_word=True)
+    pyfluent._search("display", match_whole_word=True)
     lines = capsys.readouterr().out.splitlines()
     assert '<solver_session>.results.graphics.mesh["<name>"].display (Command)' in lines
     assert (
@@ -31,7 +31,7 @@ def test_search(capsys):
         not in lines
     )
 
-    pyfluent.search("Display", match_case=True)
+    pyfluent._search("Display", match_case=True)
     lines = capsys.readouterr().out.splitlines()
     assert "<meshing_session>.tui.display (Object)" not in lines
     assert (
@@ -39,7 +39,7 @@ def test_search(capsys):
         in lines
     )
 
-    pyfluent.search(
+    pyfluent._search(
         "GraphicsWindowDisplayTimeout", match_whole_word=True, match_case=True
     )
     lines = capsys.readouterr().out.splitlines()
@@ -129,33 +129,33 @@ def test_get_version_path_prefix_from_obj(
 @pytest.mark.fluent_version("latest")
 def test_search_from_root(capsys, new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
-    pyfluent.search("display", search_root=meshing)
+    pyfluent._search("display", search_root=meshing)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.tui.display (Object)" in lines
-    pyfluent.search("display", search_root=meshing.tui)
+    pyfluent._search("display", search_root=meshing.tui)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.display (Object)" in lines
-    pyfluent.search("display", search_root=meshing.tui.display)
+    pyfluent._search("display", search_root=meshing.tui.display)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.update_scene.display (Command)" in lines
     assert "<search_root>.display_states (Object)" in lines
-    pyfluent.search("cad", search_root=meshing.meshing)
+    pyfluent._search("cad", search_root=meshing.meshing)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
     assert "<search_root>.LoadCADGeometry (Command)" in lines
-    pyfluent.search("next", search_root=meshing.workflow)
+    pyfluent._search("next", search_root=meshing.workflow)
     lines = capsys.readouterr().out.splitlines()
     assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
-    pyfluent.search("next", search_root=meshing.workflow.TaskObject)
+    pyfluent._search("next", search_root=meshing.workflow.TaskObject)
     lines = capsys.readouterr().out.splitlines()
     assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
-    pyfluent.search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
+    pyfluent._search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.InsertNextTask (Command)" in lines
-    pyfluent.search("timeout", search_root=meshing.preferences)
+    pyfluent._search("timeout", search_root=meshing.preferences)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.General.IdleTimeout (Parameter)" in lines
-    pyfluent.search("timeout", search_root=meshing.preferences.General)
+    pyfluent._search("timeout", search_root=meshing.preferences.General)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.IdleTimeout (Parameter)" in lines
 
@@ -164,31 +164,31 @@ def test_search_from_root(capsys, new_watertight_workflow_session):
 @pytest.mark.fluent_version("==23.2")
 def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
-    pyfluent.search("conduction", search_root=solver)
+    pyfluent._search("conduction", search_root=solver)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.tui.define.models.shell_conduction (Object)" in lines
     assert (
         '<search_root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
-    pyfluent.search("conduction", search_root=solver.setup.boundary_conditions)
+    pyfluent._search("conduction", search_root=solver.setup.boundary_conditions)
     lines = capsys.readouterr().out.splitlines()
     assert (
         '<search_root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
-    pyfluent.search("conduction", search_root=solver.setup.boundary_conditions.wall)
+    pyfluent._search("conduction", search_root=solver.setup.boundary_conditions.wall)
     lines = capsys.readouterr().out.splitlines()
     assert (
         '<search_root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
-    pyfluent.search(
+    pyfluent._search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"]
     )
     lines = capsys.readouterr().out.splitlines()
     assert '<search_root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
-    pyfluent.search(
+    pyfluent._search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"].phase
     )
     lines = capsys.readouterr().out.splitlines()
