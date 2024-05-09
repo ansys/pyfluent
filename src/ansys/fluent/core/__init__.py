@@ -87,6 +87,9 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
+# Whether to write API objects to a text file
+WRITE_API_SEARCH_OBJECTS_FILE = False
+
 # Parent directory where codegen writes out API files
 GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
 

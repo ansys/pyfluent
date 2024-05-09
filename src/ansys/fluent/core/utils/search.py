@@ -1,10 +1,16 @@
 """Provides a module to search a word through the Fluent's object hierarchy.."""
 
 from collections.abc import Mapping
+import os.path
 from pathlib import Path
 import pickle
 from typing import Any, Optional
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from spellchecker import SpellChecker
+
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -22,11 +28,24 @@ from ansys.fluent.core.workflow import (
 )
 
 
-def get_api_tree_file_name(version: str) -> Path:
+def get_api_tree_file_name(
+    version: Optional[str] = None,
+    text: Optional[bool] = None,
+    name: Optional[bool] = None,
+    tui: Optional[bool] = None,
+) -> Path:
     """Get API tree file name."""
     from ansys.fluent.core import GENERATED_API_DIR
 
-    return (GENERATED_API_DIR / f"api_tree_{version}.pickle").resolve()
+    text_file_folder = Path(os.path.join(GENERATED_API_DIR, "api_tree"))
+    if text:
+        return (text_file_folder / "api_tree.txt").resolve()
+    elif name:
+        return (text_file_folder / "api_tree_names.txt").resolve()
+    elif tui:
+        return (text_file_folder / "api_tree_tui.txt").resolve()
+    else:
+        return (GENERATED_API_DIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
@@ -131,7 +150,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
     return version, path, prefix
 
 
-def search(
+def _search(
     word: str,
     match_whole_word: bool = False,
     match_case: bool = False,
@@ -175,6 +194,9 @@ def search(
     <solver_session>.results.graphics.mesh["<name>"].geometry (Parameter)
     <solver_session>.results.graphics.contour["<name>"].geometry (Parameter)
     """
+    api_objects = []
+    api_tui_objects = []
+    api_object_names = set()
     if version:
         version = get_version_for_file_name(version)
     root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
@@ -229,10 +251,152 @@ def search(
                     next_path = f'{path}.{k}["<name>"]'
                 else:
                     next_path = f"{path}.{k}"
+                type_ = "Object" if isinstance(v, Mapping) else v
+                api_object_names.add(k)
+                if "tui" in next_path:
+                    api_tui_objects.append(f"{next_path} ({type_})")
+                else:
+                    api_objects.append(f"{next_path} ({type_})")
                 if _match(k, word, match_whole_word, match_case):
-                    type_ = "Object" if isinstance(v, Mapping) else v
                     print(f"{next_path} ({type_})")
             if isinstance(v, Mapping):
                 inner(v, next_path, root_path)
 
     inner(api_tree, "", root_path)
+
+    def _write_file(
+        api_objects: list,
+        text: Optional[bool] = False,
+        tui: Optional[bool] = False,
+        name: Optional[bool] = None,
+    ):
+        api_tree_file = get_api_tree_file_name(text=text, name=name, tui=tui)
+        api_tree_file.touch()
+        with open(api_tree_file, "w") as file:
+            for api_object in api_objects:
+                file.write(f"{api_object}\n")
+
+    if pyfluent.WRITE_API_SEARCH_OBJECTS_FILE:
+        from ansys.fluent.core import GENERATED_API_DIR
+
+        text_file_folder = Path(os.path.join(GENERATED_API_DIR, "api_tree"))
+        text_file_folder.mkdir(exist_ok=True)
+
+        _write_file(api_objects=api_objects, text=True)
+        _write_file(api_objects=api_tui_objects, tui=True)
+        _write_file(api_objects=api_object_names, name=True)
+
+
+def _process_wildcards(word: str, names: list):
+    """Process wildcard pattern in the given word.
+
+    Parameters
+    ----------
+    word: str
+        The word to search for.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+    wildcard_matches: list
+        Matched API object names.
+    """
+    wildcard_matches = []
+    word = word.replace("*", "")
+    for name in names:
+        if name.startswith(word) or name.endswith(word):
+            wildcard_matches.append(name)
+    return wildcard_matches
+
+
+def _process_misspelled(word: str, names_txt_file, names: list):
+    """Process misspelled word.
+
+    Parameters
+    ----------
+    word: str
+        The word to search for.
+    names_txt_file:
+        Text file containing all API object names.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+    correct_spell: list
+        List of corrected spell.
+    """
+    correct_spell = []
+    possible_corrections = []
+    spell = SpellChecker()
+    spell.word_frequency.load_text_file(names_txt_file)
+    spell.word_frequency.load_words(names)
+    misspelled = spell.unknown([word])
+    if misspelled:
+        for name in misspelled:
+            correct_spell.append(spell.correction(name))
+            possible_corrections.extend(list(spell.candidates(name)))
+        if correct_spell == possible_corrections:
+            return correct_spell
+        else:
+            corrections_in_tree = set()
+            for correction in possible_corrections:
+                for name in names:
+                    if correction in name:
+                        corrections_in_tree.add(correction)
+            return list(corrections_in_tree)
+    else:
+        return [word]
+
+
+def search(word: str):
+    """Search for a word through the Fluent's object hierarchy.
+
+    Parameters
+    ----------
+    word: str
+        The word to search for.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> pyfluent.search("iterate")
+    >>> pyfluent.search("iter*")
+    >>> pyfluent.search("*iter")
+    """
+    api_object_names = get_api_tree_file_name(name=True)
+    names_txt = open(api_object_names, "r")
+    names = names_txt.readlines()
+    is_wildcard = False
+    if "*" in word:
+        queries = _process_wildcards(word, names)
+        is_wildcard = True
+    else:
+        queries = _process_misspelled(
+            word=word, names_txt_file=api_object_names, names=names
+        )
+    api_tree = get_api_tree_file_name(text=True)
+    api_tui_tree = get_api_tree_file_name(tui=True)
+    text_files = [api_tree, api_tui_tree]
+    print("\n The most similar API objects are: \n")
+    for text_file in text_files:
+        text = open(text_file, "r")
+        api_objects = text.readlines()
+        tfidf_vectorizer = TfidfVectorizer()
+        tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
+        for query in queries:
+            query_vector = tfidf_vectorizer.transform([query])
+            cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
+            if is_wildcard:
+                word = word.replace("*", "")
+                most_similar_api_object_index = cosine_similarities.argmax()
+                if word in api_objects[most_similar_api_object_index]:
+                    print(api_objects[most_similar_api_object_index])
+            else:
+                most_similar_api_object_indices = cosine_similarities.argsort()
+                for most_similar_api_object_index in reversed(
+                    most_similar_api_object_indices[0][-3:]
+                ):
+                    if query in api_objects[most_similar_api_object_index]:
+                        print(api_objects[most_similar_api_object_index])
