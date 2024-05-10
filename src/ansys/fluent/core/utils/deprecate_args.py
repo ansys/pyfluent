@@ -19,12 +19,12 @@ def deprecate_argument(
             argument."""
             if old_arg in kwargs:
                 warnings.warn(
-                    f"'{old_arg}' is deprecated. Use '{new_arg}' instead.",
+                    f"'{old_arg}' is deprecated. Using '{new_arg}' instead.",
                     deprecation_class,
                 )
-                val = converter(kwargs[old_arg])
-                if val is not None and kwargs.get(new_arg) is None:
-                    kwargs[new_arg] = val
+                new_value = converter(kwargs[old_arg])
+                if new_value is not None and kwargs.get(new_arg) is None:
+                    kwargs[new_arg] = new_value
                 kwargs.pop(old_arg)
             return func(*args, **kwargs)
 
