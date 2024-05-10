@@ -123,13 +123,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
+      # temporarily disabling
+      # - name: Cache pip
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+      #     restore-keys: |
+      #       Python-${{ runner.os }}-${{ matrix.python-version }}
 
       - name: Install pyfluent
         run: make install
