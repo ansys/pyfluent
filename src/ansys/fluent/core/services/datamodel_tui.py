@@ -16,7 +16,6 @@ from ansys.fluent.core.services.interceptors import (
     ErrorStateInterceptor,
     GrpcErrorInterceptor,
     TracingInterceptor,
-    WrapApiCallInterceptor,
 )
 
 Path = list[str]
@@ -39,7 +38,6 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(self._fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
-            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata

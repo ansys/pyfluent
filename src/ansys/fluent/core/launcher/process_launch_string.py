@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.pyfluent_enums import FluentMode, UIMode
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
@@ -100,7 +101,8 @@ def _generate_launch_string(
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
-    launch_string += " -nm"
+    if not pyfluent.SHOW_MESH_AFTER_CASE_READ:
+        launch_string += " -nm"
     return launch_string
 
 
