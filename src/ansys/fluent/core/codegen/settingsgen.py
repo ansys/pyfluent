@@ -32,7 +32,8 @@ import pickle
 import pprint
 import shutil
 
-from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
+from ansys.fluent.core import GENERATED_API_DIR, launch_fluent
+from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
@@ -470,7 +471,7 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-def generate(version, sessions: dict):
+def generate(version, static_infos: dict):
     """Generate settings API classes."""
     parent_dir = (GENERATED_API_DIR / "solver" / f"settings_{version}").resolve()
 
@@ -479,12 +480,7 @@ def generate(version, sessions: dict):
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
-    if FluentMode.SOLVER not in sessions:
-        sessions[FluentMode.SOLVER] = launch_fluent()
-    session = sessions[FluentMode.SOLVER]
-    sinfo = session._settings_service.get_static_info()
-    sessions.pop(FluentMode.SOLVER)
-    session.exit()  # exiting the solver session here as it won't be required during allapigen anymore
+    sinfo = static_infos[StaticInfoType.SETTINGS]
     cls, _ = flobject.get_cls("", sinfo, version=version)
 
     api_tree = {}
@@ -495,6 +491,7 @@ def generate(version, sessions: dict):
 
 
 if __name__ == "__main__":
-    sessions = {FluentMode.SOLVER: launch_fluent()}
-    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, sessions)
+    solver = launch_fluent()
+    version = get_version_for_file_name(session=solver)
+    static_infos = {StaticInfoType.SETTINGS: solver._settings_service.get_static_info()}
+    generate(version, static_infos)
