@@ -24,9 +24,9 @@ from ansys.fluent.core.workflow import (
 
 def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    from ansys.fluent.core import GENERATED_API_DIR
+    from ansys.fluent.core import CODEGEN_OUTDIR
 
-    return (GENERATED_API_DIR / f"api_tree_{version}.pickle").resolve()
+    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):

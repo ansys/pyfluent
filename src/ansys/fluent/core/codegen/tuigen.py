@@ -24,7 +24,7 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.services.datamodel_tui import (
@@ -43,7 +43,7 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (GENERATED_API_DIR / mode / f"tui_{version}.py").resolve()
+    return (CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4

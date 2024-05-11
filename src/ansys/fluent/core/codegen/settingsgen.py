@@ -32,7 +32,7 @@ import pickle
 import pprint
 import shutil
 
-from ansys.fluent.core import GENERATED_API_DIR, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
@@ -473,7 +473,7 @@ def _populate_init(parent_dir, sinfo):
 
 def generate(version, static_infos: dict):
     """Generate settings API classes."""
-    parent_dir = (GENERATED_API_DIR / "solver" / f"settings_{version}").resolve()
+    parent_dir = (CODEGEN_OUTDIR / "solver" / f"settings_{version}").resolve()
 
     # Clear previously generated data
     if os.path.exists(parent_dir):

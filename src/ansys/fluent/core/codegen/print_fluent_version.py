@@ -1,12 +1,12 @@
 """Module to write Fluent version information."""
 
-from ansys.fluent.core import GENERATED_API_DIR, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, launch_fluent
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
 def print_fluent_version(version: str, scheme_eval):
     """Write Fluent version information to file."""
-    version_file = (GENERATED_API_DIR / f"fluent_version_{version}.py").resolve()
+    version_file = (CODEGEN_OUTDIR / f"fluent_version_{version}.py").resolve()
     with open(version_file, "w", encoding="utf8") as f:
         f.write(f'FLUENT_VERSION = "{version}"\n')
         f.write(f'FLUENT_BUILD_TIME = "{scheme_eval("(inquire-build-time)")}"\n')

@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 from typing import Any, Dict
 
-from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -102,7 +102,7 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (GENERATED_API_DIR / f"datamodel_{version}").resolve()
+        datamodel_dir = (CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
