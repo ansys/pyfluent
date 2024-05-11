@@ -10,11 +10,11 @@ if __name__ == "__main__":
     t0 = time()
     meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
     version = get_version_for_file_name(session=meshing)
-    above_v222 = FluentVersion(version) >= FluentVersion.v222
-    above_v231 = FluentVersion(version) >= FluentVersion.v231
-    above_v242 = FluentVersion(version) >= FluentVersion.v242
+    gt_222 = FluentVersion(version) > FluentVersion.v222
+    ge_231 = FluentVersion(version) >= FluentVersion.v231
+    ge_242 = FluentVersion(version) >= FluentVersion.v242
     solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if above_v231 else FluentMode.SOLVER
+        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
     )
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
@@ -34,21 +34,21 @@ if __name__ == "__main__":
         ),
         StaticInfoType.SETTINGS: solver._settings_service.get_static_info(),
     }
-    if above_v222:
+    if gt_222:
         static_infos[StaticInfoType.TUI_SOLVER] = (
             solver._datamodel_service_tui.get_static_info("")
         )
         static_infos[StaticInfoType.TUI_MESHING] = (
             meshing._datamodel_service_tui.get_static_info("")
         )
-    if above_v231:
+    if ge_231:
         static_infos[StaticInfoType.DATAMODEL_FLICING] = (
             solver._datamodel_service_se.get_static_info("flserver")
         )
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
-    if above_v242:
+    if ge_242:
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
         )
