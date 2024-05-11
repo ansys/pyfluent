@@ -318,8 +318,12 @@ if __name__ == "__main__":
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
     version = get_version_for_file_name(session=solver)
-    static_infos = {
-        StaticInfoType.TUI_SOLVER: solver._datamodel_service_tui.get_static_info(""),
-        StaticInfoType.TUI_MESHING: meshing._datamodel_service_tui.get_static_info(""),
-    }
+    static_infos = {}
+    if FluentVersion(version) >= FluentVersion.v222:
+        static_infos[StaticInfoType.TUI_SOLVER] = (
+            solver._datamodel_service_tui.get_static_info("")
+        )
+        static_infos[StaticInfoType.TUI_MESHING] = (
+            meshing._datamodel_service_tui.get_static_info("")
+        )
     generate(version, static_infos)

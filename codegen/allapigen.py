@@ -8,12 +8,15 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
     t0 = time()
-    solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
-    version = get_version_for_file_name(session=solver)
+    version = get_version_for_file_name(session=meshing)
+    above_v222 = FluentVersion(version) >= FluentVersion.v222
+    above_v231 = FluentVersion(version) >= FluentVersion.v231
+    above_v242 = FluentVersion(version) >= FluentVersion.v242
+    solver = launch_fluent(
+        mode=FluentMode.SOLVER_ICING if above_v231 else FluentMode.SOLVER_MODE
+    )
     static_infos = {
-        StaticInfoType.TUI_SOLVER: solver._datamodel_service_tui.get_static_info(""),
-        StaticInfoType.TUI_MESHING: meshing._datamodel_service_tui.get_static_info(""),
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "workflow"
         ),
@@ -31,15 +34,21 @@ if __name__ == "__main__":
         ),
         StaticInfoType.SETTINGS: solver._settings_service.get_static_info(),
     }
-    if FluentVersion(version) >= FluentVersion.v231:
-        flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
+    if above_v222:
+        static_infos[StaticInfoType.TUI_SOLVER] = (
+            solver._datamodel_service_tui.get_static_info("")
+        )
+        static_infos[StaticInfoType.TUI_MESHING] = (
+            meshing._datamodel_service_tui.get_static_info("")
+        )
+    if above_v231:
         static_infos[StaticInfoType.DATAMODEL_FLICING] = (
-            flicing._datamodel_service_se.get_static_info("flserver")
+            solver._datamodel_service_se.get_static_info("flserver")
         )
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
-    if FluentVersion(version) >= FluentVersion.v242:
+    if above_v242:
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
         )
