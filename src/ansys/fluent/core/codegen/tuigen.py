@@ -33,6 +33,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
+    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
@@ -87,21 +88,24 @@ def _copy_tui_help_xml_file(version: str):
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
-        ansys_version = (
-            FluentVersion.get_latest_installed()
-        )  # picking up the file from the latest install location
-        awp_root = os.environ[ansys_version.awp_var]
-        xml_source = (
-            Path(awp_root)
-            / "commonfiles"
-            / "help"
-            / "en-us"
-            / "fluent_gui_help"
-            / "fluent_gui_help.xml"
-        )
-        if xml_source.exists():
-            shutil.copy(str(xml_source), _XML_HELP_FILE)
-        else:
+        try:
+            ansys_version = (
+                FluentVersion.get_latest_installed()
+            )  # picking up the file from the latest install location
+            awp_root = os.environ[ansys_version.awp_var]
+            xml_source = (
+                Path(awp_root)
+                / "commonfiles"
+                / "help"
+                / "en-us"
+                / "fluent_gui_help"
+                / "fluent_gui_help.xml"
+            )
+            if xml_source.exists():
+                shutil.copy(str(xml_source), _XML_HELP_FILE)
+            else:
+                logger.warning("fluent_gui_help.xml is not found.")
+        except AnsysVersionNotFound:
             logger.warning("fluent_gui_help.xml is not found.")
 
 
@@ -297,7 +301,7 @@ def generate(version, static_infos: dict):
     api_tree = {}
     if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
-    _populate_xml_helpstrings()  # TODO: Change this for Fluent run
+    _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
         "meshing", version, static_infos
     ).generate()
