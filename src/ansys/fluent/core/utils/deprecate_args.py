@@ -28,13 +28,16 @@ def deprecate_argument(
             argument."""
             if old_arg in kwargs:
                 old_value = kwargs[old_arg]
+                warning_str = f"'{old_arg}' is deprecated. "
                 new_value = converter(kwargs[old_arg])
-                if new_value is not None and kwargs.get(new_arg) is None:
+                if kwargs.get(new_arg) is None:
                     kwargs[new_arg] = new_value
+                    warning_str += f"Use '{new_arg} = {_str_repr(new_value)}' instead of '{old_arg} = {_str_repr(old_value)}'."
+                else:
+                    warning_str += f"Use only '{new_arg}' instead."
                 kwargs.pop(old_arg)
                 warnings.warn(
-                    f"'{old_arg} = {_str_repr(old_value)}' is deprecated. "
-                    f"Use '{new_arg} = {_str_repr(new_value)}' instead.",
+                    warning_str,
                     deprecation_class,
                 )
             return func(*args, **kwargs)
