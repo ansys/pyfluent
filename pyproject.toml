@@ -61,6 +61,7 @@ optional = true
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = "==7.2.6"
+jsonschema = "<4.18.0"  # Issue with rpds-py installation in github runners
 jupyter_sphinx = "==0.5.3"
 numpydoc = "==1.6.0"
 matplotlib = "==3.8.2"
