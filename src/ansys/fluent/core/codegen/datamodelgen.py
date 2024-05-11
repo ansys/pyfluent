@@ -378,7 +378,6 @@ def generate(version, static_infos: dict):
 if __name__ == "__main__":
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
-    flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
     version = get_version_for_file_name(session=solver)
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
@@ -393,14 +392,15 @@ if __name__ == "__main__":
         StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
             "PMFileManagement"
         ),
-        StaticInfoType.DATAMODEL_FLICING: flicing._datamodel_service_se.get_static_info(
-            "flserver"
-        ),
         StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
             "preferences"
         ),
     }
     if FluentVersion(version) >= FluentVersion.v231:
+        flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
+        static_infos[StaticInfoType.DATAMODEL_FLICING] = (
+            flicing._datamodel_service_se.get_static_info("flserver")
+        )
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
