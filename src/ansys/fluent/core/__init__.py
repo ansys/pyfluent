@@ -87,7 +87,7 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
-# Directory where codegen writes out API files
+# Directory where API files are writes out during codegen
 CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 
 # Whether to zip settings API files during codegen
