@@ -14,7 +14,7 @@ if __name__ == "__main__":
     above_v231 = FluentVersion(version) >= FluentVersion.v231
     above_v242 = FluentVersion(version) >= FluentVersion.v242
     solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if above_v231 else FluentMode.SOLVER_MODE
+        mode=FluentMode.SOLVER_ICING if above_v231 else FluentMode.SOLVER
     )
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
