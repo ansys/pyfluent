@@ -32,7 +32,7 @@ import pickle
 import pprint
 import shutil
 
-from ansys.fluent.core import CODEGEN_OUTDIR, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
@@ -480,6 +480,10 @@ def generate(version, static_infos: dict):
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
+    if CODEGEN_ZIP_SETTINGS:
+        parent_dir = parent_dir / "settings"
+        os.makedirs(parent_dir)
+
     sinfo = static_infos[StaticInfoType.SETTINGS]
     cls, _ = flobject.get_cls("", sinfo, version=version)
 
@@ -487,6 +491,11 @@ def generate(version, static_infos: dict):
     _populate_hash_dict("", sinfo, cls, api_tree)
     _populate_classes(parent_dir)
     _populate_init(parent_dir, sinfo)
+
+    if CODEGEN_ZIP_SETTINGS:
+        shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
+        shutil.rmtree(parent_dir.parent)
+
     return {"<solver_session>": api_tree}
 
 

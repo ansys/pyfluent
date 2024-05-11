@@ -90,6 +90,9 @@ USE_FILE_TRANSFER_SERVICE = False
 # Directory where codegen writes out API files
 CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 
+# Whether to zip settings API files during codegen
+CODEGEN_ZIP_SETTINGS = False
+
 
 # TODO: clean up the following and related code
 def wrap_api_call(f, *args, **kwargs):
