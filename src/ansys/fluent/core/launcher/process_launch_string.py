@@ -54,6 +54,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
     addArgs = kwargs["additional_arguments"]
+    launch_args_string += " " + addArgs
     if "-t" not in addArgs and "-cnf=" not in addArgs:
         parallel_options = build_parallel_options(
             load_machines(ncores=kwargs["processor_count"])
@@ -79,7 +80,6 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 def _generate_launch_string(
     argvals,
     mode: FluentMode,
-    additional_arguments: str,
     server_info_file_name: str,
 ):
     """Generates the launch string to launch fluent."""
@@ -95,8 +95,6 @@ def _generate_launch_string(
     launch_string += _build_fluent_launch_args_string(**argvals)
     if FluentMode.is_meshing(mode):
         launch_string += " -meshing"
-    if additional_arguments:
-        launch_string += f" {additional_arguments}"
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
