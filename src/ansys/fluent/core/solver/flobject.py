@@ -1974,12 +1974,13 @@ def get_root(
     try:
         if CODEGEN_ZIP_SETTINGS:
             importer = zipimporter(
-                str(CODEGEN_OUTDIR.resolve() / "solver" / f"settings_{version}.zip")
+                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
             )
             settings = importer.load_module("settings")
         else:
             settings = utils.load_module(
-                f"settings_{version}", CODEGEN_OUTDIR.resolve() / "solver"
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
             )
 
         if settings.SHASH != _gethash(obj_info):
