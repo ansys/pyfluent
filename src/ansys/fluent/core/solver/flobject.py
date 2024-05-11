@@ -22,7 +22,6 @@ import collections
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
-import importlib
 import keyword
 import logging
 import os.path
@@ -1969,7 +1968,7 @@ def get_root(
     -------
     root object
     """
-    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS
+    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 
     obj_info = flproxy.get_static_info()
     try:
@@ -1979,8 +1978,8 @@ def get_root(
             )
             settings = importer.load_module("settings")
         else:
-            settings = importlib.import_module(
-                f"ansys.fluent.core.generated.solver.settings_{version}"
+            settings = utils.load_module(
+                f"settings_{version}", CODEGEN_OUTDIR.resolve() / "solver"
             )
 
         if settings.SHASH != _gethash(obj_info):
