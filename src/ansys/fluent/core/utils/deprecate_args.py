@@ -15,7 +15,7 @@ def deprecate_argument(
     def _str_repr(var):
         """Converts string or FluentEnum variable to quoted string representation."""
         if isinstance(var, (str, FluentEnum)):
-            return f'"{str(var)}"'
+            return f'"{var}"'
         else:
             return var
 
@@ -36,10 +36,7 @@ def deprecate_argument(
                 else:
                     warning_str += f"Use only '{new_arg}' instead."
                 kwargs.pop(old_arg)
-                warnings.warn(
-                    warning_str,
-                    deprecation_class,
-                )
+                warnings.warn(warning_str, deprecation_class, stacklevel=2)
             return func(*args, **kwargs)
 
         return wrapper
