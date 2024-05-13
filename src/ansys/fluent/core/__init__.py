@@ -87,8 +87,11 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
-# Parent directory where codegen writes out API files
-GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
+# Directory where API files are writes out during codegen
+CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
+
+# Whether to zip settings API files during codegen
+CODEGEN_ZIP_SETTINGS = False
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False

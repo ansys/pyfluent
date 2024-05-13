@@ -2,7 +2,7 @@ import ast
 
 import pytest
 
-from ansys.fluent.core import GENERATED_API_DIR
+from ansys.fluent.core import CODEGEN_OUTDIR
 from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -14,7 +14,7 @@ def test_settings_stub():
     # intellisense engine while typing in editors like vscode. This test validates the
     # information contained in a type-stub file.
     version = FluentVersion(fluent_release_version).number
-    stub_file = GENERATED_API_DIR / "solver" / f"settings_{version}" / "export.pyi"
+    stub_file = CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "export.pyi"
     assert stub_file.exists()
     with open(stub_file) as f:
         module_def = ast.parse(f.read())

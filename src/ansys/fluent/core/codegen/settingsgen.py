@@ -32,7 +32,8 @@ import pickle
 import pprint
 import shutil
 
-from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, launch_fluent
+from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
@@ -470,31 +471,36 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-def generate(version, sessions: dict):
+def generate(version, static_infos: dict):
     """Generate settings API classes."""
-    parent_dir = (GENERATED_API_DIR / "solver" / f"settings_{version}").resolve()
+    parent_dir = (CODEGEN_OUTDIR / "solver" / f"settings_{version}").resolve()
 
     # Clear previously generated data
     if os.path.exists(parent_dir):
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
-    if FluentMode.SOLVER not in sessions:
-        sessions[FluentMode.SOLVER] = launch_fluent()
-    session = sessions[FluentMode.SOLVER]
-    sinfo = session._settings_service.get_static_info()
-    sessions.pop(FluentMode.SOLVER)
-    session.exit()  # exiting the solver session here as it won't be required during allapigen anymore
+    if CODEGEN_ZIP_SETTINGS:
+        parent_dir = parent_dir / "settings"
+        os.makedirs(parent_dir)
+
+    sinfo = static_infos[StaticInfoType.SETTINGS]
     cls, _ = flobject.get_cls("", sinfo, version=version)
 
     api_tree = {}
     _populate_hash_dict("", sinfo, cls, api_tree)
     _populate_classes(parent_dir)
     _populate_init(parent_dir, sinfo)
+
+    if CODEGEN_ZIP_SETTINGS:
+        shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
+        shutil.rmtree(parent_dir.parent)
+
     return {"<solver_session>": api_tree}
 
 
 if __name__ == "__main__":
-    sessions = {FluentMode.SOLVER: launch_fluent()}
-    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, sessions)
+    solver = launch_fluent()
+    version = get_version_for_file_name(session=solver)
+    static_infos = {StaticInfoType.SETTINGS: solver._settings_service.get_static_info()}
+    generate(version, static_infos)

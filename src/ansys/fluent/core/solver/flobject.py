@@ -22,7 +22,6 @@ import collections
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
-import importlib
 import keyword
 import logging
 import os.path
@@ -47,6 +46,7 @@ from typing import (
 )
 import warnings
 import weakref
+from zipimport import zipimporter
 
 try:
     import ansys.units as ansys_units
@@ -1968,11 +1968,20 @@ def get_root(
     -------
     root object
     """
+    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
+
     obj_info = flproxy.get_static_info()
     try:
-        settings = importlib.import_module(
-            f"ansys.fluent.core.generated.solver.settings_{version}"
-        )
+        if CODEGEN_ZIP_SETTINGS:
+            importer = zipimporter(
+                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+            )
+            settings = importer.load_module("settings")
+        else:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+            )
 
         if settings.SHASH != _gethash(obj_info):
             settings_logger.warning(
