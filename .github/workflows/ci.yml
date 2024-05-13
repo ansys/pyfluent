@@ -193,7 +193,6 @@ jobs:
       - name: Build Source Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          rm poetry.lock
           poetry install --only docs
           make build-doc-source
         env:
