@@ -6,6 +6,8 @@ from pathlib import Path
 import pickle
 from typing import Any, Optional
 
+from nltk.corpus import wordnet as wn
+from nltk.corpus import wordnet_ic
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from spellchecker import SpellChecker
@@ -274,7 +276,8 @@ def _search(
         api_tree_file.touch()
         with open(api_tree_file, "w") as file:
             for api_object in api_objects:
-                file.write(f"{api_object}\n")
+                file.write(f"{api_object}")
+                file.write("\n")
 
     if pyfluent.WRITE_API_SEARCH_OBJECTS_FILE:
         from ansys.fluent.core import GENERATED_API_DIR
@@ -288,7 +291,7 @@ def _search(
 
 
 def _process_wildcards(word: str, names: list):
-    """Process wildcard pattern in the given word.
+    """Process wildcard pattern in the given word. #fnmatch
 
     Parameters
     ----------
@@ -350,13 +353,38 @@ def _process_misspelled(word: str, names_txt_file, names: list):
         return [word]
 
 
-def search(word: str):
+def search(
+    search_string: str,
+    language: Optional[str] = None,
+    wildcard: bool = False,
+    exact: bool = False,
+    match_case=True,
+):
     """Search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
-    word: str
-        The word to search for.
+    search_string: str
+        The word to search for. Semantic search is default.
+    language: str
+        The language for the semantic search. English is default for the semantic search.
+        'albanian':'als', 'arabic':'arb', 'bulgarian':'bul', 'chinese_simplified':'cmn', 'chinese_traditional':'qcn',
+        'danish':'dan', 'greek':'ell', 'english':'eng', 'persian':'fas', 'finnish':'fin', 'french':'fra',
+        'hebrew':'heb', 'croatian':'hrv', 'icelandic':'isl', 'italian':'ita', 'japanese':'jpn', 'catalan':'cat',
+        'basque':'eus', 'galicain':'glg', 'spanish':'spa', 'indonesian':'ind', 'malay':'zsm', 'dutch':'nld',
+        'polish':'pol', 'portuguese':'por', 'romanian':'ron', 'lithuanian':'lit', 'slovak':'slk', 'slovene':'slv',
+        'swedish':'swe', 'thai':'tha'
+    wildcard: bool
+        Whether to use wildcard pattern. If ``True`` will match wildcard pattern based on ``fnmatch`` module and
+        will turn off semantic matching.
+    exact: bool
+        Whether to get exact match. If ``True`` will match exact string and will turn off semantic matching.
+    match_case: bool
+        Whether to match case. If ``False`` will match case-insensitive case.
+
+        warning - lang exact
+        except - wildcard , exact
+        warning - exact = True, then wildcard will not be performed
 
     Examples
     --------
@@ -364,18 +392,45 @@ def search(word: str):
     >>> pyfluent.search("iterate")
     >>> pyfluent.search("iter*")
     >>> pyfluent.search("*iter")
+    >>> pyfluent.search('读', 'cmn')   # search 'read' in Chinese
+    The most similar API objects are:
+    <solver_session>.file.read (Command)
+    <solver_session>.file.import_.read (Command)
+    <solver_session>.mesh.surface_mesh.read (Command)
+    <solver_session>.tui.display.display_states.read (Command)
+    <meshing_session>.tui.display.display_states.read (Command)
     """
     api_object_names = get_api_tree_file_name(name=True)
     names_txt = open(api_object_names, "r")
     names = names_txt.readlines()
-    is_wildcard = False
-    if "*" in word:
-        queries = _process_wildcards(word, names)
-        is_wildcard = True
+
+    if wildcard:
+        queries = _process_wildcards(search_string, names)
     else:
         queries = _process_misspelled(
-            word=word, names_txt_file=api_object_names, names=names
+            word=search_string, names_txt_file=api_object_names, names=names
         )
+    if language:
+        brown_ic = wordnet_ic.ic("ic-brown.dat")
+        synset_1 = wn.synsets(search_string, lang=language if language else "eng")
+        print(f"\nsynset_1 = {synset_1}\n")
+        wup_similarities = {}
+        similar_keys = set()
+        for name in names:
+            name = name.replace("\n", "").lower()
+            synset_2 = wn.synsets(name, lang="eng")
+            for s1 in synset_1:
+                for s2 in synset_2:
+                    similarity_score = wn.wup_similarity(s1, s2, brown_ic)
+                    wup_similarities[similarity_score] = [
+                        s1.name().split(".")[0],
+                        s2.name().split(".")[0],
+                    ]
+                    if search_string in s2.name().split(".")[0]:
+                        similar_keys.add(s2.name().split(".")[0] + "*")
+        queries = list(similar_keys)
+        wildcard = True
+
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
     text_files = [api_tree, api_tui_tree]
@@ -388,10 +443,10 @@ def search(word: str):
         for query in queries:
             query_vector = tfidf_vectorizer.transform([query])
             cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
-            if is_wildcard:
-                word = word.replace("*", "")
+            if wildcard:
+                search_string = search_string.replace("*", "")
                 most_similar_api_object_index = cosine_similarities.argmax()
-                if word in api_objects[most_similar_api_object_index]:
+                if search_string in api_objects[most_similar_api_object_index]:
                     print(api_objects[most_similar_api_object_index])
             else:
                 most_similar_api_object_indices = cosine_similarities.argsort()
@@ -400,3 +455,23 @@ def search(word: str):
                 ):
                     if query in api_objects[most_similar_api_object_index]:
                         print(api_objects[most_similar_api_object_index])
+
+
+if __name__ == "__main__":
+    # pyfluent.WRITE_API_SEARCH_OBJECTS_FILE = True
+    # _search("", version="242")
+    # search("iterate")           # correct spelling
+
+    # search("iter*")             # wildcard
+    # search("*iter")             # wildcard
+
+    # search("itrate")            # iterate (misspelled)
+    # search("andoe_mlp_a")       # anode_mpl_a (misspelled)
+    # search("cfb_lma")           # cbf_lam (misspelled)
+
+    # search('读', 'cmn')            # read in Chinese  (semantic search)
+    # search('写', 'cmn')            # write in Chinese (semantic search)
+    # search('leer', 'spa')         # read in Spanish   (semantic search)
+    # search('フォント', 'jpn')       # font in Japanese  (semantic search)
+    # search('area', 'eng')  # font in Japanese  (semantic search)
+    search("area")  # font in Japanese  (semantic search)
