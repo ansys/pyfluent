@@ -53,10 +53,10 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
-    addArgs = kwargs["additional_arguments"]
-    if addArgs:
-        launch_args_string += " " + addArgs
-    if "-t" not in addArgs and "-cnf=" not in addArgs:
+    additional_arguments = kwargs["additional_arguments"]
+    if additional_arguments:
+        launch_args_string += " " + additional_arguments
+    if "-t" not in additional_arguments and "-cnf=" not in additional_arguments:
         parallel_options = build_parallel_options(
             load_machines(ncores=kwargs["processor_count"])
         )
