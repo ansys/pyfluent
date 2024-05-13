@@ -161,40 +161,35 @@ def test_search_from_root(capsys, new_watertight_workflow_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version("==23.2")
 def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
     pyfluent.search("conduction", search_root=solver)
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.tui.define.models.shell_conduction (Object)" in lines
     assert (
-        '<search_root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
+        '<search_root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
     pyfluent.search("conduction", search_root=solver.setup.boundary_conditions)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<search_root>.wall["<name>"].phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
+        '<search_root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
     pyfluent.search("conduction", search_root=solver.setup.boundary_conditions.wall)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<search_root>["<name>"].phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
+        '<search_root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
         in lines
     )
     pyfluent.search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"]
     )
     lines = capsys.readouterr().out.splitlines()
-    assert (
-        '<search_root>.phase["<name>"].thermal.shell_conduction["<name>"] (Object)'
-        in lines
-    )
+    assert '<search_root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
     pyfluent.search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"].phase
     )
     lines = capsys.readouterr().out.splitlines()
-    assert (
-        '<search_root>["<name>"].thermal.shell_conduction["<name>"] (Object)' in lines
-    )
+    assert '<search_root>["<name>"].shell_conduction["<name>"] (Object)' in lines
