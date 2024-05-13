@@ -206,7 +206,6 @@ class StandaloneLauncher:
         launch_string = _generate_launch_string(
             self.argvals,
             self.mode,
-            self.additional_arguments,
             server_info_file_name,
         )
 
