@@ -300,14 +300,15 @@ class TUIGenerator:
 def generate(version, static_infos: dict):
     """Generate TUI API classes."""
     api_tree = {}
-    if FluentVersion(version) > FluentVersion.v222:
+    gt_222 = FluentVersion(version) > FluentVersion.v222
+    if gt_222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    if StaticInfoType.TUI_MESHING in static_infos:
+    if not gt_222 or StaticInfoType.TUI_MESHING in static_infos:
         api_tree["<meshing_session>"] = TUIGenerator(
             "meshing", version, static_infos
         ).generate()
-    if StaticInfoType.TUI_SOLVER in static_infos:
+    if not gt_222 or StaticInfoType.TUI_SOLVER in static_infos:
         api_tree["<solver_session>"] = TUIGenerator(
             "solver", version, static_infos
         ).generate()
@@ -326,7 +327,7 @@ if __name__ == "__main__":
     meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
     version = get_version_for_file_name(session=solver)
     static_infos = {}
-    if FluentVersion(version) >= FluentVersion.v222:
+    if FluentVersion(version) > FluentVersion.v222:
         static_infos[StaticInfoType.TUI_SOLVER] = (
             solver._datamodel_service_tui.get_static_info("")
         )
