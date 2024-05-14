@@ -376,9 +376,14 @@ def _get_group_settings_static_info(name, children, commands, queries):
     }
 
 
-def _get_named_object_settings_static_info(name, children):
+def _get_named_object_settings_static_info(name, object_type, children):
     return {
-        name: {"children": children, "type": "named-object", "help": f"{name} help"}
+        name: {
+            "object-type": object_type,
+            "children": children,
+            "type": "named-object",
+            "help": f"{name} help",
+        }
     }
 
 
@@ -403,7 +408,7 @@ _expected_init_settings_api_output = '''#
 """A package providing Fluent's Settings Objects in Python."""
 from ansys.fluent.core.solver.flobject import *
 
-SHASH = "9713aa09d09d1d66d22440d062af6bab56dddc24c74da6af28aa2a5125ff4030"
+SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"
 from .root import root'''
 
 
@@ -580,8 +585,10 @@ from ansys.fluent.core.solver.flobject import (
 )
 
 from .P4 import P4 as P4_cls
+from .N1_child import N1_child
 
-class N1(NamedObject, _NonCreatableNamedObjectMixin):
+
+class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     """
     N1 help.
     """
@@ -593,7 +600,37 @@ class N1(NamedObject, _NonCreatableNamedObjectMixin):
 
     _child_classes = dict(
         P4=P4_cls,
-    )'''
+    )
+
+    child_object_type: N1_child = N1_child
+    """
+    child_object_type of N1.
+    """'''
+
+
+_expected_N1_child_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+
+class N1_child(Group):
+    """
+    'child_object_type' of N1.
+    """
+
+    fluent_name = "child-object-type"'''
 
 
 _expected_P1_settings_api_output = '''#
@@ -685,7 +722,9 @@ def test_codegen_with_settings_static_info(monkeypatch):
             )
             | _get_parameter_settings_static_info("P1", "string")
             | _get_named_object_settings_static_info(
-                "N1", _get_parameter_settings_static_info("P4", "string")
+                "N1",
+                _get_group_settings_static_info("G3", {}, {}, {})["G3"],
+                _get_parameter_settings_static_info("P4", "string"),
             )
         ),
         "commands": _get_command_settings_static_info("C1", [("A1", "string")]),
@@ -712,6 +751,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
         "G1",
         "G2",
         "N1",
+        "N1_child",
         "P1",
         "P2",
         "P3",
@@ -739,6 +779,10 @@ def test_codegen_with_settings_static_info(monkeypatch):
         assert f.read().strip() == _expected_G1_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "N1.py", "r") as f:
         assert f.read().strip() == _expected_N1_settings_api_output
+    with open(
+        codegen_outdir / "solver" / f"settings_{version}" / "N1_child.py", "r"
+    ) as f:
+        assert f.read().strip() == _expected_N1_child_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "P1.py", "r") as f:
         assert f.read().strip() == _expected_P1_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "Q1.py", "r") as f:
@@ -754,7 +798,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
             "P2": "Parameter",
             "Q2": "Query",
         },
-        "N1": {"P4": "Parameter"},
+        "N1:<name>": {"P4": "Parameter"},
         "P1": "Parameter",
         "Q1": "Query",
     }
