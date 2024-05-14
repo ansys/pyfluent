@@ -47,7 +47,7 @@ def get_api_tree_file_name(
     tui: Optional[bool] = None,
 ) -> Path:
     """Get API tree file name."""
-    from ansys.fluent.core import GENERATED_API_DIR
+    from ansys.fluent.core import CODEGEN_OUTDIR
 
     text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
     if text:
@@ -57,7 +57,7 @@ def get_api_tree_file_name(
     elif tui:
         return (text_file_folder / "api_tree_tui.txt").resolve()
     else:
-        return (GENERATED_API_DIR / f"api_tree_{version}.pickle").resolve()
+        return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
@@ -95,47 +95,28 @@ def _get_version_path_prefix_from_obj(obj: Any):
         version = get_version_for_file_name(obj.get_fluent_version().value)
         prefix = "<search_root>"
     elif isinstance(obj, TUIMenu):
-        module = obj.__class__.__module__
-        path = [
-            (
-                "<meshing_session>"
-                if module.startswith("ansys.fluent.core.generated.meshing")
-                else "<solver_session>"
-            ),
-            "tui",
-        ]
+        path = ["<session>", "tui"]
         path.extend(obj._path)
+        module = obj.__class__.__module__
         version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, (ClassicWorkflow, Workflow)):
         path = ["<meshing_session>", obj.rules]
-        module = obj._workflow.__class__.__module__
-        module = _remove_suffix(module, ".workflow")
-        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, BaseTask):
         path = ["<meshing_session>", obj.rules]
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
-        module = obj._workflow.__class__.__module__
-        module = _remove_suffix(module, ".workflow")
-        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, TaskContainer):
         path = ["<meshing_session>", obj.rules]
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         path[-1] = f"{path[-1]}:<name>"
-        module = obj._container._workflow.__class__.__module__
-        module = _remove_suffix(module, ".workflow")
-        version = module.rsplit("_", 1)[-1]
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, PyMenu):
         rules = obj.rules
         path = ["<meshing_session>" if rules in _meshing_rules else "<solver_session>"]
         path.append(rules)
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
-        module = obj.__class__.__module__
-        module = _remove_suffix(module, f".{rules}")
-        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, PyNamedObjectContainer):
         rules = obj.rules
@@ -143,9 +124,6 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.append(rules)
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         path[-1] = f"{path[-1]}:<name>"
-        module = obj.__class__.__module__
-        module = _remove_suffix(module, f".{rules}")
-        version = module.rsplit("_", 1)[-1]
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, flobject.Group):
         module = obj.__class__.__module__
@@ -249,6 +227,11 @@ def _search(
             path = prefix
         while root_path:
             p = root_path.pop(0)
+            # With the dynamic loading of generated api modules, we loose the filepath information
+            # from which we were extracting the solver/meshing mode of the given object.
+            # Anyway, we are planning to remove search_root in the newer version of search function.
+            if p == "<session>":
+                p = "<solver_session>"
             if p in tree:
                 tree = tree[p]
             else:

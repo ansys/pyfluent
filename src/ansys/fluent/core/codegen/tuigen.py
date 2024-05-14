@@ -24,15 +24,16 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-from ansys.fluent.core import GENERATED_API_DIR, FluentMode, launch_fluent
+from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, launch_fluent
+from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.services.datamodel_tui import (
-    PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
+    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
@@ -43,7 +44,7 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (GENERATED_API_DIR / mode / f"tui_{version}.py").resolve()
+    return (CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -87,21 +88,24 @@ def _copy_tui_help_xml_file(version: str):
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
-        ansys_version = (
-            FluentVersion.get_latest_installed()
-        )  # picking up the file from the latest install location
-        awp_root = os.environ[ansys_version.awp_var]
-        xml_source = (
-            Path(awp_root)
-            / "commonfiles"
-            / "help"
-            / "en-us"
-            / "fluent_gui_help"
-            / "fluent_gui_help.xml"
-        )
-        if xml_source.exists():
-            shutil.copy(str(xml_source), _XML_HELP_FILE)
-        else:
+        try:
+            ansys_version = (
+                FluentVersion.get_latest_installed()
+            )  # picking up the file from the latest install location
+            awp_root = os.environ[ansys_version.awp_var]
+            xml_source = (
+                Path(awp_root)
+                / "commonfiles"
+                / "help"
+                / "en-us"
+                / "fluent_gui_help"
+                / "fluent_gui_help.xml"
+            )
+            if xml_source.exists():
+                shutil.copy(str(xml_source), _XML_HELP_FILE)
+            else:
+                logger.warning("fluent_gui_help.xml is not found.")
+        except AnsysVersionNotFound:
             logger.warning("fluent_gui_help.xml is not found.")
 
 
@@ -170,7 +174,7 @@ class _RenameModuleUnpickler(pickle.Unpickler):
 class TUIGenerator:
     """Generates explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, sessions: dict):
+    def __init__(self, mode: str, version: str, static_infos: dict):
         self._mode = mode
         self._version = version
         self._tui_file = _get_tui_filepath(mode, version)
@@ -181,12 +185,8 @@ class TUIGenerator:
         self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
-        fluent_mode = FluentMode.get_mode(mode)
-        if fluent_mode not in sessions:
-            sessions[fluent_mode] = launch_fluent(mode=fluent_mode)
-        self.session = sessions[fluent_mode]
-        self._service = self.session._datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
+        self._static_infos = static_infos
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
         for child_menu_name, child_menu_info in info["menus"].items():
@@ -271,9 +271,13 @@ class TUIGenerator:
                 ) as f:
                     self._main_menu = _RenameModuleUnpickler(f).load()
             else:
-                info = PyMenu(
-                    self._service, self._version, self._mode, self._main_menu.path
-                ).get_static_info()
+                info = self._static_infos[
+                    (
+                        StaticInfoType.TUI_MESHING
+                        if self._mode == "meshing"
+                        else StaticInfoType.TUI_SOLVER
+                    )
+                ]
                 self._populate_menu(self._main_menu, info)
             self._write_code_to_tui_file(
                 f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
@@ -292,16 +296,18 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version, sessions: dict):
+def generate(version, static_infos: dict):
     """Generate TUI API classes."""
     api_tree = {}
     if FluentVersion(version) > FluentVersion.v222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     api_tree["<meshing_session>"] = TUIGenerator(
-        "meshing", version, sessions
+        "meshing", version, static_infos
     ).generate()
-    api_tree["<solver_session>"] = TUIGenerator("solver", version, sessions).generate()
+    api_tree["<solver_session>"] = TUIGenerator(
+        "solver", version, static_infos
+    ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
@@ -313,6 +319,15 @@ def generate(version, sessions: dict):
 
 
 if __name__ == "__main__":
-    sessions = {FluentMode.SOLVER: launch_fluent()}
-    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, sessions)
+    solver = launch_fluent()
+    meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
+    version = get_version_for_file_name(session=solver)
+    static_infos = {}
+    if FluentVersion(version) >= FluentVersion.v222:
+        static_infos[StaticInfoType.TUI_SOLVER] = (
+            solver._datamodel_service_tui.get_static_info("")
+        )
+        static_infos[StaticInfoType.TUI_MESHING] = (
+            meshing._datamodel_service_tui.get_static_info("")
+        )
+    generate(version, static_infos)

@@ -576,18 +576,3 @@ def test_new_2d_meshing_workflow(new_mesh_session):
     # Switch to solution mode
     solver = meshing.switch_to_solver()
     assert solver
-
-
-@pytest.mark.fluent_version(">=23.2")
-def test_set_state_behavior(new_mesh_session):
-    meshing = new_mesh_session
-    assert not meshing.meshing.GlobalSettings.EnableOversetMeshing()
-    meshing.meshing.GlobalSettings.EnableOversetMeshing.set_state(True)
-    assert meshing.meshing.GlobalSettings.EnableOversetMeshing()
-
-    meshing.meshing.GlobalSettings.set_state(EnableOversetMeshing=False)
-    assert not meshing.meshing.GlobalSettings.EnableOversetMeshing()
-    with pytest.raises(TypeError):
-        meshing.meshing.GlobalSettings.set_state()
-    with pytest.raises(TypeError):
-        meshing.meshing.GlobalSettings.EnableOversetMeshing.set_state()

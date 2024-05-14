@@ -20,7 +20,7 @@ def generate_meshing_datamodels():
     for meshing_datamodel in meshing_datamodels:
         try:
             datamodel = importlib.import_module(
-                f"ansys.fluent.core.{_get_file_or_folder(mode='meshing', is_datamodel=True)}.{meshing_datamodel}"
+                f"ansys.fluent.core.generated.{_get_file_or_folder(mode='meshing', is_datamodel=True)}.{meshing_datamodel}"
             )
             if datamodel:
                 meshing_datamodel_roots.append(datamodel.Root)
@@ -40,7 +40,7 @@ def generate_solver_datamodels():
     for solver_datamodel in solver_datamodels:
         try:
             datamodel = importlib.import_module(
-                f"ansys.fluent.core.{_get_file_or_folder(mode='solver', is_datamodel=True)}.{solver_datamodel}"
+                f"ansys.fluent.core.generated.{_get_file_or_folder(mode='solver', is_datamodel=True)}.{solver_datamodel}"
             )
             if datamodel:
                 solver_datamodel_roots.append(datamodel.Root)
