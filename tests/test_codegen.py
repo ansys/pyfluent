@@ -443,6 +443,173 @@ class root(Group):
     )'''
 
 
+_expected_A1_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+
+class A1(String):
+    """
+    A1 help.
+    """
+
+    fluent_name = "A1"'''
+
+
+_expected_C1_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+from .A1 import A1 as A1_cls
+
+class C1(Command):
+    """
+    C1 help.
+    
+    Parameters
+    ----------
+        A1 : str
+            A1 help.
+    
+    """
+
+    fluent_name = "C1"
+
+    argument_names = \\
+        ['A1']
+
+    _child_classes = dict(
+        A1=A1_cls,
+    )'''  # noqa: W293
+
+
+_expected_G1_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+from .G2 import G2 as G2_cls
+from .P2 import P2 as P2_cls
+from .C2 import C2 as C2_cls
+from .Q2 import Q2 as Q2_cls
+
+class G1(Group):
+    """
+    G1 help.
+    """
+
+    fluent_name = "G1"
+
+    child_names = \\
+        ['G2', 'P2']
+
+    command_names = \\
+        ['C2']
+
+    query_names = \\
+        ['Q2']
+
+    _child_classes = dict(
+        G2=G2_cls,
+        P2=P2_cls,
+        C2=C2_cls,
+        Q2=Q2_cls,
+    )'''
+
+
+_expected_N1_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+from .P4 import P4 as P4_cls
+
+class N1(NamedObject, _NonCreatableNamedObjectMixin):
+    """
+    N1 help.
+    """
+
+    fluent_name = "N1"
+
+    child_names = \\
+        ['P4']
+
+    _child_classes = dict(
+        P4=P4_cls,
+    )'''
+
+
+_expected_P1_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+
+class P1(String):
+    """
+    P1 help.
+    """
+
+    fluent_name = "P1"'''
+
+
 def test_codegen_with_settings_static_info(monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
@@ -510,6 +677,16 @@ def test_codegen_with_settings_static_info(monkeypatch):
     assert set(p.name for p in settings_paths) == set(filenames)
     with open(codegen_outdir / "solver" / f"settings_{version}" / "root.py", "r") as f:
         assert f.read().strip() == _expected_root_settings_api_outout
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "A1.py", "r") as f:
+        assert f.read().strip() == _expected_A1_settings_api_output
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "C1.py", "r") as f:
+        assert f.read().strip() == _expected_C1_settings_api_output
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "G1.py", "r") as f:
+        assert f.read().strip() == _expected_G1_settings_api_output
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "N1.py", "r") as f:
+        assert f.read().strip() == _expected_N1_settings_api_output
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "P1.py", "r") as f:
+        assert f.read().strip() == _expected_P1_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
