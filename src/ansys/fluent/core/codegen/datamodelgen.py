@@ -169,7 +169,7 @@ class DataModelGenerator:
                 self.version,
             )
         if StaticInfoType.DATAMODEL_MESHING_UTILITIES in static_infos:
-            self._static_info["meshing_utilities"] = DataModelStaticInfo(
+            self._static_info["MeshingUtilities"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING_UTILITIES,
                 "MeshingUtilities",
                 ("meshing",),
@@ -203,23 +203,27 @@ class DataModelGenerator:
                     info.static_info = self._get_static_info(info.static_info_type)
 
         if run_icing_mode:
-            info.static_info = self._get_static_info(StaticInfoType.DATAMODEL_FLICING)
-            try:
-                if (
-                    len(
-                        info.static_info["singletons"]["Case"]["singletons"]["App"][
-                            "singletons"
-                        ]
-                    )
-                    == 0
-                ):
-                    print(
-                        "Information: Icing settings not generated ( R23.1+ is required )\n"
-                    )
-            except:
-                print(
-                    "Information: Problem accessing flserver datamodel for icing settings\n"
+            info = self._static_info.get("flicing")
+            if info:
+                info.static_info = self._get_static_info(
+                    StaticInfoType.DATAMODEL_FLICING
                 )
+                try:
+                    if (
+                        len(
+                            info.static_info["singletons"]["Case"]["singletons"]["App"][
+                                "singletons"
+                            ]
+                        )
+                        == 0
+                    ):
+                        print(
+                            "Information: Icing settings not generated ( R23.1+ is required )\n"
+                        )
+                except:
+                    print(
+                        "Information: Problem accessing flserver datamodel for icing settings\n"
+                    )
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}

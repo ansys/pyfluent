@@ -114,6 +114,75 @@ class main_menu(TUIMenu):
 '''
 
 
+@pytest.mark.parametrize("mode", ["solver", "meshing"])
+def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    version = "251"
+    static_infos = {}
+    static_info_type = (
+        StaticInfoType.TUI_SOLVER if mode == "solver" else StaticInfoType.TUI_MESHING
+    )
+    static_infos[static_info_type] = {
+        "menus": _get_nth_tui_menu_static_info(
+            1,
+            _get_nth_tui_menu_static_info(2, {}, _get_nth_tui_command_static_info(3)),
+            _get_nth_tui_command_static_info(2),
+        ),
+        "commands": _get_nth_tui_command_static_info(1),
+        "help": "Root",
+    }
+    allapigen.generate(version, static_infos)
+    generated_paths = list(codegen_outdir.iterdir())
+    assert len(generated_paths) == 2
+    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle", mode}
+    solver_paths = list((codegen_outdir / mode).iterdir())
+    assert len(solver_paths) == 1
+    assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
+    with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
+        assert f.read() == _get_expected_tui_api_output(mode)
+    api_tree_file = get_api_tree_file_name(version)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
+    tui_tree = {
+        "tui": {"M1": {"M2": {"C3": "Command"}, "C2": "Command"}, "C1": "Command"}
+    }
+    api_tree_expected = {"<meshing_session>": {}, "<solver_session>": {}}
+    api_tree_expected[f"<{mode}_session>"] = tui_tree
+    assert api_tree == api_tree_expected
+    shutil.rmtree(str(codegen_outdir))
+
+
+_static_info_type_by_rules = {
+    "workflow": StaticInfoType.DATAMODEL_WORKFLOW,
+    "meshing": StaticInfoType.DATAMODEL_MESHING,
+    "PartManagement": StaticInfoType.DATAMODEL_PART_MANAGEMENT,
+    "PMFileManagement": StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
+    "flicing": StaticInfoType.DATAMODEL_FLICING,
+    "preferences": StaticInfoType.DATAMODEL_PREFERENCES,
+    "solverworkflow": StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
+    "MeshingUtilities": StaticInfoType.DATAMODEL_MESHING_UTILITIES,
+}
+
+
+def _get_datamodel_entity_static_info(
+    name, singletons, namedobjects, commands, parameters
+):
+    return {
+        name: {
+            "singletons": singletons,
+            "namedobjects": namedobjects,
+            "commands": commands,
+            "parameters": parameters,
+        }
+    }
+
+
+def _get_datamodel_command_static_info(name, args, returntype):
+    args = [{"name": arg[0], "type": arg[1]} for arg in args]
+    return {name: {"commandinfo": {"args": args, "returntype": returntype}}}
+
+
 _expected_datamodel_api_output = '''#
 # This is an auto-generated file.  DO NOT EDIT!
 #
@@ -224,90 +293,38 @@ class Root(PyMenu):
 '''
 
 
-@pytest.mark.parametrize("mode", ["solver", "meshing"])
-def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
+@pytest.mark.parametrize(
+    "rules",
+    [
+        "workflow",
+        "meshing",
+        "PartManagement",
+        "PMFileManagement",
+        "preferences",
+        "solverworkflow",
+        "MeshingUtilities",
+    ],
+)
+def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
     static_infos = {}
-    static_info_type = (
-        StaticInfoType.TUI_SOLVER if mode == "solver" else StaticInfoType.TUI_MESHING
-    )
-    static_infos[static_info_type] = {
-        "menus": _get_nth_tui_menu_static_info(
-            1,
-            _get_nth_tui_menu_static_info(2, {}, _get_nth_tui_command_static_info(3)),
-            _get_nth_tui_command_static_info(2),
-        ),
-        "commands": _get_nth_tui_command_static_info(1),
-        "help": "Root",
-    }
-    allapigen.generate(version, static_infos)
-    generated_paths = list(codegen_outdir.iterdir())
-    assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle", mode}
-    solver_paths = list((codegen_outdir / mode).iterdir())
-    assert len(solver_paths) == 1
-    assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
-    with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
-        assert f.read() == _get_expected_tui_api_output(mode)
-    api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "rb") as f:
-        api_tree = pickle.load(f)
-    tui_tree = {
-        "tui": {"M1": {"M2": {"C3": "Command"}, "C2": "Command"}, "C1": "Command"}
-    }
-    api_tree_expected = {"<meshing_session>": {}, "<solver_session>": {}}
-    api_tree_expected[f"<{mode}_session>"] = tui_tree
-    assert api_tree == api_tree_expected
-    shutil.rmtree(str(codegen_outdir))
-
-
-def _get_datamodel_entity_static_info(
-    name, singletons, namedobjects, commands, parameters
-):
-    return {
-        name: {
-            "singletons": singletons,
-            "namedobjects": namedobjects,
-            "commands": commands,
-            "parameters": parameters,
-        }
-    }
-
-
-def test_codegen_with_datamodel_static_info(monkeypatch):
-    codegen_outdir = Path(tempfile.mkdtemp())
-    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
-    version = "251"
-    static_infos = {}
-    static_info_type = StaticInfoType.DATAMODEL_WORKFLOW
+    static_info_type = _static_info_type_by_rules[rules]
     static_infos[static_info_type] = {
         "singletons": _get_datamodel_entity_static_info(
             "S1",
             _get_datamodel_entity_static_info("S2", {}, {}, {}, {}),
             {},
-            {
-                "C2": {
-                    "commandinfo": {
-                        "args": [{"name": "A2", "type": "Real"}],
-                        "returntype": "Logical",
-                    }
-                }
-            },
+            _get_datamodel_command_static_info("C2", [("A2", "Real")], "Logical"),
             {"P2": {"type": "Real"}},
         ),
         "namedobjects": _get_datamodel_entity_static_info(
             "N1", _get_datamodel_entity_static_info("S3", {}, {}, {}, {}), {}, {}, {}
         ),
-        "commands": {
-            "C1": {
-                "commandinfo": {
-                    "args": [{"name": "A1", "type": "String"}],
-                    "returntype": "Logical",
-                }
-            }
-        },
+        "commands": _get_datamodel_command_static_info(
+            "C1", [("A1", "String")], "Logical"
+        ),
         "parameters": {"P1": {"type": "String"}},
         "help": "Root",
     }
@@ -320,22 +337,31 @@ def test_codegen_with_datamodel_static_info(monkeypatch):
     }
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
     assert len(datamodel_paths) == 1
-    assert set(p.name for p in datamodel_paths) == {"workflow.py"}
-    with open(codegen_outdir / f"datamodel_{version}" / "workflow.py", "r") as f:
+    assert set(p.name for p in datamodel_paths) == {f"{rules}.py"}
+    with open(codegen_outdir / f"datamodel_{version}" / f"{rules}.py", "r") as f:
         assert f.read() == _expected_datamodel_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
     datamodel_tree = {
-        "workflow": {
+        rules: {
             "C1": "Command",
             "N1:<name>": {"S3": {}},
             "P1": "Parameter",
             "S1": {"C2": "Command", "P2": "Parameter", "S2": {}},
         }
     }
-    api_tree_expected = {}
-    api_tree_expected["<meshing_session>"] = datamodel_tree
-    api_tree_expected["<solver_session>"] = datamodel_tree
+    api_tree_expected = {"<meshing_session>": {}, "<solver_session>": {}}
+    if rules in [
+        "workflow",
+        "meshing",
+        "PartManagement",
+        "PMFileManagement",
+        "preferences",
+        "MeshingUtilities",
+    ]:
+        api_tree_expected["<meshing_session>"] = datamodel_tree
+    if rules in ["workflow", "flicing", "preferences", "solverworkflow"]:
+        api_tree_expected["<solver_session>"] = datamodel_tree
     assert api_tree == api_tree_expected
-    # shutil.rmtree(str(codegen_outdir))
+    shutil.rmtree(str(codegen_outdir))
