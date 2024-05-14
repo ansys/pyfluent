@@ -457,7 +457,6 @@ def search(
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
     text_files = [api_tree, api_tui_tree]
-    results = []
     print("\n The most similar API objects are: \n")
     for text_file in text_files:
         text = open(text_file, "r")
@@ -471,7 +470,6 @@ def search(
                 most_similar_api_object_index = cosine_similarities.argmax()
                 if query in api_objects[most_similar_api_object_index]:
                     print(api_objects[most_similar_api_object_index])
-                    results.append(api_objects[most_similar_api_object_index])
             else:
                 most_similar_api_object_indices = cosine_similarities.argsort()
                 for most_similar_api_object_index in reversed(
@@ -479,5 +477,3 @@ def search(
                 ):
                     if query in api_objects[most_similar_api_object_index]:
                         print(api_objects[most_similar_api_object_index])
-                        results.append(api_objects[most_similar_api_object_index])
-    return results
