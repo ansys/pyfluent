@@ -153,23 +153,23 @@ class DockerLauncher:
         del argvals["self"]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
         self.argvals = argvals
-        self.new_session = self.mode.value[0]
+        self.new_session = self.argvals["mode"].value[0]
         self.file_transfer_service = file_transfer_service
 
     def __call__(self):
-        if self.mode == FluentMode.SOLVER_ICING:
+        if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
         args = _build_fluent_launch_args_string(**self.argvals).split()
-        if FluentMode.is_meshing(self.mode):
+        if FluentMode.is_meshing(self.argvals["mode"]):
             args.append(" -meshing")
-        if self.container_dict is None:
+        if self.argvals["container_dict"] is None:
             setattr(self, "container_dict", {})
-        if self.product_version:
-            self.container_dict["image_tag"] = f"v{self.product_version.value}"
-        if self.dry_run:
+        if self.argvals["product_version"]:
+            self.container_dict["image_tag"] = (
+                f"v{self.argvals['product_version'].value}"
+            )
+        if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(args, **self.container_dict)
             from pprint import pprint
 
@@ -190,7 +190,7 @@ class DockerLauncher:
             port=port,
             password=password,
             file_transfer_service=self.file_transfer_service,
-            cleanup_on_exit=self.cleanup_on_exit,
+            cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
         )
@@ -199,12 +199,12 @@ class DockerLauncher:
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=self.file_transfer_service,
-            start_transcript=self.start_transcript,
+            start_transcript=self.argvals["start_transcript"],
         )
 
-        if self.start_watchdog is None and self.cleanup_on_exit:
+        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
             setattr(self, "start_watchdog", True)
-        if self.start_watchdog:
+        if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
 
