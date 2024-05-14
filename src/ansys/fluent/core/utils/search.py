@@ -9,7 +9,6 @@ from typing import Any, Optional
 import warnings
 
 from nltk.corpus import wordnet as wn
-from nltk.corpus import wordnet_ic
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from spellchecker import SpellChecker
@@ -393,7 +392,7 @@ def search(
     Raises
     ------
     ValueConflict
-        If both ``wildcard`` and ``exact`` are ``True``
+        If both ``wildcard`` and ``exact`` are ``True``.
 
     Examples
     --------
@@ -423,26 +422,31 @@ def search(
 
     api_object_names = get_api_tree_file_name(name=True)
     names_txt = open(api_object_names, "r")
-    names = names_txt.readlines()
+    names = [name.replace("\n", "") for name in names_txt.readlines()]
     synset_1 = wn.synsets(search_string, lang=language)
+
     if wildcard and not exact:
         queries = _process_wildcards(search_string, names)
     elif synset_1:
         similar_keys = set()
-        brown_ic = wordnet_ic.ic("ic-brown.dat")
         for name in names:
-            name = name.replace("\n", "").lower()
             synset_2 = wn.synsets(name, lang="eng")
             for s1 in synset_1:
                 for s2 in synset_2:
-                    similarity = wn.wup_similarity(s1, s2, brown_ic)
                     name_s1 = s1.name().split(".")[0]
                     name_s2 = s2.name().split(".")[0]
                     if search_string in name_s2 or name_s1 in name_s2:
                         similar_keys.add(name_s2 + "*")
-        queries = list(similar_keys)
+        queries = set()
+        for key in similar_keys:
+            queries.update(set(_process_wildcards(key, names)))
+        queries = list(queries)
         wildcard = True
-    elif match_case and not wildcard:
+    elif exact and not wildcard:
+        queries = _process_misspelled(
+            word=search_string, names_txt_file=api_object_names, names=names
+        )
+    elif match_case:
         queries = _process_misspelled(
             word=search_string, names_txt_file=api_object_names, names=names
         )
@@ -450,10 +454,11 @@ def search(
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
     text_files = [api_tree, api_tui_tree]
+    results = []
     print("\n The most similar API objects are: \n")
     for text_file in text_files:
         text = open(text_file, "r")
-        api_objects = text.readlines()
+        api_objects = [api_object.replace("\n", "") for api_object in text.readlines()]
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
         for query in queries:
@@ -461,8 +466,9 @@ def search(
             cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
             if wildcard:
                 most_similar_api_object_index = cosine_similarities.argmax()
-                if search_string in api_objects[most_similar_api_object_index]:
+                if query in api_objects[most_similar_api_object_index]:
                     print(api_objects[most_similar_api_object_index])
+                    results.append(api_objects[most_similar_api_object_index])
             else:
                 most_similar_api_object_indices = cosine_similarities.argsort()
                 for most_similar_api_object_index in reversed(
@@ -470,15 +476,16 @@ def search(
                 ):
                     if query in api_objects[most_similar_api_object_index]:
                         print(api_objects[most_similar_api_object_index])
+                        results.append(api_objects[most_similar_api_object_index])
+    return results
 
 
 if __name__ == "__main__":
     # pyfluent.WRITE_API_SEARCH_OBJECTS_FILE = True
     # _search("", version="242")
-    # search("iterate")           # correct spelling
+    # search("iterate", exact=True)           # correct spelling
 
-    search("iter*", wildcard=True)  # wildcard
-    # search("*iter", wildcard=True)             # wildcard
+    # search("iter*", wildcard=True)  # wildcard
 
     # search("itrate")            # iterate (misspelled)
     # search("andoe_mlp_a")       # anode_mpl_a (misspelled)
@@ -488,4 +495,5 @@ if __name__ == "__main__":
     # search('写', 'cmn')            # write in Chinese (semantic search)
     # search('leer', 'spa')         # read in Spanish   (semantic search)
     # search('フォント', 'jpn')       # font in Japanese  (semantic search)
-    # search("area")  # font in Japanese  (semantic search)
+
+    search("font")  # font in Japanese  (semantic search)
