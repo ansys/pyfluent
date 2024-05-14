@@ -4,7 +4,16 @@ from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
+from ansys.fluent.core.utils.search import (
+    ValueConflict,
+    _get_version_path_prefix_from_obj,
+)
+
+
+@pytest.mark.codegen_required
+def test_exception_search():
+    with pytest.raises(ValueConflict):
+        pyfluent.search(search_string="font", wildcard=True, match_whole_word=True)
 
 
 @pytest.mark.codegen_required

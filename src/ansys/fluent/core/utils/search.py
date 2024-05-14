@@ -404,13 +404,13 @@ def search(
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
-    if language and match_whole_word:
+    if wildcard and match_whole_word:
+        raise ValueConflict()
+    elif language and match_whole_word:
         warnings.warn(
             "``match_whole_word=True`` will match exact string and will turn off semantic matching.",
             UserWarning,
         )
-    elif wildcard and match_whole_word:
-        raise ValueConflict()
     elif match_whole_word:
         warnings.warn(
             "``match_whole_word=True`` will turn off semantic and wildcard matching.",
