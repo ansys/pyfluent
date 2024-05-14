@@ -30,6 +30,8 @@ from ansys.fluent.core.workflow import (
     Workflow,
 )
 
+_THIS_DIRNAME = os.path.dirname(__file__)
+
 
 class ValueConflict(ValueError):
     """Raised when both ``wildcard`` and ``exact`` are ``True``."""
@@ -47,7 +49,7 @@ def get_api_tree_file_name(
     """Get API tree file name."""
     from ansys.fluent.core import GENERATED_API_DIR
 
-    text_file_folder = Path(os.path.join(GENERATED_API_DIR, "api_tree"))
+    text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
     if text:
         return (text_file_folder / "api_tree.txt").resolve()
     elif name:
@@ -288,10 +290,9 @@ def _search(
                 file.write("\n")
 
     if pyfluent.WRITE_API_SEARCH_OBJECTS_FILE:
-        from ansys.fluent.core import GENERATED_API_DIR
 
-        text_file_folder = Path(os.path.join(GENERATED_API_DIR, "api_tree"))
-        text_file_folder.mkdir(exist_ok=True)
+        text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
+        text_file_folder.mkdir(parents=True, exist_ok=True)
 
         _write_file(api_objects=api_objects, text=True)
         _write_file(api_objects=api_tui_objects, tui=True)
@@ -320,7 +321,13 @@ def _process_wildcards(word: str, names: list):
     return wildcard_matches
 
 
-def _process_misspelled(word: str, names_txt_file, names: list):
+def _process_misspelled(
+    word: str,
+    names_txt_file,
+    names: list,
+    exact: Optional[bool] = False,
+    match_case: Optional[bool] = False,
+):
     """Process misspelled word.
 
     Parameters
@@ -331,6 +338,10 @@ def _process_misspelled(word: str, names_txt_file, names: list):
         Text file containing all API object names.
     names: list
         All API object names.
+    exact: bool
+        Whether to match exact case.
+    match_case: bool
+        Whether to match case.
 
     Returns
     -------
@@ -347,9 +358,9 @@ def _process_misspelled(word: str, names_txt_file, names: list):
         for name in misspelled:
             correct_spell.append(spell.correction(name))
             possible_corrections.extend(list(spell.candidates(name)))
-        if correct_spell == possible_corrections:
+        if exact and correct_spell == possible_corrections:
             return correct_spell
-        else:
+        elif match_case:
             corrections_in_tree = set()
             for correction in possible_corrections:
                 for name in names:
@@ -427,7 +438,7 @@ def search(
 
     if wildcard and not exact:
         queries = _process_wildcards(search_string, names)
-    elif synset_1:
+    elif synset_1 and not exact and not wildcard:
         similar_keys = set()
         for name in names:
             synset_2 = wn.synsets(name, lang="eng")
@@ -444,11 +455,17 @@ def search(
         wildcard = True
     elif exact and not wildcard:
         queries = _process_misspelled(
-            word=search_string, names_txt_file=api_object_names, names=names
+            word=search_string,
+            names_txt_file=api_object_names,
+            names=names,
+            exact=exact,
         )
     elif match_case:
         queries = _process_misspelled(
-            word=search_string, names_txt_file=api_object_names, names=names
+            word=search_string,
+            names_txt_file=api_object_names,
+            names=names,
+            match_case=match_case,
         )
 
     api_tree = get_api_tree_file_name(text=True)
@@ -478,22 +495,3 @@ def search(
                         print(api_objects[most_similar_api_object_index])
                         results.append(api_objects[most_similar_api_object_index])
     return results
-
-
-if __name__ == "__main__":
-    # pyfluent.WRITE_API_SEARCH_OBJECTS_FILE = True
-    # _search("", version="242")
-    # search("iterate", exact=True)           # correct spelling
-
-    # search("iter*", wildcard=True)  # wildcard
-
-    # search("itrate")            # iterate (misspelled)
-    # search("andoe_mlp_a")       # anode_mpl_a (misspelled)
-    # search("cfb_lma")           # cbf_lam (misspelled)
-
-    # search('读', language='cmn')            # read in Chinese  (semantic search)
-    # search('写', 'cmn')            # write in Chinese (semantic search)
-    # search('leer', 'spa')         # read in Spanish   (semantic search)
-    # search('フォント', 'jpn')       # font in Japanese  (semantic search)
-
-    search("font")  # font in Japanese  (semantic search)

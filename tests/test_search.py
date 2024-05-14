@@ -8,6 +8,61 @@ from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
 
 
 @pytest.mark.codegen_required
+def test_exact_search(capsys):
+    pyfluent.search("font", exact=True)
+    lines = capsys.readouterr().out.splitlines()
+    assert "Font" not in lines
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+
+
+@pytest.mark.codegen_required
+def test_match_case_search(capsys):
+    pyfluent.search("Font")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
+
+
+@pytest.mark.codegen_required
+def test_misspelled_search(capsys):
+    pyfluent.search("cfb_lma")
+    lines = capsys.readouterr().out.splitlines()
+    assert (
+        "<solver_session>.setup.models.viscous.geko_options.cbf_lam (Parameter)"
+        in lines
+    )
+
+
+@pytest.mark.codegen_required
+def test_wildcard_search(capsys):
+    pyfluent.search("iter*", wildcard=True)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.solution.run_calculation.iter_count (Parameter)" in lines
+    assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
+
+
+@pytest.mark.codegen_required
+def test_chinese_semantic_search(capsys):
+    pyfluent.search("读", language="cmn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.read_case (Command)" in lines
+    assert "<meshing_session>.meshing.File.ReadMesh (Command)" in lines
+
+    pyfluent.search("写", language="cmn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.write_case (Command)" in lines
+    assert "<meshing_session>.meshing.File.WriteMesh (Command)" in lines
+
+
+@pytest.mark.codegen_required
+def test_japanese_semantic_search(capsys):
+    pyfluent.search("フォント", language="jpn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
+
+
+@pytest.mark.codegen_required
 def test_search(capsys):
     pyfluent._search("display")
     lines = capsys.readouterr().out.splitlines()
