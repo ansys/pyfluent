@@ -35,8 +35,8 @@ def test_allapigen_files(new_solver_session):
     )
 
 
-def test_codegen_with_no_static_info(tmp_path, monkeypatch):
-    codegen_outdir = tmp_path / "generated"
+def test_codegen_with_no_static_info(monkeypatch):
+    codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
     allapigen.generate(version, {})
@@ -110,8 +110,7 @@ class main_menu(TUIMenu):
             class C3(TUIMethod):
                 """
                 C3 help.
-                """
-'''
+                """'''
 
 
 @pytest.mark.parametrize("mode", ["solver", "meshing"])
@@ -140,7 +139,7 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     assert len(solver_paths) == 1
     assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
     with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
-        assert f.read() == _get_expected_tui_api_output(mode)
+        assert f.read().strip() == _get_expected_tui_api_output(mode)
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
@@ -288,9 +287,7 @@ class Root(PyMenu):
         -------
         bool
         """
-        pass
-
-'''
+        pass'''
 
 
 @pytest.mark.parametrize(
@@ -339,7 +336,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     assert len(datamodel_paths) == 1
     assert set(p.name for p in datamodel_paths) == {f"{rules}.py"}
     with open(codegen_outdir / f"datamodel_{version}" / f"{rules}.py", "r") as f:
-        assert f.read() == _expected_datamodel_api_output
+        assert f.read().strip() == _expected_datamodel_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
@@ -365,3 +362,171 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
         api_tree_expected["<solver_session>"] = datamodel_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
+
+
+def _get_group_settings_static_info(name, children, commands, queries):
+    return {
+        name: {
+            "children": children,
+            "commands": commands,
+            "queries": queries,
+            "type": "group",
+            "help": f"{name} help",
+        }
+    }
+
+
+def _get_named_object_settings_static_info(name, children):
+    return {
+        name: {"children": children, "type": "named-object", "help": f"{name} help"}
+    }
+
+
+def _get_parameter_settings_static_info(name, type_):
+    return {name: {"type": type_, "help": f"{name} help"}}
+
+
+def _get_command_settings_static_info(name, args):
+    args = {arg[0]: {"type": arg[1], "help": f"{arg[0]} help"} for arg in args}
+    return {name: {"arguments": args, "type": "command", "help": f"{name} help"}}
+
+
+def _get_query_settings_static_info(name, args):
+    args = {arg[0]: {"type": arg[1], "help": f"{arg[0]} help"} for arg in args}
+    return {name: {"arguments": args, "type": "query", "help": f"{name} help"}}
+
+
+_expected_root_settings_api_outout = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+from .G1 import G1 as G1_cls
+from .P1 import P1 as P1_cls
+from .N1 import N1 as N1_cls
+from .C1 import C1 as C1_cls
+from .Q1 import Q1 as Q1_cls
+
+class root(Group):
+    """
+    'root' object.
+    """
+
+    fluent_name = ""
+
+    child_names = \\
+        ['G1', 'P1', 'N1']
+
+    command_names = \\
+        ['C1']
+
+    query_names = \\
+        ['Q1']
+
+    _child_classes = dict(
+        G1=G1_cls,
+        P1=P1_cls,
+        N1=N1_cls,
+        C1=C1_cls,
+        Q1=Q1_cls,
+    )'''
+
+
+def test_codegen_with_settings_static_info(monkeypatch):
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    version = "251"
+    static_infos = {}
+    static_infos[StaticInfoType.SETTINGS] = {
+        "children": (
+            _get_group_settings_static_info(
+                "G1",
+                (
+                    (
+                        _get_group_settings_static_info(
+                            "G2",
+                            _get_parameter_settings_static_info("P3", "integer"),
+                            {},
+                            {},
+                        )
+                    )
+                    | _get_parameter_settings_static_info("P2", "real")
+                ),
+                _get_command_settings_static_info("C2", [("A2", "real")]),
+                _get_query_settings_static_info("Q2", [("A2", "real")]),
+            )
+            | _get_parameter_settings_static_info("P1", "string")
+            | _get_named_object_settings_static_info(
+                "N1", _get_parameter_settings_static_info("P4", "string")
+            )
+        ),
+        "commands": _get_command_settings_static_info("C1", [("A1", "string")]),
+        "queries": _get_query_settings_static_info("Q1", [("A1", "string")]),
+        "type": "group",
+    }
+    allapigen.generate(version, static_infos)
+    generated_paths = list(codegen_outdir.iterdir())
+    assert len(generated_paths) == 2
+    assert set(p.name for p in generated_paths) == {
+        f"api_tree_{version}.pickle",
+        "solver",
+    }
+    solver_paths = list((codegen_outdir / "solver").iterdir())
+    assert len(solver_paths) == 1
+    assert set(p.name for p in solver_paths) == {f"settings_{version}"}
+    settings_paths = list((codegen_outdir / "solver" / f"settings_{version}").iterdir())
+    filenames = [
+        "root",
+        "A1",
+        "A2",
+        "C1",
+        "C2",
+        "G1",
+        "G2",
+        "N1",
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "Q1",
+        "Q2",
+    ]
+    filenames = (
+        ["__init__.py"]
+        + [f"{f}.py" for f in filenames]
+        + [f"{f}.pyi" for f in filenames]
+    )
+    assert set(p.name for p in settings_paths) == set(filenames)
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "root.py", "r") as f:
+        assert f.read().strip() == _expected_root_settings_api_outout
+    api_tree_file = get_api_tree_file_name(version)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
+    settings_tree = {
+        "C1": "Command",
+        "G1": {
+            "C2": "Command",
+            "G2": {"P3": "Parameter"},
+            "P2": "Parameter",
+            "Q2": "Query",
+        },
+        "N1": {"P4": "Parameter"},
+        "P1": "Parameter",
+        "Q1": "Query",
+    }
+    api_tree_expected = {}
+    api_tree_expected[f"<meshing_session>"] = {}
+    api_tree_expected[f"<solver_session>"] = settings_tree
+    assert api_tree == api_tree_expected
+    # shutil.rmtree(str(codegen_outdir))

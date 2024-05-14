@@ -32,7 +32,8 @@ import pickle
 import pprint
 import shutil
 
-from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, launch_fluent
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import CODEGEN_ZIP_SETTINGS, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
@@ -473,20 +474,21 @@ def _populate_init(parent_dir, sinfo):
 
 def generate(version, static_infos: dict):
     """Generate settings API classes."""
-    parent_dir = (CODEGEN_OUTDIR / "solver" / f"settings_{version}").resolve()
+    parent_dir = (pyfluent.CODEGEN_OUTDIR / "solver" / f"settings_{version}").resolve()
+    api_tree = {}
+    sinfo = static_infos.get(StaticInfoType.SETTINGS)
 
     # Clear previously generated data
     if os.path.exists(parent_dir):
         shutil.rmtree(parent_dir)
-    os.makedirs(parent_dir)
 
-    if CODEGEN_ZIP_SETTINGS:
-        parent_dir = parent_dir / "settings"
+    if sinfo:
         os.makedirs(parent_dir)
 
-    api_tree = {}
-    sinfo = static_infos.get(StaticInfoType.SETTINGS)
-    if sinfo:
+        if CODEGEN_ZIP_SETTINGS:
+            parent_dir = parent_dir / "settings"
+            os.makedirs(parent_dir)
+
         cls, _ = flobject.get_cls("", sinfo, version=version)
 
         _populate_hash_dict("", sinfo, cls, api_tree)
