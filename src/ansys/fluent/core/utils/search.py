@@ -408,10 +408,10 @@ def search(
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.search("iterate")
-    >>> pyfluent.search("iter*")
-    >>> pyfluent.search("*iter")
-    >>> pyfluent.search('读', 'cmn')   # search 'read' in Chinese
+    >>> pyfluent.search("font", exact=True)
+    >>> pyfluent.search("Font")
+    >>> pyfluent.search("iter*", wildcard=True)
+    >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
     The most similar API objects are:
     <solver_session>.file.read (Command)
     <solver_session>.file.import_.read (Command)
