@@ -2,7 +2,7 @@
 
 from collections.abc import Mapping
 import fnmatch
-import os.path
+import os
 from pathlib import Path
 import pickle
 from typing import Any, Optional

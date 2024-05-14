@@ -31,7 +31,7 @@ from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
-from ansys.fluent.core.utils.search import _search, search  # noqa: F401
+from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning  # noqa: F401
 
@@ -87,15 +87,14 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
+# Directory where API files are writes out during codegen
+CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
+
+# Whether to zip settings API files during codegen
+CODEGEN_ZIP_SETTINGS = False
+
+# Whether to show mesh after case read
+SHOW_MESH_AFTER_CASE_READ = False
+
 # Whether to write API objects to a text file
 WRITE_API_SEARCH_OBJECTS_FILE = False
-
-# Parent directory where codegen writes out API files
-GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
-
-
-# TODO: clean up the following and related code
-def wrap_api_call(f, *args, **kwargs):
-    """Wrap API call."""
-    # overwritten in PyConsole
-    return f(*args, **kwargs)
