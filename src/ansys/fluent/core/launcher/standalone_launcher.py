@@ -192,7 +192,7 @@ class StandaloneLauncher:
         if self.argvals["lightweight_mode"] is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
-            setattr(self, "lightweight_mode", False)
+            self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(
             self.argvals["product_version"]
         )
@@ -211,8 +211,8 @@ class StandaloneLauncher:
 
         sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
         if self.argvals["env"] is None:
-            setattr(self, "env", {})
-        kwargs = _get_subprocess_kwargs_for_fluent(self.env, self.argvals)
+            self.argvals["env"] = {}
+        kwargs = _get_subprocess_kwargs_for_fluent(self.argvals["env"], self.argvals)
         if self.argvals["cwd"]:
             kwargs.update(cwd=self.argvals["cwd"])
         launch_string += _build_journal_argument(

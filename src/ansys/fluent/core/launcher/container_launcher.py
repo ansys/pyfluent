@@ -164,13 +164,15 @@ class DockerLauncher:
         if FluentMode.is_meshing(self.argvals["mode"]):
             args.append(" -meshing")
         if self.argvals["container_dict"] is None:
-            setattr(self, "container_dict", {})
+            self.argvals["container_dict"] = {}
         if self.argvals["product_version"]:
             self.container_dict["image_tag"] = (
                 f"v{self.argvals['product_version'].value}"
             )
         if self.argvals["dry_run"]:
-            config_dict, *_ = configure_container_dict(args, **self.container_dict)
+            config_dict, *_ = configure_container_dict(
+                args, **self.argvals["container_dict"]
+            )
             from pprint import pprint
 
             print("\nDocker container run configuration:\n")
@@ -203,7 +205,7 @@ class DockerLauncher:
         )
 
         if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
-            setattr(self, "start_watchdog", True)
+            self.argvals["start_watchdog"] = True
         if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
