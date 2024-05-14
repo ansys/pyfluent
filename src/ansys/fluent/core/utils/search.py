@@ -375,6 +375,7 @@ def search(
     language: str
         The language for the semantic search.
         English is default for the semantic search.
+        ISO 639-3 code of the language to be used for semantic search.
         See `https://omwn.org/omw1.html` for the list of supported languages.
         The default value is `eng` for English language.
     wildcard: bool
