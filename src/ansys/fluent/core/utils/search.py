@@ -34,10 +34,12 @@ _THIS_DIRNAME = os.path.dirname(__file__)
 
 
 class ValueConflict(ValueError):
-    """Raised when both ``wildcard`` and ``exact`` are ``True``."""
+    """Raised when both ``wildcard`` and ``match_whole_word`` are ``True``."""
 
     def __init__(self):
-        super().__init__("Provide either ``wildcard`` or ``exact`` as ``True``.")
+        super().__init__(
+            "Provide either ``wildcard`` or ``match_whole_word`` as ``True``."
+        )
 
 
 def get_api_tree_file_name(
@@ -308,7 +310,7 @@ def _process_misspelled(
     word: str,
     names_txt_file,
     names: list,
-    exact: Optional[bool] = False,
+    match_whole_word: Optional[bool] = False,
     match_case: Optional[bool] = False,
 ):
     """Process misspelled word.
@@ -321,8 +323,8 @@ def _process_misspelled(
         Text file containing all API object names.
     names: list
         All API object names.
-    exact: bool
-        Whether to match exact case.
+    match_whole_word: bool
+        Whether to match whole case.
     match_case: bool
         Whether to match case.
 
@@ -341,7 +343,7 @@ def _process_misspelled(
         for name in misspelled:
             correct_spell.append(spell.correction(name))
             possible_corrections.extend(list(spell.candidates(name)))
-        if exact and correct_spell == possible_corrections:
+        if match_whole_word and correct_spell == possible_corrections:
             return correct_spell
         elif match_case:
             corrections_in_tree = set()
@@ -357,9 +359,9 @@ def _process_misspelled(
 def search(
     search_string: str,
     language: Optional[str] = "eng",
-    wildcard: bool = False,
-    exact: bool = False,
-    match_case=True,
+    wildcard: Optional[bool] = False,
+    match_whole_word: Optional[bool] = False,
+    match_case: Optional[bool] = True,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -378,20 +380,20 @@ def search(
     wildcard: bool
         Whether to use wildcard pattern. If ``True`` will match wildcard pattern based on ``fnmatch`` module and
         will turn off semantic matching.
-    exact: bool
+    match_whole_word: bool
         Whether to get exact match. If ``True`` will match exact string and will turn off semantic matching.
     match_case: bool
-        Whether to match case. If ``False`` will match case-insensitive case.
+        Whether to match case. If ``True`` will match case-insensitive case.
 
     Raises
     ------
     ValueConflict
-        If both ``wildcard`` and ``exact`` are ``True``.
+        If both ``wildcard`` and ``match_whole_word`` are ``True``.
 
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.search("font", exact=True)
+    >>> pyfluent.search("font", match_whole_word=True)
     >>> pyfluent.search("Font")
     >>> pyfluent.search("iter*", wildcard=True)
     >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
@@ -402,16 +404,17 @@ def search(
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
-    if language and exact:
+    if language and match_whole_word:
         warnings.warn(
-            "``exact=True`` will match exact string and will turn off semantic matching.",
+            "``match_whole_word=True`` will match exact string and will turn off semantic matching.",
             UserWarning,
         )
-    elif wildcard and exact:
+    elif wildcard and match_whole_word:
         raise ValueConflict()
-    elif exact:
+    elif match_whole_word:
         warnings.warn(
-            "``exact=True`` will turn off semantic and wildcard matching.", UserWarning
+            "``match_whole_word=True`` will turn off semantic and wildcard matching.",
+            UserWarning,
         )
 
     api_object_names = get_api_tree_file_name(name=True)
@@ -419,9 +422,9 @@ def search(
     names = [name.replace("\n", "") for name in names_txt.readlines()]
     synset_1 = wn.synsets(search_string, lang=language)
 
-    if wildcard and not exact:
+    if wildcard and not match_whole_word:
         queries = _process_wildcards(search_string, names)
-    elif synset_1 and not exact and not wildcard:
+    elif synset_1 and not match_whole_word and not wildcard:
         similar_keys = set()
         for name in names:
             synset_2 = wn.synsets(name, lang="eng")
@@ -436,12 +439,12 @@ def search(
             queries.update(set(_process_wildcards(key, names)))
         queries = list(queries)
         wildcard = True
-    elif exact and not wildcard:
+    elif match_whole_word and not wildcard:
         queries = _process_misspelled(
             word=search_string,
             names_txt_file=api_object_names,
             names=names,
-            exact=exact,
+            match_whole_word=match_whole_word,
         )
     elif match_case:
         queries = _process_misspelled(
