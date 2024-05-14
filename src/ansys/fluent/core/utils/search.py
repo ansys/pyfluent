@@ -8,6 +8,9 @@ import pickle
 from typing import Any, Optional
 import warnings
 
+import nltk
+
+nltk.download("wordnet")
 from nltk.corpus import wordnet as wn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -370,13 +373,10 @@ def search(
     search_string: str
         The word to search for. Semantic search is default.
     language: str
-        The language for the semantic search. English is default for the semantic search.
-        'albanian':'als', 'arabic':'arb', 'bulgarian':'bul', 'chinese_simplified':'cmn', 'chinese_traditional':'qcn',
-        'danish':'dan', 'greek':'ell', 'english':'eng', 'persian':'fas', 'finnish':'fin', 'french':'fra',
-        'hebrew':'heb', 'croatian':'hrv', 'icelandic':'isl', 'italian':'ita', 'japanese':'jpn', 'catalan':'cat',
-        'basque':'eus', 'galicain':'glg', 'spanish':'spa', 'indonesian':'ind', 'malay':'zsm', 'dutch':'nld',
-        'polish':'pol', 'portuguese':'por', 'romanian':'ron', 'lithuanian':'lit', 'slovak':'slk', 'slovene':'slv',
-        'swedish':'swe', 'thai':'tha'
+        The language for the semantic search.
+        English is default for the semantic search.
+        See `https://omwn.org/omw1.html` for the list of supported languages.
+        The default value is `eng` for English language.
     wildcard: bool
         Whether to use wildcard pattern. If ``True`` will match wildcard pattern based on ``fnmatch`` module and
         will turn off semantic matching.
