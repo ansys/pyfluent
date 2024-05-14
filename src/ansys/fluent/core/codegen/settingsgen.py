@@ -33,7 +33,7 @@ import pprint
 import shutil
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import CODEGEN_ZIP_SETTINGS, launch_fluent
+from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
@@ -485,7 +485,7 @@ def generate(version, static_infos: dict):
     if sinfo:
         os.makedirs(parent_dir)
 
-        if CODEGEN_ZIP_SETTINGS:
+        if pyfluent.CODEGEN_ZIP_SETTINGS:
             parent_dir = parent_dir / "settings"
             os.makedirs(parent_dir)
 
@@ -495,7 +495,7 @@ def generate(version, static_infos: dict):
         _populate_classes(parent_dir)
         _populate_init(parent_dir, sinfo)
 
-        if CODEGEN_ZIP_SETTINGS:
+        if pyfluent.CODEGEN_ZIP_SETTINGS:
             shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
             shutil.rmtree(parent_dir.parent)
 

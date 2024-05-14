@@ -401,6 +401,37 @@ def _get_query_settings_static_info(name, args):
     return {name: {"arguments": args, "type": "query", "help": f"{name} help"}}
 
 
+_settings_static_info = {
+    "children": (
+        _get_group_settings_static_info(
+            "G1",
+            (
+                (
+                    _get_group_settings_static_info(
+                        "G2",
+                        _get_parameter_settings_static_info("P3", "integer"),
+                        {},
+                        {},
+                    )
+                )
+                | _get_parameter_settings_static_info("P2", "real")
+            ),
+            _get_command_settings_static_info("C2", [("A2", "real")]),
+            _get_query_settings_static_info("Q2", [("A2", "real")]),
+        )
+        | _get_parameter_settings_static_info("P1", "string")
+        | _get_named_object_settings_static_info(
+            "N1",
+            _get_group_settings_static_info("G3", {}, {}, {})["G3"],
+            _get_parameter_settings_static_info("P4", "string"),
+        )
+    ),
+    "commands": _get_command_settings_static_info("C1", [("A1", "string")]),
+    "queries": _get_query_settings_static_info("Q1", [("A1", "string")]),
+    "type": "group",
+}
+
+
 _expected_init_settings_api_output = '''#
 # This is an auto-generated file.  DO NOT EDIT!
 #
@@ -702,35 +733,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
     static_infos = {}
-    static_infos[StaticInfoType.SETTINGS] = {
-        "children": (
-            _get_group_settings_static_info(
-                "G1",
-                (
-                    (
-                        _get_group_settings_static_info(
-                            "G2",
-                            _get_parameter_settings_static_info("P3", "integer"),
-                            {},
-                            {},
-                        )
-                    )
-                    | _get_parameter_settings_static_info("P2", "real")
-                ),
-                _get_command_settings_static_info("C2", [("A2", "real")]),
-                _get_query_settings_static_info("Q2", [("A2", "real")]),
-            )
-            | _get_parameter_settings_static_info("P1", "string")
-            | _get_named_object_settings_static_info(
-                "N1",
-                _get_group_settings_static_info("G3", {}, {}, {})["G3"],
-                _get_parameter_settings_static_info("P4", "string"),
-            )
-        ),
-        "commands": _get_command_settings_static_info("C1", [("A1", "string")]),
-        "queries": _get_query_settings_static_info("Q1", [("A1", "string")]),
-        "type": "group",
-    }
+    static_infos[StaticInfoType.SETTINGS] = _settings_static_info
     allapigen.generate(version, static_infos)
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
@@ -806,4 +809,24 @@ def test_codegen_with_settings_static_info(monkeypatch):
     api_tree_expected[f"<meshing_session>"] = {}
     api_tree_expected[f"<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
+    shutil.rmtree(str(codegen_outdir))
+
+
+def test_codegen_with_zipped_settings_static_info(monkeypatch):
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    monkeypatch.setattr(pyfluent, "CODEGEN_ZIP_SETTINGS", True)
+    version = "251"
+    static_infos = {}
+    static_infos[StaticInfoType.SETTINGS] = _settings_static_info
+    allapigen.generate(version, static_infos)
+    generated_paths = list(codegen_outdir.iterdir())
+    assert len(generated_paths) == 2
+    assert set(p.name for p in generated_paths) == {
+        f"api_tree_{version}.pickle",
+        "solver",
+    }
+    solver_paths = list((codegen_outdir / "solver").iterdir())
+    assert len(solver_paths) == 1
+    assert set(p.name for p in solver_paths) == {f"settings_{version}.zip"}
     shutil.rmtree(str(codegen_outdir))
