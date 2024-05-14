@@ -47,3 +47,20 @@ def test_codegen_with_no_static_info(tmp_path, monkeypatch):
         "<meshing_session>": {"tui": {}},
         "<solver_session>": {"tui": {}},
     }
+
+
+def test_codegen_with_tui_solver_static_info(tmp_path, monkeypatch):
+    codegen_outdir = tmp_path / "generated"
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    version = "251"
+    allapigen.generate(version, {})
+    generated_paths = list(codegen_outdir.glob("*"))
+    assert len(generated_paths) == 1
+    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
+    api_tree_file = get_api_tree_file_name(version)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
+    assert api_tree == {
+        "<meshing_session>": {"tui": {}},
+        "<solver_session>": {"tui": {}},
+    }

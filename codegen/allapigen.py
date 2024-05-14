@@ -55,6 +55,10 @@ if __name__ == "__main__":
     t1 = time()
     print(f"Time to fetch static info: {t1 - t0:.2f} seconds")
     print_fluent_version.generate(version, solver.scheme_eval.scheme_eval)
+    from pprint import pformat
+
+    with open("static_infos.txt", "w") as f:
+        f.write(pformat(static_infos))
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
