@@ -37,9 +37,9 @@ def test_codegen_with_no_static_info(tmp_path, monkeypatch):
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
     allapigen.generate(version, {})
-    generted_paths = list(codegen_outdir.glob("*"))
-    assert len(generted_paths) == 1
-    assert set(p.name for p in generted_paths) == {f"api_tree_{version}.pickle"}
+    generated_paths = list(codegen_outdir.glob("*"))
+    assert len(generated_paths) == 1
+    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
