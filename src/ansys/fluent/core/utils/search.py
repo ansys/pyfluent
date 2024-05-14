@@ -283,7 +283,7 @@ def _search(
 
 
 def _process_wildcards(word: str, names: list):
-    """Process wildcard pattern in the given word. #fnmatch
+    """Process wildcard pattern in the given word.
 
     Parameters
     ----------
