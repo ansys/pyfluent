@@ -806,4 +806,4 @@ def test_codegen_with_settings_static_info(monkeypatch):
     api_tree_expected[f"<meshing_session>"] = {}
     api_tree_expected[f"<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
-    # shutil.rmtree(str(codegen_outdir))
+    shutil.rmtree(str(codegen_outdir))
