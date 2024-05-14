@@ -114,15 +114,126 @@ class main_menu(TUIMenu):
 '''
 
 
+_expected_datamodel_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+# pylint: disable=line-too-long
+
+from ansys.fluent.core.services.datamodel_se import (
+    PyMenu,
+    PyParameter,
+    PyTextual,
+    PyNumerical,
+    PyDictionary,
+    PyNamedObjectContainer,
+    PyCommand,
+    PyQuery
+)
+
+
+class Root(PyMenu):
+    """
+    Singleton Root.
+    """
+    def __init__(self, service, rules, path):
+        self.N1 = self.__class__.N1(service, rules, path + [("N1", "")])
+        self.S1 = self.__class__.S1(service, rules, path + [("S1", "")])
+        self.P1 = self.__class__.P1(service, rules, path + [("P1", "")])
+        self.C1 = self.__class__.C1(service, rules, "C1", path)
+        super().__init__(service, rules, path)
+
+    class N1(PyNamedObjectContainer):
+        """
+        .
+        """
+        class _N1(PyMenu):
+            """
+            Singleton _N1.
+            """
+            def __init__(self, service, rules, path):
+                self.S3 = self.__class__.S3(service, rules, path + [("S3", "")])
+                super().__init__(service, rules, path)
+
+            class S3(PyMenu):
+                """
+                Singleton S3.
+                """
+                def __init__(self, service, rules, path):
+                    super().__init__(service, rules, path)
+
+        def __getitem__(self, key: str) -> _N1:
+            return super().__getitem__(key)
+
+    class S1(PyMenu):
+        """
+        Singleton S1.
+        """
+        def __init__(self, service, rules, path):
+            self.S2 = self.__class__.S2(service, rules, path + [("S2", "")])
+            self.P2 = self.__class__.P2(service, rules, path + [("P2", "")])
+            self.C2 = self.__class__.C2(service, rules, "C2", path)
+            super().__init__(service, rules, path)
+
+        class S2(PyMenu):
+            """
+            Singleton S2.
+            """
+            def __init__(self, service, rules, path):
+                super().__init__(service, rules, path)
+
+        class P2(PyNumerical):
+            """
+            Parameter P2 of value type float.
+            """
+            pass
+
+        class C2(PyCommand):
+            """
+            Command C2.
+
+            Parameters
+            ----------
+            A2 : float
+
+            Returns
+            -------
+            bool
+            """
+            pass
+
+    class P1(PyTextual):
+        """
+        Parameter P1 of value type str.
+        """
+        pass
+
+    class C1(PyCommand):
+        """
+        Command C1.
+
+        Parameters
+        ----------
+        A1 : str
+
+        Returns
+        -------
+        bool
+        """
+        pass
+
+'''
+
+
 @pytest.mark.parametrize("mode", ["solver", "meshing"])
 def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
     static_infos = {}
-    static_infos[
+    static_info_type = (
         StaticInfoType.TUI_SOLVER if mode == "solver" else StaticInfoType.TUI_MESHING
-    ] = {
+    )
+    static_infos[static_info_type] = {
         "menus": _get_nth_tui_menu_static_info(
             1,
             _get_nth_tui_menu_static_info(2, {}, _get_nth_tui_command_static_info(3)),
@@ -150,3 +261,81 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     api_tree_expected[f"<{mode}_session>"] = tui_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
+
+
+def _get_datamodel_entity_static_info(
+    name, singletons, namedobjects, commands, parameters
+):
+    return {
+        name: {
+            "singletons": singletons,
+            "namedobjects": namedobjects,
+            "commands": commands,
+            "parameters": parameters,
+        }
+    }
+
+
+def test_codegen_with_datamodel_static_info(monkeypatch):
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    version = "251"
+    static_infos = {}
+    static_info_type = StaticInfoType.DATAMODEL_WORKFLOW
+    static_infos[static_info_type] = {
+        "singletons": _get_datamodel_entity_static_info(
+            "S1",
+            _get_datamodel_entity_static_info("S2", {}, {}, {}, {}),
+            {},
+            {
+                "C2": {
+                    "commandinfo": {
+                        "args": [{"name": "A2", "type": "Real"}],
+                        "returntype": "Logical",
+                    }
+                }
+            },
+            {"P2": {"type": "Real"}},
+        ),
+        "namedobjects": _get_datamodel_entity_static_info(
+            "N1", _get_datamodel_entity_static_info("S3", {}, {}, {}, {}), {}, {}, {}
+        ),
+        "commands": {
+            "C1": {
+                "commandinfo": {
+                    "args": [{"name": "A1", "type": "String"}],
+                    "returntype": "Logical",
+                }
+            }
+        },
+        "parameters": {"P1": {"type": "String"}},
+        "help": "Root",
+    }
+    allapigen.generate(version, static_infos)
+    generated_paths = list(codegen_outdir.iterdir())
+    assert len(generated_paths) == 2
+    assert set(p.name for p in generated_paths) == {
+        f"api_tree_{version}.pickle",
+        f"datamodel_{version}",
+    }
+    datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
+    assert len(datamodel_paths) == 1
+    assert set(p.name for p in datamodel_paths) == {"workflow.py"}
+    with open(codegen_outdir / f"datamodel_{version}" / "workflow.py", "r") as f:
+        assert f.read() == _expected_datamodel_api_output
+    api_tree_file = get_api_tree_file_name(version)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
+    datamodel_tree = {
+        "workflow": {
+            "C1": "Command",
+            "N1:<name>": {"S3": {}},
+            "P1": "Parameter",
+            "S1": {"C2": "Command", "P2": "Parameter", "S2": {}},
+        }
+    }
+    api_tree_expected = {}
+    api_tree_expected["<meshing_session>"] = datamodel_tree
+    api_tree_expected["<solver_session>"] = datamodel_tree
+    assert api_tree == api_tree_expected
+    # shutil.rmtree(str(codegen_outdir))
