@@ -396,7 +396,18 @@ def _get_query_settings_static_info(name, args):
     return {name: {"arguments": args, "type": "query", "help": f"{name} help"}}
 
 
-_expected_root_settings_api_outout = '''#
+_expected_init_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+"""A package providing Fluent's Settings Objects in Python."""
+from ansys.fluent.core.solver.flobject import *
+
+SHASH = "9713aa09d09d1d66d22440d062af6bab56dddc24c74da6af28aa2a5125ff4030"
+from .root import root'''
+
+
+_expected_root_settings_api_output = '''#
 # This is an auto-generated file.  DO NOT EDIT!
 #
 
@@ -610,6 +621,45 @@ class P1(String):
     fluent_name = "P1"'''
 
 
+_expected_Q1_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _CreatableNamedObjectMixin,
+    _NonCreatableNamedObjectMixin,
+    _HasAllowedValuesMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+from .A1 import A1 as A1_cls
+
+class Q1(Query):
+    """
+    Q1 help.
+    
+    Parameters
+    ----------
+        A1 : str
+            A1 help.
+    
+    """
+
+    fluent_name = "Q1"
+
+    argument_names = \\
+        ['A1']
+
+    _child_classes = dict(
+        A1=A1_cls,
+    )'''  # noqa: W293
+
+
 def test_codegen_with_settings_static_info(monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
@@ -675,8 +725,12 @@ def test_codegen_with_settings_static_info(monkeypatch):
         + [f"{f}.pyi" for f in filenames]
     )
     assert set(p.name for p in settings_paths) == set(filenames)
+    with open(
+        codegen_outdir / "solver" / f"settings_{version}" / "__init__.py", "r"
+    ) as f:
+        assert f.read().strip() == _expected_init_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "root.py", "r") as f:
-        assert f.read().strip() == _expected_root_settings_api_outout
+        assert f.read().strip() == _expected_root_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "A1.py", "r") as f:
         assert f.read().strip() == _expected_A1_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "C1.py", "r") as f:
@@ -687,6 +741,8 @@ def test_codegen_with_settings_static_info(monkeypatch):
         assert f.read().strip() == _expected_N1_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "P1.py", "r") as f:
         assert f.read().strip() == _expected_P1_settings_api_output
+    with open(codegen_outdir / "solver" / f"settings_{version}" / "Q1.py", "r") as f:
+        assert f.read().strip() == _expected_Q1_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
