@@ -1,10 +1,12 @@
 """Provides a module to search a word through the Fluent's object hierarchy.."""
 
 from collections.abc import Mapping
+import fnmatch
 import os.path
 from pathlib import Path
 import pickle
 from typing import Any, Optional
+import warnings
 
 from nltk.corpus import wordnet as wn
 from nltk.corpus import wordnet_ic
@@ -28,6 +30,13 @@ from ansys.fluent.core.workflow import (
     TaskContainer,
     Workflow,
 )
+
+
+class ValueConflict(ValueError):
+    """Raised when both ``wildcard`` and ``exact`` are ``True``."""
+
+    def __init__(self):
+        super().__init__("Provide either ``wildcard`` or ``exact`` as ``True``.")
 
 
 def get_api_tree_file_name(
@@ -306,9 +315,8 @@ def _process_wildcards(word: str, names: list):
         Matched API object names.
     """
     wildcard_matches = []
-    word = word.replace("*", "")
     for name in names:
-        if name.startswith(word) or name.endswith(word):
+        if fnmatch.fnmatch(name, word):
             wildcard_matches.append(name)
     return wildcard_matches
 
@@ -355,7 +363,7 @@ def _process_misspelled(word: str, names_txt_file, names: list):
 
 def search(
     search_string: str,
-    language: Optional[str] = None,
+    language: Optional[str] = "eng",
     wildcard: bool = False,
     exact: bool = False,
     match_case=True,
@@ -382,9 +390,10 @@ def search(
     match_case: bool
         Whether to match case. If ``False`` will match case-insensitive case.
 
-        warning - lang exact
-        except - wildcard , exact
-        warning - exact = True, then wildcard will not be performed
+    Raises
+    ------
+    ValueConflict
+        If both ``wildcard`` and ``exact`` are ``True``
 
     Examples
     --------
@@ -400,36 +409,43 @@ def search(
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
+    if language and exact:
+        warnings.warn(
+            "``exact=True`` will match exact string and will turn off semantic matching.",
+            UserWarning,
+        )
+    elif wildcard and exact:
+        raise ValueConflict()
+    elif exact:
+        warnings.warn(
+            "``exact=True`` will turn off semantic and wildcard matching.", UserWarning
+        )
+
     api_object_names = get_api_tree_file_name(name=True)
     names_txt = open(api_object_names, "r")
     names = names_txt.readlines()
-
-    if wildcard:
+    synset_1 = wn.synsets(search_string, lang=language)
+    if wildcard and not exact:
         queries = _process_wildcards(search_string, names)
-    else:
-        queries = _process_misspelled(
-            word=search_string, names_txt_file=api_object_names, names=names
-        )
-    if language:
-        brown_ic = wordnet_ic.ic("ic-brown.dat")
-        synset_1 = wn.synsets(search_string, lang=language if language else "eng")
-        print(f"\nsynset_1 = {synset_1}\n")
-        wup_similarities = {}
+    elif synset_1:
         similar_keys = set()
+        brown_ic = wordnet_ic.ic("ic-brown.dat")
         for name in names:
             name = name.replace("\n", "").lower()
             synset_2 = wn.synsets(name, lang="eng")
             for s1 in synset_1:
                 for s2 in synset_2:
-                    similarity_score = wn.wup_similarity(s1, s2, brown_ic)
-                    wup_similarities[similarity_score] = [
-                        s1.name().split(".")[0],
-                        s2.name().split(".")[0],
-                    ]
-                    if search_string in s2.name().split(".")[0]:
-                        similar_keys.add(s2.name().split(".")[0] + "*")
+                    similarity = wn.wup_similarity(s1, s2, brown_ic)
+                    name_s1 = s1.name().split(".")[0]
+                    name_s2 = s2.name().split(".")[0]
+                    if search_string in name_s2 or name_s1 in name_s2:
+                        similar_keys.add(name_s2 + "*")
         queries = list(similar_keys)
         wildcard = True
+    elif match_case and not wildcard:
+        queries = _process_misspelled(
+            word=search_string, names_txt_file=api_object_names, names=names
+        )
 
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
@@ -444,7 +460,6 @@ def search(
             query_vector = tfidf_vectorizer.transform([query])
             cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
             if wildcard:
-                search_string = search_string.replace("*", "")
                 most_similar_api_object_index = cosine_similarities.argmax()
                 if search_string in api_objects[most_similar_api_object_index]:
                     print(api_objects[most_similar_api_object_index])
@@ -462,16 +477,15 @@ if __name__ == "__main__":
     # _search("", version="242")
     # search("iterate")           # correct spelling
 
-    # search("iter*")             # wildcard
-    # search("*iter")             # wildcard
+    search("iter*", wildcard=True)  # wildcard
+    # search("*iter", wildcard=True)             # wildcard
 
     # search("itrate")            # iterate (misspelled)
     # search("andoe_mlp_a")       # anode_mpl_a (misspelled)
     # search("cfb_lma")           # cbf_lam (misspelled)
 
-    # search('读', 'cmn')            # read in Chinese  (semantic search)
+    # search('读', language='cmn')            # read in Chinese  (semantic search)
     # search('写', 'cmn')            # write in Chinese (semantic search)
     # search('leer', 'spa')         # read in Spanish   (semantic search)
     # search('フォント', 'jpn')       # font in Japanese  (semantic search)
-    # search('area', 'eng')  # font in Japanese  (semantic search)
-    search("area")  # font in Japanese  (semantic search)
+    # search("area")  # font in Japanese  (semantic search)
