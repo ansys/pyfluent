@@ -1,6 +1,5 @@
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
-import importlib
 import json
 import logging
 from typing import Any, Dict, Optional, Union
@@ -22,6 +21,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
@@ -47,8 +47,11 @@ def _parse_server_info_file(file_name: str):
 
 def _get_datamodel_attributes(session, attribute: str):
     try:
-        preferences_module = importlib.import_module(
-            f"ansys.fluent.core.generated.datamodel_{session._version}." + attribute
+        from ansys.fluent.core import CODEGEN_OUTDIR
+
+        preferences_module = load_module(
+            attribute,
+            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{attribute}.py",
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except ImportError:

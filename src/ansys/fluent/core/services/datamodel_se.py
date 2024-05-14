@@ -22,7 +22,6 @@ from ansys.fluent.core.services.interceptors import (
     ErrorStateInterceptor,
     GrpcErrorInterceptor,
     TracingInterceptor,
-    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -149,7 +148,6 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
-            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
@@ -886,15 +884,9 @@ class PyStateContainer(PyCallableStateObject):
 
         Raises
         ------
-        TypeError
-            If no arguments are provided to the ``set_state()`` method.
         ReadOnlyObjectError
             If the object is read-only.
         """
-        if state is None and not kwargs:
-            raise TypeError(
-                "The `set_state()` method requires either 'state' or 'kwargs' arguments."
-            )
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
         self.service.set_state(

@@ -87,15 +87,21 @@ DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
+
 # Whether to write API objects to a text file
 WRITE_API_SEARCH_OBJECTS_FILE = False
+
 
 # Parent directory where codegen writes out API files
 GENERATED_API_DIR = (Path(__file__) / ".." / "generated").resolve()
 
 
-# TODO: clean up the following and related code
-def wrap_api_call(f, *args, **kwargs):
-    """Wrap API call."""
-    # overwritten in PyConsole
-    return f(*args, **kwargs)
+# Directory where API files are writes out during codegen
+CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
+
+
+# Whether to zip settings API files during codegen
+CODEGEN_ZIP_SETTINGS = False
+
+# Whether to show mesh after case read
+SHOW_MESH_AFTER_CASE_READ = False
