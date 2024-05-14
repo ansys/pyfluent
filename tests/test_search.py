@@ -9,7 +9,7 @@ from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj
 
 @pytest.mark.codegen_required
 def test_exact_search(capsys):
-    pyfluent.search("font", exact=True)
+    pyfluent.search("font", match_whole_word=True)
     lines = capsys.readouterr().out.splitlines()
     assert "Font" not in lines
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
