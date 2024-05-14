@@ -116,8 +116,9 @@ class DataModelGenerator:
     def __init__(self, version, static_infos: dict):
         self.version = version
         self._server_static_infos = static_infos
-        self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo(
+        self._static_info: Dict[str, DataModelStaticInfo] = {}
+        if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
+            self._static_info["workflow"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_WORKFLOW,
                 "workflow",
                 (
@@ -125,55 +126,54 @@ class DataModelGenerator:
                     "solver",
                 ),
                 self.version,
-            ),
-            "meshing": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_MESHING in static_infos:
+            self._static_info["meshing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING, "meshing", ("meshing",), self.version
-            ),
-            "PartManagement": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_PART_MANAGEMENT in static_infos:
+            self._static_info["PartManagement"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PART_MANAGEMENT,
                 "PartManagement",
                 ("meshing",),
                 self.version,
-            ),
-            "PMFileManagement": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT in static_infos:
+            self._static_info["PMFileManagement"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
                 "PMFileManagement",
                 ("meshing",),
                 self.version,
-            ),
-            "flicing": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_FLICING in static_infos:
+            self._static_info["flicing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_FLICING,
                 "flserver",
                 ("flicing",),
                 self.version,
                 "flicing",
-            ),
-            "preferences": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_PREFERENCES in static_infos:
+            self._static_info["preferences"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PREFERENCES,
                 "preferences",
-                ("meshing", "solver", "flicing,"),
+                ("meshing", "solver", "flicing"),
                 self.version,
-            ),
-            "solverworkflow": (
-                DataModelStaticInfo(
-                    StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
-                    "solverworkflow",
-                    ("solver",),
-                    self.version,
-                )
-                if FluentVersion(self.version) >= FluentVersion.v231
-                else None
-            ),
-        }
-        if FluentVersion(self.version) >= FluentVersion.v242:
+            )
+        if StaticInfoType.DATAMODEL_SOLVER_WORKFLOW in static_infos:
+            self._static_info["solverworkflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
+                "solverworkflow",
+                ("solver",),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_MESHING_UTILITIES in static_infos:
             self._static_info["meshing_utilities"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING_UTILITIES,
                 "MeshingUtilities",
                 ("meshing",),
                 self.version,
             )
-        if not self._static_info["solverworkflow"]:
-            del self._static_info["solverworkflow"]
         self._delete_generated_files()
         self._populate_static_info()
 

@@ -271,14 +271,13 @@ class TUIGenerator:
                 ) as f:
                     self._main_menu = _RenameModuleUnpickler(f).load()
             else:
-                info = self._static_infos[
-                    (
-                        StaticInfoType.TUI_MESHING
-                        if self._mode == "meshing"
-                        else StaticInfoType.TUI_SOLVER
-                    )
-                ]
-                self._populate_menu(self._main_menu, info)
+                info = self._static_infos.get(
+                    StaticInfoType.TUI_MESHING
+                    if self._mode == "meshing"
+                    else StaticInfoType.TUI_SOLVER
+                )
+                if info:
+                    self._populate_menu(self._main_menu, info)
             self._write_code_to_tui_file(
                 f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
             )

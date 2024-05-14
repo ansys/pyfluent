@@ -484,17 +484,18 @@ def generate(version, static_infos: dict):
         parent_dir = parent_dir / "settings"
         os.makedirs(parent_dir)
 
-    sinfo = static_infos[StaticInfoType.SETTINGS]
-    cls, _ = flobject.get_cls("", sinfo, version=version)
-
     api_tree = {}
-    _populate_hash_dict("", sinfo, cls, api_tree)
-    _populate_classes(parent_dir)
-    _populate_init(parent_dir, sinfo)
+    sinfo = static_infos.get(StaticInfoType.SETTINGS)
+    if sinfo:
+        cls, _ = flobject.get_cls("", sinfo, version=version)
 
-    if CODEGEN_ZIP_SETTINGS:
-        shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
-        shutil.rmtree(parent_dir.parent)
+        _populate_hash_dict("", sinfo, cls, api_tree)
+        _populate_classes(parent_dir)
+        _populate_init(parent_dir, sinfo)
+
+        if CODEGEN_ZIP_SETTINGS:
+            shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
+            shutil.rmtree(parent_dir.parent)
 
     return {"<solver_session>": api_tree}
 
