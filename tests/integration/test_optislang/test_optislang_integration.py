@@ -7,6 +7,7 @@ from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
@@ -33,7 +34,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = load_mixing_elbow_param_case_dat
-    assert solver_session.health_check_service.is_serving
+    assert solver_session.health_check.is_serving
     case_path = examples.path("elbow_param.cas.h5")
     solver_session.tui.file.read_case_data(case_path)
 
@@ -49,7 +50,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     solver_session.tui.file.read_case(case_path)
 
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(solver_session.get_fluent_version()[:-2]) < 23.0:
+    if solver_session.get_fluent_version() < FluentVersion.v231:
         input_parameters = input_parameters["inlet2_temp"]
         output_parameters = output_parameters["outlet_temp-op"]
 
@@ -123,7 +124,7 @@ def test_generate_read_mesh(mixing_elbow_geometry):
     meshing = pyfluent.launch_fluent(
         mode="meshing", precision="double", processor_count=2
     )
-    assert meshing.health_check_service.is_serving
+    assert meshing.health_check.is_serving
     temporary_resource_path = os.path.join(
         pyfluent.EXAMPLES_PATH, "test_generate_read_mesh_resources"
     )
@@ -133,7 +134,7 @@ def test_generate_read_mesh(mixing_elbow_geometry):
         os.mkdir(temporary_resource_path)
 
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing.get_fluent_version()[:-2]) < 23.0:
+    if meshing.get_fluent_version() < FluentVersion.v231:
         # Step 3 Generate mesh from geometry with default workflow settings
         meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
         geo_import = meshing.workflow.TaskObject["Import Geometry"]

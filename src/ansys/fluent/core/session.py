@@ -1,14 +1,15 @@
 """Module containing class encapsulating Fluent connection and the Base Session."""
-import importlib
+
 import json
 import logging
-from typing import Any, Optional
+from typing import Any, Dict, Optional, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.field_data import FieldDataService
+from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -20,8 +21,8 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
-import ansys.platform.instancemanagement as pypim
+from ansys.fluent.core.utils import load_module
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
 
@@ -46,8 +47,11 @@ def _parse_server_info_file(file_name: str):
 
 def _get_datamodel_attributes(session, attribute: str):
     try:
-        preferences_module = importlib.import_module(
-            f"ansys.fluent.core.datamodel_{session._version}." + attribute
+        from ansys.fluent.core import CODEGEN_OUTDIR
+
+        preferences_module = load_module(
+            attribute,
+            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{attribute}.py",
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except ImportError:
@@ -75,12 +79,11 @@ class BaseSession:
     Attributes
     ----------
     scheme_eval: SchemeEval
-        Instance of SchemeEval on which Fluent's scheme code can be
-        executed.
+        Instance of ``SchemeEval`` to execute Fluent's scheme code on.
 
     Methods
     -------
-    create_from_server_info_file(
+    _create_from_server_info_file(
         server_info_file_name, cleanup_on_exit, start_transcript
         )
         Create a Session instance from server-info file
@@ -89,33 +92,50 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    _pim_methods = ["upload", "download"]
-
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        scheme_eval: SchemeEval,
+        file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """BaseSession.
 
-        Args:
-            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+        Parameters
+        ----------
+        fluent_connection (:ref:`ref_fluent_connection`):
+            Encapsulates a Fluent connection.
+        scheme_eval: SchemeEval
+            Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+        file_transfer_service : Optional
+            Service for uploading and downloading files.
+        start_transcript : bool, optional
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         """
-        BaseSession.build_from_fluent_connection(
-            self, fluent_connection, remote_file_handler
+        self._start_transcript = start_transcript
+        self._launcher_args = launcher_args
+        BaseSession._build_from_fluent_connection(
+            self,
+            fluent_connection,
+            scheme_eval,
+            file_transfer_service,
         )
 
-    def build_from_fluent_connection(
+    def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        scheme_eval: SchemeEval,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
-        self.fluent_connection = fluent_connection
-        self._remote_file_handler = remote_file_handler
-        self.error_state = self.fluent_connection.error_state
-        self.scheme_eval = self.fluent_connection.scheme_eval
+        self._fluent_connection = fluent_connection
+        self._file_transfer_service = file_transfer_service
+        self._error_state = fluent_connection._error_state
+        self.scheme_eval = scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
         self.journal = Journal(self.scheme_eval)
@@ -124,92 +144,122 @@ class BaseSession:
             fluent_connection._channel, fluent_connection._metadata
         )
         self.transcript = Transcript(self._transcript_service)
-        if fluent_connection.start_transcript:
+        if self._start_transcript:
             self.transcript.start()
 
-        self.datamodel_service_tui = service_creator("tui").create(
+        self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.error_state,
+            self._error_state,
             self.scheme_eval,
         )
 
-        self.datamodel_service_se = service_creator("datamodel").create(
+        self._datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.error_state,
+            self._error_state,
+            self._file_transfer_service,
         )
 
-        self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
-        self.datamodel_events.start()
+        self._datamodel_events = DatamodelEvents(self._datamodel_service_se)
+        self._datamodel_events.start()
 
         self._batch_ops_service = service_creator("batch_ops").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.events_service = service_creator("events").create(
+        self._events_service = service_creator("events").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.events_manager = EventsManager(
-            self.events_service, self.error_state, self.fluent_connection._id
+        self.events = EventsManager(
+            self._events_service, self._error_state, fluent_connection._id
         )
 
         self._monitors_service = service_creator("monitors").create(
-            fluent_connection._channel, fluent_connection._metadata, self.error_state
+            fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
-        self.monitors_manager = MonitorsManager(
-            self.fluent_connection._id, self._monitors_service
+        self.monitors = MonitorsManager(fluent_connection._id, self._monitors_service)
+
+        self.events.register_callback("InitializedEvent", self.monitors.refresh)
+        self.events.register_callback("DataReadEvent", self.monitors.refresh)
+
+        self.events.start()
+
+        self._field_data_service = self._fluent_connection.create_grpc_service(
+            FieldDataService, self._error_state
         )
 
-        self.events_manager.register_callback(
-            "InitializedEvent", self.monitors_manager.refresh
-        )
-        self.events_manager.register_callback(
-            "DataReadEvent", self.monitors_manager.refresh
-        )
+        class Fields:
+            """Container for field and solution variables."""
 
-        self.events_manager.start()
+            def __init__(self, _session):
+                """Initialize Fields."""
+                self.field_info = service_creator("field_info").create(
+                    _session._field_data_service, _IsDataValid(_session.scheme_eval)
+                )
+                self.field_data = service_creator("field_data").create(
+                    _session._field_data_service,
+                    self.field_info,
+                    _IsDataValid(_session.scheme_eval),
+                    _session.scheme_eval,
+                )
+                self.field_data_streaming = FieldDataStreaming(
+                    _session._fluent_connection._id, _session._field_data_service
+                )
 
-        self._field_data_service = self.fluent_connection.create_grpc_service(
-            FieldDataService, self.error_state
-        )
-        self.field_info = service_creator("field_info").create(
-            self._field_data_service, _IsDataValid(self.scheme_eval)
-        )
-        self.field_data = service_creator("field_data").create(
-            self._field_data_service,
-            self.field_info,
-            _IsDataValid(self.scheme_eval),
-            self.scheme_eval,
-        )
-        self.field_data_streaming = FieldDataStreaming(
-            self.fluent_connection._id, self._field_data_service
-        )
+        self.fields = Fields(self)
 
-        self.settings_service = service_creator("settings").create(
+        self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.scheme_eval,
-            self.error_state,
+            self._error_state,
         )
 
-        self.health_check_service = fluent_connection.health_check_service
+        self.health_check = fluent_connection.health_check
         self.connection_properties = fluent_connection.connection_properties
 
-        self.fluent_connection.register_finalizer_cb(
-            self.datamodel_service_se.unsubscribe_all_events
+        self._fluent_connection.register_finalizer_cb(
+            self._datamodel_service_se.unsubscribe_all_events
         )
         for obj in (
-            self.datamodel_events,
+            self._datamodel_events,
             self.transcript,
-            self.events_manager,
-            self.monitors_manager,
+            self.events,
+            self.monitors,
         ):
-            self.fluent_connection.register_finalizer_cb(obj.stop)
+            self._fluent_connection.register_finalizer_cb(obj.stop)
+
+    @property
+    def field_info(self):
+        """Provides access to Fluent field information."""
+        warnings.warn(
+            "field_info is deprecated. Use fields.field_info instead.",
+            DeprecationWarning,
+        )
+        return self.fields.field_info
+
+    @property
+    def field_data(self):
+        """Fluent field data on surfaces."""
+        warnings.warn(
+            "field_data is deprecated. Use fields.field_data instead.",
+            DeprecationWarning,
+        )
+        return self.fields.field_data
+
+    @property
+    def field_data_streaming(self):
+        """Field gRPC streaming service of Fluent."""
+        warnings.warn(
+            "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
+            DeprecationWarning,
+        )
+        return self.fields.field_data_streaming
 
     @property
     def id(self) -> str:
         """Return the session ID."""
-        return self.fluent_connection._id
+        return self._fluent_connection._id
 
     def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
@@ -222,10 +272,12 @@ class BaseSession:
         self.journal.stop()
 
     @classmethod
-    def create_from_server_info_file(
+    def _create_from_server_info_file(
         cls,
         server_info_file_name: str,
-        remote_file_handler: Optional[Any] = None,
+        file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -234,11 +286,16 @@ class BaseSession:
         ----------
         server_info_file_name : str
             Path to server-info file written out by Fluent server
-        remote_file_handler : Optional
+        file_transfer_service : Optional
             Support file upload and download.
+        start_transcript : bool, optional
+            Whether to start the Fluent transcript in the client.
+            The default is ``True``, in which case the Fluent
+            transcript can be subsequently started and stopped
+            using method calls on the ``Session`` object.
         **connection_kwargs : dict, optional
             Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
-            being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
+            being initialized. For example, ``cleanup_on_exit = True``.
             See :func:`FluentConnection initialization <ansys.fluent.core.fluent_connection.FluentConnection.__init__>`
             for more details and possible arguments.
 
@@ -248,11 +305,19 @@ class BaseSession:
             Session instance
         """
         ip, port, password = _parse_server_info_file(server_info_file_name)
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password=password,
+            file_transfer_service=file_transfer_service,
+            **connection_kwargs,
+        )
         session = cls(
-            fluent_connection=FluentConnection(
-                ip=ip, port=port, password=password, **connection_kwargs
-            ),
-            remote_file_handler=remote_file_handler,
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         return session
 
@@ -260,58 +325,73 @@ class BaseSession:
         """Executes a tui command."""
         self.scheme_eval.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
 
-    def get_fluent_version(self):
+    def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
-        return self.scheme_eval.version
+        return FluentVersion(self.scheme_eval.version)
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
-        self.fluent_connection.exit(**kwargs)
+        self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Terminate session."""
-        self.fluent_connection.force_exit()
+        """Forces the Fluent session to exit, losing unsaved progress and data."""
+        self._fluent_connection.force_exit()
 
-    def force_exit_container(self) -> None:
-        """Terminate Docker container session."""
-        self.fluent_connection.force_exit_container()
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
 
-    def upload(self, file_name: str, remote_file_name: Optional[str] = None):
-        """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        if self._file_transfer_service:
+            return self._file_transfer_service.file_exists_on_remote(file_name)
+
+    def _file_transfer_api_warning(self, method_name: str) -> str:
+        """User warning for upload/download methods."""
+        return f"You have directly called the {method_name} method of the session. \
+        Please be advised that for the current version of Fluent, many API methods \
+        automatically handle file uploads and downloads internally. You may not \
+        need to explicitly call {method_name} in most cases. \
+        However, there are exceptions, particularly in PMFileManagement, where complex \
+        file interactions require explicit use of {method_name}  method \
+        for relevant files."
+
+    def upload(
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
+    ):
+        """Upload a file to the server.
 
         Parameters
         ----------
         file_name : str
-            file name
+            Name of the local file to upload to the server.
         remote_file_name : str, optional
             remote file name, by default None
         """
-        return PimFileTransferService(self.fluent_connection._remote_instance).upload(
-            file_name, remote_file_name
-        )
+        warnings.warn(self._file_transfer_api_warning("upload()"), UserWarning)
+        if self._file_transfer_service:
+            return self._file_transfer_service.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_file_name: Optional[str] = "."):
-        """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
+    def download(self, file_name: str, local_directory: Optional[str] = "."):
+        """Download a file from the server.
 
         Parameters
         ----------
         file_name : str
-            file name
-        local_file_name : str, optional
-            local file path, by default current directory
+            Name of the file to download from the server.
+        local_directory : str, optional
+            Local destination directory. The default is the current working directory.
         """
-        return PimFileTransferService(self.fluent_connection._remote_instance).download(
-            file_name, local_file_name
-        )
-
-    def __dir__(self):
-        returned_list = sorted(set(list(self.__dict__.keys()) + dir(type(self))))
-        if not pypim.is_configured():
-            for method in BaseSession._pim_methods:
-                if method in returned_list:
-                    returned_list.remove(method)
-        return returned_list
+        warnings.warn(self._file_transfer_api_warning("download()"), UserWarning)
+        if self._file_transfer_service:
+            return self._file_transfer_service.download(file_name, local_directory)
 
     def __enter__(self):
         return self
@@ -320,3 +400,13 @@ class BaseSession:
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
         self.exit()
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
+            "field_data",
+            "field_info",
+            "field_data_streaming",
+            "start_journal",
+            "stop_journal",
+        }
+        return sorted(dir_list)

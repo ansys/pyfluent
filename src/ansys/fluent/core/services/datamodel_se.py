@@ -1,8 +1,11 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
+
 from enum import Enum
 import functools
-from itertools import chain, repeat
+import itertools
 import logging
+import os
+from threading import RLock
 from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
 
 from google.protobuf.json_format import MessageToDict, ParseDict
@@ -19,9 +22,9 @@ from ansys.fluent.core.services.interceptors import (
     ErrorStateInterceptor,
     GrpcErrorInterceptor,
     TracingInterceptor,
-    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 Path = list[tuple[str, str]]
 _TValue = Union[None, bool, int, float, str, Sequence["_TValue"], dict[str, "_TValue"]]
@@ -37,7 +40,10 @@ member_specs_oneof_fields = [
 def _get_value_from_message_dict(
     d: dict[str, Any], key: list[Union[str, Sequence[str]]]
 ):
-    """Get value from a protobuf message dict."""
+    """Get value from a protobuf message dict by a sequence of keys.
+
+    A key can also be a list of oneof types.
+    """
     for k in key:
         if isinstance(k, str):
             d = d[k]
@@ -46,25 +52,48 @@ def _get_value_from_message_dict(
     return d
 
 
+class DisallowedFilePurpose(ValueError):
+    """Is raised when the specified file purpose is not in the allowed values."""
+
+    def __init__(
+        self,
+        context: Optional[Any] = None,
+        name: Optional[Any] = None,
+        allowed_values: Optional[Any] = None,
+    ):
+        super().__init__(
+            allowed_name_error_message(
+                context=context, trial_name=name, allowed_values=allowed_values
+            )
+        )
+
+
 class InvalidNamedObject(RuntimeError):
-    """Provides the error when the object is not a named object."""
+    """Raised when the object is not a named object."""
 
     def __init__(self, class_name):
         super().__init__(f"{class_name} is not a named object class.")
 
 
 class SubscribeEventError(RuntimeError):
-    """Provides the error when server fails to subscribe from event."""
+    """Raised when server fails to subscribe from event."""
 
     def __init__(self, request):
         super().__init__(f"Failed to subscribe event: {request}!")
 
 
 class UnsubscribeEventError(RuntimeError):
-    """Provides the error when server fails to unsubscribe from event."""
+    """Raised when server fails to unsubscribe from event."""
 
     def __init__(self, request):
         super().__init__(f"Failed to unsubscribe event: {request}!")
+
+
+class ReadOnlyObjectError(RuntimeError):
+    """Raised on an attempt to mutate a read-only object."""
+
+    def __init__(self, obj_name):
+        super().__init__(f"{obj_name} is readonly!")
 
 
 class Attribute(Enum):
@@ -106,7 +135,11 @@ class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        file_transfer_service: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
@@ -115,10 +148,10 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
-            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
+        self.file_transfer_service = file_transfer_service
 
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
@@ -200,11 +233,16 @@ class DatamodelServiceImpl:
         """createCommandArguments RPC of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    # pylint: disable=missing-raises-doc
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments RPC of DataModel service."""
+        """deleteCommandArguments RPC of DataModel service.
+
+        Raises
+        ------
+        RuntimeError
+            If command instancing is not supported.
+        """
         try:
             return self._stub.deleteCommandArguments(request, metadata=self._metadata)
         except grpc.RpcError as ex:
@@ -255,6 +293,7 @@ def _convert_value_to_variant(val: _TValue, var: Variant) -> None:
             item_var = var.variant_vector_state.item.add()
             _convert_value_to_variant(item, item_var)
     elif isinstance(val, dict):
+        var.variant_map_state.SetInParent()
         for k, v in val.items():
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
@@ -295,6 +334,7 @@ class EventSubscription:
     def __init__(
         self,
         service,
+        path,
         request_dict: dict[str, Any],
     ) -> None:
         """Subscribe to a datamodel event.
@@ -304,14 +344,17 @@ class EventSubscription:
         SubscribeEventError
             If server fails to subscribe from event.
         """
-        self._service = service
+        self.is_subscribed: bool = False
+        self._service: DatamodelService = service
+        self.path: str = path
         response = service.subscribe_events(request_dict)
         response = response[0]
         if response["status"] != DataModelProtoModule.STATUS_SUBSCRIBED:
             raise SubscribeEventError(request_dict)
-        self.status = response["status"]
-        self.tag = response["tag"]
-        self._service.events[self.tag] = self
+        else:
+            self.is_subscribed = True
+        self.tag: str = response["tag"]
+        self._service.subscriptions.add(self.tag, self)
 
     def unsubscribe(self) -> None:
         """Unsubscribe the datamodel event.
@@ -321,25 +364,98 @@ class EventSubscription:
         UnsubscribeEventError
             If server fails to unsubscribe from event.
         """
-        if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
+        if self.is_subscribed:
             self._service.event_streaming.unregister_callback(self.tag)
             response = self._service.unsubscribe_events([self.tag])
             response = response[0]
             if response["status"] != DataModelProtoModule.STATUS_UNSUBSCRIBED:
                 raise UnsubscribeEventError(self.tag)
-            self.status = response["status"]
-            self._service.events.pop(self.tag, None)
+            else:
+                self.is_subscribed = False
+            self._service.subscriptions.remove(self.tag)
 
-    def __del__(self) -> None:
-        """Unsubscribe the datamodel event."""
-        self.unsubscribe()
+
+class SubscriptionList:
+    """Stores subscription objects by tag."""
+
+    def __init__(self):
+        self._subscriptions = {}
+        self._lock = RLock()
+
+    def __contains__(self, tag: str) -> bool:
+        with self._lock:
+            return tag in self._subscriptions
+
+    def add(self, tag: str, subscription: EventSubscription) -> None:
+        """Add a subscription object.
+
+        Parameters
+        ----------
+        tag : str
+            Subscription tag.
+        subscription : EventSubscription
+            Subscription object.
+        """
+        with self._lock:
+            self._subscriptions[tag] = subscription
+
+    def remove(self, tag: str) -> None:
+        """Remove a subscription object.
+
+        Parameters
+        ----------
+        tag : str
+            Subscription tag.
+        """
+        with self._lock:
+            self._subscriptions.pop(tag, None)
+
+    def unsubscribe_while_deleting(
+        self, rules: str, path: str, deletion_stage: str
+    ) -> None:
+        """Unsubscribe corresponding subscription objects while the datamodel object is
+        being deleted.
+
+        Parameters
+        ----------
+        rules : str
+            Datamodel object rules.
+        path : str
+            Datamodel object path.
+        deletion_stage : {"before", "after"}
+            All subscription objects except those of on-deleted type are unsubscribed
+            before the datamodel object is deleted. On-deleted subscription objects are
+            unsubscribed after the datamodel object is deleted.
+        """
+        with self._lock:
+            delete_tag = f"/{rules}/deleted"
+            after = deletion_stage == "after"
+            keys_to_unsubscribe = []
+            for k, v in self._subscriptions.items():
+                if v.path.startswith(path) and not (
+                    after ^ v.tag.startswith(delete_tag)
+                ):
+                    keys_to_unsubscribe.append(k)
+            for k in reversed(keys_to_unsubscribe):
+                self._subscriptions[k].unsubscribe()
+
+    def unsubscribe_all(self) -> None:
+        """Unsubscribe all subscription objects."""
+        with self._lock:
+            while self._subscriptions:
+                v = next(reversed(self._subscriptions.values()))
+                v.unsubscribe()
 
 
 class DatamodelService(StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
+        self,
+        channel: grpc.Channel,
+        metadata: list[tuple[str, str]],
+        fluent_error_state,
+        file_transfer_service: Optional[Any] = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -348,9 +464,12 @@ class DatamodelService(StreamingService):
             metadata=metadata,
         )
         self.event_streaming = None
-        self.events = {}
+        self.subscriptions = SubscriptionList()
+        self.file_transfer_service = file_transfer_service
+        self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
+        """Get attribute value."""
         request = DataModelProtoModule.GetAttributeValueRequest(
             rules=rules, path=path, attribute=attribute
         )
@@ -358,11 +477,13 @@ class DatamodelService(StreamingService):
         return _convert_variant_to_value(response.result)
 
     def get_state(self, rules: str, path: str) -> _TValue:
+        """Get state."""
         request = DataModelProtoModule.GetStateRequest(rules=rules, path=path)
         response = self._impl.get_state(request)
         return _convert_variant_to_value(response.state)
 
     def get_object_names(self, rules: str, path: str) -> list[str]:
+        """Get object names."""
         request = DataModelProtoModule.GetObjectNamesRequest()
         request.rules = rules
         request.path = path
@@ -370,6 +491,7 @@ class DatamodelService(StreamingService):
         return response.names
 
     def rename(self, rules: str, path: str, new_name: str) -> None:
+        """Rename an object."""
         request = DataModelProtoModule.RenameRequest()
         request.rules = rules
         request.path = path
@@ -380,6 +502,7 @@ class DatamodelService(StreamingService):
     def delete_child_objects(
         self, rules: str, path: str, obj_type: str, child_names: list[str]
     ) -> None:
+        """Delete child objects."""
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
         request.path = path + "/" + obj_type
@@ -389,6 +512,7 @@ class DatamodelService(StreamingService):
         self._impl.delete_child_objects(request)
 
     def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
+        """Delete all child objects."""
         request = DataModelProtoModule.DeleteChildObjectsRequest()
         request.rules = rules
         request.path = path + "/" + obj_type
@@ -397,6 +521,7 @@ class DatamodelService(StreamingService):
         self._impl.delete_child_objects(request)
 
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
+        """Set state."""
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
         )
@@ -404,6 +529,7 @@ class DatamodelService(StreamingService):
         self._impl.set_state(request)
 
     def fix_state(self, rules, path) -> None:
+        """Fix state."""
         request = DataModelProtoModule.FixStateRequest()
         request.rules = rules
         request.path = convert_path_to_se_path(path)
@@ -412,6 +538,7 @@ class DatamodelService(StreamingService):
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
     ) -> None:
+        """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
             rules=rules, path=path, wait=True
         )
@@ -419,6 +546,7 @@ class DatamodelService(StreamingService):
         self._impl.update_dict(request)
 
     def delete_object(self, rules: str, path: str) -> None:
+        """Delete an object."""
         request = DataModelProtoModule.DeleteObjectRequest(
             rules=rules, path=path, wait=True
         )
@@ -427,6 +555,7 @@ class DatamodelService(StreamingService):
     def execute_command(
         self, rules: str, path: str, command: str, args: dict[str, _TValue]
     ) -> _TValue:
+        """Execute the command."""
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
         )
@@ -437,6 +566,7 @@ class DatamodelService(StreamingService):
     def execute_query(
         self, rules: str, path: str, query: str, args: dict[str, _TValue]
     ) -> _TValue:
+        """Execute the query."""
         request = DataModelProtoModule.ExecuteQueryRequest(
             rules=rules, path=path, query=query
         )
@@ -445,6 +575,7 @@ class DatamodelService(StreamingService):
         return _convert_variant_to_value(response.result)
 
     def create_command_arguments(self, rules: str, path: str, command: str) -> str:
+        """Create command arguments."""
         request = DataModelProtoModule.CreateCommandArgumentsRequest(
             rules=rules, path=path, command=command
         )
@@ -454,6 +585,7 @@ class DatamodelService(StreamingService):
     def delete_command_arguments(
         self, rules: str, path: str, command: str, commandid: str
     ) -> None:
+        """Delete command arguments."""
         request = DataModelProtoModule.DeleteCommandArgumentsRequest(
             rules=rules, path=path, command=command, commandid=commandid
         )
@@ -464,6 +596,7 @@ class DatamodelService(StreamingService):
         rules: str,
         path: str,
     ) -> dict[str, Any]:
+        """Get specifications."""
         request = DataModelProtoModule.GetSpecsRequest(
             rules=rules,
             path=path,
@@ -473,12 +606,14 @@ class DatamodelService(StreamingService):
         )
 
     def get_static_info(self, rules: str) -> dict[str, Any]:
+        """Get static info."""
         request = DataModelProtoModule.GetStaticInfoRequest(rules=rules)
         return MessageToDict(
             self._impl.get_static_info(request).info, use_integers_for_enums=True
         )
 
     def subscribe_events(self, request_dict: dict[str, Any]) -> dict[str, Any]:
+        """Subscribe events."""
         request = DataModelProtoModule.SubscribeEventsRequest()
         ParseDict(request_dict, request)
         return [
@@ -487,6 +622,7 @@ class DatamodelService(StreamingService):
         ]
 
     def unsubscribe_events(self, tags: list[str]) -> dict[str, Any]:
+        """Unsubscribe events."""
         request = DataModelProtoModule.UnsubscribeEventsRequest()
         request.tag[:] = tags
         return [
@@ -496,13 +632,12 @@ class DatamodelService(StreamingService):
 
     def unsubscribe_all_events(self) -> None:
         """Unsubscribe all subscribed events."""
-        for event in list(self.events.values()):
-            event.unsubscribe()
-        self.events.clear()
+        self.subscriptions.unsubscribe_all()
 
     def add_on_child_created(
         self, rules: str, path: str, child_type: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on child created."""
         request_dict = {
             "eventrequest": [
                 {
@@ -514,13 +649,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_deleted(
         self, rules: str, path: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on deleted."""
         request_dict = {
             "eventrequest": [
                 {
@@ -529,13 +665,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_changed(
         self, rules: str, path: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on changed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -544,13 +681,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_affected(
         self, rules: str, path: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on affected."""
         request_dict = {
             "eventrequest": [
                 {
@@ -559,13 +697,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_affected_at_type_path(
         self, rules: str, path: str, child_type: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on affected at type path."""
         request_dict = {
             "eventrequest": [
                 {
@@ -577,13 +716,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_command_executed(
         self, rules: str, path: str, command: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on command executed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -595,13 +735,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_attribute_changed(
         self, rules: str, path: str, attribute: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on attribute changed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -613,13 +754,14 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
     def add_on_command_attribute_changed(
         self, rules: str, path: str, command: str, attribute: str, obj, cb: Callable
     ) -> EventSubscription:
+        """Add on command attribute changed."""
         request_dict = {
             "eventrequest": [
                 {
@@ -632,7 +774,7 @@ class DatamodelService(StreamingService):
                 }
             ]
         }
-        subscription = EventSubscription(self, request_dict)
+        subscription = EventSubscription(self, path, request_dict)
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
@@ -713,9 +855,10 @@ class PyStateContainer(PyCallableStateObject):
         return self.service.get_state(self.rules, convert_path_to_se_path(self.path))
 
     def get_state(self) -> Any:
-        if pyfluent.DATAMODEL_USE_STATE_CACHE:
-            state = DataModelCache.get_state(self.rules, self, NameKey.DISPLAY)
-            if DataModelCache.is_unassigned(state):
+        """Get state."""
+        if self.service.cache is not None:
+            state = self.service.cache.get_state(self.rules, self, NameKey.DISPLAY)
+            if self.service.cache.is_unassigned(state):
                 state = self.get_remote_state()
         else:
             state = self.get_remote_state()
@@ -724,12 +867,28 @@ class PyStateContainer(PyCallableStateObject):
     getState = get_state
 
     def fix_state(self) -> None:
+        """Fix state."""
         self.service.fix_state(self.rules, self.path)
 
     fixState = fix_state
 
     def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
-        """Set state of the current object."""
+        """Set state of the current object.
+
+        Parameters
+        ----------
+        state : Any, optional
+            state
+        kwargs : Any
+            Keyword arguments.
+
+        Raises
+        ------
+        ReadOnlyObjectError
+            If the object is read-only.
+        """
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            raise ReadOnlyObjectError(type(self).__name__)
         self.service.set_state(
             self.rules, convert_path_to_se_path(self.path), kwargs or state
         )
@@ -846,6 +1005,13 @@ class PyStateContainer(PyCallableStateObject):
             self.rules, convert_path_to_se_path(self.path), command, attribute, self, cb
         )
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_list = dir_list - {"setState", "set_state"}
+
+        return sorted(dir_list)
+
 
 class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use this class
@@ -903,6 +1069,7 @@ class PyMenu(PyStateContainer):
         raise AttributeError("This method is yet to be implemented in pyfluent.")
 
     def delete_child(self) -> None:
+        """Delete child object."""
         self._raise_method_not_yet_implemented_exception()
 
     def rename(self, new_name: str) -> None:
@@ -925,6 +1092,14 @@ class PyMenu(PyStateContainer):
         child_names : List[str]
             List of named objects.
         """
+        for child_name in child_names:
+            child_path = f"{convert_path_to_se_path(self.path)}/{obj_type}:{child_name}"
+            # delete_child_objects doesn't stream back on-deleted events. Thus
+            # unsubscribing all subscription objects before the deletion.
+            for stage in ["before", "after"]:
+                self.service.subscriptions.unsubscribe_while_deleting(
+                    self.rules, child_path, stage
+                )
         self.service.delete_child_objects(
             self.rules, convert_path_to_se_path(self.path), obj_type, child_names
         )
@@ -939,6 +1114,13 @@ class PyMenu(PyStateContainer):
         obj_type: str
             Type of the named object container.
         """
+        child_path = f"{convert_path_to_se_path(self.path)}/{obj_type}:"
+        # delete_all_child_objects doesn't stream back on-deleted events. Thus
+        # unsubscribing all subscription objects before the deletion.
+        for stage in ["before", "after"]:
+            self.service.subscriptions.unsubscribe_while_deleting(
+                self.rules, child_path, stage
+            )
         self.service.delete_all_child_objects(
             self.rules, convert_path_to_se_path(self.path), obj_type
         )
@@ -1121,6 +1303,7 @@ class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
 
     def allowed_values(self) -> list[str]:
+        """Get allowed values."""
         return self.get_attr(Attribute.ALLOWED_VALUES.value)
 
 
@@ -1162,12 +1345,26 @@ class PyDictionary(PyParameter):
         ----------
         dict_state : dict[str, Any]
             Incoming dict state
+
+        Raises
+        ------
+        ReadOnlyObjectError
+            If the object is read-only.
         """
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            raise ReadOnlyObjectError(type(self).__name__)
         self.service.update_dict(
             self.rules, convert_path_to_se_path(self.path), dict_state
         )
 
     updateDict = update_dict
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_list = dir_list - {"updateDict", "update_dict"}
+
+        return sorted(dir_list)
 
 
 class PyNamedObjectContainer:
@@ -1274,7 +1471,20 @@ class PyNamedObjectContainer:
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
-            self.service.delete_object(self.rules, convert_path_to_se_path(child_path))
+            se_path = convert_path_to_se_path(child_path)
+            # All subscription objects except those of on-deleted type are unsubscribed
+            # before the datamodel object is deleted.
+            self.service.subscriptions.unsubscribe_while_deleting(
+                self.rules, se_path, "before"
+            )
+            # On-deleted subscription objects are unsubscribed after the datamodel
+            # object is deleted.
+            self[key].add_on_deleted(
+                lambda _: self.service.subscriptions.unsubscribe_while_deleting(
+                    self.rules, se_path, "after"
+                )
+            )
+            self.service.delete_object(self.rules, se_path)
         else:
             raise LookupError(
                 f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
@@ -1419,6 +1629,40 @@ class PyCommand:
             self.path = path
         self._static_info = None  # command's static info
 
+    def _get_file_purpose(self, arg):
+        try:
+            cmd_instance = self.create_instance()
+            arg_instance = getattr(cmd_instance, arg)
+            file_purpose = arg_instance.get_attr("filePurpose")
+            if file_purpose:
+                if file_purpose == "input":
+                    if _InputFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_InputFile,)
+                elif file_purpose == "output":
+                    if _OutputFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_OutputFile,)
+                elif file_purpose == "inout":
+                    if _InOutFile not in self.__class__.__bases__:
+                        self.__class__.__bases__ += (_InOutFile,)
+                else:
+                    raise DisallowedFilePurpose(
+                        "File purpose", file_purpose, ["input", "output", "inout"]
+                    )
+            del cmd_instance, arg_instance
+            return file_purpose if file_purpose else None
+        except AttributeError:
+            pass
+
+    def before_execute(self, value):
+        """Executes before command execution."""
+        if hasattr(self, "_do_before_execute"):
+            self._do_before_execute(value)
+
+    def after_execute(self, value):
+        """Executes after command execution."""
+        if hasattr(self, "_do_after_execute"):
+            self._do_after_execute(value)
+
     def __call__(self, *args, **kwds) -> Any:
         """Execute the command.
 
@@ -1427,9 +1671,17 @@ class PyCommand:
         Any
             Return value.
         """
-        return self.service.execute_command(
+        for arg, value in kwds.items():
+            if self._get_file_purpose(arg):
+                self.before_execute(value)
+                kwds[f"{arg}"] = os.path.basename(value)
+        command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
+        for arg, value in kwds.items():
+            if self._get_file_purpose(arg):
+                self.after_execute(value)
+        return command
 
     def help(self) -> None:
         """Prints help string."""
@@ -1456,10 +1708,10 @@ class PyCommand:
                 response = self.service.get_static_info(self.rules)
                 PyCommand._full_static_info[self.rules] = response
             rules_static_info = PyCommand._full_static_info[self.rules]
-            names = [x[0] for x in self.path]
-            static_info_path = list(
-                chain(*zip(repeat(["singletons", "namedobjects"], len(names)), names))
-            )
+            static_info_path = []
+            for comp in self.path:
+                static_info_path.append("namedobjects" if comp[1] else "singletons")
+                static_info_path.append(comp[0])
             parent_static_info = _get_value_from_message_dict(
                 rules_static_info, static_info_path
             )
@@ -1479,12 +1731,32 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                static_info["args"],
+                static_info.get("args"),
             )
         except RuntimeError:
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
+
+
+class _InputFile:
+    def _do_before_execute(self, value):
+        try:
+            self.service.file_transfer_service.upload(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _OutputFile:
+    def _do_after_execute(self, value):
+        try:
+            self.service.file_transfer_service.download(file_name=value)
+        except AttributeError:
+            pass
+
+
+class _InOutFile(_InputFile, _OutputFile):
+    pass
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
@@ -1542,6 +1814,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     getAttribValue = get_attr
 
     def help(self) -> None:
+        """Get help."""
         pass
 
 
@@ -1708,7 +1981,7 @@ class DataModelType(Enum):
     # Really???
     TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
     NUMBER = (
-        ["Real", "Int", "ListReal", "Real List", "Integer"],
+        ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt"],
         PyNumericalCommandArgumentsSubItem,
     )
     DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)
@@ -1787,7 +2060,7 @@ class PyMenuGeneric(PyMenu):
             )
 
     def __dir__(self) -> list[str]:
-        return list(chain(*self._get_child_names()))
+        return list(itertools.chain(*self._get_child_names()))
 
     def __getattr__(self, name: str):
         if name in PyMenuGeneric.attrs:

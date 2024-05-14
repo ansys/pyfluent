@@ -47,11 +47,11 @@ method:
 
   import ansys.fluent.core as pyfluent
   solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
-  solver.health_check_service.is_serving
+  solver.health_check.is_serving
 
 To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
 environment variable, where ``<ver>`` is the three-digit format for the release.
-For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release. 
+For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release.
 
 On a Windows system, this environment variable is configured when a release is installed.
 
@@ -73,12 +73,12 @@ setting, and iterates the solver:
   solver.tui.solve.initialize.initialize_flow()
   solver.tui.solve.dual_time_iterate(2, 3)
 
-If you want to interact with the Fluent GUI (graphical user interface), pass ``show_gui=True``
+If you want to interact with the Fluent GUI (graphical user interface), pass ``ui_mode="gui"``
 to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method:
 
 .. code:: python
 
-  session = pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True, mode="solver")
+  session = pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui", mode="solver")
 
 If you want to look at PyFluent's debug logging, use the following command:
 

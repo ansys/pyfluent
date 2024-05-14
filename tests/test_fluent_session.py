@@ -15,15 +15,15 @@ from util.solver_workflow import (  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
-from ansys.fluent.core.launcher.launcher_utils import IpPortNotProvided
+from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def _read_case(session, lightweight_setup=True):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    fluent_version_str = session.get_fluent_version()[:-2]
     # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
-    if float(fluent_version_str) < 23.1:
+    if session.get_fluent_version() < FluentVersion.v231:
         session.file.read(file_name=case_path, file_type="case")
     else:
         session.file.read(
@@ -144,16 +144,16 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
-    assert session2.health_check_service.is_serving
+    assert session2.health_check.is_serving
     session2.exit()
 
     timeout_loop(
-        session1.health_check_service.is_serving,
+        session1.health_check.is_serving,
         5.0,
         expected="truthy",
     )
 
-    assert session1.health_check_service.is_serving
+    assert session1.health_check.is_serving
     session1.exit()
 
 
@@ -170,12 +170,12 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.health_check_service.is_serving,
+        session1.health_check.is_serving,
         5.0,
         expected="falsy",
     )
 
-    assert not session1.health_check_service.is_serving
+    assert not session1.health_check.is_serving
 
 
 def test_fluent_connection_properties(
@@ -214,7 +214,7 @@ def test_fluent_freeze_kill(
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    assert session.fluent_connection.wait_process_finished(wait=5)
+    assert session._fluent_connection.wait_process_finished(wait=5)
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -234,15 +234,15 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("PYFLUENT_LOGGING")
     monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
     inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
-    script = (
-        "import ansys.fluent.core as pyfluent;"
-        "solver = pyfluent.launch_fluent(start_watchdog=False);"
-        f'{"print(solver.connection_properties.cortex_host);" if inside_container else "print(solver.connection_properties.cortex_pid);"}'
-        "exit()"
+    import ansys.fluent.core as pyfluent
+
+    solver = pyfluent.launch_fluent(start_watchdog=False)
+    cortex = (
+        solver.connection_properties.cortex_host
+        if inside_container
+        else solver.connection_properties.cortex_pid
     )
-    output = subprocess.check_output(f'python -c "{script}"', shell=True)
-    cortex = output.decode().strip()
-    cortex = cortex if inside_container else int(cortex)
+    solver.exit()
     assert timeout_loop(
         lambda: (inside_container and not get_container(cortex))
         or (not inside_container and not psutil.pid_exists(cortex)),
@@ -254,15 +254,15 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
     session1.exit()
-    assert not session1.fluent_connection.wait_process_finished(wait=0)
+    assert not session1._fluent_connection.wait_process_finished(wait=0)
 
     session2 = pyfluent.launch_fluent()
     session2.exit(wait=60)
-    assert session2.fluent_connection.wait_process_finished(wait=0)
+    assert session2._fluent_connection.wait_process_finished(wait=0)
 
     session3 = pyfluent.launch_fluent()
     session3.exit(wait=True)
-    assert session3.fluent_connection.wait_process_finished(wait=0)
+    assert session3._fluent_connection.wait_process_finished(wait=0)
 
     with pytest.raises(WaitTypeError) as msg:
         session4 = pyfluent.launch_fluent()

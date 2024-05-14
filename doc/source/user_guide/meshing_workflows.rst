@@ -1,13 +1,15 @@
 .. _ref_user_guide_meshing_workflows:
 
-Use meshing workflows
-=====================
-PyFluent supports accessing all Fluent meshing functionalities, including 
-guided meshing workflows.
+Classic meshing workflow
+========================
+You can use PyFluent to access the classic meshing workflows
+which align with the journal syntax.
 
 Watertight geometry meshing workflow
 ------------------------------------
-This simple example shows how to use the watertight geometry meshing workflow.
+Use the **Watertight Geometry** workflow for water-tight CAD geometries that
+do not require much in the way of clean-up or modifications.
+The following example shows you how to use the Watertight Geometry workflow.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -114,7 +116,10 @@ Switch to solution mode
 
 Fault-tolerant meshing workflow
 -------------------------------
-This simple example shows how to use the fault-tolerant meshing workflow.
+Use the **Fault-tolerant** meshing workflow for more complicated non-water-tight CAD
+geometries that may require some form of clean-up or modification (for example,
+defects such as overlaps, intersections, holes, duplicates, etc).
+The following example shows you how to use the fault-tolerant workflow.
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -567,9 +572,223 @@ Switch to solution mode
 
     solver = meshing.switch_to_solver()
 
-Sample use of CommandArguments
-------------------------------
-This simple example shows you how to use the ``CommandArgument`` attributes and explicit
+
+2D meshing workflow
+-------------------
+Use the **2D** meshing workflow to mesh specific two-dimensional geometries.
+The following example shows how to use the 2D Meshing workflow.
+
+Import geometry
+~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
+    meshing = pyfluent.launch_fluent(
+        mode="meshing", precision='double', processor_count=2
+    )
+    meshing.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
+    meshing.workflow.TaskObject["Load CAD Geometry"].Arguments.set_state(
+        {
+            r"FileName": import_file_name,
+            r"LengthUnit": r"mm",
+            r"Refaceting": {
+                r"Refacet": False,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Load CAD Geometry"].Execute()
+
+Set regions and boundaries
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Update Regions"].Execute()
+    meshing.workflow.TaskObject["Update Boundaries"].Arguments.set_state(
+        {
+            r"SelectionType": r"zone",
+        }
+    )
+    meshing.workflow.TaskObject["Update Boundaries"].Execute()
+
+Define global sizing
+~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Define Global Sizing"].Arguments.set_state(
+        {
+            r"CurvatureNormalAngle": 20,
+            r"MaxSize": 2000,
+            r"MinSize": 5,
+            r"SizeFunctions": r"Curvature",
+        }
+    )
+    meshing.workflow.TaskObject["Define Global Sizing"].Execute()
+
+Add body of influence
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"boi_1",
+            r"BOIExecution": r"Body Of Influence",
+            r"BOIFaceLabelList": [r"boi"],
+            r"BOISize": 50,
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+Set edge sizing
+~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"edgesize_1",
+            r"BOIExecution": r"Edge Size",
+            r"BOISize": 5,
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+            r"EdgeLabelList": [r"airfoil-te"],
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+Set curvature sizing
+~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"curvature_1",
+            r"BOICurvatureNormalAngle": 10,
+            r"BOIExecution": r"Curvature",
+            r"BOIMaxSize": 2,
+            r"BOIMinSize": 1.5,
+            r"BOIScopeTo": r"edges",
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+            r"EdgeLabelList": [r"airfoil"],
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+Add boundary layer
+~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Add 2D Boundary Layers"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"aspect-ratio_1",
+            r"NumberOfLayers": 4,
+            r"OffsetMethodType": r"aspect-ratio",
+        }
+    )
+    meshing.workflow.TaskObject["Add 2D Boundary Layers"].AddChildAndUpdate(
+        DeferUpdate=False
+    )
+
+Generate surface mesh
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+    meshing.workflow.TaskObject["aspect-ratio_1"].Revert()
+    meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"uniform_1",
+            r"FirstLayerHeight": 2,
+            r"NumberOfLayers": 4,
+            r"OffsetMethodType": r"uniform",
+        }
+    )
+    meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
+
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(None)
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+    meshing.workflow.TaskObject["uniform_1"].Revert()
+    meshing.workflow.TaskObject["uniform_1"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"smooth-transition_1",
+            r"FirstLayerHeight": 2,
+            r"NumberOfLayers": 7,
+            r"OffsetMethodType": r"smooth-transition",
+        }
+    )
+    meshing.workflow.TaskObject["uniform_1"].Execute()
+
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(None)
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+Export Fluent 2D mesh
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Arguments.set_state(
+        {
+            r"FileName": r"mesh1.msh.h5",
+        }
+    )
+    meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Execute()
+
+Switch to solver mode
+~~~~~~~~~~~~~~~~~~~~~
+
+Switching to solver mode is not allowed in 2D Meshing mode.
+
+
+Sample use of ``CommandArguments``
+----------------------------------
+This simple example shows how to use the ``CommandArgument`` attributes and explicit
 attribute access methods in a watertight geometry meshing workflow.
 
 .. Note::
@@ -585,12 +804,26 @@ attribute access methods in a watertight geometry meshing workflow.
     w = meshing.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    w.task("Import Geometry").CommandArguments()
-    w.task("Import Geometry").CommandArguments.FileName.is_read_only()
-    w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
-    w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values()
-    w.task("Import Geometry").CommandArguments.LengthUnit.default_value()
-    w.task("Import Geometry").CommandArguments.LengthUnit()
-    w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
-    w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
+    w.TaskObject["Import Geometry"].CommandArguments()
+    w.TaskObject["Import Geometry"].CommandArguments.FileName.is_read_only()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.is_active()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.allowed_values()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit.default_value()
+    w.TaskObject["Import Geometry"].CommandArguments.LengthUnit()
+    w.TaskObject["Import Geometry"].CommandArguments.CadImportOptions.OneZonePer()
+    w.TaskObject["Import Geometry"].CommandArguments.CadImportOptions.FeatureAngle.min()
 
+Some improvements
+-----------------
+You can call the TaskObject to get it's state:
+
+.. code:: python
+
+    meshing.workflow.TaskObject()
+
+Items of the TaskObject can now be accessed in settings dictionary style:
+
+.. code:: python
+
+    for name, object in meshing.workflow.TaskObject.items():
+        ...

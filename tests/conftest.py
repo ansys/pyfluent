@@ -7,7 +7,6 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
-from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_release_version = FluentVersion.current_release().value
@@ -77,12 +76,6 @@ def run_before_each_test(
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
 
 
-@pytest.fixture(autouse=True)
-def clear_datamodel_cache():
-    yield
-    DataModelCache.rules_str_to_cache.clear()
-
-
 class Helpers:
     """Can be reused to provide helper methods to tests."""
 
@@ -114,3 +107,8 @@ def helpers(monkeypatch):
 
 
 pytest.wont_raise = nullcontext
+
+
+def pytest_sessionfinish(session, exitstatus):
+    if exitstatus == 5:
+        session.exitstatus = 0

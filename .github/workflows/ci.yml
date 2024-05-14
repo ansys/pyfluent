@@ -11,6 +11,8 @@ on:
       - "*"
     branches:
       - main
+    paths-ignore:
+      - 'doc/**'
 
 concurrency:
   group: ${{ github.ref }}
@@ -73,7 +75,7 @@ jobs:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/commit-style@v5.0
+      - uses: ansys/actions/commit-style@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -81,7 +83,7 @@ jobs:
     name: "Run branch name style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/branch-name-style@v5.0
+      - uses: ansys/actions/branch-name-style@v6
 
   test-import:
     name: Build and Smoke tests
@@ -98,7 +100,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@v5
+        uses: ansys/actions/build-wheelhouse@v6
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -125,10 +127,10 @@ jobs:
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_doc.txt') }}
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
@@ -142,20 +144,20 @@ jobs:
         id: version
 
       - name: Cache API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-api-code
         with:
           path: |
-            src/ansys/fluent/core/datamodel_231
-            src/ansys/fluent/core/fluent_version_231.py
-            src/ansys/fluent/core/meshing/tui_231.py
-            src/ansys/fluent/core/solver/settings_231
-            src/ansys/fluent/core/solver/tui_231.py
+            src/ansys/fluent/core/generated/datamodel_231
+            src/ansys/fluent/core/generated/fluent_version_231.py
+            src/ansys/fluent/core/generated/meshing/tui_231.py
+            src/ansys/fluent/core/generated/solver/settings_231
+            src/ansys/fluent/core/generated/solver/tui_231.py
             doc/source/api/meshing/tui
             doc/source/api/meshing/datamodel
             doc/source/api/solver/tui
             doc/source/api/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Login to GitHub Container Registry
@@ -184,7 +186,7 @@ jobs:
           make install > /dev/null
 
       - name: Cache examples
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: doc/source/examples
           key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('examples/**', 'doc/source/conf.py') }}
@@ -192,7 +194,10 @@ jobs:
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build Source Documentation
-        run: make build-doc-source
+        run: |
+          pip install -r requirements/requirements_build.txt
+          poetry install --only docs
+          make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
@@ -212,6 +217,7 @@ jobs:
 
   build:
     name: Build
+    if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
     needs: test-import
     runs-on: [self-hosted, pyfluent]
 
@@ -224,10 +230,10 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
@@ -244,20 +250,21 @@ jobs:
         id: version
 
       - name: Cache 22.2 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-222-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_222
-            src/ansys/fluent/core/fluent_version_222.py
-            src/ansys/fluent/core/meshing/tui_222.py
-            src/ansys/fluent/core/solver/settings_222
-            src/ansys/fluent/core/solver/tui_222.py
+            src/ansys/fluent/core/generated/datamodel_222
+            src/ansys/fluent/core/generated/fluent_version_222.py
+            src/ansys/fluent/core/generated/meshing/tui_222.py
+            src/ansys/fluent/core/generated/solver/settings_222
+            src/ansys/fluent/core/generated/solver/tui_222.py
+            src/ansys/fluent/core/generated/data/api_tree_222.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v22.2.0
 
       - name: Login to GitHub Container Registry
@@ -281,24 +288,25 @@ jobs:
 
       - name: Print 22.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_222.py
-          python -c "from ansys.fluent.core.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_222.py
+          python -c "from ansys.fluent.core.generated.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 23.1 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-231-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_231
-            src/ansys/fluent/core/fluent_version_231.py
-            src/ansys/fluent/core/meshing/tui_231.py
-            src/ansys/fluent/core/solver/settings_231
-            src/ansys/fluent/core/solver/tui_231.py
+            src/ansys/fluent/core/generated/datamodel_231
+            src/ansys/fluent/core/generated/fluent_version_231.py
+            src/ansys/fluent/core/generated/meshing/tui_231.py
+            src/ansys/fluent/core/generated/solver/settings_231
+            src/ansys/fluent/core/generated/solver/tui_231.py
+            src/ansys/fluent/core/generated/data/api_tree_231.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0
 
       - name: Pull 23.1 Fluent docker image
@@ -315,24 +323,25 @@ jobs:
 
       - name: Print 23.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_231.py
-          python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_231.py
+          python -c "from ansys.fluent.core.generated.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 23.2 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-232-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_232
-            src/ansys/fluent/core/fluent_version_232.py
-            src/ansys/fluent/core/meshing/tui_232.py
-            src/ansys/fluent/core/solver/settings_232
-            src/ansys/fluent/core/solver/tui_232.py
+            src/ansys/fluent/core/generated/datamodel_232
+            src/ansys/fluent/core/generated/fluent_version_232.py
+            src/ansys/fluent/core/generated/meshing/tui_232.py
+            src/ansys/fluent/core/generated/solver/settings_232
+            src/ansys/fluent/core/generated/solver/tui_232.py
+            src/ansys/fluent/core/generated/data/api_tree_232.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
 
       - name: Pull 23.2 Fluent docker image
@@ -349,24 +358,25 @@ jobs:
 
       - name: Print 23.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_232.py
-          python -c "from ansys.fluent.core.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_232.py
+          python -c "from ansys.fluent.core.generated.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 24.1 API Code
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-241-api-code
         with:
           path:
-            src/ansys/fluent/core/datamodel_241
-            src/ansys/fluent/core/fluent_version_241.py
-            src/ansys/fluent/core/meshing/tui_241.py
-            src/ansys/fluent/core/solver/settings_241
-            src/ansys/fluent/core/solver/tui_241.py
+            src/ansys/fluent/core/generated/datamodel_241
+            src/ansys/fluent/core/generated/fluent_version_241.py
+            src/ansys/fluent/core/generated/meshing/tui_241.py
+            src/ansys/fluent/core/generated/solver/settings_241
+            src/ansys/fluent/core/generated/solver/tui_241.py
+            src/ansys/fluent/core/generated/data/api_tree_241.pickle
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0
 
       - name: Pull 24.1 Fluent docker image
@@ -383,8 +393,43 @@ jobs:
 
       - name: Print 24.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_241.py
-          python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_241.py
+          python -c "from ansys.fluent.core.generated.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Cache 24.2 API Code
+        uses: actions/cache@v4
+        id: cache-242-api-code
+        with:
+          path:
+            src/ansys/fluent/core/generated/datamodel_242
+            src/ansys/fluent/core/generated/fluent_version_242.py
+            src/ansys/fluent/core/generated/meshing/tui_242.py
+            src/ansys/fluent/core/generated/solver/settings_242
+            src/ansys/fluent/core/generated/solver/tui_242.py
+            src/ansys/fluent/core/generated/data/api_tree_242.pickle
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
+
+      - name: Pull 24.2 Fluent docker image
+        if: steps.cache-242-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v24.2.0
+
+      - name: Run 24.2 API codegen
+        if: steps.cache-242-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v24.2.0
+
+      - name: Print 24.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_242.py
+          python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -407,6 +452,7 @@ jobs:
 
   test:
     name: Unit Testing
+    if: ${{ always() }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -421,32 +467,40 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
+          - image-tag: v24.2.0
+            version: 242
+    timeout-minutes: 120
 
     steps:
 
       - uses: actions/checkout@v4
 
       - name: Setup Python
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Download package
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         uses: actions/download-artifact@v4
         with:
           name: PyFluent-packages
           path: dist
 
       - name: Install pyfluent
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: pip install -q --force-reinstall dist/*.whl > /dev/null
 
       - name: Retrieve PyFluent version
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
           echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
         id: version
 
       - name: Login to GitHub Container Registry
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -454,12 +508,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Unit Testing
-        run: make unittest-dev-${{ matrix.version }}
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: |
+          make install-test
+          make unittest-dev-${{ matrix.version }}
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
@@ -470,82 +528,10 @@ jobs:
           name: coverage_report
           path: ./htmlcov
 
-# Separate build+test job for 24.2 Fluent
-# Don't upload anything to artifacts/cache/release-package from here
-  build_test_242:
-    name: Build and Test
-    needs: test-import
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image-tag: v24.2.0
-            version: 242
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Add version information
-        run: make version-info
-
-      - name: Install pyfluent
-        run: make install
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Run API codegen
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Print Fluent version info
-        run: |
-          cat src/ansys/fluent/core/fluent_version_${{ matrix.version }}.py
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
-
-      - name: Unit Testing
-        run: make unittest-dev-${{ matrix.version }}
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, build_test_242]
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -578,7 +564,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             ./**/*.whl

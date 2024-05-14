@@ -1,10 +1,12 @@
 """Functions to download sample datasets from the Ansys example data repository."""
+
 import logging
 import os
 from pathlib import Path
 import re
 import shutil
 from typing import Optional
+import warnings
 import zipfile
 
 import requests
@@ -12,6 +14,13 @@ import requests
 import ansys.fluent.core as pyfluent
 
 logger = logging.getLogger("pyfluent.networking")
+
+
+class RemoteFileNotFoundError(FileNotFoundError):
+    """Raised on an attempt to download a non-existent remote file."""
+
+    def __init__(self, url):
+        super().__init__(f"{url} does not exist.")
 
 
 def delete_downloads():
@@ -61,7 +70,9 @@ def _retrieve_file(
     # First check if file has already been downloaded
     logger.info(f"Checking if {local_path_no_zip} already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        print(f"File already exists. File path:\n{local_path_no_zip}")
+        warnings.warn(
+            f"\nFile already exists. File path:\n{local_path_no_zip}\n", UserWarning
+        )
         logger.info("File already exists.")
         if return_without_path:
             return file_name_no_zip
@@ -118,6 +129,11 @@ def download_file(
         the host, and that the example files are being made available by the host through this same path,
         only the file name is required for Fluent to find and open the file.
 
+    Raises
+    ------
+    RemoteFileNotFoundError
+        If remote file does not exist.
+
     Returns
     -------
     str
@@ -146,15 +162,36 @@ def download_file(
     """
     if return_without_path is None:
         if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            return_without_path = True
-        else:
-            return_without_path = False
+            if pyfluent.USE_FILE_TRANSFER_SERVICE:
+                return_without_path = False
+            else:
+                return_without_path = True
 
     url = _get_file_url(file_name, directory)
+    head = requests.head(f"{url}")
+    if not head.ok:
+        raise RemoteFileNotFoundError(url)
     return _retrieve_file(url, file_name, save_path, return_without_path)
 
 
 def path(file_name: str):
+    """Return path of given file name.
+
+    Parameters
+    ----------
+    file_name : str
+        Name of the file.
+
+    Raises
+    ------
+    FileNotFoundError
+        If file does not exist.
+
+    Returns
+    -------
+    file_path: str
+        File path.
+    """
     if os.path.isabs(file_name):
         return file_name
     file_path = Path(pyfluent.EXAMPLES_PATH) / file_name

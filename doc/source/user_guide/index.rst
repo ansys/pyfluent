@@ -107,8 +107,8 @@ A meshing mode session has an active ``meshing`` object that provides two
 distinct interfaces to the mesher:
 
 - ``tui`` object
-- meshing workflow, which consists of ``meshing`` and ``workflow`` properties and the
-  ``PartManagement`` and ``PMFileMangement`` classes
+- meshing workflow, which consists of :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties and the
+  :ref:`PartManagement <ref_meshing_datamodel_PartManagement>` and :ref:`PMFileMangement <ref_meshing_datamodel_PMFileManagement>` classes
 
 Meshing ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -131,7 +131,7 @@ For the full hierarchy under the meshing ``tui`` object, see
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``meshing`` object has ``meshing`` and ``workflow`` properties that together
+The ``meshing`` object has :ref:`meshing <ref_meshing_datamodel_meshing>` and :ref:`workflow <ref_meshing_datamodel_workflow>` properties that together
 provide access to Fluent's meshing workflows. This interface is consistent with
 the Python meshing workflow interface that Fluent meshing exposes directly:
 
@@ -151,7 +151,10 @@ the Python meshing workflow interface that Fluent meshing exposes directly:
 
     meshing.GlobalSettings.LengthUnit.set_state("mm")
 
-For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
+For additional examples, see :ref:`ref_user_guide_meshing_workflows` for
+classic meshing workflow interface that appear in journals or
+:ref:`ref_user_guide_new_meshing_workflows` for the new object oriented
+meshing workflow interface.
 For information on the full interface, see :ref:`ref_meshing_datamodel`.
 
 Search for Fluent settings or commands
@@ -204,7 +207,7 @@ The connection status of any session can be verified with:
 
 .. code:: python
 
-    health = solver.health_check_service.status()
+    health = solver.health_check.status()
 
 ``"SERVING"`` is returned if and only if the connection is healthy.
 
@@ -220,11 +223,11 @@ stop and start the streaming of a transcript manually with:
     solver.transcript.start()
 
 You can enable and disable the streaming of events pertaining to various solver
-event types via the ``events_manager`` attribute of a solution mode session:
+event types via the ``events`` attribute of a solution mode session:
 
 .. code:: python
 
-    solver.events_manager.start()
+    solver.events.start()
 
 For more information, see :ref:`ref_events`.
 

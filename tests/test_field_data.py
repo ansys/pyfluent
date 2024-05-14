@@ -3,6 +3,7 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.field_data import FieldUnavailable, SurfaceDataType
 
@@ -46,11 +47,11 @@ def test_field_data(new_solver_session) -> None:
     iterate(iter_count=10)
 
     # Get field data object
-    field_data = solver.field_data
+    field_data = solver.fields.field_data
 
     transaction = field_data.new_transaction()
 
-    hot_inlet_surf_id = solver.field_info.get_surfaces_info()["hot-inlet"][
+    hot_inlet_surf_id = solver.fields.field_info.get_surfaces_info()["hot-inlet"][
         "surface_id"
     ][0]
     transaction.add_surfaces_request(
@@ -117,8 +118,8 @@ def test_field_data_allowed_values(new_solver_session) -> None:
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
-    field_data = solver.field_data
-    field_info = solver.field_info
+    field_data = solver.fields.field_data
+    field_info = solver.fields.field_info
     transaction = field_data.new_transaction()
     fields_request = transaction.add_scalar_fields_request
 
@@ -173,7 +174,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
-    field_data = solver.field_data
+    field_data = solver.fields.field_data
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
@@ -241,7 +242,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 def test_field_data_objects_2d(load_disk_mesh) -> None:
     solver = load_disk_mesh
 
-    field_data = solver.field_data
+    field_data = solver.fields.field_data
 
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
@@ -302,26 +303,28 @@ def test_field_data_errors(new_solver_session) -> None:
     )
 
     with pytest.raises(DisallowedValuesError) as fne:
-        solver.field_data.get_scalar_field_data(
+        solver.fields.field_data.get_scalar_field_data(
             field_name="y-face-area", surface_ids=[0]
         )
 
     with pytest.raises(DisallowedValuesError) as fne:
-        solver.field_data.get_scalar_field_data(
+        solver.fields.field_data.get_scalar_field_data(
             field_name="partition-neighbors", surface_ids=[0]
         )
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
     with pytest.raises(FieldUnavailable) as fnu:
-        solver.field_data.get_scalar_field_data(field_name="density", surface_ids=[0])
+        solver.fields.field_data.get_scalar_field_data(
+            field_name="density", surface_ids=[0]
+        )
 
-    y_face_area = solver.field_data.get_scalar_field_data(
+    y_face_area = solver.fields.field_data.get_scalar_field_data(
         field_name="y-face-area", surface_ids=[0]
     )
     assert y_face_area and isinstance(y_face_area, dict)
 
-    partition_neighbors = solver.field_data.get_scalar_field_data(
+    partition_neighbors = solver.fields.field_data.get_scalar_field_data(
         field_name="partition-neighbors", surface_ids=[0]
     )
     assert partition_neighbors and isinstance(partition_neighbors, dict)
@@ -330,15 +333,17 @@ def test_field_data_errors(new_solver_session) -> None:
     solver.solution.initialization.hybrid_initialize()
 
     # Get field data object
-    field_data = solver.field_data
+    field_data = solver.fields.field_data
 
     with pytest.raises(DisallowedValuesError) as sne:
-        solver.field_data.get_scalar_field_data(
+        solver.fields.field_data.get_scalar_field_data(
             field_name="density", surface_name="bob"
         )
 
     with pytest.raises(DisallowedValuesError) as fne:
-        solver.field_data.get_scalar_field_data(field_name="xdensity", surface_ids=[0])
+        solver.fields.field_data.get_scalar_field_data(
+            field_name="xdensity", surface_ids=[0]
+        )
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -350,20 +355,35 @@ def test_field_info_validators(new_solver_session) -> None:
     solver.file.read(file_type="case", file_name=import_file_name)
     solver.solution.initialization.hybrid_initialize()
 
-    vector_field_1 = solver.field_info.validate_vector_fields("velocity")
+    vector_field_1 = solver.fields.field_info.validate_vector_fields("velocity")
     assert vector_field_1 is None
 
     with pytest.raises(DisallowedValuesError) as vector_field_error:
-        solver.field_info.validate_vector_fields("relative-vel")
+        solver.fields.field_info.validate_vector_fields("relative-vel")
 
-    scalar_field_1 = solver.field_info.validate_scalar_fields("z-velocity")
+    scalar_field_1 = solver.fields.field_info.validate_scalar_fields("z-velocity")
     assert scalar_field_1 is None
 
     with pytest.raises(DisallowedValuesError) as scalar_field_error:
-        solver.field_info.validate_scalar_fields("z-vel")
+        solver.fields.field_info.validate_scalar_fields("z-vel")
 
-    surface = solver.field_info.validate_surfaces(["cold-inlet"])
+    surface = solver.fields.field_info.validate_surfaces(["cold-inlet"])
     assert surface is None
 
     with pytest.raises(DisallowedValuesError) as surface_error:
-        solver.field_info.validate_surfaces(["out"])
+        solver.fields.field_info.validate_surfaces(["out"])
+
+
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
+@pytest.mark.fluent_version(">=24.2")
+def test_field_data_does_not_modify_case(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+    solver.scheme_eval.scheme_eval("(%save-case-id)")
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.fields.field_data.get_scalar_field_data(
+        field_name="absolute-pressure", surface_name="cold-inlet"
+    )
+    assert not solver.scheme_eval.scheme_eval("(case-modified?)")

@@ -1,3 +1,5 @@
+"""Provides a module for datamodel event streaming."""
+
 import logging
 import os
 import threading
@@ -51,28 +53,30 @@ class DatamodelEvents(StreamingService):
                     )
                 with self._lock:
                     self._streaming = True
-                    for tag, cb in self._cbs.items():
-                        if tag == response.tag:
-                            if response.HasField("createdEventResponse"):
-                                childtype = response.createdEventResponse.childtype
-                                childname = response.createdEventResponse.childname
-                                child = getattr(cb[0], childtype)[childname]
-                                cb[1](child)
-                            elif (
-                                response.HasField("modifiedEventResponse")
-                                or response.HasField("deletedEventResponse")
-                                or response.HasField("affectedEventResponse")
-                                or response.HasField("attributeChangedEventResponse")
-                                or response.HasField(
-                                    "commandAttributeChangedEventResponse"
-                                )
-                            ):
-                                cb[1](cb[0])
-                            elif response.HasField("commandExecutedEventResponse"):
-                                command = response.commandExecutedEventResponse.command
-                                args = _convert_variant_to_value(
-                                    response.commandExecutedEventResponse.args
-                                )
-                                cb[1](cb[0], command, args)
+                    cb = self._cbs.get(response.tag, None)
+                    if cb:
+                        if response.HasField("createdEventResponse"):
+                            childtype = response.createdEventResponse.childtype
+                            childname = response.createdEventResponse.childname
+                            child = getattr(cb[0], childtype)[childname]
+                            cb[1](child)
+                        elif response.HasField("attributeChangedEventResponse"):
+                            value = response.attributeChangedEventResponse.value
+                            cb[1](_convert_variant_to_value(value))
+                        elif response.HasField("commandAttributeChangedEventResponse"):
+                            value = response.commandAttributeChangedEventResponse.value
+                            cb[1](_convert_variant_to_value(value))
+                        elif (
+                            response.HasField("modifiedEventResponse")
+                            or response.HasField("deletedEventResponse")
+                            or response.HasField("affectedEventResponse")
+                        ):
+                            cb[1](cb[0])
+                        elif response.HasField("commandExecutedEventResponse"):
+                            command = response.commandExecutedEventResponse.command
+                            args = _convert_variant_to_value(
+                                response.commandExecutedEventResponse.args
+                            )
+                            cb[1](cb[0], command, args)
             except StopIteration:
                 break

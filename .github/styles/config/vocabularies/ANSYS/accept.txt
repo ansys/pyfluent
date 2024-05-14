@@ -29,6 +29,7 @@ fluent_connection
 fullname
 health_check
 hexahedral
+inout
 interceptors
 mass_average
 mass_flow
@@ -42,6 +43,7 @@ monitor
 MonitorsManager
 numpy
 postprocess
+PIM
 PyFluent
 Pythonic
 pyvista
@@ -60,6 +62,8 @@ SVAR
 svar_data
 svar_info
 SVARs
+solution_variable_data
+solution_variable_info
 transcript
 TUI
 UDFs

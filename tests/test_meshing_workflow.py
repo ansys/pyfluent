@@ -1,5 +1,4 @@
 from functools import partial
-from time import sleep
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -12,8 +11,8 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow_session,
 )
 
-from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
-from ansys.fluent.core.meshing.watertight import watertight_workflow
+from ansys.fluent.core import examples
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -122,7 +121,7 @@ def test_mixing_elbow_meshing_workflow(
     ###############################################################################
     # Check the mesh in Meshing mode
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+    if meshing_session.get_fluent_version() < FluentVersion.v231:
         meshing_session.tui.mesh.check_mesh()
 
 
@@ -195,7 +194,7 @@ def test_command_args_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.task("Import Geometry")
+    igt = w.TaskObject["Import Geometry"]
     assert igt.arguments.CadImportOptions()
     assert igt.arguments.CadImportOptions.OneZonePer()
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
@@ -232,7 +231,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w = session_new.workflow
 
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.task("Import Geometry")
+    import_geom = w.TaskObject["Import Geometry"]
     assert import_geom.arguments.LengthUnit.default_value() == "mm"
     assert import_geom.arguments.LengthUnit.allowed_values() == [
         "m",
@@ -264,7 +263,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     import_geom.arguments.CadImportOptions.OneZonePer.set_state("face")
     assert import_geom.arguments.CadImportOptions.OneZonePer() == "face"
 
-    volume_mesh_gen = w.task("Generate the Volume Mesh")
+    volume_mesh_gen = w.TaskObject["Generate the Volume Mesh"]
     assert (
         volume_mesh_gen.arguments.VolumeFillControls.Type.default_value() == "Cartesian"
     )
@@ -313,7 +312,7 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     w = session_new.workflow
     m = session_new.meshing.ImportGeometry.create_instance
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.task("Import Geometry")
+    import_geom = w.TaskObject["Import Geometry"]
 
     with pytest.raises(AttributeError) as msg:
         import_geom.arguments.MeshUnit.set_state("in")
@@ -331,7 +330,7 @@ def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    assert w.task("Import Geometry").arguments.LengthUnit.allowed_values() == [
+    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.allowed_values() == [
         "m",
         "cm",
         "mm",
@@ -340,9 +339,9 @@ def test_sample_use_of_command_arguments(new_mesh_session):
         "um",
         "nm",
     ]
-    assert w.task("Import Geometry").arguments.LengthUnit.default_value() == "mm"
+    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.default_value() == "mm"
     w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
-    assert w.task("Import Geometry").arguments.LengthUnit() == "in"
+    assert w.TaskObject["Import Geometry"].arguments.LengthUnit() == "in"
 
 
 @pytest.mark.codegen_required
@@ -350,273 +349,10 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.task("Import Geometry")
+    import_geom = w.TaskObject["Import Geometry"]
 
     with pytest.raises(AttributeError) as msg:
         import_geom.delete_child()
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.skip
-def test_meshing_workflow_structure(new_mesh_session):
-    """
-    o Workflow
-    |
-    |--o Import Geometry
-    |
-    |--o Add Local Sizing
-    |
-    |--o Generate the Surface Mesh
-    |
-    |--o Describe Geometry
-    |  |
-    |  |--o Enclose Fluid Regions (Capping)
-    |  |
-    |  |--o Create Regions
-    |
-    |--o Update Regions
-    |
-    |--o Add Boundary Layers
-    |
-    |--o Generate the Volume Mesh
-    """
-    w = new_mesh_session.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-    task_names = (
-        "Import Geometry",
-        "Add Local Sizing",
-        "Generate the Surface Mesh",
-        "Describe Geometry",
-        "Enclose Fluid Regions (Capping)",
-        "Create Regions",
-        "Update Regions",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    )
-
-    (
-        import_geom,
-        add_sizing,
-        gen_surf_mesh,
-        describe_geometry,
-        cap,
-        create_regions,
-        update_regions,
-        add_boundary_layers,
-        gen_vol_mesh,
-    ) = all_tasks = [w.task(name) for name in task_names]
-
-    def upstream_names(task):
-        return {upstream.name() for upstream in task.get_direct_upstream_tasks()}
-
-    def downstream_names(task):
-        return {downstream.name() for downstream in task.get_direct_downstream_tasks()}
-
-    assert upstream_names(import_geom) == set()
-    assert downstream_names(import_geom) == {
-        "Generate the Surface Mesh",
-        "Add Local Sizing",
-    }
-
-    assert upstream_names(add_sizing) == {"Import Geometry"}
-    assert downstream_names(add_sizing) == {"Generate the Surface Mesh"}
-
-    assert upstream_names(gen_surf_mesh) == {"Import Geometry", "Add Local Sizing"}
-    assert downstream_names(gen_surf_mesh) == {
-        "Describe Geometry",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    }
-
-    assert upstream_names(describe_geometry) == {
-        "Generate the Surface Mesh",
-        "Add Boundary Layers",
-    }
-    assert downstream_names(describe_geometry) == {
-        "Update Regions",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    }
-
-    assert upstream_names(cap) == {
-        "Describe Geometry",
-        "Add Boundary Layers",
-        "Generate the Surface Mesh",
-    }
-    assert downstream_names(cap) == {
-        "Describe Geometry",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    }
-
-    assert upstream_names(create_regions) == {
-        "Describe Geometry",
-        "Add Boundary Layers",
-        "Generate the Surface Mesh",
-    }
-    assert downstream_names(create_regions) == {
-        "Describe Geometry",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-        "Update Regions",
-    }
-
-    assert upstream_names(update_regions) == {"Describe Geometry"}
-    assert downstream_names(update_regions) == {"Generate the Volume Mesh"}
-
-    assert upstream_names(add_boundary_layers) == {
-        "Describe Geometry",
-        "Generate the Surface Mesh",
-    }
-    assert downstream_names(add_boundary_layers) == {
-        "Describe Geometry",
-        "Generate the Volume Mesh",
-    }
-
-    assert upstream_names(gen_vol_mesh) == {
-        "Update Regions",
-        "Describe Geometry",
-        "Add Boundary Layers",
-        "Generate the Surface Mesh",
-    }
-    assert downstream_names(gen_vol_mesh) == set()
-
-    for task in all_tasks:
-        assert {sub_task.name() for sub_task in task.ordered_children()} == (
-            {
-                "Enclose Fluid Regions (Capping)",
-                "Create Regions",
-            }
-            if task is describe_geometry
-            else set()
-        )
-
-    for task in all_tasks:
-        assert {sub_task.name() for sub_task in task.inactive_ordered_children()} == (
-            {
-                "Apply Share Topology",
-                "Update Boundaries",
-            }
-            if task is describe_geometry
-            else set()
-        )
-
-    task_ids = [task.get_id() for task in all_tasks]
-    # uniqueness test
-    assert len(set(task_ids)) == len(task_ids)
-    # ordering test
-    idxs = [int(id[len("TaskObject") :]) for id in task_ids]
-    assert sorted(idxs) == idxs
-    """Given the workflow::
-
-            Workflow
-            ├── Import Geometry
-            ├── Add Local Sizing
-            ├── Generate the Surface Mesh ── Insert Next Task
-                                            ├── Add Boundary Type
-                                            ├── Update Boundaries
-                                            ├── ...
-    """
-    assert set(gen_surf_mesh.GetNextPossibleTasks()) == {
-        "AddBoundaryType",
-        "UpdateBoundaries",
-        "SetUpPeriodicBoundaries",
-        "LinearMeshPattern",
-        "ManageZones",
-        "ModifyMeshRefinement",
-        "ImproveSurfaceMesh",
-        "RunCustomJournal",
-    }
-
-    children = w.ordered_children()
-    expected_task_order = (
-        "Import Geometry",
-        "Add Local Sizing",
-        "Generate the Surface Mesh",
-        "Describe Geometry",
-        "Update Regions",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    )
-
-    actual_task_order = tuple(child.name() for child in children)
-
-    assert actual_task_order == expected_task_order
-
-    assert [child.name() for child in children[3].ordered_children()] == [
-        "Enclose Fluid Regions (Capping)",
-        "Create Regions",
-    ]
-
-    gen_surf_mesh.InsertNextTask(CommandName="AddBoundaryType")
-
-    children = w.ordered_children()
-    expected_task_order = (
-        "Import Geometry",
-        "Add Local Sizing",
-        "Generate the Surface Mesh",
-        "Add Boundary Type",
-        "Describe Geometry",
-        "Update Regions",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    )
-
-    actual_task_order = tuple(child.name() for child in children)
-
-    assert actual_task_order == expected_task_order
-
-    assert [child.name() for child in children[4].ordered_children()] == [
-        "Enclose Fluid Regions (Capping)",
-        "Create Regions",
-    ]
-
-
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
-def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
-    watertight = new_mesh_session.watertight()
-    import_geometry = watertight.import_geometry
-    assert import_geometry.Arguments() == {}
-    import_geometry.Arguments = dict(FileName=mixing_elbow_geometry)
-    assert 8 < len(import_geometry.arguments.get_state()) < 15
-    assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
-    import_geometry.arguments.set_state(dict(FileName=None))
-    sleep(5)
-    assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        FileName=None
-    )
-    assert import_geometry.arguments.get_state()["FileName"] is None
-    import_geometry.arguments.set_state(dict(FileName=mixing_elbow_geometry))
-    sleep(5)
-    assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        FileName=mixing_elbow_geometry
-    )
-    assert import_geometry.FileName() == mixing_elbow_geometry
-    import_geometry.FileName.set_state("bob")
-    sleep(5)
-    assert import_geometry.FileName() == "bob"
-    import_geometry.FileName.set_state(mixing_elbow_geometry)
-    import_geometry.Execute()
-    add_local_sizing = watertight.add_local_sizing
-    assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
-    assert not add_local_sizing.ordered_children()
-
-    added_sizing = add_local_sizing.add_child_and_update(
-        state={"BOIFaceLabelList": ["elbow-fluid"]}
-    )
-    assert len(add_local_sizing.ordered_children()) == 1
-    assert added_sizing
-    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
-    # restart
-    watertight = new_mesh_session.watertight()
-    assert import_geometry.State() == "Out-of-date"
-    import_geometry(FileName=mixing_elbow_geometry, AppendMesh=False)
-    assert import_geometry.State() == "Up-to-date"
-    import_geometry_state = import_geometry.arguments()
-    assert len(import_geometry_state) > 2
 
 
 @pytest.mark.codegen_required
@@ -626,115 +362,6 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
     tasks = [task for task in workflow.TaskObject]
     assert len(tasks) == 11
     assert tasks[0].name() == "Import Geometry"
-
-
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
-def test_watertight_workflow(mixing_elbow_geometry, new_mesh_session):
-    watertight = watertight_workflow(
-        geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
-    )
-    add_local_sizing = watertight.add_local_sizing
-    assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
-    assert not add_local_sizing.ordered_children()
-    added_sizing = add_local_sizing.add_child_and_update(
-        state={"BOIFaceLabelList": ["elbow-fluid"]}
-    )
-    assert len(add_local_sizing.ordered_children()) == 1
-    assert added_sizing
-    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
-
-
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
-def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
-    watertight = watertight_workflow(
-        geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
-    )
-    add_local_sizing = watertight.add_local_sizing
-    assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
-    assert not add_local_sizing.ordered_children()
-    added_sizing = add_local_sizing.add_child_and_update(
-        state={"BOIFaceLabelList": ["elbow-fluid"]}
-    )
-    assert len(add_local_sizing.ordered_children()) == 1
-    assert added_sizing
-    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
-    assert added_sizing.name() == "facesize_1"
-    assert len(added_sizing.arguments())
-    added_sizing_by_name = add_local_sizing.compound_child("facesize_1")
-    added_sizing_by_pos = add_local_sizing.last_child()
-    assert added_sizing.arguments() == added_sizing_by_name.arguments()
-    assert added_sizing.arguments() == added_sizing_by_pos.arguments()
-    assert not added_sizing.python_name()
-    describe_geometry = watertight.describe_geometry
-    describe_geometry_children = describe_geometry.ordered_children()
-    assert len(describe_geometry_children) == 2
-    describe_geometry_child_task_python_names = (
-        describe_geometry.child_task_python_names()
-    )
-    assert describe_geometry_child_task_python_names == [
-        "enclose_fluid_regions",
-        "create_regions",
-    ]
-
-
-@pytest.mark.skip(reason="Randomly hanging.")
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
-def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry, new_mesh_session):
-    watertight = watertight_workflow(
-        geometry_file_name=mixing_elbow_geometry, session=new_mesh_session
-    )
-    create_volume_mesh = watertight.create_volume_mesh
-    assert create_volume_mesh is not None
-    watertight.DeleteTasks(ListOfTasks=["Generate the Volume Mesh"])
-    # I assume that what's going on here is that due to DeleteTasks we are triggering
-    # change events in the server but those events are (still) being transmitted after
-    # DeleteTasks has returned. Hence, the dynamic watertight Python interface
-    # is still updating after the command has returned and the client can try to access
-    # while it is in that update phase, leading to (difficult to understand) exceptions.
-    # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
-    create_volume_mesh = watertight.create_volume_mesh
-    assert create_volume_mesh is None
-    watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
-    create_volume_mesh = watertight.create_volume_mesh
-    assert create_volume_mesh is not None
-
-    watertight_geom = watertight.describe_geometry
-    assert watertight_geom.create_regions.arguments()["NumberOfFlowVolumes"] == 1
-    watertight.DeleteTasks(ListOfTasks=["Create Regions"])
-    assert watertight_geom.create_regions is None
-    assert watertight_geom.enclose_fluid_regions
-    watertight_geom.enclose_fluid_regions.delete()
-    assert watertight_geom.enclose_fluid_regions is None
-    watertight.create_volume_mesh.delete()
-    assert watertight.create_volume_mesh is None
-
-
-@pytest.mark.fluent_version("==23.2")
-@pytest.mark.codegen_required
-def test_fault_tolerant_workflow(exhaust_system_geometry, new_mesh_session):
-    fault_tolerant = fault_tolerant_workflow(session=new_mesh_session)
-    part_management = fault_tolerant.part_management
-    file_name = exhaust_system_geometry
-    part_management.LoadFmdFile(FilePath=file_name)
-    part_management.MoveCADComponentsToNewObject(
-        Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
-    )
-    part_management.Node["Object"].Rename(NewName=r"Engine")
-    import_cad = fault_tolerant.TaskObject["Import CAD and Part Management"]
-    import_cad.Arguments.setState(
-        {
-            r"CreateObjectPer": r"Custom",
-            r"FMDFileName": file_name,
-            r"FileLoaded": r"yes",
-            r"ObjectSetting": r"DefaultObjectSetting",
-        }
-    )
-    import_cad.Execute()
 
 
 @pytest.mark.codegen_required
@@ -769,9 +396,183 @@ def test_modified_workflow(new_mesh_session):
     assert set(task_display_names) == task_object_display_names
 
 
+@pytest.mark.codegen_required
 def test_nonexistent_attrs(new_mesh_session):
     meshing = new_mesh_session
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz
-    assert msg.value.args[0] == "'MeshingWorkflow' object has no attribute 'xyz'"
+    assert msg.value.args[0] == "'ClassicMeshingWorkflow' object has no attribute 'xyz'"
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_old_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    assert meshing.workflow.TaskObject["Import Geometry"].arguments()
+    with pytest.raises(AttributeError) as msg:
+        meshing.workflow.import_geometry
+    assert (
+        msg.value.args[0]
+        == "'ClassicMeshingWorkflow' object has no attribute 'import_geometry'"
+    )
+
+
+@pytest.mark.nightly
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_new_2d_meshing_workflow(new_mesh_session):
+    # Import geometry
+    import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
+    meshing.workflow.TaskObject["Load CAD Geometry"].Arguments.set_state(
+        {
+            r"FileName": import_file_name,
+            r"LengthUnit": r"mm",
+            r"Refaceting": {
+                r"Refacet": False,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Load CAD Geometry"].Execute()
+
+    meshing.workflow.TaskObject["Update Regions"].Execute()
+    meshing.workflow.TaskObject["Update Boundaries"].Arguments.set_state(
+        {
+            r"SelectionType": r"zone",
+        }
+    )
+    meshing.workflow.TaskObject["Update Boundaries"].Execute()
+
+    meshing.workflow.TaskObject["Define Global Sizing"].Arguments.set_state(
+        {
+            r"CurvatureNormalAngle": 20,
+            r"MaxSize": 2000,
+            r"MinSize": 5,
+            r"SizeFunctions": r"Curvature",
+        }
+    )
+    meshing.workflow.TaskObject["Define Global Sizing"].Execute()
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"boi_1",
+            r"BOIExecution": r"Body Of Influence",
+            r"BOIFaceLabelList": [r"boi"],
+            r"BOISize": 50,
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"edgesize_1",
+            r"BOIExecution": r"Edge Size",
+            r"BOISize": 5,
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+            r"EdgeLabelList": [r"airfoil-te"],
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+    meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BOIControlName": r"curvature_1",
+            r"BOICurvatureNormalAngle": 10,
+            r"BOIExecution": r"Curvature",
+            r"BOIMaxSize": 2,
+            r"BOIMinSize": 1.5,
+            r"BOIScopeTo": r"edges",
+            r"BOIZoneorLabel": r"label",
+            r"DrawSizeControl": True,
+            r"EdgeLabelList": [r"airfoil"],
+        }
+    )
+    meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate(DeferUpdate=False)
+
+    meshing.workflow.TaskObject["Add 2D Boundary Layers"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"aspect-ratio_1",
+            r"NumberOfLayers": 4,
+            r"OffsetMethodType": r"aspect-ratio",
+        }
+    )
+    meshing.workflow.TaskObject["Add 2D Boundary Layers"].AddChildAndUpdate(
+        DeferUpdate=False
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+    meshing.workflow.TaskObject["aspect-ratio_1"].Revert()
+    meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"uniform_1",
+            r"FirstLayerHeight": 2,
+            r"NumberOfLayers": 4,
+            r"OffsetMethodType": r"uniform",
+        }
+    )
+    meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(None)
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+    meshing.workflow.TaskObject["uniform_1"].Revert()
+    meshing.workflow.TaskObject["uniform_1"].Arguments.set_state(
+        {
+            r"AddChild": r"yes",
+            r"BLControlName": r"smooth-transition_1",
+            r"FirstLayerHeight": 2,
+            r"NumberOfLayers": 7,
+            r"OffsetMethodType": r"smooth-transition",
+        }
+    )
+    meshing.workflow.TaskObject["uniform_1"].Execute()
+
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(None)
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
+        {
+            r"Surface2DPreferences": {
+                r"MergeEdgeZonesBasedOnLabels": r"no",
+                r"MergeFaceZonesBasedOnLabels": r"no",
+                r"ShowAdvancedOptions": True,
+            },
+        }
+    )
+    meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+
+    meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Arguments.set_state(
+        {
+            r"FileName": r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\out\case1.msh.h5",
+        }
+    )
+    meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Execute()
+
+    # Switch to solution mode
+    solver = meshing.switch_to_solver()
+    assert solver

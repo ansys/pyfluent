@@ -1,4 +1,5 @@
 ﻿"""Test the PyPIM integration."""
+
 from concurrent import futures
 import os
 from unittest.mock import create_autospec
@@ -10,12 +11,15 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
+from ansys.fluent.core import examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
 )
 from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_solver import Solver
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
@@ -31,11 +35,13 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
         ready=True,
         status_message=None,
         services={
-            "grpc": pypim.Service(uri=fluent.fluent_connection._channel_str, headers={})
+            "grpc": pypim.Service(
+                uri=fluent._fluent_connection._channel_str, headers={}
+            )
         },
     )
     pim_channel = grpc.insecure_channel(
-        fluent.fluent_connection._channel_str,
+        fluent._fluent_connection._channel_str,
     )
     mock_instance.wait_for_ready = create_autospec(mock_instance.wait_for_ready)
     mock_instance.build_grpc_channel = create_autospec(
@@ -74,10 +80,10 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     mock_instance.build_grpc_channel.assert_called_with()
 
     # And it connected using the channel created by PyPIM
-    assert fluent.fluent_connection._channel == pim_channel
+    assert fluent._fluent_connection._channel == pim_channel
 
     # and it kept track of the instance to be able to delete it
-    assert fluent.fluent_connection._remote_instance == mock_instance
+    assert fluent._fluent_connection._remote_instance == mock_instance
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
@@ -90,14 +96,81 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     server.start()
 
     with pytest.raises(UnsupportedRemoteFluentInstance) as msg:
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password="12345",
+            remote_instance=mock_instance,
+            cleanup_on_exit=False,
+        )
         session = BaseSession(
-            FluentConnection(
-                ip=ip,
-                port=port,
-                password="12345",
-                remote_instance=mock_instance,
-                cleanup_on_exit=False,
-            )
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
         session.exit(wait=60)
-        session.fluent_connection.wait_process_finished(wait=60)
+        session._fluent_connection.wait_process_finished(wait=60)
+
+
+class TransferRequestRecorder:
+    def __init__(self):
+        self.uploaded_files = list()
+        self.downloaded_files = list()
+
+    def uploads(self):
+        return self.uploaded_files
+
+    def downloads(self):
+        return self.downloaded_files
+
+    def upload(self, file_name: str):
+        self.uploaded_files.append(file_name)
+
+    def download(self, file_name: str):
+        self.downloaded_files.append(file_name)
+
+    def is_configured(self):
+        return True
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.2")
+def test_file_purpose_on_remote_instance(
+    monkeypatch, new_solver_session, new_mesh_session
+):
+    solver = new_solver_session
+
+    file_service = TransferRequestRecorder()
+
+    solver_session = Solver(
+        fluent_connection=solver._fluent_connection,
+        scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
+        file_transfer_service=file_service,
+    )
+
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+
+    solver_session.file.read_case(file_name=import_file_name)
+    assert len(file_service.uploads()) == 1
+    assert file_service.uploads()[0] == import_file_name
+
+    solver_session.file.write_case(file_name=import_file_name)
+    assert len(file_service.downloads()) == 1
+    assert file_service.downloads()[0] == import_file_name
+
+    meshing = new_mesh_session
+
+    meshing_session = PureMeshing(
+        fluent_connection=meshing._fluent_connection,
+        scheme_eval=meshing._fluent_connection._connection_interface.scheme_eval,
+        file_transfer_service=file_service,
+    )
+
+    meshing_session.meshing.File.ReadMesh(FileName=import_file_name)
+    assert len(file_service.uploads()) == 2
+    assert file_service.uploads()[1] == import_file_name
+
+    meshing_session.meshing.File.WriteMesh(FileName=import_file_name)
+    assert len(file_service.downloads()) == 2
+    assert file_service.downloads()[1] == import_file_name

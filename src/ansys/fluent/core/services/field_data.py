@@ -1,4 +1,5 @@
 """Wrappers over FieldData gRPC service of Fluent."""
+
 from enum import IntEnum
 from functools import reduce
 from typing import Callable, Dict, List, Optional, Tuple, Union
@@ -69,9 +70,14 @@ class FieldDataService(StreamingService):
         """GetSurfacesInfo RPC of FieldData service."""
         return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
-    # pylint: disable=missing-raises-doc
     def get_fields(self, request):
-        """GetFields RPC of FieldData service."""
+        """GetFields RPC of FieldData service.
+
+        Raises
+        ------
+        RuntimeError
+            If an empty chunk encountered during field extraction.
+        """
         chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)
         if not chunk_iterator.is_active():
             raise RuntimeError(
@@ -193,22 +199,25 @@ class FieldInfo:
         return info
 
     def validate_scalar_fields(self, field_name: str):
+        """Validate scalar fields."""
         _AllowedScalarFieldNames(
             self._is_data_valid, info=self.get_scalar_fields_info()
         ).valid_name(field_name)
 
     def validate_vector_fields(self, field_name: str):
+        """Validate vector fields."""
         _AllowedVectorFieldNames(
             self._is_data_valid, info=self.get_vector_fields_info()
         ).valid_name(field_name)
 
     def validate_surfaces(self, surfaces: List[str]):
+        """Validate surfaces."""
         for surface in surfaces:
             _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
 
 
 class FieldUnavailable(RuntimeError):
-    """Provides the error when field is unavailable."""
+    """Raised when field is unavailable."""
 
     pass
 
@@ -251,7 +260,9 @@ class _AllowedFieldNames(_AllowedNames):
             if not names.is_valid(field_name, respect_data_valid=False):
                 raise self._field_name_error(
                     allowed_name_error_message(
-                        "field", field_name, names(respect_data_valid=False)
+                        context="field",
+                        trial_name=field_name,
+                        allowed_values=names(respect_data_valid=False),
                     )
                 )
             if not names.is_valid(field_name, respect_data_valid=True):
@@ -265,9 +276,14 @@ class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return self._info if self._info else self._field_info.get_surfaces_info()
 
-    # pylint: disable=missing-raises-doc
     def valid_name(self, surface_name: str) -> str:
-        """Returns valid names."""
+        """Returns valid names.
+
+        Raises
+        ------
+        DisallowedValuesError
+            If surface name is invalid.
+        """
         if validate_inputs and not self.is_valid(surface_name):
             raise DisallowedValuesError("surface", surface_name, self())
         return surface_name
@@ -311,9 +327,11 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         return (
             self._info
             if self._info
-            else self._field_info.get_vector_fields_info()
-            if (not respect_data_valid or self._is_data_valid())
-            else []
+            else (
+                self._field_info.get_vector_fields_info()
+                if (not respect_data_valid or self._is_data_valid())
+                else []
+            )
         )
 
     def is_valid(self, name, respect_data_valid=True):
@@ -460,7 +478,7 @@ class FieldTransaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
         node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
+        boundary_value: Optional[bool] = True,
     ) -> None:
         """Add request to get scalar field data on surfaces.
 
@@ -477,7 +495,7 @@ class FieldTransaction:
             ``False``, the element location is provided.
         boundary_value : bool, optional
             Whether to provide the slip velocity at the wall boundaries. The default
-            is ``False``. When ``True``, no slip velocity is provided.
+            is ``True``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
@@ -496,9 +514,11 @@ class FieldTransaction:
                     scalarFieldName=self._allowed_scalar_field_names.valid_name(
                         field_name
                     ),
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     provideBoundaryValues=boundary_value,
                 )
                 for surface_id in surface_ids
@@ -586,7 +606,9 @@ class FieldTransaction:
         skip: int, optional
             Pathlines to skip. The default is ``0``.
         reverse: bool, optional
-            Whether to draw pathlines in reverse direction. The default is ``False``.
+            Whether to draw pathlines in a reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
         tolerance: float, optional
             Pathlines tolerance. The default is ``0.001``.
         coarsen: int, optional
@@ -612,9 +634,11 @@ class FieldTransaction:
                     field=field_name,
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     steps=steps,
                     stepSize=step_size,
                     skip=skip,
@@ -810,17 +834,23 @@ class ChunkParser:
                 payload_tag_id = (
                     _get_tag_for_surface_request()
                     if request_type == "surfaceRequest"
-                    else _get_tag_for_scalar_field_request(
-                        field_request_info.scalarFieldRequest
+                    else (
+                        _get_tag_for_scalar_field_request(
+                            field_request_info.scalarFieldRequest
+                        )
+                        if request_type == "scalarFieldRequest"
+                        else (
+                            _get_tag_for_vector_field_request()
+                            if request_type == "vectorFieldRequest"
+                            else (
+                                _get_tag_for_pathlines_field_request(
+                                    field_request_info.pathlinesFieldRequest
+                                )
+                                if request_type == "pathlinesFieldRequest"
+                                else None
+                            )
+                        )
                     )
-                    if request_type == "scalarFieldRequest"
-                    else _get_tag_for_vector_field_request()
-                    if request_type == "vectorFieldRequest"
-                    else _get_tag_for_pathlines_field_request(
-                        field_request_info.pathlinesFieldRequest
-                    )
-                    if request_type == "pathlinesFieldRequest"
-                    else None
                 )
             else:
                 if self._callbacks_provider is None:
@@ -1125,7 +1155,7 @@ class FieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
         node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
+        boundary_value: Optional[bool] = True,
     ) -> Union[ScalarFieldData, Dict[int, ScalarFieldData]]:
         """Get scalar field data on a surface.
 
@@ -1142,7 +1172,7 @@ class FieldData:
             When ``False``, data is provided for the element location.
         boundary_value : bool, optional
             Whether to provide slip velocity at the wall boundaries. The default is
-            ``False``. When ``True``, no slip velocity is provided.
+            ``True``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
@@ -1165,9 +1195,11 @@ class FieldData:
                     scalarFieldName=self._allowed_scalar_field_names.valid_name(
                         field_name
                     ),
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     provideBoundaryValues=boundary_value,
                 )
                 for surface_id in surface_ids
@@ -1404,6 +1436,8 @@ class FieldData:
             Pathlines to skip. The default is ``0``.
         reverse: bool, optional
             Whether to draw pathlines in reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
         tolerance: float, optional
             Pathlines tolerance. The default is ``0.001``.
         coarsen: int, optional
@@ -1433,9 +1467,11 @@ class FieldData:
                     field=field_name,
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
+                    dataLocation=(
+                        FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements
+                    ),
                     steps=steps,
                     stepSize=step_size,
                     skip=skip,

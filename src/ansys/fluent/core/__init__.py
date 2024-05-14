@@ -1,6 +1,7 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
+from pathlib import Path
 import pydoc
 
 import platformdirs
@@ -12,17 +13,27 @@ logging.root_config()
 logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
+from ansys.fluent.core.get_build_details import (  # noqa: F401
+    get_build_version,
+    get_build_version_string,
+)
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
-from ansys.fluent.core.launcher.launcher_utils import FluentMode  # noqa: F401
+from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    UIMode,
+)
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning  # noqa: F401
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
@@ -73,7 +84,14 @@ DATAMODEL_USE_ATTR_CACHE = True
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
+# Whether to use remote gRPC file transfer service
+USE_FILE_TRANSFER_SERVICE = False
 
-def wrap_api_call(f, *args, **kwargs):
-    # overwritten in PyConsole
-    return f(*args, **kwargs)
+# Directory where API files are writes out during codegen
+CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
+
+# Whether to zip settings API files during codegen
+CODEGEN_ZIP_SETTINGS = False
+
+# Whether to show mesh after case read
+SHOW_MESH_AFTER_CASE_READ = False

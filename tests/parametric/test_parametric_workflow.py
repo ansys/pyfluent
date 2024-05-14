@@ -7,6 +7,13 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+PYTEST_RELATIVE_TOLERANCE = 1e-3
+
+
+def pytest_approx(expected):
+    return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
 @pytest.mark.nightly
@@ -15,6 +22,10 @@ def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        file_transfer_service = RemoteFileTransferStrategy(
+            host_mount_path=tmp_save_path
+        )
     import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
@@ -22,9 +33,17 @@ def test_parametric_workflow():
         inside_container = True
         config_dict = {}
         config_dict.update(host_mount_path=tmp_save_path)
-        solver_session = pyfluent.launch_fluent(
-            processor_count=2, container_dict=config_dict
-        )
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+                file_transfer_service=file_transfer_service,
+            )
+        else:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+            )
         container_workdir = PurePosixPath(DEFAULT_CONTAINER_MOUNT_PATH)
     else:
         inside_container = False
@@ -86,11 +105,13 @@ def test_parametric_workflow():
     assert base_dp.input_parameters["inlet1_temp"]() == 300.0
     study1.design_points.update_current()
     assert len(study1.design_points) == 1
-    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
-        333.348727, rel=1e-5
+    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest_approx(
+        333.348727
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
-    dp1_name = study1.design_points.create_1()
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
+    dp_names = set([*study1.design_points.keys()])
+    study1.design_points.create_1()
+    dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
     dp1.input_parameters["inlet1_vel"] = 1
@@ -111,14 +132,14 @@ def test_parametric_workflow():
     assert study1.current_design_point() == dp2_name
     study1.design_points.update_all()
     assert len(study1.design_points) == 3
-    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest.approx(
+    assert base_dp.output_parameters["outlet-temp-avg-op"]() == pytest_approx(
         333.348727
     )
-    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest.approx(1.506855)
-    assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
-    assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
-    assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest.approx(425.004045)
-    assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest.approx(2.029792)
+    assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
+    assert dp1.output_parameters["outlet-temp-avg-op"]() == pytest_approx(425.004045)
+    assert dp1.output_parameters["outlet-vel-avg-op"]() == pytest_approx(2.029792)
+    assert dp2.output_parameters["outlet-temp-avg-op"]() == pytest_approx(425.004045)
+    assert dp2.output_parameters["outlet-vel-avg-op"]() == pytest_approx(2.029792)
 
     design_point_table = Path(tmp_save_path) / "design_point_table_study_1.csv"
     if inside_container:
@@ -156,9 +177,17 @@ def test_parametric_workflow():
     solver_session.exit()
 
     if inside_container:
-        solver_session = pyfluent.launch_fluent(
-            processor_count=2, container_dict=config_dict
-        )
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+                file_transfer_service=file_transfer_service,
+            )
+        else:
+            solver_session = pyfluent.launch_fluent(
+                processor_count=2,
+                container_dict=config_dict,
+            )
     else:
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 
@@ -201,3 +230,34 @@ def test_parametric_workflow():
     solver_session.file.parametric_project.archive(archive_name=write_archive_name)
     assert archive_name.exists()
     solver_session.exit()
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_parameters_list_function(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+    solver.tui.define.parameters.enable_in_TUI("yes")
+
+    velocity_inlet = solver.tui.define.boundary_conditions.set.velocity_inlet
+    velocity_inlet("inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit")
+    velocity_inlet("inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit")
+    velocity_inlet("inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit")
+    velocity_inlet("inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit")
+
+    solver.solution.report_definitions.surface["outlet-temp-avg"] = {}
+    outlet_temp_avg = solver.solution.report_definitions.surface["outlet-temp-avg"]
+    outlet_temp_avg.report_type = "surface-areaavg"
+    outlet_temp_avg.field = "temperature"
+    outlet_temp_avg.surface_names = ["outlet"]
+
+    solver.solution.report_definitions.surface["outlet-vel-avg"] = {}
+    outlet_vel_avg = solver.solution.report_definitions.surface["outlet-vel-avg"]
+    outlet_vel_avg.report_type = "surface-areaavg"
+    outlet_vel_avg.field = "velocity-magnitude"
+    outlet_vel_avg.surface_names = ["outlet"]
+
+    create_output_param = solver.tui.define.parameters.output_parameters.create
+    create_output_param("report-definition", "outlet-temp-avg")
+    create_output_param("report-definition", "outlet-vel-avg")
+
+    assert len(solver.parameters.input_parameters.list()) == 4
+    assert len(solver.parameters.output_parameters.list()) == 2

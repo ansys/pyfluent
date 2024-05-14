@@ -1,4 +1,17 @@
-"""Provides a module for launching Fluent in standalone mode."""
+"""Provides a module for launching Fluent in standalone mode.
+
+Examples
+--------
+
+>>> from ansys.fluent.core.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+
+>>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode="meshing")
+>>> standalone_meshing_session = standalone_meshing_launcher()
+
+>>> standalone_solver_launcher = create_launcher(LaunchMode.STANDALONE)
+>>> standalone_solver_session = standalone_solver_launcher()
+"""
 
 import logging
 import os
@@ -6,25 +19,36 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core.launcher.launcher_utils import (
-    FluentMode,
+from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
+    _raise_non_gui_exception_in_windows,
+)
+from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _confirm_watchdog_start,
-    _generate_launch_string,
+    _get_subprocess_kwargs_for_fluent,
+    is_windows,
+)
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
+from ansys.fluent.core.launcher.pyfluent_enums import (
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    UIMode,
+    _get_graphics_driver,
+    _get_mode,
+    _get_standalone_launch_fluent_version,
+    _get_ui_mode,
+    _validate_gpu,
+)
+from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_name,
-    _get_subprocess_kwargs_for_fluent,
-    _is_windows,
-    _process_invalid_args,
-    _raise_exception_g_gu_in_windows_os,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-_THIS_DIR = os.path.dirname(__file__)
-_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
@@ -34,7 +58,9 @@ class StandaloneLauncher:
     def __init__(
         self,
         mode: FluentMode,
-        product_version: Optional[str] = None,
+        ui_mode: UIMode,
+        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
+        product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -42,12 +68,8 @@ class StandaloneLauncher:
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
         env: Optional[Dict[str, Any]] = None,
-        start_container: Optional[bool] = None,
-        container_dict: Optional[dict] = None,
-        dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        show_gui: Optional[bool] = None,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
         lightweight_mode: Optional[bool] = None,
@@ -56,7 +78,7 @@ class StandaloneLauncher:
         cwd: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
-        scheduler_options: Optional[dict] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -64,11 +86,15 @@ class StandaloneLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        product_version : str, optional
-            Select an installed version of ANSYS. The string must be in a format like
-            ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
-            FluentVersion class. The default is ``None``, in which case the newest installed
-            version is used.
+        ui_mode : UIMode
+            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+            Graphics driver of Fluent. Options are the values of the
+            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
+            ``FluentLinuxGraphicsDriver`` enum in Linux.
+        product_version : FluentVersion, optional
+            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+            The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
             in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -91,18 +117,6 @@ class StandaloneLauncher:
         env : dict[str, str], optional
             Mapping to modify environment variables in Fluent. The default
             is ``None``.
-        start_container : bool, optional
-            Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-            :mod:`~ansys.fluent.core.launcher.fluent_container`.
-        container_dict : dict, optional
-            Dictionary for Fluent Docker container configuration. If specified,
-            setting ``start_container = True`` as well is redundant.
-            Will launch Fluent inside a Docker container using the configuration changes specified.
-            See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
-        dry_run : bool, optional
-            Defaults to False. If True, will not launch Fluent, and will instead print configuration information
-            that would be used as if Fluent was being launched. If dry running a container start,
-            ``launch_fluent()`` will return the configured ``container_dict``.
         cleanup_on_exit : bool, optional
             Whether to shut down the connected Fluent session when PyFluent is
             exited, or the ``exit()`` method is called on the session instance,
@@ -112,15 +126,11 @@ class StandaloneLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        show_gui : bool, optional
-            Whether to display the Fluent GUI. The default is ``None``, which does not
-            cause the GUI to be shown. If a value of ``False`` is
-            not explicitly provided, the GUI will also be shown if
-            the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
         case_file_name : str, optional
-            If provided, the case file at ``case_file_name`` is read into the Fluent session.
+            Name of the case file to read into the
+            Fluent session. The default is ``None``.
         case_data_file_name : str, optional
-            If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
+            Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
         lightweight_mode : bool, optional
             Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
             current Fluent solver session. The mesh is read into a background Fluent solver session which will
@@ -142,6 +152,8 @@ class StandaloneLauncher:
             which means an independent watchdog process is run to ensure
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
+        file_transfer_service : optional
+            File transfer service. Uploads/downloads files to/from the server.
 
         Returns
         -------
@@ -164,25 +176,28 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        del start_container
+        _validate_gpu(gpu, version)
+        graphics_driver = _get_graphics_driver(graphics_driver)
+        ui_mode = _get_ui_mode(ui_mode)
+        mode = _get_mode(mode)
         argvals = locals().copy()
         del argvals["self"]
-        _process_invalid_args(dry_run, "standalone", argvals)
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
         for arg_name, arg_values in argvals.items():
             setattr(self, arg_name, arg_values)
         self.argvals = argvals
         self.new_session = self.mode.value[0]
+        self.file_transfer_service = file_transfer_service
 
     def __call__(self):
         if self.lightweight_mode is None:
             # note argvals is no longer locals() here due to _get_session_info() pass
             self.argvals.pop("lightweight_mode")
             setattr(self, "lightweight_mode", False)
-
-        if self.additional_arguments:
-            _raise_exception_g_gu_in_windows_os(self.additional_arguments)
+        fluent_version = _get_standalone_launch_fluent_version(self.product_version)
+        if fluent_version:
+            _raise_non_gui_exception_in_windows(self.ui_mode, fluent_version)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
@@ -191,8 +206,6 @@ class StandaloneLauncher:
         launch_string = _generate_launch_string(
             self.argvals,
             self.mode,
-            self.show_gui,
-            self.additional_arguments,
             server_info_file_name,
         )
 
@@ -204,11 +217,15 @@ class StandaloneLauncher:
             kwargs.update(cwd=self.cwd)
         launch_string += _build_journal_argument(self.topy, self.journal_file_names)
 
-        if _is_windows():
+        if is_windows():
             # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
             launch_cmd = 'start "" ' + launch_string
         else:
-            launch_cmd = launch_string
+            if self.ui_mode < UIMode.HIDDEN_GUI:
+                # Using nohup to hide Fluent output from the current terminal
+                launch_cmd = "nohup " + launch_string + " &"
+            else:
+                launch_cmd = launch_string
 
         try:
             logger.debug(f"Launching Fluent with command: {launch_cmd}")
@@ -220,7 +237,7 @@ class StandaloneLauncher:
                     server_info_file_name, self.start_timeout, sifile_last_mtime
                 )
             except TimeoutError as ex:
-                if _is_windows():
+                if is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
                     launch_cmd = launch_string.replace('"', "", 2)
                     kwargs.update(shell=False)
@@ -234,16 +251,16 @@ class StandaloneLauncher:
                 else:
                     raise ex
 
-            session = self.new_session.create_from_server_info_file(
+            session = self.new_session._create_from_server_info_file(
                 server_info_file_name=server_info_file_name,
-                remote_file_handler=RemoteFileHandler(),
+                file_transfer_service=self.file_transfer_service,
                 cleanup_on_exit=self.cleanup_on_exit,
                 start_transcript=self.start_transcript,
                 launcher_args=self.argvals,
                 inside_container=False,
             )
             start_watchdog = _confirm_watchdog_start(
-                self.start_watchdog, self.cleanup_on_exit, session.fluent_connection
+                self.start_watchdog, self.cleanup_on_exit, session._fluent_connection
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")

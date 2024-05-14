@@ -40,7 +40,7 @@ To see the documentation for the viscous model menu options, you can run:
 .. code-block:: python
 
    >>> help(solver.tui.define.models.viscous)
-   Help on viscous in module ansys.fluent.core.solver.tui_241 object:
+   Help on viscous in module ansys.fluent.core.generated.solver.tui_241 object:
 
    class viscous(ansys.fluent.core.services.datamodel_tui.TUIMenu)
     |  viscous(service, version, mode, path)

@@ -4,6 +4,7 @@ The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
 """
+
 from typing import Any, List, Optional
 
 import ansys.fluent.core.filereader.lispy as lispy
@@ -55,8 +56,8 @@ class RPVars:
         """
         return (
             self._set_var(var, val)
-            if val
-            else (self._get_var(var) if var else self._get_vars())
+            if val is not None
+            else (self._get_var(var) if var is not None else self._get_vars())
         )
 
     def allowed_values(self) -> List[str]:
@@ -76,7 +77,11 @@ class RPVars:
     def _get_var(self, var: str):
         if var not in self.allowed_values():
             raise RuntimeError(
-                allowed_name_error_message("rp-vars", var, RPVars._allowed_values)
+                allowed_name_error_message(
+                    context="rp-vars",
+                    trial_name=var,
+                    allowed_values=RPVars._allowed_values,
+                )
             )
 
         cmd = f"(rpgetvar {RPVars._var(var)})"

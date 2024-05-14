@@ -1,3 +1,5 @@
+"""Provides a module to search a word through the Fluent's object hierarchy.."""
+
 from collections.abc import Mapping
 from pathlib import Path
 import pickle
@@ -12,19 +14,19 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
-from ansys.fluent.core.workflow import BaseTask, TaskContainer, WorkflowWrapper
+from ansys.fluent.core.workflow import (
+    BaseTask,
+    ClassicWorkflow,
+    TaskContainer,
+    Workflow,
+)
 
 
-def get_api_tree_file_name(version: str, pyfluent_path: str) -> Path:
-    return (
-        (
-            (Path(pyfluent_path) / "ansys" / "fluent" / "core")
-            if pyfluent_path
-            else (Path(__file__) / ".." / "..")
-        )
-        / "data"
-        / f"api_tree_{version}.pickle"
-    ).resolve()
+def get_api_tree_file_name(version: str) -> Path:
+    """Get API tree file name."""
+    from ansys.fluent.core import CODEGEN_OUTDIR
+
+    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
@@ -55,52 +57,35 @@ def _get_version_path_prefix_from_obj(obj: Any):
     prefix = None
     if isinstance(obj, PureMeshing):
         path = ["<meshing_session>"]
-        version = get_version_for_file_name(obj.get_fluent_version())
+        version = get_version_for_file_name(obj.get_fluent_version().value)
         prefix = "<search_root>"
     elif isinstance(obj, Solver):
         path = ["<solver_session>"]
-        version = get_version_for_file_name(obj.get_fluent_version())
+        version = get_version_for_file_name(obj.get_fluent_version().value)
         prefix = "<search_root>"
     elif isinstance(obj, TUIMenu):
-        module = obj.__class__.__module__
-        path = [
-            "<meshing_session>"
-            if module.startswith("ansys.fluent.core.meshing")
-            else "<solver_session>",
-            "tui",
-        ]
+        path = ["<session>", "tui"]
         path.extend(obj._path)
+        module = obj.__class__.__module__
         version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
-    elif isinstance(obj, WorkflowWrapper):
+    elif isinstance(obj, (ClassicWorkflow, Workflow)):
         path = ["<meshing_session>", obj.rules]
-        module = obj._workflow.__class__.__module__
-        module = _remove_suffix(module, ".workflow")
-        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, BaseTask):
         path = ["<meshing_session>", obj.rules]
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
-        module = obj._workflow.__class__.__module__
-        module = _remove_suffix(module, ".workflow")
-        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, TaskContainer):
         path = ["<meshing_session>", obj.rules]
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         path[-1] = f"{path[-1]}:<name>"
-        module = obj._container._workflow.__class__.__module__
-        module = _remove_suffix(module, ".workflow")
-        version = module.rsplit("_", 1)[-1]
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, PyMenu):
         rules = obj.rules
         path = ["<meshing_session>" if rules in _meshing_rules else "<solver_session>"]
         path.append(rules)
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
-        module = obj.__class__.__module__
-        module = _remove_suffix(module, f".{rules}")
-        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
     elif isinstance(obj, PyNamedObjectContainer):
         rules = obj.rules
@@ -108,9 +93,6 @@ def _get_version_path_prefix_from_obj(obj: Any):
         path.append(rules)
         path.extend([f"{k[0]}:<name>" if k[1] else k[0] for k in obj.path])
         path[-1] = f"{path[-1]}:<name>"
-        module = obj.__class__.__module__
-        module = _remove_suffix(module, f".{rules}")
-        version = module.rsplit("_", 1)[-1]
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, flobject.Group):
         module = obj.__class__.__module__
@@ -181,9 +163,9 @@ def search(
     if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
-            if get_api_tree_file_name(version, None).exists():
+            if get_api_tree_file_name(version).exists():
                 break
-    api_tree_file = get_api_tree_file_name(version, None)
+    api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
 
@@ -211,6 +193,11 @@ def search(
             path = prefix
         while root_path:
             p = root_path.pop(0)
+            # With the dynamic loading of generated api modules, we loose the filepath information
+            # from which we were extracting the solver/meshing mode of the given object.
+            # Anyway, we are planning to remove search_root in the newer version of search function.
+            if p == "<session>":
+                p = "<solver_session>"
             if p in tree:
                 tree = tree[p]
             else:

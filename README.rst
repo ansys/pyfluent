@@ -55,12 +55,12 @@ development version or previously released versions.
 You can also `view <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.png>`_ or
 `download <https://cheatsheets.docs.pyansys.com/pyfluent_cheat_sheet.pdf>`_ the
 PyFluent cheat sheet. This one-page reference provides syntax rules and commands
-for using PyFluent. 
+for using PyFluent.
 
 On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
 issues to report bugs and request new features. On the `PyFluent Discussions
 <https://github.com/ansys/pyfluent/discussions>`_ page or the `Discussions <https://discuss.ansys.com/>`_
-page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback. 
+page on the Ansys Developer portal, you can post questions, share ideas, and get community feedback.
 
 To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
@@ -120,7 +120,7 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
 
   import ansys.fluent.core as pyfluent
   solver_session = pyfluent.launch_fluent(mode="solver")
-  solver_session.health_check_service.is_serving
+  solver_session.health_check.is_serving
 
 Basic usage
 ~~~~~~~~~~~

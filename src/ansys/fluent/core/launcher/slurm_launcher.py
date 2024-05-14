@@ -36,15 +36,15 @@ import time
 from typing import Any, Callable, Union
 
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
-    _generate_launch_string,
-    _get_mode,
-    _get_server_info_file_name,
     _get_subprocess_kwargs_for_fluent,
-    _process_invalid_args,
 )
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
+from ansys.fluent.core.launcher.pyfluent_enums import _get_mode
+from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -214,8 +214,6 @@ class SlurmLauncher:
         launch_cmd = _generate_launch_string(
             self._argvals,
             self.mode,
-            self._show_gui,
-            self._additional_arguments,
             self._server_info_file_name,
         )
 
@@ -236,9 +234,9 @@ class SlurmLauncher:
         _await_fluent_launch(
             self._server_info_file_name, self._start_timeout, self._sifile_last_mtime
         )
-        session = self._new_session.create_from_server_info_file(
+        session = self._new_session._create_from_server_info_file(
             server_info_file_name=self._server_info_file_name,
-            remote_file_handler=None,
+            file_transfer_service=None,
             cleanup_on_exit=self._cleanup_on_exit,
             start_transcript=self._start_transcript,
             inside_container=False,

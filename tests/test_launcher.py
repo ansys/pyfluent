@@ -1,25 +1,58 @@
 from pathlib import Path
 import platform
 
-from beartype.roar import BeartypeCallHintParamViolation
 import pytest
 from util.fixture_fluent import download_input_file
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
+from ansys.fluent.core.launcher.error_handler import (
+    DockerContainerLaunchNotSupported,
+    GPUSolverSupportError,
+    LaunchFluentError,
+    _raise_non_gui_exception_in_windows,
+)
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
-    DockerContainerLaunchNotSupported,
-    FluentMode,
-    LaunchFluentError,
-    UnexpectedKeywordArgument,
     _build_journal_argument,
     check_docker_support,
+    is_windows,
+)
+from ansys.fluent.core.launcher.process_launch_string import (
+    _build_fluent_launch_args_string,
     get_fluent_exe_path,
+)
+from ansys.fluent.core.launcher.pyfluent_enums import (
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    LaunchMode,
+    UIMode,
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
 import ansys.platform.instancemanagement as pypim
+
+
+def test_gpu_version_error():
+    with pytest.raises(GPUSolverSupportError) as msg:
+        pyfluent.launch_fluent(
+            mode="meshing",
+            version="2d",
+            precision="single",
+            processor_count=5,
+            show_gui=True,
+            gpu=True,
+        )
+        pyfluent.setup_for_fluent(
+            mode="meshing",
+            version="2d",
+            precision="single",
+            processor_count=5,
+            show_gui=True,
+            gpu=True,
+        )
 
 
 def test_mode():
@@ -37,23 +70,48 @@ def test_unsuccessful_fluent_connection():
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
 
 
-def test_additional_argument_g_gu():
-    default_windows_flag = launcher_utils._is_windows()
-    launcher_utils._is_windows = lambda: True
+@pytest.mark.fluent_version("<24.1")
+def test_non_gui_in_windows_throws_exception():
+    default_windows_flag = launcher_utils.is_windows()
+    launcher_utils.is_windows = lambda: True
     try:
-        with pytest.raises(InvalidArgument) as msg:
-            pyfluent.launch_fluent(
-                mode="solver",
-                show_gui=True,
-                additional_arguments="-g",
-                start_container=False,
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v232)
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v231)
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v222)
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(
+                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v232
             )
-        with pytest.raises(InvalidArgument) as msg:
-            pyfluent.launch_fluent(
-                mode="solver", additional_arguments="-gu", start_container=False
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(
+                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v231
+            )
+        with pytest.raises(InvalidArgument):
+            _raise_non_gui_exception_in_windows(
+                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v222
             )
     finally:
-        launcher_utils._is_windows = lambda: default_windows_flag
+        launcher_utils.is_windows = lambda: default_windows_flag
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_non_gui_in_windows_does_not_throw_exception():
+    default_windows_flag = launcher_utils.is_windows()
+    launcher_utils.is_windows = lambda: True
+    try:
+        _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v241)
+        _raise_non_gui_exception_in_windows(
+            UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v241
+        )
+        _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v242)
+        _raise_non_gui_exception_in_windows(
+            UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v242
+        )
+    finally:
+        launcher_utils.is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
@@ -72,7 +130,7 @@ def test_container_launcher():
 
         # test run with configuration dict
         session = pyfluent.launch_fluent(container_dict=container_dict)
-        assert session.health_check_service.is_serving
+        assert session.health_check.is_serving
 
 
 @pytest.mark.standalone
@@ -87,11 +145,10 @@ def test_case_load():
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
     # Mesh available because not lightweight
-    fluent_version = float(session.get_fluent_version()[:-2])
-    if not fluent_version < 23.1:
+    if not session.get_fluent_version() < FluentVersion.v231:
         assert session.mesh.quality.is_active()
     # Data not loaded
-    assert not session.field_data.is_data_valid()
+    assert not session.fields.field_data.is_data_valid()
 
     session.exit()
 
@@ -114,7 +171,7 @@ def test_case_lightweight_setup():
     # Mesh not available because lightweight
     assert not session.mesh.quality.is_active()
     # Data not loaded
-    assert not session.field_data.is_data_valid()
+    assert not session.fields.field_data.is_data_valid()
 
 
 @pytest.mark.standalone
@@ -130,11 +187,10 @@ def test_case_data_load():
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
     # Mesh available because not lightweight
-    fluent_version = float(session.get_fluent_version()[:-2])
-    if not fluent_version < 23.1:
+    if not session.get_fluent_version() < FluentVersion.v231:
         assert session.mesh.quality.is_active()
     # Data loaded
-    assert session.field_data.is_data_valid()
+    assert session.fields.field_data.is_data_valid()
 
     session.exit()
 
@@ -147,12 +203,11 @@ def test_gpu_launch_arg(helpers, monkeypatch):
     with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(gpu=True, start_timeout=0)
 
-    assert " -gpu" in str(error.value)
-
     with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(gpu=[1, 2, 4], start_timeout=0)
 
-    assert " -gpu=1,2,4" in str(error.value)
+    with pytest.raises(GPUSolverSupportError):
+        pyfluent.launch_fluent(gpu=True, version="2d")
 
 
 def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
@@ -169,13 +224,6 @@ def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
         pyfluent.launch_fluent(additional_arguments="-gpu=1,2,4", start_timeout=0)
 
     assert " -gpu=1,2,4" in str(error.value)
-
-
-def test_kwargs():
-    with pytest.raises(UnexpectedKeywordArgument):
-        pyfluent.launch_fluent(abc=1, meshing_mode=True)
-    with pytest.raises(UnexpectedKeywordArgument):
-        pyfluent.launch_fluent(abc=1, xyz=2)
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
@@ -232,7 +280,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
@@ -242,7 +290,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version="23.1.0") == expected_path
+    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
 
 
 def test_watchdog_launch(monkeypatch):
@@ -251,36 +299,79 @@ def test_watchdog_launch(monkeypatch):
 
 
 def test_fluent_launchers():
+    kwargs = dict(
+        ui_mode=UIMode.NO_GUI,
+        graphics_driver=(
+            FluentWindowsGraphicsDriver.AUTO
+            if is_windows()
+            else FluentLinuxGraphicsDriver.AUTO
+        ),
+    )
     if not check_docker_support() and not pypim.is_configured():
         standalone_meshing_launcher = create_launcher(
-            "standalone", mode=FluentMode.MESHING_MODE
+            LaunchMode.STANDALONE, mode=FluentMode.MESHING_MODE, **kwargs
         )
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
 
         standalone_solver_launcher = create_launcher(
-            "standalone", mode=FluentMode.SOLVER
+            LaunchMode.STANDALONE, mode=FluentMode.SOLVER, **kwargs
         )
         standalone_solver_session = standalone_solver_launcher()
         assert standalone_solver_session
 
     if check_docker_support():
+        kargs = dict(
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=None,
+            version=None,
+            precision=None,
+            processor_count=None,
+            journal_file_names=None,
+            start_timeout=None,
+            additional_arguments="",
+            env=None,
+            container_dict=None,
+            dry_run=None,
+            cleanup_on_exit=None,
+            start_transcript=None,
+            case_file_name=None,
+            case_data_file_name=None,
+            lightweight_mode=None,
+            py=None,
+            gpu=None,
+            cwd=None,
+            topy=None,
+            start_watchdog=None,
+            file_transfer_service=None,
+        )
         container_meshing_launcher = create_launcher(
-            "container", mode=FluentMode.MESHING_MODE
+            LaunchMode.CONTAINER,
+            mode=FluentMode.MESHING_MODE,
+            **kargs,
         )
         container_meshing_session = container_meshing_launcher()
         assert container_meshing_session
 
-        container_solver_launcher = create_launcher("container", mode=FluentMode.SOLVER)
+        container_solver_launcher = create_launcher(
+            LaunchMode.CONTAINER,
+            mode=FluentMode.SOLVER,
+            **kargs,
+        )
         container_solver_session = container_solver_launcher()
         assert container_solver_session
 
     if pypim.is_configured():
-        pim_meshing_launcher = create_launcher("pim", mode=FluentMode.MESHING_MODE)
+        pim_meshing_launcher = create_launcher(
+            LaunchMode.PIM, mode=FluentMode.MESHING_MODE, **kwargs
+        )
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
 
-        pim_solver_launcher = create_launcher("pim", mode=FluentMode.SOLVER)
+        pim_solver_launcher = create_launcher(
+            LaunchMode.PIM, mode=FluentMode.SOLVER, **kwargs
+        )
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
 
@@ -299,10 +390,62 @@ def test_fluent_launchers():
             ' -i "a.jou" -i "b.jou" -topy="c.py"',
             pytest.wont_raise(),
         ),
-        (None, 5, None, pytest.raises(BeartypeCallHintParamViolation)),
+        (None, 5, None, pytest.raises(TypeError)),
         (True, None, None, pytest.raises(InvalidArgument)),
     ],
 )
 def test_build_journal_argument(topy, journal_file_names, result, raises):
     with raises:
         assert _build_journal_argument(topy, journal_file_names) == result
+
+
+@pytest.mark.filterwarnings("error::FutureWarning")
+def test_show_gui_raises_warning():
+    if not check_docker_support() and not pypim.is_configured():
+        with pytest.raises(PyFluentDeprecationWarning):
+            pyfluent.launch_fluent(show_gui=True)
+
+
+def test_fluent_enums():
+    assert str(UIMode.GUI) == "gui"
+    assert UIMode("gui") == UIMode.GUI
+    with pytest.raises(ValueError):
+        UIMode("")
+    assert UIMode.NO_GUI < UIMode.GUI
+    with pytest.raises(TypeError):
+        UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
+
+
+def test_exposure_and_graphics_driver_arguments():
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(ui_mode="gu")
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
+    for m in UIMode:
+        string1 = _build_fluent_launch_args_string(
+            ui_mode=m, additional_arguments="", processor_count=None
+        ).strip()
+        string2 = f"3ddp -{m.value[0]}" if m.value[0] else "3ddp"
+        assert string1 == string2
+    for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
+        for m in e:
+            assert (
+                _build_fluent_launch_args_string(
+                    graphics_driver=m, additional_arguments="", processor_count=None
+                ).strip()
+                == f"3ddp -driver {m.value[0]}"
+                if m.value[0]
+                else " 3ddp"
+            )
+
+
+def test_processor_count():
+    def get_processor_count(solver):
+        return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
+
+    with pyfluent.launch_fluent(processor_count=2) as solver:
+        assert get_processor_count(solver) == 2
+    # The following check is not yet supported for container launch
+    # https://github.com/ansys/pyfluent/issues/2624
+    # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
+    #     assert get_processor_count(solver) == 2

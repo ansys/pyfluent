@@ -1,4 +1,5 @@
 """Module for events management."""
+
 from functools import partial
 import logging
 from typing import Callable, List
@@ -84,9 +85,12 @@ class EventsManager(StreamingService):
         ----------
         event_name : str
             Event name to register the callback to.
-
         callback : Callable
             Callback to register.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
 
         Returns
         -------
@@ -98,7 +102,7 @@ class EventsManager(StreamingService):
         InvalidArgument
             If event name is not valid.
         DisallowedValuesError
-            If an argument value not in allowed values.
+            If an argument value not in the allowed values.
         """
         if event_name is None or callback is None:
             raise InvalidArgument("'event_name' and 'callback' ")

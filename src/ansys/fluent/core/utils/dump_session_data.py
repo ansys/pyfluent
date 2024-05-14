@@ -1,4 +1,5 @@
 """Module providing dump session data functionality."""
+
 from pathlib import Path
 import pickle
 from typing import Optional, Union
@@ -30,15 +31,15 @@ def dump_session_data(
     session_data = {
         "scalar_fields_info": {
             k: v
-            for k, v in session.field_info.get_scalar_fields_info().items()
+            for k, v in session.fields.field_info.get_scalar_fields_info().items()
             if (not fields or k in fields)
         },
         "surfaces_info": {
             k: v
-            for k, v in session.field_info.get_surfaces_info().items()
+            for k, v in session.fields.field_info.get_surfaces_info().items()
             if (not surfaces or k in surfaces)
         },
-        "vector_fields_info": session.field_info.get_vector_fields_info(),
+        "vector_fields_info": session.fields.field_info.get_vector_fields_info(),
     }
     if not fields:
         fields = [
@@ -50,14 +51,16 @@ def dump_session_data(
         session_data["range"][field] = {}
         for surface in surfaces_id:
             session_data["range"][field][surface] = {}
-            session_data["range"][field][surface][
-                "node_value"
-            ] = session.field_info.get_scalar_field_range(field, True, [surface])
-            session_data["range"][field][surface][
-                "cell_value"
-            ] = session.field_info.get_scalar_field_range(field, False, [surface])
+            session_data["range"][field][surface]["node_value"] = (
+                session.fields.field_info.get_scalar_field_range(field, True, [surface])
+            )
+            session_data["range"][field][surface]["cell_value"] = (
+                session.fields.field_info.get_scalar_field_range(
+                    field, False, [surface]
+                )
+            )
 
-    transaction = session.field_data.new_transaction()
+    transaction = session.fields.field_data.new_transaction()
     transaction.add_surfaces_request(
         surface_ids=surfaces_id, provide_faces_centroid=True, provide_faces_normal=True
     )
@@ -99,6 +102,8 @@ def dump_session_data(
 
 
 class DumpDataReader:
+    """Reads dump data."""
+
     def __init__(self, file_name: str):
         with open(
             str(Path(file_name).resolve()),
@@ -107,9 +112,11 @@ class DumpDataReader:
             self._session_data = pickle.load(pickle_obj)
 
     def get_session_data(self):
+        """Get session data."""
         return self._session_data
 
     def get_surface_data(self, surface_ids, data_types) -> list[Union[np.array, None]]:
+        """Get surface data."""
         tag_id = (("type", "surface-data"),)
 
         enum_to_field_name = {
@@ -132,6 +139,7 @@ class DumpDataReader:
     def get_scalar_field_data(
         self, surface_ids, data_location, provide_boundary_values, field_names
     ) -> list[Union[np.array, None]]:
+        """Get scalar field data."""
         tag_id = (
             ("type", "scalar-field"),
             ("dataLocation", data_location),
@@ -149,6 +157,7 @@ class DumpDataReader:
     def get_vector_field_data(
         self, surface_ids, field_names
     ) -> list[Union[np.array, None]]:
+        """Get vector field data."""
         tag_id = (("type", "vector-field"),)
 
         vector_field_data = [
@@ -165,6 +174,7 @@ class DumpDataReader:
     def get_pathlines_data(
         self, surface_ids, field_names, key
     ) -> list[Union[np.array, None]]:
+        """Get pathlines data."""
         pathlines_data = []
         for surface_id in surface_ids:
             for field_name in field_names:

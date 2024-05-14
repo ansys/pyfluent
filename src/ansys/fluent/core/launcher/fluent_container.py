@@ -48,6 +48,7 @@ config_dict =
 >>> config_dict.update(image_name='custom_fluent', image_tag='v23.1.0', mem_limit='1g')
 >>> session = pyfluent.launch_fluent(container_dict=config_dict)
 """
+
 import logging
 import os
 from pathlib import Path, PurePosixPath
@@ -55,6 +56,7 @@ import tempfile
 from typing import List, Optional, Union
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
@@ -65,7 +67,7 @@ DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
 class FluentImageNameTagNotSpecified(ValueError):
-    """Provides the error when Fluent image name or image tag is not specified."""
+    """Raised when Fluent image name or image tag is not specified."""
 
     def __init__(self):
         super().__init__(
@@ -74,7 +76,7 @@ class FluentImageNameTagNotSpecified(ValueError):
 
 
 class ServerInfoFileError(ValueError):
-    """Provides the error when server info file is not given properly."""
+    """Raised when server info file is not given properly."""
 
     def __init__(self):
         super().__init__(
@@ -83,7 +85,7 @@ class ServerInfoFileError(ValueError):
 
 
 class LicenseServerNotSpecified(KeyError):
-    """Provides the error when license server is not specified."""
+    """Raised when license server is not specified."""
 
     def __init__(self):
         super().__init__(
@@ -178,7 +180,10 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
-        host_mount_path = pyfluent.EXAMPLES_PATH
+        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+            host_mount_path = pyfluent.USER_DATA_PATH
+        else:
+            host_mount_path = pyfluent.EXAMPLES_PATH
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
@@ -282,7 +287,7 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
+            image_tag = os.getenv("FLUENT_IMAGE_TAG", f"v{fluent_release_version}")
         if not image_name:
             image_name = os.getenv("FLUENT_IMAGE_NAME", "ghcr.io/ansys/pyfluent")
         if not image_tag or not image_name:

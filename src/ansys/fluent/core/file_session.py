@@ -1,3 +1,5 @@
+"""Provides a module for file session."""
+
 from typing import List, Optional
 
 import numpy as np
@@ -16,14 +18,14 @@ from ansys.fluent.core.services.field_data import (
 
 
 class InvalidMultiPhaseFieldName(ValueError):
-    """Provides the error when multi-phase field name is inappropriate."""
+    """Raised when multi-phase field name is inappropriate."""
 
     def __init__(self):
         super().__init__("Multi-phase field name should start with 'phase-'.")
 
 
 class InvalidFieldName(ValueError):
-    """Provides the error when a field name is inappropriate."""
+    """Raised when a field name is inappropriate."""
 
     def __init__(self):
         super().__init__("The only allowed field is 'velocity'.")
@@ -98,7 +100,7 @@ class Transaction:
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
         node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
+        boundary_value: Optional[bool] = True,
     ) -> None:
         """Add request to get scalar field data on surfaces.
 
@@ -115,7 +117,7 @@ class Transaction:
             ``False``, the element location is provided.
         boundary_value : bool, optional
             Whether to provide the slip velocity at the wall boundaries. The default
-            is ``False``. When ``True``, no slip velocity is provided.
+            is ``True``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
@@ -259,10 +261,10 @@ class Transaction:
             field_data_surface = field_data[scalar_field_tag]
             for surface_id in transaction.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][
-                    transaction.field_name
-                ] = self._file_session._data_file.get_face_scalar_field_data(
-                    transaction.phase_name, transaction.field_name, surface_id
+                field_data_surface[surface_id][transaction.field_name] = (
+                    self._file_session._data_file.get_face_scalar_field_data(
+                        transaction.phase_name, transaction.field_name, surface_id
+                    )
                 )
 
         vector_field_tag = (("type", "vector-field"),)
@@ -275,10 +277,10 @@ class Transaction:
             field_data_surface = field_data[vector_field_tag]
             for surface_id in transaction.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][
-                    transaction.field_name
-                ] = self._file_session._data_file.get_face_vector_field_data(
-                    transaction.phase_name, surface_id
+                field_data_surface[surface_id][transaction.field_name] = (
+                    self._file_session._data_file.get_face_vector_field_data(
+                        transaction.phase_name, surface_id
+                    )
                 )
                 field_data_surface[surface_id]["vector-scale"] = np.array([0.1])
 
@@ -297,6 +299,8 @@ class Transaction:
 
 
 class FileFieldData:
+    """File field data."""
+
     def __init__(self, file_session, field_info):
         self._file_session = file_session
         self._field_info = field_info
@@ -390,7 +394,7 @@ class FileFieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
         node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
+        boundary_value: Optional[bool] = True,
     ):
         """Get scalar field data on a surface.
 
@@ -407,7 +411,7 @@ class FileFieldData:
             When ``False``, data is provided for the element location.
         boundary_value : bool, optional
             Whether to provide slip velocity at the wall boundaries. The default is
-            ``False``. When ``True``, no slip velocity is provided.
+            ``True``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
@@ -585,6 +589,8 @@ class FileFieldData:
 
 
 class FileFieldInfo:
+    """File field info."""
+
     def __init__(self, file_session):
         self._file_session = file_session
 
@@ -707,6 +713,8 @@ class FileFieldInfo:
 
 
 class FileSession:
+    """File session to read case and data file."""
+
     def __init__(self):
         """__init__ method of FileSession class."""
         self._case_file = None

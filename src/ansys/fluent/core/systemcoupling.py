@@ -10,6 +10,8 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @dataclass
 class Variable:
+    """Provides variable data."""
+
     name: str
     display_name: str
     tensor_type: str
@@ -20,6 +22,8 @@ class Variable:
 
 @dataclass
 class Region:
+    """Provides region data."""
+
     name: str
     display_name: str
     topology: str
@@ -44,43 +48,54 @@ class SystemCoupling:
     def __init__(self, solver):
         self._solver = solver
         # version check - this requires Fluent 2024 R1 or newer.
-        if FluentVersion.get_latest_installed() < FluentVersion.v241:
+        if self._solver.get_fluent_version() < FluentVersion.v241:
             raise RuntimeError(
-                f"Fluent version is {FluentVersion.get_latest_installed().value}. PySystemCoupling integration requires Fluent 24.1.0 or later."
+                f"Fluent version is {self._solver.get_fluent_version().value}. PySystemCoupling integration requires Fluent {FluentVersion.v241.value} or later."
             )
 
     @property
     def participant_type(self) -> str:
+        """Get participant type."""
         return "FLUENT"
 
     def get_variables(self) -> List[Variable]:
+        """Get variables."""
         return self.__get_syc_setup()["variables"]
 
     def get_regions(self) -> List[Region]:
+        """Get regions."""
         return self.__get_syc_setup()["regions"]
 
     def get_analysis_type(self) -> str:
+        """Get analysis type."""
         return self.__get_syc_setup()["analysis-type"]
 
     def connect(self, host: str, port: int, name: str) -> None:
+        """Connect parallelly."""
         self._solver.setup.models.system_coupling.connect_parallel(
             schost=host, scport=port, scname=name
         )
 
     def solve(self) -> None:
+        """Initialize and solve."""
         self._solver.setup.models.system_coupling.init_and_solve()
 
     def __get_syc_setup(self) -> dict:
         def get_scp_string() -> str:
-            """Get SCP file contents in the form of the XML string."""
-            fluent_cwd = self._solver.connection_properties.cortex_pwd
-            scp_file_name = os.path.join(fluent_cwd, "fluent.scp")
+            """Get the SCP file contents in the form of an XML string."""
+
+            scp_file_name = "fluent.scp"
             self._solver.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name
             )
+
+            # download the file locally in case Fluent is in a container
+            if self._solver._fluent_connection._remote_instance != None:
+                self._solver.download(scp_file_name)
+
             assert os.path.exists(
                 scp_file_name
-            ), "ERROR: could not create System Coupling .scp file"
+            ), "ERROR: could not create System Coupling SCP file"
 
             with open(scp_file_name, "r") as f:
                 xml_string = f.read()
@@ -116,7 +131,7 @@ class SystemCoupling:
 
             ext_vars = {
                 "force",
-                "lortentz-force",
+                "lorentz-force",
                 "heatrate",
                 "heatflow",
                 "mass-flow-rate",

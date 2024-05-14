@@ -1,3 +1,5 @@
+"""Provides a module for datamodel streaming."""
+
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
@@ -21,7 +23,7 @@ class DatamodelStream(StreamingService):
         rules,
         no_commands_diff_state,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)

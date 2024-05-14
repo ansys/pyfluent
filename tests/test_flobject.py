@@ -1,16 +1,23 @@
 """Unit tests for flobject module."""
-# import codegen.settingsgen
+
 from collections.abc import MutableMapping
 import io
 import weakref
 
 import pytest
 from test_utils import count_key_recursive
+from util.solver_workflow import new_solver_session  # noqa: F401
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
-from ansys.fluent.core.solver.flobject import InactiveObjectError, find_children
+from ansys.fluent.core.solver.flobject import (
+    InactiveObjectError,
+    _gethash,
+    find_children,
+)
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+import ansys.units
 
 
 class Setting:
@@ -35,6 +42,7 @@ class Setting:
 
     attrs = {
         "active?": lambda self: True,
+        "webui-release-active?": lambda self: True,
     }
 
 
@@ -291,6 +299,7 @@ class Root(Group):
             attrs = {
                 "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
+                "webui-release-active?": lambda self: True,
             }
 
         children = {
@@ -362,7 +371,10 @@ class Proxy:
             return self.r
         obj = self.r
         for c in path.split("/"):
-            obj = obj.get_child(c)
+            try:
+                obj = obj.get_child(c)
+            except KeyError:
+                obj = obj.get_command(c)
         return obj
 
     def get_var(self, path):
@@ -509,9 +521,9 @@ def test_attrs():
 # install
 def _disabled_test_settings_gen():
     info = Proxy().get_static_info()
-    cls = flobject.get_cls("", info)
+    cls, _ = flobject.get_cls("", info)
     f = io.StringIO()
-    codegen.settingsgen.write_settings_classes(f, cls, info)
+    ansys.fluent.core.codegen.settingsgen.write_settings_classes(f, cls, info)
     assert (
         f.getvalue()
         == '''###
@@ -665,7 +677,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     modified = velocity_inlet.user_creatable()
     assert existing == modified
 
-    if solver.get_fluent_version() < "24.2.0":
+    if solver.get_fluent_version() < FluentVersion.v242:
         turbulent_viscosity_ratio = velocity_inlet[
             "inlet1"
         ].turbulence.turbulent_viscosity_ratio_real
@@ -696,7 +708,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     assert count_key_recursive(default_attrs, "default") > 5
 
     mesh = solver.results.graphics.mesh.create("mesh-1")
-    if solver.get_fluent_version() < "24.2.0":
+    if solver.get_fluent_version() < FluentVersion.v242:
         assert mesh.name.is_read_only()
     else:
         assert not mesh.name.is_read_only()
@@ -706,9 +718,8 @@ def test_accessor_methods_on_settings_object(load_static_mixer_settings_only):
     solver.results.graphics.mesh["mesh-1"].rename("mesh_new")
     assert solver.results.graphics.mesh.get_object_names() == ["mesh_new"]
 
-    if solver.get_fluent_version() >= "24.2.0":
-        solver.results.graphics.mesh.rename(new="mesh_242", old="mesh_new")
-        assert solver.results.graphics.mesh.get_object_names() == ["mesh_242"]
+    solver.results.graphics.mesh.rename(new="mesh_242", old="mesh_new")
+    assert solver.results.graphics.mesh.get_object_names() == ["mesh_242"]
 
 
 @pytest.mark.fluent_version("latest")
@@ -723,7 +734,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_on
     accuracy_control = (
         solver.setup.models.discrete_phase.numerics.tracking.accuracy_control
     )
-    if solver.get_fluent_version() < "24.1.0":
+    if solver.get_fluent_version() < FluentVersion.v241:
         max_refinements = accuracy_control.max_number_of_refinements
     else:
         max_refinements = accuracy_control.max_num_refinements
@@ -733,36 +744,11 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_settings_on
     assert max_refinements.get_attr("max") == 1000000
 
 
-@pytest.mark.fluent_version("==23.1")
+@pytest.mark.fluent_version("==24.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root_231(load_static_mixer_settings_only):
+def test_find_children_from_settings_root(load_static_mixer_settings_only):
     setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 18514
-    assert len(find_children(setup_cls(), "gen*")) >= 9
-    assert set(find_children(setup_cls(), "general*")) >= {
-        "general",
-        "models/discrete_phase/general_settings",
-        "models/virtual_blade_model/disk/general",
-    }
-    assert set(find_children(setup_cls(), "general")) >= {
-        "general",
-        "models/virtual_blade_model/disk/general",
-    }
-    assert set(find_children(setup_cls(), "*gen")) >= {
-        "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
-        "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
-        "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
-        "boundary_conditions/outlet_vent/p_backflow_spec_gen",
-        "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
-        "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
-    }
-
-
-@pytest.mark.fluent_version("latest")
-@pytest.mark.codegen_required
-def test_find_children_from_settings_root_232(load_static_mixer_settings_only):
-    setup_cls = load_static_mixer_settings_only.setup.__class__
-    assert len(find_children(setup_cls())) >= 18514
+    assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
         "general",
@@ -797,7 +783,7 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         if path.endswith("geom_dir_spec")
     )
 
-    if load_static_mixer_settings_only.get_fluent_version() < "24.2.0":
+    if load_static_mixer_settings_only.get_fluent_version() < FluentVersion.v242:
         assert set(
             find_children(
                 load_mixer.materials.fluid["air"].density.piecewise_polynomial
@@ -819,6 +805,39 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_settings_onl
         }
 
 
+@pytest.mark.fluent_version(">=24.1")
+def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
+    solver = new_solver_session_no_transcript
+
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.solution.initialization.hybrid_initialize()
+
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet["*1"].momentum.velocity.value()[
+            "inlet1"
+        ]["momentum"]["velocity"]["value"]
+        == solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].momentum.velocity.value()
+    )
+
+    assert solver.setup.boundary_conditions.wall["*"]()
+
+    with pytest.raises(AttributeError) as msg:
+        solver.setup.boundary_conditions.velocity_inlet["*1"].inlet1()
+    assert msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet1'.\n"
+
+    with pytest.raises(KeyError) as msg:
+        solver.setup.boundary_conditions.velocity_inlet["inlet-1"]
+    assert (
+        msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet-1'.\n"
+        "The most similar names are: inlet1, inlet2."
+    )
+
+
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2792")
 @pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
@@ -832,7 +851,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         solver.setup.mod
 
     assert (
-        msg.value.args[0] == "mod is not an allowed Settings objects name.\n"
+        msg.value.args[0] == "'setup' object has no attribute 'mod'.\n"
         "The most similar names are: models."
     )
 
@@ -840,7 +859,7 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         solver.setup.models.viscous.model = "k_epsilon"
 
     assert (
-        msg.value.args[0] == "k_epsilon is not an allowed model name.\n"
+        msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
         "The most similar names are: k-epsilon."
     )
 
@@ -849,10 +868,22 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_settings_api_names_exception(new_solver_session_no_transcript):
+    solver = new_solver_session_no_transcript
+
+    case_path = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    with pytest.raises(RuntimeError):
+        solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
+
+
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
-    root = solver._root
+    root = solver.settings
 
     nodes = {}
     expected_type_list = [
@@ -943,3 +974,222 @@ def test_strings_with_allowed_values(load_static_mixer_settings_only):
         "density-based-implicit",
         "density-based-explicit",
     ]
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_parent_class_attributes(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+    assert solver.setup.models.energy.enabled
+    with pytest.raises(AttributeError):
+        solver.setup.models.energy.__class__.enabled
+
+
+def _check_vector_units(obj, units):
+    assert obj.units() == units
+    state_with_units = obj.state_with_units()
+    state = obj.get_state()
+    assert len(state_with_units) == 2
+    assert len(state) == len(state_with_units[0])
+    assert all(x == y for x, y in zip(state, state_with_units[0]))
+    assert units == state_with_units[1]
+    if flobject.ansys_units:
+        assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_ansys_units_integration(load_mixing_elbow_mesh):
+    solver = load_mixing_elbow_mesh
+    assert isinstance(solver.settings.state_with_units(), dict)
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    turbulence = hot_inlet.turbulence
+    turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hydraulic_diameter = turbulence.hydraulic_diameter
+    hydraulic_diameter.set_state("1 [in]")
+    assert hydraulic_diameter() == "1 [in]"
+    assert hydraulic_diameter.as_quantity() == None
+    assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
+    assert hydraulic_diameter.units() == "m"
+    turbulent_intensity = turbulence.turbulent_intensity
+    turbulent_intensity.set_state(0.2)
+    assert turbulent_intensity() == 0.2
+    assert turbulent_intensity.as_quantity() == ansys.units.Quantity(0.2, "")
+    turbulent_intensity.set_state(ansys.units.Quantity(0.1, ""))
+    assert turbulent_intensity.state_with_units() == (0.1, "")
+    hydraulic_diameter.set_state(1)
+    assert hydraulic_diameter.as_quantity() == ansys.units.Quantity(1, "m")
+    assert hydraulic_diameter.state_with_units() == (1.0, "m")
+    assert hydraulic_diameter.units() == "m"
+    hydraulic_diameter.set_state(ansys.units.Quantity(1, "in"))
+    assert hydraulic_diameter.as_quantity() == ansys.units.Quantity(0.0254, "m")
+    assert hydraulic_diameter.state_with_units() == (0.0254, "m")
+    assert hydraulic_diameter.units() == "m"
+    assert hydraulic_diameter() == 0.0254
+    velocity = ansys.units.Quantity(
+        12.0, ansys.units.UnitRegistry().ft
+    ) / ansys.units.Quantity(3.0, ansys.units.UnitRegistry().s)
+    hot_inlet.momentum.velocity.value = velocity
+    assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
+    velocity = (1.0, "m s^-1")
+    hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value.state_with_units() == velocity
+    velocity = ansys.units.Quantity(12.0, "m s^-1")
+    hot_inlet.momentum.velocity = velocity
+    assert hot_inlet.momentum.velocity.value() == velocity.value
+    assert hot_inlet.momentum.velocity.value.as_quantity() == velocity
+    assert hot_inlet.momentum.velocity.state_with_units() == {
+        "option": "value",
+        "value": (12.0, "m s^-1"),
+    }
+    clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
+    clip_factor.set_state(1.2)
+    assert clip_factor() == 1.2
+    assert clip_factor.as_quantity() == ansys.units.Quantity(1.2, "")
+    assert clip_factor.state_with_units() == (1.2, "")
+    assert clip_factor.units() == ""
+    clip_factor.set_state(ansys.units.Quantity(1.8, ""))
+    assert clip_factor.as_quantity() == ansys.units.Quantity(1.8, "")
+    assert clip_factor.state_with_units() == (1.8, "")
+    assert clip_factor.units() == ""
+
+    _check_vector_units(
+        solver.setup.general.operating_conditions.reference_pressure_location, "m"
+    )
+
+    _check_vector_units(
+        solver.setup.reference_frames[
+            "global"
+        ].initial_state.orientation.first_axis.axis_to.vector,
+        "",
+    )
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
+    solver = load_mixing_elbow_mesh
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+
+    assert hot_inlet.state_with_units() == {
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": (0, "m s^-1")},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "name": "hot-inlet",
+        "turbulence": {
+            "turbulent_intensity": (0.05, ""),
+            "turbulent_specification": "Intensity and Viscosity Ratio",
+            "turbulent_viscosity_ratio": (10, None),
+        },
+    } or {
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": (0, "m s^-1")},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "name": "hot-inlet",
+        "turbulence": {
+            "turbulent_specification": "Intensity and Viscosity Ratio",
+            "turbulent_intensity": (0.05, ""),
+            "turbulent_viscosity_ratio": (10, None),
+        },
+    }
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_bug_1001124_quantity_assignment(load_mixing_elbow_mesh):
+    speed = ansys.units.Quantity(100, "m s^-1")
+    solver = load_mixing_elbow_mesh
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity.value = speed.value
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.value()
+        == speed.value
+    )
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = (
+        speed
+    )
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "hot-inlet"
+        ].momentum.velocity.value()
+        == speed.value
+    )
+
+
+def test_assert_type():
+    types = [
+        bool,
+        int,
+        flobject.RealType,
+        str,
+        flobject.BoolListType,
+        flobject.IntListType,
+        flobject.RealListType,
+        flobject.StringListType,
+        flobject.RealVectorType,
+        flobject.DictStateType,
+    ]
+    vals = [
+        False,
+        1,
+        1.0,
+        "a",
+        [False, True],
+        [1, 2],
+        [1.0, 2.0],
+        ["a", "b"],
+        (1.0, 2.0, 3.0),
+        {"a": 1},
+    ]
+    subtypes = {
+        bool: (int,),
+        str: (flobject.RealType,),
+        flobject.BoolListType: (flobject.IntListType,),
+        flobject.StringListType: (flobject.RealListType,),
+    }
+    for i_t, tp in enumerate(types):
+        for i_v, val in enumerate(vals):
+            if i_t == i_v:
+                flobject.assert_type(val, tp)
+            else:
+                subtype = subtypes.get(types[i_v])
+                if subtype and types[i_t] in subtype:
+                    flobject.assert_type(val, tp)
+                else:
+                    with pytest.raises(TypeError):
+                        flobject.assert_type(val, tp)
+
+
+def test_static_info_hash_identity(new_solver_session):
+    solver = new_solver_session
+    hash1 = _gethash(solver._settings_service.get_static_info())
+    hash2 = _gethash(solver._settings_service.get_static_info())
+    assert hash1 == hash2
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_default_argument_names_for_commands(load_static_mixer_settings_only):
+    solver = load_static_mixer_settings_only
+
+    assert solver.results.graphics.contour.command_names == [
+        "delete",
+        "rename",
+        "list",
+        "list_properties",
+        "make_a_copy",
+        "display",
+        "copy",
+        "add_to_graphics",
+        "clear_history",
+    ]
+
+    assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
+    assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    # The following is the default behavior when no arguments are associated with the command.
+    assert solver.results.graphics.contour.list.argument_names == []

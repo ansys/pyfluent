@@ -1,10 +1,98 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = [
-    "setuptools>=45.0",
-    "wheel>=0.37.0",
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+# Check https://python-poetry.org/docs/pyproject/ for all available sections
+name = "ansys-fluent-core"
+version = "0.21.dev0"
+description = "PyFluent provides Pythonic access to Ansys Fluent"
+license = "MIT"
+authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
+maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]
+readme = "README.rst"
+repository = "https://github.com/ansys/pyfluent"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
 ]
 
+include = [
+    { path = "src/ansys/fluent/core/generated/fluent_version_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/meshing/tui_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/tui_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/datamodel_*/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
+]
+
+packages = [
+    { include = "ansys", from = "src" },
+    { include = "tests", to = "ansys/fluent" },
+    { include = "README.rst", to = "ansys/fluent/core/docs" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+importlib-metadata = {version = "^7.0.1", python = "<3.9"}
+ansys-api-fluent = "^0.3.22"
+ansys-platform-instancemanagement = "^1.0"
+ansys-tools-filetransfer = ">=0.1,<0.3"
+ansys-units = "^0.3.2"
+alive-progress = "^3.1.5"
+beartype = "^0.17"
+docker = "^6.1.3"
+grpcio = "^1.30.0"
+grpcio-health-checking = "^1.30.0"
+h5py = { version = "==3.10.0", optional = true }
+lxml = "^4.9.2"
+numpy= "^1.21.5"
+pandas = "^1.1.5"
+platformdirs = "^3.5.1"
+psutil = "^5.9.5"
+pyyaml = "^6.0"
+requests = "^2.31.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = "==7.2.6"
+jupyter_sphinx = "==0.5.3"
+numpydoc = "==1.6.0"
+matplotlib = "==3.8.2"
+ansys-sphinx-theme = "==0.13.2"
+pypandoc = "==1.12"
+pytest-sphinx = "==0.5.0"
+sphinx-autobuild = "==2021.3.14"
+sphinx-autodoc-typehints = "==1.25.3"
+sphinx-copybutton = "==0.5.2"
+sphinx-gallery = "==0.15.0"
+sphinx-notfound-page = "==1.0.0"
+sphinxcontrib-websupport = "==1.2.7"
+sphinxemoji = "==0.3.1"
+sphinx-toggleprompt = "==0.5.2"
+autodocsumm = "==0.2.12"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "==8.0.2"
+pytest-cov = "==4.1.0"
+pytest-mock = "==3.12.0"
+
+[tool.poetry.extras]
+reader = ["h5py"]
+tests = ["pytest", "pytest-cov", "pytest-mock"]
+
+[tool.poetry.urls]
+"Documentation" = "https://fluent.docs.pyansys.com/"
+"Source" = "https://github.com/ansys/pyfluent"
+"Tracker" = "https://github.com/ansys/pyfluent/issues"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -32,23 +120,18 @@ force_sort_within_sections = true
 line_length = 88
 default_section = "THIRDPARTY"
 skip_glob = [
-    "src/ansys/fluent/core/meshing/tui",
-    "src/ansys/fluent/core/solver/tui",
-    "src/ansys/fluent/core/datamodel_222",
-    "src/ansys/fluent/core/datamodel_231",
-    "src/ansys/fluent/core/datamodel_232",
-    "src/ansys/fluent/core/datamodel_241",
-    "src/ansys/fluent/core/solver/settings_222",
-    "src/ansys/fluent/core/solver/settings_231",
-    "src/ansys/fluent/core/solver/settings_232",
-    "src/ansys/fluent/core/solver/settings_241"
+    "src/ansys/fluent/core/generated"
 ]
 filter_files = "true"
 known_first_party = ["ansys"]
 
 
 [tool.codespell]
-skip = "*.xml,./src/ansys/fluent/core/meshing/tui*,./src/ansys/fluent/core/solver/tui*,./src/ansys/fluent/core/datamodel_222/*,./src/ansys/fluent/core/datamodel_231/*,./src/ansys/fluent/core/datamodel_232/*,./src/ansys/fluent/core/datamodel_241/*,./codegen/data/fluent_gui_help.xml,./src/ansys/fluent/core/solver/settings_222/*,./src/ansys/fluent/core/solver/settings_231/*,./src/ansys/fluent/core/solver/settings_232/*,./src/ansys/fluent/core/solver/settings_241/*"
+skip = """
+    *.xml,
+    ./src/ansys/fluent/core/generated/*,
+    ./src/ansys/fluent/core/codegen/data/fluent_gui_help.xml,
+    """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 
 
@@ -56,22 +139,7 @@ ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 in-place = "true"
 exclude = [
     "tests/",
-    "src/ansys/fluent/core/meshing/tui_222.py",
-    "src/ansys/fluent/core/solver/tui_222.py",
-    "src/ansys/fluent/core/solver/settings_222/",
-    "src/ansys/fluent/core/datamodel_222/",
-    "src/ansys/fluent/core/meshing/tui_231.py",
-    "src/ansys/fluent/core/solver/tui_231.py",
-    "src/ansys/fluent/core/solver/settings_231/",
-    "src/ansys/fluent/core/datamodel_231/",
-    "src/ansys/fluent/core/meshing/tui_232.py",
-    "src/ansys/fluent/core/solver/tui_232.py",
-    "src/ansys/fluent/core/solver/settings_232/",
-    "src/ansys/fluent/core/datamodel_232/",
-    "src/ansys/fluent/core/meshing/tui_241.py",
-    "src/ansys/fluent/core/solver/tui_241.py",
-    "src/ansys/fluent/core/solver/settings_241/",
-    "src/ansys/fluent/core/datamodel_241/"
+    "src/ansys/fluent/core/generated/",
 ]
 black = "true"
 non-cap = [
@@ -94,11 +162,7 @@ non-cap = [
 [tool.coverage.run]
 source = ["ansys/fluent"]
 omit = [
-    "*/ansys/fluent/core/fluent_version_*",
-    "*/ansys/fluent/core/meshing/tui_*",
-    "*/ansys/fluent/core/solver/tui_*",
-    "*/ansys/fluent/core/solver/settings_*/*",
-    "*/ansys/fluent/core/datamodel_*/*"
+    "*/ansys/fluent/core/generated/*",
 ]
 
 [tool.coverage.report]

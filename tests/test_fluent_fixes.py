@@ -54,7 +54,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     solver_session.tui.solve.set.number_of_iterations(15)
     solver_session.tui.solve.iterate()
 
-    monitors_list = solver_session.monitors_manager.get_monitor_set_names()
+    monitors_list = solver_session.monitors.get_monitor_set_names()
 
     assert monitors_list == [
         "residual",
@@ -64,9 +64,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
         "point-vel-rplot",
     ]
 
-    mp = solver_session.monitors_manager.get_monitor_set_data(
-        monitor_set_name="residual"
-    )
+    mp = solver_session.monitors.get_monitor_set_data(monitor_set_name="residual")
 
     assert mp
 
@@ -78,7 +76,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     solver_session.solution.initialization.hybrid_initialize()
     solver_session.tui.solve.iterate()
 
-    new_monitors_list = solver_session.monitors_manager.get_monitor_set_names()
+    new_monitors_list = solver_session.monitors.get_monitor_set_names()
 
     assert new_monitors_list == [
         "residual",
@@ -88,3 +86,26 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
         "point-vel-rplot",
         "sample-report-plot",
     ]
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_empty_vector_field_data_2339(new_solver_session):
+    solver = new_solver_session
+
+    import_case = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
+    import_data = examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+
+    assert import_case
+    assert import_data
+
+    solver.file.read_case(file_name=import_case)
+
+    solver.file.read_data(file_name=import_data)
+
+    assert [
+        a.x
+        for a in solver.fields.field_data.get_vector_field_data(
+            field_name="velocity", surface_ids=[1]
+        )[1].data
+    ][:5]

@@ -168,6 +168,8 @@ class ReductionService:
 
 
 class BadReductionRequest(Exception):
+    """Raised on an attempt to make a bad reduction request."""
+
     def __init__(self, err):
         super().__init__(f"Could not complete reduction function request: {err}")
 
@@ -219,9 +221,7 @@ def _root(obj):
     return (
         None
         if isinstance(obj, list)
-        else obj
-        if not getattr(obj, "obj_name", None)
-        else _root(obj._parent)
+        else obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
     )
 
 

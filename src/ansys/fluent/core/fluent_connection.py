@@ -1,3 +1,5 @@
+"""Provides a module for Fluent connection functionality."""
+
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
@@ -7,7 +9,7 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 import warnings
 import weakref
 
@@ -18,6 +20,7 @@ import psutil
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.platform.instancemanagement import Instance
 import docker
 
@@ -25,7 +28,7 @@ logger = logging.getLogger("pyfluent.general")
 
 
 class PortNotProvided(ValueError):
-    """Provides the error when port is not provided."""
+    """Raised when port is not provided."""
 
     def __init__(self):
         super().__init__(
@@ -34,15 +37,14 @@ class PortNotProvided(ValueError):
 
 
 class UnsupportedRemoteFluentInstance(ValueError):
-    """Provides the error when 'wait_process_finished' does not support remote Fluent
-    session."""
+    """Raised when 'wait_process_finished' does not support remote Fluent session."""
 
     def __init__(self):
         super().__init__("Remote Fluent instance is unsupported.")
 
 
 class WaitTypeError(TypeError):
-    """Provides the error when invalid ``wait`` type is provided."""
+    """Raised when invalid ``wait`` type is provided."""
 
     def __init__(self):
         super().__init__("Invalid 'wait' type.")
@@ -119,22 +121,24 @@ class ErrorState:
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> session = pyfluent.launch_fluent()
-    >>> session.fluent_connection.error_state.set("test", "test details")
-    >>> session.fluent_connection.error_state.name
+    >>> session._fluent_connection._error_state.set("test", "test details")
+    >>> session._fluent_connection._error_state.name
     'test'
-    >>> session.fluent_connection.error_state.details
+    >>> session._fluent_connection._error_state.details
     'test details'
-    >>> session.fluent_connection.error_state.clear()
-    >>> session.fluent_connection.error_state.name
+    >>> session._fluent_connection._error_state.clear()
+    >>> session._fluent_connection._error_state.name
     ''
     """
 
     @property
     def name(self):
+        """Get name."""
         return self._name
 
     @property
     def details(self):
+        """Get details."""
         return self._details
 
     def __init__(self, name: str = "", details: str = ""):
@@ -198,6 +202,84 @@ class FluentConnectionProperties:
         return vars(self)
 
 
+def _get_ip_and_port(
+    ip: Optional[str] = None, port: Optional[int] = None
+) -> (str, int):
+    if not ip:
+        ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+    if not port:
+        port = os.getenv("PYFLUENT_FLUENT_PORT")
+    if not port:
+        raise PortNotProvided()
+    return ip, port
+
+
+def _get_channel(ip: str, port: int):
+    # Same maximum message length is used in the server
+    max_message_length = _get_max_c_int_limit()
+    return grpc.insecure_channel(
+        f"{ip}:{port}",
+        options=[
+            ("grpc.max_send_message_length", max_message_length),
+            ("grpc.max_receive_message_length", max_message_length),
+        ],
+    )
+
+
+class _ConnectionInterface:
+    def __init__(self, create_grpc_service, error_state):
+        self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
+        self.scheme_eval = service_creator("scheme_eval").create(
+            self._scheme_eval_service
+        )
+
+    @property
+    def product_build_info(self) -> str:
+        """Get Fluent build information."""
+        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
+        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
+        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
+        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
+
+    def get_cortex_connection_properties(self):
+        """Get connection properties of Fluent."""
+        from grpc._channel import _InactiveRpcError
+
+        try:
+            logger.info(self.product_build_info)
+            logger.debug("Obtaining Cortex connection properties...")
+            fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
+            cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
+            cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
+            cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+            logger.debug("Cortex connection properties successfully obtained.")
+        except _InactiveRpcError:
+            logger.warning(
+                "Fluent Cortex properties unobtainable. 'force exit()' and other"
+                "methods are not going to work properly. Proceeding..."
+            )
+            fluent_host_pid = None
+            cortex_host = None
+            cortex_pid = None
+            cortex_pwd = None
+
+        return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
+
+    def is_solver_mode(self):
+        """Checks if the Fluent session is in solver mode.
+
+        Returns
+        --------
+            ``True`` if the Fluent session is in solver mode, ``False`` otherwise.
+        """
+        return self.scheme_eval.scheme_eval("(cx-solver-mode?)")
+
+    def exit_server(self):
+        """Exits the server."""
+        self.scheme_eval.exec(("(exit-server)",))
+
+
 class FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -221,9 +303,9 @@ class FluentConnection:
         password: Optional[str] = None,
         channel: Optional[grpc.Channel] = None,
         cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
         remote_instance: Optional[Instance] = None,
-        launcher_args: Optional[Dict[str, Any]] = None,
+        file_transfer_service: Optional[Any] = None,
+        slurm_job_id: Optional[str] = None,
         inside_container: Optional[bool] = None,
     ):
         """Initialize a Session.
@@ -249,24 +331,25 @@ class FluentConnection:
             When True, the connected Fluent session will be shut down
             when PyFluent is exited or exit() is called on the session
             instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
         remote_instance : ansys.platform.instancemanagement.Instance
             The corresponding remote instance when Fluent is launched through
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
+        file_transfer_service : optional
+            File transfer service for uploading files to and
+            downloading files from the server.
+        slurm_job_id: bool, optional
+            Job ID of a Fluent session running within a Slurm environment.
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
-            is running inside a docker container.
+            is running inside a Docker container.
 
         Raises
         ------
         PortNotProvided
             If port is not provided.
         """
-        self.error_state = ErrorState()
+        self._error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
         self._slurm_job_id = None
@@ -274,34 +357,22 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
-            if not ip:
-                ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
-            if not port:
-                port = os.getenv("PYFLUENT_FLUENT_PORT")
+            ip, port = _get_ip_and_port(ip, port)
+            self._channel = _get_channel(ip, port)
             self._channel_str = f"{ip}:{port}"
-            if not port:
-                raise PortNotProvided()
-            # Same maximum message length is used in the server
-            max_message_length = _get_max_c_int_limit()
-            self._channel = grpc.insecure_channel(
-                f"{ip}:{port}",
-                options=[
-                    ("grpc.max_send_message_length", max_message_length),
-                    ("grpc.max_receive_message_length", max_message_length),
-                ],
-            )
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
 
-        self.health_check_service = service_creator("health_check").create(
-            self._channel, self._metadata, self.error_state
+        self.health_check = service_creator("health_check").create(
+            self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
-        self.health_check_service.check_health()
+        # TODO: Show user-friendly error message.
+        self.health_check.check_health()
 
-        self._slurm_job_id = launcher_args and launcher_args.get("slurm_job_id")
+        self._slurm_job_id = slurm_job_id
 
         self._id = f"session-{next(FluentConnection._id_iter)}"
 
@@ -309,35 +380,13 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        # Move this service later.
-        # Currently, required by launcher to connect to a running session.
-        self._scheme_eval_service = self.create_grpc_service(
-            SchemeEvalService, self.error_state
+        self._connection_interface = _ConnectionInterface(
+            self.create_grpc_service, self._error_state
         )
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
+        fluent_host_pid, cortex_host, cortex_pid, cortex_pwd = (
+            self._connection_interface.get_cortex_connection_properties()
         )
-
         self._cleanup_on_exit = cleanup_on_exit
-        self.start_transcript = start_transcript
-        from grpc._channel import _InactiveRpcError
-
-        try:
-            logger.debug("Obtaining Cortex connection properties...")
-            fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
-            cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
-            cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
-            cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
-            logger.debug("Cortex connection properties successfully obtained.")
-        except _InactiveRpcError:
-            logger.warning(
-                "Fluent Cortex properties unobtainable, force exit and other"
-                "methods are not going to work properly, proceeding..."
-            )
-            cortex_host = None
-            cortex_pid = None
-            cortex_pwd = None
-            fluent_host_pid = None
 
         if (
             (inside_container is None or inside_container is True)
@@ -367,7 +416,8 @@ class FluentConnection:
         )
 
         self._remote_instance = remote_instance
-        self.launcher_args = launcher_args
+
+        self._file_transfer_service = file_transfer_service
 
         self._exit_event = threading.Event()
 
@@ -385,9 +435,10 @@ class FluentConnection:
             FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
-            self.scheme_eval,
+            self._connection_interface,
             self.finalizer_cbs,
             self._remote_instance,
+            self._file_transfer_service,
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
@@ -409,76 +460,54 @@ class FluentConnection:
         >>> session.force_exit()
         """
         if self.connection_properties.inside_container:
-            logger.error(
-                "Cannot execute cleanup script, Fluent running inside container. "
-                "Use force_exit_container() instead."
-            )
-            return
-        if self._remote_instance is not None:
+            self._force_exit_container()
+        elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
             return
-
-        pwd = self.connection_properties.cortex_pwd
-        pid = self.connection_properties.fluent_host_pid
-        host = self.connection_properties.cortex_host
-        if host != socket.gethostname():
-            logger.error(
-                "Fluent host is not the current host, cancelling forced exit..."
-            )
-            return
-        if os.name == "nt":
-            cleanup_file_ext = "bat"
-            cmd_list = []
-        elif os.name == "posix":
-            cleanup_file_ext = "sh"
-            cmd_list = ["bash"]
         else:
-            logger.error(
-                "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
-            )
-            return
-        cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
-        logger.debug(f"Looking for {cleanup_file_name}...")
-        cleanup_file_name = Path(pwd, cleanup_file_name)
-        if cleanup_file_name.is_file():
-            logger.info(
-                f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
-            )
-            cmd_list.append(cleanup_file_name)
-            logger.debug(f"Cleanup command list = {cmd_list}")
-            subprocess.Popen(
-                cmd_list,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-        elif self._slurm_job_id:
-            logger.debug("Fluent running inside Slurm, closing Slurm session...")
-            self._close_slurm()
-        else:
-            logger.error("Could not find cleanup file.")
+            pwd = self.connection_properties.cortex_pwd
+            pid = self.connection_properties.fluent_host_pid
+            host = self.connection_properties.cortex_host
+            if host != socket.gethostname():
+                logger.error(
+                    "Fluent host is not the current host, cancelling forced exit..."
+                )
+                return
+            if os.name == "nt":
+                cleanup_file_ext = "bat"
+                cmd_list = []
+            elif os.name == "posix":
+                cleanup_file_ext = "sh"
+                cmd_list = ["bash"]
+            else:
+                logger.error(
+                    "Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
+                )
+                return
+            cleanup_file_name = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+            logger.debug(f"Looking for {cleanup_file_name}...")
+            cleanup_file_name = Path(pwd, cleanup_file_name)
+            if cleanup_file_name.is_file():
+                logger.info(
+                    f"Executing Fluent cleanup script, file path: {cleanup_file_name}"
+                )
+                cmd_list.append(cleanup_file_name)
+                logger.debug(f"Cleanup command list = {cmd_list}")
+                subprocess.Popen(
+                    cmd_list,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+            elif self._slurm_job_id:
+                logger.debug("Fluent running inside Slurm, closing Slurm session...")
+                self._close_slurm()
+            else:
+                logger.error("Could not find cleanup file.")
 
-    def force_exit_container(self):
+    def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
-        unsaved progress and data.
-
-        Notes
-        -----
-        By default, Fluent does not run in a container,
-        in that case use :func:`force_exit()`.
-        If the Fluent session is responsive, prefer using :func:`exit()` instead.
-        """
-        if self._remote_instance is not None:
-            logger.error(
-                "Fluent is running remotely, cannot terminate Fluent container."
-            )
-            return
+        unsaved progress and data."""
         container = self.connection_properties.inside_container
-        if not container:
-            logger.error(
-                "Session is not inside a container, cannot terminate Fluent container. "
-                "Try force_exit() instead."
-            )
-            return
         container_id = self.connection_properties.cortex_host
         pid = self.connection_properties.fluent_host_pid
         cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
@@ -517,8 +546,8 @@ class FluentConnection:
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
-        warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
-        return self.health_check_service.status()
+        warnings.warn("Use -> health_check.status()", DeprecationWarning)
+        return self.health_check.status()
 
     def wait_process_finished(self, wait: Union[float, int, bool] = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
@@ -637,7 +666,7 @@ class FluentConnection:
             if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
-            if not self.health_check_service.is_serving:
+            if not self.health_check.is_serving:
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
                 logger.info("Attempting to send exit request to Fluent...")
@@ -660,7 +689,7 @@ class FluentConnection:
                     logger.debug(
                         "Fluent running inside container, cleaning up Fluent inside container..."
                     )
-                    self.force_exit_container()
+                    self.force_exit()
                 else:
                     logger.debug(
                         "Fluent running locally, cleaning up Fluent processes..."
@@ -674,9 +703,10 @@ class FluentConnection:
     def _exit(
         channel,
         cleanup_on_exit,
-        scheme_eval,
+        connection_interface,
         finalizer_cbs,
         remote_instance,
+        file_transfer_service,
         exit_event,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
@@ -685,7 +715,7 @@ class FluentConnection:
                 cb()
             if cleanup_on_exit:
                 try:
-                    scheme_eval.exec(("(exit-server)",))
+                    connection_interface.exit_server()
                 except Exception:
                     pass
             channel.close()
@@ -693,5 +723,10 @@ class FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+        if file_transfer_service and isinstance(
+            file_transfer_service, RemoteFileTransferStrategy
+        ):
+            file_transfer_service.container.kill()
 
         exit_event.set()

@@ -1,3 +1,5 @@
+"""Provides a module to get Fluent version."""
+
 from enum import Enum
 from functools import total_ordering
 import os
@@ -8,13 +10,13 @@ from ansys.fluent.core._version import fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):
-    """Provides the error when Ansys version is not found."""
+    """Raised when Ansys version is not found."""
 
     pass
 
 
 class ComparisonError(RuntimeError):
-    """Provides the error when a comparison can't be completed."""
+    """Raised when a comparison can't be completed."""
 
     def __init__(self):
         super().__init__(
@@ -23,6 +25,7 @@ class ComparisonError(RuntimeError):
 
 
 def get_version(session=None):
+    """Get Fluent version."""
     if session is None:
         # for CI runs, get the version statically from env var set within CI
         image_tag = os.getenv("FLUENT_IMAGE_TAG")
@@ -30,10 +33,11 @@ def get_version(session=None):
             return image_tag.lstrip("v")
         session = pyfluent.launch_fluent(mode="solver")
 
-    return session.get_fluent_version()
+    return session.get_fluent_version().value
 
 
 def get_version_for_file_name(version: Optional[str] = None, session=None):
+    """Get Fluent version for file name."""
     if version is None:
         version = get_version(session)
 
@@ -53,6 +57,7 @@ class FluentVersion(Enum):
     FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
+    v251 = "25.1.0"
     v242 = "24.2.0"
     v241 = "24.1.0"
     v232 = "23.2.0"
@@ -123,3 +128,7 @@ class FluentVersion(Enum):
         if isinstance(other, FluentVersion):
             return self.value < other.value
         raise ComparisonError()
+
+    def __repr__(self) -> str:
+        """Return a string representation for the Fluent version."""
+        return self.value

@@ -1,8 +1,9 @@
 """Module providing visualization objects to facilitate integration with libraries like
 Matplotlib and pyvista."""
+
 import inspect
 
-from ansys.fluent.core.meta import PyLocalContainer
+from ansys.fluent.core.post_objects.meta import PyLocalContainer
 
 
 class Container:
@@ -46,6 +47,7 @@ class Container:
         )
 
     def get_path(self):
+        """Get container path."""
         return self._path
 
     @property
@@ -54,6 +56,7 @@ class Container:
         return "object"
 
     def update(self, value):
+        """Update the value."""
         for name, val in value.items():
             o = getattr(self, name)
             o.update(val)

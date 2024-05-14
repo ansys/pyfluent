@@ -18,10 +18,10 @@ the following code snippets) whose interface directly exposes the
   >>> solver = pyfluent.launch_fluent(mode="solver")
 
 
-The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.solver.settings_232.file.file`,
-:obj:`~ansys.fluent.core.solver.settings_232.setup.setup`,
-:obj:`~ansys.fluent.core.solver.settings_232.solution.solution`, and
-:obj:`~ansys.fluent.core.solver.settings_232.results.results`,
+The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.generated.solver.settings_232.file.file`,
+:obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`,
+:obj:`~ansys.fluent.core.generated.solver.settings_232.solution.solution`, and
+:obj:`~ansys.fluent.core.generated.solver.settings_232.results.results`,
 which are also instances of settings objects. Note that the last three are
 top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
 of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
@@ -41,9 +41,9 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 
 - The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
   can be accessed as attributes. For example, using the expression ``solver.setup.models.energy``,
-  which resolves to :obj:`~ansys.fluent.core.solver.settings_232.energy.energy`,
-  which is a child of :obj:`~ansys.fluent.core.solver.settings_232.models_1.models`,
-  which itself is a child of :obj:`~ansys.fluent.core.solver.settings_232.setup.setup`, and each of those
+  which resolves to :obj:`~ansys.fluent.core.generated.solver.settings_232.energy.energy`,
+  which is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.models_1.models`,
+  which itself is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`, and each of those
   three objects is a ``Group``.
   The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
@@ -104,8 +104,27 @@ and ``NamedObject`` types, the state value is a dictionary. For the
   >>> solver.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
 
 
-You can also access the state of an object with the ``get_state`` method and
-modify it with the ``set_state`` method.
+You can also access the state of an object with the ``get_state()`` method and
+modify it with the ``set_state()`` method.
+
+``Real`` and ``RealList`` settings objects can incorporate units alongside values. If an object
+supports units, you can retrieve its value and units as an ``ansys.units.Quantity`` object using
+the ``as_quantity()`` method. Alternatively, you can obtain the same information as a tuple by
+calling the ``state_with_units()`` method. You can call the ``state_with_units()`` method on a
+container object. It returns a dictionary where relevant values are represented as tuples containing
+the value and units.
+
+Both ``ansys.units.Quantity`` objects and value-unit tuples can be used with the
+``set_state()`` method of ``Real`` or ``RealList`` objects.
+
+.. code-block::
+
+  >>> diam_obj = hydraulic_diameter.as_quantity()
+  >>> diam_tup = hydraulic_diameter.state_with_units()
+  >>> assert diam_tup == (diam_obj.value, diam_obj.units.name)
+  >>> hydraulic_diameter.set_state(2.0 * diam_obj)
+  >>> assert hydraulic_diameter.units == diam_obj.units
+
 
 You can print the current state in a simple text format with the
 ``print_state`` method. For example, assume you entered:
@@ -154,10 +173,10 @@ and can be of either primitive or container type.
 Additional metadata
 -------------------
 Settings object methods are provided to access some additional metadata. There are
-a number of explicit methods and two generic methods: ``get_attr`` and ``get_attrs``.
+a number of explicit methods and two generic methods: ``get_attr()`` and ``get_attrs()``.
 
 The following examples access the list of allowed values for a particular state of
-the viscous model. All string and string list objects have an ``allowed_values``
+the viscous model. All string and string list objects have an ``allowed_values()``
 method, which returns a list of allowed string values if such a constraint currently applies
 for that object or returns ``None`` otherwise.
 
@@ -223,7 +242,7 @@ Metadata name       Method              Can return None    Type applicability   
 ==================  ==================  =================  =====================  ====================
 
 
-Using the ``get_attr`` method requires knowledge of metadata names, their applicability, and
+Using the ``get_attr()`` method requires knowledge of metadata names, their applicability, and
 the ability to interpret the raw values of the metadata. You can avoid all these issues by
 using the explicitly named methods. Note also that the metadata is dynamic, which means
 values can change based on the application state. A ``None`` value signifies that no value
@@ -273,13 +292,13 @@ Objects and commands can be active or inactive based on the application state.
 The ``is_active()`` method returns ``True`` if an object or command
 is currently active.
 
-The ``get_active_child_names`` method returns a list of
+The ``get_active_child_names()`` method returns a list of
 active children::
 
   >>> solver.setup.models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
-The ``get_active_command_names`` method returns the list of active
+The ``get_active_command_names()`` method returns the list of active
 commands::
 
   >>> solver.solution.run_calculation.get_active_command_names()
@@ -336,5 +355,5 @@ The following list summarizes common wildcards:
 
 Root object
 -----------
-The :ref:`_root` object (named solver in the preceding examples) is the top-level
+The :ref:`ref_root` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.

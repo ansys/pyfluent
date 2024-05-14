@@ -1,15 +1,17 @@
+"""Provides a module for post objects."""
+
 import re
 
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
-    """Provides the error when iso-surface definition is incomplete."""
+    """Raised when iso-surface definition is incomplete."""
 
     def __init__(self):
         super().__init__("Iso surface definition is incomplete.")
 
 
 class SurfaceCreationError(RuntimeError):
-    """Provides the error when surface creation is unsuccessful."""
+    """Raised when surface creation is unsuccessful."""
 
     def __init__(self):
         super().__init__("Surface creation is unsuccessful.")
@@ -96,11 +98,15 @@ class PostAPIHelper:
                 self._get_api_handle().plane_surface(
                     self._surface_name_on_server,
                     "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
-                    (xy_plane.z() / unit_info[1]) - unit_info[2]
-                    if xy_plane
-                    else (yz_plane.x() / unit_info[1]) - unit_info[2]
-                    if yz_plane
-                    else (zx_plane.y() / unit_info[1]) - unit_info[2],
+                    (
+                        (xy_plane.z() / unit_info[1]) - unit_info[2]
+                        if xy_plane
+                        else (
+                            (yz_plane.x() / unit_info[1]) - unit_info[2]
+                            if yz_plane
+                            else (zx_plane.y() / unit_info[1]) - unit_info[2]
+                        )
+                    ),
                 )
             field_info = self.obj._api_helper.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())
@@ -116,7 +122,7 @@ class PostAPIHelper:
         self.obj = obj
         self.field_info = lambda: obj.get_root().session.field_info
         self.field_data = lambda: obj.get_root().session.field_data
-        self.monitors_manager = lambda: obj.get_root().session.monitors_manager
+        self.monitors_manager = lambda: obj.get_root().session.monitors
         self.id = lambda: obj.get_root().session.id
         if obj.__class__.__name__ == "Surface":
             self.surface_api = PostAPIHelper._SurfaceAPI(obj)

@@ -20,9 +20,11 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
-from ansys.fluent.core.launcher.launcher_utils import LaunchFluentError
+from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 
 
@@ -93,6 +95,13 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
+def test_download_file():
+    with pytest.raises(examples.RemoteFileNotFoundError):
+        import_case = examples.download_file(
+            "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
+        )
+
+
 def test_create_mock_session_by_passing_ip_port_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
@@ -105,17 +114,25 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
     server.start()
 
     with pytest.raises(PortNotProvided) as msg:
+        fluent_connection = FluentConnection(
+            ip=ip, password="12345", cleanup_on_exit=False
+        )
         session = BaseSession(
-            FluentConnection(ip=ip, password="12345", cleanup_on_exit=False)
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
 
-    session = BaseSession(
-        FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
+    fluent_connection = FluentConnection(
+        ip=ip, port=port, password="12345", cleanup_on_exit=False
     )
-    assert session.health_check_service.is_serving
+    session = BaseSession(
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+    )
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_by_setting_ip_port_env_var(
@@ -132,11 +149,15 @@ def test_create_mock_session_by_setting_ip_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = BaseSession(FluentConnection(password="12345", cleanup_on_exit=False))
-    assert session.health_check_service.is_serving
+    fluent_connection = FluentConnection(password="12345", cleanup_on_exit=False)
+    session = BaseSession(
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+    )
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_by_passing_grpc_channel() -> None:
@@ -150,13 +171,17 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
     )
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
-    session = BaseSession(
-        FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
+    fluent_connection = FluentConnection(
+        channel=channel, cleanup_on_exit=False, password="12345"
     )
-    assert session.health_check_service.is_serving
+    session = BaseSession(
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+    )
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
@@ -171,13 +196,13 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
-    session = BaseSession.create_from_server_info_file(
+    session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
-    assert session.health_check_service.is_serving
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_from_server_info_file_with_wrong_password(
@@ -195,7 +220,7 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError) as ex:
-        session = BaseSession.create_from_server_info_file(
+        session = BaseSession._create_from_server_info_file(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
         )
@@ -223,13 +248,13 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
         password="12345",
     )
     # check a few dir elements
-    session_dir = dir(session)
+    fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
-        assert attr in session_dir
-    assert session.health_check_service.is_serving
+        assert attr in fields_dir
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -251,13 +276,13 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
         cleanup_on_exit=False, ip=ip, port=port, password="12345"
     )
     # check a few dir elements
-    session_dir = dir(session)
+    fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
-        assert attr in session_dir
-    assert session.health_check_service.is_serving
+        assert attr in fields_dir
+    assert session.health_check.is_serving
     server.stop(None)
     session.exit()
-    assert not session.health_check_service.is_serving
+    assert not session.health_check.is_serving
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
@@ -333,13 +358,23 @@ def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    solver = pyfluent.launch_fluent(
-        case_file_name=import_file_name, lightweight_mode=True
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name,
+            lightweight_mode=True,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name, lightweight_mode=True
+        )
     solver.setup.models.energy.enabled = False
-    old_fluent_connection_id = id(solver.fluent_connection)
+    old_fluent_connection_id = id(solver._fluent_connection)
     timeout_loop(
-        id(solver.fluent_connection) != old_fluent_connection_id,
+        id(solver._fluent_connection) != old_fluent_connection_id,
         timeout=60,
         idle_period=1,
     )
@@ -358,16 +393,22 @@ def test_help_does_not_throw(new_solver_session):
 def test_build_from_fluent_connection(make_new_session):
     solver1 = make_new_session()
     solver2 = make_new_session()
-    assert solver1.health_check_service.is_serving
-    assert solver2.health_check_service.is_serving
-    health_check_service1 = solver1.health_check_service
-    cortex_pid2 = solver2.fluent_connection.connection_properties.cortex_pid
-    solver1.build_from_fluent_connection(solver2.fluent_connection)
-    assert solver1.health_check_service.is_serving
-    assert solver2.health_check_service.is_serving
+    assert solver1.health_check.is_serving
+    assert solver2.health_check.is_serving
+    health_check_service1 = solver1.health_check
+    cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
+    # The below hack is performed to check the base class method
+    # (child class has a method with same name)
+    solver1.__class__.__bases__[0]._build_from_fluent_connection(
+        solver1,
+        fluent_connection=solver2._fluent_connection,
+        scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
+    )
+    assert solver1.health_check.is_serving
+    assert solver2.health_check.is_serving
     assert not health_check_service1.is_serving
-    assert solver1.fluent_connection.connection_properties.cortex_pid == cortex_pid2
-    assert solver2.fluent_connection.connection_properties.cortex_pid == cortex_pid2
+    assert solver1._fluent_connection.connection_properties.cortex_pid == cortex_pid2
+    assert solver2._fluent_connection.connection_properties.cortex_pid == cortex_pid2
 
 
 @pytest.mark.standalone
@@ -394,7 +435,7 @@ def test_recover_grpc_error_from_connection_error():
 def test_solver_methods(new_solver_session):
     solver = new_solver_session
 
-    if int(solver._version) == 222:
+    if solver.get_fluent_version() == FluentVersion.v222:
         api_keys = {
             "file",
             "setup",
@@ -404,7 +445,7 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver._version) == 232:
+    if solver.get_fluent_version() == FluentVersion.v232:
         api_keys = {
             "file",
             "mesh",
@@ -418,7 +459,7 @@ def test_solver_methods(new_solver_session):
             "report",
         }
         assert api_keys.issubset(set(dir(solver)))
-    if int(solver._version) >= 241:
+    if solver.get_fluent_version() >= FluentVersion.v241:
         api_keys = {
             "file",
             "mesh",
@@ -431,3 +472,28 @@ def test_solver_methods(new_solver_session):
             "parallel",
         }
         assert api_keys.issubset(set(dir(solver)))
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_get_set_state_on_solver(new_solver_session):
+    solver = new_solver_session
+    state = solver.get_state()
+    assert state
+    solver.set_state(state)
+
+
+def test_solver_structure(new_solver_session):
+    solver = new_solver_session
+    with pytest.warns(DeprecationWarning):
+        solver.field_data
+    with pytest.warns(DeprecationWarning):
+        solver.svar_data
+
+    assert {
+        "field_data",
+        "field_info",
+        "field_data_streaming",
+        "solution_variable_data",
+        "solution_variable_info",
+        "reduction",
+    }.issubset(set(dir(solver.fields)))

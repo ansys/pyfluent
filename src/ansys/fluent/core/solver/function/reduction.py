@@ -58,11 +58,14 @@ Examples
 ...     ])
 19.28151
 """
+
 import numpy as np
 from numpy import array
 
 
 class BadReductionRequest(Exception):
+    """Raised on an attempt to make a bad reduction request."""
+
     def __init__(self, err):
         """__init__ method of BadReductionRequest class."""
         super().__init__(f"Could not complete reduction function request: {err}")
@@ -108,9 +111,7 @@ def _root(obj):
     return (
         None
         if isinstance(obj, list)
-        else obj
-        if not getattr(obj, "obj_name", None)
-        else _root(obj._parent)
+        else obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
     )
 
 
@@ -259,14 +260,17 @@ class _Vector:
 
     @property
     def x(self):
+        """Get X vector."""
         return self.array[0]
 
     @property
     def y(self):
+        """Get Y vector."""
         return self.array[1]
 
     @property
     def z(self):
+        """Get Z vector."""
         return self.array[2]
 
 

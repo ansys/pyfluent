@@ -1,19 +1,17 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.meshing_queries import (
-    MeshingQueries,
-    MeshingQueriesService,
-)
+from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.data_transfer import transfer_case
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class PureMeshing(BaseSession):
@@ -26,7 +24,7 @@ class PureMeshing(BaseSession):
     in this mode.
     """
 
-    rules = [
+    _rules = [
         "workflow",
         "meshing",
         "MeshingUtilities",
@@ -34,49 +32,66 @@ class PureMeshing(BaseSession):
         "PMFileManagement",
     ]
 
-    for r in rules:
-        DataModelCache.set_config(r, "name_key", NameKey.INTERNAL)
-
     def __init__(
         self,
         fluent_connection: FluentConnection,
-        remote_file_handler: Optional[Any] = None,
+        scheme_eval: SchemeEval,
+        file_transfer_service: Optional[Any] = None,
+        start_transcript: bool = True,
+        launcher_args: Optional[Dict[str, Any]] = None,
     ):
         """PureMeshing session.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
-            remote_file_handler: Supports file upload and download.
+            scheme_eval: SchemeEval
+                Instance of ``SchemeEval`` to execute Fluent's scheme code on.
+            file_transfer_service: Supports file upload and download.
+            start_transcript : bool, optional
+                Whether to start the Fluent transcript in the client.
+                The default is ``True``, in which case the Fluent transcript can be subsequently
+                started and stopped using method calls on the ``Session`` object.
         """
         super(PureMeshing, self).__init__(
-            fluent_connection=fluent_connection, remote_file_handler=remote_file_handler
+            fluent_connection=fluent_connection,
+            scheme_eval=scheme_eval,
+            file_transfer_service=file_transfer_service,
+            start_transcript=start_transcript,
+            launcher_args=launcher_args,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
             fluent_connection,
-            self.get_fluent_version(),
-            self.datamodel_service_tui,
-            self.datamodel_service_se,
+            self.get_fluent_version().value,
+            self._datamodel_service_tui,
+            self._datamodel_service_se,
         )
 
-        self.meshing_queries_service = fluent_connection.create_grpc_service(
-            MeshingQueriesService, self.error_state
-        )
-
-        datamodel_service_se = self.datamodel_service_se
+        datamodel_service_se = self._datamodel_service_se
         self.datamodel_streams = {}
-        if pyfluent.DATAMODEL_USE_STATE_CACHE:
-            for rules in self.__class__.rules:
+        if datamodel_service_se.cache is not None:
+            for rules in PureMeshing._rules:
+                datamodel_service_se.cache.set_config(
+                    rules,
+                    "name_key",
+                    (
+                        NameKey.DISPLAY
+                        if DataModelCache.use_display_name
+                        else NameKey.INTERNAL
+                    ),
+                )
                 stream = DatamodelStream(datamodel_service_se)
                 stream.register_callback(
-                    functools.partial(DataModelCache.update_cache, rules=rules)
+                    functools.partial(
+                        datamodel_service_se.cache.update_cache, rules=rules
+                    )
                 )
                 self.datamodel_streams[rules] = stream
                 stream.start(
                     rules=rules,
                     no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
                 )
-                self.fluent_connection.register_finalizer_cb(stream.stop)
+                self._fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
     def tui(self):
@@ -90,15 +105,9 @@ class PureMeshing(BaseSession):
         return self._base_meshing.meshing
 
     @property
-    def meshing_queries(self):
-        """Datamodel root of meshing_queries."""
-        if float(self.get_fluent_version()[:-2]) >= 23.2:
-            return MeshingQueries(self.meshing_queries_service)
-
-    @property
     def meshing_utilities(self):
         """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version() >= "24.2.0":
+        if self.get_fluent_version() >= FluentVersion.v242:
             return self._base_meshing.meshing_utilities
 
     @property
@@ -106,15 +115,43 @@ class PureMeshing(BaseSession):
         """Datamodel root of workflow."""
         return self._base_meshing.workflow
 
-    def watertight(self, dynamic_interface=True):
+    def watertight(self):
         """Get a new watertight workflow."""
-        self.workflow.watertight(dynamic_interface)
-        return self.workflow
+        self._base_meshing.watertight_workflow.reinitialize()
+        return self._base_meshing.watertight_workflow
 
-    def fault_tolerant(self, dynamic_interface=True):
+    def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        self.workflow.fault_tolerant(dynamic_interface)
-        return self.workflow
+        self._base_meshing.fault_tolerant_workflow.reinitialize()
+        return self._base_meshing.fault_tolerant_workflow
+
+    def two_dimensional_meshing(self):
+        """Get a new 2D meshing workflow."""
+        self._base_meshing.two_dimensional_meshing_workflow.reinitialize()
+        return self._base_meshing.two_dimensional_meshing_workflow
+
+    def load_workflow(self, file_path: str):
+        """Load a saved workflow."""
+        self._base_meshing.load_workflow(file_path=file_path).load()
+        return self._base_meshing.load_workflow(file_path=file_path)
+
+    def create_workflow(self):
+        """Create a meshing workflow."""
+        self._base_meshing.create_workflow.create()
+        return self._base_meshing.create_workflow
+
+    def topology_based(self):
+        """Get a new topology-based meshing workflow.
+
+        Raises
+        ------
+        RuntimeError
+            If beta features are not enabled in Fluent.
+        """
+        if not self.scheme_eval.scheme_eval("(is-beta-feature-available?)"):
+            raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
+        self._base_meshing.topology_based_meshing_workflow.reinitialize()
+        return self._base_meshing.topology_based_meshing_workflow
 
     @property
     def PartManagement(self):
@@ -170,34 +207,4 @@ class PureMeshing(BaseSession):
             num_files_to_try,
             clean_up_mesh_file,
             overwrite_previous,
-        )
-
-    def read_case(
-        self,
-        file_name: str,
-    ):
-        """Read a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.upload(
-            file_name=file_name, on_uploaded=self.tui.file.read_case
-        )
-
-    def write_case(
-        self,
-        file_name: str,
-    ):
-        """Write a case file.
-
-        Parameters
-        ----------
-        file_name : str
-            Case file name
-        """
-        self._remote_file_handler.download(
-            file_name=file_name, before_downloaded=self.tui.file.write_case
         )

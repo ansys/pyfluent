@@ -8,20 +8,21 @@ import logging
 import os
 from typing import Any, Dict, Optional, Union
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launcher_utils import (
-    FluentMode,
-    _confirm_watchdog_start,
-    _get_fluent_launch_mode,
-    _get_mode,
-    _get_running_session_mode,
-    _get_server_info,
-    _process_invalid_args,
-    _process_kwargs,
-)
+from ansys.fluent.core.launcher.error_handler import _process_invalid_args
+from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
+from ansys.fluent.core.launcher.pyfluent_enums import (
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    LaunchMode,
+    UIMode,
+    _get_fluent_launch_mode,
+    _get_running_session_mode,
+)
+from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
@@ -29,54 +30,111 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileHandler
+from ansys.fluent.core.utils.deprecate_args import deprecate_argument
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: str = None, **kwargs):
-    """Factory function to create launcher for supported launch modes.
+def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+    """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
     ----------
     fluent_launch_mode: LaunchMode
-        Supported Fluent launch modes.
-
+        Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
+        ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+    kwargs : Any
+        Keyword arguments.
     Returns
     -------
     launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
         Session launcher.
-
     Raises
     ------
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    allowed_options = ["container", "pim", "standalone", "slurm"]
-    if (
-        not isinstance(fluent_launch_mode, str)
-        or str(fluent_launch_mode) not in allowed_options
-    ):
-        raise DisallowedValuesError(
-            "fluent_launch_mode",
-            fluent_launch_mode,
-            allowed_values=allowed_options,
+    _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
+    if fluent_launch_mode == LaunchMode.STANDALONE:
+        return StandaloneLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            journal_file_names=kwargs["journal_file_names"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            env=kwargs["env"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            case_file_name=kwargs["case_file_name"],
+            case_data_file_name=kwargs["case_data_file_name"],
+            lightweight_mode=kwargs["lightweight_mode"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            cwd=kwargs["cwd"],
+            topy=kwargs["topy"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
         )
-    if fluent_launch_mode == "standalone":
-        return StandaloneLauncher(**kwargs)
-    elif fluent_launch_mode == "container":
-        return DockerLauncher(**kwargs)
-    elif fluent_launch_mode == "pim":
-        return PIMLauncher(**kwargs)
-    elif fluent_launch_mode == "slurm":
+    elif fluent_launch_mode == LaunchMode.CONTAINER:
+        return DockerLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            container_dict=kwargs["container_dict"],
+            dry_run=kwargs["dry_run"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
+    elif fluent_launch_mode == LaunchMode.PIM:
+        return PIMLauncher(
+            mode=kwargs["mode"],
+            ui_mode=kwargs["ui_mode"],
+            graphics_driver=kwargs["graphics_driver"],
+            product_version=kwargs["product_version"],
+            version=kwargs["version"],
+            precision=kwargs["precision"],
+            processor_count=kwargs["processor_count"],
+            start_timeout=kwargs["start_timeout"],
+            additional_arguments=kwargs["additional_arguments"],
+            cleanup_on_exit=kwargs["cleanup_on_exit"],
+            start_transcript=kwargs["start_transcript"],
+            py=kwargs["py"],
+            gpu=kwargs["gpu"],
+            start_watchdog=kwargs["start_watchdog"],
+            file_transfer_service=kwargs["file_transfer_service"],
+        )
+    elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
 
 
 #   pylint: disable=unused-argument
+@deprecate_argument(
+    old_arg="show_gui",
+    new_arg="ui_mode",
+    converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
+    deprecation_class=PyFluentDeprecationWarning,
+)
 def launch_fluent(
-    product_version: Optional[str] = None,
+    product_version: Optional[FluentVersion] = None,
     version: Optional[str] = None,
     precision: Optional[str] = None,
     processor_count: Optional[int] = None,
@@ -89,7 +147,10 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    show_gui: Optional[bool] = None,
+    ui_mode: Union[UIMode, str, None] = None,
+    graphics_driver: Union[
+        FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+    ] = None,
     case_file_name: Optional[str] = None,
     case_data_file_name: Optional[str] = None,
     lightweight_mode: Optional[bool] = None,
@@ -100,18 +161,16 @@ def launch_fluent(
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
-    **kwargs,
+    file_transfer_service: Optional[Any] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
     Parameters
     ----------
-    product_version : str, optional
-        Select an installed version of ANSYS. The string must be in a format like
-        ``"23.2.0"`` (for 2023 R2) matching the documented version format in the
-        FluentVersion class. The default is ``None``, in which case the newest installed
-        version is used.
+    product_version : FluentVersion, optional
+        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        The default is ``None``, in which case the newest installed version is used.
     version : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -156,11 +215,21 @@ def launch_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
-    show_gui : bool, optional
-        Whether to display the Fluent GUI. The default is ``None``, which does not
-        cause the GUI to be shown. If a value of ``False`` is
-        not explicitly provided, the GUI will also be shown if
-        the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
+    ui_mode : UIMode or str, optional
+        Fluent user interface mode. Options are either the values of the ``UIMode``
+        enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``, ``"hidden_gui"``,
+        ``"no_graphics"`` or ``"gui"``. The default is ``UIMode.HIDDEN_GUI`` in
+        Windows and ``UIMode.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
+        ``"no_gui"`` user interface modes are supported in Windows starting from Fluent
+        version 2024 R1.
+    graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
+        Graphics driver of Fluent. In Windows, options are either the values of the
+        ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,
+        ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, options are
+        either the values of the ``FluentLinuxGraphicsDriver`` enum or any of
+       ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
+       ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
+       ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
     case_file_name : str, optional
         If provided, the case file at ``case_file_name`` is read into the Fluent session.
     case_data_file_name : str, optional
@@ -184,7 +253,6 @@ def launch_fluent(
         clamped to the value of ``processor_count``. Please refer to
         *Starting the Fluent GPU Solver* section in *Fluent's User Guide* for more
         information like how to determine the GPU IDs.
-
     cwd : str, Optional
         Working directory for the Fluent client.
     topy : bool or str, optional
@@ -204,6 +272,8 @@ def launch_fluent(
         "scheduler_account": "<account>"}``. The keys ``scheduler_headnode``,
         ``scheduler_queue`` and ``scheduler_account`` are optional and should be
         specified in a similar manner to Fluent's scheduler options.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -226,17 +296,13 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    _process_kwargs(kwargs)
-    del kwargs
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
         container_dict=container_dict,
         scheduler_options=scheduler_options,
     )
     del start_container
-    mode = _get_mode(mode)
     argvals = locals().copy()
-    _process_invalid_args(dry_run, fluent_launch_mode, argvals)
     fluent_launch_mode = argvals.pop("fluent_launch_mode")
     launcher = create_launcher(fluent_launch_mode, **argvals)
     return launcher()
@@ -299,7 +365,6 @@ def connect_to_fluent(
         port=port,
         password=password,
         cleanup_on_exit=cleanup_on_exit,
-        start_transcript=start_transcript,
     )
     new_session = _get_running_session_mode(fluent_connection)
 
@@ -313,5 +378,7 @@ def connect_to_fluent(
         watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(
-        fluent_connection=fluent_connection, remote_file_handler=RemoteFileHandler()
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        start_transcript=start_transcript,
     )

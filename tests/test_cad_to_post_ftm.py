@@ -25,6 +25,8 @@ from util.meshing_workflow import (  # noqa: F401
 )
 from util.solver import check_report_definition_result
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
@@ -433,7 +435,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Check the mesh in Meshing mode
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+    if meshing_session.get_fluent_version() < FluentVersion.v231:
         meshing_session.tui.mesh.check_mesh()
 
     ###############################################################################
@@ -456,7 +458,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     # Set the velocity and turbulence boundary conditions for the first inlet
     # (inlet-1).
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+    if meshing_session.get_fluent_version() < FluentVersion.v231:
         boundary_conditions = tui.define.boundary_conditions
         boundary_conditions.set.velocity_inlet("inlet-1", [], "vmag", "no", 1, "quit")
         ###############################################################################
