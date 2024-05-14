@@ -49,6 +49,12 @@ jobs:
       - name: Print Detailsssssss
         run: echo ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
+      - name: Set Detailsssssss
+        run: set ${{ vars.FLUENT_STABLE_IMAGE_DEV }}="xyz......."
+
+      - name: Print Detailsssssss Again
+        run: echo ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
