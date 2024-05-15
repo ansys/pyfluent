@@ -53,7 +53,7 @@ import logging
 import os
 from pathlib import Path, PurePosixPath
 import tempfile
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
@@ -105,6 +105,7 @@ def configure_container_dict(
     fluent_image: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
+    file_transfer_service: Optional[Any] = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -134,6 +135,8 @@ def configure_container_dict(
         Ignored if ``fluent_image`` has been specified.
     image_tag : str, optional
         Ignored if ``fluent_image`` has been specified.
+    file_transfer_service : optional
+            File transfer service. Uploads/downloads files to/from the server.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
         to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
@@ -180,7 +183,7 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
-        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        if pyfluent.USE_FILE_TRANSFER_SERVICE and file_transfer_service:
             host_mount_path = pyfluent.USER_DATA_PATH
         else:
             host_mount_path = pyfluent.EXAMPLES_PATH
