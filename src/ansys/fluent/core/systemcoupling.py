@@ -5,6 +5,7 @@ import os
 from typing import List
 import xml.etree.ElementTree as XmlET
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -91,7 +92,15 @@ class SystemCoupling:
 
             # download the file locally in case Fluent is in a container
             if self._solver._fluent_connection._remote_instance != None:
-                self._solver.download(scp_file_name)
+                examples_path_scp = os.path.join(pyfluent.EXAMPLES_PATH, scp_file_name)
+                if os.path.exists(examples_path_scp):
+                    # For container mode without file transfer service (e.g. on GitHub),
+                    # produced files are located in pyfluent.EXAMPLES_PATH. Just use
+                    # that path, instead of attempting to download the file from the container.
+                    scp_file_name = examples_path_scp
+                else:
+                    # assume file transfer service is configured - download the file
+                    self._solver.download(scp_file_name)
 
             assert os.path.exists(
                 scp_file_name
