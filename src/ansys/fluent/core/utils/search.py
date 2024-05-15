@@ -405,28 +405,29 @@ def search(
         )
 
     api_object_names = get_api_tree_file_name(name=True)
-    names_txt = open(api_object_names, "r")
-    names = [line.rstrip("\n") for line in names_txt.readlines()]
-    synset_1 = (
-        wn.synsets(search_string.decode("utf-8"), lang=language)
-        if sys.version_info[0] < 3
-        else wn.synsets(search_string, lang=language)
-    )
+    names = [
+        line.rstrip("\n") for line in open(api_object_names, "r", encoding="utf-8")
+    ]
 
     if wildcard:
         queries = _process_wildcards(search_string, names)
-    elif synset_1 and not match_whole_word and not wildcard:
+    elif not match_whole_word and not wildcard:
         similar_keys = set()
+        synsets_1 = (
+            wn.synsets(search_string.decode("utf-8"), lang=language)
+            if sys.version_info[0] < 3
+            else wn.synsets(search_string, lang=language)
+        )
         for name in names:
-            synset_2 = (
+            synsets_2 = (
                 wn.synsets(name.decode("utf-8"), lang=language)
                 if sys.version_info[0] < 3
                 else wn.synsets(name, lang="eng")
             )
-            for s1 in synset_1:
-                for s2 in synset_2:
-                    name_s1 = s1.name().split(".")[0]
-                    name_s2 = s2.name().split(".")[0]
+            for synset_1 in synset_1:
+                for synset_2 in synsets_2:
+                    name_s1 = synset_1.name().split(".")[0]
+                    name_s2 = synset_2.name().split(".")[0]
                     if search_string in name_s2 or name_s1 in name_s2:
                         similar_keys.add(name_s2 + "*")
         queries = set()
@@ -452,8 +453,9 @@ def search(
     text_files = [api_tree, api_tui_tree]
     print("\n The most similar API objects are: \n")
     for text_file in text_files:
-        text = open(text_file, "r")
-        api_objects = [line.rstrip("\n") for line in text.readlines()]
+        api_objects = [
+            line.rstrip("\n") for line in open(text_file, "r", encoding="utf-8")
+        ]
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
         for query in queries:
