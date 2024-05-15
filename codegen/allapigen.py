@@ -2,9 +2,11 @@
 
 from time import time
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen, print_fluent_version
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.search import _search
 
 if __name__ == "__main__":
     t0 = time()
@@ -59,3 +61,5 @@ if __name__ == "__main__":
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
+    pyfluent.WRITE_API_SEARCH_OBJECTS_FILE = True
+    _search("", version="242")
