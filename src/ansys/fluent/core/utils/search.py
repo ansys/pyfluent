@@ -411,7 +411,19 @@ def search(
 
     if wildcard:
         queries = _process_wildcards(search_string, names)
-    elif not match_whole_word and not wildcard:
+    elif match_whole_word:
+        queries = _process_misspelled(
+            word=search_string,
+            names=names,
+            match_whole_word=match_whole_word,
+        )
+    elif match_case:
+        queries = _process_misspelled(
+            word=search_string,
+            names=names,
+            match_case=match_case,
+        )
+    else:
         similar_keys = set()
         synsets_1 = (
             wn.synsets(search_string.decode("utf-8"), lang=language)
@@ -426,27 +438,15 @@ def search(
             )
             for synset_1 in synsets_1:
                 for synset_2 in synsets_2:
-                    name_s1 = synset_1.name().split(".")[0]
-                    name_s2 = synset_2.name().split(".")[0]
-                    if search_string in name_s2 or name_s1 in name_s2:
-                        similar_keys.add(name_s2 + "*")
+                    synset_1_name = synset_1.name().split(".")[0]
+                    synset_2_name = synset_2.name().split(".")[0]
+                    if search_string in synset_2_name or synset_1_name in synset_2_name:
+                        similar_keys.add(synset_2_name + "*")
         queries = set()
         for key in similar_keys:
             queries.update(_process_wildcards(key, names))
         queries = list(queries)
         wildcard = True
-    elif match_whole_word:
-        queries = _process_misspelled(
-            word=search_string,
-            names=names,
-            match_whole_word=match_whole_word,
-        )
-    elif match_case:
-        queries = _process_misspelled(
-            word=search_string,
-            names=names,
-            match_case=match_case,
-        )
 
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
