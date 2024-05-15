@@ -284,7 +284,7 @@ class StandaloneLauncher:
                         file_type="case",
                         file_name=self.argvals["case_file_name"],
                     )
-            if self.case_data_file_name:
+            if self.argvals["case_data_file_name"]:
                 if not FluentMode.is_meshing(self.argvals["mode"]):
                     session.file.read(
                         file_type="case-data",

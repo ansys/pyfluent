@@ -166,9 +166,9 @@ class DockerLauncher:
         if self.argvals["container_dict"] is None:
             self.argvals["container_dict"] = {}
         if self.argvals["product_version"]:
-            self.container_dict["image_tag"] = (
-                f"v{self.argvals['product_version'].value}"
-            )
+            self.argvals["container_dict"][
+                "image_tag"
+            ] = f"v{self.argvals['product_version'].value}"
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
                 args, **self.argvals["container_dict"]
@@ -186,7 +186,7 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(args, self.container_dict)
+        port, password = start_fluent_container(args, self.argvals["container_dict"])
 
         fluent_connection = FluentConnection(
             port=port,
