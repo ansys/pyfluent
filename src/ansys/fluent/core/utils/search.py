@@ -405,7 +405,8 @@ def search(
         )
 
     api_object_names = get_api_tree_file_name(name=True)
-    names = [line.rstrip("\n") for line in open(api_object_names, "r")]
+    names_txt = open(api_object_names, "r")
+    names = [line.rstrip("\n") for line in names_txt.readlines()]
     synset_1 = (
         wn.synsets(search_string.decode("utf-8"), lang=language)
         if sys.version_info[0] < 3
@@ -451,7 +452,8 @@ def search(
     text_files = [api_tree, api_tui_tree]
     print("\n The most similar API objects are: \n")
     for text_file in text_files:
-        api_objects = [line.rstrip("\n") for line in open(text_file, "r")]
+        text = open(text_file, "r")
+        api_objects = [line.rstrip("\n") for line in text.readlines()]
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
         for query in queries:
