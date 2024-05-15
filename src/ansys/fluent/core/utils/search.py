@@ -426,7 +426,7 @@ def search(
                         similar_keys.add(name_s2 + "*")
         queries = set()
         for key in similar_keys:
-            queries.update(set(_process_wildcards(key, names)))
+            queries.update(_process_wildcards(key, names))
         queries = list(queries)
         wildcard = True
     elif match_whole_word and not wildcard:
