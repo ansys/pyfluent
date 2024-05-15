@@ -255,11 +255,11 @@ def _search(
 
     inner(api_tree, "", root_path)
 
-    def _write_file(
+    def _write_api_tree_file(
         api_objects: list,
+        name: Optional[bool] = None,
         text: Optional[bool] = False,
         tui: Optional[bool] = False,
-        name: Optional[bool] = None,
     ):
         api_tree_file = get_api_tree_file_name(text=text, name=name, tui=tui)
         api_tree_file.touch()
@@ -273,9 +273,9 @@ def _search(
         text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
         text_file_folder.mkdir(parents=True, exist_ok=True)
 
-        _write_file(api_objects=api_objects, text=True)
-        _write_file(api_objects=api_tui_objects, tui=True)
-        _write_file(api_objects=api_object_names, name=True)
+        _write_api_tree_file(api_objects=api_objects, text=True)
+        _write_api_tree_file(api_objects=api_tui_objects, tui=True)
+        _write_api_tree_file(api_objects=api_object_names, name=True)
 
 
 def _process_wildcards(word: str, names: list):
