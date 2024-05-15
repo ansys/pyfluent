@@ -47,6 +47,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Print Detailsssssss
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: gh variable set MYVARIABLE --body "xxxxx"
 
       - name: Set Detailsssssss
