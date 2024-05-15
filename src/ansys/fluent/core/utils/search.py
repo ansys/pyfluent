@@ -293,11 +293,7 @@ def _process_wildcards(word: str, names: list):
     wildcard_matches: list
         Matched API object names.
     """
-    wildcard_matches = []
-    for name in names:
-        if fnmatch.fnmatch(name, word):
-            wildcard_matches.append(name)
-    return wildcard_matches
+    return [name for name in names if fnmatch.fnmatch(name, word)]
 
 
 def _process_misspelled(
