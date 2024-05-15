@@ -5,12 +5,13 @@ import fnmatch
 import os
 from pathlib import Path
 import pickle
+import sys
 from typing import Any, Optional
 import warnings
 
 import nltk
 
-nltk.download("all")
+nltk.download("all", quiet=True)
 from nltk.corpus import wordnet as wn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -405,6 +406,9 @@ def search(
 
     api_object_names = get_api_tree_file_name(name=True)
     names = [line.rstrip("\n") for line in open(api_object_names, "r")]
+    if sys.version_info[0] < 3:
+        synset_1 = wn.synsets(search_string.decode("utf-8"), lang=language)
+
     synset_1 = wn.synsets(search_string, lang=language)
 
     if wildcard:
