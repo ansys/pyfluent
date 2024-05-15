@@ -407,7 +407,7 @@ def search(
     names = [line.rstrip("\n") for line in open(api_object_names, "r")]
     synset_1 = wn.synsets(search_string, lang=language)
 
-    if wildcard and not match_whole_word:
+    if wildcard:
         queries = _process_wildcards(search_string, names)
     elif synset_1 and not match_whole_word and not wildcard:
         similar_keys = set()
