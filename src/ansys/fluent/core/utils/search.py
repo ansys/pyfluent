@@ -399,7 +399,7 @@ def search(
         )
     elif match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` will turn off semantic and wildcard matching.",
+            "``match_whole_word=True`` will turn off wildcard matching.",
             UserWarning,
         )
 
@@ -424,7 +424,7 @@ def search(
             queries.update(_process_wildcards(key, names))
         queries = list(queries)
         wildcard = True
-    elif match_whole_word and not wildcard:
+    elif match_whole_word:
         queries = _process_misspelled(
             word=search_string,
             names=names,
