@@ -404,8 +404,7 @@ def search(
         )
 
     api_object_names = get_api_tree_file_name(name=True)
-    names_txt = open(api_object_names, "r")
-    names = [name.replace("\n", "") for name in names_txt.readlines()]
+    names = [line.rstrip("\n") for line in open(api_object_names, "r")]
     synset_1 = wn.synsets(search_string, lang=language)
 
     if wildcard and not match_whole_word:
@@ -443,8 +442,7 @@ def search(
     text_files = [api_tree, api_tui_tree]
     print("\n The most similar API objects are: \n")
     for text_file in text_files:
-        text = open(text_file, "r")
-        api_objects = [api_object.replace("\n", "") for api_object in text.readlines()]
+        api_objects = [line.rstrip("\n") for line in open(text_file, "r")]
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
         for query in queries:
