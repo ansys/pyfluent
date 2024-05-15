@@ -170,7 +170,11 @@ class DockerLauncher:
         if self.product_version:
             self.container_dict["image_tag"] = f"v{self.product_version.value}"
         if self.dry_run:
-            config_dict, *_ = configure_container_dict(args, **self.container_dict)
+            config_dict, *_ = configure_container_dict(
+                args,
+                file_transfer_service=self.file_transfer_service,
+                **self.container_dict,
+            )
             from pprint import pprint
 
             print("\nDocker container run configuration:\n")
