@@ -136,7 +136,7 @@ def configure_container_dict(
     image_tag : str, optional
         Ignored if ``fluent_image`` has been specified.
     file_transfer_service : optional
-            File transfer service. Uploads/downloads files to/from the server.
+            Supports file upload and download.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
         to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
