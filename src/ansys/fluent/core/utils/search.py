@@ -9,9 +9,6 @@ import sys
 from typing import Any, Optional
 import warnings
 
-import nltk
-
-nltk.download("all", quiet=True)
 from nltk.corpus import wordnet as wn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -417,12 +414,12 @@ def search(
             names=names,
             match_whole_word=match_whole_word,
         )
-    elif match_case:
-        queries = _process_misspelled(
-            word=search_string,
-            names=names,
-            match_case=match_case,
-        )
+        if match_case:
+            queries = _process_misspelled(
+                word=search_string,
+                names=names,
+                match_case=match_case,
+            )
     else:
         similar_keys = set()
         synsets_1 = (
