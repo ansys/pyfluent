@@ -10,7 +10,7 @@ import warnings
 
 import nltk
 
-nltk.download("wordnet")
+nltk.download("all")
 from nltk.corpus import wordnet as wn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -34,15 +34,6 @@ from ansys.fluent.core.workflow import (
 )
 
 _THIS_DIRNAME = os.path.dirname(__file__)
-
-
-class ValueConflict(ValueError):
-    """Raised when both ``wildcard`` and ``match_whole_word`` are ``True``."""
-
-    def __init__(self):
-        super().__init__(
-            "Provide either ``wildcard`` or ``match_whole_word`` as ``True``."
-        )
 
 
 def get_api_tree_file_name(
@@ -388,7 +379,7 @@ def search(
 
     Raises
     ------
-    ValueConflict
+    ValueError
         If both ``wildcard`` and ``match_whole_word`` are ``True``.
 
     Examples
@@ -406,7 +397,9 @@ def search(
     <meshing_session>.tui.display.display_states.read (Command)
     """
     if wildcard and match_whole_word:
-        raise ValueConflict()
+        raise ValueError(
+            "``wildcard`` cannot be ``True`` when ``match_whole_word`` is ``True``."
+        )
     elif language and match_whole_word:
         warnings.warn(
             "``match_whole_word=True`` will match exact string and will turn off semantic matching.",
