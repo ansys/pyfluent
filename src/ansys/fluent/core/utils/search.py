@@ -298,7 +298,6 @@ def _process_wildcards(word: str, names: list):
 
 def _process_misspelled(
     word: str,
-    names_txt_file,
     names: list,
     match_whole_word: Optional[bool] = False,
     match_case: Optional[bool] = False,
@@ -309,8 +308,6 @@ def _process_misspelled(
     ----------
     word: str
         The word to search for.
-    names_txt_file:
-        Text file containing all API object names.
     names: list
         All API object names.
     match_whole_word: bool
@@ -326,7 +323,6 @@ def _process_misspelled(
     correct_spell = []
     possible_corrections = []
     spell = SpellChecker()
-    spell.word_frequency.load_text_file(names_txt_file)
     spell.word_frequency.load_words(names)
     misspelled = spell.unknown([word])
     if misspelled:
@@ -432,14 +428,12 @@ def search(
     elif match_whole_word and not wildcard:
         queries = _process_misspelled(
             word=search_string,
-            names_txt_file=api_object_names,
             names=names,
             match_whole_word=match_whole_word,
         )
     elif match_case:
         queries = _process_misspelled(
             word=search_string,
-            names_txt_file=api_object_names,
             names=names,
             match_case=match_case,
         )
