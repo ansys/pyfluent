@@ -37,19 +37,19 @@ _THIS_DIRNAME = os.path.dirname(__file__)
 
 
 def get_api_tree_file_name(
-    version: Optional[str] = None,
-    text: Optional[bool] = None,
     name: Optional[bool] = None,
+    text: Optional[bool] = None,
     tui: Optional[bool] = None,
+    version: Optional[str] = None,
 ) -> Path:
     """Get API tree file name."""
     from ansys.fluent.core import CODEGEN_OUTDIR
 
     text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
-    if text:
-        return (text_file_folder / "api_tree.txt").resolve()
-    elif name:
+    if name:
         return (text_file_folder / "api_tree_names.txt").resolve()
+    elif text:
+        return (text_file_folder / "api_tree.txt").resolve()
     elif tui:
         return (text_file_folder / "api_tree_tui.txt").resolve()
     else:
