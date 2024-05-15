@@ -406,17 +406,22 @@ def search(
 
     api_object_names = get_api_tree_file_name(name=True)
     names = [line.rstrip("\n") for line in open(api_object_names, "r")]
-    if sys.version_info[0] < 3:
-        synset_1 = wn.synsets(search_string.decode("utf-8"), lang=language)
-
-    synset_1 = wn.synsets(search_string, lang=language)
+    synset_1 = (
+        wn.synsets(search_string.decode("utf-8"), lang=language)
+        if sys.version_info[0] < 3
+        else wn.synsets(search_string, lang=language)
+    )
 
     if wildcard:
         queries = _process_wildcards(search_string, names)
     elif synset_1 and not match_whole_word and not wildcard:
         similar_keys = set()
         for name in names:
-            synset_2 = wn.synsets(name, lang="eng")
+            synset_2 = (
+                wn.synsets(name.decode("utf-8"), lang=language)
+                if sys.version_info[0] < 3
+                else wn.synsets(name, lang="eng")
+            )
             for s1 in synset_1:
                 for s2 in synset_2:
                     name_s1 = s1.name().split(".")[0]
