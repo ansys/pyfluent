@@ -48,8 +48,8 @@ jobs:
 
       - name: Print Detailsssssss
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh variable set vars.FLUENT_STABLE_IMAGE_DEV --body "xxxxx"
+          GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+        run: gh variable set FLUENT_STABLE_IMAGE_DEV --body "12345"
 
       - name: Set Detailsssssss
         run: set {{ vars.FLUENT_STABLE_IMAGE_DEV }}="xyz......."
