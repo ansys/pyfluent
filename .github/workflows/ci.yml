@@ -49,7 +49,7 @@ jobs:
       - name: Print Detailsssssss
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh variable set MYVARIABLE --body "xxxxx"
+        run: gh variable set FLUENT_STABLE_IMAGE_DEV --body "xxxxx"
 
       - name: Set Detailsssssss
         run: set {{ vars.FLUENT_STABLE_IMAGE_DEV }}="xyz......."
