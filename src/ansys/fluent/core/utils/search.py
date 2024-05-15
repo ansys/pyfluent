@@ -424,7 +424,7 @@ def search(
                 if sys.version_info[0] < 3
                 else wn.synsets(name, lang="eng")
             )
-            for synset_1 in synset_1:
+            for synset_1 in synsets_1:
                 for synset_2 in synsets_2:
                     name_s1 = synset_1.name().split(".")[0]
                     name_s2 = synset_2.name().split(".")[0]
