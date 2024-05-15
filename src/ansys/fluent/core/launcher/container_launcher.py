@@ -123,7 +123,7 @@ class DockerLauncher:
             that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
             when the current Python process ends.
         file_transfer_service : optional
-            File transfer service. Uploads/downloads files to/from the server.
+            Supports file upload and download.
 
         Returns
         -------
