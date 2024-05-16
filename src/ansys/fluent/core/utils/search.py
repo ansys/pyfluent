@@ -345,7 +345,7 @@ def _download_nltk_data():
     import ansys.fluent.core as pyfluent
 
     nltk_data_path = Path(os.path.join(pyfluent.CODEGEN_OUTDIR, "nltk_data"))
-    os.environ["NLTK_DATA "] = str(nltk_data_path)
+    os.environ["NLTK_DATA"] = str(nltk_data_path)
     package_path = Path(os.path.join(nltk_data_path, "corpora"))
     wordnet = package_path / "wordnet.zip"
     omw = package_path / "omw-1.4.zip"
