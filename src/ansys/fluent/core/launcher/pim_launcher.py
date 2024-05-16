@@ -146,21 +146,19 @@ class PIMLauncher:
 
         if self.argvals["additional_arguments"]:
             logger.warning(
-                "'additional_arguments' option for 'launch_fluent' is currently not supported "
+                "'additional_arguments' option for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
 
         if self.argvals["start_watchdog"]:
             logger.warning(
-                "'start_watchdog' argument for 'launch_fluent' is currently not supported "
+                "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
         self.file_transfer_service = file_transfer_service
 
     def __call__(self):
-        logger.info(
-            "Starting Fluent remotely. The startup configuration will be ignored."
-        )
+        logger.info("Starting Fluent remotely. The startup configuration is ignored.")
         if self.argvals["product_version"]:
             fluent_product_version = str(self.argvals["product_version"].number)
         else:

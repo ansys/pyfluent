@@ -218,7 +218,7 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
+            # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
             self._launch_cmd = 'start "" ' + self._launch_string
         else:
             if argvals["ui_mode"] < UIMode.HIDDEN_GUI:
