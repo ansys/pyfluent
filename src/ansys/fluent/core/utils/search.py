@@ -12,7 +12,6 @@ import warnings
 from nltk.corpus import wordnet as wn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from spellchecker import SpellChecker
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
@@ -20,6 +19,7 @@ from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.solver.error_message import closest_allowed_names
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -272,8 +272,8 @@ def _search(
     _write_api_tree_file(api_objects=api_object_names, name=True)
 
 
-def _process_wildcards(word: str, names: list):
-    """Process wildcard pattern in the given word.
+def _get_wildcard_matches_for_word_from_names(word: str, names: list):
+    """Get wildcard matches for the given word.
 
     Parameters
     ----------
@@ -290,13 +290,11 @@ def _process_wildcards(word: str, names: list):
     return [name for name in names if fnmatch.fnmatch(name, word)]
 
 
-def _process_misspelled(
+def _get_close_matches_for_word_from_names(
     word: str,
     names: list,
-    match_whole_word: Optional[bool] = False,
-    match_case: Optional[bool] = False,
 ):
-    """Process misspelled word.
+    """Get close matches for the given word.
 
     Parameters
     ----------
@@ -304,66 +302,157 @@ def _process_misspelled(
         The word to search for.
     names: list
         All API object names.
-    match_whole_word: bool
-        Whether to match whole case.
-    match_case: bool
-        Whether to match case.
 
     Returns
     -------
-    correct_spell: list
-        List of corrected spell.
+    valid_close_matches: list
+        List of valid close matches.
     """
-    correct_spell = []
-    possible_corrections = []
-    spell = SpellChecker()
-    spell.word_frequency.load_words(names)
-    misspelled = spell.unknown([word])
-    if misspelled:
-        for name in misspelled:
-            correct_spell.append(spell.correction(name))
-            possible_corrections.extend(list(spell.candidates(name)))
-        if match_whole_word:
-            return correct_spell
-        elif match_case:
-            corrections_in_tree = set()
-            for correction in possible_corrections:
-                for name in names:
-                    if correction in name:
-                        corrections_in_tree.add(correction)
-            return list(corrections_in_tree)
-    else:
-        return [word]
+    close_matches = closest_allowed_names(word, names)
+    valid_close_matches = [
+        close_match for close_match in close_matches if close_match in names
+    ]
+    return valid_close_matches
 
 
 def _download_nltk_data():
     """Download NLTK data on-demand."""
-    from pathlib import Path
-
     import nltk
 
-    import ansys.fluent.core as pyfluent
-
-    nltk_data_path = Path(os.path.join(pyfluent.CODEGEN_OUTDIR, "nltk_data")).resolve()
-    nltk.data.path.append(nltk_data_path)
-    os.environ["NLTK_DATA"] = str(nltk_data_path)
-    package_path = Path(os.path.join(nltk_data_path, "corpora"))
-    wordnet = package_path / "wordnet.zip"
-    omw = package_path / "omw-1.4.zip"
     packages = ["wordnet", "omw-1.4"]
     for package in packages:
-        if not (package_path / f"{package}.zip").exists():
-            try:
-                nltk.download(
-                    package,
-                    download_dir=nltk_data_path,
-                    quiet=True,
-                    raise_on_error=True,
-                )
-            except BaseException:
-                return False
-    if wordnet.exists() and omw.exists():
-        return True
+        nltk.download(package, quiet=True)
+
+
+def _get_api_object_names():
+    """Get API object names."""
+    return [
+        line.rstrip("\n")
+        for line in open(get_api_tree_file_name(name=True), "r", encoding="utf-8")
+    ]
+
+
+def _print_search_results(queries: list, wildcard: bool):
+    """Print search results.
+
+    Parameters
+    ----------
+    queries: list
+        List of search string to matche API object names.
+    wildcard: bool
+        Whether to use wildcard search.
+    """
+    api_tree = get_api_tree_file_name(text=True)
+    api_tui_tree = get_api_tree_file_name(tui=True)
+    text_files = [api_tree, api_tui_tree]
+    print("\n The most similar API objects are: \n")
+    for text_file in text_files:
+        api_objects = [
+            line.rstrip("\n") for line in open(text_file, "r", encoding="utf-8")
+        ]
+        tfidf_vectorizer = TfidfVectorizer()
+        tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
+        for query in queries:
+            query_vector = tfidf_vectorizer.transform([query])
+            cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
+            if wildcard:
+                most_similar_api_object_index = cosine_similarities.argmax()
+                if query in api_objects[most_similar_api_object_index]:
+                    print(api_objects[most_similar_api_object_index])
+            else:
+                most_similar_api_object_indices = cosine_similarities.argsort()
+                for most_similar_api_object_index in reversed(
+                    most_similar_api_object_indices[0][-3:]
+                ):
+                    if query in api_objects[most_similar_api_object_index]:
+                        print(api_objects[most_similar_api_object_index])
+
+
+def _search_semantic(search_string: str, language: str):
+    """Perform semantic search for a word through the Fluent's object hierarchy.
+
+    Parameters
+    ----------
+    search_string: str
+        The word to search for. Semantic search is default.
+    language: str
+        The language for the semantic search.
+        English is default for the semantic search.
+        ISO 639-3 code of the language to be used for semantic search.
+        See `https://omwn.org/omw1.html` for the list of supported languages.
+        The default value is `eng` for English language.
+
+    Returns
+    -------
+    queries: list
+        List of search string matches.
+    """
+    names = _get_api_object_names()
+    similar_keys = set()
+    search_string_synsets = (
+        wn.synsets(search_string.decode("utf-8"), lang=language)
+        if sys.version_info[0] < 3
+        else wn.synsets(search_string, lang=language)
+    )
+    for name in names:
+        api_object_name_synsets = (
+            wn.synsets(name.decode("utf-8"), lang=language)
+            if sys.version_info[0] < 3
+            else wn.synsets(name, lang="eng")
+        )
+        for search_string_synset in search_string_synsets:
+            for api_object_name_synset in api_object_name_synsets:
+                search_string_synset_name = search_string_synset.name().split(".")[0]
+                api_object_synset_name = api_object_name_synset.name().split(".")[0]
+                if (
+                    search_string in api_object_synset_name
+                    or search_string_synset_name in api_object_synset_name
+                ):
+                    similar_keys.add(api_object_synset_name + "*")
+    queries = set()
+    for key in similar_keys:
+        queries.update(_search_wildcard(key, names))
+    _print_search_results(list(queries), wildcard=True)
+
+
+def _search_wildcard(search_string: str):
+    """Perform wildcard search for a word through the Fluent's object hierarchy.
+
+    Parameters
+    ----------
+    search_string: str
+        The word to search for. Semantic search is default.
+
+    Returns
+    -------
+        List of search string matches.
+    """
+    names = _get_api_object_names()
+    queries = _get_wildcard_matches_for_word_from_names(search_string, names)
+    _print_search_results(queries, wildcard=True)
+
+
+def _search_whole_word(search_string: str, match_case: bool):
+    """Perform exact search for a word through the Fluent's object hierarchy.
+
+    Parameters
+    ----------
+    search_string: str
+        The word to search for. Semantic search is default.
+    match_case: bool
+        Whether to match case. If ``True`` will match case-insensitive case.
+
+    Returns
+    -------
+        List of search string matches.
+    """
+    names = _get_api_object_names()
+    if match_case:
+        search_string = search_string + "*"
+        _search_wildcard(search_string, names)
+    else:
+        queries = _get_close_matches_for_word_from_names(search_string, names)
+        _print_search_results(queries, wildcard=False)
 
 
 def search(
@@ -427,91 +516,13 @@ def search(
             UserWarning,
         )
 
-    api_object_names = get_api_tree_file_name(name=True)
-    names = [
-        line.rstrip("\n") for line in open(api_object_names, "r", encoding="utf-8")
-    ]
-
     if wildcard:
-        queries = _process_wildcards(search_string, names)
+        _search_wildcard(search_string)
     elif match_whole_word:
-        queries = _process_misspelled(
-            word=search_string,
-            names=names,
-            match_whole_word=match_whole_word,
-        )
-        if match_case:
-            queries = _process_misspelled(
-                word=search_string,
-                names=names,
-                match_case=match_case,
-            )
-    elif not wildcard and not match_whole_word and not match_case:
-        if _download_nltk_data():
-            similar_keys = set()
-            search_string_synsets = (
-                wn.synsets(search_string.decode("utf-8"), lang=language)
-                if sys.version_info[0] < 3
-                else wn.synsets(search_string, lang=language)
-            )
-            for name in names:
-                api_object_name_synsets = (
-                    wn.synsets(name.decode("utf-8"), lang=language)
-                    if sys.version_info[0] < 3
-                    else wn.synsets(name, lang="eng")
-                )
-                for search_string_synset in search_string_synsets:
-                    for api_object_name_synset in api_object_name_synsets:
-                        search_string_synset_name = search_string_synset.name().split(
-                            "."
-                        )[0]
-                        api_object_synset_name = api_object_name_synset.name().split(
-                            "."
-                        )[0]
-                        if (
-                            search_string in api_object_synset_name
-                            or search_string_synset_name in api_object_synset_name
-                        ):
-                            similar_keys.add(api_object_synset_name + "*")
-            queries = set()
-            for key in similar_keys:
-                queries.update(_process_wildcards(key, names))
-            queries = list(queries)
-            wildcard = True
-        else:
-            queries = _process_misspelled(
-                word=search_string,
-                names=names,
-                match_case=True,
-            )
+        _search_whole_word(search_string, match_case)
     else:
-        queries = _process_misspelled(
-            word=search_string,
-            names=names,
-            match_case=True,
-        )
-
-    api_tree = get_api_tree_file_name(text=True)
-    api_tui_tree = get_api_tree_file_name(tui=True)
-    text_files = [api_tree, api_tui_tree]
-    print("\n The most similar API objects are: \n")
-    for text_file in text_files:
-        api_objects = [
-            line.rstrip("\n") for line in open(text_file, "r", encoding="utf-8")
-        ]
-        tfidf_vectorizer = TfidfVectorizer()
-        tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
-        for query in queries:
-            query_vector = tfidf_vectorizer.transform([query])
-            cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
-            if wildcard:
-                most_similar_api_object_index = cosine_similarities.argmax()
-                if query in api_objects[most_similar_api_object_index]:
-                    print(api_objects[most_similar_api_object_index])
-            else:
-                most_similar_api_object_indices = cosine_similarities.argsort()
-                for most_similar_api_object_index in reversed(
-                    most_similar_api_object_indices[0][-3:]
-                ):
-                    if query in api_objects[most_similar_api_object_index]:
-                        print(api_objects[most_similar_api_object_index])
+        try:
+            _search_semantic(search_string, language)
+        except LookupError:
+            _download_nltk_data()
+            _search_semantic(search_string, language)
