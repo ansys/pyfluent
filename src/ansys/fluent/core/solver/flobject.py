@@ -369,10 +369,10 @@ class Base:
                 obj = getattr(obj, comp)
         return obj
 
-    def before_execute(self, value):
+    def before_execute(self, value, command_name):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+            self._do_before_execute(value, command_name)
             return True
         else:
             return False
@@ -798,9 +798,11 @@ class FileName(Base):
 
 
 class _InputFile(FileName):
-    def _do_before_execute(self, value):
+    def _do_before_execute(self, value, command_name):
         if self.file_transfer_service:
-            self.file_transfer_service.upload(file_name=value)
+            self.file_transfer_service.upload(
+                file_name=value, command_name=command_name
+            )
 
 
 class _OutputFile(FileName):
@@ -1545,7 +1547,7 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if argument.before_execute(value):
+            if argument.before_execute(value, self.python_name):
                 kwds[f"{arg}"] = os.path.basename(value)
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
