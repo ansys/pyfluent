@@ -364,10 +364,7 @@ class BaseSession:
         for relevant files."
 
     def upload(
-        self,
-        file_name: Union[list[str], str],
-        remote_file_name: Optional[str] = None,
-        command_name: Optional[str] = None,
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
     ):
         """Upload a file to the server.
 
@@ -377,14 +374,10 @@ class BaseSession:
             Name of the local file to upload to the server.
         remote_file_name : str, optional
             remote file name, by default None
-        command_name : str, optional
-            Name of the command.
         """
         warnings.warn(self._file_transfer_api_warning("upload()"), UserWarning)
         if self._file_transfer_service:
-            return self._file_transfer_service.upload(
-                file_name, remote_file_name, command_name
-            )
+            return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_directory: Optional[str] = "."):
         """Download a file from the server.

@@ -73,34 +73,19 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         return full_file_name.is_file()
 
     def upload(
-        self,
-        file_name: Union[list[str], str],
-        remote_file_name: Optional[str] = None,
-        command_name: Optional[str] = None,
+        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
     ) -> None:
-        data_file = ["read_case_data"]
         local_file_name = pathlib.Path(file_name)
-
-        def _upload(file_name, local_file_name, remote_file_name):
-            if local_file_name.exists() and local_file_name.is_file():
-                if remote_file_name:
-                    shutil.copyfile(
-                        file_name,
-                        str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
-                    )
-                else:
-                    shutil.copyfile(
-                        file_name,
-                        str(self.fluent_cwd / f"{os.path.basename(file_name)}"),
-                    )
-
-        if command_name in data_file:
-            data_file = file_name.replace("cas", "dat")
-            data_file_name = pathlib.Path(data_file)
-            _upload(data_file, data_file_name, remote_file_name)
-            _upload(file_name, local_file_name, remote_file_name)
-        else:
-            _upload(file_name, local_file_name, remote_file_name)
+        if local_file_name.exists() and local_file_name.is_file():
+            if remote_file_name:
+                shutil.copyfile(
+                    file_name,
+                    str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
+                )
+            else:
+                shutil.copyfile(
+                    file_name, str(self.fluent_cwd / f"{os.path.basename(file_name)}")
+                )
 
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
