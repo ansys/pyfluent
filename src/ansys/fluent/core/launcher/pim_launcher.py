@@ -159,7 +159,7 @@ class PIMLauncher:
 
     def __call__(self):
         logger.info(
-            "Starting Fluent remotely. The startup configuration will be ignored."
+            "Starting Fluent remotely. The startup configuration is ignored."
         )
         if self.argvals["product_version"]:
             fluent_product_version = str(self.argvals["product_version"].number)
