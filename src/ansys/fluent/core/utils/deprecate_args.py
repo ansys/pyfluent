@@ -13,7 +13,7 @@ def deprecate_argument(
     the deprecated argument with the appropriate new argument."""
 
     def _str_repr(var):
-        """Converts string or FluentEnum variable to quoted string representation."""
+        """Converts a string or FluentEnum variable to quoted string representation."""
         if isinstance(var, (str, FluentEnum)):
             return f'"{var}"'
         else:
