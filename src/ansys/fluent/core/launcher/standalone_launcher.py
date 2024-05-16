@@ -298,7 +298,7 @@ class StandaloneLauncher:
             return session
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
-            raise LaunchFluentError(launch_cmd) from ex
+            raise LaunchFluentError(self._launch_cmd) from ex
         finally:
             server_info_file = Path(self._server_info_file_name)
             if server_info_file.exists():
