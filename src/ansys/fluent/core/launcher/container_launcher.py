@@ -150,28 +150,28 @@ class DockerLauncher:
         graphics_driver = _get_graphics_driver(graphics_driver)
         mode = _get_mode(mode)
         argvals = locals().copy()
+
         del argvals["self"]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
-        self.argvals = argvals
-        self.new_session = self.argvals["mode"].value[0]
+
+        self.new_session = argvals["mode"].value[0]
         self.file_transfer_service = file_transfer_service
 
-    def __call__(self):
-        if self.argvals["mode"] == FluentMode.SOLVER_ICING:
-            self.argvals["fluent_icing"] = True
-        args = _build_fluent_launch_args_string(**self.argvals).split()
-        if FluentMode.is_meshing(self.argvals["mode"]):
+        if argvals["mode"] == FluentMode.SOLVER_ICING:
+            argvals["fluent_icing"] = True
+        args = _build_fluent_launch_args_string(**argvals).split()
+        if FluentMode.is_meshing(argvals["mode"]):
             args.append(" -meshing")
-        if self.argvals["container_dict"] is None:
-            self.argvals["container_dict"] = {}
-        if self.argvals["product_version"]:
-            self.argvals["container_dict"][
+        if argvals["container_dict"] is None:
+            argvals["container_dict"] = {}
+        if argvals["product_version"]:
+            argvals["container_dict"][
                 "image_tag"
-            ] = f"v{self.argvals['product_version'].value}"
-        if self.argvals["dry_run"]:
+            ] = f"v{argvals['product_version'].value}"
+        if argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
-                args, **self.argvals["container_dict"]
+                args, **argvals["container_dict"]
             )
             from pprint import pprint
 
@@ -186,28 +186,29 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(args, self.argvals["container_dict"])
+        port, password = start_fluent_container(args, argvals["container_dict"])
 
         fluent_connection = FluentConnection(
             port=port,
             password=password,
             file_transfer_service=self.file_transfer_service,
-            cleanup_on_exit=self.argvals["cleanup_on_exit"],
-            slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
+            cleanup_on_exit=argvals["cleanup_on_exit"],
+            slurm_job_id=argvals and argvals.get("slurm_job_id"),
             inside_container=True,
         )
 
-        session = self.new_session(
+        self.session = self.new_session(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=self.file_transfer_service,
-            start_transcript=self.argvals["start_transcript"],
+            start_transcript=argvals["start_transcript"],
         )
 
-        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
-            self.argvals["start_watchdog"] = True
-        if self.argvals["start_watchdog"]:
+        if argvals["start_watchdog"] is None and argvals["cleanup_on_exit"]:
+            argvals["start_watchdog"] = True
+        if argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
 
-        return session
+    def __call__(self):
+        return self.session
