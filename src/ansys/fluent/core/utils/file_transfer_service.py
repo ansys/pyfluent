@@ -78,7 +78,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         remote_file_name: Optional[str] = None,
         command_name: Optional[str] = None,
     ) -> None:
-        command_names = ["read_case_data"]
+        data_file = ["read_case_data"]
         local_file_name = pathlib.Path(file_name)
 
         def _upload(file_name, local_file_name, remote_file_name):
@@ -94,7 +94,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
                         str(self.fluent_cwd / f"{os.path.basename(file_name)}"),
                     )
 
-        if command_name in command_names:
+        if command_name in data_file:
             data_file = file_name.replace("cas", "dat")
             data_file_name = pathlib.Path(data_file)
             _upload(data_file, data_file_name, remote_file_name)
