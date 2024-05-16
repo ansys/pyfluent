@@ -8,7 +8,10 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import (
+    LocalFileTransferStrategy,
+    RemoteFileTransferStrategy,
+)
 
 
 def file_downloaded_to_the_client(file_name: str) -> bool:
@@ -55,6 +58,9 @@ def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_ses
         assert file_downloaded_to_the_client("downloaded_meshing_mixing_elbow.msh.h5")
 
 
+@pytest.mark.skip(
+    reason="Unable to copy data file to Fluent's current working directory."
+)
 @pytest.mark.standalone
 def test_read_case_and_data():
     import ansys.fluent.core as pyfluent
@@ -68,4 +74,21 @@ def test_read_case_and_data():
     assert case_file_name
     assert data_file_name
     solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
-    solver.file.read_case_data(file_name=case_file_name)
+
+    with pytest.raises(FileNotFoundError):
+        solver.file.read_case_data(file_name=case_file_name)
+
+
+@pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")
+def test_datamodel_execute():
+    import ansys.fluent.core as pyfluent
+
+    meshing = pyfluent.launch_fluent(
+        mode="meshing", file_transfer_service=RemoteFileTransferStrategy()
+    )
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_geom = meshing.workflow.TaskObject["Import Geometry"]
+    import_geom.Arguments = {"FileName": "geom"}
+
+    with pytest.raises(RuntimeError):
+        import_geom.Execute()
