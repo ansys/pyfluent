@@ -90,21 +90,22 @@ class SystemCoupling:
                 file_name=scp_file_name
             )
 
-            # download the file locally in case Fluent is in a container
             if self._solver._fluent_connection._remote_instance != None:
+                # download the file locally in case Fluent is remote
+                # assume file transfer service is configured - download the file
+                self._solver.download(scp_file_name)
+            elif self._solver.connection_properties.inside_container:
+                # Right now, the way that PyFluent containers and tests are set up,
+                # the local Fluent container working directory will correspond to
+                # pyfluent.EXAMPLES_PATH in the host, so that is where the SCP file
+                # will be written.
                 examples_path_scp = os.path.join(pyfluent.EXAMPLES_PATH, scp_file_name)
                 if os.path.exists(examples_path_scp):
-                    # For container mode without file transfer service (e.g. on GitHub),
-                    # produced files are located in pyfluent.EXAMPLES_PATH. Just use
-                    # that path, instead of attempting to download the file from the container.
                     scp_file_name = examples_path_scp
-                else:
-                    # assume file transfer service is configured - download the file
-                    self._solver.download(scp_file_name)
 
             assert os.path.exists(
                 scp_file_name
-            ), "ERROR: could not create System Coupling SCP file"
+            ), f"ERROR: could not create System Coupling SCP file: {scp_file_name}"
 
             with open(scp_file_name, "r") as f:
                 xml_string = f.read()
