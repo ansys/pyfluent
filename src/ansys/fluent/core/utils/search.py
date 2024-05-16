@@ -323,7 +323,7 @@ def _process_misspelled(
         for name in misspelled:
             correct_spell.append(spell.correction(name))
             possible_corrections.extend(list(spell.candidates(name)))
-        if match_whole_word and correct_spell == possible_corrections:
+        if match_whole_word:
             return correct_spell
         elif match_case:
             corrections_in_tree = set()
@@ -341,7 +341,7 @@ def search(
     language: Optional[str] = "eng",
     wildcard: Optional[bool] = False,
     match_whole_word: Optional[bool] = False,
-    match_case: Optional[bool] = True,
+    match_case: Optional[bool] = False,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -418,23 +418,28 @@ def search(
             )
     else:
         similar_keys = set()
-        synsets_1 = (
+        search_string_synsets = (
             wn.synsets(search_string.decode("utf-8"), lang=language)
             if sys.version_info[0] < 3
             else wn.synsets(search_string, lang=language)
         )
         for name in names:
-            synsets_2 = (
+            api_object_name_synsets = (
                 wn.synsets(name.decode("utf-8"), lang=language)
                 if sys.version_info[0] < 3
                 else wn.synsets(name, lang="eng")
             )
-            for synset_1 in synsets_1:
-                for synset_2 in synsets_2:
-                    synset_1_name = synset_1.name().split(".")[0]
-                    synset_2_name = synset_2.name().split(".")[0]
-                    if search_string in synset_2_name or synset_1_name in synset_2_name:
-                        similar_keys.add(synset_2_name + "*")
+            for search_string_synset in search_string_synsets:
+                for api_object_name_synset in api_object_name_synsets:
+                    search_string_synset_name = search_string_synset.name().split(".")[
+                        0
+                    ]
+                    api_object_synset_name = api_object_name_synset.name().split(".")[0]
+                    if (
+                        search_string in api_object_synset_name
+                        or search_string_synset_name in api_object_synset_name
+                    ):
+                        similar_keys.add(api_object_synset_name + "*")
         queries = set()
         for key in similar_keys:
             queries.update(_process_wildcards(key, names))
