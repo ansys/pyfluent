@@ -188,7 +188,6 @@ class StandaloneLauncher:
         self.file_transfer_service = file_transfer_service
 
         if argvals["lightweight_mode"] is None:
-            # note argvals is no longer locals() here due to _get_session_info() pass
             argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(
             argvals["product_version"]
