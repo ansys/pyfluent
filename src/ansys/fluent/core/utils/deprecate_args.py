@@ -9,7 +9,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import FluentEnum
 def deprecate_argument(
     old_arg, new_arg, converter, deprecation_class=DeprecationWarning
 ):
-    """Warns user that the argument provided is deprecated, and automatically replaces
+    """Warns that the argument provided is deprecated and automatically replaces
     the deprecated argument with the appropriate new argument."""
 
     def _str_repr(var):
