@@ -8,6 +8,7 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
 
 
 def file_downloaded_to_the_client(file_name: str) -> bool:
@@ -52,3 +53,19 @@ def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_ses
         )
         assert meshing.file_exists_on_remote("downloaded_meshing_mixing_elbow.msh.h5")
         assert file_downloaded_to_the_client("downloaded_meshing_mixing_elbow.msh.h5")
+
+
+@pytest.mark.standalone
+def test_read_case_and_data():
+    import ansys.fluent.core as pyfluent
+
+    case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    data_file_name = examples.download_file(
+        "mixing_elbow.dat.h5", "pyfluent/mixing_elbow"
+    )
+    assert case_file_name
+    assert data_file_name
+    solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
+    solver.file.read_case_data(file_name=case_file_name)
