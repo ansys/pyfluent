@@ -33,8 +33,9 @@ class Region:
 
 
 class SystemCoupling:
-    """Wrap a System Coupling object, adding methods to discover more about the System
-    Coupling related setup and to help solving a System Coupling analysis.
+    """Wrap a System Coupling object, adding methods to discover more about the
+    System Coupling related setup and to help solving a System Coupling
+    analysis.
 
     Methods
     -------
