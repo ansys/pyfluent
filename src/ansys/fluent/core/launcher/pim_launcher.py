@@ -152,7 +152,7 @@ class PIMLauncher:
 
         if self.argvals["start_watchdog"]:
             logger.warning(
-                "'start_watchdog' argument for 'launch_fluent' is currently not supported "
+                "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
         self.file_transfer_service = file_transfer_service
