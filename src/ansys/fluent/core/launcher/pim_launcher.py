@@ -146,7 +146,7 @@ class PIMLauncher:
 
         if self.argvals["additional_arguments"]:
             logger.warning(
-                "'additional_arguments' option for 'launch_fluent' is currently not supported "
+                "'additional_arguments' option for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
 
