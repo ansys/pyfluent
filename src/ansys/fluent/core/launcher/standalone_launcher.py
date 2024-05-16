@@ -184,7 +184,7 @@ class StandaloneLauncher:
         del argvals["self"]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
-        self.new_session = self.argvals["mode"].value[0]
+        self.new_session = argvals["mode"].value[0]
         self.file_transfer_service = file_transfer_service
 
         if argvals["lightweight_mode"] is None:
@@ -201,7 +201,7 @@ class StandaloneLauncher:
             argvals["fluent_debug"] = True
 
         self._server_info_file_name = _get_server_info_file_name()
-        launch_string = _generate_launch_string(
+        self._launch_string = _generate_launch_string(
             argvals,
             argvals["mode"],
             self._server_info_file_name,
