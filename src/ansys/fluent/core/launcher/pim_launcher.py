@@ -158,9 +158,7 @@ class PIMLauncher:
         self.file_transfer_service = file_transfer_service
 
     def __call__(self):
-        logger.info(
-            "Starting Fluent remotely. The startup configuration is ignored."
-        )
+        logger.info("Starting Fluent remotely. The startup configuration is ignored.")
         if self.argvals["product_version"]:
             fluent_product_version = str(self.argvals["product_version"].number)
         else:
