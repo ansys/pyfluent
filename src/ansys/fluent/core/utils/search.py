@@ -189,9 +189,9 @@ def _search(
     if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
-            if get_api_tree_file_name(version).exists():
+            if get_api_tree_file_name(version=version).exists():
                 break
-    api_tree_file = get_api_tree_file_name(version)
+    api_tree_file = get_api_tree_file_name(version=version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
 
@@ -336,6 +336,35 @@ def _process_misspelled(
         return [word]
 
 
+def _download_nltk_data():
+    """Download NLTK data on-demand."""
+    from pathlib import Path
+
+    import nltk
+
+    import ansys.fluent.core as pyfluent
+
+    nltk_data_path = Path(os.path.join(pyfluent.CODEGEN_OUTDIR, "nltk_data"))
+    os.environ["NLTK_DATA "] = str(nltk_data_path)
+    package_path = Path(os.path.join(nltk_data_path, "corpora"))
+    wordnet = package_path / "wordnet.zip"
+    omw = package_path / "omw-1.4.zip"
+    packages = ["wordnet", "omw-1.4"]
+    for package in packages:
+        if not (package_path / f"{package}.zip").exists():
+            try:
+                nltk.download(
+                    package,
+                    download_dir=nltk_data_path,
+                    quiet=True,
+                    raise_on_error=True,
+                )
+            except BaseException:
+                return False
+    if wordnet.exists() and omw.exists():
+        return True
+
+
 def search(
     search_string: str,
     language: Optional[str] = "eng",
@@ -416,35 +445,50 @@ def search(
                 names=names,
                 match_case=match_case,
             )
-    else:
-        similar_keys = set()
-        search_string_synsets = (
-            wn.synsets(search_string.decode("utf-8"), lang=language)
-            if sys.version_info[0] < 3
-            else wn.synsets(search_string, lang=language)
-        )
-        for name in names:
-            api_object_name_synsets = (
-                wn.synsets(name.decode("utf-8"), lang=language)
+    elif not wildcard and not match_whole_word and not match_case:
+        if _download_nltk_data():
+            similar_keys = set()
+            search_string_synsets = (
+                wn.synsets(search_string.decode("utf-8"), lang=language)
                 if sys.version_info[0] < 3
-                else wn.synsets(name, lang="eng")
+                else wn.synsets(search_string, lang=language)
             )
-            for search_string_synset in search_string_synsets:
-                for api_object_name_synset in api_object_name_synsets:
-                    search_string_synset_name = search_string_synset.name().split(".")[
-                        0
-                    ]
-                    api_object_synset_name = api_object_name_synset.name().split(".")[0]
-                    if (
-                        search_string in api_object_synset_name
-                        or search_string_synset_name in api_object_synset_name
-                    ):
-                        similar_keys.add(api_object_synset_name + "*")
-        queries = set()
-        for key in similar_keys:
-            queries.update(_process_wildcards(key, names))
-        queries = list(queries)
-        wildcard = True
+            for name in names:
+                api_object_name_synsets = (
+                    wn.synsets(name.decode("utf-8"), lang=language)
+                    if sys.version_info[0] < 3
+                    else wn.synsets(name, lang="eng")
+                )
+                for search_string_synset in search_string_synsets:
+                    for api_object_name_synset in api_object_name_synsets:
+                        search_string_synset_name = search_string_synset.name().split(
+                            "."
+                        )[0]
+                        api_object_synset_name = api_object_name_synset.name().split(
+                            "."
+                        )[0]
+                        if (
+                            search_string in api_object_synset_name
+                            or search_string_synset_name in api_object_synset_name
+                        ):
+                            similar_keys.add(api_object_synset_name + "*")
+            queries = set()
+            for key in similar_keys:
+                queries.update(_process_wildcards(key, names))
+            queries = list(queries)
+            wildcard = True
+        else:
+            queries = _process_misspelled(
+                word=search_string,
+                names=names,
+                match_case=True,
+            )
+    else:
+        queries = _process_misspelled(
+            word=search_string,
+            names=names,
+            match_case=True,
+        )
 
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
