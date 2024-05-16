@@ -31,8 +31,6 @@ from ansys.fluent.core.workflow import (
     Workflow,
 )
 
-_THIS_DIRNAME = os.path.dirname(__file__)
-
 
 def get_api_tree_file_name(
     name: Optional[bool] = None,
@@ -43,7 +41,7 @@ def get_api_tree_file_name(
     """Get API tree file name."""
     from ansys.fluent.core import CODEGEN_OUTDIR
 
-    text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
+    text_file_folder = Path(os.path.join(CODEGEN_OUTDIR, "api_tree"))
     if name:
         return (text_file_folder / "api_tree_names.txt").resolve()
     elif text:
