@@ -95,6 +95,3 @@ CODEGEN_ZIP_SETTINGS = False
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
-
-# Whether to write API objects to a text file
-WRITE_API_SEARCH_OBJECTS_FILE = False

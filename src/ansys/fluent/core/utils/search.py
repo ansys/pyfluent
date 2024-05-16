@@ -264,14 +264,12 @@ def _search(
                 file.write(f"{api_object}")
                 file.write("\n")
 
-    if pyfluent.WRITE_API_SEARCH_OBJECTS_FILE:
+    text_file_folder = Path(os.path.join(pyfluent.CODEGEN_OUTDIR, "api_tree"))
+    text_file_folder.mkdir(parents=True, exist_ok=True)
 
-        text_file_folder = Path(os.path.join(_THIS_DIRNAME, "api_tree"))
-        text_file_folder.mkdir(parents=True, exist_ok=True)
-
-        _write_api_tree_file(api_objects=api_objects, text=True)
-        _write_api_tree_file(api_objects=api_tui_objects, tui=True)
-        _write_api_tree_file(api_objects=api_object_names, name=True)
+    _write_api_tree_file(api_objects=api_objects, text=True)
+    _write_api_tree_file(api_objects=api_tui_objects, tui=True)
+    _write_api_tree_file(api_objects=api_object_names, name=True)
 
 
 def _process_wildcards(word: str, names: list):
