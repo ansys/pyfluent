@@ -16,12 +16,14 @@ from ansys.fluent.core.utils.search import (
 )
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_exception_search():
     with pytest.raises(ValueError):
         pyfluent.search(search_string="font", wildcard=True, match_whole_word=True)
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     names = _get_api_object_names()
@@ -30,6 +32,7 @@ def test_get_wildcard_matches_for_word_from_names():
     assert "iterate_steady_2way_fsi" in wildcard_matches
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_close_matches_for_word_from_names():
     names = _get_api_object_names()
@@ -46,6 +49,7 @@ def test_get_close_matches_for_word_from_names():
     assert "sunshine_factor" in close_matches
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_wildcard(capsys):
     _search_wildcard("max*")
@@ -60,6 +64,7 @@ def test_search_wildcard(capsys):
     assert "<solver_session>.solution.controls.limits.min_des_tke (Parameter)" in lines
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_whole_word(capsys):
     _search_whole_word("RemovePartitionLinesTolerance", match_case=False)
@@ -77,6 +82,7 @@ def test_search_whole_word(capsys):
     )
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_semantic(capsys):
     _search_semantic("读", language="cmn")
@@ -90,6 +96,7 @@ def test_search_semantic(capsys):
     assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_exact_search(capsys):
     pyfluent.search("font", match_whole_word=True)
@@ -98,6 +105,7 @@ def test_exact_search(capsys):
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
     pyfluent.search("Font", match_case=True)
@@ -106,6 +114,7 @@ def test_match_case_search(capsys):
     assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_misspelled_search(capsys):
     pyfluent.search("cfb_lma")
@@ -116,6 +125,7 @@ def test_misspelled_search(capsys):
     )
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
     pyfluent.search("iter*", wildcard=True)
@@ -124,6 +134,7 @@ def test_wildcard_search(capsys):
     assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
@@ -137,6 +148,7 @@ def test_chinese_semantic_search(capsys):
     assert "<meshing_session>.meshing.File.WriteMesh (Command)" in lines
 
 
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
