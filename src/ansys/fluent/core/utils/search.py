@@ -293,7 +293,6 @@ def _print_search_results(queries: list, wildcard: bool):
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
     text_files = [api_tree, api_tui_tree]
-    print("\n The most similar API objects are: \n")
     for text_file in text_files:
         api_objects = [
             line.rstrip("\n") for line in open(text_file, "r", encoding="utf-8")

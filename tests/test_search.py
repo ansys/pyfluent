@@ -4,13 +4,84 @@ from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.search import _get_version_path_prefix_from_obj, _search
+from ansys.fluent.core.utils.search import (
+    _get_api_object_names,
+    _get_close_matches_for_word_from_names,
+    _get_version_path_prefix_from_obj,
+    _get_wildcard_matches_for_word_from_names,
+    _search,
+    _search_semantic,
+    _search_whole_word,
+    _search_wildcard,
+)
 
 
 @pytest.mark.codegen_required
 def test_exception_search():
     with pytest.raises(ValueError):
         pyfluent.search(search_string="font", wildcard=True, match_whole_word=True)
+
+
+@pytest.mark.codegen_required
+def test_get_wildcard_matches_for_word_from_names():
+    names = _get_api_object_names()
+    wildcard_matches = _get_wildcard_matches_for_word_from_names("iter*", names)
+    assert "iterating" in wildcard_matches
+    assert "iterate_steady_2way_fsi" in wildcard_matches
+
+
+@pytest.mark.codegen_required
+def test_get_close_matches_for_word_from_names():
+    names = _get_api_object_names()
+    close_matches = _get_close_matches_for_word_from_names("font", names)
+    assert "font" in close_matches
+
+    close_matches = _get_close_matches_for_word_from_names("fnt", names)
+    assert "font" in close_matches
+
+
+@pytest.mark.codegen_required
+def test_search_wildcard(capsys):
+    _search_wildcard("max*")
+    lines = capsys.readouterr().out.splitlines()
+    assert (
+        "<solver_session>.solution.run_calculation.cfl_based_adaptive_time_stepping.max_fixed_time_step (Parameter)"
+        in lines
+    )
+
+    _search_wildcard("min*")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.solution.controls.limits.min_des_tke (Parameter)" in lines
+
+
+@pytest.mark.codegen_required
+def test_search_whole_word(capsys):
+    _search_whole_word("RemovePartitionLinesTolerance", match_case=False)
+    lines = capsys.readouterr().out.splitlines()
+    assert (
+        "<meshing_session>.preferences.Graphics.RemovePartitionLinesTolerance (Parameter)"
+        in lines
+    )
+
+    _search_whole_word("k0_sei", match_case=False)
+    lines = capsys.readouterr().out.splitlines()
+    assert (
+        "<solver_session>.setup.models.battery.tool_kits.standalone_echem_model.k0_sei (Parameter)"
+        in lines
+    )
+
+
+@pytest.mark.codegen_required
+def test_search_semantic(capsys):
+    _search_semantic("读", language="cmn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.read_surface_mesh (Command)" in lines
+    assert "<meshing_session>.meshing.File.ReadJournal (Command)" in lines
+
+    _search_semantic("フォント", language="jpn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
 
 
 @pytest.mark.codegen_required
@@ -23,7 +94,7 @@ def test_exact_search(capsys):
 
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
-    pyfluent.search("Font")
+    pyfluent.search("Font", match_case=True)
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
     assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
