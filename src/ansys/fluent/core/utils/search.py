@@ -280,7 +280,7 @@ def _get_api_object_names():
     ]
 
 
-def _print_search_results(queries: list, wildcard: bool):
+def _print_search_results(queries: list):
     """Print search results.
 
     Parameters
@@ -302,17 +302,12 @@ def _print_search_results(queries: list, wildcard: bool):
         for query in queries:
             query_vector = tfidf_vectorizer.transform([query])
             cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
-            if wildcard:
-                most_similar_api_object_index = cosine_similarities.argmax()
+            most_similar_api_object_indices = cosine_similarities.argsort()
+            for most_similar_api_object_index in reversed(
+                most_similar_api_object_indices[0][-3:]
+            ):
                 if query in api_objects[most_similar_api_object_index]:
                     print(api_objects[most_similar_api_object_index])
-            else:
-                most_similar_api_object_indices = cosine_similarities.argsort()
-                for most_similar_api_object_index in reversed(
-                    most_similar_api_object_indices[0][-3:]
-                ):
-                    if query in api_objects[most_similar_api_object_index]:
-                        print(api_objects[most_similar_api_object_index])
 
 
 def _get_wildcard_matches_for_word_from_names(word: str, names: list):
@@ -352,7 +347,7 @@ def _search_wildcard(search_string: str):
     names = _get_api_object_names()
     queries = _get_wildcard_matches_for_word_from_names(search_string, names)
     if queries:
-        _print_search_results(queries, wildcard=True)
+        _print_search_results(queries)
 
 
 def _get_exact_match_for_word_from_names(
@@ -422,7 +417,7 @@ def _search_whole_word(search_string: str, match_case: bool):
     else:
         queries = _get_exact_match_for_word_from_names(search_string, names)
         if queries:
-            _print_search_results(queries, wildcard=False)
+            _print_search_results(queries)
 
 
 def _download_nltk_data():
@@ -481,7 +476,7 @@ def _search_semantic(search_string: str, language: str):
     else:
         queries = _get_close_matches_for_word_from_names(search_string, names)
         if queries:
-            _print_search_results(queries, wildcard=True)
+            _print_search_results(queries)
 
 
 def search(
