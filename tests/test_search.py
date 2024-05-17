@@ -73,7 +73,7 @@ def test_get_version_path_prefix_from_obj(
     )
     assert _get_version_path_prefix_from_obj(meshing.tui.file.import_) == (
         version,
-        ["<session>", "tui", "file", "import_"],
+        ["<meshing_session>", "tui", "file", "import_"],
         "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.tui.file.read_case) == (
@@ -82,34 +82,34 @@ def test_get_version_path_prefix_from_obj(
         None,
     )
     assert _get_version_path_prefix_from_obj(meshing.meshing) == (
-        None,
+        version,
         ["<meshing_session>", "meshing"],
         "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.workflow) == (
-        None,
+        version,
         ["<meshing_session>", "workflow"],
         "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(solver.workflow) == (
-        None,
+        version,
         ["<meshing_session>", "workflow"],
         "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.workflow.TaskObject) == (
-        None,
+        version,
         ["<meshing_session>", "workflow", "TaskObject:<name>"],
         '<search_root>["<name>"]',
     )
     assert _get_version_path_prefix_from_obj(
         meshing.workflow.TaskObject["Import Geometry"]
     ) == (
-        None,
+        version,
         ["<meshing_session>", "workflow", "TaskObject:<name>"],
         "<search_root>",
     )
     assert _get_version_path_prefix_from_obj(meshing.preferences.Appearance.Charts) == (
-        None,
+        version,
         ["<solver_session>", "preferences", "Appearance", "Charts"],
         "<search_root>",
     )
