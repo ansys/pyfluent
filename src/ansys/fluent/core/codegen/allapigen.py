@@ -18,7 +18,7 @@ def generate(version: str, static_infos: dict):
     _update_first_level(api_tree, tuigen.generate(version, static_infos))
     _update_first_level(api_tree, datamodelgen.generate(version, static_infos))
     _update_first_level(api_tree, settingsgen.generate(version, static_infos))
-    api_tree_file = get_api_tree_file_name(version)
+    api_tree_file = get_api_tree_file_name(version=version)
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)

@@ -43,7 +43,7 @@ def test_codegen_with_no_static_info(monkeypatch):
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
     assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
-    api_tree_file = get_api_tree_file_name(version)
+    api_tree_file = get_api_tree_file_name(version=version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
     assert api_tree == {"<meshing_session>": {}, "<solver_session>": {}}
@@ -140,7 +140,7 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
     with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
         assert f.read().strip() == _get_expected_tui_api_output(mode)
-    api_tree_file = get_api_tree_file_name(version)
+    api_tree_file = get_api_tree_file_name(version=version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
     tui_tree = {
@@ -337,7 +337,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     assert set(p.name for p in datamodel_paths) == {f"{rules}.py"}
     with open(codegen_outdir / f"datamodel_{version}" / f"{rules}.py", "r") as f:
         assert f.read().strip() == _expected_datamodel_api_output
-    api_tree_file = get_api_tree_file_name(version)
+    api_tree_file = get_api_tree_file_name(version=version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
     datamodel_tree = {
@@ -790,7 +790,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
         assert f.read().strip() == _expected_P1_settings_api_output
     with open(codegen_outdir / "solver" / f"settings_{version}" / "Q1.py", "r") as f:
         assert f.read().strip() == _expected_Q1_settings_api_output
-    api_tree_file = get_api_tree_file_name(version)
+    api_tree_file = get_api_tree_file_name(version=version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
     settings_tree = {
