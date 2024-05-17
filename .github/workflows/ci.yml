@@ -52,7 +52,7 @@ jobs:
       - name: Set Detailsssssss
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
-        run: docker manifest inspect ghcr.io/ansys/pyfluent:v24.2.0 -v | python -c "import sys, json, subprocess; sha_id=json.load(sys.stdin)['Descriptor']['digest']; subprocess.run(f'gh variable set FLUENT_STABLE_IMAGE_DEV --body {sha_id}')"
+        run: docker manifest inspect ghcr.io/ansys/pyfluent:v24.2.0 -v | python -c "import sys, json, subprocess; sha_id=json.load(sys.stdin)['Descriptor']['digest']; subprocess.call(f'gh variable set FLUENT_STABLE_IMAGE_DEV --body {sha_id}')"
 
       - name: Print Detailsssssss Again
         run: echo ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
