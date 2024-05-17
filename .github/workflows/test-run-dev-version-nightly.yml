@@ -27,13 +27,13 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
+#      - name: Cache pip
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.cache/pip
+#          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+#          restore-keys: |
+#            Python-${{ runner.os }}-${{ matrix.python-version }}
 
       - name: Add version information
         run: make version-info
@@ -84,7 +84,9 @@ jobs:
       - name: Update Fluent image
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:v24.2.0 | sed 's/.*@//')
+          echo $DIGEST
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
