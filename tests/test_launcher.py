@@ -439,6 +439,14 @@ def test_exposure_and_graphics_driver_arguments():
             )
 
 
+def test_additional_arguments_fluent_launch_args_string():
+    additional_arguments = "-ws -ws-port=5000 -i test.jou"
+    assert additional_arguments in _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+    )
+
+
 def test_processor_count():
     def get_processor_count(solver):
         return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
