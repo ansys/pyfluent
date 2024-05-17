@@ -50,7 +50,7 @@ def _get_datamodel_attributes(session, attribute: str):
         from ansys.fluent.core import CODEGEN_OUTDIR
 
         preferences_module = load_module(
-            attribute,
+            f"{attribute}_{session._version}",
             CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{attribute}.py",
         )
         return preferences_module.Root(session._se_service, attribute, [])
