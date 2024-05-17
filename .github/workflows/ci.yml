@@ -52,7 +52,7 @@ jobs:
       - name: Set Detailsssssss
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
-        run: gh variable set FLUENT_STABLE_IMAGE_DEV --body "sha256:e698cba23645d1a99a2fd69d5cfba3c2f37bfc063b36b01b3e5cf42c75927dae"
+        run: gh variable set FLUENT_STABLE_IMAGE_DEV --body docker manifest inspect ghcr.io/ansys/pyfluent:v24.2.0 -v | python -c "import sys, json; print(json.load(sys.stdin)['Descriptor']['digest'])"
 
       - name: Print Detailsssssss Again
         run: echo ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
