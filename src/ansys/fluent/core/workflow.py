@@ -1469,6 +1469,9 @@ class Workflow:
         if self._workflow.service in self._root_affected_cb_by_server:
             self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
             self._root_affected_cb_by_server.pop(self._workflow.service)
+        self._init_workflow(name=name, dynamic_interface=dynamic_interface)
+
+    def _init_workflow(self, name: str, dynamic_interface: bool = True):
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
