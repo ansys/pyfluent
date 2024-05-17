@@ -409,10 +409,8 @@ def _search_semantic(search_string: str, language: str):
                     or search_string_synset_name in api_object_synset_name
                 ):
                     similar_keys.add(api_object_synset_name + "*")
-    queries = set()
     for key in similar_keys:
-        queries.update(_search_wildcard(key, names))
-    _print_search_results(list(queries), wildcard=True)
+        _search_wildcard(key)
 
 
 def _search_wildcard(search_string: str):
@@ -520,9 +518,11 @@ def search(
         _search_wildcard(search_string)
     elif match_whole_word:
         _search_whole_word(search_string, match_case)
-    else:
+    elif match_case:
         try:
             _search_semantic(search_string, language)
-        except LookupError:
+        except Exception:
             _download_nltk_data()
             _search_semantic(search_string, language)
+    else:
+        _search_whole_word(search_string, match_case=False)
