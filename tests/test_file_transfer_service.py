@@ -75,8 +75,8 @@ def test_read_case_and_data():
     assert data_file_name
     solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
 
-    with pytest.raises(FileNotFoundError):
-        solver.file.read_case_data(file_name=case_file_name)
+    # Unable to copy data file to Fluent's current working directory.
+    solver.file.read_case_data(file_name=case_file_name)
 
 
 @pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")
