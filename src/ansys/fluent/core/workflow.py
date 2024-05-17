@@ -1262,6 +1262,8 @@ class Workflow:
     __call__()
     """
 
+    _root_affected_cb_by_server = {}
+
     def __init__(
         self,
         workflow: PyMenuGeneric,
@@ -1464,6 +1466,9 @@ class Workflow:
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _new_workflow(self, name: str, dynamic_interface: bool = True):
+        if self._workflow.service in self._root_affected_cb_by_server:
+            self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
+            self._root_affected_cb_by_server.pop(self._workflow.service)
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
@@ -1552,7 +1557,9 @@ class Workflow:
                 self._refresh_count += 1
                 self._refreshing = False
 
-            self.add_on_affected(refresh_after_sleep)
+            self._root_affected_cb_by_server[self._workflow.service] = (
+                self.add_on_affected(refresh_after_sleep)
+            )
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to the location provided."""
