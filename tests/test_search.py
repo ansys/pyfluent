@@ -39,6 +39,12 @@ def test_get_close_matches_for_word_from_names():
     close_matches = _get_close_matches_for_word_from_names("fnt", names)
     assert "font" in close_matches
 
+    close_matches = _get_close_matches_for_word_from_names("solve_flow", names)
+    assert "solve_flow_last" in close_matches
+
+    close_matches = _get_close_matches_for_word_from_names("sunshine", names)
+    assert "sunshine_factor" in close_matches
+
 
 @pytest.mark.codegen_required
 def test_search_wildcard(capsys):
