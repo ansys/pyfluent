@@ -272,58 +272,6 @@ def _search(
     _write_api_tree_file(api_objects=api_object_names, name=True)
 
 
-def _get_wildcard_matches_for_word_from_names(word: str, names: list):
-    """Get wildcard matches for the given word.
-
-    Parameters
-    ----------
-    word: str
-        The word to search for.
-    names: list
-        All API object names.
-
-    Returns
-    -------
-    wildcard_matches: list
-        Matched API object names.
-    """
-    return [name for name in names if fnmatch.fnmatch(name, word)]
-
-
-def _get_close_matches_for_word_from_names(
-    word: str,
-    names: list,
-):
-    """Get close matches for the given word.
-
-    Parameters
-    ----------
-    word: str
-        The word to search for.
-    names: list
-        All API object names.
-
-    Returns
-    -------
-    valid_close_matches: list
-        List of valid close matches.
-    """
-    close_matches = closest_allowed_names(word, names)
-    valid_close_matches = [
-        close_match for close_match in close_matches if close_match in names
-    ]
-    return valid_close_matches
-
-
-def _download_nltk_data():
-    """Download NLTK data on-demand."""
-    import nltk
-
-    packages = ["wordnet", "omw-1.4"]
-    for package in packages:
-        nltk.download(package, quiet=True)
-
-
 def _get_api_object_names():
     """Get API object names."""
     return [
@@ -368,6 +316,125 @@ def _print_search_results(queries: list, wildcard: bool):
                         print(api_objects[most_similar_api_object_index])
 
 
+def _get_wildcard_matches_for_word_from_names(word: str, names: list):
+    """Get wildcard matches for the given word.
+
+    Parameters
+    ----------
+    word: str
+        The word to search for.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+    wildcard_matches: list
+        Matched API object names.
+    """
+    wildcard_matches = [name for name in names if fnmatch.fnmatch(name, word)]
+    valid_wildcard_matches = [
+        wildcard_match for wildcard_match in wildcard_matches if wildcard_match in names
+    ]
+    return valid_wildcard_matches
+
+
+def _search_wildcard(search_string: str):
+    """Perform wildcard search for a word through the Fluent's object hierarchy.
+
+    Parameters
+    ----------
+    search_string: str
+        The word to search for. Semantic search is default.
+
+    Returns
+    -------
+        List of search string matches.
+    """
+    names = _get_api_object_names()
+    queries = _get_wildcard_matches_for_word_from_names(search_string, names)
+    if queries:
+        _print_search_results(queries, wildcard=True)
+
+
+def _get_exact_match_for_word_from_names(
+    word: str,
+    names: list,
+):
+    """Get exact match for the given word.
+
+    Parameters
+    ----------
+    word: str
+        The word to search for.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+    exact_matche: list
+        List of exact match.
+    """
+    return [name for name in names if word == name]
+
+
+def _get_close_matches_for_word_from_names(
+    word: str,
+    names: list,
+):
+    """Get close matches for the given word.
+
+    Parameters
+    ----------
+    word: str
+        The word to search for.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+    valid_close_matches: list
+        List of valid close matches.
+    """
+    close_matches = closest_allowed_names(word, names)
+    valid_close_matches = [
+        close_match for close_match in close_matches if close_match in names
+    ]
+    return valid_close_matches
+
+
+def _search_whole_word(search_string: str, match_case: bool):
+    """Perform exact search for a word through the Fluent's object hierarchy.
+
+    Parameters
+    ----------
+    search_string: str
+        The word to search for. Semantic search is default.
+    match_case: bool
+        Whether to match case. If ``True`` will match case-insensitive case.
+
+    Returns
+    -------
+        List of search string matches.
+    """
+    names = _get_api_object_names()
+    if match_case:
+        search_string = search_string + "*"
+        _search_wildcard(search_string, names)
+    else:
+        queries = _get_exact_match_for_word_from_names(search_string, names)
+        if queries:
+            _print_search_results(queries, wildcard=False)
+
+
+def _download_nltk_data():
+    """Download NLTK data on-demand."""
+    import nltk
+
+    packages = ["wordnet", "omw-1.4"]
+    for package in packages:
+        nltk.download(package, quiet=True)
+
+
 def _search_semantic(search_string: str, language: str):
     """Perform semantic search for a word through the Fluent's object hierarchy.
 
@@ -409,48 +476,13 @@ def _search_semantic(search_string: str, language: str):
                     or search_string_synset_name in api_object_synset_name
                 ):
                     similar_keys.add(api_object_synset_name + "*")
-    for key in similar_keys:
-        _search_wildcard(key)
-
-
-def _search_wildcard(search_string: str):
-    """Perform wildcard search for a word through the Fluent's object hierarchy.
-
-    Parameters
-    ----------
-    search_string: str
-        The word to search for. Semantic search is default.
-
-    Returns
-    -------
-        List of search string matches.
-    """
-    names = _get_api_object_names()
-    queries = _get_wildcard_matches_for_word_from_names(search_string, names)
-    _print_search_results(queries, wildcard=True)
-
-
-def _search_whole_word(search_string: str, match_case: bool):
-    """Perform exact search for a word through the Fluent's object hierarchy.
-
-    Parameters
-    ----------
-    search_string: str
-        The word to search for. Semantic search is default.
-    match_case: bool
-        Whether to match case. If ``True`` will match case-insensitive case.
-
-    Returns
-    -------
-        List of search string matches.
-    """
-    names = _get_api_object_names()
-    if match_case:
-        search_string = search_string + "*"
-        _search_wildcard(search_string, names)
+    if similar_keys:
+        for key in similar_keys:
+            _search_wildcard(key)
     else:
         queries = _get_close_matches_for_word_from_names(search_string, names)
-        _print_search_results(queries, wildcard=False)
+        if queries:
+            _print_search_results(queries, wildcard=True)
 
 
 def search(
@@ -518,11 +550,9 @@ def search(
         _search_wildcard(search_string)
     elif match_whole_word:
         _search_whole_word(search_string, match_case)
-    elif match_case:
+    else:
         try:
             _search_semantic(search_string, language)
         except Exception:
             _download_nltk_data()
             _search_semantic(search_string, language)
-    else:
-        _search_whole_word(search_string, match_case=False)
