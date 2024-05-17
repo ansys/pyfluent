@@ -86,6 +86,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
         run: |
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:v24.2.0 | sed 's/.*@//')
-          echo $DIGEST
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
