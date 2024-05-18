@@ -153,7 +153,7 @@ def test_file_purpose_on_remote_instance(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
     suffix = uuid.uuid4().hex
-    import_file_name = rename_downloaded_file(import_file_name, suffix)
+    import_file_name = rename_downloaded_file(import_file_name, f"_{suffix}")
 
     solver_session.file.read_case(file_name=import_file_name)
     assert len(file_service.uploads()) == 1
