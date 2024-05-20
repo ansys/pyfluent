@@ -494,7 +494,7 @@ def search(
     Parameters
     ----------
     search_string: str
-        The word to search for. Semantic search is default.
+        Word to search for. Semantic search is the default.
     language: str
         The language for the semantic search.
         English is default for the semantic search.
