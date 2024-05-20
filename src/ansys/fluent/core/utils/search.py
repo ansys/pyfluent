@@ -144,18 +144,18 @@ def _search(
     Parameters
     ----------
     word : str
-        The word to search for.
+        Word to search for.
     match_whole_word : bool, optional
         Whether to match whole word, by default False
     match_case : bool, optional
         Whether to match case, by default False
     version : str, optional
-        Fluent version to search in, by default None in which case
-        it will search in the latest version for which codegen was run.
+        Fluent version to search in. The default is ``None``. If ``None``,
+        it searches in the latest version for which codegen was run.
     search_root : Any, optional
-        The root object within which the search will be performed,
-        can be a session object or any API object within a session,
-        by default None in which case it will search everything.
+        The root object within which the search is performed,
+        can be a session object or any API object within a session.
+        The default is ``None``. If ``None``, it searches everything.
 
     Examples
     --------
@@ -343,7 +343,7 @@ def _search_wildcard(search_string: str):
     Parameters
     ----------
     search_string: str
-        The word to search for. Semantic search is default.
+        Word to search for. Semantic search is default.
 
     Returns
     -------
@@ -407,9 +407,10 @@ def _search_whole_word(search_string: str, match_case: bool):
     Parameters
     ----------
     search_string: str
-        The word to search for. Semantic search is default.
+        Word to search for. Semantic search is default.
     match_case: bool
-        Whether to match case. If ``True`` will match case-insensitive case.
+        Whether to match case. The default is ``True``.
+        If ``True``, it matches case-insensitive word.
 
     Returns
     -------
@@ -496,11 +497,9 @@ def search(
     search_string: str
         Word to search for. Semantic search is the default.
     language: str
-        The language for the semantic search.
-        English is default for the semantic search.
-        ISO 639-3 code of the language to be used for semantic search.
-        See `https://omwn.org/omw1.html` for the list of supported languages.
-        The default value is `eng` for English language.
+        ISO 639-3 code for the language to use for the semantic search.
+        The default is ``eng`` for English. For the list of supported languages,
+        see `OMW Version 1 <https://omwn.org/omw1.html>`_.
     wildcard: bool, optional
         Whether to use the wildcard pattern. The default is ``False``. If ``True``, the
         wildcard pattern is based on the ``fnmatch`` module and semantic matching
