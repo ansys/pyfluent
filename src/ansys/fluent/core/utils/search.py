@@ -426,7 +426,7 @@ def _search_whole_word(search_string: str, match_case: bool):
 
 
 def _download_nltk_data():
-    """Download NLTK data on-demand."""
+    """Download NLTK data on demand."""
     import nltk
 
     packages = ["wordnet", "omw-1.4"]
