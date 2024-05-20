@@ -501,13 +501,15 @@ def search(
         ISO 639-3 code of the language to be used for semantic search.
         See `https://omwn.org/omw1.html` for the list of supported languages.
         The default value is `eng` for English language.
-    wildcard: bool
-        Whether to use wildcard pattern. If ``True`` will match wildcard pattern based on ``fnmatch`` module and
-        will turn off semantic matching.
-    match_whole_word: bool
-        Whether to get exact match. If ``True`` will match exact string and will turn off semantic matching.
-    match_case: bool
-        Whether to match case. If ``True`` will match case-insensitive case.
+    wildcard: bool, optional
+        Whether to use the wildcard pattern. The default is ``False``. If ``True``, the
+        wildcard pattern is based on the ``fnmatch`` module and semantic matching
+        is turned off.
+    match_whole_word: bool, optional
+        Whether to find only exact matches. The default is ``False``. If ``True``,
+        only exact matches are found and semantic matching is turned off.
+    match_case: bool, optional
+        Whether to match case. The default is ``False``. If ``True``, the search is case-insensitive.
 
     Raises
     ------
