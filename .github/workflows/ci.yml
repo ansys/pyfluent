@@ -415,13 +415,13 @@ jobs:
         if: steps.cache-242-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run 24.2 API codegen
         if: steps.cache-242-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Print 24.2 Fluent version info
         run: |
@@ -464,7 +464,7 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
-          - image-tag: v24.2.0
+          - image-tag: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
             version: 242
     timeout-minutes: 120
 

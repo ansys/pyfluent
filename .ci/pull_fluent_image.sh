@@ -1,7 +1,15 @@
 #!/bin/sh
 
 # Image name
-_IMAGE_NAME="ghcr.io/ansys/pyfluent:${FLUENT_IMAGE_TAG:-latest}"
+SHA='sha256'
+SUBSTRING=$(${FLUENT_IMAGE_TAG}| cut -c 1-6)
+if [ "$SUBSTRING" == "$SHA" ]
+then
+  echo $SUBSTRING
+  _IMAGE_NAME="ghcr.io/ansys/pyfluent@${FLUENT_IMAGE_TAG}"
+else
+  _IMAGE_NAME="ghcr.io/ansys/pyfluent:${FLUENT_IMAGE_TAG:-latest}"
+fi
 
 # Pull fluent image based on tag
 docker pull $_IMAGE_NAME
