@@ -89,14 +89,11 @@ def _process_kwargs(kwargs):
             )
 
 
-def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
+def _process_invalid_args(fluent_launch_mode, argvals):
     """Get invalid arguments.
 
     Parameters
     ----------
-    dry_run: bool
-        Whether to dry run a container start.
-         If ``True``, the ``launch_fluent()`` will return the configured ``container_dict``.
     fluent_launch_mode: LaunchMode
         Fluent launch mode.
     argvals: dict
@@ -104,7 +101,7 @@ def _process_invalid_args(dry_run, fluent_launch_mode, argvals):
     """
     import ansys.fluent.core.launcher.pyfluent_enums as enums
 
-    if dry_run and fluent_launch_mode != enums.LaunchMode.CONTAINER:
+    if argvals.get("dry_run") and fluent_launch_mode != enums.LaunchMode.CONTAINER:
         launcher_utils.logger.warning(
             "'dry_run' argument for 'launch_fluent' currently is only "
             "supported when starting containers."

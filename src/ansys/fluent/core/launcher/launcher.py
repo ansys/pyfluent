@@ -58,7 +58,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    _process_invalid_args(kwargs.get("dry_run"), fluent_launch_mode, kwargs)
+    _process_invalid_args(fluent_launch_mode, kwargs)
     if fluent_launch_mode == LaunchMode.STANDALONE:
         unsupported_args = ["container_dict", "dry_run", "scheduler_options"]
         for arg_name in unsupported_args:
@@ -98,6 +98,10 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
                 kwargs.pop(arg_name)
         return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
+        unsupported_args = ["container_dict", "dry_run"]
+        for arg_name in unsupported_args:
+            if arg_name in kwargs:
+                kwargs.pop(arg_name)
         return SlurmLauncher(**kwargs)
 
 
