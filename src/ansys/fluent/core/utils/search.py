@@ -321,7 +321,7 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
     Parameters
     ----------
     word: str
-        The word to search for.
+       Word to search for.
     names: list
         All API object names.
 
