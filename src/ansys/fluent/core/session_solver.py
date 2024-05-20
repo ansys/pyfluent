@@ -185,7 +185,7 @@ class Solver(BaseSession):
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
                 tui_module = load_module(
-                    f"tui_{self._version}",
+                    f"solver_tui_{self._version}",
                     CODEGEN_OUTDIR / "solver" / f"tui_{self._version}.py",
                 )
                 self._tui = tui_module.main_menu(
@@ -203,7 +203,7 @@ class Solver(BaseSession):
             from ansys.fluent.core import CODEGEN_OUTDIR
 
             workflow_module = load_module(
-                "workflow",
+                f"workflow_{self._version}",
                 CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
