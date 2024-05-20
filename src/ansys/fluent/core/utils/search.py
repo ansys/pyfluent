@@ -536,7 +536,7 @@ def search(
         )
     elif language and match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` will match exact string and will turn off semantic matching.",
+            "``match_whole_word=True`` matches exact string and turns off semantic matching.",
             UserWarning,
         )
     elif match_whole_word:
