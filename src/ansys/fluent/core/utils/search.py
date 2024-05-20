@@ -541,7 +541,7 @@ def search(
         )
     elif match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` will turn off wildcard matching.",
+            "``match_whole_word=True`` turns off wildcard matching.",
             UserWarning,
         )
 
