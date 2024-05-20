@@ -184,104 +184,109 @@ class StandaloneLauncher:
         del argvals["self"]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
-        self.argvals = argvals
-        self.new_session = self.mode.value[0]
+        self.new_session = argvals["mode"].value[0]
         self.file_transfer_service = file_transfer_service
 
-    def __call__(self):
-        if self.lightweight_mode is None:
-            # note argvals is no longer locals() here due to _get_session_info() pass
-            self.argvals.pop("lightweight_mode")
-            setattr(self, "lightweight_mode", False)
-        fluent_version = _get_standalone_launch_fluent_version(self.product_version)
+        if argvals["lightweight_mode"] is None:
+            argvals["lightweight_mode"] = False
+        fluent_version = _get_standalone_launch_fluent_version(
+            argvals["product_version"]
+        )
         if fluent_version:
-            _raise_non_gui_exception_in_windows(self.ui_mode, fluent_version)
+            _raise_non_gui_exception_in_windows(argvals["ui_mode"], fluent_version)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
-            self.argvals["fluent_debug"] = True
+            argvals["fluent_debug"] = True
 
-        server_info_file_name = _get_server_info_file_name()
-        launch_string = _generate_launch_string(
-            self.argvals,
-            self.mode,
-            self.additional_arguments,
-            server_info_file_name,
+        self._server_info_file_name = _get_server_info_file_name()
+        self._launch_string = _generate_launch_string(
+            argvals,
+            argvals["mode"],
+            self._server_info_file_name,
         )
 
-        sifile_last_mtime = Path(server_info_file_name).stat().st_mtime
-        if self.env is None:
-            setattr(self, "env", {})
-        kwargs = _get_subprocess_kwargs_for_fluent(self.env, self.argvals)
-        if self.cwd:
-            kwargs.update(cwd=self.cwd)
-        launch_string += _build_journal_argument(self.topy, self.journal_file_names)
+        self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
+        if argvals["env"] is None:
+            argvals["env"] = {}
+        self._kwargs = _get_subprocess_kwargs_for_fluent(argvals["env"], argvals)
+        if argvals["cwd"]:
+            self._kwargs.update(cwd=argvals["cwd"])
+        self._launch_string += _build_journal_argument(
+            argvals["topy"], argvals["journal_file_names"]
+        )
 
         if is_windows():
-            # Using 'start.exe' is better, otherwise Fluent is more susceptible to bad termination attempts
-            launch_cmd = 'start "" ' + launch_string
+            # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
+            self._launch_cmd = 'start "" ' + self._launch_string
         else:
-            if self.ui_mode < UIMode.HIDDEN_GUI:
+            if argvals["ui_mode"] < UIMode.HIDDEN_GUI:
                 # Using nohup to hide Fluent output from the current terminal
-                launch_cmd = "nohup " + launch_string + " &"
+                self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
-                launch_cmd = launch_string
+                self._launch_cmd = self._launch_string
+        self.argvals = argvals
 
+    def __call__(self):
         try:
-            logger.debug(f"Launching Fluent with command: {launch_cmd}")
+            logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
 
-            subprocess.Popen(launch_cmd, **kwargs)
+            subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
                 _await_fluent_launch(
-                    server_info_file_name, self.start_timeout, sifile_last_mtime
+                    self._server_info_file_name,
+                    self.argvals["start_timeout"],
+                    self._sifile_last_mtime,
                 )
             except TimeoutError as ex:
                 if is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
-                    launch_cmd = launch_string.replace('"', "", 2)
-                    kwargs.update(shell=False)
+                    launch_cmd = self._launch_string.replace('"', "", 2)
+                    self._kwargs.update(shell=False)
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
                     subprocess.Popen(launch_cmd, **kwargs)
                     _await_fluent_launch(
-                        server_info_file_name, self.start_timeout, sifile_last_mtime
+                        self._server_info_file_name,
+                        self.argvals["start_timeout"],
+                        self._sifile_last_mtime,
                     )
                 else:
                     raise ex
 
             session = self.new_session._create_from_server_info_file(
-                server_info_file_name=server_info_file_name,
+                server_info_file_name=self._server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.cleanup_on_exit,
-                start_transcript=self.start_transcript,
+                cleanup_on_exit=self.argvals["cleanup_on_exit"],
+                start_transcript=self.argvals["start_transcript"],
                 launcher_args=self.argvals,
                 inside_container=False,
             )
             start_watchdog = _confirm_watchdog_start(
-                self.start_watchdog, self.cleanup_on_exit, session._fluent_connection
+                self.argvals["start_watchdog"],
+                self.argvals["cleanup_on_exit"],
+                session._fluent_connection,
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
-                ip, port, password = _get_server_info(server_info_file_name)
+                ip, port, password = _get_server_info(self._server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
-            if self.case_file_name:
-                if FluentMode.is_meshing(self.mode):
-                    session.tui.file.read_case(self.case_file_name)
-                elif self.lightweight_mode:
-                    session.read_case_lightweight(self.case_file_name)
+            if self.argvals["case_file_name"]:
+                if FluentMode.is_meshing(self.argvals["mode"]):
+                    session.tui.file.read_case(self.argvals["case_file_name"])
+                elif self.argvals["lightweight_mode"]:
+                    session.read_case_lightweight(self.argvals["case_file_name"])
                 else:
                     session.file.read(
                         file_type="case",
-                        file_name=self.case_file_name,
+                        file_name=self.argvals["case_file_name"],
                     )
-            if self.case_data_file_name:
-                if not FluentMode.is_meshing(self.mode):
+            if self.argvals["case_data_file_name"]:
+                if not FluentMode.is_meshing(self.argvals["mode"]):
                     session.file.read(
                         file_type="case-data",
-                        file_name=self.case_data_file_name,
+                        file_name=self.argvals["case_data_file_name"],
                     )
                 else:
                     raise RuntimeError(
@@ -291,8 +296,8 @@ class StandaloneLauncher:
             return session
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
-            raise LaunchFluentError(launch_cmd) from ex
+            raise LaunchFluentError(self._launch_cmd) from ex
         finally:
-            server_info_file = Path(server_info_file_name)
+            server_info_file = Path(self._server_info_file_name)
             if server_info_file.exists():
                 server_info_file.unlink()

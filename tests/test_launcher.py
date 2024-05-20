@@ -422,14 +422,11 @@ def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in UIMode:
-        assert (
-            _build_fluent_launch_args_string(
-                ui_mode=m, additional_arguments="", processor_count=None
-            ).strip()
-            == f"3ddp -{m.value[0]}"
-            if m.value[0]
-            else " 3ddp"
-        )
+        string1 = _build_fluent_launch_args_string(
+            ui_mode=m, additional_arguments="", processor_count=None
+        ).strip()
+        string2 = f"3ddp -{m.value[0]}" if m.value[0] else "3ddp"
+        assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
             assert (

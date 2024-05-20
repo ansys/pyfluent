@@ -1494,3 +1494,10 @@ def test_independent_meshing_sessions_without_dm_caching(
 
     fault_tolerant = meshing_2.fault_tolerant()
     assert fault_tolerant.import_cad_and_part_management.arguments()
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_switching_workflow_interface(new_mesh_session):
+    watertight = new_mesh_session.watertight()
+    fault_tolerant = new_mesh_session.fault_tolerant()

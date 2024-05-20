@@ -22,7 +22,6 @@ from ansys.fluent.core.services.interceptors import (
     ErrorStateInterceptor,
     GrpcErrorInterceptor,
     TracingInterceptor,
-    WrapApiCallInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -149,7 +148,6 @@ class DatamodelServiceImpl:
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
-            WrapApiCallInterceptor(),
         )
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata

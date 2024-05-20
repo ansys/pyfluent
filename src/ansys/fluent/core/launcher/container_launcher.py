@@ -150,27 +150,32 @@ class DockerLauncher:
         graphics_driver = _get_graphics_driver(graphics_driver)
         mode = _get_mode(mode)
         argvals = locals().copy()
+
         del argvals["self"]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
-        self.argvals = argvals
-        self.new_session = self.mode.value[0]
+
+        self.new_session = argvals["mode"].value[0]
         self.file_transfer_service = file_transfer_service
 
+        if argvals["mode"] == FluentMode.SOLVER_ICING:
+            argvals["fluent_icing"] = True
+        if argvals["container_dict"] is None:
+            argvals["container_dict"] = {}
+        if argvals["product_version"]:
+            argvals["container_dict"][
+                "image_tag"
+            ] = f"v{argvals['product_version'].value}"
+        self._args = _build_fluent_launch_args_string(**argvals).split()
+        if FluentMode.is_meshing(argvals["mode"]):
+            self._args.append(" -meshing")
+        self.argvals = argvals
+
     def __call__(self):
-        if self.mode == FluentMode.SOLVER_ICING:
-            self.argvals["fluent_icing"] = True
-        args = _build_fluent_launch_args_string(**self.argvals).split()
-        if FluentMode.is_meshing(self.mode):
-            args.append(" -meshing")
-        if self.container_dict is None:
-            setattr(self, "container_dict", {})
-        if self.product_version:
-            self.container_dict["image_tag"] = f"v{self.product_version.value}"
-        if self.dry_run:
-            config_dict, *_ = configure_container_dict(args, **self.container_dict)
+        if self.argvals["dry_run"]:
+            config_dict, *_ = configure_container_dict(
+                self._args, **self.argvals["container_dict"]
+            )
             from pprint import pprint
 
             print("\nDocker container run configuration:\n")
@@ -184,13 +189,15 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(args, self.container_dict)
+        port, password = start_fluent_container(
+            self._args, self.argvals["container_dict"]
+        )
 
         fluent_connection = FluentConnection(
             port=port,
             password=password,
             file_transfer_service=self.file_transfer_service,
-            cleanup_on_exit=self.cleanup_on_exit,
+            cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
         )
@@ -199,12 +206,12 @@ class DockerLauncher:
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=self.file_transfer_service,
-            start_transcript=self.start_transcript,
+            start_transcript=self.argvals["start_transcript"],
         )
 
-        if self.start_watchdog is None and self.cleanup_on_exit:
-            setattr(self, "start_watchdog", True)
-        if self.start_watchdog:
+        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
+            self.argvals["start_watchdog"] = True
+        if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
 

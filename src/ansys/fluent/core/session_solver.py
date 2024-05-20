@@ -2,7 +2,6 @@
 
 from asyncio import Future
 import functools
-import importlib
 import logging
 import threading
 from typing import Any, Dict, Optional
@@ -29,6 +28,7 @@ from ansys.fluent.core.solver.flobject import (
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
+from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -182,8 +182,11 @@ class Solver(BaseSession):
         executed."""
         if self._tui is None:
             try:
-                tui_module = importlib.import_module(
-                    f"ansys.fluent.core.generated.solver.tui_{self._version}"
+                from ansys.fluent.core import CODEGEN_OUTDIR
+
+                tui_module = load_module(
+                    f"solver_tui_{self._version}",
+                    CODEGEN_OUTDIR / "solver" / f"tui_{self._version}.py",
                 )
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "solver", []
@@ -197,8 +200,11 @@ class Solver(BaseSession):
     def _workflow_se(self):
         """Datamodel root for workflow."""
         try:
-            workflow_module = importlib.import_module(
-                f"ansys.fluent.core.generated.datamodel_{self._version}.workflow"
+            from ansys.fluent.core import CODEGEN_OUTDIR
+
+            workflow_module = load_module(
+                f"workflow_{self._version}",
+                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except ImportError:

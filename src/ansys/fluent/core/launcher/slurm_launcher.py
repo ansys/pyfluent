@@ -214,7 +214,6 @@ class SlurmLauncher:
         launch_cmd = _generate_launch_string(
             self._argvals,
             self.mode,
-            self._additional_arguments,
             self._server_info_file_name,
         )
 
