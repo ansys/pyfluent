@@ -16,6 +16,30 @@ from ansys.fluent.core.utils.search import (
 )
 
 
+def test_nltk_data_download():
+    import os
+    from pathlib import Path
+
+    import nltk
+    import platformdirs
+
+    packages = ["wordnet", "omw-1.4"]
+    for package in packages:
+        nltk.download(package, quiet=True)
+
+    with pytest.raises(LookupError):
+        _search_semantic("读", language="cmn")
+
+    user_data_path = Path(platformdirs.user_data_dir()).resolve()
+    nltk.data.path.append(user_data_path)
+    os.environ["NLTK_DATA"] = user_data_path
+    for package in packages:
+        nltk.download(package, download_dir=user_data_path, quiet=True)
+
+    with not pytest.raises(LookupError):
+        _search_semantic("读", language="cmn")
+
+
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_exception_search():
