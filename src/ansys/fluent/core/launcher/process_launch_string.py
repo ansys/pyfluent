@@ -81,7 +81,6 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 
 def _generate_launch_string(
     argvals,
-    mode: FluentMode,
     server_info_file_name: str,
 ):
     """Generates the launch string to launch fluent."""
@@ -92,10 +91,10 @@ def _generate_launch_string(
     else:
         exe_path = str(get_fluent_exe_path(**argvals))
     launch_string = exe_path
-    if mode == FluentMode.SOLVER_ICING:
+    if argvals["mode"] == FluentMode.SOLVER_ICING:
         argvals["fluent_icing"] = True
     launch_string += _build_fluent_launch_args_string(**argvals)
-    if FluentMode.is_meshing(mode):
+    if FluentMode.is_meshing(argvals["mode"]):
         launch_string += " -meshing"
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'

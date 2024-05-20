@@ -72,7 +72,7 @@ class MeshingWorkflow(Workflow):
 
     def reinitialize(self) -> None:
         """Initialize a workflow."""
-        self._new_workflow(name=self._name)
+        self._init_workflow(name=self._name)
 
     def __getattribute__(self, item: str):
         if (
