@@ -57,6 +57,7 @@ session_pure_meshing
 session_solver
 session_solver_icing
 session_solver_lite
+slurm
 Slurm
 SVAR
 svar_data
