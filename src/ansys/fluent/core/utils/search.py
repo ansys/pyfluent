@@ -440,13 +440,11 @@ def _search_semantic(search_string: str, language: str):
     Parameters
     ----------
     search_string: str
-        The word to search for. Semantic search is default.
+        Word to search for. Semantic search is the default.
     language: str
-        The language for the semantic search.
-        English is default for the semantic search.
-        ISO 639-3 code of the language to be used for semantic search.
-        See `https://omwn.org/omw1.html` for the list of supported languages.
-        The default value is `eng` for English language.
+        ISO 639-3 code for the language to use for the semantic search.
+        The default is ``eng`` for English. For the list of supported languages,
+        see `OMW Version 1 <https://omwn.org/omw1.html>`_.
 
     Returns
     -------
