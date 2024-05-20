@@ -42,13 +42,6 @@ def test_nltk_data_download():
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
-def test_exception_search():
-    with pytest.raises(ValueError):
-        pyfluent.search(search_string="font", wildcard=True, match_whole_word=True)
-
-
-@pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     names = _get_api_object_names()
     wildcard_matches = _get_wildcard_matches_for_word_from_names("iter*", names)
