@@ -10,8 +10,6 @@ from typing import Any, Optional
 import warnings
 
 from nltk.corpus import wordnet as wn
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
@@ -292,15 +290,13 @@ def _get_api_object_names():
     ]
 
 
-def _print_search_results(queries: list, wildcard: bool):
+def _print_search_results(queries: list):
     """Print search results.
 
     Parameters
     ----------
     queries: list
-        List of search string to matche API object names.
-    wildcard: bool
-        Whether to use wildcard search.
+        List of search string to match API object names.
     """
     api_tree = get_api_tree_file_name(text=True)
     api_tui_tree = get_api_tree_file_name(tui=True)
@@ -309,22 +305,10 @@ def _print_search_results(queries: list, wildcard: bool):
         api_objects = [
             line.rstrip("\n") for line in open(text_file, "r", encoding="utf-8")
         ]
-        tfidf_vectorizer = TfidfVectorizer()
-        tfidf_matrix = tfidf_vectorizer.fit_transform(api_objects)
         for query in queries:
-            query_vector = tfidf_vectorizer.transform([query])
-            cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
-            if wildcard:
-                most_similar_api_object_index = cosine_similarities.argmax()
-                if query in api_objects[most_similar_api_object_index]:
-                    print(api_objects[most_similar_api_object_index])
-            else:
-                most_similar_api_object_indices = cosine_similarities.argsort()
-                for most_similar_api_object_index in reversed(
-                    most_similar_api_object_indices[0][-3:]
-                ):
-                    if query in api_objects[most_similar_api_object_index]:
-                        print(api_objects[most_similar_api_object_index])
+            for api_object in api_objects:
+                if query in api_object:
+                    print(api_object)
 
 
 def _get_wildcard_matches_for_word_from_names(word: str, names: list):
@@ -364,7 +348,7 @@ def _search_wildcard(search_string: str):
     names = _get_api_object_names()
     queries = _get_wildcard_matches_for_word_from_names(search_string, names)
     if queries:
-        _print_search_results(queries, wildcard=True)
+        _print_search_results(queries)
 
 
 def _get_exact_match_for_word_from_names(
@@ -382,10 +366,31 @@ def _get_exact_match_for_word_from_names(
 
     Returns
     -------
-    exact_matche: list
+    exact_matches: list
         List of exact match.
     """
     return [name for name in names if word == name]
+
+
+def _get_match_case_for_word_from_names(
+    word: str,
+    names: list,
+):
+    """Get match case for the given word.
+
+    Parameters
+    ----------
+    word: str
+        Word to search for.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+    exact_matches: list
+        List of exact match.
+    """
+    return [name for name in names if word.capitalize() in name]
 
 
 def _get_close_matches_for_word_from_names(
@@ -413,7 +418,9 @@ def _get_close_matches_for_word_from_names(
     return valid_close_matches
 
 
-def _search_whole_word(search_string: str, match_case: bool):
+def _search_whole_word(
+    search_string: str, match_case: bool = False, match_whole_word: bool = False
+):
     """Perform exact search for a word through the Fluent's object hierarchy.
 
     Parameters
@@ -421,7 +428,10 @@ def _search_whole_word(search_string: str, match_case: bool):
     search_string: str
         Word to search for. Semantic search is default.
     match_case: bool
-        Whether to match case. The default is ``True``.
+        Whether to match capitalize case. The default is ``False``.
+        If ``True``, it matches capitalize word.
+    match_whole_word: bool
+        Whether to match whole word. The default is ``False``.
         If ``True``, it matches case-insensitive word.
 
     Returns
@@ -429,13 +439,16 @@ def _search_whole_word(search_string: str, match_case: bool):
         List of search string matches.
     """
     names = _get_api_object_names()
-    if match_case:
-        search_string = search_string + "*"
-        _search_wildcard(search_string, names)
+    queries = []
+    if match_case and match_whole_word:
+        queries.extend(_get_exact_match_for_word_from_names(search_string, names))
+        queries.extend(_get_match_case_for_word_from_names(search_string, names))
+    elif match_case:
+        queries.extend(_get_match_case_for_word_from_names(search_string, names))
     else:
-        queries = _get_exact_match_for_word_from_names(search_string, names)
-        if queries:
-            _print_search_results(queries, wildcard=False)
+        queries.extend(_get_exact_match_for_word_from_names(search_string, names))
+    if queries:
+        _print_search_results(queries)
 
 
 def _download_nltk_data():
@@ -506,7 +519,7 @@ def _search_semantic(search_string: str, language: str):
     else:
         queries = _get_close_matches_for_word_from_names(search_string, names)
         if queries:
-            _print_search_results(queries, wildcard=True)
+            _print_search_results(queries)
 
 
 def search(
@@ -572,8 +585,14 @@ def search(
 
     if wildcard:
         _search_wildcard(search_string)
+    elif match_whole_word and match_case:
+        _search_whole_word(
+            search_string, match_case=match_case, match_whole_word=match_whole_word
+        )
     elif match_whole_word:
-        _search_whole_word(search_string, match_case)
+        _search_whole_word(search_string, match_whole_word=match_whole_word)
+    elif match_case:
+        _search_whole_word(search_string, match_case=match_case)
     else:
         try:
             _search_semantic(search_string, language)

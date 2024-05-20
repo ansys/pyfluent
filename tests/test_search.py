@@ -122,20 +122,48 @@ def test_search_semantic(capsys):
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
-def test_exact_search(capsys):
-    pyfluent.search("font", match_whole_word=True)
+def test_whole_word_search(capsys):
+    pyfluent.search("Font", match_whole_word=True)
     lines = capsys.readouterr().out.splitlines()
-    assert "Font" not in lines
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert "font" not in lines
+    assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" in lines
+    assert (
+        "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
+        in lines
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
-    pyfluent.search("Font", match_case=True)
+    pyfluent.search("font", match_case=True)
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
-    assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
+    for line in lines:
+        assert "Font" in line
+        assert "font" not in line
+    assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" in lines
+    assert (
+        "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
+        in lines
+    )
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
+def test_match_whole_word_and_case_search(capsys):
+    pyfluent.search("font", match_whole_word=True, match_case=True)
+    lines = capsys.readouterr().out.splitlines()
+    for line in lines:
+        assert "Font" or "font" in line
+    assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" in lines
+    assert (
+        "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
+        in lines
+    )
+    assert (
+        '<solver_session>.results.graphics.lic["<name>"].color_map.font_name (Parameter)'
+        in lines
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
