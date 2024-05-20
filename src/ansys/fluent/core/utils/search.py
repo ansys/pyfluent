@@ -547,7 +547,7 @@ def search(
         Whether to find only exact matches. The default is ``False``. If ``True``,
         only exact matches are found and semantic matching is turned off.
     match_case: bool, optional
-        Whether to match case. The default is ``False``. If ``True``, the search is case-insensitive.
+        Whether to match capitalize case. The default is ``False``. If ``True``, the search is case-sensitive.
 
     Raises
     ------
@@ -568,18 +568,29 @@ def search(
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
-    if wildcard and match_whole_word:
-        raise ValueError(
-            "``wildcard`` cannot be ``True`` when ``match_whole_word`` is ``True``."
+    if (wildcard and match_whole_word) or (wildcard and match_case):
+        warnings.warn(
+            "``wildcard=True`` matches wildcard pattern.",
+            UserWarning,
+        )
+    elif language and wildcard:
+        warnings.warn(
+            "``wildcard=True`` matches wildcard pattern.",
+            UserWarning,
         )
     elif language and match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches exact string and turns off semantic matching.",
+            "``match_whole_word=True`` matches exact string.",
             UserWarning,
         )
     elif match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` turns off wildcard matching.",
+            "``match_whole_word=True`` matches exact string.",
+            UserWarning,
+        )
+    elif match_case:
+        warnings.warn(
+            "``match_case=True`` matches capitalize string.",
             UserWarning,
         )
 
