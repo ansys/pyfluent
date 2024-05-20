@@ -464,7 +464,7 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
-          - image-tag: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          - image-tag: v24.2.0
             version: 242
     timeout-minutes: 120
 
@@ -505,10 +505,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: matrix.image-tag != 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Pull Fluent docker image dev
+        if: matrix.image-tag == 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
