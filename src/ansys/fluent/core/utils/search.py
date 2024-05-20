@@ -364,7 +364,7 @@ def _get_exact_match_for_word_from_names(
     Parameters
     ----------
     word: str
-        The word to search for.
+        Word to search for.
     names: list
         All API object names.
 
