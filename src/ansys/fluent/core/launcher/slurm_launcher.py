@@ -27,7 +27,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm.pending(), slurm.running(), slurm.done()
 (False, False, True)
 
-# Callable slurm lancher
+# Callable slurm launcher
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
 >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
