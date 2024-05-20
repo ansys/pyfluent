@@ -146,13 +146,13 @@ class PIMLauncher:
         self.argvals = argvals
         self.new_session = self.argvals["mode"].value[0]
 
-        if self.argvals["additional_arguments"]:
+        if additional_arguments:
             logger.warning(
                 "'additional_arguments' option for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
 
-        if self.argvals["start_watchdog"]:
+        if start_watchdog:
             logger.warning(
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
