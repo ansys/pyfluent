@@ -528,6 +528,7 @@ def search(
     wildcard: Optional[bool] = False,
     match_whole_word: Optional[bool] = False,
     match_case: Optional[bool] = False,
+    search_root: Optional[Any] = None,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -548,11 +549,10 @@ def search(
         only exact matches are found and semantic matching is turned off.
     match_case: bool, optional
         Whether to match capitalize case. The default is ``False``. If ``True``, the search is case-sensitive.
-
-    Raises
-    ------
-    ValueError
-        If both ``wildcard`` and ``match_whole_word`` are ``True``.
+    search_root : Any, optional
+        The root object within which the search is performed,
+        can be a session object or any API object within a session.
+        The default is ``None``. If ``None``, it searches everything.
 
     Examples
     --------
@@ -604,6 +604,72 @@ def search(
         _search_whole_word(search_string, match_whole_word=match_whole_word)
     elif match_case:
         _search_whole_word(search_string, match_case=match_case)
+    elif search_root:
+        version = None
+        root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
+        if search_root and not prefix:
+            return
+        if not version:
+            version = root_version
+        if not version:
+            for fluent_version in FluentVersion:
+                version = get_version_for_file_name(fluent_version.value)
+                if get_api_tree_file_name(version=version).exists():
+                    break
+        api_tree_file = get_api_tree_file_name(version=version)
+        with open(api_tree_file, "rb") as f:
+            api_tree = pickle.load(f)
+
+        if isinstance(search_root, (flobject.Group, flobject.NamedObject)):
+            path = root_path + [
+                flobject.to_python_name(x) for x in search_root.path.split("/")
+            ]
+            root_path = []
+            tree = api_tree
+            while path:
+                p = path.pop(0)
+                if p in tree:
+                    tree = tree[p]
+                    root_path.append(p)
+                elif f"{p}:<name>" in tree:
+                    tree = tree[f"{p}:<name>"]
+                    root_path.append(f"{p}:<name>")
+                    if path:
+                        path.pop(0)
+                else:
+                    return
+
+        def inner(tree, path, root_path):
+            if root_path:
+                path = prefix
+            while root_path:
+                p = root_path.pop(0)
+                if p in tree:
+                    tree = tree[p]
+                else:
+                    return
+
+            for k, v in tree.items():
+                if k in ("<meshing_session>", "<solver_session>"):
+                    next_path = k
+                else:
+                    if k.endswith(":<name>"):
+                        k = _remove_suffix(k, ":<name>")
+                        next_path = f'{path}.{k}["<name>"]'
+                    else:
+                        next_path = f"{path}.{k}"
+                    type_ = "Object" if isinstance(v, Mapping) else v
+                    if _match(
+                        k,
+                        search_string,
+                        match_whole_word=match_whole_word,
+                        match_case=match_case,
+                    ):
+                        print(f"{next_path} ({type_})")
+                if isinstance(v, Mapping):
+                    inner(v, next_path, root_path)
+
+        inner(api_tree, "", root_path)
     else:
         try:
             _search_semantic(search_string, language)

@@ -203,6 +203,41 @@ def test_japanese_semantic_search(capsys):
 
 
 @pytest.mark.codegen_required
+@pytest.mark.fluent_version("==24.2")
+def test_search_from_root_latest(capsys, new_watertight_workflow_session):
+    meshing = new_watertight_workflow_session
+    pyfluent.search("display", search_root=meshing)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.tui.display (Object)" in lines
+    pyfluent.search("display", search_root=meshing.tui)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.display (Object)" in lines
+    pyfluent.search("display", search_root=meshing.tui.display)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.update_scene.display (Command)" in lines
+    assert "<search_root>.display_states (Object)" in lines
+    pyfluent.search("cad", search_root=meshing.meshing)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
+    assert "<search_root>.LoadCADGeometry (Command)" in lines
+    pyfluent.search("next", search_root=meshing.workflow)
+    lines = capsys.readouterr().out.splitlines()
+    assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
+    pyfluent.search("next", search_root=meshing.workflow.TaskObject)
+    lines = capsys.readouterr().out.splitlines()
+    assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
+    pyfluent.search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.InsertNextTask (Command)" in lines
+    pyfluent.search("timeout", search_root=meshing.preferences)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.General.IdleTimeout (Parameter)" in lines
+    pyfluent.search("timeout", search_root=meshing.preferences.General)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.IdleTimeout (Parameter)" in lines
+
+
+@pytest.mark.codegen_required
 def test_search(capsys):
     _search("display")
     lines = capsys.readouterr().out.splitlines()
