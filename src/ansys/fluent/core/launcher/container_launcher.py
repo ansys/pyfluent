@@ -4,9 +4,9 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode="meshing")
+>>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING_MODE)
 >>> container_meshing_session = container_meshing_launcher()
 
 >>> container_solver_launcher = create_launcher(LaunchMode.CONTAINER)

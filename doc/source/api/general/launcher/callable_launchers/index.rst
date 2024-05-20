@@ -8,6 +8,8 @@ Callable launchers
 
 :ref:`ref_pim_launcher`         Callable PIM launcher.
 
+:ref:`ref_slurm_launcher`       Callable slurm launcher.
+
 :ref:`ref_standalone_launcher`  Callable standalone launcher.
 ==============================  ==============================
 
@@ -17,4 +19,5 @@ Callable launchers
 
     container_launcher
     pim_launcher
+    slurm_launcher
     standalone_launcher
