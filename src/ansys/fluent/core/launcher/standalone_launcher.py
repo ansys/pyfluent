@@ -57,9 +57,11 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        mode: FluentMode,
-        ui_mode: UIMode,
-        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
+        mode: Optional[Union[FluentMode, str, None]] = None,
+        ui_mode: Union[UIMode, str, None] = None,
+        graphics_driver: Union[
+            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+        ] = None,
         product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -201,7 +203,6 @@ class StandaloneLauncher:
         self._server_info_file_name = _get_server_info_file_name()
         self._launch_string = _generate_launch_string(
             argvals,
-            argvals["mode"],
             self._server_info_file_name,
         )
 
