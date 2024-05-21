@@ -54,7 +54,7 @@ pandas = "^2.0.3"
 platformdirs = "^3.5.1"
 psutil = "^5.9.5"
 pyyaml = "^6.0"
-requests = "^2.31.0"
+requests = "==2.31.0"
 
 [tool.poetry.group.docs]
 optional = true
