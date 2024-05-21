@@ -7,6 +7,8 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import (
     _get_api_object_names,
     _get_close_matches_for_word_from_names,
+    _get_exact_match_for_word_from_names,
+    _get_match_case_for_word_from_names,
     _get_version_path_prefix_from_obj,
     _get_wildcard_matches_for_word_from_names,
     _search,
@@ -25,6 +27,25 @@ def test_nltk_data_download():
         nltk.download(package, quiet=True)
 
     _search_semantic("读", language="cmn")
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
+def test_get_exact_match_for_word_from_names():
+    names = _get_api_object_names()
+    exact_match = _get_exact_match_for_word_from_names("VideoResoutionY", names)
+    assert "VideoResoutionY" in exact_match
+    assert len(exact_match) == 1
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
+def test_get_match_case_for_word_from_names():
+    names = _get_api_object_names()
+    match_cases = _get_match_case_for_word_from_names("font", names)
+    assert "font" not in match_cases
+    assert "Font" in match_cases
+    assert "TextFontAutomaticHorizontalSize" in match_cases
 
 
 @pytest.mark.fluent_version("==24.2")
