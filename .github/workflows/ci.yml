@@ -509,7 +509,7 @@ jobs:
         run: make docker-pull
         env:
           with:
-            cond: matrix.image-tag == 'v24.2.0'
+            cond: ${{ matrix.image-tag == 'v24.2.0' }}
             if_true:
               FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
             if_false:
