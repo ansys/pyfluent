@@ -196,7 +196,7 @@ jobs:
           if [ -f poetry.lock ] ; then
             rm poetry.lock
           fi
-          poetry install --only docs
+          poetry install --with docs
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
