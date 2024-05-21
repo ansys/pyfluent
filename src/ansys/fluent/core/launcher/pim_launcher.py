@@ -45,9 +45,11 @@ class PIMLauncher:
 
     def __init__(
         self,
-        mode: FluentMode,
-        ui_mode: UIMode,
-        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
+        mode: Optional[Union[FluentMode, str, None]] = None,
+        ui_mode: Union[UIMode, str, None] = None,
+        graphics_driver: Union[
+            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+        ] = None,
         product_version: Optional[FluentVersion] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
@@ -141,40 +143,36 @@ class PIMLauncher:
         del argvals["self"]
         if argvals["start_timeout"] is None:
             argvals["start_timeout"] = 60
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
         self.argvals = argvals
-        self.new_session = self.mode.value[0]
+        self.new_session = self.argvals["mode"].value[0]
 
-        if self.additional_arguments:
+        if self.argvals["additional_arguments"]:
             logger.warning(
-                "'additional_arguments' option for 'launch_fluent' is currently not supported "
+                "'additional_arguments' option for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
 
-        if self.start_watchdog:
+        if self.argvals["start_watchdog"]:
             logger.warning(
-                "'start_watchdog' argument for 'launch_fluent' is currently not supported "
+                "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
         self.file_transfer_service = file_transfer_service
 
     def __call__(self):
-        logger.info(
-            "Starting Fluent remotely. The startup configuration will be ignored."
-        )
-        if self.product_version:
-            fluent_product_version = str(self.product_version.number)
+        logger.info("Starting Fluent remotely. The startup configuration is ignored.")
+        if self.argvals["product_version"]:
+            fluent_product_version = str(self.argvals["product_version"].number)
         else:
             fluent_product_version = None
 
         return launch_remote_fluent(
             session_cls=self.new_session,
-            start_transcript=self.start_transcript,
+            start_transcript=self.argvals["start_transcript"],
             product_version=fluent_product_version,
-            cleanup_on_exit=self.cleanup_on_exit,
-            mode=self.mode,
-            dimensionality=self.version,
+            cleanup_on_exit=self.argvals["cleanup_on_exit"],
+            mode=self.argvals["mode"],
+            dimensionality=self.argvals["version"],
             launcher_args=self.argvals,
             file_transfer_service=self.file_transfer_service,
         )
