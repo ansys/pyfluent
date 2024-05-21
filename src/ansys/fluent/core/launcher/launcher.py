@@ -58,7 +58,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
+    _process_invalid_args(kwargs.get("dry_run"), fluent_launch_mode, kwargs)
     if fluent_launch_mode == LaunchMode.STANDALONE:
         unsupported_args = ["container_dict", "dry_run", "scheduler_options"]
         for arg_name in unsupported_args:
