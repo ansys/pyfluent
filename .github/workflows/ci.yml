@@ -106,8 +106,7 @@ jobs:
   docs_build:
     name: Build Documentation
     needs: [docs-style]
-    #runs-on: [self-hosted, pyfluent]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v24.1.0
 
@@ -133,11 +132,7 @@ jobs:
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
       - name: Install pyfluent
-        run: |
-            python -m pip install poetry
-            # poetry env remove --all
-            poetry install --with docs
-            make install
+        run: make install
 
       - name: Retrieve PyFluent version
         run: |
@@ -197,6 +192,11 @@ jobs:
 
       - name: Build Source Documentation
         run: |
+          pip install -r requirements/requirements_build.txt
+          if [ -f poetry.lock ] ; then
+            rm poetry.lock
+          fi
+          poetry install --only docs
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
