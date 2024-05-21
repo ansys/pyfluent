@@ -5,12 +5,13 @@ import logging
 import warnings
 
 from ansys.fluent.core.launcher.pyfluent_enums import FluentEnum
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 logger = logging.getLogger("pyfluent.general")
 
 
 def deprecate_argument(
-    old_arg, new_arg, converter, deprecation_class=DeprecationWarning
+    old_arg, new_arg, converter, deprecation_class=PyFluentDeprecationWarning
 ):
     """Warns that the argument provided is deprecated and automatically replaces the
     deprecated argument with the appropriate new argument."""
