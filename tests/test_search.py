@@ -24,8 +24,7 @@ def test_nltk_data_download():
     for package in packages:
         nltk.download(package, quiet=True)
 
-    with not pytest.raises(LookupError):
-        _search_semantic("读", language="cmn")
+    _search_semantic("读", language="cmn")
 
 
 @pytest.mark.fluent_version("==24.2")
