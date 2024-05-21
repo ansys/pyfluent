@@ -24,7 +24,8 @@ from typing import Any, Dict
 import uuid
 import xml.etree.ElementTree as ET
 
-from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, launch_fluent
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
 from ansys.fluent.core.services.datamodel_tui import (
@@ -44,7 +45,7 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
+    return (pyfluent.CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -299,15 +300,18 @@ class TUIGenerator:
 def generate(version, static_infos: dict):
     """Generate TUI API classes."""
     api_tree = {}
-    if FluentVersion(version) > FluentVersion.v222:
+    gt_222 = FluentVersion(version) > FluentVersion.v222
+    if gt_222:
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    api_tree["<meshing_session>"] = TUIGenerator(
-        "meshing", version, static_infos
-    ).generate()
-    api_tree["<solver_session>"] = TUIGenerator(
-        "solver", version, static_infos
-    ).generate()
+    if not gt_222 or StaticInfoType.TUI_MESHING in static_infos:
+        api_tree["<meshing_session>"] = TUIGenerator(
+            "meshing", version, static_infos
+        ).generate()
+    if not gt_222 or StaticInfoType.TUI_SOLVER in static_infos:
+        api_tree["<solver_session>"] = TUIGenerator(
+            "solver", version, static_infos
+        ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
@@ -323,7 +327,7 @@ if __name__ == "__main__":
     meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
     version = get_version_for_file_name(session=solver)
     static_infos = {}
-    if FluentVersion(version) >= FluentVersion.v222:
+    if FluentVersion(version) > FluentVersion.v222:
         static_infos[StaticInfoType.TUI_SOLVER] = (
             solver._datamodel_service_tui.get_static_info("")
         )

@@ -113,7 +113,7 @@ def _process_datamodel_path(full_name: str):
         Path of datamodel class.
     """
     path_string = re.findall("core.*", full_name)
-    path = path_string[0].replace("core.generated", "")
+    path = path_string[0].replace("core.generated.", "")
     path = re.sub("[0-9]", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")

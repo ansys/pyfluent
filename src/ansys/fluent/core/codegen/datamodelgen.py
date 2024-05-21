@@ -6,7 +6,8 @@ from pathlib import Path
 import shutil
 from typing import Any, Dict
 
-from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, launch_fluent
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -102,7 +103,7 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
+        datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
@@ -116,8 +117,9 @@ class DataModelGenerator:
     def __init__(self, version, static_infos: dict):
         self.version = version
         self._server_static_infos = static_infos
-        self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo(
+        self._static_info: Dict[str, DataModelStaticInfo] = {}
+        if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
+            self._static_info["workflow"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_WORKFLOW,
                 "workflow",
                 (
@@ -125,55 +127,54 @@ class DataModelGenerator:
                     "solver",
                 ),
                 self.version,
-            ),
-            "meshing": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_MESHING in static_infos:
+            self._static_info["meshing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING, "meshing", ("meshing",), self.version
-            ),
-            "PartManagement": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_PART_MANAGEMENT in static_infos:
+            self._static_info["PartManagement"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PART_MANAGEMENT,
                 "PartManagement",
                 ("meshing",),
                 self.version,
-            ),
-            "PMFileManagement": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT in static_infos:
+            self._static_info["PMFileManagement"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
                 "PMFileManagement",
                 ("meshing",),
                 self.version,
-            ),
-            "flicing": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_FLICING in static_infos:
+            self._static_info["flicing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_FLICING,
                 "flserver",
                 ("flicing",),
                 self.version,
                 "flicing",
-            ),
-            "preferences": DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_PREFERENCES in static_infos:
+            self._static_info["preferences"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PREFERENCES,
                 "preferences",
-                ("meshing", "solver", "flicing,"),
+                ("meshing", "solver", "flicing"),
                 self.version,
-            ),
-            "solverworkflow": (
-                DataModelStaticInfo(
-                    StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
-                    "solverworkflow",
-                    ("solver",),
-                    self.version,
-                )
-                if FluentVersion(self.version) >= FluentVersion.v231
-                else None
-            ),
-        }
-        if FluentVersion(self.version) >= FluentVersion.v242:
-            self._static_info["meshing_utilities"] = DataModelStaticInfo(
+            )
+        if StaticInfoType.DATAMODEL_SOLVER_WORKFLOW in static_infos:
+            self._static_info["solverworkflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
+                "solverworkflow",
+                ("solver",),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_MESHING_UTILITIES in static_infos:
+            self._static_info["MeshingUtilities"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING_UTILITIES,
                 "MeshingUtilities",
                 ("meshing",),
                 self.version,
             )
-        if not self._static_info["solverworkflow"]:
-            del self._static_info["solverworkflow"]
         self._delete_generated_files()
         self._populate_static_info()
 
@@ -202,25 +203,27 @@ class DataModelGenerator:
                     info.static_info = self._get_static_info(info.static_info_type)
 
         if run_icing_mode:
-            for _, info in self._static_info.items():
-                if "flicing" in info.modes:
-                    info.static_info = self._get_static_info(info.static_info_type)
-                    try:
-                        if (
-                            len(
-                                info.static_info["singletons"]["Case"]["singletons"][
-                                    "App"
-                                ]["singletons"]
-                            )
-                            == 0
-                        ):
-                            print(
-                                "Information: Icing settings not generated ( R23.1+ is required )\n"
-                            )
-                    except:
-                        print(
-                            "Information: Problem accessing flserver datamodel for icing settings\n"
+            info = self._static_info.get("flicing")
+            if info:
+                info.static_info = self._get_static_info(
+                    StaticInfoType.DATAMODEL_FLICING
+                )
+                try:
+                    if (
+                        len(
+                            info.static_info["singletons"]["Case"]["singletons"]["App"][
+                                "singletons"
+                            ]
                         )
+                        == 0
+                    ):
+                        print(
+                            "Information: Icing settings not generated ( R23.1+ is required )\n"
+                        )
+                except:
+                    print(
+                        "Information: Problem accessing flserver datamodel for icing settings\n"
+                    )
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}

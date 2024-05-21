@@ -81,7 +81,7 @@ class BaseMeshing:
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
                 tui_module = load_module(
-                    f"tui_{self._version}",
+                    f"meshing_tui_{self._version}",
                     CODEGEN_OUTDIR / "meshing" / f"tui_{self._version}.py",
                 )
                 self._tui = tui_module.main_menu(
@@ -99,7 +99,8 @@ class BaseMeshing:
             from ansys.fluent.core import CODEGEN_OUTDIR
 
             meshing_module = load_module(
-                "meshing", CODEGEN_OUTDIR / f"datamodel_{self._version}" / "meshing.py"
+                f"meshing_{self._version}",
+                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "meshing.py",
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
         except ImportError:
@@ -122,7 +123,7 @@ class BaseMeshing:
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
                 meshing_utilities_module = load_module(
-                    "MeshingUtilities",
+                    f"MeshingUtilities_{self._version}",
                     CODEGEN_OUTDIR
                     / f"datamodel_{self._version}"
                     / "MeshingUtilities.py",
@@ -152,7 +153,7 @@ class BaseMeshing:
             from ansys.fluent.core import CODEGEN_OUTDIR
 
             workflow_module = load_module(
-                "workflow",
+                f"workflow_{self._version}",
                 CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
@@ -248,7 +249,7 @@ class BaseMeshing:
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
                 pm_module = load_module(
-                    "PartManagement",
+                    f"PartManagement_{self._version}",
                     CODEGEN_OUTDIR / f"datamodel_{self._version}" / "PartManagement.py",
                 )
                 self._part_management = pm_module.Root(
@@ -269,7 +270,7 @@ class BaseMeshing:
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
                 pmfm_module = load_module(
-                    "PMFileManagement",
+                    f"PMFileManagement_{self._version}",
                     CODEGEN_OUTDIR
                     / f"datamodel_{self._version}"
                     / "PMFileManagement.py",

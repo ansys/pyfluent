@@ -58,70 +58,45 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    _process_invalid_args(kwargs["dry_run"], fluent_launch_mode, kwargs)
+    _process_invalid_args(kwargs.get("dry_run"), fluent_launch_mode, kwargs)
     if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher(
-            mode=kwargs["mode"],
-            ui_mode=kwargs["ui_mode"],
-            graphics_driver=kwargs["graphics_driver"],
-            product_version=kwargs["product_version"],
-            version=kwargs["version"],
-            precision=kwargs["precision"],
-            processor_count=kwargs["processor_count"],
-            journal_file_names=kwargs["journal_file_names"],
-            start_timeout=kwargs["start_timeout"],
-            additional_arguments=kwargs["additional_arguments"],
-            env=kwargs["env"],
-            cleanup_on_exit=kwargs["cleanup_on_exit"],
-            start_transcript=kwargs["start_transcript"],
-            case_file_name=kwargs["case_file_name"],
-            case_data_file_name=kwargs["case_data_file_name"],
-            lightweight_mode=kwargs["lightweight_mode"],
-            py=kwargs["py"],
-            gpu=kwargs["gpu"],
-            cwd=kwargs["cwd"],
-            topy=kwargs["topy"],
-            start_watchdog=kwargs["start_watchdog"],
-            file_transfer_service=kwargs["file_transfer_service"],
-        )
+        unsupported_args = ["container_dict", "dry_run", "scheduler_options"]
+        for arg_name in unsupported_args:
+            if arg_name in kwargs:
+                kwargs.pop(arg_name)
+        return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher(
-            mode=kwargs["mode"],
-            ui_mode=kwargs["ui_mode"],
-            graphics_driver=kwargs["graphics_driver"],
-            product_version=kwargs["product_version"],
-            version=kwargs["version"],
-            precision=kwargs["precision"],
-            processor_count=kwargs["processor_count"],
-            start_timeout=kwargs["start_timeout"],
-            additional_arguments=kwargs["additional_arguments"],
-            container_dict=kwargs["container_dict"],
-            dry_run=kwargs["dry_run"],
-            cleanup_on_exit=kwargs["cleanup_on_exit"],
-            start_transcript=kwargs["start_transcript"],
-            py=kwargs["py"],
-            gpu=kwargs["gpu"],
-            start_watchdog=kwargs["start_watchdog"],
-            file_transfer_service=kwargs["file_transfer_service"],
-        )
+        unsupported_args = [
+            "journal_file_names",
+            "env",
+            "case_file_name",
+            "case_data_file_name",
+            "lightweight_mode",
+            "cwd",
+            "topy",
+            "scheduler_options",
+        ]
+        for arg_name in unsupported_args:
+            if arg_name in kwargs:
+                kwargs.pop(arg_name)
+        return DockerLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher(
-            mode=kwargs["mode"],
-            ui_mode=kwargs["ui_mode"],
-            graphics_driver=kwargs["graphics_driver"],
-            product_version=kwargs["product_version"],
-            version=kwargs["version"],
-            precision=kwargs["precision"],
-            processor_count=kwargs["processor_count"],
-            start_timeout=kwargs["start_timeout"],
-            additional_arguments=kwargs["additional_arguments"],
-            cleanup_on_exit=kwargs["cleanup_on_exit"],
-            start_transcript=kwargs["start_transcript"],
-            py=kwargs["py"],
-            gpu=kwargs["gpu"],
-            start_watchdog=kwargs["start_watchdog"],
-            file_transfer_service=kwargs["file_transfer_service"],
-        )
+        unsupported_args = [
+            "journal_file_names",
+            "env",
+            "container_dict",
+            "dry_run",
+            "case_file_name",
+            "case_data_file_name",
+            "lightweight_mode",
+            "cwd",
+            "topy",
+            "scheduler_options",
+        ]
+        for arg_name in unsupported_args:
+            if arg_name in kwargs:
+                kwargs.pop(arg_name)
+        return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
 
