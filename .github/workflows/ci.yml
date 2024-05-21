@@ -507,14 +507,14 @@ jobs:
       - name: Pull Fluent docker image
         if: matrix.image-tag != 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Pull Fluent docker image dev
-        if: matrix.image-tag == 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+        with:
+          cond: ${{ matrix.image-tag == 'v24.2.0' }}
+          if_true:
+            env:
+              FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          if_false:
+            env:
+              FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
