@@ -366,7 +366,6 @@ def _get_exact_match_for_word_from_names(
 
     Returns
     -------
-    exact_matches: list
         List of exact match.
     """
     return [name for name in names if word == name]
