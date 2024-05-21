@@ -371,11 +371,11 @@ def _get_exact_match_for_word_from_names(
     return [name for name in names if word == name]
 
 
-def _get_match_case_for_word_from_names(
+def _get_capitalize_case_for_word_from_names(
     word: str,
     names: list,
 ):
-    """Get match case for the given word.
+    """Get capitalize case for the given word.
 
     Parameters
     ----------
@@ -386,8 +386,7 @@ def _get_match_case_for_word_from_names(
 
     Returns
     -------
-    exact_matches: list
-        List of exact match.
+        List of capitalize matches.
     """
     return [name for name in names if word.capitalize() in name]
 
@@ -441,9 +440,9 @@ def _search_whole_word(
     queries = []
     if match_case and match_whole_word:
         queries.extend(_get_exact_match_for_word_from_names(search_string, names))
-        queries.extend(_get_match_case_for_word_from_names(search_string, names))
+        queries.extend(_get_capitalize_case_for_word_from_names(search_string, names))
     elif match_case:
-        queries.extend(_get_match_case_for_word_from_names(search_string, names))
+        queries.extend(_get_capitalize_case_for_word_from_names(search_string, names))
     else:
         queries.extend(_get_exact_match_for_word_from_names(search_string, names))
     if queries:
