@@ -371,11 +371,11 @@ def _get_exact_match_for_word_from_names(
     return [name for name in names if word == name]
 
 
-def _get_capitalize_case_for_word_from_names(
+def _get_capitalize_match_for_word_from_names(
     word: str,
     names: list,
 ):
-    """Get capitalize case for the given word.
+    """Get API object name if capitalize case of the given word is present in the API object name.
 
     Parameters
     ----------
@@ -386,9 +386,29 @@ def _get_capitalize_case_for_word_from_names(
 
     Returns
     -------
-        List of capitalize matches.
+        List of API object names containing capitalize case of the given word.
     """
     return [name for name in names if word.capitalize() in name]
+
+
+def _get_match_case_for_word_from_names(
+    word: str,
+    names: list,
+):
+    """Get API object name if the given word is present in the API object name.
+
+    Parameters
+    ----------
+    word: str
+        Word to search for.
+    names: list
+        All API object names.
+
+    Returns
+    -------
+        List of API object names containing the given word.
+    """
+    return [name for name in names if word in name]
 
 
 def _get_close_matches_for_word_from_names(
@@ -426,11 +446,11 @@ def _search_whole_word(
     search_string: str
         Word to search for. Semantic search is default.
     match_case: bool
-        Whether to match capitalize case. The default is ``False``.
-        If ``True``, it matches capitalize word.
+        Whether to match case. The default is ``False``.
+        If ``True``, it matches the given word.
     match_whole_word: bool
         Whether to match whole word. The default is ``False``.
-        If ``True``, it matches case-insensitive word.
+        If ``True``, it matches the given word, and it's capitalize case.
 
     Returns
     -------
@@ -440,11 +460,14 @@ def _search_whole_word(
     queries = []
     if match_case and match_whole_word:
         queries.extend(_get_exact_match_for_word_from_names(search_string, names))
-        queries.extend(_get_capitalize_case_for_word_from_names(search_string, names))
     elif match_case:
-        queries.extend(_get_capitalize_case_for_word_from_names(search_string, names))
-    else:
-        queries.extend(_get_exact_match_for_word_from_names(search_string, names))
+        queries.extend(_get_match_case_for_word_from_names(search_string, names))
+    elif match_whole_word:
+        for word in [search_string, search_string.capitalize()]:
+            queries.extend(_get_exact_match_for_word_from_names(word, names))
+    elif not match_case and not match_whole_word:
+        queries.extend(_get_capitalize_match_for_word_from_names(search_string, names))
+        queries.extend(_get_match_case_for_word_from_names(search_string, names))
     if queries:
         _print_search_results(queries)
 
@@ -578,30 +601,28 @@ def search(
         )
     elif language and match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches exact string.",
+            "``match_whole_word=True`` matches the given word, and it's capitalize case.",
             UserWarning,
         )
     elif match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches exact string.",
+            "``match_whole_word=True`` matches the given word, and it's capitalize case.",
             UserWarning,
         )
     elif match_case:
         warnings.warn(
-            "``match_case=True`` matches capitalize string.",
+            "``match_case=True`` matches the given word.",
             UserWarning,
         )
 
     if wildcard:
         _search_wildcard(search_string)
     elif match_whole_word and match_case:
-        _search_whole_word(
-            search_string, match_case=match_case, match_whole_word=match_whole_word
-        )
-    elif match_whole_word:
-        _search_whole_word(search_string, match_whole_word=match_whole_word)
+        _search_whole_word(search_string, match_case=True, match_whole_word=True)
     elif match_case:
-        _search_whole_word(search_string, match_case=match_case)
+        _search_whole_word(search_string, match_case=True)
+    elif match_whole_word:
+        _search_whole_word(search_string, match_whole_word=True)
     elif search_root:
         version = None
         root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)

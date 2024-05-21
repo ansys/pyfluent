@@ -6,9 +6,10 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import (
     _get_api_object_names,
-    _get_capitalize_case_for_word_from_names,
+    _get_capitalize_match_for_word_from_names,
     _get_close_matches_for_word_from_names,
     _get_exact_match_for_word_from_names,
+    _get_match_case_for_word_from_names,
     _get_version_path_prefix_from_obj,
     _get_wildcard_matches_for_word_from_names,
     _search,
@@ -40,12 +41,23 @@ def test_get_exact_match_for_word_from_names():
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
+def test_get_capitalize_match_for_word_from_names():
+    names = _get_api_object_names()
+    capitalize_match_cases = _get_capitalize_match_for_word_from_names("font", names)
+    assert "font" not in capitalize_match_cases
+    assert "Font" in capitalize_match_cases
+    assert "TextFontAutomaticHorizontalSize" in capitalize_match_cases
+    assert "TextFontAutomaticUnits" in capitalize_match_cases
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
 def test_get_match_case_for_word_from_names():
     names = _get_api_object_names()
-    match_cases = _get_capitalize_case_for_word_from_names("font", names)
-    assert "font" not in match_cases
-    assert "Font" in match_cases
-    assert "TextFontAutomaticHorizontalSize" in match_cases
+    match_cases = _get_match_case_for_word_from_names("font", names)
+    for match_case in match_cases:
+        assert "Font" not in match_case
+        assert "font" in match_case
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -138,11 +150,14 @@ def test_match_case_search(capsys):
     pyfluent.search("font", match_case=True)
     lines = capsys.readouterr().out.splitlines()
     for line in lines:
-        assert "Font" in line
-        assert "font" not in line
-    assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" in lines
+        assert "Font" not in line
+        assert "font" in line
     assert (
-        "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
+        '<solver_session>.results.graphics.pathline["<name>"].color_map.font_name (Parameter)'
+        in lines
+    )
+    assert (
+        '<solver_session>.results.graphics.vector["<name>"].color_map.font_automatic (Parameter)'
         in lines
     )
 
@@ -153,11 +168,12 @@ def test_match_whole_word_and_case_search(capsys):
     pyfluent.search("font", match_whole_word=True, match_case=True)
     lines = capsys.readouterr().out.splitlines()
     for line in lines:
-        assert "Font" or "font" in line
-    assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" in lines
+        assert "font" in line
+        assert "Font" not in line
+    assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" not in lines
     assert (
         "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
-        in lines
+        not in lines
     )
     assert (
         '<solver_session>.results.graphics.lic["<name>"].color_map.font_name (Parameter)'
