@@ -73,19 +73,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-
-      - name: Pull Fluent docker image
-        if: matrix.image-tag != 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: matrix.image-tag != 'v24.2.0'
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Pull Fluent docker image dev
-        if: matrix.image-tag == 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: matrix.image-tag == 'v24.2.0'
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
