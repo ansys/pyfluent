@@ -4,7 +4,8 @@ import warnings
 
 
 class PyFluentDeprecationWarning(FutureWarning):
-    """Provides the common warning class for warnings about deprecated PyFluent features."""
+    """Provides the common warning class for warnings about deprecated PyFluent
+    features."""
 
     pass
 
