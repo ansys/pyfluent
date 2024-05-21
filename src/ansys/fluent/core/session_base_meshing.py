@@ -87,7 +87,7 @@ class BaseMeshing:
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "meshing", []
                 )
-            except ImportError:
+            except (ImportError, FileNotFoundError):
                 tui_logger.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenu(self._tui_service, self._version, "meshing", [])
         return self._tui
@@ -103,7 +103,7 @@ class BaseMeshing:
                 CODEGEN_OUTDIR / f"datamodel_{self._version}" / "meshing.py",
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
-        except ImportError:
+        except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             meshing_root = PyMenuGeneric(self._se_service, "meshing")
         return meshing_root
@@ -131,7 +131,7 @@ class BaseMeshing:
                 meshing_utilities_root = meshing_utilities_module.Root(
                     self._se_service, "MeshingUtilities", []
                 )
-        except ImportError:
+        except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             if self.get_fluent_version() >= FluentVersion.v242:
                 meshing_utilities_root = PyMenuGeneric(
@@ -157,7 +157,7 @@ class BaseMeshing:
                 CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except ImportError:
+        except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
@@ -255,7 +255,7 @@ class BaseMeshing:
                 self._part_management = pm_module.Root(
                     self._se_service, "PartManagement", []
                 )
-            except ImportError:
+            except (ImportError, FileNotFoundError):
                 datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._part_management = PyMenuGeneric(
                     self._se_service, "PartManagement"
@@ -278,7 +278,7 @@ class BaseMeshing:
                 self._pm_file_management = pmfm_module.Root(
                     self._se_service, "PMFileManagement", []
                 )
-            except ImportError:
+            except (ImportError, FileNotFoundError):
                 datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._pm_file_management = PyMenuGeneric(
                     self._se_service, "PMFileManagement"
