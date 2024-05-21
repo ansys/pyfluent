@@ -422,14 +422,11 @@ def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in UIMode:
-        assert (
-            _build_fluent_launch_args_string(
-                ui_mode=m, additional_arguments="", processor_count=None
-            ).strip()
-            == f"3ddp -{m.value[0]}"
-            if m.value[0]
-            else " 3ddp"
-        )
+        string1 = _build_fluent_launch_args_string(
+            ui_mode=m, additional_arguments="", processor_count=None
+        ).strip()
+        string2 = f"3ddp -{m.value[0]}" if m.value[0] else "3ddp"
+        assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
             assert (
@@ -440,6 +437,14 @@ def test_exposure_and_graphics_driver_arguments():
                 if m.value[0]
                 else " 3ddp"
             )
+
+
+def test_additional_arguments_fluent_launch_args_string():
+    additional_arguments = "-ws -ws-port=5000 -i test.jou"
+    assert additional_arguments in _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+    )
 
 
 def test_processor_count():

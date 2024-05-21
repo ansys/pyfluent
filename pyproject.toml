@@ -50,7 +50,7 @@ grpcio-health-checking = "^1.30.0"
 h5py = { version = "==3.11.0", optional = true }
 lxml = "^4.9.2"
 numpy= "^1.21.5"
-pandas = "^1.1.5"
+pandas = "^2.0.3"
 platformdirs = "^3.5.1"
 psutil = "^5.9.5"
 pyyaml = "^6.0"
@@ -84,10 +84,11 @@ optional = true
 pytest = "==8.0.2"
 pytest-cov = "==4.1.0"
 pytest-mock = "==3.12.0"
+pytest-xdist = "==3.6.1"
 
 [tool.poetry.extras]
 reader = ["h5py"]
-tests = ["pytest", "pytest-cov", "pytest-mock"]
+tests = ["pytest", "pytest-cov", "pytest-mock", "pytest-xdist"]
 
 [tool.poetry.urls]
 "Documentation" = "https://fluent.docs.pyansys.com/"
@@ -100,6 +101,7 @@ addopts = """
 -v
 --durations=0
 --show-capture=all
+-n auto
 """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",

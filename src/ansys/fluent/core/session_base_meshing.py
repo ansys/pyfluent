@@ -1,6 +1,5 @@
 """Provides a module to get base Meshing session."""
 
-import importlib
 import logging
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -12,6 +11,7 @@ from ansys.fluent.core.meshing.meshing_workflow import (
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
+from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -78,8 +78,11 @@ class BaseMeshing:
         executed."""
         if self._tui is None:
             try:
-                tui_module = importlib.import_module(
-                    f"ansys.fluent.core.generated.meshing.tui_{self._version}"
+                from ansys.fluent.core import CODEGEN_OUTDIR
+
+                tui_module = load_module(
+                    f"meshing_tui_{self._version}",
+                    CODEGEN_OUTDIR / "meshing" / f"tui_{self._version}.py",
                 )
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "meshing", []
@@ -93,8 +96,11 @@ class BaseMeshing:
     def _meshing_root(self):
         """Datamodel root of meshing."""
         try:
-            meshing_module = importlib.import_module(
-                f"ansys.fluent.core.generated.datamodel_{self._version}.meshing"
+            from ansys.fluent.core import CODEGEN_OUTDIR
+
+            meshing_module = load_module(
+                f"meshing_{self._version}",
+                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "meshing.py",
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
         except ImportError:
@@ -114,8 +120,13 @@ class BaseMeshing:
         """Datamodel root of meshing_utilities."""
         try:
             if self.get_fluent_version() >= FluentVersion.v242:
-                meshing_utilities_module = importlib.import_module(
-                    f"ansys.fluent.core.generated.datamodel_{self._version}.MeshingUtilities"
+                from ansys.fluent.core import CODEGEN_OUTDIR
+
+                meshing_utilities_module = load_module(
+                    f"MeshingUtilities_{self._version}",
+                    CODEGEN_OUTDIR
+                    / f"datamodel_{self._version}"
+                    / "MeshingUtilities.py",
                 )
                 meshing_utilities_root = meshing_utilities_module.Root(
                     self._se_service, "MeshingUtilities", []
@@ -139,8 +150,11 @@ class BaseMeshing:
     def _workflow_se(self):
         """Datamodel root of workflow."""
         try:
-            workflow_module = importlib.import_module(
-                f"ansys.fluent.core.generated.datamodel_{self._version}.workflow"
+            from ansys.fluent.core import CODEGEN_OUTDIR
+
+            workflow_module = load_module(
+                f"workflow_{self._version}",
+                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except ImportError:
@@ -232,8 +246,11 @@ class BaseMeshing:
         """Datamodel root of ``PartManagement``."""
         if self._part_management is None:
             try:
-                pm_module = importlib.import_module(
-                    f"ansys.fluent.core.generated.datamodel_{self._version}.PartManagement"
+                from ansys.fluent.core import CODEGEN_OUTDIR
+
+                pm_module = load_module(
+                    f"PartManagement_{self._version}",
+                    CODEGEN_OUTDIR / f"datamodel_{self._version}" / "PartManagement.py",
                 )
                 self._part_management = pm_module.Root(
                     self._se_service, "PartManagement", []
@@ -250,8 +267,13 @@ class BaseMeshing:
         """Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
             try:
-                pmfm_module = importlib.import_module(
-                    f"ansys.fluent.core.generated.datamodel_{self._version}.PMFileManagement"
+                from ansys.fluent.core import CODEGEN_OUTDIR
+
+                pmfm_module = load_module(
+                    f"PMFileManagement_{self._version}",
+                    CODEGEN_OUTDIR
+                    / f"datamodel_{self._version}"
+                    / "PMFileManagement.py",
                 )
                 self._pm_file_management = pmfm_module.Root(
                     self._se_service, "PMFileManagement", []
