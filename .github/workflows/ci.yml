@@ -505,20 +505,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        uses: actions/checkout@v4
-        if: matrix.image-tag != 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        steps:
-          - run: make docker-pull
-            env:
-              FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+        if: matrix.version != '242' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Pull Fluent docker image dev
-        uses: actions/checkout@v4
-        if: matrix.image-tag == 'v24.2.0' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        steps:
-          - run: make docker-pull
-            env:
-              FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+        if: matrix.version == '242' && ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
