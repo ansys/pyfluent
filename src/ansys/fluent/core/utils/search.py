@@ -5,6 +5,7 @@ import fnmatch
 import os
 from pathlib import Path
 import pickle
+import re
 import sys
 from typing import Any, Optional
 import warnings
@@ -326,11 +327,9 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
     wildcard_matches: list
         Matched API object names.
     """
-    wildcard_matches = [name for name in names if fnmatch.fnmatch(name, word)]
-    valid_wildcard_matches = [
-        wildcard_match for wildcard_match in wildcard_matches if wildcard_match in names
-    ]
-    return valid_wildcard_matches
+    pattern = fnmatch.translate(word)
+    regex = re.compile(pattern)
+    return [name for name in names if regex.match(name)]
 
 
 def _search_wildcard(search_string: str):
