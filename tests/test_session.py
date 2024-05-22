@@ -471,7 +471,10 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
             "parallel",
         }
-        assert api_keys.issubset(set(dir(solver)))
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            assert api_keys.issubset(set(dir(solver.settings)))
+        else:
+            assert api_keys.issubset(set(dir(solver)))
 
 
 @pytest.mark.fluent_version(">=23.2")

@@ -54,7 +54,7 @@ def _get_datamodel_attributes(session, attribute: str):
             CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{attribute}.py",
         )
         return preferences_module.Root(session._se_service, attribute, [])
-    except ImportError:
+    except (ImportError, FileNotFoundError):
         datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 

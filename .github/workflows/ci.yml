@@ -431,6 +431,41 @@ jobs:
           cat src/ansys/fluent/core/generated/fluent_version_242.py
           python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Cache 25.1 API Code
+        uses: actions/cache@v4
+        id: cache-251-api-code
+        with:
+          path:
+            src/ansys/fluent/core/generated/datamodel_251
+            src/ansys/fluent/core/generated/fluent_version_251.py
+            src/ansys/fluent/core/generated/meshing/tui_251.py
+            src/ansys/fluent/core/generated/solver/settings_251
+            src/ansys/fluent/core/generated/solver/tui_251.py
+            src/ansys/fluent/core/generated/data/api_tree_251.pickle
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0
+
+      - name: Pull 25.1 Fluent docker image
+        if: steps.cache-251-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v25.1.0
+
+      - name: Run 25.1 API codegen
+        if: steps.cache-251-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v25.1.0
+
+      - name: Print 25.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_251.py
+          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Install again after codegen
         run: |
           rm -rf dist
@@ -469,6 +504,8 @@ jobs:
             version: 241
           - image-tag: v24.2.0
             version: 242
+          - image-tag: v25.1.0
+            version: 251
     timeout-minutes: 120
 
     steps:
@@ -527,8 +564,8 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload 24.1 Coverage Artifacts
-        if: matrix.image-tag == 'v24.1.0'
+      - name: Upload 24.2 Coverage Artifacts
+        if: matrix.image-tag == 'v24.2.0'
         uses: actions/upload-artifact@v4
         with:
           name: coverage_report
