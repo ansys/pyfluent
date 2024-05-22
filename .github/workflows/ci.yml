@@ -76,12 +76,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  branch-name-style:
-    name: "Run branch name style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/branch-name-style@v6
-
   test-import:
     name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
