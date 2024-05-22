@@ -262,6 +262,7 @@ def _search(
     api_tree_data["api_tui_objects"] = sorted(api_tui_objects)
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
+        _download_nltk_data()
         from ansys.fluent.core import CODEGEN_OUTDIR
 
         json_file_folder = Path(os.path.join(CODEGEN_OUTDIR, "api_tree"))
