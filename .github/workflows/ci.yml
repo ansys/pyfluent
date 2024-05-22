@@ -418,7 +418,7 @@ jobs:
         if: steps.cache-242-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v24.2.0
 
       - name: Run 24.2 API codegen
         if: steps.cache-242-api-code.outputs.cache-hit != 'true'
@@ -453,7 +453,7 @@ jobs:
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run 25.1 API codegen
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
@@ -545,13 +545,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: ${{ matrix.image-tag != 'v24.2.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: ${{ matrix.image-tag != 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Pull Fluent docker image dev
-        if: ${{ matrix.image-tag == 'v24.2.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: ${{ matrix.image-tag == 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
