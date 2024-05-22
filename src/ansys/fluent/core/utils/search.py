@@ -349,6 +349,7 @@ def _search_wildcard(search_string: str):
     queries = _get_wildcard_matches_for_word_from_names(search_string, names)
     if queries:
         _print_search_results(queries)
+    return queries
 
 
 def _get_exact_match_for_word_from_names(
@@ -470,6 +471,7 @@ def _search_whole_word(
         queries.extend(_get_match_case_for_word_from_names(search_string, names))
     if queries:
         _print_search_results(queries)
+    return queries
 
 
 def _download_nltk_data():
@@ -548,7 +550,7 @@ def search(
     language: Optional[str] = "eng",
     wildcard: Optional[bool] = False,
     match_whole_word: Optional[bool] = False,
-    match_case: Optional[bool] = False,
+    match_case: Optional[bool] = True,
     search_root: Optional[Any] = None,
 ):
     """Search for a word through the Fluent's object hierarchy.
@@ -617,12 +619,11 @@ def search(
 
     if wildcard:
         _search_wildcard(search_string)
-    elif match_whole_word and match_case:
-        _search_whole_word(search_string, match_case=True, match_whole_word=True)
-    elif match_case:
-        _search_whole_word(search_string, match_case=True)
     elif match_whole_word:
-        _search_whole_word(search_string, match_whole_word=True)
+        if not match_case:
+            _search_whole_word(search_string, match_whole_word=True)
+        else:
+            _search_whole_word(search_string, match_case=True)
     elif search_root:
         version = None
         root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)

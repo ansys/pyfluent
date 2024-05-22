@@ -67,6 +67,23 @@ def test_get_wildcard_matches_for_word_from_names():
     wildcard_matches = _get_wildcard_matches_for_word_from_names("iter*", names)
     assert "iterating" in wildcard_matches
     assert "iterate_steady_2way_fsi" in wildcard_matches
+    assert set(wildcard_matches) == set(
+        [
+            "iter_count",
+            "iterating",
+            "iter_per_coupling_count",
+            "iteration_at_creation_or_edit",
+            "iteration_interval",
+            "iteration_number_of_samples_or_levels",
+            "iterations",
+            "iterate",
+            "iterate_steady_2way_fsi",
+            "iteration",
+            "iteration_sampling_type",
+            "iteration_count",
+            "iteration_parameters",
+        ]
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
