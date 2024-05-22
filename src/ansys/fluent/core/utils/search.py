@@ -571,7 +571,7 @@ def search(
         Whether to find only exact matches. The default is ``False``. If ``True``,
         only exact matches are found and semantic matching is turned off.
     match_case: bool, optional
-        Whether to match capitalize case. The default is ``False``. If ``True``, the search is case-sensitive.
+        Whether to match case. The default is ``True``. If ``False``, the search is case-insensitive.
     search_root : Any, optional
         The root object within which the search is performed,
         can be a session object or any API object within a session.
