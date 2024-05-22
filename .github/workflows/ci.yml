@@ -193,7 +193,10 @@ jobs:
       - name: Build Source Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          poetry install --only docs
+          if [ -f poetry.lock ] ; then
+            rm poetry.lock
+          fi
+          poetry install --with docs
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
