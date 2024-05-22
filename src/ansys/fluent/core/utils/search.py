@@ -498,25 +498,15 @@ def _search_whole_word(
 
 def _download_nltk_data():
     """Download NLTK data on demand."""
-    from pathlib import Path
-
     import nltk
-    import platformdirs
 
-    user_data_path = Path(platformdirs.user_data_dir()).resolve()
-    nltk_data_path = Path(os.path.join(user_data_path, "nltk_data")).resolve()
-    nltk.data.path.append(nltk_data_path)
-    os.environ["NLTK_DATA"] = str(nltk_data_path)
-    package_path = Path(os.path.join(nltk_data_path, "corpora"))
     packages = ["wordnet", "omw-1.4"]
     for package in packages:
-        if not (package_path / f"{package}.zip").exists():
-            nltk.download(
-                package,
-                download_dir=nltk_data_path,
-                quiet=True,
-                raise_on_error=True,
-            )
+        nltk.download(
+            package,
+            quiet=True,
+            raise_on_error=True,
+        )
 
 
 def _search_semantic(search_string: str, language: str, api_tree_data: dict):
