@@ -169,8 +169,8 @@ def _search(
         Fluent version to search in. The default is ``None``. If ``None``,
         it searches in the latest version for which codegen was run.
     search_root : Any, optional
-        The root object within which the search is performed,
-        can be a session object or any API object within a session.
+        The root object within which the search is performed.
+        It can be a session object or any API object within a session.
         The default is ``None``. If ``None``, it searches everything.
 
     Examples
