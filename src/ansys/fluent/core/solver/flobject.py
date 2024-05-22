@@ -1545,7 +1545,7 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            if argument.before_execute(value):
+            if argument.before_execute(value) and self.file_transfer_service:
                 kwds[f"{arg}"] = os.path.basename(value)
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
