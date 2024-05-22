@@ -123,7 +123,7 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/tui
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
-	@xvfb-run make -C doc html
+	@xvfb-run poetry run -- make -C doc html
 
 build-all-docs:
 	@python doc/datamodel_rstgen.py

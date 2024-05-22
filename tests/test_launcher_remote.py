@@ -3,6 +3,7 @@
 from concurrent import futures
 import os
 from unittest.mock import create_autospec
+import uuid
 
 import grpc
 from grpc_health.v1 import health_pb2_grpc
@@ -24,6 +25,7 @@ import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
+from tests.util import rename_downloaded_file
 
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
@@ -150,6 +152,8 @@ def test_file_purpose_on_remote_instance(
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
+    suffix = uuid.uuid4().hex
+    import_file_name = rename_downloaded_file(import_file_name, f"_{suffix}")
 
     solver_session.file.read_case(file_name=import_file_name)
     assert len(file_service.uploads()) == 1
