@@ -376,7 +376,8 @@ def _get_capitalize_match_for_word_from_names(
     word: str,
     names: list,
 ):
-    """Get API object name if capitalize case of the given word is present in the API object name.
+    """Get API object name if capitalize case of the given word is present in the API
+    object name.
 
     Parameters
     ----------
