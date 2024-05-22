@@ -41,12 +41,12 @@ def deprecate_argument(
                     new_value = converter(kwargs[old_arg])
                     kwargs[new_arg] = new_value
                     logger.warning(
-                        f"Using '{func.__name__}({new_arg} = {_str_repr(new_value)})'"
+                        f"Using '{new_arg} = {_str_repr(new_value)}' for '{func.__name__}()'"
                         f" instead of '{old_arg} = {_str_repr(old_value)}'."
                     )
                 else:
                     logger.warning(
-                        f"Ignoring '{old_arg} = {_str_repr(old_value)}' specification for {func.__name__}(),"
+                        f"Ignoring '{old_arg} = {_str_repr(old_value)}' specification for '{func.__name__}()',"
                         f" only '{new_arg} = {_str_repr(new_value)}' applies."
                     )
                 kwargs.pop(old_arg)
