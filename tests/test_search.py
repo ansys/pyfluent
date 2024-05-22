@@ -5,7 +5,7 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import (
-    _get_api_object_names,
+    _get_api_tree_data,
     _get_capitalize_match_for_word_from_names,
     _get_close_matches_for_word_from_names,
     _get_exact_match_for_word_from_names,
@@ -17,6 +17,10 @@ from ansys.fluent.core.utils.search import (
     _search_whole_word,
     _search_wildcard,
 )
+
+api_tree_data = _get_api_tree_data()
+if api_tree_data:
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -33,8 +37,9 @@ def test_nltk_data_download():
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_exact_match_for_word_from_names():
-    names = _get_api_object_names()
-    exact_match = _get_exact_match_for_word_from_names("VideoResoutionY", names)
+    exact_match = _get_exact_match_for_word_from_names(
+        "VideoResoutionY", api_object_names
+    )
     assert "VideoResoutionY" in exact_match
     assert len(exact_match) == 1
 
@@ -42,31 +47,61 @@ def test_get_exact_match_for_word_from_names():
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_capitalize_match_for_word_from_names():
-    names = _get_api_object_names()
-    capitalize_match_cases = _get_capitalize_match_for_word_from_names("font", names)
+    capitalize_match_cases = _get_capitalize_match_for_word_from_names(
+        "font", api_object_names
+    )
     assert "font" not in capitalize_match_cases
-    assert "Font" in capitalize_match_cases
-    assert "TextFontAutomaticHorizontalSize" in capitalize_match_cases
-    assert "TextFontAutomaticUnits" in capitalize_match_cases
+    assert set(capitalize_match_cases) == set(
+        [
+            "TextFontAutomaticHorizontalSize",
+            "TextFontName",
+            "TextFontFixedHorizontalSize",
+            "TextFontFixedSize",
+            "TextFontAutomaticSize",
+            "TextFontFixedVerticalSize",
+            "TextFontAutomaticVerticalSize",
+            "ApplicationFontSize",
+            "TextFontFixedUnits",
+            "TextFontAutomaticUnits",
+            "Font",
+        ]
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_match_case_for_word_from_names():
-    names = _get_api_object_names()
-    match_cases = _get_match_case_for_word_from_names("font", names)
+    match_cases = _get_match_case_for_word_from_names("font", api_object_names)
     for match_case in match_cases:
         assert "Font" not in match_case
         assert "font" in match_case
+    assert set(match_cases) == set(
+        [
+            "text_font_fixed_units",
+            "text_font_automatic_horizontal_size",
+            "font_name",
+            "font_size",
+            "text_font_fixed_size",
+            "label_font",
+            "text_font_fixed_vertical_size",
+            "text_font_automatic_vertical_size",
+            "text_font_automatic_units",
+            "font",
+            "text_font_automatic_size",
+            "text_font_fixed_horizontal_size",
+            "application_font_size",
+            "font_automatic",
+            "text_font_name",
+        ]
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
-    names = _get_api_object_names()
-    wildcard_matches = _get_wildcard_matches_for_word_from_names("iter*", names)
-    assert "iterating" in wildcard_matches
-    assert "iterate_steady_2way_fsi" in wildcard_matches
+    wildcard_matches = _get_wildcard_matches_for_word_from_names(
+        "iter*", api_object_names
+    )
     assert set(wildcard_matches) == set(
         [
             "iter_count",
@@ -89,31 +124,32 @@ def test_get_wildcard_matches_for_word_from_names():
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_close_matches_for_word_from_names():
-    names = _get_api_object_names()
-    close_matches = _get_close_matches_for_word_from_names("font", names)
+    close_matches = _get_close_matches_for_word_from_names("font", api_object_names)
     assert "font" in close_matches
 
-    close_matches = _get_close_matches_for_word_from_names("fnt", names)
+    close_matches = _get_close_matches_for_word_from_names("fnt", api_object_names)
     assert "font" in close_matches
 
-    close_matches = _get_close_matches_for_word_from_names("solve_flow", names)
+    close_matches = _get_close_matches_for_word_from_names(
+        "solve_flow", api_object_names
+    )
     assert "solve_flow_last" in close_matches
 
-    close_matches = _get_close_matches_for_word_from_names("sunshine", names)
+    close_matches = _get_close_matches_for_word_from_names("sunshine", api_object_names)
     assert "sunshine_factor" in close_matches
 
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_wildcard(capsys):
-    _search_wildcard("max*")
+    _search_wildcard("max*", api_object_names)
     lines = capsys.readouterr().out.splitlines()
     assert (
         "<solver_session>.solution.run_calculation.cfl_based_adaptive_time_stepping.max_fixed_time_step (Parameter)"
         in lines
     )
 
-    _search_wildcard("min*")
+    _search_wildcard("min*", api_object_names)
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.solution.controls.limits.min_des_tke (Parameter)" in lines
 
@@ -121,14 +157,18 @@ def test_search_wildcard(capsys):
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_whole_word(capsys):
-    _search_whole_word("RemovePartitionLinesTolerance", match_case=False)
+    _search_whole_word(
+        "RemovePartitionLinesTolerance",
+        match_case=False,
+        api_object_names=api_object_names,
+    )
     lines = capsys.readouterr().out.splitlines()
     assert (
         "<meshing_session>.preferences.Graphics.RemovePartitionLinesTolerance (Parameter)"
         in lines
     )
 
-    _search_whole_word("k0_sei", match_case=False)
+    _search_whole_word("k0_sei", match_case=False, api_object_names=api_object_names)
     lines = capsys.readouterr().out.splitlines()
     assert (
         "<solver_session>.setup.models.battery.tool_kits.standalone_echem_model.k0_sei (Parameter)"
@@ -139,11 +179,11 @@ def test_search_whole_word(capsys):
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_semantic(capsys):
-    _search_semantic("读", language="cmn")
+    _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.file.read_surface_mesh (Command)" in lines
 
-    _search_semantic("フォント", language="jpn")
+    _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
