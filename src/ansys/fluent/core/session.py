@@ -23,6 +23,7 @@ from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManag
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 from .rpvars import RPVars
 
@@ -234,7 +235,7 @@ class BaseSession:
         """Provides access to Fluent field information."""
         warnings.warn(
             "field_info is deprecated. Use fields.field_info instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.field_info
 
@@ -243,7 +244,7 @@ class BaseSession:
         """Fluent field data on surfaces."""
         warnings.warn(
             "field_data is deprecated. Use fields.field_data instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.field_data
 
@@ -252,7 +253,7 @@ class BaseSession:
         """Field gRPC streaming service of Fluent."""
         warnings.warn(
             "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.field_data_streaming
 
@@ -263,12 +264,12 @@ class BaseSession:
 
     def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
-        warnings.warn("Use -> journal.start()", DeprecationWarning)
+        warnings.warn("Use -> journal.start()", PyFluentDeprecationWarning)
         self.journal.start(file_name)
 
     def stop_journal(self):
         """Executes tui command to stop journal."""
-        warnings.warn("Use -> journal.stop()", DeprecationWarning)
+        warnings.warn("Use -> journal.stop()", PyFluentDeprecationWarning)
         self.journal.stop()
 
     @classmethod
@@ -375,7 +376,7 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        warnings.warn(self._file_transfer_api_warning("upload()"), UserWarning)
+        warnings.warn(self._file_transfer_api_warning("upload()"), PyFluentUserWarning)
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
@@ -389,7 +390,9 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        warnings.warn(self._file_transfer_api_warning("download()"), UserWarning)
+        warnings.warn(
+            self._file_transfer_api_warning("download()"), PyFluentUserWarning
+        )
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 

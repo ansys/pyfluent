@@ -49,12 +49,18 @@ import weakref
 from zipimport import zipimporter
 
 try:
+    from ansys.fluent.core.warnings import (
+        PyFluentDeprecationWarning,
+        PyFluentUserWarning,
+    )
     import ansys.units as ansys_units
 
     from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 except ImportError:
     get_unit_for_fl_quantity_attr = None
     ansys_units = None
+    PyFluentDeprecationWarning = FutureWarning
+    PyFluentUserWarning = UserWarning
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
@@ -519,13 +525,13 @@ class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
 
-class DeprecatedSettingWarning(FutureWarning):
+class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     """Provides deprecated settings warning."""
 
     pass
 
 
-class UnstableSettingWarning(UserWarning):
+class UnstableSettingWarning(PyFluentUserWarning):
     """Provides unstable settings warning."""
 
     pass
