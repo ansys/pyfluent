@@ -1,15 +1,15 @@
-from ansys.fluent.core.generated.datamodel_241.PMFileManagement import (
+from ansys.fluent.core.generated.datamodel_242.PMFileManagement import (
     Root as pmfilemanagement_root,
 )
-from ansys.fluent.core.generated.datamodel_241.PartManagement import (
+from ansys.fluent.core.generated.datamodel_242.PartManagement import (
     Root as partmanagement_root,
 )
-from ansys.fluent.core.generated.datamodel_241.meshing import Root as meshing_root
-from ansys.fluent.core.generated.datamodel_241.preferences import (
+from ansys.fluent.core.generated.datamodel_242.meshing import Root as meshing_root
+from ansys.fluent.core.generated.datamodel_242.preferences import (
     Root as preferences_root,
 )
-from ansys.fluent.core.generated.datamodel_241.workflow import Root as workflow_root
-from ansys.fluent.core.generated.meshing.tui_241 import main_menu
+from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
+from ansys.fluent.core.generated.meshing.tui_242 import main_menu
 
 class Meshing:
     @property
