@@ -378,7 +378,9 @@ class Base:
     def before_execute(self, command_name, value, kwargs):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            base_file_name = self._do_before_execute(command_name=command_name, value=value, kwargs=kwargs)
+            base_file_name = self._do_before_execute(
+                command_name=command_name, value=value, kwargs=kwargs
+            )
             return base_file_name
         else:
             return value
@@ -386,7 +388,9 @@ class Base:
     def after_execute(self, command_name, value, kwargs):
         """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
-            base_file_name = self._do_after_execute(command_name=command_name, value=value, kwargs=kwargs)
+            base_file_name = self._do_after_execute(
+                command_name=command_name, value=value, kwargs=kwargs
+            )
             return base_file_name
         else:
             return value
@@ -807,7 +811,11 @@ class FileName(Base):
 
 
 def expand_api_file_argument(command_name, value, kwargs):
-    if kwargs.get("file_type") == "case-data" or command_name in ["read_case_data", "write_case_data"]:
+    """Expand API file argument."""
+    if kwargs.get("file_type") == "case-data" or command_name in [
+        "read_case_data",
+        "write_case_data",
+    ]:
         data_file = value.replace("cas", "dat")
         return [value, data_file]
     else:
@@ -1572,11 +1580,15 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.before_execute(command_name=self.python_name, value=value, kwargs=kwds)
+            kwds[arg] = argument.before_execute(
+                command_name=self.python_name, value=value, kwargs=kwds
+            )
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.after_execute(command_name=self.python_name, value=value, kwargs=kwds)
+            kwds[arg] = argument.after_execute(
+                command_name=self.python_name, value=value, kwargs=kwds
+            )
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
