@@ -472,7 +472,7 @@ Import geometry
     meshing = pyfluent.launch_fluent(
         mode="meshing", precision='double', processor_count=2
     )
-    two_dim_mesh = new_mesh_session.two_dimensional_meshing()
+    two_dim_mesh = meshing.two_dimensional_meshing()
 
     two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
     two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
@@ -613,3 +613,89 @@ Switch to solution mode
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Switching to solver is not allowed in 2D Meshing mode.
+
+
+Creating new meshing workflow
+-----------------------------
+Use the **create_workflow** to create a custom workflow.
+The following example shows you how to use the `create_workflow`.
+
+Create workflow
+~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
+    meshing = pyfluent.launch_fluent(
+        mode="meshing", precision='double', processor_count=2
+    )
+    created_workflow = meshing.create_workflow()
+
+Insert first task
+~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    created_workflow.insertable_tasks.import_geometry.insert()
+    created_workflow.import_geometry.file_name.set_state(import_file_name)
+    created_workflow.import_geometry.length_unit.set_state('in')
+    created_workflow.import_geometry()
+
+Insert next task
+~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
+    created_workflow.add_local_sizing()
+
+
+Loading a saved meshing workflow
+--------------------------------
+Use the **load_workflow** to create a custom workflow.
+The following example shows you how to use the `load_workflow`.
+
+Load workflow
+~~~~~~~~~~~~~
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflow"
+    )
+    meshing = pyfluent.launch_fluent(
+        mode="meshing", precision='double', processor_count=2
+    )
+    loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
+
+
+Inserting new task
+------------------
+New tasks can be inserted into the meshing workflow in an object oriented manner.
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+
+    meshing = pyfluent.launch_fluent(
+        mode="meshing", precision='double', processor_count=2
+    )
+    watertight = meshing.watertight()
+    watertight.import_geometry.insertable_tasks()
+    watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
+
+Duplicate tasks
+~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    assert watertight.import_boi_geometry.arguments()
+    assert watertight.import_boi_geometry_1.arguments()
