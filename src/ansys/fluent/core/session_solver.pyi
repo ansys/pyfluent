@@ -2,20 +2,7 @@ from ansys.fluent.core.generated.datamodel_242.preferences import (
     Root as preferences_root,
 )
 from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
-from ansys.fluent.core.generated.solver.settings_242.current_parametric_study import (
-    current_parametric_study,
-)
-from ansys.fluent.core.generated.solver.settings_242.file import file
-from ansys.fluent.core.generated.solver.settings_242.mesh import mesh
-from ansys.fluent.core.generated.solver.settings_242.parallel import parallel
 from ansys.fluent.core.generated.solver.settings_242.parameters import parameters
-from ansys.fluent.core.generated.solver.settings_242.parametric_studies import (
-    parametric_studies,
-)
-from ansys.fluent.core.generated.solver.settings_242.results import results
-from ansys.fluent.core.generated.solver.settings_242.server import server
-from ansys.fluent.core.generated.solver.settings_242.setup import setup
-from ansys.fluent.core.generated.solver.settings_242.solution import solution
 from ansys.fluent.core.generated.solver.tui_242 import main_menu
 from ansys.fluent.core.systemcoupling import SystemCoupling
 
@@ -34,22 +21,4 @@ class Solver:
     def read_case(self, file_name: str): ...
     def write_case(self, file_name: str): ...
     @property
-    def file(self) -> file: ...
-    @property
-    def mesh(self) -> mesh: ...
-    @property
-    def server(self) -> server: ...
-    @property
-    def setup(self) -> setup: ...
-    @property
-    def solution(self) -> solution: ...
-    @property
-    def results(self) -> results: ...
-    @property
-    def parametric_studies(self) -> parametric_studies: ...
-    @property
-    def current_parametric_study(self) -> current_parametric_study: ...
-    @property
     def parameters(self) -> parameters: ...
-    @property
-    def parallel(self) -> parallel: ...
