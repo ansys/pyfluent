@@ -26,6 +26,7 @@ from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
@@ -487,9 +488,9 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         solver.field_data
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
 
     assert {

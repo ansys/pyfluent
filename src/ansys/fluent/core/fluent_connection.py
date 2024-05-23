@@ -21,6 +21,7 @@ from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.platform.instancemanagement import Instance
 import docker
 
@@ -546,7 +547,7 @@ class FluentConnection:
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
-        warnings.warn("Use -> health_check.status()", DeprecationWarning)
+        warnings.warn("Use -> health_check.status()", PyFluentDeprecationWarning)
         return self.health_check.status()
 
     def wait_process_finished(self, wait: Union[float, int, bool] = 60):

@@ -42,7 +42,7 @@ def test_gpu_version_error():
             version="2d",
             precision="single",
             processor_count=5,
-            show_gui=True,
+            ui_mode="gui",
             gpu=True,
         )
         pyfluent.setup_for_fluent(
@@ -50,7 +50,7 @@ def test_gpu_version_error():
             version="2d",
             precision="single",
             processor_count=5,
-            show_gui=True,
+            ui_mode="gui",
             gpu=True,
         )
 

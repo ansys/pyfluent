@@ -19,6 +19,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 class SolutionVariableService:
@@ -125,7 +126,7 @@ class SolutionVariableInfo:
             """Solution variables."""
             warnings.warn(
                 "svars is deprecated, use solution_variables instead",
-                DeprecationWarning,
+                PyFluentDeprecationWarning,
             )
             return self.solution_variables
 
@@ -240,7 +241,7 @@ class SolutionVariableInfo:
         """Get solution variables info."""
         warnings.warn(
             "get_svars_info is deprecated, use get_variables_info instead",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.get_variables_info(zone_names=zone_names, domain_name=domain_name)
 
@@ -616,7 +617,7 @@ class SolutionVariableData:
         """Get solution variable data."""
         warnings.warn(
             "get_svar_data is deprecated, use get_data instead",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.get_data(
             solution_variable_name=svar_name,
@@ -733,7 +734,7 @@ class SolutionVariableData:
         """Set solution variable data."""
         warnings.warn(
             "set_svar_data is deprecated, use set_data instead",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.set_data(
             solution_variable_name=svar_name,
