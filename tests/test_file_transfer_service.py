@@ -75,6 +75,7 @@ def test_read_case_and_data():
     solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
 
     solver.file.read_case_data(file_name=case_file_name)
+    solver.file.write_case_data(file_name="write_case_data.cas.h5")
 
 
 @pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")
