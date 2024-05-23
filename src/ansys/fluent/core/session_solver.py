@@ -34,6 +34,7 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -147,7 +148,7 @@ class Solver(BaseSession):
         """``SolutionVariableData`` handle."""
         warnings.warn(
             "svar_data is deprecated. Use fields.solution_variable_data instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_data
 
@@ -156,7 +157,7 @@ class Solver(BaseSession):
         """``SolutionVariableInfo`` handle."""
         warnings.warn(
             "svar_info is deprecated. Use fields.solution_variable_info instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_info
 
@@ -165,7 +166,7 @@ class Solver(BaseSession):
         """``Reduction`` handle."""
         warnings.warn(
             "reduction is deprecated. Use fields.reduction instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.reduction
 
@@ -191,7 +192,7 @@ class Solver(BaseSession):
                 self._tui = tui_module.main_menu(
                     self._tui_service, self._version, "solver", []
                 )
-            except ImportError:
+            except (ImportError, FileNotFoundError):
                 tui_logger.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
         return self._tui
@@ -207,7 +208,7 @@ class Solver(BaseSession):
                 CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except ImportError:
+        except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se

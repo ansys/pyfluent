@@ -11,6 +11,7 @@ import warnings
 from alive_progress import alive_bar
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 import ansys.tools.filetransfer as ft
 import docker
@@ -218,7 +219,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 if is_file_on_remote:
                     warnings.warn(
                         f"\n{file} with the same name exists at the remote location.\n",
-                        UserWarning,
+                        PyFluentUserWarning,
                     )
                 elif os.path.isfile(file) and not is_file_on_remote:
                     self.client.upload_file(
@@ -249,7 +250,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             for file in files:
                 if os.path.isfile(file):
                     warnings.warn(
-                        f"\nFile already exists. File path:\n{file}\n", UserWarning
+                        f"\nFile already exists. File path:\n{file}\n",
+                        PyFluentUserWarning,
                     )
                 else:
                     self.client.download_file(
@@ -388,7 +390,7 @@ class PimFileTransferService:
                         else:
                             warnings.warn(
                                 f"\n{file} with the same name exists at the remote location.\n",
-                                UserWarning,
+                                PyFluentUserWarning,
                             )
                     elif not self.file_service.file_exist(os.path.basename(file)):
                         raise FileNotFoundError(f"{file} does not exist.")
@@ -436,7 +438,8 @@ class PimFileTransferService:
                 for file in files:
                     if os.path.isfile(file):
                         warnings.warn(
-                            f"\nFile already exists. File path:\n{file}\n", UserWarning
+                            f"\nFile already exists. File path:\n{file}\n",
+                            PyFluentUserWarning,
                         )
                     else:
                         self.download_file(
