@@ -102,7 +102,7 @@ Fault-tolerant meshing workflow
 -------------------------------
 Use the **Fault-tolerant** meshing workflow for more complicated non-water-tight CAD
 geometries that might require some form of cleanup or modification (for example,
-defects such as overlaps, intersections, holes, duplicates, etc).
+defects such as overlaps, intersections, holes, and duplicates).
 The following example shows you how to use the fault-tolerant workflow.
 
 Import CAD and part management
