@@ -655,8 +655,8 @@ Insert next task
 
 Loading a saved meshing workflow
 --------------------------------
-Use the **load_workflow** to create a custom workflow.
-The following example shows you how to use the `load_workflow`.
+Use the ``load_workflow()`` method to create a custom workflow.
+The following example shows how to use this method.
 
 Load workflow
 ~~~~~~~~~~~~~
