@@ -34,6 +34,7 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -147,7 +148,7 @@ class Solver(BaseSession):
         """``SolutionVariableData`` handle."""
         warnings.warn(
             "svar_data is deprecated. Use fields.solution_variable_data instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_data
 
@@ -156,7 +157,7 @@ class Solver(BaseSession):
         """``SolutionVariableInfo`` handle."""
         warnings.warn(
             "svar_info is deprecated. Use fields.solution_variable_info instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_info
 
@@ -165,7 +166,7 @@ class Solver(BaseSession):
         """``Reduction`` handle."""
         warnings.warn(
             "reduction is deprecated. Use fields.reduction instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.reduction
 
