@@ -458,7 +458,7 @@ Switch to solution mode
 2D meshing workflow
 -------------------
 Use the **2D** meshing workflow to mesh specific two-dimensional geometries.
-The following example shows you how to use the 2D meshing workflow.
+The following example shows how to use the 2D meshing workflow.
 
 Import geometry
 ~~~~~~~~~~~~~~~
