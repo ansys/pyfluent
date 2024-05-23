@@ -2,7 +2,7 @@ from ansys.fluent.core.generated.datamodel_242.preferences import (
     Root as preferences_root,
 )
 from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
-from ansys.fluent.core.generated.solver.settings_242.parameters import parameters
+import ansys.fluent.core.generated.solver.settings_242 as settings_root
 from ansys.fluent.core.generated.solver.tui_242 import main_menu
 from ansys.fluent.core.systemcoupling import SystemCoupling
 
@@ -21,4 +21,4 @@ class Solver:
     def read_case(self, file_name: str): ...
     def write_case(self, file_name: str): ...
     @property
-    def parameters(self) -> parameters: ...
+    def settings(self) -> settings_root: ...
