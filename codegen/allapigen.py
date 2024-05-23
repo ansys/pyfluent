@@ -60,5 +60,4 @@ if __name__ == "__main__":
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
-    if ge_242:
-        _search("", version="242")
+    _search("", version="242")
