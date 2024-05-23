@@ -58,12 +58,11 @@ def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_ses
         assert file_downloaded_to_the_client("downloaded_meshing_mixing_elbow.msh.h5")
 
 
-@pytest.mark.skip(
-    reason="Unable to copy data file to Fluent's current working directory."
-)
 @pytest.mark.standalone
 def test_read_case_and_data():
     import ansys.fluent.core as pyfluent
+
+    pyfluent.USE_FILE_TRANSFER_SERVICE = True
 
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -75,8 +74,11 @@ def test_read_case_and_data():
     assert data_file_name
     solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
 
-    # Unable to copy data file to Fluent's current working directory.
+    solver.file.read(file_type="case-data", file_name=case_file_name)
+    solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
+
     solver.file.read_case_data(file_name=case_file_name)
+    solver.file.write_case_data(file_name="write_case_data.cas.h5")
 
 
 @pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")
