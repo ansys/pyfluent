@@ -102,7 +102,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v24.1.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
 
     steps:
       - uses: actions/checkout@v4
