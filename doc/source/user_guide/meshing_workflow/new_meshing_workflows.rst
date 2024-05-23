@@ -675,9 +675,9 @@ Load workflow
     loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
 
 
-Inserting new task
-------------------
-New tasks can be inserted into the meshing workflow in an object oriented manner.
+Insert new task
+---------------
+You can insert new tasks into the meshing workflow in an object-oriented manner.
 
 .. code:: python
 
