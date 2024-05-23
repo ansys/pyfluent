@@ -31,19 +31,18 @@ from ansys.fluent.core.workflow import (
 )
 
 
-def get_api_tree_file_name(
-    json: Optional[bool] = None,
-    version: Optional[str] = None,
-) -> Path:
-    """Get API tree file name."""
-
+def _get_api_tree_data_file():
+    """Get API tree data file."""
     codegen_outdir = (Path(__file__) / ".." / ".." / "generated").resolve()
-
     text_file_folder = Path(os.path.join(codegen_outdir, "api_tree"))
-    if json:
-        return (text_file_folder / "api_objects.json").resolve()
-    else:
-        return (codegen_outdir / f"api_tree_{version}.pickle").resolve()
+    return (text_file_folder / "api_objects.json").resolve()
+
+
+def get_api_tree_file_name(version: str) -> Path:
+    """Get API tree file name."""
+    from ansys.fluent.core import CODEGEN_OUTDIR
+
+    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
@@ -200,9 +199,9 @@ def _search(
     if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
-            if get_api_tree_file_name(version=version).exists():
+            if get_api_tree_file_name(version).exists():
                 break
-    api_tree_file = get_api_tree_file_name(version=version)
+    api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
 
@@ -281,7 +280,7 @@ def _search(
             all_api_object_name_synsets[name] = synset_names
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
 
-        api_tree_file = get_api_tree_file_name(json=True)
+        api_tree_file = _get_api_tree_data_file()
         api_tree_file.touch()
         with open(api_tree_file, "w") as json_file:
             json.dump(api_tree_data, json_file)
@@ -293,7 +292,7 @@ def _search(
 
 def _get_api_tree_data():
     """Get API tree data."""
-    api_tree_data_file = get_api_tree_file_name(json=True)
+    api_tree_data_file = _get_api_tree_data_file()
     if api_tree_data_file.exists():
         json_file = open(api_tree_data_file, "r")
         api_tree_data = json.load(json_file)
@@ -649,9 +648,9 @@ def search(
         if not version:
             for fluent_version in FluentVersion:
                 version = get_version_for_file_name(fluent_version.value)
-                if get_api_tree_file_name(version=version).exists():
+                if get_api_tree_file_name(version).exists():
                     break
-        api_tree_file = get_api_tree_file_name(version=version)
+        api_tree_file = get_api_tree_file_name(version)
         with open(api_tree_file, "rb") as f:
             api_tree = pickle.load(f)
 
