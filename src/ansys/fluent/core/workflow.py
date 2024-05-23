@@ -16,6 +16,7 @@ from ansys.fluent.core.services.datamodel_se import (
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 
 class CommandInstanceCreationError(RuntimeError):
@@ -952,7 +953,7 @@ class CommandTask(BaseTask):
         ReadOnlyObject
             The task's arguments.
         """
-        warnings.warn("CommandArguments", DeprecationWarning)
+        warnings.warn("CommandArguments", PyFluentDeprecationWarning)
         return self._refreshed_command()
 
     @property
@@ -1080,7 +1081,7 @@ class CompositeTask(BaseTask):
         ReadOnlyObject
             The task's arguments.
         """
-        warnings.warn("CommandArguments", DeprecationWarning)
+        warnings.warn("CommandArguments", PyFluentDeprecationWarning)
         return {}
 
     @property
@@ -1193,7 +1194,7 @@ class CompoundTask(CommandTask):
             if defer_update is not None:
                 warnings.warn(
                     " The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
-                    UserWarning,
+                    PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
         return self.last_child()

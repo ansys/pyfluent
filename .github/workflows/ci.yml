@@ -76,12 +76,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  branch-name-style:
-    name: "Run branch name style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/branch-name-style@v6
-
   test-import:
     name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
@@ -453,7 +447,7 @@ jobs:
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run 25.1 API codegen
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
@@ -545,10 +539,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: ${{ matrix.image-tag != 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Pull Fluent docker image dev
+        if: ${{ matrix.image-tag == 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}

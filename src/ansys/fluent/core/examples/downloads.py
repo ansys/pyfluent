@@ -12,6 +12,7 @@ import zipfile
 import requests
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.warnings import PyFluentUserWarning
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -71,7 +72,8 @@ def _retrieve_file(
     logger.info(f"Checking if {local_path_no_zip} already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
         warnings.warn(
-            f"\nFile already exists. File path:\n{local_path_no_zip}\n", UserWarning
+            f"\nFile already exists. File path:\n{local_path_no_zip}\n",
+            PyFluentUserWarning,
         )
         logger.info("File already exists.")
         if return_without_path:

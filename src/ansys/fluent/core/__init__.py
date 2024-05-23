@@ -33,7 +33,11 @@ from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning  # noqa: F401
+from ansys.fluent.core.warnings import (  # noqa: F401
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+    warning,
+)
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
