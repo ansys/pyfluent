@@ -19,8 +19,7 @@ from ansys.fluent.core.utils.search import (
 )
 
 api_tree_data = _get_api_tree_data()
-if api_tree_data:
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -31,7 +30,7 @@ def test_nltk_data_download():
     for package in packages:
         nltk.download(package, quiet=True)
 
-    _search_semantic("读", language="cmn")
+    _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -292,25 +291,25 @@ def test_search_from_root_latest(capsys, new_watertight_workflow_session):
     lines = capsys.readouterr().out.splitlines()
     assert "<search_root>.update_scene.display (Command)" in lines
     assert "<search_root>.display_states (Object)" in lines
-    # pyfluent.search("cad", search_root=meshing.meshing)
-    # lines = capsys.readouterr().out.splitlines()
-    # assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
-    # assert "<search_root>.LoadCADGeometry (Command)" in lines
-    # pyfluent.search("next", search_root=meshing.workflow)
-    # lines = capsys.readouterr().out.splitlines()
-    # assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
-    # pyfluent.search("next", search_root=meshing.workflow.TaskObject)
-    # lines = capsys.readouterr().out.splitlines()
-    # assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
-    # pyfluent.search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
-    # lines = capsys.readouterr().out.splitlines()
-    # assert "<search_root>.InsertNextTask (Command)" in lines
-    # pyfluent.search("timeout", search_root=meshing.preferences)
-    # lines = capsys.readouterr().out.splitlines()
-    # assert "<search_root>.General.IdleTimeout (Parameter)" in lines
-    # pyfluent.search("timeout", search_root=meshing.preferences.General)
-    # lines = capsys.readouterr().out.splitlines()
-    # assert "<search_root>.IdleTimeout (Parameter)" in lines
+    pyfluent.search("cad", search_root=meshing.meshing)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
+    assert "<search_root>.LoadCADGeometry (Command)" in lines
+    pyfluent.search("next", search_root=meshing.workflow)
+    lines = capsys.readouterr().out.splitlines()
+    assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
+    pyfluent.search("next", search_root=meshing.workflow.TaskObject)
+    lines = capsys.readouterr().out.splitlines()
+    assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
+    pyfluent.search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.InsertNextTask (Command)" in lines
+    pyfluent.search("timeout", search_root=meshing.preferences)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.General.IdleTimeout (Parameter)" in lines
+    pyfluent.search("timeout", search_root=meshing.preferences.General)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<search_root>.IdleTimeout (Parameter)" in lines
 
 
 @pytest.mark.codegen_required

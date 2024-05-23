@@ -300,8 +300,7 @@ def _get_api_tree_data():
 
 
 api_tree_data = _get_api_tree_data()
-if api_tree_data:
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
 
 
 def _print_search_results(queries: list, api_tree_data: dict):
