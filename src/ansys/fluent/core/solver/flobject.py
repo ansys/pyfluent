@@ -369,10 +369,14 @@ class Base:
                 obj = getattr(obj, comp)
         return obj
 
-    def before_execute(self, value):
+    def before_execute(self, value, command_name: Optional[str] = None):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            return self._do_before_execute(value)
+            base_file_name = self._do_before_execute(value)
+            if command_name in ["read_case_data"]:
+                data_file = value.replace("cas", "dat")
+                self._do_before_execute(data_file)
+            return base_file_name
         else:
             return value
 
@@ -1547,7 +1551,9 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.before_execute(value)
+            kwds[arg] = argument.before_execute(
+                value=value, command_name=self.python_name
+            )
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
