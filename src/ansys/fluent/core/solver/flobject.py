@@ -816,7 +816,7 @@ def expand_api_file_argument(command_name, value, kwargs):
         "read_case_data",
         "write_case_data",
     ]:
-        data_file = value.replace("cas", "dat")
+        data_file = value.replace(".cas.h5", ".dat.h5")
         return [value, data_file]
     else:
         return [value]
