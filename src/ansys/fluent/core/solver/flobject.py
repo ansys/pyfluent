@@ -375,21 +375,21 @@ class Base:
                 obj = getattr(obj, comp)
         return obj
 
-    def before_execute(self, value, command_name: Optional[str] = None):
+    def before_execute(self, command_name, value, kwargs):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            base_file_name = self._do_before_execute(value)
-            if command_name in ["read_case_data"]:
-                data_file = value.replace("cas", "dat")
-                self._do_before_execute(data_file)
+            base_file_name = self._do_before_execute(command_name=command_name, value=value, kwargs=kwargs)
             return base_file_name
         else:
             return value
 
-    def after_execute(self, value):
+    def after_execute(self, command_name, value, kwargs):
         """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
-            self._do_after_execute(value)
+            base_file_name = self._do_after_execute(command_name=command_name, value=value, kwargs=kwargs)
+            return base_file_name
+        else:
+            return value
 
     def _while_setting_state(self):
         """Avoid additional processing while setting the state."""
@@ -806,19 +806,34 @@ class FileName(Base):
     pass
 
 
+def expand_api_file_argument(command_name, value, kwargs):
+    if kwargs.get("file_type") == "case-data" or command_name in ["read_case_data", "write_case_data"]:
+        data_file = value.replace("cas", "dat")
+        return [value, data_file]
+    else:
+        return [value]
+
+
 class _InputFile(FileName):
-    def _do_before_execute(self, value):
+    def _do_before_execute(self, command_name, value, kwargs):
+        file_names = expand_api_file_argument(command_name, value, kwargs)
         if self.file_transfer_service:
-            self.file_transfer_service.upload(file_name=value)
+            for file_name in file_names:
+                self.file_transfer_service.upload(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
 
 
 class _OutputFile(FileName):
-    def _do_after_execute(self, value):
+    def _do_after_execute(self, command_name, value, kwargs):
+        file_names = expand_api_file_argument(command_name, value, kwargs)
         if self.file_transfer_service:
-            self.file_transfer_service.download(file_name=value)
+            for file_name in file_names:
+                self.file_transfer_service.download(file_name=file_name)
+            return os.path.basename(value)
+        else:
+            return value
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -1557,13 +1572,11 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.before_execute(
-                value=value, command_name=self.python_name
-            )
+            kwds[arg] = argument.before_execute(command_name=self.python_name, value=value, kwargs=kwds)
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.after_execute(value)
+            kwds[arg] = argument.after_execute(command_name=self.python_name, value=value, kwargs=kwds)
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
