@@ -617,8 +617,8 @@ Switching to solver is not allowed in 2D Meshing mode.
 
 Creating new meshing workflow
 -----------------------------
-Use the **create_workflow** to create a custom workflow.
-The following example shows you how to use the `create_workflow`.
+Use the ``create_workflow()`` method to create a custom workflow.
+The following example shows how to use this method.
 
 Create workflow
 ~~~~~~~~~~~~~~~
