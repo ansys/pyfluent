@@ -6,7 +6,7 @@ You can use PyFluent to access the new, enhanced meshing workflows.
 
 Watertight geometry meshing workflow
 ------------------------------------
-Use the **Watertight Geometry** workflow for water-tight CAD geometries that
+Use the **Watertight Geometry** workflow for watertight CAD geometries that
 require little cleanup.
 The following example shows how to use the Watertight Geometry workflow.
 
