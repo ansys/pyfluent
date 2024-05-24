@@ -42,7 +42,7 @@ def test_nltk_data_download():
 def test_get_exact_match_for_word_from_names():
     exact_match = _get_exact_match_for_word_from_names(
         "VideoResoutionY",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert "VideoResoutionY" in exact_match
     assert len(exact_match) == 1
@@ -53,7 +53,7 @@ def test_get_exact_match_for_word_from_names():
 def test_get_capitalize_match_for_word_from_names():
     capitalize_match_cases = _get_capitalize_match_for_word_from_names(
         "font",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert "font" not in capitalize_match_cases
     assert set(capitalize_match_cases) == set(
@@ -78,7 +78,7 @@ def test_get_capitalize_match_for_word_from_names():
 def test_get_match_case_for_word_from_names():
     match_cases = _get_match_case_for_word_from_names(
         "font",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     for match_case in match_cases:
         assert "Font" not in match_case
@@ -109,7 +109,7 @@ def test_get_match_case_for_word_from_names():
 def test_get_wildcard_matches_for_word_from_names():
     wildcard_matches = _get_wildcard_matches_for_word_from_names(
         "iter*",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert set(wildcard_matches) == set(
         [
@@ -135,25 +135,25 @@ def test_get_wildcard_matches_for_word_from_names():
 def test_get_close_matches_for_word_from_names():
     close_matches = _get_close_matches_for_word_from_names(
         "font",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert "font" in close_matches
 
     close_matches = _get_close_matches_for_word_from_names(
         "fnt",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert "font" in close_matches
 
     close_matches = _get_close_matches_for_word_from_names(
         "solve_flow",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert "solve_flow_last" in close_matches
 
     close_matches = _get_close_matches_for_word_from_names(
         "sunshine",
-        api_object_names=api_object_names,
+        names=api_object_names,
     )
     assert "sunshine_factor" in close_matches
 
