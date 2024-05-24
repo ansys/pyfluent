@@ -325,7 +325,7 @@ class SlurmLauncher:
 
         Notes
         -----
-        Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
+        Job scheduler environments such as SLURM, LSF, and PBS, allocate resources and compute nodes.
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
