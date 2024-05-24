@@ -3,7 +3,7 @@
 ================
 Meshing Workflow
 ================
-Fluent meshing guided workflows are designed to make it easier to generate a
+The guided workflows in Fluent meshing are designed to make it easier to generate a
 volume mesh starting from CAD geometries. You can use PyFluent to access the guided workflows.
 
 Workflows are divided into the new :ref:`ref_user_guide_new_meshing_workflows` and :ref:`ref_user_guide_meshing_workflows`, which align with the journal syntax.
