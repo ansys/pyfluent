@@ -71,12 +71,16 @@ class MeshingWorkflow(Workflow):
         self._identifier = identifier
 
     def reinitialize(self) -> None:
+        """Reinitialize the same workflow."""
+        self._new_workflow(name=self._name, reinitialize=True)
+
+    def initialize(self) -> None:
         """Initialize a workflow."""
-        self._init_workflow(name=self._name)
+        self._new_workflow(name=self._name)
 
     def __getattribute__(self, item: str):
         if (
-            item != "reinitialize"
+            item not in ["reinitialize", "initialize"]
             and not item.startswith("_")
             and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):

@@ -117,17 +117,17 @@ class PureMeshing(BaseSession):
 
     def watertight(self):
         """Get a new watertight workflow."""
-        self._base_meshing.watertight_workflow.reinitialize()
+        self._base_meshing.watertight_workflow.initialize()
         return self._base_meshing.watertight_workflow
 
     def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        self._base_meshing.fault_tolerant_workflow.reinitialize()
+        self._base_meshing.fault_tolerant_workflow.initialize()
         return self._base_meshing.fault_tolerant_workflow
 
     def two_dimensional_meshing(self):
         """Get a new 2D meshing workflow."""
-        self._base_meshing.two_dimensional_meshing_workflow.reinitialize()
+        self._base_meshing.two_dimensional_meshing_workflow.initialize()
         return self._base_meshing.two_dimensional_meshing_workflow
 
     def load_workflow(self, file_path: str):
@@ -150,7 +150,7 @@ class PureMeshing(BaseSession):
         """
         if not self.scheme_eval.scheme_eval("(is-beta-feature-available?)"):
             raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
-        self._base_meshing.topology_based_meshing_workflow.reinitialize()
+        self._base_meshing.topology_based_meshing_workflow.initialize()
         return self._base_meshing.topology_based_meshing_workflow
 
     @property
