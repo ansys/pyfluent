@@ -257,8 +257,8 @@ class SlurmLauncher:
             processor is used.  In job scheduler environments the total number of
             allocated cores is clamped to value of ``processor_count``.
         journal_file_names : str or list of str, optional
-            The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
-            journal(s). The default is ``None``.
+            The string path to a Fluent journal file or a list of such paths. Fluent executes the
+            journals. The default is ``None``.
         start_timeout : int, optional
             Maximum allowable time in seconds for connecting to the Fluent
             server. The default is ``60``.
