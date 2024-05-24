@@ -11,7 +11,6 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -59,7 +58,6 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    _process_invalid_args(fluent_launch_mode, kwargs)
     if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
@@ -265,8 +263,7 @@ def launch_fluent(
     )
     common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
-    launcher = create_launcher(fluent_launch_mode, **launcher_argvals)
-    return launcher()
+    return launcher_type(**launcher_argvals)
 
 
 def connect_to_fluent(
