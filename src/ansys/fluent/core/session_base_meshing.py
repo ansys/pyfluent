@@ -92,21 +92,24 @@ class BaseMeshing:
                 self._tui = TUIMenu(self._tui_service, self._version, "meshing", [])
         return self._tui
 
-    @property
-    def _meshing_root(self):
-        """Datamodel root of meshing."""
+    def _make_datamodel_module(self, module_name):
         try:
             from ansys.fluent.core import CODEGEN_OUTDIR
 
-            meshing_module = load_module(
-                f"meshing_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "meshing.py",
+            module = load_module(
+                f"{module_name}_{self._version}",
+                CODEGEN_OUTDIR / f"datamodel_{self._version}" / f"{module_name}.py",
             )
-            meshing_root = meshing_module.Root(self._se_service, "meshing", [])
+            module_se = module.Root(self._se_service, module_name, [])
         except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            meshing_root = PyMenuGeneric(self._se_service, "meshing")
-        return meshing_root
+            module_se = PyMenuGeneric(self._se_service, module_name)
+        return module_se
+
+    @property
+    def _meshing_root(self):
+        """Datamodel root of meshing."""
+        return self._make_datamodel_module("meshing")
 
     @property
     def meshing(self):
@@ -149,18 +152,7 @@ class BaseMeshing:
     @property
     def _workflow_se(self):
         """Datamodel root of workflow."""
-        try:
-            from ansys.fluent.core import CODEGEN_OUTDIR
-
-            workflow_module = load_module(
-                f"workflow_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
-            )
-            workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            workflow_se = PyMenuGeneric(self._se_service, "workflow")
-        return workflow_se
+        return self._make_datamodel_module("workflow")
 
     @property
     def workflow(self):
@@ -245,44 +237,14 @@ class BaseMeshing:
     def PartManagement(self):
         """Datamodel root of ``PartManagement``."""
         if self._part_management is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
-
-                pm_module = load_module(
-                    f"PartManagement_{self._version}",
-                    CODEGEN_OUTDIR / f"datamodel_{self._version}" / "PartManagement.py",
-                )
-                self._part_management = pm_module.Root(
-                    self._se_service, "PartManagement", []
-                )
-            except (ImportError, FileNotFoundError):
-                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-                self._part_management = PyMenuGeneric(
-                    self._se_service, "PartManagement"
-                )
+            self._part_management = self._make_datamodel_module("PartManagement")
         return self._part_management
 
     @property
     def PMFileManagement(self):
         """Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
-
-                pmfm_module = load_module(
-                    f"PMFileManagement_{self._version}",
-                    CODEGEN_OUTDIR
-                    / f"datamodel_{self._version}"
-                    / "PMFileManagement.py",
-                )
-                self._pm_file_management = pmfm_module.Root(
-                    self._se_service, "PMFileManagement", []
-                )
-            except (ImportError, FileNotFoundError):
-                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-                self._pm_file_management = PyMenuGeneric(
-                    self._se_service, "PMFileManagement"
-                )
+            self._pm_file_management = self._make_datamodel_module("PMFileManagement")
         return self._pm_file_management
 
     @property
