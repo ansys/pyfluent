@@ -313,7 +313,7 @@ class SlurmLauncher:
             ``scheduler_queue`` and ``scheduler_account`` are optional and should be
             specified in a similar manner to Fluent's scheduler options.
         file_transfer_service : optional
-            File transfer service. Uploads/downloads files to/from the server.
+            File transfer service for uploading and downloading files to and from the server.
 
         Returns
         -------
