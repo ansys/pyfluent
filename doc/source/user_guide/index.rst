@@ -17,7 +17,7 @@ Python code to control and monitor Ansys Fluent.
    launching_ansys_fluent
    specify_file_paths
    tui_commands
-   meshing_workflows
+   meshing_workflow/index
    general_settings
    solver_settings
    models

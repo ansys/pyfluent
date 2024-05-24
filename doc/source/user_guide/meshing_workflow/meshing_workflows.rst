@@ -7,8 +7,9 @@ which align with the journal syntax.
 
 Watertight geometry meshing workflow
 ------------------------------------
-Use the **Watertight Geometry** workflow for water-tight CAD geometries that
-do not require much in the way of clean-up or modifications.
+Use the **Watertight Geometry** workflow for watertight CAD geometries that
+require little cleanup. This is useful for clean geometries that have already
+been prepped in another software, such as Ansys SpaceClaim.
 The following example shows you how to use the Watertight Geometry workflow.
 
 Import geometry
@@ -116,10 +117,9 @@ Switch to solution mode
 
 Fault-tolerant meshing workflow
 -------------------------------
-Use the **Fault-tolerant** meshing workflow for more complicated non-water-tight CAD
-geometries that may require some form of clean-up or modification (for example,
-defects such as overlaps, intersections, holes, duplicates, etc).
-The following example shows you how to use the fault-tolerant workflow.
+Use the **Fault-tolerant** meshing workflow for complex CAD geometries that need
+cleanup or modification, such as addressing overlaps, intersections, holes, and duplicates.
+The following example shows how to use the fault-tolerant workflow.
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

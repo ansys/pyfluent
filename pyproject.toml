@@ -27,6 +27,7 @@ include = [
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/api_tree/*.txt", format = ["sdist", "wheel"] },
 ]
 
 packages = [
@@ -49,6 +50,7 @@ grpcio = "^1.30.0"
 grpcio-health-checking = "^1.30.0"
 h5py = { version = "==3.11.0", optional = true }
 lxml = "^4.9.2"
+nltk = "^3.8.1"
 numpy= "^1.21.5"
 pandas = "^2.0.3"
 platformdirs = "^3.5.1"
