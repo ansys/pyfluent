@@ -8,7 +8,6 @@ from typing import Any, Dict, Optional
 import warnings
 
 from ansys.fluent.core.services import SchemeEval, service_creator
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
@@ -16,7 +15,6 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -198,27 +196,15 @@ class Solver(BaseSession):
         return self._tui
 
     @property
-    def _workflow_se(self):
-        """Datamodel root for workflow."""
-        try:
-            from ansys.fluent.core import CODEGEN_OUTDIR
-
-            workflow_module = load_module(
-                f"workflow_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
-            )
-            workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            workflow_se = PyMenuGeneric(self._se_service, "workflow")
-        return workflow_se
-
-    @property
     def workflow(self):
         """Datamodel root for workflow."""
         if not self._workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._workflow = ClassicWorkflow(
-                self._workflow_se, Solver, self.get_fluent_version()
+                _make_datamodel_module(self, "workflow"),
+                Solver,
+                self.get_fluent_version(),
             )
         return self._workflow
 

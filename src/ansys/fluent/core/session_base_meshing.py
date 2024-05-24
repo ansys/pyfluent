@@ -92,30 +92,13 @@ class BaseMeshing:
                 self._tui = TUIMenu(self._tui_service, self._version, "meshing", [])
         return self._tui
 
-    def _make_datamodel_module(self, module_name):
-        try:
-            from ansys.fluent.core import CODEGEN_OUTDIR
-
-            module = load_module(
-                f"{module_name}_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / f"{module_name}.py",
-            )
-            module_se = module.Root(self._se_service, module_name, [])
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            module_se = PyMenuGeneric(self._se_service, module_name)
-        return module_se
-
-    @property
-    def _meshing_root(self):
-        """Datamodel root of meshing."""
-        return self._make_datamodel_module("meshing")
-
     @property
     def meshing(self):
         """Meshing object."""
         if self._meshing is None:
-            self._meshing = self._meshing_root
+            from ansys.fluent.core.session import _make_datamodel_module
+
+            self._meshing = _make_datamodel_module(self, "meshing")
         return self._meshing
 
     @property
@@ -150,16 +133,13 @@ class BaseMeshing:
         return self._meshing_utilities
 
     @property
-    def _workflow_se(self):
-        """Datamodel root of workflow."""
-        return self._make_datamodel_module("workflow")
-
-    @property
     def workflow(self):
         """Datamodel root of workflow."""
         if not self._old_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._old_workflow = WorkflowMode.CLASSIC_MESHING_MODE.value(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.get_fluent_version(),
             )
@@ -169,8 +149,10 @@ class BaseMeshing:
     def watertight_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._wt_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._wt_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.get_fluent_version(),
             )
@@ -180,8 +162,10 @@ class BaseMeshing:
     def fault_tolerant_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._ft_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._ft_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.PartManagement,
                 self.PMFileManagement,
@@ -193,8 +177,10 @@ class BaseMeshing:
     def two_dimensional_meshing_workflow(self):
         """Data model root of the workflow exposed in an object-oriented manner."""
         if not self._2dm_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._2dm_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.get_fluent_version(),
             )
@@ -204,8 +190,10 @@ class BaseMeshing:
     def topology_based_meshing_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._tb_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._tb_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.get_fluent_version(),
             )
@@ -214,8 +202,10 @@ class BaseMeshing:
     def load_workflow(self, file_path: str):
         """Datamodel root of workflow exposed in object-oriented manner."""
         if not self._loaded_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._loaded_workflow = LoadWorkflow(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 file_path,
                 self.get_fluent_version(),
@@ -226,8 +216,10 @@ class BaseMeshing:
     def create_workflow(self):
         """Datamodel root of the workflow exposed in an object-oriented manner."""
         if not self._created_workflow:
+            from ansys.fluent.core.session import _make_datamodel_module
+
             self._created_workflow = CreateWorkflow(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.get_fluent_version(),
             )
@@ -237,14 +229,18 @@ class BaseMeshing:
     def PartManagement(self):
         """Datamodel root of ``PartManagement``."""
         if self._part_management is None:
-            self._part_management = self._make_datamodel_module("PartManagement")
+            from ansys.fluent.core.session import _make_datamodel_module
+
+            self._part_management = _make_datamodel_module(self, "PartManagement")
         return self._part_management
 
     @property
     def PMFileManagement(self):
         """Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
-            self._pm_file_management = self._make_datamodel_module("PMFileManagement")
+            from ansys.fluent.core.session import _make_datamodel_module
+
+            self._pm_file_management = _make_datamodel_module(self, "PMFileManagement")
         return self._pm_file_management
 
     @property

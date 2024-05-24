@@ -8,6 +8,7 @@ import warnings
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -61,6 +62,21 @@ def _get_datamodel_attributes(session, attribute: str):
 
 def _get_preferences(session):
     return _get_datamodel_attributes(session, "preferences")
+
+
+def _make_datamodel_module(session, module_name):
+    try:
+        from ansys.fluent.core import CODEGEN_OUTDIR
+
+        module = load_module(
+            f"{module_name}_{session._version}",
+            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{module_name}.py",
+        )
+        module_se = module.Root(session._se_service, module_name, [])
+    except (ImportError, FileNotFoundError):
+        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
+        module_se = PyMenuGeneric(session._se_service, module_name)
+    return module_se
 
 
 class _IsDataValid:
