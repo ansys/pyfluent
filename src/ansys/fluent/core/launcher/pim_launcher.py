@@ -18,12 +18,12 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.launcher_utils import _get_argvals_and_session
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_argvals_and_session,
 )
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing

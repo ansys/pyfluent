@@ -50,7 +50,6 @@ from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
-    _get_argvals_and_session,
     _get_subprocess_kwargs_for_fluent,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -58,6 +57,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    _get_argvals_and_session,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
 from ansys.fluent.core.session_meshing import Meshing

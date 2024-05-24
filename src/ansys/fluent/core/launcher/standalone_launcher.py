@@ -27,7 +27,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _confirm_watchdog_start,
-    _get_argvals_and_session,
     _get_subprocess_kwargs_for_fluent,
     is_windows,
 )
@@ -37,6 +36,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
     _get_ui_mode,
 )

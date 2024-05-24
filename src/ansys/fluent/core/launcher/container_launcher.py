@@ -22,7 +22,6 @@ from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.launcher_utils import _get_argvals_and_session
 from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
@@ -31,6 +30,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_argvals_and_session,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
