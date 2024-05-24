@@ -8,13 +8,12 @@ from typing import Any, Dict, Optional
 import warnings
 
 from ansys.fluent.core.services import SchemeEval, service_creator
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
+from ansys.fluent.core.session import BaseSession, _get_preferences
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -26,7 +25,6 @@ from ansys.fluent.core.solver.flobject import (
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
-from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -180,29 +178,20 @@ class Solver(BaseSession):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
+            from ansys.fluent.core.session import _make_tui_module
 
-                tui_module = load_module(
-                    f"solver_tui_{self._version}",
-                    CODEGEN_OUTDIR / "solver" / f"tui_{self._version}.py",
-                )
-                self._tui = tui_module.main_menu(
-                    self._tui_service, self._version, "solver", []
-                )
-            except (ImportError, FileNotFoundError):
-                tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
+            self._tui = _make_tui_module(self, "solver")
+
         return self._tui
 
     @property
     def workflow(self):
         """Datamodel root for workflow."""
         if not self._workflow:
-            from ansys.fluent.core.session import _make_datamodel_module
+            from ansys.fluent.core.session import _get_workflow
 
             self._workflow = ClassicWorkflow(
-                _make_datamodel_module(self, "workflow"),
+                _get_workflow(self),
                 Solver,
                 self.get_fluent_version(),
             )
