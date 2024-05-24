@@ -259,9 +259,11 @@ def launch_fluent(
     )
 
     launcher_type = _mode_to_launcher_type(fluent_launch_mode)
-    launch_args = set(inspect.signature(launch_fluent).parameters.keys())
-    launcher_args = set(inspect.signature(launcher_type.__init__).parameters.keys())
-    common_args = launch_args.intersection(launcher_args)
+    launch_fluent_args = set(inspect.signature(launch_fluent).parameters.keys())
+    launcher_type_args = set(
+        inspect.signature(launcher_type.__init__).parameters.keys()
+    )
+    common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
     launcher = create_launcher(fluent_launch_mode, **launcher_argvals)
     return launcher()
