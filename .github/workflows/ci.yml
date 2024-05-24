@@ -31,6 +31,7 @@ env:
   PACKAGE_NAMESPACE: 'ansys.fluent.core'
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   MAIN_PYTHON_VERSION: '3.9'
+  PYTHON_VERSION: '3.12'
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: 'DEBUG'
@@ -49,7 +50,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install pre-commit
         run: python -m pip install pre-commit
@@ -76,12 +77,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  branch-name-style:
-    name: "Run branch name style checks"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ansys/actions/branch-name-style@v6
-
   test-import:
     name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
@@ -89,7 +84,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11', '3.12']
         should-release:
           - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
         exclude:
@@ -108,7 +103,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v24.1.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
 
     steps:
       - uses: actions/checkout@v4
@@ -116,7 +111,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install OS packages
         run: |
@@ -193,7 +188,10 @@ jobs:
       - name: Build Source Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          poetry install --only docs
+          if [ -f poetry.lock ] ; then
+            rm poetry.lock
+          fi
+          poetry install --with docs
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
@@ -428,6 +426,41 @@ jobs:
           cat src/ansys/fluent/core/generated/fluent_version_242.py
           python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Cache 25.1 API Code
+        uses: actions/cache@v4
+        id: cache-251-api-code
+        with:
+          path:
+            src/ansys/fluent/core/generated/datamodel_251
+            src/ansys/fluent/core/generated/fluent_version_251.py
+            src/ansys/fluent/core/generated/meshing/tui_251.py
+            src/ansys/fluent/core/generated/solver/settings_251
+            src/ansys/fluent/core/generated/solver/tui_251.py
+            src/ansys/fluent/core/generated/data/api_tree_251.pickle
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0
+
+      - name: Pull 25.1 Fluent docker image
+        if: steps.cache-251-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Run 25.1 API codegen
+        if: steps.cache-251-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v25.1.0
+
+      - name: Print 25.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_251.py
+          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Install again after codegen
         run: |
           rm -rf dist
@@ -466,6 +499,8 @@ jobs:
             version: 241
           - image-tag: v24.2.0
             version: 242
+          - image-tag: v25.1.0
+            version: 251
     timeout-minutes: 120
 
     steps:
@@ -505,10 +540,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: ${{ matrix.image-tag != 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Pull Fluent docker image dev
+        if: ${{ matrix.image-tag == 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
@@ -518,8 +559,8 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload 24.1 Coverage Artifacts
-        if: matrix.image-tag == 'v24.1.0'
+      - name: Upload 24.2 Coverage Artifacts
+        if: matrix.image-tag == 'v24.2.0'
         uses: actions/upload-artifact@v4
         with:
           name: coverage_report

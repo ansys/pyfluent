@@ -36,6 +36,8 @@ jobs:
             version: 241
           - image-tag: v24.2.0
             version: 242
+          - image-tag: v25.1.0
+            version: 251
 
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +45,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.11
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -73,9 +75,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
+        if: matrix.image-tag != 'v25.1.0'
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Pull Fluent docker image dev
+        if: matrix.image-tag == 'v25.1.0'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run API codegen
         run: make api-codegen

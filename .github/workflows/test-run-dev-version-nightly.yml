@@ -54,30 +54,37 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 24.2 Fluent docker image
+      - name: Pull 25.1 Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v25.1.0
 
-      - name: Run 24.2 API codegen
+      - name: Run 25.1 API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v25.1.0
 
-      - name: Print 24.2 Fluent version info
+      - name: Print 25.1 Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_242.py
-          python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_251.py
+          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
           rm -rf dist
           make install > /dev/null
 
-      - name: 24.2 Unit Testing
+      - name: 25.1 Unit Testing
         run: |
           make install-test
-          make unittest-all-242
+          make unittest-all-251
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v25.1.0
+
+      - name: Update Fluent image
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+        run: |
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:v25.1.0 | sed 's/.*@//')
+          gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 

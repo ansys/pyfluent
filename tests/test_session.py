@@ -26,6 +26,7 @@ from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
@@ -471,7 +472,10 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
             "parallel",
         }
-        assert api_keys.issubset(set(dir(solver)))
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            assert api_keys.issubset(set(dir(solver.settings)))
+        else:
+            assert api_keys.issubset(set(dir(solver)))
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -484,9 +488,9 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         solver.field_data
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
 
     assert {

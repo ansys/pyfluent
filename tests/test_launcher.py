@@ -42,7 +42,7 @@ def test_gpu_version_error():
             version="2d",
             precision="single",
             processor_count=5,
-            show_gui=True,
+            ui_mode="gui",
             gpu=True,
         )
         pyfluent.setup_for_fluent(
@@ -50,7 +50,7 @@ def test_gpu_version_error():
             version="2d",
             precision="single",
             processor_count=5,
-            show_gui=True,
+            ui_mode="gui",
             gpu=True,
         )
 
@@ -437,6 +437,14 @@ def test_exposure_and_graphics_driver_arguments():
                 if m.value[0]
                 else " 3ddp"
             )
+
+
+def test_additional_arguments_fluent_launch_args_string():
+    additional_arguments = "-ws -ws-port=5000 -i test.jou"
+    assert additional_arguments in _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+    )
 
 
 def test_processor_count():

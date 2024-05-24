@@ -7,7 +7,7 @@ on:
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-  DOC_DEPLOYMENT_IMAGE_TAG: v24.1.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install OS packages
         run: |
