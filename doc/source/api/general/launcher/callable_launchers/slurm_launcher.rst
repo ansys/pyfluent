@@ -1,6 +1,6 @@
 .. _ref_slurm_launcher:
 
-Callable slurm launcher
+Callable Slurm launcher
 ============================
 
 .. automodule:: ansys.fluent.core.launcher.slurm_launcher
