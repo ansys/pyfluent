@@ -14,7 +14,7 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import _make_datamodel_module
+from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -179,8 +179,6 @@ class Solver(BaseSession):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
-            from ansys.fluent.core.session import _make_tui_module
-
             self._tui = _make_tui_module(self, "solver")
 
         return self._tui

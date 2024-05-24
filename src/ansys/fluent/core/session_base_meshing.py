@@ -12,6 +12,7 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.session_shared import (
     _CODEGEN_MSG_DATAMODEL,
     _make_datamodel_module,
+    _make_tui_module,
 )
 from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import (
@@ -78,8 +79,6 @@ class BaseMeshing:
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
-            from ansys.fluent.core.session import _make_tui_module
-
             self._tui = _make_tui_module(self, "meshing")
 
         return self._tui
