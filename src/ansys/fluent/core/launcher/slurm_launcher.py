@@ -284,7 +284,7 @@ class SlurmLauncher:
             Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
         lightweight_mode : bool, optional
             Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
-            current Fluent solver session. The mesh is read into a background Fluent solver session, 
+            current Fluent solver session. The mesh is read into a background Fluent solver session,
             which replaces the current Fluent solver session once the mesh is read and the lightweight settings
             made by the user in the current Fluent solver session have been applied in the background Fluent
             solver session. This is all orchestrated by PyFluent and requires no special usage.
