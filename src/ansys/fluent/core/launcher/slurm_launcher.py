@@ -57,7 +57,9 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    UIMode,
     _get_argvals_and_session,
+    _get_ui_mode,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
 from ansys.fluent.core.session_meshing import Meshing
@@ -202,6 +204,7 @@ class SlurmLauncher:
     def __init__(
         self,
         mode: Optional[Union[FluentMode, str, None]] = None,
+        ui_mode: Union[UIMode, str, None] = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
@@ -232,6 +235,8 @@ class SlurmLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
+        ui_mode : UIMode
+            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
@@ -324,6 +329,7 @@ class SlurmLauncher:
         """
         self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
+        self.argvals["ui_mode"] = _get_ui_mode(ui_mode)
 
         if self._argvals["scheduler_options"]:
             if "scheduler" not in self._argvals["scheduler_options"]:
