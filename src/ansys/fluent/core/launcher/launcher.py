@@ -263,7 +263,8 @@ def launch_fluent(
     )
     common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
-    return launcher_type(**launcher_argvals)
+    launcher = launcher_type(**launcher_argvals)
+    return launcher()
 
 
 def connect_to_fluent(
