@@ -300,7 +300,6 @@ def _get_api_tree_data():
 
 
 api_tree_data = _get_api_tree_data()
-api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
 
 
 def _print_search_results(queries: list, api_tree_data: dict):
@@ -545,10 +544,15 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
                     similar_keys.add(api_object_synset_name + "*")
     if similar_keys:
         for key in similar_keys:
-            _search_wildcard(key, api_object_names=api_object_names)
+            _search_wildcard(
+                key,
+                api_object_names=list(
+                    api_tree_data["all_api_object_name_synsets"].keys()
+                ),
+            )
     else:
         queries = _get_close_matches_for_word_from_names(
-            search_string, api_object_names
+            search_string, list(api_tree_data["all_api_object_name_synsets"].keys())
         )
         if queries:
             _print_search_results(queries, api_tree_data=api_tree_data)
@@ -627,15 +631,26 @@ def search(
         )
 
     if wildcard:
-        _search_wildcard(search_string, api_object_names=api_object_names)
+        _search_wildcard(
+            search_string,
+            api_object_names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+        )
     elif match_whole_word:
         if not match_case:
             _search_whole_word(
-                search_string, match_whole_word=True, api_object_names=api_object_names
+                search_string,
+                match_whole_word=True,
+                api_object_names=list(
+                    api_tree_data["all_api_object_name_synsets"].keys()
+                ),
             )
         else:
             _search_whole_word(
-                search_string, match_case=True, api_object_names=api_object_names
+                search_string,
+                match_case=True,
+                api_object_names=list(
+                    api_tree_data["all_api_object_name_synsets"].keys()
+                ),
             )
     elif search_root:
         version = None
