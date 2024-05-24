@@ -7,7 +7,8 @@ You can use PyFluent to access the new, enhanced meshing workflows.
 Watertight geometry meshing workflow
 ------------------------------------
 Use the **Watertight Geometry** workflow for watertight CAD geometries that
-require little cleanup.
+require little cleanup. This is useful for clean geometries that have already
+been prepped in another software, such as Ansys SpaceClaim.
 The following example shows how to use the Watertight Geometry workflow.
 
 Import geometry
@@ -100,8 +101,8 @@ Switch to solution mode
 
 Fault-tolerant meshing workflow
 -------------------------------
-Use the Fault-tolerant meshing workflow for complex CAD geometries that need cleanup or modification,
-such as addressing overlaps, intersections, holes, and duplicates.
+Use the **Fault-tolerant** meshing workflow for complex CAD geometries that need
+cleanup or modification, such as addressing overlaps, intersections, holes, and duplicates.
 The following example shows how to use the fault-tolerant workflow.
 
 Import CAD and part management
