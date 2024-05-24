@@ -715,8 +715,8 @@ def search(
                     if _match(
                         k,
                         search_string,
-                        match_whole_word=match_whole_word,
-                        match_case=match_case,
+                        match_whole_word=False,
+                        match_case=False,
                     ):
                         print(f"{next_path} ({type_})")
                 if isinstance(v, Mapping):
