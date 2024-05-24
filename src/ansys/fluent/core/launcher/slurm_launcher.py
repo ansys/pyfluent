@@ -50,6 +50,7 @@ from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
+    _get_argvals_and_session,
     _get_subprocess_kwargs_for_fluent,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
@@ -57,11 +58,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
-    UIMode,
-    _get_graphics_driver,
-    _get_mode,
-    _get_ui_mode,
-    _validate_gpu,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
 from ansys.fluent.core.session_meshing import Meshing
@@ -206,7 +202,6 @@ class SlurmLauncher:
     def __init__(
         self,
         mode: Optional[Union[FluentMode, str, None]] = None,
-        ui_mode: Union[UIMode, str, None] = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
@@ -237,8 +232,6 @@ class SlurmLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        ui_mode : UIMode
-            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
@@ -329,16 +322,8 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _validate_gpu(gpu, version)
-        graphics_driver = _get_graphics_driver(graphics_driver)
-        ui_mode = _get_ui_mode(ui_mode)
-        mode = _get_mode(mode)
-        argvals = locals().copy()
-        del argvals["self"]
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = -1
-        self._argvals = argvals
-        self._new_session = argvals["mode"].value[0]
+        self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
+        self.file_transfer_service = file_transfer_service
 
         if self._argvals["scheduler_options"]:
             if "scheduler" not in self._argvals["scheduler_options"]:

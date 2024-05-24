@@ -18,14 +18,12 @@ import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.launcher_utils import _get_argvals_and_session
 from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
-    _get_graphics_driver,
-    _get_mode,
-    _validate_gpu,
 )
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -136,16 +134,6 @@ class PIMLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _validate_gpu(gpu, version)
-        graphics_driver = _get_graphics_driver(graphics_driver)
-        mode = _get_mode(mode)
-        argvals = locals().copy()
-        del argvals["self"]
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = 60
-        self.argvals = argvals
-        self.new_session = self.argvals["mode"].value[0]
-
         if additional_arguments:
             logger.warning(
                 "'additional_arguments' option for 'launch_fluent()' method is not supported "
@@ -157,6 +145,7 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
+        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
 
     def __call__(self):
