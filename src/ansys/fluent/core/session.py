@@ -8,8 +8,6 @@ import warnings
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -23,7 +21,6 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
@@ -34,8 +31,6 @@ try:
 except Exception:
     root = Any
 
-datamodel_logger = logging.getLogger("pyfluent.datamodel")
-tui_logger = logging.getLogger("pyfluent.tui")
 logger = logging.getLogger("pyfluent.general")
 
 
@@ -47,62 +42,6 @@ def _parse_server_info_file(file_name: str):
     port = int(ip_and_port[1])
     password = lines[1].strip()
     return ip, port, password
-
-
-# def _get_datamodel_attributes(session, attribute: str):
-#     try:
-#         from ansys.fluent.core import CODEGEN_OUTDIR
-#
-#         preferences_module = load_module(
-#             f"{attribute}_{session._version}",
-#             CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{attribute}.py",
-#         )
-#         return preferences_module.Root(session._se_service, attribute, [])
-#     except (ImportError, FileNotFoundError):
-#         datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-
-
-def _make_tui_module(session, module_name):
-    try:
-        from ansys.fluent.core import CODEGEN_OUTDIR
-
-        tui_module = load_module(
-            f"{module_name}_tui_{session._version}",
-            CODEGEN_OUTDIR / module_name / f"tui_{session._version}.py",
-        )
-        return tui_module.main_menu(
-            session._tui_service, session._version, module_name, []
-        )
-    except (ImportError, FileNotFoundError):
-        tui_logger.warning(_CODEGEN_MSG_TUI)
-        return TUIMenu(session._tui_service, session._version, module_name, [])
-
-
-def _make_datamodel_module(session, module_name):
-    try:
-        from ansys.fluent.core import CODEGEN_OUTDIR
-
-        module = load_module(
-            f"{module_name}_{session._version}",
-            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{module_name}.py",
-        )
-        return module.Root(session._se_service, module_name, [])
-    except (ImportError, FileNotFoundError):
-        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-        if module_name != "preferences":
-            return PyMenuGeneric(session._se_service, module_name)
-
-
-def _get_preferences(session):
-    return _make_datamodel_module(session, "preferences")
-
-
-def _get_workflow(session):
-    return _make_datamodel_module(session, "workflow")
-
-
-def _get_meshing(session):
-    return _make_datamodel_module(session, "meshing")
 
 
 class _IsDataValid:

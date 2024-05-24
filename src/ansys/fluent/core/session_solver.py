@@ -13,7 +13,8 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
-from ansys.fluent.core.session import BaseSession, _get_preferences
+from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_shared import _make_datamodel_module
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -188,10 +189,8 @@ class Solver(BaseSession):
     def workflow(self):
         """Datamodel root for workflow."""
         if not self._workflow:
-            from ansys.fluent.core.session import _get_workflow
-
             self._workflow = ClassicWorkflow(
-                _get_workflow(self),
+                _make_datamodel_module(self, "workflow"),
                 Solver,
                 self.get_fluent_version(),
             )
@@ -220,7 +219,7 @@ class Solver(BaseSession):
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
-            self._preferences = _get_preferences(self)
+            self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
 
     def _sync_from_future(self, fut: Future):
