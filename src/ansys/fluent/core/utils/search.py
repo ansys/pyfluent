@@ -301,6 +301,11 @@ def _get_api_tree_data():
 
 api_tree_data = _get_api_tree_data()
 
+try:
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+except TypeError:
+    api_object_names = []
+
 
 def _print_search_results(queries: list, api_tree_data: dict):
     """Print search results.
@@ -552,7 +557,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
             )
     else:
         queries = _get_close_matches_for_word_from_names(
-            search_string, list(api_tree_data["all_api_object_name_synsets"].keys())
+            search_string, api_object_names
         )
         if queries:
             _print_search_results(queries, api_tree_data=api_tree_data)
@@ -633,7 +638,7 @@ def search(
     if wildcard:
         _search_wildcard(
             search_string,
-            api_object_names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+            api_object_names=api_object_names,
         )
     elif match_whole_word:
         if not match_case:
