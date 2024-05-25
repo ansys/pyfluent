@@ -1499,5 +1499,13 @@ def test_independent_meshing_sessions_without_dm_caching(
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_switching_workflow_interface(new_mesh_session):
-    watertight = new_mesh_session.watertight()
-    fault_tolerant = new_mesh_session.fault_tolerant()
+    wt1 = new_mesh_session.watertight()
+    ft = new_mesh_session.fault_tolerant()
+    tw = new_mesh_session.two_dimensional_meshing()
+    cw = new_mesh_session.create_workflow()
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
+    lw = new_mesh_session.load_workflow(file_path=saved_workflow_path)
+    wt2 = new_mesh_session.watertight()
+    del wt1, ft, tw, cw, lw, wt2

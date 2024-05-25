@@ -1466,18 +1466,22 @@ class Workflow:
         self._dynamic_interface = dynamic_interface
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
+    def _unsubscribe_root_affected_callback(self):
+        # if the same workflow is not being reinitialized, unsubscribe the root affected callback
+        if self._workflow.service in self._root_affected_cb_by_server:
+            self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
+            self._root_affected_cb_by_server.pop(self._workflow.service)
+
     def _new_workflow(
         self, name: str, dynamic_interface: bool = True, reinitialize: bool = False
     ):
         if not reinitialize:
-            # if the same workflow is not being reinitialized, unsubscribe the root affected callback
-            if self._workflow.service in self._root_affected_cb_by_server:
-                self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
-                self._root_affected_cb_by_server.pop(self._workflow.service)
+            self._unsubscribe_root_affected_callback()
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
     def _load_workflow(self, file_path: str, dynamic_interface: bool = True):
+        self._unsubscribe_root_affected_callback()
         self._workflow.LoadWorkflow(FilePath=file_path)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
@@ -1488,6 +1492,7 @@ class Workflow:
         return list(self._initial_task_python_names_map)
 
     def _create_workflow(self, dynamic_interface: bool = True):
+        self._unsubscribe_root_affected_callback()
         self._workflow.CreateNewWorkflow()
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
