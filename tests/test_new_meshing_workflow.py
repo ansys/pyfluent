@@ -1497,7 +1497,7 @@ def test_independent_meshing_sessions_without_dm_caching(
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2")
 def test_switching_workflow_interface(new_mesh_session):
     wt1 = new_mesh_session.watertight()
     ft = new_mesh_session.fault_tolerant()
