@@ -329,7 +329,7 @@ class SlurmLauncher:
         """
         self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
-        self.argvals["ui_mode"] = _get_ui_mode(ui_mode)
+        self._argvals["ui_mode"] = _get_ui_mode(ui_mode)
 
         if self._argvals["scheduler_options"]:
             if "scheduler" not in self._argvals["scheduler_options"]:
