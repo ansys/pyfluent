@@ -500,7 +500,16 @@ def _search_whole_word(
 
 def _download_nltk_data():
     """Download NLTK data on demand."""
+    import ssl
+
     import nltk
+
+    try:
+        _create_unverified_context = ssl._create_unverified_context
+    except AttributeError:
+        pass
+    else:
+        ssl._create_default_https_context = _create_unverified_context
 
     packages = ["wordnet", "omw-1.4"]
     for package in packages:
