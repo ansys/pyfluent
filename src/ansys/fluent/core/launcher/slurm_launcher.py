@@ -213,7 +213,7 @@ class SlurmLauncher:
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
         journal_file_names: Union[None, str, list[str]] = None,
-        start_timeout: int = 60,
+        start_timeout: int = -1,
         additional_arguments: Optional[str] = "",
         env: Optional[Dict[str, Any]] = None,
         cleanup_on_exit: bool = True,
