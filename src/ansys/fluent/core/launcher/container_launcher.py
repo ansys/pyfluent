@@ -147,8 +147,9 @@ class DockerLauncher:
         passed to Fluent.
         """
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        if self.argvals["start_timeout"] is None:
+            self.argvals["start_timeout"] = 60
         self.file_transfer_service = file_transfer_service
-
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
         if self.argvals["container_dict"] is None:
