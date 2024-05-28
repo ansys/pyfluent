@@ -4,9 +4,9 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode="meshing")
+>>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING_MODE)
 >>> standalone_meshing_session = standalone_meshing_launcher()
 
 >>> standalone_solver_launcher = create_launcher(LaunchMode.STANDALONE)
@@ -36,11 +36,9 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
-    _get_graphics_driver,
-    _get_mode,
+    _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
     _get_ui_mode,
-    _validate_gpu,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -178,54 +176,47 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _validate_gpu(gpu, version)
-        graphics_driver = _get_graphics_driver(graphics_driver)
-        ui_mode = _get_ui_mode(ui_mode)
-        mode = _get_mode(mode)
-        argvals = locals().copy()
-        del argvals["self"]
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = 60
-        self.new_session = argvals["mode"].value[0]
+        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
-
-        if argvals["lightweight_mode"] is None:
-            argvals["lightweight_mode"] = False
+        self.argvals["ui_mode"] = _get_ui_mode(ui_mode)
+        if self.argvals["lightweight_mode"] is None:
+            self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(
-            argvals["product_version"]
+            self.argvals["product_version"]
         )
         if fluent_version:
-            _raise_non_gui_exception_in_windows(argvals["ui_mode"], fluent_version)
+            _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
-            argvals["fluent_debug"] = True
+            self.argvals["fluent_debug"] = True
 
         self._server_info_file_name = _get_server_info_file_name()
         self._launch_string = _generate_launch_string(
-            argvals,
+            self.argvals,
             self._server_info_file_name,
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
-        if argvals["env"] is None:
-            argvals["env"] = {}
-        self._kwargs = _get_subprocess_kwargs_for_fluent(argvals["env"], argvals)
-        if argvals["cwd"]:
-            self._kwargs.update(cwd=argvals["cwd"])
+        if self.argvals["env"] is None:
+            self.argvals["env"] = {}
+        self._kwargs = _get_subprocess_kwargs_for_fluent(
+            self.argvals["env"], self.argvals
+        )
+        if self.argvals["cwd"]:
+            self._kwargs.update(cwd=self.argvals["cwd"])
         self._launch_string += _build_journal_argument(
-            argvals["topy"], argvals["journal_file_names"]
+            self.argvals["topy"], self.argvals["journal_file_names"]
         )
 
         if is_windows():
             # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
             self._launch_cmd = 'start "" ' + self._launch_string
         else:
-            if argvals["ui_mode"] < UIMode.HIDDEN_GUI:
+            if self.argvals["ui_mode"] < UIMode.HIDDEN_GUI:
                 # Using nohup to hide Fluent output from the current terminal
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
-        self.argvals = argvals
 
     def __call__(self):
         try:
@@ -247,7 +238,7 @@ class StandaloneLauncher:
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
-                    subprocess.Popen(launch_cmd, **kwargs)
+                    subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
                         self.argvals["start_timeout"],
