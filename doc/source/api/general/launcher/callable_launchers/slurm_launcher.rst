@@ -1,9 +1,9 @@
-.. _ref_standalone_launcher:
+.. _ref_slurm_launcher:
 
-Callable Standalone launcher
+Callable Slurm launcher
 ============================
 
-.. automodule:: ansys.fluent.core.launcher.standalone_launcher
+.. automodule:: ansys.fluent.core.launcher.slurm_launcher
    :members:
    :show-inheritance:
    :undoc-members:

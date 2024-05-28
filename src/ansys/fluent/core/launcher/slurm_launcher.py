@@ -26,6 +26,17 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> session.exit()
 >>> slurm.pending(), slurm.running(), slurm.done()
 (False, False, True)
+
+# Callable slurm launcher
+
+>>> from ansys.fluent.core.launcher.launcher import create_launcher
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+
+>>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING_MODE)
+>>> slurm_meshing_session = slurm_meshing_launcher()
+
+>>> slurm_solver_launcher = create_launcher(LaunchMode.SLURM)
+>>> slurm_solver_session = slurm_solver_launcher()
 """
 
 from concurrent.futures import Future, ThreadPoolExecutor
@@ -33,22 +44,29 @@ import logging
 from pathlib import Path
 import subprocess
 import time
-from typing import Any, Callable, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _get_subprocess_kwargs_for_fluent,
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.pyfluent_enums import _get_mode
+from ansys.fluent.core.launcher.pyfluent_enums import (
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    UIMode,
+    _get_argvals_and_session,
+    _get_ui_mode,
+)
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -185,27 +203,140 @@ class SlurmLauncher:
 
     def __init__(
         self,
-        **kwargs,
+        mode: Optional[Union[FluentMode, str, None]] = None,
+        ui_mode: Union[UIMode, str, None] = None,
+        graphics_driver: Union[
+            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+        ] = None,
+        product_version: Optional[FluentVersion] = None,
+        version: Optional[str] = None,
+        precision: Optional[str] = None,
+        processor_count: Optional[int] = None,
+        journal_file_names: Union[None, str, list[str]] = None,
+        start_timeout: int = 60,
+        additional_arguments: Optional[str] = "",
+        env: Optional[Dict[str, Any]] = None,
+        cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
+        case_file_name: Optional[str] = None,
+        case_data_file_name: Optional[str] = None,
+        lightweight_mode: Optional[bool] = None,
+        py: Optional[bool] = None,
+        gpu: Optional[bool] = None,
+        cwd: Optional[str] = None,
+        topy: Optional[Union[str, list]] = None,
+        start_watchdog: Optional[bool] = None,
+        scheduler_options: Optional[dict] = None,
+        file_transfer_service: Optional[Any] = None,
     ):
-        dry_run = kwargs.get("dry_run")
-        mode = kwargs.get("mode")
-        argvals = kwargs.copy()
-        del kwargs
-        _process_invalid_args(dry_run, "slurm", argvals)
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = -1
-        for arg_name, arg_values in argvals.items():
-            setattr(self, f"_{arg_name}", arg_values)
-        self._argvals = argvals
-        self.mode = _get_mode(mode)
-        self._new_session = self.mode.value[0]
+        """Launch Fluent session in standalone mode.
 
-        if self._scheduler_options:
-            if "scheduler" not in self._scheduler_options:
+        Parameters
+        ----------
+        mode : FluentMode
+            Launch mode of Fluent to point to a specific session type.
+        ui_mode : UIMode
+            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+        graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+            Graphics driver of Fluent. Options are the values of the
+            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
+            ``FluentLinuxGraphicsDriver`` enum in Linux.
+        product_version : FluentVersion, optional
+            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+            The default is ``None``, in which case the newest installed version is used.
+        version : str, optional
+            Geometric dimensionality of the Fluent simulation. The default is ``None``,
+            in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
+        precision : str, optional
+            Floating point precision. The default is ``None``, in which case ``"double"``
+            is used. Options are ``"double"`` and ``"single"``.
+        processor_count : int, optional
+            Number of processors. The default is ``None``, in which case ``1``
+            processor is used.  In job scheduler environments the total number of
+            allocated cores is clamped to value of ``processor_count``.
+        journal_file_names : str or list of str, optional
+            The string path to a Fluent journal file or a list of such paths. Fluent executes the
+            journals. The default is ``None``.
+        start_timeout : int, optional
+            Maximum allowable time in seconds for connecting to the Fluent
+            server. The default is ``60``.
+        additional_arguments : str, optional
+            Additional arguments to send to Fluent as a string in the same
+            format they are normally passed to Fluent on the command line.
+        env : dict[str, str], optional
+            Mapping to modify environment variables in Fluent. The default
+            is ``None``.
+        cleanup_on_exit : bool, optional
+            Whether to shut down the connected Fluent session when PyFluent is
+            exited, or the ``exit()`` method is called on the session instance,
+            or if the session instance becomes unreferenced. The default is ``True``.
+        start_transcript : bool, optional
+            Whether to start streaming the Fluent transcript in the client. The
+            default is ``True``. You can stop and start the streaming of the
+            Fluent transcript subsequently via the method calls, ``transcript.start()``
+            and ``transcript.stop()`` on the session object.
+        case_file_name : str, optional
+            Name of the case file to read into the
+            Fluent session. The default is ``None``.
+        case_data_file_name : str, optional
+            Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
+        lightweight_mode : bool, optional
+            Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
+            current Fluent solver session. The mesh is read into a background Fluent solver session,
+            which replaces the current Fluent solver session once the mesh is read and the lightweight settings
+            made by the user in the current Fluent solver session have been applied in the background Fluent
+            solver session. This is all orchestrated by PyFluent and requires no special usage.
+            This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
+        py : bool, optional
+            If True, Fluent will run in Python mode. Default is None.
+        gpu : bool, optional
+            If True, Fluent will start with GPU Solver.
+        cwd : str, Optional
+            Working directory for the Fluent client.
+        topy : bool or str, optional
+            A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
+            Can optionally take the file name of the new python journal file.
+        start_watchdog : bool, optional
+            When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
+            which means an independent watchdog process is run to ensure
+            that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
+            when the current Python process ends.
+        scheduler_options : dict, optional
+            Dictionary containing scheduler options. Default is None.
+
+            Currently only the Slurm scheduler is supported. The ``scheduler_options``
+            dictionary must be of the form ``{"scheduler": "slurm",
+            "scheduler_headnode": "<headnode>", "scheduler_queue": "<queue>",
+            "scheduler_account": "<account>"}``. The keys ``scheduler_headnode``,
+            ``scheduler_queue`` and ``scheduler_account`` are optional and should be
+            specified in a similar manner to Fluent's scheduler options.
+        file_transfer_service : optional
+            File transfer service for uploading and downloading files to and from the server.
+
+        Returns
+        -------
+        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+        :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+        :class:`~ansys.fluent.core.session_solver.Solver`, \
+        :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
+            Session object or configuration dictionary if ``dry_run = True``.
+
+        Notes
+        -----
+        Job scheduler environments such as SLURM, LSF, and PBS, allocate resources and compute nodes.
+        The allocated machines and core counts are queried from the scheduler environment and
+        passed to Fluent.
+        """
+        self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
+        self.file_transfer_service = file_transfer_service
+        self._argvals["ui_mode"] = _get_ui_mode(ui_mode)
+
+        if self._argvals["scheduler_options"]:
+            if "scheduler" not in self._argvals["scheduler_options"]:
                 raise InvalidArgument(
                     "The scheduler must be specified within scheduler options."
                 )
-            elif self._scheduler_options["scheduler"] != "slurm":
+            elif self._argvals["scheduler_options"]["scheduler"] != "slurm":
                 raise InvalidArgument("Only slurm is supported as scheduler.")
 
     def _prepare(self):
@@ -213,15 +344,16 @@ class SlurmLauncher:
         self._argvals.update(self._argvals["scheduler_options"])
         launch_cmd = _generate_launch_string(
             self._argvals,
-            self.mode,
             self._server_info_file_name,
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
-        if self._env is None:
-            self._env = {}
-        kwargs = _get_subprocess_kwargs_for_fluent(self._env, self._argvals)
-        launch_cmd += _build_journal_argument(self._topy, self._journal_file_names)
+        if self._argvals["env"] is None:
+            self._argvals["env"] = {}
+        kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
+        launch_cmd += _build_journal_argument(
+            self._argvals["topy"], self._argvals["journal_file_names"]
+        )
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
@@ -232,13 +364,15 @@ class SlurmLauncher:
 
     def _launch(self, slurm_job_id) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
         _await_fluent_launch(
-            self._server_info_file_name, self._start_timeout, self._sifile_last_mtime
+            self._server_info_file_name,
+            self._argvals["start_timeout"],
+            self._sifile_last_mtime,
         )
         session = self._new_session._create_from_server_info_file(
             server_info_file_name=self._server_info_file_name,
             file_transfer_service=None,
-            cleanup_on_exit=self._cleanup_on_exit,
-            start_transcript=self._start_transcript,
+            cleanup_on_exit=self._argvals["cleanup_on_exit"],
+            start_transcript=self._argvals["start_transcript"],
             inside_container=False,
         )
         return session
