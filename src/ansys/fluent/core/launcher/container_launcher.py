@@ -4,9 +4,9 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode="meshing")
+>>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING_MODE)
 >>> container_meshing_session = container_meshing_launcher()
 
 >>> container_solver_launcher = create_launcher(LaunchMode.CONTAINER)
@@ -30,9 +30,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
-    _get_graphics_driver,
-    _get_mode,
-    _validate_gpu,
+    _get_argvals_and_session,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -148,30 +146,21 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _validate_gpu(gpu, version)
-        graphics_driver = _get_graphics_driver(graphics_driver)
-        mode = _get_mode(mode)
-        argvals = locals().copy()
-
-        del argvals["self"]
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = 60
-
-        self.new_session = argvals["mode"].value[0]
+        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
 
-        if argvals["mode"] == FluentMode.SOLVER_ICING:
-            argvals["fluent_icing"] = True
-        if argvals["container_dict"] is None:
-            argvals["container_dict"] = {}
-        if argvals["product_version"]:
-            argvals["container_dict"][
+        if self.argvals["mode"] == FluentMode.SOLVER_ICING:
+            self.argvals["fluent_icing"] = True
+        if self.argvals["container_dict"] is None:
+            self.argvals["container_dict"] = {}
+        if self.argvals["product_version"]:
+            self.argvals["container_dict"][
                 "image_tag"
-            ] = f"v{argvals['product_version'].value}"
-        self._args = _build_fluent_launch_args_string(**argvals).split()
-        if FluentMode.is_meshing(argvals["mode"]):
+            ] = f"v{self.argvals['product_version'].value}"
+
+        self._args = _build_fluent_launch_args_string(**self.argvals).split()
+        if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
-        self.argvals = argvals
 
     def __call__(self):
         if self.argvals["dry_run"]:

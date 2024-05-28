@@ -4,9 +4,9 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode="meshing")
+>>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING_MODE)
 >>> pim_meshing_session = pim_meshing_launcher()
 
 >>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
@@ -23,9 +23,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
-    _get_graphics_driver,
-    _get_mode,
-    _validate_gpu,
+    _get_argvals_and_session,
 )
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -136,27 +134,18 @@ class PIMLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        _validate_gpu(gpu, version)
-        graphics_driver = _get_graphics_driver(graphics_driver)
-        mode = _get_mode(mode)
-        argvals = locals().copy()
-        del argvals["self"]
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = 60
-        self.argvals = argvals
-        self.new_session = self.argvals["mode"].value[0]
-
-        if self.argvals["additional_arguments"]:
+        if additional_arguments:
             logger.warning(
                 "'additional_arguments' option for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
 
-        if self.argvals["start_watchdog"]:
+        if start_watchdog:
             logger.warning(
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
+        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
 
     def __call__(self):

@@ -4,13 +4,13 @@ This module supports both starting Fluent locally and connecting to a remote ins
 with gRPC.
 """
 
+import inspect
 import logging
 import os
 from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.error_handler import _process_invalid_args
 from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -58,44 +58,11 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    _process_invalid_args(kwargs.get("dry_run"), fluent_launch_mode, kwargs)
     if fluent_launch_mode == LaunchMode.STANDALONE:
-        unsupported_args = ["container_dict", "dry_run", "scheduler_options"]
-        for arg_name in unsupported_args:
-            if arg_name in kwargs:
-                kwargs.pop(arg_name)
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
-        unsupported_args = [
-            "journal_file_names",
-            "env",
-            "case_file_name",
-            "case_data_file_name",
-            "lightweight_mode",
-            "cwd",
-            "topy",
-            "scheduler_options",
-        ]
-        for arg_name in unsupported_args:
-            if arg_name in kwargs:
-                kwargs.pop(arg_name)
         return DockerLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.PIM:
-        unsupported_args = [
-            "journal_file_names",
-            "env",
-            "container_dict",
-            "dry_run",
-            "case_file_name",
-            "case_data_file_name",
-            "lightweight_mode",
-            "cwd",
-            "topy",
-            "scheduler_options",
-        ]
-        for arg_name in unsupported_args:
-            if arg_name in kwargs:
-                kwargs.pop(arg_name)
         return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
@@ -271,15 +238,32 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
+
+    def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
+        launcher_mode_type = {
+            LaunchMode.CONTAINER: DockerLauncher,
+            LaunchMode.PIM: PIMLauncher,
+            LaunchMode.SLURM: SlurmLauncher,
+            LaunchMode.STANDALONE: StandaloneLauncher,
+        }
+        return launcher_mode_type[fluent_launch_mode]
+
+    argvals = inspect.getargvalues(inspect.currentframe()).locals
+
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
         container_dict=container_dict,
         scheduler_options=scheduler_options,
     )
-    del start_container
-    argvals = locals().copy()
-    fluent_launch_mode = argvals.pop("fluent_launch_mode")
-    launcher = create_launcher(fluent_launch_mode, **argvals)
+
+    launcher_type = _mode_to_launcher_type(fluent_launch_mode)
+    launch_fluent_args = set(inspect.signature(launch_fluent).parameters.keys())
+    launcher_type_args = set(
+        inspect.signature(launcher_type.__init__).parameters.keys()
+    )
+    common_args = launch_fluent_args.intersection(launcher_type_args)
+    launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
+    launcher = launcher_type(**launcher_argvals)
     return launcher()
 
 
