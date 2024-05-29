@@ -26,9 +26,7 @@ def file_downloaded_to_the_client(file_name: str) -> bool:
     -------
         Whether file exists.
     """
-    full_file_name = pathlib.Path(
-        "/home/runner/.local/share/ansys_fluent_core/examples"
-    ) / os.path.basename(file_name)
+    full_file_name = pathlib.Path(os.getcwd()) / os.path.basename(file_name)
     return full_file_name.is_file()
 
 
