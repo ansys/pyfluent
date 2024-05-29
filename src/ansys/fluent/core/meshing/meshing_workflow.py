@@ -69,11 +69,12 @@ class MeshingWorkflow(Workflow):
         self._meshing = meshing
         self._name = name
         self._identifier = identifier
+        self._unsubscribe_root_affected_callback()
         self._new_workflow(name=self._name)
 
     def reinitialize(self) -> None:
         """Reinitialize the same workflow."""
-        self._new_workflow(name=self._name, reinitialize=True)
+        self._new_workflow(name=self._name)
 
     def __getattribute__(self, item: str):
         if (
@@ -270,6 +271,7 @@ class LoadWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
+        self._unsubscribe_root_affected_callback()
         self._load_workflow(file_path=file_path)
 
 
@@ -298,4 +300,5 @@ class CreateWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
+        self._unsubscribe_root_affected_callback()
         self._create_workflow()
