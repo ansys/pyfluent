@@ -1560,6 +1560,8 @@ class Workflow:
                 try:
                     _refresh_task_accessors(self)
                 except Exception:
+                    # Is there a more specific Exception derived class
+                    # for which we know it is correct to pass?
                     pass
                 self._refresh_count += 1
                 self._refreshing = False
