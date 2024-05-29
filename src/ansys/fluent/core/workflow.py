@@ -1466,14 +1466,13 @@ class Workflow:
         self._dynamic_interface = dynamic_interface
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
-    def _new_workflow(
-        self, name: str, dynamic_interface: bool = True, reinitialize: bool = False
-    ):
-        if not reinitialize:
-            # if the same workflow is not being reinitialized, unsubscribe the root affected callback
-            if self._workflow.service in self._root_affected_cb_by_server:
-                self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
-                self._root_affected_cb_by_server.pop(self._workflow.service)
+    def _unsubscribe_root_affected_callback(self):
+        # if the same workflow is not being reinitialized, unsubscribe the root affected callback
+        if self._workflow.service in self._root_affected_cb_by_server:
+            self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
+            self._root_affected_cb_by_server.pop(self._workflow.service)
+
+    def _new_workflow(self, name: str, dynamic_interface: bool = True):
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
@@ -1558,7 +1557,12 @@ class Workflow:
                     logger.debug("Already _refreshing, ...")
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
-                _refresh_task_accessors(self)
+                try:
+                    _refresh_task_accessors(self)
+                except Exception:
+                    # Is there a more specific Exception derived class
+                    # for which we know it is correct to pass?
+                    pass
                 self._refresh_count += 1
                 self._refreshing = False
 
