@@ -228,8 +228,8 @@ def configure_container_dict(
         host_mount_path = volumes_string.replace(":" + container_mount_path, "")
         logger.debug(f"host_mount_path: {host_mount_path}")
         logger.debug(f"container_mount_path: {container_mount_path}")
-    logger.info(
-        f"PyFluent workdir: Fluent workdir {host_mount_path}:{container_mount_path}"
+    logger.warning(
+        f"Starting Fluent container mounted to {host_mount_path}, with this path available as {container_mount_path} for the Fluent session running inside the container."
     )
 
     if "ports" not in container_dict:

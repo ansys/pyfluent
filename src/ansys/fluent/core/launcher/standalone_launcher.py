@@ -179,6 +179,8 @@ class StandaloneLauncher:
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
         self.argvals["ui_mode"] = _get_ui_mode(ui_mode)
+        if self.argvals["start_timeout"] is None:
+            self.argvals["start_timeout"] = 60
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(
