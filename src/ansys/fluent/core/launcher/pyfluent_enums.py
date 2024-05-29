@@ -294,7 +294,5 @@ def _get_argvals_and_session(argvals):
     argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
     argvals["mode"] = _get_mode(argvals["mode"])
     del argvals["self"]
-    if argvals["start_timeout"] is None:
-        argvals["start_timeout"] = 60
     new_session = argvals["mode"].value[0]
     return argvals, new_session
