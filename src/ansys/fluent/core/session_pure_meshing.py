@@ -117,27 +117,22 @@ class PureMeshing(BaseSession):
 
     def watertight(self):
         """Get a new watertight workflow."""
-        self._base_meshing.watertight_workflow.initialize()
         return self._base_meshing.watertight_workflow
 
     def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        self._base_meshing.fault_tolerant_workflow.initialize()
         return self._base_meshing.fault_tolerant_workflow
 
     def two_dimensional_meshing(self):
         """Get a new 2D meshing workflow."""
-        self._base_meshing.two_dimensional_meshing_workflow.initialize()
         return self._base_meshing.two_dimensional_meshing_workflow
 
     def load_workflow(self, file_path: str):
         """Load a saved workflow."""
-        self._base_meshing.load_workflow(file_path=file_path).load()
         return self._base_meshing.load_workflow(file_path=file_path)
 
     def create_workflow(self):
         """Create a meshing workflow."""
-        self._base_meshing.create_workflow.create()
         return self._base_meshing.create_workflow
 
     def topology_based(self):
