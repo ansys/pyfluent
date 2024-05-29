@@ -1557,7 +1557,10 @@ class Workflow:
                     logger.debug("Already _refreshing, ...")
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
-                _refresh_task_accessors(self)
+                try:
+                    _refresh_task_accessors(self)
+                except Exception:
+                    pass
                 self._refresh_count += 1
                 self._refreshing = False
 
