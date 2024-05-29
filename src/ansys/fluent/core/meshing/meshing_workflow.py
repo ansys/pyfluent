@@ -69,18 +69,15 @@ class MeshingWorkflow(Workflow):
         self._meshing = meshing
         self._name = name
         self._identifier = identifier
+        self._new_workflow(name=self._name)
 
     def reinitialize(self) -> None:
         """Reinitialize the same workflow."""
         self._new_workflow(name=self._name, reinitialize=True)
 
-    def initialize(self) -> None:
-        """Initialize a workflow."""
-        self._new_workflow(name=self._name)
-
     def __getattribute__(self, item: str):
         if (
-            item not in ["reinitialize", "initialize"]
+            item not in ["reinitialize"]
             and not item.startswith("_")
             and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):
@@ -273,11 +270,7 @@ class LoadWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
-        self._file_path = file_path
-
-    def load(self) -> None:
-        """Load a workflow."""
-        self._load_workflow(file_path=self._file_path)
+        self._load_workflow(file_path=file_path)
 
 
 class CreateWorkflow(Workflow):
@@ -305,7 +298,4 @@ class CreateWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
-
-    def create(self) -> None:
-        """Create a workflow."""
         self._create_workflow()
