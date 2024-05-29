@@ -417,7 +417,3 @@ def start_fluent_container(
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
-
-
-if __name__ == "__main__":
-    print(os.getcwd())
