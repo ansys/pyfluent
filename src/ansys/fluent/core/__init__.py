@@ -69,7 +69,6 @@ def version_info() -> str:
 USER_DATA_PATH = platformdirs.user_data_dir(
     appname="ansys_fluent_core", appauthor="Ansys"
 )
-EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True
