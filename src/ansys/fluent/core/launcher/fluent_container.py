@@ -186,7 +186,7 @@ def configure_container_dict(
         if file_transfer_service:
             host_mount_path = pyfluent.USER_DATA_PATH
         else:
-            host_mount_path = pyfluent.PYFLUENT_WORKING_DIR
+            host_mount_path = os.getcwd()
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
@@ -417,3 +417,7 @@ def start_fluent_container(
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
+
+
+if __name__ == "__main__":
+    print(os.getcwd())

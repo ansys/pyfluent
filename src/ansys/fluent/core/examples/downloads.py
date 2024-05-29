@@ -39,7 +39,7 @@ def delete_downloads():
 def _decompress(file_name: str) -> None:
     """Decompress zipped file."""
     zip_ref = zipfile.ZipFile(file_name, "r")
-    zip_ref.extractall(pyfluent.PYFLUENT_WORKING_DIR)
+    zip_ref.extractall(os.getcwd())
     return zip_ref.close()
 
 
@@ -62,7 +62,7 @@ def _retrieve_file(
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        save_path = pyfluent.PYFLUENT_WORKING_DIR
+        save_path = os.getcwd()
     else:
         save_path = os.path.abspath(save_path)
     local_path = os.path.join(save_path, file_name)
@@ -196,7 +196,7 @@ def path(file_name: str):
     """
     if os.path.isabs(file_name):
         return file_name
-    file_path = Path(pyfluent.PYFLUENT_WORKING_DIR) / file_name
+    file_path = Path(os.getcwd()) / file_name
     if file_path.is_file():
         return str(file_path)
     else:

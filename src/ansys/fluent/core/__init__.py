@@ -71,8 +71,6 @@ USER_DATA_PATH = platformdirs.user_data_dir(
 )
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
-PYFLUENT_WORKING_DIR = Path(__file__.split("src")[0]).resolve()
-
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True
 
