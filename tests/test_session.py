@@ -292,7 +292,7 @@ def test_journal_creation(file_format, new_mesh_session):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
-        dir=str(pyfluent.EXAMPLES_PATH),
+        dir=str(os.getcwd()),
     )
     os.close(fd)
 
@@ -321,7 +321,7 @@ def test_start_transcript_file_write(new_mesh_session):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
-        dir=str(pyfluent.EXAMPLES_PATH),
+        dir=str(os.getcwd()),
     )
     os.close(fd)
 

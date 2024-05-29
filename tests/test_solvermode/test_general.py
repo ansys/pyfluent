@@ -3,8 +3,6 @@ from pathlib import Path
 
 import pytest
 
-import ansys.fluent.core as pyfluent
-
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
@@ -12,7 +10,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_settings_only):
     solver_session = load_mixing_elbow_settings_only
     assert solver_session.settings.is_active()
     assert solver_session.health_check.is_serving
-    file_name = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
+    file_name = Path(os.getcwd()) / "jou_test_general.py"
     solver_session.journal.start(file_name.as_posix())
     ###
     assert solver_session.setup.models.energy.enabled()

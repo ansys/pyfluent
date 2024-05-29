@@ -6,7 +6,6 @@ import os
 from pathlib import Path, PurePosixPath
 from typing import Optional
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
 from ansys.fluent.core.utils.execution import asynchronous
 
@@ -93,7 +92,7 @@ def transfer_case(
     """
     inside_container = source_instance.connection_properties.inside_container
     if not workdir:
-        workdir = Path(pyfluent.EXAMPLES_PATH)
+        workdir = Path(os.getcwd())
     else:
         workdir = Path(workdir)
     if inside_container:
