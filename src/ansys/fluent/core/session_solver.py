@@ -8,15 +8,13 @@ from typing import Any, Dict, Optional
 import warnings
 
 from ansys.fluent.core.services import SchemeEval, service_creator
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -28,7 +26,6 @@ from ansys.fluent.core.solver.flobject import (
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.systemcoupling import SystemCoupling
-from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -182,43 +179,18 @@ class Solver(BaseSession):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
+            self._tui = _make_tui_module(self, "solver")
 
-                tui_module = load_module(
-                    f"solver_tui_{self._version}",
-                    CODEGEN_OUTDIR / "solver" / f"tui_{self._version}.py",
-                )
-                self._tui = tui_module.main_menu(
-                    self._tui_service, self._version, "solver", []
-                )
-            except (ImportError, FileNotFoundError):
-                tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
         return self._tui
-
-    @property
-    def _workflow_se(self):
-        """Datamodel root for workflow."""
-        try:
-            from ansys.fluent.core import CODEGEN_OUTDIR
-
-            workflow_module = load_module(
-                f"workflow_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
-            )
-            workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            workflow_se = PyMenuGeneric(self._se_service, "workflow")
-        return workflow_se
 
     @property
     def workflow(self):
         """Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = ClassicWorkflow(
-                self._workflow_se, Solver, self.get_fluent_version()
+                _make_datamodel_module(self, "workflow"),
+                Solver,
+                self.get_fluent_version(),
             )
         return self._workflow
 
@@ -245,7 +217,7 @@ class Solver(BaseSession):
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
-            self._preferences = _get_preferences(self)
+            self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
 
     def _sync_from_future(self, fut: Future):
