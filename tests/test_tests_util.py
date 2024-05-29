@@ -3,7 +3,6 @@ import shutil
 
 import pytest
 
-from ansys.fluent.core import EXAMPLES_PATH
 from tests.util import rename_downloaded_file
 
 
@@ -13,11 +12,11 @@ from tests.util import rename_downloaded_file
 )
 def test_rename_downloaded_file(ext, a, b, c, d):
     try:
-        file_path = Path(EXAMPLES_PATH) / f"{a}{ext}"
+        file_path = Path(os.getcwd()) / f"{a}{ext}"
         file_path.touch()
         file_path = str(file_path)
         new_file_path = rename_downloaded_file(file_path, "_1")
-        assert new_file_path == str(Path(EXAMPLES_PATH) / f"{a}_1{ext}")
+        assert new_file_path == str(Path(os.getcwd()) / f"{a}_1{ext}")
     except Exception:
         raise
     finally:
@@ -25,16 +24,16 @@ def test_rename_downloaded_file(ext, a, b, c, d):
 
     try:
         file_path = f"{b}{ext}"
-        (Path(EXAMPLES_PATH) / file_path).touch()
+        (Path(os.getcwd()) / file_path).touch()
         new_file_path = rename_downloaded_file(file_path, "_1")
         assert new_file_path == f"{b}_1{ext}"
     except Exception:
         raise
     finally:
-        (Path(EXAMPLES_PATH) / new_file_path).unlink(missing_ok=True)
+        (Path(os.getcwd()) / new_file_path).unlink(missing_ok=True)
 
     try:
-        dir_path = Path(EXAMPLES_PATH) / c
+        dir_path = Path(os.getcwd()) / c
         dir_path.mkdir()
         file_path = dir_path / f"{d}{ext}"
         file_path.touch()

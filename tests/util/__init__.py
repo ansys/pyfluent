@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from ansys.fluent.core import EXAMPLES_PATH
-
 
 def rename_downloaded_file(file_path: str, suffix: str) -> str:
     """Rename downloaded file by appending a suffix to the file name.
@@ -29,8 +27,8 @@ def rename_downloaded_file(file_path: str, suffix: str) -> str:
         orig_path.rename(new_path)
         return str(new_path)
     else:
-        orig_abs_path = Path(EXAMPLES_PATH) / orig_path
-        abs_path = Path(EXAMPLES_PATH) / file_path
+        orig_abs_path = Path(os.getcwd()) / orig_path
+        abs_path = Path(os.getcwd()) / file_path
         new_stem = f"{file_path.stem}{suffix}"
         new_path = abs_path.with_stem(new_stem)
         new_path = new_path.with_suffix(ext)
