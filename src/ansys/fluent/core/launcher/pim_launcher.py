@@ -147,6 +147,8 @@ class PIMLauncher:
             )
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
+        if self.argvals["start_timeout"] is None:
+            self.argvals["start_timeout"] = 60
 
     def __call__(self):
         logger.info("Starting Fluent remotely. The startup configuration is ignored.")
