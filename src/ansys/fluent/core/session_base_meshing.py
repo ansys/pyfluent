@@ -9,8 +9,11 @@ from ansys.fluent.core.meshing.meshing_workflow import (
     WorkflowMode,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
+from ansys.fluent.core.session_shared import (
+    _CODEGEN_MSG_DATAMODEL,
+    _make_datamodel_module,
+    _make_tui_module,
+)
 from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -19,7 +22,6 @@ from ansys.fluent.core.utils.fluent_version import (
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
-tui_logger = logging.getLogger("pyfluent.tui")
 
 
 class BaseMeshing:
@@ -71,42 +73,15 @@ class BaseMeshing:
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
+            self._tui = _make_tui_module(self, "meshing")
 
-                tui_module = load_module(
-                    f"meshing_tui_{self._version}",
-                    CODEGEN_OUTDIR / "meshing" / f"tui_{self._version}.py",
-                )
-                self._tui = tui_module.main_menu(
-                    self._tui_service, self._version, "meshing", []
-                )
-            except (ImportError, FileNotFoundError):
-                tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu(self._tui_service, self._version, "meshing", [])
         return self._tui
-
-    @property
-    def _meshing_root(self):
-        """Datamodel root of meshing."""
-        try:
-            from ansys.fluent.core import CODEGEN_OUTDIR
-
-            meshing_module = load_module(
-                f"meshing_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "meshing.py",
-            )
-            meshing_root = meshing_module.Root(self._se_service, "meshing", [])
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            meshing_root = PyMenuGeneric(self._se_service, "meshing")
-        return meshing_root
 
     @property
     def meshing(self):
         """Meshing object."""
         if self._meshing is None:
-            self._meshing = self._meshing_root
+            self._meshing = _make_datamodel_module(self, "meshing")
         return self._meshing
 
     @property
@@ -141,27 +116,11 @@ class BaseMeshing:
         return self._meshing_utilities
 
     @property
-    def _workflow_se(self):
-        """Datamodel root of workflow."""
-        try:
-            from ansys.fluent.core import CODEGEN_OUTDIR
-
-            workflow_module = load_module(
-                f"workflow_{self._version}",
-                CODEGEN_OUTDIR / f"datamodel_{self._version}" / "workflow.py",
-            )
-            workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            workflow_se = PyMenuGeneric(self._se_service, "workflow")
-        return workflow_se
-
-    @property
     def workflow(self):
         """Datamodel root of workflow."""
         if not self._old_workflow:
             self._old_workflow = WorkflowMode.CLASSIC_MESHING_MODE.value(
-                self._workflow_se,
+                _make_datamodel_module(self, "workflow"),
                 self.meshing,
                 self.get_fluent_version(),
             )
@@ -171,7 +130,7 @@ class BaseMeshing:
     def watertight_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         return WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-            self._workflow_se,
+            _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
@@ -180,7 +139,7 @@ class BaseMeshing:
     def fault_tolerant_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         return WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
-            self._workflow_se,
+            _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.PartManagement,
             self.PMFileManagement,
@@ -191,7 +150,7 @@ class BaseMeshing:
     def two_dimensional_meshing_workflow(self):
         """Data model root of the workflow exposed in an object-oriented manner."""
         return WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
-            self._workflow_se,
+            _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
@@ -200,7 +159,7 @@ class BaseMeshing:
     def topology_based_meshing_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
         return WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
-            self._workflow_se,
+            _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
@@ -208,7 +167,7 @@ class BaseMeshing:
     def load_workflow(self, file_path: str):
         """Datamodel root of workflow exposed in object-oriented manner."""
         return LoadWorkflow(
-            self._workflow_se,
+            _make_datamodel_module(self, "workflow"),
             self.meshing,
             file_path,
             self.get_fluent_version(),
@@ -218,7 +177,7 @@ class BaseMeshing:
     def create_workflow(self):
         """Datamodel root of the workflow exposed in an object-oriented manner."""
         return CreateWorkflow(
-            self._workflow_se,
+            _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
@@ -227,51 +186,19 @@ class BaseMeshing:
     def PartManagement(self):
         """Datamodel root of ``PartManagement``."""
         if self._part_management is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
-
-                pm_module = load_module(
-                    f"PartManagement_{self._version}",
-                    CODEGEN_OUTDIR / f"datamodel_{self._version}" / "PartManagement.py",
-                )
-                self._part_management = pm_module.Root(
-                    self._se_service, "PartManagement", []
-                )
-            except (ImportError, FileNotFoundError):
-                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-                self._part_management = PyMenuGeneric(
-                    self._se_service, "PartManagement"
-                )
+            self._part_management = _make_datamodel_module(self, "PartManagement")
         return self._part_management
 
     @property
     def PMFileManagement(self):
         """Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
-            try:
-                from ansys.fluent.core import CODEGEN_OUTDIR
-
-                pmfm_module = load_module(
-                    f"PMFileManagement_{self._version}",
-                    CODEGEN_OUTDIR
-                    / f"datamodel_{self._version}"
-                    / "PMFileManagement.py",
-                )
-                self._pm_file_management = pmfm_module.Root(
-                    self._se_service, "PMFileManagement", []
-                )
-            except (ImportError, FileNotFoundError):
-                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-                self._pm_file_management = PyMenuGeneric(
-                    self._se_service, "PMFileManagement"
-                )
+            self._pm_file_management = _make_datamodel_module(self, "PMFileManagement")
         return self._pm_file_management
 
     @property
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
-            from ansys.fluent.core.session import _get_preferences
-
-            self._preferences = _get_preferences(self)
+            self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
