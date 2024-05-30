@@ -3,7 +3,7 @@
 Meta
 ====
 
-.. currentmodule:: ansys.fluent.core
+.. currentmodule:: ansys.fluent.core.post_objects
 
 .. autosummary::
     :toctree: _autosummary

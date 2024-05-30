@@ -12,3 +12,4 @@ Post objects
 
     post_helper
     post_objects_container
+    meta

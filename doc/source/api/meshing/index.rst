@@ -117,9 +117,7 @@ TUI commands example
     :template: flobject-module-template.rst
     :recursive:
 
-    faulttolerant
     meshing_workflow
-    watertight
 
 .. toctree::
    :maxdepth: 2
