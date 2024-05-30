@@ -1467,7 +1467,6 @@ class Workflow:
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _unsubscribe_root_affected_callback(self):
-        # if the same workflow is not being reinitialized, unsubscribe the root affected callback
         if self._workflow.service in self._root_affected_cb_by_server:
             self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
             self._root_affected_cb_by_server.pop(self._workflow.service)

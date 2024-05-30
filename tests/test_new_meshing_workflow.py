@@ -1101,9 +1101,8 @@ def test_attrs_in_watertight_meshing_workflow(new_mesh_session):
 
     assert watertight.import_geometry.file_name()
     # Reinitialize the workflow:
-    watertight.reinitialize()
-    # Failing randomly in CI.
-    # assert not watertight.import_geometry.file_name()
+    watertight = new_mesh_session.watertight()
+    assert not watertight.import_geometry.file_name()
 
 
 @pytest.mark.codegen_required
@@ -1147,8 +1146,7 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_mesh_session):
 
     assert fault_tolerant.import_cad_and_part_management.fmd_file_name()
     # Reinitialize the workflow:
-    fault_tolerant.reinitialize()
-
+    fault_tolerant = new_mesh_session.fault_tolerant()
     assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
 
 
@@ -1177,7 +1175,7 @@ def test_switch_between_workflows(new_mesh_session):
         watertight.import_geometry.arguments()
 
     # Re-initialize watertight
-    watertight.reinitialize()
+    watertight = meshing.watertight()
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
@@ -1201,7 +1199,7 @@ def test_switch_between_workflows(new_mesh_session):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     # Re-initialize fault-tolerant
-    fault_tolerant.reinitialize()
+    fault_tolerant = meshing.fault_tolerant()
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
@@ -1265,7 +1263,7 @@ def test_new_meshing_workflow_switching_without_dm_caching(
         watertight.import_geometry.arguments()
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
-    watertight.reinitialize()
+    watertight = new_mesh_session.watertight()
     with pytest.raises(RuntimeError):
         fault_tolerant.import_cad_and_part_management.arguments()
     assert watertight.import_geometry.arguments()
