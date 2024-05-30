@@ -50,12 +50,6 @@ class BaseMeshing:
         self._fluent_version = fluent_version
         self._meshing_utilities = None
         self._old_workflow = None
-        self._wt_workflow = None
-        self._ft_workflow = None
-        self._2dm_workflow = None
-        self._tb_workflow = None
-        self._loaded_workflow = None
-        self._created_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -135,70 +129,58 @@ class BaseMeshing:
     @property
     def watertight_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
-        if not self._wt_workflow:
-            self._wt_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                self.get_fluent_version(),
-            )
-        return self._wt_workflow
+        return WorkflowMode.WATERTIGHT_MESHING_MODE.value(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.get_fluent_version(),
+        )
 
     @property
     def fault_tolerant_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
-        if not self._ft_workflow:
-            self._ft_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                self.PartManagement,
-                self.PMFileManagement,
-                self.get_fluent_version(),
-            )
-        return self._ft_workflow
+        return WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.PartManagement,
+            self.PMFileManagement,
+            self.get_fluent_version(),
+        )
 
     @property
     def two_dimensional_meshing_workflow(self):
         """Data model root of the workflow exposed in an object-oriented manner."""
-        if not self._2dm_workflow:
-            self._2dm_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                self.get_fluent_version(),
-            )
-        return self._2dm_workflow
+        return WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.get_fluent_version(),
+        )
 
     @property
     def topology_based_meshing_workflow(self):
         """Datamodel root of workflow exposed in object-oriented manner."""
-        if not self._tb_workflow:
-            self._tb_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                self.get_fluent_version(),
-            )
-        return self._tb_workflow
+        return WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.get_fluent_version(),
+        )
 
     def load_workflow(self, file_path: str):
         """Datamodel root of workflow exposed in object-oriented manner."""
-        if not self._loaded_workflow:
-            self._loaded_workflow = LoadWorkflow(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                file_path,
-                self.get_fluent_version(),
-            )
-        return self._loaded_workflow
+        return LoadWorkflow(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            file_path,
+            self.get_fluent_version(),
+        )
 
     @property
     def create_workflow(self):
         """Datamodel root of the workflow exposed in an object-oriented manner."""
-        if not self._created_workflow:
-            self._created_workflow = CreateWorkflow(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                self.get_fluent_version(),
-            )
-        return self._created_workflow
+        return CreateWorkflow(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.get_fluent_version(),
+        )
 
     @property
     def PartManagement(self):
