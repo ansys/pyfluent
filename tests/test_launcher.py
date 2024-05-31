@@ -460,5 +460,5 @@ def test_container_warning_for_host_mount_path(caplog):
             "this path available as /mnt/pyfluent for the Fluent session running inside the container."
             in caplog.text
         )
-        assert pyfluent.EXAMPLES_PATH in caplog.txt
+        assert pyfluent.EXAMPLES_PATH in caplog.text
         assert os.getcwd() not in caplog.text
