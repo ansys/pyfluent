@@ -26,34 +26,47 @@ Python code to control and monitor Ansys Fluent.
    solution
 
 
-Overview
---------
-You use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
-to launch an instance of Fluent that runs as a server in the background.
-
-You can launch Fluent in solution mode with this code:
-
-.. code:: python
-
-    from ansys.fluent.core import launch_fluent
-
-    solver = launch_fluent(mode="solver")
-
-You can launch Fluent in meshing mode with this code:
-
-.. code:: python
-
-    from ansys.fluent.core import launch_fluent
-
-    meshing = launch_fluent(mode="meshing")
+PyFluent User Guide
+-------------------
+Welcome to the PyFluent User Guide. This guide will help you understand how to use PyFluent to leverage the power of ANSYS Fluent for your CFD simulations.
 
 
-For more information, see :ref:`ref_user_guide_launch`
-and :ref:`ref_launcher`.
+A Simple Example
+----------------
 
-You can use PyFluent to create and initialize multiple, independent session
-objects. Each session object provides full access to the Fluent components
-relevant to the session's current mode (solution or meshing).
+>>> import ansys.fluent.core as pf
+>>> meshing = pf.launch_fluent(mode=pf.FluentMode.MESHING_MODE, product_version=pf.FluentVersion.v242)
+>>> wt = meshing.watertight()
+>>> wt.import_geometry.file_name = pf.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
+>>> wt.import_geometry()
+>>> wt.create_volume_mesh()
+>>> meshing.switch_to_solver()
+>>> solver.setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
+>>> solver.setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")
+>>> solver.setup.cell_zone_conditions.set_zone_type(zone_list="elbow-fluid", new_type="fluid")
+>>> solver.solution.initialization.hybrid_initialize()
+>>> solver.solution.run_calculation.iterate(iter_count=100)
+>>> velocity_data = solver.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
+
+
+Key Features
+------------
+
+Guided Meshing Workflows
+------------------------
+Leverage intuitive, guided workflows to create high-quality meshes.
+
+Solution Mode and Settings Objects
+----------------------------------
+Utilize settings objects to configure and control your simulation.
+
+Data Extraction
+---------------
+Easily extract solution and mesh data for analysis and post-processing.
+
+
+
+
 
 Solution mode session
 ---------------------
