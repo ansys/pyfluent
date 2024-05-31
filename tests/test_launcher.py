@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import platform
 
@@ -450,3 +451,14 @@ def test_processor_count():
     # https://github.com/ansys/pyfluent/issues/2624
     # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
     #     assert get_processor_count(solver) == 2
+
+
+def test_container_warning_host_mount_path(caplog):
+    if check_docker_support():
+        solver = pyfluent.launch_fluent()
+        assert (
+            "this path available as /mnt/pyfluent for the Fluent session running inside the container."
+            in caplog.text
+        )
+        assert pyfluent.EXAMPLES_PATH in caplog.txt
+        assert os.getcwd() not in caplog.text
