@@ -453,7 +453,7 @@ def test_processor_count():
     #     assert get_processor_count(solver) == 2
 
 
-def test_container_warning_host_mount_path(caplog):
+def test_container_warning_for_host_mount_path(caplog):
     if check_docker_support():
         solver = pyfluent.launch_fluent()
         assert (
