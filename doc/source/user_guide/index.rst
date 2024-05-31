@@ -55,14 +55,14 @@ Key Features
 ------------
 
 Guided Meshing Workflows
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 Leverage intuitive, guided workflows to create high-quality meshes.
 
 Solution Mode and Settings Objects
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Utilize settings objects to configure and control your simulation.
 
 Data Extraction
----------------
+~~~~~~~~~~~~~~~
 Easily extract solution and mesh data for analysis and post-processing.
 
