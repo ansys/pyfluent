@@ -1204,7 +1204,7 @@ def test_switch_between_workflows(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_without_dm_caching(
     disable_datamodel_cache, new_mesh_session
 ):
