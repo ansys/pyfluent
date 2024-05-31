@@ -20,8 +20,8 @@ def pytest_approx(expected):
 @pytest.mark.fluent_version("latest")
 def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
-    Path(os.getcwd()).mkdir(parents=True, exist_ok=True)
-    tmp_save_path = tempfile.mkdtemp(dir=os.getcwd())
+    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
+    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         file_transfer_service = RemoteFileTransferStrategy(
             host_mount_path=tmp_save_path

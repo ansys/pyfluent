@@ -9,7 +9,7 @@ import ansys.fluent.core as pyfluent
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_single_jou():
-    file_name = os.path.join(os.getcwd(), "jou1.jou")
+    file_name = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
 
     with open(file_name, "w") as journal:
         journal.write('(display "from jou1.jou")')
@@ -43,7 +43,7 @@ def test_single_jou():
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_single_scm():
-    file_name = os.path.join(os.getcwd(), "jou1.scm")
+    file_name = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
 
     with open(file_name, "w") as journal:
         journal.write('(display "from jou1.scm")')
@@ -77,8 +77,8 @@ def test_single_scm():
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_2_jou():
-    file_name_1 = os.path.join(os.getcwd(), "jou1.jou")
-    file_name_2 = os.path.join(os.getcwd(), "jou2.jou")
+    file_name_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
+    file_name_2 = os.path.join(pyfluent.EXAMPLES_PATH, "jou2.jou")
 
     with open(file_name_1, "w") as journal:
         journal.write('(display "from jou1.jou")')
@@ -129,8 +129,8 @@ def test_2_jou():
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_2_scm():
-    file_name_1 = os.path.join(os.getcwd(), "jou1.scm")
-    file_name_2 = os.path.join(os.getcwd(), "jou2.scm")
+    file_name_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
+    file_name_2 = os.path.join(pyfluent.EXAMPLES_PATH, "jou2.scm")
 
     with open(file_name_1, "w") as journal:
         journal.write('(display "from jou1.scm")')

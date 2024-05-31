@@ -5,6 +5,7 @@ import os
 from typing import List
 import xml.etree.ElementTree as XmlET
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -96,9 +97,9 @@ class SystemCoupling:
             elif self._solver.connection_properties.inside_container:
                 # Right now, the way that PyFluent containers and tests are set up,
                 # the local Fluent container working directory will correspond to
-                # os.getcwd() in the host, so that is where the SCP file
+                # pyfluent.EXAMPLES_PATH in the host, so that is where the SCP file
                 # will be written.
-                examples_path_scp = os.path.join(os.getcwd(), scp_file_name)
+                examples_path_scp = os.path.join(pyfluent.EXAMPLES_PATH, scp_file_name)
                 if os.path.exists(examples_path_scp):
                     scp_file_name = examples_path_scp
 
