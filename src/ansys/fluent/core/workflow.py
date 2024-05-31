@@ -131,6 +131,16 @@ def _refresh_task_accessors(obj):
         _refresh_task_accessors(task)
 
 
+def _call_refresh_task_accessors(obj):
+    """This layer handles exception for PyConsole."""
+    try:
+        _refresh_task_accessors(obj)
+    except Exception:
+        # Is there a more specific Exception derived class
+        # for which we know it is correct to pass?
+        pass
+
+
 def _convert_task_list_to_display_names(workflow_root, task_list):
     if workflow_root.service.cache is not None:
         workflow_state = workflow_root.service.cache.get_state(
@@ -1396,6 +1406,7 @@ class Workflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
+        _call_refresh_task_accessors(self)
         if attr in self._repeated_task_python_name_display_text_map:
             return self.task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
@@ -1556,12 +1567,7 @@ class Workflow:
                     logger.debug("Already _refreshing, ...")
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
-                try:
-                    _refresh_task_accessors(self)
-                except Exception:
-                    # Is there a more specific Exception derived class
-                    # for which we know it is correct to pass?
-                    pass
+                _call_refresh_task_accessors(self)
                 self._refresh_count += 1
                 self._refreshing = False
 
