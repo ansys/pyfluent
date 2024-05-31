@@ -93,6 +93,14 @@ class SystemCoupling:
                 # download the file locally in case Fluent is remote
                 # assume file transfer service is configured - download the file
                 self._solver.download(scp_file_name)
+            elif self._solver.connection_properties.inside_container:
+                # Right now, the way that PyFluent containers and tests are set up,
+                # the local Fluent container working directory will correspond to
+                # os.getcwd() in the host, so that is where the SCP file
+                # will be written.
+                examples_path_scp = os.path.join(os.getcwd(), scp_file_name)
+                if os.path.exists(examples_path_scp):
+                    scp_file_name = examples_path_scp
 
             assert os.path.exists(
                 scp_file_name
