@@ -25,6 +25,24 @@ def root_config():
         logger.addHandler(ch)
 
 
+def set_console_loggers_level(level: Union[str, int]):
+    """Sets the level of all PyFluent loggers that write to console.
+
+    Parameters
+    ----------
+    level : str or int
+        Specified logging level to set PyFluent loggers to.
+
+    Notes
+    -----
+    See logging levels in https://docs.python.org/3/library/logging.html#logging-levels
+    """
+    logger = logging.getLogger("pyfluent")
+    logger.setLevel(level)
+    for ch in logger.handlers:
+        ch.setLevel(level)
+
+
 def is_active() -> bool:
     """Returns whether PyFluent logging to file is active."""
     return _logging_file_enabled
@@ -224,3 +242,7 @@ def configure_env_var() -> None:
                 "PYFLUENT_LOGGING environment variable specified, enabling logging..."
             )
             enable(env_logging_level)
+
+
+root_config()
+configure_env_var()

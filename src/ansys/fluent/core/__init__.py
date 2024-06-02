@@ -6,12 +6,6 @@ import pydoc
 
 import platformdirs
 
-# Logging has to be set up before importing other PyFluent modules
-import ansys.fluent.core.logging as logging
-
-logging.root_config()
-logging.configure_env_var()
-
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
@@ -27,6 +21,9 @@ from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
     FluentWindowsGraphicsDriver,
     UIMode,
 )
+
+# Logging has to be imported before importing other PyFluent modules
+from ansys.fluent.core.logging import set_console_loggers_level  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
