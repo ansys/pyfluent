@@ -217,7 +217,7 @@ How do you disable PyFluent warnings shown in the console?
 
    import ansys.fluent.core as pyfluent
    pyfluent.set_console_loggers_level("ERROR") # Disable all warning logs
-   pyfluent.warnings.disable() # Disable all warning messages
+   pyfluent.warning.disable() # Disable all warning messages
 
 
 How do you learn how to use PyFluent?
