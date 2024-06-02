@@ -279,7 +279,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path(product_version=231) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):

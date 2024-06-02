@@ -50,7 +50,7 @@ class DockerLauncher:
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
-        product_version: Optional[FluentVersion] = None,
+        product_version: Union[FluentVersion, str, float, int] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -77,8 +77,9 @@ class DockerLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion, optional
-            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        product_version : FluentVersion or str or float or int, optional
+            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+            any of ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``or ``242``.
             The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
@@ -157,7 +158,7 @@ class DockerLauncher:
         if self.argvals["product_version"]:
             self.argvals["container_dict"][
                 "image_tag"
-            ] = f"v{self.argvals['product_version'].value}"
+            ] = f"v{FluentVersion(self.argvals['product_version']).value}"
 
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
