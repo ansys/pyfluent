@@ -211,12 +211,12 @@ increasing order of precedence:
    as ``/apps/ansys_inc/v242``.
 
 
-How do you disable PyFluent logging to the console?
------------------------------------------------
+How do you disable PyFluent warnings logged to the console?
+-----------------------------------------------------------
 PyFluent uses several loggers based on the application area. The default verbosity
 level of these loggers is set to ``WARNING``. You can set the verbosity level to
-``ERROR`` for all loggers by using the following code. This will show only serious
-errors.
+``ERROR`` for all loggers by using the following code. This will disable all
+warnings and show only errors.
 
 .. code:: python
 

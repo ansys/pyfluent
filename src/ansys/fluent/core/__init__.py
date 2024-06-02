@@ -21,9 +21,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
     FluentWindowsGraphicsDriver,
     UIMode,
 )
-
-# Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logging import set_console_loggers_level  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
@@ -34,6 +31,11 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
     warning,
+)
+
+# Logging has to be imported before importing other PyFluent modules
+from ansys.fluent.core.logging import (  # isort: skip # noqa: F401
+    set_console_loggers_level,
 )
 
 _VERSION_INFO = None
