@@ -213,10 +213,10 @@ increasing order of precedence:
 
 How do you disable PyFluent warnings logged to the console?
 -----------------------------------------------------------
-PyFluent uses several loggers based on the application area. The default verbosity
-level of these loggers is set to ``WARNING``. You can set the verbosity level to
-``ERROR`` for all loggers by using the following code. This will disable all
-warnings and show only errors.
+PyFluent uses several console loggers based on the application area. The default
+verbosity level of these loggers is set to ``WARNING``. You can set the verbosity
+level to ``ERROR`` for all console loggers by using the following code. This will
+hide all warnings and show only errors.
 
 .. code:: python
 

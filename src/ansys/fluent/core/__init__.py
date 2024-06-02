@@ -6,6 +6,12 @@ import pydoc
 
 import platformdirs
 
+# isort: off
+# Logging has to be imported before importing other PyFluent modules
+from ansys.fluent.core.logging import set_console_loggers_level  # noqa: F401
+
+# isort: on
+
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
@@ -31,11 +37,6 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
     warning,
-)
-
-# Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logging import (  # isort: skip # noqa: F401
-    set_console_loggers_level,
 )
 
 _VERSION_INFO = None
