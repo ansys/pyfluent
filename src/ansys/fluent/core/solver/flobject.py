@@ -1585,6 +1585,12 @@ class BaseCommand(Action):
                 assert_type(ret, base_t._state_type)
             return ret
 
+    def _interrupt(self):
+        try:
+            self._parent.interrupt()
+        except AttributeError:
+            raise KeyboardInterrupt
+
     def __call__(self, *args, **kwds):
         return self.execute_command(*args, **kwds)
 
@@ -1616,8 +1622,7 @@ class Command(BaseCommand):
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            if self.obj_name in ["iterate", "calculate", "dual_time_iterate"]:
-                self._parent.interrupt()
+            self._interrupt()
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -1647,8 +1652,7 @@ class CommandWithPositionalArgs(BaseCommand):
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            if self.obj_name in ["iterate", "calculate", "dual_time_iterate"]:
-                self._parent.interrupt()
+            self._interrupt()
 
 
 class Query(Action):
