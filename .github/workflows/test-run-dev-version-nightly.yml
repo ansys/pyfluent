@@ -88,3 +88,8 @@ jobs:
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:v25.1.0 | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
+  clean-up:
+    name: Remove docker image
+    if: ${{ always() }}
+    needs: test
+    run: docker rmi -f ghcr.io/ansys/pyfluent:v25.1.0
