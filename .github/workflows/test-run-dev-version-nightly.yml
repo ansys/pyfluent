@@ -92,4 +92,9 @@ jobs:
     name: Remove docker image
     if: ${{ always() }}
     needs: test
-    run: docker rmi -f ghcr.io/ansys/pyfluent:v25.1.0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete 25.1 Fluent docker image
+        run: docker rmi -f ghcr.io/ansys/pyfluent:v25.1.0
