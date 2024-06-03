@@ -90,6 +90,7 @@ jobs:
 
   clean-up:
     name: Remove docker image
+    runs-on: [self-hosted, pyfluent]
     if: ${{ always() }}
     needs: test
 
