@@ -1613,7 +1613,11 @@ class Command(BaseCommand):
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
-        return self.execute_command(**kwds)
+        try:
+            return self.execute_command(**kwds)
+        except KeyboardInterrupt:
+            if self.obj_name in ["iterate", "calculate", "dual_time_iterate"]:
+                self._parent.interrupt()
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -1640,7 +1644,11 @@ class CommandWithPositionalArgs(BaseCommand):
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified keyword arguments."""
-        return self.execute_command(*args, **kwds)
+        try:
+            return self.execute_command(*args, **kwds)
+        except KeyboardInterrupt:
+            if self.obj_name in ["iterate", "calculate", "dual_time_iterate"]:
+                self._parent.interrupt()
 
 
 class Query(Action):
