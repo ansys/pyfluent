@@ -8,7 +8,7 @@ import platformdirs
 
 # isort: off
 # Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logging import set_console_loggers_level  # noqa: F401
+from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
 
 # isort: on
 

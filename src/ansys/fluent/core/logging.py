@@ -25,8 +25,8 @@ def root_config():
         logger.addHandler(ch)
 
 
-def set_console_loggers_level(level: Union[str, int]):
-    """Sets the level of all PyFluent loggers that write to console.
+def set_console_logging_level(level: Union[str, int]):
+    """Sets the level of PyFluent logging being output to console.
 
     Parameters
     ----------
