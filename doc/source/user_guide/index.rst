@@ -56,7 +56,7 @@ Key Features
 
 Guided Meshing Workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Leverage intuitive, guided workflows to create high~quality meshes.
+Leverage intuitive, guided workflows to create high-quality meshes.
 
 Solution Mode and Settings Objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
