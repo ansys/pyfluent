@@ -36,12 +36,12 @@ A Simple Example
 
 .. code-block:: python
 
-  >>> import ansys.fluent.core as pf
-  >>> meshing = pf.launch_fluent(mode=pf.FluentMode.MESHING_MODE, product_version=pf.FluentVersion.v242)
-  >>> wt = meshing.watertight()
-  >>> wt.import_geometry.file_name = pf.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
-  >>> wt.import_geometry()
-  >>> wt.create_volume_mesh()
+  >>> import ansys.fluent.core as pyfluent
+  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING_MODE, product_version=pyfluent.FluentVersion.v242)
+  >>> watertight = meshing.watertight()
+  >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
+  >>> watertight.import_geometry()
+  >>> watertight.create_volume_mesh()
   >>> meshing.switch_to_solver()
   >>> solver.setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
   >>> solver.setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")
