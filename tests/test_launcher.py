@@ -454,11 +454,11 @@ def test_processor_count():
 
 
 def test_container_warning_for_host_mount_path(caplog):
+    container_dict = {
+        "host_mount_path": os.getcwd(),
+        "container_mount_path": "/mnt/pyfluent/tests",
+    }
     if check_docker_support():
-        solver = pyfluent.launch_fluent()
-        assert (
-            "this path available as /mnt/pyfluent for the Fluent session running inside the container."
-            in caplog.text
-        )
-        assert pyfluent.EXAMPLES_PATH in caplog.text
-        assert os.getcwd() not in caplog.text
+        solver = pyfluent.launch_fluent(container_dict=container_dict)
+        assert container_dict["host_mount_path"] in caplog.text
+        assert container_dict["container_mount_path"] in caplog.text
