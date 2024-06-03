@@ -46,32 +46,20 @@ Key Features
 Getting Started
 ---------------
 
-To get started with PyFluent, follow these steps:
-
-1. **Installation**: Install PyFluent via pip:
-   
-   pip install ansys-fluent-core
-
-2. **Basic Usage**: Learn the basics of using PyFluent:
-
-- Quickstart Guide
-- Tutorials
-
-3. Documentation: Explore the comprehensive API Documentation.
-
+To get started with PyFluent, follow the steps on the :ref:`_getting_started` page.
 
 Useful Links
 ------------
 
 - [PyFluent GitHub Repository](https://github.com/ansys/pyfluent)
 - [Fluent Documentation](https://www.ansys.com/products/fluids/ansys-fluent)
-- [ANSYS Customer Portal](https://support.ansys.com)
+- [Ansys Customer Portal](https://support.ansys.com)
 
 
 Community and Support
 ---------------------
 
-Join our community to get help and share your experiences with other users:
+Join the community to get help and share your experiences with other users:
 
 - [PyAnsys Community Forum](https://forum.pyansys.com)
 - [Submit a Bug Report](https://github.com/ansys/pyfluent/issues)
