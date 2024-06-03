@@ -31,7 +31,7 @@ repository, run:
 
 .. code:: 
 
-    pip install -r requirements/requirements_doc.txt
+    poetry install --with docs
     cd doc
     make html
 
