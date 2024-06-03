@@ -29,8 +29,8 @@ class LaunchMode(Enum):
 class FluentMode(Enum):
     """Enumerates over supported Fluent modes."""
 
-    MESHING_MODE = (Meshing, "meshing")
-    PURE_MESHING_MODE = (PureMeshing, "pure-meshing")
+    MESHING = (Meshing, "meshing")
+    PURE_MESHING = (PureMeshing, "pure-meshing")
     SOLVER = (Solver, "solver")
     SOLVER_ICING = (SolverIcing, "solver-icing")
 
@@ -72,10 +72,10 @@ class FluentMode(Enum):
         Returns
         -------
         bool
-            ``True`` if the mode is ``FluentMode.MESHING_MODE`` or ``FluentMode.PURE_MESHING_MODE``,
+            ``True`` if the mode is ``FluentMode.MESHING`` or ``FluentMode.PURE_MESHING``,
             ``False`` otherwise.
         """
-        return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
+        return mode in [FluentMode.MESHING, FluentMode.PURE_MESHING]
 
 
 @total_ordering

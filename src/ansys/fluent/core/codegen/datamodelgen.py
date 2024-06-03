@@ -380,7 +380,7 @@ def generate(version, static_infos: dict):
 
 if __name__ == "__main__":
     solver = launch_fluent()
-    meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
+    meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(

@@ -6,7 +6,7 @@ Examples
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
 >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING_MODE)
+>>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
 >>> pim_meshing_session = pim_meshing_launcher()
 
 >>> pim_solver_launcher = create_launcher(LaunchMode.PIM)

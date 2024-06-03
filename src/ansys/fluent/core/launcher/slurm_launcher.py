@@ -32,7 +32,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
 >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING_MODE)
+>>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING)
 >>> slurm_meshing_session = slurm_meshing_launcher()
 
 >>> slurm_solver_launcher = create_launcher(LaunchMode.SLURM)
