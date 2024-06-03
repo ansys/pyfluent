@@ -182,6 +182,7 @@ class Base:
     Attributes
     ----------
     flproxy
+    root
     obj_name
     fluent_name
     """
@@ -190,6 +191,7 @@ class Base:
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
+        self._setattr("_root", None)
         self._setattr("_file_transfer_service", None)
         if name is not None:
             self._setattr("_name", name)
@@ -198,6 +200,10 @@ class Base:
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def set_root(self, root):
+        """Set root object."""
+        self._setattr("_root", root)
 
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
@@ -213,6 +219,17 @@ class Base:
         if self._flproxy is None:
             return self._parent.flproxy
         return self._flproxy
+
+    @property
+    def root(self):
+        """Root object.
+
+        The root object is set at the root level and accessed via the parent for the
+        child classes.
+        """
+        if self._root is None:
+            return self._parent.root
+        return self._root
 
     @property
     def file_transfer_service(self):
@@ -1587,7 +1604,7 @@ class BaseCommand(Action):
 
     def _interrupt(self):
         try:
-            self._parent.interrupt()
+            self.root.solution.run_calculation.interrupt()
         except AttributeError:
             raise KeyboardInterrupt
 
@@ -2034,6 +2051,7 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root.set_root(root)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
