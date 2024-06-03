@@ -75,7 +75,7 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-    pyfluent.EXAMPLES_PATH = pyfluent.PYFLUENT_CONTAINER_MOUNT_PATH
+    pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 
 
 class Helpers:
