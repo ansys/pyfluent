@@ -249,8 +249,8 @@ def _search(
                     api_tui_objects.append(f"{next_path} ({type_})")
                 else:
                     api_objects.append(f"{next_path} ({type_})")
-                if _match(k, word, match_whole_word, match_case):
-                    print(f"{next_path} ({type_})")
+                # if _match(k, word, match_whole_word, match_case):
+                #     print(f"{next_path} ({type_})")
             if isinstance(v, Mapping):
                 inner(v, next_path, root_path)
 
