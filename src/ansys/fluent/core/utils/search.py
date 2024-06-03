@@ -189,6 +189,7 @@ def _search(
     api_objects = []
     api_tui_objects = []
     api_object_names = set()
+    results = set()
     if version:
         version = get_version_for_file_name(version)
     root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
@@ -249,12 +250,13 @@ def _search(
                     api_tui_objects.append(f"{next_path} ({type_})")
                 else:
                     api_objects.append(f"{next_path} ({type_})")
-                # if _match(k, word, match_whole_word, match_case):
-                #     print(f"{next_path} ({type_})")
+                if _match(k, word, match_whole_word, match_case):
+                    results.add(f"{next_path} ({type_})")
             if isinstance(v, Mapping):
                 inner(v, next_path, root_path)
 
     inner(api_tree, "", root_path)
+    return results
 
     api_tree_data = dict()
     api_tree_data["api_objects"] = sorted(api_objects)
