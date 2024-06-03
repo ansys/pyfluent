@@ -54,13 +54,19 @@ A Simple Example
 Key Features
 ------------
 
+Launching Fluent from PyFluent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Easily :ref:`start a Fluent session <_ref_launcher>` locally or remotely with a variety of launch options, or connect
+to an existing session. Interact with Fluent through the session object returned by the launch
+or connect methods.
+
 Guided Meshing Workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Leverage intuitive, guided workflows to create high-quality meshes.
+Leverage intuitive, :ref:`guided workflows <_ref_meshing_workflow>` to create high-quality meshes.
 
 Solution Mode and Settings Objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize settings objects to configure and control your simulation.
+Utilize :ref:`settings objects <_ref_settings>` to configure and control your simulation.
 
 Data Extraction
 ~~~~~~~~~~~~~~~
