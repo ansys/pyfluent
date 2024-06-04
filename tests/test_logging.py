@@ -3,6 +3,7 @@ import logging
 import ansys.fluent.core as pyfluent
 
 
+@pytest.mark.standalone
 def test_set_console_logging_level(caplog):
     settings_logger = logging.getLogger("pyfluent.settings_api")
     settings_logger.warning("ABC")
