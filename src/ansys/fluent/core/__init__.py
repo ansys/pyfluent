@@ -71,6 +71,8 @@ USER_DATA_PATH = platformdirs.user_data_dir(
 )
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
+CONTAINER_MOUNT_PATH = None
+
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True
 
