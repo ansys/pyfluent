@@ -1,5 +1,7 @@
 import logging
 
+import pytest
+
 import ansys.fluent.core as pyfluent
 
 
