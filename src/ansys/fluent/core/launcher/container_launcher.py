@@ -18,6 +18,7 @@ import os
 from typing import Any, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher import watchdog
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
@@ -32,7 +33,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)

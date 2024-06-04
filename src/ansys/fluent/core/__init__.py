@@ -1,5 +1,6 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+import importlib
 import os
 from pathlib import Path
 import pydoc
@@ -17,22 +18,8 @@ from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
 )
-from ansys.fluent.core.launcher.launcher import (  # noqa: F401
-    connect_to_fluent,
-    launch_fluent,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    UIMode,
-)
-from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
-from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
-from ansys.fluent.core.utils.search import search  # noqa: F401
-from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -99,3 +86,35 @@ CODEGEN_ZIP_SETTINGS = False
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
+
+
+def __getattr__(attr):
+    if attr in ["launch_fluent", "connect_to_fluent"]:
+        launcher = importlib.import_module("ansys.fluent.core.launcher.launcher")
+        return getattr(launcher, attr)
+    elif attr in [
+        "FluentLinuxGraphicsDriver",
+        "FluentWindowsGraphicsDriver",
+        "FluentMode",
+        "UIMode",
+    ]:
+        pyfluent_enums = importlib.import_module(
+            "ansys.fluent.core.launcher.pyfluent_enums"
+        )
+        return getattr(pyfluent_enums, attr)
+    elif attr == "BatchOps":
+        from ansys.fluent.core.services.batch_ops import BatchOps
+
+        return BatchOps
+    elif attr == "Fluent":
+        from ansys.fluent.core.session import BaseSession as Fluent
+
+        return Fluent
+    elif attr == "setup_for_fluent":
+        from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent
+
+        return setup_for_fluent
+    elif attr == "search":
+        from ansys.fluent.core.utils.search import search
+
+        return search

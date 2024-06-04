@@ -7,7 +7,7 @@ from typing import Optional, Union
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
-import ansys.fluent.core.launcher.error_handler as exceptions
+from ansys.fluent.core.launcher import error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import check_docker_support, is_windows
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing

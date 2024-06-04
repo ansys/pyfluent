@@ -19,6 +19,7 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict, Optional, Union
 
+from ansys.fluent.core.launcher import watchdog
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
@@ -44,7 +45,6 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_name,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
