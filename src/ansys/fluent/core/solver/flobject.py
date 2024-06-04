@@ -62,6 +62,8 @@ except ImportError:
     PyFluentDeprecationWarning = FutureWarning
     PyFluentUserWarning = UserWarning
 
+import ansys.fluent.core as pyfluent
+
 from .error_message import allowed_name_error_message, allowed_values_error
 from .settings_external import expand_api_file_argument
 
@@ -1066,14 +1068,11 @@ class Group(SettingsBase[DictStateType]):
             if name in super().__getattribute__("_child_classes"):
                 attr._check_stable()
             return attr
-        except AttributeError as ex:
+        except AttributeError:
             self._get_parent_of_active_child_names(name)
-            error_msg = allowed_name_error_message(
-                trial_name=name,
-                allowed_values=super().__getattribute__("child_names"),
-                message=ex.args[0],
-            )
-            ex.args = (error_msg,)
+            print(f"The most similar API names are:")
+            print(f"<search_root> = {self.python_path}\n")
+            pyfluent.search(name, search_root=self, match_case=False)
             raise
 
     def __setattr__(self, name: str, value):
