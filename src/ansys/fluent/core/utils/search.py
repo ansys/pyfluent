@@ -299,14 +299,6 @@ def _get_api_tree_data():
         return api_tree_data
 
 
-api_tree_data = _get_api_tree_data()
-
-try:
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
-except TypeError:
-    api_object_names = []
-
-
 def _print_search_results(queries: list, api_tree_data: dict):
     """Print search results.
 
@@ -317,6 +309,7 @@ def _print_search_results(queries: list, api_tree_data: dict):
     api_tree_data: dict
         All API object data.
     """
+    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
     for api_tree_data in api_tree_datas:
         for query in queries:
@@ -345,21 +338,24 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
     return [name for name in names if regex.match(name)]
 
 
-def _search_wildcard(search_string: str, api_object_names: list):
+def _search_wildcard(search_string: str, api_tree_data: dict):
     """Perform wildcard search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
     search_string: str
         Word to search for. Semantic search is default.
-    api_object_names: list
-        All API object names.
+    api_tree_data: dict
+        All API object data.
 
     Returns
     -------
         List of search string matches.
     """
-    queries = _get_wildcard_matches_for_word_from_names(search_string, api_object_names)
+    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
+    queries = _get_wildcard_matches_for_word_from_names(
+        search_string, names=list(api_tree_data["all_api_object_name_synsets"].keys())
+    )
     if queries:
         _print_search_results(queries, api_tree_data=api_tree_data)
 
@@ -454,7 +450,7 @@ def _search_whole_word(
     search_string: str,
     match_case: bool = False,
     match_whole_word: bool = False,
-    api_object_names: list = None,
+    api_tree_data: dict = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.
 
@@ -468,31 +464,49 @@ def _search_whole_word(
     match_whole_word: bool
         Whether to match whole word. The default is ``False``.
         If ``True``, it matches the given word, and it's capitalize case.
-    api_object_names: list
-        All API object names.
+    api_tree_data: dict
+        All API object data.
 
     Returns
     -------
         List of search string matches.
     """
+    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     queries = []
     if match_case and match_whole_word:
         queries.extend(
-            _get_exact_match_for_word_from_names(search_string, api_object_names)
+            _get_exact_match_for_word_from_names(
+                search_string,
+                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+            )
         )
     elif match_case:
         queries.extend(
-            _get_match_case_for_word_from_names(search_string, api_object_names)
+            _get_match_case_for_word_from_names(
+                search_string,
+                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+            )
         )
     elif match_whole_word:
         for word in [search_string, search_string.capitalize()]:
-            queries.extend(_get_exact_match_for_word_from_names(word, api_object_names))
+            queries.extend(
+                _get_exact_match_for_word_from_names(
+                    word,
+                    names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+                )
+            )
     elif not match_case and not match_whole_word:
         queries.extend(
-            _get_capitalize_match_for_word_from_names(search_string, api_object_names)
+            _get_capitalize_match_for_word_from_names(
+                search_string,
+                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+            )
         )
         queries.extend(
-            _get_match_case_for_word_from_names(search_string, api_object_names)
+            _get_match_case_for_word_from_names(
+                search_string,
+                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+            )
         )
     if queries:
         _print_search_results(queries, api_tree_data=api_tree_data)
@@ -539,6 +553,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     queries: list
         List of search string matches.
     """
+    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
     search_string_synsets = (
         wn.synsets(search_string.decode("utf-8"), lang=language)
@@ -558,15 +573,11 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
                     similar_keys.add(api_object_synset_name + "*")
     if similar_keys:
         for key in similar_keys:
-            _search_wildcard(
-                key,
-                api_object_names=list(
-                    api_tree_data["all_api_object_name_synsets"].keys()
-                ),
-            )
+            _search_wildcard(key, api_tree_data)
     else:
         queries = _get_close_matches_for_word_from_names(
-            search_string, api_object_names
+            search_string,
+            names=list(api_tree_data["all_api_object_name_synsets"].keys()),
         )
         if queries:
             _print_search_results(queries, api_tree_data=api_tree_data)
@@ -644,27 +655,21 @@ def search(
             UserWarning,
         )
 
+    api_tree_data = _get_api_tree_data()
+
     if wildcard:
         _search_wildcard(
             search_string,
-            api_object_names=api_object_names,
+            api_tree_data=api_tree_data,
         )
     elif match_whole_word:
         if not match_case:
             _search_whole_word(
-                search_string,
-                match_whole_word=True,
-                api_object_names=list(
-                    api_tree_data["all_api_object_name_synsets"].keys()
-                ),
+                search_string, match_whole_word=True, api_tree_data=api_tree_data
             )
         else:
             _search_whole_word(
-                search_string,
-                match_case=True,
-                api_object_names=list(
-                    api_tree_data["all_api_object_name_synsets"].keys()
-                ),
+                search_string, match_case=True, api_tree_data=api_tree_data
             )
     elif search_root:
         version = None
