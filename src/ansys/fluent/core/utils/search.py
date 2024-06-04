@@ -630,17 +630,17 @@ def search(
         )
     elif language and match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches the given word, and it's capitalize case.",
+            "``match_whole_word=True`` matches the whole word (case insensitive).",
             UserWarning,
         )
     elif match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches the given word, and it's capitalize case.",
+            "``match_whole_word=True`` matches the whole word (case insensitive).",
             UserWarning,
         )
     elif match_case:
         warnings.warn(
-            "``match_case=True`` matches the given word.",
+            "``match_case=True`` matches the whole word (case sensitive).",
             UserWarning,
         )
 
