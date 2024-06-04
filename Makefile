@@ -152,4 +152,4 @@ compare-flobject:
 
 cleanup-previous-docker-containers:
 	@if [ -n "$(docker ps -a -q)" ]; then docker stop $(docker ps -a -q); fi
-	@if [ -n "$(docker ps -a -q)" ]; then docker rm $(docker ps -a -q); fi
+	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
