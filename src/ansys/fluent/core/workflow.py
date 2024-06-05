@@ -1290,37 +1290,41 @@ class Workflow:
         command_source : PyMenuGeneric
             The application root for commanding.
         """
-        self._workflow = workflow
-        self._command_source = command_source
-        self._python_task_names = []
-        self._lock = threading.RLock()
-        self._refreshing = False
-        self._dynamic_python_names = False
-        self._refresh_count = 0
-        self._ordered_children = []
-        self._task_list = []
-        self._getattr_recurse_depth = 0
-        self._main_thread_ident = None
-        self._task_objects = {}
-        self._dynamic_interface = False
-        self._python_name_command_id_map = {}
-        self._python_name_display_id_map = {}
-        self._python_name_display_text_map = {}
-        self._repeated_task_python_name_display_text_map = {}
-        self._initial_task_python_names_map = {}
-        self._unwanted_attrs = {
-            "reset_workflow",
-            "initialize_workflow",
-            "load_workflow",
-            "insert_new_task",
-            "create_composite_task",
-            "create_new_workflow",
-            "rules",
-            "service",
-            "task_object",
-            "workflow",
-        }
-        self._fluent_version = fluent_version
+        self.__dict__.update(
+            dict(
+                _workflow=workflow,
+                _command_source=command_source,
+                _python_task_names=[],
+                _lock=threading.RLock(),
+                _refreshing=False,
+                _dynamic_python_names=False,
+                _refresh_count=0,
+                _ordered_children=[],
+                _task_list=[],
+                _getattr_recurse_depth=0,
+                _main_thread_ident=None,
+                _task_objects={},
+                _dynamic_interface=False,
+                _python_name_command_id_map={},
+                _python_name_display_id_map={},
+                _python_name_display_text_map={},
+                _repeated_task_python_name_display_text_map={},
+                _initial_task_python_names_map={},
+                _unwanted_attrs={
+                    "reset_workflow",
+                    "initialize_workflow",
+                    "load_workflow",
+                    "insert_new_task",
+                    "create_composite_task",
+                    "create_new_workflow",
+                    "rules",
+                    "service",
+                    "task_object",
+                    "workflow",
+                },
+                _fluent_version=fluent_version,
+            )
+        )
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper.
@@ -1424,6 +1428,15 @@ class Workflow:
             if obj:
                 return obj
         return super().__getattribute__(attr)
+
+    def __setattr__(self, attr, value):
+        logger.debug(f"Workflow.__setattr__({attr}, {value})")
+        if attr in self.__dict__:
+            self.__dict__[attr] = value
+        elif attr in self._task_objects:
+            self._task_objects[attr].set_state(value)
+        else:
+            super().__setattr__(attr, value)
 
     def __dir__(self):
         """Override the behavior of ``dir`` to include attributes in the
