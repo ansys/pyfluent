@@ -2,6 +2,7 @@
 
 from collections.abc import Mapping
 import fnmatch
+import functools
 import json
 import os
 from pathlib import Path
@@ -290,6 +291,7 @@ def _search(
     )
 
 
+@functools.cache
 def _get_api_tree_data():
     """Get API tree data."""
     api_tree_data_file = _get_api_tree_data_file()
