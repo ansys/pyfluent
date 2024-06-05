@@ -1741,7 +1741,9 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return l
 
 
-class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+    """Provides creatable named objects."""
+
     def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
@@ -1843,7 +1845,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         if include_child_named_objects:
             bases = bases + (_ChildNamedObjectAccessorMixin,)
         if obj_type == "named-object" and user_creatable:
-            bases = bases + (_CreatableNamedObjectMixin,)
+            bases = bases + (CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):

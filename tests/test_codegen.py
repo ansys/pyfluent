@@ -451,7 +451,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -498,7 +498,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -523,7 +523,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -562,7 +562,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -607,7 +607,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -647,7 +647,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -672,7 +672,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,
@@ -697,7 +697,7 @@ from ansys.fluent.core.solver.flobject import *
 
 from ansys.fluent.core.solver.flobject import (
     _ChildNamedObjectAccessorMixin,
-    _CreatableNamedObjectMixin,
+    CreatableNamedObjectMixin,
     _NonCreatableNamedObjectMixin,
     HasAllowedValuesMixin,
     _InputFile,

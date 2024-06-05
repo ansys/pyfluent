@@ -283,7 +283,7 @@ def _populate_classes(parent_dir):
                 "from ansys.fluent.core.solver.flobject import *\n\n"
                 "from ansys.fluent.core.solver.flobject import (\n"
                 f"{istr1}_ChildNamedObjectAccessorMixin,\n"
-                f"{istr1}_CreatableNamedObjectMixin,\n"
+                f"{istr1}CreatableNamedObjectMixin,\n"
                 f"{istr1}_NonCreatableNamedObjectMixin,\n"
                 f"{istr1}HasAllowedValuesMixin,\n"
                 f"{istr1}_InputFile,\n"
