@@ -101,4 +101,4 @@ CODEGEN_ZIP_SETTINGS = False
 SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to interrupt Fluent solver from PyFluent
-SUPPORT_SOLVER_INTERRUPT = True
+SUPPORT_SOLVER_INTERRUPT = False
