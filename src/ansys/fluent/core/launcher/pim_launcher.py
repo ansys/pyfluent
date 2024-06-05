@@ -167,7 +167,7 @@ class PIMLauncher:
             product_version=fluent_product_version,
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             mode=self.argvals["mode"],
-            dimensionality=self.argvals["version"],
+            dimensionality=self.argvals["dimension"],
             launcher_args=self.argvals,
             file_transfer_service=self.file_transfer_service,
         )
