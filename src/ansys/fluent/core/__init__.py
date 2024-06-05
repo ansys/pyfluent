@@ -87,34 +87,41 @@ CODEGEN_ZIP_SETTINGS = False
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
 
+_launcher = "ansys.fluent.core.launcher.launcher"
+_pyfluent_enums = "ansys.fluent.core.launcher.pyfluent_enums"
+
+_pyfluent_modules = {
+    "launch_fluent": _launcher,
+    "connect_to_fluent": _launcher,
+    "FluentLinuxGraphicsDriver": _pyfluent_enums,
+    "FluentWindowsGraphicsDriver": _pyfluent_enums,
+    "FluentMode": _pyfluent_enums,
+    "UIMode": _pyfluent_enums,
+    "BatchOps": "ansys.fluent.core.services.batch_ops",
+    "setup_for_fluent": "ansys.fluent.core.utils.setup_for_fluent",
+    "search": "ansys.fluent.core.utils.search",
+}
+
 
 def __getattr__(attr):
-    if attr in ["launch_fluent", "connect_to_fluent"]:
-        launcher = importlib.import_module("ansys.fluent.core.launcher.launcher")
-        return getattr(launcher, attr)
-    elif attr in [
-        "FluentLinuxGraphicsDriver",
-        "FluentWindowsGraphicsDriver",
-        "FluentMode",
-        "UIMode",
-    ]:
-        pyfluent_enums = importlib.import_module(
-            "ansys.fluent.core.launcher.pyfluent_enums"
-        )
-        return getattr(pyfluent_enums, attr)
-    elif attr == "BatchOps":
-        from ansys.fluent.core.services.batch_ops import BatchOps
+    if attr in _pyfluent_modules:
+        return getattr(importlib.import_module(_pyfluent_modules[attr]), attr)
 
-        return BatchOps
     elif attr == "Fluent":
         from ansys.fluent.core.session import BaseSession as Fluent
 
         return Fluent
-    elif attr == "setup_for_fluent":
-        from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent
 
-        return setup_for_fluent
-    elif attr == "search":
-        from ansys.fluent.core.utils.search import search
 
-        return search
+_pyfluent_modules["Fluent"] = ""
+__all__ = list(_pyfluent_modules)
+
+
+def __dir__():
+    public_modules = globals().keys() | _pyfluent_modules
+    public_modules -= {
+        "os",
+        "importlib",
+        "Path",
+    }
+    return list(public_modules)
