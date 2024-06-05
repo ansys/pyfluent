@@ -1,5 +1,11 @@
 """Miscellaneous utility functions."""
 
+interruptible_commands = [
+    "solution/run-calculation/iterate",
+    "solution/run-calculation/calculate",
+    "solution/run-calculation/dual-time-iterate",
+]
+
 
 def expand_api_file_argument(command_name, value, kwargs):
     """Expand API file argument."""

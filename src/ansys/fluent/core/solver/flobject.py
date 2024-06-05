@@ -48,8 +48,6 @@ import warnings
 import weakref
 from zipimport import zipimporter
 
-import ansys.fluent.core as pyfluent
-
 try:
     from ansys.fluent.core.warnings import (
         PyFluentDeprecationWarning,
@@ -65,7 +63,7 @@ except ImportError:
     PyFluentUserWarning = UserWarning
 
 from .error_message import allowed_name_error_message, allowed_values_error
-from .settings_external import expand_api_file_argument
+from .settings_external import expand_api_file_argument, interruptible_commands
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -180,14 +178,6 @@ def _get_root_from_child_object(obj):
     return root
 
 
-def _interrupt(obj):
-    if pyfluent.SUPPORT_SOLVER_INTERRUPT:
-        root = _get_root_from_child_object(obj)
-        root.solution.run_calculation.interrupt()
-    else:
-        raise KeyboardInterrupt
-
-
 class Base:
     """Base class for settings and command objects.
 
@@ -217,6 +207,10 @@ class Base:
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def _set_interrupt(self, interrupt):
+        """Set interrupt method."""
+        self._setattr("_interrupt", interrupt)
 
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
@@ -1635,7 +1629,9 @@ class Command(BaseCommand):
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            _interrupt(self)
+            if self.path in interruptible_commands:
+                _get_root_from_child_object(self)._interrupt()
+            raise KeyboardInterrupt
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -1665,7 +1661,9 @@ class CommandWithPositionalArgs(BaseCommand):
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            _interrupt(self)
+            if self.path in interruptible_commands:
+                _get_root_from_child_object(self)._interrupt()
+            raise KeyboardInterrupt
 
 
 class Query(Action):
@@ -1995,6 +1993,7 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
+    interrupt: Optional[Any] = None,
     file_transfer_service: Optional[Any] = None,
     scheme_eval=None,
 ) -> Group:
@@ -2004,6 +2003,8 @@ def get_root(
     ----------
     flproxy: Proxy
         Object that interfaces with the Fluent backend.
+    interrupt: optional
+        To interrupt interruptible commands.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     scheme_eval : Any
@@ -2047,6 +2048,7 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root._set_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
