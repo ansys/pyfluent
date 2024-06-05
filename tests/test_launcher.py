@@ -289,7 +289,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_watchdog_launch(monkeypatch):
