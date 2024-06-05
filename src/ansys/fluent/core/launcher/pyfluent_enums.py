@@ -122,7 +122,7 @@ class UIMode(FluentEnum):
     GUI = ("",)
 
 
-class SolverVersion(FluentEnum):
+class Dimension(FluentEnum):
     """Geometric dimensionality of the Fluent simulation."""
 
     TWO_DIMENSIONAL = ("2d",)

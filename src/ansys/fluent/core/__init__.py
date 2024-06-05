@@ -22,11 +22,11 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     launch_fluent,
 )
 from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
-    SolverVersion,
     UIMode,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401

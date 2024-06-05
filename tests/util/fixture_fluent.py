@@ -109,7 +109,7 @@ def launch_fluent_solver_2ddp():
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
-            version=pyfluent.SolverVersion.TWO_DIMENSIONAL,
+            dimension=pyfluent.Dimension.TWO_DIMENSIONAL,
             precision=pyfluent.Precision.DOUBLE,
             mode="solver",
             container_dict=container_dict,
@@ -117,7 +117,7 @@ def launch_fluent_solver_2ddp():
         )
     else:
         solver_session = pyfluent.launch_fluent(
-            version=pyfluent.SolverVersion.TWO_DIMENSIONAL,
+            dimension=pyfluent.Dimension.TWO_DIMENSIONAL,
             precision=pyfluent.Precision.DOUBLE,
             mode="solver",
         )
@@ -131,7 +131,7 @@ def launch_fluent_solver_2ddp_t2():
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
-            version="2d",
+            dimension="2d",
             precision="double",
             processor_count=2,
             mode="solver",
@@ -140,7 +140,7 @@ def launch_fluent_solver_2ddp_t2():
         )
     else:
         solver_session = pyfluent.launch_fluent(
-            version="2d", precision="double", processor_count=2, mode="solver"
+            dimension="2d", precision="double", processor_count=2, mode="solver"
         )
     yield solver_session
     solver_session.exit()

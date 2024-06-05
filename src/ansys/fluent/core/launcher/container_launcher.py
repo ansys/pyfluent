@@ -26,11 +26,11 @@ from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
 from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
-    SolverVersion,
     UIMode,
     _get_argvals_and_session,
 )
@@ -53,7 +53,7 @@ class DockerLauncher:
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Optional[FluentVersion] = None,
-        version: Optional[Union[SolverVersion, str, None]] = None,
+        dimension: Optional[Union[Dimension, str, None]] = None,
         precision: Optional[Union[Precision, str, None]] = None,
         processor_count: Optional[int] = None,
         start_timeout: int = 60,
@@ -82,9 +82,9 @@ class DockerLauncher:
         product_version : FluentVersion, optional
             Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
             The default is ``None``, in which case the newest installed version is used.
-        version : SolverVersion or str, optional
+        dimension : Dimension or str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``"3d"`` is used. Options are either the values of the ``SolverVersion``
+            in which case ``"3d"`` is used. Options are either the values of the ``Dimension``
             enum or any of ``"3d"`` and ``"2d"``.
         precision : Precision or str, optional
             Floating point precision. The default is ``None``, in which case ``"double"``

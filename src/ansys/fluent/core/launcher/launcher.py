@@ -14,12 +14,12 @@ from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     LaunchMode,
     Precision,
-    SolverVersion,
     UIMode,
     _get_fluent_launch_mode,
     _get_running_session_mode,
@@ -70,6 +70,15 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
+def _version_to_dimension(old_arg_val):
+    if old_arg_val == "2d":
+        return Dimension.TWO_DIMENSIONAL
+    elif old_arg_val == "3d":
+        return Dimension.THREE_DIMENSIONAL
+    else:
+        return None
+
+
 #   pylint: disable=unused-argument
 @deprecate_argument(
     old_arg="show_gui",
@@ -77,9 +86,15 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
     deprecation_class=PyFluentDeprecationWarning,
 )
+@deprecate_argument(
+    old_arg="version",
+    new_arg="dimension",
+    converter=_version_to_dimension,
+    deprecation_class=PyFluentDeprecationWarning,
+)
 def launch_fluent(
     product_version: Optional[FluentVersion] = None,
-    version: Optional[Union[SolverVersion, str, None]] = None,
+    dimension: Optional[Union[Dimension, str, None]] = None,
     precision: Optional[Union[Precision, str, None]] = None,
     processor_count: Optional[int] = None,
     journal_file_names: Union[None, str, list[str]] = None,
@@ -115,9 +130,9 @@ def launch_fluent(
     product_version : FluentVersion, optional
         Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
         The default is ``None``, in which case the newest installed version is used.
-    version : SolverVersion or str, optional
+    dimension : Dimension or str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
-        in which case ``"3d"`` is used. Options are either the values of the ``SolverVersion``
+        in which case ``"3d"`` is used. Options are either the values of the ``Dimension``
         enum or any of ``"3d"`` and ``"2d"``.
     precision : Precision or str, optional
         Floating point precision. The default is ``None``, in which case ``"double"``
