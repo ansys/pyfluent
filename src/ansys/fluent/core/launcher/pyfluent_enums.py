@@ -125,8 +125,8 @@ class UIMode(FluentEnum):
 class Dimension(FluentEnum):
     """Geometric dimensionality of the Fluent simulation."""
 
-    TWO_DIMENSIONAL = ("2d",)
-    THREE_DIMENSIONAL = ("3d",)
+    TWO = ("2d",)
+    THREE = ("3d",)
 
 
 class Precision(FluentEnum):

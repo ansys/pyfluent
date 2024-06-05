@@ -109,7 +109,7 @@ def launch_fluent_solver_2ddp():
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         solver_session = pyfluent.launch_fluent(
-            dimension=pyfluent.Dimension.TWO_DIMENSIONAL,
+            dimension=pyfluent.Dimension.TWO,
             precision=pyfluent.Precision.DOUBLE,
             mode="solver",
             container_dict=container_dict,
@@ -117,7 +117,7 @@ def launch_fluent_solver_2ddp():
         )
     else:
         solver_session = pyfluent.launch_fluent(
-            dimension=pyfluent.Dimension.TWO_DIMENSIONAL,
+            dimension=pyfluent.Dimension.TWO,
             precision=pyfluent.Precision.DOUBLE,
             mode="solver",
         )

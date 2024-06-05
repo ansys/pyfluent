@@ -72,9 +72,9 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
 
 def _version_to_dimension(old_arg_val):
     if old_arg_val == "2d":
-        return Dimension.TWO_DIMENSIONAL
+        return Dimension.TWO
     elif old_arg_val == "3d":
-        return Dimension.THREE_DIMENSIONAL
+        return Dimension.THREE
     else:
         return None
 
