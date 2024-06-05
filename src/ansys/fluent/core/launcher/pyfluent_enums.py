@@ -132,7 +132,7 @@ class Dimension(FluentEnum):
 class Precision(FluentEnum):
     """Floating point precision."""
 
-    SINGLE = ("SINGLE",)
+    SINGLE = ("single",)
     DOUBLE = ("double",)
 
 
