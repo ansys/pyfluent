@@ -1781,7 +1781,9 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
-class _HasAllowedValuesMixin:
+class HasAllowedValuesMixin:
+    """Provides allowed values."""
+
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
@@ -1845,7 +1847,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
-            bases += (_HasAllowedValuesMixin,)
+            bases += (HasAllowedValuesMixin,)
         elif info.get("file_purpose") == "input":
             bases += (_InputFile,)
         elif info.get("file_purpose") == "output":
