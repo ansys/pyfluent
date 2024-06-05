@@ -285,7 +285,7 @@ def _populate_classes(parent_dir):
                 f"{istr1}_ChildNamedObjectAccessorMixin,\n"
                 f"{istr1}CreatableNamedObjectMixin,\n"
                 f"{istr1}_NonCreatableNamedObjectMixin,\n"
-                f"{istr1}HasAllowedValuesMixin,\n"
+                f"{istr1}AllowedValuesMixin,\n"
                 f"{istr1}_InputFile,\n"
                 f"{istr1}_OutputFile,\n"
                 f"{istr1}_InOutFile,\n"
