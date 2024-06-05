@@ -48,6 +48,8 @@ import warnings
 import weakref
 from zipimport import zipimporter
 
+import ansys.fluent.core as pyfluent
+
 try:
     from ansys.fluent.core.warnings import (
         PyFluentDeprecationWarning,
@@ -167,6 +169,23 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+def _get_root_from_child_object(obj):
+    root = obj._parent
+    if root is None:
+        root = obj
+    else:
+        root = _get_root_from_child_object(root)
+    return root
+
+
+def _interrupt(obj):
+    if pyfluent.SUPPORT_SOLVER_INTERRUPT:
+        root = _get_root_from_child_object(obj)
+        root.solution.run_calculation.interrupt()
+    else:
+        raise KeyboardInterrupt
 
 
 class Base:
@@ -1602,12 +1621,6 @@ class BaseCommand(Action):
                 assert_type(ret, base_t._state_type)
             return ret
 
-    def _interrupt(self):
-        try:
-            self.root.solution.run_calculation.interrupt()
-        except AttributeError:
-            raise KeyboardInterrupt
-
     def __call__(self, *args, **kwds):
         return self.execute_command(*args, **kwds)
 
@@ -1639,7 +1652,7 @@ class Command(BaseCommand):
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            self._interrupt()
+            _interrupt(self)
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -1669,7 +1682,7 @@ class CommandWithPositionalArgs(BaseCommand):
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            self._interrupt()
+            _interrupt(self)
 
 
 class Query(Action):

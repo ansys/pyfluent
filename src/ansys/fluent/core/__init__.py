@@ -99,3 +99,6 @@ CODEGEN_ZIP_SETTINGS = False
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
+
+# Whether to interrupt Fluent solver from PyFluent
+SUPPORT_SOLVER_INTERRUPT = True
