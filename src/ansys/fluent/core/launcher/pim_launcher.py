@@ -51,8 +51,8 @@ class PIMLauncher:
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Optional[FluentVersion] = None,
-        dimension: Optional[Union[Dimension, str, None]] = None,
-        precision: Optional[Union[Precision, str, None]] = None,
+        dimension: Union[Dimension, str, None] = None,
+        precision: Union[Precision, str, None] = None,
         processor_count: Optional[int] = None,
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",

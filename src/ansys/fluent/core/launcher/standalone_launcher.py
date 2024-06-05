@@ -63,8 +63,8 @@ class StandaloneLauncher:
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Optional[FluentVersion] = None,
-        dimension: Optional[Union[Dimension, str, None]] = None,
-        precision: Optional[Union[Precision, str, None]] = None,
+        dimension: Union[Dimension, str, None] = None,
+        precision: Union[Precision, str, None] = None,
         processor_count: Optional[int] = None,
         journal_file_names: Union[None, str, list[str]] = None,
         start_timeout: int = 60,
