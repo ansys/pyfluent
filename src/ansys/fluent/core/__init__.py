@@ -6,11 +6,11 @@ import pydoc
 
 import platformdirs
 
-# Logging has to be set up before importing other PyFluent modules
-import ansys.fluent.core.logging as logging
+# isort: off
+# Logging has to be imported before importing other PyFluent modules
+from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
 
-logging.root_config()
-logging.configure_env_var()
+# isort: on
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
