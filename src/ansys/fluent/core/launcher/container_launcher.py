@@ -29,6 +29,8 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    Precision,
+    SolverVersion,
     UIMode,
     _get_argvals_and_session,
 )
@@ -51,8 +53,8 @@ class DockerLauncher:
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Optional[FluentVersion] = None,
-        version: Optional[str] = None,
-        precision: Optional[str] = None,
+        version: Optional[Union[SolverVersion, str, None]] = None,
+        precision: Optional[Union[Precision, str, None]] = None,
         processor_count: Optional[int] = None,
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
@@ -80,12 +82,14 @@ class DockerLauncher:
         product_version : FluentVersion, optional
             Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
             The default is ``None``, in which case the newest installed version is used.
-        version : str, optional
+        version : SolverVersion or str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
-        precision : str, optional
+            in which case ``"3d"`` is used. Options are either the values of the ``SolverVersion``
+            enum or any of ``"3d"`` and ``"2d"``.
+        precision : Precision or str, optional
             Floating point precision. The default is ``None``, in which case ``"double"``
-            is used. Options are ``"double"`` and ``"single"``.
+            is used. Options are either the values of the ``Precision`` enum or any
+            of ``"double"`` and ``"single"``.
         processor_count : int, optional
             Number of processors. The default is ``None``, in which case ``1``
             processor is used.  In job scheduler environments the total number of

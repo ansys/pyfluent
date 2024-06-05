@@ -122,6 +122,20 @@ class UIMode(FluentEnum):
     GUI = ("",)
 
 
+class SolverVersion(FluentEnum):
+    """Geometric dimensionality of the Fluent simulation."""
+
+    TWO_DIMENSIONAL = ("2d",)
+    THREE_DIMENSIONAL = ("3d",)
+
+
+class Precision(FluentEnum):
+    """Floating point precision."""
+
+    SINGLE = ("SINGLE",)
+    DOUBLE = ("double",)
+
+
 class FluentWindowsGraphicsDriver(FluentEnum):
     """Provides supported graphics driver of Fluent in Windows."""
 
