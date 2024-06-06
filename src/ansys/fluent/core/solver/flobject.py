@@ -169,15 +169,6 @@ def to_python_name(fluent_name: str) -> str:
     return name
 
 
-def _get_root_from_child_object(obj):
-    root = obj._parent
-    if root is None:
-        root = obj
-    else:
-        root = _get_root_from_child_object(root)
-    return root
-
-
 class Base:
     """Provides the base class for settings and command objects.
 
@@ -203,6 +194,12 @@ class Base:
         if name is not None:
             self._setattr("_name", name)
         self._setattr("_child_alias_objs", {})
+
+    def _root(self, obj):
+        if obj._parent is None:
+            return obj
+        else:
+            return self._root(obj._parent)
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
@@ -1630,7 +1627,7 @@ class Command(BaseCommand):
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
             if self.path in interruptible_commands:
-                _get_root_from_child_object(self)._interrupt()
+                self._root(self)._interrupt()
             raise KeyboardInterrupt
 
 
@@ -1662,7 +1659,7 @@ class CommandWithPositionalArgs(BaseCommand):
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
             if self.path in interruptible_commands:
-                _get_root_from_child_object(self)._interrupt()
+                self._root(self)._interrupt()
             raise KeyboardInterrupt
 
 
