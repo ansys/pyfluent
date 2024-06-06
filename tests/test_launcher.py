@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import platform
 
@@ -11,7 +12,6 @@ from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
     DockerContainerLaunchNotSupported,
     GPUSolverSupportError,
-    LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
@@ -195,35 +195,34 @@ def test_case_data_load():
     session.exit()
 
 
-def test_gpu_launch_arg(helpers, monkeypatch):
-    # The launch process is terminated intentionally to verify whether the fluent launch string
-    # (which is available in the error message) is generated correctly.
-    helpers.mock_awp_vars()
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(gpu=True, start_timeout=0)
+def test_gpu_launch_arg():
+    assert (
+        _build_fluent_launch_args_string(
+            gpu=True, additional_arguments="", processor_count=None
+        ).strip()
+        == "3ddp -gpu"
+    )
+    assert (
+        _build_fluent_launch_args_string(
+            gpu=[1, 2, 4], additional_arguments="", processor_count=None
+        ).strip()
+        == "3ddp -gpu=1,2,4"
+    )
 
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(gpu=[1, 2, 4], start_timeout=0)
 
-    with pytest.raises(GPUSolverSupportError):
-        pyfluent.launch_fluent(gpu=True, version="2d")
-
-
-def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
-    # The launch process is terminated intentionally to verify whether the fluent launch string
-    # (which is available in the error message) is generated correctly.
-    helpers.mock_awp_vars()
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(additional_arguments="-gpu", start_timeout=0)
-
-    assert " -gpu" in str(error.value)
-
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(additional_arguments="-gpu=1,2,4", start_timeout=0)
-
-    assert " -gpu=1,2,4" in str(error.value)
+def test_gpu_launch_arg_additional_arg():
+    assert (
+        _build_fluent_launch_args_string(
+            additional_arguments="-gpu", processor_count=None
+        ).strip()
+        == "3ddp -gpu"
+    )
+    assert (
+        _build_fluent_launch_args_string(
+            additional_arguments="-gpu=1,2,4", processor_count=None
+        ).strip()
+        == "3ddp -gpu=1,2,4"
+    )
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
@@ -450,3 +449,14 @@ def test_processor_count():
     # https://github.com/ansys/pyfluent/issues/2624
     # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
     #     assert get_processor_count(solver) == 2
+
+
+def test_container_warning_for_host_mount_path(caplog):
+    container_dict = {
+        "host_mount_path": os.getcwd(),
+        "container_mount_path": "/mnt/pyfluent/tests",
+    }
+    if check_docker_support():
+        solver = pyfluent.launch_fluent(container_dict=container_dict)
+        assert container_dict["host_mount_path"] in caplog.text
+        assert container_dict["container_mount_path"] in caplog.text
