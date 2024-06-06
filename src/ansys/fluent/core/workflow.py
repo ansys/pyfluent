@@ -1430,7 +1430,6 @@ class Workflow:
         return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
-        logger.debug(f"Workflow.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
         elif attr in self._task_objects:
