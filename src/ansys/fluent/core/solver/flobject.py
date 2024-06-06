@@ -1626,7 +1626,7 @@ class Command(BaseCommand):
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            self._root(self)._interrupt(self)
+            self._root(self)._on_interrupt(self)
             raise KeyboardInterrupt
 
 
