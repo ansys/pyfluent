@@ -63,7 +63,7 @@ except ImportError:
     PyFluentUserWarning = UserWarning
 
 from .error_message import allowed_name_error_message, allowed_values_error
-from .settings_external import expand_api_file_argument, interruptible_commands
+from .settings_external import expand_api_file_argument
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -1626,8 +1626,7 @@ class Command(BaseCommand):
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            if self.path in interruptible_commands:
-                self._root(self)._interrupt()
+            self._root(self)._interrupt(self)
             raise KeyboardInterrupt
 
 
@@ -1658,8 +1657,7 @@ class CommandWithPositionalArgs(BaseCommand):
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            if self.path in interruptible_commands:
-                self._root(self)._interrupt()
+            self._root(self)._interrupt(self)
             raise KeyboardInterrupt
 
 

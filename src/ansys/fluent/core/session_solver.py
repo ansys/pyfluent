@@ -195,9 +195,15 @@ class Solver(BaseSession):
             )
         return self._workflow
 
-    def _interrupt(self):
+    def _interrupt(self, command):
+        interruptible_commands = [
+            "solution/run-calculation/iterate",
+            "solution/run-calculation/calculate",
+            "solution/run-calculation/dual-time-iterate",
+        ]
         if pyfluent.SUPPORT_SOLVER_INTERRUPT:
-            self.settings.solution.run_calculation.interrupt()
+            if command.path in interruptible_commands:
+                self.settings.solution.run_calculation.interrupt()
 
     @property
     def settings(self):
