@@ -58,12 +58,9 @@ class PostAPIHelper:
                 if not field:
                     raise IncompleteISOSurfaceDefinition()
                 self._delete_if_exist_on_server()
-                phases = self.obj._api_helper._get_phases()
-                unit_quantity = self.obj._api_helper._field_unit_quantity(field)
-                unit_info = self.obj._api_helper._fluent_unit_info(unit_quantity)
                 self._get_api_handle().iso_surface[self._surface_name_on_server] = {
                     "field": field,
-                    "iso_values": [(iso_value / unit_info[1]) - unit_info[2]],
+                    "iso_values": [iso_value],
                 }
             elif self.obj.definition.type() == "plane-surface":
                 plane_surface = self.obj.definition.plane_surface
@@ -71,19 +68,18 @@ class PostAPIHelper:
                 yz_plane = plane_surface.yz_plane
                 zx_plane = plane_surface.zx_plane
                 self._delete_if_exist_on_server()
-                unit_info = self.obj._api_helper._fluent_unit_info("length")
-                if xy_plane:
+                if xy_plane():
                     method = "xy-plane"
                     position = "z"
-                    value = (xy_plane.z() / unit_info[1]) - unit_info[2]
-                elif yz_plane:
+                    value = xy_plane.z()
+                elif yz_plane():
                     method = "yz-plane"
                     position = "x"
-                    value = (yz_plane.x() / unit_info[1]) - unit_info[2]
+                    value = yz_plane.x()
                 else:
                     method = "zx-plane"
                     position = "y"
-                    value = (zx_plane.y() / unit_info[1]) - unit_info[2]
+                    value = zx_plane.y()
                 self._get_api_handle().plane_surface[self._surface_name_on_server] = {
                     "method": method,
                     position: value,
