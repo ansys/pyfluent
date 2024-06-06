@@ -132,30 +132,9 @@ class PostAPIHelper:
         scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"  # noqa: E501
         return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
 
-    def _get_phases(self):
-        scheme_eval_str = "(map domain-name (get-phase-domains))"
-        return self._scheme_str_to_py_list(scheme_eval_str)
-
     def _field_unit_quantity(self, field):
         scheme_eval_str = f"(cdr (assq 'units (%fill-render-info '{field})))"
         return self._scheme_str_to_py_list(scheme_eval_str)[0]
-
-    def _fluent_unit_info(self, unit_quantity):
-        def to_float(number):
-            try:
-                return float(number)
-            except ValueError:
-                return number
-
-        scheme_eval_str = (
-            f"(units/inquire-label-scale-offset-for-quantity '{unit_quantity})"
-        )
-        unit_info = [
-            to_float(data) for data in self._scheme_str_to_py_list(scheme_eval_str)
-        ]
-        if len(unit_info) == 2:
-            unit_info.insert(0, "")
-        return unit_info
 
     def _scheme_str_to_py_list(self, scheme_eval_str):
         session = self.obj.get_root().session
