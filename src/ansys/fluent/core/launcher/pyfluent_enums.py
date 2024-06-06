@@ -167,7 +167,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         if check_docker_support():
             fluent_launch_mode = LaunchMode.CONTAINER
         else:
-            raise exceptions.DockerContainerLaunchNotSupported()
+            raise exceptions.DockerContainerLaunchError()
     elif scheduler_options and scheduler_options["scheduler"] == "slurm":
         fluent_launch_mode = LaunchMode.SLURM
     else:

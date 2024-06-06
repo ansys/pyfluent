@@ -10,7 +10,7 @@ from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
-    DockerContainerLaunchNotSupported,
+    DockerContainerLaunchError,
     GPUSolverSupportError,
     _raise_non_gui_exception_in_windows,
 )
@@ -116,7 +116,7 @@ def test_non_gui_in_windows_does_not_throw_exception():
 
 def test_container_launcher():
     if not check_docker_support():
-        with pytest.raises(DockerContainerLaunchNotSupported) as msg:
+        with pytest.raises(DockerContainerLaunchError) as msg:
             container_dict_1 = pyfluent.launch_fluent(start_container=True)
             container_dict_2 = pyfluent.launch_fluent(
                 start_container=True, dry_run=True
