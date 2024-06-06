@@ -2043,7 +2043,7 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
-    root._set_interrupt(interrupt)
+    root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
