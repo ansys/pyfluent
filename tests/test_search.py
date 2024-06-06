@@ -18,15 +18,8 @@ from ansys.fluent.core.utils.search import (
     _search_wildcard,
 )
 
-api_tree_data = _get_api_tree_data()
 
-try:
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
-except TypeError:
-    api_object_names = []
-
-
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 def test_nltk_data_download():
     import nltk
 
@@ -34,12 +27,15 @@ def test_nltk_data_download():
     for package in packages:
         nltk.download(package, quiet=True)
 
+    api_tree_data = _get_api_tree_data()
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_exact_match_for_word_from_names():
+    api_tree_data = _get_api_tree_data()
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
     exact_match = _get_exact_match_for_word_from_names(
         "VideoResoutionY",
         names=api_object_names,
@@ -48,9 +44,11 @@ def test_get_exact_match_for_word_from_names():
     assert len(exact_match) == 1
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_capitalize_match_for_word_from_names():
+    api_tree_data = _get_api_tree_data()
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
     capitalize_match_cases = _get_capitalize_match_for_word_from_names(
         "font",
         names=api_object_names,
@@ -73,9 +71,11 @@ def test_get_capitalize_match_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_match_case_for_word_from_names():
+    api_tree_data = _get_api_tree_data()
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
     match_cases = _get_match_case_for_word_from_names(
         "font",
         names=api_object_names,
@@ -104,9 +104,11 @@ def test_get_match_case_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
+    api_tree_data = _get_api_tree_data()
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
     wildcard_matches = _get_wildcard_matches_for_word_from_names(
         "iter*",
         names=api_object_names,
@@ -130,9 +132,11 @@ def test_get_wildcard_matches_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_get_close_matches_for_word_from_names():
+    api_tree_data = _get_api_tree_data()
+    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
     close_matches = _get_close_matches_for_word_from_names(
         "font",
         names=api_object_names,
@@ -158,12 +162,13 @@ def test_get_close_matches_for_word_from_names():
     assert "sunshine_factor" in close_matches
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_search_wildcard(capsys):
+    api_tree_data = _get_api_tree_data()
     _search_wildcard(
         "max*",
-        api_object_names=api_object_names,
+        api_tree_data=api_tree_data,
     )
     lines = capsys.readouterr().out.splitlines()
     assert (
@@ -173,19 +178,20 @@ def test_search_wildcard(capsys):
 
     _search_wildcard(
         "min*",
-        api_object_names=api_object_names,
+        api_tree_data=api_tree_data,
     )
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.solution.controls.limits.min_des_tke (Parameter)" in lines
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_search_whole_word(capsys):
+    api_tree_data = _get_api_tree_data()
     _search_whole_word(
         "RemovePartitionLinesTolerance",
         match_case=False,
-        api_object_names=api_object_names,
+        api_tree_data=api_tree_data,
     )
     lines = capsys.readouterr().out.splitlines()
     assert (
@@ -196,7 +202,7 @@ def test_search_whole_word(capsys):
     _search_whole_word(
         "k0_sei",
         match_case=False,
-        api_object_names=api_object_names,
+        api_tree_data=api_tree_data,
     )
     lines = capsys.readouterr().out.splitlines()
     assert (
@@ -205,9 +211,10 @@ def test_search_whole_word(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_search_semantic(capsys):
+    api_tree_data = _get_api_tree_data()
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.file.read_surface_mesh (Command)" in lines
@@ -217,7 +224,7 @@ def test_search_semantic(capsys):
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_whole_word_search(capsys):
     pyfluent.search("Font", match_whole_word=True)
@@ -230,7 +237,7 @@ def test_whole_word_search(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
     pyfluent.search("font", match_case=True)
@@ -248,7 +255,7 @@ def test_match_case_search(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_match_whole_word_and_case_search(capsys):
     pyfluent.search("font", match_whole_word=True, match_case=True)
@@ -267,7 +274,7 @@ def test_match_whole_word_and_case_search(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_misspelled_search(capsys):
     pyfluent.search("cfb_lma")
@@ -278,7 +285,7 @@ def test_misspelled_search(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
     pyfluent.search("iter*", wildcard=True)
@@ -287,7 +294,7 @@ def test_wildcard_search(capsys):
     assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
@@ -299,7 +306,7 @@ def test_chinese_semantic_search(capsys):
     assert "<solver_session>.file.write_case (Command)" in lines
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
@@ -308,7 +315,7 @@ def test_japanese_semantic_search(capsys):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 def test_search_from_root_latest(capsys, new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     pyfluent.search("display", search_root=meshing)
