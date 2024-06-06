@@ -140,7 +140,7 @@ def launch_fluent_solver_2ddp_t2():
         )
     else:
         solver_session = pyfluent.launch_fluent(
-            dimension="2d", precision="double", processor_count=2, mode="solver"
+            dimension="two", precision="double", processor_count=2, mode="solver"
         )
     yield solver_session
     solver_session.exit()
