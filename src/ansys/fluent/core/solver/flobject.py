@@ -1657,7 +1657,7 @@ class CommandWithPositionalArgs(BaseCommand):
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            self._root(self)._interrupt(self)
+            self._root(self)._on_interrupt(self)
             raise KeyboardInterrupt
 
 
