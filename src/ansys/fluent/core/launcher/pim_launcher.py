@@ -80,8 +80,8 @@ class PIMLauncher:
             The default is ``None``, in which case the newest installed version is used.
         dimension : Dimension or str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``"3d"`` is used. Options are either the values of the ``Dimension``
-            enum or any of ``"3d"`` and ``"2d"``.
+            in which case ``"three"`` is used. Options are either the values of the ``Dimension``
+            enum or any of ``"three"`` and ``"two"``.
         precision : Precision or str, optional
             Floating point precision. The default is ``None``, in which case ``"double"``
             is used. Options are either the values of the ``Precision`` enum or any
