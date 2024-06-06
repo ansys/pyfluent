@@ -48,7 +48,7 @@ class PIMLauncher:
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
-        product_version: Optional[FluentVersion] = None,
+        product_version: Union[FluentVersion, str, float, int] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -73,8 +73,9 @@ class PIMLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion, optional
-            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        product_version : FluentVersion or str or float or int, optional
+            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+           ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
             The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
@@ -153,7 +154,9 @@ class PIMLauncher:
     def __call__(self):
         logger.info("Starting Fluent remotely. The startup configuration is ignored.")
         if self.argvals["product_version"]:
-            fluent_product_version = str(self.argvals["product_version"].number)
+            fluent_product_version = str(
+                FluentVersion(self.argvals["product_version"]).number
+            )
         else:
             fluent_product_version = None
 
@@ -172,7 +175,7 @@ class PIMLauncher:
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
-    product_version: Optional[FluentVersion] = None,
+    product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Optional[str] = None,
@@ -194,8 +197,8 @@ def launch_remote_fluent(
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via method calls on the session object.
-    product_version : FluentVersion, optional
-        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+    product_version : str, optional
+        Version of Ansys Fluent to launch. Use ``"242"`` for 2024 R2.
         The default is ``None``, in which case the newest installed version is used.
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage

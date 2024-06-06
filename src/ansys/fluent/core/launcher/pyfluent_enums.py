@@ -219,7 +219,7 @@ def _get_running_session_mode(
 
 
 def _get_standalone_launch_fluent_version(
-    product_version: Union[FluentVersion, None]
+    product_version: Union[FluentVersion, str, float, int, None]
 ) -> Optional[FluentVersion]:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
@@ -235,15 +235,15 @@ def _get_standalone_launch_fluent_version(
         Fluent version or ``None``
     """
 
-    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
-    # determine the Fluent version, so returning None.
-    if os.getenv("PYFLUENT_FLUENT_ROOT"):
-        return None
-
     # Look for Fluent version in the following order:
     # 1. product_version parameter passed with launch_fluent
     if product_version:
         return FluentVersion(product_version)
+
+    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
+    # determine the Fluent version, so returning None.
+    if os.getenv("PYFLUENT_FLUENT_ROOT"):
+        return None
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return FluentVersion.get_latest_installed()
