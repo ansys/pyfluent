@@ -179,7 +179,7 @@ def _get_root_from_child_object(obj):
 
 
 class Base:
-    """Base class for settings and command objects.
+    """Provides the base class for settings and command objects.
 
     Parameters
     ----------
