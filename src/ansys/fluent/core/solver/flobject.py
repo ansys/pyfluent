@@ -205,9 +205,9 @@ class Base:
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
 
-    def _set_interrupt(self, interrupt):
+    def _set_on_interrupt(self, on_interrupt):
         """Set interrupt method."""
-        self._setattr("_interrupt", interrupt)
+        self._setattr("_on_interrupt", on_interrupt)
 
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
