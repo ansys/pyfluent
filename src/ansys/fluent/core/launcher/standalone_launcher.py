@@ -168,7 +168,7 @@ class StandaloneLauncher:
         UnexpectedKeywordArgument
             If an unexpected keyword argument is provided.
         DockerContainerLaunchError
-            If a Fluent Docker container launch is not supported.
+            If a Fluent Docker container launch is not successful.
 
         Notes
         -----
