@@ -132,8 +132,8 @@ class Dimension(FluentEnum):
 class Precision(FluentEnum):
     """Floating point precision."""
 
-    SINGLE = ("single",)
-    DOUBLE = ("double",)
+    SINGLE = ("",)
+    DOUBLE = ("dp",)
 
 
 class FluentWindowsGraphicsDriver(FluentEnum):
@@ -289,17 +289,17 @@ def _get_ui_mode(
     return ui_mode
 
 
-def _validate_gpu(gpu: Union[bool, list], version: str):
+def _validate_gpu(gpu: Union[bool, list], dimension: str):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
     ----------
     gpu : bool or list, optional
         This option will start Fluent with the GPU Solver.
-    version : str, optional
+    dimension : str, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if version == "2d" and gpu:
+    if dimension == "2d" and gpu:
         raise exceptions.GPUSolverSupportError()
 
 
