@@ -7,6 +7,7 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_release_version = FluentVersion.current_release().value
@@ -74,6 +75,7 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+    pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 
 
 class Helpers:

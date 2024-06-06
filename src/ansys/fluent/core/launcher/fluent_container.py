@@ -186,7 +186,7 @@ def configure_container_dict(
         if file_transfer_service:
             host_mount_path = pyfluent.USER_DATA_PATH
         else:
-            host_mount_path = pyfluent.EXAMPLES_PATH
+            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH or os.getcwd()
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
@@ -228,6 +228,9 @@ def configure_container_dict(
         host_mount_path = volumes_string.replace(":" + container_mount_path, "")
         logger.debug(f"host_mount_path: {host_mount_path}")
         logger.debug(f"container_mount_path: {container_mount_path}")
+    logger.warning(
+        f"Starting Fluent container mounted to {host_mount_path}, with this path available as {container_mount_path} for the Fluent session running inside the container."
+    )
 
     if "ports" not in container_dict:
         if not port:
