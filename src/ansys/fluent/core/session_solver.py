@@ -212,7 +212,7 @@ class Solver(BaseSession):
             self._settings_root = flobject.get_root(
                 flproxy=self._settings_service,
                 version=self._version,
-                interrupt=self._interrupt,
+                on_interrupt=self._interrupt,
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme_eval.scheme_eval,
             )
