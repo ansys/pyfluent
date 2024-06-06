@@ -21,6 +21,8 @@ def create_solver_session(*args, **kwargs):
 def new_solver_session():
     solver = create_solver_session()
     yield solver
+    solver.results.report.system.print_process_statistics()
+    solver.results.report.system.print_time_statistics()
     solver.exit(timeout=5, timeout_force=True)
 
 
@@ -52,6 +54,8 @@ def make_new_session():
 def new_solver_session_single_precision():
     solver = create_solver_session(precision="single")
     yield solver
+    solver.results.report.system.print_process_statistics()
+    solver.results.report.system.print_time_statistics()
     solver.exit(timeout=5, timeout_force=True)
 
 

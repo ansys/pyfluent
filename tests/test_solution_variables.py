@@ -125,56 +125,53 @@ def test_solution_variables(new_solver_session):
 def test_solution_variables_single_precision(new_solver_session_single_precision):
     solver = new_solver_session_single_precision
     import_file_name = examples.download_file(
-        "vortex_init.cas.h5", "pyfluent/examples/Steady-Vortex-VOF"
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
+    examples.download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
 
     solution_variable_info = solver.fields.solution_variable_info
     solution_variable_data = solver.fields.solution_variable_data
 
-    solver.file.read(file_type="case", file_name=import_file_name)
-
-    solver.solution.initialization.hybrid_initialize()
-    solver.solution.run_calculation.iterate(iter_count=10)
+    solver.file.read_case_data(file_name=import_file_name)
 
     zones_info = solution_variable_info.get_zones_info()
 
-    assert zones_info.domains == ["water", "air", "mixture"]
+    assert zones_info.domains == ["mixture"]
 
     assert set(zones_info.zones) == {
-        "mrf-tank",
-        "tank_top",
-        "wall_tank",
-        "shaft_tank",
-        "shaft_mrf",
-        "wall_impeller",
-        "mrf",
-        "interior--mrf",
-        "tank",
-        "interior--tank",
+        "symmetry-xyplane",
+        "hot-inlet",
+        "cold-inlet",
+        "outlet",
+        "wall-inlet",
+        "wall-elbow",
+        "elbow-fluid",
+        "interior--elbow-fluid",
     }
 
-    zone_info = zones_info["wall_tank"]
+    zone_info = zones_info["wall-elbow"]
 
-    assert zone_info.name == "wall_tank"
+    assert zone_info.name == "wall-elbow"
 
-    assert zone_info.count == 14921
+    assert zone_info.count == 2168
 
-    assert zone_info.zone_id == 27
+    assert zone_info.zone_id == 34
 
     assert zone_info.zone_type == "wall"
 
     wall_fluid_info = solution_variable_info.get_variables_info(
-        zone_names=["wall_tank", "tank"], domain_name="mixture"
+        zone_names=["wall-elbow", "elbow-fluid"], domain_name="mixture"
     )
 
     assert set(wall_fluid_info.solution_variables) == {
         "SV_ADS_0",
         "SV_ADS_1",
         "SV_CENTROID",
-        "SV_DENSITY",
+        "SV_H",
         "SV_K",
         "SV_O",
         "SV_P",
+        "SV_T",
         "SV_U",
         "SV_V",
         "SV_W",
@@ -190,15 +187,15 @@ def test_solution_variables_single_precision(new_solver_session_single_precision
 
     sv_p_wall_fluid = solution_variable_data.get_data(
         solution_variable_name="SV_P",
-        zone_names=["wall_tank", "tank"],
-        domain_name="air",
+        zone_names=["wall-elbow", "elbow-fluid"],
+        domain_name="mixture",
     )
-    assert sv_p_wall_fluid.domain == "air"
+    assert sv_p_wall_fluid.domain == "mixture"
 
-    assert sv_p_wall_fluid.zones == ["wall_tank", "tank"]
+    assert sv_p_wall_fluid.zones == ["wall-elbow", "elbow-fluid"]
 
-    fluid_temp = sv_p_wall_fluid["tank"]
-    assert fluid_temp.size == 183424
+    fluid_temp = sv_p_wall_fluid["elbow-fluid"]
+    assert fluid_temp.size == 17822
     assert str(fluid_temp.dtype) == "float32"
 
 
