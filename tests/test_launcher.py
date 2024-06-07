@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import platform
 
@@ -268,7 +269,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path(product_version=231) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
@@ -278,7 +279,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_watchdog_launch(monkeypatch):
@@ -344,7 +345,7 @@ def test_fluent_launchers():
 
     if pypim.is_configured():
         pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs
         )
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
@@ -436,3 +437,14 @@ def test_processor_count():
     # https://github.com/ansys/pyfluent/issues/2624
     # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
     #     assert get_processor_count(solver) == 2
+
+
+def test_container_warning_for_host_mount_path(caplog):
+    container_dict = {
+        "host_mount_path": os.getcwd(),
+        "container_mount_path": "/mnt/pyfluent/tests",
+    }
+    if check_docker_support():
+        solver = pyfluent.launch_fluent(container_dict=container_dict)
+        assert container_dict["host_mount_path"] in caplog.text
+        assert container_dict["container_mount_path"] in caplog.text

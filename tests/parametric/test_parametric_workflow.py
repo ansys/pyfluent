@@ -232,6 +232,7 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only

@@ -127,16 +127,16 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         else:
             return fluent_root / "bin" / "fluent"
 
-    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
-    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
-    if fluent_root:
-        return get_exe_path(Path(fluent_root))
-
     # Look for Fluent exe path in the following order:
     # 1. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+
+    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
+    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    if fluent_root:
+        return get_exe_path(Path(fluent_root))
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
