@@ -80,12 +80,12 @@ class PIMLauncher:
             The default is ``None``, in which case the newest installed version is used.
         dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``3`` is used. Options are either the values of the ``Dimension``
-            enum or any of ``2`` and ``3``.
+            in which case ``Dimension.THREE`` is used. Options are either the values of the
+            ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
         precision : Precision or str, optional
-            Floating point precision. The default is ``None``, in which case ``"double"``
-            is used. Options are either the values of the ``Precision`` enum or any
-            of ``"double"`` and ``"single"``.
+            Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
+            is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
+            or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
         processor_count : int, optional
             Number of processors. The default is ``None``, in which case ``1``
             processor is used.  In job scheduler environments the total number of
