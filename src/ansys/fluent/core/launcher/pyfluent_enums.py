@@ -128,6 +128,18 @@ class Dimension(FluentEnum):
     TWO = ("2d",)
     THREE = ("3d",)
 
+    @classmethod
+    def _missing_(cls, value: int):
+        if value is None:
+            return cls.THREE
+        for member in cls:
+            if int(member.value[0][0]) == value:
+                return member
+        raise ValueError(
+            f"The specified value '{value}' is not a supported value of {cls.__name__}."
+            f""" The supported values are: '{"', '".join((member.value[0][0]) for member in cls)}'."""
+        )
+
 
 class Precision(FluentEnum):
     """Floating point precision."""

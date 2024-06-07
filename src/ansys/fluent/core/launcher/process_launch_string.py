@@ -32,19 +32,12 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         all_options = json.load(fp)
     launch_args_string = ""
     dimension = kwargs.get("dimension")
-    if dimension is None:
-        launch_args_string += f" {Dimension.THREE.value[0]}"
-    elif isinstance(dimension, str):
-        launch_args_string += f" {Dimension(dimension).value[0]}"
-    else:
-        launch_args_string += f" {dimension.value[0]}"
+    launch_args_string += f" {Dimension(dimension).value[0]}"
     precision = kwargs.get("precision")
     if precision is None:
         launch_args_string += f"{Precision.DOUBLE.value[0]}"
-    elif isinstance(precision, str):
-        launch_args_string += f"{Precision(precision).value[0]}"
     else:
-        launch_args_string += f"{precision.value[0]}"
+        launch_args_string += f"{Precision(precision).value[0]}"
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
