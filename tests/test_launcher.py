@@ -39,7 +39,7 @@ def test_gpu_version_error():
     with pytest.raises(GPUSolverSupportError) as msg:
         pyfluent.launch_fluent(
             mode="meshing",
-            dimension="two",
+            dimension=2,
             precision="single",
             processor_count=5,
             ui_mode="gui",
@@ -47,7 +47,7 @@ def test_gpu_version_error():
         )
         pyfluent.setup_for_fluent(
             mode="meshing",
-            dimension="two",
+            dimension=2,
             precision="single",
             processor_count=5,
             ui_mode="gui",
