@@ -29,8 +29,8 @@ class LaunchMode(Enum):
 class FluentMode(Enum):
     """Enumerates over supported Fluent modes."""
 
-    MESHING_MODE = (Meshing, "meshing")
-    PURE_MESHING_MODE = (PureMeshing, "pure-meshing")
+    MESHING = (Meshing, "meshing")
+    PURE_MESHING = (PureMeshing, "pure-meshing")
     SOLVER = (Solver, "solver")
     SOLVER_ICING = (SolverIcing, "solver-icing")
 
@@ -72,10 +72,10 @@ class FluentMode(Enum):
         Returns
         -------
         bool
-            ``True`` if the mode is ``FluentMode.MESHING_MODE`` or ``FluentMode.PURE_MESHING_MODE``,
+            ``True`` if the mode is ``FluentMode.MESHING`` or ``FluentMode.PURE_MESHING``,
             ``False`` otherwise.
         """
-        return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
+        return mode in [FluentMode.MESHING, FluentMode.PURE_MESHING]
 
 
 @total_ordering
@@ -219,7 +219,7 @@ def _get_running_session_mode(
 
 
 def _get_standalone_launch_fluent_version(
-    product_version: Union[FluentVersion, None]
+    product_version: Union[FluentVersion, str, float, int, None]
 ) -> Optional[FluentVersion]:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
@@ -235,15 +235,15 @@ def _get_standalone_launch_fluent_version(
         Fluent version or ``None``
     """
 
-    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
-    # determine the Fluent version, so returning None.
-    if os.getenv("PYFLUENT_FLUENT_ROOT"):
-        return None
-
     # Look for Fluent version in the following order:
     # 1. product_version parameter passed with launch_fluent
     if product_version:
         return FluentVersion(product_version)
+
+    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
+    # determine the Fluent version, so returning None.
+    if os.getenv("PYFLUENT_FLUENT_ROOT"):
+        return None
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return FluentVersion.get_latest_installed()

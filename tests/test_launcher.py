@@ -279,7 +279,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path(product_version=231) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
@@ -289,7 +289,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_watchdog_launch(monkeypatch):
@@ -308,7 +308,7 @@ def test_fluent_launchers():
     )
     if not check_docker_support() and not pypim.is_configured():
         standalone_meshing_launcher = create_launcher(
-            LaunchMode.STANDALONE, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.STANDALONE, mode=FluentMode.MESHING, **kwargs
         )
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
@@ -340,7 +340,7 @@ def test_fluent_launchers():
         )
         container_meshing_launcher = create_launcher(
             LaunchMode.CONTAINER,
-            mode=FluentMode.MESHING_MODE,
+            mode=FluentMode.MESHING,
             **kargs,
         )
         container_meshing_session = container_meshing_launcher()
@@ -356,7 +356,7 @@ def test_fluent_launchers():
 
     if pypim.is_configured():
         pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs
         )
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session

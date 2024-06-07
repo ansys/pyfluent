@@ -76,7 +76,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     deprecation_class=PyFluentDeprecationWarning,
 )
 def launch_fluent(
-    product_version: Optional[FluentVersion] = None,
+    product_version: Union[FluentVersion, str, float, int, None] = None,
     version: Optional[str] = None,
     precision: Optional[str] = None,
     processor_count: Optional[int] = None,
@@ -110,8 +110,9 @@ def launch_fluent(
 
     Parameters
     ----------
-    product_version : FluentVersion, optional
-        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+    product_version : FluentVersion or str or float or int, optional
+        Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+        any of  ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``or ``242``.
         The default is ``None``, in which case the newest installed version is used.
     version : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
