@@ -397,6 +397,7 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
+@pytest.mark.standalone
 @pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
     with pytest.raises(PyFluentDeprecationWarning):
