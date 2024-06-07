@@ -63,7 +63,7 @@ class StandaloneLauncher:
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Optional[FluentVersion] = None,
-        dimension: Union[Dimension, str, None] = None,
+        dimension: Union[Dimension, int, None] = None,
         precision: Union[Precision, str, None] = None,
         processor_count: Optional[int] = None,
         journal_file_names: Union[None, str, list[str]] = None,
@@ -97,10 +97,10 @@ class StandaloneLauncher:
         product_version : FluentVersion, optional
             Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
             The default is ``None``, in which case the newest installed version is used.
-        dimension : Dimension or str, optional
+        dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``"three"`` is used. Options are either the values of the ``SolverVersion``
-            enum or any of ``"three"`` and ``"two"``.
+            in which case ``3`` is used. Options are either the values of the ``Dimension``
+            enum or any of ``2`` and ``3``.
         precision : Precision or str, optional
             Floating point precision. The default is ``None``, in which case ``"double"``
             is used. Options are either the values of the ``Precision`` enum or any

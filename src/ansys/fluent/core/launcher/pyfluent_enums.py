@@ -301,14 +301,14 @@ def _get_ui_mode(
     return ui_mode
 
 
-def _validate_gpu(gpu: Union[bool, list], dimension: str):
+def _validate_gpu(gpu: Union[bool, list], dimension: int):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
     ----------
     gpu : bool or list, optional
         This option will start Fluent with the GPU Solver.
-    dimension : str, optional
+    dimension : int, optional
         Geometric dimensionality of the Fluent simulation.
     """
     if Dimension(dimension) == Dimension.TWO and gpu:
