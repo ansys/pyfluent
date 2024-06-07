@@ -287,7 +287,8 @@ def test_watchdog_launch(monkeypatch):
     pyfluent.launch_fluent(start_watchdog=True)
 
 
-def test_fluent_launchers():
+@pytest.mark.standalone
+def test_create_standalone_launcher():
     kwargs = dict(
         ui_mode=UIMode.NO_GUI,
         graphics_driver=(
@@ -311,6 +312,16 @@ def test_fluent_launchers():
     assert standalone_solver_session
     standalone_solver_session.exit()
 
+
+def test_fluent_launchers():
+    kwargs = dict(
+        ui_mode=UIMode.NO_GUI,
+        graphics_driver=(
+            FluentWindowsGraphicsDriver.AUTO
+            if is_windows()
+            else FluentLinuxGraphicsDriver.AUTO
+        ),
+    )
     kargs = dict(
         ui_mode=kwargs["ui_mode"],
         graphics_driver=kwargs["graphics_driver"],
