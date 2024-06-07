@@ -32,7 +32,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
 >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING_MODE)
+>>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING)
 >>> slurm_meshing_session = slurm_meshing_launcher()
 
 >>> slurm_solver_launcher = create_launcher(LaunchMode.SLURM)
@@ -208,7 +208,7 @@ class SlurmLauncher:
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
-        product_version: Optional[FluentVersion] = None,
+        product_version: Union[FluentVersion, str, float, int, None] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -241,8 +241,9 @@ class SlurmLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion, optional
-            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        product_version : FluentVersion or str or float or int, optional
+            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+            ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
             The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
