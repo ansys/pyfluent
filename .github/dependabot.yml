@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/requirements" # Location of package manifests
+    directory: "/" # Location of package manifests
     insecure-external-code-execution: allow
     schedule:
       interval: "monthly"
