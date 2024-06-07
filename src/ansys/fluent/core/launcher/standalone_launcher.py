@@ -6,7 +6,7 @@ Examples
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
 >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING_MODE)
+>>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING)
 >>> standalone_meshing_session = standalone_meshing_launcher()
 
 >>> standalone_solver_launcher = create_launcher(LaunchMode.STANDALONE)
@@ -62,7 +62,7 @@ class StandaloneLauncher:
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
-        product_version: Optional[FluentVersion] = None,
+        product_version: Union[FluentVersion, str, float, int, None] = None,
         dimension: Union[Dimension, int, None] = None,
         precision: Union[Precision, str, None] = None,
         processor_count: Optional[int] = None,
@@ -94,8 +94,9 @@ class StandaloneLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion, optional
-            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        product_version : FluentVersion or str or float or int, optional
+            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+           ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
             The default is ``None``, in which case the newest installed version is used.
         dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
