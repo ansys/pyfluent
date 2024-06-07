@@ -3,7 +3,6 @@
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-import docker
 
 
 class InvalidPassword(ValueError):
@@ -31,16 +30,6 @@ class UnexpectedKeywordArgument(TypeError):
     """Raised when a valid keyword argument is not specified."""
 
     pass
-
-
-class DockerContainerLaunchError(docker.errors.DockerException):
-    """Raised when Docker container launch is not successful."""
-
-    def __init__(self):
-        try:
-            _ = docker.from_env()
-        except docker.errors.DockerException as ex:
-            super().__init__(str(ex))
 
 
 class LaunchFluentError(Exception):
