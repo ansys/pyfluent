@@ -29,6 +29,7 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file(
     "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
 )
