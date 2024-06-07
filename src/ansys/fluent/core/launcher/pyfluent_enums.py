@@ -299,7 +299,7 @@ def _validate_gpu(gpu: Union[bool, list], dimension: str):
     dimension : str, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if dimension == "2d" and gpu:
+    if Dimension(dimension) == Dimension.TWO and gpu:
         raise exceptions.GPUSolverSupportError()
 
 
