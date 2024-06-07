@@ -125,8 +125,6 @@ class PIMLauncher:
         ------
         UnexpectedKeywordArgument
             If an unexpected keyword argument is provided.
-        DockerContainerLaunchNotSupported
-            If a Fluent Docker container launch is not supported.
 
         Notes
         -----
