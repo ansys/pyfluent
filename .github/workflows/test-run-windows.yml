@@ -1,0 +1,69 @@
+name: Test Run Windows
+
+on:
+  workflow_dispatch:
+
+env:
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYFLUENT_LAUNCH_CONTAINER: 1
+  PYFLUENT_LOGGING: 'DEBUG'
+  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_HIDE_LOG_SECRETS: 1
+  MAIN_PYTHON_VERSION: '3.9'
+
+jobs:
+  test:
+    name: Unit Testing
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull 25.1 Fluent docker image
+        run: docker pull ghcr.io/ansys/pyfluent:v25.1.0
+
+      - name: Run 25.1 API codegen
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v25.1.0
+
+      - name: Print 25.1 Fluent version info
+        run: |
+          type src/ansys/fluent/core/generated/fluent_version_251.py
+          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install
+
+      - name: 25.1 Unit Testing
+        run: |
+          make install-test
+          make unittest-dev-251-windows
+        env:
+          FLUENT_IMAGE_TAG: v25.1.0

@@ -11,7 +11,7 @@ install-test:
 	@pip install -r requirements/requirements_build.txt
 	@poetry install --with test
 	@poetry install -E reader
-	@poetry run python -m pip install -q --force-reinstall dist/*.whl > /dev/null
+	@poetry run python -m pip install -q --force-reinstall dist/*.whl
 
 version-info:
 	@bash -c "date -u +'Build date: %B %d, %Y %H:%M UTC ShaID: <id>' | xargs -I date sed -i 's/_VERSION_INFO = .*/_VERSION_INFO = \"date\"/g' src/ansys/fluent/core/__init__.py"
@@ -57,6 +57,10 @@ unittest-dev-251:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@poetry run python -m pytest --fluent-version=25.1 $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.1 $(PYTESTRERUN)
+
+unittest-dev-251-window:
+	@echo "Running unittests"
+	@poetry run python -m pytest --fluent-version=25.1 --solvermode $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.1 --solvermode $(PYTESTRERUN)
 
 unittest-all-222:
 	@echo "Running all unittests"
@@ -127,6 +131,14 @@ api-codegen:
 	@echo "Running API codegen"
 	@python -m venv env
 	@. env/bin/activate
+	@pip install -q -e .
+	@python codegen/allapigen.py
+	@rm -rf env
+
+api-codegen-windows:
+	@echo "Running API codegen"
+	@python -m venv env
+	@env\Scripts\activate
 	@pip install -q -e .
 	@python codegen/allapigen.py
 	@rm -rf env
