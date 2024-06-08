@@ -4,7 +4,7 @@ import functools
 import logging
 import warnings
 
-from ansys.fluent.core.launcher.pyfluent_enums import FluentEnum
+from ansys.fluent.core.launcher.pyfluent_enums import Dimension, FluentEnum
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 logger = logging.getLogger("pyfluent.general")
@@ -18,7 +18,9 @@ def deprecate_argument(
 
     def _str_repr(var):
         """Converts a string or FluentEnum variable to quoted string representation."""
-        if isinstance(var, (str, FluentEnum)):
+        if isinstance(var, Dimension):
+            return 2 if var == Dimension.TWO else 3
+        elif isinstance(var, (str, FluentEnum)):
             return f'"{var}"'
         else:
             return var

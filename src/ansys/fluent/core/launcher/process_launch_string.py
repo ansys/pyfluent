@@ -6,7 +6,12 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import FluentMode, UIMode
+from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
+    FluentMode,
+    Precision,
+    UIMode,
+)
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -26,6 +31,13 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     with open(_OPTIONS_FILE, encoding="utf-8") as fp:
         all_options = json.load(fp)
     launch_args_string = ""
+    dimension = kwargs.get("dimension")
+    launch_args_string += f" {Dimension(dimension).value[0]}"
+    precision = kwargs.get("precision")
+    if precision is None:
+        launch_args_string += f"{Precision.DOUBLE.value[0]}"
+    else:
+        launch_args_string += f"{Precision(precision).value[0]}"
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
