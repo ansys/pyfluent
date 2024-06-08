@@ -135,6 +135,8 @@ skip = """
     *.xml,
     ./src/ansys/fluent/core/generated/*,
     ./src/ansys/fluent/core/codegen/data/fluent_gui_help.xml,
+    pyproject.toml,
+    CODE_OF_CONDUCT.md,
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 
