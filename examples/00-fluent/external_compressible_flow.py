@@ -48,6 +48,7 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 wing_spaceclaim_file, wing_intermediary_file = [
     examples.download_file(CAD_file, "pyfluent/external_compressible")
     for CAD_file in ["wing.scdoc", "wing.pmdb"]
