@@ -29,6 +29,7 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file(
     "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
 )
@@ -77,7 +78,7 @@ solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
 # Set up the cell zone conditions for the fluid zone (``elbow-fluid``). Set ``material``
 # to ``"water-liquid"``.
 
-solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+solver.setup.cell_zone_conditions.fluid["elbow-fluid"].general.material = "water-liquid"
 
 ###############################################################################
 # Set up boundary conditions for CFD analysis
@@ -95,10 +96,10 @@ solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 
 cold_inlet.momentum.velocity.value = 0.4
-cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 cold_inlet.turbulence.turbulent_intensity = 0.05
 cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
-cold_inlet.thermal.t.value = 293.15
+cold_inlet.thermal.temperature.value = 293.15
 
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
@@ -110,9 +111,9 @@ cold_inlet.thermal.t.value = 293.15
 hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
 hot_inlet.momentum.velocity.value = 1.2
-hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
-hot_inlet.thermal.t.value = 313.15
+hot_inlet.thermal.temperature.value = 313.15
 
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
@@ -120,7 +121,7 @@ hot_inlet.thermal.t.value = 313.15
 
 solver.setup.boundary_conditions.pressure_outlet[
     "outlet"
-].turbulence.turbulent_viscosity_ratio_real = 4
+].turbulence.turbulent_viscosity_ratio = 4
 
 ###############################################################################
 # Disable plotting of residuals during calculation

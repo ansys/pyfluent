@@ -1,7 +1,15 @@
+ci:
+  autofix_commit_msg: |
+      ci: auto fixes from pre-commit.com hooks
+
+      for more information, see https://pre-commit.ci
+  autoupdate_commit_msg: 'ci: pre-commit autoupdate'
+  autoupdate_schedule: monthly
+
 repos:
 
 - repo: https://github.com/psf/black
-  rev: 24.3.0
+  rev: 24.4.2
   hooks:
   - id: black
     args: [
@@ -21,7 +29,7 @@ repos:
       'flake8-annotations==3.0.1'
     ]
     args: [
-      --exclude, src/ansys/fluent/core/meshing/tui* src/ansys/fluent/core/solver/tui* src/ansys/fluent/core/datamodel_222/* src/ansys/fluent/core/datamodel_231/* src/ansys/fluent/core/datamodel_232/* src/ansys/fluent/core/datamodel_241/* src/ansys/fluent/core/solver/settings_222/* src/ansys/fluent/core/solver/settings_231/* src/ansys/fluent/core/solver/settings_232/* src/ansys/fluent/core/solver/settings_241/*,
+      --exclude, src/ansys/fluent/core/generated,
       --select, W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 F401 F403 N801 N802 N803 N804 N805 N806,
       #--select, W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 F401 F403 N801 N802 N803 N804 N805 N806 ANN001 ANN201 ANN205 ANN206,
       --count,
@@ -29,7 +37,7 @@ repos:
       --max-complexity, "10",
       --max-line-length, "88",
       --extend-ignore, E203 E501,
-      ansys, codegen, doc, examples, tests
+      ansys, doc, examples, tests
     ]
 
 - repo: https://github.com/codespell-project/codespell
@@ -59,7 +67,7 @@ repos:
 #    ]
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.5.0
+  rev: v4.6.0
   hooks:
     - id: check-yaml
 

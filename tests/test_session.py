@@ -23,8 +23,10 @@ from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvide
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
@@ -357,9 +359,19 @@ def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    solver = pyfluent.launch_fluent(
-        case_file_name=import_file_name, lightweight_mode=True
-    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name,
+            lightweight_mode=True,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name, lightweight_mode=True
+        )
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver._fluent_connection)
     timeout_loop(
@@ -460,10 +472,12 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
             "parallel",
         }
-        assert api_keys.issubset(set(dir(solver)))
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            assert api_keys.issubset(set(dir(solver.settings)))
+        else:
+            assert api_keys.issubset(set(dir(solver)))
 
 
-@pytest.mark.skip("github issue: https://github.com/ansys/pyfluent/issues/2684")
 @pytest.mark.fluent_version(">=23.2")
 def test_get_set_state_on_solver(new_solver_session):
     solver = new_solver_session
@@ -474,9 +488,9 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         solver.field_data
-    with pytest.warns(DeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
 
     assert {

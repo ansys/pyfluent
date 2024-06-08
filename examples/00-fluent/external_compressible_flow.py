@@ -48,6 +48,7 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 wing_spaceclaim_file, wing_intermediary_file = [
     examples.download_file(CAD_file, "pyfluent/external_compressible")
     for CAD_file in ["wing.scdoc", "wing.pmdb"]
@@ -292,19 +293,19 @@ pressure_farfield = solver.setup.boundary_conditions.pressure_far_field[
     "pressure_farfield"
 ]
 
-pressure_farfield.gauge_pressure = 0
+pressure_farfield.momentum.gauge_pressure = 0
 
-pressure_farfield.m = 0.8395
+pressure_farfield.momentum.mach_number = 0.8395
 
-pressure_farfield.t = 255.56
+pressure_farfield.thermal.temperature = 255.56
 
-pressure_farfield.flow_direction[0] = 0.998574
+pressure_farfield.momentum.flow_direction[0] = 0.998574
 
-pressure_farfield.flow_direction[2] = 0.053382
+pressure_farfield.momentum.flow_direction[2] = 0.053382
 
-pressure_farfield.turbulent_intensity = 0.05
+pressure_farfield.turbulence.turbulent_intensity = 0.05
 
-pressure_farfield.turbulent_viscosity_ratio_real = 10
+pressure_farfield.turbulence.turbulent_viscosity_ratio = 10
 
 ###############################################################################
 # Operating Conditions

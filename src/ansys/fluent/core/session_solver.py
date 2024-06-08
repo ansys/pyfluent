@@ -2,22 +2,19 @@
 
 from asyncio import Future
 import functools
-import importlib
 import logging
 import threading
 from typing import Any, Dict, Optional
 import warnings
 
 from ansys.fluent.core.services import SchemeEval, service_creator
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
 )
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, _get_preferences
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -34,6 +31,7 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -147,7 +145,7 @@ class Solver(BaseSession):
         """``SolutionVariableData`` handle."""
         warnings.warn(
             "svar_data is deprecated. Use fields.solution_variable_data instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_data
 
@@ -156,7 +154,7 @@ class Solver(BaseSession):
         """``SolutionVariableInfo`` handle."""
         warnings.warn(
             "svar_info is deprecated. Use fields.solution_variable_info instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_info
 
@@ -165,7 +163,7 @@ class Solver(BaseSession):
         """``Reduction`` handle."""
         warnings.warn(
             "reduction is deprecated. Use fields.reduction instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.reduction
 
@@ -181,37 +179,18 @@ class Solver(BaseSession):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
-            try:
-                tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self._version}"
-                )
-                self._tui = tui_module.main_menu(
-                    self._tui_service, self._version, "solver", []
-                )
-            except ImportError:
-                tui_logger.warning(_CODEGEN_MSG_TUI)
-                self._tui = TUIMenu(self._tui_service, self._version, "solver", [])
-        return self._tui
+            self._tui = _make_tui_module(self, "solver")
 
-    @property
-    def _workflow_se(self):
-        """Datamodel root for workflow."""
-        try:
-            workflow_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self._version}.workflow"
-            )
-            workflow_se = workflow_module.Root(self._se_service, "workflow", [])
-        except ImportError:
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            workflow_se = PyMenuGeneric(self._se_service, "workflow")
-        return workflow_se
+        return self._tui
 
     @property
     def workflow(self):
         """Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = ClassicWorkflow(
-                self._workflow_se, Solver, self.get_fluent_version()
+                _make_datamodel_module(self, "workflow"),
+                Solver,
+                self.get_fluent_version(),
             )
         return self._workflow
 
@@ -238,7 +217,7 @@ class Solver(BaseSession):
     def preferences(self):
         """Datamodel root of preferences."""
         if self._preferences is None:
-            self._preferences = _get_preferences(self)
+            self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
 
     def _sync_from_future(self, fut: Future):

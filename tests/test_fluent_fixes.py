@@ -47,12 +47,8 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
 
-    solver_session.tui.file.read_case(import_case)
-
-    solver_session.tui.file.read_data(import_data)
-
-    solver_session.tui.solve.set.number_of_iterations(15)
-    solver_session.tui.solve.iterate()
+    solver_session.file.read_case_data(file_name=import_case)
+    solver_session.solution.run_calculation.iterate(iter_count=1)
 
     monitors_list = solver_session.monitors.get_monitor_set_names()
 
@@ -74,7 +70,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     sample_report_plot.report_defs = "mass-bal"
 
     solver_session.solution.initialization.hybrid_initialize()
-    solver_session.tui.solve.iterate()
+    solver_session.solution.run_calculation.iterate(iter_count=1)
 
     new_monitors_list = solver_session.monitors.get_monitor_set_names()
 
@@ -105,7 +101,7 @@ def test_empty_vector_field_data_2339(new_solver_session):
 
     assert [
         a.x
-        for a in solver.field_data.get_vector_field_data(
+        for a in solver.fields.field_data.get_vector_field_data(
             field_name="velocity", surface_ids=[1]
         )[1].data
     ][:5]

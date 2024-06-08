@@ -1,15 +1,16 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
+from pathlib import Path
 import pydoc
 
 import platformdirs
 
-# Logging has to be set up before importing other PyFluent modules
-import ansys.fluent.core.logging as logging
+# isort: off
+# Logging has to be imported before importing other PyFluent modules
+from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
 
-logging.root_config()
-logging.configure_env_var()
+# isort: on
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
@@ -32,7 +33,11 @@ from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning  # noqa: F401
+from ansys.fluent.core.warnings import (  # noqa: F401
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+    warning,
+)
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
@@ -66,6 +71,8 @@ USER_DATA_PATH = platformdirs.user_data_dir(
 )
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
+CONTAINER_MOUNT_PATH = None
+
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True
 
@@ -83,8 +90,14 @@ DATAMODEL_USE_ATTR_CACHE = True
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
+# Whether to use remote gRPC file transfer service
+USE_FILE_TRANSFER_SERVICE = False
 
-def wrap_api_call(f, *args, **kwargs):
-    """Wrap API call."""
-    # overwritten in PyConsole
-    return f(*args, **kwargs)
+# Directory where API files are writes out during codegen
+CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
+
+# Whether to zip settings API files during codegen
+CODEGEN_ZIP_SETTINGS = False
+
+# Whether to show mesh after case read
+SHOW_MESH_AFTER_CASE_READ = False

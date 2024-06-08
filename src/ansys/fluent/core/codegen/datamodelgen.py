@@ -1,17 +1,20 @@
+"""Module to generate Fluent datamodel API classes."""
+
 from io import FileIO
 import os
 from pathlib import Path
 import shutil
 from typing import Any, Dict
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
-from ansys.fluent.core.session import BaseSession as Session
+from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
 
-_THIS_DIR = Path(__file__).parent
+_ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
@@ -36,10 +39,11 @@ _PY_TYPE_BY_DM_TYPE = {
     "None": "None",
 }
 
+# TODO: Move doc specific variables to docgen
+
 _MESHING_DM_DOC_DIR = os.path.normpath(
     os.path.join(
-        _THIS_DIR,
-        "..",
+        _ROOT_DIR,
         "doc",
         "source",
         "api",
@@ -49,8 +53,7 @@ _MESHING_DM_DOC_DIR = os.path.normpath(
 )
 _SOLVER_DM_DOC_DIR = os.path.normpath(
     os.path.join(
-        _THIS_DIR,
-        "..",
+        _ROOT_DIR,
         "doc",
         "source",
         "api",
@@ -82,28 +85,25 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
 
 
 class DataModelStaticInfo:
+    """Stores datamodel static information."""
+
     _noindices = []
 
     def __init__(
         self,
-        pyfluent_path: str,
+        static_info_type: StaticInfoType,
         rules: str,
         modes: tuple,
         version: str,
         rules_save_name: str = "",
     ):
+        self.static_info_type = static_info_type
         self.rules = rules
         self.modes = modes
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (
-            (Path(pyfluent_path) if pyfluent_path else (Path(_THIS_DIR) / ".." / "src"))
-            / "ansys"
-            / "fluent"
-            / "core"
-            / f"datamodel_{version}"
-        ).resolve()
+        datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if len(modes) > 1:
@@ -112,57 +112,74 @@ class DataModelStaticInfo:
 
 
 class DataModelGenerator:
-    def __init__(self, version, pyfluent_path, sessions: dict):
+    """Provides the datamodel API class generator."""
+
+    def __init__(self, version, static_infos: dict):
         self.version = version
-        self.sessions = sessions
-        self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo(
-                pyfluent_path,
+        self._server_static_infos = static_infos
+        self._static_info: Dict[str, DataModelStaticInfo] = {}
+        if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
+            self._static_info["workflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_WORKFLOW,
                 "workflow",
                 (
                     "meshing",
                     "solver",
                 ),
                 self.version,
-            ),
-            "meshing": DataModelStaticInfo(
-                pyfluent_path, "meshing", ("meshing",), self.version
-            ),
-            "PartManagement": DataModelStaticInfo(
-                pyfluent_path, "PartManagement", ("meshing",), self.version
-            ),
-            "PMFileManagement": DataModelStaticInfo(
-                pyfluent_path, "PMFileManagement", ("meshing",), self.version
-            ),
-            "flicing": DataModelStaticInfo(
-                pyfluent_path, "flserver", ("flicing",), self.version, "flicing"
-            ),
-            "preferences": DataModelStaticInfo(
-                pyfluent_path,
-                "preferences",
-                ("meshing", "solver", "flicing,"),
-                self.version,
-            ),
-            "solverworkflow": (
-                DataModelStaticInfo(
-                    pyfluent_path, "solverworkflow", ("solver",), self.version
-                )
-                if FluentVersion(self.version) >= FluentVersion.v231
-                else None
-            ),
-        }
-        if FluentVersion(self.version) >= FluentVersion.v242:
-            self._static_info["meshing_utilities"] = DataModelStaticInfo(
-                pyfluent_path, "MeshingUtilities", ("meshing",), self.version
             )
-        if not self._static_info["solverworkflow"]:
-            del self._static_info["solverworkflow"]
+        if StaticInfoType.DATAMODEL_MESHING in static_infos:
+            self._static_info["meshing"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING, "meshing", ("meshing",), self.version
+            )
+        if StaticInfoType.DATAMODEL_PART_MANAGEMENT in static_infos:
+            self._static_info["PartManagement"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_PART_MANAGEMENT,
+                "PartManagement",
+                ("meshing",),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT in static_infos:
+            self._static_info["PMFileManagement"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
+                "PMFileManagement",
+                ("meshing",),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_FLICING in static_infos:
+            self._static_info["flicing"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_FLICING,
+                "flserver",
+                ("flicing",),
+                self.version,
+                "flicing",
+            )
+        if StaticInfoType.DATAMODEL_PREFERENCES in static_infos:
+            self._static_info["preferences"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_PREFERENCES,
+                "preferences",
+                ("meshing", "solver", "flicing"),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_SOLVER_WORKFLOW in static_infos:
+            self._static_info["solverworkflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
+                "solverworkflow",
+                ("solver",),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_MESHING_UTILITIES in static_infos:
+            self._static_info["MeshingUtilities"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING_UTILITIES,
+                "MeshingUtilities",
+                ("meshing",),
+                self.version,
+            )
         self._delete_generated_files()
         self._populate_static_info()
 
-    def _get_static_info(self, rules: str, session: Session):
-        response = session._datamodel_service_se.get_static_info(rules)
-        return response
+    def _get_static_info(self, static_info_type: StaticInfoType):
+        return self._server_static_infos[static_info_type]
 
     def _populate_static_info(self):
         run_meshing_mode = any(
@@ -176,50 +193,37 @@ class DataModelGenerator:
         )
 
         if run_meshing_mode:
-            if FluentMode.MESHING_MODE not in self.sessions:
-                self.sessions[FluentMode.MESHING_MODE] = launch_fluent(
-                    mode=FluentMode.MESHING_MODE
-                )
-            session = self.sessions[FluentMode.MESHING_MODE]
             for _, info in self._static_info.items():
                 if "meshing" in info.modes:
-                    info.static_info = self._get_static_info(info.rules, session)
-            self.sessions.pop(FluentMode.MESHING_MODE)
+                    info.static_info = self._get_static_info(info.static_info_type)
 
         if run_solver_mode:
-            if FluentMode.SOLVER not in self.sessions:
-                self.sessions[FluentMode.SOLVER] = launch_fluent(mode=FluentMode.SOLVER)
-            session = self.sessions[FluentMode.SOLVER]
             for _, info in self._static_info.items():
                 if "solver" in info.modes:
-                    info.static_info = self._get_static_info(info.rules, session)
+                    info.static_info = self._get_static_info(info.static_info_type)
 
         if run_icing_mode:
-            if FluentMode.SOLVER_ICING not in self.sessions:
-                self.sessions[FluentMode.SOLVER_ICING] = launch_fluent(
-                    mode=FluentMode.SOLVER_ICING
+            info = self._static_info.get("flicing")
+            if info:
+                info.static_info = self._get_static_info(
+                    StaticInfoType.DATAMODEL_FLICING
                 )
-            session = self.sessions[FluentMode.SOLVER_ICING]
-            for _, info in self._static_info.items():
-                if "flicing" in info.modes:
-                    info.static_info = self._get_static_info(info.rules, session)
-                    try:
-                        if (
-                            len(
-                                info.static_info["singletons"]["Case"]["singletons"][
-                                    "App"
-                                ]["singletons"]
-                            )
-                            == 0
-                        ):
-                            print(
-                                "Information: Icing settings not generated ( R23.1+ is required )\n"
-                            )
-                    except:
-                        print(
-                            "Information: Problem accessing flserver datamodel for icing settings\n"
+                try:
+                    if (
+                        len(
+                            info.static_info["singletons"]["Case"]["singletons"]["App"][
+                                "singletons"
+                            ]
                         )
-            self.sessions.pop(FluentMode.SOLVER_ICING)
+                        == 0
+                    ):
+                        print(
+                            "Information: Icing settings not generated ( R23.1+ is required )\n"
+                        )
+                except:
+                    print(
+                        "Information: Problem accessing flserver datamodel for icing settings\n"
+                    )
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}
@@ -329,83 +333,9 @@ class DataModelGenerator:
             api_tree[k] = "Query"
         return api_tree
 
-    def _write_doc_for_model_object(
-        self, info, doc_dir: Path, heading, module_name, class_name, noindex=True
-    ) -> None:
-        doc_dir.mkdir(exist_ok=True)
-        index_file = doc_dir / "index.rst"
-        with open(index_file, "w", encoding="utf8") as f:
-            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
-            f.write(f".. {ref}:\n\n")
-            if class_name == "Root":
-                heading_ = heading
-            else:
-                heading_ = class_name.split(".")[-1]
-            f.write(f"{heading_}\n")
-            f.write(f"{'=' * len(heading_)}\n")
-            f.write("\n")
-
-            named_objects = sorted(info.get("namedobjects", []))
-            singletons = sorted(info.get("singletons", []))
-            parameters = sorted(info.get("parameters", []))
-            commands = sorted(info.get("commands", []))
-            queries = sorted(info.get("queries", []))
-
-            f.write(f".. autoclass:: {module_name}.{class_name}\n")
-            if noindex:
-                f.write("   :noindex:\n")
-            f.write("   :members:\n")
-            f.write("   :show-inheritance:\n")
-            f.write("   :undoc-members:\n")
-            f.write('   :exclude-members: "__weakref__, __dict__"\n')
-            f.write('   :special-members: " __init__"\n')
-            f.write("   :autosummary:\n\n")
-
-            if singletons or named_objects:
-                f.write(".. toctree::\n")
-                f.write("   :hidden:\n\n")
-
-                for k in singletons:
-                    if k.isidentifier():
-                        f.write(f"   {k}/index\n")
-                        self._write_doc_for_model_object(
-                            info["singletons"][k],
-                            doc_dir / k,
-                            heading + "." + k,
-                            module_name,
-                            class_name + "." + k,
-                        )
-
-                for k in named_objects:
-                    f.write(f"   {k}/index\n")
-                    self._write_doc_for_model_object(
-                        info["namedobjects"][k],
-                        doc_dir / k,
-                        heading + "." + k,
-                        module_name,
-                        f"{class_name}.{k}._{k}",
-                    )
-
     def write_static_info(self) -> None:
+        """Write API classes to files."""
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
-        for mode in ["meshing", "solver"]:
-            doc_dir = Path(
-                _MESHING_DM_DOC_DIR if mode == "meshing" else _SOLVER_DM_DOC_DIR
-            )
-            doc_dir.mkdir(exist_ok=True)
-            index_file = doc_dir / "index.rst"
-            with open(index_file, "w", encoding="utf8") as f:
-                f.write(f".. _ref_{mode}_datamodel:\n\n")
-                heading = mode + ".datamodel"
-                f.write(f"{heading}\n")
-                f.write(f"{'=' * len(heading)}\n")
-                f.write("\n")
-                f.write(f".. currentmodule:: ansys.fluent.core.datamodel\n\n")
-                f.write(".. autosummary::\n")
-                f.write("   :toctree: _autosummary\n\n")
-                f.write(".. toctree::\n")
-                f.write("   :hidden:\n\n")
-
         for name, info in self._static_info.items():
             if info.static_info == None:
                 continue
@@ -427,30 +357,10 @@ class DataModelGenerator:
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
                 }
-                mode_to_dir = dict(
-                    meshing=_MESHING_DM_DOC_DIR,
-                    solver=_SOLVER_DM_DOC_DIR,
-                    flicing=_SOLVER_DM_DOC_DIR,
-                )
                 for mode in info.modes:
                     if mode in ("solver", "meshing"):
                         key = f"<{mode}_session>"
                         api_tree[key].update(api_tree_val)
-                    dir_type = mode_to_dir.get(mode)
-                    first_heading = "solver" if mode == "flicing" else mode
-                    if dir_type:
-                        doc_dir = Path(dir_type)
-                        index_file = doc_dir / "index.rst"
-                        with open(index_file, "a", encoding="utf8") as f:
-                            f.write(f"   {name}/index\n")
-                        self._write_doc_for_model_object(
-                            info=info.static_info,
-                            doc_dir=doc_dir / name,
-                            heading=f"{first_heading}.datamodel.{name}",
-                            module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
-                            class_name="Root",
-                            noindex=len(info.modes) > 1 and mode != "solver",
-                        )
         return api_tree
 
     def _delete_generated_files(self):
@@ -463,11 +373,42 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version, pyfluent_path, sessions: dict):
-    return DataModelGenerator(version, pyfluent_path, sessions).write_static_info()
+def generate(version, static_infos: dict):
+    """Generate datamodel API classes."""
+    return DataModelGenerator(version, static_infos).write_static_info()
 
 
 if __name__ == "__main__":
-    sessions = {FluentMode.SOLVER: launch_fluent()}
-    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    generate(version, None, sessions)
+    solver = launch_fluent()
+    meshing = launch_fluent(mode=FluentMode.MESHING)
+    version = get_version_for_file_name(session=solver)
+    static_infos = {
+        StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
+            "workflow"
+        ),
+        StaticInfoType.DATAMODEL_MESHING: meshing._datamodel_service_se.get_static_info(
+            "meshing"
+        ),
+        StaticInfoType.DATAMODEL_PART_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
+            "PartManagement"
+        ),
+        StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
+            "PMFileManagement"
+        ),
+        StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
+            "preferences"
+        ),
+    }
+    if FluentVersion(version) >= FluentVersion.v231:
+        flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
+        static_infos[StaticInfoType.DATAMODEL_FLICING] = (
+            flicing._datamodel_service_se.get_static_info("flserver")
+        )
+        static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
+            solver._datamodel_service_se.get_static_info("solverworkflow")
+        )
+    if FluentVersion(version) >= FluentVersion.v242:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+        )
+    generate(version, static_infos)

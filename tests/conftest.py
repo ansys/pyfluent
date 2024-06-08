@@ -7,7 +7,7 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 import pytest
 
-from ansys.fluent.core.data_model_cache import DataModelCache
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_release_version = FluentVersion.current_release().value
@@ -75,12 +75,7 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-
-
-@pytest.fixture(autouse=True)
-def clear_datamodel_cache():
-    yield
-    DataModelCache.rules_str_to_cache.clear()
+    pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 
 
 class Helpers:

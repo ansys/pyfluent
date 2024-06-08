@@ -144,7 +144,7 @@ all PyFluent packages in a Python *virtual environment*:
 
 Which version of Python should you use?
 ---------------------------------------
-PyFluent supports Python 3.9 through Python 3.11 on Windows and Linux. Python
+PyFluent supports Python 3.9 through Python 3.12 on Windows and Linux. Python
 3.10 is shipped with Ansys 2023 R2 and later. For example, in a 2023 R2 Windows
 installation, the executable file Python 3.10 is typically located at:
 ``C:\Program Files\ANSYS Inc\v232\commonfiles\CPython\3_10\winx64\Release\python.exe``.
@@ -200,16 +200,24 @@ How does PyFluent infer the location to launch Fluent?
 PyFluent infers the Fluent location based on the following information, in
 increasing order of precedence:
 
+#. Value of ``product_version`` parameter passed to :func:`launch_fluent()
+   <ansys.fluent.core.launch_fluent>`.
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
    when Fluent is installed, where ``<ver>`` is the Fluent release number such
-   as ``241`` for release 2024 R1.  PyFluent automatically uses this environment
+   as ``242`` for release 2024 R2.  PyFluent automatically uses this environment
    variable to locate the latest Fluent installation. On Linux systems configure
    ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such
-   as ``/apps/ansys_inc/v241``.
+   as ``/apps/ansys_inc/v242``.
 
-#. Value of ``product_version`` parameter passed to :func:`launch_fluent()
-   <ansys.fluent.core.launch_fluent>`.
+
+How do you disable PyFluent warnings shown in the console?
+----------------------------------------------------------
+.. code:: python
+
+   import ansys.fluent.core as pyfluent
+   pyfluent.set_console_logging_level("ERROR") # Disable all warning logs
+   pyfluent.warning.disable() # Disable all warning messages
 
 
 How do you learn how to use PyFluent?

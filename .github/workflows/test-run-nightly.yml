@@ -1,13 +1,9 @@
-
-name: Run Custom Tests
+name: Test Run Nightly
 
 on:
-  #pull_request:
+  schedule:  # UTC at 0400
+    - cron:  '0 4 * * *'
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -16,26 +12,12 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  MAIN_PYTHON_VERSION: '3.9'
 
 jobs:
-
-  build_test:
-    name: Build and Test
+  test:
+    name: Unit Testing
     runs-on: [self-hosted, pyfluent]
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image-tag: v22.2.0
-            version: 222
-          - image-tag: v23.1.0
-            version: 231
-          - image-tag: v23.2.0
-            version: 232
-          - image-tag: v24.1.0
-            version: 241
-          - image-tag: v24.2.0
-            version: 242
 
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +25,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -52,6 +34,9 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
 
       - name: Add version information
         run: make version-info
@@ -72,30 +57,41 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull Fluent docker image
+      - name: Pull 24.2 Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: v24.2.0
 
-      - name: Run API codegen
+      - name: Run 24.2 API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: v24.2.0
 
-      - name: Print Fluent version info
+      - name: Print 24.2 Fluent version info
         run: |
-          cat src/ansys/fluent/core/fluent_version_${{ matrix.version }}.py
+          cat src/ansys/fluent/core/generated/fluent_version_242.py
+          python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
           rm -rf dist
           make install > /dev/null
 
-      - name: Unit Testing
+      - name: 24.2 Unit Testing
         run: |
-            echo "Running custom unittest"
-            sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
-            make install-test
-            poetry python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
+          make install-test
+          make unittest-all-242
         env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: v24.2.0
+
+      - name: Upload 24.2 Coverage Results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          root_dir: ${{ github.workspace }}
+          name: cov_xml.xml
+
+      - name: Upload 24.2 Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage_report
+          path: ./htmlcov

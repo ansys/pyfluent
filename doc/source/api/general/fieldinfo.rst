@@ -20,7 +20,7 @@ The field info object is an attribute of the solver object:
 
 .. code-block:: python
 
-  >>> field_info = solver.field_info
+  >>> field_info = solver.fields.field_info
 
 Sample requests
 ---------------

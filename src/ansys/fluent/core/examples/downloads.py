@@ -6,11 +6,13 @@ from pathlib import Path
 import re
 import shutil
 from typing import Optional
+import warnings
 import zipfile
 
 import requests
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.warnings import PyFluentUserWarning
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -69,7 +71,10 @@ def _retrieve_file(
     # First check if file has already been downloaded
     logger.info(f"Checking if {local_path_no_zip} already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        print(f"File already exists. File path:\n{local_path_no_zip}")
+        warnings.warn(
+            f"\nFile already exists. File path:\n{local_path_no_zip}\n",
+            PyFluentUserWarning,
+        )
         logger.info("File already exists.")
         if return_without_path:
             return file_name_no_zip
@@ -159,9 +164,10 @@ def download_file(
     """
     if return_without_path is None:
         if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            return_without_path = True
-        else:
-            return_without_path = False
+            if pyfluent.USE_FILE_TRANSFER_SERVICE:
+                return_without_path = False
+            else:
+                return_without_path = True
 
     url = _get_file_url(file_name, directory)
     head = requests.head(f"{url}")

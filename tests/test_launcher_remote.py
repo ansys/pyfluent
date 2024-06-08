@@ -3,6 +3,7 @@
 from concurrent import futures
 import os
 from unittest.mock import create_autospec
+import uuid
 
 import grpc
 from grpc_health.v1 import health_pb2_grpc
@@ -24,12 +25,10 @@ import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
-
-import_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-)
+from tests.util import rename_downloaded_file
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2910")
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     fluent = new_solver_session
     # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
@@ -150,6 +149,12 @@ def test_file_purpose_on_remote_instance(
         scheme_eval=solver._fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_service,
     )
+
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    suffix = uuid.uuid4().hex
+    import_file_name = rename_downloaded_file(import_file_name, f"_{suffix}")
 
     solver_session.file.read_case(file_name=import_file_name)
     assert len(file_service.uploads()) == 1

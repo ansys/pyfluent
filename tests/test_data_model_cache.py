@@ -5,6 +5,7 @@ from util.meshing_workflow import (  # noqa: F401
 )
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.services.datamodel_se import _convert_value_to_variant
 
@@ -21,11 +22,12 @@ class Fake:
 
 
 def test_data_model_cache():
-    DataModelCache.set_state("x", Fake([("A", ""), ("x", "")]), 42.0)
-    assert 42.0 == DataModelCache.get_state("x", Fake([("A", ""), ("x", "")]))
-    assert dict(x=42.0) == DataModelCache.get_state("x", Fake([("A", "")]))
-    assert DataModelCache.Empty == DataModelCache.get_state("x", Fake([("B", "")]))
-    assert DataModelCache.Empty == DataModelCache.get_state("y", Fake([]))
+    cache = DataModelCache()
+    cache.set_state("x", Fake([("A", ""), ("x", "")]), 42.0)
+    assert 42.0 == cache.get_state("x", Fake([("A", ""), ("x", "")]))
+    assert dict(x=42.0) == cache.get_state("x", Fake([("A", "")]))
+    assert DataModelCache.Empty == cache.get_state("x", Fake([("B", "")]))
+    assert DataModelCache.Empty == cache.get_state("y", Fake([]))
 
 
 @pytest.mark.parametrize(
@@ -47,7 +49,8 @@ def test_data_model_cache():
         ({"r1": {}}, "r1", {"A": [3.0, 6.0]}, [], {"r1": {"A": [3.0, 6.0]}}),
         ({"r1": {}}, "r1", {"A": ["ab", "cd"]}, [], {"r1": {"A": ["ab", "cd"]}}),
         ({"r1": {"A": {}}}, "r1", {"A": {"B": 5}}, [], {"r1": {"A": {"B": 5}}}),
-        ({"r1": {"A": 5}}, "r1", {"A": {}}, [], {"r1": {"A": None}}),
+        ({"r1": {"A": 5}}, "r1", {"A": {}}, [], {"r1": {"A": 5}}),
+        ({"r1": {"A": 5}}, "r1", {"A": None}, [], {"r1": {"A": None}}),
         (
             {"r1": {"A": {}}},
             "r1",
@@ -111,12 +114,13 @@ def test_data_model_cache():
 def test_update_cache_display_names_as_keys(
     initial_cache, rules, state, deleted_paths, final_cache
 ):
-    cache_rules = DataModelCache.rules_str_to_cache
+    cache = DataModelCache()
+    cache_rules = cache.rules_str_to_cache
     cache_rules.clear()
     cache_rules.update(initial_cache)
     var = Variant()
     _convert_value_to_variant(state, var)
-    DataModelCache.update_cache(rules, var, deleted_paths)
+    cache.update_cache(rules, var, deleted_paths)
     assert cache_rules == final_cache
 
 
@@ -201,13 +205,14 @@ def test_update_cache_display_names_as_keys(
 def test_update_cache_internal_names_as_keys(
     initial_cache, rules, state, deleted_paths, final_cache
 ):
-    DataModelCache.set_config("r1", "name_key", NameKey.INTERNAL)
-    cache_rules = DataModelCache.rules_str_to_cache
+    cache = DataModelCache()
+    cache.set_config("r1", "name_key", NameKey.INTERNAL)
+    cache_rules = cache.rules_str_to_cache
     cache_rules.clear()
     cache_rules.update(initial_cache)
     var = Variant()
     _convert_value_to_variant(state, var)
-    DataModelCache.update_cache(rules, var, deleted_paths)
+    cache.update_cache(rules, var, deleted_paths)
     assert cache_rules == final_cache
 
 
@@ -224,31 +229,27 @@ def test_get_cached_values_in_command_arguments(new_mesh_session):
 
 @pytest.fixture
 def display_names_as_keys_in_cache():
-    rules_list = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
-    for rules in rules_list:
-        DataModelCache.set_config(rules, "name_key", NameKey.DISPLAY)
+    DataModelCache.use_display_name = True
     yield
-    for rules in rules_list:
-        DataModelCache.set_config(rules, "name_key", NameKey.INTERNAL)
+    DataModelCache.use_display_name = False
 
 
 def test_display_names_as_keys(
     display_names_as_keys_in_cache, new_watertight_workflow_session
 ):
-    assert "TaskObject:Import Geometry" in DataModelCache.rules_str_to_cache["workflow"]
-    assert "TaskObject:TaskObject1" not in DataModelCache.rules_str_to_cache["workflow"]
+    cache = new_watertight_workflow_session._datamodel_service_se.cache
+    assert "TaskObject:Import Geometry" in cache.rules_str_to_cache["workflow"]
+    assert "TaskObject:TaskObject1" not in cache.rules_str_to_cache["workflow"]
 
 
 def test_internal_names_as_keys(new_watertight_workflow_session):
-    assert (
-        "TaskObject:Import Geometry"
-        not in DataModelCache.rules_str_to_cache["workflow"]
-    )
-    assert "TaskObject:TaskObject1" in DataModelCache.rules_str_to_cache["workflow"]
+    cache = new_watertight_workflow_session._datamodel_service_se.cache
+    assert "TaskObject:Import Geometry" not in cache.rules_str_to_cache["workflow"]
+    assert "TaskObject:TaskObject1" in cache.rules_str_to_cache["workflow"]
 
 
 @pytest.mark.parametrize(
-    "cache,name_key_in_config,path,name_key,state",
+    "rules_cache,name_key_in_config,path,name_key,state",
     [
         ({"A": {"B": {"C": 2}}}, NameKey.INTERNAL, "A/B", NameKey.INTERNAL, {"C": 2}),
         (
@@ -281,13 +282,14 @@ def test_internal_names_as_keys(new_watertight_workflow_session):
         ),
     ],
 )
-def test_cache_get_state(cache, name_key_in_config, path, name_key, state):
+def test_cache_get_state(rules_cache, name_key_in_config, path, name_key, state):
+    cache = DataModelCache()
     rules = "x"
-    DataModelCache.set_config(rules, "name_key", name_key_in_config)
-    cache_rules = DataModelCache.rules_str_to_cache
+    cache.set_config(rules, "name_key", name_key_in_config)
+    cache_rules = cache.rules_str_to_cache
     cache_rules.clear()
-    cache_rules[rules] = cache
-    assert state == DataModelCache.get_state(rules, Fake(path), name_key)
+    cache_rules[rules] = rules_cache
+    assert state == cache.get_state(rules, Fake(path), name_key)
 
 
 @pytest.mark.parametrize(
@@ -413,10 +415,24 @@ def test_cache_set_state(
     value,
     final_cache,
 ):
+    cache = DataModelCache()
     rules = "x"
-    DataModelCache.set_config(rules, "name_key", name_key_in_config)
-    cache_rules = DataModelCache.rules_str_to_cache
+    cache.set_config(rules, "name_key", name_key_in_config)
+    cache_rules = cache.rules_str_to_cache
     cache_rules.clear()
     cache_rules[rules] = initial_cache
-    DataModelCache.set_state(rules, Fake(path), value)
+    cache.set_state(rules, Fake(path), value)
     assert final_cache == cache_rules[rules]
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_cache_per_session():
+    with (
+        pyfluent.launch_fluent(mode="meshing") as m1,
+        pyfluent.launch_fluent(mode="meshing") as m2,
+    ):
+        assert m1.meshing.GlobalSettings.EnableComplexMeshing()
+        assert m2.meshing.GlobalSettings.EnableComplexMeshing()
+        w1 = m1.watertight()
+        assert not m1.meshing.GlobalSettings.EnableComplexMeshing()
+        assert m2.meshing.GlobalSettings.EnableComplexMeshing()

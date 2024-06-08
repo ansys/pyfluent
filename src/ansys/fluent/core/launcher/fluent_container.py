@@ -53,7 +53,7 @@ import logging
 import os
 from pathlib import Path, PurePosixPath
 import tempfile
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
@@ -105,6 +105,7 @@ def configure_container_dict(
     fluent_image: Optional[str] = None,
     image_name: Optional[str] = None,
     image_tag: Optional[str] = None,
+    file_transfer_service: Optional[Any] = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -134,6 +135,8 @@ def configure_container_dict(
         Ignored if ``fluent_image`` has been specified.
     image_tag : str, optional
         Ignored if ``fluent_image`` has been specified.
+    file_transfer_service : optional
+        Supports file upload and download.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
         to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
@@ -180,7 +183,10 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     if not host_mount_path:
-        host_mount_path = pyfluent.EXAMPLES_PATH
+        if file_transfer_service:
+            host_mount_path = pyfluent.USER_DATA_PATH
+        else:
+            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH or os.getcwd()
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
@@ -222,6 +228,9 @@ def configure_container_dict(
         host_mount_path = volumes_string.replace(":" + container_mount_path, "")
         logger.debug(f"host_mount_path: {host_mount_path}")
         logger.debug(f"container_mount_path: {container_mount_path}")
+    logger.warning(
+        f"Starting Fluent container mounted to {host_mount_path}, with this path available as {container_mount_path} for the Fluent session running inside the container."
+    )
 
     if "ports" not in container_dict:
         if not port:

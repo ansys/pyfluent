@@ -1,3 +1,4 @@
+import gc
 from time import sleep
 
 from google.protobuf.json_format import MessageToDict
@@ -6,15 +7,44 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyCommand,
+    PyMenu,
     PyMenuGeneric,
+    PyNamedObjectContainer,
+    PyTextual,
     ReadOnlyObjectError,
+    _convert_value_to_variant,
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
+from ansys.fluent.core.utils.execution import timeout_loop
+
+
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        (None, None),
+        (False, False),
+        (True, True),
+        (1, 1),
+        (1.0, 1.0),
+        ("abc", "abc"),
+        ((1, 2, 3), [1, 2, 3]),
+        ([1, 2, 3], [1, 2, 3]),
+        ({"a": 5}, {"a": 5}),
+        ({"a": [1, 2, 3]}, {"a": [1, 2, 3]}),
+        ({"a": {"b": 5}}, {"a": {"b": 5}}),
+    ],
+)
+def test_convert_value_to_variant_to_value(value, expected):
+    variant = Variant()
+    _convert_value_to_variant(value, variant)
+    assert expected == _convert_variant_to_value(variant)
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -487,3 +517,267 @@ def test_read_ony_set_state(new_mesh_session):
     assert "set_state" not in dir(
         meshing.preferences.MeshingWorkflow.CheckpointingOption
     )
+
+
+test_rules = (
+    "RULES:\n"
+    "    SINGLETON: ROOT\n"
+    "        members = A\n"
+    "        OBJECT: A\n"
+    "            members = B, X\n"
+    "            commands = C\n"
+    "            isABC = $./X == ABC\n"
+    "            OBJECT: B\n"
+    "            END\n"
+    "            STRING: X\n"
+    "                default = IJK\n"
+    "            END\n"
+    "            COMMAND: C\n"
+    "                returnType = Logical\n"
+    "                functionName = S_C\n"
+    "                isABC = $../X == ABC\n"
+    "            END\n"
+    "        END\n"
+    "     END\n"
+    "END\n"
+)
+
+
+class test_root(PyMenu):
+    def __init__(self, service, rules, path):
+        self.A = self.__class__.A(service, rules, path + [("A", "")])
+        super().__init__(service, rules, path)
+
+    class A(PyNamedObjectContainer):
+        class _A(PyMenu):
+            def __init__(self, service, rules, path):
+                self.B = self.__class__.B(service, rules, path + [("B", "")])
+                self.X = self.__class__.X(service, rules, path + [("X", "")])
+                self.C = self.__class__.C(service, rules, "C", path)
+                super().__init__(service, rules, path)
+
+            class B(PyNamedObjectContainer):
+                class _B(PyMenu):
+                    pass
+
+            class X(PyTextual):
+                pass
+
+            class C(PyCommand):
+                pass
+
+
+def _create_datamodel_root(session, rules_str) -> PyMenu:
+    rules_file_name = "test.fdl"
+    session.scheme_eval.scheme_eval(
+        f'(with-output-to-file "{rules_file_name}" (lambda () (format "~a" "{rules_str}")))'
+    )
+    session.scheme_eval.scheme_eval(
+        '(state/register-new-state-engine "test" "test.fdl")'
+    )
+    session.scheme_eval.scheme_eval(f'(remove-file "{rules_file_name}")')
+    assert session.scheme_eval.scheme_eval('(state/find-root "test")') > 0
+    return test_root(session._se_service, "test", [])
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_child_created_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_child_created("B", lambda _: data.append(1))
+    root.A["A1"].add_on_child_created("B", lambda _: data.append(2))
+    gc.collect()
+    assert "/test/created/A:A1/B" in solver._se_service.subscriptions
+    assert "/test/created/A:A1/B-1" in solver._se_service.subscriptions
+    root.A["A1"].B["B1"] = {}
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert "/test/created/A:A1/B" not in solver._se_service.subscriptions
+    assert "/test/created/A:A1/B-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_deleted_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_deleted(lambda _: data.append(1))
+    root.A["A1"].add_on_deleted(lambda _: data.append(2))
+    gc.collect()
+    assert "/test/deleted/A:A1" in solver._se_service.subscriptions
+    assert "/test/deleted/A:A1-1" in solver._se_service.subscriptions
+    del root.A["A1"]
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    assert timeout_loop(
+        lambda: "/test/deleted/A:A1" not in solver._se_service.subscriptions, 5
+    )
+    assert timeout_loop(
+        lambda: "/test/deleted/A:A1-1" not in solver._se_service.subscriptions, 5
+    )
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_changed_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].X.add_on_changed(lambda _: data.append(1))
+    root.A["A1"].X.add_on_changed(lambda _: data.append(2))
+    gc.collect()
+    assert "/test/modified/A:A1/X" in solver._se_service.subscriptions
+    assert "/test/modified/A:A1/X-1" in solver._se_service.subscriptions
+    root.A["A1"].X = "ABC"
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert "/test/modified/A:A1/X" not in solver._se_service.subscriptions
+    assert "/test/modified/A:A1/X-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_affected_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_affected(lambda _: data.append(1))
+    root.A["A1"].add_on_affected(lambda _: data.append(2))
+    gc.collect()
+    assert "/test/affected/A:A1" in solver._se_service.subscriptions
+    assert "/test/affected/A:A1-1" in solver._se_service.subscriptions
+    root.A["A1"].X = "ABC"
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert "/test/affected/A:A1" not in solver._se_service.subscriptions
+    assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_affected_at_type_path_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_affected_at_type_path("B", lambda _: data.append(1))
+    root.A["A1"].add_on_affected_at_type_path("B", lambda _: data.append(2))
+    gc.collect()
+    assert "/test/affected/A:A1/B" in solver._se_service.subscriptions
+    assert "/test/affected/A:A1/B-1" in solver._se_service.subscriptions
+    root.A["A1"].B["B1"] = {}
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert "/test/affected/A:A1/B" not in solver._se_service.subscriptions
+    assert "/test/affected/A:A1/B-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_command_executed_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_command_executed("C", lambda *args: data.append(1))
+    root.A["A1"].add_on_command_executed("C", lambda *args: data.append(2))
+    gc.collect()
+    assert "/test/command_executed/A:A1/C" in solver._se_service.subscriptions
+    assert "/test/command_executed/A:A1/C-1" in solver._se_service.subscriptions
+    root.A["A1"].C()
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert "/test/command_executed/A:A1/C" not in solver._se_service.subscriptions
+    assert "/test/command_executed/A:A1/C-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_attribute_changed_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_attribute_changed("isABC", lambda _: data.append(1))
+    root.A["A1"].add_on_attribute_changed("isABC", lambda _: data.append(2))
+    gc.collect()
+    assert "/test/attribute_changed/A:A1/isABC" in solver._se_service.subscriptions
+    assert "/test/attribute_changed/A:A1/isABC-1" in solver._se_service.subscriptions
+    root.A["A1"].X = "ABC"
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert "/test/attribute_changed/A:A1/isABC" not in solver._se_service.subscriptions
+    assert (
+        "/test/attribute_changed/A:A1/isABC-1" not in solver._se_service.subscriptions
+    )
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_command_attribute_changed_lifetime(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_command_attribute_changed(
+        "C", "isABC", lambda _: data.append(1)
+    )
+    root.A["A1"].add_on_command_attribute_changed(
+        "C", "isABC", lambda _: data.append(2)
+    )
+    gc.collect()
+    assert (
+        "/test/command_attribute_changed/A:A1/C/isABC"
+        in solver._se_service.subscriptions
+    )
+    assert (
+        "/test/command_attribute_changed/A:A1/C/isABC-1"
+        in solver._se_service.subscriptions
+    )
+    root.A["A1"].X = "ABC"
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    del root.A["A1"]
+    assert (
+        "/test/command_attribute_changed/A:A1/C/isABC"
+        not in solver._se_service.subscriptions
+    )
+    assert (
+        "/test/command_attribute_changed/A:A1/C/isABC-1"
+        not in solver._se_service.subscriptions
+    )
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    pyfluent.logging.enable()
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_affected(lambda _: data.append(1))
+    root.A["A1"].add_on_affected(lambda _: data.append(2))
+    gc.collect()
+    assert "/test/affected/A:A1" in solver._se_service.subscriptions
+    assert "/test/affected/A:A1-1" in solver._se_service.subscriptions
+    root.A["A1"].X = "ABC"
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    root.delete_child_objects("A", ["A1"])
+    assert "/test/affected/A:A1" not in solver._se_service.subscriptions
+    assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
+    solver = new_solver_session
+    root = _create_datamodel_root(solver, test_rules)
+    pyfluent.logging.enable()
+    root.A["A1"] = {}
+    data = []
+    h = root.A["A1"].add_on_affected(lambda _: data.append(1))
+    root.A["A1"].add_on_affected(lambda _: data.append(2))
+    gc.collect()
+    assert "/test/affected/A:A1" in solver._se_service.subscriptions
+    assert "/test/affected/A:A1-1" in solver._se_service.subscriptions
+    root.A["A1"].X = "ABC"
+    assert timeout_loop(lambda: data == [1, 2], 5)
+    root.delete_all_child_objects("A")
+    assert "/test/affected/A:A1" not in solver._se_service.subscriptions
+    assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions

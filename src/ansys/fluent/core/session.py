@@ -1,6 +1,5 @@
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
-import importlib
 import json
 import logging
 from typing import Any, Dict, Optional, Union
@@ -23,6 +22,7 @@ from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataS
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 from .rpvars import RPVars
 
@@ -31,7 +31,6 @@ try:
 except Exception:
     root = Any
 
-datamodel_logger = logging.getLogger("pyfluent.datamodel")
 logger = logging.getLogger("pyfluent.general")
 
 
@@ -43,20 +42,6 @@ def _parse_server_info_file(file_name: str):
     port = int(ip_and_port[1])
     password = lines[1].strip()
     return ip, port, password
-
-
-def _get_datamodel_attributes(session, attribute: str):
-    try:
-        preferences_module = importlib.import_module(
-            f"ansys.fluent.core.datamodel_{session._version}." + attribute
-        )
-        return preferences_module.Root(session._se_service, attribute, [])
-    except ImportError:
-        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-
-
-def _get_preferences(session):
-    return _get_datamodel_attributes(session, "preferences")
 
 
 class _IsDataValid:
@@ -231,7 +216,7 @@ class BaseSession:
         """Provides access to Fluent field information."""
         warnings.warn(
             "field_info is deprecated. Use fields.field_info instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.field_info
 
@@ -240,7 +225,7 @@ class BaseSession:
         """Fluent field data on surfaces."""
         warnings.warn(
             "field_data is deprecated. Use fields.field_data instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.field_data
 
@@ -249,7 +234,7 @@ class BaseSession:
         """Field gRPC streaming service of Fluent."""
         warnings.warn(
             "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
-            DeprecationWarning,
+            PyFluentDeprecationWarning,
         )
         return self.fields.field_data_streaming
 
@@ -260,12 +245,12 @@ class BaseSession:
 
     def start_journal(self, file_name: str):
         """Executes tui command to start journal."""
-        warnings.warn("Use -> journal.start()", DeprecationWarning)
+        warnings.warn("Use -> journal.start()", PyFluentDeprecationWarning)
         self.journal.start(file_name)
 
     def stop_journal(self):
         """Executes tui command to stop journal."""
-        warnings.warn("Use -> journal.stop()", DeprecationWarning)
+        warnings.warn("Use -> journal.stop()", PyFluentDeprecationWarning)
         self.journal.stop()
 
     @classmethod
@@ -303,7 +288,11 @@ class BaseSession:
         """
         ip, port, password = _parse_server_info_file(server_info_file_name)
         fluent_connection = FluentConnection(
-            ip=ip, port=port, password=password, **connection_kwargs
+            ip=ip,
+            port=port,
+            password=password,
+            file_transfer_service=file_transfer_service,
+            **connection_kwargs,
         )
         session = cls(
             fluent_connection=fluent_connection,
@@ -328,9 +317,23 @@ class BaseSession:
         self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
-        """Immediately terminates the Fluent session, losing unsaved progress and
-        data."""
+        """Forces the Fluent session to exit, losing unsaved progress and data."""
         self._fluent_connection.force_exit()
+
+    def file_exists_on_remote(self, file_name: str) -> bool:
+        """Check if remote file exists.
+
+        Parameters
+        ----------
+        file_name: str
+            File name.
+
+        Returns
+        -------
+            Whether file exists.
+        """
+        if self._file_transfer_service:
+            return self._file_transfer_service.file_exists_on_remote(file_name)
 
     def _file_transfer_api_warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
@@ -354,7 +357,7 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        warnings.warn(self._file_transfer_api_warning("upload()"), UserWarning)
+        warnings.warn(self._file_transfer_api_warning("upload()"), PyFluentUserWarning)
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
@@ -368,7 +371,9 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        warnings.warn(self._file_transfer_api_warning("download()"), UserWarning)
+        warnings.warn(
+            self._file_transfer_api_warning("download()"), PyFluentUserWarning
+        )
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 

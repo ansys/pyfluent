@@ -1,68 +1,63 @@
-import argparse
-import os
-from pathlib import Path
-import pickle
+"""Helper module to generate Fluent API classes."""
 
-import datamodelgen
-import print_fluent_version
-import settingsgen
-import tuigen
+from time import time
 
-from ansys.fluent.core import FluentMode, launch_fluent
-from ansys.fluent.core.utils.fluent_version import (
-    FluentVersion,
-    get_version_for_file_name,
-)
-from ansys.fluent.core.utils.search import get_api_tree_file_name
-
-
-def _update_first_level(d, u):
-    for k in d:
-        d[k].update(u.get(k, {}))
-
+from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
+from ansys.fluent.core.codegen import StaticInfoType, allapigen, print_fluent_version
+from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.search import _search
 
 if __name__ == "__main__":
-    api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
-    parser = argparse.ArgumentParser(
-        description="Generate python code from Fluent APIs"
+    t0 = time()
+    meshing = launch_fluent(mode=FluentMode.MESHING)
+    version = get_version_for_file_name(session=meshing)
+    gt_222 = FluentVersion(version) > FluentVersion.v222
+    ge_231 = FluentVersion(version) >= FluentVersion.v231
+    ge_242 = FluentVersion(version) >= FluentVersion.v242
+    solver = launch_fluent(
+        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
     )
-    parser.add_argument(
-        "--pyfluent-path",
-        dest="pyfluent_path",
-        help="Specify the pyfluent installation folder to patch, with full path.  Such as /my-venv/Lib/site-packages",
-    )
-    if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
-        parser.add_argument(
-            "--ansys-version",
-            dest="ansys_version",
-            help=f"Specify the ansys package version to use, default is {FluentVersion.get_latest_installed().value}",
+    static_infos = {
+        StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
+            "workflow"
+        ),
+        StaticInfoType.DATAMODEL_MESHING: meshing._datamodel_service_se.get_static_info(
+            "meshing"
+        ),
+        StaticInfoType.DATAMODEL_PART_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
+            "PartManagement"
+        ),
+        StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
+            "PMFileManagement"
+        ),
+        StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
+            "preferences"
+        ),
+        StaticInfoType.SETTINGS: solver._settings_service.get_static_info(),
+    }
+    if gt_222:
+        static_infos[StaticInfoType.TUI_SOLVER] = (
+            solver._datamodel_service_tui.get_static_info("")
         )
-        parser.add_argument(
-            "--fluent-path",
-            dest="fluent_path",
-            help="Specify the fluent folder to use, with full path.  Such as /apps/ansys_inc/v232/fluent",
+        static_infos[StaticInfoType.TUI_MESHING] = (
+            meshing._datamodel_service_tui.get_static_info("")
         )
-
-    args = parser.parse_args()
-    if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
-        if args.ansys_version:
-            awp_root = os.environ[FluentVersion(args.ansys_version).awp_var]
-            os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
-        if args.fluent_path:
-            os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
-    sessions = {FluentMode.SOLVER: launch_fluent()}
-    version = get_version_for_file_name(session=sessions[FluentMode.SOLVER])
-    print_fluent_version.generate(args.pyfluent_path, sessions)
-    _update_first_level(
-        api_tree, tuigen.generate(version, args.pyfluent_path, sessions)
-    )
-    _update_first_level(
-        api_tree, datamodelgen.generate(version, args.pyfluent_path, sessions)
-    )
-    _update_first_level(
-        api_tree, settingsgen.generate(version, args.pyfluent_path, sessions)
-    )
-    api_tree_file = get_api_tree_file_name(version, args.pyfluent_path)
-    Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
-    with open(api_tree_file, "wb") as f:
-        pickle.dump(api_tree, f)
+    if ge_231:
+        static_infos[StaticInfoType.DATAMODEL_FLICING] = (
+            solver._datamodel_service_se.get_static_info("flserver")
+        )
+        static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
+            solver._datamodel_service_se.get_static_info("solverworkflow")
+        )
+    if ge_242:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+        )
+    t1 = time()
+    print(f"Time to fetch static info: {t1 - t0:.2f} seconds")
+    CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
+    print_fluent_version.generate(version, solver.scheme_eval.scheme_eval)
+    allapigen.generate(version, static_infos)
+    t2 = time()
+    print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
+    _search("", version=version)

@@ -24,6 +24,14 @@ class PureMeshing(BaseSession):
     in this mode.
     """
 
+    _rules = [
+        "workflow",
+        "meshing",
+        "MeshingUtilities",
+        "PartManagement",
+        "PMFileManagement",
+    ]
+
     def __init__(
         self,
         fluent_connection: FluentConnection,
@@ -61,15 +69,26 @@ class PureMeshing(BaseSession):
 
         datamodel_service_se = self._datamodel_service_se
         self.datamodel_streams = {}
-        if pyfluent.DATAMODEL_USE_STATE_CACHE:
-            for _rules in rules:
+        if datamodel_service_se.cache is not None:
+            for rules in PureMeshing._rules:
+                datamodel_service_se.cache.set_config(
+                    rules,
+                    "name_key",
+                    (
+                        NameKey.DISPLAY
+                        if DataModelCache.use_display_name
+                        else NameKey.INTERNAL
+                    ),
+                )
                 stream = DatamodelStream(datamodel_service_se)
                 stream.register_callback(
-                    functools.partial(DataModelCache.update_cache, rules=_rules)
+                    functools.partial(
+                        datamodel_service_se.cache.update_cache, rules=rules
+                    )
                 )
-                self.datamodel_streams[_rules] = stream
+                self.datamodel_streams[rules] = stream
                 stream.start(
-                    rules=_rules,
+                    rules=rules,
                     no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
                 )
                 self._fluent_connection.register_finalizer_cb(stream.stop)
@@ -98,18 +117,23 @@ class PureMeshing(BaseSession):
 
     def watertight(self):
         """Get a new watertight workflow."""
-        self._base_meshing.watertight_workflow.reinitialize()
         return self._base_meshing.watertight_workflow
 
     def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        self._base_meshing.fault_tolerant_workflow.reinitialize()
         return self._base_meshing.fault_tolerant_workflow
 
     def two_dimensional_meshing(self):
         """Get a new 2D meshing workflow."""
-        self._base_meshing.two_dimensional_meshing_workflow.reinitialize()
         return self._base_meshing.two_dimensional_meshing_workflow
+
+    def load_workflow(self, file_path: str):
+        """Load a saved workflow."""
+        return self._base_meshing.load_workflow(file_path=file_path)
+
+    def create_workflow(self):
+        """Create a meshing workflow."""
+        return self._base_meshing.create_workflow
 
     def topology_based(self):
         """Get a new topology-based meshing workflow.
@@ -121,7 +145,7 @@ class PureMeshing(BaseSession):
         """
         if not self.scheme_eval.scheme_eval("(is-beta-feature-available?)"):
             raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
-        self._base_meshing.topology_based_meshing_workflow.reinitialize()
+        self._base_meshing.topology_based_meshing_workflow.initialize()
         return self._base_meshing.topology_based_meshing_workflow
 
     @property
@@ -179,15 +203,3 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
-
-
-rules = [
-    "workflow",
-    "meshing",
-    "MeshingUtilities",
-    "PartManagement",
-    "PMFileManagement",
-]
-
-for r in rules:
-    DataModelCache.set_config(r, "name_key", NameKey.INTERNAL)

@@ -41,9 +41,14 @@ and L are the inlet diameter, orifice diameter, and orifice length respectively.
 # the geometry file.
 
 # sphinx_gallery_thumbnail_path = '_static/cavitation_model_thumb.png'
+import os
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
+os.environ["AWP_ROOT251"] = r"C:\Program Files\ANSYS Inc\v241"
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 cav_file = examples.download_file("cav.msh.gz", "pyfluent/cavitation")
 
 ###############################################################################
@@ -154,7 +159,7 @@ inlet_1["mixture"] = {
     "turbulence": {
         "turbulent_specification": "Intensity and Viscosity Ratio",
         "turbulent_intensity": 0.05,
-        "turbulent_viscosity_ratio_real": 10,
+        "turbulent_viscosity_ratio": 10,
     },
 }
 
@@ -183,7 +188,7 @@ outlet["mixture"] = {
     "turbulence": {
         "turbulent_specification": "Intensity and Viscosity Ratio",
         "turbulent_intensity": 0.04,
-        "turbulent_viscosity_ratio_real": 10,
+        "turbulent_viscosity_ratio": 10,
     },
 }
 

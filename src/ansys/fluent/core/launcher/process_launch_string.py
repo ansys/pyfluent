@@ -4,8 +4,9 @@ import json
 import os
 from pathlib import Path
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import FluentMode
+from ansys.fluent.core.launcher.pyfluent_enums import FluentMode, UIMode
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -53,8 +54,10 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
-    addArgs = kwargs["additional_arguments"]
-    if "-t" not in addArgs and "-cnf=" not in addArgs:
+    additional_arguments = kwargs["additional_arguments"]
+    if additional_arguments:
+        launch_args_string += " " + additional_arguments
+    if "-t" not in additional_arguments and "-cnf=" not in additional_arguments:
         parallel_options = build_parallel_options(
             load_machines(ncores=kwargs["processor_count"])
         )
@@ -66,6 +69,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
     ui_mode = kwargs.get("ui_mode")
+    if isinstance(ui_mode, str):
+        ui_mode = UIMode(ui_mode)
     if ui_mode and ui_mode.value[0]:
         launch_args_string += f" -{ui_mode.value[0]}"
     graphics_driver = kwargs.get("graphics_driver")
@@ -76,8 +81,6 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 
 def _generate_launch_string(
     argvals,
-    mode: FluentMode,
-    additional_arguments: str,
     server_info_file_name: str,
 ):
     """Generates the launch string to launch fluent."""
@@ -88,17 +91,16 @@ def _generate_launch_string(
     else:
         exe_path = str(get_fluent_exe_path(**argvals))
     launch_string = exe_path
-    if mode == FluentMode.SOLVER_ICING:
+    if argvals["mode"] == FluentMode.SOLVER_ICING:
         argvals["fluent_icing"] = True
     launch_string += _build_fluent_launch_args_string(**argvals)
-    if FluentMode.is_meshing(mode):
+    if FluentMode.is_meshing(argvals["mode"]):
         launch_string += " -meshing"
-    if additional_arguments:
-        launch_string += f" {additional_arguments}"
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
-    launch_string += " -nm"
+    if not pyfluent.SHOW_MESH_AFTER_CASE_READ:
+        launch_string += " -nm"
     return launch_string
 
 
@@ -125,16 +127,16 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         else:
             return fluent_root / "bin" / "fluent"
 
-    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
-    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
-    if fluent_root:
-        return get_exe_path(Path(fluent_root))
-
     # Look for Fluent exe path in the following order:
     # 1. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+
+    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
+    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    if fluent_root:
+        return get_exe_path(Path(fluent_root))
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))

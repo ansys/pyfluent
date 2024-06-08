@@ -69,14 +69,16 @@ class MeshingWorkflow(Workflow):
         self._meshing = meshing
         self._name = name
         self._identifier = identifier
+        self._unsubscribe_root_affected_callback()
+        self._new_workflow(name=self._name)
 
     def reinitialize(self) -> None:
-        """Initialize a workflow."""
+        """Reinitialize the same workflow."""
         self._new_workflow(name=self._name)
 
     def __getattribute__(self, item: str):
         if (
-            item != "reinitialize"
+            item not in ["reinitialize"]
             and not item.startswith("_")
             and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):
@@ -240,3 +242,63 @@ class WorkflowMode(Enum):
     FAULT_TOLERANT_MESHING_MODE = FaultTolerantMeshingWorkflow
     TWO_DIMENSIONAL_MESHING_MODE = TwoDimensionalMeshingWorkflow
     TOPOLOGY_BASED_MESHING_MODE = TopologyBasedMeshingWorkflow
+
+
+class LoadWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for a loaded workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        file_path: str,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize a ``LoadWorkflow`` instance.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        file_path: str
+            Path to the saved workflow.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._unsubscribe_root_affected_callback()
+        self._load_workflow(file_path=file_path)
+
+
+class CreateWorkflow(Workflow):
+    """Provides a specialization of the workflow wrapper for a newly created
+    workflow."""
+
+    def __init__(
+        self,
+        workflow: PyMenuGeneric,
+        meshing: PyMenuGeneric,
+        fluent_version: FluentVersion,
+    ) -> None:
+        """Initialize a ``CreateWorkflow`` instance.
+
+        Parameters
+        ----------
+        workflow : PyMenuGeneric
+            Underlying workflow object.
+        meshing : PyMenuGeneric
+            Meshing object.
+        fluent_version: FluentVersion
+            Version of Fluent in this session.
+        """
+        super().__init__(
+            workflow=workflow, command_source=meshing, fluent_version=fluent_version
+        )
+        self._meshing = meshing
+        self._unsubscribe_root_affected_callback()
+        self._create_workflow()

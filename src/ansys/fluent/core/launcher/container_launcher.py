@@ -4,9 +4,9 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+>>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode="meshing")
+>>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING)
 >>> container_meshing_session = container_meshing_launcher()
 
 >>> container_solver_launcher = create_launcher(LaunchMode.CONTAINER)
@@ -30,9 +30,9 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     UIMode,
+    _get_argvals_and_session,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -45,10 +45,12 @@ class DockerLauncher:
 
     def __init__(
         self,
-        mode: FluentMode,
-        ui_mode: UIMode,
-        graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver],
-        product_version: Optional[FluentVersion] = None,
+        mode: Optional[Union[FluentMode, str, None]] = None,
+        ui_mode: Union[UIMode, str, None] = None,
+        graphics_driver: Union[
+            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
+        ] = None,
+        product_version: Union[FluentVersion, str, float, int] = None,
         version: Optional[str] = None,
         precision: Optional[str] = None,
         processor_count: Optional[int] = None,
@@ -75,8 +77,9 @@ class DockerLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion, optional
-            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        product_version : FluentVersion or str or float or int, optional
+            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+            any of ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
             The default is ``None``, in which case the newest installed version is used.
         version : str, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
@@ -144,30 +147,28 @@ class DockerLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
-        argvals = locals().copy()
-        del argvals["self"]
-        if argvals["start_timeout"] is None:
-            argvals["start_timeout"] = 60
-        for arg_name, arg_values in argvals.items():
-            setattr(self, arg_name, arg_values)
-        self.argvals = argvals
-        self.new_session = self.mode.value[0]
-        self.file_transfer_service = (
-            file_transfer_service if file_transfer_service else PimFileTransferService()
-        )
+        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        if self.argvals["start_timeout"] is None:
+            self.argvals["start_timeout"] = 60
+        self.file_transfer_service = file_transfer_service
+        if self.argvals["mode"] == FluentMode.SOLVER_ICING:
+            self.argvals["fluent_icing"] = True
+        if self.argvals["container_dict"] is None:
+            self.argvals["container_dict"] = {}
+        if self.argvals["product_version"]:
+            self.argvals["container_dict"][
+                "image_tag"
+            ] = f"v{FluentVersion(self.argvals['product_version']).value}"
+
+        self._args = _build_fluent_launch_args_string(**self.argvals).split()
+        if FluentMode.is_meshing(self.argvals["mode"]):
+            self._args.append(" -meshing")
 
     def __call__(self):
-        if self.mode == FluentMode.SOLVER_ICING:
-            self.argvals["fluent_icing"] = True
-        args = _build_fluent_launch_args_string(**self.argvals).split()
-        if FluentMode.is_meshing(self.mode):
-            args.append(" -meshing")
-        if self.container_dict is None:
-            setattr(self, "container_dict", {})
-        if self.product_version:
-            self.container_dict["image_tag"] = f"v{self.product_version.value}"
-        if self.dry_run:
-            config_dict, *_ = configure_container_dict(args, **self.container_dict)
+        if self.argvals["dry_run"]:
+            config_dict, *_ = configure_container_dict(
+                self._args, **self.argvals["container_dict"]
+            )
             from pprint import pprint
 
             print("\nDocker container run configuration:\n")
@@ -181,12 +182,15 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(args, self.container_dict)
+        port, password = start_fluent_container(
+            self._args, self.argvals["container_dict"]
+        )
 
         fluent_connection = FluentConnection(
             port=port,
             password=password,
-            cleanup_on_exit=self.cleanup_on_exit,
+            file_transfer_service=self.file_transfer_service,
+            cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
         )
@@ -195,12 +199,12 @@ class DockerLauncher:
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=self.file_transfer_service,
-            start_transcript=self.start_transcript,
+            start_transcript=self.argvals["start_transcript"],
         )
 
-        if self.start_watchdog is None and self.cleanup_on_exit:
-            setattr(self, "start_watchdog", True)
-        if self.start_watchdog:
+        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
+            self.argvals["start_watchdog"] = True
+        if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
 

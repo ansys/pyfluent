@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import platform
 
@@ -11,7 +12,6 @@ from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
     DockerContainerLaunchNotSupported,
     GPUSolverSupportError,
-    LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
@@ -42,7 +42,7 @@ def test_gpu_version_error():
             version="2d",
             precision="single",
             processor_count=5,
-            show_gui=True,
+            ui_mode="gui",
             gpu=True,
         )
         pyfluent.setup_for_fluent(
@@ -50,7 +50,7 @@ def test_gpu_version_error():
             version="2d",
             precision="single",
             processor_count=5,
-            show_gui=True,
+            ui_mode="gui",
             gpu=True,
         )
 
@@ -148,7 +148,7 @@ def test_case_load():
     if not session.get_fluent_version() < FluentVersion.v231:
         assert session.mesh.quality.is_active()
     # Data not loaded
-    assert not session.field_data.is_data_valid()
+    assert not session.fields.field_data.is_data_valid()
 
     session.exit()
 
@@ -171,7 +171,7 @@ def test_case_lightweight_setup():
     # Mesh not available because lightweight
     assert not session.mesh.quality.is_active()
     # Data not loaded
-    assert not session.field_data.is_data_valid()
+    assert not session.fields.field_data.is_data_valid()
 
 
 @pytest.mark.standalone
@@ -190,40 +190,39 @@ def test_case_data_load():
     if not session.get_fluent_version() < FluentVersion.v231:
         assert session.mesh.quality.is_active()
     # Data loaded
-    assert session.field_data.is_data_valid()
+    assert session.fields.field_data.is_data_valid()
 
     session.exit()
 
 
-def test_gpu_launch_arg(helpers, monkeypatch):
-    # The launch process is terminated intentionally to verify whether the fluent launch string
-    # (which is available in the error message) is generated correctly.
-    helpers.mock_awp_vars()
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(gpu=True, start_timeout=0)
+def test_gpu_launch_arg():
+    assert (
+        _build_fluent_launch_args_string(
+            gpu=True, additional_arguments="", processor_count=None
+        ).strip()
+        == "3ddp -gpu"
+    )
+    assert (
+        _build_fluent_launch_args_string(
+            gpu=[1, 2, 4], additional_arguments="", processor_count=None
+        ).strip()
+        == "3ddp -gpu=1,2,4"
+    )
 
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(gpu=[1, 2, 4], start_timeout=0)
 
-    with pytest.raises(GPUSolverSupportError):
-        pyfluent.launch_fluent(gpu=True, version="2d")
-
-
-def test_gpu_launch_arg_additional_arg(helpers, monkeypatch):
-    # The launch process is terminated intentionally to verify whether the fluent launch string
-    # (which is available in the error message) is generated correctly.
-    helpers.mock_awp_vars()
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(additional_arguments="-gpu", start_timeout=0)
-
-    assert " -gpu" in str(error.value)
-
-    with pytest.raises(LaunchFluentError) as error:
-        pyfluent.launch_fluent(additional_arguments="-gpu=1,2,4", start_timeout=0)
-
-    assert " -gpu=1,2,4" in str(error.value)
+def test_gpu_launch_arg_additional_arg():
+    assert (
+        _build_fluent_launch_args_string(
+            additional_arguments="-gpu", processor_count=None
+        ).strip()
+        == "3ddp -gpu"
+    )
+    assert (
+        _build_fluent_launch_args_string(
+            additional_arguments="-gpu=1,2,4", processor_count=None
+        ).strip()
+        == "3ddp -gpu=1,2,4"
+    )
 
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
@@ -280,7 +279,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
         expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path(product_version=231) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
@@ -290,7 +289,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=FluentVersion.v231) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_watchdog_launch(monkeypatch):
@@ -309,7 +308,7 @@ def test_fluent_launchers():
     )
     if not check_docker_support() and not pypim.is_configured():
         standalone_meshing_launcher = create_launcher(
-            LaunchMode.STANDALONE, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.STANDALONE, mode=FluentMode.MESHING, **kwargs
         )
         standalone_meshing_session = standalone_meshing_launcher()
         assert standalone_meshing_session
@@ -328,27 +327,20 @@ def test_fluent_launchers():
             version=None,
             precision=None,
             processor_count=None,
-            journal_file_names=None,
             start_timeout=None,
             additional_arguments="",
-            env=None,
             container_dict=None,
             dry_run=None,
             cleanup_on_exit=None,
             start_transcript=None,
-            case_file_name=None,
-            case_data_file_name=None,
-            lightweight_mode=None,
             py=None,
             gpu=None,
-            cwd=None,
-            topy=None,
             start_watchdog=None,
             file_transfer_service=None,
         )
         container_meshing_launcher = create_launcher(
             LaunchMode.CONTAINER,
-            mode=FluentMode.MESHING_MODE,
+            mode=FluentMode.MESHING,
             **kargs,
         )
         container_meshing_session = container_meshing_launcher()
@@ -364,7 +356,7 @@ def test_fluent_launchers():
 
     if pypim.is_configured():
         pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING_MODE, **kwargs
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs
         )
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
@@ -401,8 +393,9 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 @pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
-    with pytest.raises(PyFluentDeprecationWarning):
-        pyfluent.launch_fluent(show_gui=True)
+    if not check_docker_support() and not pypim.is_configured():
+        with pytest.raises(PyFluentDeprecationWarning):
+            pyfluent.launch_fluent(show_gui=True)
 
 
 def test_fluent_enums():
@@ -421,14 +414,11 @@ def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
     for m in UIMode:
-        assert (
-            _build_fluent_launch_args_string(
-                ui_mode=m, additional_arguments="", processor_count=None
-            ).strip()
-            == f"3ddp -{m.value[0]}"
-            if m.value[0]
-            else " 3ddp"
-        )
+        string1 = _build_fluent_launch_args_string(
+            ui_mode=m, additional_arguments="", processor_count=None
+        ).strip()
+        string2 = f"3ddp -{m.value[0]}" if m.value[0] else "3ddp"
+        assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
             assert (
@@ -441,6 +431,14 @@ def test_exposure_and_graphics_driver_arguments():
             )
 
 
+def test_additional_arguments_fluent_launch_args_string():
+    additional_arguments = "-ws -ws-port=5000 -i test.jou"
+    assert additional_arguments in _build_fluent_launch_args_string(
+        additional_arguments=additional_arguments,
+        processor_count=4,
+    )
+
+
 def test_processor_count():
     def get_processor_count(solver):
         return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
@@ -451,3 +449,14 @@ def test_processor_count():
     # https://github.com/ansys/pyfluent/issues/2624
     # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
     #     assert get_processor_count(solver) == 2
+
+
+def test_container_warning_for_host_mount_path(caplog):
+    container_dict = {
+        "host_mount_path": os.getcwd(),
+        "container_mount_path": "/mnt/pyfluent/tests",
+    }
+    if check_docker_support():
+        solver = pyfluent.launch_fluent(container_dict=container_dict)
+        assert container_dict["host_mount_path"] in caplog.text
+        assert container_dict["container_mount_path"] in caplog.text

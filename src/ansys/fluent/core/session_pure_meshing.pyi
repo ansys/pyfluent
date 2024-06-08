@@ -1,11 +1,15 @@
-from ansys.fluent.core.datamodel_241.PMFileManagement import (
+from ansys.fluent.core.generated.datamodel_242.PMFileManagement import (
     Root as pmfilemanagement_root,
 )
-from ansys.fluent.core.datamodel_241.PartManagement import Root as partmanagement_root
-from ansys.fluent.core.datamodel_241.meshing import Root as meshing_root
-from ansys.fluent.core.datamodel_241.preferences import Root as preferences_root
-from ansys.fluent.core.datamodel_241.workflow import Root as workflow_root
-from ansys.fluent.core.meshing.tui_241 import main_menu
+from ansys.fluent.core.generated.datamodel_242.PartManagement import (
+    Root as partmanagement_root,
+)
+from ansys.fluent.core.generated.datamodel_242.meshing import Root as meshing_root
+from ansys.fluent.core.generated.datamodel_242.preferences import (
+    Root as preferences_root,
+)
+from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
+from ansys.fluent.core.generated.meshing.tui_242 import main_menu
 
 class PureMeshing:
     @property
@@ -20,6 +24,8 @@ class PureMeshing:
     def fault_tolerant(self): ...
     def two_dimensional_meshing(self): ...
     def topology_based(self): ...
+    def load_workflow(self, file_path: str): ...
+    def create_workflow(self): ...
     @property
     def PartManagement(self) -> partmanagement_root: ...
     @property

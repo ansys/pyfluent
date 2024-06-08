@@ -1,6 +1,5 @@
 """Unit tests for flobject module."""
 
-# import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
 import weakref
@@ -524,7 +523,7 @@ def _disabled_test_settings_gen():
     info = Proxy().get_static_info()
     cls, _ = flobject.get_cls("", info)
     f = io.StringIO()
-    codegen.settingsgen.write_settings_classes(f, cls, info)
+    ansys.fluent.core.codegen.settingsgen.write_settings_classes(f, cls, info)
     assert (
         f.getvalue()
         == '''###
@@ -833,6 +832,7 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
         solver.setup.boundary_conditions.velocity_inlet["inlet-1"]
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2792")
 @pytest.mark.fluent_version("latest")
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
@@ -851,6 +851,18 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     energy_parent = solver.setup._get_parent_of_active_child_names("energy")
 
     assert energy_parent == "\n energy is a child of models \n"
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_settings_api_names_exception(new_solver_session_no_transcript):
+    solver = new_solver_session_no_transcript
+
+    case_path = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    with pytest.raises(RuntimeError):
+        solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -1053,6 +1065,19 @@ def test_ansys_units_integration_nested_state(load_mixing_elbow_mesh):
         "turbulence": {
             "turbulent_intensity": (0.05, ""),
             "turbulent_specification": "Intensity and Viscosity Ratio",
+            "turbulent_viscosity_ratio": (10, None),
+        },
+    } or {
+        "momentum": {
+            "initial_gauge_pressure": {"option": "value", "value": (0, "Pa")},
+            "reference_frame": "Absolute",
+            "velocity": {"option": "value", "value": (0, "m s^-1")},
+            "velocity_specification_method": "Magnitude, Normal to Boundary",
+        },
+        "name": "hot-inlet",
+        "turbulence": {
+            "turbulent_specification": "Intensity and Viscosity Ratio",
+            "turbulent_intensity": (0.05, ""),
             "turbulent_viscosity_ratio": (10, None),
         },
     }

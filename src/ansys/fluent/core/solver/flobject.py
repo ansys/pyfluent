@@ -22,9 +22,9 @@ import collections
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
-import importlib
 import keyword
 import logging
+import os.path
 import pickle
 import string
 import sys
@@ -46,16 +46,24 @@ from typing import (
 )
 import warnings
 import weakref
+from zipimport import zipimporter
 
 try:
+    from ansys.fluent.core.warnings import (
+        PyFluentDeprecationWarning,
+        PyFluentUserWarning,
+    )
     import ansys.units as ansys_units
 
     from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 except ImportError:
     get_unit_for_fl_quantity_attr = None
     ansys_units = None
+    PyFluentDeprecationWarning = FutureWarning
+    PyFluentUserWarning = UserWarning
 
 from .error_message import allowed_name_error_message, allowed_values_error
+from .settings_external import expand_api_file_argument
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -368,15 +376,25 @@ class Base:
                 obj = getattr(obj, comp)
         return obj
 
-    def before_execute(self, value):
+    def before_execute(self, command_name, value, kwargs):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+            base_file_name = self._do_before_execute(
+                command_name=command_name, value=value, kwargs=kwargs
+            )
+            return base_file_name
+        else:
+            return value
 
-    def after_execute(self, value):
+    def after_execute(self, command_name, value, kwargs):
         """Executes after command execution."""
         if hasattr(self, "_do_after_execute"):
-            self._do_after_execute(value)
+            base_file_name = self._do_after_execute(
+                command_name=command_name, value=value, kwargs=kwargs
+            )
+            return base_file_name
+        else:
+            return value
 
     def _while_setting_state(self):
         """Avoid additional processing while setting the state."""
@@ -515,13 +533,13 @@ class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
 
-class DeprecatedSettingWarning(FutureWarning):
+class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     """Provides deprecated settings warning."""
 
     pass
 
 
-class UnstableSettingWarning(UserWarning):
+class UnstableSettingWarning(PyFluentUserWarning):
     """Provides unstable settings warning."""
 
     pass
@@ -794,15 +812,25 @@ class FileName(Base):
 
 
 class _InputFile(FileName):
-    def _do_before_execute(self, value):
+    def _do_before_execute(self, command_name, value, kwargs):
+        file_names = expand_api_file_argument(command_name, value, kwargs)
         if self.file_transfer_service:
-            self.file_transfer_service.upload(file_name=value)
+            for file_name in file_names:
+                self.file_transfer_service.upload(file_name=file_name)
+            return os.path.basename(value)
+        else:
+            return value
 
 
 class _OutputFile(FileName):
-    def _do_after_execute(self, value):
+    def _do_after_execute(self, command_name, value, kwargs):
+        file_names = expand_api_file_argument(command_name, value, kwargs)
         if self.file_transfer_service:
-            self.file_transfer_service.download(file_name=value)
+            for file_name in file_names:
+                self.file_transfer_service.download(file_name=file_name)
+            return os.path.basename(value)
+        else:
+            return value
 
 
 class _InOutFile(_InputFile, _OutputFile):
@@ -1063,11 +1091,12 @@ class Group(SettingsBase[DictStateType]):
         try:
             return attr.set_state(value)
         except Exception as ex:
-            allowed = attr.allowed_values()
-            if allowed and value not in allowed:
-                raise allowed_values_error(name, value, allowed) from ex
+            if hasattr(attr, "allowed_values"):
+                allowed = attr.allowed_values()
+                if allowed and value not in allowed:
+                    raise allowed_values_error(name, value, allowed) from ex
             else:
-                raise ex
+                raise
 
 
 class WildcardPath(Group):
@@ -1540,11 +1569,15 @@ class BaseCommand(Action):
         """Execute command."""
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.before_execute(value)
+            kwds[arg] = argument.before_execute(
+                command_name=self.python_name, value=value, kwargs=kwds
+            )
         ret = self._execute_command(*args, **kwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            argument.after_execute(value)
+            kwds[arg] = argument.after_execute(
+                command_name=self.python_name, value=value, kwargs=kwds
+            )
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
@@ -1962,11 +1995,20 @@ def get_root(
     -------
     root object
     """
+    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
+
     obj_info = flproxy.get_static_info()
     try:
-        settings = importlib.import_module(
-            f"ansys.fluent.core.solver.settings_{version}"
-        )
+        if CODEGEN_ZIP_SETTINGS:
+            importer = zipimporter(
+                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+            )
+            settings = importer.load_module("settings")
+        else:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+            )
 
         if settings.SHASH != _gethash(obj_info):
             settings_logger.warning(

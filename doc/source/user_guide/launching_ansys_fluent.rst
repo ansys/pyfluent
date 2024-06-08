@@ -105,8 +105,8 @@ Scheduler support
 When PyFluent is run within a job scheduler environment, the :func:`launch_fluent()
 <ansys.fluent.core.launcher.launcher.launch_fluent>` method automatically determines
 the list of machines and core counts to start Fluent with. The supported
-scheduler environments are Univa Grid Engine (UGE), Load Sharing Facility (LSF),
-Portable Batch System (PBS), and Slurm.
+scheduler environments are Altair Grid Engine (formerly UGE), Sun Grid Engine (SGE),
+Load Sharing Facility (LSF), Portable Batch System (PBS), and Slurm.
 
 This example shows a bash shell script that can be submitted to a Slurm
 scheduler using the ``sbatch`` command:
