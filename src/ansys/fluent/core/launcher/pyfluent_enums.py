@@ -122,6 +122,32 @@ class UIMode(FluentEnum):
     GUI = ("",)
 
 
+class Dimension(FluentEnum):
+    """Geometric dimensionality of the Fluent simulation."""
+
+    TWO = ("2d",)
+    THREE = ("3d",)
+
+    @classmethod
+    def _missing_(cls, value: int):
+        if value is None:
+            return cls.THREE
+        for member in cls:
+            if int(member.value[0][0]) == value:
+                return member
+        raise ValueError(
+            f"The specified value '{value}' is not a supported value of {cls.__name__}."
+            f""" The supported values are: '{"', '".join((member.value[0][0]) for member in cls)}'."""
+        )
+
+
+class Precision(FluentEnum):
+    """Floating point precision."""
+
+    SINGLE = ("",)
+    DOUBLE = ("dp",)
+
+
 class FluentWindowsGraphicsDriver(FluentEnum):
     """Provides supported graphics driver of Fluent in Windows."""
 
@@ -272,22 +298,22 @@ def _get_ui_mode(
     return ui_mode
 
 
-def _validate_gpu(gpu: Union[bool, list], version: str):
+def _validate_gpu(gpu: Union[bool, list], dimension: int):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
     ----------
     gpu : bool or list, optional
         This option will start Fluent with the GPU Solver.
-    version : str, optional
+    dimension : int, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if version == "2d" and gpu:
+    if Dimension(dimension) == Dimension.TWO and gpu:
         raise exceptions.GPUSolverSupportError()
 
 
 def _get_argvals_and_session(argvals):
-    _validate_gpu(argvals["gpu"], argvals["version"])
+    _validate_gpu(argvals["gpu"], argvals["dimension"])
     argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
     argvals["mode"] = _get_mode(argvals["mode"])
     del argvals["self"]
