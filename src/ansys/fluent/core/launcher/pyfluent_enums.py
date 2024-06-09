@@ -29,8 +29,8 @@ class LaunchMode(Enum):
 class FluentMode(Enum):
     """Enumerates over supported Fluent modes."""
 
-    MESHING_MODE = (Meshing, "meshing")
-    PURE_MESHING_MODE = (PureMeshing, "pure-meshing")
+    MESHING = (Meshing, "meshing")
+    PURE_MESHING = (PureMeshing, "pure-meshing")
     SOLVER = (Solver, "solver")
     SOLVER_ICING = (SolverIcing, "solver-icing")
 
@@ -72,10 +72,10 @@ class FluentMode(Enum):
         Returns
         -------
         bool
-            ``True`` if the mode is ``FluentMode.MESHING_MODE`` or ``FluentMode.PURE_MESHING_MODE``,
+            ``True`` if the mode is ``FluentMode.MESHING`` or ``FluentMode.PURE_MESHING``,
             ``False`` otherwise.
         """
-        return mode in [FluentMode.MESHING_MODE, FluentMode.PURE_MESHING_MODE]
+        return mode in [FluentMode.MESHING, FluentMode.PURE_MESHING]
 
 
 @total_ordering
@@ -120,6 +120,32 @@ class UIMode(FluentEnum):
     NO_GUI = ("gu",)
     HIDDEN_GUI = ("hidden",)
     GUI = ("",)
+
+
+class Dimension(FluentEnum):
+    """Geometric dimensionality of the Fluent simulation."""
+
+    TWO = ("2d",)
+    THREE = ("3d",)
+
+    @classmethod
+    def _missing_(cls, value: int):
+        if value is None:
+            return cls.THREE
+        for member in cls:
+            if int(member.value[0][0]) == value:
+                return member
+        raise ValueError(
+            f"The specified value '{value}' is not a supported value of {cls.__name__}."
+            f""" The supported values are: '{"', '".join((member.value[0][0]) for member in cls)}'."""
+        )
+
+
+class Precision(FluentEnum):
+    """Floating point precision."""
+
+    SINGLE = ("",)
+    DOUBLE = ("dp",)
 
 
 class FluentWindowsGraphicsDriver(FluentEnum):
@@ -219,7 +245,7 @@ def _get_running_session_mode(
 
 
 def _get_standalone_launch_fluent_version(
-    product_version: Union[FluentVersion, None]
+    product_version: Union[FluentVersion, str, float, int, None]
 ) -> Optional[FluentVersion]:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
@@ -235,15 +261,15 @@ def _get_standalone_launch_fluent_version(
         Fluent version or ``None``
     """
 
-    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
-    # determine the Fluent version, so returning None.
-    if os.getenv("PYFLUENT_FLUENT_ROOT"):
-        return None
-
     # Look for Fluent version in the following order:
     # 1. product_version parameter passed with launch_fluent
     if product_version:
         return FluentVersion(product_version)
+
+    # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
+    # determine the Fluent version, so returning None.
+    if os.getenv("PYFLUENT_FLUENT_ROOT"):
+        return None
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return FluentVersion.get_latest_installed()
@@ -275,22 +301,22 @@ def _get_ui_mode(
     return ui_mode
 
 
-def _validate_gpu(gpu: Union[bool, list], version: str):
+def _validate_gpu(gpu: Union[bool, list], dimension: int):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
     ----------
     gpu : bool or list, optional
         This option will start Fluent with the GPU Solver.
-    version : str, optional
+    dimension : int, optional
         Geometric dimensionality of the Fluent simulation.
     """
-    if version == "2d" and gpu:
+    if Dimension(dimension) == Dimension.TWO and gpu:
         raise exceptions.GPUSolverSupportError()
 
 
 def _get_argvals_and_session(argvals):
-    _validate_gpu(argvals["gpu"], argvals["version"])
+    _validate_gpu(argvals["gpu"], argvals["dimension"])
     argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
     argvals["mode"] = _get_mode(argvals["mode"])
     del argvals["self"]
