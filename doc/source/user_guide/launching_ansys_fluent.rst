@@ -61,7 +61,7 @@ modeling dimension:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", version="2d", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", dimension=2, mode="solver")
 
 Local parallel
 ~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ number of processors for local parallel execution:
 .. code:: python
 
    solver = pyfluent.launch_fluent(
-      precision="double", version="2d", processor_count=2, mode="solver"
+      precision="double", dimension=2, processor_count=2, mode="solver"
    )
 
 Distributed parallel
@@ -83,7 +83,7 @@ distributed across more than one machine:
 
    solver = pyfluent.launch_fluent(
       precision="double",
-      version="3d",
+      dimension=3,
       processor_count=16,
       mode="solver",
       additional_arguments="-cnf=m1:8,m2:8",
@@ -153,7 +153,7 @@ machines and cores:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", version="3d", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", dimension=3, mode="solver")
 
 If you want to clamp the number of cores that Fluent is launched on, you can
 pass the ``processor_count`` parameter:
@@ -161,7 +161,7 @@ pass the ``processor_count`` parameter:
 .. code:: python
 
    solver = pyfluent.launch_fluent(
-      precision="double", version="3d", processor_count=16, mode="solver"
+      precision="double", dimension=3, processor_count=16, mode="solver"
    )
 
 Passing the ``processor_count`` parameter like this forces execution of Fluent on 16
@@ -179,7 +179,7 @@ argument:
 .. code:: python
 
    solver = pyfluent.launch_fluent(
-      precision="double", version="3d", mode="solver", additional_arguments="-t16"
+      precision="double", dimension=3, mode="solver", additional_arguments="-t16"
    )
 
 For distributed parallel processing, you usually pass both parameters:
@@ -188,7 +188,7 @@ For distributed parallel processing, you usually pass both parameters:
 
    solver = pyfluent.launch_fluent(
       precision="double",
-      version="3d",
+      dimension=3,
       mode="solver",
       additional_arguments="-t16 -cnf=m1:8,m2:8",
    )

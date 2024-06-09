@@ -54,9 +54,11 @@ from ansys.fluent.core.launcher.launcher_utils import (
 )
 from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    Precision,
     UIMode,
     _get_argvals_and_session,
     _get_ui_mode,
@@ -209,8 +211,8 @@ class SlurmLauncher:
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Union[FluentVersion, str, float, int, None] = None,
-        version: Optional[str] = None,
-        precision: Optional[str] = None,
+        dimension: Union[Dimension, int, None] = None,
+        precision: Union[Precision, str, None] = None,
         processor_count: Optional[int] = None,
         journal_file_names: Union[None, str, list[str]] = None,
         start_timeout: int = -1,
@@ -245,12 +247,14 @@ class SlurmLauncher:
             Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
             ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
             The default is ``None``, in which case the newest installed version is used.
-        version : str, optional
+        dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
-        precision : str, optional
-            Floating point precision. The default is ``None``, in which case ``"double"``
-            is used. Options are ``"double"`` and ``"single"``.
+            in which case ``Dimension.THREE`` is used. Options are either the values of the
+            ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
+        precision : Precision or str, optional
+            Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
+            is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
+            or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
         processor_count : int, optional
             Number of processors. The default is ``None``, in which case ``1``
             processor is used.  In job scheduler environments the total number of
