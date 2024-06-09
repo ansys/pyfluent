@@ -192,7 +192,6 @@ def test_fluent_connection_properties(
     assert isinstance(connection_properties.fluent_host_pid, int)
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/2899")
 def test_fluent_freeze_kill(
     new_solver_session,
 ) -> None:
