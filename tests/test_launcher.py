@@ -37,7 +37,7 @@ def test_gpu_version_error():
     with pytest.raises(GPUSolverSupportError) as msg:
         pyfluent.launch_fluent(
             mode="meshing",
-            version="2d",
+            dimension=2,
             precision="single",
             processor_count=5,
             ui_mode="gui",
@@ -45,7 +45,7 @@ def test_gpu_version_error():
         )
         pyfluent.setup_for_fluent(
             mode="meshing",
-            version="2d",
+            dimension=2,
             precision="single",
             processor_count=5,
             ui_mode="gui",
@@ -397,7 +397,6 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
-@pytest.mark.standalone
 @pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
     with pytest.raises(PyFluentDeprecationWarning):

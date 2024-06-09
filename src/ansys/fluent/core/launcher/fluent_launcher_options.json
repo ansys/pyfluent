@@ -1,28 +1,4 @@
 {
-    "version": {
-        "type": "str",
-        "allowed_values": [
-            "3d",
-            "2d"
-        ],
-        "default": "3d",
-        "fluent_required": true,
-        "fluent_format": " {}"
-    },
-    "precision": {
-        "type": "str",
-        "allowed_values": [
-            "single",
-            "double"
-        ],
-        "default": "double",
-        "fluent_required": true,
-        "fluent_map": {
-            "single": "",
-            "double": "dp"
-        },
-        "fluent_format": "{}"
-    },
     "fluent_debug": {
         "type": "bool",
         "fluent_map": {
