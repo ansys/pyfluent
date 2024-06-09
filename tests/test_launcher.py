@@ -299,7 +299,7 @@ def test_create_standalone_launcher():
     )
 
     standalone_meshing_launcher = create_launcher(
-        LaunchMode.STANDALONE, mode=FluentMode.MESHING_MODE, **kwargs
+        LaunchMode.STANDALONE, mode=FluentMode.MESHING, **kwargs
     )
     standalone_meshing_session = standalone_meshing_launcher()
     assert standalone_meshing_session
@@ -342,7 +342,7 @@ def test_fluent_launchers():
     )
     container_meshing_launcher = create_launcher(
         LaunchMode.CONTAINER,
-        mode=FluentMode.MESHING_MODE,
+        mode=FluentMode.MESHING,
         **kargs,
     )
     container_meshing_session = container_meshing_launcher()
@@ -462,7 +462,6 @@ def test_container_warning_for_host_mount_path(caplog):
         "host_mount_path": os.getcwd(),
         "container_mount_path": "/mnt/pyfluent/tests",
     }
-    if check_docker_support():
-        solver = pyfluent.launch_fluent(container_dict=container_dict)
-        assert container_dict["host_mount_path"] in caplog.text
-        assert container_dict["container_mount_path"] in caplog.text
+    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    assert container_dict["host_mount_path"] in caplog.text
+    assert container_dict["container_mount_path"] in caplog.text
