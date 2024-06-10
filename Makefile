@@ -151,5 +151,8 @@ compare-flobject:
 	@python .ci/compare_flobject.py
 
 cleanup-previous-docker-containers:
-	@if [ -n "$(docker ps -a -q)" ]; then docker stop $(docker ps -a -q); fi
+	@if [ -n "$(docker ps -a -q)" ]; then \
+		docker inspect --format='{{.Config.Labels.test_name}}' $(docker ps -a -q); \
+		docker stop $(docker ps -a -q); \
+	fi
 	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
