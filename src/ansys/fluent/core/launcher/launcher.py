@@ -14,10 +14,12 @@ from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     LaunchMode,
+    Precision,
     UIMode,
     _get_fluent_launch_mode,
     _get_running_session_mode,
@@ -68,6 +70,15 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
+def _version_to_dimension(old_arg_val):
+    if old_arg_val == "2d":
+        return Dimension.TWO
+    elif old_arg_val == "3d":
+        return Dimension.THREE
+    else:
+        return None
+
+
 #   pylint: disable=unused-argument
 @deprecate_argument(
     old_arg="show_gui",
@@ -75,10 +86,16 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
     deprecation_class=PyFluentDeprecationWarning,
 )
+@deprecate_argument(
+    old_arg="version",
+    new_arg="dimension",
+    converter=_version_to_dimension,
+    deprecation_class=PyFluentDeprecationWarning,
+)
 def launch_fluent(
-    product_version: Optional[FluentVersion] = None,
-    version: Optional[str] = None,
-    precision: Optional[str] = None,
+    product_version: Union[FluentVersion, str, float, int, None] = None,
+    dimension: Union[Dimension, int, None] = None,
+    precision: Union[Precision, str, None] = None,
     processor_count: Optional[int] = None,
     journal_file_names: Union[None, str, list[str]] = None,
     start_timeout: Optional[int] = None,
@@ -110,15 +127,18 @@ def launch_fluent(
 
     Parameters
     ----------
-    product_version : FluentVersion, optional
-        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+    product_version : FluentVersion or str or float or int, optional
+        Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+        any of  ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``or ``242``.
         The default is ``None``, in which case the newest installed version is used.
-    version : str, optional
+    dimension : Dimension or int, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
-        in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
-    precision : str, optional
-        Floating point precision. The default is ``None``, in which case ``"double"``
-        is used. Options are ``"double"`` and ``"single"``.
+        in which case ``Dimension.THREE`` is used. Options are either the values of the
+        ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
+    precision : Precision or str, optional
+        Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
+        is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
+        or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of

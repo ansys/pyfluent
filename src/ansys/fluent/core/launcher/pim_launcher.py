@@ -6,7 +6,7 @@ Examples
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
 >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
 
->>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING_MODE)
+>>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
 >>> pim_meshing_session = pim_meshing_launcher()
 
 >>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
@@ -19,9 +19,11 @@ from typing import Any, Dict, Optional, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    Precision,
     UIMode,
     _get_argvals_and_session,
 )
@@ -48,9 +50,9 @@ class PIMLauncher:
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
-        product_version: Optional[FluentVersion] = None,
-        version: Optional[str] = None,
-        precision: Optional[str] = None,
+        product_version: Union[FluentVersion, str, float, int] = None,
+        dimension: Union[Dimension, int, None] = None,
+        precision: Union[Precision, str, None] = None,
         processor_count: Optional[int] = None,
         start_timeout: int = 60,
         additional_arguments: Optional[str] = "",
@@ -73,15 +75,18 @@ class PIMLauncher:
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion, optional
-            Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+        product_version : FluentVersion or str or float or int, optional
+            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
+           ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
             The default is ``None``, in which case the newest installed version is used.
-        version : str, optional
+        dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
-        precision : str, optional
-            Floating point precision. The default is ``None``, in which case ``"double"``
-            is used. Options are ``"double"`` and ``"single"``.
+            in which case ``Dimension.THREE`` is used. Options are either the values of the
+            ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
+        precision : Precision or str, optional
+            Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
+            is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
+            or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
         processor_count : int, optional
             Number of processors. The default is ``None``, in which case ``1``
             processor is used.  In job scheduler environments the total number of
@@ -153,7 +158,9 @@ class PIMLauncher:
     def __call__(self):
         logger.info("Starting Fluent remotely. The startup configuration is ignored.")
         if self.argvals["product_version"]:
-            fluent_product_version = str(self.argvals["product_version"].number)
+            fluent_product_version = str(
+                FluentVersion(self.argvals["product_version"]).number
+            )
         else:
             fluent_product_version = None
 
@@ -163,7 +170,7 @@ class PIMLauncher:
             product_version=fluent_product_version,
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             mode=self.argvals["mode"],
-            dimensionality=self.argvals["version"],
+            dimensionality=self.argvals["dimension"],
             launcher_args=self.argvals,
             file_transfer_service=self.file_transfer_service,
         )
@@ -172,7 +179,7 @@ class PIMLauncher:
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
-    product_version: Optional[FluentVersion] = None,
+    product_version: Optional[str] = None,
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Optional[str] = None,
@@ -194,8 +201,8 @@ def launch_remote_fluent(
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via method calls on the session object.
-    product_version : FluentVersion, optional
-        Version of Ansys Fluent to launch. Use ``FluentVersion.v241`` for 2024 R1.
+    product_version : str, optional
+        Version of Ansys Fluent to launch. Use ``"242"`` for 2024 R2.
         The default is ``None``, in which case the newest installed version is used.
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage

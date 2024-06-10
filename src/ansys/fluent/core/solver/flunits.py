@@ -269,11 +269,7 @@ def get_si_unit_for_fluent_quantity(
     # attribute only for dimensionless variables
     if quantity is None:
         return ""
-    try:
-        if quantity.startswith("'"):
-            quantity = quantity[1:]
-    except AttributeError:
-        # not a string
+    if not isinstance(quantity, str):
         raise InvalidQuantityType(quantity)
     try:
         return (unit_table or _fl_unit_table)[quantity]
