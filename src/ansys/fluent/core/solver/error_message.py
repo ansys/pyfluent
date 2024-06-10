@@ -32,9 +32,9 @@ def allowed_name_error_message(
         else:
             message += f"The allowed values are: {allowed_values}."
     elif search_results:
-        message = "\nThe most similar API names are:\n"
+        message = message + "\nThe most similar API names are:\n"
         for search_result in search_results:
-            message += search_result
+            message += search_result + "\n"
 
     return message
 

@@ -1047,15 +1047,18 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
-            search_results = pyfluent.utils._search(
+            modified_search_results = []
+            for search_result in pyfluent.utils._search(
                 word=name, search_root=self, match_case=False, match_whole_word=False
-            )
-            for search_result in search_results:
-                search_result.replace("<search_root>", self.__class__.__name__)
+            ):
+                search_result = search_result.replace(
+                    "<search_root>", self.__class__.__name__
+                )
+                modified_search_results.append(search_result)
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                search_results=search_results,
+                search_results=modified_search_results,
             )
             ex.args = (error_msg,)
             raise
