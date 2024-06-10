@@ -2,6 +2,7 @@
 
 import logging
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
@@ -14,7 +15,6 @@ from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
-from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -91,7 +91,7 @@ class BaseMeshing:
             if self.get_fluent_version() >= FluentVersion.v242:
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
-                meshing_utilities_module = load_module(
+                meshing_utilities_module = pyfluent.utils.load_module(
                     f"MeshingUtilities_{self._version}",
                     CODEGEN_OUTDIR
                     / f"datamodel_{self._version}"

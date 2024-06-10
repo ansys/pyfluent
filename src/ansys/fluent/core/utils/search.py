@@ -196,8 +196,6 @@ def _search(
     if search_root and not prefix:
         return
     if not version:
-        version = root_version
-    if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
             if get_api_tree_file_name(version).exists():

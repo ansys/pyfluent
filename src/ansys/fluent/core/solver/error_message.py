@@ -12,10 +12,11 @@ def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
 
 
 def allowed_name_error_message(
-    allowed_values: Any,
+    allowed_values: Optional[Any] = None,
     context: Optional[str] = None,
     trial_name: Optional[str] = None,
     message: Optional[str] = None,
+    search_results: Optional[list] = None,
 ) -> str:
     """Provide an error message with the closest names matching the 'trial_name' from
     the 'allowed_values' list."""
@@ -30,6 +31,10 @@ def allowed_name_error_message(
             message += f"The most similar names are: {', '.join(matches)}."
         else:
             message += f"The allowed values are: {allowed_values}."
+    elif search_results:
+        message = "\nThe most similar API names are:\n"
+        for search_result in search_results:
+            message += search_result
 
     return message
 

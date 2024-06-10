@@ -1046,10 +1046,18 @@ class Group(SettingsBase[DictStateType]):
             if name in super().__getattribute__("_child_classes"):
                 attr._check_stable()
             return attr
-        except AttributeError:
-            print(f"The most similar API names are:")
-            print(f"<search_root> = {self.python_path}\n")
-            pyfluent.search(name, search_root=self, match_case=False)
+        except AttributeError as ex:
+            search_results = pyfluent.utils._search(
+                word=name, search_root=self, match_case=False, match_whole_word=False
+            )
+            for search_result in search_results:
+                search_result.replace("<search_root>", self.__class__.__name__)
+            error_msg = allowed_name_error_message(
+                trial_name=name,
+                message=ex.args[0],
+                search_results=search_results,
+            )
+            ex.args = (error_msg,)
             raise
 
     def __setattr__(self, name: str, value):
