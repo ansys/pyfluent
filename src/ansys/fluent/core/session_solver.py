@@ -7,6 +7,7 @@ import threading
 from typing import Any, Dict, Optional
 import warnings
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
@@ -194,6 +195,16 @@ class Solver(BaseSession):
             )
         return self._workflow
 
+    def _interrupt(self, command):
+        interruptible_commands = [
+            "solution/run-calculation/iterate",
+            "solution/run-calculation/calculate",
+            "solution/run-calculation/dual-time-iterate",
+        ]
+        if pyfluent.SUPPORT_SOLVER_INTERRUPT:
+            if command.path in interruptible_commands:
+                self.settings.solution.run_calculation.interrupt()
+
     @property
     def settings(self):
         """Root settings object."""
@@ -201,6 +212,7 @@ class Solver(BaseSession):
             self._settings_root = flobject.get_root(
                 flproxy=self._settings_service,
                 version=self._version,
+                interrupt=self._interrupt,
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme_eval.scheme_eval,
             )

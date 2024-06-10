@@ -22,17 +22,6 @@ def is_windows():
     return platform.system() == "Windows"
 
 
-def check_docker_support():
-    """Check whether Python Docker SDK is supported by the current system."""
-    import docker
-
-    try:
-        _ = docker.from_env()
-    except docker.errors.DockerException:
-        return False
-    return True
-
-
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
