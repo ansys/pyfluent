@@ -126,6 +126,9 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
+
       - name: Install pyfluent
         run: make install
 
@@ -140,11 +143,7 @@ jobs:
         id: cache-api-code
         with:
           path: |
-            src/ansys/fluent/core/generated/datamodel_231
-            src/ansys/fluent/core/generated/fluent_version_231.py
-            src/ansys/fluent/core/generated/meshing/tui_231.py
-            src/ansys/fluent/core/generated/solver/settings_231
-            src/ansys/fluent/core/generated/solver/tui_231.py
+            src/ansys/fluent/core/generated
             doc/source/api/meshing/tui
             doc/source/api/meshing/datamodel
             doc/source/api/solver/tui
@@ -232,6 +231,9 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
+
       - name: Add version information
         run: make version-info
 
@@ -249,12 +251,7 @@ jobs:
         id: cache-222-api-code
         with:
           path:
-            src/ansys/fluent/core/generated/datamodel_222
-            src/ansys/fluent/core/generated/fluent_version_222.py
-            src/ansys/fluent/core/generated/meshing/tui_222.py
-            src/ansys/fluent/core/generated/solver/settings_222
-            src/ansys/fluent/core/generated/solver/tui_222.py
-            src/ansys/fluent/core/generated/data/api_tree_222.pickle
+            src/ansys/fluent/core/generated
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -291,12 +288,7 @@ jobs:
         id: cache-231-api-code
         with:
           path:
-            src/ansys/fluent/core/generated/datamodel_231
-            src/ansys/fluent/core/generated/fluent_version_231.py
-            src/ansys/fluent/core/generated/meshing/tui_231.py
-            src/ansys/fluent/core/generated/solver/settings_231
-            src/ansys/fluent/core/generated/solver/tui_231.py
-            src/ansys/fluent/core/generated/data/api_tree_231.pickle
+            src/ansys/fluent/core/generated
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -326,12 +318,7 @@ jobs:
         id: cache-232-api-code
         with:
           path:
-            src/ansys/fluent/core/generated/datamodel_232
-            src/ansys/fluent/core/generated/fluent_version_232.py
-            src/ansys/fluent/core/generated/meshing/tui_232.py
-            src/ansys/fluent/core/generated/solver/settings_232
-            src/ansys/fluent/core/generated/solver/tui_232.py
-            src/ansys/fluent/core/generated/data/api_tree_232.pickle
+            src/ansys/fluent/core/generated
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -361,12 +348,7 @@ jobs:
         id: cache-241-api-code
         with:
           path:
-            src/ansys/fluent/core/generated/datamodel_241
-            src/ansys/fluent/core/generated/fluent_version_241.py
-            src/ansys/fluent/core/generated/meshing/tui_241.py
-            src/ansys/fluent/core/generated/solver/settings_241
-            src/ansys/fluent/core/generated/solver/tui_241.py
-            src/ansys/fluent/core/generated/data/api_tree_241.pickle
+            src/ansys/fluent/core/generated
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -396,12 +378,7 @@ jobs:
         id: cache-242-api-code
         with:
           path:
-            src/ansys/fluent/core/generated/datamodel_242
-            src/ansys/fluent/core/generated/fluent_version_242.py
-            src/ansys/fluent/core/generated/meshing/tui_242.py
-            src/ansys/fluent/core/generated/solver/settings_242
-            src/ansys/fluent/core/generated/solver/tui_242.py
-            src/ansys/fluent/core/generated/data/api_tree_242.pickle
+            src/ansys/fluent/core/generated
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
@@ -431,18 +408,13 @@ jobs:
         id: cache-251-api-code
         with:
           path:
-            src/ansys/fluent/core/generated/datamodel_251
-            src/ansys/fluent/core/generated/fluent_version_251.py
-            src/ansys/fluent/core/generated/meshing/tui_251.py
-            src/ansys/fluent/core/generated/solver/settings_251
-            src/ansys/fluent/core/generated/solver/tui_251.py
-            src/ansys/fluent/core/generated/data/api_tree_251.pickle
+            src/ansys/fluent/core/generated
             doc/source/api/core/meshing/tui
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'

@@ -6,7 +6,12 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import FluentMode, UIMode
+from ansys.fluent.core.launcher.pyfluent_enums import (
+    Dimension,
+    FluentMode,
+    Precision,
+    UIMode,
+)
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -26,6 +31,13 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     with open(_OPTIONS_FILE, encoding="utf-8") as fp:
         all_options = json.load(fp)
     launch_args_string = ""
+    dimension = kwargs.get("dimension")
+    launch_args_string += f" {Dimension(dimension).value[0]}"
+    precision = kwargs.get("precision")
+    if precision is None:
+        launch_args_string += f"{Precision.DOUBLE.value[0]}"
+    else:
+        launch_args_string += f"{Precision(precision).value[0]}"
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
@@ -127,16 +139,16 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         else:
             return fluent_root / "bin" / "fluent"
 
-    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
-    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
-    if fluent_root:
-        return get_exe_path(Path(fluent_root))
-
     # Look for Fluent exe path in the following order:
     # 1. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+
+    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
+    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    if fluent_root:
+        return get_exe_path(Path(fluent_root))
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))

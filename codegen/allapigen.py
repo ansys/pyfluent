@@ -9,7 +9,7 @@ from ansys.fluent.core.utils.search import _search
 
 if __name__ == "__main__":
     t0 = time()
-    meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
+    meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=meshing)
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
