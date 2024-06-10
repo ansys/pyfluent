@@ -10,14 +10,12 @@ from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
-    DockerContainerLaunchNotSupported,
     GPUSolverSupportError,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
-    check_docker_support,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -115,22 +113,14 @@ def test_non_gui_in_windows_does_not_throw_exception():
 
 
 def test_container_launcher():
-    if not check_docker_support():
-        with pytest.raises(DockerContainerLaunchNotSupported) as msg:
-            container_dict_1 = pyfluent.launch_fluent(start_container=True)
-            container_dict_2 = pyfluent.launch_fluent(
-                start_container=True, dry_run=True
-            )
+    # test dry_run
+    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+    assert isinstance(container_dict, dict)
+    assert len(container_dict) > 1
 
-    if check_docker_support():
-        # test dry_run
-        container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-        assert isinstance(container_dict, dict)
-        assert len(container_dict) > 1
-
-        # test run with configuration dict
-        session = pyfluent.launch_fluent(container_dict=container_dict)
-        assert session.health_check.is_serving
+    # test run with configuration dict
+    session = pyfluent.launch_fluent(container_dict=container_dict)
+    assert session.health_check.is_serving
 
 
 @pytest.mark.standalone
@@ -297,6 +287,32 @@ def test_watchdog_launch(monkeypatch):
     pyfluent.launch_fluent(start_watchdog=True)
 
 
+@pytest.mark.standalone
+def test_create_standalone_launcher():
+    kwargs = dict(
+        ui_mode=UIMode.NO_GUI,
+        graphics_driver=(
+            FluentWindowsGraphicsDriver.AUTO
+            if is_windows()
+            else FluentLinuxGraphicsDriver.AUTO
+        ),
+    )
+
+    standalone_meshing_launcher = create_launcher(
+        LaunchMode.STANDALONE, mode=FluentMode.MESHING, **kwargs
+    )
+    standalone_meshing_session = standalone_meshing_launcher()
+    assert standalone_meshing_session
+    standalone_meshing_session.exit()
+
+    standalone_solver_launcher = create_launcher(
+        LaunchMode.STANDALONE, mode=FluentMode.SOLVER, **kwargs
+    )
+    standalone_solver_session = standalone_solver_launcher()
+    assert standalone_solver_session
+    standalone_solver_session.exit()
+
+
 def test_fluent_launchers():
     kwargs = dict(
         ui_mode=UIMode.NO_GUI,
@@ -306,53 +322,40 @@ def test_fluent_launchers():
             else FluentLinuxGraphicsDriver.AUTO
         ),
     )
-    if not check_docker_support() and not pypim.is_configured():
-        standalone_meshing_launcher = create_launcher(
-            LaunchMode.STANDALONE, mode=FluentMode.MESHING, **kwargs
-        )
-        standalone_meshing_session = standalone_meshing_launcher()
-        assert standalone_meshing_session
+    kargs = dict(
+        ui_mode=kwargs["ui_mode"],
+        graphics_driver=kwargs["graphics_driver"],
+        product_version=None,
+        precision=None,
+        processor_count=None,
+        start_timeout=None,
+        additional_arguments="",
+        container_dict=None,
+        dry_run=None,
+        cleanup_on_exit=None,
+        start_transcript=None,
+        py=None,
+        gpu=None,
+        start_watchdog=None,
+        file_transfer_service=None,
+    )
+    container_meshing_launcher = create_launcher(
+        LaunchMode.CONTAINER,
+        mode=FluentMode.MESHING,
+        **kargs,
+    )
+    container_meshing_session = container_meshing_launcher()
+    assert container_meshing_session
+    container_meshing_session.exit()
 
-        standalone_solver_launcher = create_launcher(
-            LaunchMode.STANDALONE, mode=FluentMode.SOLVER, **kwargs
-        )
-        standalone_solver_session = standalone_solver_launcher()
-        assert standalone_solver_session
-
-    if check_docker_support():
-        kargs = dict(
-            ui_mode=kwargs["ui_mode"],
-            graphics_driver=kwargs["graphics_driver"],
-            product_version=None,
-            dimension=None,
-            precision=None,
-            processor_count=None,
-            start_timeout=None,
-            additional_arguments="",
-            container_dict=None,
-            dry_run=None,
-            cleanup_on_exit=None,
-            start_transcript=None,
-            py=None,
-            gpu=None,
-            start_watchdog=None,
-            file_transfer_service=None,
-        )
-        container_meshing_launcher = create_launcher(
-            LaunchMode.CONTAINER,
-            mode=FluentMode.MESHING,
-            **kargs,
-        )
-        container_meshing_session = container_meshing_launcher()
-        assert container_meshing_session
-
-        container_solver_launcher = create_launcher(
-            LaunchMode.CONTAINER,
-            mode=FluentMode.SOLVER,
-            **kargs,
-        )
-        container_solver_session = container_solver_launcher()
-        assert container_solver_session
+    container_solver_launcher = create_launcher(
+        LaunchMode.CONTAINER,
+        mode=FluentMode.SOLVER,
+        **kargs,
+    )
+    container_solver_session = container_solver_launcher()
+    assert container_solver_session
+    container_solver_session.exit()
 
     if pypim.is_configured():
         pim_meshing_launcher = create_launcher(
@@ -360,12 +363,14 @@ def test_fluent_launchers():
         )
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
+        pim_meshing_session.exit()
 
         pim_solver_launcher = create_launcher(
             LaunchMode.PIM, mode=FluentMode.SOLVER, **kwargs
         )
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
+        pim_solver_session.exit()
 
 
 @pytest.mark.parametrize(
@@ -393,9 +398,8 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 @pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
-    if not check_docker_support() and not pypim.is_configured():
-        with pytest.raises(PyFluentDeprecationWarning):
-            pyfluent.launch_fluent(show_gui=True)
+    with pytest.raises(PyFluentDeprecationWarning):
+        pyfluent.launch_fluent(show_gui=True)
 
 
 def test_fluent_enums():
@@ -456,7 +460,6 @@ def test_container_warning_for_host_mount_path(caplog):
         "host_mount_path": os.getcwd(),
         "container_mount_path": "/mnt/pyfluent/tests",
     }
-    if check_docker_support():
-        solver = pyfluent.launch_fluent(container_dict=container_dict)
-        assert container_dict["host_mount_path"] in caplog.text
-        assert container_dict["container_mount_path"] in caplog.text
+    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    assert container_dict["host_mount_path"] in caplog.text
+    assert container_dict["container_mount_path"] in caplog.text
