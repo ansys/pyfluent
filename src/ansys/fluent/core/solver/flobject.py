@@ -1028,28 +1028,6 @@ class Group(SettingsBase[DictStateType]):
             ret.extend(items)
         return ret
 
-    def _get_parent_of_active_child_names(self, name):
-        with warnings.catch_warnings():
-            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
-            parents = ""
-            path_list = []
-            for parent in self.get_active_child_names():
-                try:
-                    if hasattr(getattr(self, parent), str(name)):
-                        path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
-                        if len(parents) != 0:
-                            parents += ", " + parent
-                        else:
-                            parents += parent
-                except AttributeError:
-                    pass
-            if len(path_list):
-                print(f"\n {str(name)} can be accessed from the following paths: \n")
-                for path in path_list:
-                    print(path)
-            if len(parents):
-                return f"\n {name} is a child of {parents} \n"
-
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
@@ -1069,7 +1047,6 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError:
-            self._get_parent_of_active_child_names(name)
             print(f"The most similar API names are:")
             print(f"<search_root> = {self.python_path}\n")
             pyfluent.search(name, search_root=self, match_case=False)
