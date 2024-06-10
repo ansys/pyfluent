@@ -22,6 +22,7 @@ and field data (surface, scalar, and vector).
    :hidden:
 
    settings
+   settings_root
    tuicommands
    datamodel/index
    schemeeval
