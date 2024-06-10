@@ -8,7 +8,7 @@ from typing import Optional, Union
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
-from ansys.fluent.core.launcher.launcher_utils import check_docker_support, is_windows
+from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -190,10 +190,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         start_container is None
         and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
-        if check_docker_support():
-            fluent_launch_mode = LaunchMode.CONTAINER
-        else:
-            raise exceptions.DockerContainerLaunchNotSupported()
+        fluent_launch_mode = LaunchMode.CONTAINER
     elif scheduler_options and scheduler_options["scheduler"] == "slurm":
         fluent_launch_mode = LaunchMode.SLURM
     else:
