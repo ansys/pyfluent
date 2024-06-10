@@ -326,7 +326,6 @@ def test_fluent_launchers():
         ui_mode=kwargs["ui_mode"],
         graphics_driver=kwargs["graphics_driver"],
         product_version=None,
-        version=None,
         precision=None,
         processor_count=None,
         start_timeout=None,
