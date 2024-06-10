@@ -298,6 +298,7 @@ def test_deprecated_settings(new_solver_session):
     }
 
 
+@pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
     version = solver.get_fluent_version()
