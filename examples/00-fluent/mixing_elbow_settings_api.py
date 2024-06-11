@@ -152,7 +152,7 @@ solver.solution.run_calculation.iterate(iter_count=150)
 # the images are large enough.
 
 graphics = solver.results.graphics
-# use_window_resolution option not active inside containers or ansyslab environment
+# use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
 graphics.picture.x_resolution = 1920
