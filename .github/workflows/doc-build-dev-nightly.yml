@@ -33,9 +33,6 @@ jobs:
           sudo apt update
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
-
       - name: Install pyfluent
         run: make install
 
@@ -56,10 +53,18 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
       - name: Build All Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          poetry install --only docs
+          if [ -f poetry.lock ] ; then
+            rm poetry.lock
+          fi
+          poetry install --with docs
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
