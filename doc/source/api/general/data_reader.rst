@@ -62,4 +62,3 @@ from the ``examples`` repository:
    :exclude-members: __weakref__, __dict__
    :special-members: __init__
    :autosummary:
-   :noindex:
