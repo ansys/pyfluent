@@ -189,8 +189,8 @@ def _search(
     """
     api_objects = []
     api_tui_objects = []
-    api_object_names = set()
-    results = set()
+    api_object_names = []
+    results = []
     if version:
         version = get_version_for_file_name(version)
     root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
@@ -244,13 +244,13 @@ def _search(
                 else:
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
-                api_object_names.add(k)
+                api_object_names.append(k)
                 if "tui" in next_path:
                     api_tui_objects.append(f"{next_path} ({type_})")
                 else:
                     api_objects.append(f"{next_path} ({type_})")
                 if _match(k, word, match_whole_word, match_case):
-                    results.add(f"{next_path} ({type_})")
+                    results.append(f"{next_path} ({type_})")
             if isinstance(v, Mapping):
                 inner(v, next_path, root_path)
 
