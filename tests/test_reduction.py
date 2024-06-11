@@ -116,6 +116,45 @@ def _test_count(solver):
     solver_named_expressions.pop(key="test_expr_1")
 
 
+def _test_count_if(solver):
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
+    s_velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
+    solver_named_expressions["test_expr_1"] = {}
+    solver_named_expressions["test_expr_1"].definition = (
+        "CountIf(AbsolutePressure > 0[Pa], ['inlet1'])"
+    )
+    expr_val_1 = solver_named_expressions["test_expr_1"].get_value()
+    solver_named_expressions["test_expr_1"].definition = (
+        "CountIf(AbsolutePressure > 0[Pa], ['inlet2'])"
+    )
+    expr_val_2 = solver_named_expressions["test_expr_1"].get_value()
+    solver_named_expressions["test_expr_1"].definition = (
+        "CountIf(AbsolutePressure > 0[Pa], ['inlet1', 'inlet2'])"
+    )
+    expr_val_3 = solver_named_expressions["test_expr_1"].get_value()
+    assert expr_val_3 == expr_val_1 + expr_val_2
+    red_val_1 = solver.fields.reduction.count_if(
+        condition="AbsolutePressure > 0[Pa]", locations=["inlet1"]
+    )
+    red_val_2 = solver.fields.reduction.count_if(
+        condition="AbsolutePressure > 0[Pa]", locations=[s_velocity_inlet["inlet2"]]
+    )
+    red_val_3 = solver.fields.reduction.count_if(
+        condition="AbsolutePressure > 0[Pa]", locations=[s_velocity_inlet]
+    )
+    val = solver.fields.reduction.sum_if(
+        expression="AbsolutePressure",
+        condition="AbsolutePressure > 0[Pa]",
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
+        weight="Area",
+    )
+    assert red_val_1 == expr_val_1
+    assert red_val_2 == expr_val_2
+    assert red_val_3 == expr_val_3
+    solver_named_expressions.pop(key="test_expr_1")
+
+
 def _test_centroid(solver):
     solver.solution.initialization.hybrid_initialize()
     solver_named_expressions = solver.setup.named_expressions
@@ -344,6 +383,7 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_area_average(solver1)
     _test_min(solver1, solver2)
     _test_count(solver1)
+    _test_count_if(solver1)
     _test_centroid(solver1)
     _test_area_integrated_average(solver1, solver2)
     _test_error_handling(solver1)

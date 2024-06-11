@@ -68,7 +68,7 @@ class ReductionService:
         self, request: ReductionProtoModule.CountIfRequest
     ) -> ReductionProtoModule.CountIfResponse:
         """Count If RPC of Reduction service."""
-        return self._stub.Count(request, metadata=self._metadata)
+        return self._stub.CountIf(request, metadata=self._metadata)
 
     def force(
         self, request: ReductionProtoModule.ForceRequest
@@ -295,10 +295,10 @@ class Reduction:
         response = self.service.count(request)
         return _convert_variant_to_value(response.value)
 
-    def count_if(self, expression, locations, ctxt=None) -> Any:
-        """Get count if."""
+    def count_if(self, condition, locations, ctxt=None) -> Any:
+        """Get count if a particular condition satisfies."""
         request = ReductionProtoModule.CountIfRequest()
-        request.expression = expression
+        request.expression = condition
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.count_if(request)
         return _convert_variant_to_value(response.value)

@@ -33,7 +33,7 @@ an area-average of absolute pressure over the velocity inlet.
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> solver.reduction.area_average(
+  >>> solver.fields.reduction.area_average(
   >>>   expression="AbsolutePressure",
   >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
   >>> )
@@ -58,7 +58,7 @@ For example, to calculate area of a location one has to do:
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> solver.reduction.area(
+  >>> solver.fields.reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]]
   >>> )
   7.565427133371293e-07
@@ -68,7 +68,7 @@ Instead, one can use the context argument:
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> solver.reduction.area(locations=["inlet1"], ctxt=solver)
+  >>> solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
   7.565427133371293e-07
 
 
@@ -176,6 +176,14 @@ Compute the total number of cells included in the specified locations.
 
   >>> reduction.count(locations)
 
+Count if
+~~~~~~~~
+Compute the total number of cells included in the specified locations if a condition is satisfied.
+
+.. code-block:: python
+
+  >>> reduction.count_if(condition, locations)
+
 Minimum
 ~~~~~~~
 Compute the minimum of the specified expression over the specified locations.
@@ -214,16 +222,14 @@ Compute the total mass-weighted value of the specified expression over the speci
 .. note::
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
-Mass flow
-~~~~~~~~~
-Compute the total mass flow rate of the specified locations.
+Mass flow average absolute
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Compute the mass-flow-weighted absolute average value of the specified expression over the specified locations.
 
 .. code-block:: python
 
-  >>> reduction.mass_flow(locations)
+  >>> reduction.mass_flow_average_absolute(expression, locations)
 
-.. note::
-   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 Mass flow average
 ~~~~~~~~~~~~~~~~~
