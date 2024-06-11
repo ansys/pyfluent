@@ -36,9 +36,6 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
-
       - name: Add version information
         run: make version-info
 
@@ -80,3 +77,6 @@ jobs:
         run: |
           make install-test
           make unittest-solvermode-251
+
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers

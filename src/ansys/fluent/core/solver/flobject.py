@@ -170,7 +170,7 @@ def to_python_name(fluent_name: str) -> str:
 
 
 class Base:
-    """Base class for settings and command objects.
+    """Provides the base class for settings and command objects.
 
     Parameters
     ----------
@@ -195,9 +195,19 @@ class Base:
             self._setattr("_name", name)
         self._setattr("_child_alias_objs", {})
 
+    def _root(self, obj):
+        if obj._parent is None:
+            return obj
+        else:
+            return self._root(obj._parent)
+
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def _set_on_interrupt(self, on_interrupt):
+        """Set interrupt method."""
+        self._setattr("_on_interrupt", on_interrupt)
 
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
@@ -1613,7 +1623,11 @@ class Command(BaseCommand):
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
-        return self.execute_command(**kwds)
+        try:
+            return self.execute_command(**kwds)
+        except KeyboardInterrupt:
+            self._root(self)._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -1640,7 +1654,11 @@ class CommandWithPositionalArgs(BaseCommand):
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified keyword arguments."""
-        return self.execute_command(*args, **kwds)
+        try:
+            return self.execute_command(*args, **kwds)
+        except KeyboardInterrupt:
+            self._root(self)._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 class Query(Action):
@@ -1974,6 +1992,7 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
+    interrupt: Optional[Any] = None,
     file_transfer_service: Optional[Any] = None,
     scheme_eval=None,
 ) -> Group:
@@ -1983,6 +2002,8 @@ def get_root(
     ----------
     flproxy: Proxy
         Object that interfaces with the Fluent backend.
+    interrupt: optional
+        To interrupt interruptible commands.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     scheme_eval : Any
@@ -2026,6 +2047,7 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
