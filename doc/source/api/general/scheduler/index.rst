@@ -3,17 +3,17 @@
 Scheduler
 =========
 
-.. currentmodule:: ansys.fluent.core.scheduler
+.. automodule:: ansys.fluent.core.scheduler
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
 
-.. autosummary::
-    :toctree: _autosummary
-    :recursive:
+.. toctree::
+    :maxdepth: 2
+    :hidden:
 
-    load_machines.load_machines
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
+    load_machines
     machine_list

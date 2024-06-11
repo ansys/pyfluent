@@ -4,11 +4,9 @@
 
 ``flobject``
 ============
-.. currentmodule:: ansys.fluent.core.solver
 
-.. autosummary::
-   :toctree: _autosummary
-   :template: flobject-module-template.rst
-   :recursive:
-
-   flobject
+.. automodule:: ansys.fluent.core.solver.flobject
+   :members:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :autosummary:

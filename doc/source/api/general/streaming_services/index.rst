@@ -3,15 +3,19 @@
 Streaming services
 ==================
 
-.. currentmodule:: ansys.fluent.core.streaming_services
+.. automodule:: ansys.fluent.core.streaming_services
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
 
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
+.. toctree::
+    :maxdepth: 2
+    :hidden:
 
     streaming
     events_streaming
     monitor_streaming
     transcript_streaming
-

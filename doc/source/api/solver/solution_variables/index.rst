@@ -149,10 +149,11 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
-    :toctree: _autosummary
-    :template: flobject-class-template.rst
-    :recursive:
+   :toctree: _autosummary
 
-    solution_variables.SolutionVariableInfo
-    solution_variables.SolutionVariableData
-   
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+    SolutionVariableInfo
+    SolutionVariableData

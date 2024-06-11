@@ -29,4 +29,4 @@ and field data (surface, scalar, and vector).
    events
    monitors
    reduction
-   solution_variables
+   solution_variables/index

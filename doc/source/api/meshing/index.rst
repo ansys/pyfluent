@@ -110,20 +110,18 @@ TUI commands example
     solver.tui.define.models.unsteady_2nd_order("yes")
     exit()
 
-.. currentmodule:: ansys.fluent.core.meshing
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    faulttolerant
-    meshing_workflow
-    watertight
+.. automodule:: ansys.fluent.core.meshing
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
+    :maxdepth: 2
+    :hidden:
 
-   tui/index
-   datamodel/index
+    meshing_workflow
+    tui/index
+    datamodel/index
