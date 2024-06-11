@@ -143,12 +143,6 @@ def _test_count_if(solver):
     red_val_3 = solver.fields.reduction.count_if(
         condition="AbsolutePressure > 0[Pa]", locations=[s_velocity_inlet]
     )
-    val = solver.fields.reduction.sum_if(
-        expression="AbsolutePressure",
-        condition="AbsolutePressure > 0[Pa]",
-        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight="Area",
-    )
     assert red_val_1 == expr_val_1
     assert red_val_2 == expr_val_2
     assert red_val_3 == expr_val_3
