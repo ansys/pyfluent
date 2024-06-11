@@ -9,3 +9,4 @@ Callable Slurm launcher
    :undoc-members:
    :exclude-members: __weakref__, __dict__
    :autosummary:
+   :noindex:
