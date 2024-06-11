@@ -255,7 +255,6 @@ def _search(
                 inner(v, next_path, root_path)
 
     inner(api_tree, "", root_path)
-    return results
 
     api_tree_data = dict()
     api_tree_data["api_objects"] = sorted(api_objects)
@@ -289,6 +288,7 @@ def _search(
     _write_api_tree_file(
         api_tree_data=api_tree_data, api_object_names=list(api_object_names)
     )
+    return results
 
 
 @functools.cache
