@@ -427,7 +427,7 @@ solver.tui.file.write_data("mixing_elbow1.dat.h5")
 
 picture = solver.tui.display.set.picture
 # use-window-container TUI option not available inside containers or Ansys Lab environment
-if "use_window_resolution" in picture:
+if "use_window_resolution" in dir(picture):
     picture.use_window_resolution("no")
 picture.x_resolution("1920")
 picture.y_resolution("1440")

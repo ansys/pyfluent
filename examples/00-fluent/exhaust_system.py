@@ -628,7 +628,7 @@ solver.tui.file.write_case_data("exhaust_system.cas.h5", "yes")
 
 picture = solver.tui.display.set.picture
 # use-window-container TUI option not available inside containers or Ansys Lab environment
-if "use_window_resolution" in picture:
+if "use_window_resolution" in dir(picture):
     picture.use_window_resolution("no")
 picture.x_resolution("1920")
 picture.y_resolution("1440")
