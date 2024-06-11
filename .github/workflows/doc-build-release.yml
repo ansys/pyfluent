@@ -35,9 +35,6 @@ jobs:
           sudo apt update
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
-
       - name: Install pyfluent
         run: make install
 

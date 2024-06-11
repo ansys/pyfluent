@@ -55,9 +55,6 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
-
       - name: Add version information
         run: make version-info
 
@@ -111,3 +108,6 @@ jobs:
             poetry python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers

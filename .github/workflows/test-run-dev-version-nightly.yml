@@ -35,9 +35,6 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
-
       - name: Add version information
         run: make version-info
 
@@ -83,6 +80,9 @@ jobs:
           make unittest-all-251
         env:
           FLUENT_IMAGE_TAG: v25.1.0
+
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
 
       - name: Update Fluent image
         env:
