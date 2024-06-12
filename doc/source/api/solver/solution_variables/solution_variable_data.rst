@@ -1,4 +1,4 @@
-.. _ref_solution_variable_data:
+.. _ref_SolutionVariableData:
 
 SolutionVariableData
 ====================

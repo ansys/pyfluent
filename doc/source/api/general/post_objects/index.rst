@@ -3,13 +3,12 @@
 Post objects
 ============
 
-.. automodule:: ansys.fluent.core.post_objects
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: __weakref__, __dict__
-   :special-members: __init__
-   :autosummary:
+=================================  ======================================================================
+:ref:`ref_post_helper`             | Provides a module for post objects.
+
+:ref:`ref_post_objects_container`  Module providing visualization objects to facilitate integration with 
+                                   libraries like Matplotlib and pyvista.
+=================================  ======================================================================
 
 .. toctree::
     :maxdepth: 2

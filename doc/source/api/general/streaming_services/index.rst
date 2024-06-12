@@ -3,13 +3,15 @@
 Streaming services
 ==================
 
-.. automodule:: ansys.fluent.core.streaming_services
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: __weakref__, __dict__
-   :special-members: __init__
-   :autosummary:
+===============================  ===========================================
+:ref:`ref_streaming`             | Provides a module for streaming services.
+
+:ref:`ref_events_streaming`      Module for events management.
+
+:ref:`ref_monitor_streaming`     Module for monitors management.
+
+:ref:`ref_transcript_streaming`  Provides a module for transcript streaming.
+===============================  ===========================================
 
 .. toctree::
     :maxdepth: 2

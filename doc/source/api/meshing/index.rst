@@ -122,6 +122,6 @@ TUI commands example
    :maxdepth: 2
    :hidden:
 
-    meshing_workflow
-    tui/index
-    datamodel/index
+   meshing_workflow
+   tui/index
+   datamodel/index

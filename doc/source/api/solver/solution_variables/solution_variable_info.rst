@@ -1,9 +1,9 @@
-.. _ref_solution_variable_info:
+.. _ref_SolutionVariableInfo:
 
 SolutionVariableInfo
 ====================
 
-.. automodule:: ansys.fluent.core.services.SolutionVariableInfo
+.. autoclass:: ansys.fluent.core.services.solution_variables.SolutionVariableInfo
    :members:
    :show-inheritance:
    :undoc-members:

@@ -12,8 +12,6 @@ and field data (surface, scalar, and vector).
 
 .. vale Google.Spacing = YES
 
-.. currentmodule:: ansys.fluent.core.solver
-
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -25,5 +23,5 @@ and field data (surface, scalar, and vector).
    schemeeval
    events
    monitors
-   reduction
+   reduction/index
    solution_variables/index
