@@ -20,7 +20,6 @@ and field data (surface, scalar, and vector).
    settings_root
    tuicommands
    datamodel/index
-   schemeeval
    events
    monitors
    reduction/index

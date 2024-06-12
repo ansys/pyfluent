@@ -109,5 +109,6 @@ Logging
     post_objects/index
     execution_utils
     search
+    schemeeval
     meta
     logging
