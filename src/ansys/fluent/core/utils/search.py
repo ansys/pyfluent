@@ -149,6 +149,7 @@ def _search(
     match_case: bool = False,
     version: Optional[str] = None,
     search_root: Optional[Any] = None,
+    write_api_tree_data: Optional[bool] = False,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -167,6 +168,8 @@ def _search(
         The root object within which the search is performed.
         It can be a session object or any API object within a session.
         The default is ``None``. If ``None``, it searches everything.
+    write_api_tree_data: bool, optional
+        Whether to write the API tree data.
 
     Examples
     --------
@@ -285,9 +288,10 @@ def _search(
         with open(api_tree_file, "w") as json_file:
             json.dump(api_tree_data, json_file)
 
-    _write_api_tree_file(
-        api_tree_data=api_tree_data, api_object_names=list(api_object_names)
-    )
+    if write_api_tree_data:
+        _write_api_tree_file(
+            api_tree_data=api_tree_data, api_object_names=list(api_object_names)
+        )
     return results
 
 
