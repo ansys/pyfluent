@@ -3,7 +3,7 @@
 SolutionVariableData
 ====================
 
-.. automodule:: ansys.fluent.core.services.SolutionVariableData
+.. autoclass:: ansys.fluent.core.services.solution_variables.SolutionVariableData
    :members:
    :show-inheritance:
    :undoc-members:

@@ -146,10 +146,7 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
     >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
     >>> solution_variable_data.set_data(solution_variable_name="SV_T", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data, domain_name="mixture")
 
-.. currentmodule:: ansys.fluent.core.services
-
-.. autosummary::
-   :toctree: _autosummary
+.. currentmodule:: ansys.fluent.core.services.solution_variables
 
 .. toctree::
    :maxdepth: 2

@@ -14,9 +14,6 @@ and field data (surface, scalar, and vector).
 
 .. currentmodule:: ansys.fluent.core.solver
 
-.. autosummary::
-   :toctree: _autosummary
-
 .. toctree::
    :maxdepth: 2
    :hidden:

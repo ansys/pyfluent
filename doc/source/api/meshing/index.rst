@@ -119,8 +119,8 @@ TUI commands example
    :autosummary:
 
 .. toctree::
-    :maxdepth: 2
-    :hidden:
+   :maxdepth: 2
+   :hidden:
 
     meshing_workflow
     tui/index
