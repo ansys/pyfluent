@@ -13,6 +13,7 @@ from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
+_CONNECTION_INFO_COMMAND = "(grpcserver/server-info(is-server-running?))"
 
 
 def is_windows():
@@ -21,6 +22,8 @@ def is_windows():
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+    from ansys.fluent.core import INFER_REMOTING_IP, READ_SERVERINFO_FROM_STDOUT
+
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     kwargs: Dict[str, Any] = {}
@@ -33,10 +36,11 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    if READ_SERVERINFO_FROM_STDOUT:
+        # Disabling password authentication as password cannot be written to stdout
+        fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
     if not is_slurm:
-        from ansys.fluent.core import INFER_REMOTING_IP
-
         if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
             remoting_ip = find_remoting_ip()
             if remoting_ip:
@@ -62,6 +66,14 @@ def _await_fluent_launch(
         logger.info("Waiting for Fluent to launch...")
         if start_timeout >= 0:
             logger.info(f"...{start_timeout} seconds remaining")
+
+
+def _get_connection_info(proc: subprocess.Popen):
+    for line in proc.stdout:
+        if line.startswith(_CONNECTION_INFO_COMMAND.encode()):
+            line = line.decode().removeprefix(_CONNECTION_INFO_COMMAND).strip()
+            port, host = line.split()
+            return host, int(port)
 
 
 def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
