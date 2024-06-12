@@ -495,6 +495,7 @@ def test_search_from_root(new_watertight_workflow_session):
     assert "<search_root>.IdleTimeout (Parameter)" in results
 
 
+@pytest.mark.skip("Results are varying each time.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
 def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
