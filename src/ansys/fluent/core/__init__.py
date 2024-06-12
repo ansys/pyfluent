@@ -106,3 +106,7 @@ SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False
+
+# Whether to read server info from stdout of the Fluent process.
+# When set to False, the server info will be read from file.
+READ_SERVERINFO_FROM_STDOUT = False
