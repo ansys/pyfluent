@@ -1,9 +1,9 @@
-.. _ref_workflow:
+.. _ref_machine_list:
 
-Workflow
-========
+machine_list
+============
 
-.. automodule:: ansys.fluent.core.workflow
+.. automodule:: ansys.fluent.core.scheduler.machine_list
    :members:
    :show-inheritance:
    :undoc-members:

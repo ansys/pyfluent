@@ -31,12 +31,15 @@ health_check
 hexahedral
 inout
 interceptors
+load_machines
+machine_list
 mass_average
 mass_flow
 mass_integrated_average
 mesher
 meshing's
 meshing_queries
+meshing_workflow
 metaclass
 metaclasses
 monitor
@@ -46,6 +49,8 @@ postprocess
 PIM
 PyFluent
 Pythonic
+post_helper
+post_objects_container
 pyvista
 rpc
 rpvars
