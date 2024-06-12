@@ -352,12 +352,8 @@ You can also calculate the sum with a condition:
   >>> )
   20670300.0
 
+.. toctree::
+   :hidden:
+   :maxdepth: 2
 
-.. currentmodule:: ansys.fluent.core.solver.function
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    reduction
+   reduction
