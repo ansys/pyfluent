@@ -280,8 +280,8 @@ solver.file.write_case_data(file_name="cav")
 # the images are large enough.
 
 graphics = solver.results.graphics
-# use_window_resolution option not available inside containers
-if not solver.connection_properties.inside_container:
+# use_window_resolution option not active inside containers or Ansys Lab environment
+if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
 graphics.picture.x_resolution = 1920
 graphics.picture.y_resolution = 1440
