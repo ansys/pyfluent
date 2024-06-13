@@ -26,8 +26,6 @@ class AppendToFile:
 class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
 
-    _writing_transcript_to_interpreter = False
-
     def __init__(self, transcript_service):
         """__init__ method of Transcript class."""
         super().__init__(
@@ -36,6 +34,7 @@ class Transcript(StreamingService):
             streaming_service=transcript_service,
         )
         self.callback_ids = []
+        self._writing_transcript_to_interpreter = False
 
     def start(
         self, file_name: Optional[str] = None, write_to_stdout: bool = False
@@ -64,9 +63,9 @@ class Transcript(StreamingService):
 
     def _write_to_stdout(self):
         """Write transcript to stdout."""
-        if not Transcript._writing_transcript_to_interpreter:
+        if not self._writing_transcript_to_interpreter:
             self.callback_ids.append(self.register_callback(print))
-            Transcript._writing_transcript_to_interpreter = True
+            self._writing_transcript_to_interpreter = True
 
     def stop(self) -> None:
         """Stop streaming of Fluent transcript."""

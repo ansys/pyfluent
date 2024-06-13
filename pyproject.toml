@@ -27,7 +27,7 @@ include = [
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/api_tree/*.txt", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/api_tree/*.json", format = ["sdist", "wheel"] },
 ]
 
 packages = [
@@ -62,7 +62,7 @@ requests = "==2.31.0"
 optional = true
 
 [tool.poetry.group.docs.dependencies]
-Sphinx = "==7.2.6"
+Sphinx = "==7.3.7"
 jupyter_sphinx = "==0.5.3"
 numpydoc = "==1.6.0"
 matplotlib = "==3.9.0"

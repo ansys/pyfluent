@@ -1,9 +1,9 @@
-.. _ref_workflow:
+.. _ref_load_machines:
 
-Workflow
-========
+load_machines
+=============
 
-.. automodule:: ansys.fluent.core.workflow
+.. automodule:: ansys.fluent.core.scheduler.load_machines
    :members:
    :show-inheritance:
    :undoc-members:

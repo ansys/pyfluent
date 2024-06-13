@@ -152,6 +152,7 @@ compare-flobject:
 
 cleanup-previous-docker-containers:
 	@if [ -n "$(docker ps -a -q)" ]; then \
+		echo "Found running containers"; \
 		docker inspect --format='{{.Config.Labels.test_name}}' $(docker ps -a -q); \
 		docker stop $(docker ps -a -q); \
 	fi

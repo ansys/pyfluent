@@ -1,9 +1,9 @@
-.. _ref_workflow:
+.. _ref_streaming:
 
-Workflow
-========
+streaming
+=========
 
-.. automodule:: ansys.fluent.core.workflow
+.. automodule:: ansys.fluent.core.streaming_services.streaming
    :members:
    :show-inheritance:
    :undoc-members:

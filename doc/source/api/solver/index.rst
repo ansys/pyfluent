@@ -12,20 +12,15 @@ and field data (surface, scalar, and vector).
 
 .. vale Google.Spacing = YES
 
-.. currentmodule:: ansys.fluent.core.solver
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. toctree::
    :maxdepth: 2
    :hidden:
 
    settings
+   settings_root
    tuicommands
    datamodel/index
-   schemeeval
    events
    monitors
-   reduction
-   solution_variables
+   reduction/index
+   solution_variables/index

@@ -149,6 +149,7 @@ def _search(
     match_case: bool = False,
     version: Optional[str] = None,
     search_root: Optional[Any] = None,
+    write_api_tree_data: Optional[bool] = False,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -167,6 +168,8 @@ def _search(
         The root object within which the search is performed.
         It can be a session object or any API object within a session.
         The default is ``None``. If ``None``, it searches everything.
+    write_api_tree_data: bool, optional
+        Whether to write the API tree data.
 
     Examples
     --------
@@ -189,14 +192,13 @@ def _search(
     """
     api_objects = []
     api_tui_objects = []
-    api_object_names = set()
+    api_object_names = []
+    results = []
     if version:
         version = get_version_for_file_name(version)
     root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
     if search_root and not prefix:
         return
-    if not version:
-        version = root_version
     if not version:
         for fluent_version in FluentVersion:
             version = get_version_for_file_name(fluent_version.value)
@@ -245,13 +247,13 @@ def _search(
                 else:
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
-                api_object_names.add(k)
+                api_object_names.append(k)
                 if "tui" in next_path:
                     api_tui_objects.append(f"{next_path} ({type_})")
                 else:
                     api_objects.append(f"{next_path} ({type_})")
                 if _match(k, word, match_whole_word, match_case):
-                    print(f"{next_path} ({type_})")
+                    results.append(f"{next_path} ({type_})")
             if isinstance(v, Mapping):
                 inner(v, next_path, root_path)
 
@@ -286,9 +288,11 @@ def _search(
         with open(api_tree_file, "w") as json_file:
             json.dump(api_tree_data, json_file)
 
-    _write_api_tree_file(
-        api_tree_data=api_tree_data, api_object_names=list(api_object_names)
-    )
+    if write_api_tree_data:
+        _write_api_tree_file(
+            api_tree_data=api_tree_data, api_object_names=list(api_object_names)
+        )
+    return results
 
 
 @functools.cache
@@ -643,17 +647,17 @@ def search(
         )
     elif language and match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches the given word, and it's capitalize case.",
+            "``match_whole_word=True`` matches the whole word (case insensitive).",
             UserWarning,
         )
     elif match_whole_word:
         warnings.warn(
-            "``match_whole_word=True`` matches the given word, and it's capitalize case.",
+            "``match_whole_word=True`` matches the whole word (case insensitive).",
             UserWarning,
         )
     elif match_case:
         warnings.warn(
-            "``match_case=True`` matches the given word.",
+            "``match_case=True`` matches the whole word (case sensitive).",
             UserWarning,
         )
 
@@ -678,8 +682,6 @@ def search(
         root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
         if search_root and not prefix:
             return
-        if not version:
-            version = root_version
         if not version:
             for fluent_version in FluentVersion:
                 version = get_version_for_file_name(fluent_version.value)
