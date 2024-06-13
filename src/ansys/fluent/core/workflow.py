@@ -1410,7 +1410,6 @@ class Workflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
-        _call_refresh_task_accessors(self)
         if attr in self._repeated_task_python_name_display_text_map:
             return self.task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
