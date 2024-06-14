@@ -133,7 +133,6 @@ file my_journal.py in the working directory.
 
    fluent.exe 3ddp -i my_journal.jou -topy
 
-
 In Fluent 2023 R1, calls to TUI commands that have equivalents in the solver settings
 API are automatically recorded as method calls to the corresponding solver settings
 objects in the Python journal. If a TUI command does not have an API analogue, it is
