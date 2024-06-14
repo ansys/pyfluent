@@ -140,7 +140,7 @@ is recorded as a settings API call in the Python journal. Otherwise, a call to
 original TUI call. You need to manually convert those TUI commands using the transformation
 rules described in the next section.
 
-In Fluent 2022 R2, the Python journaling feature is not available at all, so uou need to manually
+In Fluent 2022 R2, the Python journaling feature is not available at all, so you must manually
 convert all TUI commands using the transformation rules described in the next section.
 
 TUI command transformation rules
