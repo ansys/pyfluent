@@ -136,7 +136,7 @@ file my_journal.py in the working directory.
 
 In Fluent 2023 R1, any call to a TUI command, for which a settings API analogue exists,
 is recorded as a settings API call in the Python journal. Otherwise, a call to 
-``execute_tui(<argument>)`` is recorded and ``<argument>`` is a string representing the 
+``execute_tui(<argument>)`` is recorded, where ``<argument>`` is a string representing the 
 original TUI call. You need to manually convert those TUI commands using the transformation
 rules described in the next section.
 
