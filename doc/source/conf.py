@@ -246,7 +246,7 @@ texinfo_documents = [
         "ansys.fluent.core Documentation",
         author,
         "ansys.fluent.core",
-        "Pythonic interface for Fluent using gRPC",
+        "Python client library that interfaces to Fluent",
         "Engineering Software",
     ),
 ]

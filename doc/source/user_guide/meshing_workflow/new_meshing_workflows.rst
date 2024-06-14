@@ -21,7 +21,7 @@ Import geometry
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
     meshing = pyfluent.launch_fluent(
-        mode="meshing", precision='double', processor_count=2
+        mode="meshing", precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     watertight = meshing.watertight()
     watertight.import_geometry.file_name.set_state(import_file_name)
@@ -116,7 +116,7 @@ Import CAD and part management
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
-    meshing = pyfluent.launch_fluent(precision="double", processor_count=2, mode="meshing")
+    meshing = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode="meshing")
     fault_tolerant = meshing.fault_tolerant()
     meshing.PartManagement.InputFileChanged(
         FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
@@ -470,7 +470,7 @@ Import geometry
 
     import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
     meshing = pyfluent.launch_fluent(
-        mode="meshing", precision='double', processor_count=2
+        mode="meshing", precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     two_dim_mesh = meshing.two_dimensional_meshing()
 
@@ -630,7 +630,7 @@ Create workflow
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
     meshing = pyfluent.launch_fluent(
-        mode="meshing", precision='double', processor_count=2
+        mode="meshing", precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     created_workflow = meshing.create_workflow()
 
@@ -670,7 +670,7 @@ Load workflow
         "sample_watertight_workflow.wft", "pyfluent/meshing_workflow"
     )
     meshing = pyfluent.launch_fluent(
-        mode="meshing", precision='double', processor_count=2
+        mode="meshing", precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
 
@@ -684,7 +684,7 @@ You can insert new tasks into the meshing workflow in an object-oriented manner.
     import ansys.fluent.core as pyfluent
 
     meshing = pyfluent.launch_fluent(
-        mode="meshing", precision='double', processor_count=2
+        mode="meshing", precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     watertight = meshing.watertight()
     watertight.import_geometry.insertable_tasks()

@@ -41,13 +41,17 @@ the Python kernel.
 Launch Fluent
 -------------
 To launch Fluent from PyFluent, use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method:
+function:
 
 .. code:: python
 
-  import ansys.fluent.core as pyfluent
-  solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode=pyfluent.FluentMode.SOLVER)
-  solver.health_check.is_serving
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.launch_fluent(
+  >>>     precision=pyfluent.Precision.DOUBLE,
+  >>>     processor_count=2,
+  >>>     mode=pyfluent.FluentMode.SOLVER
+  >>> )
+  >>> solver.health_check.is_serving
 
 To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
 environment variable, where ``<ver>`` is the three-digit format for the release.
@@ -78,7 +82,7 @@ to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent
 
 .. code:: python
 
-  session = pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui", mode=pyfluent.FluentMode.SOLVER)
+  session = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui", mode=pyfluent.FluentMode.SOLVER)
 
 If you want to look at PyFluent's debug logging, use the following command:
 
