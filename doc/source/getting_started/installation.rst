@@ -37,7 +37,7 @@ when you use PyFluent.
 The full PyFluent package includes some required API classes that are auto-generated rather than
 being maintained under version control, so they will not be present amongst the files in your
 cloned repository at this point. You run the auto-generation using a script included in the repository,
-as specified below. The auto-generation requires an Ansys Fluent installation, as detailed below.
+as specified below. The auto-generation requires an Ansys Fluent installation.
 
    python codegen/allapigen.py  # Generates the API files
 
