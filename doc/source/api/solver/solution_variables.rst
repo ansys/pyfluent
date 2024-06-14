@@ -18,7 +18,7 @@ Launch the fluent solver, and make solution variable objects available
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
   >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   >>> solver.file.read(file_type="case", file_name=import_filename)
 
 

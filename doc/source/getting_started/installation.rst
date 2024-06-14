@@ -46,7 +46,7 @@ method:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
+  solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode=pyfluent.FluentMode.SOLVER)
   solver.health_check.is_serving
 
 To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
@@ -74,11 +74,11 @@ setting, and iterates the solver:
   solver.tui.solve.dual_time_iterate(2, 3)
 
 If you want to interact with the Fluent GUI (graphical user interface), pass ``ui_mode="gui"``
-to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method:
+to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function:
 
 .. code:: python
 
-  session = pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui", mode="solver")
+  session = pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui", mode=pyfluent.FluentMode.SOLVER)
 
 If you want to look at PyFluent's debug logging, use the following command:
 

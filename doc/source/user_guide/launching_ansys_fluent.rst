@@ -3,16 +3,16 @@
 Launch or connect to Fluent
 ===========================
 You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method to start Fluent from Python in gRPC mode. This code starts Fluent in the background
+function to start Fluent from Python in gRPC mode. This code starts Fluent in the background
 so that commands can be sent to Fluent from the Python interpreter:
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    solver = pyfluent.launch_fluent(mode="solver")
+    solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
-method to connect to a running Fluent session that has started the gRPC server. The gRPC
+function to connect to a running Fluent session that has started the gRPC server. The gRPC
 server in Fluent can be started using the ``-sifile=<server_info_file_name>`` command line
 startup option, ``server/start-server`` text command or
 ``File -> Applications -> Server -> Start...`` ribbon menu. Fluent writes out a server-info file on
@@ -35,7 +35,7 @@ This example shows how to launch Fluent in solution mode:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(mode="solver")
+   solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
 
 Meshing mode
 ~~~~~~~~~~~~
@@ -43,7 +43,7 @@ This example shows how to launch Fluent in meshing mode:
 
 .. code:: python
 
-   meshing_session = pyfluent.launch_fluent(mode="meshing")
+   meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
 Precision
 ~~~~~~~~~
@@ -52,7 +52,7 @@ and set the floating point precision:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", mode=pyfluent.FluentMode.SOLVER)
 
 Dimension
 ~~~~~~~~~
@@ -61,7 +61,7 @@ modeling dimension:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", version="2d", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", version="2d", mode=pyfluent.FluentMode.SOLVER)
 
 Local parallel
 ~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ number of processors for local parallel execution:
 .. code:: python
 
    solver = pyfluent.launch_fluent(
-      precision="double", version="2d", processor_count=2, mode="solver"
+      precision="double", version="2d", processor_count=2, mode=pyfluent.FluentMode.SOLVER
    )
 
 Distributed parallel
@@ -85,7 +85,7 @@ distributed across more than one machine:
       precision="double",
       version="3d",
       processor_count=16,
-      mode="solver",
+      mode=pyfluent.FluentMode.SOLVER,
       additional_arguments="-cnf=m1:8,m2:8",
    )
 
@@ -103,7 +103,7 @@ For more details, see :ref:`ref_logging_user_guide`.
 Scheduler support
 -----------------
 When PyFluent is run within a job scheduler environment, the :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` method automatically determines
+<ansys.fluent.core.launcher.launcher.launch_fluent>` function automatically determines
 the list of machines and core counts to start Fluent with. The supported
 scheduler environments are Altair Grid Engine (formerly UGE), Sun Grid Engine (SGE),
 Load Sharing Facility (LSF), Portable Batch System (PBS), and Slurm.
@@ -153,7 +153,7 @@ machines and cores:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", version="3d", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", version="3d", mode=pyfluent.FluentMode.SOLVER)
 
 If you want to clamp the number of cores that Fluent is launched on, you can
 pass the ``processor_count`` parameter:
@@ -161,7 +161,7 @@ pass the ``processor_count`` parameter:
 .. code:: python
 
    solver = pyfluent.launch_fluent(
-      precision="double", version="3d", processor_count=16, mode="solver"
+      precision="double", version="3d", processor_count=16, mode=pyfluent.FluentMode.SOLVER
    )
 
 Passing the ``processor_count`` parameter like this forces execution of Fluent on 16
@@ -172,14 +172,14 @@ not scale well on all the allocated cores.
 
 Finally, if you want to ignore the scheduler allocation, you can pass the ``-t``
 or ``-t`` and ``-cnf`` arguments to the
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
+:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 using the ``additional_arguments`` parameter. For local parallel execution, simply pass the ``-t``
 argument:
 
 .. code:: python
 
    solver = pyfluent.launch_fluent(
-      precision="double", version="3d", mode="solver", additional_arguments="-t16"
+      precision="double", version="3d", mode=pyfluent.FluentMode.SOLVER, additional_arguments="-t16"
    )
 
 For distributed parallel processing, you usually pass both parameters:
@@ -189,11 +189,11 @@ For distributed parallel processing, you usually pass both parameters:
    solver = pyfluent.launch_fluent(
       precision="double",
       version="3d",
-      mode="solver",
+      mode=pyfluent.FluentMode.SOLVER,
       additional_arguments="-t16 -cnf=m1:8,m2:8",
    )
 
-The :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
+The :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 also supports the ``scheduler_options`` parameter to submit the Fluent job to a Slurm
 scheduler without using any bash script:
 
@@ -215,7 +215,7 @@ scheduler without using any bash script:
 The keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account`` are
 optional and should be specified in a similar manner to Fluent's scheduler options.
 Here, the :func:`launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method returns a :class:`SlurmFuture <ansys.fluent.core.launcher.slurm_launcher.SlurmFuture>`
+function returns a :class:`SlurmFuture <ansys.fluent.core.launcher.slurm_launcher.SlurmFuture>`
 instance from which the PyFluent session can be extracted. For a detailed usage, see the
 documentation of the :mod:`slurm_launcher <ansys.fluent.core.launcher.slurm_launcher>`
 module.
@@ -224,5 +224,5 @@ module.
 
 The ``scheduler_options`` parameter doesn't support the automatic scheduler allocation,
 the ``-t`` and ``-cnf`` arguments must be passed to the
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
+:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 using the ``additional_arguments`` parameter for distributed parallel processing.

@@ -15,7 +15,7 @@ the following code snippets) whose interface directly exposes the
 .. code-block::
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
 
 
 The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.generated.solver.settings_232.file.file`,
@@ -258,7 +258,7 @@ in a single solver session:
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   >>> solver.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done

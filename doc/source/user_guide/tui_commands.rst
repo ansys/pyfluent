@@ -103,7 +103,7 @@ The following code yields the same result but specifies all arguments in one cal
    /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
 The recorded Python journal contains the following line which can be executed in
-PyFluent, assuming ``solver`` is the session instance returned by ``launch_fluent``.
+PyFluent, where ``solver`` is the session instance returned by ``launch_fluent``.
 
 .. code:: python
 
@@ -134,14 +134,16 @@ file my_journal.py in the working directory.
    fluent.exe 3ddp -i my_journal.jou -topy
 
 
-In Fluent 2023 R1, any call to a TUI command, for which a settings API analogue exists,
-is recorded as a settings API call in the Python journal. Otherwise, a call to 
-``execute_tui(<argument>)`` is recorded and ``<argument>`` is a string representing the 
-original TUI call. You need to manually convert those TUI commands using the transformation
-rules described in the next section.
+In Fluent 2023 R1, calls to TUI commands that have equivalents in the solver settings
+API are automatically recorded as method calls to the corresponding solver settings
+objects in the Python journal. If a TUI command does not have an API analogue, it is
+recorded as ``execute_tui(<argument>)``, where ``<argument>`` is the original TUI command string.
+You'll need to manually convert these TUI commands using the transformation rules provided
+in the next section.
 
-In Fluent 2022 R2, the Python journaling feature is not available at all, so uou need to manually
-convert all TUI commands using the transformation rules described in the next section.
+In Fluent 2022 R2, the Python journaling feature is not available. Therefore, you must
+manually convert all TUI commands using the transformation rules described in the next 
+section.
 
 TUI command transformation rules
 --------------------------------

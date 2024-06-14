@@ -3,8 +3,6 @@
 ==========
 User guide
 ==========
-Anyone who wants to use PyFluent can import its Python modules and develop
-Python code to control and monitor Ansys Fluent.
 
 ..
    This toctree must be a top level index to get it to show up in
@@ -37,7 +35,7 @@ A Simple Example
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING_MODE, product_version=pyfluent.FluentVersion.v242)
+  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v242)
   >>> watertight = meshing.watertight()
   >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
   >>> watertight.import_geometry()
@@ -56,7 +54,7 @@ Key Features
 
 Launching Fluent from PyFluent
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Easily :ref:`start a Fluent session <_ref_launcher>` locally or remotely with a variety of launch options, or connect
+Easily :ref:`start a Fluent session <_ref_user_guide_launch>` locally or remotely with a variety of launch options, or connect
 to an existing session. Interact with Fluent through the session object returned by the launch
 or connect methods.
 
@@ -71,4 +69,15 @@ Utilize :ref:`settings objects <_ref_settings>` to configure and control your si
 Data Extraction
 ~~~~~~~~~~~~~~~
 Easily extract solution and mesh data for analysis and post-processing.
+
+
+Use Cases
+---------
+Some example use cases are given in this user guide.
+
+Physics Models
+~~~~~~~~~~~~~~
+.. _ref_user_guide_models:
+
+
 

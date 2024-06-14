@@ -190,7 +190,7 @@ processors and activate the Fluent user interface:
 
 For additional launch examples, see :ref:`ref_user_guide_launch`. For
 descriptions of all parameters, see the :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` method.
+<ansys.fluent.core.launcher.launcher.launch_fluent>` function.
 
 .. _faqs_fluentloc:
 
