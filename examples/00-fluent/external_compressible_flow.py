@@ -48,6 +48,8 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+# Do not set pyfluent.CONTAINER_MOUNT_PATH. It has set to run this example in GitHub container only.
+
 pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 wing_spaceclaim_file, wing_intermediary_file = [
     examples.download_file(CAD_file, "pyfluent/external_compressible")
@@ -88,6 +90,8 @@ geo_import.Arguments.set_state(
         "FileName": wing_intermediary_file,
     }
 )
+
+# Execute meshing.upload(wing_intermediary_file) if Fluent is running in container mode or in Ansys Lab.
 
 geo_import.Execute()
 
