@@ -45,7 +45,7 @@ as specified below. The auto-generation requires an Ansys Fluent installation, a
 Fluent Installation
 -------------------
 
-To get maximum benefit from PyFluent, You must have a licensed copy of Ansys Fluent installed.
+To benefit fully from using PyFluent, you must have a licensed copy of Ansys Fluent installed.
 All versions of PyFluent support Fluent 2022 R2 and later. 
 
 The Windows installation of Ansys Fluent automatically sets the required environment variables
