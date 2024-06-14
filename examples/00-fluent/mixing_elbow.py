@@ -90,7 +90,7 @@ geo_import.Arguments = {
 # ~~~~~~~~~~~~~~~
 # Import the geometry.
 
-# Execute meshing.upload(wing_intermediary_file) if Fluent is running in Ansys Lab.
+# Execute meshing.upload(wing_intermediary_file) if Fluent is running in container mode or in Ansys Lab.
 
 geo_import.Execute()
 
