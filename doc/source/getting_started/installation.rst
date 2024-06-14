@@ -1,96 +1,69 @@
 .. _installation:
 
 ============
-Installation
+INSTALLATION
 ============
 
-The ``ansys-fluent-core`` package supports Python 3.9 through
-Python 3.12 on Windows and Linux.
 
-.. note::
-   This page provides information for quickly installing and launching
-   the ``ansys-fluent-core`` package. Additional PyFluent packages, which
-   are described later on this page, can also be installed. For
-   information on installing all PyFluent packages in a virtual environment,
-   see :ref:`faqs_install` in :ref:`faqs`.
+PyFluent Installation
+---------------------
 
-Install the package
--------------------
-Install the latest ``ansys-fluent-core`` package from
-`PyPi <https://pypi.org/project/ansys-fluent-core/>`_ with this code:
+PyFluent supports Python 3.9 through Python 3.12 on Windows, Mac OS and Linux.
+
+PyFluent can be installed, along with all its optional dependencies, using:
 
 .. code::
 
    pip install ansys-fluent-core
 
-If you plan on doing local *development* of PyFluent with Git, install the
-latest ``ansys-fluent-core`` package with this code:
 
+Development Installation
+------------------------
+
+The PyFluent source repository is available on GitHub. You can clone the repository using:
 .. code:: console
 
    git clone https://github.com/ansys/pyfluent.git
-   cd pyfluent
+
+Once you have cloned the repository, run the following commands. Installing with the
+-e option overwrites the directory in site-packages with a symbolic link to the repository,
+meaning any changes you make to the PyFluent code will automatically be reflected
+when you use PyFluent.
+
+.. code:: console
    pip install pip -U
-   pip install -e .
+   pip install -e ./pyfluent
+
+The full PyFluent package includes some required API classes that are auto-generated rather than
+being maintained under version control, so they will not be present amongst the files in your
+cloned repository at this point. You run the auto-generation using a script included in the repository,
+as specified below. The auto-generation requires an Ansys Fluent installation, as detailed below.
+
    python codegen/allapigen.py  # Generates the API files
 
 
-Any changes that you make locally are reflected in your setup after you restart
-the Python kernel.
+Fluent Installation
+-------------------
 
-Launch Fluent
--------------
-To launch Fluent from PyFluent, use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-function:
+To get maximum benefit from PyFluent, You must have a licensed copy of Ansys Fluent installed.
+All versions of PyFluent support Fluent 2022 R2 and later. 
 
-.. code:: python
+The Windows installation of Ansys Fluent automatically sets the required environment variables
+so that PyFluent can find the Ansys Fluent installation. Using Fluent 2024 R2 installed in the
+default directory as an example, the installer automatically sets the ``AWP_ROOT242`` environment
+variable to point to ``C:\Program Files\ANSYS Inc\v242`` by default.
 
-  >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(
-  >>>     precision=pyfluent.Precision.DOUBLE,
-  >>>     processor_count=2,
-  >>>     mode=pyfluent.FluentMode.SOLVER
-  >>> )
-  >>> solver.health_check.is_serving
+On Linux, the required environment variable is not set automatically, and can be set for the
+current user in the current shell session. E.g.:
 
-To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
-environment variable, where ``<ver>`` is the three-digit format for the release.
-For example, ``AWP_ROOT232`` is the environment variable for the 2023 R2 release.
+.. code:: console
 
-On a Windows system, this environment variable is configured when a release is installed.
+    export AWP_ROOT242=/usr/ansys_inc/v242
 
-On a Linux system, you must configure this environment variable to point to the absolute
-path of the installed release. For example, for the 2023 R2 release, you would set
-the ``AWP_ROOT232`` environment variable to point to an absolute location such as
-``/apps/ansys_inc/v232``.
+For this variable to persist between different shell sessions for the current user, the same
+export command can instead be added to the user's ``~/.profile`` file.
 
 For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
-
-Once Fluent is active, you can use the ``solver_session.tui`` interface to send
-Fluent TUI commands to PyFluent. For example, this code reads a case file, updates a
-setting, and iterates the solver:
-
-.. code:: python
-
-  solver.tui.file.read_case('elbow.cas.h5')
-  solver.tui.define.models.unsteady_2nd_order("yes")
-  solver.tui.solve.initialize.initialize_flow()
-  solver.tui.solve.dual_time_iterate(2, 3)
-
-If you want to interact with the Fluent GUI (graphical user interface), pass ``ui_mode="gui"``
-to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function:
-
-.. code:: python
-
-  session = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui", mode=pyfluent.FluentMode.SOLVER)
-
-If you want to look at PyFluent's debug logging, use the following command:
-
-.. code:: python
-
-   pyfluent.logging.enable()
-
-For more details, see :ref:`ref_logging_user_guide`.
 
 
 Additional PyFluent packages

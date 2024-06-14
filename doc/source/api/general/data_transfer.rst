@@ -5,7 +5,7 @@ Transferring data between sessions
 
 You use the ``transfer_case`` function to transfer a case or mesh file between
 PyFluent sessions. You must specify a source session and one or more
-destination session.
+destination sessions.
 
 Sample usage
 ------------
