@@ -124,3 +124,6 @@ jobs:
           make unittest-all-${{ matrix.version }}-no-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers

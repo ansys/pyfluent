@@ -145,7 +145,15 @@ build-all-docs:
 	@python doc/tui_rstgen.py
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
-	@xvfb-run make -C doc html
+	@xvfb-run poetry run -- make -C doc html
 
 compare-flobject:
 	@python .ci/compare_flobject.py
+
+cleanup-previous-docker-containers:
+	@if [ -n "$(docker ps -a -q)" ]; then \
+		echo "Found running containers"; \
+		docker inspect --format='{{.Config.Labels.test_name}}' $(docker ps -a -q); \
+		docker stop $(docker ps -a -q); \
+	fi
+	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi

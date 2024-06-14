@@ -29,6 +29,7 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file(
     "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
 )
@@ -151,8 +152,8 @@ solver.solution.run_calculation.iterate(iter_count=150)
 # the images are large enough.
 
 graphics = solver.results.graphics
-# use_window_resolution option not available inside containers
-if not solver.connection_properties.inside_container:
+# use_window_resolution option not active inside containers or Ansys Lab environment
+if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
 graphics.picture.x_resolution = 1920
 graphics.picture.y_resolution = 1440

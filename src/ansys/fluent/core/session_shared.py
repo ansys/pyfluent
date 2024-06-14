@@ -2,9 +2,9 @@
 
 import logging
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.utils import load_module
 
 _CODEGEN_MSG_DATAMODEL = (
     "Currently calling the datamodel API in a generic manner. "
@@ -26,7 +26,7 @@ def _make_tui_module(session, module_name):
     try:
         from ansys.fluent.core import CODEGEN_OUTDIR
 
-        tui_module = load_module(
+        tui_module = pyfluent.utils.load_module(
             f"{module_name}_tui_{session._version}",
             CODEGEN_OUTDIR / module_name / f"tui_{session._version}.py",
         )
@@ -42,7 +42,7 @@ def _make_datamodel_module(session, module_name):
     try:
         from ansys.fluent.core import CODEGEN_OUTDIR
 
-        module = load_module(
+        module = pyfluent.utils.load_module(
             f"{module_name}_{session._version}",
             CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{module_name}.py",
         )

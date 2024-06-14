@@ -53,10 +53,18 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
       - name: Build All Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          poetry install --only docs
+          if [ -f poetry.lock ] ; then
+            rm poetry.lock
+          fi
+          poetry install --with docs
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

@@ -350,10 +350,3 @@ The following list summarizes common wildcards:
 
 - ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
   containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
-
-.. _settings_root_section:
-
-Root object
------------
-The :ref:`ref_root` object (named solver in the preceding examples) is the top-level
-solver settings object. It contains all other settings objects in a hierarchical structure.

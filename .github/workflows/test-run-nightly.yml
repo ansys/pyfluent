@@ -81,6 +81,9 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: v24.2.0
 
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
+
       - name: Upload 24.2 Coverage Results to Codecov
         uses: codecov/codecov-action@v4
         with:

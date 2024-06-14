@@ -6,11 +6,11 @@ import pydoc
 
 import platformdirs
 
-# Logging has to be set up before importing other PyFluent modules
-import ansys.fluent.core.logging as logging
+# isort: off
+# Logging has to be imported before importing other PyFluent modules
+from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
 
-logging.root_config()
-logging.configure_env_var()
+# isort: on
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
@@ -22,9 +22,11 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     launch_fluent,
 )
 from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
+    Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    Precision,
     UIMode,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
@@ -71,6 +73,8 @@ USER_DATA_PATH = platformdirs.user_data_dir(
 )
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
+CONTAINER_MOUNT_PATH = None
+
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True
 
@@ -99,3 +103,6 @@ CODEGEN_ZIP_SETTINGS = False
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
+
+# Whether to interrupt Fluent solver from PyFluent
+SUPPORT_SOLVER_INTERRUPT = False

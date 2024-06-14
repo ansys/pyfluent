@@ -120,9 +120,12 @@ class BatchOps:
                             ):
                                 self._supported = True
                                 response_cls_name = method_desc.output_type.name
-                                # TODO Get the respnse_cls from message_factory
-                                self.response_cls = getattr(file, response_cls_name)
-                                break
+                                # TODO Get the response_cls from message_factory
+                                try:
+                                    self.response_cls = getattr(file, response_cls_name)
+                                    break
+                                except AttributeError:
+                                    pass
             if self._supported:
                 self._request = batch_ops_pb2.ExecuteRequest(
                     package=package,

@@ -62,6 +62,8 @@ except ImportError:
     PyFluentDeprecationWarning = FutureWarning
     PyFluentUserWarning = UserWarning
 
+import ansys.fluent.core as pyfluent
+
 from .error_message import allowed_name_error_message, allowed_values_error
 from .settings_external import expand_api_file_argument
 
@@ -170,7 +172,7 @@ def to_python_name(fluent_name: str) -> str:
 
 
 class Base:
-    """Base class for settings and command objects.
+    """Provides the base class for settings and command objects.
 
     Parameters
     ----------
@@ -195,9 +197,19 @@ class Base:
             self._setattr("_name", name)
         self._setattr("_child_alias_objs", {})
 
+    def _root(self, obj):
+        if obj._parent is None:
+            return obj
+        else:
+            return self._root(obj._parent)
+
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._setattr("_flproxy", flproxy)
+
+    def _set_on_interrupt(self, on_interrupt):
+        """Set interrupt method."""
+        self._setattr("_on_interrupt", on_interrupt)
 
     def _set_file_transfer_service(self, file_transfer_service):
         """Set file_transfer_service."""
@@ -1026,28 +1038,6 @@ class Group(SettingsBase[DictStateType]):
             ret.extend(items)
         return ret
 
-    def _get_parent_of_active_child_names(self, name):
-        with warnings.catch_warnings():
-            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
-            parents = ""
-            path_list = []
-            for parent in self.get_active_child_names():
-                try:
-                    if hasattr(getattr(self, parent), str(name)):
-                        path_list.append(f"    {self.python_path}.{parent}.{str(name)}")
-                        if len(parents) != 0:
-                            parents += ", " + parent
-                        else:
-                            parents += parent
-                except AttributeError:
-                    pass
-            if len(path_list):
-                print(f"\n {str(name)} can be accessed from the following paths: \n")
-                for path in path_list:
-                    print(path)
-            if len(parents):
-                return f"\n {name} is a child of {parents} \n"
-
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
@@ -1067,11 +1057,18 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
-            self._get_parent_of_active_child_names(name)
+            modified_search_results = []
+            for search_result in pyfluent.utils._search(
+                word=name, search_root=self, match_case=False, match_whole_word=False
+            ):
+                search_result = search_result.replace(
+                    "<search_root>", self.__class__.__name__
+                )
+                modified_search_results.append(search_result)
             error_msg = allowed_name_error_message(
                 trial_name=name,
-                allowed_values=super().__getattribute__("child_names"),
                 message=ex.args[0],
+                search_results=modified_search_results,
             )
             ex.args = (error_msg,)
             raise
@@ -1613,7 +1610,11 @@ class Command(BaseCommand):
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
-        return self.execute_command(**kwds)
+        try:
+            return self.execute_command(**kwds)
+        except KeyboardInterrupt:
+            self._root(self)._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 class CommandWithPositionalArgs(BaseCommand):
@@ -1640,7 +1641,11 @@ class CommandWithPositionalArgs(BaseCommand):
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified keyword arguments."""
-        return self.execute_command(*args, **kwds)
+        try:
+            return self.execute_command(*args, **kwds)
+        except KeyboardInterrupt:
+            self._root(self)._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 class Query(Action):
@@ -1741,7 +1746,9 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return l
 
 
-class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+    """Provides creatable named objects."""
+
     def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
@@ -1781,7 +1788,9 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
-class _HasAllowedValuesMixin:
+class AllowedValuesMixin:
+    """Provides allowed values."""
+
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
@@ -1841,11 +1850,11 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         if include_child_named_objects:
             bases = bases + (_ChildNamedObjectAccessorMixin,)
         if obj_type == "named-object" and user_creatable:
-            bases = bases + (_CreatableNamedObjectMixin,)
+            bases = bases + (CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
-            bases += (_HasAllowedValuesMixin,)
+            bases += (AllowedValuesMixin,)
         elif info.get("file_purpose") == "input":
             bases += (_InputFile,)
         elif info.get("file_purpose") == "output":
@@ -1930,9 +1939,12 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
-        return_type = info.get("return-type") or info.get("return_type")
-        if return_type:
-            cls.return_type = return_type
+        if version < "242":
+            cls.return_type = object()
+        else:
+            return_type = info.get("return-type") or info.get("return_type")
+            if return_type:
+                cls.return_type = return_type
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
@@ -1970,6 +1982,7 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
+    interrupt: Optional[Any] = None,
     file_transfer_service: Optional[Any] = None,
     scheme_eval=None,
 ) -> Group:
@@ -1979,6 +1992,8 @@ def get_root(
     ----------
     flproxy: Proxy
         Object that interfaces with the Fluent backend.
+    interrupt: optional
+        To interrupt interruptible commands.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     scheme_eval : Any
@@ -2022,6 +2037,7 @@ def get_root(
         cls, _ = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
+    root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)

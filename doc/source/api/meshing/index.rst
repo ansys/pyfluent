@@ -13,7 +13,7 @@ Workflow example
 
     import ansys.fluent.core as pyfluent
 
-    meshing = pyfluent.launch_fluent(mode="meshing")
+    meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing.workflow.TaskObject["Import Geometry"].Arguments = {"FileName": "cylinder.agdb"}
     meshing.workflow.TaskObject["Import Geometry"].Execute()
@@ -104,26 +104,24 @@ TUI commands example
 
     import ansys.fluent.core as pyfluent
 
-    meshing_session = pyfluent.launch_fluent(mode="meshing")
+    meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
     meshing_session.tui.file.read_case("elbow.cas.gz")
     solver = meshing_session.switch_to_solver()
     solver.tui.define.models.unsteady_2nd_order("yes")
     exit()
 
-.. currentmodule:: ansys.fluent.core.meshing
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    faulttolerant
-    meshing_workflow
-    watertight
+.. automodule:: ansys.fluent.core.meshing
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
 
 .. toctree::
    :maxdepth: 2
    :hidden:
 
+   meshing_workflow
    tui/index
    datamodel/index

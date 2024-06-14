@@ -8,8 +8,10 @@ so that commands can be sent to Fluent from the Python interpreter:
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.launch_fluent(
+  >>>     mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
 function to connect to a running Fluent session that has started the gRPC server. The gRPC
@@ -21,8 +23,10 @@ using a server-info file server.txt in the working directory:
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    solver = pyfluent.connect_to_fluent(server_info_file_name="server.txt")
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.connect_to_fluent(
+  >>>     server_info_file_name="server.txt"
+  >>> )
 
 Launcher options
 ----------------
@@ -35,7 +39,9 @@ This example shows how to launch Fluent in solution mode:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent(
+  >>>     mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
 Meshing mode
 ~~~~~~~~~~~~
@@ -43,7 +49,9 @@ This example shows how to launch Fluent in meshing mode:
 
 .. code:: python
 
-   meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.launch_fluent(
+  >>>      mode=pyfluent.FluentMode.MESHING
+  >>> )
 
 Precision
 ~~~~~~~~~
@@ -52,16 +60,23 @@ and set the floating point precision:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent(
+  >>>      precision=pyfluent.Precision.DOUBLE,
+  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
 Dimension
 ~~~~~~~~~
 This example shows how to launch Fluent in solution mode and set the
-modeling dimension:
+modeling dimension to two:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", version="2d", mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent(
+  >>>      precision=pyfluent.Precision.DOUBLE,
+  >>>      dimension=pyfluent.Dimension.TWO,
+  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
 Local parallel
 ~~~~~~~~~~~~~~
@@ -70,9 +85,12 @@ number of processors for local parallel execution:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(
-      precision="double", version="2d", processor_count=2, mode=pyfluent.FluentMode.SOLVER
-   )
+  >>> solver = pyfluent.launch_fluent(
+  >>>      precision=pyfluent.Precision.DOUBLE,
+  >>>      dimension=pyfluent.Dimension.TWO,
+  >>>      processor_count=2,
+  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
 Distributed parallel
 ~~~~~~~~~~~~~~~~~~~~
@@ -81,13 +99,13 @@ distributed across more than one machine:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(
-      precision="double",
-      version="3d",
-      processor_count=16,
-      mode=pyfluent.FluentMode.SOLVER,
-      additional_arguments="-cnf=m1:8,m2:8",
-   )
+  >>> solver = pyfluent.launch_fluent(
+  >>>     precision=pyfluent.Precision.DOUBLE,
+  >>>     dimension=pyfluent.Dimension.THREE,
+  >>>     processor_count=16,
+  >>>     mode=pyfluent.FluentMode.SOLVER,
+  >>>     additional_arguments="-cnf=m1:8,m2:8",
+  >>> )
 
 Logging support
 ---------------
@@ -96,7 +114,7 @@ This command enables logging:
 
 .. code:: python
 
-   pyfluent.logging.enable()
+  >>> pyfluent.logging.enable()
 
 For more details, see :ref:`ref_logging_user_guide`.
 
@@ -104,7 +122,7 @@ Scheduler support
 -----------------
 When PyFluent is run within a job scheduler environment, the :func:`launch_fluent()
 <ansys.fluent.core.launcher.launcher.launch_fluent>` function automatically determines
-the list of machines and core counts to start Fluent with. The supported
+the list of machines and core counts with which to start Fluent. The supported
 scheduler environments are Altair Grid Engine (formerly UGE), Sun Grid Engine (SGE),
 Load Sharing Facility (LSF), Portable Batch System (PBS), and Slurm.
 
@@ -126,7 +144,7 @@ scheduler using the ``sbatch`` command:
    #
    # Activate your favorite Python environment
    #
-   export AWP_ROOT232=/apps/ansys_inc/v232
+   export AWP_ROOT242=/apps/ansys_inc/v242
    . ./venv/bin/activate
    #
    # Run a PyFluent script
@@ -137,7 +155,7 @@ Here are a few notes about this example:
 
 - Eight machines with a total of 32 cores are requested. Fluent is started with
   the appropriate command line arguments passed to ``-t`` and ``-cnf``.
-- The variable ``AWP_ROOT232`` is configured so that PyFluent knows where to find
+- The variable ``AWP_ROOT242`` is configured so that PyFluent can find
   the Fluent installation.
 - The code assumes that a Python virtual environment was pre-configured with
   PyFluent installed before the job script is submitted to Slurm. You could
@@ -153,16 +171,23 @@ machines and cores:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(precision="double", version="3d", mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent(
+  >>>      precision=pyfluent.Precision.DOUBLE,
+  >>>      dimension=pyfluent.Dimension.THREE,
+  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
-If you want to clamp the number of cores that Fluent is launched on, you can
-pass the ``processor_count`` parameter:
+You can use the ``processor_count`` argument to set the number of cores that
+Fluent uses:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(
-      precision="double", version="3d", processor_count=16, mode=pyfluent.FluentMode.SOLVER
-   )
+  >>> solver = pyfluent.launch_fluent(
+  >>>     precision=pyfluent.Precision.DOUBLE,
+  >>>     dimension=pyfluent.Dimension.THREE,
+  >>>     processor_count=16,
+  >>>     mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
 Passing the ``processor_count`` parameter like this forces execution of Fluent on 16
 cores, despite the fact that the Slurm submission requests 32 total cores from
@@ -170,28 +195,31 @@ the job scheduler. This behavior may be useful in situations where the scheduler
 environment allocates all the cores on a machine and you know that Fluent may
 not scale well on all the allocated cores.
 
-Finally, if you want to ignore the scheduler allocation, you can pass the ``-t``
-or ``-t`` and ``-cnf`` arguments to the
+Finally, if you want to ignore the scheduler allocation, you can pass either the ``-t``
+argument or both the ``-t`` and ``-cnf`` arguments to the
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
-using the ``additional_arguments`` parameter. For local parallel execution, simply pass the ``-t``
-argument:
+using the ``additional_arguments`` parameter. For local parallel execution, simply pass the
+``-t`` argument:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(
-      precision="double", version="3d", mode=pyfluent.FluentMode.SOLVER, additional_arguments="-t16"
-   )
+  >>> solver = pyfluent.launch_fluent(
+  >>>     precision=pyfluent.Precision.DOUBLE,
+  >>>     dimension=pyfluent.Dimension.THREE,
+  >>>     mode=pyfluent.FluentMode.SOLVER,
+  >>>     additional_arguments="-t16"
+  >>> )
 
 For distributed parallel processing, you usually pass both parameters:
 
 .. code:: python
 
-   solver = pyfluent.launch_fluent(
-      precision="double",
-      version="3d",
-      mode=pyfluent.FluentMode.SOLVER,
-      additional_arguments="-t16 -cnf=m1:8,m2:8",
-   )
+  >>> solver = pyfluent.launch_fluent(
+  >>>     precision=pyfluent.Precision.DOUBLE,
+  >>>     mode=pyfluent.FluentMode.SOLVER,
+  >>>     dimension=pyfluent.Dimension.THREE,
+  >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
+  >>> )
 
 The :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 also supports the ``scheduler_options`` parameter to submit the Fluent job to a Slurm
@@ -199,16 +227,16 @@ scheduler without using any bash script:
 
 .. code:: python
 
-   slurm = pyfluent.launch_fluent(
-      scheduler_options={
-         "scheduler": "slurm",
-         "scheduler_headnode": "<headnode>",
-         "scheduler_queue": "<queue>",
-         "scheduler_account": "<account>"
-      },
-      additional_arguments="-t16 -cnf=m1:8,m2:8",
-   )
-   solver = slurm.result()
+  >>> slurm = pyfluent.launch_fluent(
+  >>>     scheduler_options={
+  >>>         "scheduler": "slurm",
+  >>>         "scheduler_headnode": "<headnode>",
+  >>>         "scheduler_queue": "<queue>",
+  >>>         "scheduler_account": "<account>"
+  >>>     },
+  >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
+  >>> )
+  >>> solver = slurm.result()
 
 .. vale off
 

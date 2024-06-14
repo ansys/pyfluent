@@ -81,6 +81,9 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: v25.1.0
 
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
+
       - name: Update Fluent image
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
@@ -88,3 +91,14 @@ jobs:
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:v25.1.0 | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
+  clean-up:
+    name: Remove docker image
+    runs-on: [self-hosted, pyfluent]
+    if: ${{ always() }}
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete 25.1 Fluent docker image
+        run: docker rmi -f ghcr.io/ansys/pyfluent:v25.1.0

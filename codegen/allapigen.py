@@ -9,7 +9,7 @@ from ansys.fluent.core.utils.search import _search
 
 if __name__ == "__main__":
     t0 = time()
-    meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
+    meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=meshing)
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
@@ -60,4 +60,4 @@ if __name__ == "__main__":
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
-    _search("", version=version)
+    _search("", version=version, write_api_tree_data=True)

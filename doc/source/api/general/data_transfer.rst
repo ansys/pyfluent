@@ -19,11 +19,20 @@ meshing session and transfer it to a solver session.
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.utils.data_transfer import transfer_case
 
-  >>> mesh_file_name = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
-  >>> pure_meshing_session.tui.file.read_mesh(import_file_name)
+  >>> mesh_file_name = download_file(
+          "mixing_elbow.msh.h5",
+          "pyfluent/mixing_elbow"
+      )
+  >>> pure_meshing_session = pyfluent.launch_fluent(
+          mode=pyfluent.FluentMode.MESHING
+      )
+  >>> pure_meshing_session.tui.file.read_mesh(
+          import_file_name
+      )
 
-  >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> solver_session = pyfluent.launch_fluent(
+          mode=pyfluent.FluentMode.SOLVER
+      )
 
   >>> transfer_case(
   >>>     source_instance=meshing,

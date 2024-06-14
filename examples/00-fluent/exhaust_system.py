@@ -48,6 +48,7 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
 )
@@ -626,8 +627,8 @@ solver.tui.file.write_case_data("exhaust_system.cas.h5", "yes")
 # the images are large enough.
 
 picture = solver.tui.display.set.picture
-# use-window-container TUI option not available inside containers
-if not solver.connection_properties.inside_container:
+# use-window-container TUI option not available inside containers or Ansys Lab environment
+if "use_window_resolution" in dir(picture):
     picture.use_window_resolution("no")
 picture.x_resolution("1920")
 picture.y_resolution("1440")

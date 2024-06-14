@@ -324,7 +324,7 @@ def generate(version, static_infos: dict):
 
 if __name__ == "__main__":
     solver = launch_fluent()
-    meshing = launch_fluent(mode=FluentMode.MESHING_MODE)
+    meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
     static_infos = {}
     if FluentVersion(version) > FluentVersion.v222:
