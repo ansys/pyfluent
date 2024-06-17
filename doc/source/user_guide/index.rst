@@ -199,7 +199,7 @@ Surface field and mesh data services are available in solution mode only via the
 
 .. code:: python
 
-    surface_data = solver.field_data.get_fields()
+    surface_data = solver.fields.field_data.get_fields()
 
 For more information, see :ref:`ref_field_data`.
 

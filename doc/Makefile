@@ -22,7 +22,7 @@ help:
 clean:
 	rm -rf build_errors.txt
 	rm -rf $(BUILDDIR)/*
-	rm -rf $(SOURCEDIR)/examples/*
+	rm -rf $(SOURCEDIR)/examples/*/*
 	rm -rf $(SOURCEDIR)/api/meshing/datamodel
 	rm -rf $(SOURCEDIR)/api/meshing/tui
 	rm -rf $(SOURCEDIR)/api/solver/datamodel
