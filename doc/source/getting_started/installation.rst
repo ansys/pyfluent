@@ -31,6 +31,7 @@ meaning any changes you make to the PyFluent code will automatically be reflecte
 when you use PyFluent.
 
 .. code:: console
+
    pip install pip -U
    pip install -e ./pyfluent
 
@@ -39,7 +40,7 @@ being maintained under version control, so they will not be present amongst the 
 cloned repository at this point. You run the auto-generation using a script included in the repository,
 as specified below. The auto-generation requires an Ansys Fluent installation.
 
-   python codegen/allapigen.py  # Generates the API files
+   python codegen/allapigen.py
 
 
 Fluent Installation
