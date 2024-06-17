@@ -14,7 +14,7 @@ The following contribution information is specific to PyFluent.
 
 Clone the repository
 --------------------
-Follow the steps in the _Development Installation_ section of :ref:`_installation` 
+Follow the steps in the Development Installation section of :ref:`_ref_installation` 
 to set PyFluent up in development mode.
 
 Build documentation
