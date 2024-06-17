@@ -27,8 +27,7 @@ The PyFluent source repository is available on GitHub. You can clone the reposit
 
 Once you have cloned the repository, run the following commands. Installing with the
 -e option overwrites the directory in site-packages with a symbolic link to the repository,
-meaning any changes you make to the PyFluent code will automatically be reflected
-when you use PyFluent.
+meaning any changes you make to the PyFluent code reflect automatically when you use PyFluent.
 
 .. code:: console
 
@@ -36,7 +35,7 @@ when you use PyFluent.
    pip install -e ./pyfluent
 
 The full PyFluent package includes some required API classes that are auto-generated rather than
-being maintained under version control, so they will not be present amongst the files in your
+being maintained under version control, so they are not present amongst the files in your
 cloned repository at this point. You run the auto-generation using a script included in the repository,
 as specified below. The auto-generation requires an Ansys Fluent installation.
 
