@@ -1,9 +1,9 @@
 .. _ref_contributing:
 
-==========
-Contribute
-==========
-Overall guidance on contributing to a PyAnsys library appears in the
+========================
+Contributing to PyFluent
+========================
+General guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
 this guide, paying particular attention to the `Coding Style
@@ -14,20 +14,13 @@ The following contribution information is specific to PyFluent.
 
 Clone the repository
 --------------------
-To clone and install the latest PyFluent release in development
-mode, run:
-
-.. code::
-
-    git clone https://github.com/ansys/pyfluent.git
-    cd pyfluent
-    pip install pip -U
-    pip install -e .
+Follow the steps in the _Development Installation_ section of :ref:`_installation` 
+to set PyFluent up in development mode.
 
 Build documentation
 -------------------
-To build the PyFluent documentation locally, in the root directory of the
-repository, run:
+To build the PyFluent documentation locally, run the following commands in the root
+(``pyfluent``) directory of the repository:
 
 .. code:: 
 

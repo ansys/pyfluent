@@ -65,5 +65,5 @@ Join the community to get help and share your experiences with other users:
 - [Submit a Bug Report](https://github.com/ansys/pyfluent/issues)
 - [Contact Support](https://support.ansys.com)
 
-You can contribute to the project by reporting issues, suggesting features, or submitting
-pull requests on GitHub.
+See :ref:`ref_contributing` for guidance on how you can contribute to PyFluent
+by reporting issues, suggesting features, or submitting pull requests on GitHub.
