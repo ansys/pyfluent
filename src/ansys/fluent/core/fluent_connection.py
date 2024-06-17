@@ -295,7 +295,6 @@ class FluentConnection:
     _on_exit_cbs: List[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: Optional[MonitorThread] = None
-    _writing_transcript_to_interpreter = False
 
     def __init__(
         self,

@@ -3,11 +3,9 @@
 Meta
 ====
 
-.. currentmodule:: ansys.fluent.core
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    meta
+.. automodule:: ansys.fluent.core.meta
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :autosummary:
