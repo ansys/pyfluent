@@ -11,7 +11,7 @@ Sample usage
 ------------
 
 This example shows how you use the ``transfer_case`` function to read a mesh file in a
-pure meshing session and transfer it to a solver session.
+meshing session and transfer it to a solver session.
 
 .. code-block:: python
 
