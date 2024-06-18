@@ -24,7 +24,7 @@ meshing session and transfer it to a solver session.
   >>>     "pyfluent/mixing_elbow"
   >>> )
   >>> pure_meshing_session = pyfluent.launch_fluent(
-  >>>     mode=pyfluent.FluentMode.MESHING
+  >>>     mode=pyfluent.FluentMode.PURE_MESHING
   >>> )
   >>> pure_meshing_session.tui.file.read_mesh(
   >>>     import_file_name
