@@ -8,7 +8,7 @@ You can use field info objects to access Fluent field information.
 Accessing field info objects
 ----------------------------
 
-.. code-block:: python
+.. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)

@@ -12,8 +12,7 @@ PyFluent supports Python 3.9 through Python 3.12 on Windows, Mac OS and Linux.
 
 PyFluent can be installed, along with all its optional dependencies, using:
 
-.. code::
-
+.. code:: console
    pip install ansys-fluent-core
 
 
@@ -25,7 +24,7 @@ The PyFluent source repository is available on GitHub. You can clone the reposit
 
    git clone https://github.com/ansys/pyfluent.git
 
-Once you have cloned the repository, run the following commands. Installing with the
+Once you have cloned the repository, you can install PyFluent. Installing with the
 -e option overwrites the directory in site-packages with a symbolic link to the repository,
 meaning any changes you make to the PyFluent code reflect automatically when you use PyFluent.
 
@@ -38,6 +37,8 @@ The full PyFluent package includes some required API classes that are auto-gener
 being maintained under version control, so they are not present amongst the files in your
 cloned repository at this point. You run the auto-generation using a script included in the repository,
 as specified below. The auto-generation requires an Ansys Fluent installation.
+
+.. code:: console
 
    python codegen/allapigen.py
 

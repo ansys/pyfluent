@@ -32,7 +32,7 @@ Welcome to the PyFluent User Guide. This guide will help you understand how to u
 A Simple Example
 ----------------
 
-.. code-block:: python
+.. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v242)
