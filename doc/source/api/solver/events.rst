@@ -9,7 +9,7 @@ The EventsManager calls each callback whenever a server-side event occurs, passi
 ID and event information arguments to the callback. The EventsManager is useful for solution
 monitoring and updating graphics during runtime.
 
-Supported events are listed in the ``Events`` enum:
+Supported events are listed in the ``Events``:
 
 The following code triggers a callback at the end of every iteration.
 
