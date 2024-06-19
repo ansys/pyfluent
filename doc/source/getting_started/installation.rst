@@ -38,8 +38,8 @@ Step-by-Step Explanation
    git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
 
-- These commands clone the PyFluent repository from GitHub to your local machine and navigate into the
-repository directory.
+- These commands clone the PyFluent repository from GitHub to your local machine and navigate into
+  the repository directory.
 
 2. Upgrade Pip:
 
@@ -56,8 +56,8 @@ repository directory.
    pip install -e
 
 - Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
-repository. This means any changes you make to the PyFluent code are automatically reflected when
-you use PyFluent.
+  repository. This means any changes you make to the PyFluent code are automatically reflected
+  when you use PyFluent.
 
 4. Generate Required API Classes:
 
@@ -65,12 +65,12 @@ you use PyFluent.
 
    python codegen/allapigen.py
 
-- The full PyFluent package includes some required API classes that are auto-generated rather than
-maintained under version control.This command runs the auto-generation script included in the repository.
-Note that this step requires an Ansys Fluent installation.
+- The full PyFluent package includes some required API classes that are auto-generated rather
+  than maintained under version control. This command runs the auto-generation script included
+  in the repository. Note that this step requires an Ansys Fluent installation.
 
-By following these steps, you'll set up PyFluent for local development, ensuring that any changes you
-make to the source code are immediately usable without needing to reinstall the package.
+By following these steps, you'll set up PyFluent for local development, ensuring that any changes 
+you make to the source code are immediately usable without needing to reinstall the package.
 
 Fluent Installation
 -------------------
