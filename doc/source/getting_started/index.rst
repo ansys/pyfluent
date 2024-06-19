@@ -4,7 +4,7 @@
 Getting started
 ===============
 
-1. :ref:`_ref_installation`
+1. :ref:`ref_installation`
 
 2. **Basic Usage**: Learn the basics of using PyFluent:
 
