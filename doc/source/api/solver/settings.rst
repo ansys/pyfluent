@@ -12,7 +12,7 @@ function returns an object (named ``solver`` in
 the following code snippets) whose interface directly exposes the
 :ref:`root<settings_root_section>` of the solver settings hierarchy.
 
-.. code-block::
+.. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
