@@ -13,7 +13,7 @@ Sample usage
 This example shows how you use the ``transfer_case`` function to read a mesh file in a
 meshing session and transfer it to a solver session.
 
-.. code-block:: python
+.. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
