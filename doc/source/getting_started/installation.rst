@@ -31,45 +31,50 @@ development with the following commands:
 
 Step-by-Step Explanation
 ~~~~~~~~~~~~~~~~~~~~~~~~
-1. Clone the Repository:
+
+Clone the Repository
+++++++++++++++++++++
 
 .. code:: console
 
    git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
 
-- These commands clone the PyFluent repository from GitHub to your local machine and navigate into
-  the repository directory.
+These commands clone the PyFluent repository from GitHub to your local machine and navigate into
+the repository directory.
 
-2. Upgrade Pip:
+Upgrade Pip
++++++++++++
 
 .. code:: console
 
    pip install pip -U
 
-- This command upgrades pip to the latest version to ensure compatibility with the latest packages.
+This command upgrades pip to the latest version to ensure compatibility with the latest packages.
 
-3. Install PyFluent in Editable Mode:
+Install PyFluent in Editable Mode
++++++++++++++++++++++++++++++++++
 
 .. code:: console
 
    pip install -e
 
-- Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
-  repository. This means any changes you make to the PyFluent code are automatically reflected
-  when you use PyFluent.
+Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
+repository. This means any changes you make to the PyFluent code are automatically reflected
+when you use PyFluent.
 
-4. Generate Required API Classes:
+Generate Required API Classes
++++++++++++++++++++++++++++++
 
 .. code:: console
 
    python codegen/allapigen.py
 
-- The full PyFluent package includes some required API classes that are auto-generated rather
-  than maintained under version control. This command runs the auto-generation script included
-  in the repository. Note that this step requires an Ansys Fluent installation.
+The full PyFluent package includes some required API classes that are auto-generated rather
+than maintained under version control. This command runs the auto-generation script included
+in the repository. Note that this step requires an Ansys Fluent installation.
 
-By following these steps, you'll set up PyFluent for local development, ensuring that any changes 
+By following these steps, you can set up PyFluent for local development, ensuring that any changes 
 you make to the source code are immediately usable without needing to reinstall the package.
 
 Fluent Installation
