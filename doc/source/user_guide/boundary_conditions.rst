@@ -10,23 +10,12 @@ Boundary conditions
 
 .. code:: python
 
-    boundary_conditions = solver.setup.boundary_conditions
-    velocity_inlet = boundary_conditions.velocity_inlet
-    velocity_inlet["cold-inlet"].vmag = {
-        "option": "constant or expression",
-        "constant": 0.4,
-    }
-    velocity_inlet[
-        "cold-inlet"
-    ].ke_spec = "Intensity and Hydraulic Diameter"
-    velocity_inlet["cold-inlet"].turb_intensity = 5
-    velocity_inlet[
-        "cold-inlet"
-    ].turb_hydraulic_diam = "4 [in]"
-    velocity_inlet["cold-inlet"].t = {
-        "option": "constant or expression",
-        "constant": 293.15,
-    }
+    >>> cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    >>> cold_inlet.momentum.velocity = 0.4
+    >>> cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
+    >>> cold_inlet.turbulence.turbulent_intensity= 5
+    >>> cold_inlet.turbulence.hydraulic_diameter= "4 [in]"
+    >>> cold_inlet.thermal.temperature= 293.15
 
 Cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~
@@ -36,4 +25,4 @@ Cell zone conditions
 .. code:: python
 
     # Enabling Laminar Zone
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"laminar": True}
+    >>> solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"laminar": True}
