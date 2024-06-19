@@ -38,6 +38,8 @@ being maintained under version control, so they are not present amongst the file
 cloned repository at this point. You run the auto-generation using a script included in the repository,
 as specified below. The auto-generation requires an Ansys Fluent installation.
 
+.. code:: console
+
    python codegen/allapigen.py
 
 
