@@ -61,9 +61,9 @@ Community and Support
 
 Join the community to get help and share your experiences with other users:
 
-- [PyAnsys Community Forum](https://forum.pyansys.com)
-- [Submit a Bug Report](https://github.com/ansys/pyfluent/issues)
-- [Contact Support](https://support.ansys.com)
+- `PyAnsys Community Forum <https://forum.pyansys.com>`_
+- `Submit a Bug Report <https://github.com/ansys/pyfluent/issues>`_
+- `Contact Support <https://support.ansys.com>`_
 
 See :ref:`ref_contributing` for guidance on how you can contribute to PyFluent
 by reporting issues, suggesting features, or submitting pull requests on GitHub.
