@@ -1,5 +1,6 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+import importlib
 import os
 from pathlib import Path
 import pydoc
@@ -17,24 +18,8 @@ from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
 )
-from ansys.fluent.core.launcher.launcher import (  # noqa: F401
-    connect_to_fluent,
-    launch_fluent,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
-    Dimension,
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
-)
-from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
-from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
-from ansys.fluent.core.utils.search import search  # noqa: F401
-from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -106,3 +91,42 @@ SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False
+
+_launcher = "ansys.fluent.core.launcher.launcher"
+_pyfluent_enums = "ansys.fluent.core.launcher.pyfluent_enums"
+
+_pyfluent_modules = {
+    "launch_fluent": _launcher,
+    "connect_to_fluent": _launcher,
+    "FluentLinuxGraphicsDriver": _pyfluent_enums,
+    "FluentWindowsGraphicsDriver": _pyfluent_enums,
+    "FluentMode": _pyfluent_enums,
+    "UIMode": _pyfluent_enums,
+    "BatchOps": "ansys.fluent.core.services.batch_ops",
+    "setup_for_fluent": "ansys.fluent.core.utils.setup_for_fluent",
+    "search": "ansys.fluent.core.utils.search",
+}
+
+
+def __getattr__(attr):
+    if attr in _pyfluent_modules:
+        return getattr(importlib.import_module(_pyfluent_modules[attr]), attr)
+
+    elif attr == "Fluent":
+        from ansys.fluent.core.session import BaseSession as Fluent
+
+        return Fluent
+
+
+_pyfluent_modules["Fluent"] = ""
+__all__ = list(_pyfluent_modules)
+
+
+def __dir__():
+    public_modules = globals().keys() | _pyfluent_modules
+    public_modules -= {
+        "os",
+        "importlib",
+        "Path",
+    }
+    return list(public_modules)
