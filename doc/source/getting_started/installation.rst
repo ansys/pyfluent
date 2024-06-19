@@ -24,7 +24,7 @@ The PyFluent source repository is available on GitHub. You can clone the reposit
 
    git clone https://github.com/ansys/pyfluent.git
 
-Once you have cloned the repository, run the following commands. Installing with the
+Once you have cloned the repository, you can install PyFluent. Installing with the
 -e option overwrites the directory in site-packages with a symbolic link to the repository,
 meaning any changes you make to the PyFluent code reflect automatically when you use PyFluent.
 
