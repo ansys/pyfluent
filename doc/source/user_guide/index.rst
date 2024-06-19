@@ -26,7 +26,7 @@ User guide
 
 PyFluent User Guide
 -------------------
-Welcome to the PyFluent User Guide. This guide will help you understand how to use PyFluent to leverage the power of Ansys Fluent for your CFD simulations.
+Welcome to the PyFluent User Guide. This guide helps you understand how to use PyFluent to leverage the power of Ansys Fluent for your CFD simulations.
 
 
 A Simple Example
@@ -54,7 +54,7 @@ Key Features
 
 Launching Fluent from PyFluent
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Easily :ref:`start a Fluent session <_ref_user_guide_launch>` locally or remotely with a variety of launch options, or connect
+:ref:`start a Fluent session <_ref_user_guide_launch>` locally or remotely with a variety of launch options, or connect
 to an existing session. Interact with Fluent through the session object returned by the launch
 or connect methods.
 
@@ -68,7 +68,7 @@ Utilize :ref:`settings objects <_ref_settings>` to configure and control your si
 
 Data Extraction
 ~~~~~~~~~~~~~~~
-Easily extract solution and mesh data for analysis and post-processing.
+Extract solution and mesh data for analysis and post-processing.
 
 
 Use Cases
