@@ -18,30 +18,59 @@ PyFluent can be installed, along with all its optional dependencies, using:
 
 Development Installation
 ------------------------
+The PyFluent source repository is available on GitHub. You can clone the repository and set up for local
+development with the following commands:
 
-The PyFluent source repository is available on GitHub. You can clone the repository using:
 .. code:: console
 
    git clone https://github.com/ansys/pyfluent.git
+   cd pyfluent
+   pip install pip -U
+   pip install -e
+   python codegen/allapigen.py
 
-Once you have cloned the repository, you can install PyFluent. Installing with the
--e option overwrites the directory in site-packages with a symbolic link to the repository,
-meaning any changes you make to the PyFluent code reflect automatically when you use PyFluent.
+Step-by-Step Explanation
+~~~~~~~~~~~~~~~~~~~~~~~~
+1. Clone the Repository:
+
+.. code:: console
+
+   git clone https://github.com/ansys/pyfluent.git
+   cd pyfluent
+
+- These commands clone the PyFluent repository from GitHub to your local machine and navigate into the
+repository directory.
+
+2. Upgrade Pip:
 
 .. code:: console
 
    pip install pip -U
-   pip install -e ./pyfluent
 
-The full PyFluent package includes some required API classes that are auto-generated rather than
-being maintained under version control, so they are not present amongst the files in your
-cloned repository at this point. You run the auto-generation using a script included in the repository,
-as specified below. The auto-generation requires an Ansys Fluent installation.
+- This command upgrades pip to the latest version to ensure compatibility with the latest packages.
+
+3. Install PyFluent in Editable Mode:
+
+.. code:: console
+
+   pip install -e
+
+- Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
+repository. This means any changes you make to the PyFluent code are automatically reflected when
+you use PyFluent.
+
+4. Generate Required API Classes:
 
 .. code:: console
 
    python codegen/allapigen.py
 
+- The full PyFluent package includes some required API classes that are auto-generated rather than
+maintained under version control.This command runs the auto-generation script included in the repository.
+Note that this step requires an Ansys Fluent installation.
+
+By following these steps, you'll set up PyFluent for local development, ensuring that any changes you
+make to the source code are immediately usable without needing to reinstall the package.
 
 Fluent Installation
 -------------------
