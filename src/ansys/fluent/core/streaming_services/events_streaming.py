@@ -51,7 +51,9 @@ class Events(Enum):
 
 class EventsManager(StreamingService):
     """Manages server-side events.
-    This class allows the client to register and unregister callbacks with server events.
+
+    This class allows the client to register and unregister callbacks with server
+    events.
     """
 
     def __init__(self, session_events_service, fluent_error_state, session_id):
