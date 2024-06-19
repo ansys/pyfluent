@@ -51,9 +51,9 @@ To get started with PyFluent, follow the steps on the :ref:`_getting_started` pa
 Useful Links
 ------------
 
-- [PyFluent GitHub Repository](https://github.com/ansys/pyfluent)
-- [Fluent Documentation](https://www.ansys.com/products/fluids/ansys-fluent)
-- [Ansys Customer Portal](https://support.ansys.com)
+- `PyFluent GitHub Repository <https://github.com/ansys/pyfluent>`_
+- `Fluent Documentation <https://www.ansys.com/products/fluids/ansys-fluent>`_
+- `Ansys Customer Portal <https://support.ansys.com>`_
 
 
 Community and Support
