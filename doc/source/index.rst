@@ -46,7 +46,7 @@ Key Features
 Getting Started
 ---------------
 
-To get started with PyFluent, follow the steps on the :ref:`_getting_started` page.
+To get started with PyFluent, follow the steps on the :ref:`getting_started` page.
 
 Useful Links
 ------------
