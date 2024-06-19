@@ -11,7 +11,7 @@ Getting started
 - :ref:`_ref_user_guide`
 - Tutorials
 
-3. Documentation: Explore the comprehensive :ref:`_ref_api`.
+3. Documentation: Explore the comprehensive :ref:`ref_api`.
 
 .. toctree::
    :hidden:
