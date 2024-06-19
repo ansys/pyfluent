@@ -32,13 +32,6 @@ class UnexpectedKeywordArgument(TypeError):
     pass
 
 
-class DockerContainerLaunchNotSupported(SystemError):
-    """Raised when Docker container launch is not supported."""
-
-    def __init__(self):
-        super().__init__("Python Docker SDK is unsupported on this system.")
-
-
 class LaunchFluentError(Exception):
     """Exception class representing launch errors."""
 

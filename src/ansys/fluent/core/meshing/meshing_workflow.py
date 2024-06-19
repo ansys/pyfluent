@@ -72,14 +72,9 @@ class MeshingWorkflow(Workflow):
         self._unsubscribe_root_affected_callback()
         self._new_workflow(name=self._name)
 
-    def reinitialize(self) -> None:
-        """Reinitialize the same workflow."""
-        self._new_workflow(name=self._name)
-
     def __getattribute__(self, item: str):
         if (
-            item not in ["reinitialize"]
-            and not item.startswith("_")
+            not item.startswith("_")
             and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):
             raise RuntimeError(

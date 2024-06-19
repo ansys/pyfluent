@@ -126,9 +126,6 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
-
       - name: Install pyfluent
         run: make install
 
@@ -231,9 +228,6 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Cleanup previous docker containers
-        run: make cleanup-previous-docker-containers
 
       - name: Add version information
         run: make version-info
@@ -531,6 +525,9 @@ jobs:
           make unittest-dev-${{ matrix.version }}
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Cleanup previous docker containers
+        run: make cleanup-previous-docker-containers
 
       - name: Upload 24.2 Coverage Artifacts
         if: matrix.image-tag == 'v24.2.0'

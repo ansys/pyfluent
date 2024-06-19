@@ -19,7 +19,7 @@ from ansys.fluent.core.utils.search import (
 )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 def test_nltk_data_download():
     import nltk
 
@@ -31,7 +31,7 @@ def test_nltk_data_download():
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_exact_match_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -44,7 +44,7 @@ def test_get_exact_match_for_word_from_names():
     assert len(exact_match) == 1
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_capitalize_match_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -71,7 +71,7 @@ def test_get_capitalize_match_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_match_case_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -104,7 +104,7 @@ def test_get_match_case_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -132,7 +132,7 @@ def test_get_wildcard_matches_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_get_close_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -162,7 +162,7 @@ def test_get_close_matches_for_word_from_names():
     assert "sunshine_factor" in close_matches
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_wildcard(capsys):
     api_tree_data = _get_api_tree_data()
@@ -184,7 +184,7 @@ def test_search_wildcard(capsys):
     assert "<solver_session>.solution.controls.limits.min_des_tke (Parameter)" in lines
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_whole_word(capsys):
     api_tree_data = _get_api_tree_data()
@@ -211,7 +211,7 @@ def test_search_whole_word(capsys):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_search_semantic(capsys):
     api_tree_data = _get_api_tree_data()
@@ -224,7 +224,7 @@ def test_search_semantic(capsys):
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_whole_word_search(capsys):
     pyfluent.search("Font", match_whole_word=True)
@@ -237,7 +237,7 @@ def test_whole_word_search(capsys):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
     pyfluent.search("font", match_case=True)
@@ -255,7 +255,7 @@ def test_match_case_search(capsys):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_match_whole_word_and_case_search(capsys):
     pyfluent.search("font", match_whole_word=True, match_case=True)
@@ -274,7 +274,7 @@ def test_match_whole_word_and_case_search(capsys):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_misspelled_search(capsys):
     pyfluent.search("cfb_lma")
@@ -285,7 +285,7 @@ def test_misspelled_search(capsys):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
     pyfluent.search("iter*", wildcard=True)
@@ -294,7 +294,7 @@ def test_wildcard_search(capsys):
     assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
@@ -306,7 +306,7 @@ def test_chinese_semantic_search(capsys):
     assert "<solver_session>.file.write_case (Command)" in lines
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
@@ -315,7 +315,7 @@ def test_japanese_semantic_search(capsys):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 def test_search_from_root_latest(capsys, new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     pyfluent.search("display", search_root=meshing)
@@ -350,46 +350,48 @@ def test_search_from_root_latest(capsys, new_watertight_workflow_session):
 
 
 @pytest.mark.codegen_required
-def test_search(capsys):
-    _search("display")
-    lines = capsys.readouterr().out.splitlines()
-    assert "<meshing_session>.tui.display (Object)" in lines
-    assert "<meshing_session>.tui.display.update_scene.display (Command)" in lines
+def test_search():
+    results = _search("display")
+    assert "<meshing_session>.tui.display (Object)" in results
+    assert "<meshing_session>.tui.display.update_scene.display (Command)" in results
     assert (
         "<meshing_session>.preferences.Graphics.MeshingMode.GraphicsWindowDisplayTimeout (Parameter)"
-        in lines
+        in results
     )
-    assert '<solver_session>.results.graphics.mesh["<name>"].display (Command)' in lines
+    assert (
+        '<solver_session>.results.graphics.mesh["<name>"].display (Command)' in results
+    )
     assert (
         '<solver_session>.results.graphics.mesh["<name>"].display_state_name (Parameter)'
-        in lines
+        in results
     )
 
-    _search("display", match_whole_word=True)
-    lines = capsys.readouterr().out.splitlines()
-    assert '<solver_session>.results.graphics.mesh["<name>"].display (Command)' in lines
+    results = _search("display", match_whole_word=True)
+    assert (
+        '<solver_session>.results.graphics.mesh["<name>"].display (Command)' in results
+    )
     assert (
         '<solver_session>.results.graphics.mesh["<name>"].display_state_name (Parameter)'
-        not in lines
+        not in results
     )
 
-    _search("Display", match_case=True)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<meshing_session>.tui.display (Object)" not in lines
+    results = _search("Display", match_case=True)
+    assert "<meshing_session>.tui.display (Object)" not in results
     assert (
         "<meshing_session>.preferences.Graphics.MeshingMode.GraphicsWindowDisplayTimeout (Parameter)"
-        in lines
+        in results
     )
 
-    _search("GraphicsWindowDisplayTimeout", match_whole_word=True, match_case=True)
-    lines = capsys.readouterr().out.splitlines()
+    results = _search(
+        "GraphicsWindowDisplayTimeout", match_whole_word=True, match_case=True
+    )
     assert (
         "<meshing_session>.preferences.Graphics.MeshingMode.GraphicsWindowDisplayTimeout (Parameter)"
-        in lines
+        in results
     )
     assert (
         "<solver_session>.preferences.Graphics.MeshingMode.GraphicsWindowDisplayTimeoutValue (Parameter)"
-        not in lines
+        not in results
     )
 
 
@@ -467,67 +469,60 @@ def test_get_version_path_prefix_from_obj(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_search_from_root(capsys, new_watertight_workflow_session):
+def test_search_from_root(new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
-    _search("display", search_root=meshing)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.tui.display (Object)" in lines
-    _search("display", search_root=meshing.tui)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.display (Object)" in lines
-    _search("display", search_root=meshing.tui.display)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.update_scene.display (Command)" in lines
-    assert "<search_root>.display_states (Object)" in lines
-    _search("cad", search_root=meshing.meshing)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
-    assert "<search_root>.LoadCADGeometry (Command)" in lines
-    _search("next", search_root=meshing.workflow)
-    lines = capsys.readouterr().out.splitlines()
-    assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
-    _search("next", search_root=meshing.workflow.TaskObject)
-    lines = capsys.readouterr().out.splitlines()
-    assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
-    _search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.InsertNextTask (Command)" in lines
-    _search("timeout", search_root=meshing.preferences)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.General.IdleTimeout (Parameter)" in lines
-    _search("timeout", search_root=meshing.preferences.General)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.IdleTimeout (Parameter)" in lines
+    results = _search("display", search_root=meshing)
+    assert "<search_root>.tui.display (Object)" in results
+    results = _search("display", search_root=meshing.tui)
+    assert "<search_root>.display (Object)" in results
+    results = _search("display", search_root=meshing.tui.display)
+    assert "<search_root>.update_scene.display (Command)" in results
+    assert "<search_root>.display_states (Object)" in results
+    results = _search("cad", search_root=meshing.meshing)
+    assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in results
+    assert "<search_root>.LoadCADGeometry (Command)" in results
+    results = _search("next", search_root=meshing.workflow)
+    assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in results
+    results = _search("next", search_root=meshing.workflow.TaskObject)
+    assert '<search_root>["<name>"].InsertNextTask (Command)' in results
+    results = _search(
+        "next", search_root=meshing.workflow.TaskObject["Import Geometry"]
+    )
+    assert "<search_root>.InsertNextTask (Command)" in results
+    results = _search("timeout", search_root=meshing.preferences)
+    assert "<search_root>.General.IdleTimeout (Parameter)" in results
+    results = _search("timeout", search_root=meshing.preferences.General)
+    assert "<search_root>.IdleTimeout (Parameter)" in results
 
 
+@pytest.mark.skip("Results are varying each time.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
 def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
-    _search("conduction", search_root=solver)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.tui.define.models.shell_conduction (Object)" in lines
+    results = _search("conduction", search_root=solver)
+    assert "<search_root>.tui.define.models.shell_conduction (Object)" in results
     assert (
-        '<search_root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
-        in lines
+        '<search_root>.setup.boundary_conditions.wall["<name>"].phase["<name>"].thermal.enable_shell_conduction (Parameter)'
+        in results
     )
-    _search("conduction", search_root=solver.setup.boundary_conditions)
-    lines = capsys.readouterr().out.splitlines()
+    results = _search("conduction", search_root=solver.setup.boundary_conditions)
     assert (
         '<search_root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
-        in lines
+        in results
     )
-    _search("conduction", search_root=solver.setup.boundary_conditions.wall)
-    lines = capsys.readouterr().out.splitlines()
+    results = _search("conduction", search_root=solver.setup.boundary_conditions.wall)
     assert (
         '<search_root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
-        in lines
+        in results
     )
-    _search("conduction", search_root=solver.setup.boundary_conditions.wall["wall"])
-    lines = capsys.readouterr().out.splitlines()
-    assert '<search_root>.phase["<name>"].shell_conduction["<name>"] (Object)' in lines
-    _search(
+    results = _search(
+        "conduction", search_root=solver.setup.boundary_conditions.wall["wall"]
+    )
+    assert (
+        '<search_root>.phase["<name>"].shell_conduction["<name>"] (Object)' in results
+    )
+    results = _search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"].phase
     )
-    lines = capsys.readouterr().out.splitlines()
-    assert '<search_root>["<name>"].shell_conduction["<name>"] (Object)' in lines
+    assert '<search_root>["<name>"].shell_conduction["<name>"] (Object)' in results

@@ -33,7 +33,7 @@ class PostAPIHelper:
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
-            return self.obj.get_root().session.tui.surface
+            return self.obj.get_root().session.results.surfaces
 
         def _delete_if_exist_on_server(self):
             field_info = self.obj._api_helper.field_info()
@@ -58,56 +58,32 @@ class PostAPIHelper:
                 if not field:
                     raise IncompleteISOSurfaceDefinition()
                 self._delete_if_exist_on_server()
-                phases = self.obj._api_helper._get_phases()
-                unit_quantity = self.obj._api_helper._field_unit_quantity(field)
-                unit_info = self.obj._api_helper._fluent_unit_info(unit_quantity)
-                if phases:
-                    phases = list(filter(field.startswith, phases))
-                    if phases:
-                        domain, field = (
-                            field[0 : len(phases[0])],
-                            field[len(phases[0]) + 1 :],
-                        )
-                    else:
-                        domain = "mixture"
-                    self._get_api_handle().iso_surface(
-                        domain,
-                        field,
-                        self._surface_name_on_server,
-                        (),
-                        (),
-                        (iso_value / unit_info[1]) - unit_info[2],
-                        (),
-                    )
-                else:
-                    self._get_api_handle().iso_surface(
-                        field,
-                        self._surface_name_on_server,
-                        (),
-                        (),
-                        (iso_value / unit_info[1]) - unit_info[2],
-                        (),
-                    )
+                self._get_api_handle().iso_surface[self._surface_name_on_server] = {
+                    "field": field,
+                    "iso_values": [iso_value],
+                }
             elif self.obj.definition.type() == "plane-surface":
                 plane_surface = self.obj.definition.plane_surface
                 xy_plane = plane_surface.xy_plane
                 yz_plane = plane_surface.yz_plane
                 zx_plane = plane_surface.zx_plane
                 self._delete_if_exist_on_server()
-                unit_info = self.obj._api_helper._fluent_unit_info("length")
-                self._get_api_handle().plane_surface(
-                    self._surface_name_on_server,
-                    "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
-                    (
-                        (xy_plane.z() / unit_info[1]) - unit_info[2]
-                        if xy_plane
-                        else (
-                            (yz_plane.x() / unit_info[1]) - unit_info[2]
-                            if yz_plane
-                            else (zx_plane.y() / unit_info[1]) - unit_info[2]
-                        )
-                    ),
-                )
+                if xy_plane():
+                    method = "xy-plane"
+                    position = "z"
+                    value = xy_plane.z()
+                elif yz_plane():
+                    method = "yz-plane"
+                    position = "x"
+                    value = yz_plane.x()
+                else:
+                    method = "zx-plane"
+                    position = "y"
+                    value = zx_plane.y()
+                self._get_api_handle().plane_surface[self._surface_name_on_server] = {
+                    "method": method,
+                    position: value,
+                }
             field_info = self.obj._api_helper.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())
             if self._surface_name_on_server not in surfaces_list:
@@ -115,7 +91,12 @@ class PostAPIHelper:
 
         def delete_surface_on_server(self):
             """Deletes the surface on server."""
-            self._get_api_handle().delete_surface(self._surface_name_on_server)
+            if self.obj.definition.type() == "iso-surface":
+                self._get_api_handle().iso_surface.delete(self._surface_name_on_server)
+            elif self.obj.definition.type() == "plane-surface":
+                self._get_api_handle().plane_surface.delete(
+                    self._surface_name_on_server
+                )
 
     def __init__(self, obj):
         """__init__ method of PostAPIHelper class."""
@@ -151,30 +132,9 @@ class PostAPIHelper:
         scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"  # noqa: E501
         return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
 
-    def _get_phases(self):
-        scheme_eval_str = "(map domain-name (get-phase-domains))"
-        return self._scheme_str_to_py_list(scheme_eval_str)
-
     def _field_unit_quantity(self, field):
         scheme_eval_str = f"(cdr (assq 'units (%fill-render-info '{field})))"
         return self._scheme_str_to_py_list(scheme_eval_str)[0]
-
-    def _fluent_unit_info(self, unit_quantity):
-        def to_float(number):
-            try:
-                return float(number)
-            except ValueError:
-                return number
-
-        scheme_eval_str = (
-            f"(units/inquire-label-scale-offset-for-quantity '{unit_quantity})"
-        )
-        unit_info = [
-            to_float(data) for data in self._scheme_str_to_py_list(scheme_eval_str)
-        ]
-        if len(unit_info) == 2:
-            unit_info.insert(0, "")
-        return unit_info
 
     def _scheme_str_to_py_list(self, scheme_eval_str):
         session = self.obj.get_root().session

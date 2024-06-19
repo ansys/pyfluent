@@ -131,6 +131,16 @@ def _refresh_task_accessors(obj):
         _refresh_task_accessors(task)
 
 
+def _call_refresh_task_accessors(obj):
+    """This layer handles exception for PyConsole."""
+    try:
+        _refresh_task_accessors(obj)
+    except Exception:
+        # Is there a more specific Exception derived class
+        # for which we know it is correct to pass?
+        pass
+
+
 def _convert_task_list_to_display_names(workflow_root, task_list):
     if workflow_root.service.cache is not None:
         workflow_state = workflow_root.service.cache.get_state(
@@ -1280,37 +1290,41 @@ class Workflow:
         command_source : PyMenuGeneric
             The application root for commanding.
         """
-        self._workflow = workflow
-        self._command_source = command_source
-        self._python_task_names = []
-        self._lock = threading.RLock()
-        self._refreshing = False
-        self._dynamic_python_names = False
-        self._refresh_count = 0
-        self._ordered_children = []
-        self._task_list = []
-        self._getattr_recurse_depth = 0
-        self._main_thread_ident = None
-        self._task_objects = {}
-        self._dynamic_interface = False
-        self._python_name_command_id_map = {}
-        self._python_name_display_id_map = {}
-        self._python_name_display_text_map = {}
-        self._repeated_task_python_name_display_text_map = {}
-        self._initial_task_python_names_map = {}
-        self._unwanted_attrs = {
-            "reset_workflow",
-            "initialize_workflow",
-            "load_workflow",
-            "insert_new_task",
-            "create_composite_task",
-            "create_new_workflow",
-            "rules",
-            "service",
-            "task_object",
-            "workflow",
-        }
-        self._fluent_version = fluent_version
+        self.__dict__.update(
+            dict(
+                _workflow=workflow,
+                _command_source=command_source,
+                _python_task_names=[],
+                _lock=threading.RLock(),
+                _refreshing=False,
+                _dynamic_python_names=False,
+                _refresh_count=0,
+                _ordered_children=[],
+                _task_list=[],
+                _getattr_recurse_depth=0,
+                _main_thread_ident=None,
+                _task_objects={},
+                _dynamic_interface=False,
+                _python_name_command_id_map={},
+                _python_name_display_id_map={},
+                _python_name_display_text_map={},
+                _repeated_task_python_name_display_text_map={},
+                _initial_task_python_names_map={},
+                _unwanted_attrs={
+                    "reset_workflow",
+                    "initialize_workflow",
+                    "load_workflow",
+                    "insert_new_task",
+                    "create_composite_task",
+                    "create_new_workflow",
+                    "rules",
+                    "service",
+                    "task_object",
+                    "workflow",
+                },
+                _fluent_version=fluent_version,
+            )
+        )
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a ``BaseTask`` wrapper.
@@ -1414,6 +1428,14 @@ class Workflow:
                 return obj
         return super().__getattribute__(attr)
 
+    def __setattr__(self, attr, value):
+        if attr in self.__dict__:
+            self.__dict__[attr] = value
+        elif attr in self._task_objects:
+            self._task_objects[attr].set_state(value)
+        else:
+            super().__setattr__(attr, value)
+
     def __dir__(self):
         """Override the behavior of ``dir`` to include attributes in the
         ``WorkflowWrapper`` class and the underlying workflow."""
@@ -1467,7 +1489,6 @@ class Workflow:
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _unsubscribe_root_affected_callback(self):
-        # if the same workflow is not being reinitialized, unsubscribe the root affected callback
         if self._workflow.service in self._root_affected_cb_by_server:
             self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
             self._root_affected_cb_by_server.pop(self._workflow.service)
@@ -1557,12 +1578,7 @@ class Workflow:
                     logger.debug("Already _refreshing, ...")
                 self._refreshing = True
                 logger.debug("Call _refresh_task_accessors")
-                try:
-                    _refresh_task_accessors(self)
-                except Exception:
-                    # Is there a more specific Exception derived class
-                    # for which we know it is correct to pass?
-                    pass
+                _call_refresh_task_accessors(self)
                 self._refresh_count += 1
                 self._refreshing = False
 

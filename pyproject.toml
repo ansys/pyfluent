@@ -27,7 +27,7 @@ include = [
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/api_tree/*.txt", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/api_tree/*.json", format = ["sdist", "wheel"] },
 ]
 
 packages = [
@@ -39,7 +39,7 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 importlib-metadata = {version = "^7.0.1", python = "<3.9"}
-ansys-api-fluent = "^0.3.22"
+ansys-api-fluent = "^0.3.24"
 ansys-platform-instancemanagement = "^1.0"
 ansys-tools-filetransfer = ">=0.1,<0.3"
 ansys-units = "^0.3.2"
@@ -62,7 +62,7 @@ requests = "==2.31.0"
 optional = true
 
 [tool.poetry.group.docs.dependencies]
-Sphinx = "==7.2.6"
+Sphinx = "==7.3.7"
 jupyter_sphinx = "==0.5.3"
 numpydoc = "==1.6.0"
 matplotlib = "==3.9.0"
@@ -135,6 +135,8 @@ skip = """
     *.xml,
     ./src/ansys/fluent/core/generated/*,
     ./src/ansys/fluent/core/codegen/data/fluent_gui_help.xml,
+    pyproject.toml,
+    CODE_OF_CONDUCT.md,
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 

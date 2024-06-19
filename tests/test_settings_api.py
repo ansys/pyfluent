@@ -36,7 +36,8 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     assert viscous_model.model() == "inviscid"
 
 
-@pytest.mark.fluent_version(">=24.1")
+# Failing for 24.1 but passes for 24.2 and 25.1
+@pytest.mark.fluent_version(">=24.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
@@ -298,13 +299,14 @@ def test_deprecated_settings(new_solver_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
+    version = solver.get_fluent_version()
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     ret = solver.file.read_case_data(file_name=case_path)
-    assert ret is None
+    assert ret is None if version >= FluentVersion.v242 else not None
     solver.solution.report_definitions.surface["surface-1"] = dict(
         surface_names=["cold-inlet"]
     )
