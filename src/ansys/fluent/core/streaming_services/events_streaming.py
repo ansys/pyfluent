@@ -1,30 +1,57 @@
 """Module for events management."""
 
+from enum import Enum
 from functools import partial
 import logging
-from typing import Callable, List
+from typing import Callable
+import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
-from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
+from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 network_logger = logging.getLogger("pyfluent.networking")
 
 
+class Events(Enum):
+    """Enumerates over supported server (Fluent) events."""
+
+    TIMESTEP_STARTED = "TimestepStartedEvent"
+    TIMESTEP_ENDED = "TimestepEndedEvent"
+    ITERATION_STARTED = "IterationStartedEvent"
+    ITERATION_ENDED = "IterationEndedEvent"
+    CALCULATIONS_STARTED = "CalculationsStartedEvent"
+    CALCULATIONS_ENDED = "CalculationsEndedEvent"
+    CALCULATIONS_PAUSED = "CalculationsPausedEvent"
+    CALCULATIONS_RESUMED = "CalculationsResumedEvent"
+    ABOUT_TO_READ_CASE = "AboutToReadCaseEvent"
+    CASE_READ = "CaseReadEvent"
+    ABOUT_TO_READ_DATA = "AboutToReadDataEvent"
+    DATA_READ = "DataReadEvent"
+    ABOUT_TO_INITIALIZE = "AboutToInitializeEvent"
+    INITIALIZED = "InitializedEvent"
+    REPORT_DEFINITION_CHANGED = "ReportDefinitionChangedEvent"
+    PLOT_SET_CHANGED = "PlotSetChangedEvent"
+    RESIDUAL_PLOT_CHANGED = "ResidualPlotChangedEvent"
+    CLEAR_SETTINGS_DONE = "ClearSettingsDoneEvent"
+    AUTO_PAUSE = "AutoPauseEvent"
+    PROGRESS = "ProgressEvent"
+    SOLVER_TIME_ESTIMATE = "SolverTimeEstimateEvent"
+    ERROR = "ErrorEvent"
+    COMMAND_COMPLETED = "CommandCompletedEvent"
+    DATA_MODEL_CHANGED = "DataModelChangedEvent"
+    EXECUTE_IN_CLIENT = "ExecuteInClientEvent"
+
+    @classmethod
+    def _missing_(cls, value: str):
+        for member in cls:
+            if member.value.lower() == value:
+                return member
+
+
 class EventsManager(StreamingService):
     """Manages server-side events.
-
     This class allows the client to register and unregister callbacks with server events.
-
-    Parameters
-    ----------
-    session : BaseSession
-        Fluent session object
-
-    Attributes
-    ----------
-    events_list : List[str]
-        List of supported events.
     """
 
     def __init__(self, session_events_service, fluent_error_state, session_id):
@@ -36,9 +63,6 @@ class EventsManager(StreamingService):
         )
         self._fluent_error_state = fluent_error_state
         self._session_id: str = session_id
-        self._events_list: List[str] = [
-            attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
-        ]
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         request = EventsProtoModule.BeginStreamingRequest(*args, **kwargs)
@@ -48,12 +72,12 @@ class EventsManager(StreamingService):
         while True:
             try:
                 response = next(responses)
-                event_name = response.WhichOneof("as")
+                event_name = Events(response.WhichOneof("as"))
                 with self._lock:
                     self._streaming = True
                     # error-code 0 from Fluent indicates server running without error
                     if (
-                        event_name == "errorevent"
+                        event_name == Events.ERROR
                         and response.errorevent.errorCode != 0
                     ):
                         error_message = response.errorevent.message.rstrip()
@@ -67,14 +91,14 @@ class EventsManager(StreamingService):
                     for callback in callbacks_map.values():
                         callback(
                             session_id=self._session_id,
-                            event_info=getattr(response, event_name),
+                            event_info=getattr(response, event_name.value.lower()),
                         )
             except StopIteration:
                 break
 
     def register_callback(
         self,
-        event_name: str,
+        event_name: Events,
         callback: Callable,
         *args,
         **kwargs,
@@ -83,7 +107,7 @@ class EventsManager(StreamingService):
 
         Parameters
         ----------
-        event_name : str
+        event_name : Events
             Event name to register the callback to.
         callback : Callable
             Callback to register.
@@ -101,16 +125,17 @@ class EventsManager(StreamingService):
         ------
         InvalidArgument
             If event name is not valid.
-        DisallowedValuesError
-            If an argument value not in the allowed values.
         """
         if event_name is None or callback is None:
             raise InvalidArgument("'event_name' and 'callback' ")
 
-        if event_name not in self.events_list:
-            raise DisallowedValuesError("event-name", event_name, self.events_list)
+        if type(event_name) == str:
+            warnings.warn(
+                "Please enter the event name as enum of 'Events'.\n"
+                f"For instance: Enter '{Events(event_name)}' instead of '{event_name}'."
+            )
+            event_name = Events(event_name)
         with self._lock:
-            event_name = event_name.lower()
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
             if callbacks_map:
@@ -132,18 +157,3 @@ class EventsManager(StreamingService):
             for callbacks_map in self._service_callbacks.values():
                 if callback_id in callbacks_map:
                     del callbacks_map[callback_id]
-
-    @property
-    def events_list(self) -> List[str]:
-        """Get a list of supported events.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        List[str]
-            List of supported events.
-        """
-        return self._events_list

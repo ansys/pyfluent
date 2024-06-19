@@ -17,7 +17,7 @@ from ansys.fluent.core.session_shared import (  # noqa: F401
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.events_streaming import Events, EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
@@ -161,8 +161,8 @@ class BaseSession:
         )
         self.monitors = MonitorsManager(fluent_connection._id, self._monitors_service)
 
-        self.events.register_callback("InitializedEvent", self.monitors.refresh)
-        self.events.register_callback("DataReadEvent", self.monitors.refresh)
+        self.events.register_callback(Events.INITIALIZED, self.monitors.refresh)
+        self.events.register_callback(Events.DATA_READ, self.monitors.refresh)
 
         self.events.start()
 
