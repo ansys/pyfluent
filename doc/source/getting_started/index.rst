@@ -8,12 +8,9 @@ Getting started
 
 * :ref:`ref_user_guide`: Learn the basics of using PyFluent.
 
-* `Examples <https://fluent.docs.pyansys.com/version/stable/examples/index.html>`. Explore
-some real end-to-end PyFluent simulations.
+* `Examples <https://fluent.docs.pyansys.com/version/stable/examples/index.html>`_: Explore real PyFluent use cases.
 
-* :ref:`ref_api`: Navigate all the classes and functions that make up the Python API.
-
-* :ref:`_faqs`: Get answers to some common PyFluent questions.
+* :ref:`ref_api`: Navigate the Python API's classes and functions.
 
 .. toctree::
    :hidden:
