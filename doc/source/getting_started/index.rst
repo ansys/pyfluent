@@ -4,14 +4,16 @@
 Getting started
 ===============
 
-1. :ref:`ref_installation`
+- :ref:`ref_installation`: Get ready to use and develop PyFluent.
 
-2. **Basic Usage**: Learn the basics of using PyFluent:
+- :ref:`ref_user_guide`: Learn the basics of using PyFluent.
 
-- :ref:`ref_user_guide`
-- Tutorials
+- `Examples <https://fluent.docs.pyansys.com/version/stable/examples/index.html>`. Explore
+some real end-to-end PyFluent simulations.
 
-3. Documentation: Explore the comprehensive :ref:`ref_api`.
+- :ref:`ref_api`: Navigate all the classes and functions that make up the Python API.
+
+- :ref:`_faqs`: Get answers to some common PyFluent questions.
 
 .. toctree::
    :hidden:
