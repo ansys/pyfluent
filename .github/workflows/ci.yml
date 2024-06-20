@@ -188,6 +188,7 @@ jobs:
             rm poetry.lock
           fi
           poetry install --with docs
+          poetry install -E reader
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
