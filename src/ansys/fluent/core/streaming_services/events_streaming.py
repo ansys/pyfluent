@@ -4,7 +4,6 @@ from enum import Enum
 from functools import partial
 import logging
 from typing import Callable
-import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
@@ -13,7 +12,7 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 network_logger = logging.getLogger("pyfluent.networking")
 
 
-class Events(Enum):
+class Event(Enum):
     """Enumerates over supported server (Fluent) events."""
 
     TIMESTEP_STARTED = "TimestepStartedEvent"
@@ -74,14 +73,11 @@ class EventsManager(StreamingService):
         while True:
             try:
                 response = next(responses)
-                event_name = Events(response.WhichOneof("as"))
+                event_name = Event(response.WhichOneof("as"))
                 with self._lock:
                     self._streaming = True
                     # error-code 0 from Fluent indicates server running without error
-                    if (
-                        event_name == Events.ERROR
-                        and response.errorevent.errorCode != 0
-                    ):
+                    if event_name == Event.ERROR and response.errorevent.errorCode != 0:
                         error_message = response.errorevent.message.rstrip()
                         network_logger.error(
                             f"gRPC - {error_message}, "
@@ -100,7 +96,7 @@ class EventsManager(StreamingService):
 
     def register_callback(
         self,
-        event_name: Events,
+        event_name: Union[Event, str],
         callback: Callable,
         *args,
         **kwargs,
@@ -109,7 +105,7 @@ class EventsManager(StreamingService):
 
         Parameters
         ----------
-        event_name : Events
+        event_name : Event or str
             Event name to register the callback to.
         callback : Callable
             Callback to register.
@@ -131,12 +127,7 @@ class EventsManager(StreamingService):
         if event_name is None or callback is None:
             raise InvalidArgument("'event_name' and 'callback' ")
 
-        if type(event_name) == str:
-            warnings.warn(
-                "Please enter the event name as enum of 'Events'.\n"
-                f"For instance: Enter '{Events(event_name)}' instead of '{event_name}'."
-            )
-            event_name = Events(event_name)
+        event_name = Event(event_name)
         with self._lock:
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
