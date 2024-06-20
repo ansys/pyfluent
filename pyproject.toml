@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 # Check https://python-poetry.org/docs/pyproject/ for all available sections
 name = "ansys-fluent-core"
-version = "0.21.dev1"
+version = "0.22.dev0"
 description = "PyFluent provides Pythonic access to Ansys Fluent"
 license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
