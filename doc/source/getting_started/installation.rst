@@ -57,7 +57,7 @@ Install PyFluent in Editable Mode
 
 .. code:: console
 
-   pip install -e
+   pip install -e .
 
 Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
 repository. This means any changes you make to the PyFluent code are automatically reflected
