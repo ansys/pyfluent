@@ -64,7 +64,7 @@ Leverage intuitive, :ref:`guided workflows <ref_meshing_workflow>` to create hig
 
 Solution Mode and Settings Objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <_ref_settings>` to configure and control your simulation.
+Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation.
 
 Data Extraction
 ~~~~~~~~~~~~~~~
