@@ -26,7 +26,7 @@ development with the following commands:
    git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
    pip install pip -U
-   pip install -e
+   pip install -e .
    python codegen/allapigen.py
 
 Step-by-Step Explanation
