@@ -110,4 +110,5 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous docker containers
+        if: always()
         run: make cleanup-previous-docker-containers

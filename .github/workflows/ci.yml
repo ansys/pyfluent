@@ -188,6 +188,7 @@ jobs:
             rm poetry.lock
           fi
           poetry install --with docs
+          poetry install -E reader
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
@@ -526,6 +527,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous docker containers
+        if: always()
         run: make cleanup-previous-docker-containers
 
       - name: Upload 24.2 Coverage Artifacts

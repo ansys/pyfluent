@@ -6,8 +6,6 @@ Services
 ==============================  ====================================================================================
 :ref:`ref_batch_ops`            | Executes operations in batch in Fluent.
 
-:ref:`ref_error_handler`        Handles gRPC service errors.
-
 :ref:`ref_events_code`          Begins and ends event streaming service of Fluent.
 
 :ref:`ref_field_data_code`      Extracts Fluent field data and provides access to Fluent field information.
@@ -32,7 +30,6 @@ Services
     :hidden:
 
     batch_ops
-    error_handler
     events
     field_data
     health_check
