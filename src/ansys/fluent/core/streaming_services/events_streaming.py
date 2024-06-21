@@ -33,13 +33,11 @@ class Event(Enum):
     PLOT_SET_CHANGED = "PlotSetChangedEvent"
     RESIDUAL_PLOT_CHANGED = "ResidualPlotChangedEvent"
     SETTINGS_CLEARED = "ClearSettingsDoneEvent"
-    AUTO_PAUSE = "AutoPauseEvent"
-    PROGRESS = "ProgressEvent"
-    SOLVER_TIME_ESTIMATE = "SolverTimeEstimateEvent"
+    SOLUTION_PAUSE = "AutoPauseEvent"
+    PROGRESS_UPDATED = "ProgressEvent"
+    SOLVER_TIME_ESTIMATE_UPDATED = "SolverTimeEstimateEvent"
     ERROR = "ErrorEvent"
     COMMAND_COMPLETED = "CommandCompletedEvent"
-    DATA_MODEL_CHANGED = "DataModelChangedEvent"
-    EXECUTE_IN_CLIENT = "ExecuteInClientEvent"
 
     @classmethod
     def _missing_(cls, value: str):
