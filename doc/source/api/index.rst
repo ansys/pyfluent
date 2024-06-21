@@ -1,7 +1,9 @@
+.. _ref_api:
+
 API reference
 =============
 
-This section describes the core Pythonic interfaces for Fluent. Here, you can find the application programming
+This section describes the core Python interfaces for Fluent. Here, you can find the application programming
 interfaces for such things as launching Fluent, assorted utilities, as well as the interfaces for the meshing and
 solver components of Fluent.
 
@@ -13,13 +15,13 @@ Features of PyFluent not specifically belonging to either the Meshing or Solver 
 PyFluent session objects, which connect to Fluent sessions, are documented. Fundamental gRPC services, including
 streaming services, upon which PyFluent depends (and are directly usable) are outlined. Other features include a
 Scheduler module for facilitating use of external job scheduling systems, a purely Python-based reader for Fluent
-project and case files, Python-based journaling, task-based workflow objects, full Pythonic access to Fluent rp-vars,
+project and case files, Python-based journaling, task-based workflow objects, full Python access to Fluent rp-vars,
 visualization objects for interfacing to Matplotlib and pyvista, and tools for asynchronous and batched command execution.
 
 Meshing
 #######
 
-The :ref:`ref_meshing` mode provides Pythonic interfaces to the Fluent meshing TUI, Fluent meshing guided workflows,
+The :ref:`ref_meshing` mode provides Python interfaces to the Fluent meshing TUI, Fluent meshing guided workflows,
 and part management.
 
 Solver
