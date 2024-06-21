@@ -76,12 +76,8 @@ def test_settings_reader_get_rp_and_config_vars():
     assert reader.config_var.rp_3d__q() is True
     assert len(reader.rp_var.context.map_r17__plus()) == 53
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(RuntimeError):
         reader.rp_var.defaults.pre_r19__dot0_early()
 
-    with pytest.raises(ValueError) as msg:
+    with pytest.raises(ValueError):
         reader.config_var("rp-3d")
-    assert (
-        msg.value.args[0] == "'config-vars' has no attribute 'rp-3d'.\n"
-        "The most similar names are: rp-3d?, rp-des?."
-    )

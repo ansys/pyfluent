@@ -25,8 +25,6 @@ from util.meshing_workflow import (  # noqa: F401
 )
 from util.solver import check_report_definition_result
 
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
@@ -434,9 +432,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if meshing_session.get_fluent_version() < FluentVersion.v231:
-        meshing_session.tui.mesh.check_mesh()
+    meshing_session.tui.mesh.check_mesh()
 
     ###############################################################################
     # Switch to Solution mode
@@ -457,73 +453,67 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Set the velocity and turbulence boundary conditions for the first inlet
     # (inlet-1).
-    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if meshing_session.get_fluent_version() < FluentVersion.v231:
-        boundary_conditions = tui.define.boundary_conditions
-        boundary_conditions.set.velocity_inlet("inlet-1", [], "vmag", "no", 1, "quit")
-        ###############################################################################
-        # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
-        # and inlet_3).
-        boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
+    boundary_conditions = tui.define.boundary_conditions
+    boundary_conditions.set.velocity_inlet("inlet-1", [], "vmag", "no", 1, "quit")
+    ###############################################################################
+    # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
+    # and inlet_3).
+    boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
 
-        ###############################################################################
-        # Set the boundary conditions at the outlet (outlet-1).
-        boundary_conditions.set.pressure_outlet(
-            "outlet-1", [], "turb-intensity", 5, "quit"
-        )
-        tui.solve.monitors.residual.plot("yes")
+    ###############################################################################
+    # Set the boundary conditions at the outlet (outlet-1).
+    boundary_conditions.set.pressure_outlet("outlet-1", [], "turb-intensity", 5, "quit")
+    tui.solve.monitors.residual.plot("yes")
 
-        ###############################################################################
-        # Initialize the flow field using the Initialization
-        tui.solve.initialize.hyb_initialization()
+    ###############################################################################
+    # Initialize the flow field using the Initialization
+    tui.solve.initialize.hyb_initialization()
 
-        ###############################################################################
-        # Start the calculation by requesting 100 iterations
-        tui.solve.set.number_of_iterations(100)
-        tui.solve.iterate()
+    ###############################################################################
+    # Start the calculation by requesting 100 iterations
+    tui.solve.set.number_of_iterations(100)
+    tui.solve.iterate()
 
-        ###############################################################################
-        # Assert the returned mass flow rate report definition value
-        flux = solver_session.solution.report_definitions.flux
-        flux["mass_flow_rate"] = {}
-        flux["mass_flow_rate"].zone_names = [
-            "inlet-1",
-            "inlet-2",
-            "inlet-3",
-            "outlet-1",
-        ]
+    ###############################################################################
+    # Assert the returned mass flow rate report definition value
+    flux = solver_session.solution.report_definitions.flux
+    flux["mass_flow_rate"] = {}
+    flux["mass_flow_rate"].zone_names = [
+        "inlet-1",
+        "inlet-2",
+        "inlet-3",
+        "outlet-1",
+    ]
 
-        check_report_definition = partial(
-            check_report_definition_result,
-            report_definitions=solver_session.solution.report_definitions,
-        )
+    check_report_definition = partial(
+        check_report_definition_result,
+        report_definitions=solver_session.solution.report_definitions,
+    )
 
-        check_report_definition(
-            report_definition_name="mass_flow_rate",
-            expected_result=pytest.approx(-6.036667e-07, abs=1e-3),
-        )
+    check_report_definition(
+        report_definition_name="mass_flow_rate",
+        expected_result=pytest.approx(-6.036667e-07, abs=1e-3),
+    )
 
-        ###############################################################################
-        # Assert the returned velocity-magnitude report definition value on the outlet
-        # surface
-        solver_session.solution.report_definitions.surface[
-            "velocity_magnitude_outlet"
-        ] = {}
-        vmag_outlet = solver_session.solution.report_definitions.surface[
-            "velocity_magnitude_outlet"
-        ]
-        vmag_outlet.report_type = "surface-areaavg"
-        vmag_outlet.field = "velocity-magnitude"
-        vmag_outlet.surface_names = ["outlet-1"]
+    ###############################################################################
+    # Assert the returned velocity-magnitude report definition value on the outlet
+    # surface
+    solver_session.solution.report_definitions.surface["velocity_magnitude_outlet"] = {}
+    vmag_outlet = solver_session.solution.report_definitions.surface[
+        "velocity_magnitude_outlet"
+    ]
+    vmag_outlet.report_type = "surface-areaavg"
+    vmag_outlet.field = "velocity-magnitude"
+    vmag_outlet.surface_names = ["outlet-1"]
 
-        check_report_definition = partial(
-            check_report_definition_result,
-            report_definitions=solver_session.solution.report_definitions,
-        )
+    check_report_definition = partial(
+        check_report_definition_result,
+        report_definitions=solver_session.solution.report_definitions,
+    )
 
-        check_report_definition(
-            report_definition_name="velocity_magnitude_outlet",
-            expected_result=pytest.approx(3.7988207, rel=1e-3),
-        )
+    check_report_definition(
+        report_definition_name="velocity_magnitude_outlet",
+        expected_result=pytest.approx(3.7988207, rel=1e-3),
+    )
 
-        ###############################################################################
+    ###############################################################################

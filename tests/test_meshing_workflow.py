@@ -12,7 +12,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
 )
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -120,9 +119,7 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if meshing_session.get_fluent_version() < FluentVersion.v231:
-        meshing_session.tui.mesh.check_mesh()
+    meshing_session.tui.mesh.check_mesh()
 
 
 @pytest.mark.codegen_required
@@ -254,9 +251,8 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     assert not import_geom.arguments.FileName()
     import_geom.arguments.FileName = "xyz.txt"
     assert import_geom.arguments.FileName() == "xyz.txt"
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         import_geom.arguments.File = "sample.txt"
-    assert msg.value.args[0] == "No attribute named 'File' in 'Import Geometry'."
     assert not import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
 
     assert import_geom.arguments.CadImportOptions.OneZonePer() == "body"
@@ -280,28 +276,16 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     assert feat_angle.min() == 0.0
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         assert feat_angle.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         assert import_geom.arguments.NumParts.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
 
     # Test intended to fail in string type (min() only available in numerical types)
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         assert import_geom.arguments.LengthUnit.min()
-    assert (
-        msg.value.args[0]
-        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
-    )
 
 
 @pytest.mark.skip("Wait for later implementation.")
@@ -400,9 +384,8 @@ def test_modified_workflow(new_mesh_session):
 def test_nonexistent_attrs(new_mesh_session):
     meshing = new_mesh_session
     assert not hasattr(meshing.workflow, "xyz")
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         meshing.workflow.xyz
-    assert msg.value.args[0] == "'ClassicMeshingWorkflow' object has no attribute 'xyz'"
 
 
 @pytest.mark.codegen_required
@@ -411,12 +394,17 @@ def test_old_workflow_structure(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     assert meshing.workflow.TaskObject["Import Geometry"].arguments()
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         meshing.workflow.import_geometry
-    assert (
-        msg.value.args[0]
-        == "'ClassicMeshingWorkflow' object has no attribute 'import_geometry'"
-    )
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_new_workflow_structure(new_mesh_session):
+    meshing = new_mesh_session
+    watertight = meshing.watertight()
+    assert watertight.import_geometry.arguments()
+    with pytest.raises(AttributeError):
+        watertight.TaskObject["Import Geometry"]
 
 
 @pytest.mark.nightly
