@@ -10,8 +10,12 @@ Fluent mode. The guidance in this topic applies to both modes.
 
 The PyFluent TUI commands allow you to automate workflows. Everything that's in
 the Fluent TUI (which itself is a comprehensive automation interface) is exposed
-in PyFluent. The PyFluent TUI commands are Pythonic versions of the commands
+in PyFluent. The PyFluent TUI commands are Python versions of the commands
 that are used in the Fluent console.
+
+The Python TUI is superseded by purpose-built PyFluent interfaces that are more powerful
+and user-friendly. See :ref:`settings objects <ref_settings>` for solution mode, and 
+:ref:`guided workflows <ref_meshing_workflow>` for meshing mode.
 
 The PyFluent TUI commands do not support TUI features such as aliases or
 command abbreviation. To make using PyFluent commands in an interactive
@@ -61,10 +65,9 @@ To see the documentation for the viscous model menu options, you can run:
     |      Enable/disable the intermittency transition model to account for transitional effects.
    ...
 
-The arguments to a TUI command are those that would be passed in direct
-interaction in the Fluent console, but they are in a Pythonic style. In the recent
-Fluent versions, in both meshing and solution mode,
-you can use Python journaling, which is a beta feature,
+Each TUI method argument is the Python analogue that would be passed in direct
+interaction in the Fluent console. In the recent Fluent versions, in both meshing 
+and solution mode, you can use Python journaling, which is a beta feature,
 to construct the TUI commands for PyFluent. The following section describes how to
 construct the TUI commands for PyFluent in different Fluent versions.
 
@@ -100,7 +103,7 @@ The following code yields the same result but specifies all arguments in one cal
    /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
 The recorded Python journal contains the following line which can be executed in
-PyFluent, assuming ``solver`` is the session instance returned by ``launch_fluent``.
+PyFluent, where ``solver`` is the session instance returned by ``launch_fluent``.
 
 .. code:: python
 
@@ -130,14 +133,16 @@ file my_journal.py in the working directory.
 
    fluent.exe 3ddp -i my_journal.jou -topy
 
+In Fluent 2023 R1, calls to TUI commands that have equivalents in the solver settings
+API are automatically recorded as method calls to the corresponding solver settings
+objects in the Python journal. If a TUI command does not have an API analogue, it is
+recorded as ``execute_tui(<argument>)``, where ``<argument>`` is the original TUI command string.
+You'll need to manually convert these TUI commands using the transformation rules provided
+in the next section.
 
-In Fluent 2023 R1, the TUI commands for which settings API exist are recorded
-as settings API commands in the Python journal. All other TUI commands are recorded
-in a manner which is not Pythonic. You need to manually convert those TUI commands
-using the transformation rules described in the next section.
-
-In Fluent 2022 R2, Python journaling feature is not available. You need to manually
-convert the TUI commands using the transformation rules described in the next section.
+In Fluent 2022 R2, the Python journaling feature is not available. Therefore, you must
+manually convert all TUI commands using the transformation rules described in the next 
+section.
 
 TUI command transformation rules
 --------------------------------

@@ -5,8 +5,8 @@ Frequently asked questions
 
 What is PyAnsys?
 ----------------
-PyAnsys is a set of open source technologies that allow you to interface Pythonically
-with Ansys Fluent, Mechanical APDL, AEDT, and other Ansys products. You can use PyAnsys
+PyAnsys is a set of open source technologies that allow you to interface with Ansys
+Fluent, Mechanical APDL, AEDT, and other Ansys products via Python. You can use PyAnsys
 libraries within a Python environment of your choice in conjunction with external Python
 libraries.
 
@@ -16,14 +16,13 @@ libraries.
 
 What is PyFluent?
 -----------------
-PyFluent provides Pythonic access to Ansys Fluent. Its features enable the seamless use of
+PyFluent provides Python access to Ansys Fluent. Its features enable the seamless use of
 Fluent within the Python ecosystem and broad access to native Fluent features for performing
 actions such as these:
 
 - Launch Fluent using a local Ansys installation.
 - Connect to a Fluent instance running on a remote machine.
-- Use Fluent's TUI (text user interface) commands for both meshing and solver features.
-- Use Fluent's built-in postprocessing capabilities.
+- TODO
 
 PyFluent is bundled with the Fluent installation. You can also download and install PyFluent
 separately. For more information, see :ref:`faqs_install`, which appears later on this page.
@@ -186,12 +185,12 @@ processors and activate the Fluent user interface:
 
 .. code:: python
 
-   session=pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui")
+   session=pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui")
 
 
 For additional launch examples, see :ref:`ref_user_guide_launch`. For
 descriptions of all parameters, see the :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` method.
+<ansys.fluent.core.launcher.launcher.launch_fluent>` function.
 
 .. _faqs_fluentloc:
 

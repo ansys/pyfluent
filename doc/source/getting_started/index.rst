@@ -4,13 +4,13 @@
 Getting started
 ===============
 
-PyFluent provides Pythonic access to Ansys Fluent. 
+* :ref:`ref_installation`: Get ready to use and develop PyFluent.
 
-To run PyFluent, you must have a licensed copy of Fluent 2022 R2 or later
-installed locally.
+* :ref:`ref_user_guide`: Learn the basics of using PyFluent.
 
-For more information on Fluent, see the `Ansys Fluent page <https://www.ansys.com/products/fluids/ansys-fluent>`_ 
-on the Ansys website.
+* `Examples <https://fluent.docs.pyansys.com/version/stable/examples/index.html>`_: Explore real PyFluent use cases.
+
+* :ref:`ref_api`: Navigate the Python API's classes and functions.
 
 .. toctree::
    :hidden:

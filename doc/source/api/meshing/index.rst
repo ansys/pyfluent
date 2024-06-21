@@ -13,7 +13,7 @@ Workflow example
 
     import ansys.fluent.core as pyfluent
 
-    meshing = pyfluent.launch_fluent(mode="meshing")
+    meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing.workflow.TaskObject["Import Geometry"].Arguments = {"FileName": "cylinder.agdb"}
     meshing.workflow.TaskObject["Import Geometry"].Execute()
