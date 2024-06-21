@@ -1749,8 +1749,22 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
 
 class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
-    """Provides creatable named objects."""
+    """Provides creatable named objects for Fluent 25.1 and later."""
 
+    def __setitem__(self, name: str, value):
+        if name not in self.get_object_names():
+            with self._while_creating():
+                self.flproxy.create(self.path, name)
+        child = self._objects.get(name)
+        if not child:
+            child = self._create_child_object(name)
+        child.set_state(value)
+
+
+class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
+    """Provides creatable named objects for Fluent 24.2 and earlier."""
+
+    # In Fluent 25.1, create method is available as commands in NamedObject class.
     def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
@@ -1767,15 +1781,6 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
         with self._while_creating():
             self.flproxy.create(self.path, name)
         return self._create_child_object(name)
-
-    def __setitem__(self, name: str, value):
-        if name not in self.get_object_names():
-            with self._while_creating():
-                self.flproxy.create(self.path, name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
-        child.set_state(value)
 
 
 class _NonCreatableNamedObjectMixin(
@@ -1852,7 +1857,10 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         if include_child_named_objects:
             bases = bases + (_ChildNamedObjectAccessorMixin,)
         if obj_type == "named-object" and user_creatable:
-            bases = bases + (CreatableNamedObjectMixin,)
+            if version < "251":
+                bases = bases + (CreatableNamedObjectMixinOld,)
+            else:
+                bases = bases + (CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif info.get("has-allowed-values"):
