@@ -33,7 +33,7 @@ class Event(Enum):
     PLOT_SET_CHANGED = "PlotSetChangedEvent"
     RESIDUAL_PLOT_CHANGED = "ResidualPlotChangedEvent"
     SETTINGS_CLEARED = "ClearSettingsDoneEvent"
-    SOLUTION_PAUSE = "AutoPauseEvent"
+    SOLUTION_PAUSED = "AutoPauseEvent"
     PROGRESS_UPDATED = "ProgressEvent"
     SOLVER_TIME_ESTIMATE_UPDATED = "SolverTimeEstimateEvent"
     ERROR = "ErrorEvent"
