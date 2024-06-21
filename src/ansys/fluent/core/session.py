@@ -162,7 +162,7 @@ class BaseSession:
         self.monitors = MonitorsManager(fluent_connection._id, self._monitors_service)
 
         self.events.register_callback(Event.SOLUTION_INITIALIZED, self.monitors.refresh)
-        self.events.register_callback(Event.DATA_READ, self.monitors.refresh)
+        self.events.register_callback(Event.DATA_LOADED, self.monitors.refresh)
 
         self.events.start()
 
