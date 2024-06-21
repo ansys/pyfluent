@@ -1,33 +1,38 @@
 .. _ref_data_transfer:
 
-Transfer data
-=============
+Transferring data between sessions
+==================================
 
-You use the `'transfer_case`` method to transfer a case or mesh file between
-instances of Fluent. You must specify a source instance and one or more
-destination instances.
+You use the ``transfer_case`` function to transfer a case or mesh file between
+PyFluent sessions. You must specify a source session and one or more
+destination solver sessions.
 
 Sample usage
 ------------
 
-To use the ``transfer_case`` method to transfer a mesh or a case file, you import the
-file and pass the source, destination instances, and the file type. You can either
-generate the files in the parent instance or just read the file.
+This example shows how you use the ``transfer_case`` function to read a mesh file in a
+meshing session and transfer it to a solver session.
 
-This example shows how you use the ``transfer_case`` method to read a mesh file in a
-pure meshing session and transfer it to a solver session.
-
-.. code-block:: python
+.. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
   >>> from ansys.fluent.core.utils.data_transfer import transfer_case
 
-  >>> mesh_file_name = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
-  >>> pure_meshing_session.tui.file.read_mesh(import_file_name)
+  >>> mesh_file_name = download_file(
+  >>>     "mixing_elbow.msh.h5",
+  >>>     "pyfluent/mixing_elbow"
+  >>> )
+  >>> pure_meshing_session = pyfluent.launch_fluent(
+  >>>     mode=pyfluent.FluentMode.PURE_MESHING
+  >>> )
+  >>> pure_meshing_session.tui.file.read_mesh(
+  >>>     import_file_name
+  >>> )
 
-  >>> solver_session = pyfluent.launch_fluent(mode="solver")
+  >>> solver_session = pyfluent.launch_fluent(
+  >>>     mode=pyfluent.FluentMode.SOLVER
+  >>> )
 
   >>> transfer_case(
   >>>     source_instance=meshing,
@@ -40,8 +45,8 @@ pure meshing session and transfer it to a solver session.
   >>> )
 
 
-Similarly, you can use the ``transfer_case`` method to transfer a case file from one instance of Fluent
-to another.
+Similarly, you can use the ``transfer_case`` function to transfer a case file between PyFluent
+sessions.
 
 .. automodule:: ansys.fluent.core.utils.data_transfer
    :members:

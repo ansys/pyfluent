@@ -13,7 +13,7 @@ Workflow example
 
     import ansys.fluent.core as pyfluent
 
-    meshing = pyfluent.launch_fluent(mode="meshing")
+    meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing.workflow.TaskObject["Import Geometry"].Arguments = {"FileName": "cylinder.agdb"}
     meshing.workflow.TaskObject["Import Geometry"].Execute()
@@ -104,7 +104,7 @@ TUI commands example
 
     import ansys.fluent.core as pyfluent
 
-    meshing_session = pyfluent.launch_fluent(mode="meshing")
+    meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
     meshing_session.tui.file.read_case("elbow.cas.gz")
     solver = meshing_session.switch_to_solver()
     solver.tui.define.models.unsteady_2nd_order("yes")

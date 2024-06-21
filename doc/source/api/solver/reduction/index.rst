@@ -16,7 +16,7 @@ Then, make boundary conditions data, etc. available (for example, by reading cas
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
   >>> solver.file.read(file_type="case", file_name=case_path)
 
