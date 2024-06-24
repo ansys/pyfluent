@@ -3,7 +3,7 @@
 from enum import Enum
 from functools import partial
 import logging
-from typing import Callable
+from typing import Callable, Union
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
