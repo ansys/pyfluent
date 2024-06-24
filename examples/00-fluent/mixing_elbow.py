@@ -45,6 +45,8 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+# Do not set pyfluent.CONTAINER_MOUNT_PATH. It has set to run this example in GitHub container only.
+
 pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
@@ -87,6 +89,8 @@ geo_import.Arguments = {
 # Import geometry
 # ~~~~~~~~~~~~~~~
 # Import the geometry.
+
+# Execute meshing.upload(wing_intermediary_file) if Fluent is running in Ansys Lab.
 
 geo_import.Execute()
 
