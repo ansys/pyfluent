@@ -29,21 +29,21 @@ class Event(Enum):
     DATA_LOADED = "DataReadEvent"
     ABOUT_TO_INITIALIZE_SOLUTION = "AboutToInitializeEvent"
     SOLUTION_INITIALIZED = "InitializedEvent"
-    REPORT_DEFINITION_CHANGED = "ReportDefinitionChangedEvent"
-    PLOT_SET_CHANGED = "PlotSetChangedEvent"
-    RESIDUAL_PLOT_CHANGED = "ResidualPlotChangedEvent"
+    REPORT_DEFINITION_UPDATED = "ReportDefinitionChangedEvent"
+    REPORT_PLOT_SET_UPDATED = "PlotSetChangedEvent"
+    RESIDUAL_PLOT_UPDATED = "ResidualPlotChangedEvent"
     SETTINGS_CLEARED = "ClearSettingsDoneEvent"
     SOLUTION_PAUSED = "AutoPauseEvent"
     PROGRESS_UPDATED = "ProgressEvent"
     SOLVER_TIME_ESTIMATE_UPDATED = "SolverTimeEstimateEvent"
-    ERROR = "ErrorEvent"
-    COMMAND_COMPLETED = "CommandCompletedEvent"
+    FATAL_ERROR = "ErrorEvent"
 
     @classmethod
     def _missing_(cls, value: str):
         for member in cls:
             if member.value.lower() == value:
                 return member
+        raise ValueError(f"'{value}' is not a supported 'Event'.")
 
 
 class EventsManager(StreamingService):
@@ -75,7 +75,10 @@ class EventsManager(StreamingService):
                 with self._lock:
                     self._streaming = True
                     # error-code 0 from Fluent indicates server running without error
-                    if event_name == Event.ERROR and response.errorevent.errorCode != 0:
+                    if (
+                        event_name == Event.FATAL_ERROR
+                        and response.errorevent.errorCode != 0
+                    ):
                         error_message = response.errorevent.message.rstrip()
                         network_logger.error(
                             f"gRPC - {error_message}, "
