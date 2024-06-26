@@ -1,4 +1,4 @@
-.. _ref_reduction:
+.. _ref_reduction_guide:
 
 Reduction
 =========
@@ -357,9 +357,3 @@ You can also calculate the sum with a condition:
   >>>   weight="Area"
   >>> )
   20670300.0
-
-.. toctree::
-   :hidden:
-   :maxdepth: 2
-
-   reduction
