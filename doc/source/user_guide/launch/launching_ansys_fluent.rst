@@ -116,7 +116,7 @@ This command enables logging:
 
   >>> pyfluent.logging.enable()
 
-For more details, see :ref:`ref_logging_user_guide`.
+For more details, see :ref:`ref_user_guide_logging`.
 
 Scheduler support
 -----------------
