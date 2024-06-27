@@ -1,5 +1,5 @@
 # Specify base image variable
-ARG baseImage=rockylinux
+ARG baseImage=rockylinux:9.3
 
 # Create a build stage for Fluent from base image
 FROM ${baseImage} as fluentbuilder
