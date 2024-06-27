@@ -68,7 +68,7 @@ if __name__ == "__main__":
     copy_list = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
     remove_list = ["excludeCEIList.txt", "excludeFluentList.txt"]
     create_archive(
-        src="/home/hpohekar/ansys_inc",
+        src="/<path>/ansys_inc",
         copy_list=create_file_folders_list(files_list=copy_list),
         remove_list=create_file_folders_list(files_list=remove_list),
     )

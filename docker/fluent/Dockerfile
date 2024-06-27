@@ -5,7 +5,7 @@ FROM centos:7
 COPY ansys_inc.tgz .
 
 # Extract ansys_inc
-RUN tar -xzvf ansys_inc.tgz ansys_inc
+RUN tar -xzf ansys_inc.tgz ansys_inc
 
 # Remove ansys_inc.tgz
 RUN rm -f ansys_inc.tgz
