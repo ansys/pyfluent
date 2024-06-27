@@ -1,35 +1,11 @@
-# Specify base image variable
-ARG baseImage=rockylinux:9.3
-
-# Create a build stage for Fluent from base image
-FROM ${baseImage} as fluentbuilder
+# Specify base image
+FROM rockylinux:9.3
 
 # Copy Fluent archive
-COPY fluent.tgz /ansys_inc/
+COPY ansys_inc.tgz .
 
-# Extract Fluent archive to ansys_inc and remove Fluent archive
-RUN tar -xzf /ansys_inc/fluent.tgz --directory /ansys_inc/ && rm -f /ansys_inc/fluent.tgz
-
-# Create a build stage for CEI from base image
-FROM ${baseImage} as ceibuilder
-
-# Copy CEI archive
-COPY cei.tgz /ansys_inc/
-
-# Extract CEI archive to ansys_inc and remove CEI archive
-RUN tar -xzf /ansys_inc/cei.tgz --directory /ansys_inc/ && rm -f /ansys_inc/cei.tgz
-
-# Create a build stage for CFD-Post from base image
-FROM ${baseImage} as cfdpostbuilder
-
-# Copy CFD-Post archive
-COPY cfdpost.tgz /ansys_inc/
-
-# Extract CFD-Post archive to ansys_inc and remove CFD-Post archive
-RUN tar -xzf /ansys_inc/cfdpost.tgz --directory /ansys_inc/ && rm -f /ansys_inc/cfdpost.tgz
-
-# Base image
-FROM ${baseImage}
+# Extract ansys_inc and remove ansys_inc.tgz
+RUN tar -xzf /ansys_inc.tgz --directory . && rm -f /ansys_inc.tgz
 
 # Add description metadata
 LABEL description="Ansys Fluent 2025 R1"
@@ -47,15 +23,6 @@ RUN yum install -y \
         mesa-libGLU-9.0.0-4.el7.x86_64 \
         libglvnd-glx-1.0.1-0.8.git5baa1e5.el7.x86_64 \
         libglvnd-1.0.1-0.8.git5baa1e5.el7.x86_64  && yum clean all
-
-# Copy Fluent files to ansys_inc directory
-COPY --from=fluentbuilder /ansys_inc /ansys_inc/
-
-# Copy CEI files to ansys_inc directory
-COPY --from=ceibuilder /ansys_inc /ansys_inc/
-
-# Copy CFD-Post files to ansys_inc directory
-COPY --from=cfdpostbuilder /ansys_inc /ansys_inc/
 
 # Specify default Fluent executable
 ENTRYPOINT ["/ansys_inc/v251/fluent/bin/fluent"]
