@@ -1,5 +1,5 @@
 # Specify base image
-FROM rockylinux:9.3
+FROM centos:7
 
 # Copy Fluent archive
 COPY ansys_inc.tgz .
