@@ -5,7 +5,7 @@ This test covers the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and
 process industries. It is often important to predict the flow field and
-temperature field in the area of the mixing region in order to properly design
+temperature field in the area of the mixing region to properly design
 the junction.
 
 This test queries the following using PyTest:
