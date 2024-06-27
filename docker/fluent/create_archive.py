@@ -42,7 +42,6 @@ def create_archive(src: Union[Path, str], copy_list: list, remove_list: list):
     remove_list: list
         List of text files containing relative path of files and folders to exclude them from the archive.
     """
-    dst = Path("/home/hpohekar/ansys_inc_test/")
     dst = Path(current_path) / "ansys_inc"
     for file in copy_list:
         source = Path(src) / file
@@ -61,7 +60,7 @@ def create_archive(src: Union[Path, str], copy_list: list, remove_list: list):
             shutil.rmtree(Path(destination))
     if Path(dst).exists():
         archive = tarfile.open(Path(current_path) / f"{Path(dst).stem}.tgz", "w:gz")
-        archive.add(Path(dst).resolve(), arcname=".")
+        archive.add(Path(dst).resolve(), arcname="ansys_inc")
         archive.close()
 
 
@@ -69,7 +68,7 @@ if __name__ == "__main__":
     copy_list = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
     remove_list = ["excludeCEIList.txt", "excludeFluentList.txt"]
     create_archive(
-        src="/<path>/ansys_inc",
+        src="/home/hpohekar/ansys_inc",
         copy_list=create_file_folders_list(files_list=copy_list),
         remove_list=create_file_folders_list(files_list=remove_list),
     )
