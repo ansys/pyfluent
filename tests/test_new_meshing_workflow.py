@@ -1507,3 +1507,47 @@ def test_switching_workflow_interface(new_mesh_session):
     lw = new_mesh_session.load_workflow(file_path=saved_workflow_path)
     wt2 = new_mesh_session.watertight()
     del wt1, ft, tw, cw, lw, wt2
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_duplicate_children_of_compound_task(new_mesh_session, mixing_elbow_geometry):
+    watertight = new_mesh_session.watertight()
+    watertight.import_geometry.file_name = mixing_elbow_geometry
+    watertight.import_geometry()
+    watertight.add_local_sizing.add_child_and_update(
+        state={
+            "boi_control_name": "wall",
+            "boi_face_label_list": ["wall-elbow", "wall-inlet"],
+            "boi_size": 10,
+        }
+    )
+    watertight.add_local_sizing.add_child_and_update(
+        state={
+            "boi_control_name": "inlet",
+            "boi_face_label_list": ["wall-inlet", "cold-inlet", "hot-inlet"],
+            "boi_size": 10,
+        }
+    )
+    watertight.add_local_sizing.add_child_and_update(
+        state={
+            "boi_control_name": "outlet",
+            "boi_face_label_list": ["outlet"],
+            "boi_size": 10,
+        }
+    )
+
+    assert {
+        "child_of_add_local_sizing",
+        "child_1_of_add_local_sizing",
+        "child_2_of_add_local_sizing",
+    }.issubset(set(watertight.task_names()))
+
+    assert watertight.add_local_sizing.task_names() == [
+        "child_of_add_local_sizing",
+        "child_1_of_add_local_sizing",
+        "child_2_of_add_local_sizing",
+    ]
+
+    assert watertight.tasks()[-2].name() == "inlet"
+    assert watertight.tasks()[-2].python_name() == "child_1_of_add_local_sizing"

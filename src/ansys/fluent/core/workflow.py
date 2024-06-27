@@ -382,9 +382,12 @@ class BaseTask:
 
         return self._python_name
 
-    def _set_python_name(self):
+    def _set_python_name(self, py_name=None):
         this_command = self._command()
-        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        if py_name:
+            self._python_name = py_name
+        else:
+            self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
         self._cache_data(this_command)
 
     def _cache_data(self, command):
@@ -1051,16 +1054,6 @@ class CompoundChild(SimpleTask):
         """
         super().__init__(command_source, task)
 
-    def python_name(self) -> str:
-        """Get the Pythonic name of this task from the underlying application.
-
-        Returns
-        -------
-        str
-            The Pythonic name of this task.
-        """
-        pass
-
 
 class CompositeTask(BaseTask):
     """Composite task representation for wrapping a Workflow TaskObject instance of
@@ -1207,7 +1200,22 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
+        self._update_python_name()
         return self.last_child()
+
+    def _update_python_name(self):
+        py_name = "child_of_" + self.python_name()
+        c = 1
+        while True:
+            if py_name not in self.task_names():
+                break
+            py_name = f"child_{c}_of_" + self.python_name()
+            c += 1
+        task_name = self.tasks()[-1].name()
+        self.tasks()[-1]._set_python_name(py_name=py_name)
+        self._command_source.task(task_name)._set_python_name(py_name=py_name)
+        self._command_source.tasks()[-1]._set_python_name(py_name=py_name)
+        self._command_source._python_name_display_text_map[py_name] = task_name
 
     def last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask.
