@@ -1551,3 +1551,4 @@ def test_duplicate_children_of_compound_task(new_mesh_session, mixing_elbow_geom
 
     assert watertight.tasks()[-2].name() == "inlet"
     assert watertight.tasks()[-2].python_name() == "child_1_of_add_local_sizing"
+    assert watertight.task("inlet").python_name() == "child_1_of_add_local_sizing"

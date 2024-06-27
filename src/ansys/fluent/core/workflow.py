@@ -1213,7 +1213,6 @@ class CompoundTask(CommandTask):
             c += 1
         task_name = self.tasks()[-1].name()
         self.tasks()[-1]._set_python_name(py_name=py_name)
-        self._command_source.task(task_name)._set_python_name(py_name=py_name)
         self._command_source.tasks()[-1]._set_python_name(py_name=py_name)
         self._command_source._python_name_display_text_map[py_name] = task_name
 
