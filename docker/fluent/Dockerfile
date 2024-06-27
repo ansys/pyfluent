@@ -2,10 +2,10 @@
 FROM centos:7
 
 # Copy Fluent archive
-COPY ansys_inc.tgz .
+COPY ansys_inc_test2.tgz .
 
 # Extract ansys_inc and remove ansys_inc.tgz
-RUN tar -xzf /ansys_inc.tgz --directory . && rm -f /ansys_inc.tgz
+RUN mkdir ansys_inc && tar -xzvf ansys_inc_test2.tgz -C ansys_inc && rm -f ansys_inc_test2.tgz
 
 # Add description metadata
 LABEL description="Ansys Fluent 2025 R1"
