@@ -9,7 +9,6 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
-from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.exceptions import (
     DisallowedValuesError,
     SurfaceSpecificationError,
@@ -23,6 +22,7 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.deprecate_args import deprecate_argument
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 def override_help_text(func, func_to_be_wrapped):
