@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, List, Optional, Tuple, Union
+from typing import Any, Iterable, Iterator, Optional, Tuple, Union
 import warnings
 
 from ansys.fluent.core.services.datamodel_se import (
@@ -307,16 +307,6 @@ class BaseTask:
             Inactive ordered children.
         """
         return []
-
-    def child_task_python_names(self) -> List[str]:
-        """Get the Pythonic names of the child tasks.
-
-        Returns
-        -------
-        List[str]
-            Pythonic names of the child tasks.
-        """
-        return self._python_task_names
 
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the application.
@@ -1395,17 +1385,6 @@ class Workflow:
                 self._task_list = task_list
         return self._ordered_children
 
-    def child_task_python_names(self) -> List[str]:
-        """Get the Pythonic names of the child tasks.
-
-        Returns
-        -------
-        List[str]
-            Pythonic names of the child tasks.
-        """
-        with self._lock:
-            return self._python_task_names
-
     @staticmethod
     def inactive_tasks() -> list:
         """Get the inactive ordered task list held by this task.
@@ -1453,7 +1432,7 @@ class Workflow:
             list(self.__dict__)
             + dir(type(self))
             + arg_list
-            + self.child_task_python_names()
+            + self.task_names()
             + list(self._repeated_task_python_name_display_text_map)
         )
         dir_set = dir_set - self._unwanted_attrs

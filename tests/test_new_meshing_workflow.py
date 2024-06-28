@@ -727,9 +727,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     describe_geometry = watertight.describe_geometry
     describe_geometry_children = describe_geometry.tasks()
     assert len(describe_geometry_children) == 2
-    describe_geometry_child_task_python_names = (
-        describe_geometry.child_task_python_names()
-    )
+    describe_geometry_child_task_python_names = describe_geometry.task_names()
     assert describe_geometry_child_task_python_names == [
         "enclose_fluid_regions",
         "create_regions",
