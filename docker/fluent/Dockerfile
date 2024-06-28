@@ -1,14 +1,8 @@
 # Specify base image
 FROM centos:7
 
-# Copy Fluent archive
-COPY ansys_inc.tgz .
-
-# Extract ansys_inc
-RUN tar -xzf ansys_inc.tgz ansys_inc
-
-# Remove ansys_inc.tgz
-RUN rm -f ansys_inc.tgz
+# Copy ansys_inc
+COPY ansys_inc /ansys_inc
 
 # Add description metadata
 LABEL description="Ansys Fluent 2025 R1"
