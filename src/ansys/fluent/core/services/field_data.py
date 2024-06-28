@@ -21,8 +21,6 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
-from ansys.fluent.core.utils.deprecate_args import deprecate_argument
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -1150,6 +1148,9 @@ class FieldData:
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
         )
+
+    from ansys.fluent.core.utils.deprecate_args import deprecate_argument
+    from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
     @deprecate_argument(
         old_arg="surface_name",
