@@ -134,7 +134,6 @@ jobs:
         run: |
           echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-
         id: version
 
       - name: Cache API Code
@@ -185,7 +184,6 @@ jobs:
 
       - name: Build Source Documentation
         run: |
-          echo "PYFLUENT=$(python -c "import importlib; importlib.import_module('ansys.fluent.core')")" >> $GITHUB_ENV
           pip install -r requirements/requirements_build.txt
           if [ -f poetry.lock ] ; then
             rm poetry.lock
