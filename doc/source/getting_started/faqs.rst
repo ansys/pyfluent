@@ -188,7 +188,7 @@ processors and activate the Fluent user interface:
    session=pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui")
 
 
-For additional launch examples, see :ref:`ref_user_guide_launch`. For
+For additional launch examples, see :ref:`ref_launch_guide`. For
 descriptions of all parameters, see the :func:`launch_fluent()
 <ansys.fluent.core.launcher.launcher.launch_fluent>` function.
 

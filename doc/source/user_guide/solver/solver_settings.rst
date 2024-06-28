@@ -1,4 +1,4 @@
-.. _ref_user_guide_solver_settings:
+.. _ref_solver_settings_guide:
 
 Solver settings
 ===============

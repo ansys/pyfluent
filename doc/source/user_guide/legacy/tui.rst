@@ -1,4 +1,4 @@
-.. _ref_user_guide_tui_commands:
+.. _ref_tui_commands_guide:
 
 Use TUI commands
 ================

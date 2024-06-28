@@ -54,7 +54,7 @@ Key Features
 
 Launching Fluent from PyFluent
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:ref:`Start a Fluent session <ref_user_guide_launch>` locally or remotely with a variety of launch options, or connect
+:ref:`Start a Fluent session <ref_launch_guide>` locally or remotely with a variety of launch options, or connect
 to an existing session. Interact with Fluent through the session object returned by the launch
 or connect methods.
 
@@ -77,7 +77,7 @@ Some example use cases are given in this user guide.
 
 Physics Models
 ~~~~~~~~~~~~~~
-.. _ref_user_guide_models:
+.. _ref_models_guide:
 
 
 

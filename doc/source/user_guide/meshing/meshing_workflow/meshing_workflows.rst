@@ -1,4 +1,4 @@
-.. _ref_user_guide_meshing_workflows:
+.. _ref_meshing_workflows_guide:
 
 Classic meshing workflow
 ========================

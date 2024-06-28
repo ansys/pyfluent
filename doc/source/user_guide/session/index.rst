@@ -1,1 +1,1 @@
-.. _ref_user_guide_session:
+.. _ref_session_guide:

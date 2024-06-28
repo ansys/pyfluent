@@ -1,4 +1,4 @@
-.. _ref_user_guide_models:
+.. _ref_models_guide:
 
 Physics models
 ==============

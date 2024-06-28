@@ -1,4 +1,4 @@
-.. _ref_user_guide_launch:
+.. _ref_launch_guide:
 
 Launch or connect to Fluent
 ===========================
@@ -116,7 +116,7 @@ This command enables logging:
 
   >>> pyfluent.logging.enable()
 
-For more details, see :ref:`ref_user_guide_logging`.
+For more details, see :ref:`ref_logging_guide`.
 
 Scheduler support
 -----------------
