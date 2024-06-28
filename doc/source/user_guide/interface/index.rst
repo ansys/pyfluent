@@ -53,7 +53,7 @@ session that starts a second Fluent instance and is independent of your PyFluent
   >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
 
-A uniform interface interface across solver settings objects. For instance,
+A uniform interface exists across solver settings objects. For instance,
 ``get_state()``, ``set_state()`` and ``is-active()`` are ubiquitous methods,
 and ``allowed_values()``, ``min()`` and ``max()`` are found on relevant items.
 Here are some examples using the ``viscous`` and ``discrete_phase`` models.
