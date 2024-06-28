@@ -262,7 +262,7 @@ class _AllowedFieldNames(_AllowedNames):
                     allowed_name_error_message(
                         context="field",
                         trial_name=field_name,
-                        allowed_values=names(respect_data_valid=False),
+                        allowed_values=list(names(respect_data_valid=False).keys()),
                     )
                 )
             if not names.is_valid(field_name, respect_data_valid=True):
