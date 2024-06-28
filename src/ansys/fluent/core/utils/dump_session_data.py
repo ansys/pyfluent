@@ -6,8 +6,6 @@ from typing import Optional, Union
 
 import numpy as np
 
-from ansys.fluent.core.services.field_data import SurfaceDataType
-
 
 def dump_session_data(
     session,
@@ -119,17 +117,8 @@ class DumpDataReader:
         """Get surface data."""
         tag_id = (("type", "surface-data"),)
 
-        enum_to_field_name = {
-            SurfaceDataType.FacesConnectivity: "faces",
-            SurfaceDataType.Vertices: "vertices",
-            SurfaceDataType.FacesCentroid: "centroid",
-            SurfaceDataType.FacesNormal: "face-normal",
-        }
-
         surfaces_data = [
-            self._session_data["fields"][tag_id][surface_id][
-                enum_to_field_name[data_type]
-            ]
+            self._session_data["fields"][tag_id][surface_id][data_type.value()]
             for data_type in data_types
             for surface_id in surface_ids
         ]

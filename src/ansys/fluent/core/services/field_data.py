@@ -1,6 +1,6 @@
 """Wrappers over FieldData gRPC service of Fluent."""
 
-from enum import IntEnum
+from enum import Enum
 from functools import reduce
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -9,6 +9,7 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
+from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.exceptions import (
     DisallowedValuesError,
     SurfaceSpecificationError,
@@ -21,6 +22,7 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.utils.deprecate_args import deprecate_argument
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -222,13 +224,13 @@ class FieldUnavailable(RuntimeError):
     pass
 
 
-class SurfaceDataType(IntEnum):
+class SurfaceDataType(Enum):
     """Provides surface data types."""
 
-    Vertices = 1
-    FacesConnectivity = 2
-    FacesNormal = 3
-    FacesCentroid = 4
+    Vertices = "vertices"
+    FacesConnectivity = "faces"
+    FacesNormal = "face-normal"
+    FacesCentroid = "centroid"
 
 
 class _AllowedNames:
@@ -1221,11 +1223,17 @@ class FieldData:
                 for surface_id in surface_ids
             }
 
+    @deprecate_argument(
+        old_arg="surface_name",
+        new_arg="surface_names",
+        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+        deprecation_class=PyFluentDeprecationWarning,
+    )
     def get_surface_data(
         self,
         data_type: SurfaceDataType,
         surface_ids: Optional[List[int]] = None,
-        surface_name: Optional[str] = None,
+        surface_names: Optional[List[str]] = None,
         overset_mesh: Optional[bool] = False,
     ) -> Union[
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
@@ -1239,8 +1247,8 @@ class FieldData:
             SurfaceDataType Enum member.
         surface_ids : List[int], optional
             List of surface IDs for the surface data.
-        surface_name : str, optional
-            Surface name for the surface data.
+        surface_names: List[str], optional
+            List of surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
 
@@ -1256,7 +1264,7 @@ class FieldData:
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
-            surface_name=surface_name,
+            surface_names=surface_names,
         )
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
@@ -1272,19 +1280,13 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        enum_to_field_name = {
-            SurfaceDataType.FacesConnectivity: "faces",
-            SurfaceDataType.Vertices: "vertices",
-            SurfaceDataType.FacesCentroid: "centroid",
-            SurfaceDataType.FacesNormal: "face-normal",
-        }
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
         def _get_surfaces_data(parent_class, surf_id, _data_type):
             return parent_class(
                 surf_id,
-                surface_data[surf_id][enum_to_field_name[_data_type]],
+                surface_data[surf_id][_data_type.value()],
             )
 
         if data_type == SurfaceDataType.Vertices:
