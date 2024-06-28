@@ -3,19 +3,18 @@
 import os
 from pathlib import Path
 import shutil
-import tarfile
 from typing import Union
 
 current_path = Path(__file__.rstrip(os.path.basename(__file__)))
 
 
 def create_file_folders_list(files_list: list):
-    """Create list of files and folders specified in a text file.
+    """Create a list of files and folders specified in a text file.
 
     Parameters
     ----------
     files_list: list
-        List of text files containing relative path of files and folders.
+        List of text files containing relative paths of files and folders.
 
     Returns
     -------
@@ -30,7 +29,7 @@ def create_file_folders_list(files_list: list):
     return file_folders
 
 
-def create_archive(src: Union[Path, str], copy_list: list, remove_list: list):
+def copy_files(src: Union[Path, str], copy_list: list, remove_list: list):
     """Create an archive from Fluent unified installation.
 
     Parameters
@@ -38,9 +37,9 @@ def create_archive(src: Union[Path, str], copy_list: list, remove_list: list):
     src: Union[Path, str]
         Path of ``ansys_inc`` folder in Fluent unified installation directory.
     copy_list: list
-        List of text files containing relative path of files and folders to include them in the archive.
+        List of text files containing relative paths of files and folders to include them in the archive.
     remove_list: list
-        List of text files containing relative path of files and folders to exclude them from the archive.
+        List of text files containing relative paths of files and folders to exclude them from the archive.
     """
     dst = Path(current_path) / "ansys_inc"
     for file in copy_list:
@@ -58,16 +57,12 @@ def create_archive(src: Union[Path, str], copy_list: list, remove_list: list):
             Path(destination).unlink()
         elif Path(destination).is_dir():
             shutil.rmtree(Path(destination))
-    if Path(dst).exists():
-        archive = tarfile.open(Path(current_path) / f"{Path(dst).stem}.tgz", "w:gz")
-        archive.add(Path(dst).resolve(), arcname="ansys_inc")
-        archive.close()
 
 
 if __name__ == "__main__":
     copy_list = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
     remove_list = ["excludeCEIList.txt", "excludeFluentList.txt"]
-    create_archive(
+    copy_files(
         src="/<path>/ansys_inc",
         copy_list=create_file_folders_list(files_list=copy_list),
         remove_list=create_file_folders_list(files_list=remove_list),
