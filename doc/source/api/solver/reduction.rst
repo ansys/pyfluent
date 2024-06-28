@@ -1,4 +1,4 @@
-.. _ref_Reduction:
+.. _ref_reduction:
 
 reduction
 =========

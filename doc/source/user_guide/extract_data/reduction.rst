@@ -1,4 +1,4 @@
-.. _ref_reduction:
+.. _ref_reduction_guide:
 
 Reduction
 =========
@@ -16,7 +16,7 @@ Then, make boundary conditions data, etc. available (for example, by reading cas
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
   >>> solver.file.read(file_type="case", file_name=case_path)
 
@@ -357,9 +357,3 @@ You can also calculate the sum with a condition:
   >>>   weight="Area"
   >>> )
   20670300.0
-
-.. toctree::
-   :hidden:
-   :maxdepth: 2
-
-   reduction
