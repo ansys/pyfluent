@@ -382,10 +382,14 @@ class BaseTask:
 
         return self._python_name
 
-    def _set_python_name(self, py_name=None):
+    def _set_python_name(self, compound=False):
         this_command = self._command()
-        if py_name:
-            self._python_name = py_name
+        if self.task_type() == "Compound Child" or compound:
+            p_name = (
+                f"child_{self._command_source._compound_parent_task_python_name_id[1]}_of_"
+                + self._command_source._compound_parent_task_python_name_id[0]
+            )
+            self._python_name = p_name
         else:
             self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
         self._cache_data(this_command)
@@ -1188,6 +1192,12 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
+        self._command_source._compound_parent_task_python_name_id[0] = (
+            self.python_name()
+        )
+        self._command_source._compound_parent_task_python_name_id[1] = (
+            self._command_source._compound_parent_task_python_name_id[1] + 1
+        )
         self._add_child(state)
         if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
@@ -1204,17 +1214,8 @@ class CompoundTask(CommandTask):
         return self.last_child()
 
     def _update_python_name(self):
-        py_name = "child_of_" + self.python_name()
-        c = 1
-        while True:
-            if py_name not in self.task_names():
-                break
-            py_name = f"child_{c}_of_" + self.python_name()
-            c += 1
-        task_name = self.tasks()[-1].name()
-        self.tasks()[-1]._set_python_name(py_name=py_name)
-        self._command_source.tasks()[-1]._set_python_name(py_name=py_name)
-        self._command_source._python_name_display_text_map[py_name] = task_name
+        self.tasks()[-1]._set_python_name(compound=True)
+        self._command_source.tasks()[-1]._set_python_name(compound=True)
 
     def last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask.
@@ -1317,6 +1318,7 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
+                _compound_parent_task_python_name_id=[None, 0],
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
