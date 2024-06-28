@@ -232,6 +232,16 @@ class SurfaceDataType(Enum):
     FacesNormal = "face-normal"
     FacesCentroid = "centroid"
 
+    @classmethod
+    def _missing_(cls, value: str):
+        for member in cls:
+            if str(member) == value:
+                return member
+        raise ValueError(
+            f"The specified value '{value}' is not a supported value of {cls.__name__}."
+            f""" The supported values are: '{"', '".join(str(member) for member in cls)}'."""
+        )
+
 
 class _AllowedNames:
     def __init__(
@@ -1292,7 +1302,7 @@ class FieldData:
         def _get_surfaces_data(parent_class, surf_id, _data_type):
             return parent_class(
                 surf_id,
-                surface_data[surf_id][_data_type.value()],
+                surface_data[surf_id][SurfaceDataType(_data_type).value],
             )
 
         if data_type == SurfaceDataType.Vertices:

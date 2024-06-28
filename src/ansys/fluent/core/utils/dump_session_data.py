@@ -6,6 +6,8 @@ from typing import Optional, Union
 
 import numpy as np
 
+from ansys.fluent.core.services.field_data import SurfaceDataType
+
 
 def dump_session_data(
     session,
@@ -118,7 +120,9 @@ class DumpDataReader:
         tag_id = (("type", "surface-data"),)
 
         surfaces_data = [
-            self._session_data["fields"][tag_id][surface_id][data_type.value()]
+            self._session_data["fields"][tag_id][surface_id][
+                SurfaceDataType(data_type).value
+            ]
             for data_type in data_types
             for surface_id in surface_ids
         ]
