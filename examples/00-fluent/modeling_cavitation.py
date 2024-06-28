@@ -48,7 +48,6 @@ os.environ["AWP_ROOT251"] = r"C:\Program Files\ANSYS Inc\v241"
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 cav_file = examples.download_file("cav.msh.gz", "pyfluent/cavitation")
 
 ###############################################################################
@@ -266,11 +265,11 @@ initialization.hybrid_initialize()
 # Save the case file 'cav.cas.h5'. Then, start the calculation by requesting
 # 500 iterations. Save the final case file and the data.
 
-solver.file.write_case(file_name="cav")
+solver.file.write_case(file_name="cav.cas.h5")
 
 solver.solution.run_calculation.iterate(iter_count=500)
 
-solver.file.write_case_data(file_name="cav")
+solver.file.write_case_data(file_name="cav.cas.h5")
 
 ###############################################################################
 # Post Processing
