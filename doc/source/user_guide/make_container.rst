@@ -69,8 +69,11 @@ The Docker container configuration needed to build the container is detailed in 
 `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
 
 
+Run the Docker container 
+========================
+
 Run the Docker container using the command line
-===============================================
+-----------------------------------------------
 
 Execute the following command to run the Docker container in solver mode. 
 Please note, that you will have to specify the Ansys license file.
@@ -89,7 +92,7 @@ Execute the following command to run the Docker container in meshing mode.
 
 
 Run Docker container using PyFluent
-===================================
+-----------------------------------
 
 Install `PyFluent <https://github.com/ansys/pyfluent>`_ and execute the following code
 to run the Docker container using PyFluent.
