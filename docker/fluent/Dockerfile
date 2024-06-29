@@ -1,5 +1,5 @@
 # Specify base image
-FROM ubuntu:20.04
+FROM centos:7
 
 # User variables
 ARG USERNAME=fluent
@@ -21,17 +21,18 @@ LABEL email="pyansys.core@ansys.com"
 LABEL org.opencontainers.image.documentation="https://fluent.docs.pyansys.com"
 
 # Install dependencies
-RUN apt-get -y update && apt-get -y install \
-        csh \
-        fontconfig \
-        libxi-dev \
-        libsm6 \
-        libice-dev \
-        libxrandr-dev \
-        libxinerama-dev \
-        libxcursor-dev \
-        libglu1-mesa \
-        libglvnd-dev  && apt-get clean all
+RUN yum install -y \
+        tcsh.x86_64 \
+        fontconfig.x86_64 \
+        libXi.x86_64 \
+        libSM.x86_64 \
+        libICE.x86_64 \
+        libXrandr.x86_64 \
+        libXinerama.x86_64 \
+        libXcursor.x86_64 \
+        mesa-libGLU.x86_64 \
+        libglvnd-glx.x86_64 \
+        libglvnd.x86_64  && yum clean all
 
 # Set user
 USER $USERNAME

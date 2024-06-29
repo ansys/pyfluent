@@ -13,9 +13,7 @@ installation directory to the container.
 Requirements
 ============
 
-* A Linux machine, preferably with Ubuntu 18.04 or later.
-  CentOS Linux distribution is not supported anymore.
-  This machine needs to have `Docker <https://www.docker.com>`_ installed.
+* A Linux machine with `Docker <https://www.docker.com>`_ installed.
 
 * A valid Ansys account. Your Ansys reseller should have
   provide you with one.
@@ -98,12 +96,11 @@ to run the Docker container using PyFluent.
 .. code:: python
 
     import os
+    import ansys.fluent.core as pyfluent
     os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
     os.environ["FLUENT_IMAGE_TAG"] = "latest"
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<ansys_license_file>"
-    import ansys.fluent.core as pyfluent
-    custom_config = {}
-    custom_config.update(fluent_image='ansys_inc:latest', host_mount_path=f"{os.getcwd()}", auto_remove=False)
+    custom_config = {'fluent_image': 'ansys_inc:latest', 'host_mount_path': f"{os.getcwd()}", 'auto_remove': False}
     solver = pyfluent.launch_fluent(container_dict=custom_config)
 
 
