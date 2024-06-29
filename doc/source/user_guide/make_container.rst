@@ -14,7 +14,9 @@ installation directory to the container.
 Requirements
 ============
 
-* A Linux machine with `Docker <https://www.docker.com>`_ installed.
+* A Linux machine, preferably with Ubuntu 18.04 or later.
+  CentOS Linux distribution is not supported anymore.
+  This machine needs to have `Docker <https://www.docker.com>`_ installed.
 
 * A valid Ansys account. Your Ansys reseller should have
   provide you with one.
