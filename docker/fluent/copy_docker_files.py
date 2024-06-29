@@ -1,4 +1,4 @@
-"""Provides a module to create an archive of Fluent unified installation."""
+"""Provides a module to create an archive of the Ansys installation."""
 
 import os
 from pathlib import Path
@@ -29,18 +29,18 @@ def create_file_folders_list(files_list: list):
     return file_folders
 
 
-def copy_files(src: Union[Path, str], copy_list: list, remove_list: list):
-    """Create an archive from Fluent unified installation.
+def copy_files(src: Union[Path, str]):
+    """Copy files from the Ansys installation directory.
 
     Parameters
     ----------
     src: Union[Path, str]
-        Path of ``ansys_inc`` folder in Fluent unified installation directory.
-    copy_list: list
-        List of text files containing relative paths of files and folders to include them in the archive.
-    remove_list: list
-        List of text files containing relative paths of files and folders to exclude them from the archive.
+        Path of ``ansys_inc`` folder in the Ansys installation directory.
     """
+    copy_files = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
+    remove_files = ["excludeCEIList.txt", "excludeFluentList.txt"]
+    copy_list = (create_file_folders_list(files_list=copy_files),)
+    remove_list = create_file_folders_list(files_list=remove_files)
     dst = Path(current_path) / "ansys_inc"
     for file in copy_list:
         source = Path(src) / file
@@ -60,10 +60,4 @@ def copy_files(src: Union[Path, str], copy_list: list, remove_list: list):
 
 
 if __name__ == "__main__":
-    copy_list = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
-    remove_list = ["excludeCEIList.txt", "excludeFluentList.txt"]
-    copy_files(
-        src="<path to ``ansys_inc`` directory>",
-        copy_list=create_file_folders_list(files_list=copy_list),
-        remove_list=create_file_folders_list(files_list=remove_list),
-    )
+    copy_files(src="<path to ``ansys_inc`` directory>")

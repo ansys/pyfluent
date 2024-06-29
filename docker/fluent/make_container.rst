@@ -2,19 +2,23 @@
 Create your Fluent docker container
 ===================================
 
-.. warning:: You need a valid Ansys license 
-    to follow the steps detailed in this section.
+.. warning:: You need a valid Ansys license and an Ansys account to
+   follow the steps detailed in this section.
 
-You can create your Fluent docker container by following
-the steps given on this page.
-This guide will use a local Ubuntu machine to copy the needed
-files from the Fluent installation directory to the container.
+You can create your Fluent docker container by following the steps given on this page.
+This guide will use a local Ubuntu machine to copy the needed files from the Fluent 
+installation directory to the container.
 
 
 Requirements
 ============
 
-* A Linux machine needs to have `Docker <https://www.docker.com>`_ installed.
+* A Linux machine, preferably with Ubuntu 18.04 or later.
+  CentOS Linux distribution is not supported anymore.
+  This machine needs to have `Docker <https://www.docker.com>`_ installed.
+
+* A valid Ansys account. Your Ansys reseller should have
+  provide you with one.
 
 * The following provided files:
   
@@ -28,22 +32,19 @@ Procedure
 Specify the Ansys installation directory
 ----------------------------------------
 
-Specify only the Ansys installation directory in the following function of 
+Specify the pre-installed Ansys directory in the following function of 
 `copy_docker_files.py <https://github.com/ansys/pyfluent/blob/main/docker/fluent/copy_docker_files.py>`_. 
 
 .. code:: python
 
-    copy_files(
-        src="<path to ``ansys_inc`` directory>",
-        copy_list=create_file_folders_list(files_list=copy_list),
-        remove_list=create_file_folders_list(files_list=remove_list),
-    )
+    copy_files(src="<path to ``ansys_inc`` directory>")
 
 Copy needed files
 -----------------
 
 Change local directory where `copy_docker_files.py <https://github.com/ansys/pyfluent/blob/main/docker/fluent/copy_docker_files.py>`_ 
-is located and run this script to copy needed files from the Fluent installation directory to the container.
+is located and run this script to copy needed files from the Ansys installation directory 
+to the container.
 
 .. code:: python
 
