@@ -71,9 +71,6 @@ The Docker container configuration needed to build the container is detailed in 
 `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
 
 
-Run the Docker container 
-========================
-
 Run the Docker container using the command line
 -----------------------------------------------
 
@@ -84,13 +81,13 @@ Execute the following command to run the Docker container in solver mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<ansys_license_file> ansys_inc  3ddp -gu
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<ansys_license_file> ansys_inc 3ddp -gu
 
 Execute the following command to run the Docker container in meshing mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<ansys_license_file> ansys_inc  3ddp -gu -meshing
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<ansys_license_file> ansys_inc 3ddp -gu -meshing
 
 
 Run Docker container using PyFluent
@@ -120,5 +117,4 @@ Summary
 
 * **Step 3:** Build Docker image.
 
-* **Step 4:** Run the Docker container using the command line or
-run the Docker container using PyFluent.
+* **Step 4:** Run the Docker container using the command line or run the Docker container using PyFluent.
