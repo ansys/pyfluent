@@ -10,7 +10,7 @@ ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
-# Copy ansys_inc
+# Copy ``ansys_inc`` directory
 COPY ansys_inc /ansys_inc
 
 # Add metadata
@@ -49,7 +49,7 @@ RUN mkdir -p /home/$USERNAME/$WORKING_DIRECTORY \
 # Set user
 USER $USERNAME
 
-# set working directory
+# Set working directory
 WORKDIR /home/$USERNAME/$WORKING_DIRECTORY
 
 # Specify default Fluent executable
