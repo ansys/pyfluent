@@ -36,7 +36,7 @@ RUN apt-get -y update && apt-get -y install \
 # Specify working directory
 ENV WORKING_DIRECTORY=/workdir
 
-# Set home directory
+# Specify home directory
 ENV HOME=/home/$USERNAME
 
 # Add a working directory and make it accessible to any user
@@ -46,7 +46,7 @@ RUN mkdir -p /home/$USERNAME/$WORKING_DIRECTORY \
     && \
     chmod a+rwx /home/$USERNAME/$WORKING_DIRECTORY
 
-# Set user
+# Set the user
 USER $USERNAME
 
 # Set working directory
