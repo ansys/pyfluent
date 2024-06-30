@@ -33,8 +33,24 @@ RUN apt-get -y update && apt-get -y install \
         libglu1-mesa \
         libglvnd-dev  && apt-get clean all
 
+# Specify working directory
+ENV WORKING_DIRECTORY=/workdir
+
+# Set home directory
+ENV HOME=/home/$USERNAME
+
+# Add a working directory and make it accessible to any user
+RUN mkdir -p /home/$USERNAME/$WORKING_DIRECTORY \
+    && \
+    chown -R $USERNAME:$USERNAME /home/$USERNAME/$WORKING_DIRECTORY \
+    && \
+    chmod a+rwx /home/$USERNAME/$WORKING_DIRECTORY
+
 # Set user
 USER $USERNAME
+
+# set working directory
+WORKDIR /home/$USERNAME/$WORKING_DIRECTORY
 
 # Specify default Fluent executable
 ENTRYPOINT ["/ansys_inc/v251/fluent/bin/fluent"]

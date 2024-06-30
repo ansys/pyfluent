@@ -1,12 +1,12 @@
 .. _ref_make_container:
 
-Create your Fluent docker container
+Create your Fluent Docker container
 ===================================
 
 .. warning:: You need a valid Ansys license and an Ansys account to
    follow the steps detailed in this section.
 
-You can create your Fluent docker container by following the steps given on this page.
+You can create your Fluent Docker container by following the steps given on this page.
 This guide will use a local Ubuntu machine to copy the needed files from the Fluent 
 installation directory to the container.
 
@@ -71,8 +71,8 @@ The Docker container configuration needed to build the container is detailed in 
 `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
 
 
-Run the Docker container using the command line
------------------------------------------------
+Run Docker container using the command line
+-------------------------------------------
 
 Execute the following command to run the Docker container in solver mode. 
 Please note, that you will have to specify the Ansys license file.
@@ -81,13 +81,13 @@ Execute the following command to run the Docker container in solver mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<ansys_license_file> ansys_inc 3ddp -gu
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc 3ddp -gu
 
 Execute the following command to run the Docker container in meshing mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<ansys_license_file> ansys_inc 3ddp -gu -meshing
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc 3ddp -gu -meshing
 
 
 Run Docker container using PyFluent
@@ -102,7 +102,7 @@ to run the Docker container using PyFluent.
     import ansys.fluent.core as pyfluent
     os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
     os.environ["FLUENT_IMAGE_TAG"] = "latest"
-    os.environ["ANSYSLMD_LICENSE_FILE"] = "<ansys_license_file>"
+    os.environ["ANSYSLMD_LICENSE_FILE"] = "<license>.ansys.com"
     custom_config = {'fluent_image': 'ansys_inc:latest', 'host_mount_path': f"{os.getcwd()}", 'auto_remove': False}
     solver = pyfluent.launch_fluent(container_dict=custom_config)
 
