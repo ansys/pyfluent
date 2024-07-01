@@ -79,6 +79,17 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
+def mode_to_launcher_type(fluent_launch_mode: LaunchMode):
+    """Map launch mode to launcher type."""
+    launcher_mode_type = {
+        LaunchMode.CONTAINER: DockerLauncher,
+        LaunchMode.PIM: PIMLauncher,
+        LaunchMode.SLURM: SlurmLauncher,
+        LaunchMode.STANDALONE: StandaloneLauncher,
+    }
+    return launcher_mode_type[fluent_launch_mode]
+
+
 #   pylint: disable=unused-argument
 @deprecate_argument(
     old_arg="show_gui",
@@ -257,15 +268,6 @@ def launch_fluent(
     passed to Fluent.
     """
 
-    def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
-        launcher_mode_type = {
-            LaunchMode.CONTAINER: DockerLauncher,
-            LaunchMode.PIM: PIMLauncher,
-            LaunchMode.SLURM: SlurmLauncher,
-            LaunchMode.STANDALONE: StandaloneLauncher,
-        }
-        return launcher_mode_type[fluent_launch_mode]
-
     argvals = inspect.getargvalues(inspect.currentframe()).locals
 
     fluent_launch_mode = _get_fluent_launch_mode(
@@ -274,7 +276,7 @@ def launch_fluent(
         scheduler_options=scheduler_options,
     )
 
-    launcher_type = _mode_to_launcher_type(fluent_launch_mode)
+    launcher_type = mode_to_launcher_type(fluent_launch_mode)
     launch_fluent_args = set(inspect.signature(launch_fluent).parameters.keys())
     launcher_type_args = set(
         inspect.signature(launcher_type.__init__).parameters.keys()
