@@ -130,15 +130,21 @@ def _get_version_path_prefix_from_obj(obj: Any):
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, flobject.Group):
         module = obj.__class__.__module__
-        version = module.split(".")[-2].rsplit("_", 1)[-1]
+        try:
+            version = module.split(".")[-2].rsplit("_", 1)[-1]
+        except IndexError:
+            version = None
         prefix = "<search_root>"
-        path = ["<solver_session>"]
+        path = ["<solver_session>.settings"]
         # Cannot deduce the whole path without api_tree
     elif isinstance(obj, flobject.NamedObject):
         module = obj.__class__.__module__
-        version = module.split(".")[-2].rsplit("_", 1)[-1]
+        try:
+            version = module.split(".")[-2].rsplit("_", 1)[-1]
+        except IndexError:
+            version = None
         prefix = '<search_root>["<name>"]'
-        path = ["<solver_session>"]
+        path = ["<solver_session>.settings"]
         # Cannot deduce the whole path without api_tree
     return version, path, prefix
 
