@@ -102,6 +102,7 @@ Logging
     fielddata
     fieldinfo
     case_reader
+    data_reader
     data_transfer
     journaling
     workflow
