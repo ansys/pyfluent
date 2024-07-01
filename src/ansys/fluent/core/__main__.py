@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     session = start()
 
-    locs = locals()
+    locs = locals().copy()
     import code
 
     code.interact(local=locs)
