@@ -202,3 +202,7 @@ class BaseMeshing:
         if self._preferences is None:
             self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return [attr for attr in sorted(dir_list) if not attr.startswith("_")]

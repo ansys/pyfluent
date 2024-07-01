@@ -203,3 +203,7 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return [attr for attr in sorted(dir_list) if not attr.startswith("_")]
