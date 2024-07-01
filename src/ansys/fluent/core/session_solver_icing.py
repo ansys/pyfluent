@@ -66,4 +66,4 @@ class SolverIcing(Solver):
         return self._flserver.Case.App
 
     def __dir__(self):
-        super().__dir__(self)
+        return super(SolverIcing, self).__dir__()
