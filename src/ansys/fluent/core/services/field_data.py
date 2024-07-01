@@ -1245,12 +1245,47 @@ class FieldData:
         converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
         deprecation_class=PyFluentDeprecationWarning,
     )
+    @deprecate_argument(
+        old_arg="data_type",
+        new_arg="provide_vertices",
+        converter=lambda old_arg_val: (
+            True if old_arg_val == SurfaceDataType.Vertices else False
+        ),
+        deprecation_class=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="data_type",
+        new_arg="provide_faces",
+        converter=lambda old_arg_val: (
+            True if old_arg_val == SurfaceDataType.FacesConnectivity else False
+        ),
+        deprecation_class=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="data_type",
+        new_arg="provide_faces_centroid",
+        converter=lambda old_arg_val: (
+            True if old_arg_val == SurfaceDataType.FacesCentroid else False
+        ),
+        deprecation_class=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="data_type",
+        new_arg="provide_faces_normal",
+        converter=lambda old_arg_val: (
+            True if old_arg_val == SurfaceDataType.FacesNormal else False
+        ),
+        deprecation_class=PyFluentDeprecationWarning,
+    )
     def get_surface_data(
         self,
-        data_type: SurfaceDataType,
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
         overset_mesh: Optional[bool] = False,
+        provide_vertices: Optional[bool] = False,
+        provide_faces: Optional[bool] = False,
+        provide_faces_centroid: Optional[bool] = False,
+        provide_faces_normal: Optional[bool] = False,
     ) -> Union[
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
@@ -1259,14 +1294,20 @@ class FieldData:
 
         Parameters
         ----------
-        data_type : SurfaceDataType
-            SurfaceDataType Enum member.
         surface_ids : List[int], optional
             List of surface IDs for the surface data.
         surface_names: List[str], optional
             List of surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
+        provide_vertices : bool, optional
+            Whether to get node coordinates. The default is ``True``.
+        provide_faces : bool, optional
+            Whether to get face connectivity. The default is ``True``.
+        provide_faces_centroid : bool, optional
+            Whether to get face centroids. The default is ``False``.
+        provide_faces_normal : bool, optional
+            Whether to get faces normal. The default is ``False``
 
         Returns
         -------
@@ -1288,10 +1329,10 @@ class FieldData:
                 FieldDataProtoModule.SurfaceRequest(
                     surfaceId=surface_id,
                     oversetMesh=overset_mesh,
-                    provideFaces=data_type == SurfaceDataType.FacesConnectivity,
-                    provideVertices=data_type == SurfaceDataType.Vertices,
-                    provideFacesCentroid=data_type == SurfaceDataType.FacesCentroid,
-                    provideFacesNormal=data_type == SurfaceDataType.FacesNormal,
+                    provideFaces=provide_faces,
+                    provideVertices=provide_vertices,
+                    provideFacesCentroid=provide_faces_centroid,
+                    provideFacesNormal=provide_faces_normal,
                 )
                 for surface_id in surface_ids
             ]
