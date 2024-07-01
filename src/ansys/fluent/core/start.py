@@ -127,6 +127,13 @@ def _list_configurations():
     return [f.split(".")[0] for f in os.listdir(CONFIG_DIR) if f.endswith(".json")]
 
 
+def _launch_for_config(config):
+    session = launch_fluent(**config)
+    print("Fluent launched successfully with the following configuration:")
+    print(config)
+    return session
+
+
 def _launch():
     configs = _list_configurations()
     if configs:
@@ -151,12 +158,7 @@ def _launch():
         save_config = input("\nSave this configuration? (y/n): ")
         if save_config.lower() == "y":
             _save_configuration(config_name, config)
-
-    # could look-up and use the specific launcher here, but not really needed
-    session = launch_fluent(**config)
-    print("Fluent launched successfully with the following configuration:")
-    print(config)
-    return session
+    _launch_for_config(config)
 
 
 def _prompt_user_for_connect_options():
@@ -213,8 +215,7 @@ def _connect():
     return session
 
 
-def start():
-    """User-friendly, prompt-based function to start a PyFluent session"""
+def _start():
     # use enum here
     options = "Launch Fluent", "Connect to Fluent", "Just use PyFluent"
     print("Select an option:")
@@ -229,3 +230,11 @@ def start():
         return _launch()
     if int(option) == 2:
         return _connect()
+
+
+def start(config_name: dict = None):
+    """User-friendly, prompt-based function to start a PyFluent session"""
+    if config_name:
+        return _launch_for_config(_load_configuration(config_name))
+    else:
+        return _start()
