@@ -39,7 +39,7 @@ def copy_files(src: Union[Path, str]):
     """
     copy_files = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
     remove_files = ["excludeCEIList.txt", "excludeFluentList.txt"]
-    copy_list = (create_file_folders_list(files_list=copy_files),)
+    copy_list = create_file_folders_list(files_list=copy_files)
     remove_list = create_file_folders_list(files_list=remove_files)
     dst = Path(current_path) / "ansys_inc"
     for file in copy_list:
