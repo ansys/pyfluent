@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, List, Optional, Tuple, Union
+from typing import Any, Iterable, Iterator, Optional, Tuple, Union
 import warnings
 
 from ansys.fluent.core.services.datamodel_se import (
@@ -308,16 +308,6 @@ class BaseTask:
         """
         return []
 
-    def child_task_python_names(self) -> List[str]:
-        """Get the Pythonic names of the child tasks.
-
-        Returns
-        -------
-        List[str]
-            Pythonic names of the child tasks.
-        """
-        return self._python_task_names
-
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the application.
 
@@ -382,9 +372,16 @@ class BaseTask:
 
         return self._python_name
 
-    def _set_python_name(self):
+    def _set_python_name(self, compound=False):
         this_command = self._command()
-        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        if self.task_type() == "Compound Child" or compound:
+            p_name = (
+                f"child_{self._command_source._compound_parent_task_python_name_id[1]}_of_"
+                + self._command_source._compound_parent_task_python_name_id[0]
+            )
+            self._python_name = p_name
+        else:
+            self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
         self._cache_data(this_command)
 
     def _cache_data(self, command):
@@ -1051,16 +1048,6 @@ class CompoundChild(SimpleTask):
         """
         super().__init__(command_source, task)
 
-    def python_name(self) -> str:
-        """Get the Pythonic name of this task from the underlying application.
-
-        Returns
-        -------
-        str
-            The Pythonic name of this task.
-        """
-        pass
-
 
 class CompositeTask(BaseTask):
     """Composite task representation for wrapping a Workflow TaskObject instance of
@@ -1195,6 +1182,12 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
+        self._command_source._compound_parent_task_python_name_id[0] = (
+            self.python_name()
+        )
+        self._command_source._compound_parent_task_python_name_id[1] = (
+            self._command_source._compound_parent_task_python_name_id[1] + 1
+        )
         self._add_child(state)
         if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
@@ -1207,7 +1200,12 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
+        self._update_python_name()
         return self.last_child()
+
+    def _update_python_name(self):
+        self.tasks()[-1]._set_python_name(compound=True)
+        self._command_source.tasks()[-1]._set_python_name(compound=True)
 
     def last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask.
@@ -1310,6 +1308,7 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
+                _compound_parent_task_python_name_id=[None, 0],
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
@@ -1386,17 +1385,6 @@ class Workflow:
                 self._task_list = task_list
         return self._ordered_children
 
-    def child_task_python_names(self) -> List[str]:
-        """Get the Pythonic names of the child tasks.
-
-        Returns
-        -------
-        List[str]
-            Pythonic names of the child tasks.
-        """
-        with self._lock:
-            return self._python_task_names
-
     @staticmethod
     def inactive_tasks() -> list:
         """Get the inactive ordered task list held by this task.
@@ -1444,7 +1432,7 @@ class Workflow:
             list(self.__dict__)
             + dir(type(self))
             + arg_list
-            + self.child_task_python_names()
+            + self.task_names()
             + list(self._repeated_task_python_name_display_text_map)
         )
         dir_set = dir_set - self._unwanted_attrs
