@@ -30,9 +30,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
             return f"Union{[x.__name__ for x in annotation.__args__]}"
 
         if name != "self":
-            print(
-                f"{name},\n    Type: {get_annotation(defn)},\n    Default:{defn.default}\n"
-            )
+            print(f"{name} : {get_annotation(defn)}, default : {defn.default}")
 
     def print_launcher_arg_list():
         print(
@@ -45,9 +43,9 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
     arg_vals = {}
     while True:
         arg_name = input(
-            "Type 'list' to see the full, annotated argument list."
-            "Press Enter to launch without making further changes.\n"
-            "Enter the name of an argument to change its value.\n"
+            "\nEnter 'list' for the argument list,"
+            " press Enter to launch without making further changes,"
+            " or enter an argument name to change its value: "
         )
         if not arg_name:
             break
@@ -59,16 +57,16 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
             for line in init_doc_list:
                 if found_name:
                     if line.startswith(" "):
-                        print(line)
+                        print(line.strip())
                     else:
                         break
                 else:
                     found_name = line.startswith(arg_name + " ")
                     if found_name:
-                        print(f"    Detailed documentation for {line}:")
+                        print(f"Detailed documentation for {line.strip()}:")
             value = (
                 input(
-                    f"Enter a value for {arg_name} or press Enter to keep the default: "
+                    f"\nEnter a value for {arg_name} or press Enter to keep the default: "
                 )
                 or None
             )
@@ -93,7 +91,7 @@ def _prompt_user_for_launch_options():
     while not (option.isdigit() and 1 <= int(option) <= len(options)):
         option = input("Select an option by number: ")
     option_name = options[int(option) - 1]
-    print(f"Selecting option: {option_name}... ")
+    print(f"Selecting option: {option_name}...\n")
     return _prompt_user_for_options_in_launch_mode(LaunchMode(int(option)))
 
 
@@ -144,13 +142,13 @@ def _launch():
         else:
             config_name = input("Enter a name for the new configuration: ")
             config = _prompt_user_for_launch_options()
-            save_config = input("Save this configuration? (y/n): ")
+            save_config = input("\nSave this configuration? (y/n): ")
             if save_config.lower() == "y":
                 _save_configuration(config_name, config)
     else:
         config_name = input("Enter a name for the new configuration: ")
         config = _prompt_user_for_launch_options()
-        save_config = input("Save this configuration? (y/n): ")
+        save_config = input("\nSave this configuration? (y/n): ")
         if save_config.lower() == "y":
             _save_configuration(config_name, config)
 
