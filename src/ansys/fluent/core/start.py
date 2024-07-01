@@ -40,8 +40,7 @@ def _list_configurations():
     return [f.split(".")[0] for f in os.listdir(CONFIG_DIR) if f.endswith(".json")]
 
 
-def start():
-    """User-friendly, prompt-based function to start a PyFluent session"""
+def _launch():
     configs = _list_configurations()
     if configs:
         print("Available configurations:")
@@ -70,3 +69,19 @@ def start():
     print("Fluent launched successfully with the following configuration:")
     print(config)
     return solver
+
+
+def start():
+    """User-friendly, prompt-based function to start a PyFluent session"""
+    # use enum here
+    options = "Launch Fluent", "Connect to Fluent", "Just use PyFluent"
+    print("Select an option:")
+    for idx, option_name in enumerate(options):
+        print(f"{idx + 1}: {option_name}")
+    option = ""
+    while not (option.isdigit() and 1 <= int(option) <= len(options)):
+        option = input("Select an option by number: ")
+    option_name = options[int(option) - 1]
+    print(f"Selecting option: {option_name}...")
+    if int(option) == 1:
+        return _launch()
