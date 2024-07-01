@@ -4,13 +4,33 @@ import json
 import os
 
 from ansys.fluent.core import connect_to_fluent, launch_fluent
+from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
 
 CONFIG_DIR = "fluent_configs"
 
 
-def _prompt_user_for_launch_options():
+def _prompt_user_for_options_standalone():
     precision = input("Enter precision (single/double, default: double): ") or "double"
     return {"precision": precision}
+
+
+def _prompt_user_for_launch_options():
+    options = (
+        "Standalone: Fluent will start on this computer",
+        "PIM: e.g., you are working in Ansys Lab or similar environment. Fluent will start in the cloud",
+        "Container: a Docker image containing Fluent will start",
+        "Slurm: you will configure Fluent to be queued on Slurm. You will have access to the session object before Fluent runs",
+    )
+    print("Select an option:")
+    for idx, option_name in enumerate(options):
+        print(f"{idx + 1}: {option_name}")
+    option = ""
+    while not (option.isdigit() and 1 <= int(option) <= len(options)):
+        option = input("Select an option by number: ")
+    option_name = options[int(option) - 1]
+    print(f"Selecting option: {option_name}... ")
+    if LaunchMode(int(option)) == LaunchMode.STANDALONE:
+        return _prompt_user_for_options_standalone()
 
 
 def _save_configuration(config_name, config):
