@@ -1,8 +1,10 @@
 """Module containing the user-friendly prompt-based ``start()`` function"""
 
+from enum import Enum
 import inspect
 import json
 import os
+from typing import _UnionGenericAlias
 
 from ansys.fluent.core import connect_to_fluent, launch_fluent
 from ansys.fluent.core.launcher.launcher import mode_to_launcher_type
@@ -13,21 +15,67 @@ CONFIG_DIR = "fluent_configs"
 
 def _prompt_user_for_options_in_launch_mode(launch_mode):
     launcher_type = mode_to_launcher_type(launch_mode)
-    launcher_type_args = inspect.signature(launcher_type.__init__).parameters
-    arg_vals = {}
-    print(
-        f"Getting your choices to configure a {launcher_type} ({inspect.getdoc(launcher_type)})..."
-    )
-    for name, defn in launcher_type_args.items():
+    init_method = launcher_type.__init__
+    launcher_type_args = inspect.signature(init_method).parameters
+    init_doc_list = inspect.getdoc(init_method).split("\n")
+    params_pos = init_doc_list.index("Parameters")
+    returns_pos = init_doc_list.index("Returns")
+    init_doc_list = init_doc_list[params_pos + 1 : returns_pos]
+
+    def print_arg(name, defn):
+        def get_annotation(arg_defn):
+            annotation = arg_defn.annotation
+            if not isinstance(annotation, _UnionGenericAlias):
+                return annotation
+            return f"Union{[x.__name__ for x in annotation.__args__]}"
+
         if name != "self":
+            print(
+                f"{name},\n    Type: {get_annotation(defn)},\n    Default:{defn.default}\n"
+            )
+
+    def print_launcher_arg_list():
+        print(
+            f"The following arguments apply to {launcher_type.__name__} ({inspect.getdoc(launcher_type)})...\n"
+        )
+        for name, defn in launcher_type_args.items():
+            print_arg(name, defn)
+
+    print_launcher_arg_list()
+    arg_vals = {}
+    while True:
+        arg_name = input(
+            "Type 'list' to see the full, annotated argument list."
+            "Press Enter to launch without making further changes.\n"
+            "Enter the name of an argument to change its value.\n"
+        )
+        if not arg_name:
+            break
+        if arg_name.lower() in ("list", "'list'"):
+            print_launcher_arg_list()
+        elif arg_name != "self" and arg_name in launcher_type_args:
+            print_arg(arg_name, launcher_type_args[arg_name])
+            found_name = False
+            for line in init_doc_list:
+                if found_name:
+                    if line.startswith(" "):
+                        print(line)
+                    else:
+                        break
+                else:
+                    found_name = line.startswith(arg_name + " ")
+                    if found_name:
+                        print(f"    Detailed documentation for {line}:")
             value = (
                 input(
-                    f"Enter a value for {name} ({defn.annotation}) or press Enter to accept the default ({defn.default}):"
+                    f"Enter a value for {arg_name} or press Enter to keep the default: "
                 )
-                or defn.default
+                or None
             )
-            if value:
-                arg_vals[name] = value
+            if value is not None:
+                import ansys  # noqa: F401
+
+                arg_vals[arg_name] = eval(value)
     return arg_vals
 
 
@@ -49,7 +97,17 @@ def _prompt_user_for_launch_options():
     return _prompt_user_for_options_in_launch_mode(LaunchMode(int(option)))
 
 
-def _save_configuration(config_name, config):
+def _save_configuration(config_name, config_in):
+    config = {}
+    for k, v in config.items():
+        if isinstance(v, Enum):
+            value_of_enum = v.value
+            if isinstance(value_of_enum, tuple):
+                config[k] = value_of_enum[0]
+            else:
+                config[k] = value_of_enum
+        else:
+            config[k] = v
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
     config_path = os.path.join(CONFIG_DIR, f"{config_name}.json")
