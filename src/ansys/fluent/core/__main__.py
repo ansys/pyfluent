@@ -6,7 +6,9 @@ if __name__ == "__main__":
     from ansys.fluent.core import launch_fluent  # noqa: F401
     from ansys.fluent.core.start import start
 
-    solver = start()
+    session = start()
+
+    locs = locals()
     import code
 
-    code.interact(local=locals())
+    code.interact(local=locs)

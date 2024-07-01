@@ -3,19 +3,14 @@
 import json
 import os
 
-from ansys.fluent.core import launch_fluent
+from ansys.fluent.core import connect_to_fluent, launch_fluent
 
 CONFIG_DIR = "fluent_configs"
 
 
-def _prompt_user_for_options():
-    # Example prompt for simplicity
-    # version = input("Enter Fluent version (default: latest): ") or "latest"
+def _prompt_user_for_launch_options():
     precision = input("Enter precision (single/double, default: double): ") or "double"
-    return {
-        #    "version": version,
-        "precision": precision
-    }
+    return {"precision": precision}
 
 
 def _save_configuration(config_name, config):
@@ -54,21 +49,75 @@ def _launch():
             config = _load_configuration(config_name)
         else:
             config_name = input("Enter a name for the new configuration: ")
-            config = _prompt_user_for_options()
+            config = _prompt_user_for_launch_options()
             save_config = input("Save this configuration? (y/n): ")
             if save_config.lower() == "y":
                 _save_configuration(config_name, config)
     else:
         config_name = input("Enter a name for the new configuration: ")
-        config = _prompt_user_for_options()
+        config = _prompt_user_for_launch_options()
         save_config = input("Save this configuration? (y/n): ")
         if save_config.lower() == "y":
             _save_configuration(config_name, config)
 
-    solver = launch_fluent(**config)
+    session = launch_fluent(**config)
     print("Fluent launched successfully with the following configuration:")
     print(config)
-    return solver
+    return session
+
+
+def _prompt_user_for_connect_options():
+    args = {}
+    options = (
+        "Specify a server info file path",
+        "Specify server info data individually (or use defaults)",
+    )
+    print("Select an option:")
+    for idx, option_name in enumerate(options):
+        print(f"{idx + 1}: {option_name}")
+    option = ""
+    while not (option.isdigit() and 1 <= int(option) <= len(options)):
+        option = input("Select an option by number: ")
+    option_name = options[int(option) - 1]
+    print(f"Selecting option: {option_name}... ")
+    if int(option) == 1:
+        args["server_info_file_name"] = input("Enter the server info file path: ")
+    else:
+        args["ip"] = (
+            input("Enter an IP address or press Enter to use the current default: ")
+            or None
+        )
+        args["port"] = (
+            input("Enter a port number or press Enter to use the current default: ")
+            or None
+        )
+        args["password"] = (
+            input("Enter a password or press Enter if one is not required: ") or None
+        )
+        args["cleanup_on_exit"] = (
+            input(
+                "Shut down the connected Fluent session automatically when the PyFluent session exits? (y/n, default: n): "
+            )
+            or "n"
+        ).lower() == "y"
+        if args["cleanup_on_exit"]:
+            args["start_watchdog"] = (
+                input(
+                    "Ensure that any local Fluent connections are properly closed (uses a separate watchdog process)? (y/n, default: y): "
+                )
+                or "y"
+            ).lower() == "y"
+        args["start_transcript"] = (
+            input("Stream the Fluent transcript to PyFluent? (y/n, default: y): ")
+            or "y"
+        ).lower() == "y"
+    return args
+
+
+def _connect():
+    config = _prompt_user_for_connect_options()
+    session = connect_to_fluent(**config)
+    return session
 
 
 def start():
@@ -82,6 +131,8 @@ def start():
     while not (option.isdigit() and 1 <= int(option) <= len(options)):
         option = input("Select an option by number: ")
     option_name = options[int(option) - 1]
-    print(f"Selecting option: {option_name}...")
+    print(f"Selecting option: {option_name}... ")
     if int(option) == 1:
         return _launch()
+    if int(option) == 2:
+        return _connect()
