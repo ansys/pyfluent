@@ -57,7 +57,7 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        mode: Optional[Union[FluentMode, str, None]] = None,
+        mode: Union[FluentMode, str, None] = None,
         ui_mode: Union[UIMode, str, None] = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
@@ -86,11 +86,12 @@ class StandaloneLauncher:
 
         Parameters
         ----------
-        mode : FluentMode
+        mode : FluentMode or str, optional
             Launch mode of Fluent to point to a specific session type.
-        ui_mode : UIMode
+        ui_mode : UIMode or str, optional
             Fluent user interface mode. Options are the values of the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
+            or str,optional
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
