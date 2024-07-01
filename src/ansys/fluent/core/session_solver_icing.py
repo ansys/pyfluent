@@ -64,3 +64,7 @@ class SolverIcing(Solver):
     def icing(self):
         """Instance of icing (Case.App) -> root datamodel object."""
         return self._flserver.Case.App
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return [attr for attr in sorted(dir_list) if not attr.startswith("_")]

@@ -307,4 +307,4 @@ class Solver(BaseSession):
             "start_journal",
             "stop_journal",
         }
-        return sorted(dir_list)
+        return [attr for attr in sorted(dir_list) if not attr.startswith("_")]

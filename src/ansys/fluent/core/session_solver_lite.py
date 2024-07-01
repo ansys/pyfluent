@@ -50,3 +50,7 @@ class SolverLite(Solver):
             fluent_connection=self._fluent_connection, scheme_eval=self.scheme_eval
         )
         return solver_session
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return [attr for attr in sorted(dir_list) if not attr.startswith("_")]
