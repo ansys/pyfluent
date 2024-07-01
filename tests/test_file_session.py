@@ -36,21 +36,21 @@ def test_field_info_data_multi_phase():
     file_session.read_case(case_file_name)
     file_session.read_data(data_file_name)
 
-    sv_density = file_session.field_data.get_scalar_field_data(
+    sv_density = file_session.fields.field_data.get_scalar_field_data(
         "phase-2:SV_DENSITY", [33]
     )
     assert sv_density[33].size == 268
     assert sv_density[33][130].scalar_data == 1.225
     assert (
         round(
-            file_session.field_data.get_scalar_field_data(
+            file_session.fields.field_data.get_scalar_field_data(
                 "phase-2:SV_WALL_YPLUS", [33]
             )[33][130].scalar_data,
             5,
         )
         == 0.00103
     )
-    vector_data = file_session.field_data.get_vector_field_data
+    vector_data = file_session.fields.field_data.get_vector_field_data
     assert vector_data("phase-2:velocity", surface_ids=[33])[33].size == 268
     assert vector_data("phase-1:velocity", surface_ids=[34])[34].size == 2168
 
@@ -78,13 +78,13 @@ def test_field_info_data_single_phase():
         "velocity-inlet-5",
         "default-interior",
     ]
-    sv_t_wall = file_session.field_data.get_scalar_field_data(
+    sv_t_wall = file_session.fields.field_data.get_scalar_field_data(
         "SV_T", surface_name="wall"
     )
     assert sv_t_wall.size == 3630
     assert round(sv_t_wall[1800].scalar_data, 4) == 313.15
 
-    surface_data = file_session.field_data.get_surface_data
+    surface_data = file_session.fields.field_data.get_surface_data
     surface_data_wall = surface_data(
         data_type=SurfaceDataType.Vertices, surface_name="wall"
     )
@@ -100,7 +100,7 @@ def test_field_info_data_single_phase():
     assert surface_data_symmetry[1000].node_count == 4
     assert list(surface_data_symmetry[1000].node_indices) == [1259, 1260, 1227, 1226]
 
-    vector_data = file_session.field_data.get_vector_field_data
+    vector_data = file_session.fields.field_data.get_vector_field_data
     assert vector_data("velocity", surface_name="wall").size == 3630
 
     vector_data_symmetry = vector_data("velocity", surface_name="symmetry")
@@ -204,7 +204,7 @@ def test_transaction_request_single_phase():
     file_session.read_case(case_file_name)
     file_session.read_data(data_file_name)
 
-    field_data = file_session.field_data
+    field_data = file_session.fields.field_data
 
     transaction_1 = field_data.new_transaction()
 
@@ -264,7 +264,7 @@ def test_transaction_request_multi_phase():
     file_session.read_case(case_file_name)
     file_session.read_data(data_file_name)
 
-    field_data = file_session.field_data
+    field_data = file_session.fields.field_data
 
     transaction_1 = field_data.new_transaction()
 
@@ -304,7 +304,7 @@ def test_error_handling_single_phase():
     file_session.read_case(case_file_name)
     file_session.read_data(data_file_name)
 
-    field_data = file_session.field_data
+    field_data = file_session.fields.field_data
 
     transaction_1 = field_data.new_transaction()
 
@@ -330,7 +330,7 @@ def test_error_handling_multi_phase():
     file_session.read_case(case_file_name)
     file_session.read_data(data_file_name)
 
-    field_data = file_session.field_data
+    field_data = file_session.fields.field_data
 
     transaction_1 = field_data.new_transaction()
     with pytest.raises(InvalidMultiPhaseFieldName) as msg:
