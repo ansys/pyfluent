@@ -20,7 +20,6 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -259,11 +258,9 @@ class _AllowedFieldNames(_AllowedNames):
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):
                 raise self._field_name_error(
-                    allowed_name_error_message(
-                        context="field",
-                        trial_name=field_name,
-                        allowed_values=list(names(respect_data_valid=False).keys()),
-                    )
+                    context="field",
+                    name=field_name,
+                    allowed_values=list(names(respect_data_valid=False).keys()),
                 )
             if not names.is_valid(field_name, respect_data_valid=True):
                 raise self._field_unavailable_error(
