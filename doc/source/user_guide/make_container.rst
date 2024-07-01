@@ -74,7 +74,6 @@ The Docker container configuration needed to build the container is detailed in 
 Run Docker container using the command line
 -------------------------------------------
 
-Execute the following command to run the Docker container in solver mode. 
 Please note, that you will have to specify the Ansys license file.
 
 Execute the following command to run the Docker container in solver mode.
