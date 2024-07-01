@@ -309,9 +309,9 @@ def connect_to_fluent(
         value. The explicit value of ``port`` takes precedence over
         ``PYFLUENT_FLUENT_PORT=<port>``.
     cleanup_on_exit : bool, optional
-        Whether to shut down the connected Fluent session when PyFluent is
-        exited, or the ``exit()`` method is called on the session instance,
-        or if the session instance becomes unreferenced. The default is ``False``.
+        Whether to shut down the connected Fluent session automatically when the
+        PyFluent session exits or if the session instance becomes unreferenced.
+        The default is ``False``.
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
