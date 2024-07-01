@@ -64,3 +64,6 @@ class SolverIcing(Solver):
     def icing(self):
         """Instance of icing (Case.App) -> root datamodel object."""
         return self._flserver.Case.App
+
+    def __dir__(self):
+        super().__dir__(self)
