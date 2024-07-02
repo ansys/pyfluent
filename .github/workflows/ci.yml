@@ -435,7 +435,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine
+          pip install twine>=5.1.1
           twine check dist/*
 
       - name: Upload package
@@ -555,7 +555,7 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install twine
+          pip install twine>=5.1.1
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
@@ -565,7 +565,7 @@ jobs:
 
       - name: Upload to Public PyPi
         run: |
-          pip install twine
+          pip install twine>=5.1.1
           twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
