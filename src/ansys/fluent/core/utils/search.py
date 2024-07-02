@@ -144,7 +144,7 @@ def _get_version_path_prefix_from_obj(obj: Any):
         except IndexError:
             version = None
         prefix = '<search_root>["<name>"]'
-        path = ["<solver_session>.settings"]
+        path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
     return version, path, prefix
 
