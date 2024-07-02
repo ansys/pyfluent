@@ -435,7 +435,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine
+          pip install twine==5.0.0
           twine check dist/*
 
       - name: Upload package
