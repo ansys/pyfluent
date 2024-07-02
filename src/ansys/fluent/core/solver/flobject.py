@@ -1749,7 +1749,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
 
 class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
-    """Provides creatable named objects for Fluent 25.1 and later."""
+    """Provides creatable named objects for Fluent 2025 R1 and later."""
 
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
