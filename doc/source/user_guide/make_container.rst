@@ -80,13 +80,13 @@ Execute the following command to run the Docker container in solver mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc 3ddp -gu
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc:v251 3ddp -gu
 
 Execute the following command to run the Docker container in meshing mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc 3ddp -gu -meshing
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc:v251 3ddp -gu -meshing
 
 
 Run Docker container using PyFluent
