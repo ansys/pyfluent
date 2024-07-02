@@ -13,6 +13,18 @@ from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
 CONFIG_DIR = "fluent_configs"
 
 
+def _prompt_user_for_option(options):
+    print("Select an option:")
+    for idx, option_name in enumerate(options):
+        print(f"{idx + 1}: {option_name}")
+    option = ""
+    while not (option.isdigit() and 1 <= int(option) <= len(options)):
+        option = input("Select an option by number: ")
+    option_name = options[int(option) - 1]
+    print(f"Selecting option: {option_name}...")
+    return option
+
+
 def _prompt_user_for_options_in_launch_mode(launch_mode):
     launcher_type = mode_to_launcher_type(launch_mode)
     init_method = launcher_type.__init__
@@ -34,7 +46,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
 
     def print_launcher_arg_list():
         print(
-            f"The following arguments apply to {launcher_type.__name__} ({inspect.getdoc(launcher_type)})...\n"
+            f"The following arguments apply to {launcher_type.__name__} ({inspect.getdoc(launcher_type)})..."
         )
         for name, defn in launcher_type_args.items():
             print_arg(name, defn)
@@ -42,26 +54,15 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
     print_launcher_arg_list()
     arg_vals = {}
     while True:
-
         options = (
             "Show the full argument list",
-            "Launch without making further changes",
             "Select an argument to see full details and edit",
+            "Launch without making further changes",
         )
-        print("Select an option:")
-        for idx, option_name in enumerate(options):
-            print(f"{idx + 1}: {option_name}")
-        option = ""
-        while not (option.isdigit() and 1 <= int(option) <= len(options)):
-            option = input("Select an option by number: ")
-        option_name = options[int(option) - 1]
-        print(f"Selecting option: {option_name}...\n")
-
+        option = _prompt_user_for_option(options)
         if int(option) == 1:
             print_launcher_arg_list()
-        if int(option) == 2:
-            break
-        if int(option) == 3:
+        elif int(option) == 2:
             arg_name = None
             while arg_name == "self" or arg_name not in launcher_type_args:
                 arg_name = input("Enter a valid argument name: ")
@@ -79,7 +80,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
                         print(f"Detailed documentation for {line.strip()}:")
             value = (
                 input(
-                    f"\nEnter a value for {arg_name} or press Enter to keep the default: "
+                    f"\Enter a value for {arg_name} or press Enter to keep the default: "
                 )
                 or None
             )
@@ -87,6 +88,10 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
                 import ansys  # noqa: F401
 
                 arg_vals[arg_name] = eval(value)
+            elif arg_name in arg_vals:
+                del arg_vals[arg_name]
+        elif int(option) == 3:
+            break
 
     return arg_vals
 
@@ -98,14 +103,7 @@ def _prompt_user_for_launch_options():
         "Container: a Docker image containing Fluent will start",
         "Slurm: you will configure Fluent to be queued on Slurm. You will have access to the session object before Fluent runs",
     )
-    print("Select an option:")
-    for idx, option_name in enumerate(options):
-        print(f"{idx + 1}: {option_name}")
-    option = ""
-    while not (option.isdigit() and 1 <= int(option) <= len(options)):
-        option = input("Select an option by number: ")
-    option_name = options[int(option) - 1]
-    print(f"Selecting option: {option_name}...\n")
+    option = _prompt_user_for_option(options)
     return _prompt_user_for_options_in_launch_mode(LaunchMode(int(option)))
 
 
@@ -165,13 +163,13 @@ def _launch():
             config = _load_configuration(config_name)
         else:
             config = _prompt_user_for_launch_options()
-            save_config = input("\nSave this configuration? (y/n): ")
+            save_config = input("Save this configuration? (y/n): ")
             if save_config.lower() == "y":
                 config_name = input("Enter a name for the new configuration: ")
                 _save_configuration(config_name, config)
     else:
         config = _prompt_user_for_launch_options()
-        save_config = input("\nSave this configuration? (y/n): ")
+        save_config = input("Save this configuration? (y/n): ")
         if save_config.lower() == "y":
             config_name = input("Enter a name for the new configuration: ")
             _save_configuration(config_name, config)
@@ -184,14 +182,7 @@ def _prompt_user_for_connect_options():
         "Specify a server info file path",
         "Specify server info data individually (or use defaults)",
     )
-    print("Select an option:")
-    for idx, option_name in enumerate(options):
-        print(f"{idx + 1}: {option_name}")
-    option = ""
-    while not (option.isdigit() and 1 <= int(option) <= len(options)):
-        option = input("Select an option by number: ")
-    option_name = options[int(option) - 1]
-    print(f"Selecting option: {option_name}... ")
+    option = _prompt_user_for_option(options)
     if int(option) == 1:
         args["server_info_file_name"] = input("Enter the server info file path: ")
     else:
@@ -235,14 +226,7 @@ def _connect():
 def _start():
     # use enum here
     options = "Launch Fluent", "Connect to Fluent", "Just use PyFluent"
-    print("Select an option:")
-    for idx, option_name in enumerate(options):
-        print(f"{idx + 1}: {option_name}")
-    option = ""
-    while not (option.isdigit() and 1 <= int(option) <= len(options)):
-        option = input("Select an option by number: ")
-    option_name = options[int(option) - 1]
-    print(f"Selecting option: {option_name}... ")
+    option = _prompt_user_for_option(options)
     if int(option) == 1:
         return _launch()
     if int(option) == 2:
