@@ -16,6 +16,7 @@ caf
 CaseFile
 CommandArguments
 DataFile
+Dockerfile
 endblock
 endfor
 endif

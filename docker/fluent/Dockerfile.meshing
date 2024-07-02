@@ -1,9 +1,0 @@
-ARG baseImage=centos:7
-FROM ${baseImage} as cadbuilder
-COPY cad.tgz /ansys_inc/
-RUN tar -xzf /ansys_inc/cad.tgz --directory /ansys_inc/ && rm -f /ansys_inc/cad.tgz
-
-FROM ghcr.io/ansys/pyfluent-solver:latest AS fluent
-WORKDIR /ansys_inc/
-COPY --from=cadbuilder /ansys_inc /ansys_inc/
-ENTRYPOINT ["/ansys_inc/v222/fluent/bin/fluent"]
