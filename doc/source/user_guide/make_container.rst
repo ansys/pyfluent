@@ -65,7 +65,7 @@ located to build ``ansys_inc`` Docker image in the current directory.
 
 .. code:: console
 
-    sudo docker build -t ansys_inc .
+    sudo docker build -t ansys_inc:v251 .
 
 The Docker container configuration needed to build the container is detailed in the
 `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
