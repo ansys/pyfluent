@@ -150,16 +150,16 @@ def _launch():
             config_name = configs[int(choice) - 1]
             config = _load_configuration(config_name)
         else:
-            config_name = input("Enter a name for the new configuration: ")
             config = _prompt_user_for_launch_options()
             save_config = input("\nSave this configuration? (y/n): ")
             if save_config.lower() == "y":
+                config_name = input("Enter a name for the new configuration: ")
                 _save_configuration(config_name, config)
     else:
-        config_name = input("Enter a name for the new configuration: ")
         config = _prompt_user_for_launch_options()
         save_config = input("\nSave this configuration? (y/n): ")
         if save_config.lower() == "y":
+            config_name = input("Enter a name for the new configuration: ")
             _save_configuration(config_name, config)
     return _launch_for_config(config)
 
