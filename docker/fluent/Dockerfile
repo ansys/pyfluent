@@ -34,17 +34,17 @@ RUN apt-get -y update && apt-get -y install \
         libglvnd-dev  && apt-get clean all
 
 # Specify working directory
-ENV WORKING_DIRECTORY=/workdir
+ENV WORKING_DIRECTORY=/home/$USERNAME/$WORKING_DIRECTORY
 
 # Specify home directory
 ENV HOME=/home/$USERNAME
 
 # Add a working directory and make it accessible to any user
-RUN mkdir -p /home/$USERNAME/$WORKING_DIRECTORY \
+RUN mkdir -p $WORKING_DIRECTORY \
     && \
-    chown -R $USERNAME:$USERNAME /home/$USERNAME/$WORKING_DIRECTORY \
+    chown -R $USERNAME:$USERNAME $WORKING_DIRECTORY \
     && \
-    chmod a+rwx /home/$USERNAME/$WORKING_DIRECTORY
+    chmod a+rwx $WORKING_DIRECTORY
 
 # Set the user
 USER $USERNAME
