@@ -95,22 +95,25 @@ def _prompt_user_for_launch_options():
     return _prompt_user_for_options_in_launch_mode(LaunchMode(int(option)))
 
 
-def _save_configuration(config_name, config_in):
-    config = {}
+def _save_configuration(config_name, config):
+    config_copy = {}
     for k, v in config.items():
         if isinstance(v, Enum):
+            config_copy[k] = str(v)
+            """
             value_of_enum = v.value
             if isinstance(value_of_enum, tuple):
-                config[k] = value_of_enum[0]
+                config_copy[k] = value_of_enum[0]
             else:
-                config[k] = value_of_enum
+                config_copy[k] = value_of_enum
+            """
         else:
-            config[k] = v
+            config_copy[k] = v
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
     config_path = os.path.join(CONFIG_DIR, f"{config_name}.json")
     with open(config_path, "w") as f:
-        json.dump(config, f)
+        json.dump(config_copy, f)
 
 
 def _load_configuration(config_name):
@@ -158,7 +161,7 @@ def _launch():
         save_config = input("\nSave this configuration? (y/n): ")
         if save_config.lower() == "y":
             _save_configuration(config_name, config)
-    _launch_for_config(config)
+    return _launch_for_config(config)
 
 
 def _prompt_user_for_connect_options():
