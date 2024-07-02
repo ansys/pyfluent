@@ -42,16 +42,29 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
     print_launcher_arg_list()
     arg_vals = {}
     while True:
-        arg_name = input(
-            "\nEnter 'list' for the argument list,"
-            " press Enter to launch without making further changes,"
-            " or enter an argument name to change its value: "
+
+        options = (
+            "Show the full argument list",
+            "Launch without making further changes",
+            "Select an argument to see full details and edit",
         )
-        if not arg_name:
-            break
-        if arg_name.lower() in ("list", "'list'"):
+        print("Select an option:")
+        for idx, option_name in enumerate(options):
+            print(f"{idx + 1}: {option_name}")
+        option = ""
+        while not (option.isdigit() and 1 <= int(option) <= len(options)):
+            option = input("Select an option by number: ")
+        option_name = options[int(option) - 1]
+        print(f"Selecting option: {option_name}...\n")
+
+        if int(option) == 1:
             print_launcher_arg_list()
-        elif arg_name != "self" and arg_name in launcher_type_args:
+        if int(option) == 2:
+            break
+        if int(option) == 3:
+            arg_name = None
+            while arg_name == "self" or arg_name not in launcher_type_args:
+                arg_name = input("Enter a valid argument name: ")
             print_arg(arg_name, launcher_type_args[arg_name])
             found_name = False
             for line in init_doc_list:
@@ -74,6 +87,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
                 import ansys  # noqa: F401
 
                 arg_vals[arg_name] = eval(value)
+
     return arg_vals
 
 
