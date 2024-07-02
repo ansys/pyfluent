@@ -34,6 +34,8 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
     returns_pos = init_doc_list.index("Returns")
     init_doc_list = init_doc_list[params_pos + 1 : returns_pos]
 
+    arg_vals = {}
+
     def print_arg(name, defn):
         def get_annotation(arg_defn):
             annotation = arg_defn.annotation
@@ -42,7 +44,9 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
             return f"Union{[x.__name__ for x in annotation.__args__]}"
 
         if name != "self":
-            print(f"{name} : {get_annotation(defn)}, default : {defn.default}")
+            print(
+                f"{name} : {get_annotation(defn)}, default : {defn.default}, value : {arg_vals.get(name)}"
+            )
 
     def print_launcher_arg_list():
         print(
@@ -52,7 +56,6 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
             print_arg(name, defn)
 
     print_launcher_arg_list()
-    arg_vals = {}
     while True:
         options = (
             "Show the full argument list",
@@ -80,7 +83,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
                         print(f"Detailed documentation for {line.strip()}:")
             value = (
                 input(
-                    f"\Enter a value for {arg_name} or press Enter to keep the default: "
+                    f"Enter a value for {arg_name} or press Enter to keep the default: "
                 )
                 or None
             )
