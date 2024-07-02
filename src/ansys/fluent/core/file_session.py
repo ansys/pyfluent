@@ -1,10 +1,12 @@
 """Provides a module for file session."""
 
 from typing import List, Optional
+import warnings
 
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
+from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.exceptions import SurfaceSpecificationError
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
@@ -719,10 +721,18 @@ class FileSession:
         """__init__ method of FileSession class."""
         self._case_file = None
         self._data_file = None
-        self.field_info = FileFieldInfo(self)
-        self.field_data = FileFieldData(self, self.field_info)
         self.monitors_manager = lambda: None
         self.session_id = 1
+
+        class Fields:
+            """Container for field and solution variables."""
+
+            def __init__(self, _session):
+                """Initialize Fields."""
+                self.field_info = FileFieldInfo(_session)
+                self.field_data = FileFieldData(_session, self.field_info)
+
+        self.fields = Fields(self)
 
     def read_case(self, case_file_name):
         """Read Case file."""
@@ -731,3 +741,21 @@ class FileSession:
     def read_data(self, data_file_name):
         """Read Data file."""
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
+
+    @property
+    def field_info(self):
+        """Provides access to Fluent field information."""
+        warnings.warn(
+            "field_info is deprecated. Use fields.field_info instead.",
+            PyFluentDeprecationWarning,
+        )
+        return self.fields.field_info
+
+    @property
+    def field_data(self):
+        """Fluent field data on surfaces."""
+        warnings.warn(
+            "field_data is deprecated. Use fields.field_data instead.",
+            PyFluentDeprecationWarning,
+        )
+        return self.fields.field_data
