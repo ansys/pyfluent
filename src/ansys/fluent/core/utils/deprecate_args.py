@@ -10,7 +10,11 @@ logger = logging.getLogger("pyfluent.general")
 
 
 def deprecate_argument(
-    old_arg, new_arg, converter, deprecation_class=PyFluentDeprecationWarning
+    old_arg,
+    new_arg,
+    converter,
+    deprecation_class=PyFluentDeprecationWarning,
+    is_last_instance_of_old_arg=True,
 ):
     """Warns that the argument provided is deprecated and automatically replaces the
     deprecated argument with the appropriate new argument."""
@@ -53,7 +57,8 @@ def deprecate_argument(
                         f"Ignoring '{old_arg} = {_str_repr(old_value)}' specification for '{func.__name__}()',"
                         f" only '{new_arg} = {_str_repr(new_value)}' applies."
                     )
-                kwargs.pop(old_arg)
+                if is_last_instance_of_old_arg:
+                    kwargs.pop(old_arg)
             return func(*args, **kwargs)
 
         return wrapper

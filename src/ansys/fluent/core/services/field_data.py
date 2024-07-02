@@ -715,7 +715,6 @@ def _get_surface_ids(
     allowed_surface_names,
     surface_ids: Optional[List[int]] = None,
     surface_names: Optional[List[str]] = None,
-    surface_name: Optional[str] = None,
 ) -> List[int]:
     """Get surface IDs based on surface names or IDs.
 
@@ -725,8 +724,6 @@ def _get_surface_ids(
         List of surface IDs.
     surface_names: List[str], optional
         List of surface names.
-    surface_name: str, optional
-        List of surface name.
 
     Returns
     -------
@@ -737,19 +734,17 @@ def _get_surface_ids(
     SurfaceSpecificationError
         If both ``surface_ids`` and ``surface_names`` are provided.
     """
-    if surface_ids and (surface_name or surface_names):
+    if surface_ids and surface_names:
         raise SurfaceSpecificationError()
     if not surface_ids:
         surface_ids = []
         if surface_names:
             for surface_name in surface_names:
                 surface_ids.extend(
-                    field_info.get_surfaces_info()[surface_name]["surface_id"]
+                    field_info.get_surfaces_info()[
+                        allowed_surface_names.valid_name(surface_name)
+                    ]["surface_id"]
                 )
-        elif surface_name:
-            surface_ids = field_info.get_surfaces_info()[
-                allowed_surface_names.valid_name(surface_name)
-            ]["surface_id"]
         else:
             raise SurfaceSpecificationError()
     return surface_ids
@@ -1227,7 +1222,7 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
 
-        if len(surface_names) == 1:
+        if surface_names and len(surface_names) == 1:
             return ScalarFieldData(
                 surface_ids[0], scalar_field_data[surface_ids[0]][field_name]
             )
@@ -1252,6 +1247,7 @@ class FieldData:
             True if old_arg_val == SurfaceDataType.Vertices else False
         ),
         deprecation_class=PyFluentDeprecationWarning,
+        is_last_instance_of_old_arg=False,
     )
     @deprecate_argument(
         old_arg="data_type",
@@ -1260,6 +1256,7 @@ class FieldData:
             True if old_arg_val == SurfaceDataType.FacesConnectivity else False
         ),
         deprecation_class=PyFluentDeprecationWarning,
+        is_last_instance_of_old_arg=False,
     )
     @deprecate_argument(
         old_arg="data_type",
@@ -1268,6 +1265,7 @@ class FieldData:
             True if old_arg_val == SurfaceDataType.FacesCentroid else False
         ),
         deprecation_class=PyFluentDeprecationWarning,
+        is_last_instance_of_old_arg=False,
     )
     @deprecate_argument(
         old_arg="data_type",
@@ -1346,41 +1344,55 @@ class FieldData:
                 surface_data[surf_id][SurfaceDataType(_data_type).value],
             )
 
-        if data_type == SurfaceDataType.Vertices:
-            if len(surface_names) == 1:
-                return _get_surfaces_data(Vertices, surface_ids[0], data_type)
-            else:
-                return {
-                    surface_id: _get_surfaces_data(Vertices, surface_id, data_type)
-                    for surface_id in surface_ids
-                }
-
-        if data_type == SurfaceDataType.FacesCentroid:
-            if len(surface_names) == 1:
-                return _get_surfaces_data(FacesCentroid, surface_ids[0], data_type)
-            else:
-                return {
-                    surface_id: _get_surfaces_data(FacesCentroid, surface_id, data_type)
-                    for surface_id in surface_ids
-                }
-
-        if data_type == SurfaceDataType.FacesConnectivity:
-            if len(surface_names) == 1:
-                return _get_surfaces_data(FacesConnectivity, surface_ids[0], data_type)
+        if provide_vertices:
+            if surface_names and len(surface_names) == 1:
+                return _get_surfaces_data(
+                    Vertices, surface_ids[0], SurfaceDataType.Vertices
+                )
             else:
                 return {
                     surface_id: _get_surfaces_data(
-                        FacesConnectivity, surface_id, data_type
+                        Vertices, surface_id, SurfaceDataType.Vertices
                     )
                     for surface_id in surface_ids
                 }
 
-        if data_type == SurfaceDataType.FacesNormal:
-            if len(surface_names) == 1:
-                return _get_surfaces_data(FacesNormal, surface_ids[0], data_type)
+        if provide_faces_centroid:
+            if surface_names and len(surface_names) == 1:
+                return _get_surfaces_data(
+                    FacesCentroid, surface_ids[0], SurfaceDataType.FacesCentroid
+                )
             else:
                 return {
-                    surface_id: _get_surfaces_data(FacesNormal, surface_id, data_type)
+                    surface_id: _get_surfaces_data(
+                        FacesCentroid, surface_id, SurfaceDataType.FacesCentroid
+                    )
+                    for surface_id in surface_ids
+                }
+
+        if provide_faces:
+            if surface_names and len(surface_names) == 1:
+                return _get_surfaces_data(
+                    FacesConnectivity, surface_ids[0], SurfaceDataType.FacesConnectivity
+                )
+            else:
+                return {
+                    surface_id: _get_surfaces_data(
+                        FacesConnectivity, surface_id, SurfaceDataType.FacesConnectivity
+                    )
+                    for surface_id in surface_ids
+                }
+
+        if provide_faces_normal:
+            if surface_names and len(surface_names) == 1:
+                return _get_surfaces_data(
+                    FacesNormal, surface_ids[0], SurfaceDataType.FacesNormal
+                )
+            else:
+                return {
+                    surface_id: _get_surfaces_data(
+                        FacesNormal, surface_id, SurfaceDataType.FacesNormal
+                    )
                     for surface_id in surface_ids
                 }
 
@@ -1414,7 +1426,7 @@ class FieldData:
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
         """
-        if len(surface_names) == 1:
+        if surface_names and len(surface_names) == 1:
             self.scheme_eval.string_eval(
                 f"(surface? (thread-name->id '{surface_names[0]}))"
             )
@@ -1442,7 +1454,7 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
 
-        if len(surface_names) == 1:
+        if surface_names and len(surface_names) == 1:
             return VectorFieldData(
                 surface_ids[0],
                 vector_field_data[surface_ids[0]][field_name],
@@ -1565,7 +1577,7 @@ class FieldData:
                 pathlines_data[surf_id][_data_type],
             )
 
-        if len(surface_names) == 1:
+        if surface_names and len(surface_names) == 1:
             vertices_data = _get_surfaces_data(Vertices, surface_ids[0], "vertices")
             lines_data = _get_surfaces_data(FacesConnectivity, surface_ids[0], "lines")
             field_data = ScalarFieldData(
