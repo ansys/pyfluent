@@ -1577,6 +1577,8 @@ class BaseCommand(Action):
             kwds[arg] = argument.after_execute(
                 command_name=self.python_name, value=value, kwargs=kwds
             )
+        if self.obj_name == "create" and isinstance(self._parent, NamedObject):
+            return self._parent[ret]
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
@@ -1819,7 +1821,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             pname = to_python_name(name)
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
-        if obj_type == "command" and name in ["rename", "delete", "resize"]:
+        if obj_type == "command" and name in ["rename", "delete", "resize", "create"]:
             base = CommandWithPositionalArgs
         if base is None:
             settings_logger.warning(
