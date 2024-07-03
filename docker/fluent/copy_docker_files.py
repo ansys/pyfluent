@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import shutil
+import sys
 from typing import Union
 
 current_path = Path(__file__.rstrip(os.path.basename(__file__)))
@@ -60,4 +61,4 @@ def copy_files(src: Union[Path, str]):
 
 
 if __name__ == "__main__":
-    copy_files(src="<path to ``ansys_inc`` directory>")
+    copy_files(src=sys.argv[1])

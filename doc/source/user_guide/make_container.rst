@@ -30,26 +30,28 @@ Requirements
 Procedure
 =========
 
+If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change current working directory to
+`Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing the following commands
+otherwise copy these files in an empty folder and execute the following commands from that folder.
+
 Specify the Ansys installation directory
 ----------------------------------------
 
-Specify the pre-installed Ansys directory in the following function of 
-`copy_docker_files.py <https://github.com/ansys/pyfluent/blob/main/docker/fluent/copy_docker_files.py>`_. 
+Specify the pre-installed Ansys directory as a command line argument.
 
 .. code:: python
 
-    copy_files(src="<path to ``ansys_inc`` directory>")
+    python copy_docker_files.py <path to 'ansys_inc' directory>
 
 Copy needed files
 -----------------
 
-Change local directory where `copy_docker_files.py <https://github.com/ansys/pyfluent/blob/main/docker/fluent/copy_docker_files.py>`_ 
-is located and run this script to copy needed files from the Ansys installation directory 
+Run the following script to copy needed files from the Ansys installation directory
 to the container.
 
 .. code:: python
 
-    python copy_docker_files.py
+    python copy_docker_files.py <path to 'ansys_inc' directory>
 
 Not all the installation files are copied, the files ignored during the copying are 
 detailed in the following files.
@@ -60,8 +62,7 @@ detailed in the following files.
 Build Docker image
 ------------------
 
-Execute the following command where `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_ is 
-located to build ``ansys_inc`` Docker image in the current directory.
+Execute the following command to build the Docker image.
 
 .. code:: console
 
@@ -80,13 +81,13 @@ Execute the following command to run the Docker container in solver mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc:v251 3ddp -gu
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc:v251 3ddp -gu
 
 Execute the following command to run the Docker container in meshing mode.
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license>.ansys.com ansys_inc:v251 3ddp -gu -meshing
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc:v251 3ddp -gu -meshing
 
 
 Run Docker container using PyFluent
@@ -99,7 +100,7 @@ to run the Docker container using PyFluent.
 
     import os
     import ansys.fluent.core as pyfluent
-    os.environ["ANSYSLMD_LICENSE_FILE"] = "<license>.ansys.com"
+    os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
     custom_config = {'fluent_image': 'ansys_inc:v251', 'host_mount_path': f"{os.getcwd()}", 'auto_remove': False}
     solver = pyfluent.launch_fluent(container_dict=custom_config)
 
