@@ -1182,9 +1182,15 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
-        self._command_source._compound_parent_task_python_name_id[0] = (
+        if (
             self.python_name()
-        )
+            != self._command_source._compound_parent_task_python_name_id[0]
+        ):
+            self._command_source._compound_parent_task_python_name_id[0] = (
+                self.python_name()
+            )
+            self._command_source._compound_parent_task_python_name_id[1] = 0
+
         self._command_source._compound_parent_task_python_name_id[1] = (
             self._command_source._compound_parent_task_python_name_id[1] + 1
         )
