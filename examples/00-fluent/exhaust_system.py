@@ -84,8 +84,8 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry file (``exhaust_system.fmd``) and selectively manage some
 # parts.
-# Execute meshing.upload(import_file_name) if Fluent is running in Ansys Lab.
 
+meshing.upload(import_file_name)
 meshing.PartManagement.InputFileChanged(
     FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
 )

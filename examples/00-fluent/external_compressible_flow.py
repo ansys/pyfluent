@@ -91,8 +91,7 @@ geo_import.Arguments.set_state(
     }
 )
 
-# Execute meshing.upload(wing_intermediary_file) if Fluent is running in Ansys Lab.
-
+meshing.upload(wing_intermediary_file)
 geo_import.Execute()
 
 ###############################################################################
