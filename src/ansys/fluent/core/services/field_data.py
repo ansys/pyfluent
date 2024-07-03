@@ -232,16 +232,6 @@ class SurfaceDataType(Enum):
     FacesNormal = "face-normal"
     FacesCentroid = "centroid"
 
-    @classmethod
-    def _missing_(cls, value: str):
-        for member in cls:
-            if str(member) == value:
-                return member
-        raise ValueError(
-            f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: '{"', '".join(str(member) for member in cls)}'."""
-        )
-
 
 class _AllowedNames:
     def __init__(
