@@ -1821,7 +1821,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             pname = to_python_name(name)
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
-        if obj_type == "command" and name in ["rename", "delete", "resize", "create"]:
+        if obj_type == "command" and name in ["create", "rename", "delete", "resize"]:
             base = CommandWithPositionalArgs
         if base is None:
             settings_logger.warning(
