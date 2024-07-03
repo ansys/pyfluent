@@ -48,9 +48,6 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-# Do not set pyfluent.CONTAINER_MOUNT_PATH. It has set to run this example in GitHub container only.
-
-pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
 )
