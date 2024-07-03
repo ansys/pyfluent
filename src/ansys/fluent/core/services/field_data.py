@@ -261,11 +261,9 @@ class _AllowedFieldNames(_AllowedNames):
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):
                 raise self._field_name_error(
-                    allowed_name_error_message(
-                        context="field",
-                        trial_name=field_name,
-                        allowed_values=names(respect_data_valid=False),
-                    )
+                    context="field",
+                    name=field_name,
+                    allowed_values=list(names(respect_data_valid=False).keys()),
                 )
             if not names.is_valid(field_name, respect_data_valid=True):
                 raise self._field_unavailable_error(
