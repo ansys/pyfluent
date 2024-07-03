@@ -8,7 +8,15 @@ from typing import _UnionGenericAlias
 
 from ansys.fluent.core import connect_to_fluent, launch_fluent
 from ansys.fluent.core.launcher.launcher import mode_to_launcher_type
-from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode
+from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
+    Dimension,
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    LaunchMode,
+    Precision,
+    UIMode,
+)
 
 CONFIG_DIR = "fluent_configs"
 
@@ -83,7 +91,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
                         print(f"Detailed documentation for {line.strip()}:")
             value = (
                 input(
-                    f"Enter a value for {arg_name} or press Enter to keep the default: "
+                    f"Enter a value for {arg_name} or press Enter to use the default: "
                 )
                 or None
             )
@@ -107,7 +115,11 @@ def _prompt_user_for_launch_options():
         "Slurm: you will configure Fluent to be queued on Slurm. You will have access to the session object before Fluent runs",
     )
     option = _prompt_user_for_option(options)
-    return _prompt_user_for_options_in_launch_mode(LaunchMode(int(option)))
+    launch_mode = LaunchMode(int(option))
+    args = _prompt_user_for_options_in_launch_mode(launch_mode)
+    if launch_mode == LaunchMode.CONTAINER:
+        args["start_container"] = True
+    return args
 
 
 def _save_configuration(config_name, config):
