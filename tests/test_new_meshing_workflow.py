@@ -723,7 +723,7 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_mesh_session):
     added_sizing_by_pos = add_local_sizing.last_child()
     assert added_sizing.arguments() == added_sizing_by_name.arguments()
     assert added_sizing.arguments() == added_sizing_by_pos.arguments()
-    assert not added_sizing.python_name()
+    assert added_sizing.python_name() == "child_1_of_add_local_sizing"
     describe_geometry = watertight.describe_geometry
     describe_geometry_children = describe_geometry.tasks()
     assert len(describe_geometry_children) == 2
