@@ -1766,7 +1766,7 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
 class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
     """Provides creatable named objects for Fluent 24.2 and earlier."""
 
-    # In Fluent 25.1, create method is available as commands in NamedObject class.
+    # In Fluent 2025 R1, the ``create()`` method is available as commands in the ``NamedObject`` class.
     def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
