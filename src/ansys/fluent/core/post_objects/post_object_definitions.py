@@ -154,6 +154,7 @@ class MeshDefn(GraphicsDefn):
         @Attribute
         def allowed_values(self):
             """Surface list allowed values."""
+            # Not sure why the change field_info() -> field_info()() is required for solution variable display
             return list(
                 (self._api_helper.field_info()().get_surfaces_info().keys())
             ) + list(self.get_root()._local_surfaces_provider())
