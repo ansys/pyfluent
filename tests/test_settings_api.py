@@ -108,10 +108,14 @@ def test_wildcard_fnmatch(new_solver_session):
     solver.solution.initialization.hybrid_initialize()
 
     mesh = solver.results.graphics.mesh
-    assert mesh.create(name="mesh-2").name() == "mesh-2"
     assert mesh.create("mesh-a").name() == "mesh-a"
     mesh.create("mesh-bc")
-    assert mesh.create().name() == "mesh-3"
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert mesh.create(name="mesh-2").name() == "mesh-2"
+        assert mesh.create().name() == "mesh-3"
+    else:
+        assert mesh.create("mesh-2").name() == "mesh-2"
+        assert mesh.create("mesh-3").name() == "mesh-3"
 
     assert sorted(mesh["mesh-*"]()) == sorted(
         ["mesh-1", "mesh-2", "mesh-3", "mesh-a", "mesh-bc"]
