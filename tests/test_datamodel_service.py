@@ -259,6 +259,7 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
