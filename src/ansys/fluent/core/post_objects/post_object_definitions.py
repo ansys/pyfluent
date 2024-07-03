@@ -155,7 +155,7 @@ class MeshDefn(GraphicsDefn):
         def allowed_values(self):
             """Surface list allowed values."""
             return list(
-                (self._api_helper.field_info().get_surfaces_info().keys())
+                (self._api_helper.field_info()().get_surfaces_info().keys())
             ) + list(self.get_root()._local_surfaces_provider())
 
     class show_edges(metaclass=PyLocalPropertyMeta):
