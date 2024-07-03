@@ -1233,36 +1233,28 @@ class FieldData:
     @deprecate_argument(
         old_arg="data_type",
         new_arg="provide_vertices",
-        converter=lambda old_arg_val: (
-            True if old_arg_val == SurfaceDataType.Vertices else False
-        ),
+        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.Vertices,
         deprecation_class=PyFluentDeprecationWarning,
         is_last_instance_of_old_arg=False,
     )
     @deprecate_argument(
         old_arg="data_type",
         new_arg="provide_faces",
-        converter=lambda old_arg_val: (
-            True if old_arg_val == SurfaceDataType.FacesConnectivity else False
-        ),
+        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.FacesConnectivity,
         deprecation_class=PyFluentDeprecationWarning,
         is_last_instance_of_old_arg=False,
     )
     @deprecate_argument(
         old_arg="data_type",
         new_arg="provide_faces_centroid",
-        converter=lambda old_arg_val: (
-            True if old_arg_val == SurfaceDataType.FacesCentroid else False
-        ),
+        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.FacesCentroid,
         deprecation_class=PyFluentDeprecationWarning,
         is_last_instance_of_old_arg=False,
     )
     @deprecate_argument(
         old_arg="data_type",
         new_arg="provide_faces_normal",
-        converter=lambda old_arg_val: (
-            True if old_arg_val == SurfaceDataType.FacesNormal else False
-        ),
+        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.FacesNormal,
         deprecation_class=PyFluentDeprecationWarning,
     )
     def get_surface_data(
