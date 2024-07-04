@@ -1,4 +1,4 @@
-.. _ref_make_container:
+.. _ref_make_container_image:
 
 Containerization of Fluent
 ==========================
@@ -58,7 +58,7 @@ Execute this command to build the Docker image:
 
 .. code:: console
 
-    sudo docker build -t ansys_inc:v241 .
+    sudo docker build -t ansys_inc .
 
 The Docker container configuration needed to build the container image is described in the
 `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
@@ -73,13 +73,13 @@ Execute this command to run the Docker container in solver mode:
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc:v241 3ddp -gu
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu
 
 Execute this command to run the Docker container in meshing mode:
 
 .. code:: console
 
-    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc:v241 3ddp -gu -meshing
+    sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu -meshing
 
 
 Run Docker container using PyFluent
@@ -93,6 +93,6 @@ to run the Docker container using PyFluent:
     import os
     import ansys.fluent.core as pyfluent
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
-    custom_config = {'fluent_image': 'ansys_inc:v241', 'host_mount_path': f"{os.getcwd()}", 'auto_remove': False}
+    custom_config = {'fluent_image': 'ansys_inc:latest', 'host_mount_path': f"{os.getcwd()}", 'auto_remove': False}
     solver = pyfluent.launch_fluent(container_dict=custom_config)
 
