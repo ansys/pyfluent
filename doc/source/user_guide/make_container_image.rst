@@ -26,7 +26,7 @@ Procedure
 ---------
 
 These text files indicate the files that are included or excluded during the copying for Ansys version 24R1.
-If you have a different version of Ansys then update these paths in the following text files accordingly. e.g. If you have
+If you have a different version of Ansys then update these paths in the following text files accordingly, for example if you have
 the pre-installed Ansys version 23R2 then replace v241 with v232 and 24.1.0 with 23.2.0 etc.
 
 * These files indicate the files that are included during the copying:
