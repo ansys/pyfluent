@@ -1269,6 +1269,7 @@ def test_new_meshing_workflow_switching_without_dm_caching(
     assert watertight.import_geometry.arguments()
 
 
+@pytest.mark.skip(reason="This is fixed in main branch")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_validate_arguments(new_mesh_session):

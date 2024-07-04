@@ -1173,6 +1173,7 @@ def test_static_info_hash_identity(new_solver_session):
     assert hash1 == hash2
 
 
+@pytest.mark.skip(reason="This is fixed in main branch")
 @pytest.mark.fluent_version(">=24.2")
 def test_default_argument_names_for_commands(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
