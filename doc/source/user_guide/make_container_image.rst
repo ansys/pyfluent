@@ -1,13 +1,12 @@
 .. _ref_make_container:
 
-Create Fluent Docker container image
-====================================
+Containerization of Fluent
+==========================
 
-.. warning:: You need a valid Ansys license and an Ansys account to
-   follow the steps in this section.
+.. warning:: You need a valid Ansys license to follow the steps in this section.
 
-The following procedure for creating a Fluent Docker container image uses a
-Linux machine to copy the needed files from the Fluent installation directory.
+This document provides instructions and guidelines on how to containerize
+Fluent for efficient and secure deployment and management.
 
 
 Prerequisites
@@ -15,7 +14,7 @@ Prerequisites
 
 * A Linux machine with `Docker <https://www.docker.com>`_ installed.
 
-* A valid Ansys license and account. Your Ansys reseller should have provided you with one.
+* A valid Ansys license. Your Ansys reseller should have provided you with one.
 
 * The following provided files:
   
@@ -36,7 +35,7 @@ Copy needed files
 +++++++++++++++++
 
 Specify the pre-installed Ansys directory as a command line argument and run this script to copy needed files from the
-Ansys installation directory to the container image:
+Ansys installation directory to the current working directory:
 
 .. code:: python
 
@@ -52,8 +51,8 @@ Not all the installation files are copied. These files indicate the files that a
 
 2. If you find that some of the excluded files are need to run your workflows then you can remove those files from the exclusion list and repeat the build process to create a new image.
 
-Build Docker image
-++++++++++++++++++
+Build the Docker image
+++++++++++++++++++++++
 
 Execute this command to build the Docker image:
 
@@ -68,7 +67,7 @@ The Docker container configuration needed to build the container image is descri
 Run Docker container using the command line
 -------------------------------------------
 
-When you execute the command for running the Docker container you must specify the Ansys license file.
+When you run the Docker container, you must specify the Ansys license file.
 
 Execute this command to run the Docker container in solver mode:
 
