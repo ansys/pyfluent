@@ -20,7 +20,6 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.deprecate_args import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
@@ -1230,40 +1229,16 @@ class FieldData:
     )
     @deprecate_argument(
         old_arg="data_type",
-        new_arg="provide_vertices",
-        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.Vertices,
-        deprecation_class=PyFluentDeprecationWarning,
-        is_last_instance_of_old_arg=False,
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="provide_faces",
-        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.FacesConnectivity,
-        deprecation_class=PyFluentDeprecationWarning,
-        is_last_instance_of_old_arg=False,
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="provide_faces_centroid",
-        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.FacesCentroid,
-        deprecation_class=PyFluentDeprecationWarning,
-        is_last_instance_of_old_arg=False,
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="provide_faces_normal",
-        converter=lambda old_arg_val: old_arg_val == SurfaceDataType.FacesNormal,
+        new_arg="data_types",
+        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
         deprecation_class=PyFluentDeprecationWarning,
     )
     def get_surface_data(
         self,
+        data_types: Union[SurfaceDataType],
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
         overset_mesh: Optional[bool] = False,
-        provide_vertices: Optional[bool] = False,
-        provide_faces: Optional[bool] = False,
-        provide_faces_centroid: Optional[bool] = False,
-        provide_faces_normal: Optional[bool] = False,
     ) -> Union[
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
@@ -1272,20 +1247,14 @@ class FieldData:
 
         Parameters
         ----------
+        data_types : Union[SurfaceDataType]
+            SurfaceDataType Enum members.
         surface_ids : List[int], optional
             List of surface IDs for the surface data.
         surface_names: List[str], optional
             List of surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
-        provide_vertices : bool, optional
-            Whether to get node coordinates. The default is ``True``.
-        provide_faces : bool, optional
-            Whether to get face connectivity. The default is ``True``.
-        provide_faces_centroid : bool, optional
-            Whether to get face centroids. The default is ``False``.
-        provide_faces_normal : bool, optional
-            Whether to get faces normal. The default is ``False``
 
         Returns
         -------
@@ -1307,10 +1276,10 @@ class FieldData:
                 FieldDataProtoModule.SurfaceRequest(
                     surfaceId=surface_id,
                     oversetMesh=overset_mesh,
-                    provideFaces=provide_faces,
-                    provideVertices=provide_vertices,
-                    provideFacesCentroid=provide_faces_centroid,
-                    provideFacesNormal=provide_faces_normal,
+                    provideFaces=SurfaceDataType.FacesConnectivity in data_types,
+                    provideVertices=SurfaceDataType.Vertices in data_types,
+                    provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
+                    provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
                 )
                 for surface_id in surface_ids
             ]
@@ -1324,7 +1293,7 @@ class FieldData:
                 surface_data[surf_id][SurfaceDataType(_data_type).value],
             )
 
-        if provide_vertices:
+        if SurfaceDataType.Vertices in data_types:
             if surface_names and len(surface_names) == 1:
                 return _get_surfaces_data(
                     Vertices, surface_ids[0], SurfaceDataType.Vertices
@@ -1337,7 +1306,7 @@ class FieldData:
                     for surface_id in surface_ids
                 }
 
-        if provide_faces_centroid:
+        if SurfaceDataType.FacesCentroid in data_types:
             if surface_names and len(surface_names) == 1:
                 return _get_surfaces_data(
                     FacesCentroid, surface_ids[0], SurfaceDataType.FacesCentroid
@@ -1350,7 +1319,7 @@ class FieldData:
                     for surface_id in surface_ids
                 }
 
-        if provide_faces:
+        if SurfaceDataType.FacesConnectivity in data_types:
             if surface_names and len(surface_names) == 1:
                 return _get_surfaces_data(
                     FacesConnectivity, surface_ids[0], SurfaceDataType.FacesConnectivity
@@ -1363,7 +1332,7 @@ class FieldData:
                     for surface_id in surface_ids
                 }
 
-        if provide_faces_normal:
+        if SurfaceDataType.FacesNormal in data_types:
             if surface_names and len(surface_names) == 1:
                 return _get_surfaces_data(
                     FacesNormal, surface_ids[0], SurfaceDataType.FacesNormal
