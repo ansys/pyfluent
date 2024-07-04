@@ -25,6 +25,26 @@ Prerequisites
 Procedure
 ---------
 
+These text files indicate the files that are included or excluded during the copying for Ansys version 24R1.
+If you have a different version of Ansys then update these paths in the following text files accordingly. e.g. If you have
+the pre-installed Ansys version 23R2 then replace v241 with v232 and 24.1.0 with 23.2.0 etc.
+
+* These files indicate the files that are included during the copying:
+
+  * `cadList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/cadList.txt>`_
+  * `ceiList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/ceiList.txt>`_
+  * `cfdpostList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/cfdpostList.txt>`_
+  * `fluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/fluentList.txt>`_
+
+* These files indicate the files that are excluded during the copying:
+
+  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
+  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
+
+1. We have excluded these files because we have determined that they are not needed to run typical Fluent workflows.
+
+2. If you find that some of the excluded files are need to run your workflows then you can remove those files from the exclusion list.
+
 * If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to
 `Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing these commands.
 
@@ -40,16 +60,6 @@ Ansys installation directory to the current working directory:
 .. code:: python
 
     python copy_docker_files.py <path to 'ansys_inc' directory>
-
-Not all the installation files are copied. These files indicate the files that are ignored during the copying:
-
-  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
-  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
-
-
-1. We have excluded these files because we have determined that they are not needed to run typical Fluent workflows.
-
-2. If you find that some of the excluded files are need to run your workflows then you can remove those files from the exclusion list and repeat the build process to create a new image.
 
 Build the Docker image
 ++++++++++++++++++++++
