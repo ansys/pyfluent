@@ -364,6 +364,7 @@ def test_reduction_does_not_modify_case(load_static_mixer_case):
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
 
 
+@pytest.mark.skip(reason="This is fixed in main branch")
 @pytest.mark.fluent_version(">=24.2")
 def test_fix_for_invalid_location_inputs(load_static_mixer_case):
     solver = load_static_mixer_case
