@@ -104,6 +104,7 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
+      EXAMPLES_HOST_MOUNT_PATH: 1
 
     steps:
       - uses: actions/checkout@v4
@@ -192,6 +193,7 @@ jobs:
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          PYFLUENT_HOST_MOUNT_PATH: ${{ env.EXAMPLES_HOST_MOUNT_PATH }}
 
       - name: Zip HTML Documentation before upload
         run: |
