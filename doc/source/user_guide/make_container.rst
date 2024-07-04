@@ -1,24 +1,22 @@
 .. _ref_make_container:
 
-Create your Fluent Docker container
-===================================
+Create Fluent Docker container image
+====================================
 
 .. warning:: You need a valid Ansys license and an Ansys account to
    follow the steps in this section.
 
-The following procure for creating a Fluent Docker container uses a local
-Ubuntu machine to copy the needed files from the Fluent
+The following procedure for creating a Fluent Docker container image uses a
+Linux machine to copy the needed files from the Fluent installation directory.
 
 
-Requirements
-============
+Prerequisites
+-------------
 
-* A Linux machine, preferably with Ubuntu 18.04 or later.
-  CentOS Linux distribution is not supported anymore.
-  This machine needs to have `Docker <https://www.docker.com>`_ installed.
+* A Linux machine and this machine needs to have `Docker <https://www.docker.com>`_ installed.
 
 * A valid Ansys account. Your Ansys reseller should have
-  provide you with one.
+  provided you with one.
 
 * The following provided files:
   
@@ -27,14 +25,14 @@ Requirements
 
 
 Procedure
-=========
+---------
 
-If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change current working directory to
+If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to
 `Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing these commands
-otherwise copy these files in an empty folder and execute these commands from that folder.
+otherwise copy these files into an empty folder and execute these commands from that folder.
 
 Specify the Ansys installation directory
-----------------------------------------
+++++++++++++++++++++++++++++++++++++++++
 
 Specify the pre-installed Ansys directory as a command line argument.
 
@@ -43,7 +41,7 @@ Specify the pre-installed Ansys directory as a command line argument.
     python copy_docker_files.py <path to 'ansys_inc' directory>
 
 Copy needed files
------------------
++++++++++++++++++
 
 Run this script to copy needed files from the Ansys installation directory
 to the container.
@@ -59,7 +57,7 @@ ignored during the copying:
   * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
 
 Build Docker image
-------------------
+++++++++++++++++++
 
 Execute this command to build the Docker image.
 
