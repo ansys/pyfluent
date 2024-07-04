@@ -248,11 +248,21 @@ class Reduction:
     def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
+        self.ctxt = ctxt
 
     docstring = None
 
-    @staticmethod
-    def _get_location_string(locations, ctxt) -> List[str]:
+    def _validate_str_location(self, loc: str):
+        if loc not in (
+            list(self.ctxt.fields.field_info.get_surfaces_info().keys())
+            + list(self.ctxt.settings.setup.cell_zone_conditions.keys())
+        ):
+            raise ValueError(f"Invalid location input: '{loc}'")
+
+    def _get_location_string(self, locations, ctxt) -> List[str]:
+        for loc in locations:
+            if isinstance(loc, str):
+                self._validate_str_location(loc)
         try:
             return _locns(locations, ctxt)[0][1]
         except BadReductionRequest:

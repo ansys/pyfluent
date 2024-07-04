@@ -406,10 +406,15 @@ def test_fix_for_invalid_location_inputs(load_static_mixer_case):
 
     assert solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
         assert solver.fields.reduction.area(locations=["inlet-1"], ctxt=solver)
+
+    with pytest.raises(KeyError):
+        assert solver.fields.reduction.area(
+            locations=[solver.setup.boundary_conditions.velocity_inlet["inlet-1"]]
+        )
 
     assert solver.fields.reduction.area(locations=["inlet1"])
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
         assert solver.fields.reduction.area(locations=["inlet-1"])
