@@ -30,8 +30,8 @@ Procedure
 =========
 
 If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change current working directory to
-`Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing the following commands
-otherwise copy these files in an empty folder and execute the following commands from that folder.
+`Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing these commands
+otherwise copy these files in an empty folder and execute these commands from that folder.
 
 Specify the Ansys installation directory
 ----------------------------------------
@@ -45,7 +45,7 @@ Specify the pre-installed Ansys directory as a command line argument.
 Copy needed files
 -----------------
 
-Run the following script to copy needed files from the Ansys installation directory
+Run this script to copy needed files from the Ansys installation directory
 to the container.
 
 .. code:: python
@@ -61,7 +61,7 @@ ignored during the copying:
 Build Docker image
 ------------------
 
-Execute the following command to build the Docker image.
+Execute this command to build the Docker image.
 
 .. code:: console
 
@@ -93,7 +93,7 @@ Execute this command to run the Docker container in meshing mode.
 Run Docker container using PyFluent
 -----------------------------------
 
-Install `PyFluent <https://github.com/ansys/pyfluent>`_ and execute the following code
+Install `PyFluent <https://github.com/ansys/pyfluent>`_ and execute this code
 to run the Docker container using PyFluent.
 
 .. code:: python
