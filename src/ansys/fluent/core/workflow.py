@@ -358,7 +358,13 @@ class BaseTask:
         str
             Pythonic name of the task.
         """
-        if not self._python_name:
+        if self._python_name in self._command_source._compound_task_names_with_children:
+            if (
+                self.task_type() == "Compound Child"
+                and self.name() in self._command_source._compound_task_map
+            ):
+                self._python_name = self._command_source._compound_task_map[self.name()]
+        elif not self._python_name:
             if self._command_source._dynamic_python_names:
                 display_name_map = self._command_source._python_name_display_text_map
                 if self.display_name() not in display_name_map.values():
@@ -374,12 +380,13 @@ class BaseTask:
 
     def _set_python_name(self, compound=False):
         this_command = self._command()
-        if self.task_type() == "Compound Child" or compound:
+        if compound:
             p_name = (
                 f"child_{self._command_source._compound_parent_task_python_name_id[1]}_of_"
                 + self._command_source._compound_parent_task_python_name_id[0]
             )
             self._python_name = p_name
+            self._command_source._compound_task_map[self.name()] = p_name
         else:
             self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
         self._cache_data(this_command)
@@ -1047,6 +1054,7 @@ class CompoundChild(SimpleTask):
             The name of this task.
         """
         super().__init__(command_source, task)
+        self._set_python_name(compound=True)
 
 
 class CompositeTask(BaseTask):
@@ -1189,6 +1197,9 @@ class CompoundTask(CommandTask):
             self._command_source._compound_parent_task_python_name_id[0] = (
                 self.python_name()
             )
+            self._command_source._compound_task_names_with_children.append(
+                self.python_name()
+            )
             self._command_source._compound_parent_task_python_name_id[1] = 0
 
         self._command_source._compound_parent_task_python_name_id[1] = (
@@ -1206,7 +1217,7 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
-        self.tasks()[-1]._set_python_name(compound=True)
+        # self.tasks()[-1]._set_python_name(compound=True)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
@@ -1311,6 +1322,8 @@ class Workflow:
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
                 _compound_parent_task_python_name_id=[None, 0],
+                _compound_task_map={},
+                _compound_task_names_with_children=[],
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
