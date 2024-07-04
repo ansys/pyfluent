@@ -1,4 +1,4 @@
-"""Provides a module to create an archive of the Ansys installation."""
+"""Provides a module to copy files from the Ansys installation directory."""
 
 import os
 from pathlib import Path

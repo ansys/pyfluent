@@ -1,1 +1,1 @@
-v251/fluent/fluent25.1.0/addons/gpuapp
+v241/fluent/fluent24.1.0/addons/gpuapp
