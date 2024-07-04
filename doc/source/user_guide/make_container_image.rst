@@ -13,10 +13,9 @@ Linux machine to copy the needed files from the Fluent installation directory.
 Prerequisites
 -------------
 
-* A Linux machine and this machine needs to have `Docker <https://www.docker.com>`_ installed.
+* A Linux machine with `Docker <https://www.docker.com>`_ installed.
 
-* A valid Ansys account. Your Ansys reseller should have
-  provided you with one.
+* A valid Ansys license and account. Your Ansys reseller should have provided you with one.
 
 * The following provided files:
   
@@ -27,61 +26,57 @@ Prerequisites
 Procedure
 ---------
 
-If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to
-`Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing these commands
-otherwise copy these files into an empty folder and execute these commands from that folder.
+* If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to
+`Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing these commands.
 
-Specify the Ansys installation directory
-++++++++++++++++++++++++++++++++++++++++
-
-Specify the pre-installed Ansys directory as a command line argument.
-
-.. code:: python
-
-    python copy_docker_files.py <path to 'ansys_inc' directory>
+* If you haven't cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then copy `Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ into an empty folder and
+execute these commands from that folder.
 
 Copy needed files
 +++++++++++++++++
 
-Run this script to copy needed files from the Ansys installation directory
-to the container.
+Specify the pre-installed Ansys directory as a command line argument and run this script to copy needed files from the
+Ansys installation directory to the container image:
 
 .. code:: python
 
     python copy_docker_files.py <path to 'ansys_inc' directory>
 
-Not all the installation files are copied. These files indicate the files that are
-ignored during the copying:
+Not all the installation files are copied. These files indicate the files that are ignored during the copying:
 
   * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
   * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
 
+
+1. We have excluded these files because we have determined that they are not needed to run typical Fluent workflows.
+
+2. If you find that some of the excluded files are need to run your workflows then you can remove those files from the exclusion list and repeat the build process to create a new image.
+
 Build Docker image
 ++++++++++++++++++
 
-Execute this command to build the Docker image.
+Execute this command to build the Docker image:
 
 .. code:: console
 
     sudo docker build -t ansys_inc:v241 .
 
-The Docker container configuration needed to build the container is described in the
+The Docker container configuration needed to build the container image is described in the
 `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
 
 
 Run Docker container using the command line
 -------------------------------------------
 
-When you execute the command for running the Docker container in either solver or meshing mode,
-you must specify the Ansys license file.
+When you execute the command for running the Docker container you must specify the Ansys license file.
 
-Execute this command to run the Docker container in solver mode.
+Execute this command to run the Docker container in solver mode:
 
 .. code:: console
 
     sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc:v241 3ddp -gu
 
-Execute this command to run the Docker container in meshing mode.
+Execute this command to run the Docker container in meshing mode:
 
 .. code:: console
 
@@ -92,7 +87,7 @@ Run Docker container using PyFluent
 -----------------------------------
 
 Install `PyFluent <https://github.com/ansys/pyfluent>`_ and execute this code
-to run the Docker container using PyFluent.
+to run the Docker container using PyFluent:
 
 .. code:: python
 
