@@ -185,8 +185,12 @@ def configure_container_dict(
     if not host_mount_path:
         if file_transfer_service:
             host_mount_path = pyfluent.USER_DATA_PATH
+        elif os.getenv("PYFLUENT_HOST_MOUNT_PATH", None):
+            host_mount_path = pyfluent.EXAMPLES_PATH
+        elif pyfluent.CONTAINER_MOUNT_PATH:
+            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH
         else:
-            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH or os.getcwd()
+            host_mount_path = os.getcwd()
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "

@@ -1,11 +1,11 @@
 """
 End-to-end Fluent Solver Workflow using Watertight Meshing
 -----------------------------------------------------------------------------
-This test covers the setup and solution of a three-dimensional
+This test covers the setup and solution of a 3D
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and
-processindustries. It is often important to predict the flow field and
-temperature field in the area of the mixing regionin order to properly design
+process industries. It is often important to predict the flow field and
+temperature field in the area of the mixing region to properly design
 the junction.
 
 This test queries the following using PyTest:

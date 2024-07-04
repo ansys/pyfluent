@@ -48,7 +48,6 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 import_file_name = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
 )
@@ -83,6 +82,7 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 # Import the CAD geometry file (``exhaust_system.fmd``) and selectively manage some
 # parts.
 
+meshing.upload(import_file_name)
 meshing.PartManagement.InputFileChanged(
     FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
 )

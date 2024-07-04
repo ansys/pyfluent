@@ -37,10 +37,12 @@ class BaseMeshing:
     ):
         """BaseMeshing session.
 
-        Args:
-            session_execute_tui (_type_): Executes Fluent’s SolverTUI methods.
-
-            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        Parameters
+        ----------
+        session_execute_tui (_type_):
+            Executes Fluent’s SolverTUI methods.
+        fluent_connection (:ref:`ref_fluent_connection`):
+            Encapsulates a Fluent connection.
         """
         self._tui_service = datamodel_service_tui
         self._se_service = datamodel_service_se
