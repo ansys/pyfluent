@@ -107,7 +107,7 @@ class EventsManager(StreamingService):
         Parameters
         ----------
         event_name : Event or str
-            Event name to register the callback to.
+            Event to register the callback to.
         callback : Callable
             Callback to register.
         args : Any
