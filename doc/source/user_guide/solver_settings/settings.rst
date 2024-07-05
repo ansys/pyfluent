@@ -40,7 +40,7 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
 :obj:`~ansys.fluent.core.solver.flobject.ListObject`.
 
 - The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
-  can be accessed as attributes. For example, using the expression ``solver.setup.models.energy``,
+  can be accessed as attributes. For example, using the expression ``solver.settings.setup.models.energy``,
   which resolves to :obj:`~ansys.fluent.core.generated.solver.settings_232.energy.energy`,
   which is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.models_1.models`,
   which itself is a child of :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`, and each of those
@@ -52,7 +52,7 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
   created named objects. For
   a given ``NamedObject`` container, each contained object is of the same
   specific type. A given named object can be accessed using the index operator. For example,
-  ``solver.setup.boundary_conditions.velocity_inlet['inlet2']`` yields a ``velocity_inlet``
+  ``solver.settings.setup.boundary_conditions.velocity_inlet['inlet2']`` yields a ``velocity_inlet``
   object with the name ``inlet2``, assuming it exists. The current list of named object
   children can be accessed via ``<NamedObject>.get_object_names()``.
 
@@ -60,7 +60,7 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
   created unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
   list. Children of a ``ListObject`` object can be accessed using the index operator.
-  For example, ``solver.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
+  For example, ``solver.settings.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
   refers to the third (starting from index 0) mass source entry for the fluid zone
   named ``fluid-1``. The current number of child objects can be accessed with the
   ``get_size()`` method.
@@ -75,20 +75,20 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
 
 .. code-block::
 
-  >>> solver.setup.models.viscous.model()
+  >>> solver.settings.setup.models.viscous.model()
   'k-epsilon-standard'
 
 
 .. code-block::
 
   >>> from pprint import pprint
-  >>> pprint (solver.setup.models.energy())
+  >>> pprint (solver.settings.setup.models.energy())
   {'enabled': True,
    'inlet_diffusion': True,
    'kinetic_energy': False,
    'pressure_work': False,
    'viscous_dissipation': False}
-  >>> solver.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
+  >>> solver.settings.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
   10.0
 
 
@@ -99,9 +99,9 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 
 .. code-block::
 
-  >>> solver.setup.models.viscous.model = 'laminar'
-  >>> solver.setup.models.energy = { 'enabled' : False }
-  >>> solver.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
+  >>> solver.settings.setup.models.viscous.model = 'laminar'
+  >>> solver.settings.setup.models.energy = { 'enabled' : False }
+  >>> solver.settings.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
 
 
 You can also access the state of an object with the ``get_state()`` method and
@@ -131,7 +131,7 @@ You can print the current state in a simple text format with the
 
 .. code-block::
 
-  >>> solver.setup.models.print_state()
+  >>> solver.settings.setup.models.print_state()
 
 
 The following output is returned:
@@ -183,19 +183,19 @@ for that object or returns ``None`` otherwise.
 
 .. code-block::
 
-  >>> solver.setup.models.viscous.model.allowed_values()
+  >>> solver.settings.setup.models.viscous.model.allowed_values()
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 
 .. code-block::
 
-  >>> solver.setup.models.viscous.model.get_attr('allowed-values')
+  >>> solver.settings.setup.models.viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 
 .. code-block::
 
-  >>> solver.setup.models.viscous.model.get_attrs(['allowed-values'])
+  >>> solver.settings.setup.models.viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
 
 
@@ -259,15 +259,15 @@ in a single solver session:
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
-  >>> solver.file.read(file_type="case", file_name=import_file_name)
+  >>> solver.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
-  >>> solver.setup.models.viscous.is_active()
+  >>> solver.settings.setup.models.viscous.is_active()
   True
-  >>> solver.setup.models.viscous.model.is_read_only()
+  >>> solver.settings.setup.models.viscous.model.is_read_only()
   False
-  >>> solver.setup.models.viscous.model.default_value()
-  >>> pprint(solver.setup.models.viscous.model.allowed_values())
+  >>> solver.settings.setup.models.viscous.model.default_value()
+  >>> pprint(solver.settings.setup.models.viscous.model.allowed_values())
   ['inviscid',
    'laminar',
    'k-epsilon',
@@ -280,9 +280,9 @@ in a single solver session:
    'scale-adaptive-simulation',
    'detached-eddy-simulation',
    'large-eddy-simulation']
-  >>> solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].turb_intensity.min()
+  >>> solver.settings.setup.boundary_conditions.velocity_inlet['cold-inlet'].turb_intensity.min()
   0
-  >>> solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].turb_intensity.max()
+  >>> solver.settings.setup.boundary_conditions.velocity_inlet['cold-inlet'].turb_intensity.max()
   1
 
 
@@ -295,13 +295,13 @@ is currently active.
 The ``get_active_child_names()`` method returns a list of
 active children::
 
-  >>> solver.setup.models.get_active_child_names()
+  >>> solver.settings.setup.models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
 The ``get_active_command_names()`` method returns the list of active
 commands::
 
-  >>> solver.solution.run_calculation.get_active_command_names()
+  >>> solver.settings.solution.run_calculation.get_active_command_names()
   ['iterate']
 
 Supporting wildcards
@@ -309,12 +309,12 @@ Supporting wildcards
 You can use wildcards when using named objects, list objects, and string list settings.
 For named objects and list objects, for instance::
 
-  >>> solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]()
+  >>> solver.settings.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]()
   {'fluid': {'source_terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}
 
 Also, when you have one or more velocity inlets with "inlet" in their names::
 
-  >>> solver.setup.boundary_conditions.velocity_inlet["*inlet*"].vmag()
+  >>> solver.settings.setup.boundary_conditions.velocity_inlet["*inlet*"].vmag()
   {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
   'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
 

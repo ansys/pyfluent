@@ -16,7 +16,7 @@ Enable energy model
 
 .. code:: python
 
-    energy = solver.setup.models.energy
+    energy = solver.settings.setup.models.energy
     energy.enabled = True
 
 Enable viscous model
@@ -26,6 +26,6 @@ Enable viscous model
 
 .. code:: python
 
-    viscous = solver.setup.models.viscous
+    viscous = solver.settings.setup.models.viscous
     viscous.k_epsilon_model.enabled = True
     viscous.k_omega_model.enabled = True

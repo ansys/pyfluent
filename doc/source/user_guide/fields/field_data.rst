@@ -19,8 +19,8 @@ by reading case and data files).
   >>> from ansys.fluent.core import examples
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
-  >>> solver.file.read(file_type="case", file_name=import_file_name)
-  >>> solver.solution.initialization.hybrid_initialize()
+  >>> solver.settings.file.read(file_type="case", file_name=import_file_name)
+  >>> solver.settings.solution.initialization.hybrid_initialize()
 
 The field data object is an attribute of the solver object:
 

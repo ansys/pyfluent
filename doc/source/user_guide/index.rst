@@ -12,21 +12,19 @@ User guide
    :maxdepth: 1
    :hidden:
 
-   launching_ansys_fluent
-   specify_file_paths
-   tui_commands
-   meshing_workflow/index
-   general_settings
-   solver_settings
-   models
-   materials
-   boundary_conditions
-   solution
-
+   fields
+   journal
+   legacy
+   meshing
+   offline
+   services
+   session
+   solver
 
 PyFluent User Guide
 -------------------
-Welcome to the PyFluent User Guide. This guide helps you understand how to use PyFluent to leverage the power of Ansys Fluent for your CFD simulations.
+Welcome to the PyFluent User Guide. This guide helps you understand how to use PyFluent to
+leverage the power of Ansys Fluent for your CFD simulations.
 
 
 A Simple Example
@@ -41,12 +39,12 @@ A Simple Example
   >>> watertight.import_geometry()
   >>> watertight.create_volume_mesh()
   >>> meshing.switch_to_solver()
-  >>> solver.setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
-  >>> solver.setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")
-  >>> solver.setup.cell_zone_conditions.set_zone_type(zone_list="elbow-fluid", new_type="fluid")
-  >>> solver.solution.initialization.hybrid_initialize()
-  >>> solver.solution.run_calculation.iterate(iter_count=100)
-  >>> velocity_data = solver.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> solver.settings.setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
+  >>> solver.settings.setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")
+  >>> solver.settings.setup.cell_zone_conditions.set_zone_type(zone_list="elbow-fluid", new_type="fluid")
+  >>> solver.settings.solution.initialization.hybrid_initialize()
+  >>> solver.settings.solution.run_calculation.iterate(iter_count=100)
+  >>> velocity_data = solver.fields.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
 
 
 Key Features

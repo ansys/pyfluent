@@ -107,7 +107,7 @@ PyFluent, where ``solver`` is the session instance returned by ``launch_fluent``
 
 .. code:: python
 
-   solver.setup.boundary_conditions.velocity_inlet['inlet1'] = {"t" : 293.15}
+   solver.settings.setup.boundary_conditions.velocity_inlet['inlet1'] = {"t" : 293.15}
 
 In the above example, the settings API command is recorded as that exists for the TUI
 command. An example where settings API doesn't exist is setting the pressure unit:

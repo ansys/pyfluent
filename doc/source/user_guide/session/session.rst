@@ -1,9 +1,7 @@
-.. _ref_interface_guide:
+.. _ref_session_launch_guide:
 
-
-==============
-Using PyFluent
-==============
+Using PyFluent sessions
+=======================
 
 You can obtain a PyFluent session object by calling either :func:`launch_fluent()
 <ansys.fluent.core.launcher.launcher.launch_fluent>` or :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`. 
