@@ -253,9 +253,10 @@ class Reduction:
     docstring = None
 
     def _validate_str_location(self, loc: str):
-        if loc not in (
-            list(self.ctxt.fields.field_info.get_surfaces_info())
-            + list(self.ctxt.settings.setup.cell_zone_conditions())
+        if all(loc not in names() for names in (
+            self.ctxt.fields.field_info.get_surfaces_info,
+            self.ctxt.settings.setup.cell_zone_conditions
+            )
         ):
             raise ValueError(f"Invalid location input: '{loc}'")
 
