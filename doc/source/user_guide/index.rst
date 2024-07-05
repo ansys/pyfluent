@@ -4,22 +4,19 @@
 User guide
 ==========
 
-..
-   This toctree must be a top level index to get it to show up in
-   pydata_sphinx_theme
-
 .. toctree::
    :maxdepth: 1
    :hidden:
 
-   fields
+   fields/index
    journal
-   legacy
-   meshing
-   offline
-   services
-   session
-   solver
+   legacy/index
+   meshing/index
+   offline/index
+   services/index
+   session/index
+   solver_settings/index
+
 
 PyFluent User Guide
 -------------------

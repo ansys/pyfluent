@@ -3,11 +3,12 @@
 EventsManager
 =============
 
-An instance of ``EventsManager`` exists as an active ``events_streaming`` property in each
-solution mode session object. You can register client callbacks with the EventsManager.
-The EventsManager calls each callback whenever a server-side event occurs, passing the session
-ID and event information arguments to the callback. The EventsManager is useful for solution
-monitoring and updating graphics during runtime.
+Each solver session object has an ``events`` child of type ``EventsManager``. You can call
+the ``events.register_callback()`` method in order to receive notifications of various events
+occurring in Fluent. (The EventsManager calls each callback whenever a Fluent
+event occurs, passing the session ID and event information as arguments to the callback. This
+interface is subject to change). The EventsManager is useful for solution monitoring and dynamic
+update of graphics.
 
 Supported events are:
 
