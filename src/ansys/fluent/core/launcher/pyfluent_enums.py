@@ -137,7 +137,7 @@ class Dimension(FluentEnum):
                 return member
         raise ValueError(
             f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: '{"', '".join((member.value[0][0]) for member in cls)}'."""
+            f""" The supported values are: {", ".join((member.value[0][0]) for member in cls)}."""
         )
 
 
