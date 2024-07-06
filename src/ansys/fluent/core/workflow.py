@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import re
 import threading
+import time
 from typing import Any, Iterable, Iterator, Optional, Tuple, Union
 import warnings
 
@@ -1217,7 +1218,8 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
-        # self.tasks()[-1]._set_python_name(compound=True)
+        time.sleep(1)
+        self.tasks()[-1]._set_python_name(compound=True)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
