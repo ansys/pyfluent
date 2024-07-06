@@ -99,7 +99,7 @@ USE_FILE_TRANSFER_SERVICE = False
 CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 
 # Whether to zip settings API files during codegen
-CODEGEN_ZIP_SETTINGS = False
+CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
