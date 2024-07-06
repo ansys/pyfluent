@@ -9,10 +9,7 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
-from ansys.fluent.core.exceptions import (
-    DisallowedValuesError,
-    SurfaceSpecificationError,
-)
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -20,7 +17,10 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.deprecate_args import deprecate_argument
+from ansys.fluent.core.utils.deprecate_args import (
+    deprecate_argument,
+    deprecate_arguments,
+)
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
@@ -356,6 +356,19 @@ class _FieldMethod:
         return self._field_data_accessor(*args, **kwargs)
 
 
+def _surface_converter(old_args_dict, new_args):
+    surfaces_list = []
+    if "surface_name" in old_args_dict:
+        surfaces_list.append(old_args_dict["surface_name"])
+    if "surface_ids" in old_args_dict:
+        for _id in old_args_dict["surface_ids"]:
+            surfaces_list.append(_id)
+    if "surface_names" in old_args_dict:
+        for _name in old_args_dict["surface_names"]:
+            surfaces_list.append(_name)
+    return {new_args[0]: surfaces_list}
+
+
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
@@ -417,35 +430,53 @@ class FieldTransaction:
             self.add_pathlines_fields_request,
         )
 
+    @staticmethod
+    def _data_type_convertor(old_args_dict, new_args):
+        d_type_list = []
+        if old_args_dict.get("provide_vertices"):
+            d_type_list.append(SurfaceDataType.Vertices)
+        if old_args_dict.get("provide_faces"):
+            d_type_list.append(SurfaceDataType.FacesConnectivity)
+        if old_args_dict.get("provide_faces_centroid"):
+            d_type_list.append(SurfaceDataType.FacesCentroid)
+        if old_args_dict.get("provide_faces_normal"):
+            d_type_list.append(SurfaceDataType.FacesNormal)
+        return {new_args[0]: d_type_list}
+
+    @deprecate_arguments(
+        old_args=["surface_names", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
+        deprecation_class=PyFluentDeprecationWarning,
+    )
+    @deprecate_arguments(
+        old_args=[
+            "provide_vertices",
+            "provide_faces",
+            "provide_faces_centroid",
+            "provide_faces_normal",
+        ],
+        new_args=["data_types"],
+        converter=_data_type_convertor,
+        deprecation_class=PyFluentDeprecationWarning,
+    )
     def add_surfaces_request(
         self,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        data_types: Union[List[SurfaceDataType], List[str]],
+        surfaces: List[Union[int, str]],
         overset_mesh: Optional[bool] = False,
-        provide_vertices: Optional[bool] = True,
-        provide_faces: Optional[bool] = True,
-        provide_faces_centroid: Optional[bool] = False,
-        provide_faces_normal: Optional[bool] = False,
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals).
 
         Parameters
         ----------
-        surface_ids : List[int], optional
-            List of surface IDS for the surface data.
-        surface_names: List[str], optional
-            List of surface names for the surface data.
+        data_types : Union[List[SurfaceDataType], List[str]],
+            SurfaceDataType Enum members.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
         overset_mesh : bool, optional
             Whether to get the overset met. The default is ``False``.
-        provide_vertices : bool, optional
-            Whether to get node coordinates. The default is ``True``.
-        provide_faces : bool, optional
-            Whether to get face connectivity. The default is ``True``.
-        provide_faces_centroid : bool, optional
-            Whether to get face centroids. The default is ``False``.
-        provide_faces_normal : bool, optional
-            Whether to get faces normal. The default is ``False``
 
         Returns
         -------
@@ -454,28 +485,36 @@ class FieldTransaction:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
+        for d_type in data_types:
+            if isinstance(d_type, str):
+                data_types.remove(d_type)
+                data_types.append(SurfaceDataType(d_type))
         self._fields_request.surfaceRequest.extend(
             [
                 FieldDataProtoModule.SurfaceRequest(
                     surfaceId=surface_id,
                     oversetMesh=overset_mesh,
-                    provideFaces=provide_faces,
-                    provideVertices=provide_vertices,
-                    provideFacesCentroid=provide_faces_centroid,
-                    provideFacesNormal=provide_faces_normal,
+                    provideFaces=SurfaceDataType.FacesConnectivity in data_types,
+                    provideVertices=SurfaceDataType.Vertices in data_types,
+                    provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
+                    provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
                 )
                 for surface_id in surface_ids
             ]
         )
 
+    @deprecate_arguments(
+        old_args=["surface_names", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
+        deprecation_class=PyFluentDeprecationWarning,
+    )
     def add_scalar_fields_request(
         self,
         field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        surfaces: List[Union[int, str]],
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = True,
     ) -> None:
@@ -485,10 +524,8 @@ class FieldTransaction:
         ----------
         field_name : str
             Name of the scalar field.
-        surface_ids : List[int], optional
-            List of surface IDs for scalar field data.
-        surface_names: List[str], optional
-            List of surface names for scalar field data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
         node_value : bool, optional
             Whether to provide the nodal location. The default is ``True``. If
             ``False``, the element location is provided.
@@ -503,8 +540,7 @@ class FieldTransaction:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
         self._fields_request.scalarFieldRequest.extend(
             [
@@ -524,11 +560,16 @@ class FieldTransaction:
             ]
         )
 
+    @deprecate_arguments(
+        old_args=["surface_names", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
+        deprecation_class=PyFluentDeprecationWarning,
+    )
     def add_vector_fields_request(
         self,
         field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        surfaces: List[Union[int, str]],
     ) -> None:
         """Add request to get vector field data on surfaces.
 
@@ -536,10 +577,8 @@ class FieldTransaction:
         ----------
         field_name : str
             Name of the vector field.
-        surface_ids : List[int], optional
-            List of surface IDs for vector field data.
-        surface_names: List[str], optional
-            List of surface names for vector field data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
 
         Returns
         -------
@@ -548,8 +587,7 @@ class FieldTransaction:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
         self._fields_request.vectorFieldRequest.extend(
             [
@@ -563,11 +601,16 @@ class FieldTransaction:
             ]
         )
 
+    @deprecate_arguments(
+        old_args=["surface_names", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
+        deprecation_class=PyFluentDeprecationWarning,
+    )
     def add_pathlines_fields_request(
         self,
         field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        surfaces: List[Union[int, str]],
         additional_field_name: Optional[str] = "",
         provide_particle_time_field: Optional[bool] = False,
         node_value: Optional[bool] = True,
@@ -587,10 +630,8 @@ class FieldTransaction:
         ----------
         field_name : str
             Name of the scalar field to color pathlines.
-        surface_ids : List[int], optional
-            List of surface IDs for pathlines field data.
-        surface_names : List[str], optional
-            List of surface names for pathlines field data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
         additional_field_name : str, optional
             Additional field if required.
         provide_particle_time_field: bool, optional
@@ -623,8 +664,7 @@ class FieldTransaction:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
         self._fields_request.pathlinesFieldRequest.extend(
             [
@@ -700,40 +740,30 @@ class _FieldDataConstants:
 def _get_surface_ids(
     field_info: FieldInfo,
     allowed_surface_names,
-    surface_ids: Optional[List[int]] = None,
-    surface_names: Optional[List[str]] = None,
+    surfaces: List[Union[int, str]],
 ) -> List[int]:
     """Get surface IDs based on surface names or IDs.
 
     Parameters
     ----------
-    surface_ids : List[int], optional
-        List of surface IDs.
-    surface_names: List[str], optional
-        List of surface names.
+    surfaces : Union[List[int], List[str]]
+        List of surface IDs or surface names.
 
     Returns
     -------
     List[int]
 
-    Raises
-    ------
-    SurfaceSpecificationError
-        If both ``surface_ids`` and ``surface_names`` are provided.
     """
-    if surface_ids and surface_names:
-        raise SurfaceSpecificationError()
-    if not surface_ids:
-        surface_ids = []
-        if surface_names:
-            for surface_name in surface_names:
-                surface_ids.extend(
-                    field_info.get_surfaces_info()[
-                        allowed_surface_names.valid_name(surface_name)
-                    ]["surface_id"]
-                )
+    surface_ids = []
+    for surf in surfaces:
+        if isinstance(surf, str):
+            surface_ids.extend(
+                field_info.get_surfaces_info()[allowed_surface_names.valid_name(surf)][
+                    "surface_id"
+                ]
+            )
         else:
-            raise SurfaceSpecificationError()
+            surface_ids.append(surf)
     return surface_ids
 
 
@@ -1143,17 +1173,16 @@ class FieldData:
             self._allowed_vector_field_names,
         )
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surface_names",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+    @deprecate_arguments(
+        old_args=["surface_name", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
         deprecation_class=PyFluentDeprecationWarning,
     )
     def get_scalar_field_data(
         self,
         field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        surfaces: List[Union[int, str]],
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = True,
     ) -> Union[ScalarFieldData, Dict[int, ScalarFieldData]]:
@@ -1163,10 +1192,8 @@ class FieldData:
         ----------
         field_name : str
             Name of the scalar field.
-        surface_ids : List[int], optional
-            List of surface IDs for scalar field data.
-        surface_names: List[str], optional
-            List of surface names for scalar field data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
         node_value : bool, optional
             Whether to provide data for the nodal location. The default is ``True``.
             When ``False``, data is provided for the element location.
@@ -1184,8 +1211,7 @@ class FieldData:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
         fields_request = get_fields_request()
         fields_request.scalarFieldRequest.extend(
@@ -1209,7 +1235,7 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
 
-        if surface_names and len(surface_names) == 1:
+        if len(surfaces) == 1 and isinstance(surfaces[0], str):
             return ScalarFieldData(
                 surface_ids[0], scalar_field_data[surface_ids[0]][field_name]
             )
@@ -1221,10 +1247,10 @@ class FieldData:
                 for surface_id in surface_ids
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surface_names",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+    @deprecate_arguments(
+        old_args=["surface_name", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
         deprecation_class=PyFluentDeprecationWarning,
     )
     @deprecate_argument(
@@ -1235,9 +1261,8 @@ class FieldData:
     )
     def get_surface_data(
         self,
-        data_types: Union[SurfaceDataType],
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        data_types: Union[List[SurfaceDataType], List[str]],
+        surfaces: List[Union[int, str]],
         overset_mesh: Optional[bool] = False,
     ) -> Union[
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
@@ -1247,12 +1272,10 @@ class FieldData:
 
         Parameters
         ----------
-        data_types : Union[SurfaceDataType]
+        data_types : Union[List[SurfaceDataType], List[str]],
             SurfaceDataType Enum members.
-        surface_ids : List[int], optional
-            List of surface IDs for the surface data.
-        surface_names: List[str], optional
-            List of surface names for the surface data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
 
@@ -1267,9 +1290,12 @@ class FieldData:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
+        for d_type in data_types:
+            if isinstance(d_type, str):
+                data_types.remove(d_type)
+                data_types.append(SurfaceDataType(d_type))
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
             [
@@ -1294,7 +1320,7 @@ class FieldData:
             )
 
         if SurfaceDataType.Vertices in data_types:
-            if surface_names and len(surface_names) == 1:
+            if len(surfaces) == 1 and isinstance(surfaces[0], str):
                 return _get_surfaces_data(
                     Vertices, surface_ids[0], SurfaceDataType.Vertices
                 )
@@ -1307,7 +1333,7 @@ class FieldData:
                 }
 
         if SurfaceDataType.FacesCentroid in data_types:
-            if surface_names and len(surface_names) == 1:
+            if len(surfaces) == 1 and isinstance(surfaces[0], str):
                 return _get_surfaces_data(
                     FacesCentroid, surface_ids[0], SurfaceDataType.FacesCentroid
                 )
@@ -1320,7 +1346,7 @@ class FieldData:
                 }
 
         if SurfaceDataType.FacesConnectivity in data_types:
-            if surface_names and len(surface_names) == 1:
+            if len(surfaces) == 1 and isinstance(surfaces[0], str):
                 return _get_surfaces_data(
                     FacesConnectivity, surface_ids[0], SurfaceDataType.FacesConnectivity
                 )
@@ -1333,7 +1359,7 @@ class FieldData:
                 }
 
         if SurfaceDataType.FacesNormal in data_types:
-            if surface_names and len(surface_names) == 1:
+            if len(surfaces) == 1 and isinstance(surfaces[0], str):
                 return _get_surfaces_data(
                     FacesNormal, surface_ids[0], SurfaceDataType.FacesNormal
                 )
@@ -1345,17 +1371,16 @@ class FieldData:
                     for surface_id in surface_ids
                 }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surface_names",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+    @deprecate_arguments(
+        old_args=["surface_name", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
         deprecation_class=PyFluentDeprecationWarning,
     )
     def get_vector_field_data(
         self,
         field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        surfaces: List[Union[int, str]],
     ) -> Union[VectorFieldData, Dict[int, VectorFieldData]]:
         """Get vector field data on a surface.
 
@@ -1363,10 +1388,8 @@ class FieldData:
         ----------
         field_name : str
             Name of the vector field.
-        surface_ids : List[int], optional
-            List of surface IDs for vector field data.
-        surface_names: List[str], optional
-            List of surface names for vector field data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
 
         Returns
         -------
@@ -1375,19 +1398,13 @@ class FieldData:
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
         """
-        if surface_names and len(surface_names) == 1:
-            self.scheme_eval.string_eval(
-                f"(surface? (thread-name->id '{surface_names[0]}))"
-            )
-        elif surface_ids:
-            for surface_id in surface_ids:
-                self.scheme_eval.string_eval(f"(surface? {surface_id})")
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
+        for surface_id in surface_ids:
+            self.scheme_eval.string_eval(f"(surface? {surface_id})")
         fields_request = get_fields_request()
         fields_request.vectorFieldRequest.extend(
             [
@@ -1403,7 +1420,7 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
 
-        if surface_names and len(surface_names) == 1:
+        if len(surfaces) == 1 and isinstance(surfaces[0], str):
             return VectorFieldData(
                 surface_ids[0],
                 vector_field_data[surface_ids[0]][field_name],
@@ -1419,17 +1436,16 @@ class FieldData:
                 for surface_id in surface_ids
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surface_names",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+    @deprecate_arguments(
+        old_args=["surface_name", "surface_ids"],
+        new_args=["surfaces"],
+        converter=_surface_converter,
         deprecation_class=PyFluentDeprecationWarning,
     )
     def get_pathlines_field_data(
         self,
         field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_names: Optional[List[str]] = None,
+        surfaces: List[Union[int, str]],
         additional_field_name: Optional[str] = "",
         provide_particle_time_field: Optional[bool] = False,
         node_value: Optional[bool] = True,
@@ -1449,10 +1465,8 @@ class FieldData:
         ----------
         field_name : str
             Name of the scalar field to color pathlines.
-        surface_ids : List[int], optional
-            List of surface IDs for pathlines field data.
-        surface_names : List[str], optional
-            List of surface names for pathlines field data.
+        surfaces : List[Union[int, str]]
+            List of surface IDS or surface names for the surface data.
         additional_field_name : str, optional
             Additional field if required.
         provide_particle_time_field: bool, optional
@@ -1488,8 +1502,7 @@ class FieldData:
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
-            surface_ids=surface_ids,
-            surface_names=surface_names,
+            surfaces=surfaces,
         )
         fields_request = get_fields_request()
         fields_request.pathlinesFieldRequest.extend(
@@ -1526,7 +1539,7 @@ class FieldData:
                 pathlines_data[surf_id][_data_type],
             )
 
-        if surface_names and len(surface_names) == 1:
+        if len(surfaces) == 1 and isinstance(surfaces[0], str):
             vertices_data = _get_surfaces_data(Vertices, surface_ids[0], "vertices")
             lines_data = _get_surfaces_data(FacesConnectivity, surface_ids[0], "lines")
             field_data = ScalarFieldData(

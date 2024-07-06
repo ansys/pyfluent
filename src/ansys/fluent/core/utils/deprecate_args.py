@@ -2,6 +2,7 @@
 
 import functools
 import logging
+from typing import List
 import warnings
 
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
@@ -57,6 +58,56 @@ def deprecate_argument(
                         f" only '{new_arg} = {_str_repr(new_value)}' applies."
                     )
                 kwargs.pop(old_arg)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def deprecate_arguments(
+    old_args: List,
+    new_args: List,
+    converter,
+    deprecation_class=PyFluentDeprecationWarning,
+):
+    """Warns that the arguments provided are deprecated and automatically replaces the
+    deprecated arguments with the appropriate new arguments."""
+
+    def decorator(func):
+        """Holds the original method to perform operations on it."""
+
+        def _convert_list_to_str(args):
+            arg_list = ""
+            for arg in args:
+                arg_list += arg + ", "
+            return arg_list[:-2]
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            """Warns about the deprecated arguments and replaces them with the new
+            arguments."""
+            old_arg_list = _convert_list_to_str(old_args)
+            new_arg_list = _convert_list_to_str(new_args)
+            warnings.warn(
+                f"'{old_arg_list}' are deprecated. Use '{new_arg_list}' instead.",
+                deprecation_class,
+                stacklevel=2,
+            )
+            old_args_dict = {}
+            for arg in old_args:
+                if arg in kwargs:
+                    old_args_dict[arg] = kwargs.pop(arg)
+            new_args_dict = converter(old_args_dict, new_args)
+            for key, val in new_args_dict.items():
+                if key in kwargs:
+                    logger.warning(
+                        f"Ignoring deprecated specification for '{func.__name__}()',"
+                        f" only '{key} = {kwargs[key]}' applies."
+                    )
+
+            kwargs = {**new_args_dict, **kwargs}
+
             return func(*args, **kwargs)
 
         return wrapper
