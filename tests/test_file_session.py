@@ -3,7 +3,6 @@ from pathlib import Path
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.exceptions import SurfaceSpecificationError
 from ansys.fluent.core.file_session import (
     FileSession,
     InvalidFieldName,
@@ -37,22 +36,22 @@ def test_field_info_data_multi_phase():
     file_session.read_data(data_file_name)
 
     sv_density = file_session.fields.field_data.get_scalar_field_data(
-        "phase-2:SV_DENSITY", [33]
+        field_name="phase-2:SV_DENSITY", surface_ids=[33]
     )
     assert sv_density[33].size == 268
     assert sv_density[33][130].scalar_data == 1.225
     assert (
         round(
             file_session.fields.field_data.get_scalar_field_data(
-                "phase-2:SV_WALL_YPLUS", [33]
+                field_name="phase-2:SV_WALL_YPLUS", surface_ids=[33]
             )[33][130].scalar_data,
             5,
         )
         == 0.00103
     )
     vector_data = file_session.fields.field_data.get_vector_field_data
-    assert vector_data("phase-2:velocity", surface_ids=[33])[33].size == 268
-    assert vector_data("phase-1:velocity", surface_ids=[34])[34].size == 2168
+    assert vector_data(field_name="phase-2:velocity", surface_ids=[33])[33].size == 268
+    assert vector_data(field_name="phase-1:velocity", surface_ids=[34])[34].size == 2168
 
 
 def test_field_info_data_single_phase():
@@ -208,12 +207,12 @@ def test_transaction_request_single_phase():
 
     transaction_1 = field_data.new_transaction()
 
-    transaction_1.add_surfaces_request([3, 5])
+    transaction_1.add_surfaces_request(surface_ids=[3, 5])
 
-    transaction_1.add_scalar_fields_request("SV_T", [3, 5])
+    transaction_1.add_scalar_fields_request("SV_T", surface_ids=[3, 5])
     transaction_1.add_scalar_fields_request("SV_T", surface_names=["wall", "symmetry"])
 
-    transaction_1.add_vector_fields_request("velocity", [3, 5])
+    transaction_1.add_vector_fields_request("velocity", surface_ids=[3, 5])
 
     data = transaction_1.get_fields()
 
@@ -268,9 +267,11 @@ def test_transaction_request_multi_phase():
 
     transaction_1 = field_data.new_transaction()
 
-    transaction_1.add_scalar_fields_request("phase-2:SV_WALL_YPLUS", [29, 30])
+    transaction_1.add_scalar_fields_request(
+        "phase-2:SV_WALL_YPLUS", surface_ids=[29, 30]
+    )
 
-    transaction_1.add_vector_fields_request("phase-3:velocity", [31])
+    transaction_1.add_vector_fields_request("phase-3:velocity", surfaces=[31])
 
     data = transaction_1.get_fields()
 
@@ -309,10 +310,10 @@ def test_error_handling_single_phase():
     transaction_1 = field_data.new_transaction()
 
     with pytest.raises(NotImplementedError) as msg:
-        transaction_1.add_pathlines_fields_request("SV_T", [3, 5])
+        transaction_1.add_pathlines_fields_request("SV_T", surfaces=[3, 5])
 
     with pytest.raises(NotImplementedError) as msg:
-        field_data.get_pathlines_field_data("SV_T", [3, 5])
+        field_data.get_pathlines_field_data("SV_T", surfaces=[3, 5])
 
 
 def test_error_handling_multi_phase():
@@ -334,7 +335,7 @@ def test_error_handling_multi_phase():
 
     transaction_1 = field_data.new_transaction()
     with pytest.raises(InvalidMultiPhaseFieldName) as msg:
-        transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", [29, 30])
+        transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", surface_ids=[29, 30])
 
     with pytest.raises(InvalidMultiPhaseFieldName) as msg:
         d_size = field_data.get_vector_field_data("velocity", surface_ids=[34])[34].size
@@ -342,9 +343,4 @@ def test_error_handling_multi_phase():
     with pytest.raises(InvalidFieldName) as msg:
         d_size = field_data.get_vector_field_data(
             "phase-1:temperature", surface_ids=[34]
-        )[34].size
-
-    with pytest.raises(SurfaceSpecificationError) as msg:
-        d_size = field_data.get_vector_field_data(
-            "velocity", surface_ids=[34], surface_name="wall"
         )[34].size
