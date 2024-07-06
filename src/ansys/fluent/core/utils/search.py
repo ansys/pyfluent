@@ -12,11 +12,7 @@ import sys
 from typing import Any, Optional
 import warnings
 
-from nltk.corpus import wordnet as wn
-
-from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.error_message import closest_allowed_names
@@ -69,6 +65,9 @@ _meshing_rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
 
 
 def _get_version_path_prefix_from_obj(obj: Any):
+    from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+
     path = None
     version = None
     prefix = None
@@ -130,13 +129,19 @@ def _get_version_path_prefix_from_obj(obj: Any):
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, flobject.Group):
         module = obj.__class__.__module__
-        version = module.split(".")[-2].rsplit("_", 1)[-1]
+        try:
+            version = module.split(".")[-2].rsplit("_", 1)[-1]
+        except IndexError:
+            version = None
         prefix = "<search_root>"
         path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
     elif isinstance(obj, flobject.NamedObject):
         module = obj.__class__.__module__
-        version = module.split(".")[-2].rsplit("_", 1)[-1]
+        try:
+            version = module.split(".")[-2].rsplit("_", 1)[-1]
+        except IndexError:
+            version = None
         prefix = '<search_root>["<name>"]'
         path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
@@ -264,6 +269,8 @@ def _search(
     api_tree_data["api_tui_objects"] = sorted(api_tui_objects)
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
+        from nltk.corpus import wordnet as wn
+
         _download_nltk_data()
         from ansys.fluent.core import CODEGEN_OUTDIR
 
@@ -559,6 +566,8 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     queries: list
         List of search string matches.
     """
+    from nltk.corpus import wordnet as wn
+
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
     search_string_synsets = (
