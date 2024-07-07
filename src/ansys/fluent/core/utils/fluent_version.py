@@ -6,7 +6,7 @@ import os
 from typing import Optional
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._version import fluent_release_version
+from ansys.fluent.core import fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):

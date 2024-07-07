@@ -3,7 +3,7 @@
 from collections import OrderedDict
 import subprocess
 
-from ansys.fluent.core._version import __version__
+from ansys.fluent.core import __version__
 
 
 def get_build_version():
