@@ -383,8 +383,8 @@ class BaseTask:
         this_command = self._command()
         if compound:
             p_name = (
-                f"child_{self._command_source._compound_parent_task_python_name_id[1]}_of_"
-                + self._command_source._compound_parent_task_python_name_id[0]
+                self._command_source._compound_parent_task_python_name_id[0]
+                + f"_child_{self._command_source._compound_parent_task_python_name_id[1]}"
             )
             self._python_name = p_name
             self._command_source._compound_task_map[self.name()] = p_name

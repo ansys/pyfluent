@@ -1536,16 +1536,16 @@ def test_duplicate_children_of_compound_task(new_mesh_session, mixing_elbow_geom
     )
 
     assert {
-        "child_1_of_add_local_sizing",
-        "child_2_of_add_local_sizing",
-        "child_3_of_add_local_sizing",
+        "add_local_sizing_child_1",
+        "add_local_sizing_child_2",
+        "add_local_sizing_child_3",
     }.issubset(set(watertight.task_names()))
 
     assert watertight.add_local_sizing.task_names() == [
-        "child_1_of_add_local_sizing",
-        "child_2_of_add_local_sizing",
-        "child_3_of_add_local_sizing",
+        "add_local_sizing_child_1",
+        "add_local_sizing_child_2",
+        "add_local_sizing_child_3",
     ]
 
     assert watertight.tasks()[-2].name() == "inlet"
-    assert watertight.tasks()[-2].python_name() == "child_2_of_add_local_sizing"
+    assert watertight.tasks()[-2].python_name() == "add_local_sizing_child_2"
