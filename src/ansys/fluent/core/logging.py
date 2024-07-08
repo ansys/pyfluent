@@ -7,8 +7,6 @@ import logging.config
 import os
 from typing import Optional, Union
 
-import yaml
-
 _logging_file_enabled = False
 
 
@@ -80,6 +78,8 @@ def get_default_config() -> dict:
                  'pyfluent.tui': {'handlers': ['pyfluent_file'], 'level': 'DEBUG'}},
      'version': 1}
     """
+    import yaml
+
     file_name = os.path.abspath(__file__)
     file_dir = os.path.dirname(file_name)
     yaml_path = os.path.join(file_dir, "logging_config.yaml")
