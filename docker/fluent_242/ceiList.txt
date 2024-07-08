@@ -1,0 +1,5 @@
+v242/CEI/BUILDINFO.txt
+v242/CEI/apex242
+v242/CEI/bin
+v242/CEI/ensight242lang
+v242/CEI/nexus242
