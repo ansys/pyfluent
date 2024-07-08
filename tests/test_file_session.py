@@ -30,6 +30,10 @@ def test_field_info_data_multi_phase():
         return_without_path=False,
     )
     file_session = FileSession()
+
+    # backward compatibility check
+    assert file_session.fields.field_data == file_session.field_data
+
     assert Path(case_file_name).exists()
     assert Path(data_file_name).exists()
     file_session.read_case(case_file_name)
@@ -62,6 +66,10 @@ def test_field_info_data_single_phase():
         "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
     )
     file_session = FileSession()
+
+    # backward compatibility check
+    assert file_session.fields.field_data == file_session.field_data
+
     file_session.read_case(case_file_name)
     file_session.read_data(data_file_name)
 
