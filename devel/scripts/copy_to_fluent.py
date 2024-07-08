@@ -1,4 +1,4 @@
-"""Script to copy PyFluent files to Fluent and print Fluent Manifest"""
+"""Script to copy PyFluent files to Fluent and print Fluent Manifest."""
 
 import argparse
 import os
