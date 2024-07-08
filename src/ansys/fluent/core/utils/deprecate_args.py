@@ -14,7 +14,7 @@ def deprecate_argument(
     old_arg,
     new_arg,
     converter,
-    deprecation_class=PyFluentDeprecationWarning,
+    warning_cls=PyFluentDeprecationWarning,
 ):
     """Warns that the argument provided is deprecated and automatically replaces the
     deprecated argument with the appropriate new argument."""
@@ -40,7 +40,7 @@ def deprecate_argument(
             if old_arg in kwargs:
                 warnings.warn(
                     f"'{old_arg}' is deprecated. Use '{new_arg}' instead.",
-                    deprecation_class,
+                    warning_cls,
                     stacklevel=2,
                 )
                 old_value = kwargs[old_arg]
@@ -69,7 +69,7 @@ def deprecate_arguments(
     old_args: List,
     new_args: List,
     converter,
-    deprecation_class=PyFluentDeprecationWarning,
+    warning_cls=PyFluentDeprecationWarning,
 ):
     """Warns that the arguments provided are deprecated and automatically replaces the
     deprecated arguments with the appropriate new arguments."""
@@ -77,21 +77,13 @@ def deprecate_arguments(
     def decorator(func):
         """Holds the original method to perform operations on it."""
 
-        def _convert_list_to_str(args):
-            arg_list = ""
-            for arg in args:
-                arg_list += arg + ", "
-            return arg_list[:-2]
-
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             """Warns about the deprecated arguments and replaces them with the new
             arguments."""
-            old_arg_list = _convert_list_to_str(old_args)
-            new_arg_list = _convert_list_to_str(new_args)
             warnings.warn(
-                f"The argument list, '{old_arg_list}' is deprecated. Use '{new_arg_list}' instead.",
-                deprecation_class,
+                f"The arguments: {', '.join(old_args)} are deprecated. Use {', '.join(new_args)} instead.",
+                warning_cls,
                 stacklevel=2,
             )
             old_args_dict = {}

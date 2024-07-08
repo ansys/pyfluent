@@ -90,13 +90,13 @@ class Transaction:
         old_args=["provide_vertices", "provide_faces"],
         new_args=["data_types"],
         converter=_data_type_convertor,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     @deprecate_arguments(
         old_args=["surface_names", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def add_surfaces_request(
         self,
@@ -135,7 +135,7 @@ class Transaction:
         old_args=["surface_names", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def add_scalar_fields_request(
         self,
@@ -187,7 +187,7 @@ class Transaction:
         old_args=["surface_names", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def add_vector_fields_request(
         self,
@@ -342,13 +342,13 @@ class FileFieldData:
         old_args=["surface_name", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     @deprecate_argument(
         old_arg="data_type",
         new_arg="data_types",
         converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def get_surface_data(
         self,
@@ -430,7 +430,7 @@ class FileFieldData:
         old_args=["surface_name", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def get_scalar_field_data(
         self,
@@ -519,7 +519,7 @@ class FileFieldData:
         old_args=["surface_name", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def get_vector_field_data(
         self,
@@ -602,7 +602,7 @@ class FileFieldData:
         old_args=["surface_name", "surface_ids"],
         new_args=["surfaces"],
         converter=_surface_converter,
-        deprecation_class=PyFluentDeprecationWarning,
+        warning_cls=PyFluentDeprecationWarning,
     )
     def get_pathlines_field_data(
         self,
