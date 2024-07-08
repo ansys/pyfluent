@@ -1577,7 +1577,11 @@ class BaseCommand(Action):
             kwds[arg] = argument.after_execute(
                 command_name=self.python_name, value=value, kwargs=kwds
             )
-        if self.obj_name == "create" and isinstance(self._parent, NamedObject):
+        if (
+            self.obj_name == "create"
+            and isinstance(self._parent, NamedObject)
+            and ret in self._parent
+        ):
             return self._parent[ret]
         return_t = getattr(self, "return_type", None)
         if return_t:
