@@ -60,7 +60,6 @@ from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
-import docker
 
 logger = logging.getLogger("pyfluent.launcher")
 DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
@@ -399,6 +398,8 @@ def start_fluent_container(
 
         host_server_info_file.touch(exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
+
+        import docker
 
         docker_client = docker.from_env()
 

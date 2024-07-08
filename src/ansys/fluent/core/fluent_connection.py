@@ -1,5 +1,7 @@
 """Provides a module for Fluent connection functionality."""
 
+from __future__ import annotations
+
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
@@ -13,7 +15,6 @@ from typing import Any, Callable, List, Optional, Tuple, Union
 import warnings
 import weakref
 
-from docker.models.containers import Container
 import grpc
 import psutil
 
@@ -23,9 +24,14 @@ from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.platform.instancemanagement import Instance
-import docker
 
 logger = logging.getLogger("pyfluent.general")
+
+
+def _docker():
+    import docker
+
+    return docker
 
 
 class PortNotProvided(ValueError):
@@ -105,11 +111,11 @@ def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
     if not isinstance(container_id_or_name, str):
         container_id_or_name = str(container_id_or_name)
     try:
-        docker_client = docker.from_env()
+        docker_client = _docker().from_env()
         container = docker_client.containers.get(container_id_or_name)
-    except docker.errors.NotFound:  # NotFound is a child from DockerException
+    except _docker().errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except docker.errors.DockerException as exc:
+    except _docker().errors.DockerException as exc:
         logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
@@ -515,7 +521,7 @@ class FluentConnection:
         if get_container(container_id):
             try:
                 container.exec_run(["bash", cleanup_file_name], detach=True)
-            except docker.errors.APIError as e:
+            except _docker().errors.APIError as e:
                 logger.info(f"{type(e).__name__}: {e}")
                 logger.debug(
                     "Caught Docker APIError, Docker container probably not running anymore."
