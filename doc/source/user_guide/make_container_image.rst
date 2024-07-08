@@ -12,47 +12,38 @@ Fluent for efficient and secure deployment and management.
 Prerequisites
 -------------
 
-* A Linux machine with `Docker <https://www.docker.com>`_ installed.
+1. A Linux machine with `Docker <https://www.docker.com>`_ installed.
 
-* A valid Ansys license. Your Ansys reseller should have provided you with one.
+2. A valid Ansys license. Your Ansys reseller should have provided you with one.
 
-* The following provided files:
-  
-  * `Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_
-  * `copy_docker_files.py <https://github.com/ansys/pyfluent/blob/main/docker/fluent/copy_docker_files.py>`_
+3. Clone `PyFluent <https://github.com/ansys/pyfluent>`_ or download the files from any of the following directories into an empty folder according to the Ansys version you have.
+
+  * `Ansys Fluent 2022 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_
+  * `Ansys Fluent 2031 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_
+  * `Ansys Fluent 2032 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_
+  * `Ansys Fluent 2041 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_
+  * `Ansys Fluent 2042 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_
 
 
 Procedure
 ---------
 
-These text files indicate the files that are included or excluded during the copying for Ansys version 24R1.
-If you have a different version of Ansys then update these paths in the following text files accordingly, for example if you have
-the pre-installed Ansys version 23R2 then replace v241 with v232 and 24.1.0 with 23.2.0 etc.
+1. Set current working directory
+++++++++++++++++++++++++++++++++
 
-* These files indicate the files that are included during the copying:
+* If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to any of the
+`fluent_222 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_, `fluent_231 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_,
+`fluent_232 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_, `fluent_241 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_,
+`fluent_242 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_ directories according to the Ansys version you have.
 
-  * `cadList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/cadList.txt>`_
-  * `ceiList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/ceiList.txt>`_
-  * `cfdpostList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/cfdpostList.txt>`_
-  * `fluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/fluentList.txt>`_
+* If you haven't cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to the folder into which you have downloaded the files from any of the
+`fluent_222 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_, `fluent_231 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_,
+`fluent_232 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_, `fluent_241 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_,
+`fluent_242 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_ directories.
 
-* These files indicate the files that are excluded during the copying:
 
-  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
-  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
-
-1. We have excluded these files because we have determined that they are not needed to run typical Fluent workflows.
-
-2. If you find that some of the excluded files are need to run your workflows then you can remove those files from the exclusion list.
-
-* If you have cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to
-`Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ before executing these commands.
-
-* If you haven't cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then copy `Docker files <https://github.com/ansys/pyfluent/blob/main/docker/fluent>`_ into an empty folder and
-execute these commands from that folder.
-
-Copy needed files
-+++++++++++++++++
+2. Copy needed files
+++++++++++++++++++++
 
 Specify the pre-installed Ansys directory as a command line argument and run this script to copy needed files from the
 Ansys installation directory to the current working directory:
@@ -61,7 +52,17 @@ Ansys installation directory to the current working directory:
 
     python copy_docker_files.py <path to 'ansys_inc' directory>
 
-Build the Docker image
+
+* These files indicate the files that are excluded during the copying:
+
+  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
+  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
+
+1. We have excluded these files because we have determined that they are not needed to run typical Fluent workflows.
+
+2. If you find that some of the excluded files are needed to run your workflows then you can remove those files from the exclusion list.
+
+3. Build the Docker image
 ++++++++++++++++++++++
 
 Execute this command to build the Docker image:
