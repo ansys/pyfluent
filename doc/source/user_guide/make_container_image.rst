@@ -19,10 +19,10 @@ Prerequisites
 3. Clone `PyFluent <https://github.com/ansys/pyfluent>`_ or download the files from any of the following directories into an empty folder according to the Ansys version you have.
 
   * `Ansys Fluent 2022 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_
-  * `Ansys Fluent 2031 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_
-  * `Ansys Fluent 2032 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_
-  * `Ansys Fluent 2041 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_
-  * `Ansys Fluent 2042 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_
+  * `Ansys Fluent 2023 R1 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_
+  * `Ansys Fluent 2023 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_
+  * `Ansys Fluent 2024 R1 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_
+  * `Ansys Fluent 2024 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_
 
 
 Procedure
@@ -36,10 +36,9 @@ Procedure
 `fluent_232 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_, `fluent_241 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_,
 `fluent_242 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_ directories according to the Ansys version you have.
 
-* If you haven't cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to the folder into which you have downloaded the files from any of the
-`fluent_222 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_, `fluent_231 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_,
+* If you haven't cloned `PyFluent <https://github.com/ansys/pyfluent>`_ locally then change the current working directory to the folder into which you have downloaded the files from any of the `fluent_222 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_, `fluent_231 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_,
 `fluent_232 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_, `fluent_241 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_,
-`fluent_242 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_ directories.
+`fluent_242 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_ directories according to the Ansys version you have.
 
 
 2. Copy needed files
