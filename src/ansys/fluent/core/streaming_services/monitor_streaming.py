@@ -4,10 +4,15 @@ import threading
 from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
-import pandas as pd
 
 from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+
+
+def _pandas():
+    import pandas
+
+    return pandas
 
 
 class MonitorsManager(StreamingService):

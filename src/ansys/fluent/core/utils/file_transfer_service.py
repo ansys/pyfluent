@@ -11,7 +11,7 @@ import warnings
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
-import docker
+import ansys.tools.filetransfer as ft
 
 logger = logging.getLogger("pyfluent.file_transfer_service")
 
@@ -144,6 +144,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         host_mount_path: Union[str, Path], optional
             Existing path in the host operating system to be available inside the container.
         """
+        import docker
+
         self.docker_client = docker.from_env()
         self.image_name = (
             image_name if image_name else "ghcr.io/ansys/tools-filetransfer"

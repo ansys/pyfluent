@@ -9,10 +9,11 @@ import subprocess
 import time
 from typing import Any, Dict, Union
 
-from beartype import BeartypeConf, beartype
-
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.utils.networking import find_remoting_ip
+
+# from beartype import BeartypeConf, beartype
+
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -79,7 +80,7 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
     return start_watchdog
 
 
-@beartype(conf=BeartypeConf(violation_type=TypeError))
+# @beartype(conf=BeartypeConf(violation_type=TypeError))
 def _build_journal_argument(
     topy: Union[None, bool, str], journal_file_names: Union[None, str, list[str]]
 ) -> str:
