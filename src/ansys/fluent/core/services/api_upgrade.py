@@ -44,4 +44,4 @@ class ApiUpgradeAdvisor:
                 print(
                     "The following solver settings object method could also be used to execute the above command:"
                 )
-                print(f"<solver_session>.{journal_str[len('solver.'):]}")
+                print(f"<solver_session>.settings.{journal_str[len('solver.'):]}")
