@@ -90,7 +90,7 @@ def deprecate_arguments(
             old_arg_list = _convert_list_to_str(old_args)
             new_arg_list = _convert_list_to_str(new_args)
             warnings.warn(
-                f"'{old_arg_list}' are deprecated. Use '{new_arg_list}' instead.",
+                f"The argument list, '{old_arg_list}' is deprecated. Use '{new_arg_list}' instead.",
                 deprecation_class,
                 stacklevel=2,
             )
