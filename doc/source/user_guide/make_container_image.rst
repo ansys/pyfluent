@@ -16,14 +16,7 @@ Prerequisites
 
 2. A valid Ansys license. Your Ansys reseller should have provided you with one.
 
-3. Obtain the ``docker/fluent`` directory for the particular Fluent release.
-
-  * `Ansys Fluent 2022 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_222>`_
-  * `Ansys Fluent 2023 R1 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_231>`_
-  * `Ansys Fluent 2023 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_232>`_
-  * `Ansys Fluent 2024 R1 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_241>`_
-  * `Ansys Fluent 2024 R2 <https://github.com/ansys/pyfluent/blob/main/docker/fluent_242>`_
-
+3. PyFluent source. You can clone `PyFluent <https://github.com/ansys/pyfluent>`_ or download the zip from `here <https://github.com/ansys/pyfluent/archive/refs/heads/main.zip>`_.
 
 Procedure
 ---------
@@ -31,7 +24,7 @@ Procedure
 1. Set current working directory
 ++++++++++++++++++++++++++++++++
 
-Navigate to the ``docker/fluent_`` directory for the particular Fluent release.
+Within the PyFluent source navigate to the ``docker/fluent_<version>`` directory for the particular Fluent release.
 
 
 2. Copy needed files
