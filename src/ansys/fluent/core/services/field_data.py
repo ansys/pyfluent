@@ -17,10 +17,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.deprecate_args import (
-    deprecate_argument,
-    deprecate_arguments,
-)
+from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 

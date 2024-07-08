@@ -17,10 +17,7 @@ from ansys.fluent.core.services.field_data import (
     Vertices,
     _surface_converter,
 )
-from ansys.fluent.core.utils.deprecate_args import (
-    deprecate_argument,
-    deprecate_arguments,
-)
+from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
 
 
 class InvalidMultiPhaseFieldName(ValueError):
