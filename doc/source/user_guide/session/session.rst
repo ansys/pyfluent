@@ -90,6 +90,8 @@ Here are some examples using the ``viscous`` and ``discrete_phase`` models.
 
 Some items in the solver settings object tree are methods:
 
+.. code:: python
+
   >>> solver.settings.solution.run_calculation.iterate(iter_count=100)
 
 
