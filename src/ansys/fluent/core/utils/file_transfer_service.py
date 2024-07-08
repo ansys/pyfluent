@@ -8,12 +8,9 @@ import shutil
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 import warnings
 
-from alive_progress import alive_bar
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
-import ansys.tools.filetransfer as ft
 import docker
 
 logger = logging.getLogger("pyfluent.file_transfer_service")
@@ -176,6 +173,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 detach=True,
                 volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
             )
+        import ansys.tools.filetransfer as ft
+
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
 
     def file_exists_on_remote(self, file_name: str) -> bool:
@@ -379,6 +378,8 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
+            from alive_progress import alive_bar
+
             with alive_bar(len(files), title="Uploading...") as bar:
                 for file in files:
                     if os.path.isfile(file):
@@ -434,6 +435,8 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
+            from alive_progress import alive_bar
+
             with alive_bar(len(files), title="Downloading...") as bar:
                 for file in files:
                     if os.path.isfile(file):
