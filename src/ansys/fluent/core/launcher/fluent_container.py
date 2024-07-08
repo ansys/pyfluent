@@ -56,7 +56,6 @@ import tempfile
 from typing import Any, List, Optional, Union
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
@@ -297,7 +296,9 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = os.getenv("FLUENT_IMAGE_TAG", f"v{fluent_release_version}")
+            image_tag = os.getenv(
+                "FLUENT_IMAGE_TAG", f"v{pyfluent.fluent_release_version}"
+            )
         if not image_name:
             image_name = os.getenv("FLUENT_IMAGE_NAME", "ghcr.io/ansys/pyfluent")
         if not image_tag or not image_name:
