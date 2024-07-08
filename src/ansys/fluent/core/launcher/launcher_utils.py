@@ -12,9 +12,6 @@ from typing import Any, Dict, Union
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
-# from beartype import BeartypeConf, beartype
-
-
 logger = logging.getLogger("pyfluent.launcher")
 
 
@@ -80,25 +77,33 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
     return start_watchdog
 
 
-# @beartype(conf=BeartypeConf(violation_type=TypeError))
 def _build_journal_argument(
     topy: Union[None, bool, str], journal_file_names: Union[None, str, list[str]]
 ) -> str:
     """Build Fluent commandline journal argument."""
-    if topy and not journal_file_names:
-        raise InvalidArgument(
-            "Use 'journal_file_names' to specify and convert journal files."
-        )
-    fluent_jou_arg = ""
-    if isinstance(journal_file_names, str):
-        journal_file_names = [journal_file_names]
-    if journal_file_names:
-        fluent_jou_arg += "".join(
-            [f' -i "{journal}"' for journal in journal_file_names]
-        )
-    if topy:
-        if isinstance(topy, str):
-            fluent_jou_arg += f' -topy="{topy}"'
-        else:
-            fluent_jou_arg += " -topy"
-    return fluent_jou_arg
+
+    from beartype import BeartypeConf, beartype
+
+    @beartype(conf=BeartypeConf(violation_type=TypeError))
+    def _impl(
+        topy: Union[None, bool, str], journal_file_names: Union[None, str, list[str]]
+    ) -> str:
+        if topy and not journal_file_names:
+            raise InvalidArgument(
+                "Use 'journal_file_names' to specify and convert journal files."
+            )
+        fluent_jou_arg = ""
+        if isinstance(journal_file_names, str):
+            journal_file_names = [journal_file_names]
+        if journal_file_names:
+            fluent_jou_arg += "".join(
+                [f' -i "{journal}"' for journal in journal_file_names]
+            )
+        if topy:
+            if isinstance(topy, str):
+                fluent_jou_arg += f' -topy="{topy}"'
+            else:
+                fluent_jou_arg += " -topy"
+        return fluent_jou_arg
+
+    return _impl(topy, journal_file_names)
