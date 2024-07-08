@@ -66,6 +66,17 @@ class Transaction:
         self._file_session = file_session
         self._field_info = field_info
 
+    def _get_surface_ids(self, surfaces):
+        surface_ids = []
+        for surface in surfaces:
+            if isinstance(surface, str):
+                surface_ids.append(
+                    self._field_info.get_surfaces_info()[surface]["surface_id"][0]
+                )
+            else:
+                surface_ids.append(surface)
+        return surface_ids
+
     @staticmethod
     def _data_type_convertor(old_args_dict, new_args):
         d_type_list = []
@@ -112,7 +123,8 @@ class Transaction:
                 data_types.append(SurfaceDataType(d_type))
         provide_vertices = SurfaceDataType.Vertices in data_types
         provide_faces = SurfaceDataType.FacesConnectivity in data_types
-        for surface_id in surfaces:
+        surface_ids = self._get_surface_ids(surfaces)
+        for surface_id in surface_ids:
             self._surface_transactions.append(
                 Transaction._SurfaceTransaction(
                     surface_id, provide_vertices, provide_faces
@@ -156,24 +168,19 @@ class Transaction:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        for surface in surfaces:
-            if isinstance(surface, str):
-                surfaces.append(
-                    self._field_info.get_surfaces_info()[surface]["surface_id"][0]
-                )
-                surfaces.remove(surface)
+        surface_ids = self._get_surface_ids(surfaces)
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
             self._scalar_field_transactions.append(
                 Transaction._ScalarFieldTransaction(
-                    field_name, surfaces, field_name.split(":")[0]
+                    field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
             self._scalar_field_transactions.append(
-                Transaction._ScalarFieldTransaction(field_name, surfaces)
+                Transaction._ScalarFieldTransaction(field_name, surface_ids)
             )
 
     @deprecate_arguments(
@@ -205,24 +212,19 @@ class Transaction:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        for surface in surfaces:
-            if isinstance(surface, str):
-                surfaces.append(
-                    self._field_info.get_surfaces_info()[surface]["surface_id"][0]
-                )
-                surfaces.remove(surface)
+        surface_ids = self._get_surface_ids(surfaces)
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
             self._vector_field_transactions.append(
                 Transaction._VectorFieldTransaction(
-                    field_name, surfaces, field_name.split(":")[0]
+                    field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
             self._vector_field_transactions.append(
-                Transaction._VectorFieldTransaction(field_name, surfaces)
+                Transaction._VectorFieldTransaction(field_name, surface_ids)
             )
 
     def add_pathlines_fields_request(
@@ -330,7 +332,7 @@ class FileFieldData:
         for surface in surfaces:
             if isinstance(surface, str):
                 surface_ids.append(
-                    self._field_info.get_surfaces_info()[surfaces[0]]["surface_id"]
+                    self._field_info.get_surfaces_info()[surface]["surface_id"][0]
                 )
             else:
                 surface_ids.append(surface)
