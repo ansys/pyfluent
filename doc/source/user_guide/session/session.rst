@@ -98,6 +98,8 @@ Note: You can find out more about solver settings objects here:
 
 Objects under ``fields`` provide a similar interface.
 
+.. code:: python
+
   >>> field_data = fields.field_data
   >>> transaction = field_data.new_transaction()
   >>> add_scalar_fields = transaction.add_scalar_fields_request
