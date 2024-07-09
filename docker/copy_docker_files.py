@@ -1,21 +1,20 @@
 """Provides a module to copy files from the Ansys installation directory."""
 
-import os
 from pathlib import Path
 import shutil
 import sys
 from typing import Union
 
-current_path = Path(__file__.rstrip(os.path.basename(__file__)))
 
-
-def create_file_folders_list(files_list: list):
+def create_file_folders_list(files_list: list, fluent_version: Union[Path, str]):
     """Create a list of files and folders specified in a text file.
 
     Parameters
     ----------
     files_list: list
         List of text files containing relative paths of files and folders.
+    fluent_version: Union[Path, str]
+        Path of ``docker/fluent_<version>`` folder.
 
     Returns
     -------
@@ -24,25 +23,31 @@ def create_file_folders_list(files_list: list):
     """
     file_folders = []
     for file in files_list:
-        with open(Path(current_path) / file, "r") as f:
+        with open(Path(fluent_version) / file, "r") as f:
             lines = f.readlines()
             file_folders.extend([line.rstrip("\n") for line in lines])
     return file_folders
 
 
-def copy_files(src: Union[Path, str]):
+def copy_files(src: Union[Path, str], fluent_version: Union[Path, str]):
     """Copy files from the Ansys installation directory.
 
     Parameters
     ----------
     src: Union[Path, str]
         Path of ``ansys_inc`` folder in the Ansys installation directory.
+    fluent_version: Union[Path, str]
+        Path of ``docker/fluent_<version>`` folder.
     """
     copy_files = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
     remove_files = ["excludeCEIList.txt", "excludeFluentList.txt"]
-    copy_list = create_file_folders_list(files_list=copy_files)
-    remove_list = create_file_folders_list(files_list=remove_files)
-    dst = Path(current_path) / "ansys_inc"
+    copy_list = create_file_folders_list(
+        files_list=copy_files, fluent_version=fluent_version
+    )
+    remove_list = create_file_folders_list(
+        files_list=remove_files, fluent_version=fluent_version
+    )
+    dst = Path(fluent_version) / "ansys_inc"
     for file in copy_list:
         source = Path(src) / file
         destination = Path(dst) / file
@@ -61,4 +66,4 @@ def copy_files(src: Union[Path, str]):
 
 
 if __name__ == "__main__":
-    copy_files(src=sys.argv[1])
+    copy_files(src=sys.argv[1], fluent_version=sys.argv[2])
