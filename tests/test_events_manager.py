@@ -11,15 +11,31 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     on_case_loaded_old.loaded = False
 
+    def on_case_loaded_old_with_args(x, y, session_id, event_info):
+        on_case_loaded_old_with_args.state = dict(x=x, y=y)
+
+    on_case_loaded_old_with_args.state = None
+
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
 
     on_case_loaded.loaded = False
 
+    def on_case_loaded_with_args(x, y, session, event_info):
+        on_case_loaded_with_args.state = dict(x=x, y=y)
+
+    on_case_loaded_with_args.state = None
+
     new_solver_session.events.register_callback(Event.CASE_LOADED, on_case_loaded_old)
 
     new_solver_session.events.register_callback(
-        Event.CASE_LOADED, on_case_loaded, callback_has_new_signature=True
+        Event.CASE_LOADED, on_case_loaded_old_with_args, 12, y=42
+    )
+
+    new_solver_session.events.register_callback(Event.CASE_LOADED, on_case_loaded)
+
+    new_solver_session.events.register_callback(
+        Event.CASE_LOADED, on_case_loaded_with_args, 12, y=42
     )
 
     case_file_name = examples.download_file(
@@ -30,8 +46,12 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     assert not on_case_loaded_old.loaded
     assert not on_case_loaded.loaded
+    assert not on_case_loaded_old_with_args.state
+    assert not on_case_loaded_with_args.state
 
     new_solver_session.file.read_case(file_name=case_file_name)
 
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
+    assert on_case_loaded_old_with_args.state == dict(a=12, y=42)
+    assert on_case_loaded_with_args.state == dict(a=12, y=42)
