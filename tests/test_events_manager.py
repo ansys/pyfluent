@@ -26,22 +26,22 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     on_case_loaded_with_args.state = None
 
-    new_solver_session.events.register_callback(Event.CASE_LOADED, on_case_loaded_old)
+    solver = new_solver_session
 
-    new_solver_session.events.register_callback(
+    solver.events.register_callback(Event.CASE_LOADED, on_case_loaded_old)
+
+    solver.events.register_callback(
         Event.CASE_LOADED, on_case_loaded_old_with_args, 12, y=42
     )
 
-    new_solver_session.events.register_callback(Event.CASE_LOADED, on_case_loaded)
+    solver.events.register_callback(Event.CASE_LOADED, on_case_loaded)
 
-    new_solver_session.events.register_callback(
+    solver.events.register_callback(
         Event.CASE_LOADED, on_case_loaded_with_args, 12, y=42
     )
 
     case_file_name = examples.download_file(
-        "mixing_elbow_mul_ph.cas.h5",
-        "pyfluent/file_session",
-        return_without_path=False,
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
 
     assert not on_case_loaded_old.loaded
@@ -49,7 +49,10 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     assert not on_case_loaded_old_with_args.state
     assert not on_case_loaded_with_args.state
 
-    new_solver_session.file.read_case(file_name=case_file_name)
+    try:
+        solver.settings.file.read_case(file_name=case_file_name)
+    except AttributeError:
+        solver.tui.read_case(case_file_name)
 
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
