@@ -132,6 +132,7 @@ def _populate_xml_helpstrings():
         else:
             v = "".join(node.find("p").itertext())
             _XML_HELPSTRINGS[k] = v
+    _XML_HELP_FILE.unlink()
 
 
 def _is_valid_tui_menu_name(name):
