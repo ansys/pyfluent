@@ -2,7 +2,8 @@ import ast
 
 import pytest
 
-from ansys.fluent.core import CODEGEN_OUTDIR, fluent_release_version
+from ansys.fluent.core import CODEGEN_OUTDIR
+from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 

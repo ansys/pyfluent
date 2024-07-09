@@ -1,0 +1,7 @@
+v241/commonfiles/CAD
+v241/aisol
+v241/commonfiles/MainWin
+v241/Framework
+v241/commonfiles/registry
+v241/tp/stdc++
+v241/tp/openssl

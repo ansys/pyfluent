@@ -3,7 +3,6 @@ import subprocess
 import threading
 import time
 
-from docker.models.containers import Container
 import psutil
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
@@ -18,6 +17,7 @@ from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from docker.models.containers import Container
 
 
 def _read_case(session, lightweight_setup=True):
