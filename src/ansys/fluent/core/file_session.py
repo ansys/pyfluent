@@ -15,7 +15,6 @@ from ansys.fluent.core.services.field_data import (
     SurfaceDataType,
     VectorFieldData,
     Vertices,
-    _surface_converter,
 )
 from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
 
@@ -32,6 +31,20 @@ class InvalidFieldName(ValueError):
 
     def __init__(self):
         super().__init__("The only allowed field is 'velocity'.")
+
+
+def _data_type_convertor(args_dict):
+    d_type_list = []
+    d_type_map = {
+        "provide_vertices": SurfaceDataType.Vertices,
+        "provide_faces": SurfaceDataType.FacesConnectivity,
+    }
+    for key, val in d_type_map.items():
+        if args_dict.get(key):
+            d_type_list.append(val)
+        args_dict.pop(key, None)
+    args_dict["data_types"] = d_type_list
+    return args_dict
 
 
 class Transaction:
@@ -63,36 +76,20 @@ class Transaction:
         self._file_session = file_session
         self._field_info = field_info
 
-    def _get_surface_ids(self, surfaces):
-        surface_ids = []
-        for surface in surfaces:
-            if isinstance(surface, str):
-                surface_ids.append(
-                    self._field_info.get_surfaces_info()[surface]["surface_id"][0]
-                )
-            else:
-                surface_ids.append(surface)
-        return surface_ids
-
-    @staticmethod
-    def _data_type_convertor(old_args_dict, new_args):
-        d_type_list = []
-        if old_args_dict.get("provide_vertices"):
-            d_type_list.append(SurfaceDataType.Vertices)
-        if old_args_dict.get("provide_faces"):
-            d_type_list.append(SurfaceDataType.FacesConnectivity)
-        return {new_args[0]: d_type_list}
-
-    @deprecate_arguments(
-        old_args=["provide_vertices", "provide_faces"],
-        new_args=["data_types"],
-        converter=_data_type_convertor,
+    @deprecate_argument(
+        old_arg="surface_names",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     @deprecate_arguments(
-        old_args=["surface_names", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+        converter=_data_type_convertor,
         warning_cls=PyFluentDeprecationWarning,
     )
     def add_surfaces_request(
@@ -114,13 +111,19 @@ class Transaction:
         -------
         None
         """
+        updated_types = []
         for d_type in data_types:
             if isinstance(d_type, str):
-                data_types.remove(d_type)
-                data_types.append(SurfaceDataType(d_type))
+                updated_types.append(SurfaceDataType(d_type))
+            else:
+                updated_types.append(d_type)
+        data_types = updated_types
         provide_vertices = SurfaceDataType.Vertices in data_types
         provide_faces = SurfaceDataType.FacesConnectivity in data_types
-        surface_ids = self._get_surface_ids(surfaces)
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
         for surface_id in surface_ids:
             self._surface_transactions.append(
                 Transaction._SurfaceTransaction(
@@ -128,10 +131,16 @@ class Transaction:
                 )
             )
 
-    @deprecate_arguments(
-        old_args=["surface_names", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+    @deprecate_argument(
+        old_arg="surface_names",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     def add_scalar_fields_request(
@@ -165,7 +174,10 @@ class Transaction:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = self._get_surface_ids(surfaces)
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
@@ -180,10 +192,16 @@ class Transaction:
                 Transaction._ScalarFieldTransaction(field_name, surface_ids)
             )
 
-    @deprecate_arguments(
-        old_args=["surface_names", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+    @deprecate_argument(
+        old_arg="surface_names",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     def add_vector_fields_request(
@@ -209,7 +227,10 @@ class Transaction:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = self._get_surface_ids(surfaces)
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
 
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
@@ -224,6 +245,18 @@ class Transaction:
                 Transaction._VectorFieldTransaction(field_name, surface_ids)
             )
 
+    @deprecate_argument(
+        old_arg="surface_names",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
+        warning_cls=PyFluentDeprecationWarning,
+    )
     def add_pathlines_fields_request(
         self,
         field_name: str,
@@ -324,21 +357,16 @@ class FileFieldData:
         """Create a new field transaction."""
         return Transaction(self._file_session, self._field_info)
 
-    def _get_surface_ids(self, surfaces):
-        surface_ids = []
-        for surface in surfaces:
-            if isinstance(surface, str):
-                surface_ids.append(
-                    self._field_info.get_surfaces_info()[surface]["surface_id"][0]
-                )
-            else:
-                surface_ids.append(surface)
-        return surface_ids
-
-    @deprecate_arguments(
-        old_args=["surface_name", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+    @deprecate_argument(
+        old_arg="surface_name",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: [old_arg_val],
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     @deprecate_argument(
@@ -377,7 +405,10 @@ class FileFieldData:
                 data_types.remove(d_type)
                 data_types.append(SurfaceDataType(d_type))
 
-        surface_ids = self._get_surface_ids(surfaces)
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
 
         if SurfaceDataType.Vertices in data_types:
             if len(surfaces) == 1 and isinstance(surfaces[0], str):
@@ -423,10 +454,16 @@ class FileFieldData:
                     for surface_id in surface_ids
                 }
 
-    @deprecate_arguments(
-        old_args=["surface_name", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+    @deprecate_argument(
+        old_arg="surface_name",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: [old_arg_val],
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     def get_scalar_field_data(
@@ -463,7 +500,10 @@ class FileFieldData:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = self._get_surface_ids(surfaces)
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
         if len(surfaces) == 1 and isinstance(surfaces[0], str):
             surface_ids = self._field_info.get_surfaces_info()[surfaces[0]][
                 "surface_id"
@@ -512,10 +552,16 @@ class FileFieldData:
                     for surface_id in surface_ids
                 }
 
-    @deprecate_arguments(
-        old_args=["surface_name", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+    @deprecate_argument(
+        old_arg="surface_name",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: [old_arg_val],
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     def get_vector_field_data(
@@ -546,7 +592,10 @@ class FileFieldData:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = self._get_surface_ids(surfaces)
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
         if (
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
@@ -595,10 +644,16 @@ class FileFieldData:
                     for surface_id in surface_ids
                 }
 
-    @deprecate_arguments(
-        old_args=["surface_name", "surface_ids"],
-        new_args=["surfaces"],
-        converter=_surface_converter,
+    @deprecate_argument(
+        old_arg="surface_name",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: [old_arg_val],
+        warning_cls=PyFluentDeprecationWarning,
+    )
+    @deprecate_argument(
+        old_arg="surface_ids",
+        new_arg="surfaces",
+        converter=lambda old_arg_val: old_arg_val,
         warning_cls=PyFluentDeprecationWarning,
     )
     def get_pathlines_field_data(
@@ -793,3 +848,28 @@ class FileSession:
             PyFluentDeprecationWarning,
         )
         return self.fields.field_data
+
+
+def _get_surface_ids(
+    field_info: FileFieldInfo,
+    surfaces: List[Union[int, str]],
+) -> List[int]:
+    """Get surface IDs based on surface names or IDs.
+
+    Parameters
+    ----------
+    surfaces : Union[List[int], List[str]]
+        List of surface IDs or surface names.
+
+    Returns
+    -------
+    List[int]
+
+    """
+    surface_ids = []
+    for surf in surfaces:
+        if isinstance(surf, str):
+            surface_ids.extend(field_info.get_surfaces_info()[surf]["surface_id"])
+        else:
+            surface_ids.append(surf)
+    return list(set(surface_ids))
