@@ -134,9 +134,11 @@ class EventsManager(StreamingService):
         event_name : Event or str
             Event to register the callback to.
         callback : Callable
-            Callback to register. The callback signature is
-            <function>([args,] [kwargs,] session, event_info)
-
+            Callback to register. If the custom arguments,
+            args and kwargs, are empty then the callback
+            signature must be precisely <function>(session, event_info).
+            Otherwise, the arguments for args and/or kwargs
+            must precede the other arguments in the signature.
         args : Any
             Arguments.
         kwargs : Any
