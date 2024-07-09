@@ -18,7 +18,7 @@ by reading case and data files).
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent()
   >>> solver.file.read(file_type="case", file_name=import_file_name)
   >>> solver.solution.initialization.hybrid_initialize()
 
@@ -41,14 +41,14 @@ Here are the methods for requesting each type of field:
 
 Get surface data
 ~~~~~~~~~~~~~~~~
-You can request surface vertices for a given ``surface_name`` by calling
-the ``get_surface_data`` method and specifying ``Vertices`` for ``data_type``.
+You can request surface vertices for given ``surfaces`` by calling
+the ``get_surface_data`` method and specifying ``Vertices`` for ``data_types``.
 
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
 
-  >>> vertices_data = field_data.get_surface_data(surface_name="cold-inlet", data_type=SurfaceDataType.Vertices)
+  >>> vertices_data = field_data.get_surface_data(surfaces=["cold-inlet"], data_types=[SurfaceDataType.Vertices])
   >>> vertices_data.size
   241
   >>> vertices_data.surface_id
@@ -61,25 +61,25 @@ the ``get_surface_data`` method and specifying ``Vertices`` for ``data_type``.
   0.0036200774
 
 You can call the same method to get the corresponding surface face normals and centroids.
-For ``data_type``, specifying ``FacesNormal`` and ``FacesCentroid`` respectively.
+For ``data_types``, specifying ``FacesNormal`` and ``FacesCentroid`` respectively.
 
 .. code-block:: python
 
   >>> faces_normal_data = field_data.get_surface_data(
-  >>>     data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
+  >>>     data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
   >>> )
 
   >>> faces_centroid_data = field_data.get_surface_data(
-  >>>     data_type=SurfaceDataType.FacesCentroid, surface_name="cold-inlet"
+  >>>     data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
   >>> )
 
-You can request face connectivity data for a given ``surface_name`` by calling
-the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_type``.
+You can request face connectivity data for given ``surfaces`` by calling
+the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_types``.
 
 .. code-block:: python
 
   >>> faces_connectivity_data = field_data.get_surface_data(
-  >>>     data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
+  >>>     data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
   >>> )
   >>> faces_connectivity_data[5].node_count
   4
@@ -97,7 +97,7 @@ You can call the ``get_scalar_field_data`` method to get scalar field data, such
 
 .. code-block:: python
 
-  >>> abs_press_data = field_data.get_scalar_field_data(field_name="absolute-pressure", surface_name="cold-inlet")
+  >>> abs_press_data = field_data.get_scalar_field_data(field_name="absolute-pressure", surfaces=["cold-inlet"])
   >>> abs_press_data.size
   241
   >>> abs_press_data[120].scalar_data
@@ -112,7 +112,7 @@ You can call the ``get_vector_field_data`` method to get vector field data.
 
 .. code-block:: python
 
-  >>> velocity_vector_data = field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> velocity_vector_data = field_data.get_vector_field_data(field_name="velocity", surfaces=["cold-inlet"])
   >>> velocity_vector_data.size
   152
   >>> velocity_vector_data.scale
@@ -127,7 +127,7 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
 
 .. code-block:: python
 
-  >>> path_lines_data = field_data.get_pathlines_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> path_lines_data = field_data.get_pathlines_field_data(field_name="velocity", surfaces=["cold-inlet"])
   >>> path_lines_data["vertices"].size
   76152
   >>> path_lines_data["lines"].size
@@ -170,16 +170,16 @@ Following code demonstrate adding multiple requests to a single transaction.
 .. code-block::
 
   >>> transaction.add_surfaces_request(
-  >>>     surface_ids=[1], provide_vertices=True, provide_faces=False, provide_faces_centroid=True
+  >>>     surfaces=[1], data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
   >>> )
   >>> transaction.add_surfaces_request(
-  >>>     surface_ids=[2], provide_vertices=True, provide_faces=True
+  >>>     surfaces=[2], data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
   >>> )
   >>> transaction.add_scalar_fields_request(
-  >>>     surface_ids=[1,2], field_name="temperature", node_value=True, boundary_value=True
+  >>>     surfaces=[1,2], field_name="pressure", node_value=True, boundary_value=True
   >>> )
-  >>> transaction.add_vector_fields_request(surface_ids=[1,2], field_name="velocity")
-  >>> transaction.add_pathlines_fields_request(surface_ids=[1,2], field_name="temperature")
+  >>> transaction.add_vector_fields_request(surfaces=[1,2], field_name="velocity")
+  >>> transaction.add_pathlines_fields_request(surfaces=[1,2], field_name="temperature")
 
 
 You can call the ``get_fields`` method to get the data for all these requests. This call also
