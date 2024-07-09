@@ -98,11 +98,14 @@ class EventsManager(StreamingService):
                 break
 
     @staticmethod
-    def _make_callback_to_call(callback: Callable, callback_has_new_signature: bool):
+    def _make_callback_to_call(
+        callback: Callable, callback_has_new_signature: bool, *args, **kwargs
+    ):
+        fn = partial(callback, *args, **kwargs)
         return (
-            callback
+            fn
             if callback_has_new_signature
-            else lambda session, event_info: callback(
+            else lambda session, event_info: fn(
                 session_id=session.id, event_info=event_info
             )
         )
@@ -155,7 +158,7 @@ class EventsManager(StreamingService):
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
             callback_to_call = EventsManager._make_callback_to_call(
-                partial(callback, *args, **kwargs), callback_has_new_signature
+                callback, callback_has_new_signature, *args, **kwargs
             )
             if callbacks_map:
                 callbacks_map.update({callback_id: callback_to_call})
