@@ -71,11 +71,12 @@ def deprecate_arguments(
             kwargs = converter(kwargs)
             new_args = set(kwargs) - set(input_kwargs)
             old_args = set(input_kwargs) - set(kwargs)
-            warnings.warn(
-                f"The arguments: {', '.join(old_args)} are deprecated. Use {', '.join(new_args)} instead.",
-                warning_cls,
-                stacklevel=2,
-            )
+            if old_args and new_args:
+                warnings.warn(
+                    f"The arguments: {', '.join(old_args)} are deprecated. Use {', '.join(new_args)} instead.",
+                    warning_cls,
+                    stacklevel=2,
+                )
             return func(*args, **kwargs)
 
         return wrapper
