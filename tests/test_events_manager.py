@@ -6,7 +6,7 @@ from ansys.fluent.core.streaming_services.events_streaming import Event
 
 def test_receive_event_on_case_loaded(new_solver_session) -> None:
 
-    def on_case_loaded(_1, _2):
+    def on_case_loaded(session_id, event_info):
         on_case_loaded.loaded = True
 
     on_case_loaded.loaded = False
