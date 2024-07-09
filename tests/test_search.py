@@ -240,7 +240,7 @@ def test_whole_word_search(capsys):
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
-    pyfluent.search("font", match_case=True)
+    pyfluent.search("font", match_whole_word=True, match_case=True)
     lines = capsys.readouterr().out.splitlines()
     for line in lines:
         assert "Font" not in line
