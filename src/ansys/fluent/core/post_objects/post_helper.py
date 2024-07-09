@@ -101,8 +101,8 @@ class PostAPIHelper:
     def __init__(self, obj):
         """__init__ method of PostAPIHelper class."""
         self.obj = obj
-        self.field_info = lambda: obj.get_root().session.field_info
-        self.field_data = lambda: obj.get_root().session.field_data
+        self.field_info = lambda: obj.get_root().session.fields.field_info
+        self.field_data = lambda: obj.get_root().session.fields.field_data
         self.monitors_manager = lambda: obj.get_root().session.monitors
         self.id = lambda: obj.get_root().session.id
         if obj.__class__.__name__ == "Surface":
