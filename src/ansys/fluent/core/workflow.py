@@ -380,17 +380,20 @@ class BaseTask:
         return self._python_name
 
     def _set_python_name(self, compound=False):
-        this_command = self._command()
-        if compound:
-            p_name = (
-                self._command_source._compound_parent_task_python_name_id[0]
-                + f"_child_{self._command_source._compound_parent_task_python_name_id[1]}"
-            )
-            self._python_name = p_name
-            self._command_source._compound_task_map[self.name()] = p_name
-        else:
-            self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
-        self._cache_data(this_command)
+        if self._dynamic_interface:
+            this_command = self._command()
+            if compound:
+                p_name = (
+                    self._command_source._compound_parent_task_python_name_id[0]
+                    + f"_child_{self._command_source._compound_parent_task_python_name_id[1]}"
+                )
+                self._python_name = p_name
+                self._command_source._compound_task_map[self.name()] = p_name
+            else:
+                self._python_name = camel_to_snake_case(
+                    this_command.get_attr("helpString")
+                )
+            self._cache_data(this_command)
 
     def _cache_data(self, command):
         disp_text = command.get_attr("displayText")
