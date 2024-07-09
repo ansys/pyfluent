@@ -2,6 +2,7 @@
 
 from enum import Enum
 from functools import partial
+import inspect
 import logging
 from typing import Callable, Union
 
@@ -100,10 +101,9 @@ class EventsManager(StreamingService):
     @staticmethod
     def _make_callback_to_call(callback: Callable, args, kwargs):
         fn = partial(callback, *args, **kwargs)
-        callback_has_new_signature = True
         return (
             fn
-            if callback_has_new_signature
+            if "session" in inspect.signature(callback).parameters
             else lambda session, event_info: fn(
                 session_id=session.id, event_info=event_info
             )

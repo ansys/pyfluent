@@ -53,5 +53,5 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
-    assert on_case_loaded_old_with_args.state == dict(a=12, y=42)
-    assert on_case_loaded_with_args.state == dict(a=12, y=42)
+    assert on_case_loaded_old_with_args.state == dict(x=12, y=42)
+    assert on_case_loaded_with_args.state == dict(x=12, y=42)
