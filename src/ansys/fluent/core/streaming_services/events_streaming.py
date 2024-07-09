@@ -5,10 +5,12 @@ from functools import partial
 import inspect
 import logging
 from typing import Callable, Union
+import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 network_logger = logging.getLogger("pyfluent.networking")
 
@@ -100,10 +102,16 @@ class EventsManager(StreamingService):
 
     @staticmethod
     def _make_callback_to_call(callback: Callable, args, kwargs):
+        new_style = "session" in inspect.signature(callback).parameters
+        if not new_style:
+            warnings.warn(
+                "Replace any event callback session_id arguments with session",
+                PyFluentDeprecationWarning,
+            )
         fn = partial(callback, *args, **kwargs)
         return (
             fn
-            if "session" in inspect.signature(callback).parameters
+            if new_style
             else lambda session, event_info: fn(
                 session_id=session.id, event_info=event_info
             )
