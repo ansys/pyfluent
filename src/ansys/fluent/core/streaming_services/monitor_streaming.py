@@ -166,12 +166,12 @@ class MonitorsManager(StreamingService):
                 monitor_data.append(data_received[monitor_name])
 
             if monitor_data:
-                new_df = pd.DataFrame([monitor_data], columns=monitors)
+                new_df = _pandas().DataFrame([monitor_data], columns=monitors)
                 new_df.set_index("xvalues", inplace=True)
                 if df.empty:
                     df_data["df"] = new_df
                 else:
-                    df_data["df"] = pd.concat([df, new_df])
+                    df_data["df"] = _pandas().concat([df, new_df])
                 for callback_map in self._service_callbacks.values():
                     callback, args, kwargs = callback_map
                     callback(*args, **kwargs)
@@ -208,7 +208,7 @@ class MonitorsManager(StreamingService):
                     continue
                 self._data_frames[monitor_set_name] = {}
                 monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
-                df = pd.DataFrame([], columns=monitors_name)
+                df = _pandas().DataFrame([], columns=monitors_name)
                 df.set_index("xvalues", inplace=True)
                 self._data_frames[monitor_set_name]["df"] = df
                 self._data_frames[monitor_set_name]["monitors"] = monitors_name
