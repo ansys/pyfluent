@@ -1,6 +1,7 @@
 """Wrappers over Reduction gRPC service of Fluent."""
 
 from typing import Any, List, Tuple
+import weakref
 
 import grpc
 
@@ -248,7 +249,7 @@ class Reduction:
     def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
-        self.ctxt = ctxt
+        self.ctxt = weakref.proxy(ctxt)
 
     docstring = None
 
