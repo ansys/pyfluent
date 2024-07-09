@@ -55,19 +55,17 @@ def test_field_data(new_solver_session) -> None:
         "surface_id"
     ][0]
     transaction.add_surfaces_request(
-        surface_ids=[1, hot_inlet_surf_id],
-        provide_vertices=True,
-        provide_faces=False,
-        provide_faces_centroid=True,
+        surfaces=[1, hot_inlet_surf_id],
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     transaction.add_scalar_fields_request(
-        surface_ids=[1, hot_inlet_surf_id],
+        surfaces=[1, hot_inlet_surf_id],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
     )
     transaction.add_pathlines_fields_request(
-        surface_ids=[1, hot_inlet_surf_id],
+        surfaces=[1, hot_inlet_surf_id],
         field_name="temperature",
         provide_particle_time_field=True,
     )
@@ -107,7 +105,7 @@ def test_field_data(new_solver_session) -> None:
     transaction2 = field_data.new_transaction()
     fields_request = transaction2.add_scalar_fields_request
     surface_names = fields_request.surface_names.allowed_values()
-    fields_request(surface_names=surface_names, field_name="temperature")
+    fields_request(surfaces=surface_names, field_name="temperature")
     data2 = transaction2.get_fields()
     assert data2
 
@@ -191,43 +189,43 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     # Absolute Pressure data over the cold-inlet (surface_id=3)
     abs_press_data = field_data.get_scalar_field_data(
-        field_name="absolute-pressure", surface_name="cold-inlet"
+        field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
 
     assert abs_press_data.size == 241
     assert abs_press_data[120].scalar_data == 101325.0
 
     vertices_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.Vertices, surface_name="cold-inlet"
+        data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
     )
     assert round(float(vertices_data[5].x), 2) == -0.2
 
     faces_centroid_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.FacesCentroid, surface_name="cold-inlet"
+        data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
     )
     assert round(float(faces_centroid_data[5].y), 2) == -0.18
 
     faces_connectivity_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
+        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
     assert faces_connectivity_data[5].node_count == 4
     assert (faces_connectivity_data[5].node_indices == [12, 13, 17, 16]).all()
 
     faces_normal_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
+        data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
     )
     assert faces_normal_data.size == 152
     assert faces_normal_data.surface_id == 3
 
     velocity_vector_data = field_data.get_vector_field_data(
-        field_name="velocity", surface_name="cold-inlet"
+        field_name="velocity", surfaces=["cold-inlet"]
     )
 
     assert velocity_vector_data.size == 152
     assert velocity_vector_data.scale == 1.0
 
     path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surface_name="cold-inlet"
+        field_name="velocity", surfaces=["cold-inlet"]
     )
 
     assert path_lines_data["vertices"].size == 76152
@@ -255,37 +253,37 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
 
     # Absolute Pressure data over the cold-inlet (surface_id=3)
     abs_press_data = field_data.get_scalar_field_data(
-        field_name="absolute-pressure", surface_name="velocity-inlet-2"
+        field_name="absolute-pressure", surfaces=["velocity-inlet-2"]
     )
 
     assert abs_press_data.size == 11
     assert abs_press_data[5].scalar_data == 101325.0
 
     vertices_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.Vertices, surface_name="interior-4"
+        data_types=[SurfaceDataType.Vertices], surfaces=["interior-4"]
     )
     assert round(float(vertices_data[5].x), 2) == 0.0
 
     faces_centroid_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.FacesCentroid, surface_name="velocity-inlet-2"
+        data_types=[SurfaceDataType.FacesCentroid], surfaces=["velocity-inlet-2"]
     )
     assert round(float(faces_centroid_data[5].y), 2) == 0.02
 
     faces_connectivity_data = field_data.get_surface_data(
-        data_type=SurfaceDataType.FacesConnectivity, surface_name="velocity-inlet-2"
+        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
     )[5]
     assert faces_connectivity_data.node_count == 2
     assert (faces_connectivity_data.node_indices == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
-        field_name="velocity", surface_name="velocity-inlet-2"
+        field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
     assert velocity_vector_data.size == 10
     assert velocity_vector_data.scale == 1.0
 
     path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surface_name="velocity-inlet-2"
+        field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
     assert path_lines_data["vertices"].size == 5010
@@ -304,28 +302,28 @@ def test_field_data_errors(new_solver_session) -> None:
 
     with pytest.raises(DisallowedValuesError) as fne:
         solver.fields.field_data.get_scalar_field_data(
-            field_name="y-face-area", surface_ids=[0]
+            field_name="y-face-area", surfaces=[0]
         )
 
     with pytest.raises(DisallowedValuesError) as fne:
         solver.fields.field_data.get_scalar_field_data(
-            field_name="partition-neighbors", surface_ids=[0]
+            field_name="partition-neighbors", surfaces=[0]
         )
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
     with pytest.raises(FieldUnavailable) as fnu:
         solver.fields.field_data.get_scalar_field_data(
-            field_name="density", surface_ids=[0]
+            field_name="density", surfaces=[0]
         )
 
     y_face_area = solver.fields.field_data.get_scalar_field_data(
-        field_name="y-face-area", surface_ids=[0]
+        field_name="y-face-area", surfaces=[0]
     )
     assert y_face_area and isinstance(y_face_area, dict)
 
     partition_neighbors = solver.fields.field_data.get_scalar_field_data(
-        field_name="partition-neighbors", surface_ids=[0]
+        field_name="partition-neighbors", surfaces=[0]
     )
     assert partition_neighbors and isinstance(partition_neighbors, dict)
 
@@ -337,12 +335,12 @@ def test_field_data_errors(new_solver_session) -> None:
 
     with pytest.raises(DisallowedValuesError) as sne:
         solver.fields.field_data.get_scalar_field_data(
-            field_name="density", surface_name="bob"
+            field_name="density", surfaces=["bob"]
         )
 
     with pytest.raises(DisallowedValuesError) as fne:
         solver.fields.field_data.get_scalar_field_data(
-            field_name="xdensity", surface_ids=[0]
+            field_name="xdensity", surfaces=[0]
         )
 
 
@@ -384,6 +382,6 @@ def test_field_data_does_not_modify_case(new_solver_session):
     solver.scheme_eval.scheme_eval("(%save-case-id)")
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
     solver.fields.field_data.get_scalar_field_data(
-        field_name="absolute-pressure", surface_name="cold-inlet"
+        field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
