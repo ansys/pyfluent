@@ -102,19 +102,22 @@ class EventsManager(StreamingService):
 
     @staticmethod
     def _make_callback_to_call(callback: Callable, args, kwargs):
-        new_style = "session" in inspect.signature(callback).parameters
-        if not new_style:
+        old_style = "session_id" in inspect.signature(callback).parameters
+        if old_style:
             warnings.warn(
-                "Replace any event callback session_id arguments with session",
+                "Update event callback function signatures"
+                " substituting 'session' for 'session_id'.",
                 PyFluentDeprecationWarning,
             )
         fn = partial(callback, *args, **kwargs)
         return (
-            fn
-            if new_style
-            else lambda session, event_info: fn(
-                session_id=session.id, event_info=event_info
+            (
+                lambda session, event_info: fn(
+                    session_id=session.id, event_info=event_info
+                )
             )
+            if old_style
+            else fn
         )
 
     def register_callback(
@@ -131,7 +134,9 @@ class EventsManager(StreamingService):
         event_name : Event or str
             Event to register the callback to.
         callback : Callable
-            Callback to register.
+            Callback to register. The callback signature is
+            <function>([args,] [kwargs,] session, event_info)
+
         args : Any
             Arguments.
         kwargs : Any
