@@ -992,8 +992,7 @@ def _check_vector_units(obj, units):
     assert len(state) == len(state_with_units[0])
     assert all(x == y for x, y in zip(state, state_with_units[0]))
     assert units == state_with_units[1]
-    if flobject.ansys_units:
-        assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
+    assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
 @pytest.mark.fluent_version(">=24.1")
