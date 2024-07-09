@@ -12,8 +12,6 @@ import sys
 from typing import Any, Optional
 import warnings
 
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.error_message import closest_allowed_names
 from ansys.fluent.core.utils.fluent_version import (
@@ -66,7 +64,9 @@ _meshing_rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
 
 def _get_version_path_prefix_from_obj(obj: Any):
     from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
+    from ansys.fluent.core.services.datamodel_tui import TUIMenu
     from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
 
     path = None
     version = None

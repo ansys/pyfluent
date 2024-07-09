@@ -48,19 +48,20 @@ import warnings
 import weakref
 from zipimport import zipimporter
 
-try:
-    from ansys.fluent.core.warnings import (
-        PyFluentDeprecationWarning,
-        PyFluentUserWarning,
-    )
-    import ansys.units as ansys_units
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
-    from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
-except ImportError:
-    get_unit_for_fl_quantity_attr = None
-    ansys_units = None
-    PyFluentDeprecationWarning = FutureWarning
-    PyFluentUserWarning = UserWarning
+from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
+
+
+def _ansys_units():
+
+    try:
+        import ansys.units
+
+        return ansys.units
+    except ImportError:
+        pass
+
 
 import ansys.fluent.core as pyfluent
 
@@ -474,17 +475,17 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
-    def as_quantity(self) -> Optional[ansys_units.Quantity]:
+    def as_quantity(self) -> Optional[ansys.units.Quantity]:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
-        if not ansys_units:
+        if not _ansys_units():
             error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
             units = get_si_unit_for_fluent_quantity(quantity)
             if units is not None:
                 try:
-                    return ansys_units.Quantity(
+                    return _ansys_units().Quantity(
                         value=self.get_state(),
                         units=units,
                     )
@@ -520,9 +521,11 @@ class RealNumerical(Numerical):
                     raise UnhandledQuantity(self.path, state)
                 return units
 
-            if ansys_units and isinstance(state, (ansys_units.Quantity, tuple)):
+            if _ansys_units() and isinstance(state, (_ansys_units().Quantity, tuple)):
                 state = (
-                    ansys_units.Quantity(*state) if isinstance(state, tuple) else state
+                    _ansys_units().Quantity(*state)
+                    if isinstance(state, tuple)
+                    else state
                 )
                 state = state.to(get_units()).value
             elif isinstance(state, tuple):
@@ -712,7 +715,7 @@ class SettingsBase(Base, Generic[StateT]):
     def set_state(self, state: Optional[StateT] = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
-            if isinstance(state, (tuple, ansys_units.Quantity)) and hasattr(
+            if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)
