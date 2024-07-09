@@ -18,25 +18,24 @@ Prerequisites
 
 3. PyFluent source. You can clone `PyFluent <https://github.com/ansys/pyfluent>`_ or download the zip from `here <https://github.com/ansys/pyfluent/archive/refs/heads/main.zip>`_.
 
+
 Procedure
 ---------
 
 1. Set current working directory
 ++++++++++++++++++++++++++++++++
 
-Within the PyFluent source navigate to the ``docker/fluent_<version>`` directory for the particular Fluent release.
-
+Within the PyFluent source navigate to the ``docker`` directory.
 
 2. Copy needed files
 ++++++++++++++++++++
 
-Specify the pre-installed Ansys directory as a command line argument and run this script to copy needed files from the
-Ansys installation directory to the current working directory:
+Specify the pre-installed Ansys directory and ``docker/fluent_<version>`` directory for the particular Fluent release as a
+command line arguments and run this script to copy needed files from the Ansys installation directory to the particular Fluent release directory:
 
 .. code:: python
 
-    python copy_docker_files.py <path to 'ansys_inc' directory>
-
+    python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
 
 * These files indicate the files that are excluded during the copying:
 
@@ -50,14 +49,13 @@ Ansys installation directory to the current working directory:
 3. Build the Docker image
 ++++++++++++++++++++++
 
-Execute this command to build the Docker image:
+Specify ``docker/fluent_<version>`` directory for the particular Fluent release and execute this command to build the Docker image:
 
 .. code:: console
 
-    sudo docker build -t ansys_inc .
+    sudo docker build -t ansys_inc <path to 'docker/fluent_<version>' directory>
 
-The Docker container configuration needed to build the container image is described in the
-`Dockerfile <https://github.com/ansys/pyfluent/blob/main/docker/fluent/Dockerfile>`_.
+The Docker container configuration needed to build the container image is described in the ``docker/fluent_<version>/Dockerfile``.
 
 
 Run Docker container using the command line
