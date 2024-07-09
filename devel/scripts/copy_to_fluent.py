@@ -48,6 +48,10 @@ for root, dirs, files in os.walk(pyfluent_core_dst):
         if dir == "__pycache__":
             shutil.rmtree(Path(root) / dir)
 
+# Remove some unnecessary data files
+(pyfluent_core_dst / "codegen" / "data" / "static_info_222_meshing.pickle").unlink()
+(pyfluent_core_dst / "codegen" / "data" / "static_info_222_solver.pickle").unlink()
+
 # Finally, print the Fluent manifest code of the copied files.
 # Copy and replace this output in the following section in packageManifest/cortex/manifest.pkg in Fluent repository
 # # PyFluent sources START
