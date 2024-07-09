@@ -53,7 +53,7 @@ class EventsManager(StreamingService):
     events.
     """
 
-    def __init__(self, session_events_service, fluent_error_state, session_id):
+    def __init__(self, session_events_service, fluent_error_state, session):
         """__init__ method of EventsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
@@ -61,7 +61,9 @@ class EventsManager(StreamingService):
             streaming_service=session_events_service,
         )
         self._fluent_error_state = fluent_error_state
-        self._session_id: str = session_id
+        # This has been updated from id to session, which
+        # can also be done in other streaming services
+        self._session = session
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         request = EventsProtoModule.BeginStreamingRequest(*args, **kwargs)
@@ -89,16 +91,27 @@ class EventsManager(StreamingService):
                     callbacks_map = self._service_callbacks.get(event_name, {})
                     for callback in callbacks_map.values():
                         callback(
-                            session_id=self._session_id,
+                            session=self._session,
                             event_info=getattr(response, event_name.value.lower()),
                         )
             except StopIteration:
                 break
 
+    @staticmethod
+    def _make_callback_to_call(callback: Callable, callback_has_new_signature: bool):
+        return (
+            callback
+            if callback_has_new_signature
+            else lambda session, event_info: callback(
+                session_id=session.id, event_info=event_info
+            )
+        )
+
     def register_callback(
         self,
         event_name: Union[Event, str],
         callback: Callable,
+        callback_has_new_signature: bool = False,
         *args,
         **kwargs,
     ):
@@ -110,6 +123,15 @@ class EventsManager(StreamingService):
             Event to register the callback to.
         callback : Callable
             Callback to register.
+        callback_has_new_signature: bool
+            Whether the callback has the new
+            style signature, where a session object rather than
+            a session ID string is passed as the first callback
+            argument.
+            New style is:
+              ``callback(session: object, event_info: object)``
+            Old style is:
+              ``callback(session_id: str, event_info: object)``
         args : Any
             Arguments.
         kwargs : Any
@@ -132,12 +154,13 @@ class EventsManager(StreamingService):
         with self._lock:
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
+            callback_to_call = EventsManager._make_callback_to_call(
+                partial(callback, *args, **kwargs), callback_has_new_signature
+            )
             if callbacks_map:
-                callbacks_map.update({callback_id: partial(callback, *args, **kwargs)})
+                callbacks_map.update({callback_id: callback_to_call})
             else:
-                self._service_callbacks[event_name] = {
-                    callback_id: partial(callback, *args, **kwargs)
-                }
+                self._service_callbacks[event_name] = {callback_id: callback_to_call}
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.
