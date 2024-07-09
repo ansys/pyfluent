@@ -98,10 +98,9 @@ class EventsManager(StreamingService):
                 break
 
     @staticmethod
-    def _make_callback_to_call(
-        callback: Callable, callback_has_new_signature: bool, args, kwargs
-    ):
+    def _make_callback_to_call(callback: Callable, args, kwargs):
         fn = partial(callback, *args, **kwargs)
+        callback_has_new_signature = True
         return (
             fn
             if callback_has_new_signature
@@ -114,7 +113,6 @@ class EventsManager(StreamingService):
         self,
         event_name: Union[Event, str],
         callback: Callable,
-        callback_has_new_signature: bool = False,
         *args,
         **kwargs,
     ):
@@ -126,15 +124,6 @@ class EventsManager(StreamingService):
             Event to register the callback to.
         callback : Callable
             Callback to register.
-        callback_has_new_signature: bool
-            Whether the callback has the new
-            style signature, where a session object rather than
-            a session ID string is passed as the first callback
-            argument.
-            New style is:
-              ``callback(session: object, event_info: object)``
-            Old style is:
-              ``callback(session_id: str, event_info: object)``
         args : Any
             Arguments.
         kwargs : Any
@@ -158,7 +147,7 @@ class EventsManager(StreamingService):
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
             callback_to_call = EventsManager._make_callback_to_call(
-                callback, callback_has_new_signature, args, kwargs
+                callback, args, kwargs
             )
             if callbacks_map:
                 callbacks_map.update({callback_id: callback_to_call})
