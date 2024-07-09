@@ -2,7 +2,6 @@
 
 import functools
 import logging
-from typing import List
 import warnings
 
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
@@ -18,17 +17,6 @@ def deprecate_argument(
 ):
     """Warns that the argument provided is deprecated and automatically replaces the
     deprecated argument with the appropriate new argument."""
-
-    def _str_repr(var):
-        """Converts a string or FluentEnum variable to quoted string representation."""
-        from ansys.fluent.core.launcher.pyfluent_enums import Dimension, FluentEnum
-
-        if isinstance(var, Dimension):
-            return 2 if var == Dimension.TWO else 3
-        elif isinstance(var, (str, FluentEnum)):
-            return f'"{var}"'
-        else:
-            return var
 
     def decorator(func):
         """Holds the original method to perform operations on it."""
@@ -49,13 +37,13 @@ def deprecate_argument(
                     new_value = converter(kwargs[old_arg])
                     kwargs[new_arg] = new_value
                     logger.warning(
-                        f"Using '{new_arg} = {_str_repr(new_value)}' for '{func.__name__}()'"
-                        f" instead of '{old_arg} = {_str_repr(old_value)}'."
+                        f"Using '{new_arg} = {new_value}' for '{func.__name__}()'"
+                        f" instead of '{old_arg} = {old_value}'."
                     )
                 else:
                     logger.warning(
-                        f"Ignoring '{old_arg} = {_str_repr(old_value)}' specification for '{func.__name__}()',"
-                        f" only '{new_arg} = {_str_repr(new_value)}' applies."
+                        f"Ignoring '{old_arg} = {old_value}' specification for '{func.__name__}()',"
+                        f" only '{new_arg} = {new_value}' applies."
                     )
                 kwargs.pop(old_arg)
             return func(*args, **kwargs)
@@ -66,8 +54,6 @@ def deprecate_argument(
 
 
 def deprecate_arguments(
-    old_args: List,
-    new_args: List,
     converter,
     warning_cls=PyFluentDeprecationWarning,
 ):
@@ -81,25 +67,15 @@ def deprecate_arguments(
         def wrapper(*args, **kwargs):
             """Warns about the deprecated arguments and replaces them with the new
             arguments."""
+            input_kwargs = kwargs.copy()
+            kwargs = converter(kwargs)
+            new_args = set(kwargs) - set(input_kwargs)
+            old_args = set(input_kwargs) - set(kwargs)
             warnings.warn(
                 f"The arguments: {', '.join(old_args)} are deprecated. Use {', '.join(new_args)} instead.",
                 warning_cls,
                 stacklevel=2,
             )
-            old_args_dict = {}
-            for arg in old_args:
-                if arg in kwargs:
-                    old_args_dict[arg] = kwargs.pop(arg)
-            new_args_dict = converter(old_args_dict, new_args)
-            for key, val in new_args_dict.items():
-                if key in kwargs:
-                    logger.warning(
-                        f"Ignoring deprecated specification for '{func.__name__}()',"
-                        f" only '{key} = {kwargs[key]}' applies."
-                    )
-
-            kwargs = {**new_args_dict, **kwargs}
-
             return func(*args, **kwargs)
 
         return wrapper
