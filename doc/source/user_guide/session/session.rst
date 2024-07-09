@@ -90,6 +90,8 @@ Here are some examples using the ``viscous`` and ``discrete_phase`` models.
 
 Some items in the solver settings object tree are methods:
 
+.. code:: python
+
   >>> solver.settings.solution.run_calculation.iterate(iter_count=100)
 
 
@@ -97,6 +99,8 @@ Note: You can find out more about solver settings objects here:
 :ref:`ref_settings_guide`. 
 
 Objects under ``fields`` provide a similar interface.
+
+.. code:: python
 
   >>> field_data = fields.field_data
   >>> transaction = field_data.new_transaction()
