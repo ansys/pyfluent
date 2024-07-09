@@ -3,7 +3,7 @@
 from collections import OrderedDict
 import subprocess
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core._version import __version__
 
 
 def get_build_version():
@@ -20,7 +20,7 @@ def get_build_version():
         build_details["Build Time"] = (
             f"{last_commit_time[1]} {last_commit_time[2]} {last_commit_time[4]} {last_commit_time[3]} UTC{time_zone}"
         )
-        build_details["Current Version"] = f"{pyfluent.__version__}"
+        build_details["Current Version"] = f"{__version__}"
         build_details["ShaID"] = (
             subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
             .decode("ascii")
