@@ -1,0 +1,7 @@
+v232/commonfiles/CAD
+v232/aisol
+v232/commonfiles/MainWin
+v232/Framework
+v232/commonfiles/registry
+v232/tp/stdc++
+v232/tp/openssl

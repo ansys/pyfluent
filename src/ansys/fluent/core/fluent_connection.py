@@ -13,7 +13,6 @@ from typing import Any, Callable, List, Optional, Tuple, Union
 import warnings
 import weakref
 
-from docker.models.containers import Container
 import grpc
 import psutil
 
@@ -24,6 +23,7 @@ from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStra
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.platform.instancemanagement import Instance
 import docker
+from docker.models.containers import Container
 
 logger = logging.getLogger("pyfluent.general")
 
