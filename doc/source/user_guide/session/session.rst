@@ -1,4 +1,4 @@
-.. _ref_session_launch_guide:
+.. _ref_session_guide:
 
 Using PyFluent sessions
 =======================
