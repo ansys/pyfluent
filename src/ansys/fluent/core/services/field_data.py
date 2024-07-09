@@ -365,7 +365,8 @@ def _data_type_convertor(args_dict):
         if args_dict.get(key):
             d_type_list.append(val)
         args_dict.pop(key, None)
-    args_dict["data_types"] = d_type_list
+    if args_dict.get("data_types") is None:
+        args_dict["data_types"] = d_type_list
     return args_dict
 
 
@@ -473,10 +474,13 @@ class FieldTransaction:
             allowed_surface_names=self._allowed_surface_names,
             surfaces=surfaces,
         )
+        updated_data_types = []
         for d_type in data_types:
             if isinstance(d_type, str):
-                data_types.remove(d_type)
-                data_types.append(SurfaceDataType(d_type))
+                updated_data_types.append(SurfaceDataType(d_type))
+            else:
+                updated_data_types.append(d_type)
+        data_types = updated_data_types
         self._fields_request.surfaceRequest.extend(
             [
                 FieldDataProtoModule.SurfaceRequest(
