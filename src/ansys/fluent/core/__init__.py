@@ -12,7 +12,8 @@ from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
 
 # isort: on
 
-from ansys.fluent.core._version import __version__  # noqa: F401
+import importlib.metadata as importlib_metadata
+
 from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
@@ -40,6 +41,9 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentUserWarning,
     warning,
 )
+
+__version__ = importlib_metadata.version(__name__.replace(".", "-"))
+fluent_release_version = "24.1.0"
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
@@ -99,7 +103,7 @@ USE_FILE_TRANSFER_SERVICE = False
 CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 
 # Whether to zip settings API files during codegen
-CODEGEN_ZIP_SETTINGS = False
+CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False
