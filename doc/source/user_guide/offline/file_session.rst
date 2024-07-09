@@ -162,7 +162,9 @@ Multi phase
 Sample usage
 ------------
 
-You can use the Graphics toolbar to display the mesh, contour and vector data respectively.
+You can use the ``ansys-fluent-visualization`` package to display the
+mesh and to visualize results via contours, vectors and other
+post-processing objects.
 
 
 .. code-block:: python

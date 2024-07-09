@@ -18,13 +18,11 @@ User guide
    solver_settings/index
 
 
-PyFluent User Guide
--------------------
-Welcome to the PyFluent User Guide. This guide helps you understand how to use PyFluent to
+Welcome to the PyFluent user guide. This guide helps you understand how to use PyFluent to
 leverage the power of Ansys Fluent for your CFD simulations.
 
 
-A Simple Example
+A simple example
 ----------------
 
 .. code:: python
@@ -44,7 +42,7 @@ A Simple Example
   >>> velocity_data = solver.fields.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
 
 
-Key Features
+Key features
 ------------
 
 Launching Fluent from PyFluent
@@ -53,20 +51,20 @@ Launching Fluent from PyFluent
 to an existing session. Interact with Fluent through the session object returned by the launch
 or connect methods.
 
-Guided Meshing Workflows
+Guided meshing workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Leverage intuitive, :ref:`guided workflows <ref_meshing_workflow>` to create high-quality meshes.
 
-Solution Mode and Settings Objects
+Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation.
 
-Data Extraction
+Data extraction
 ~~~~~~~~~~~~~~~
 Extract solution and mesh data for analysis and post-processing.
 
 
-Use Cases
+Use cases
 ---------
 Some example use cases are given in this user guide.
 
