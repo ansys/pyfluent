@@ -32,7 +32,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate_args import deprecate_argument
+from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
@@ -84,13 +84,13 @@ def _version_to_dimension(old_arg_val):
     old_arg="show_gui",
     new_arg="ui_mode",
     converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
-    deprecation_class=PyFluentDeprecationWarning,
+    warning_cls=PyFluentDeprecationWarning,
 )
 @deprecate_argument(
     old_arg="version",
     new_arg="dimension",
     converter=_version_to_dimension,
-    deprecation_class=PyFluentDeprecationWarning,
+    warning_cls=PyFluentDeprecationWarning,
 )
 def launch_fluent(
     product_version: Union[FluentVersion, str, float, int, None] = None,

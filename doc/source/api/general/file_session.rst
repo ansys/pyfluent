@@ -112,9 +112,9 @@ Multi phase
   >>> file_session.read_case(case_file_name)
   >>> file_session.read_data(data_file_name)
 
-  >>> file_session.field_info.get_scalar_field_range("phase-2:SV_P")
+  >>> file_session.fields.field_info.get_scalar_field_range("phase-2:SV_P")
   [0.0, 1.5435200335871788e-11]
-  >>> file_session.field_info.get_scalar_fields_info()
+  >>> file_session.fields.field_info.get_scalar_fields_info()
   {'phase-1:SV_ARTIFICIAL_WALL_FLAG': {'display_name': 'SV_ARTIFICIAL_WALL_FLAG',
    'section': 'field-data',
    'domain': 'phase-1'},
@@ -125,7 +125,7 @@ Multi phase
    'phase-4:': {'display_name': '',
    'section': 'field-data',
    'domain': 'phase-4'}}
-   >>> file_session.field_info.get_vector_fields_info()
+   >>> file_session.fields.field_info.get_vector_fields_info()
    {'phase-1:velocity': {'x-component': 'phase-1: SV_U',
     'y-component': 'phase-1: SV_V',
     'z-component': 'phase-1: SV_W'},
@@ -133,7 +133,7 @@ Multi phase
     'phase-4:velocity': {'x-component': 'phase-4: SV_U',
     'y-component': 'phase-4: SV_V',
     'z-component': 'phase-4: SV_W'}}
-   >>> transaction = file_session.field_data.new_transaction()
+   >>> transaction = file_session.fields.field_data.new_transaction()
    >>> transaction.add_scalar_fields_request("phase-1:SV_DENSITY", [30])
    >>> transaction.add_vector_fields_request("phase-1:velocity", [30])
    >>> transaction.get_fields()
@@ -145,17 +145,17 @@ Multi phase
       'vector-field'),): {30: {'phase-1:velocity': array([0., ..... 0.]),
       'vector-scale': array([0.1])}}}
    >>> from ansys.fluent.core.services.field_data import SurfaceDataType
-   >>> file_session.field_data.get_surface_data(SurfaceDataType.Vertices, [30])[30].size
+   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [30])[30].size
    79
-   >>> ffile_session.field_data.get_surface_data(SurfaceDataType.Vertices, [30])[30][50].x
+   >>> file_session.fields.field_data.get_surface_data(data_types=[SurfaceDataType.Vertices], surfaces=[30])[30][50].x
    0.14896461503555408
-   >>> file_session.field_data.get_scalar_field_data("phase-1:SV_P", surface_name="wall-elbow").size
+   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surfaces=["wall-elbow"]).size
    2168
-   >>> file_session.field_data.get_scalar_field_data("phase-1:SV_P", surface_name="wall-elbow")[1100].scalar_data
+   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surfaces=["wall-elbow"])[1100].scalar_data
    1.4444035696104466e-11
-   >>> file_session.field_data.get_vector_field_data("phase-2:velocity", surface_name="wall-elbow").size
+   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surfaces=["wall-elbow"]).size
    2168
-   >>> file_session.field_data.get_vector_field_data("phase-2:velocity", surface_name="wall-elbow")[1000].x
+   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surfaces=["wall-elbow"])[1000].x
    0.0
 
 
