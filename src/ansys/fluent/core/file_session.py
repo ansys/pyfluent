@@ -864,7 +864,6 @@ def _get_surface_ids(
     Returns
     -------
     List[int]
-
     """
     surface_ids = []
     for surf in surfaces:

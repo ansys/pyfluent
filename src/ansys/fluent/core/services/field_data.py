@@ -756,7 +756,6 @@ def _get_surface_ids(
     Returns
     -------
     List[int]
-
     """
     surface_ids = []
     for surf in surfaces:
@@ -1308,10 +1307,13 @@ class FieldData:
             allowed_surface_names=self._allowed_surface_names,
             surfaces=surfaces,
         )
+        updated_data = []
         for d_type in data_types:
             if isinstance(d_type, str):
-                data_types.remove(d_type)
-                data_types.append(SurfaceDataType(d_type))
+                updated_data.append(SurfaceDataType(d_type))
+            else:
+                updated_data.append(d_type)
+        data_types = updated_data
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
             [
