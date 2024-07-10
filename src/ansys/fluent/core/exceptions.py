@@ -25,10 +25,3 @@ class InvalidArgument(ValueError):
     """Raised when an argument value is inappropriate."""
 
     pass
-
-
-class SurfaceSpecificationError(ValueError):
-    """Raised when both ``surface_ids`` and ``surface_names`` are provided."""
-
-    def __init__(self):
-        super().__init__("Provide either 'surface_ids' or 'surface_names'.")

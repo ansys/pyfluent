@@ -992,8 +992,7 @@ def _check_vector_units(obj, units):
     assert len(state) == len(state_with_units[0])
     assert all(x == y for x, y in zip(state, state_with_units[0]))
     assert units == state_with_units[1]
-    if flobject.ansys_units:
-        assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
+    assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
 @pytest.mark.fluent_version(">=24.1")
@@ -1173,22 +1172,35 @@ def test_static_info_hash_identity(new_solver_session):
     assert hash1 == hash2
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2997")
 @pytest.mark.fluent_version(">=24.2")
 def test_default_argument_names_for_commands(load_static_mixer_settings_only):
     solver = load_static_mixer_settings_only
 
-    assert solver.results.graphics.contour.command_names == [
-        "delete",
-        "rename",
-        "list",
-        "list_properties",
-        "make_a_copy",
-        "display",
-        "copy",
-        "add_to_graphics",
-        "clear_history",
-    ]
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert set(solver.results.graphics.contour.command_names) == {
+            "create",
+            "delete",
+            "rename",
+            "list",
+            "list_properties",
+            "make_a_copy",
+            "display",
+            "copy",
+            "add_to_graphics",
+            "clear_history",
+        }
+    else:
+        assert set(solver.results.graphics.contour.command_names) == {
+            "delete",
+            "rename",
+            "list",
+            "list_properties",
+            "make_a_copy",
+            "display",
+            "copy",
+            "add_to_graphics",
+            "clear_history",
+        }
 
     assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
