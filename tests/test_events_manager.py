@@ -52,7 +52,7 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     try:
         solver.settings.file.read_case(file_name=case_file_name)
     except AttributeError:
-        solver.tui.read_case(case_file_name)
+        solver.tui.file.read_case(case_file_name)
 
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
