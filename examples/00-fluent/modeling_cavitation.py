@@ -41,10 +41,7 @@ and L are the inlet diameter, orifice diameter, and orifice length respectively.
 # the geometry file.
 
 # sphinx_gallery_thumbnail_path = '_static/cavitation_model_thumb.png'
-import os
 
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
-os.environ["AWP_ROOT251"] = r"C:\Program Files\ANSYS Inc\v241"
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -306,7 +303,7 @@ graphics.contour["contour_static_pressure"] = {
 ###############################################################################
 # Mirror the display around the symmetry plane to show the full model.
 
-solver.tui.display.set.mirror_zones(["symm_2", "symm_1"])
+solver.results.graphics.views.mirror_zones = ["symm_2", "symm_1"]
 
 graphics.contour["contour_static_pressure"].display()
 
@@ -359,6 +356,6 @@ graphics.picture.save_picture(file_name="contour_vf_vapor.png")
 
 # Save case to 'cav.cas.h5' and exit
 
-solver.file.write_case(file_name="cav")
+solver.file.write_case(file_name="cav.cas.h5")
 
 solver.exit()
