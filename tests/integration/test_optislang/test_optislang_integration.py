@@ -10,7 +10,6 @@ from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.casereader import CaseReader
 
 
 @pytest.mark.nightly
@@ -42,7 +41,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     solver_session.settings.file.read_case_data(file_name=case_path)
 
     # Step 3: Get input and output parameters and create a dictionary
-    reader = CaseReader(case_file_name=case_path)
+    reader = CaseFile(case_file_name=case_path)
 
     input_parameters = {}
     for p in reader.input_parameters():
@@ -262,7 +261,7 @@ def test_parametric_project(
     assert base_inputs == {"inlet2_temp": 500.0}
     base_outputs = base_dp["output_parameters"]
     assert base_outputs == {"outlet_temp-op": 322.336008}
-    pstudy.design_points.create_1()
+    pstudy.design_points.create()
     dp = pstudy.design_points["DP1"]
     dp.input_parameters["inlet2_temp"] = 600.0
     pstudy.design_points.update_selected(design_points=["DP1"])
