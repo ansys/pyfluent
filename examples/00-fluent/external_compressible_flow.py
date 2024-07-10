@@ -200,6 +200,13 @@ volume_mesh_gen.Arguments.set_state(
 volume_mesh_gen.Execute()
 
 ###############################################################################
+# Check mesh in meshing mode
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Check the mesh in meshing mode.
+
+meshing.tui.mesh.check_mesh()
+
+###############################################################################
 # Save mesh file
 # ~~~~~~~~~~~~~~
 # Save the mesh file (``wing.msh.h5``).

@@ -536,6 +536,13 @@ volume_mesh_gen.Arguments.set_state(
 volume_mesh_gen.Execute()
 
 ###############################################################################
+# Check mesh
+# ~~~~~~~~~~
+# Check the mesh.
+
+meshing.tui.mesh.check_mesh()
+
+###############################################################################
 # Solve and postprocess
 # ---------------------
 # Once you have completed the fault tolerate meshing workflow, you can solve and

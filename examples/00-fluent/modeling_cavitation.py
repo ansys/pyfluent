@@ -303,7 +303,7 @@ graphics.contour["contour_static_pressure"] = {
 ###############################################################################
 # Mirror the display around the symmetry plane to show the full model.
 
-solver.results.graphics.views.mirror_zones = ["symm_2", "symm_1"]
+solver.settings.results.graphics.views.mirror_zones = ["symm_2", "symm_1"]
 
 graphics.contour["contour_static_pressure"].display()
 
@@ -356,6 +356,6 @@ graphics.picture.save_picture(file_name="contour_vf_vapor.png")
 
 # Save case to 'cav.cas.h5' and exit
 
-solver.file.write_case(file_name="cav.cas.h5")
+solver.settings.file.write_case(file_name="cav.cas.h5")
 
 solver.exit()
