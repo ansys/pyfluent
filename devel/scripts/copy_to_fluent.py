@@ -58,7 +58,7 @@ for root, dirs, files in os.walk(pyfluent_core_dst):
 # <manifest code>
 # # PyFluent sources END
 
-prefix = "fluent/fluentRampantReleaseMajor.RampantReleaseMinor.RampantReleaseRevision/cortex/pylib/flapi/pyfluent/ansys/fluent/core"
+prefix = "fluent/fluentRampantReleaseMajor.RampantReleaseMinor.RampantReleaseRevision/cortex/pylib/pyfluent/ansys/fluent/core"
 for root, dirs, files in os.walk(pyfluent_core_dst):
     root_path = Path(root)
     if root_path.name == "__pycache__":
