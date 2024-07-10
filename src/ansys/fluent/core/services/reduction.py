@@ -1,6 +1,7 @@
 """Wrappers over Reduction gRPC service of Fluent."""
 
 from typing import Any, List, Tuple
+import weakref
 
 import grpc
 
@@ -248,11 +249,24 @@ class Reduction:
     def __init__(self, service: ReductionService, ctxt=None):
         """__init__ method of Reduction class."""
         self.service = service
+        self.ctxt = weakref.proxy(ctxt)
 
     docstring = None
 
-    @staticmethod
-    def _get_location_string(locations, ctxt) -> List[str]:
+    def _validate_str_location(self, loc: str):
+        if all(
+            loc not in names()
+            for names in (
+                self.ctxt.fields.field_info.get_surfaces_info,
+                self.ctxt.settings.setup.cell_zone_conditions,
+            )
+        ):
+            raise ValueError(f"Invalid location input: '{loc}'")
+
+    def _get_location_string(self, locations, ctxt) -> List[str]:
+        for loc in locations:
+            if isinstance(loc, str):
+                self._validate_str_location(loc)
         try:
             return _locns(locations, ctxt)[0][1]
         except BadReductionRequest:
