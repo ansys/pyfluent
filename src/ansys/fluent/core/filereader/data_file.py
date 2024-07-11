@@ -24,13 +24,6 @@ import numpy as np
 
 from . import lispy
 
-try:
-    import h5py
-except ModuleNotFoundError as exc:
-    raise ModuleNotFoundError(
-        "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
-    ) from exc
-
 
 class DataFile:
     """Class to read a Fluent case file.

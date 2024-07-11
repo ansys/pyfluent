@@ -10,7 +10,6 @@ install:
 install-test:
 	@pip install -r requirements/requirements_build.txt
 	@poetry install --with test
-	@poetry install -E reader
 	@poetry run python -m pip install -q --force-reinstall dist/*.whl > /dev/null
 
 version-info:
@@ -128,7 +127,6 @@ api-codegen:
 	@python -m venv env
 	@. env/bin/activate
 	@pip install -q -e .
-	@pip install -q -e .[reader]
 	@python codegen/allapigen.py
 	@rm -rf env
 
