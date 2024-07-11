@@ -1,11 +1,3 @@
-"""
-This local parametric study workflow test performs these steps
-
-TODO
-"""
-
-############################################################################
-
 from math import inf
 
 import pytest
@@ -19,9 +11,6 @@ from ansys.fluent.core.parametric import (
 
 @pytest.mark.self_hosted
 def test_local_parametric_run():
-    ############################################################################
-    # Read the hopper/mixer case
-
     case_filepath = examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
         "pyfluent/static_mixer",
