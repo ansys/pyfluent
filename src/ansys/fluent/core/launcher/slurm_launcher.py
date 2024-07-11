@@ -392,7 +392,7 @@ class SlurmLauncher:
                 queues = _SlurmWrapper.list_queues()
                 if queue not in queues:
                     raise InvalidArgument(
-                        f"Slurm queue is not valid. Valid queues are {', '.join(queues)}."
+                        f"""Slurm queue is not valid. Valid queues are "{'", "'.join(queues)}"."""
                     )
 
     def _prepare(self):
