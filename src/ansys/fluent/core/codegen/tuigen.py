@@ -191,14 +191,14 @@ class TUIGenerator:
         self._static_infos = static_infos
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
-        for child_menu_name, child_menu_info in info["menus"].items():
+        for child_menu_name, child_menu_info in sorted(info["menus"].items()):
             if _is_valid_tui_menu_name(child_menu_name):
                 child_menu = _TUIMenu(
                     menu.path + [child_menu_name], child_menu_info["help"]
                 )
                 menu.children[child_menu.name] = child_menu
                 self._populate_menu(child_menu, child_menu_info)
-        for child_command_name, child_command_info in info["commands"].items():
+        for child_command_name, child_command_info in sorted(info["commands"].items()):
             if _is_valid_tui_menu_name(child_command_name):
                 child_menu = _TUIMenu(
                     menu.path + [child_command_name], child_command_info["help"], True
