@@ -1,7 +1,5 @@
-"""
-Classes for locally defining a parametric study for Fluent without
-running Fluent. The study can then be submitted to be executed in
-parallel.
+"""Classes for locally defining a parametric study for Fluent without running Fluent.
+The study can then be submitted to be executed in parallel.
 
 Example
 -------
@@ -28,7 +26,6 @@ Display results
 >>>   for k, v in design_point.output_parameters.items():
 >>>     print("output parameter", k, v)
 >>> print(72 * "-")
-
 """
 
 import logging
@@ -52,7 +49,6 @@ class DesignPoint:
     name : str
         Name of the design point.
     dp_settings
-
     """
 
     def __init__(self, name: str, study: Any):
@@ -280,8 +276,8 @@ class ParametricStudy:
     def current_design_point(self) -> DesignPoint:
         """Get the current design point.
 
-        This is the current design point within the design points under the
-        parametric study.
+        This is the current design point within the design points under the parametric
+        study.
         """
         dp_name = self._parametric_studies[self.name].current_design_point()
         return self.design_points[dp_name]
@@ -747,8 +743,7 @@ def convert_design_point_parameter_units(
 
 
 class LocalDesignPoint:
-    """
-    Purely local version of a design point in a parametric study.
+    """Purely local version of a design point in a parametric study.
 
     Attributes
     ----------
@@ -791,8 +786,7 @@ class LocalDesignPoint:
 
 
 class LocalDesignPointTable(list):
-    """
-    Local version of the design point table in a parametric study.
+    """Local version of the design point table in a parametric study.
 
     Methods
     -------
@@ -950,8 +944,7 @@ def _run_local_study_in_fluent(
 
 
 class LocalParametricStudy:
-    """
-    Local version of a parametric study that manages design points to parametrize a
+    """Local version of a parametric study that manages design points to parametrize a
     Fluent solver setup.
 
     Methods
