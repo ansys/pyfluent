@@ -1,5 +1,5 @@
-Apply solution settings
-=======================
+Applying solution settings
+==========================
 
 PyFluent allows you to use :ref:`ref_settings` to interact with solution settings, and initialize and solve.
 

@@ -8,5 +8,5 @@ Solver settings
    :hidden:
 
    settings
-   set_up
+   set_up/index
    solution

@@ -82,7 +82,7 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
 .. code-block::
 
   >>> from pprint import pprint
-  >>> pprint (solver.settings.setup.models.energy())
+  >>> pprint (solver.settings.setup.models.energy(), width=1)
   {'enabled': True,
    'inlet_diffusion': True,
    'kinetic_energy': False,
@@ -267,7 +267,7 @@ in a single solver session:
   >>> solver.settings.setup.models.viscous.model.is_read_only()
   False
   >>> solver.settings.setup.models.viscous.model.default_value()
-  >>> pprint(solver.settings.setup.models.viscous.model.allowed_values())
+  >>> pprint(solver.settings.setup.models.viscous.model.allowed_values(), width=1)
   ['inviscid',
    'laminar',
    'k-epsilon',

@@ -34,7 +34,7 @@ PyFluent extends its capabilities by offering a programmatic approach. This inte
 allows for enhanced automation, scripting, and the development of custom applications.
 
 
-Key Features
+Key features
 ------------
 
 - **Automation**: Automate repetitive tasks and complex workflows.
@@ -43,27 +43,27 @@ Key Features
 - **Flexibility**: Seamlessly integrate with other Python libraries and tools.
 
 
-Getting Started
+Getting started
 ---------------
 
 To get started with PyFluent, follow the steps on the :ref:`getting_started` page.
 
-Useful Links
+Useful links
 ------------
 
-- `PyFluent GitHub Repository <https://github.com/ansys/pyfluent>`_
-- `Fluent Documentation <https://www.ansys.com/products/fluids/ansys-fluent>`_
-- `Ansys Customer Portal <https://support.ansys.com>`_
+- `PyFluent GitHub repository <https://github.com/ansys/pyfluent>`_
+- `Fluent documentation <https://www.ansys.com/products/fluids/ansys-fluent>`_
+- `Ansys customer portal <https://support.ansys.com>`_
 
 
-Community and Support
+Community and support
 ---------------------
 
 Join the community to get help and share your experiences with other users:
 
-- `PyAnsys Community Forum <https://forum.pyansys.com>`_
-- `Submit a Bug Report <https://github.com/ansys/pyfluent/issues>`_
-- `Contact Support <https://support.ansys.com>`_
+- `PyAnsys community forum <https://forum.pyansys.com>`_
+- `Submit a bug report <https://github.com/ansys/pyfluent/issues>`_
+- `Contact support <https://support.ansys.com>`_
 
 See :ref:`ref_contributing` for guidance on how you can contribute to PyFluent
 by reporting issues, suggesting features, or submitting pull requests on GitHub.

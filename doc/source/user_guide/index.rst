@@ -65,8 +65,8 @@ Solution mode and settings objects
 Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
 with the basics of setting up and executing your physics problem using Python.
 
-Data extraction
-~~~~~~~~~~~~~~~
+Field data extraction
+~~~~~~~~~~~~~~~~~~~~~
 :ref:`Extract solution and mesh data for analysis and post-processing <ref_fields_guide>`.
 Access and modify field data arrays for physical variables of interest at your chosen locations.
 Choose to apply reduction functions from a comprehensive range or create and compute expressions

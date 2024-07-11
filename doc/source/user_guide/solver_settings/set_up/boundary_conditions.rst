@@ -7,7 +7,11 @@ Boundary conditions
 ~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
-
+    >>> import ansys.fluent.core as pyfluent
+    >>> from ansys.fluent.core import examples
+    >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    >>> solver = pyfluent.launch_fluent()
+    >>> solver.settings.file.read_case(file_name=file_name)
     >>> cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     >>> cold_inlet.momentum.velocity.set_state(0.4)
     >>> inlet_turbulence = cold_inlet.turbulence
