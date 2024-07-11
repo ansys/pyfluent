@@ -128,6 +128,7 @@ api-codegen:
 	@python -m venv env
 	@. env/bin/activate
 	@pip install -q -e .
+	@pip install -q -e .[reader]
 	@python codegen/allapigen.py
 	@rm -rf env
 
