@@ -165,7 +165,9 @@ jobs:
 
       - name: Run API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make api-codegen
+        run: |
+          poetry install --all-extras
+          make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
