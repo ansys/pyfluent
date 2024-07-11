@@ -1,19 +1,8 @@
-"""
-This local parametric study workflow test performs these steps
-
-TODO
-"""
-
 from ansys.fluent.core import examples
 from ansys.fluent.core.parametric import LocalParametricStudy
 
-############################################################################
-
 
 def test_local_parametric_setup():
-    ############################################################################
-    # Read the hopper/mixer case
-
     case_filepath = examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
         "pyfluent/static_mixer",
