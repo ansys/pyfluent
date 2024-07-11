@@ -11,7 +11,7 @@ from math import inf
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.parametric import (
+from ansys.fluent.core.parametric import (
     LocalParametricStudy,
     convert_design_point_parameter_units,
 )

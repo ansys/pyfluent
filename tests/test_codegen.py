@@ -9,8 +9,8 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
-from ansys.fluent.core.utils.search import get_api_tree_file_name
 
 
 @pytest.mark.codegen_required

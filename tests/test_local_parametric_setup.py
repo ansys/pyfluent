@@ -5,7 +5,7 @@ TODO
 """
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.parametric import LocalParametricStudy
+from ansys.fluent.core.parametric import LocalParametricStudy
 
 ############################################################################
 
