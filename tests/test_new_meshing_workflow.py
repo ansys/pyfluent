@@ -1427,6 +1427,7 @@ def test_loaded_workflow(new_mesh_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3065")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_created_workflow(new_mesh_session):
