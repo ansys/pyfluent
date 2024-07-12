@@ -130,7 +130,7 @@ class MonitorsManager(StreamingService):
                 )
             )
 
-    def refresh(self, session_id, event_info) -> None:
+    def refresh(self, session, event_info) -> None:
         """Refresh plots on-initialized and data-read events.
 
         This method is registered with the EventsManager and is called
@@ -138,8 +138,8 @@ class MonitorsManager(StreamingService):
 
         Parameters
         ----------
-        session_id : str
-            Name of the monitor set.
+        session : str
+            Session object.
         event_info : object
             Event info object.
 

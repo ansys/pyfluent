@@ -2,12 +2,16 @@
 
 from enum import Enum
 from functools import partial
+import inspect
 import logging
 from typing import Callable, Union
+import warnings
+import weakref
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 network_logger = logging.getLogger("pyfluent.networking")
 
@@ -53,7 +57,7 @@ class EventsManager(StreamingService):
     events.
     """
 
-    def __init__(self, session_events_service, fluent_error_state, session_id):
+    def __init__(self, session_events_service, fluent_error_state, session):
         """__init__ method of EventsManager class."""
         super().__init__(
             stream_begin_method="BeginStreaming",
@@ -61,7 +65,9 @@ class EventsManager(StreamingService):
             streaming_service=session_events_service,
         )
         self._fluent_error_state = fluent_error_state
-        self._session_id: str = session_id
+        # This has been updated from id to session, which
+        # can also be done in other streaming services
+        self._session = weakref.proxy(session)
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         request = EventsProtoModule.BeginStreamingRequest(*args, **kwargs)
@@ -89,11 +95,31 @@ class EventsManager(StreamingService):
                     callbacks_map = self._service_callbacks.get(event_name, {})
                     for callback in callbacks_map.values():
                         callback(
-                            session_id=self._session_id,
+                            session=self._session,
                             event_info=getattr(response, event_name.value.lower()),
                         )
             except StopIteration:
                 break
+
+    @staticmethod
+    def _make_callback_to_call(callback: Callable, args, kwargs):
+        old_style = "session_id" in inspect.signature(callback).parameters
+        if old_style:
+            warnings.warn(
+                "Update event callback function signatures"
+                " substituting 'session' for 'session_id'.",
+                PyFluentDeprecationWarning,
+            )
+        fn = partial(callback, *args, **kwargs)
+        return (
+            (
+                lambda session, event_info: fn(
+                    session_id=session.id, event_info=event_info
+                )
+            )
+            if old_style
+            else fn
+        )
 
     def register_callback(
         self,
@@ -107,9 +133,13 @@ class EventsManager(StreamingService):
         Parameters
         ----------
         event_name : Event or str
-            Event name to register the callback to.
+            Event to register the callback to.
         callback : Callable
-            Callback to register.
+            Callback to register. If the custom arguments,
+            args and kwargs, are empty then the callback
+            signature must be precisely <function>(session, event_info).
+            Otherwise, the arguments for args and/or kwargs
+            must precede the other arguments in the signature.
         args : Any
             Arguments.
         kwargs : Any
@@ -132,12 +162,13 @@ class EventsManager(StreamingService):
         with self._lock:
             callback_id = f"{event_name}-{next(self._service_callback_id)}"
             callbacks_map = self._service_callbacks.get(event_name)
+            callback_to_call = EventsManager._make_callback_to_call(
+                callback, args, kwargs
+            )
             if callbacks_map:
-                callbacks_map.update({callback_id: partial(callback, *args, **kwargs)})
+                callbacks_map.update({callback_id: callback_to_call})
             else:
-                self._service_callbacks[event_name] = {
-                    callback_id: partial(callback, *args, **kwargs)
-                }
+                self._service_callbacks[event_name] = {callback_id: callback_to_call}
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.

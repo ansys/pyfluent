@@ -152,9 +152,7 @@ class BaseSession:
         self._events_service = service_creator("events").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self.events = EventsManager(
-            self._events_service, self._error_state, fluent_connection._id
-        )
+        self.events = EventsManager(self._events_service, self._error_state, self)
 
         self._monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
