@@ -126,6 +126,20 @@ def pytest_sessionfinish(session, exitstatus):
 #             tests_by_fixture[fixture].append(item.nodeid)
 
 
+@pytest.fixture
+def mixing_elbow_geometry_filename():
+    return download_file(
+        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    )
+
+
+@pytest.fixture
+def exhaust_system_geometry_filename():
+    return download_file(
+        file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+    )
+
+
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
@@ -145,6 +159,11 @@ def new_meshing_session():
 
 
 @pytest.fixture
+def new_pure_meshing_session():
+    return create_session(mode=pyfluent.FluentMode.PURE_MESHING)
+
+
+@pytest.fixture
 def watertight_workflow_session(new_meshing_session):
     new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     return new_meshing_session
@@ -156,11 +175,6 @@ def fault_tolerant_workflow_session(new_meshing_session):
         WorkflowType="Fault-tolerant Meshing"
     )
     return new_meshing_session
-
-
-@pytest.fixture
-def new_pure_meshing_session():
-    return create_session(mode=pyfluent.FluentMode.PURE_MESHING)
 
 
 @pytest.fixture
@@ -194,22 +208,6 @@ def new_solver_session_2d():
 
 
 @pytest.fixture
-def disk_case_session(new_solver_session_2d):
-    solver = new_solver_session_2d
-    case_name = download_file("pyfluent/rotating_disk", "disk.msh.gz")
-    solver.file.read(file_type="case", file_name=case_name)
-    return solver
-
-
-@pytest.fixture
-def static_mixer_case_session(new_solver_session):
-    solver = new_solver_session
-    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver.file.read(file_type="case", file_name=case_name)
-    return solver
-
-
-@pytest.fixture
 def static_mixer_settings_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -222,33 +220,17 @@ def static_mixer_settings_session(new_solver_session):
 
 
 @pytest.fixture
-def disk_settings_session(new_solver_session_2d):
-    solver = new_solver_session_2d
-    case_name = download_file("pyfluent/rotating_disk", "disk.cas.h5")
-    solver.file.read(
-        file_type="case",
-        file_name=case_name,
-        lightweight_setup=True,
-    )
-    return solver
-
-
-@pytest.fixture
-def periodic_rot_settings_session(new_solver_session):
+def static_mixer_case_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("pyfluent/periodic_rot", "periodic_rot.cas.h5")
-    solver.file.read(
-        file_type="case",
-        file_name=case_name,
-        lightweight_setup=True,
-    )
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(file_type="case", file_name=case_name)
     return solver
 
 
 @pytest.fixture
 def mixing_elbow_settings_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("pyfluent/mixing_elbow", "mixing_elbow.cas.h5")
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("pyfluent/mixing_elbow", "mixing_elbow.dat.h5")
     solver.settings.file.read(
         file_type="case",
@@ -261,7 +243,7 @@ def mixing_elbow_settings_session(new_solver_session):
 @pytest.fixture
 def mixing_elbow_case_data_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("pyfluent/mixing_elbow", "mixing_elbow.cas.h5")
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("pyfluent/mixing_elbow", "mixing_elbow.dat.h5")
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
@@ -270,21 +252,42 @@ def mixing_elbow_case_data_session(new_solver_session):
 @pytest.fixture
 def mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("pyfluent/mixing_elbow", "elbow_param.cas.h5")
+    case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
     download_file("pyfluent/mixing_elbow", "elbow_param.dat.h5")
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
 
 @pytest.fixture
-def mixing_elbow_geometry_filename():
-    return download_file(
-        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+def disk_settings_session(new_solver_session_2d):
+    solver = new_solver_session_2d
+    case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
+    solver.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
     )
+    return solver
 
 
 @pytest.fixture
-def exhaust_system_geometry_filename():
-    return download_file(
-        file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+def disk_case_session(new_solver_session_2d):
+    solver = new_solver_session_2d
+    case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
+    solver.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def periodic_rot_settings_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file(
+        "periodic_rot.cas.h5",
+        "pyfluent/periodic_rot",
     )
+    solver.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver

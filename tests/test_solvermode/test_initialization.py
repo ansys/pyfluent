@@ -7,8 +7,8 @@ from ansys.fluent.core.examples.downloads import download_file
 def test_initialization_settings(new_solver_session):
     solver = new_solver_session
     case_name = download_file(
-        "pyfluent/wigley_hull",
         "wigley.cas.h5",
+        "pyfluent/wigley_hull",
     )
     solver.file.read(
         file_type="case",
@@ -75,7 +75,7 @@ def test_initialization_settings(new_solver_session):
 @pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("pyfluent/vki_turbine", "vki_turbine.cas.gz")
+    case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")
     solver.file.read(file_type="case", file_name=case_name)
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()

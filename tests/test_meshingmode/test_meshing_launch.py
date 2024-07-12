@@ -68,7 +68,7 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    geom_name = download_file("pyfluent/mixing_elbow", "mixing_elbow.pmdb")
+    geom_name = download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
         FileName=geom_name, LengthUnit="in"
     )

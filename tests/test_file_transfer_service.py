@@ -59,10 +59,10 @@ def test_remote_grpc_fts_container(
 
 
 @pytest.mark.standalone
-def test_read_case_and_data():
+def test_read_case_and_data(monkeypatch):
     import ansys.fluent.core as pyfluent
 
-    pyfluent.USE_FILE_TRANSFER_SERVICE = True
+    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
 
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
