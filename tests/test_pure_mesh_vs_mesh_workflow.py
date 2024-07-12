@@ -27,8 +27,8 @@ def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_mode(load_mixing_elbow_meshing):
-    meshing_session = load_mixing_elbow_meshing
+def test_meshing_mode(new_meshing_session):
+    meshing_session = new_meshing_session
     # check a few dir elements
     # n.b. 'field_data', 'field_info' need to
     # be eliminated from meshing sessions
@@ -43,8 +43,8 @@ def test_meshing_mode(load_mixing_elbow_meshing):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_and_solver_mode_exit(load_mixing_elbow_meshing):
-    meshing_session = load_mixing_elbow_meshing
+def test_meshing_and_solver_mode_exit(new_meshing_session):
+    meshing_session = new_meshing_session
     solver_session = meshing_session.switch_to_solver()
     # Even if exit statement is invoked twice, only one is executed as the channel instance is shared
     meshing_session.exit()
@@ -53,8 +53,8 @@ def test_meshing_and_solver_mode_exit(load_mixing_elbow_meshing):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_mode_post_switching_to_solver(load_mixing_elbow_meshing):
-    meshing_session = load_mixing_elbow_meshing
+def test_meshing_mode_post_switching_to_solver(new_meshing_session):
+    meshing_session = new_meshing_session
     meshing_session.switch_to_solver()
     # Post switching to solver session, meshing session specific attributes are unavailable
     with pytest.raises(AttributeError):
