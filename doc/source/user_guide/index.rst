@@ -77,4 +77,3 @@ Offline features
 :ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
 PyFluent provides Python classes that represent case, data and project files. There is even an offline
 ``FileSession`` class whose interface mimics the live session interface.
-

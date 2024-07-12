@@ -13,6 +13,7 @@ so that commands can be sent to Fluent from the Python interpreter:
   >>>     mode=pyfluent.FluentMode.SOLVER
   >>> )
 
+
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
 function to connect to a running Fluent session that has started the gRPC server. The gRPC
 server in Fluent can be started using the ``-sifile=<server_info_file_name>`` command line
@@ -27,6 +28,7 @@ using a server-info file server.txt in the working directory:
   >>> solver = pyfluent.connect_to_fluent(
   >>>     server_info_file_name="server.txt"
   >>> )
+
 
 Launcher options
 ----------------
@@ -43,6 +45,7 @@ This example shows how to launch Fluent in solution mode:
   >>>     mode=pyfluent.FluentMode.SOLVER
   >>> )
 
+
 Meshing mode
 ~~~~~~~~~~~~
 This example shows how to launch Fluent in meshing mode:
@@ -52,6 +55,7 @@ This example shows how to launch Fluent in meshing mode:
   >>> meshing_session = pyfluent.launch_fluent(
   >>>      mode=pyfluent.FluentMode.MESHING
   >>> )
+
 
 Precision
 ~~~~~~~~~
@@ -64,6 +68,7 @@ and set the floating point precision:
   >>>      precision=pyfluent.Precision.DOUBLE,
   >>>      mode=pyfluent.FluentMode.SOLVER
   >>> )
+
 
 Dimension
 ~~~~~~~~~
@@ -78,6 +83,7 @@ modeling dimension to two:
   >>>      mode=pyfluent.FluentMode.SOLVER
   >>> )
 
+
 Local parallel
 ~~~~~~~~~~~~~~
 This example shows how to launch Fluent in solution mode and set the
@@ -91,6 +97,7 @@ number of processors for local parallel execution:
   >>>      processor_count=2,
   >>>      mode=pyfluent.FluentMode.SOLVER
   >>> )
+
 
 Distributed parallel
 ~~~~~~~~~~~~~~~~~~~~
@@ -107,6 +114,7 @@ distributed across more than one machine:
   >>>     additional_arguments="-cnf=m1:8,m2:8",
   >>> )
 
+
 Logging support
 ---------------
 PyFluent has an option to run with logging enabled.
@@ -116,7 +124,8 @@ This command enables logging:
 
   >>> pyfluent.logging.enable()
 
-For more details, see :ref:`ref_logging_guide`.
+
+For more details, see :ref:`ref_logging`.
 
 Scheduler support
 -----------------
@@ -177,6 +186,7 @@ machines and cores:
   >>>      mode=pyfluent.FluentMode.SOLVER
   >>> )
 
+
 You can use the ``processor_count`` argument to set the number of cores that
 Fluent uses:
 
@@ -188,6 +198,7 @@ Fluent uses:
   >>>     processor_count=16,
   >>>     mode=pyfluent.FluentMode.SOLVER
   >>> )
+
 
 Passing the ``processor_count`` parameter like this forces execution of Fluent on 16
 cores, despite the fact that the Slurm submission requests 32 total cores from
@@ -210,6 +221,7 @@ using the ``additional_arguments`` parameter. For local parallel execution, simp
   >>>     additional_arguments="-t16"
   >>> )
 
+
 For distributed parallel processing, you usually pass both parameters:
 
 .. code:: python
@@ -220,6 +232,7 @@ For distributed parallel processing, you usually pass both parameters:
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
   >>> )
+
 
 The :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 also supports the ``scheduler_options`` parameter to submit the Fluent job to a Slurm
@@ -237,6 +250,7 @@ scheduler without using any bash script:
   >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
   >>> )
   >>> solver = slurm.result()
+
 
 .. vale off
 

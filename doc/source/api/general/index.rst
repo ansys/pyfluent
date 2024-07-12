@@ -27,3 +27,4 @@ General
     search
     schemeeval
     logging
+    specify_file_paths
