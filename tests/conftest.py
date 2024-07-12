@@ -165,6 +165,12 @@ def create_solver_session():
 
 
 @pytest.fixture
+def new_watertight_workflow_session(new_meshing_session):
+    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    return new_meshing_session
+
+
+@pytest.fixture
 def new_solver_session():
     solver = create_solver_session()
     return solver
