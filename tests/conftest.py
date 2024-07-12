@@ -194,16 +194,17 @@ def mixing_elbow_watertight_pure_meshing_session(
     return meshing
 
 
-def create_solver_session():
+def create_solver_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
+            **kwargs,
         )
     else:
-        return pyfluent.launch_fluent()
+        return pyfluent.launch_fluent(**kwargs)
 
 
 @pytest.fixture
@@ -213,17 +214,14 @@ def new_solver_session():
 
 
 @pytest.fixture
+def new_solver_session_sp():
+    solver = create_solver_session(precision="single")
+    return solver
+
+
+@pytest.fixture
 def disk_case_session():
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        solver = pyfluent.launch_fluent(
-            dimension=2,
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-        )
-    else:
-        solver = pyfluent.launch_fluent(dimension=2)
+    solver = create_solver_session(dimension=2)
     case_name = download_file("pyfluent/rotating_disk", "disk.msh.gz")
     solver.file.read(file_type="case", file_name=case_name)
     return solver
