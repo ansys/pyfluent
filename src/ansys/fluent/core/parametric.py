@@ -252,7 +252,7 @@ def _run_local_study_in_fluent(
 
 class LocalParametricStudy:
     """Local version of a parametric study that manages design points to parametrize a
-         Fluent solver setup.
+    Fluent solver setup.
 
     Methods
     -------
