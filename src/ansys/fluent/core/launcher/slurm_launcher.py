@@ -42,6 +42,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 from concurrent.futures import Future, ThreadPoolExecutor
 import logging
 from pathlib import Path
+import shutil
 import subprocess
 import time
 from typing import Any, Callable, Dict, Optional, Union
@@ -81,6 +82,63 @@ def _get_slurm_job_id(proc: subprocess.Popen):
             return int(line)
 
 
+class _SlurmWrapper:
+    """A class wrapping Slurm commands."""
+
+    @staticmethod
+    def is_available() -> bool:
+        """Check whether Slurm is available.
+
+        Returns
+        -------
+        bool
+            ``True`` if Slurm is available, otherwise ``False``.
+        """
+        return shutil.which("sinfo") and len(_SlurmWrapper.list_queues()) > 0
+
+    @staticmethod
+    def list_queues() -> list[str]:
+        """Return list of queues.
+
+        Returns
+        -------
+        list[str]
+        List of queues.
+        """
+        out = subprocess.check_output(["sinfo", "--format=%P", "--noheader"])
+        queues = out.decode().strip().split()
+        queues = [q.removesuffix("*") for q in queues]
+        return queues
+
+    @staticmethod
+    def get_state(job_id: int) -> str:
+        """Return state of a job.
+
+        Parameters
+        ----------
+        job_id : int
+            Job id.
+
+        Returns
+        -------
+        str
+            Any of ``""``, ``"RUNNING"``, ``"CANCELLED"`` or ``"COMPLETED"``.
+        """
+        out = subprocess.check_output(["squeue", "-j", f"{job_id}", "-o", '"%T"', "-h"])
+        return out.decode().strip().strip('"')
+
+    @staticmethod
+    def cancel(job_id: int) -> None:
+        """Cancel a job.
+
+        Parameters
+        ----------
+        job_id : int
+            Job id.
+        """
+        subprocess.run(["scancel", f"{job_id}"])
+
+
 class SlurmFuture:
     """Encapsulates asynchronous launch of Fluent within a Slurm environment.
 
@@ -99,13 +157,10 @@ class SlurmFuture:
         self.cancel()
 
     def _get_state(self) -> str:
-        out = subprocess.check_output(
-            ["squeue", "-j", f"{self._job_id}", "-o", '"%T"', "-h"]
-        )
-        return out.decode().strip().strip('"')
+        return _SlurmWrapper.get_state(self._job_id)
 
     def _cancel(self):
-        subprocess.run(["scancel", f"{self._job_id}"])
+        _SlurmWrapper.cancel(self._job_id)
 
     def cancel(self, timeout: int = 60) -> bool:
         """Attempt to cancel the Fluent launch within timeout seconds.
@@ -332,6 +387,8 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        if not _SlurmWrapper.is_available():
+            raise RuntimeError("Slurm is not available.")
         self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
         self._argvals["ui_mode"] = _get_ui_mode(ui_mode)
@@ -344,6 +401,13 @@ class SlurmLauncher:
                 )
             elif self._argvals["scheduler_options"]["scheduler"] != "slurm":
                 raise InvalidArgument("Only slurm is supported as scheduler.")
+            queue = self._argvals["scheduler_options"].get("scheduler_queue")
+            if queue is not None:
+                queues = _SlurmWrapper.list_queues()
+                if queue not in queues:
+                    raise InvalidArgument(
+                        f"""Slurm queue is not valid. Valid queues are "{'", "'.join(queues)}"."""
+                    )
 
     def _prepare(self):
         self._server_info_file_name = _get_server_info_file_name(use_tmpdir=False)
