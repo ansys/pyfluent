@@ -5,7 +5,6 @@ import shutil
 import tempfile
 
 import pytest
-from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -118,7 +117,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_generate_read_mesh(mixing_elbow_geometry):
+def test_generate_read_mesh(mixing_elbow_geometry_filename):
     """Use case 2: This optiSLang integration test performs these steps.
 
     - Launch Fluent in Meshing Mode
@@ -150,7 +149,7 @@ def test_generate_read_mesh(mixing_elbow_geometry):
     # Step 3 Generate mesh from geometry with default workflow settings
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geo_import = meshing.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName=mixing_elbow_geometry)
+    geo_import.Arguments = dict(FileName=mixing_elbow_geometry_filename)
     geo_import.Execute()
     meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
     meshing.tui.mesh.check_mesh()

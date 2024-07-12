@@ -180,3 +180,10 @@ def static_mixer_settings_only(new_solver_session):
         lightweight_setup=True,
     )
     return solver
+
+
+@pytest.fixture
+def mixing_elbow_geometry_filename():
+    return download_file(
+        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    )

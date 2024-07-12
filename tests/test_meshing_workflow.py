@@ -5,7 +5,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     exhaust_system_geometry,
-    mixing_elbow_geometry,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )
@@ -19,7 +18,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
-    mixing_elbow_geometry,
+    mixing_elbow_geometry_filename,
 ):
     """This test covers generic meshing workflow behaviour."""
     meshing_session = shared_watertight_workflow_session
@@ -40,7 +39,9 @@ def test_mixing_elbow_meshing_workflow(
     # Import the CAD geometry
     # Query the task state before and after task execution
     assign_task_args(
-        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
+        task_name="Import Geometry",
+        FileName=mixing_elbow_geometry_filename,
+        LengthUnit="in",
     )
 
     execute_task_with_pre_and_postconditions(task_name="Import Geometry")
@@ -147,7 +148,7 @@ Error Object: ()
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
     model_object_throws_on_invalid_arg,
     shared_watertight_workflow,
-    mixing_elbow_geometry
+    mixing_elbow_geometry_filename
 ):
     # task_names = ("Import Geometry", "Add Local Sizing")
     task_names = ("Add Local Sizing",)
@@ -163,7 +164,7 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     model_object_throws_on_invalid_arg,
     shared_watertight_workflow,
-    mixing_elbow_geometry
+    mixing_elbow_geometry_filename
 ):
     workflow = shared_watertight_workflow
     assign_task_args = partial(
@@ -171,7 +172,7 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     )
 
     assign_task_args(
-        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
+        task_name="Import Geometry", FileName=mixing_elbow_geometry_filename, LengthUnit="in"
     )
 
     workflow.TaskObject["Import Geometry"].Execute()

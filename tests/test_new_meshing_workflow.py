@@ -685,9 +685,9 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_sessio
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_watertight_workflow(mixing_elbow_geometry, new_meshing_session):
+def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session):
     watertight = new_meshing_session.watertight()
-    watertight.import_geometry.file_name = mixing_elbow_geometry
+    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.tasks()
@@ -703,9 +703,11 @@ def test_watertight_workflow(mixing_elbow_geometry, new_meshing_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_watertight_workflow_children(mixing_elbow_geometry, new_meshing_session):
+def test_watertight_workflow_children(
+    mixing_elbow_geometry_filename, new_meshing_session
+):
     watertight = new_meshing_session.watertight()
-    watertight.import_geometry.file_name = mixing_elbow_geometry
+    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.tasks()
@@ -737,10 +739,10 @@ def test_watertight_workflow_children(mixing_elbow_geometry, new_meshing_session
 @pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_watertight_workflow_dynamic_interface(
-    mixing_elbow_geometry, new_meshing_session
+    mixing_elbow_geometry_filename, new_meshing_session
 ):
     watertight = new_meshing_session.watertight()
-    watertight.import_geometry.file_name = mixing_elbow_geometry
+    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
@@ -808,11 +810,11 @@ def test_fault_tolerant_workflow(exhaust_system_geometry, new_meshing_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry):
+def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     watertight = new_meshing_session.watertight()
     import_geometry = watertight.import_geometry
     assert import_geometry.Arguments() == {}
-    import_geometry.Arguments = dict(FileName=mixing_elbow_geometry)
+    import_geometry.Arguments = dict(FileName=mixing_elbow_geometry_filename)
     assert 8 < len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(file_name=None))
@@ -821,16 +823,16 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry):
         file_name=None
     )
     assert import_geometry.arguments.get_state()["file_name"] is None
-    import_geometry.arguments.set_state(dict(file_name=mixing_elbow_geometry))
+    import_geometry.arguments.set_state(dict(file_name=mixing_elbow_geometry_filename))
     time.sleep(5)
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        file_name=mixing_elbow_geometry
+        file_name=mixing_elbow_geometry_filename
     )
-    assert import_geometry.file_name() == mixing_elbow_geometry
+    assert import_geometry.file_name() == mixing_elbow_geometry_filename
     import_geometry.file_name.set_state("bob")
     time.sleep(5)
     assert import_geometry.file_name() == "bob"
-    import_geometry.file_name.set_state(mixing_elbow_geometry)
+    import_geometry.file_name.set_state(mixing_elbow_geometry_filename)
     import_geometry()
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.tasks()
@@ -847,7 +849,7 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry):
     # restart
     watertight = new_meshing_session.watertight()
     assert import_geometry.state() == "Out-of-date"
-    import_geometry(FileName=mixing_elbow_geometry, AppendMesh=False)
+    import_geometry(FileName=mixing_elbow_geometry_filename, AppendMesh=False)
     assert import_geometry.state() == "Up-to-date"
     import_geometry_state = import_geometry.arguments()
     assert len(import_geometry_state) > 2
@@ -1512,10 +1514,10 @@ def test_switching_workflow_interface(new_meshing_session):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_duplicate_children_of_compound_task(
-    new_meshing_session, mixing_elbow_geometry
+    new_meshing_session, mixing_elbow_geometry_filename
 ):
     watertight = new_meshing_session.watertight()
-    watertight.import_geometry.file_name = mixing_elbow_geometry
+    watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
     watertight.add_local_sizing.add_child_and_update(
         state={

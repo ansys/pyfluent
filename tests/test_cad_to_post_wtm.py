@@ -20,7 +20,6 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    mixing_elbow_geometry,
     new_watertight_workflow,
     new_watertight_workflow_session,
 )
@@ -31,7 +30,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
+def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry_filename):
     meshing_session = new_watertight_workflow_session
     workflow = meshing_session.workflow
 
@@ -48,7 +47,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     # Query the task state before and after task execution
     assign_task_args(
         task_name="Import Geometry",
-        FileName=mixing_elbow_geometry,
+        FileName=mixing_elbow_geometry_filename,
         LengthUnit="in",
     )
 

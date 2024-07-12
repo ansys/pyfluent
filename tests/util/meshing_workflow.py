@@ -90,16 +90,6 @@ def shared_watertight_workflow(shared_watertight_workflow_session):
 _mixing_elbow_geometry_file_name = None
 
 
-@pytest.fixture
-def mixing_elbow_geometry():
-    global _mixing_elbow_geometry_file_name
-    if not _mixing_elbow_geometry_file_name:
-        _mixing_elbow_geometry_file_name = download_file(
-            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-        )
-    return _mixing_elbow_geometry_file_name
-
-
 def initialize_fault_tolerant(mesh_session):
     mesh_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
