@@ -11,8 +11,8 @@ from util.solver import assign_settings_value_from_value_dict as assign_dict_val
 @pytest.mark.fluent_version(">=24.1")
 @pytest.mark.settings_only
 @pytest.mark.codegen_required
-def test_boundaries_elbow(load_mixing_elbow_settings_only):
-    solver_session = load_mixing_elbow_settings_only
+def test_boundaries_elbow(mixing_elbow_settings_session):
+    solver_session = mixing_elbow_settings_session
     solver_session.setup.models.energy.enabled = True
 
     cold_inlet = solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]
@@ -76,8 +76,8 @@ def test_boundaries_elbow(load_mixing_elbow_settings_only):
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_boundaries_periodic(load_periodic_rot_settings_only):
-    solver_session = load_periodic_rot_settings_only
+def test_boundaries_periodic(periodic_rot_settings_session):
+    solver_session = periodic_rot_settings_session
     print(__file__)
     _THIS_DIR = os.path.dirname(__file__)
     _DATA_FILE = os.path.join(_THIS_DIR, "boundaries_periodic_expDict")
