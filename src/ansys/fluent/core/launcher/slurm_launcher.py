@@ -42,6 +42,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 from concurrent.futures import Future, ThreadPoolExecutor
 import logging
 from pathlib import Path
+import shutil
 import subprocess
 import time
 from typing import Any, Callable, Dict, Optional, Union
@@ -83,6 +84,17 @@ def _get_slurm_job_id(proc: subprocess.Popen):
 
 class _SlurmWrapper:
     """A class wrapping Slurm commands."""
+
+    @staticmethod
+    def is_available() -> bool:
+        """Check whether Slurm is available.
+
+        Returns
+        -------
+        bool
+            ``True`` if Slurm is available, otherwise ``False``.
+        """
+        return shutil.which("sinfo") and len(_SlurmWrapper.list_queues()) > 0
 
     @staticmethod
     def list_queues() -> list[str]:
@@ -375,6 +387,8 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        if not _SlurmWrapper.is_available():
+            raise RuntimeError("Slurm is not available.")
         self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
         self._argvals["ui_mode"] = _get_ui_mode(ui_mode)
