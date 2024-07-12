@@ -1,9 +1,6 @@
 import numpy as np
 import pytest
-from util.solver_workflow import (  # noqa: F401
-    new_solver_session,
-    new_solver_session_single_precision,
-)
+from util.solver_workflow import new_solver_session_single_precision  # noqa: F401
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file

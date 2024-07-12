@@ -149,3 +149,21 @@ def create_mesh_session():
 def new_mesh_session():
     mesher = create_mesh_session()
     yield mesher
+
+
+def create_solver_session():
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        return pyfluent.launch_fluent(
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        return pyfluent.launch_fluent()
+
+
+@pytest.fixture
+def new_solver_session():
+    solver = create_solver_session()
+    yield solver

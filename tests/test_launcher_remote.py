@@ -9,7 +9,6 @@ import grpc
 from grpc_health.v1 import health_pb2_grpc
 import pytest
 from test_session import MockHealthServicer, MockSchemeEvalServicer
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
 from ansys.fluent.core import examples

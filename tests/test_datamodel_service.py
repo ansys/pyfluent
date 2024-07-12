@@ -3,7 +3,6 @@ from time import sleep
 
 from google.protobuf.json_format import MessageToDict
 import pytest
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant

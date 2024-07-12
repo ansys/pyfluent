@@ -1,5 +1,3 @@
-from util.solver_workflow import new_solver_session  # noqa: F401
-
 from ansys.fluent.core import examples
 from ansys.fluent.core.streaming_services.events_streaming import Event
 

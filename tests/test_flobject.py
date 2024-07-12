@@ -6,7 +6,6 @@ import weakref
 
 import pytest
 from test_utils import count_key_recursive
-from util.solver_workflow import new_solver_session  # noqa: F401
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
