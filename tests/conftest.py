@@ -126,23 +126,22 @@ def pytest_sessionfinish(session, exitstatus):
 #             tests_by_fixture[fixture].append(item.nodeid)
 
 
-def create_mesh_session():
+def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         return pyfluent.launch_fluent(
-            mode=pyfluent.FluentMode.MESHING,
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
+            **kwargs,
         )
     else:
-        return pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+        return pyfluent.launch_fluent(**kwargs)
 
 
 @pytest.fixture
 def new_meshing_session():
-    mesher = create_mesh_session()
-    return mesher
+    return create_session(mode=pyfluent.FluentMode.MESHING)
 
 
 @pytest.fixture
@@ -161,17 +160,7 @@ def fault_tolerant_workflow_session(new_meshing_session):
 
 @pytest.fixture
 def new_pure_meshing_session():
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        meshing = pyfluent.launch_fluent(
-            mode=pyfluent.FluentMode.PURE_MESHING,
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-        )
-    else:
-        meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PURE_MESHING)
-    return meshing
+    return create_session(mode=pyfluent.FluentMode.PURE_MESHING)
 
 
 @pytest.fixture
@@ -187,23 +176,9 @@ def mixing_elbow_watertight_pure_meshing_session(
     return meshing
 
 
-def create_solver_session(**kwargs):
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        return pyfluent.launch_fluent(
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-            **kwargs,
-        )
-    else:
-        return pyfluent.launch_fluent(**kwargs)
-
-
 @pytest.fixture
 def new_solver_session():
-    solver = create_solver_session()
-    return solver
+    return create_session()
 
 
 @pytest.fixture
