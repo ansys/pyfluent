@@ -5,6 +5,7 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.workflow import camel_to_snake_case
+from tests.conftest import new_meshing_session
 from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
@@ -1462,11 +1463,14 @@ def test_created_workflow(new_meshing_session):
     )
 
 
+new_meshing_session2 = new_meshing_session
+
+
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_independent_meshing_sessions(new_meshing_session, new_mesh_session_1):
+def test_independent_meshing_sessions(new_meshing_session, new_mesh_session2):
     meshing_1 = new_meshing_session
-    meshing_2 = new_mesh_session_1
+    meshing_2 = new_mesh_session2
 
     watertight = meshing_1.watertight()
     assert watertight.import_geometry.arguments()
@@ -1484,10 +1488,10 @@ def test_independent_meshing_sessions(new_meshing_session, new_mesh_session_1):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions_without_dm_caching(
-    disable_datamodel_cache, new_meshing_session, new_mesh_session_1
+    disable_datamodel_cache, new_meshing_session, new_mesh_session2
 ):
     meshing_1 = new_meshing_session
-    meshing_2 = new_mesh_session_1
+    meshing_2 = new_mesh_session2
 
     watertight = meshing_1.watertight()
     assert watertight.import_geometry.arguments()

@@ -44,13 +44,6 @@ def reset_workflow(mesh_session):
     mesh_session.workflow.ResetWorkflow()
 
 
-@pytest.fixture
-def new_mesh_session_1():
-    mesher = create_mesh_session()
-    yield mesher
-    mesher.exit()
-
-
 def initialize_fault_tolerant(mesh_session):
     mesh_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
