@@ -94,20 +94,6 @@ def launch_fluent_solver_2ddp_t2():
     solver_session.exit()
 
 
-_exhaust_system_geometry_file_name = None
-
-
-@pytest.fixture
-def load_mixing_elbow_case_dat(new_solver_session):
-    solver_session = new_solver_session
-    input_type, input_name = download_input_file(
-        "pyfluent/mixing_elbow", "mixing_elbow.cas.h5", "mixing_elbow.dat.h5"
-    )
-    solver_session.file.read(file_type=input_type, file_name=input_name)
-    yield solver_session
-    solver_session.exit()
-
-
 @pytest.fixture
 def load_mixing_elbow_settings_only(new_solver_session):
     solver_session = new_solver_session
