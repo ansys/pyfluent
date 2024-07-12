@@ -68,26 +68,6 @@ def launch_fluent_pure_meshing():
 
 
 @pytest.fixture
-def launch_fluent_solver_3ddp_t2():
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        solver_session = pyfluent.launch_fluent(
-            precision="double",
-            processor_count=2,
-            mode="solver",
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-        )
-    else:
-        solver_session = pyfluent.launch_fluent(
-            precision="double", processor_count=2, mode="solver"
-        )
-    yield solver_session
-    solver_session.exit()
-
-
-@pytest.fixture
 def launch_fluent_solver_2ddp():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
@@ -144,8 +124,8 @@ def exhaust_system_geometry():
 
 
 @pytest.fixture
-def load_mixing_elbow_mesh(launch_fluent_solver_3ddp_t2):
-    solver_session = launch_fluent_solver_3ddp_t2
+def load_mixing_elbow_mesh(new_solver_session):
+    solver_session = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/mixing_elbow", "mixing_elbow.msh.h5"
     )
@@ -155,8 +135,8 @@ def load_mixing_elbow_mesh(launch_fluent_solver_3ddp_t2):
 
 
 @pytest.fixture
-def load_mixing_elbow_case_dat(launch_fluent_solver_3ddp_t2):
-    solver_session = launch_fluent_solver_3ddp_t2
+def load_mixing_elbow_case_dat(new_solver_session):
+    solver_session = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/mixing_elbow", "mixing_elbow.cas.h5", "mixing_elbow.dat.h5"
     )
@@ -193,8 +173,8 @@ _mixing_elbow_geom_file_name = None
 
 
 @pytest.fixture
-def load_mixing_elbow_param_case_dat(launch_fluent_solver_3ddp_t2):
-    solver_session = launch_fluent_solver_3ddp_t2
+def load_mixing_elbow_param_case_dat(new_solver_session):
+    solver_session = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/mixing_elbow", "elbow_param.cas.h5", "elbow_param.dat.h5"
     )
@@ -266,8 +246,8 @@ def load_mixing_elbow_meshing():
 
 
 @pytest.fixture
-def load_periodic_rot_cas(launch_fluent_solver_3ddp_t2):
-    solver_session = launch_fluent_solver_3ddp_t2
+def load_periodic_rot_cas(new_solver_session):
+    solver_session = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/periodic_rot", "periodic_rot.cas.h5"
     )

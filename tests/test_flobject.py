@@ -880,8 +880,8 @@ def test_settings_api_names_exception(new_solver_session_no_transcript):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
-    solver = launch_fluent_solver_3ddp_t2
+def test_accessor_methods_on_settings_objects(new_solver_session):
+    solver = new_solver_session
     root = solver.settings
 
     nodes = {}

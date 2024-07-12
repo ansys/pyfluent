@@ -3,8 +3,8 @@ from util.fixture_fluent import download_input_file
 
 
 @pytest.mark.settings_only
-def test_initialization_settings(launch_fluent_solver_3ddp_t2):
-    solver = launch_fluent_solver_3ddp_t2
+def test_initialization_settings(new_solver_session):
+    solver = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/wigley_hull",
         "wigley.cas.h5",
@@ -72,8 +72,8 @@ def test_initialization_settings(launch_fluent_solver_3ddp_t2):
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
-    solver = launch_fluent_solver_3ddp_t2
+def test_fmg_initialize(new_solver_session):
+    solver = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/vki_turbine", "vki_turbine.cas.gz"
     )

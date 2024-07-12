@@ -238,9 +238,7 @@ def test_parameters(load_mixing_elbow_param_case_dat):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_parametric_project(
-    load_mixing_elbow_param_case_dat, launch_fluent_solver_3ddp_t2
-):
+def test_parametric_project(load_mixing_elbow_param_case_dat, new_solver_session):
     session1 = load_mixing_elbow_param_case_dat
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
@@ -252,7 +250,7 @@ def test_parametric_project(
     )
     assert project_file.exists()
 
-    session2 = launch_fluent_solver_3ddp_t2
+    session2 = new_solver_session
     session2.settings.file.parametric_project.open(project_filename=str(project_file))
     current_pstudy_name = session2.settings.current_parametric_study()
     assert current_pstudy_name == "elbow_param-Solve"
