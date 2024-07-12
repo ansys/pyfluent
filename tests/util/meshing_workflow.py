@@ -59,26 +59,6 @@ def new_watertight_workflow(new_watertight_workflow_session):
 _mesher = None
 
 
-@pytest.fixture
-def shared_mesh_session():
-    global _mesher
-    if not _mesher:
-        _mesher = create_mesh_session()
-    return _mesher
-
-
-@pytest.fixture
-def shared_watertight_workflow_session(shared_mesh_session):
-    initialize_watertight(shared_mesh_session)
-    yield shared_mesh_session
-    reset_workflow(shared_mesh_session)
-
-
-@pytest.fixture
-def shared_watertight_workflow(shared_watertight_workflow_session):
-    yield shared_watertight_workflow_session.workflow
-
-
 _mixing_elbow_geometry_file_name = None
 
 
@@ -95,18 +75,6 @@ def new_fault_tolerant_workflow_session(new_meshing_session):
 @pytest.fixture
 def new_fault_tolerant_workflow(new_fault_tolerant_workflow_session):
     yield new_fault_tolerant_workflow_session.workflow
-
-
-@pytest.fixture
-def shared_fault_tolerant_workflow_session(shared_mesh_session):
-    initialize_fault_tolerant(shared_mesh_session)
-    yield shared_mesh_session
-    reset_workflow(shared_mesh_session)
-
-
-@pytest.fixture
-def shared_fault_tolerant_workflow(shared_fault_tolerant_workflow_session):
-    yield shared_fault_tolerant_workflow_session.workflow
 
 
 _exhaust_system_geometry_file_name = None
