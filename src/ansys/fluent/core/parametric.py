@@ -31,7 +31,6 @@ Display results
 from math import ceil
 from typing import Any, Dict, Union
 
-from ansys.fluent.core.filereader.casereader import CaseReader
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.utils.execution import asynchronous
 
@@ -271,6 +270,8 @@ class LocalParametricStudy:
     """
 
     def __init__(self, case_filepath: str, base_design_point_name: str = "Base DP"):
+        from ansys.fluent.core.filereader.casereader import CaseReader
+
         self.case_filepath = case_filepath
         base_design_point = LocalDesignPoint(base_design_point_name)
         case_reader = CaseReader(case_file_name=case_filepath)
