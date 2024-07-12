@@ -6,7 +6,6 @@ import time
 import psutil
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
-from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
@@ -48,9 +47,10 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
 
 
 def test_session_starts_no_transcript_if_disabled(
-    new_solver_session_no_transcript,
+    new_solver_session,
 ) -> None:
-    session = new_solver_session_no_transcript
+    session = new_solver_session
+    session.transcript.stop()
 
     def print_transcript(transcript):
         print_transcript.called = True

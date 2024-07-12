@@ -6,7 +6,6 @@ import weakref
 
 import pytest
 from test_utils import count_key_recursive
-from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
@@ -805,8 +804,8 @@ def test_find_children_from_fluent_solver_session(static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
-    solver = new_solver_session_no_transcript
+def test_settings_wild_card_access(new_solver_session) -> None:
+    solver = new_solver_session
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
@@ -838,8 +837,8 @@ def test_settings_wild_card_access(new_solver_session_no_transcript) -> None:
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2792")
 @pytest.mark.fluent_version("latest")
-def test_settings_matching_names(new_solver_session_no_transcript) -> None:
-    solver = new_solver_session_no_transcript
+def test_settings_matching_names(new_solver_session) -> None:
+    solver = new_solver_session
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
@@ -869,8 +868,8 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
-def test_settings_api_names_exception(new_solver_session_no_transcript):
-    solver = new_solver_session_no_transcript
+def test_settings_api_names_exception(new_solver_session):
+    solver = new_solver_session
 
     case_path = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
