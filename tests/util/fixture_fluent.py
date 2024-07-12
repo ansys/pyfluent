@@ -173,17 +173,6 @@ _mixing_elbow_geom_file_name = None
 
 
 @pytest.fixture
-def load_mixing_elbow_param_case_dat(new_solver_session):
-    solver_session = new_solver_session
-    input_type, input_name = download_input_file(
-        "pyfluent/mixing_elbow", "elbow_param.cas.h5", "elbow_param.dat.h5"
-    )
-    solver_session.settings.file.read(file_type=input_type, file_name=input_name)
-    yield solver_session
-    solver_session.exit()
-
-
-@pytest.fixture
 def load_mixing_elbow_pure_meshing():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
