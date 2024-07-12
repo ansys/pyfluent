@@ -370,9 +370,9 @@ static_mixer_case_session2 = static_mixer_case_session
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
-def test_reductions(static_mixer_case_session, static_mixer2) -> None:
+def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> None:
     solver1 = static_mixer_case_session
-    solver2 = static_mixer2
+    solver2 = static_mixer_case_session2
     _test_context(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
