@@ -10,8 +10,8 @@ def test_report_system_proc_stats_tui(new_solver_session, capsys) -> None:
     assert "CPU" in captured.out
 
 
-def test_runtime_tui_menus(load_static_mixer_case) -> None:
-    solver = load_static_mixer_case
+def test_runtime_tui_menus(static_mixer) -> None:
+    solver = static_mixer
     solver.tui.define.models.addon_module(3)
     rmf = solver.tui.define.models.resolved_MEA_fuelcells
     assert rmf is not None

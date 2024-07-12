@@ -1,5 +1,4 @@
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import (

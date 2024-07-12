@@ -177,6 +177,14 @@ def new_solver_session():
 
 
 @pytest.fixture
+def static_mixer(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(file_type="case", file_name=case_path)
+    return solver
+
+
+@pytest.fixture
 def static_mixer_settings_only(new_solver_session):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")

@@ -5,7 +5,6 @@ import time
 
 import psutil
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
@@ -215,8 +214,8 @@ def test_fluent_freeze_kill(
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_interrupt(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_interrupt(static_mixer):
+    solver = static_mixer
     solver.setup.general.solver.time = "unsteady-2nd-order"
     solver.solution.initialization.standard_initialize()
     asynchronous(solver.solution.run_calculation.dual_time_iterate)(
