@@ -994,8 +994,8 @@ def _check_vector_units(obj, units):
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_ansys_units_integration(static_mixer_case_session):
-    solver = static_mixer_case_session
+def test_ansys_units_integration(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
     assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
@@ -1061,8 +1061,8 @@ def test_ansys_units_integration(static_mixer_case_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_ansys_units_integration_nested_state(static_mixer_case_session):
-    solver = static_mixer_case_session
+def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
 
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
@@ -1096,9 +1096,9 @@ def test_ansys_units_integration_nested_state(static_mixer_case_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_bug_1001124_quantity_assignment(static_mixer_case_session):
+def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     speed = ansys.units.Quantity(100, "m s^-1")
-    solver = static_mixer_case_session
+    solver = mixing_elbow_settings_session
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
     ].momentum.velocity.value = speed.value

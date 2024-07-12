@@ -231,7 +231,6 @@ def static_mixer_case_session(new_solver_session):
 def mixing_elbow_settings_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    download_file("pyfluent/mixing_elbow", "mixing_elbow.dat.h5")
     solver.settings.file.read(
         file_type="case",
         file_name=case_name,
@@ -244,7 +243,7 @@ def mixing_elbow_settings_session(new_solver_session):
 def mixing_elbow_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    download_file("pyfluent/mixing_elbow", "mixing_elbow.dat.h5")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
@@ -253,7 +252,7 @@ def mixing_elbow_case_data_session(new_solver_session):
 def mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
-    download_file("pyfluent/mixing_elbow", "elbow_param.dat.h5")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 

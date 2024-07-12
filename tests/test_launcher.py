@@ -127,8 +127,8 @@ def test_container_launcher():
 def test_case_load():
     # Test that launch_fluent() works with a case file as an argument
     case_name = download_file(
-        "pyfluent/mixing_elbow",
         "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
     )
     session = pyfluent.launch_fluent(case_file_name=case_name)
 
@@ -148,8 +148,8 @@ def test_case_load():
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
     case_name = download_file(
-        "pyfluent/mixing_elbow",
         "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
     )
     session = pyfluent.launch_fluent(
         case_file_name=case_name,
@@ -168,12 +168,12 @@ def test_case_lightweight_setup():
 def test_case_data_load():
     # Test that launch_fluent() works with a case+data file as an argument
     case_name = download_file(
-        "pyfluent/mixing_elbow",
         "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
     )
     download_file(
-        "pyfluent/mixing_elbow",
         "mixing_elbow.dat.h5",
+        "pyfluent/mixing_elbow",
     )
     session = pyfluent.launch_fluent(case_data_file_name=case_name)
 
