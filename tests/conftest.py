@@ -9,6 +9,7 @@ from packaging.version import Version
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -148,7 +149,7 @@ def create_mesh_session():
 @pytest.fixture
 def new_meshing_session():
     mesher = create_mesh_session()
-    yield mesher
+    return mesher
 
 
 def create_solver_session():
@@ -166,4 +167,16 @@ def create_solver_session():
 @pytest.fixture
 def new_solver_session():
     solver = create_solver_session()
-    yield solver
+    return solver
+
+
+@pytest.fixture
+def static_mixer_settings_only(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(
+        file_type="case",
+        file_name=case_path,
+        lightweight_setup=True,
+    )
+    return solver
