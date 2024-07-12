@@ -206,20 +206,37 @@ def new_solver_session():
 
 
 @pytest.fixture
+def disk_case_session():
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        solver = pyfluent.launch_fluent(
+            dimension=2,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver = pyfluent.launch_fluent(dimension=2)
+    case_name = download_file("pyfluent/rotating_disk", "disk.msh.gz")
+    solver.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
 def static_mixer_case_session(new_solver_session):
     solver = new_solver_session
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver.file.read(file_type="case", file_name=case_path)
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(file_type="case", file_name=case_name)
     return solver
 
 
 @pytest.fixture
 def static_mixer_settings_session(new_solver_session):
     solver = new_solver_session
-    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(
         file_type="case",
-        file_name=case_path,
+        file_name=case_name,
         lightweight_setup=True,
     )
     return solver
