@@ -144,13 +144,15 @@ def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
-        return pyfluent.launch_fluent(
+        session = pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
             **kwargs,
         )
     else:
-        return pyfluent.launch_fluent(**kwargs)
+        session = pyfluent.launch_fluent(**kwargs)
+    yield session
+    session.exit()
 
 
 @pytest.fixture
