@@ -52,22 +52,6 @@ def get_name_info(allnamesdict, namescheck):
 
 
 @pytest.fixture
-def launch_fluent_pure_meshing():
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        pure_meshing_session = pyfluent.launch_fluent(
-            mode="pure-meshing",
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-        )
-    else:
-        pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
-    yield pure_meshing_session
-    pure_meshing_session.exit()
-
-
-@pytest.fixture
 def launch_fluent_solver_2ddp():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
@@ -164,17 +148,6 @@ def load_periodic_rot_settings_only(new_solver_session):
         file_name=input_name,
         lightweight_setup=True,
     )
-    yield solver_session
-    solver_session.exit()
-
-
-@pytest.fixture
-def load_disk_mesh(launch_fluent_solver_2ddp_t2):
-    solver_session = launch_fluent_solver_2ddp_t2
-    input_type, input_name = download_input_file(
-        "pyfluent/rotating_disk", "disk.msh.gz"
-    )
-    solver_session.file.read(file_type=input_type, file_name=input_name)
     yield solver_session
     solver_session.exit()
 

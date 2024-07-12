@@ -62,10 +62,10 @@ def test_meshing_mode_post_switching_to_solver(new_meshing_session):
 
 
 # def test_transfer_mesh_to_solvers(
-#     launch_fluent_pure_meshing, new_solver_session
+#     new_pure_meshing_session, new_solver_session
 # ):
 #     mesh_file_name = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-#     pure_meshing_session = launch_fluent_pure_meshing
+#     pure_meshing_session = new_pure_meshing_session
 #     pure_meshing_session.tui.file.read_mesh(mesh_file_name)
 #     pure_meshing_session.tui.mesh.check_mesh()
 #     mesh_info = pure_meshing_session.scheme_eval.string_eval(
@@ -82,9 +82,9 @@ def test_meshing_mode_post_switching_to_solver(new_meshing_session):
 #     assert pure_meshing_session_cell_count == solver_session_cell_count
 
 
-def test_transfer_case_to_solvers(launch_fluent_pure_meshing, new_solver_session):
+def test_transfer_case_to_solvers(new_pure_meshing_session, new_solver_session):
     case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    pure_meshing_session = launch_fluent_pure_meshing
+    pure_meshing_session = new_pure_meshing_session
     pure_meshing_session.tui.file.read_case(case_file_name)
     pure_meshing_session.tui.mesh.check_mesh()
     mesh_info = pure_meshing_session.scheme_eval.string_eval(
