@@ -183,13 +183,13 @@ def new_solver_session():
 
 @pytest.fixture
 def new_solver_session_sp():
-    solver = create_solver_session(precision="single")
+    solver = create_session(precision="single")
     return solver
 
 
 @pytest.fixture
 def new_solver_session_2d():
-    solver = create_solver_session(dimension=2)
+    solver = create_session(dimension=2)
     return solver
 
 
