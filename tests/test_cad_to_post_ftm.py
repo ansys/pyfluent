@@ -21,7 +21,6 @@ from util.meshing_workflow import (  # noqa: F401
     exhaust_system_geometry,
     new_fault_tolerant_workflow,
     new_fault_tolerant_workflow_session,
-    new_mesh_session,
 )
 from util.solver import check_report_definition_result
 

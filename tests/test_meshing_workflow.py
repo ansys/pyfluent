@@ -6,7 +6,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     execute_task_with_pre_and_postcondition_checks,
     exhaust_system_geometry,
     mixing_elbow_geometry,
-    new_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )

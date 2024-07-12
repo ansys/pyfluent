@@ -1,3 +1,4 @@
+from collections import defaultdict
 from contextlib import nullcontext
 import functools
 import operator
@@ -8,6 +9,7 @@ from packaging.version import Version
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_release_version = FluentVersion.current_release().value
@@ -114,3 +116,36 @@ pytest.wont_raise = nullcontext
 def pytest_sessionfinish(session, exitstatus):
     if exitstatus == 5:
         session.exitstatus = 0
+
+
+tests_by_fixture = defaultdict(list)
+
+
+def pytest_collection_finish(session):
+    for k, v in sorted(tests_by_fixture.items(), key=lambda t: len(t[1]), reverse=True):
+        print(k, len(v))
+
+
+def pytest_itemcollected(item):
+    if not item.nodeid.startswith("tests/test_solvermode/"):
+        for fixture in item.fixturenames:
+            tests_by_fixture[fixture].append(item.nodeid)
+
+
+def create_mesh_session():
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        return pyfluent.launch_fluent(
+            mode=pyfluent.FluentMode.MESHING,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        return pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+
+
+@pytest.fixture
+def new_mesh_session():
+    mesher = create_mesh_session()
+    yield mesher

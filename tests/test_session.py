@@ -7,7 +7,6 @@ import time
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
 import pytest
-from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import make_new_session, new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import (

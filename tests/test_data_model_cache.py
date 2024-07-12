@@ -1,8 +1,5 @@
 import pytest
-from util.meshing_workflow import (  # noqa: F401
-    new_mesh_session,
-    new_watertight_workflow_session,
-)
+from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent

@@ -4,7 +4,6 @@ import os
 import pathlib
 
 import pytest
-from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples

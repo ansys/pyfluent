@@ -21,7 +21,6 @@ from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
-    new_mesh_session,
     new_watertight_workflow,
     new_watertight_workflow_session,
 )
