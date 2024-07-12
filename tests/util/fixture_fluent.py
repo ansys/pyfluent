@@ -124,17 +124,6 @@ def exhaust_system_geometry():
 
 
 @pytest.fixture
-def load_mixing_elbow_mesh(new_solver_session):
-    solver_session = new_solver_session
-    input_type, input_name = download_input_file(
-        "pyfluent/mixing_elbow", "mixing_elbow.msh.h5"
-    )
-    solver_session.file.read(file_type=input_type, file_name=input_name)
-    yield solver_session
-    solver_session.exit()
-
-
-@pytest.fixture
 def load_mixing_elbow_case_dat(new_solver_session):
     solver_session = new_solver_session
     input_type, input_name = download_input_file(
