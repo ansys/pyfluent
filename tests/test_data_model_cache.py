@@ -231,15 +231,15 @@ def display_names_as_keys_in_cache():
 
 
 def test_display_names_as_keys(
-    display_names_as_keys_in_cache, new_watertight_workflow_session
+    display_names_as_keys_in_cache, watertight_workflow_session
 ):
-    cache = new_watertight_workflow_session._datamodel_service_se.cache
+    cache = watertight_workflow_session._datamodel_service_se.cache
     assert "TaskObject:Import Geometry" in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" not in cache.rules_str_to_cache["workflow"]
 
 
-def test_internal_names_as_keys(new_watertight_workflow_session):
-    cache = new_watertight_workflow_session._datamodel_service_se.cache
+def test_internal_names_as_keys(watertight_workflow_session):
+    cache = watertight_workflow_session._datamodel_service_se.cache
     assert "TaskObject:Import Geometry" not in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" in cache.rules_str_to_cache["workflow"]
 

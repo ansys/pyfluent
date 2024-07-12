@@ -5,8 +5,8 @@ from ansys.fluent.core.examples import download_file
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
-    pure_meshing_session = load_mixing_elbow_pure_meshing
+def test_pure_meshing_mode(mixing_elbow_watertight_pure_meshing_session):
+    pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
     # check a few dir elements
     # n.b. 'field_data', 'field_info' need to
     # be eliminated from meshing sessions

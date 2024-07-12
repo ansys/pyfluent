@@ -14,11 +14,11 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
-    new_watertight_workflow_session,
+    watertight_workflow_session,
     mixing_elbow_geometry_filename,
 ):
     """This test covers generic meshing workflow behaviour."""
-    meshing_session = new_watertight_workflow_session
+    meshing_session = watertight_workflow_session
     workflow = meshing_session.workflow
 
     ###############################################################################
@@ -124,10 +124,10 @@ def test_mixing_elbow_meshing_workflow(
 
 @pytest.mark.codegen_required
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
-    new_watertight_workflow_session,
+    watertight_workflow_session,
 ):
     try:
-        new_watertight_workflow_session.workflow.TaskObject["no such task"]
+        watertight_workflow_session.workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:
@@ -144,13 +144,13 @@ Error Object: ()
 
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
     model_object_throws_on_invalid_arg,
-    new_watertight_workflow_session,
+    watertight_workflow_session,
     mixing_elbow_geometry_filename
 ):
     # task_names = ("Import Geometry", "Add Local Sizing")
     task_names = ("Add Local Sizing",)
     for task_name in task_names:
-        task = new_watertight_workflow_session.workflow.TaskObject[task_name]
+        task = watertight_workflow_session.workflow.TaskObject[task_name]
         try:
             task.Arguments = {"no such arg": 42}
         except Exception:
@@ -160,10 +160,10 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
 
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     model_object_throws_on_invalid_arg,
-    new_watertight_workflow_session,
+    watertight_workflow_session,
     mixing_elbow_geometry_filename
 ):
-    workflow = new_watertight_workflow_session.workflow
+    workflow = watertight_workflow_session.workflow
     assign_task_args = partial(
         assign_task_arguments, workflow=workflow, check_state=False
     )

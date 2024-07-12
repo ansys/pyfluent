@@ -152,6 +152,33 @@ def new_meshing_session():
     return mesher
 
 
+@pytest.fixture
+def watertight_workflow_session(new_meshing_session):
+    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    return new_meshing_session
+
+
+@pytest.fixture
+def mixing_elbow_watertight_pure_meshing_session(mixing_elbow_geometry_filename):
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        meshing = pyfluent.launch_fluent(
+            mode=pyfluent.FluentMode.PURE_MESHING,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PURE_MESHING)
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=mixing_elbow_geometry_filename, LengthUnit="in"
+    )
+
+    return meshing
+
+
 def create_solver_session():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
@@ -162,12 +189,6 @@ def create_solver_session():
         )
     else:
         return pyfluent.launch_fluent()
-
-
-@pytest.fixture
-def new_watertight_workflow_session(new_meshing_session):
-    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    return new_meshing_session
 
 
 @pytest.fixture
@@ -197,7 +218,7 @@ def static_mixer_settings_session(new_solver_session):
 
 
 @pytest.fixture
-def load_mixing_elbow_param_case_data_session(new_solver_session):
+def mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("pyfluent/mixing_elbow", "elbow_param.cas.h5")
     download_file("pyfluent/mixing_elbow", "elbow_param.dat.h5")

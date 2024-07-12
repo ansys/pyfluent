@@ -7,8 +7,8 @@ from util.fixture_fluent import download_input_file
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
-    pure_meshing_session = load_mixing_elbow_pure_meshing
+def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
+    pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
     assert pure_meshing_session.health_check.is_serving
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)

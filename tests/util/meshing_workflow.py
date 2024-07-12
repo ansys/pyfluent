@@ -51,17 +51,6 @@ def new_mesh_session_1():
     mesher.exit()
 
 
-@pytest.fixture
-def new_watertight_workflow(new_watertight_workflow_session):
-    yield new_watertight_workflow_session.workflow
-
-
-_mesher = None
-
-
-_mixing_elbow_geometry_file_name = None
-
-
 def initialize_fault_tolerant(mesh_session):
     mesh_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 

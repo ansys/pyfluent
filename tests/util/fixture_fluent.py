@@ -143,37 +143,6 @@ _mixing_elbow_geom_file_name = None
 
 
 @pytest.fixture
-def load_mixing_elbow_pure_meshing():
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        pure_meshing_session = pyfluent.launch_fluent(
-            precision="double",
-            processor_count=2,
-            mode="pure-meshing",
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-        )
-    else:
-        pure_meshing_session = pyfluent.launch_fluent(
-            precision="double", processor_count=2, mode="pure-meshing"
-        )
-    global _mixing_elbow_geom_file_name
-    if not _mixing_elbow_geom_file_name:
-        _mixing_elbow_geom_file_name = download_file(
-            file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-        )
-
-    pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=_mixing_elbow_geom_file_name, LengthUnit="in"
-    )
-
-    yield pure_meshing_session
-    pure_meshing_session.exit()
-
-
-@pytest.fixture
 def load_periodic_rot_cas(new_solver_session):
     solver_session = new_solver_session
     input_type, input_name = download_input_file(

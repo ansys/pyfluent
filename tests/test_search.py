@@ -360,9 +360,9 @@ def test_search():
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
-    new_watertight_workflow_session, new_solver_session
+    watertight_workflow_session, new_solver_session
 ):
-    meshing = new_watertight_workflow_session
+    meshing = watertight_workflow_session
     solver = new_solver_session
     version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
@@ -431,8 +431,8 @@ def test_get_version_path_prefix_from_obj(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_search_from_root(new_watertight_workflow_session):
-    meshing = new_watertight_workflow_session
+def test_search_from_root(watertight_workflow_session):
+    meshing = watertight_workflow_session
     results = _search("display", search_root=meshing)
     assert "<search_root>.tui.display (Object)" in results
     results = _search("display", search_root=meshing.tui)
