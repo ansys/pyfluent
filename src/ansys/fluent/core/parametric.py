@@ -231,7 +231,9 @@ def _run_local_study_in_fluent(
         )
 
     for session in sessions:
-        studies.append(next(iter(session.result().studies.values())))
+        studies.append(
+            next(iter(session.result().settings.parametric_studies.values()))
+        )
 
     apply_to_studies(studies, study_inputs)
 
