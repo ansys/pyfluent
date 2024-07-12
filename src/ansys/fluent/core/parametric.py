@@ -1,6 +1,5 @@
-"""Classes for locally defining a parametric study for Fluent without
-running Fluent. The study can then be submitted to be executed in
-parallel.
+"""Classes for locally defining a parametric study for Fluent without running Fluent.
+The study can then be submitted to be executed in parallel.
 
 Example
 -------
@@ -27,7 +26,6 @@ Display results
 >>>   for k, v in design_point.output_parameters.items():
 >>>     print("output parameter", k, v)
 >>> print(72 * "-")
-
 """
 
 from math import ceil
@@ -61,7 +59,7 @@ def convert_design_point_parameter_units(
 class LocalDesignPoint:
     """Purely local version of a design point in a parametric study.
 
-    Attributes
+    Parameters
     ----------
     name : str
         Name of the design point.
@@ -114,6 +112,7 @@ class LocalDesignPointTable(list):
     remove_design_point(idx_or_name)
         Remove a design point, either by name (str) or an index
         indicating the position in the table (by order of insertion).
+
     Raises
     ------
     RuntimeError
@@ -252,9 +251,8 @@ def _run_local_study_in_fluent(
 
 
 class LocalParametricStudy:
-    """
-    Local version of a parametric study that manages design points to parametrize a
-    Fluent solver setup.
+    """Local version of a parametric study that manages design points to parametrize a
+         Fluent solver setup.
 
     Methods
     -------
@@ -263,12 +261,13 @@ class LocalParametricStudy:
     design_point(idx_or_name)
         Get a design point, either by name (str) or an index
         indicating the position in the table (by order of insertion).
+    run_in_fluent
+    Run the study in Fluent
+
     Raises
     ------
     RuntimeError
         If the design point is not found.
-    run_in_fluent
-        Run the study in Fluent
     """
 
     def __init__(self, case_filepath: str, base_design_point_name: str = "Base DP"):
