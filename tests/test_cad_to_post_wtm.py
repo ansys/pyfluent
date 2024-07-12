@@ -20,7 +20,6 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    new_watertight_workflow,
 )
 from util.solver import check_report_definition_result
 
