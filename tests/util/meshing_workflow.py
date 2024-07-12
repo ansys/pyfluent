@@ -54,9 +54,9 @@ def new_mesh_session_1():
 
 
 @pytest.fixture
-def new_watertight_workflow_session(new_mesh_session):
-    initialize_watertight(new_mesh_session)
-    yield new_mesh_session
+def new_watertight_workflow_session(new_meshing_session):
+    initialize_watertight(new_meshing_session)
+    yield new_meshing_session
 
 
 @pytest.fixture
@@ -105,9 +105,9 @@ def initialize_fault_tolerant(mesh_session):
 
 
 @pytest.fixture
-def new_fault_tolerant_workflow_session(new_mesh_session):
-    initialize_fault_tolerant(new_mesh_session)
-    yield new_mesh_session
+def new_fault_tolerant_workflow_session(new_meshing_session):
+    initialize_fault_tolerant(new_meshing_session)
+    yield new_meshing_session
 
 
 @pytest.fixture

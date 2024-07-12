@@ -146,7 +146,7 @@ def create_mesh_session():
 
 
 @pytest.fixture
-def new_mesh_session():
+def new_meshing_session():
     mesher = create_mesh_session()
     yield mesher
 

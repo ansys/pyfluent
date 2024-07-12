@@ -38,8 +38,8 @@ def test_solver_preferences(new_solver_session):
 
 
 @pytest.mark.codegen_required
-def test_meshing_preferences(new_mesh_session):
-    meshing = new_mesh_session
+def test_meshing_preferences(new_meshing_session):
+    meshing = new_meshing_session
     preferred_meshing = meshing.preferences.MeshingWorkflow
     preferred_meshing.Verbosity = "off"
     assert preferred_meshing.Verbosity() == "off"
