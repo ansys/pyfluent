@@ -18,8 +18,6 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    new_fault_tolerant_workflow,
-    new_fault_tolerant_workflow_session,
 )
 from util.solver import check_report_definition_result
 
@@ -29,9 +27,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 def test_exhaust_system(
-    new_fault_tolerant_workflow_session, exhaust_system_geometry_filename
+    fault_tolerant_workflow_session, exhaust_system_geometry_filename
 ):
-    meshing_session = new_fault_tolerant_workflow_session
+    meshing_session = fault_tolerant_workflow_session
     workflow = meshing_session.workflow
 
     assign_task_args = partial(

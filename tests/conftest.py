@@ -159,6 +159,14 @@ def watertight_workflow_session(new_meshing_session):
 
 
 @pytest.fixture
+def fault_tolerant_workflow_session(new_meshing_session):
+    new_meshing_session.workflow.InitializeWorkflow(
+        WorkflowType="Fault-tolerant Meshing"
+    )
+    return new_meshing_session
+
+
+@pytest.fixture
 def mixing_elbow_watertight_pure_meshing_session(mixing_elbow_geometry_filename):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}

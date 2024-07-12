@@ -1,6 +1,3 @@
-import pytest
-
-
 def assign_task_arguments(
     workflow, check_state: bool, task_name: str, **kwargs
 ) -> None:
@@ -34,37 +31,3 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
     ):
         assert result is True
     check_task_execute_postconditions(task)
-
-
-def initialize_watertight(mesh_session):
-    mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-
-def reset_workflow(mesh_session):
-    mesh_session.workflow.ResetWorkflow()
-
-
-def initialize_fault_tolerant(mesh_session):
-    mesh_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-
-
-@pytest.fixture
-def new_fault_tolerant_workflow_session(new_meshing_session):
-    initialize_fault_tolerant(new_meshing_session)
-    yield new_meshing_session
-
-
-@pytest.fixture
-def new_fault_tolerant_workflow(new_fault_tolerant_workflow_session):
-    yield new_fault_tolerant_workflow_session.workflow
-
-
-_exhaust_system_geometry_file_name = None
-
-
-"""
-@pytest.fixture
-def model_object_throws_on_invalid_arg():
-    import os
-    os.environ["MODEL_OBJECT_THROW_BAD_CHILD"] = "1"
-"""
