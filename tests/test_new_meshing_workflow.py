@@ -787,10 +787,10 @@ def test_watertight_workflow_dynamic_interface(
 
 @pytest.mark.fluent_version("==23.2")
 @pytest.mark.codegen_required
-def test_fault_tolerant_workflow(exhaust_system_geometry, new_meshing_session):
+def test_fault_tolerant_workflow(exhaust_system_geometry_filename, new_meshing_session):
     fault_tolerant = new_meshing_session.fault_tolerant()
     part_management = fault_tolerant.part_management
-    file_name = exhaust_system_geometry
+    file_name = exhaust_system_geometry_filename
     part_management.LoadFmdFile(FilePath=file_name)
     part_management.MoveCADComponentsToNewObject(
         Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]

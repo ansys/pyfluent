@@ -18,7 +18,6 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    exhaust_system_geometry,
     new_fault_tolerant_workflow,
     new_fault_tolerant_workflow_session,
 )
@@ -29,7 +28,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geometry):
+def test_exhaust_system(
+    new_fault_tolerant_workflow_session, exhaust_system_geometry_filename
+):
     meshing_session = new_fault_tolerant_workflow_session
     workflow = meshing_session.workflow
 
@@ -44,7 +45,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Import the CAD geometry
     meshing_session.PartManagement.InputFileChanged(
-        FilePath=exhaust_system_geometry,
+        FilePath=exhaust_system_geometry_filename,
         IgnoreSolidNames=False,
         PartPerBody=False,
     )
@@ -67,7 +68,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
         {
             "Context": 0,
             "CreateObjectPer": "Custom",
-            "FMDFileName": exhaust_system_geometry,
+            "FMDFileName": exhaust_system_geometry_filename,
             "FileLoaded": "yes",
             "ObjectSetting": "DefaultObjectSetting",
             "Options": {

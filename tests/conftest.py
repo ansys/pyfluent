@@ -210,3 +210,10 @@ def mixing_elbow_geometry_filename():
     return download_file(
         file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
+
+
+@pytest.fixture
+def exhaust_system_geometry_filename():
+    return download_file(
+        file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+    )

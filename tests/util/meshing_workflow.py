@@ -1,7 +1,5 @@
 import pytest
 
-from ansys.fluent.core.examples import download_file
-
 
 def assign_task_arguments(
     workflow, check_state: bool, task_name: str, **kwargs
@@ -112,16 +110,6 @@ def shared_fault_tolerant_workflow(shared_fault_tolerant_workflow_session):
 
 
 _exhaust_system_geometry_file_name = None
-
-
-@pytest.fixture
-def exhaust_system_geometry():
-    global _exhaust_system_geometry_file_name
-    if not _exhaust_system_geometry_file_name:
-        _exhaust_system_geometry_file_name = download_file(
-            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
-        )
-    return _exhaust_system_geometry_file_name
 
 
 """

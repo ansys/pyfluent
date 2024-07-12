@@ -114,16 +114,6 @@ _exhaust_system_geometry_file_name = None
 
 
 @pytest.fixture
-def exhaust_system_geometry():
-    global _exhaust_system_geometry_file_name
-    if not _exhaust_system_geometry_file_name:
-        _exhaust_system_geometry_file_name = download_file(
-            file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
-        )
-    return _exhaust_system_geometry_file_name
-
-
-@pytest.fixture
 def load_mixing_elbow_case_dat(new_solver_session):
     solver_session = new_solver_session
     input_type, input_name = download_input_file(
