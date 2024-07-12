@@ -658,8 +658,8 @@ class root(Group):
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object(static_mixer_settings_only):
-    solver = static_mixer_settings_only
+def test_accessor_methods_on_settings_object(static_mixer_settings_session):
+    solver = static_mixer_settings_session
 
     existing = solver.file.read.file_type.get_attr("allowed-values")
     modified = solver.file.read.file_type.allowed_values()
@@ -721,8 +721,8 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version("latest")
-def test_accessor_methods_on_settings_object_types(static_mixer_settings_only):
-    solver = static_mixer_settings_only
+def test_accessor_methods_on_settings_object_types(static_mixer_settings_session):
+    solver = static_mixer_settings_session
 
     assert solver.setup.general.solver.type.allowed_values() == [
         "pressure-based",
@@ -744,8 +744,8 @@ def test_accessor_methods_on_settings_object_types(static_mixer_settings_only):
 
 @pytest.mark.fluent_version("==24.1")
 @pytest.mark.codegen_required
-def test_find_children_from_settings_root(static_mixer_settings_only):
-    setup_cls = static_mixer_settings_only.setup.__class__
+def test_find_children_from_settings_root(static_mixer_settings_session):
+    setup_cls = static_mixer_settings_session.setup.__class__
     assert len(find_children(setup_cls())) >= 10000
     assert len(find_children(setup_cls(), "gen*")) >= 9
     assert set(find_children(setup_cls(), "general*")) >= {
@@ -765,9 +765,9 @@ def test_find_children_from_settings_root(static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version("latest")
-def test_find_children_from_fluent_solver_session(static_mixer_settings_only):
-    setup_children = find_children(static_mixer_settings_only.setup)
-    load_mixer = static_mixer_settings_only.setup
+def test_find_children_from_fluent_solver_session(static_mixer_settings_session):
+    setup_children = find_children(static_mixer_settings_session.setup)
+    load_mixer = static_mixer_settings_session.setup
     assert len(setup_children) >= 18514
 
     viscous = load_mixer.models.viscous
@@ -781,7 +781,7 @@ def test_find_children_from_fluent_solver_session(static_mixer_settings_only):
         if path.endswith("geom_dir_spec")
     )
 
-    if static_mixer_settings_only.get_fluent_version() < FluentVersion.v242:
+    if static_mixer_settings_session.get_fluent_version() < FluentVersion.v242:
         assert set(
             find_children(
                 load_mixer.materials.fluid["air"].density.piecewise_polynomial
@@ -959,8 +959,8 @@ def get_child_nodes(node, nodes, type_list):
 
 
 @pytest.mark.fluent_version("latest")
-def test_strings_with_allowed_values(static_mixer_settings_only):
-    solver = static_mixer_settings_only
+def test_strings_with_allowed_values(static_mixer_settings_session):
+    solver = static_mixer_settings_session
 
     with pytest.raises(AttributeError) as e:
         string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
@@ -975,8 +975,8 @@ def test_strings_with_allowed_values(static_mixer_settings_only):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_parent_class_attributes(static_mixer_settings_only):
-    solver = static_mixer_settings_only
+def test_parent_class_attributes(static_mixer_settings_session):
+    solver = static_mixer_settings_session
     assert solver.setup.models.energy.enabled
     with pytest.raises(AttributeError):
         solver.setup.models.energy.__class__.enabled
@@ -1171,8 +1171,8 @@ def test_static_info_hash_identity(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_default_argument_names_for_commands(static_mixer_settings_only):
-    solver = static_mixer_settings_only
+def test_default_argument_names_for_commands(static_mixer_settings_session):
+    solver = static_mixer_settings_session
 
     if solver.get_fluent_version() >= FluentVersion.v251:
         assert set(solver.results.graphics.contour.command_names) == {

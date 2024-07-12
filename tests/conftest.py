@@ -177,7 +177,7 @@ def new_solver_session():
 
 
 @pytest.fixture
-def static_mixer(new_solver_session):
+def static_mixer_case_session(new_solver_session):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(file_type="case", file_name=case_path)
@@ -185,7 +185,7 @@ def static_mixer(new_solver_session):
 
 
 @pytest.fixture
-def static_mixer_settings_only(new_solver_session):
+def static_mixer_settings_session(new_solver_session):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(
@@ -197,7 +197,7 @@ def static_mixer_settings_only(new_solver_session):
 
 
 @pytest.fixture
-def load_mixing_elbow_param_case_data(new_solver_session):
+def load_mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("pyfluent/mixing_elbow", "elbow_param.cas.h5")
     download_file("pyfluent/mixing_elbow", "elbow_param.dat.h5")

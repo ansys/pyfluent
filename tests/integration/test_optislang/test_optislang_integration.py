@@ -15,7 +15,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_simple_solve(load_mixing_elbow_param_case_data):
+def test_simple_solve(load_mixing_elbow_param_case_data_session):
     """Use case 1: This optiSLang integration test performs these steps.
 
     - Reads a case file with and without data file
@@ -35,7 +35,7 @@ def test_simple_solve(load_mixing_elbow_param_case_data):
     logging.root.setLevel("ERROR")
 
     # Step 2: Launch fluent session and read case file with and without data file
-    solver_session = load_mixing_elbow_param_case_data
+    solver_session = load_mixing_elbow_param_case_data_session
     assert solver_session.health_check.is_serving
     case_path = examples.path("elbow_param.cas.h5")
     solver_session.settings.file.read_case_data(file_name=case_path)
@@ -218,8 +218,8 @@ def test_case_file():
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_parameters(load_mixing_elbow_param_case_data):
-    solver_session = load_mixing_elbow_param_case_data
+def test_parameters(load_mixing_elbow_param_case_data_session):
+    solver_session = load_mixing_elbow_param_case_data_session
     input_params = solver_session.settings.parameters.input_parameters.expression[
         "inlet2_temp"
     ]
@@ -237,8 +237,10 @@ def test_parameters(load_mixing_elbow_param_case_data):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_parametric_project(load_mixing_elbow_param_case_data, new_solver_session):
-    session1 = load_mixing_elbow_param_case_data
+def test_parametric_project(
+    load_mixing_elbow_param_case_data_session, new_solver_session
+):
+    session1 = load_mixing_elbow_param_case_data_session
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     init_project = Path(tmp_save_path) / "mixing_elbow_param_init.flprj"
