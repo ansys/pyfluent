@@ -1,8 +1,7 @@
 import pytest
 
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-
-load_static_mixer_case_2 = static_mixer
+from tests.conftest import static_mixer
 
 
 def _test_locn_extraction(solver1, solver2):
@@ -366,11 +365,14 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
+static_mixer2 = static_mixer
+
+
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
-def test_reductions(static_mixer, load_static_mixer_case_2) -> None:
+def test_reductions(static_mixer, static_mixer2) -> None:
     solver1 = static_mixer
-    solver2 = load_static_mixer_case_2
+    solver2 = static_mixer2
     _test_context(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
