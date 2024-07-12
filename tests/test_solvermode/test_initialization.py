@@ -1,17 +1,18 @@
 import pytest
-from util.fixture_fluent import download_input_file
+
+from ansys.fluent.core.examples.downloads import download_file
 
 
 @pytest.mark.settings_only
 def test_initialization_settings(new_solver_session):
     solver = new_solver_session
-    input_type, input_name = download_input_file(
+    case_name = download_file(
         "pyfluent/wigley_hull",
         "wigley.cas.h5",
     )
     solver.file.read(
-        file_type=input_type,
-        file_name=input_name,
+        file_type="case",
+        file_name=case_name,
         lightweight_setup=True,
     )
     solver.parallel.partition.set.laplace_smoothing.enabled = True
@@ -74,10 +75,8 @@ def test_initialization_settings(new_solver_session):
 @pytest.mark.fluent_version(">=24.1")
 def test_fmg_initialize(new_solver_session):
     solver = new_solver_session
-    input_type, input_name = download_input_file(
-        "pyfluent/vki_turbine", "vki_turbine.cas.gz"
-    )
-    solver.file.read(file_type=input_type, file_name=input_name)
+    case_name = download_file("pyfluent/vki_turbine", "vki_turbine.cas.gz")
+    solver.file.read(file_type="case", file_name=case_name)
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()
     solver.solution.initialization.fmg.fmg_initialize()

@@ -68,7 +68,6 @@ def pytest_runtest_setup(item):
 
 
 pytest_plugins = [
-    "util.fixture_fluent",
     "util.meshing_workflow",
 ]
 

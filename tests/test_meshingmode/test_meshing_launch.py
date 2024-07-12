@@ -1,7 +1,8 @@
 import os
 
 import pytest
-from util.fixture_fluent import download_input_file
+
+from ansys.fluent.core.examples.downloads import download_file
 
 
 @pytest.mark.nightly
@@ -67,11 +68,9 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    input_type, input_name = download_input_file(
-        "pyfluent/mixing_elbow", "mixing_elbow.pmdb"
-    )
+    geom_name = download_file("pyfluent/mixing_elbow", "mixing_elbow.pmdb")
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=input_name, LengthUnit="in"
+        FileName=geom_name, LengthUnit="in"
     )
     pure_meshing_session.tui.file.read_journal(file_name)
     if os.path.exists(file_name):

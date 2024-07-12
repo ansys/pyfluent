@@ -3,9 +3,9 @@ import os
 from unittest import TestCase
 
 import pytest
-from util.fixture_fluent import get_name_info
 from util.solver import SettingsValDict as D
 from util.solver import assign_settings_value_from_value_dict as assign_dict_val
+from util.solver import get_name_info
 
 
 @pytest.mark.fluent_version(">=24.1")
