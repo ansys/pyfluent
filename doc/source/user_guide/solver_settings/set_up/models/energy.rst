@@ -1,8 +1,6 @@
 Energy model
 ============
 
-**Python code**
-
 .. code:: python
 
     >>> import ansys.fluent.core as pyfluent
@@ -12,7 +10,7 @@ Energy model
     >>> solver.settings.file.read_case(file_name=file_name)
     >>> energy = solver.settings.setup.models.energy
     >>> energy.enabled.get_state()
-        True
+    True
     >>> from pprint import pprint
     >>> pprint(energy.get_state(), width=1)
     {'enabled': True,
