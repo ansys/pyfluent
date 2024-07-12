@@ -52,22 +52,6 @@ def get_name_info(allnamesdict, namescheck):
 
 
 @pytest.fixture
-def sample_solver_session():
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
-        file_transfer_service = RemoteFileTransferStrategy()
-        solver_session = pyfluent.launch_fluent(
-            mode="solver",
-            container_dict=container_dict,
-            file_transfer_service=file_transfer_service,
-        )
-    else:
-        solver_session = pyfluent.launch_fluent(mode="solver")
-    yield solver_session
-    solver_session.exit()
-
-
-@pytest.fixture
 def launch_fluent_pure_meshing():
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
@@ -182,8 +166,8 @@ def load_mixing_elbow_case_dat(launch_fluent_solver_3ddp_t2):
 
 
 @pytest.fixture
-def load_mixing_elbow_settings_only(sample_solver_session):
-    solver_session = sample_solver_session
+def load_mixing_elbow_settings_only(new_solver_session):
+    solver_session = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/mixing_elbow", "mixing_elbow.cas.h5"
     )
@@ -197,8 +181,8 @@ def load_mixing_elbow_settings_only(sample_solver_session):
 
 
 @pytest.fixture
-def load_static_mixer_case(sample_solver_session):
-    solver = sample_solver_session
+def load_static_mixer_case(new_solver_session):
+    solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(file_type="case", file_name=case_path)
     yield solver
@@ -206,8 +190,8 @@ def load_static_mixer_case(sample_solver_session):
 
 
 @pytest.fixture
-def load_static_mixer_settings_only(sample_solver_session):
-    solver = sample_solver_session
+def load_static_mixer_settings_only(new_solver_session):
+    solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(
         file_type="case",
@@ -306,8 +290,8 @@ def load_periodic_rot_cas(launch_fluent_solver_3ddp_t2):
 
 
 @pytest.fixture
-def load_periodic_rot_settings_only(sample_solver_session):
-    solver_session = sample_solver_session
+def load_periodic_rot_settings_only(new_solver_session):
+    solver_session = new_solver_session
     input_type, input_name = download_input_file(
         "pyfluent/periodic_rot", "periodic_rot.cas.h5"
     )
