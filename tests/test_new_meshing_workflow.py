@@ -1468,9 +1468,9 @@ new_meshing_session2 = new_meshing_session
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_independent_meshing_sessions(new_meshing_session, new_mesh_session2):
+def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2):
     meshing_1 = new_meshing_session
-    meshing_2 = new_mesh_session2
+    meshing_2 = new_meshing_session2
 
     watertight = meshing_1.watertight()
     assert watertight.import_geometry.arguments()
@@ -1488,10 +1488,10 @@ def test_independent_meshing_sessions(new_meshing_session, new_mesh_session2):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions_without_dm_caching(
-    disable_datamodel_cache, new_meshing_session, new_mesh_session2
+    disable_datamodel_cache, new_meshing_session, new_meshing_session2
 ):
     meshing_1 = new_meshing_session
-    meshing_2 = new_mesh_session2
+    meshing_2 = new_meshing_session2
 
     watertight = meshing_1.watertight()
     assert watertight.import_geometry.arguments()
