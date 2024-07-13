@@ -144,25 +144,27 @@ def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
-        session = pyfluent.launch_fluent(
+        return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
             **kwargs,
         )
     else:
-        session = pyfluent.launch_fluent(**kwargs)
-    yield session
-    session.exit()
+        return pyfluent.launch_fluent(**kwargs)
 
 
 @pytest.fixture
 def new_meshing_session():
-    return create_session(mode=pyfluent.FluentMode.MESHING)
+    meshing = create_session(mode=pyfluent.FluentMode.MESHING)
+    yield meshing
+    meshing.exit()
 
 
 @pytest.fixture
 def new_pure_meshing_session():
-    return create_session(mode=pyfluent.FluentMode.PURE_MESHING)
+    meshing = create_session(mode=pyfluent.FluentMode.PURE_MESHING)
+    yield meshing
+    meshing.exit()
 
 
 @pytest.fixture
@@ -194,19 +196,23 @@ def mixing_elbow_watertight_pure_meshing_session(
 
 @pytest.fixture
 def new_solver_session():
-    return create_session()
+    solver = create_session()
+    yield solver
+    solver.exit()
 
 
 @pytest.fixture
 def new_solver_session_sp():
     solver = create_session(precision="single")
-    return solver
+    yield solver
+    solver.exit()
 
 
 @pytest.fixture
 def new_solver_session_2d():
     solver = create_session(dimension=2)
-    return solver
+    yield solver
+    solver.exit()
 
 
 @pytest.fixture
