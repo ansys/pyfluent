@@ -36,7 +36,7 @@ The following rules specify what is written to the journal:
   * Calls made in the Scheme programming language are not written to journal.
 
 #. **Fluent GUI actions**.
-  * Commands invoked through Fluent guided workflow GUIs are written to journal. This includes meshing workflows actions in the meshing mode GUI.
+  * Guided workflow commands invoked through the GUI are written to journal. This includes meshing workflows actions in the meshing mode GUI.
   * Commands invoked through the preferences panel in either meshing or solution mode are written to journal.
   * Other commands invoked through the solution mode GUI are not written to journal. To journal based on solution mode GUI actions, use the Fluent Web UI.
   

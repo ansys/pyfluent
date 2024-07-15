@@ -15,10 +15,9 @@ The following code triggers a callback at the end of every iteration.
 
 .. code-block:: python
 
-    >>> Damn expose this
     >>> from ansys.fluent.core import Event
     >>>
-    >>> def at_end_of_iteration(session, event_info):
-    >>>     print("Iteration ended index", event_info.index)
+    >>> def on_iteration_ended(session, event_info):
+    >>>     print("Iteration ended. Index = ", event_info.index)
     >>>
-    >>> callback_id = solver.events.register_callback(Event.ITERATION_ENDED, at_end_of_iteration)
+    >>> callback_id = solver.events.register_callback(Event.ITERATION_ENDED, on_iteration_ended)
