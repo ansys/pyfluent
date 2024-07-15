@@ -17,10 +17,10 @@ User guide
    transfer_data
    units
    file_transfer
+   offline/index
    journal
    log
-   search
-   offline/index
+   usability
    legacy/index
 
 

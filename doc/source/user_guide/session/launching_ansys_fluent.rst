@@ -1,7 +1,7 @@
 .. _ref_launch_guide:
 
-Launch or connect to Fluent
-===========================
+Launching and connecting to Fluent
+==================================
 You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
 function to start Fluent from Python in gRPC mode. This code starts Fluent in the background
 so that commands can be sent to Fluent from the Python interpreter:

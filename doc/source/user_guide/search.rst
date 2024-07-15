@@ -1,4 +1,0 @@
-Search
-======
-
-Check back soon.

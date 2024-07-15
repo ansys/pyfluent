@@ -1,6 +1,6 @@
 .. _ref_monitors_guide:
 
-Monitors
-========
+Using monitors
+==============
 
-Check back soon.
+Check back soon for full details.

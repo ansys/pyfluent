@@ -1,7 +1,7 @@
 .. _ref_events_guide:
 
-EventsManager
-=============
+Observing events
+================
 
 Each solver session object has an ``events`` child of type ``EventsManager``. You can call
 the ``events.register_callback()`` method in order to receive notifications of various events

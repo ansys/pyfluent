@@ -5,7 +5,6 @@ Physical units
 By default, you can access and modify PyFluent solver settings according to its S.I. unit.
 However, PyFluent also allows you to work in arbitrary physical examples. Here's an example:
 
-
 .. code-block:: python
 
 >>> from ansys.units import Quantity

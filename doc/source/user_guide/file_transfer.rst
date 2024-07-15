@@ -3,4 +3,4 @@
 File transfer
 =============
 
-Check back soon.
+Check back soon for full details.

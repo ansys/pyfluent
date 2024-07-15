@@ -1,7 +1,7 @@
 .. _ref_session_launch_guide:
 
-Starting and managing PyFluent sessions
-=======================================
+Managing sessions
+=================
 
 
 .. toctree::
