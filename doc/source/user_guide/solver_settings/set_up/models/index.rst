@@ -5,7 +5,7 @@ Physics models
 
 The guide for each Python physics model uses a solver session object
 named ``solver`` that is available in solution mode. For the physics 
-models to be active you will generally need to have loaded a case or 
+models to be active you generally need to have loaded a case or 
 mesh file; e.g.:
 
 .. code:: python
