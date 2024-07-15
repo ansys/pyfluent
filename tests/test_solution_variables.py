@@ -1,9 +1,5 @@
 import numpy as np
 import pytest
-from util.solver_workflow import (  # noqa: F401
-    new_solver_session,
-    new_solver_session_single_precision,
-)
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
@@ -123,8 +119,8 @@ def test_solution_variables(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_solution_variables_single_precision(new_solver_session_single_precision):
-    solver = new_solver_session_single_precision
+def test_solution_variables_single_precision(new_solver_session_sp):
+    solver = new_solver_session_sp
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )

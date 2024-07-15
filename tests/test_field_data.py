@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
@@ -237,8 +236,8 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_field_data_objects_2d(load_disk_mesh) -> None:
-    solver = load_disk_mesh
+def test_field_data_objects_2d(disk_case_session) -> None:
+    solver = disk_case_session
 
     field_data = solver.fields.field_data
 

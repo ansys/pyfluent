@@ -1,7 +1,5 @@
 import time
 
-from util.solver_workflow import new_solver_session  # noqa: F401
-
 from ansys.fluent.core import connect_to_fluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 

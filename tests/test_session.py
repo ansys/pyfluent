@@ -7,8 +7,6 @@ import time
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
 import pytest
-from util.meshing_workflow import new_mesh_session  # noqa: F401
-from util.solver_workflow import make_new_session, new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import (
     scheme_eval_pb2,
@@ -27,6 +25,7 @@ from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStra
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+from tests.conftest import new_solver_session
 
 
 class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
@@ -288,7 +287,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.fluent_version(">=23.2")
-def test_journal_creation(file_format, new_mesh_session):
+def test_journal_creation(file_format, new_meshing_session):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
@@ -304,7 +303,7 @@ def test_journal_creation(file_format, new_mesh_session):
     prev_size = prev_stat.st_size
     print(f"prev_stat: {prev_stat}")
 
-    session = new_mesh_session
+    session = new_meshing_session
     if session.connection_properties.inside_container:
         session.journal.start(file_name.name)
     else:
@@ -317,7 +316,7 @@ def test_journal_creation(file_format, new_mesh_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_start_transcript_file_write(new_mesh_session):
+def test_start_transcript_file_write(new_meshing_session):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
@@ -332,7 +331,7 @@ def test_start_transcript_file_write(new_mesh_session):
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
 
-    session = new_mesh_session
+    session = new_meshing_session
     session.transcript.start(file_name)
     session = session.switch_to_solver()
     session.transcript.stop()
@@ -391,9 +390,12 @@ def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
 
 
-def test_build_from_fluent_connection(make_new_session):
-    solver1 = make_new_session()
-    solver2 = make_new_session()
+new_solver_session2 = new_solver_session
+
+
+def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
+    solver1 = new_solver_session
+    solver2 = new_solver_session2
     assert solver1.health_check.is_serving
     assert solver2.health_check.is_serving
     health_check_service1 = solver1.health_check

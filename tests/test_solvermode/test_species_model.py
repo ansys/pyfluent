@@ -3,8 +3,8 @@ import pytest
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version(">=24.1")
-def test_change_create_mixture(load_mixing_elbow_settings_only):
-    solver_session = load_mixing_elbow_settings_only
+def test_change_create_mixture(mixing_elbow_settings_session):
+    solver_session = mixing_elbow_settings_session
 
     # Test turning on species transport model
     species_mdl = solver_session.setup.models.species.model

@@ -1,8 +1,4 @@
 import pytest
-from util.meshing_workflow import (  # noqa: F401
-    new_mesh_session,
-    new_watertight_workflow_session,
-)
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
@@ -218,9 +214,9 @@ def test_update_cache_internal_names_as_keys(
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_get_cached_values_in_command_arguments(new_mesh_session):
-    new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    geo_import = new_mesh_session.workflow.TaskObject["Import Geometry"]
+def test_get_cached_values_in_command_arguments(new_meshing_session):
+    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName="Bob")
     geo_import.Arguments = dict(FileName=None)
     assert "FileName" in geo_import.command_arguments()
@@ -235,15 +231,15 @@ def display_names_as_keys_in_cache():
 
 
 def test_display_names_as_keys(
-    display_names_as_keys_in_cache, new_watertight_workflow_session
+    display_names_as_keys_in_cache, watertight_workflow_session
 ):
-    cache = new_watertight_workflow_session._datamodel_service_se.cache
+    cache = watertight_workflow_session._datamodel_service_se.cache
     assert "TaskObject:Import Geometry" in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" not in cache.rules_str_to_cache["workflow"]
 
 
-def test_internal_names_as_keys(new_watertight_workflow_session):
-    cache = new_watertight_workflow_session._datamodel_service_se.cache
+def test_internal_names_as_keys(watertight_workflow_session):
+    cache = watertight_workflow_session._datamodel_service_se.cache
     assert "TaskObject:Import Geometry" not in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" in cache.rules_str_to_cache["workflow"]
 
