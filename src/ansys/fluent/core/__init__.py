@@ -31,6 +31,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.streaming_services.events_streaming import Event  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401

@@ -1,5 +1,4 @@
-from ansys.fluent.core import examples
-from ansys.fluent.core.streaming_services.events_streaming import Event
+from ansys.fluent.core import Event, examples
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
