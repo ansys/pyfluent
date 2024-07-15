@@ -75,3 +75,44 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session.tui.file.read_journal(file_name)
     if os.path.exists(file_name):
         os.remove(file_name)
+
+
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_launch_meshing(new_meshing_session):
+    meshing = new_meshing_session
+    assert not meshing.switched
+    solver = meshing.switch_to_solver()
+    assert meshing.switched
+    assert not meshing.tui
+    assert not meshing.meshing
+    assert not meshing.workflow
+    assert not meshing.watertight
+
+
+def test_fake_session():
+
+    class fake_session:
+
+        def __init__(self) -> None:
+            self.switched = False
+
+        def __getattribute__(self, item: str):
+            if item == "switched":
+                return super(fake_session, self).__getattribute__(item)
+
+            if self.switched:
+                return None
+
+            return super(fake_session, self).__getattribute__(item)
+
+        def foo(self):
+            return 42
+
+    f = fake_session()
+
+    assert f.foo() == 42
+
+    f.switched = True
+
+    assert f.foo is None

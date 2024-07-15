@@ -63,6 +63,11 @@ class Meshing(PureMeshing):
         self.switched = True
         return solver_session
 
+    def __getattribute__(self, item):
+        if self.switched:
+            return None
+        return super(Meshing, self).__getattribute__(item)
+
     @property
     def tui(self):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
