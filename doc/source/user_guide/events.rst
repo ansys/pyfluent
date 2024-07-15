@@ -3,10 +3,10 @@
 Observing events
 ================
 
-Each solver session object has an ``events`` child of type ``EventsManager``. You can call
+Each session object has an ``events`` child of type ``EventsManager``. You can call
 the ``events.register_callback()`` method in order to receive notifications of various events
 occurring in Fluent. (The EventsManager calls each callback whenever a Fluent
-event occurs, passing the relevant solver session object and event information as arguments to the
+event occurs, passing the relevant session object and event information as arguments to the
 callback). The EventsManager is useful for solution monitoring and dynamic update of graphics.
 
 Supported events are enumerated by the PyFluent ``Event`` class.
