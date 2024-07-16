@@ -15,6 +15,13 @@ from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 network_logger = logging.getLogger("pyfluent.networking")
 
 
+def _missing_for_events(cls, value):
+    for member in cls:
+        if member.value.lower() == value:
+            return member
+    raise ValueError(f"'{value}' is not a supported '{cls.__name__}'.")
+
+
 class SolverEvent(Enum):
     """Enumerates over supported server (Fluent) events."""
 
@@ -43,10 +50,7 @@ class SolverEvent(Enum):
 
     @classmethod
     def _missing_(cls, value: str):
-        for member in cls:
-            if member.value.lower() == value:
-                return member
-        raise ValueError(f"'{value}' is not a supported 'SolverEvent'.")
+        _missing_for_events(cls, value)
 
 
 # alias for backward compatibility
@@ -64,10 +68,7 @@ class MeshingEvent(Enum):
 
     @classmethod
     def _missing_(cls, value: str):
-        for member in cls:
-            if member.value.lower() == value:
-                return member
-        raise ValueError(f"'{value}' is not a supported 'MeshingEvent'.")
+        _missing_for_events(cls, value)
 
 
 TEvent = TypeVar("TEvent")
