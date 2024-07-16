@@ -193,25 +193,16 @@ def _run_local_study_in_fluent(
 
     @asynchronous
     def apply_to_study(study, inputs):
-        first = True
         for input in inputs:
-            if first:
-                design_point = study.design_points[BASE_DP_NAME]
-                design_point.capture_simulation_report_data_enabled = (
-                    capture_report_data
-                )
-                first = False
-            else:
-                design_point = study.add_design_point(
-                    capture_simulation_report_data=capture_report_data
-                )
+            design_point = study.design_points[BASE_DP_NAME]
+            design_point.capture_simulation_report_data = capture_report_data
             design_point.input_parameters = convert_design_point_parameter_units(
                 input.copy()
             )
 
     @asynchronous
     def update_design_point(study):
-        study.update_all_design_points()
+        study.design_points.update_all()
 
     def apply_to_studies(studies, inputs) -> None:
         results = []
@@ -231,7 +222,12 @@ def _run_local_study_in_fluent(
         )
 
     for session in sessions:
-        studies.append(next(iter(session.result().studies.values())))
+        session.result().settings.parametric_studies.initialize(
+            project_filename=session.result().id
+        )
+        studies.append(
+            next(iter(session.result().settings.parametric_studies.values()))
+        )
 
     apply_to_studies(studies, study_inputs)
 
