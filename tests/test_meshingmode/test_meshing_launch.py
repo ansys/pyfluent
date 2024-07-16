@@ -2,6 +2,7 @@ import os
 
 import pytest
 
+from ansys.fluent.core import Event
 from ansys.fluent.core.examples.downloads import download_file
 
 
@@ -79,7 +80,7 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_launch_meshing(new_meshing_session):
+def test_launch_meshing_and_switch(new_meshing_session):
     meshing = new_meshing_session
     assert not meshing.switched
     solver = meshing.switch_to_solver()
@@ -90,9 +91,48 @@ def test_launch_meshing(new_meshing_session):
     assert not meshing.watertight
 
 
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_meshing_streaming_and_switch(new_meshing_session):
+
+    def on_case_loaded(session, event_info):
+        on_case_loaded.loaded = True
+
+    on_case_loaded.loaded = False
+
+    def on_trancript(transcript):
+        on_trancript.called = True
+
+    on_trancript.called = False
+
+    meshing = new_meshing_session
+
+    meshing.events.register_callback(Event.CASE_LOADED, on_case_loaded)
+    meshing.transcript.register_callback(on_trancript)
+
+    solver = meshing.switch_to_solver()
+
+    on_trancript.called = False
+
+    case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
+    try:
+        solver.settings.file.read_case(file_name=case_file_name)
+    except AttributeError:
+        solver.tui.file.read_case(case_file_name)
+
+    assert not on_trancript.called
+    assert not on_case_loaded.loaded
+
+
 def test_fake_session():
 
-    class fake_session:
+    class fake_session_base:
+
+        def bar(self):
+            pass
+
+    class fake_session(fake_session_base):
 
         def __init__(self) -> None:
             self.switched = False
@@ -116,3 +156,5 @@ def test_fake_session():
     f.switched = True
 
     assert f.foo is None
+
+    assert f.bar is None

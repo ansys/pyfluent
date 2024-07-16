@@ -315,7 +315,8 @@ class BaseSession:
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
-        self._fluent_connection.exit(**kwargs)
+        if self._fluent_connection:
+            self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
