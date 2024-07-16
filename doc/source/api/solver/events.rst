@@ -10,4 +10,5 @@ EventsManager
     :template: noindex-class.rst
     :recursive:
 
+    Events
     EventsManager

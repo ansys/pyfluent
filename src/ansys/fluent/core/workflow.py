@@ -5,7 +5,8 @@ from __future__ import annotations
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, List, Optional, Tuple, Union
+import time
+from typing import Any, Iterable, Iterator, Optional, Tuple, Union
 import warnings
 
 from ansys.fluent.core.services.datamodel_se import (
@@ -308,16 +309,6 @@ class BaseTask:
         """
         return []
 
-    def child_task_python_names(self) -> List[str]:
-        """Get the Pythonic names of the child tasks.
-
-        Returns
-        -------
-        List[str]
-            Pythonic names of the child tasks.
-        """
-        return self._python_task_names
-
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the application.
 
@@ -368,7 +359,13 @@ class BaseTask:
         str
             Pythonic name of the task.
         """
-        if not self._python_name:
+        if self._python_name in self._command_source._compound_task_names_with_children:
+            if (
+                self.task_type() == "Compound Child"
+                and self.name() in self._command_source._compound_task_map
+            ):
+                self._python_name = self._command_source._compound_task_map[self.name()]
+        elif not self._python_name:
             if self._command_source._dynamic_python_names:
                 display_name_map = self._command_source._python_name_display_text_map
                 if self.display_name() not in display_name_map.values():
@@ -382,10 +379,21 @@ class BaseTask:
 
         return self._python_name
 
-    def _set_python_name(self):
-        this_command = self._command()
-        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
-        self._cache_data(this_command)
+    def _set_python_name(self, compound=False):
+        if self._dynamic_interface:
+            this_command = self._command()
+            if compound:
+                p_name = (
+                    self._command_source._compound_parent_task_python_name_id[0]
+                    + f"_child_{self._command_source._compound_parent_task_python_name_id[1]}"
+                )
+                self._python_name = p_name
+                self._command_source._compound_task_map[self.name()] = p_name
+            else:
+                self._python_name = camel_to_snake_case(
+                    this_command.get_attr("helpString")
+                )
+            self._cache_data(this_command)
 
     def _cache_data(self, command):
         disp_text = command.get_attr("displayText")
@@ -1050,16 +1058,7 @@ class CompoundChild(SimpleTask):
             The name of this task.
         """
         super().__init__(command_source, task)
-
-    def python_name(self) -> str:
-        """Get the Pythonic name of this task from the underlying application.
-
-        Returns
-        -------
-        str
-            The Pythonic name of this task.
-        """
-        pass
+        self._set_python_name(compound=True)
 
 
 class CompositeTask(BaseTask):
@@ -1195,6 +1194,21 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
+        if (
+            self.python_name()
+            != self._command_source._compound_parent_task_python_name_id[0]
+        ):
+            self._command_source._compound_parent_task_python_name_id[0] = (
+                self.python_name()
+            )
+            self._command_source._compound_task_names_with_children.append(
+                self.python_name()
+            )
+            self._command_source._compound_parent_task_python_name_id[1] = 0
+
+        self._command_source._compound_parent_task_python_name_id[1] = (
+            self._command_source._compound_parent_task_python_name_id[1] + 1
+        )
         self._add_child(state)
         if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
@@ -1207,6 +1221,8 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
+        time.sleep(1)
+        self.tasks()[-1]._set_python_name(compound=True)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
@@ -1310,6 +1326,9 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
+                _compound_parent_task_python_name_id=[None, 0],
+                _compound_task_map={},
+                _compound_task_names_with_children=[],
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
@@ -1386,17 +1405,6 @@ class Workflow:
                 self._task_list = task_list
         return self._ordered_children
 
-    def child_task_python_names(self) -> List[str]:
-        """Get the Pythonic names of the child tasks.
-
-        Returns
-        -------
-        List[str]
-            Pythonic names of the child tasks.
-        """
-        with self._lock:
-            return self._python_task_names
-
     @staticmethod
     def inactive_tasks() -> list:
         """Get the inactive ordered task list held by this task.
@@ -1444,7 +1452,7 @@ class Workflow:
             list(self.__dict__)
             + dir(type(self))
             + arg_list
-            + self.child_task_python_names()
+            + self.task_names()
             + list(self._repeated_task_python_name_display_text_map)
         )
         dir_set = dir_set - self._unwanted_attrs

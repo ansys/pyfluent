@@ -1,11 +1,11 @@
 """
 End-to-end Fluent Solver Workflow using Watertight Meshing
 -----------------------------------------------------------------------------
-This test covers the setup and solution of a three-dimensional
+This test covers the setup and solution of a 3D
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and
-processindustries. It is often important to predict the flow field and
-temperature field in the area of the mixing regionin order to properly design
+process industries. It is often important to predict the flow field and
+temperature field in the area of the mixing region to properly design
 the junction.
 
 This test queries the following using PyTest:
@@ -20,10 +20,6 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    mixing_elbow_geometry,
-    new_mesh_session,
-    new_watertight_workflow,
-    new_watertight_workflow_session,
 )
 from util.solver import check_report_definition_result
 
@@ -32,8 +28,8 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
-    meshing_session = new_watertight_workflow_session
+def test_mixing_elbow(watertight_workflow_session, mixing_elbow_geometry_filename):
+    meshing_session = watertight_workflow_session
     workflow = meshing_session.workflow
 
     assign_task_args = partial(
@@ -49,7 +45,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     # Query the task state before and after task execution
     assign_task_args(
         task_name="Import Geometry",
-        FileName=mixing_elbow_geometry,
+        FileName=mixing_elbow_geometry_filename,
         LengthUnit="in",
     )
 

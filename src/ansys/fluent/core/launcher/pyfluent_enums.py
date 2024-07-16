@@ -88,14 +88,15 @@ class FluentEnum(Enum):
     @classmethod
     def _missing_(cls, value: str):
         for member in cls:
-            if str(member) == value:
+            if member.str_value() == value:
                 return member
         raise ValueError(
             f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: '{"', '".join(str(member) for member in cls)}'."""
+            f""" The supported values are: '{"', '".join(member.str_value() for member in cls)}'."""
         )
 
-    def __str__(self):
+    def str_value(self):
+        """Returns string value of the enum."""
         return self.name.lower()
 
     def __lt__(self, other):
@@ -122,7 +123,7 @@ class UIMode(FluentEnum):
     GUI = ("",)
 
 
-class Dimension(FluentEnum):
+class Dimension(Enum):
     """Geometric dimensionality of the Fluent simulation."""
 
     TWO = ("2d",)
@@ -137,7 +138,7 @@ class Dimension(FluentEnum):
                 return member
         raise ValueError(
             f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: '{"', '".join((member.value[0][0]) for member in cls)}'."""
+            f""" The supported values are: {", ".join((member.value[0][0]) for member in cls)}."""
         )
 
 
@@ -191,7 +192,8 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
         fluent_launch_mode = LaunchMode.CONTAINER
-    elif scheduler_options and scheduler_options["scheduler"] == "slurm":
+    # Currently, only Slurm scheduler is supported and within SlurmLauncher we check the value of the scheduler
+    elif scheduler_options:
         fluent_launch_mode = LaunchMode.SLURM
     else:
         fluent_launch_mode = LaunchMode.STANDALONE
@@ -203,7 +205,10 @@ def _get_graphics_driver(
 ):
     if graphics_driver is None:
         graphics_driver = "auto"
-    graphics_driver = str(graphics_driver)
+    if isinstance(
+        graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
+    ):
+        graphics_driver = graphics_driver.str_value()
     graphics_driver = (
         FluentWindowsGraphicsDriver(graphics_driver)
         if is_windows()

@@ -48,7 +48,6 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
 wing_spaceclaim_file, wing_intermediary_file = [
     examples.download_file(CAD_file, "pyfluent/external_compressible")
     for CAD_file in ["wing.scdoc", "wing.pmdb"]
@@ -89,6 +88,7 @@ geo_import.Arguments.set_state(
     }
 )
 
+meshing.upload(wing_intermediary_file)
 geo_import.Execute()
 
 ###############################################################################
@@ -211,7 +211,7 @@ meshing.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~
 # Save the mesh file (``wing.msh.h5``).
 
-meshing.tui.file.write_mesh("wing.msh.h5")
+meshing.meshing.File.WriteMesh(FileName="wing.msh.h5")
 
 ###############################################################################
 # Solve and postprocess

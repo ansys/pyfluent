@@ -1,7 +1,4 @@
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
-from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import (
@@ -240,7 +237,7 @@ def test_whole_word_search(capsys):
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_match_case_search(capsys):
-    pyfluent.search("font", match_case=True)
+    pyfluent.search("font", match_whole_word=True, match_case=True)
     lines = capsys.readouterr().out.splitlines()
     for line in lines:
         assert "Font" not in line
@@ -315,41 +312,6 @@ def test_japanese_semantic_search(capsys):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==24.2")
-def test_search_from_root_latest(capsys, new_watertight_workflow_session):
-    meshing = new_watertight_workflow_session
-    pyfluent.search("display", search_root=meshing)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.tui.display (Object)" in lines
-    pyfluent.search("display", search_root=meshing.tui)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.display (Object)" in lines
-    pyfluent.search("display", search_root=meshing.tui.display)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.update_scene.display (Command)" in lines
-    assert "<search_root>.display_states (Object)" in lines
-    pyfluent.search("cad", search_root=meshing.meshing)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.GlobalSettings.EnableCleanCAD (Parameter)" in lines
-    assert "<search_root>.LoadCADGeometry (Command)" in lines
-    pyfluent.search("next", search_root=meshing.workflow)
-    lines = capsys.readouterr().out.splitlines()
-    assert '<search_root>.TaskObject["<name>"].InsertNextTask (Command)' in lines
-    pyfluent.search("next", search_root=meshing.workflow.TaskObject)
-    lines = capsys.readouterr().out.splitlines()
-    assert '<search_root>["<name>"].InsertNextTask (Command)' in lines
-    pyfluent.search("next", search_root=meshing.workflow.TaskObject["Import Geometry"])
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.InsertNextTask (Command)" in lines
-    pyfluent.search("timeout", search_root=meshing.preferences)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.General.IdleTimeout (Parameter)" in lines
-    pyfluent.search("timeout", search_root=meshing.preferences.General)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<search_root>.IdleTimeout (Parameter)" in lines
-
-
-@pytest.mark.codegen_required
 def test_search():
     results = _search("display")
     assert "<meshing_session>.tui.display (Object)" in results
@@ -398,9 +360,9 @@ def test_search():
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
-    new_watertight_workflow_session, new_solver_session
+    watertight_workflow_session, new_solver_session
 ):
-    meshing = new_watertight_workflow_session
+    meshing = watertight_workflow_session
     solver = new_solver_session
     version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
@@ -469,8 +431,8 @@ def test_get_version_path_prefix_from_obj(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_search_from_root(new_watertight_workflow_session):
-    meshing = new_watertight_workflow_session
+def test_search_from_root(watertight_workflow_session):
+    meshing = watertight_workflow_session
     results = _search("display", search_root=meshing)
     assert "<search_root>.tui.display (Object)" in results
     results = _search("display", search_root=meshing.tui)
@@ -498,8 +460,8 @@ def test_search_from_root(new_watertight_workflow_session):
 @pytest.mark.skip("Results are varying each time.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
-def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
-    solver = load_static_mixer_settings_only
+def test_search_settings_from_root(capsys, static_mixer_settings_session):
+    solver = static_mixer_settings_session
     results = _search("conduction", search_root=solver)
     assert "<search_root>.tui.define.models.shell_conduction (Object)" in results
     assert (

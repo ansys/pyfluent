@@ -1,7 +1,5 @@
 .. _ref_file_session:
 
-
-
 .. automodule:: ansys.fluent.core.filereader.data_file
    :members:
    :show-inheritance:

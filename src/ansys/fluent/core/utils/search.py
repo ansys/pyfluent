@@ -12,12 +12,6 @@ import sys
 from typing import Any, Optional
 import warnings
 
-from nltk.corpus import wordnet as wn
-
-from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
-from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.error_message import closest_allowed_names
 from ansys.fluent.core.utils.fluent_version import (
@@ -69,6 +63,11 @@ _meshing_rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
 
 
 def _get_version_path_prefix_from_obj(obj: Any):
+    from ansys.fluent.core.services.datamodel_se import PyMenu, PyNamedObjectContainer
+    from ansys.fluent.core.services.datamodel_tui import TUIMenu
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+
     path = None
     version = None
     prefix = None
@@ -130,13 +129,19 @@ def _get_version_path_prefix_from_obj(obj: Any):
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, flobject.Group):
         module = obj.__class__.__module__
-        version = module.split(".")[-2].rsplit("_", 1)[-1]
+        try:
+            version = module.split(".")[-2].rsplit("_", 1)[-1]
+        except IndexError:
+            version = None
         prefix = "<search_root>"
         path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
     elif isinstance(obj, flobject.NamedObject):
         module = obj.__class__.__module__
-        version = module.split(".")[-2].rsplit("_", 1)[-1]
+        try:
+            version = module.split(".")[-2].rsplit("_", 1)[-1]
+        except IndexError:
+            version = None
         prefix = '<search_root>["<name>"]'
         path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
@@ -264,6 +269,8 @@ def _search(
     api_tree_data["api_tui_objects"] = sorted(api_tui_objects)
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
+        from nltk.corpus import wordnet as wn
+
         _download_nltk_data()
         from ansys.fluent.core import CODEGEN_OUTDIR
 
@@ -559,6 +566,8 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     queries: list
         List of search string matches.
     """
+    from nltk.corpus import wordnet as wn
+
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
     search_string_synsets = (
@@ -595,7 +604,6 @@ def search(
     wildcard: Optional[bool] = False,
     match_whole_word: Optional[bool] = False,
     match_case: Optional[bool] = True,
-    search_root: Optional[Any] = None,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -616,10 +624,6 @@ def search(
         only exact matches are found and semantic matching is turned off.
     match_case: bool, optional
         Whether to match case. The default is ``True``. If ``False``, the search is case-insensitive.
-    search_root : Any, optional
-        The root object within which the search is performed,
-        can be a session object or any API object within a session.
-        The default is ``None``. If ``None``, it searches everything.
 
     Examples
     --------
@@ -663,6 +667,14 @@ def search(
 
     api_tree_data = _get_api_tree_data()
 
+    try:
+        _search_semantic(search_string, language, api_tree_data=api_tree_data)
+    except ModuleNotFoundError:
+        pass
+    except LookupError:
+        _download_nltk_data()
+        _search_semantic(search_string, language, api_tree_data=api_tree_data)
+
     if wildcard:
         _search_wildcard(
             search_string,
@@ -677,73 +689,7 @@ def search(
             _search_whole_word(
                 search_string, match_case=True, api_tree_data=api_tree_data
             )
-    elif search_root:
-        version = None
-        root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
-        if search_root and not prefix:
-            return
-        if not version:
-            for fluent_version in FluentVersion:
-                version = get_version_for_file_name(fluent_version.value)
-                if get_api_tree_file_name(version).exists():
-                    break
-        api_tree_file = get_api_tree_file_name(version)
-        with open(api_tree_file, "rb") as f:
-            api_tree = pickle.load(f)
-
-        if isinstance(search_root, (flobject.Group, flobject.NamedObject)):
-            path = root_path + [
-                flobject.to_python_name(x) for x in search_root.path.split("/")
-            ]
-            root_path = []
-            tree = api_tree
-            while path:
-                p = path.pop(0)
-                if p in tree:
-                    tree = tree[p]
-                    root_path.append(p)
-                elif f"{p}:<name>" in tree:
-                    tree = tree[f"{p}:<name>"]
-                    root_path.append(f"{p}:<name>")
-                    if path:
-                        path.pop(0)
-                else:
-                    return
-
-        def inner(tree, path, root_path):
-            if root_path:
-                path = prefix
-            while root_path:
-                p = root_path.pop(0)
-                if p in tree:
-                    tree = tree[p]
-                else:
-                    return
-
-            for k, v in tree.items():
-                if k in ("<meshing_session>", "<solver_session>"):
-                    next_path = k
-                else:
-                    if k.endswith(":<name>"):
-                        k = _remove_suffix(k, ":<name>")
-                        next_path = f'{path}.{k}["<name>"]'
-                    else:
-                        next_path = f"{path}.{k}"
-                    type_ = "Object" if isinstance(v, Mapping) else v
-                    if _match(
-                        k,
-                        search_string,
-                        match_whole_word=False,
-                        match_case=False,
-                    ):
-                        print(f"{next_path} ({type_})")
-                if isinstance(v, Mapping):
-                    inner(v, next_path, root_path)
-
-        inner(api_tree, "", root_path)
     else:
-        try:
-            _search_semantic(search_string, language, api_tree_data=api_tree_data)
-        except LookupError:
-            _download_nltk_data()
-            _search_semantic(search_string, language, api_tree_data=api_tree_data)
+        _search_whole_word(
+            search_string, match_whole_word=True, api_tree_data=api_tree_data
+        )

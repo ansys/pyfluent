@@ -4,6 +4,7 @@ import json
 import logging
 from typing import Any, Dict, Optional, Union
 import warnings
+import weakref
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
@@ -17,7 +18,7 @@ from ansys.fluent.core.session_shared import (  # noqa: F401
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.events_streaming import Event, EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
@@ -153,7 +154,7 @@ class BaseSession:
             fluent_connection._channel, fluent_connection._metadata
         )
         self.events = EventsManager(
-            self._events_service, self._error_state, fluent_connection._id
+            self._events_service, self._error_state, weakref.proxy(self)
         )
 
         self._monitors_service = service_creator("monitors").create(
@@ -161,8 +162,8 @@ class BaseSession:
         )
         self.monitors = MonitorsManager(fluent_connection._id, self._monitors_service)
 
-        self.events.register_callback("InitializedEvent", self.monitors.refresh)
-        self.events.register_callback("DataReadEvent", self.monitors.refresh)
+        self.events.register_callback(Event.SOLUTION_INITIALIZED, self.monitors.refresh)
+        self.events.register_callback(Event.DATA_LOADED, self.monitors.refresh)
 
         self.events.start()
 

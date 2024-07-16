@@ -21,6 +21,7 @@ User guide
    journal
    log
    usability
+   make_container_image
    legacy/index
 
 

@@ -3,8 +3,6 @@ from time import sleep
 
 from google.protobuf.json_format import MessageToDict
 import pytest
-from util.meshing_workflow import new_mesh_session  # noqa: F401
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.api.fluent.v0.variant_pb2 import Variant
@@ -49,8 +47,8 @@ def test_convert_value_to_variant_to_value(value, expected):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_event_subscription(new_mesh_session):
-    session = new_mesh_session
+def test_event_subscription(new_meshing_session):
+    session = new_meshing_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     tags = [
         "/workflow/created/TaskObject",
@@ -103,8 +101,8 @@ def test_event_subscription(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_add_on_child_created(new_mesh_session):
-    meshing = new_mesh_session
+def test_add_on_child_created(new_meshing_session):
+    meshing = new_meshing_session
     child_paths = []
     subscription = meshing.workflow.add_on_child_created(
         "TaskObject", lambda obj: child_paths.append(convert_path_to_se_path(obj.path))
@@ -122,8 +120,8 @@ def test_add_on_child_created(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_add_on_deleted(new_mesh_session):
-    meshing = new_mesh_session
+def test_add_on_deleted(new_meshing_session):
+    meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     data = []
     subscription = meshing.workflow.TaskObject["Import Geometry"].add_on_deleted(
@@ -137,8 +135,8 @@ def test_add_on_deleted(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_add_on_changed(new_mesh_session):
-    meshing = new_mesh_session
+def test_add_on_changed(new_meshing_session):
+    meshing = new_meshing_session
     task_list = meshing.workflow.Workflow.TaskList
     assert isinstance(task_list(), list)
     assert len(task_list()) == 0
@@ -158,8 +156,8 @@ def test_add_on_changed(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_add_on_affected(new_mesh_session):
-    meshing = new_mesh_session
+def test_add_on_affected(new_meshing_session):
+    meshing = new_meshing_session
     data = []
     subscription = meshing.workflow.Workflow.add_on_affected(
         lambda obj: data.append(True)
@@ -212,8 +210,8 @@ def test_add_on_affected(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_add_on_affected_at_type_path(new_mesh_session):
-    meshing = new_mesh_session
+def test_add_on_affected_at_type_path(new_meshing_session):
+    meshing = new_meshing_session
     data = []
     subscription = meshing.workflow.add_on_affected_at_type_path(
         "TaskObject", lambda obj: data.append(True)
@@ -232,8 +230,8 @@ def test_add_on_affected_at_type_path(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_add_on_command_executed(new_mesh_session):
-    meshing = new_mesh_session
+def test_add_on_command_executed(new_meshing_session):
+    meshing = new_meshing_session
     data = []
     subscription = meshing.meshing.add_on_command_executed(
         "ImportGeometry", lambda obj, command, args: data.append(True)
@@ -259,10 +257,13 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
-    meshing = new_mesh_session
+def test_datamodel_streaming_full_diff_state(
+    disable_datamodel_cache, new_meshing_session
+):
+    meshing = new_meshing_session
     datamodel_service_se = meshing._datamodel_service_se
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=False)
@@ -288,9 +289,9 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
-    disable_datamodel_cache, new_mesh_session
+    disable_datamodel_cache, new_meshing_session
 ):
-    meshing = new_mesh_session
+    meshing = new_meshing_session
     datamodel_service_se = meshing._datamodel_service_se
     stream = DatamodelStream(datamodel_service_se)
     stream.start(rules="meshing", no_commands_diff_state=True)
@@ -315,8 +316,8 @@ def test_datamodel_streaming_no_commands_diff_state(
 
 @pytest.mark.fluent_version(">=24.2")
 @pytest.mark.codegen_required
-def test_get_object_names_wtm(new_mesh_session):
-    meshing = new_mesh_session
+def test_get_object_names_wtm(new_meshing_session):
+    meshing = new_meshing_session
 
     assert not meshing.workflow.TaskObject.get_object_names()
 
@@ -341,8 +342,8 @@ def test_get_object_names_wtm(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_get_and_set_state_for_command_arg_instance(new_mesh_session):
-    meshing = new_mesh_session
+def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
+    meshing = new_meshing_session
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
@@ -372,8 +373,8 @@ def _is_internal_name(name: str, prefix: str) -> bool:
 
 
 @pytest.mark.codegen_required
-def test_task_object_keys_are_display_names(new_mesh_session):
-    meshing = new_mesh_session
+def test_task_object_keys_are_display_names(new_meshing_session):
+    meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     task_object_state = meshing.workflow.TaskObject()
     assert len(task_object_state) > 0
@@ -469,8 +470,8 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_named_object_specific_methods(new_mesh_session):
-    meshing = new_mesh_session
+def test_named_object_specific_methods(new_meshing_session):
+    meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert set(meshing.workflow.TaskObject.get_object_names()) == {
@@ -500,15 +501,15 @@ def test_named_object_specific_methods(new_mesh_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_command_creation_inside_singleton(new_mesh_session):
-    meshing = new_mesh_session
+def test_command_creation_inside_singleton(new_meshing_session):
+    meshing = new_meshing_session
     read_mesh = meshing.meshing.File.ReadMesh.create_instance()
     assert read_mesh.FileName is not None
 
 
 @pytest.mark.codegen_required
-def test_read_ony_set_state(new_mesh_session):
-    meshing = new_mesh_session
+def test_read_ony_set_state(new_meshing_session):
+    meshing = new_meshing_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
     assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
     with pytest.raises(ReadOnlyObjectError):

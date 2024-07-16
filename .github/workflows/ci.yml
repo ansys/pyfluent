@@ -104,6 +104,7 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
+      EXAMPLES_HOST_MOUNT_PATH: 1
 
     steps:
       - uses: actions/checkout@v4
@@ -188,10 +189,11 @@ jobs:
             rm poetry.lock
           fi
           poetry install --with docs
-          poetry install -E reader
+          poetry install --all-extras
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          PYFLUENT_HOST_MOUNT_PATH: ${{ env.EXAMPLES_HOST_MOUNT_PATH }}
 
       - name: Zip HTML Documentation before upload
         run: |
@@ -435,7 +437,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine
+          pip install twine==5.0.0
           twine check dist/*
 
       - name: Upload package
@@ -555,7 +557,7 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install twine
+          pip install twine==5.0.0
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
@@ -565,7 +567,7 @@ jobs:
 
       - name: Upload to Public PyPi
         run: |
-          pip install twine
+          pip install twine==5.0.0
           twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:

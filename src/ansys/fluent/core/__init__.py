@@ -31,6 +31,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.streaming_services.events_streaming import Event  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.search import search  # noqa: F401
@@ -101,7 +102,7 @@ USE_FILE_TRANSFER_SERVICE = False
 CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 
 # Whether to zip settings API files during codegen
-CODEGEN_ZIP_SETTINGS = False
+CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
 
 # Whether to show mesh after case read
 SHOW_MESH_AFTER_CASE_READ = False

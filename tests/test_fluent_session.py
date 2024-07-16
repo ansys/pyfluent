@@ -3,14 +3,8 @@ import subprocess
 import threading
 import time
 
-from docker.models.containers import Container
 import psutil
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
-from util.solver_workflow import (  # noqa: F401
-    new_solver_session,
-    new_solver_session_no_transcript,
-)
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
@@ -18,6 +12,7 @@ from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from docker.models.containers import Container
 
 
 def _read_case(session, lightweight_setup=True):
@@ -51,9 +46,10 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
 
 
 def test_session_starts_no_transcript_if_disabled(
-    new_solver_session_no_transcript,
+    new_solver_session,
 ) -> None:
-    session = new_solver_session_no_transcript
+    session = new_solver_session
+    session.transcript.stop()
 
     def print_transcript(transcript):
         print_transcript.called = True
@@ -218,8 +214,8 @@ def test_fluent_freeze_kill(
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_interrupt(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_interrupt(static_mixer_case_session):
+    solver = static_mixer_case_session
     solver.setup.general.solver.time = "unsteady-2nd-order"
     solver.solution.initialization.standard_initialize()
     asynchronous(solver.solution.run_calculation.dual_time_iterate)(

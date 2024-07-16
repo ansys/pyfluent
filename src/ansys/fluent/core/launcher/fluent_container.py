@@ -60,7 +60,6 @@ from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
-import docker
 
 logger = logging.getLogger("pyfluent.launcher")
 DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
@@ -185,8 +184,12 @@ def configure_container_dict(
     if not host_mount_path:
         if file_transfer_service:
             host_mount_path = pyfluent.USER_DATA_PATH
+        elif os.getenv("PYFLUENT_HOST_MOUNT_PATH", None):
+            host_mount_path = pyfluent.EXAMPLES_PATH
+        elif pyfluent.CONTAINER_MOUNT_PATH:
+            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH
         else:
-            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH or os.getcwd()
+            host_mount_path = os.getcwd()
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
@@ -395,6 +398,8 @@ def start_fluent_container(
 
         host_server_info_file.touch(exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
+
+        import docker
 
         docker_client = docker.from_env()
 
