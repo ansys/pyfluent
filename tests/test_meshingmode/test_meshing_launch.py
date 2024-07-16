@@ -6,7 +6,7 @@ from ansys.fluent.core import Event
 from ansys.fluent.core.examples.downloads import download_file
 
 
-# @pytest.mark.nightly
+@pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
