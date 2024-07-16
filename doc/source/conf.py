@@ -151,6 +151,8 @@ sphinx_gallery_conf = {
     "gallery_dirs": ["examples"],
     # Pattern to search for example files
     "filename_pattern": r"\.py",
+    # Disabled example scripts
+    "ignore_pattern": r"ahmed_body_workflow\.py|brake\.py|DOE_ML\.py|radiation_headlamp\.py",  # noqa: E501
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
