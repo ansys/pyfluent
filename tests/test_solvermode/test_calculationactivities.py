@@ -4,8 +4,8 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version("latest")
-def test_solver_calculation(load_mixing_elbow_mesh):
-    solver_session = load_mixing_elbow_mesh
+def test_solver_calculation(static_mixer_case_session):
+    solver_session = static_mixer_case_session
     scheme_eval = solver_session.scheme_eval.scheme_eval
     assert scheme_eval("(client-get-var 'residuals/plot?)") == True
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.

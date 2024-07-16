@@ -4,8 +4,6 @@ import os
 import pathlib
 
 import pytest
-from util.meshing_workflow import new_mesh_session  # noqa: F401
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import (
@@ -34,7 +32,9 @@ def file_downloaded_to_the_client(file_name: str) -> bool:
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
-def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_session):
+def test_remote_grpc_fts_container(
+    monkeypatch, new_solver_session, new_meshing_session
+):
     solver = new_solver_session
     import_case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -48,7 +48,7 @@ def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_ses
         assert solver.file_exists_on_remote("downloaded_solver_mixing_elbow.cas.h5")
         assert file_downloaded_to_the_client("downloaded_solver_mixing_elbow.cas.h5")
 
-    meshing = new_mesh_session
+    meshing = new_meshing_session
     meshing.meshing.File.ReadMesh(FileName=import_mesh_file_name)
     if meshing._file_transfer_service:
         meshing.meshing.File.WriteMesh(
@@ -59,10 +59,10 @@ def test_remote_grpc_fts_container(monkeypatch, new_solver_session, new_mesh_ses
 
 
 @pytest.mark.standalone
-def test_read_case_and_data():
+def test_read_case_and_data(monkeypatch):
     import ansys.fluent.core as pyfluent
 
-    pyfluent.USE_FILE_TRANSFER_SERVICE = True
+    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
 
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"

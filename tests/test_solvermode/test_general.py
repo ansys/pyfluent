@@ -8,8 +8,8 @@ import ansys.fluent.core as pyfluent
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_solver_import_mixingelbow(load_mixing_elbow_settings_only):
-    solver_session = load_mixing_elbow_settings_only
+def test_solver_import_mixingelbow(mixing_elbow_settings_session):
+    solver_session = mixing_elbow_settings_session
     assert solver_session.settings.is_active()
     assert solver_session.health_check.is_serving
     file_name = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
@@ -83,8 +83,8 @@ def test_solver_import_mixingelbow(load_mixing_elbow_settings_only):
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_disk_2d_setup(load_disk_settings_only):
-    session = load_disk_settings_only
+def test_disk_2d_setup(disk_settings_session):
+    session = disk_settings_session
     assert session.settings.is_active()
     assert session.health_check.is_serving
     ###
