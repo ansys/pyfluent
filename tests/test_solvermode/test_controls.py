@@ -3,8 +3,8 @@ import pytest
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_controls(load_mixing_elbow_settings_only):
-    solver = load_mixing_elbow_settings_only
+def test_controls(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
     solver.setup.models.multiphase.models = "vof"
     assert solver.setup.models.multiphase.models() == "vof"
     solver.setup.general.operating_conditions.gravity = {

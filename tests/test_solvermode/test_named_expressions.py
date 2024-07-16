@@ -3,8 +3,8 @@ import pytest
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version(">=24.1")
-def test_expression(load_mixing_elbow_settings_only):
-    solver_session = load_mixing_elbow_settings_only
+def test_expression(mixing_elbow_settings_session):
+    solver_session = mixing_elbow_settings_session
     # Case file already has energy model turned on
     # solver_session.setup.models.energy.enabled = True
     expressions = solver_session.setup.named_expressions

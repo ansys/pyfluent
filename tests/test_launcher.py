@@ -3,10 +3,10 @@ from pathlib import Path
 import platform
 
 import pytest
-from util.fixture_fluent import download_input_file
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
+from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
@@ -126,11 +126,11 @@ def test_container_launcher():
 @pytest.mark.standalone
 def test_case_load():
     # Test that launch_fluent() works with a case file as an argument
-    _, cas_path = download_input_file(
-        "pyfluent/mixing_elbow",
+    case_name = download_file(
         "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_file_name=cas_path)
+    session = pyfluent.launch_fluent(case_file_name=case_name)
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -147,12 +147,12 @@ def test_case_load():
 @pytest.mark.fluent_version(">=23.2")
 def test_case_lightweight_setup():
     # Test that launch_fluent() correctly performs lightweight setup
-    _, cas_path = download_input_file(
-        "pyfluent/mixing_elbow",
+    case_name = download_file(
         "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
     )
     session = pyfluent.launch_fluent(
-        case_file_name=cas_path,
+        case_file_name=case_name,
         lightweight_mode=True,
     )
 
@@ -167,12 +167,15 @@ def test_case_lightweight_setup():
 @pytest.mark.standalone
 def test_case_data_load():
     # Test that launch_fluent() works with a case+data file as an argument
-    _, cas_dat_path = download_input_file(
-        "pyfluent/mixing_elbow",
+    case_name = download_file(
         "mixing_elbow.cas.h5",
-        "mixing_elbow.dat.h5",
+        "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_data_file_name=cas_dat_path)
+    download_file(
+        "mixing_elbow.dat.h5",
+        "pyfluent/mixing_elbow",
+    )
+    session = pyfluent.launch_fluent(case_data_file_name=case_name)
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()

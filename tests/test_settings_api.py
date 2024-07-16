@@ -2,7 +2,6 @@ import warnings
 
 import pytest
 from pytest import WarningsRecorder
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver.flobject import (
