@@ -242,7 +242,7 @@ def _run_local_study_in_fluent(
 
     for study in studies:
         for _, design_point in study.design_points.items():
-            next(it).output_parameters = design_point.output_parameters.copy()
+            next(it).output_parameters = design_point.output_parameters.get_state()
 
 
 class LocalParametricStudy:
