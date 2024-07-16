@@ -42,6 +42,7 @@ class Meshing(PureMeshing):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
+        self.switched = False
         super(Meshing, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
@@ -50,9 +51,15 @@ class Meshing(PureMeshing):
             launcher_args=launcher_args,
         )
         self.switch_to_solver = lambda: self._switch_to_solver()
-        self.switched = False
 
     def _switch_to_solver(self) -> Any:
+        for obj in (
+            self._datamodel_events,
+            self.transcript,
+            self.events,
+            self.monitors,
+        ):
+            obj.stop()
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self._fluent_connection,
@@ -63,21 +70,25 @@ class Meshing(PureMeshing):
         self.switched = True
         return solver_session
 
-    def __getattribute__(self, item):
-        if self.switched:
+    def __getattribute__(self, item: str):
+        if item == "switched":
+            return super(Meshing, self).__getattribute__(item)
+
+        if self.switched and item != "exit":
             return None
+
         return super(Meshing, self).__getattribute__(item)
 
     @property
     def tui(self):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
-        return super(Meshing, self).tui if not self.switched else None
+        return super(Meshing, self).tui
 
     @property
     def meshing(self):
         """Datamodel root of meshing."""
-        return super(Meshing, self).meshing if not self.switched else None
+        return super(Meshing, self).meshing
 
     @property
     def meshing_utilities(self):
@@ -87,7 +98,7 @@ class Meshing(PureMeshing):
     @property
     def workflow(self):
         """Datamodel root of workflow."""
-        return super(Meshing, self).workflow if not self.switched else None
+        return super(Meshing, self).workflow
 
     @property
     def PartManagement(self):
