@@ -26,7 +26,7 @@ from ansys.fluent.core.solver.flobject import (
     StateType,
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
-from ansys.fluent.core.streaming_services.events_streaming import Event
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
@@ -105,6 +105,7 @@ class Solver(BaseSession):
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
+            event_type=SolverEvent,
         )
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
 
@@ -145,8 +146,10 @@ class Solver(BaseSession):
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
-        self.events.register_callback(Event.SOLUTION_INITIALIZED, self.monitors.refresh)
-        self.events.register_callback(Event.DATA_LOADED, self.monitors.refresh)
+        self.events.register_callback(
+            SolverEvent.SOLUTION_INITIALIZED, self.monitors.refresh
+        )
+        self.events.register_callback(SolverEvent.DATA_LOADED, self.monitors.refresh)
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
 
