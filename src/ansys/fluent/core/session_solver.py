@@ -26,6 +26,8 @@ from ansys.fluent.core.solver.flobject import (
     StateType,
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
+from ansys.fluent.core.streaming_services.events_streaming import Event
+from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
@@ -138,6 +140,15 @@ class Solver(BaseSession):
             self.fields.reduction = reduction_old
         self._settings_api_root = None
         self.fields.solution_variable_data = self._solution_variable_data()
+
+        monitors_service = service_creator("monitors").create(
+            fluent_connection._channel, fluent_connection._metadata, self._error_state
+        )
+        self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
+        self.events.register_callback(Event.SOLUTION_INITIALIZED, self.monitors.refresh)
+        self.events.register_callback(Event.DATA_LOADED, self.monitors.refresh)
+
+        fluent_connection.register_finalizer_cb(self.monitors.stop)
 
     def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""

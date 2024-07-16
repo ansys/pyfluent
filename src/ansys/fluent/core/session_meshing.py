@@ -52,19 +52,14 @@ class Meshing(PureMeshing):
         )
 
     def switch_to_solver(self) -> Any:
-        """Switch to solver mode and return a solver session object
+        """Switch to solver mode and return a solver session object.
         Deactivate this object's public interface and streaming services.
 
         Returns
         -------
         Solver
         """
-        for obj in (
-            self._datamodel_events,
-            self.transcript,
-            self.events,
-            self.monitors,
-        ):
+        for obj in (self._datamodel_events, self.transcript, self.events):
             obj.stop()
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
