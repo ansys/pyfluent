@@ -59,12 +59,7 @@ class Meshing(PureMeshing):
         -------
         Solver
         """
-        for obj in (
-            self._datamodel_events,
-            self.transcript,
-            self.events,
-            self.monitors,
-        ):
+        for obj in (self._datamodel_events, self.transcript, self.events):
             obj.stop()
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(

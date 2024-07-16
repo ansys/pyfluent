@@ -1,5 +1,6 @@
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
+from enum import Enum
 import json
 import logging
 from typing import Any, Dict, Optional, Union
@@ -18,9 +19,8 @@ from ansys.fluent.core.session_shared import (  # noqa: F401
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
-from ansys.fluent.core.streaming_services.events_streaming import Event, EventsManager
+from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
-from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
@@ -82,6 +82,7 @@ class BaseSession:
         file_transfer_service: Optional[Any] = None,
         start_transcript: bool = True,
         launcher_args: Optional[Dict[str, Any]] = None,
+        event_type: Optional[Enum] = None,
     ):
         """BaseSession.
 
@@ -98,6 +99,8 @@ class BaseSession:
             The default is ``True``, in which case the Fluent
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
+        event_type : Enum, optional
+            Event enumeration specific to the session type.
         """
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
@@ -106,6 +109,7 @@ class BaseSession:
             fluent_connection,
             scheme_eval,
             file_transfer_service,
+            event_type,
         )
 
     def _build_from_fluent_connection(
@@ -113,6 +117,7 @@ class BaseSession:
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
         file_transfer_service: Optional[Any] = None,
+        event_type=None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
@@ -150,22 +155,17 @@ class BaseSession:
         self._batch_ops_service = service_creator("batch_ops").create(
             fluent_connection._channel, fluent_connection._metadata
         )
-        self._events_service = service_creator("events").create(
-            fluent_connection._channel, fluent_connection._metadata
-        )
-        self.events = EventsManager(
-            self._events_service, self._error_state, weakref.proxy(self)
-        )
 
-        self._monitors_service = service_creator("monitors").create(
-            fluent_connection._channel, fluent_connection._metadata, self._error_state
-        )
-        self.monitors = MonitorsManager(fluent_connection._id, self._monitors_service)
-
-        self.events.register_callback(Event.SOLUTION_INITIALIZED, self.monitors.refresh)
-        self.events.register_callback(Event.DATA_LOADED, self.monitors.refresh)
-
-        self.events.start()
+        if event_type:
+            events_service = service_creator("events").create(
+                fluent_connection._channel, fluent_connection._metadata
+            )
+            self.events = EventsManager[event_type](
+                event_type, events_service, self._error_state, weakref.proxy(self)
+            )
+            self.events.start()
+        else:
+            self.events = None
 
         self._field_data_service = self._fluent_connection.create_grpc_service(
             FieldDataService, self._error_state
@@ -208,7 +208,6 @@ class BaseSession:
             self._datamodel_events,
             self.transcript,
             self.events,
-            self.monitors,
         ):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
