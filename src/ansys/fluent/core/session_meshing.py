@@ -117,5 +117,5 @@ class Meshing(PureMeshing):
 
     @property
     def preferences(self):
-        """Datamodel root of preferences."""
+        """Preferences datamodel root."""
         return super(Meshing, self).preferences
