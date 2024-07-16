@@ -6,7 +6,6 @@ import inspect
 import logging
 from typing import Callable, Union
 import warnings
-import weakref
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
@@ -67,7 +66,7 @@ class EventsManager(StreamingService):
         self._fluent_error_state = fluent_error_state
         # This has been updated from id to session, which
         # can also be done in other streaming services
-        self._session = weakref.proxy(session)
+        self._session = session
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         request = EventsProtoModule.BeginStreamingRequest(*args, **kwargs)

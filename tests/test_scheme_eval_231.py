@@ -2,7 +2,6 @@ from typing import Any, Dict
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.scheme_eval import (

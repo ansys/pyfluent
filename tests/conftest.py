@@ -8,6 +8,8 @@ from packaging.version import Version
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.examples.downloads import download_file
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _fluent_release_version = FluentVersion.current_release().value
@@ -64,12 +66,6 @@ def pytest_runtest_setup(item):
             pytest.skip()
 
 
-pytest_plugins = [
-    "util.fixture_fluent",
-    "util.meshing_workflow",
-]
-
-
 @pytest.fixture(autouse=True)
 def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
@@ -114,3 +110,191 @@ pytest.wont_raise = nullcontext
 def pytest_sessionfinish(session, exitstatus):
     if exitstatus == 5:
         session.exitstatus = 0
+
+
+# tests_by_fixture = defaultdict(list)
+
+
+# def pytest_collection_finish(session):
+#     for k, v in sorted(tests_by_fixture.items(), key=lambda t: len(t[1]), reverse=True):
+#         print(k, len(v))
+
+
+# def pytest_itemcollected(item):
+#     if not item.nodeid.startswith("tests/test_solvermode/"):
+#         for fixture in item.fixturenames:
+#             tests_by_fixture[fixture].append(item.nodeid)
+
+
+@pytest.fixture
+def mixing_elbow_geometry_filename():
+    return download_file(
+        file_name="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+    )
+
+
+@pytest.fixture
+def exhaust_system_geometry_filename():
+    return download_file(
+        file_name="exhaust_system.fmd", directory="pyfluent/exhaust_system"
+    )
+
+
+def create_session(**kwargs):
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        file_transfer_service = RemoteFileTransferStrategy()
+        return pyfluent.launch_fluent(
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+            **kwargs,
+        )
+    else:
+        return pyfluent.launch_fluent(**kwargs)
+
+
+@pytest.fixture
+def new_meshing_session():
+    meshing = create_session(mode=pyfluent.FluentMode.MESHING)
+    yield meshing
+    meshing.exit()
+
+
+@pytest.fixture
+def new_pure_meshing_session():
+    meshing = create_session(mode=pyfluent.FluentMode.PURE_MESHING)
+    yield meshing
+    meshing.exit()
+
+
+@pytest.fixture
+def watertight_workflow_session(new_meshing_session):
+    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    return new_meshing_session
+
+
+@pytest.fixture
+def fault_tolerant_workflow_session(new_meshing_session):
+    new_meshing_session.workflow.InitializeWorkflow(
+        WorkflowType="Fault-tolerant Meshing"
+    )
+    return new_meshing_session
+
+
+@pytest.fixture
+def mixing_elbow_watertight_pure_meshing_session(
+    new_pure_meshing_session, mixing_elbow_geometry_filename
+):
+    meshing = new_pure_meshing_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=mixing_elbow_geometry_filename, LengthUnit="in"
+    )
+
+    return meshing
+
+
+@pytest.fixture
+def new_solver_session():
+    solver = create_session()
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
+def new_solver_session_sp():
+    solver = create_session(precision="single")
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
+def new_solver_session_2d():
+    solver = create_session(dimension=2)
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
+def static_mixer_settings_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
+
+
+@pytest.fixture
+def static_mixer_case_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_settings_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_data_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_param_case_data_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def disk_settings_session(new_solver_session_2d):
+    solver = new_solver_session_2d
+    case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
+    solver.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver
+
+
+@pytest.fixture
+def disk_case_session(new_solver_session_2d):
+    solver = new_solver_session_2d
+    case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
+    solver.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def periodic_rot_settings_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file(
+        "periodic_rot.cas.h5",
+        "pyfluent/periodic_rot",
+    )
+    solver.file.read(
+        file_type="case",
+        file_name=case_name,
+        lightweight_setup=True,
+    )
+    return solver

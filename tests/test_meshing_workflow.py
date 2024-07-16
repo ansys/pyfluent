@@ -4,11 +4,6 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    exhaust_system_geometry,
-    mixing_elbow_geometry,
-    new_mesh_session,
-    shared_watertight_workflow,
-    shared_watertight_workflow_session,
 )
 
 from ansys.fluent.core import examples
@@ -19,11 +14,11 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
-    shared_watertight_workflow_session,
-    mixing_elbow_geometry,
+    watertight_workflow_session,
+    mixing_elbow_geometry_filename,
 ):
     """This test covers generic meshing workflow behaviour."""
-    meshing_session = shared_watertight_workflow_session
+    meshing_session = watertight_workflow_session
     workflow = meshing_session.workflow
 
     ###############################################################################
@@ -41,7 +36,9 @@ def test_mixing_elbow_meshing_workflow(
     # Import the CAD geometry
     # Query the task state before and after task execution
     assign_task_args(
-        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
+        task_name="Import Geometry",
+        FileName=mixing_elbow_geometry_filename,
+        LengthUnit="in",
     )
 
     execute_task_with_pre_and_postconditions(task_name="Import Geometry")
@@ -127,10 +124,10 @@ def test_mixing_elbow_meshing_workflow(
 
 @pytest.mark.codegen_required
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
-    shared_watertight_workflow,
+    watertight_workflow_session,
 ):
     try:
-        shared_watertight_workflow.TaskObject["no such task"]
+        watertight_workflow_session.workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:
@@ -147,13 +144,13 @@ Error Object: ()
 
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
     model_object_throws_on_invalid_arg,
-    shared_watertight_workflow,
-    mixing_elbow_geometry
+    watertight_workflow_session,
+    mixing_elbow_geometry_filename
 ):
     # task_names = ("Import Geometry", "Add Local Sizing")
     task_names = ("Add Local Sizing",)
     for task_name in task_names:
-        task = shared_watertight_workflow.TaskObject[task_name]
+        task = watertight_workflow_session.workflow.TaskObject[task_name]
         try:
             task.Arguments = {"no such arg": 42}
         except Exception:
@@ -163,16 +160,16 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
 
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     model_object_throws_on_invalid_arg,
-    shared_watertight_workflow,
-    mixing_elbow_geometry
+    watertight_workflow_session,
+    mixing_elbow_geometry_filename
 ):
-    workflow = shared_watertight_workflow
+    workflow = watertight_workflow_session.workflow
     assign_task_args = partial(
         assign_task_arguments, workflow=workflow, check_state=False
     )
 
     assign_task_args(
-        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
+        task_name="Import Geometry", FileName=mixing_elbow_geometry_filename, LengthUnit="in"
     )
 
     workflow.TaskObject["Import Geometry"].Execute()
@@ -190,8 +187,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_command_args_datamodel_se(new_mesh_session):
-    session_new = new_mesh_session
+def test_command_args_datamodel_se(new_meshing_session):
+    session_new = new_meshing_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
@@ -202,8 +199,8 @@ def test_command_args_datamodel_se(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_command_args_including_task_object_datamodel_se(new_mesh_session):
-    session_new = new_mesh_session
+def test_command_args_including_task_object_datamodel_se(new_meshing_session):
+    session_new = new_meshing_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
@@ -215,8 +212,8 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_attribute_query_list_types(new_mesh_session):
-    session_new = new_mesh_session
+def test_attribute_query_list_types(new_meshing_session):
+    session_new = new_meshing_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
@@ -225,8 +222,8 @@ def test_attribute_query_list_types(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
-def test_accessors_for_argument_sub_items(new_mesh_session):
-    session_new = new_mesh_session
+def test_accessors_for_argument_sub_items(new_meshing_session):
+    session_new = new_meshing_session
 
     w = session_new.workflow
 
@@ -307,8 +304,8 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 @pytest.mark.skip("Wait for later implementation.")
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_read_only_behaviour_of_command_arguments(new_mesh_session):
-    session_new = new_mesh_session
+def test_read_only_behaviour_of_command_arguments(new_meshing_session):
+    session_new = new_meshing_session
     w = session_new.workflow
     m = session_new.meshing.ImportGeometry.create_instance
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -326,8 +323,8 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
 
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
-def test_sample_use_of_command_arguments(new_mesh_session):
-    w = new_mesh_session.workflow
+def test_sample_use_of_command_arguments(new_meshing_session):
+    w = new_meshing_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert w.TaskObject["Import Geometry"].arguments.LengthUnit.allowed_values() == [
@@ -345,8 +342,8 @@ def test_sample_use_of_command_arguments(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-def test_dummy_journal_data_model_methods(new_mesh_session):
-    session_new = new_mesh_session
+def test_dummy_journal_data_model_methods(new_meshing_session):
+    session_new = new_meshing_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = w.TaskObject["Import Geometry"]
@@ -356,8 +353,8 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-def test_iterate_meshing_workflow_task_container(new_mesh_session):
-    workflow = new_mesh_session.workflow
+def test_iterate_meshing_workflow_task_container(new_meshing_session):
+    workflow = new_meshing_session.workflow
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     tasks = [task for task in workflow.TaskObject]
     assert len(tasks) == 11
@@ -365,8 +362,8 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-def test_modified_workflow(new_mesh_session):
-    meshing = new_mesh_session
+def test_modified_workflow(new_meshing_session):
+    meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     task_object_display_names = {
@@ -397,8 +394,8 @@ def test_modified_workflow(new_mesh_session):
 
 
 @pytest.mark.codegen_required
-def test_nonexistent_attrs(new_mesh_session):
-    meshing = new_mesh_session
+def test_nonexistent_attrs(new_meshing_session):
+    meshing = new_meshing_session
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz
@@ -407,8 +404,8 @@ def test_nonexistent_attrs(new_mesh_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
-def test_old_workflow_structure(new_mesh_session):
-    meshing = new_mesh_session
+def test_old_workflow_structure(new_meshing_session):
+    meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     assert meshing.workflow.TaskObject["Import Geometry"].arguments()
     with pytest.raises(AttributeError) as msg:
@@ -422,10 +419,10 @@ def test_old_workflow_structure(new_mesh_session):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
-def test_new_2d_meshing_workflow(new_mesh_session):
+def test_new_2d_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
-    meshing = new_mesh_session
+    meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
     meshing.workflow.TaskObject["Load CAD Geometry"].Arguments.set_state(
         {

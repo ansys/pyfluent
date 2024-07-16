@@ -5,7 +5,6 @@ import shutil
 import tempfile
 
 import pytest
-from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -16,7 +15,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_simple_solve(load_mixing_elbow_param_case_dat):
+def test_simple_solve(mixing_elbow_param_case_data_session):
     """Use case 1: This optiSLang integration test performs these steps.
 
     - Reads a case file with and without data file
@@ -36,7 +35,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     logging.root.setLevel("ERROR")
 
     # Step 2: Launch fluent session and read case file with and without data file
-    solver_session = load_mixing_elbow_param_case_dat
+    solver_session = mixing_elbow_param_case_data_session
     assert solver_session.health_check.is_serving
     case_path = examples.path("elbow_param.cas.h5")
     solver_session.settings.file.read_case_data(file_name=case_path)
@@ -118,7 +117,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_generate_read_mesh(mixing_elbow_geometry):
+def test_generate_read_mesh(mixing_elbow_geometry_filename):
     """Use case 2: This optiSLang integration test performs these steps.
 
     - Launch Fluent in Meshing Mode
@@ -150,7 +149,7 @@ def test_generate_read_mesh(mixing_elbow_geometry):
     # Step 3 Generate mesh from geometry with default workflow settings
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geo_import = meshing.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName=mixing_elbow_geometry)
+    geo_import.Arguments = dict(FileName=mixing_elbow_geometry_filename)
     geo_import.Execute()
     meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
     meshing.tui.mesh.check_mesh()
@@ -219,8 +218,8 @@ def test_case_file():
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_parameters(load_mixing_elbow_param_case_dat):
-    solver_session = load_mixing_elbow_param_case_dat
+def test_parameters(mixing_elbow_param_case_data_session):
+    solver_session = mixing_elbow_param_case_data_session
     input_params = solver_session.settings.parameters.input_parameters.expression[
         "inlet2_temp"
     ]
@@ -238,10 +237,8 @@ def test_parameters(load_mixing_elbow_param_case_dat):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_parametric_project(
-    load_mixing_elbow_param_case_dat, launch_fluent_solver_3ddp_t2
-):
-    session1 = load_mixing_elbow_param_case_dat
+def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_session):
+    session1 = mixing_elbow_param_case_data_session
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     init_project = Path(tmp_save_path) / "mixing_elbow_param_init.flprj"
@@ -252,7 +249,7 @@ def test_parametric_project(
     )
     assert project_file.exists()
 
-    session2 = launch_fluent_solver_3ddp_t2
+    session2 = new_solver_session
     session2.settings.file.parametric_project.open(project_filename=str(project_file))
     current_pstudy_name = session2.settings.current_parametric_study()
     assert current_pstudy_name == "elbow_param-Solve"
