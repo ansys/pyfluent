@@ -1,5 +1,4 @@
-"""
-.. _ahmed_body_simulation:
+""".. _ahmed_body_simulation:
 
 Ahmed Body External Aerodynamics Simulation
 -------------------------------------------
