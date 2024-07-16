@@ -4,7 +4,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, TypeVar, Union
+from typing import Callable, Generic, Type, TypeVar, Union
 import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -81,9 +81,15 @@ class EventsManager(Generic[TEvent]):
     events.
     """
 
-    def __init__(self, session_events_service, fluent_error_state, session):
+    def __init__(
+        self,
+        event_type: Type[TEvent],
+        session_events_service,
+        fluent_error_state,
+        session,
+    ):
         """__init__ method of EventsManager class."""
-        self._event_type = self.__orig_class__.__args__[0]
+        self._event_type = event_type
         self._impl = StreamingService(
             stream_begin_method="BeginStreaming",
             target=partial(EventsManager._process_streaming, self),

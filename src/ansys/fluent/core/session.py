@@ -161,7 +161,7 @@ class BaseSession:
                 fluent_connection._channel, fluent_connection._metadata
             )
             self.events = EventsManager[event_type](
-                events_service, self._error_state, weakref.proxy(self)
+                event_type, events_service, self._error_state, weakref.proxy(self)
             )
             self.events.start()
         else:
