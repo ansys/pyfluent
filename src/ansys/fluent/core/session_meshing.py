@@ -59,8 +59,8 @@ class Meshing(PureMeshing):
         -------
         Solver
         """
-        for obj in (self._datamodel_events, self.transcript, self.events):
-            obj.stop()
+        for cb in self._fluent_connection.finalizer_cbs:
+            cb()
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self._fluent_connection,
