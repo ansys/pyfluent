@@ -44,11 +44,7 @@ material degradation.
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing the
 # geometry files.
-import os
 
-os.environ["PYFLUENT_FLUENT_ROOT"] = (
-    r"D:\Installations\Ansys\v242_15072024\ANSYS Inc\v242\fluent"
-)
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 

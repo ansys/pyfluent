@@ -18,11 +18,7 @@ This example demonstrates:
 ####################################################################################
 # Import required libraries/modules
 # ==================================================================================
-import os
 
-os.environ["PYFLUENT_FLUENT_ROOT"] = (
-    r"D:\Installations\Ansys\v242_15072024\ANSYS Inc\v242\fluent"
-)
 import csv
 from pathlib import Path
 
