@@ -125,6 +125,14 @@ def test_meshing_streaming_and_switch(new_meshing_session):
     assert not on_case_loaded.loaded
 
 
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_meshing_no_foreign_objects(new_meshing_session):
+    meshing = new_meshing_session
+    with pytest.raises(AttributeError):
+        meshing.monitors
+
+
 def test_fake_session():
 
     class fake_session_base:

@@ -10,6 +10,7 @@ from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
+from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -62,6 +63,7 @@ class PureMeshing(BaseSession):
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
+            event_type=MeshingEvent,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
