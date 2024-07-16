@@ -74,8 +74,8 @@ session.settings.file.read_case(file_name=import_filename)
 ############################
 # Define models and material
 # --------------------------
-session.setup.models.energy = {"enabled": True}
-session.setup.general.solver.time = "unsteady-2nd-order-bounded"
+session.settings.setup.models.energy = {"enabled": True}
+session.settings.setup.general.solver.time = "unsteady-2nd-order-bounded"
 session.tui.define.materials.copy("solid", "steel")
 
 #########################################
@@ -88,7 +88,7 @@ session.tui.solve.set.equations("flow", "no", "kw", "no")
 # --------------------
 # (15.79 rps corresponds to 100 km/h car speed
 # with 0.28 m of axis height from ground)
-session.setup.cell_zone_conditions.solid["disc2"] = {
+session.settings.setup.cell_zone_conditions.solid["disc2"] = {
     "solid_motion": {
         "solid_motion_zone_motion_function": "none",
         "solid_motion_axis_direction": [0, 1, 0],
@@ -99,7 +99,7 @@ session.setup.cell_zone_conditions.solid["disc2"] = {
         "enable": True,
     }
 }
-session.setup.cell_zone_conditions.solid["disc1"] = {
+session.settings.setup.cell_zone_conditions.solid["disc1"] = {
     "solid_motion": {
         "solid_motion_zone_motion_function": "none",
         "solid_motion_axis_direction": [0, 1, 0],
@@ -117,10 +117,10 @@ session.setup.cell_zone_conditions.solid["disc1"] = {
 # Wall thickness 0f 2 mm has been assumed and 2e9 w/m3 is the heat generation which
 # has been calculated from kinetic energy change due to braking.
 
-session.setup.boundary_conditions.wall["wall-pad-disc2"] = {
+session.settings.setup.boundary_conditions.wall["wall-pad-disc2"] = {
     "thermal": {"q_dot": {"value": 2000000000}, "wall_thickness": {"value": 0.002}}
 }
-session.setup.boundary_conditions.wall["wall_pad-disc1"] = {
+session.settings.setup.boundary_conditions.wall["wall_pad-disc1"] = {
     "thermal": {"q_dot": {"value": 2000000000}, "wall_thickness": {"value": 0.002}}
 }
 
@@ -148,8 +148,8 @@ session.tui.define.boundary_conditions.set.wall(
 # ----------
 # Initialize with 300 K temperature
 
-session.solution.initialization.initialization_type = "standard"
-session.solution.initialization.standard_initialize()
+session.settings.solution.initialization.initialization_type = "standard"
+session.settings.solution.initialization.standard_initialize()
 
 ###############################################################################################
 # Post processing setup
@@ -159,43 +159,43 @@ session.solution.initialization.standard_initialize()
 # * Set views and camera
 # * Set animation object
 
-session.solution.report_definitions.volume["max-pad-temperature"] = {}
-session.solution.report_definitions.volume["max-pad-temperature"].report_type = (
-    "volume-max"
-)
-session.solution.report_definitions.volume["max-pad-temperature"] = {
+session.settings.solution.report_definitions.volume["max-pad-temperature"] = {}
+session.settings.solution.report_definitions.volume[
+    "max-pad-temperature"
+].report_type = "volume-max"
+session.settings.solution.report_definitions.volume["max-pad-temperature"] = {
     "field": "temperature",
     "cell_zones": ["geom-1-innerpad", "geom-1-outerpad"],
 }
 
-session.solution.report_definitions.volume["max-disc-temperature"] = {}
-session.solution.report_definitions.volume["max-disc-temperature"].report_type = (
-    "volume-max"
-)
-session.solution.report_definitions.volume["max-disc-temperature"] = {
+session.settings.solution.report_definitions.volume["max-disc-temperature"] = {}
+session.settings.solution.report_definitions.volume[
+    "max-disc-temperature"
+].report_type = "volume-max"
+session.settings.solution.report_definitions.volume["max-disc-temperature"] = {
     "field": "temperature",
     "cell_zones": ["disc1", "disc2"],
 }
 
-session.solution.monitor.report_plots.create(name="max-temperature")
-session.solution.monitor.report_plots["max-temperature"] = {
+session.settings.solution.monitor.report_plots.create(name="max-temperature")
+session.settings.solution.monitor.report_plots["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"]
 }
 
 report_file_path = Path(save_path) / "max-temperature.out"
-session.solution.monitor.report_files.create(name="max-temperature")
-session.solution.monitor.report_files["max-temperature"] = {
+session.settings.solution.monitor.report_files.create(name="max-temperature")
+session.settings.solution.monitor.report_files["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"],
     "file_name": str(report_file_path),
 }
-session.solution.monitor.report_files["max-temperature"].report_defs = [
+session.settings.solution.monitor.report_files["max-temperature"].report_defs = [
     "max-pad-temperature",
     "max-disc-temperature",
     "flow-time",
 ]
 
-session.results.graphics.contour.create(name="contour-1")
-session.results.graphics.contour["contour-1"] = {
+session.settings.results.graphics.contour.create(name="contour-1")
+session.settings.results.graphics.contour["contour-1"] = {
     "boundary_values": True,
     "range_option": {"auto_range_on": {"global_range": True}},
     "field": "temperature",
@@ -223,8 +223,8 @@ session.results.graphics.contour["contour-1"] = {
     "filled": True,
 }
 
-session.results.graphics.contour["temperature"] = {}
-session.results.graphics.contour["temperature"] = {
+session.settings.results.graphics.contour["temperature"] = {}
+session.settings.results.graphics.contour["temperature"] = {
     "field": "temperature",
     "surfaces_list": "wall*",
     "color_map": {
@@ -251,12 +251,16 @@ session.results.graphics.contour["temperature"] = {
     },
 }
 
-session.results.graphics.views.restore_view(view_name="top")
-session.results.graphics.views.camera.zoom(factor=2)
-session.results.graphics.views.save_view(view_name="animation-view")
+session.settings.results.graphics.views.restore_view(view_name="top")
+session.settings.results.graphics.views.camera.zoom(factor=2)
+session.settings.results.graphics.views.save_view(view_name="animation-view")
 
-session.solution.calculation_activity.solution_animations["animate-temperature"] = {}
-session.solution.calculation_activity.solution_animations["animate-temperature"] = {
+session.settings.solution.calculation_activity.solution_animations[
+    "animate-temperature"
+] = {}
+session.settings.solution.calculation_activity.solution_animations[
+    "animate-temperature"
+] = {
     "animate_on": "temperature",
     "frequency_of": "flow-time",
     "flow_time_frequency": 0.05,
@@ -270,8 +274,8 @@ session.solution.calculation_activity.solution_animations["animate-temperature"]
 # * Set time step size
 # * Set number of time steps and maximum number of iterations per time step
 
-session.solution.run_calculation.transient_controls.time_step_size = 0.01
-session.solution.run_calculation.dual_time_iterate(
+session.settings.solution.run_calculation.transient_controls.time_step_size = 0.01
+session.settings.solution.run_calculation.dual_time_iterate(
     time_step_count=200, max_iter_per_step=5
 )
 
@@ -280,7 +284,7 @@ session.solution.run_calculation.dual_time_iterate(
 # --------------------
 # Write case and data files
 save_case_data_as = Path(save_path) / "brake-final.cas.h5"
-session.file.write(file_type="case-data", file_name=str(save_case_data_as))
+session.settings.file.write(file_type="case-data", file_name=str(save_case_data_as))
 
 ###############################################
 # Post processing with PyVista (3D visualization)
