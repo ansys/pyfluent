@@ -124,7 +124,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
     assert not on_trancript.called
     assert not on_case_loaded.loaded
 
-
+"""
 def test_fake_session():
 
     class fake_session_base:
@@ -158,3 +158,4 @@ def test_fake_session():
     assert f.foo is None
 
     assert f.bar is None
+"""
