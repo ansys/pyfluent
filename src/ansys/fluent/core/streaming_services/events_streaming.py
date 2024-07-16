@@ -83,6 +83,7 @@ class EventsManager(Generic[TEvent]):
 
     def __init__(self, session_events_service, fluent_error_state, session):
         """__init__ method of EventsManager class."""
+        self._event_type = self.__orig_class__.__args__[0]
         self._impl = StreamingService(
             stream_begin_method="BeginStreaming",
             target=partial(EventsManager._process_streaming, self),
@@ -108,7 +109,7 @@ class EventsManager(Generic[TEvent]):
                     service._streaming = True
                     # error-code 0 from Fluent indicates server running without error
                     if (
-                        event_name == Event.FATAL_ERROR
+                        event_name == self._event_type.FATAL_ERROR
                         and response.errorevent.errorCode != 0
                     ):
                         error_message = response.errorevent.message.rstrip()
@@ -184,8 +185,7 @@ class EventsManager(Generic[TEvent]):
         if event_name is None or callback is None:
             raise InvalidArgument("'event_name' and 'callback' ")
 
-        # instantiate an event of the generic "templated" type
-        event_name = self.__orig_class__.__args__[0](event_name)
+        event_name = self._event_type(event_name)
         with self._impl._lock:
             callback_id = f"{event_name}-{next(self._impl._service_callback_id)}"
             callbacks_map = self._impl._service_callbacks.get(event_name)
