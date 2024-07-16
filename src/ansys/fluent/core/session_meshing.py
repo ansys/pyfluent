@@ -50,9 +50,16 @@ class Meshing(PureMeshing):
             start_transcript=start_transcript,
             launcher_args=launcher_args,
         )
-        self.switch_to_solver = lambda: self._switch_to_solver()
 
-    def _switch_to_solver(self) -> Any:
+    def switch_to_solver(self) -> Any:
+        """
+        Switch to solver mode and return a solver session object
+        Deactivate this object's public interface and streaming services.
+
+        Returns
+        -------
+        Solver
+        """
         for obj in (
             self._datamodel_events,
             self.transcript,
@@ -66,7 +73,6 @@ class Meshing(PureMeshing):
             scheme_eval=self.scheme_eval,
             file_transfer_service=self._file_transfer_service,
         )
-        delattr(self, "switch_to_solver")
         self.switched = True
         return solver_session
 
@@ -81,36 +87,35 @@ class Meshing(PureMeshing):
 
     @property
     def tui(self):
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
-        executed."""
+        """Meshing TUI root."""
         return super(Meshing, self).tui
 
     @property
     def meshing(self):
-        """Datamodel root of meshing."""
+        """Meshing datamodel root."""
         return super(Meshing, self).meshing
 
     @property
     def meshing_utilities(self):
-        """Datamodel root of meshing_utilities."""
-        return super(Meshing, self).meshing_utilities if not self.switched else None
+        """Meshing utilities datamodel root."""
+        return super(Meshing, self).meshing_utilities
 
     @property
     def workflow(self):
-        """Datamodel root of workflow."""
+        """Workflow datamodel root."""
         return super(Meshing, self).workflow
 
     @property
     def PartManagement(self):
-        """Datamodel root of PartManagement."""
-        return super(Meshing, self).PartManagement if not self.switched else None
+        """Part management datamodel root."""
+        return super(Meshing, self).PartManagement
 
     @property
     def PMFileManagement(self):
-        """Datamodel root of PMFileManagement."""
-        return super(Meshing, self).PMFileManagement if not self.switched else None
+        """Part management file management datamodel root."""
+        return super(Meshing, self).PMFileManagement
 
     @property
     def preferences(self):
         """Datamodel root of preferences."""
-        return super(Meshing, self).preferences if not self.switched else None
+        return super(Meshing, self).preferences
