@@ -71,7 +71,9 @@ def version_info() -> str:
 USER_DATA_PATH = platformdirs.user_data_dir(
     appname="ansys_fluent_core", appauthor="Ansys"
 )
-EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
+
+USER_DOCS_PATH = platformdirs.user_documents_dir()
+EXAMPLES_PATH = os.path.join(USER_DOCS_PATH, "ansys_fluent_core_examples")
 
 CONTAINER_MOUNT_PATH = None
 

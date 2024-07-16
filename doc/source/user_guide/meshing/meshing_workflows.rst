@@ -1,4 +1,4 @@
-.. _ref_user_guide_meshing_workflows:
+.. _ref_meshing_workflows_guide:
 
 Classic meshing workflow
 ========================
@@ -28,9 +28,9 @@ Import geometry
     >>> workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
     >>> tasks = workflow.TaskObject
     >>> import_geometry = tasks['Import Geometry']
-    >>> import_geometry.Arguments = {
+    >>> import_geometry.Arguments.set_state({
     >>>     'FileName': import_file_name, 'LengthUnit': 'in'
-    >>> }
+    >>> })
     >>> import_geometry.Execute()
 
 Add local sizing
@@ -74,12 +74,12 @@ Update boundaries
 .. code:: python
 
     >>> update_boundaries = tasks["Update Boundaries"]
-    >>> update_boundaries.Arguments = {
+    >>> update_boundaries.Arguments.set_state({
     >>>     "BoundaryLabelList": ["wall-inlet"],
     >>>     "BoundaryLabelTypeList": ["wall"],
     >>>     "OldBoundaryLabelList": ["wall-inlet"],
     >>>     "OldBoundaryLabelTypeList": ["velocity-inlet"],
-    >>> }
+    >>> })
     >>> update_boundaries.Execute()
 
 Update regions
@@ -98,10 +98,10 @@ Add boundary layers
     >>> add_boundary_layers.AddChildToTask()
     >>> add_boundary_layers.InsertCompoundChildTask()
     >>> transition = tasks["smooth-transition_1"]
-    >>> transition.Arguments = {
+    >>> transition.Arguments.set_state({
     >>>     "BLControlName": "smooth-transition_1",
-    >>> }
-    >>> add_boundary_layers.Arguments = {}
+    >>> })
+    >>> add_boundary_layers.Arguments.set_state({})
     >>> transition.Execute()
 
 Generate volume mesh

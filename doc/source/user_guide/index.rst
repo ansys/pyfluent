@@ -4,32 +4,31 @@
 User guide
 ==========
 
-..
-   This toctree must be a top level index to get it to show up in
-   pydata_sphinx_theme
-
 .. toctree::
    :maxdepth: 1
    :hidden:
 
-   launching_ansys_fluent
-   specify_file_paths
-   tui_commands
-   meshing_workflow/index
-   general_settings
-   solver_settings
-   models
-   materials
-   boundary_conditions
-   solution
+   session/index
+   solver_settings/index
+   meshing/index
+   fields/index
+   events
+   monitors
+   transfer_data
+   units
+   file_transfer
+   offline/index
+   journal
+   log
+   usability
+   legacy/index
 
 
-PyFluent User Guide
--------------------
-Welcome to the PyFluent User Guide. This guide helps you understand how to use PyFluent to leverage the power of Ansys Fluent for your CFD simulations.
+Welcome to the PyFluent user guide. This guide helps you understand how to use PyFluent to
+leverage the power of Ansys Fluent for your CFD simulations.
 
 
-A Simple Example
+A simple example
 ----------------
 
 .. code:: python
@@ -41,43 +40,46 @@ A Simple Example
   >>> watertight.import_geometry()
   >>> watertight.create_volume_mesh()
   >>> meshing.switch_to_solver()
-  >>> solver.setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
-  >>> solver.setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")
-  >>> solver.setup.cell_zone_conditions.set_zone_type(zone_list="elbow-fluid", new_type="fluid")
-  >>> solver.solution.initialization.hybrid_initialize()
-  >>> solver.solution.run_calculation.iterate(iter_count=100)
-  >>> velocity_data = solver.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> setup, solution = solver.settings.setup, solver.settings.solution
+  >>> setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
+  >>> setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")
+  >>> setup.cell_zone_conditions.set_zone_type(zone_list="elbow-fluid", new_type="fluid")
+  >>> solution.initialization.hybrid_initialize()
+  >>> solution.run_calculation.iterate(iter_count=100)
+  >>> velocity_data = solver.fields.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
 
 
-Key Features
+Key features
 ------------
 
 Launching Fluent from PyFluent
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:ref:`Start a Fluent session <ref_user_guide_launch>` locally or remotely with a variety of launch options, or connect
-to an existing session. Interact with Fluent through the session object returned by the launch
+:ref:`Start a Fluent session <ref_launch_guide>` locally or remotely with a variety of launch options, or connect
+to an existing session. Interact with Fluent through the session object returned by either the launch
 or connect methods.
 
-Guided Meshing Workflows
+PyFluent sessions
+~~~~~~~~~~~~~~~~~
+:ref:`Understand how to work with PyFluent session objects <ref_session_guide>`
+
+Guided meshing workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Leverage intuitive, :ref:`guided workflows <ref_meshing_workflow>` to create high-quality meshes.
 
-Solution Mode and Settings Objects
+Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation.
+Utilize :ref:`settings objects <ref_settings>` to configure and control your simulation. Get familiar
+with the basics of setting up and executing your physics problem using Python.
 
-Data Extraction
-~~~~~~~~~~~~~~~
-Extract solution and mesh data for analysis and post-processing.
+Field data extraction
+~~~~~~~~~~~~~~~~~~~~~
+:ref:`Extract solution and mesh data for analysis and post-processing <ref_fields_guide>`.
+Access and modify field data arrays for physical variables of interest at your chosen locations.
+Choose to apply reduction functions from a comprehensive range or create and compute expressions
+using Fluent's powerful expression language.
 
-
-Use Cases
----------
-Some example use cases are given in this user guide.
-
-Physics Models
-~~~~~~~~~~~~~~
-.. _ref_user_guide_models:
-
-
-
+Offline features
+~~~~~~~~~~~~~~~~
+:ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
+PyFluent provides Python classes that represent case, data and project files. There is even an offline
+``FileSession`` class whose interface mimics the live session interface.
