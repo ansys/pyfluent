@@ -1,5 +1,4 @@
-"""
-.. _doe_ml:
+""".. _doe_ml:
 
 Design of Experiments and Machine Learning model building
 ---------------------------------------------------------
