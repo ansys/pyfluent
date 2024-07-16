@@ -52,8 +52,8 @@ class Meshing(PureMeshing):
         )
 
     def switch_to_solver(self) -> Any:
-        """Switch to solver mode and return a solver session object.
-        Deactivate this object's public interface and streaming services.
+        """Switch to solver mode and return a solver session object. Deactivate this
+        object's public interface and streaming services.
 
         Returns
         -------
