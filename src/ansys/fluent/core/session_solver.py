@@ -26,7 +26,7 @@ from ansys.fluent.core.solver.flobject import (
     StateType,
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
-from ansys.fluent.core.streaming_services.events_streaming import Event
+from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.systemcoupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
@@ -105,6 +105,7 @@ class Solver(BaseSession):
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
+            event_type=SolverEvent,
         )
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
 
