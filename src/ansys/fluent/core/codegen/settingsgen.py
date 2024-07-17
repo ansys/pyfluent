@@ -38,16 +38,20 @@ def _write_cls_helper(out, cls, indent=0):
         istr1 = _get_indent_str(indent + 1)
         istr2 = _get_indent_str(indent + 2)
         out.write("\n")
-        out.write(
-            f"{istr}class {cls.__name__}"
-            f'({", ".join(c.__name__ for c in cls.__bases__)}):\n'
-        )
+        if hasattr(cls, "__name__"):
+            out.write(
+                f"{istr}class {cls.__name__}"
+                f'({", ".join(c.__name__ for c in cls.__bases__)}):\n'
+            )
+        else:
+            out.write(f'{istr1}return_type = "{cls}"\n')
 
         doc = ("\n" + istr1).join(cls.__doc__.split("\n"))
         out.write(f'{istr1}"""\n')
         out.write(f"{istr1}{doc}")
         out.write(f'\n{istr1}"""\n')
-        out.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n')
+        if hasattr(cls, "fluent_name"):
+            out.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
 
         child_names = getattr(cls, "child_names", None)
         if child_names:
@@ -79,6 +83,21 @@ def _write_cls_helper(out, cls, indent=0):
             for _, child in cls._child_classes.items():
                 _write_cls_helper(out, child, indent + 1)
 
+        query_names = getattr(cls, "query_names", None)
+        if query_names:
+            out.write(f"{istr1}query_names = \\\n")
+            strout = io.StringIO()
+            pprint.pprint(
+                query_names,
+                stream=strout,
+                compact=True,
+                width=80 - indent * 4 - 10,
+            )
+            mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+            out.write(f"{istr2}{mn}\n")
+            for _, child in cls._child_classes.items():
+                _write_cls_helper(out, child, indent + 1)
+
         arguments = getattr(cls, "argument_names", None)
         if arguments:
             out.write(f"{istr1}argument_names = \\\n")
@@ -93,9 +112,20 @@ def _write_cls_helper(out, cls, indent=0):
             out.write(f"{istr2}{mn}\n")
             for _, child in cls._child_classes.items():
                 _write_cls_helper(out, child, indent + 1)
+
         child_object_type = getattr(cls, "child_object_type", None)
         if child_object_type:
             _write_cls_helper(out, child_object_type, indent + 1)
+
+        child_aliases = getattr(cls, "_child_aliases", None)
+        if child_aliases:
+            out.write(f"{istr1}_child_aliases = dict(\n")
+            out.writelines([f'{istr2}{k}="{v}",\n' for k, v in child_aliases.items()])
+            out.write(f"{istr1})\n\n")
+
+        return_type = getattr(cls, "return_type", None)
+        if return_type:
+            _write_cls_helper(out, return_type, indent + 1)
     except Exception:
         raise
 
@@ -138,7 +168,7 @@ if __name__ == "__main__":
     import ansys.fluent.core as pyfluent
 
     session = pyfluent.connect_to_fluent(
-        ip="10.18.44.94", port=51940, password="6ri2i2gk"
+        ip="10.18.44.94", port=57998, password="rqauxqpu"
     )
     # session = launch_fluent()
     sinfo = session._settings_service.get_static_info()
