@@ -59,9 +59,9 @@ Install PyFluent in Editable Mode
 
    pip install -e .
 
-Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
-repository. This means any changes you make to the PyFluent code are automatically reflected
-when you use PyFluent.
+Installing with the -e option (editable mode) creates a symbolic link to the repository in the
+``site-packages`` directory of your Python installation. This means any changes you make to the
+PyFluent code are automatically reflected when you use PyFluent.
 
 Generate Required API Classes
 +++++++++++++++++++++++++++++
