@@ -229,9 +229,8 @@ def _run_local_study_in_fluent(
         session.result().settings.parametric_studies.initialize(
             project_filename=session.result().id
         )
-        studies.append(
-            next(iter(session.result().settings.parametric_studies.values()))
-        )
+        for study in session.result().settings.parametric_studies.values():
+            studies.append(study)
 
     apply_to_studies(studies, study_inputs)
 
