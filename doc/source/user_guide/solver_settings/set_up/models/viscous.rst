@@ -1,6 +1,9 @@
 Viscous model
 =============
 
+Setting up and querying the model
+---------------------------------
+
 .. code:: python
 
     >>> viscous = solver.settings.setup.models.viscous
