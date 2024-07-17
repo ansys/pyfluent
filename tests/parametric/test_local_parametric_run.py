@@ -7,7 +7,7 @@ from ansys.fluent.core.parametric import (
 )
 
 
-@pytest.mark.skip(reason="Passes locally but fails in GitHub.")
+@pytest.mark.nightly
 def test_local_parametric_run():
     case_filepath = examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
