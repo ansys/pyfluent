@@ -92,7 +92,7 @@ Here are some examples using the ``viscous`` and ``discrete_phase`` models.
    (0, 1000000)
   
 
-Some items in the solver settings object tree are methods thaht you call to request a particular
+Some items in the solver settings object tree are methods that you call to request a particular
 action in Fluent:
 
 .. code:: python
