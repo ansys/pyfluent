@@ -29,12 +29,11 @@ import matplotlib.pyplot as plt
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import ansys.fluent.visualization.pyvista as pv
 
 ###############################################################################
 # PyVista
 # --------------------
-
+import ansys.fluent.visualization.pyvista as pv
 
 ###############################################################################
 # Specifying save path

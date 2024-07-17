@@ -21,8 +21,6 @@ Design of Experiments and Machine Learning model building
 # * Design of Experiment, Fluent setup and simulation using PyFluent.
 # * Building of Supervised Machine Learning Model.
 
-# sphinx_gallery_thumbnail_path = '_static/doe_ml_predictions_regression.png'
-
 ###################################
 # Import required libraries/modules
 # =================================

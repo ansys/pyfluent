@@ -36,13 +36,8 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-
-try:
-    import ansys.fluent.visualization.pyvista as pv
-except ImportError:
-    import ansys.fluent.post.pyvista as pv
-
 from ansys.fluent.visualization import set_config
+import ansys.fluent.visualization.pyvista as pv
 
 #######################################################################################
 # Specifying save path
