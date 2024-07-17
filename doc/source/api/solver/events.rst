@@ -10,5 +10,6 @@ EventsManager
     :template: noindex-class.rst
     :recursive:
 
-    Events
+    MeshingEvent
+    SolverEvent
     EventsManager
