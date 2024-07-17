@@ -1,3 +1,5 @@
+import pytest
+
 from ansys.fluent.core import examples
 from ansys.fluent.core.parametric import (
     LocalParametricStudy,
@@ -5,6 +7,7 @@ from ansys.fluent.core.parametric import (
 )
 
 
+@pytest.mark.self_hosted
 def test_local_parametric_run():
     case_filepath = examples.download_file(
         "Static_Mixer_Parameters.cas.h5",
