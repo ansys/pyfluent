@@ -69,6 +69,7 @@ class FluentImageNameTagNotSpecified(ValueError):
     """Raised when Fluent image name or image tag is not specified."""
 
     def __init__(self):
+        """Initializes FluentImageNameTagNotSpecified."""
         super().__init__(
             "Specify either 'fluent_image' or 'image_tag' and 'image_name'."
         )
@@ -78,6 +79,7 @@ class ServerInfoFileError(ValueError):
     """Raised when server info file is not given properly."""
 
     def __init__(self):
+        """Initializes ServerInfoFileError."""
         super().__init__(
             "Specify server info file either using 'container_server_info_file' argument or in the 'container_dict'."
         )
@@ -87,6 +89,7 @@ class LicenseServerNotSpecified(KeyError):
     """Raised when license server is not specified."""
 
     def __init__(self):
+        """Initializes LicenseServerNotSpecified."""
         super().__init__(
             "Specify licence server either using 'ANSYSLMD_LICENSE_FILE' environment variable or in the 'container_dict'."
         )

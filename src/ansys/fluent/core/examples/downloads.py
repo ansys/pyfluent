@@ -21,6 +21,7 @@ class RemoteFileNotFoundError(FileNotFoundError):
     """Raised on an attempt to download a non-existent remote file."""
 
     def __init__(self, url):
+        """Initializes RemoteFileNotFoundError."""
         super().__init__(f"{url} does not exist.")
 
 
