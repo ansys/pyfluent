@@ -7,6 +7,7 @@ Boundary conditions
 ~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
+
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
