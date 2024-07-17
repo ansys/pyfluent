@@ -194,11 +194,15 @@ def _run_local_study_in_fluent(
     @asynchronous
     def apply_to_study(study, inputs):
         for input in inputs:
-            design_point = study.design_points[BASE_DP_NAME]
-            design_point.capture_simulation_report_data = capture_report_data
-            design_point.input_parameters = convert_design_point_parameter_units(
-                input.copy()
-            )
+            dp_names = set([*study.design_points.keys()])
+            try:
+                study.design_points.create_1()
+            except AttributeError:
+                study.design_points.create()
+            dp1_name = set([*study.design_points.keys()]).difference(dp_names).pop()
+            dp = study.design_points[dp1_name]
+            dp.capture_simulation_report_data = capture_report_data
+            dp.input_parameters = convert_design_point_parameter_units(input.copy())
 
     @asynchronous
     def update_design_point(study):
@@ -238,11 +242,12 @@ def _run_local_study_in_fluent(
     for update in updates:
         update.result()
 
-    it = iter(local_study.design_point_table)
-
     for study in studies:
         for _, design_point in study.design_points.items():
-            next(it).output_parameters = design_point.output_parameters.get_state()
+            for local_design_point in local_study.design_point_table:
+                local_design_point.output_parameters = (
+                    design_point.output_parameters.get_state()
+                )
 
 
 class LocalParametricStudy:
