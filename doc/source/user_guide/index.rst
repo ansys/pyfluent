@@ -74,7 +74,7 @@ with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction
 ~~~~~~~~~~~~~~~~~~~~~
-:ref:`Extract solution and mesh data for analysis and post-processing <ref_fields_guide>`.
+:ref:`Extract solution and mesh data <ref_fields_guide>` for analysis and post-processing.
 Access and modify field data arrays for physical variables of interest at your chosen locations.
 Choose to apply reduction functions or create and compute expressions using Fluent's powerful
 expression language.
