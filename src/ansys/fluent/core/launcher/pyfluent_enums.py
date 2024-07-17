@@ -192,7 +192,8 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
         fluent_launch_mode = LaunchMode.CONTAINER
-    elif scheduler_options and scheduler_options["scheduler"] == "slurm":
+    # Currently, only Slurm scheduler is supported and within SlurmLauncher we check the value of the scheduler
+    elif scheduler_options:
         fluent_launch_mode = LaunchMode.SLURM
     else:
         fluent_launch_mode = LaunchMode.STANDALONE

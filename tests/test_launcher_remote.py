@@ -9,7 +9,6 @@ import grpc
 from grpc_health.v1 import health_pb2_grpc
 import pytest
 from test_session import MockHealthServicer, MockSchemeEvalServicer
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
 from ansys.fluent.core import examples
@@ -138,7 +137,7 @@ class TransferRequestRecorder:
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_file_purpose_on_remote_instance(
-    monkeypatch, new_solver_session, new_mesh_session
+    monkeypatch, new_solver_session, new_meshing_session
 ):
     solver = new_solver_session
 
@@ -164,7 +163,7 @@ def test_file_purpose_on_remote_instance(
     assert len(file_service.downloads()) == 1
     assert file_service.downloads()[0] == import_file_name
 
-    meshing = new_mesh_session
+    meshing = new_meshing_session
 
     meshing_session = PureMeshing(
         fluent_connection=meshing._fluent_connection,

@@ -60,3 +60,13 @@ def copy_database_material(materials, type, name):
         materials.database.copy_by_name(type=type, name=name)
     except AttributeError:
         materials.copy_database_material_by_name(type=type, name=name)
+
+
+def get_name_info(allnamesdict, namescheck):
+    name_selected = {}
+    for names, details in allnamesdict.items():
+        if isinstance(details, dict):
+            for name in namescheck:
+                if name in details.values() or name in details or name in names:
+                    name_selected[name] = details
+    return name_selected

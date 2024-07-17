@@ -3,8 +3,8 @@ import pytest
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_solver_models(load_mixing_elbow_settings_only):
-    solver_session = load_mixing_elbow_settings_only
+def test_solver_models(mixing_elbow_settings_session):
+    solver_session = mixing_elbow_settings_session
     models = solver_session.setup.models
     assert models.energy.enabled()
     models.energy.enabled = False
@@ -23,8 +23,8 @@ def test_solver_models(load_mixing_elbow_settings_only):
 
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
-def test_disk_2d_models(load_disk_settings_only):
-    solver_session = load_disk_settings_only
+def test_disk_2d_models(disk_settings_session):
+    solver_session = disk_settings_session
     models = solver_session.setup.models
     solver_session.setup.general.solver.two_dim_space = "axisymmetric"
     solver_session.setup.general.solver.two_dim_space = "swirl"

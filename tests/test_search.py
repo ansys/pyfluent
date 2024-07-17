@@ -1,7 +1,4 @@
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
-from util.meshing_workflow import new_watertight_workflow_session  # noqa: F401
-from util.solver_workflow import new_solver_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.search import (
@@ -363,9 +360,9 @@ def test_search():
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_get_version_path_prefix_from_obj(
-    new_watertight_workflow_session, new_solver_session
+    watertight_workflow_session, new_solver_session
 ):
-    meshing = new_watertight_workflow_session
+    meshing = watertight_workflow_session
     solver = new_solver_session
     version = solver._version
     assert _get_version_path_prefix_from_obj(meshing) == (
@@ -434,8 +431,8 @@ def test_get_version_path_prefix_from_obj(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
-def test_search_from_root(new_watertight_workflow_session):
-    meshing = new_watertight_workflow_session
+def test_search_from_root(watertight_workflow_session):
+    meshing = watertight_workflow_session
     results = _search("display", search_root=meshing)
     assert "<search_root>.tui.display (Object)" in results
     results = _search("display", search_root=meshing.tui)
@@ -463,8 +460,8 @@ def test_search_from_root(new_watertight_workflow_session):
 @pytest.mark.skip("Results are varying each time.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("==23.2")
-def test_search_settings_from_root(capsys, load_static_mixer_settings_only):
-    solver = load_static_mixer_settings_only
+def test_search_settings_from_root(capsys, static_mixer_settings_session):
+    solver = static_mixer_settings_session
     results = _search("conduction", search_root=solver)
     assert "<search_root>.tui.define.models.shell_conduction (Object)" in results
     assert (

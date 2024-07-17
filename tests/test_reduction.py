@@ -1,9 +1,7 @@
 import pytest
-from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-
-load_static_mixer_case_2 = load_static_mixer_case
+from tests.conftest import static_mixer_case_session
 
 
 def _test_locn_extraction(solver1, solver2):
@@ -367,11 +365,14 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
+static_mixer_case_session2 = static_mixer_case_session
+
+
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
-def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
-    solver1 = load_static_mixer_case
-    solver2 = load_static_mixer_case_2
+def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> None:
+    solver1 = static_mixer_case_session
+    solver2 = static_mixer_case_session2
     _test_context(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
@@ -388,8 +389,8 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_reduction_does_not_modify_case(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_reduction_does_not_modify_case(static_mixer_case_session):
+    solver = static_mixer_case_session
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
     solver.reduction.area_average(
         expression="AbsolutePressure",
@@ -400,8 +401,8 @@ def test_reduction_does_not_modify_case(load_static_mixer_case):
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2998")
 @pytest.mark.fluent_version(">=24.2")
-def test_fix_for_invalid_location_inputs(load_static_mixer_case):
-    solver = load_static_mixer_case
+def test_fix_for_invalid_location_inputs(static_mixer_case_session):
+    solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
 
     assert solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
