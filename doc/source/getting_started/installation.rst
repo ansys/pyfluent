@@ -83,13 +83,14 @@ Fluent Installation
 To benefit fully from using PyFluent, you must have a licensed copy of Ansys Fluent installed.
 All versions of PyFluent support Fluent 2022 R2 and later. 
 
-The Windows installation of Ansys Fluent automatically sets the required environment variables
-so that PyFluent can find the Ansys Fluent installation. Using Fluent 2024 R2 installed in the
-default directory as an example, the installer automatically sets the ``AWP_ROOT242`` environment
-variable to point to ``C:\Program Files\ANSYS Inc\v242`` by default.
+PyFluent uses an environment variable to locate your Ansys installation.
 
-On Linux, the required environment variable is not set automatically, and can be set for the
-current user in the current shell session. E.g.:
+On Windows, the Ansys installer sets the environment variable. For instance, the Ansys 2024R2
+installer sets the ``AWP_ROOT242`` environment variable to point to ``C:\Program Files\ANSYS Inc\v242``
+if you accept the default installation location.
+
+On Linux, the environment variable is not set automatically, and can be set for the
+current user in the current shell session as follows:
 
 .. code:: console
 
