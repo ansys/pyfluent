@@ -101,7 +101,7 @@ action in Fluent:
 
 
 Note: You can find out more about solver settings objects here:
-:ref:`ref_settings_guide`. 
+:ref:`ref_solver_settings_guide`. 
 
 Objects under ``fields`` provide an interface with a style similar to
 that of the ``settings`` objects:

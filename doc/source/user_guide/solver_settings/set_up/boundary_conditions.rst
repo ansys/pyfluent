@@ -1,7 +1,7 @@
-Boundary conditions
-===================
-The examples in this section show how you use :ref:`ref_settings` to interact with
-boundary conditions.
+Boundary conditions and cell zone conditions
+============================================
+The examples in this section show how you use :ref:`ref_settings` objects to set up
+boundary conditions and cell zone conditions.
 
 Boundary conditions
 ~~~~~~~~~~~~~~~~~~~
