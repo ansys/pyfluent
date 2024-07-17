@@ -22,17 +22,10 @@ This example demonstrates:
 import csv
 from pathlib import Path
 
-##############################################################################
-# Matplotlib
-# --------------------
 import matplotlib.pyplot as plt
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-
-###############################################################################
-# PyVista
-# --------------------
 import ansys.fluent.visualization.pyvista as pv
 
 ###############################################################################
