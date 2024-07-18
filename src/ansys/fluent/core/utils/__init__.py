@@ -6,7 +6,7 @@ import sys
 
 logger = logging.getLogger("pyfluent.general")
 
-from .search import _search  # noqa: F401
+from ansys.fluent.core.search import _search  # noqa: F401
 
 
 def load_module(module_name, file_path):
