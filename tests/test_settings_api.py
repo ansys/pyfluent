@@ -45,26 +45,77 @@ def test_wildcard(new_solver_session):
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
     boundary_conditions = solver.setup.boundary_conditions
-    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
-        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 15}}},
-        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 5}}},
-    }
-    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity.value() == {
-        "inlet2": {"momentum": {"velocity": {"value": 15}}},
-        "inlet1": {"momentum": {"velocity": {"value": 5}}},
-    }
-    boundary_conditions.velocity_inlet["inl*"].momentum.velocity = 10
-    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
-        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
-        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
-    }
-    boundary_conditions.velocity_inlet = boundary_conditions.velocity_inlet[
-        "inl*"
-    ].momentum.velocity()
-    assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
-        "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
-        "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
-    }
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert boundary_conditions.velocity_inlet[
+            "inl*"
+        ].momentum.velocity_magnitude() == {
+            "inlet2": {
+                "momentum": {"velocity_magnitude": {"option": "value", "value": 15}}
+            },
+            "inlet1": {
+                "momentum": {"velocity_magnitude": {"option": "value", "value": 5}}
+            },
+        }
+        assert boundary_conditions.velocity_inlet[
+            "inl*"
+        ].momentum.velocity_magnitude.value() == {
+            "inlet2": {"momentum": {"velocity_magnitude": {"value": 15}}},
+            "inlet1": {"momentum": {"velocity_magnitude": {"value": 5}}},
+        }
+        boundary_conditions.velocity_inlet["inl*"].momentum.velocity_magnitude = 10
+        assert boundary_conditions.velocity_inlet[
+            "inl*"
+        ].momentum.velocity_magnitude() == {
+            "inlet2": {
+                "momentum": {"velocity_magnitude": {"option": "value", "value": 10}}
+            },
+            "inlet1": {
+                "momentum": {"velocity_magnitude": {"option": "value", "value": 10}}
+            },
+        }
+        boundary_conditions.velocity_inlet = boundary_conditions.velocity_inlet[
+            "inl*"
+        ].momentum.velocity_magnitude()
+        assert boundary_conditions.velocity_inlet[
+            "inl*"
+        ].momentum.velocity_magnitude() == {
+            "inlet2": {
+                "momentum": {"velocity_magnitude": {"option": "value", "value": 10}}
+            },
+            "inlet1": {
+                "momentum": {"velocity_magnitude": {"option": "value", "value": 10}}
+            },
+        }
+        state = boundary_conditions.velocity_inlet["inl*"]()
+        assert state["inlet1"]["momentum"]["velocity_magnitude"]["value"] == 10
+        assert state["inlet2"]["momentum"]["velocity_magnitude"]["value"] == 10
+        boundary_conditions.velocity_inlet["inl*"] = {
+            "momentum": {"velocity_magnitude": {"value": 15}}
+        }
+        state = boundary_conditions.velocity_inlet["inl*"]()
+        assert state["inlet1"]["momentum"]["velocity_magnitude"]["value"] == 15
+        assert state["inlet2"]["momentum"]["velocity_magnitude"]["value"] == 15
+    else:
+        assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+            "inlet2": {"momentum": {"velocity": {"option": "value", "value": 15}}},
+            "inlet1": {"momentum": {"velocity": {"option": "value", "value": 5}}},
+        }
+        assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity.value() == {
+            "inlet2": {"momentum": {"velocity": {"value": 15}}},
+            "inlet1": {"momentum": {"velocity": {"value": 5}}},
+        }
+        boundary_conditions.velocity_inlet["inl*"].momentum.velocity = 10
+        assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+            "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+            "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+        }
+        boundary_conditions.velocity_inlet = boundary_conditions.velocity_inlet[
+            "inl*"
+        ].momentum.velocity()
+        assert boundary_conditions.velocity_inlet["inl*"].momentum.velocity() == {
+            "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+            "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
+        }
     cell_zone_conditions = solver.setup.cell_zone_conditions
     if solver.get_fluent_version() >= FluentVersion.v242:
         sources = cell_zone_conditions.fluid["*"].sources.terms
