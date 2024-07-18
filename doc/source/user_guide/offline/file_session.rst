@@ -3,21 +3,21 @@
 File Session
 ============
 
-The FileSession class provides an interface to expose field info and
-field data from a case and data file.
+The ``FileSession`` class mimics the functionality of live ``Session`` objects, allowing you
+to access field data and other relevant information without a live Fluent session.
+You command ``FileSession`` objects to read your input files before you access the data through
+the ``FileSession`` object's methods. 
 
 Sample usage
 ------------
 
-You can use the FileSession by passing the case and data file information by using
-the CaseReader (:ref:`ref_case_reader`) and DataReader (:ref:`ref_data_reader`).
-This example shows adding case and data file information to FileSession. Then,
-field info is extracted followed by adding a transaction request and extracting
-field data. One can either run a single or multi-phase case. In that respect, the example
-covers both single and multi-phase cases.
+The following examples cover both single-phase and multiphase cases. After case and data files are
+loaded, field information is accessed and some field data is extracted. Here, the extraction uses two approaches:
+a transaction-based approach where multiple data requests are bundled into each transaction and a direct approach
+where a sequence of separate requests are made.
 
-Single phase
-------------
+Single-phase
+~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -98,8 +98,8 @@ Single phase
    0.001690600193527586
 
 
-Multi phase
------------
+Multiphase
+~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -159,8 +159,8 @@ Multi phase
    0.0
 
 
-Sample usage
-------------
+Visualization sample usage
+--------------------------
 
 You can use the ``ansys-fluent-visualization`` package to display the
 mesh and to visualize results via contours, vectors and other
@@ -175,7 +175,7 @@ post-processing objects.
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.visualization.matplotlib import Plots
   >>> from ansys.fluent.visualization.pyvista import Graphics
-  >>> from ansys.fluent.core.file_session  import FileSession
+  >>> from ansys.fluent.core.file_session import FileSession
   >>> fileSession=FileSession()
   >>> fileSession.read_case("elbow1.cas.h5")
   >>> fileSession.read_data("elbow1.dat.h5")
