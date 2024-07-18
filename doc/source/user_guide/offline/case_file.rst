@@ -3,14 +3,14 @@
 CaseFile
 ========
 
-The CaseFile class provides a reader for Fluent case files.
+The ``CaseFile`` class allows you to access Fluent case information without a live Fluent session.
+You command ``CaseFile`` objects to read your Fluent case files before you access the case information through
+the ``CaseFile`` methods. 
 
 Sample usage
 ------------
 
-You can use the CaseFile class by importing it and passing a case file path.
-This example shows how to have the CaseFile class read a case file (.cas.h5)
-from the ``examples`` repository:
+This example shows how to command a ``CaseFile`` object to read a case file, and query its interface:
 
 .. code-block:: python
 
@@ -28,6 +28,7 @@ from the ``examples`` repository:
   >>> {p.name: p.units for p in reader.output_parameters()}
   {'outlet-temp-avg-op': 'K', 'outlet-vel-avg-op': 'm s^-1'}
 
+
 Additional features
 -------------------
 Along with basic functionality, the CaseFile class provides many additional features, including these:
@@ -42,18 +43,20 @@ Along with basic functionality, the CaseFile class provides many additional feat
 
     >>> reader = CaseFile(project_file_name="Dir1/Dir2/project.flprj")
 
+
 - **Reads ``rp_vars`` and ``config_vars`` variables**
-  The CaseFile class can provide the ``rp_vars`` and ``config_vars`` variables:
+  The CaseFile class can provide the ``rp_vars`` and ``config_vars`` variables
+  in Python data structures:
   
   .. code-block:: python
 
     >>> reader.rp_vars()
     >>> reader.config_vars()
 
+
 - **Extracts mesh data**
   The CaseReader can be used to extract mesh data. This example shows how to
-  have the CaseFile class read a case file (.cas.h5) from the ``examples``
-  repository and extract and use mesh data:
+  command a ``CaseFile`` object to read a case file and extract and use the mesh data:
 
   .. code-block:: python
 
@@ -78,3 +81,4 @@ Along with basic functionality, the CaseFile class provides many additional feat
       >>> reader.get_mesh().get_vertices(3)
       array([ 0.        , -0.1016    ,  0.        , ...,  0.00620755,
        -0.19304685,  0.03033731])
+

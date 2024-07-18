@@ -95,7 +95,7 @@ by calling the ``get_variables_info`` method.
   
 Solution variable data
 ----------------------
-solution variable data can be extracted and modified via the following solution_variable_data object methods:
+solution variable data can be extracted and modified via the following solution_variable_data methods:
 
 - ``get_data`` to get solution variable data.
 - ``set_data`` to set solution variable data.

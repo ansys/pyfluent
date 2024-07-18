@@ -3,16 +3,14 @@
 DataFile
 ========
 
-The DataFile class provides a reader for Fluent data files.
+The ``DataFile`` class allows you to access solution data without a live Fluent session.
+You command ``DataFile`` objects to read your Fluent data files before you access the data through
+the ``DataFile`` methods. 
 
 Sample usage
 ------------
 
-You can use the DataFile class by importing it and passing a data file path.
-For some case file dependent features, the case file handle from
-the CaseFile class needs to be passed as shown in the following code snippet.
-This example shows how to have the DataFile class read a data file (.cas.h5)
-from the ``examples`` repository:
+This example shows how to command a ``DataFile`` object to access case and data files, and query its interface:
 
 .. code-block:: python
 

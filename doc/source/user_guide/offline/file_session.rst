@@ -6,7 +6,7 @@ File Session
 The ``FileSession`` class mimics the functionality of live ``Session`` objects, allowing you
 to access field data and other relevant information without a live Fluent session.
 You command ``FileSession`` objects to read your input files before you access the data through
-the ``FileSession`` object's methods. 
+the ``FileSession`` object methods. 
 
 Sample usage
 ------------
