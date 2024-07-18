@@ -36,7 +36,8 @@ def _prompt_user_for_option(options):
 def _prompt_user_for_options_in_launch_mode(launch_mode):
     launcher_type = mode_to_launcher_type(launch_mode)
     init_method = launcher_type.__init__
-    launcher_type_args = inspect.signature(init_method).parameters
+    launcher_type_args = inspect.signature(init_method).parameters[1:].copy()
+    del launcher_type_args["self"]
     init_doc_list = inspect.getdoc(init_method).split("\n")
     params_pos = init_doc_list.index("Parameters")
     returns_pos = init_doc_list.index("Returns")
@@ -51,14 +52,13 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
                 return annotation
             return f"Union{[x.__name__ for x in annotation.__args__]}"
 
-        if name != "self":
-            print(
-                f"{name} : {get_annotation(defn)}, default : {defn.default}, value : {arg_vals.get(name)}"
-            )
+        print(
+            f"{name} : {get_annotation(defn)}, default : {defn.default}, value : {arg_vals.get(name)}"
+        )
 
     def print_launcher_arg_list():
         print(
-            f"The following arguments apply to {launcher_type.__name__} ({inspect.getdoc(launcher_type)})..."
+            f"The following arguments apply to {launcher_type.__name__} ({inspect.getdoc(launcher_type).rstrip('.')})..."
         )
         for name, defn in launcher_type_args.items():
             print_arg(name, defn)
@@ -75,7 +75,7 @@ def _prompt_user_for_options_in_launch_mode(launch_mode):
             print_launcher_arg_list()
         elif int(option) == 2:
             arg_name = None
-            while arg_name == "self" or arg_name not in launcher_type_args:
+            while arg_name == arg_name not in launcher_type_args:
                 arg_name = input("Enter a valid argument name: ")
             print_arg(arg_name, launcher_type_args[arg_name])
             found_name = False
@@ -251,6 +251,8 @@ def _start():
 def start(config_name: dict = None):
     """User-friendly, prompt-based function to start a PyFluent session"""
     if config_name:
-        return _launch_for_config(_load_configuration(config_name))
+        config = _load_configuration(config_name)
+        print(f"Launching from selected configuration, {config_name}. Please wait.")
+        return _launch_for_config(config)
     else:
         return _start()
