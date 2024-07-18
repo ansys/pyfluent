@@ -20,7 +20,7 @@ some options for starting Fluent's gRPC server:
 
 #.Start Fluent with ``<fluent_executable> -sifile=<server_info_file_name>``.
 #.Execute the ``server/start-server`` TUI command in Fluent. 
-#.Execute ``File -> Applications -> Server -> Start...`` from the FLuent GUI ribbon menu.
+#.Execute ``File -> Applications -> Server -> Start...`` from the Fluent GUI ribbon menu.
 
 On starting the gRPC server, Fluent writes out a server-info file at ``<server_info_file_name>`` and
 prints this information in the console. If you do not specify a particular ``<server_info_file_name>``,
