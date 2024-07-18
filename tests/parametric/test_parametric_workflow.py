@@ -8,6 +8,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 PYTEST_RELATIVE_TOLERANCE = 1e-3
 
@@ -110,7 +111,10 @@ def test_parametric_workflow():
     )
     assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
     dp_names = set([*study1.design_points.keys()])
-    study1.design_points.create_1()
+    if solver_session.get_fluent_version() < FluentVersion.v251:
+        study1.design_points.create_1()
+    else:
+        study1.design_points.create()
     dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
