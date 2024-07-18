@@ -36,7 +36,7 @@ def _prompt_user_for_option(options):
 def _prompt_user_for_options_in_launch_mode(launch_mode):
     launcher_type = mode_to_launcher_type(launch_mode)
     init_method = launcher_type.__init__
-    launcher_type_args = inspect.signature(init_method).parameters[1:].copy()
+    launcher_type_args = inspect.signature(init_method).parameters.copy()
     del launcher_type_args["self"]
     init_doc_list = inspect.getdoc(init_method).split("\n")
     params_pos = init_doc_list.index("Parameters")
