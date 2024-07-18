@@ -199,8 +199,7 @@ How does PyFluent infer the location to launch Fluent?
 PyFluent infers the Fluent location based on the following information, in
 increasing order of precedence:
 
-#. Value of ``product_version`` parameter passed to :func:`launch_fluent()
-   <ansys.fluent.core.launch_fluent>`.
+#. Value of ``product_version`` parameter passed to :func:`launch_fluent <ansys.fluent.core.launch_fluent>`.
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
    when Fluent is installed, where ``<ver>`` is the Fluent release number such
