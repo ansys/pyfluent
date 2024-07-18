@@ -17,6 +17,7 @@ class MeshWriteError(RuntimeError):
     """Raised when mesh write is unsuccessful."""
 
     def __init__(self):
+        """Initializes MeshWriteError."""
         super().__init__("Could not write mesh from meshing session.")
 
 

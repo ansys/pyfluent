@@ -1,6 +1,9 @@
 Energy model
 ============
 
+Setting up and querying the model
+---------------------------------
+
 .. code:: python
 
     >>> import ansys.fluent.core as pyfluent

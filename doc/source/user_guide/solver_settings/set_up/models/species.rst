@@ -1,6 +1,9 @@
 Species model
 =============
 
+Setting up and querying the model
+---------------------------------
+
 .. code:: python
 
     >>> solver.settings.file.read_case(file_name=file_name)

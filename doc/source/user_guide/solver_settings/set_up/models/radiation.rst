@@ -1,6 +1,9 @@
 Radiation model
 ===============
 
+Setting up and querying the model
+---------------------------------
+
 .. code:: python
 
     >>> radiation = solver.settings.setup.models.radiation

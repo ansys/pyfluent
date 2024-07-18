@@ -18,18 +18,22 @@ You can obtain a PyFluent session object by calling either :func:`launch_fluent(
 
 Note: You can find out more about using :ref:`ref_session_guide`, and :ref:`ref_launch_guide`.
 
-The above ``solver`` session object contains a variety of Python objects that provide access to the data
-and functions of the connected Fluent solver. A consistent interface style is maintained across those objects
+
+Solution mode sessions
+----------------------
+
+The above ``solver`` session object exposes a variety of Python child objects that provide access to the data
+and functions of the connected Fluent solver. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
-this ``solver`` session provides child objects for solver settings and field data access respectively.
-You can discover the ``fields`` and ``settings`` attributes by executing ``dir(solver)``. then you can discover
-more children within ``fields`` and ``settings``, and so on.  
+the ``solver`` session provides child objects for solver settings and field data access respectively.
+You can see these ``fields`` and ``settings`` children by executing ``dir(solver)``. You can discover the
+children of ``fields`` and ``settings`` by calling ``dir(solver.fields)`` and ``dir(solver.settings)`` respectively,
+and so on:
 
 .. code:: python
 
   >>> solver_children = dir(solver)
   >>> settings = solver.settings
-  >>> from pprint import pprint
   >>> settings_children = dir(settings)
   >>> fields = solver.fields
   >>> fields_children = dir(fields)
@@ -52,7 +56,7 @@ session that starts a second Fluent instance and is independent of your PyFluent
 
 
 A uniform interface exists across solver settings objects. For instance,
-``get_state()``, ``set_state()`` and ``is-active()`` are ubiquitous methods,
+``get_state()``, ``set_state()`` and ``is_active()`` are ubiquitous methods,
 and ``allowed_values()``, ``min()`` and ``max()`` are found on relevant items.
 Here are some examples using the ``viscous`` and ``discrete_phase`` models.
 
@@ -88,7 +92,8 @@ Here are some examples using the ``viscous`` and ``discrete_phase`` models.
    (0, 1000000)
   
 
-Some items in the solver settings object tree are methods:
+Some items in the solver settings object tree are methods that you call to request a particular
+action in Fluent:
 
 .. code:: python
 
@@ -96,9 +101,10 @@ Some items in the solver settings object tree are methods:
 
 
 Note: You can find out more about solver settings objects here:
-:ref:`ref_settings_guide`. 
+:ref:`ref_solver_settings_guide`. 
 
-Objects under ``fields`` provide a similar interface.
+Objects under ``fields`` provide an interface with a style similar to
+that of the ``settings`` objects:
 
 .. code:: python
 
@@ -125,7 +131,10 @@ Objects under ``fields`` provide a similar interface.
   15401477.28604886
 
 
-Note that interactions in meshing mode are consistent with solver mode. Here is some
+Meshing mode sessions
+---------------------
+
+Meshing mode also provides an interface style that is consistent with the above interactions. Here is some
 task-based meshing workflow code:
 
 .. code:: python
@@ -144,5 +153,83 @@ task-based meshing workflow code:
   >>> import_geometry()
 
 
-Note: You can find out more about meshing workflow here:
-:ref:`ref_new_meshing_workflows_guide`. 
+Note: You can find out more about meshing workflows here:
+:ref:`ref_new_meshing_workflows_guide`.
+
+A meshing mode session object exposes additional child objects. For instance, ``meshing``
+has ``fields`` and ``events`` children. Each has the same interface as the identically named
+child of the ``solver`` session object respectively.
+
+You can also create a pure meshing session:
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> pure_meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PURE_MESHING)
+
+
+The only difference between the two meshing session types is that a pure session cannot be
+switched to solution mode directly. The existence of the pure session type promotes creation
+of minimal server images, which becomes significant in the context of containerization.
+
+
+Switching between sessions
+--------------------------
+
+You switch between meshing and solution modes by calling the ``switch_to_solver()`` method.
+
+.. code:: python
+  >>> switched_solver = meshing.switch_to_solver()
+
+
+The ``switched_solver`` session uses the same Fluent instance that was previously used by the
+``messing`` session, which is now unusable.
+
+A similar action with the ``pure_meshing`` session raises an exception:
+
+.. code:: python
+  >>> failed_solver = pure_meshing.switch_to_solver() # raises an AttributeError!
+
+
+Note: there is no method to switch back to meshing mode from solution mode.
+
+
+Sharing cases between sessions
+------------------------------
+
+An alternative to mode switching is to transfer your case between sessions, an operation
+that's allowed both for pure and for regular meshing sessions:
+
+.. code:: python
+  >>> pure_meshing.transfer_mesh_to_solvers(solvers=[solver, switched_solver])
+
+Ending PyFluent sessions
+------------------------
+
+Just as PyFluent session objects start and exist independently within a single Python interpreter session,
+each session can be ended independently of the others. Calling the ``exit()`` method on the ``solver`` and
+``pure_meshing`` session objects ends those PyFluent sessions and terminates the connected Fluent sessions:
+
+.. code:: python
+  >>> solver.exit()
+  >>> pure_meshing.exit()
+
+
+Each Fluent session terminates in this scenario because both PyFluent ``Session`` objects were obtained by
+calling the ``launch_fluent()`` function. If the ``connect_to_fluent()`` function were used instead, the
+Fluent session would terminate upon the ``exit()`` method call if and only if the ``connect_to_fluent()``
+function were called with the argument value ``cleanup_on_exit=True``.
+
+Session exiting can also happen implicitly when ``Session`` objects are garbage collected. The same rules apply
+regarding Fluent termination whether the exit is explicit via an ``<session>.exit()`` method call or implicit.
+Implicit exiting occurs via the Python garbage collector. Calling ``session.exit()`` is equivalent to the session
+being garbage collected:
+
+.. code:: python
+  >>> def run_solver():
+  >>>     solver = pyfluent.launch_fluent()
+  >>>     # <insert some PyFluent solver actions>
+  >>>     # solver is exited at the end of the function
+
+
+When you end your Python interpreter session, all active PyFluent sessions are exited automatically.

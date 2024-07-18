@@ -1,6 +1,9 @@
 Battery model
 =============
 
+Setting up and querying the model
+---------------------------------
+
 .. code:: python
 
     >>> battery = solver.settings.setup.models.battery

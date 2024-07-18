@@ -61,7 +61,7 @@ or connect methods.
 
 PyFluent sessions
 ~~~~~~~~~~~~~~~~~
-:ref:`Understand how to work with PyFluent session objects <ref_session_guide>`
+:ref:`Understand how to work with PyFluent session objects <ref_session_guide>`.
 
 Guided meshing workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,13 +74,15 @@ with the basics of setting up and executing your physics problem using Python.
 
 Field data extraction
 ~~~~~~~~~~~~~~~~~~~~~
-:ref:`Extract solution and mesh data for analysis and post-processing <ref_fields_guide>`.
+:ref:`Extract solution and mesh data <ref_fields_guide>` for analysis and post-processing.
 Access and modify field data arrays for physical variables of interest at your chosen locations.
-Choose to apply reduction functions from a comprehensive range or create and compute expressions
-using Fluent's powerful expression language.
+Choose to apply reduction functions or create and compute expressions using Fluent's powerful
+expression language.
 
 Offline features
 ~~~~~~~~~~~~~~~~
+
 :ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
-PyFluent provides Python classes that represent case, data and project files. There is even an offline
-``FileSession`` class whose interface mimics the live session interface.
+PyFluent offers Python classes that represent case, data, and project files, enabling you to work with
+Fluent data efficiently offline. The ``FileSession`` class mimics the functionality of live ``Session``
+objects, allowing you to access field data and other relevant information without a live Fluent session.

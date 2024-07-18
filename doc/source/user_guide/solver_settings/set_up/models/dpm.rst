@@ -1,6 +1,9 @@
 Discrete phase model
 ====================
 
+Setting up and querying the model
+---------------------------------
+
 .. code:: python
 
     >>> dpm = solver.settings.setup.models.discrete_phase

@@ -13,6 +13,7 @@ PyFluent supports Python 3.9 through Python 3.12 on Windows, Mac OS and Linux.
 PyFluent can be installed, along with all its optional dependencies, using:
 
 .. code:: console
+
    pip install ansys-fluent-core
 
 
@@ -59,9 +60,9 @@ Install PyFluent in Editable Mode
 
    pip install -e .
 
-Installing with the -e option (editable mode) creates a symbolic link in site-packages to the
-repository. This means any changes you make to the PyFluent code are automatically reflected
-when you use PyFluent.
+Installing with the -e option (editable mode) creates a symbolic link to the repository in the
+``site-packages`` directory of your Python installation. This means any changes you make to the
+PyFluent code are automatically reflected when you use PyFluent.
 
 Generate Required API Classes
 +++++++++++++++++++++++++++++
@@ -83,13 +84,14 @@ Fluent Installation
 To benefit fully from using PyFluent, you must have a licensed copy of Ansys Fluent installed.
 All versions of PyFluent support Fluent 2022 R2 and later. 
 
-The Windows installation of Ansys Fluent automatically sets the required environment variables
-so that PyFluent can find the Ansys Fluent installation. Using Fluent 2024 R2 installed in the
-default directory as an example, the installer automatically sets the ``AWP_ROOT242`` environment
-variable to point to ``C:\Program Files\ANSYS Inc\v242`` by default.
+PyFluent uses an environment variable to locate your Ansys installation.
 
-On Linux, the required environment variable is not set automatically, and can be set for the
-current user in the current shell session. E.g.:
+On Windows, the Ansys installer sets the environment variable. For instance, the Ansys 2024R2
+installer sets the ``AWP_ROOT242`` environment variable to point to ``C:\Program Files\ANSYS Inc\v242``
+if you accept the default installation location.
+
+**On Linux, the environment variable is not set automatically.** It can be set for the
+current user in the current shell session as follows:
 
 .. code:: console
 

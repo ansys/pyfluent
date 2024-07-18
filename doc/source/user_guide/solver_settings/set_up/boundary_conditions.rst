@@ -1,12 +1,13 @@
-Boundary conditions
-===================
-The examples in this section show how you use :ref:`ref_settings` to interact with
-boundary conditions.
+Boundary conditions and cell zone conditions
+============================================
+The examples in this section show how you use :ref:`ref_settings` objects to set up
+boundary conditions and cell zone conditions.
 
 Boundary conditions
 ~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
+
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

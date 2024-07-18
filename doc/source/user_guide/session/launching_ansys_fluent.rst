@@ -3,8 +3,8 @@
 Launching and connecting to Fluent
 ==================================
 You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-function to start Fluent from Python in gRPC mode. This code starts Fluent in the background
-so that commands can be sent to Fluent from the Python interpreter:
+function to start Fluent from Python. This code starts Fluent in the background and starts
+Fluent's gRPC server so that commands can be sent to it from the Python interpreter:
 
 .. code:: python
 
@@ -15,12 +15,19 @@ so that commands can be sent to Fluent from the Python interpreter:
 
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
-function to connect to a running Fluent session that has started the gRPC server. The gRPC
-server in Fluent can be started using the ``-sifile=<server_info_file_name>`` command line
-startup option, ``server/start-server`` text command or
-``File -> Applications -> Server -> Start...`` ribbon menu. Fluent writes out a server-info file on
-starting the gRPC server. This code connects to a running Fluent session
-using a server-info file server.txt in the working directory:
+function to connect to a running Fluent session that has already started the gRPC server. There are
+some options for starting Fluent's gRPC server:
+
+#.Start Fluent with ``<fluent_executable> -sifile=<server_info_file_name>``, or
+#.Execute the ``server/start-server`` TUI command in Fluent, or
+#.Execute ``File -> Applications -> Server -> Start...`` from the Fluent GUI ribbon menu.
+
+On starting the gRPC server, Fluent writes out a server-info file at ``<server_info_file_name>`` and
+prints this information in the console. If you do not specify a particular ``<server_info_file_name>``,
+it is automatically generated.
+
+This code connects to a running Fluent session where the server-info file is server.txt in the working
+directory:
 
 .. code:: python
 
@@ -37,13 +44,18 @@ For more information, see :func:`launch_fluent() <ansys.fluent.core.launcher.lau
 
 Solver mode
 ~~~~~~~~~~~
-This example shows how to launch Fluent in solution mode:
+These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
 
   >>> solver = pyfluent.launch_fluent(
   >>>     mode=pyfluent.FluentMode.SOLVER
   >>> )
+  
+
+.. code:: python
+
+  >>> solver = pyfluent.launch_fluent()
 
 
 Meshing mode
@@ -65,8 +77,7 @@ and set the floating point precision:
 .. code:: python
 
   >>> solver = pyfluent.launch_fluent(
-  >>>      precision=pyfluent.Precision.DOUBLE,
-  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>>      precision=pyfluent.Precision.DOUBLE
   >>> )
 
 
@@ -79,8 +90,7 @@ modeling dimension to two:
 
   >>> solver = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE,
-  >>>      dimension=pyfluent.Dimension.TWO,
-  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>>      dimension=pyfluent.Dimension.TWO
   >>> )
 
 
@@ -94,8 +104,7 @@ number of processors for local parallel execution:
   >>> solver = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE,
   >>>      dimension=pyfluent.Dimension.TWO,
-  >>>      processor_count=2,
-  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>>      processor_count=2
   >>> )
 
 
@@ -109,8 +118,7 @@ distributed across more than one machine:
   >>> solver = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
-  >>>     processor_count=16,
-  >>>     mode=pyfluent.FluentMode.SOLVER,
+  >>>     processor_count=16
   >>>     additional_arguments="-cnf=m1:8,m2:8",
   >>> )
 
@@ -125,11 +133,11 @@ This command enables logging:
   >>> pyfluent.logging.enable()
 
 
-For more details, see :ref:`ref_logging`.
+For more details, see :ref:`ref_logging_guide`.
 
 Scheduler support
 -----------------
-When PyFluent is run within a job scheduler environment, the :func:`launch_fluent()
+When PyFluent is used within a job scheduler environment, the :func:`launch_fluent()
 <ansys.fluent.core.launcher.launcher.launch_fluent>` function automatically determines
 the list of machines and core counts with which to start Fluent. The supported
 scheduler environments are Altair Grid Engine (formerly UGE), Sun Grid Engine (SGE),
@@ -160,6 +168,7 @@ scheduler using the ``sbatch`` command:
    #
    python run.py
 
+
 Here are a few notes about this example:
 
 - Eight machines with a total of 32 cores are requested. Fluent is started with
@@ -172,9 +181,9 @@ Here are a few notes about this example:
 - The ``run.py`` file can contain any number of PyFluent commands using any of
   the supported interfaces.
 
-Once running within the scheduler environment, the
+Within the scheduler environment, the
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method can be used in a few different ways. This example shows how to start
+function can be used in a few different ways. This example shows how to start
 the three-dimensional, double precision version of Fluent on all the requested
 machines and cores:
 
@@ -182,8 +191,7 @@ machines and cores:
 
   >>> solver = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE,
-  >>>      dimension=pyfluent.Dimension.THREE,
-  >>>      mode=pyfluent.FluentMode.SOLVER
+  >>>      dimension=pyfluent.Dimension.THREE
   >>> )
 
 
@@ -217,7 +225,6 @@ using the ``additional_arguments`` parameter. For local parallel execution, simp
   >>> solver = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
-  >>>     mode=pyfluent.FluentMode.SOLVER,
   >>>     additional_arguments="-t16"
   >>> )
 
@@ -228,7 +235,6 @@ For distributed parallel processing, you usually pass both parameters:
 
   >>> solver = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
-  >>>     mode=pyfluent.FluentMode.SOLVER,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
   >>> )
