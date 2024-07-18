@@ -50,7 +50,7 @@ class SolverEvent(Enum):
 
     @classmethod
     def _missing_(cls, value: str):
-        _missing_for_events(cls, value)
+        return _missing_for_events(cls, value)
 
 
 # alias for backward compatibility
@@ -110,7 +110,7 @@ class EventsManager(Generic[TEvent]):
         while True:
             try:
                 response = next(responses)
-                event_name = Event(response.WhichOneof("as"))
+                event_name = self._event_type(response.WhichOneof("as"))
                 with service._lock:
                     service._streaming = True
                     # error-code 0 from Fluent indicates server running without error
