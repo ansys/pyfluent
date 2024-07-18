@@ -22,7 +22,7 @@ Note: You can find out more about using :ref:`ref_session_guide`, and :ref:`ref_
 Solution mode sessions
 ----------------------
 
-The above ``solver`` session object contains a variety of Python child objects that provide access to the data
+The above ``solver`` session object exposes a variety of Python child objects that provide access to the data
 and functions of the connected Fluent solver. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
 the ``solver`` session provides child objects for solver settings and field data access respectively.

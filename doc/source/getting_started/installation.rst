@@ -90,7 +90,7 @@ On Windows, the Ansys installer sets the environment variable. For instance, the
 installer sets the ``AWP_ROOT242`` environment variable to point to ``C:\Program Files\ANSYS Inc\v242``
 if you accept the default installation location.
 
-On Linux, the environment variable is not set automatically, and can be set for the
+**On Linux, the environment variable is not set automatically.** It can be set for the
 current user in the current shell session as follows:
 
 .. code:: console
