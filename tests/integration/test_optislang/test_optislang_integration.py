@@ -2,7 +2,6 @@ from collections import OrderedDict
 import os
 from pathlib import Path
 import shutil
-import tempfile
 
 import pytest
 
@@ -61,9 +60,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
         "inlet2_temp"
     ] = {"value": 600}
 
-    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
-    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    design_elbow_param_path = Path(tmp_save_path) / "design_elbow_param.cas.h5"
+    design_elbow_param_path = Path(pyfluent.EXAMPLES_PATH) / "design_elbow_param.cas.h5"
     solver_session.settings.file.write_case(file_name=str(design_elbow_param_path))
 
     assert design_elbow_param_path.exists()
@@ -182,7 +179,9 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_case_file():
-    case_path = examples.download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
+    case_path = examples.download_file(
+        "elbow_param.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
     reader = CaseFile(case_file_name=case_path)
 
     assert reader.num_dimensions() == 3
@@ -239,10 +238,8 @@ def test_parameters(mixing_elbow_param_case_data_session):
 @pytest.mark.fluent_version("latest")
 def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_session):
     session1 = mixing_elbow_param_case_data_session
-    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
-    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    init_project = Path(tmp_save_path) / "mixing_elbow_param_init.flprj"
-    project_file = Path(tmp_save_path) / "mixing_elbow_param.flprj"
+    init_project = Path(pyfluent.EXAMPLES_PATH) / "mixing_elbow_param_init.flprj"
+    project_file = Path(pyfluent.EXAMPLES_PATH) / "mixing_elbow_param.flprj"
     session1.settings.parametric_studies.initialize(project_filename=str(init_project))
     session1.settings.file.parametric_project.save_as(
         project_filename=str(project_file)
