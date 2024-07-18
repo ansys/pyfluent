@@ -156,7 +156,7 @@ task-based meshing workflow code:
 Note: You can find out more about meshing workflows here:
 :ref:`ref_new_meshing_workflows_guide`.
 
-A meshing mode session object contains additional child objects. For instance, ``meshing``
+A meshing mode session object exposes additional child objects. For instance, ``meshing``
 has ``fields`` and ``events`` children. Each has the same interface as the identically named
 child of the ``solver`` session object respectively.
 
