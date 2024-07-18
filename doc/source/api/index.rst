@@ -4,7 +4,7 @@ API reference
 =============
 
 This is PyFluent's class and function reference.
-Please refer to the :ref:`_ref_user_guide` for
+Please refer to the :ref:`ref_user_guide` for
 full guidelines on their use.
 
 .. toctree::
