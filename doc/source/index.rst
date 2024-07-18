@@ -52,7 +52,7 @@ Useful links
 ------------
 
 - `PyFluent GitHub repository <https://github.com/ansys/pyfluent>`_
-- `Fluent documentation <https://www.ansys.com/products/fluids/ansys-fluent>`_
+- `Fluent documentation <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent>`_
 - `Ansys customer portal <https://support.ansys.com>`_
 
 
