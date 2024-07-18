@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from ansys.fluent.core import Event
+from ansys.fluent.core import MeshingEvent
 from ansys.fluent.core.examples.downloads import download_file
 
 
@@ -107,7 +107,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     meshing = new_meshing_session
 
-    meshing.events.register_callback(Event.CASE_LOADED, on_case_loaded)
+    meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
     meshing.transcript.register_callback(on_trancript)
 
     solver = meshing.switch_to_solver()
