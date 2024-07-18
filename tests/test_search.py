@@ -1,7 +1,7 @@
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.search import (
+from ansys.fluent.core.search import (
     _get_api_tree_data,
     _get_capitalize_match_for_word_from_names,
     _get_close_matches_for_word_from_names,
