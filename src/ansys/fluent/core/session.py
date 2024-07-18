@@ -204,11 +204,7 @@ class BaseSession:
         self._fluent_connection.register_finalizer_cb(
             self._datamodel_service_se.unsubscribe_all_events
         )
-        for obj in (
-            self._datamodel_events,
-            self.transcript,
-            self.events,
-        ):
+        for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
     @property
