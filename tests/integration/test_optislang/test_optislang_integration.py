@@ -36,7 +36,9 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = mixing_elbow_param_case_data_session
     assert solver_session.health_check.is_serving
-    case_path = examples.path("elbow_param.cas.h5")
+    case_path = examples.download_file(
+        "elbow_param.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
     solver_session.settings.file.read_case_data(file_name=case_path)
 
     # Step 3: Get input and output parameters and create a dictionary
