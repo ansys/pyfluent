@@ -4,7 +4,7 @@ from pathlib import Path
 import pickle
 
 from ansys.fluent.core.codegen import datamodelgen, settingsgen, tuigen
-from ansys.fluent.core.utils.search import get_api_tree_file_name
+from ansys.fluent.core.search import get_api_tree_file_name
 
 
 def _update_first_level(d, u):
