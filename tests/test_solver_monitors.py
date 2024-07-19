@@ -37,6 +37,7 @@ def test_solver_monitors(new_solver_session):
 
     # monitor set names becomes available after initializing
     solver.solution.initialization.hybrid_initialize()
+
     monitor_set_names = ordered_report_plot_names + ["residual"]
     assert sorted(solver.monitors.get_monitor_set_names()) == sorted(monitor_set_names)
 
