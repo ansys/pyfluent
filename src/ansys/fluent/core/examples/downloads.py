@@ -102,7 +102,6 @@ def _retrieve_file(
         _decompress(local_path)
         local_path = local_path_no_zip
         file_name = file_name_no_zip
-    print(f"Download successful. File path:\n{local_path}")
     logger.info("Download successful.")
     if return_without_path:
         return file_name
