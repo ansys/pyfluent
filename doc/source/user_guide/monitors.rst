@@ -3,8 +3,10 @@
 Using monitors
 ==============
 
-Monitors allow you to observe the convergence of your solution dynamically
-by checking the values of solution variables and residuals.
+Monitors in PyFluent allow you to dynamically observe the convergence of your 
+solution by tracking the values of solution variables and residuals. They enable
+you to visualize the progress of the solver, helping you ensure that the solution
+is progressing as expected and allowing you to diagnose issues early on.
 
 The following example queries what monitors exist and then registers a callback
 function which tabulates monitored values per iteration:
