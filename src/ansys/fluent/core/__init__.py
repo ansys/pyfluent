@@ -81,7 +81,11 @@ USER_DATA_PATH = platformdirs.user_data_dir(
 USER_DOCS_PATH = platformdirs.user_documents_dir()
 EXAMPLES_PATH = os.path.join(USER_DOCS_PATH, "ansys_fluent_core_examples")
 
-CONTAINER_MOUNT_PATH = None
+# Host path which is mounted to the container
+CONTAINER_MOUNT_SOURCE = None
+
+# Path inside the container where the host path is mounted
+CONTAINER_MOUNT_TARGET = "/mnt/pyfluent"
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True

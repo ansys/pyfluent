@@ -458,11 +458,11 @@ def test_processor_count():
     #     assert get_processor_count(solver) == 2
 
 
-def test_container_warning_for_host_mount_path(caplog):
+def test_container_warning_for_mount_source(caplog):
     container_dict = {
-        "host_mount_path": os.getcwd(),
-        "container_mount_path": "/mnt/pyfluent/tests",
+        "mount_source": os.getcwd(),
+        "mount_target": "/mnt/pyfluent/tests",
     }
     solver = pyfluent.launch_fluent(container_dict=container_dict)
-    assert container_dict["host_mount_path"] in caplog.text
-    assert container_dict["container_mount_path"] in caplog.text
+    assert container_dict["mount_source"] in caplog.text
+    assert container_dict["mount_target"] in caplog.text

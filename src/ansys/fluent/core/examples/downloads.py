@@ -63,10 +63,10 @@ def _retrieve_file(
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        if os.getenv("PYFLUENT_HOST_MOUNT_PATH", None):
+        if os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", None):
             save_path = pyfluent.EXAMPLES_PATH
-        elif pyfluent.CONTAINER_MOUNT_PATH:
-            save_path = pyfluent.CONTAINER_MOUNT_PATH
+        elif pyfluent.CONTAINER_MOUNT_TARGET:
+            save_path = pyfluent.CONTAINER_MOUNT_TARGET
         else:
             save_path = os.getcwd()
     else:

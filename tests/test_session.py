@@ -360,7 +360,7 @@ def test_read_case_using_lightweight_mode():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        container_dict = {"mount_source": pyfluent.USER_DATA_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
