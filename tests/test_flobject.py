@@ -412,6 +412,9 @@ class Proxy:
     def is_interactive_mode(self):
         return False
 
+    def has_wildcard(self, name: str) -> bool:
+        return False
+
 
 def test_primitives():
     r = flobject.get_root(Proxy())
