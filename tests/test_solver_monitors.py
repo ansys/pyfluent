@@ -1,6 +1,9 @@
+import pytest
+
 from ansys.fluent.core import examples
 
 
+@pytest.mark.fluent_version(">=23.1")
 def test_solver_monitors(new_solver_session):
 
     solver = new_solver_session
@@ -9,10 +12,7 @@ def test_solver_monitors(new_solver_session):
         file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
     )
 
-    try:
-        solver.file.read_case(file_name=import_case)
-    except AttributeError:
-        solver.tui.file.read_case(import_case)
+    solver.file.read_case(file_name=import_case)
 
     ordered_report_plot_names = [
         "mass-bal-rplot",
@@ -33,10 +33,7 @@ def test_solver_monitors(new_solver_session):
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
 
-    try:
-        solver.file.read_data(file_name=import_data)
-    except AttributeError:
-        solver.tui.file.read_data(import_data)
+    solver.file.read_data(file_name=import_data)
 
     # monitor set names remains unavailable after loading data
     assert len(solver.monitors.get_monitor_set_names()) == 0
