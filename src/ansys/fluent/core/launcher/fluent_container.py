@@ -191,7 +191,7 @@ def configure_container_dict(
             "PYFLUENT_CONTAINER_MOUNT_SOURCE", pyfluent.CONTAINER_MOUNT_SOURCE
         )
     if not mount_source:
-        mount_source = pyfluent.USER_DATA_PATH if file_transfer_service else os.getcwd()
+        mount_source = pyfluent.EXAMPLES_PATH if file_transfer_service else os.getcwd()
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "

@@ -71,6 +71,7 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+    pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
 
 
@@ -142,7 +143,7 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"mount_source": pyfluent.USER_DATA_PATH}
+        container_dict = {"mount_source": pyfluent.EXAMPLES_PATH}
         file_transfer_service = RemoteFileTransferStrategy()
         return pyfluent.launch_fluent(
             container_dict=container_dict,
