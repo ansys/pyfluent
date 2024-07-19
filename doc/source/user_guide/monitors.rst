@@ -4,8 +4,7 @@ Using monitors
 ==============
 
 Monitors allow you to observe the convergence of your solution dynamically
-by checking residuals, statistics, force values, surface integrals, and volume
-integrals.
+by checking the values of solution variables and residuals.
 
 The following example queries what monitors exist and then registers a callback
 function which tabulates monitored values per iteration:
