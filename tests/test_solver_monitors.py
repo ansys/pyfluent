@@ -19,7 +19,7 @@ def test_solver_monitors(new_solver_session):
     ]
 
     assert (
-        sorted(solver.settings.solution.monitor.report_plots().keys())
+        sorted(solver.settings.solution.monitor.report_plots())
         == ordered_report_plot_names
     )
 
@@ -68,7 +68,7 @@ def test_solver_monitors(new_solver_session):
     monitor_callback.called = False
 
     # n.b. there is no checking of the callback signature at registration. Instead
-    # we would get a TypeError at callback time if the signatire is wrong. The correct
+    # we would get a TypeError at callback time if the signature is wrong. The correct
     # signature is undocumented.
     register_id = solver.monitors.register_callback(monitor_callback)
 
