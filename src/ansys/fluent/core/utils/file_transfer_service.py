@@ -8,12 +8,19 @@ import shutil
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 import warnings
 
-import ansys.fluent.core as pyfluent
+import platformdirs
+
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
 logger = logging.getLogger("pyfluent.file_transfer_service")
+
+
+# Host path which is mounted to the file-transfer-service container
+MOUNT_SOURCE = platformdirs.user_data_dir(
+    appname="ansys_fluent_core", appauthor="Ansys"
+)
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -154,7 +161,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         )
         self.image_tag = image_tag if image_tag else "latest"
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
-        self.mount_source = mount_source if mount_source else pyfluent.USER_DATA_PATH
+        self.mount_source = mount_source if mount_source else MOUNT_SOURCE
         try:
             self.host_port = port if port else random.randint(5000, 6000)
             self.ports = {"50000/tcp": self.host_port}

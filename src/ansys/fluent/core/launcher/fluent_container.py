@@ -188,7 +188,7 @@ def configure_container_dict(
 
     if not mount_source:
         if file_transfer_service:
-            mount_source = pyfluent.USER_DATA_PATH
+            mount_source = file_transfer_service.MOUNT_SOURCE
         elif os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", None):
             mount_source = pyfluent.CONTAINER_MOUNT_SOURCE
         elif pyfluent.CONTAINER_MOUNT_SOURCE:
