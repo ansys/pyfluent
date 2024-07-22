@@ -154,7 +154,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         )
         self.image_tag = image_tag if image_tag else "latest"
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
-        self.mount_source = mount_source if mount_source else pyfluent.EXAMPLES_PATH
+        self.mount_source = mount_source if mount_source else pyfluent.USER_DATA_PATH
         try:
             self.host_port = port if port else random.randint(5000, 6000)
             self.ports = {"50000/tcp": self.host_port}
