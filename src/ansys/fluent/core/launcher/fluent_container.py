@@ -187,11 +187,15 @@ def configure_container_dict(
         logger.debug(f"container_dict before processing: {container_dict}")
 
     if not mount_source:
-        mount_source = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_SOURCE", pyfluent.CONTAINER_MOUNT_SOURCE
-        )
-    if not mount_source:
-        mount_source = pyfluent.USER_DATA_PATH if file_transfer_service else os.getcwd()
+        if file_transfer_service:
+            mount_source = pyfluent.USER_DATA_PATH
+        elif os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", None):
+            mount_source = pyfluent.CONTAINER_MOUNT_SOURCE
+        elif pyfluent.CONTAINER_MOUNT_SOURCE:
+            mount_source = pyfluent.CONTAINER_MOUNT_SOURCE
+        else:
+            mount_source = os.getcwd()
+
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
