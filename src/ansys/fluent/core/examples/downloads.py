@@ -4,7 +4,6 @@ import logging
 import os
 from pathlib import Path
 import re
-import shutil
 from typing import Optional
 import warnings
 import zipfile
@@ -25,16 +24,12 @@ class RemoteFileNotFoundError(FileNotFoundError):
         super().__init__(f"{url} does not exist.")
 
 
-def delete_downloads():
-    """Delete all downloaded examples from the default examples folder to free space or
-    update the files.
-
-    Notes
-    -----
-    The default examples path is given by ``pyfluent.EXAMPLES_PATH``.
-    """
-    shutil.rmtree(pyfluent.EXAMPLES_PATH)
-    os.makedirs(pyfluent.EXAMPLES_PATH)
+def get_default_save_path() -> str:
+    """Get default save path for downloaded files."""
+    return os.getenv(
+        "PYFLUENT_CONTAINER_MOUNT_SOURCE",
+        pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
+    )
 
 
 def _decompress(file_name: str) -> None:
@@ -63,10 +58,7 @@ def _retrieve_file(
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        save_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-            pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
-        )
+        save_path = get_default_save_path()
     else:
         save_path = os.path.abspath(save_path)
     local_path = os.path.join(save_path, file_name)
