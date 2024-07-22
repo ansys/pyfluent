@@ -47,7 +47,7 @@ command line arguments and run this script to copy needed files from the Ansys i
 2. If you find that some of the excluded files are needed to run your workflows then you can remove those files from the exclusion list.
 
 3. Build the Docker image
-++++++++++++++++++++++
++++++++++++++++++++++++++
 
 Specify ``docker/fluent_<version>`` directory for the particular Fluent release and execute this command to build the Docker image:
 

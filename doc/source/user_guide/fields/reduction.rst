@@ -1,4 +1,4 @@
-.. _ref_reduction:
+.. _ref_reduction_guide:
 
 Reduction
 =========
@@ -9,16 +9,16 @@ or across multiple remote Fluent sessions.
 Accessing reduction functions
 -----------------------------
 
-In order to access reduction function, import it and launch the fluent solver.
+In order to access reduction function, import it and launch the Fluent solver.
 Then, make boundary conditions data, etc. available (for example, by reading case files):
 
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-  >>> solver.file.read(file_type="case", file_name=case_path)
+  >>> solver.settings.file.read(file_type="case", file_name=case_path)
 
 
 Simple usage
@@ -32,10 +32,10 @@ an area-average of absolute pressure over the velocity inlet.
 
 .. code-block:: python
 
-  >>> solver.solution.initialization.hybrid_initialize()
+  >>> solver.settings.solution.initialization.hybrid_initialize()
   >>> solver.fields.reduction.area_average(
   >>>   expression="AbsolutePressure",
-  >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
+  >>>   locations=solver.settings.setup.boundary_conditions.velocity_inlet,
   >>> )
   101325.0000000001
 
@@ -57,9 +57,9 @@ For example, to calculate area of a location one has to do:
 
 .. code-block:: python
 
-  >>> solver.solution.initialization.hybrid_initialize()
+  >>> solver.settings.solution.initialization.hybrid_initialize()
   >>> solver.fields.reduction.area(
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]]
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]]
   >>> )
   7.565427133371293e-07
 
@@ -67,7 +67,7 @@ Instead, one can use the context argument:
 
 .. code-block:: python
 
-  >>> solver.solution.initialization.hybrid_initialize()
+  >>> solver.settings.solution.initialization.hybrid_initialize()
   >>> solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
   7.565427133371293e-07
 
@@ -270,13 +270,13 @@ the velocity inlets with the below examples:
 
 .. code-block:: python
 
-  >>> area_inlet_1 = solver.reduction.area(
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
+  >>> area_inlet_1 = solver.fields.reduction.area(
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
   7.565427133371293e-07
 
-  >>> area_inlet = solver.reduction.area(
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
+  >>> area_inlet = solver.fields.reduction.area(
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>> )
   1.513085401926681e-06
 
@@ -285,9 +285,9 @@ inlets as shown:
 
 .. code-block:: python
 
-  >>> solver.reduction.area_average(
+  >>> solver.fields.reduction.area_average(
   >>>   expression="AbsolutePressure",
-  >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
+  >>>   locations=solver.settings.setup.boundary_conditions.velocity_inlet,
   >>> )
   101325.0000000001
 
@@ -296,9 +296,9 @@ as shown:
 
 .. code-block:: python
 
-  >>> solver.reduction.area_integral(
+  >>> solver.fields.reduction.area_integral(
   >>>   expression="AbsolutePressure",
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
   0.07665669042888468
 
@@ -306,8 +306,8 @@ You can calculate the geometric centroid of the velocity inlet 2 as shown:
 
 .. code-block:: python
 
-  >>> solver.reduction.centroid(
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>> solver.fields.reduction.centroid(
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   x: -0.001000006193379666
   y: -0.002999999999999999
@@ -318,9 +318,9 @@ for the specified locations as shown:
 
 .. code-block:: python
 
-  >>> solver.reduction.moment(
+  >>> solver.fields.reduction.moment(
   >>>   expression="Force(['wall'])",
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
 
@@ -329,9 +329,9 @@ specified locations as shown:
 
 .. code-block:: python
 
-  >>> solver.reduction.moment(
+  >>> solver.fields.reduction.moment(
   >>>   expression="['inlet1']",
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
 
@@ -339,9 +339,9 @@ One can calculate sum of Absolute Pressure over all nodes of velocity inlet with
 
 .. code-block:: python
 
-  >>> solver.reduction.sum(
+  >>> solver.fields.reduction.sum(
   >>>   expression="AbsolutePressure",
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
   20670300.0
@@ -350,16 +350,10 @@ You can also calculate the sum with a condition:
 
 .. code-block:: python
 
-  >>> solver.reduction.sum_if(
+  >>> solver.fields.reduction.sum_if(
   >>>   expression="AbsolutePressure",
   >>>   condition="AbsolutePressure > 0[Pa]",
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
+  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
   20670300.0
-
-.. toctree::
-   :hidden:
-   :maxdepth: 2
-
-   reduction

@@ -798,6 +798,7 @@ class PyLocalContainer(MutableMapping):
         return parent
 
     def update(self, value):
+        """Updates this object with the provided dictionary."""
         for name, val in value.items():
             o = self[name]
             o.update(val)

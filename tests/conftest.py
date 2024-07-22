@@ -260,7 +260,7 @@ def mixing_elbow_case_data_session(new_solver_session):
 def mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
-    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    download_file("elbow_param.dat.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
