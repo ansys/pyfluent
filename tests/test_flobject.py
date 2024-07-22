@@ -1174,7 +1174,7 @@ def test_static_info_hash_identity(new_solver_session):
 def test_no_hash_mismatch(new_solver_session, caplog):
     caplog.clear()
     new_solver_session.setup
-    assert "Mismatch" not in caplog.text
+    assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
 @pytest.mark.fluent_version(">=24.2")

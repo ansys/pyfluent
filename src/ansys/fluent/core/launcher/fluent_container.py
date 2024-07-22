@@ -305,7 +305,10 @@ def configure_container_dict(
         if not image_tag or not image_name:
             fluent_image = os.getenv("FLUENT_CONTAINER_IMAGE", None)
         elif image_tag and image_name:
-            fluent_image = f"{image_name}:{image_tag}"
+            if image_tag.startswith("sha"):
+                fluent_image = f"{image_name}@{image_tag}"
+            else:
+                fluent_image = f"{image_name}:{image_tag}"
         else:
             raise FluentImageNameTagNotSpecified()
 

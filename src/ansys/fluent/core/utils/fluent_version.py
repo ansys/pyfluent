@@ -27,11 +27,7 @@ class ComparisonError(RuntimeError):
 def get_version(session=None):
     """Get Fluent version."""
     if session is None:
-        # for CI runs, get the version statically from env var set within CI
-        image_tag = os.getenv("FLUENT_IMAGE_TAG")
-        if image_tag is not None:
-            return image_tag.lstrip("v")
-        session = pyfluent.launch_fluent(mode="solver")
+        session = pyfluent.launch_fluent()
 
     return session.get_fluent_version().value
 

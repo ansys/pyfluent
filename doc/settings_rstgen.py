@@ -216,7 +216,7 @@ if __name__ == "__main__":
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v24.1.0")
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v24.2.0")
     version = get_version_for_file_name(image_tag.lstrip("v"))
     settings = importlib.import_module(
         f"ansys.fluent.core.generated.solver.settings_{version}"
