@@ -85,7 +85,7 @@ class MonitorDefn(PlotDefn):
         @Attribute
         def allowed_values(self):
             """Monitor set allowed values."""
-            return self._api_helper.monitors().get_monitor_set_names()
+            return self._api_helper.monitors.get_monitor_set_names()
 
 
 class XYPlotDefn(PlotDefn):
