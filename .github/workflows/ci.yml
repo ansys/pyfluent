@@ -422,7 +422,7 @@ jobs:
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Print 25.1 Fluent version info
         run: |
@@ -467,7 +467,7 @@ jobs:
             version: 241
           - image-tag: v24.2.0
             version: 242
-          - image-tag: v25.1.0
+          - image-tag: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
             version: 251
     timeout-minutes: 120
 
@@ -508,16 +508,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: ${{ matrix.image-tag != 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Pull Fluent docker image dev
-        if: ${{ matrix.image-tag == 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
