@@ -480,3 +480,220 @@ def test_exit_not_in_settings(new_solver_session):
 
     with pytest.raises(AttributeError):
         solver.settings.exit()
+
+
+def test_builtin_settings(static_mixer_case_session):
+    from ansys.fluent.core import (
+        Ablation,
+        Battery,
+        BoundaryCondition,
+        BoundaryConditions,
+        CellZoneCondition,
+        CellZoneConditions,
+        DiscretePhase,
+        DynamicMesh,
+        EChemistry,
+        Energy,
+        FluidCellZone,
+        FluidCellZones,
+        FluidMaterial,
+        FluidMaterials,
+        General,
+        Injections,
+        InteriorBoundaries,
+        InteriorBoundary,
+        Materials,
+        MeshInterfaces,
+        Models,
+        Multiphase,
+        NamedExpressions,
+        Optics,
+        Pemfc,
+        PressureOutlet,
+        PressureOutlets,
+        Radiation,
+        ReferenceFrame,
+        ReferenceFrames,
+        ReferenceValues,
+        Setup,
+        Sofc,
+        SolidMaterial,
+        SolidMaterials,
+        Species,
+        Structure,
+        SystemCoupling,
+        VelocityInlet,
+        VelocityInlets,
+        VirtualBladeModel,
+        Viscous,
+        WallBoundaries,
+        WallBoundary,
+    )
+
+    solver = static_mixer_case_session
+    assert Setup(solver=solver) == solver.setup
+    assert General(solver=solver) == solver.setup.general
+    assert Models(solver=solver) == solver.setup.models
+    assert Multiphase(solver=solver) == solver.setup.models.multiphase
+    assert Energy(solver=solver) == solver.setup.models.energy
+    assert Viscous(solver=solver) == solver.setup.models.viscous
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Radiation(solver=solver) == solver.setup.models.radiation
+    else:
+        with pytest.raises(RuntimeError):
+            Radiation(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Species(solver=solver) == solver.setup.models.species
+    else:
+        with pytest.raises(RuntimeError):
+            Species(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert DiscretePhase(solver=solver) == solver.setup.models.discrete_phase
+    else:
+        with pytest.raises(RuntimeError):
+            DiscretePhase(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            Injections(solver=solver) == solver.setup.models.discrete_phase.injections
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            Injections(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            VirtualBladeModel(solver=solver) == solver.setup.models.virtual_blade_model
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            VirtualBladeModel(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert Optics(solver=solver) == solver.setup.models.optics
+    else:
+        with pytest.raises(RuntimeError):
+            Optics(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Structure(solver=solver) == solver.setup.models.structure
+    else:
+        with pytest.raises(RuntimeError):
+            Structure(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Ablation(solver=solver) == solver.setup.models.ablation
+    else:
+        with pytest.raises(RuntimeError):
+            Ablation(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert EChemistry(solver=solver) == solver.setup.models.echemistry
+    else:
+        with pytest.raises(RuntimeError):
+            EChemistry(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert Battery(solver=solver) == solver.setup.models.battery
+    else:
+        with pytest.raises(RuntimeError):
+            Battery(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert SystemCoupling(solver=solver) == solver.setup.models.system_coupling
+    else:
+        with pytest.raises(RuntimeError):
+            SystemCoupling(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert Sofc(solver=solver) == solver.setup.models.sofc
+    else:
+        with pytest.raises(RuntimeError):
+            Sofc(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v242:
+        assert Pemfc(solver=solver) == solver.setup.models.pemfc
+    else:
+        with pytest.raises(RuntimeError):
+            Pemfc(solver=solver)
+    assert Materials(solver=solver) == solver.setup.materials
+    assert FluidMaterials(solver=solver) == solver.setup.materials.fluid
+    assert (
+        FluidMaterial(solver=solver, name="air") == solver.setup.materials.fluid["air"]
+    )
+    assert SolidMaterials(solver=solver) == solver.setup.materials.solid
+    assert (
+        SolidMaterial(solver=solver, name="aluminum")
+        == solver.setup.materials.solid["aluminum"]
+    )
+    assert CellZoneConditions(solver=solver) == solver.setup.cell_zone_conditions
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            CellZoneCondition(solver=solver, name="fluid")
+            == solver.setup.cell_zone_conditions["fluid"]
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            CellZoneCondition(solver=solver, name="fluid")
+    assert FluidCellZones(solver=solver) == solver.setup.cell_zone_conditions.fluid
+    assert (
+        FluidCellZone(solver=solver, name="fluid")
+        == solver.setup.cell_zone_conditions.fluid["fluid"]
+    )
+    assert BoundaryConditions(solver=solver) == solver.setup.boundary_conditions
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            BoundaryCondition(solver=solver, name="inlet2")
+            == solver.setup.boundary_conditions["inlet2"]
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            BoundaryCondition(solver=solver, name="inlet2")
+    assert (
+        VelocityInlets(solver=solver) == solver.setup.boundary_conditions.velocity_inlet
+    )
+    assert (
+        VelocityInlet(solver=solver, name="inlet2")
+        == solver.setup.boundary_conditions.velocity_inlet["inlet2"]
+    )
+    assert (
+        InteriorBoundaries(solver=solver) == solver.setup.boundary_conditions.interior
+    )
+    assert (
+        InteriorBoundary(solver=solver, name="interior--fluid")
+        == solver.setup.boundary_conditions.interior["interior--fluid"]
+    )
+    assert (
+        PressureOutlets(solver=solver)
+        == solver.setup.boundary_conditions.pressure_outlet
+    )
+    assert (
+        PressureOutlet(solver=solver, name="outlet")
+        == solver.setup.boundary_conditions.pressure_outlet["outlet"]
+    )
+    assert WallBoundaries(solver=solver) == solver.setup.boundary_conditions.wall
+    assert (
+        WallBoundary(solver=solver, name="wall")
+        == solver.setup.boundary_conditions.wall["wall"]
+    )
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
+    else:
+        with pytest.raises(RuntimeError):
+            MeshInterfaces(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert DynamicMesh(solver=solver) == solver.setup.dynamic_mesh
+    else:
+        with pytest.raises(RuntimeError):
+            DynamicMesh(solver=solver)
+    assert ReferenceValues(solver=solver) == solver.setup.reference_values
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
+    else:
+        with pytest.raises(RuntimeError):
+            ReferenceFrames(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        # Fluent 25.1 issue
+        if solver.get_fluent_version() != FluentVersion.v251:
+            assert (
+                ReferenceFrame(solver=solver, name="global")
+                == solver.setup.reference_frames["global"]
+            )
+    else:
+        with pytest.raises(RuntimeError):
+            ReferenceFrame(solver=solver, name="global")
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert NamedExpressions(solver=solver) == solver.setup.named_expressions
+    else:
+        with pytest.raises(RuntimeError):
+            NamedExpressions(solver=solver)
