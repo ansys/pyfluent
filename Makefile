@@ -144,7 +144,7 @@ build-all-docs:
 	@python doc/datamodel_rstgen.py
 	@python doc/tui_rstgen.py
 	@python doc/settings_rstgen.py
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@xvfb-run poetry run -- make -C doc html
 
 compare-flobject:

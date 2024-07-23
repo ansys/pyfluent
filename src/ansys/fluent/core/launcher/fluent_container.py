@@ -21,12 +21,12 @@ Launching a Fluent Docker container with system default configuration:
 >>> import ansys.fluent.core as pyfluent
 >>> session = pyfluent.launch_fluent(start_container=True)
 
-Launching with custom configuration, using ``host_mount_path`` and ``fluent_image``
+Launching with custom configuration, using ``mount_source`` and ``fluent_image``
 which are arguments for :func:`configure_container_dict`, and ``auto_remove`` which is an argument for `Docker run`_:
 
 >>> import ansys.fluent.core as pyfluent
 >>> custom_config = {}
->>> custom_config.update(fluent_image='custom_fluent:v23.1.0', host_mount_path='/testing', auto_remove=False)
+>>> custom_config.update(fluent_image='custom_fluent:v23.1.0', mount_source='/testing', auto_remove=False)
 >>> session = pyfluent.launch_fluent(container_dict=custom_config)
 
 Getting default Fluent Docker container configuration, then launching with customized configuration:
@@ -58,11 +58,11 @@ from typing import Any, List, Optional, Union
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
+from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")
-DEFAULT_CONTAINER_MOUNT_PATH = "/mnt/pyfluent"
 
 
 class FluentImageNameTagNotSpecified(ValueError):
@@ -95,10 +95,12 @@ class LicenseServerNotSpecified(KeyError):
         )
 
 
+@deprecate_argument("container_mount_path", "mount_target")
+@deprecate_argument("host_mount_path", "mount_source")
 def configure_container_dict(
     args: List[str],
-    host_mount_path: Optional[Union[str, Path]] = None,
-    container_mount_path: Optional[Union[str, Path]] = None,
+    mount_source: Optional[Union[str, Path]] = None,
+    mount_target: Optional[Union[str, Path]] = None,
     timeout: int = 60,
     port: Optional[int] = None,
     license_server: Optional[str] = None,
@@ -116,10 +118,10 @@ def configure_container_dict(
     ----------
     args : List[str]
         List of Fluent launch arguments.
-    host_mount_path : Union[str, Path], optional
-        Existing path in the host operating system that will be available inside the container.
-    container_mount_path : Union[str, Path], optional
-        Path inside the container where host mount path will be mounted to.
+    mount_source : Union[str, Path], optional
+        Existing path in the host operating system that will be mounted to ``mount_target``.
+    mount_target : Union[str, Path], optional
+        Path inside the container where ``mount_source`` will be mounted to.
     timeout : int, optional
         Time limit  for the Fluent container to start, in seconds. By default, 30 seconds.
     port : int, optional
@@ -127,7 +129,7 @@ def configure_container_dict(
     license_server : str, optional
         License server for Ansys Fluent to use.
     container_server_info_file : Union[str, Path], optional
-        Name of the server information file for Fluent to write on the ``host_mount_path``.
+        Name of the server information file for Fluent to write on the ``mount_source``.
     remove_server_info_file : bool, optional
         Defaults to True, and automatically deletes the server information file after PyFluent has finished using it.
     fluent_image : str, optional
@@ -184,38 +186,38 @@ def configure_container_dict(
     else:
         logger.debug(f"container_dict before processing: {container_dict}")
 
-    if not host_mount_path:
+    if not mount_source:
         if file_transfer_service:
-            host_mount_path = pyfluent.USER_DATA_PATH
-        elif os.getenv("PYFLUENT_HOST_MOUNT_PATH", None):
-            host_mount_path = pyfluent.EXAMPLES_PATH
-        elif pyfluent.CONTAINER_MOUNT_PATH:
-            host_mount_path = pyfluent.CONTAINER_MOUNT_PATH
+            mount_source = file_transfer_service.MOUNT_SOURCE
         else:
-            host_mount_path = os.getcwd()
+            mount_source = os.getenv(
+                "PYFLUENT_CONTAINER_MOUNT_SOURCE",
+                pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
+            )
+
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by specified 'host_mount_path'."
+            "it is going to be overwritten by specified 'mount_source'."
         )
         container_dict.pop("volumes")
 
-    if not os.path.exists(host_mount_path):
-        os.makedirs(host_mount_path)
+    if not os.path.exists(mount_source):
+        os.makedirs(mount_source)
 
-    if not container_mount_path:
-        container_mount_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_PATH", DEFAULT_CONTAINER_MOUNT_PATH
+    if not mount_target:
+        mount_target = os.getenv(
+            "PYFLUENT_CONTAINER_MOUNT_TARGET", pyfluent.CONTAINER_MOUNT_TARGET
         )
     elif "volumes" in container_dict:
         logger.warning(
             "'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by specified 'container_mount_path'."
+            "it is going to be overwritten by specified 'mount_target'."
         )
         container_dict.pop("volumes")
 
     if "volumes" not in container_dict:
-        container_dict.update(volumes=[f"{host_mount_path}:{container_mount_path}"])
+        container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
     else:
         logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
         if len(container_dict["volumes"]) != 1:
@@ -224,18 +226,18 @@ def configure_container_dict(
                 "using the first mount as the working directory for Fluent."
             )
         volumes_string = container_dict["volumes"][0]
-        container_mount_path = ""
+        mount_target = ""
         for c in reversed(volumes_string):
             if c == ":":
                 break
             else:
-                container_mount_path += c
-        container_mount_path = container_mount_path[::-1]
-        host_mount_path = volumes_string.replace(":" + container_mount_path, "")
-        logger.debug(f"host_mount_path: {host_mount_path}")
-        logger.debug(f"container_mount_path: {container_mount_path}")
+                mount_target += c
+        mount_target = mount_target[::-1]
+        mount_source = volumes_string.replace(":" + mount_target, "")
+        logger.debug(f"mount_source: {mount_source}")
+        logger.debug(f"mount_target: {mount_target}")
     logger.warning(
-        f"Starting Fluent container mounted to {host_mount_path}, with this path available as {container_mount_path} for the Fluent session running inside the container."
+        f"Starting Fluent container mounted to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
     )
 
     if "ports" not in container_dict:
@@ -268,7 +270,7 @@ def configure_container_dict(
 
     if "working_dir" not in container_dict:
         container_dict.update(
-            working_dir=container_mount_path,
+            working_dir=mount_target,
         )
 
     if "command" in container_dict:
@@ -285,17 +287,14 @@ def configure_container_dict(
 
     if container_server_info_file:
         container_server_info_file = (
-            PurePosixPath(container_mount_path)
-            / PurePosixPath(container_server_info_file).name
+            PurePosixPath(mount_target) / PurePosixPath(container_server_info_file).name
         )
     else:
         fd, sifile = tempfile.mkstemp(
-            suffix=".txt", prefix="serverinfo-", dir=host_mount_path
+            suffix=".txt", prefix="serverinfo-", dir=mount_source
         )
         os.close(fd)
-        container_server_info_file = (
-            PurePosixPath(container_mount_path) / Path(sifile).name
-        )
+        container_server_info_file = PurePosixPath(mount_target) / Path(sifile).name
 
     if not fluent_image:
         if not image_tag:
@@ -324,7 +323,7 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
-    host_server_info_file = Path(host_mount_path) / container_server_info_file.name
+    host_server_info_file = Path(mount_source) / container_server_info_file.name
 
     return (
         container_dict,

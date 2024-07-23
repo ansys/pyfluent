@@ -7,7 +7,6 @@ from pathlib import Path, PurePosixPath
 from typing import Optional
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
 from ansys.fluent.core.utils.execution import asynchronous
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -102,9 +101,9 @@ def transfer_case(
             network_logger.warning(
                 "Fluent is running inside a container, and no 'container_workdir' was specified for "
                 "'transfer_case'. Assuming that the default container mount path "
-                f"'{DEFAULT_CONTAINER_MOUNT_PATH}' is being used. "
+                f"'{pyfluent.CONTAINER_MOUNT_TARGET}' is being used. "
             )
-            container_workdir = PurePosixPath(DEFAULT_CONTAINER_MOUNT_PATH)
+            container_workdir = PurePosixPath(pyfluent.CONTAINER_MOUNT_TARGET)
             network_logger.debug(f"container_workdir: {container_workdir}")
         else:
             container_workdir = PurePosixPath(container_workdir)
