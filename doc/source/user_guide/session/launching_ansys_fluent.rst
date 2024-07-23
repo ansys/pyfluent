@@ -19,8 +19,8 @@ function to connect to a running Fluent session that has already started the gRP
 some options for starting Fluent's gRPC server:
 
 1. Start Fluent with ``<fluent_executable> -sifile=<server_info_file_name>``, or
-2. Execute the ``server/start-server`` TUI command in Fluent, or
-3. Execute ``File -> Applications -> Server -> Start...`` from the Fluent GUI ribbon menu.
+2. Execute the ``server/start-server`` solution mode TUI command in Fluent, or
+3. Execute ``File -> Applications -> Server -> Start...`` from the Fluent GUI ribbon menu in solution mode.
 
 On starting the gRPC server, Fluent writes out a server-info file at ``<server_info_file_name>`` and
 prints this information in the console. If you do not specify a particular ``<server_info_file_name>``,
