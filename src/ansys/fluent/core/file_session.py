@@ -810,7 +810,7 @@ class FileSession:
         """__init__ method of FileSession class."""
         self._case_file = None
         self._data_file = None
-        self.monitors = lambda: None
+        self.monitors = None
         self.session_id = 1
 
         class Fields:
