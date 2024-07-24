@@ -12,7 +12,7 @@ logger = logging.getLogger("pyfluent.general")
 def deprecate_argument(
     old_arg,
     new_arg,
-    converter,
+    converter=lambda x: x,
     warning_cls=PyFluentDeprecationWarning,
 ):
     """Warns that the argument provided is deprecated and automatically replaces the

@@ -33,7 +33,11 @@ from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
 from ansys.fluent.core.search import search  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
-from ansys.fluent.core.streaming_services.events_streaming import Event  # noqa: F401
+from ansys.fluent.core.streaming_services.events_streaming import (  # noqa: F401
+    Event,
+    MeshingEvent,
+    SolverEvent,
+)
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
@@ -69,13 +73,15 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-# Setup data directory
-USER_DATA_PATH = platformdirs.user_data_dir(
-    appname="ansys_fluent_core", appauthor="Ansys"
+EXAMPLES_PATH = os.path.join(
+    platformdirs.user_documents_dir(), "ansys_fluent_core_examples"
 )
-EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
-CONTAINER_MOUNT_PATH = None
+# Host path which is mounted to the container
+CONTAINER_MOUNT_SOURCE = None
+
+# Path inside the container where the host path is mounted
+CONTAINER_MOUNT_TARGET = "/mnt/pyfluent"
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True

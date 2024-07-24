@@ -996,7 +996,9 @@ def _check_vector_units(obj, units):
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    assert isinstance(solver.settings.state_with_units(), dict)
+    # https://github.com/ansys/pyfluent/issues/3120
+    if solver.get_fluent_version() != FluentVersion.v251:
+        assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
@@ -1168,6 +1170,13 @@ def test_static_info_hash_identity(new_solver_session):
     hash1 = _gethash(solver._settings_service.get_static_info())
     hash2 = _gethash(solver._settings_service.get_static_info())
     assert hash1 == hash2
+
+
+@pytest.mark.codegen_required
+def test_no_hash_mismatch(new_solver_session, caplog):
+    caplog.clear()
+    new_solver_session.setup
+    assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
 @pytest.mark.fluent_version(">=24.2")

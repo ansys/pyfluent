@@ -21,6 +21,7 @@ class RemoteFileNotFoundError(FileNotFoundError):
     """Raised on an attempt to download a non-existent remote file."""
 
     def __init__(self, url):
+        """Initializes RemoteFileNotFoundError."""
         super().__init__(f"{url} does not exist.")
 
 
@@ -62,12 +63,10 @@ def _retrieve_file(
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        if os.getenv("PYFLUENT_HOST_MOUNT_PATH", None):
-            save_path = pyfluent.EXAMPLES_PATH
-        elif pyfluent.CONTAINER_MOUNT_PATH:
-            save_path = pyfluent.CONTAINER_MOUNT_PATH
-        else:
-            save_path = os.getcwd()
+        save_path = os.getenv(
+            "PYFLUENT_CONTAINER_MOUNT_SOURCE",
+            pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
+        )
     else:
         save_path = os.path.abspath(save_path)
     local_path = os.path.join(save_path, file_name)
@@ -102,7 +101,6 @@ def _retrieve_file(
         _decompress(local_path)
         local_path = local_path_no_zip
         file_name = file_name_no_zip
-    print(f"Download successful. File path:\n{local_path}")
     logger.info("Download successful.")
     if return_without_path:
         return file_name
