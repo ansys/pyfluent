@@ -227,13 +227,18 @@ class Base:
             return self._parent.flproxy
         return self._flproxy
 
-    def _file_transfer_service(self):
+    @property
+    def file_transfer_service(self):
+        """Remote file handler.
+
+        Supports file upload and download.
+        """
         with warnings.catch_warnings():
             warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
             if self._file_transfer_service:
                 return self._file_transfer_service
             elif self._parent:
-                return self._parent._file_transfer_service
+                return self._parent.file_transfer_service
 
     _name = None
     fluent_name = None
@@ -824,9 +829,9 @@ class FileName(Base):
 class _InputFile(FileName):
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self._file_transfer_service:
+        if self.file_transfer_service:
             for file_name in file_names:
-                self._file_transfer_service.upload(file_name=file_name)
+                self.file_transfer_service.upload(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -835,9 +840,9 @@ class _InputFile(FileName):
 class _OutputFile(FileName):
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self._file_transfer_service:
+        if self.file_transfer_service:
             for file_name in file_names:
-                self._file_transfer_service.download(file_name=file_name)
+                self.file_transfer_service.download(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -1934,6 +1939,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(children, cls.child_names)
 
         commands = info.get("commands")
+        if commands and not user_creatable:
+            commands.pop("create", None)
         if commands:
             cls.command_names = []
             _process_cls_names(commands, cls.command_names)
