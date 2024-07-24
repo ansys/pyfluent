@@ -73,3 +73,10 @@ def test_get_first_dict_key_for_value():
     assert get_first_dict_key_for_value({1: 2, 3: 4}, 2) == 1
     with pytest.raises(ValueError):
         get_first_dict_key_for_value({1: 2}, 1)
+
+
+PYTEST_RELATIVE_TOLERANCE = 1e-3
+
+
+def pytest_approx(expected):
+    return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
