@@ -481,8 +481,7 @@ def _populate_classes(parent_dir):
                 stub_f.close()
 
 
-def _populate_init(parent_dir, sinfo):
-    hash = _gethash(sinfo)
+def _populate_init(parent_dir, hash):
     file_name = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
     with open(file_name, "w") as f:
         f.write("#\n")
@@ -507,6 +506,7 @@ def generate(version, static_infos: dict):
         shutil.rmtree(parent_dir)
 
     if sinfo:
+        hash = _gethash(sinfo)
         os.makedirs(parent_dir)
 
         if pyfluent.CODEGEN_ZIP_SETTINGS:
@@ -517,7 +517,7 @@ def generate(version, static_infos: dict):
 
         _populate_hash_dict("", sinfo, cls, api_tree)
         _populate_classes(parent_dir)
-        _populate_init(parent_dir, sinfo)
+        _populate_init(parent_dir, hash)
 
         if pyfluent.CODEGEN_ZIP_SETTINGS:
             shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
