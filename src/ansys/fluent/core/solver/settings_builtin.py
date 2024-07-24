@@ -19,21 +19,25 @@ class _NamedObjectSettings:
         return obj[name]
 
 
-def _create_singleton_settings(name: str, path: str):
-    return type(name, (_SingletonSettings,), {"path": path})
+class viscous(_SingletonSettings):
+    """Viscous settings."""
+
+    path = "setup.models.viscous"
 
 
-def _create_named_object_settings(name: str, path: str):
-    return type(name, (_NamedObjectSettings,), {"path": path})
+class boundary_conditions(_SingletonSettings):
+    """Boundary conditions settings."""
+
+    path = "setup.boundary_conditions"
 
 
-viscous = _create_singleton_settings("viscous", "setup.models.viscous")
-boundary_conditions = _create_singleton_settings(
-    "boundary_conditions", "setup.boundary_conditions"
-)
-boundary_condition = _create_named_object_settings(
-    "boundary_condition", "setup.boundary_conditions"
-)
-velocity_inlet = _create_named_object_settings(
-    "velocity_inlet", "setup.boundary_conditions"
-)
+class boundary_condition(_NamedObjectSettings):
+    """Boundary condition settings."""
+
+    path = "setup.boundary_conditions"
+
+
+class velocity_inlet(_NamedObjectSettings):
+    """Velocity inlet settings."""
+
+    path = "setup.boundary_conditions"
