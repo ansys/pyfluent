@@ -227,6 +227,7 @@ class Base:
             return self._parent.flproxy
         return self._flproxy
 
+    @property
     def _file_transfer_service(self):
         with warnings.catch_warnings():
             warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
