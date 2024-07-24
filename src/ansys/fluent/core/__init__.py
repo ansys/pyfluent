@@ -73,15 +73,15 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-# Setup data directory
-USER_DATA_PATH = platformdirs.user_data_dir(
-    appname="ansys_fluent_core", appauthor="Ansys"
+EXAMPLES_PATH = os.path.join(
+    platformdirs.user_documents_dir(), "ansys_fluent_core_examples"
 )
 
-USER_DOCS_PATH = platformdirs.user_documents_dir()
-EXAMPLES_PATH = os.path.join(USER_DOCS_PATH, "ansys_fluent_core_examples")
+# Host path which is mounted to the container
+CONTAINER_MOUNT_SOURCE = None
 
-CONTAINER_MOUNT_PATH = None
+# Path inside the container where the host path is mounted
+CONTAINER_MOUNT_TARGET = "/mnt/pyfluent"
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True

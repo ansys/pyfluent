@@ -24,7 +24,7 @@ env:
   # You should go up in number, if you go down (or repeat a previous value)
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
-  RESET_EXAMPLES_CACHE: 6
+  RESET_EXAMPLES_CACHE: 7
   API_CODE_CACHE: 3
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
   PACKAGE_NAME: 'ansys-fluent-core'
@@ -104,7 +104,7 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
-      EXAMPLES_HOST_MOUNT_PATH: 1
+      PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Documents/ansys_fluent_core_examples"
 
     steps:
       - uses: actions/checkout@v4
@@ -193,7 +193,6 @@ jobs:
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-          PYFLUENT_HOST_MOUNT_PATH: ${{ env.EXAMPLES_HOST_MOUNT_PATH }}
 
       - name: Zip HTML Documentation before upload
         run: |
@@ -423,7 +422,7 @@ jobs:
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Print 25.1 Fluent version info
         run: |
@@ -471,6 +470,8 @@ jobs:
           - image-tag: v25.1.0
             version: 251
     timeout-minutes: 120
+    env:
+        FLUENT_IMAGE_TAG: ${{ matrix.version == 251 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
 
@@ -509,24 +510,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: ${{ matrix.image-tag != 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
+        if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Pull Fluent docker image dev
-        if: ${{ matrix.image-tag == 'v25.1.0' && !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
           make install-test
           make unittest-dev-${{ matrix.version }}
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous docker containers
         if: always()

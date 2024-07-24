@@ -8,11 +8,19 @@ import shutil
 from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
 import warnings
 
-import ansys.fluent.core as pyfluent
+import platformdirs
+
+from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
 logger = logging.getLogger("pyfluent.file_transfer_service")
+
+
+# Host path which is mounted to the file-transfer-service container
+MOUNT_SOURCE = platformdirs.user_data_dir(
+    appname="ansys_fluent_core", appauthor="Ansys"
+)
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -120,13 +128,15 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
     and ``gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
     """
 
+    @deprecate_argument("container_mount_path", "mount_target")
+    @deprecate_argument("host_mount_path", "mount_source")
     def __init__(
         self,
         image_name: Optional[str] = None,
         image_tag: Optional[str] = None,
         port: Optional[int] = None,
-        container_mount_path: Optional[str] = None,
-        host_mount_path: Optional[str] = None,
+        mount_target: Optional[str] = None,
+        mount_source: Optional[str] = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -138,10 +148,10 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             Tag of the image.
         port: int, optional
             Port for the file transfer service to use.
-        container_mount_path: Union[str, Path], optional
-            Path inside the container for the host mount path.
-        host_mount_path: Union[str, Path], optional
-            Existing path in the host operating system to be available inside the container.
+        mount_target: Union[str, Path], optional
+            Path inside the container where ``mount_source`` will be mounted to.
+        mount_source: Union[str, Path], optional
+            Existing path in the host operating system that will be mounted to ``mount_target``.
         """
         import docker
 
@@ -150,12 +160,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             image_name if image_name else "ghcr.io/ansys/tools-filetransfer"
         )
         self.image_tag = image_tag if image_tag else "latest"
-        self.container_mount_path = (
-            container_mount_path if container_mount_path else "/home/container/workdir/"
-        )
-        self.host_mount_path = (
-            host_mount_path if host_mount_path else pyfluent.USER_DATA_PATH
-        )
+        self.mount_target = mount_target if mount_target else "/home/container/workdir/"
+        self.mount_source = mount_source if mount_source else MOUNT_SOURCE
         try:
             self.host_port = port if port else random.randint(5000, 6000)
             self.ports = {"50000/tcp": self.host_port}
@@ -163,7 +169,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
+                volumes=[f"{self.mount_source}:{self.mount_target}"],
             )
         except docker.errors.DockerException:
             self.host_port = port if port else random.randint(6000, 7000)
@@ -172,7 +178,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.host_mount_path}:{self.container_mount_path}"],
+                volumes=[f"{self.mount_source}:{self.mount_target}"],
             )
         import ansys.tools.filetransfer as ft
 
@@ -190,9 +196,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         -------
             Whether file exists.
         """
-        full_file_name = pathlib.Path(self.host_mount_path) / os.path.basename(
-            file_name
-        )
+        full_file_name = pathlib.Path(self.mount_source) / os.path.basename(file_name)
         return full_file_name.is_file()
 
     def upload(
