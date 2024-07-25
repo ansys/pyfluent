@@ -812,14 +812,28 @@ def test_settings_wild_card_access(new_solver_session) -> None:
 
     solver.solution.initialization.hybrid_initialize()
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet["*1"].momentum.velocity.value()[
-            "inlet1"
-        ]["momentum"]["velocity"]["value"]
-        == solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].momentum.velocity.value()
-    )
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert (
+            solver.setup.boundary_conditions.velocity_inlet[
+                "*1"
+            ].momentum.velocity_magnitude.value()["inlet1"]["momentum"][
+                "velocity_magnitude"
+            ][
+                "value"
+            ]
+            == solver.setup.boundary_conditions.velocity_inlet[
+                "inlet1"
+            ].momentum.velocity.value()
+        )
+    else:
+        assert (
+            solver.setup.boundary_conditions.velocity_inlet[
+                "*1"
+            ].momentum.velocity.value()["inlet1"]["momentum"]["velocity"]["value"]
+            == solver.setup.boundary_conditions.velocity_inlet[
+                "inlet1"
+            ].momentum.velocity.value()
+        )
 
     assert solver.setup.boundary_conditions.wall["*"]()
 
