@@ -3,17 +3,12 @@ from pathlib import Path, PurePosixPath
 import tempfile
 
 import pytest
+from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-PYTEST_RELATIVE_TOLERANCE = 1e-3
-
-
-def pytest_approx(expected):
-    return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
 @pytest.mark.nightly

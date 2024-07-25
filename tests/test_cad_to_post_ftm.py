@@ -456,7 +456,7 @@ def test_exhaust_system(
     # Set the velocity and turbulence boundary conditions for the first inlet
     # (inlet-1).
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if meshing_session.get_fluent_version() < FluentVersion.v231:
+    if solver_session.get_fluent_version() < FluentVersion.v231:
         boundary_conditions = tui.define.boundary_conditions
         boundary_conditions.set.velocity_inlet("inlet-1", [], "vmag", "no", 1, "quit")
         ###############################################################################
