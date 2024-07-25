@@ -357,7 +357,7 @@ def _test_sum_if(solver):
     val = solver.fields.reduction.sum_if(
         expression="AbsolutePressure",
         condition="AbsolutePressure > 0[Pa]",
-        locations=[solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]],
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
     )
 
