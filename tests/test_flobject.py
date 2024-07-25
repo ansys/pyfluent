@@ -1010,6 +1010,9 @@ def _check_vector_units(obj, units):
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        # https://github.com/ansys/pyfluent/issues/3134
+        return
     assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
