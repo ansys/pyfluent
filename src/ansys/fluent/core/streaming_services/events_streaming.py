@@ -68,7 +68,7 @@ class MeshingEvent(Enum):
 
     @classmethod
     def _missing_(cls, value: str):
-        _missing_for_events(cls, value)
+        return _missing_for_events(cls, value)
 
 
 TEvent = TypeVar("TEvent")

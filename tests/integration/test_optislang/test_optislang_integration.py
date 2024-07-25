@@ -5,6 +5,7 @@ import shutil
 import tempfile
 
 import pytest
+from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -99,7 +100,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
         output_value = entry[0]
         output_unit = entry[1]
 
-    assert output_value == 322.3360076327905
+    assert output_value == pytest_approx(322.3360076327905)
 
     # output_unit should assert the unit string but it doesn't currently
     # A bug has been submitted to address this
@@ -172,7 +173,9 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_case_file():
-    case_path = examples.download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
+    case_path = examples.download_file(
+        "elbow_param.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
+    )
     reader = CaseFile(case_file_name=case_path)
 
     assert reader.num_dimensions() == 3
