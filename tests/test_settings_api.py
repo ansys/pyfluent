@@ -39,9 +39,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 @pytest.mark.fluent_version(">=24.2")
 def test_wildcard(new_solver_session):
     solver = new_solver_session
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        # https://github.com/ansys/pyfluent/issues/3134
-        return
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
     boundary_conditions = solver.setup.boundary_conditions
