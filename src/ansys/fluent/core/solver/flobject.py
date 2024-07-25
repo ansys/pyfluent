@@ -590,12 +590,13 @@ class _Alias:
                 scheme_eval("(api-unecho-python-port pyfluent-journal-str-port)")
                 journal_str = scheme_eval(
                     "(close-output-port pyfluent-journal-str-port)"
-                ).strip()
-                warnings.warn(
-                    "Note: A newer syntax is available to perform the last operation:\n"
-                    f"{journal_str}",
-                    DeprecatedSettingWarning,
                 )
+                if isinstance(journal_str, str):
+                    warnings.warn(
+                        "Note: A newer syntax is available to perform the last operation:\n"
+                        f"{journal_str.strip()}",
+                        DeprecatedSettingWarning,
+                    )
                 if not _Alias.once:
                     warnings.warn(
                         "\nExecute the following code to suppress future warnings like the above:\n\n"
