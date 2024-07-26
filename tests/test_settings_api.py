@@ -437,10 +437,10 @@ def test_generated_code_special_cases(new_solver_session):
     assert _OutputFile in write_file_bases
 
 
-def test_builtin_settings(static_mixer_settings_session):
+def test_builtin_settings(static_mixer_case_session):
     from ansys.fluent.core import BoundaryConditions, VelocityInlet, Viscous
 
-    solver = static_mixer_settings_session
+    solver = static_mixer_case_session
     visc = Viscous(solver=solver)
     assert visc == solver.setup.models.viscous
     cold_inlet = VelocityInlet(solver=solver, name="inlet2")
