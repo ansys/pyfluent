@@ -435,3 +435,15 @@ def test_generated_code_special_cases(new_solver_session):
     write_file_bases = solver.file.write_case.file_name.__class__.__bases__
     assert _InputFile not in write_file_bases
     assert _OutputFile in write_file_bases
+
+
+def test_builtin_settings(static_mixer_settings_session):
+    from ansys.fluent.core import BoundaryConditions, VelocityInlet, Viscous
+
+    solver = static_mixer_settings_session
+    visc = Viscous(solver=solver)
+    assert visc == solver.setup.models.viscous
+    cold_inlet = VelocityInlet(solver=solver, name="inlet2")
+    assert cold_inlet == solver.setup.boundary_conditions.velocity_inlet["inlet2"]
+    bc_group = BoundaryConditions(solver=solver)
+    assert bc_group == solver.setup.boundary_conditions
