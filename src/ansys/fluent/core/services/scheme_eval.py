@@ -340,3 +340,21 @@ class SchemeEval:
             S("user-initial-environment"),
         )
         return self.eval(val)
+
+    def is_defined(self, symbol: str) -> bool:
+        """Check if a symbol is defined in the scheme environment.
+
+        Parameters
+        ----------
+        symbol : str
+            Name of the symbol
+
+        Returns
+        -------
+        bool
+            True if symbol is defined, False otherwise
+        """
+        S = Symbol  # noqa N806
+        return not self.scheme_eval(
+            f"(lexical-unreferenceable? user-initial-environment '{symbol})"
+        )
