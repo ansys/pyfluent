@@ -29,7 +29,7 @@ include = [
     { path = "src/ansys/fluent/core/generated/solver/settings_*.zip", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/api_tree/*.json", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/*.zip", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/*.py", format = ["sdist", "wheel"] },
 ]
 
 packages = [
