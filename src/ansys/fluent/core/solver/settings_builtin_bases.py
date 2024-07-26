@@ -3,7 +3,7 @@
 from ansys.fluent.core.session_solver import Solver
 
 
-class _SingletonSettings:
+class _SingletonSetting:
     def __new__(cls, solver: Solver):
         obj = solver.settings
         for comp in cls.path.split("."):
@@ -11,7 +11,7 @@ class _SingletonSettings:
         return obj
 
 
-class _NamedObjectSettings(_SingletonSettings):
+class _NamedObjectSetting(_SingletonSetting):
     def __new__(cls, solver: Solver, name: str):
         obj = super().__new__(cls, solver)
         return obj[name]
