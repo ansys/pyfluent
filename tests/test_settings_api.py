@@ -446,25 +446,34 @@ def test_builtin_settings(static_mixer_case_session):
         CellZoneCondition,
         CellZoneConditions,
         DiscretePhase,
+        DynamicMesh,
         EChemistry,
         Energy,
         FluidCellZone,
         FluidCellZones,
+        FluidMaterial,
+        FluidMaterials,
         General,
         Injections,
         InteriorBoundaries,
         InteriorBoundary,
-        Material,
         Materials,
+        MeshInterfaces,
         Models,
         Multiphase,
+        NamedExpressions,
         Optics,
         Pemfc,
         PressureOutlet,
         PressureOutlets,
         Radiation,
+        ReferenceFrame,
+        ReferenceFrames,
+        ReferenceValues,
         Setup,
         Sofc,
+        SolidMaterial,
+        SolidMaterials,
         Species,
         Structure,
         SystemCoupling,
@@ -477,10 +486,81 @@ def test_builtin_settings(static_mixer_case_session):
     )
 
     solver = static_mixer_case_session
-    assert Genera
+    assert Setup(solver=solver) == solver.setup
+    assert General(solver=solver) == solver.setup.general
+    assert Models(solver=solver) == solver.setup.models
+    assert Multiphase(solver=solver) == solver.setup.models.multiphase
+    assert Energy(solver=solver) == solver.setup.models.energy
     assert Viscous(solver=solver) == solver.setup.models.viscous
+    assert Radiation(solver=solver) == solver.setup.models.radiation
+    assert Species(solver=solver) == solver.setup.models.species
+    assert DiscretePhase(solver=solver) == solver.setup.models.discrete_phase
+    assert Injections(solver=solver) == solver.setup.models.discrete_phase.injections
+    assert VirtualBladeModel(solver=solver) == solver.setup.models.virtual_blade_model
+    assert Optics(solver=solver) == solver.setup.models.optics
+    assert Structure(solver=solver) == solver.setup.models.structure
+    assert Ablation(solver=solver) == solver.setup.models.ablation
+    assert EChemistry(solver=solver) == solver.setup.models.echemistry
+    assert Battery(solver=solver) == solver.setup.models.battery
+    assert SystemCoupling(solver=solver) == solver.setup.models.system_coupling
+    assert Sofc(solver=solver) == solver.setup.models.sofc
+    assert Pemfc(solver=solver) == solver.setup.models.pemfc
+    assert Materials(solver=solver) == solver.setup.materials
+    assert FluidMaterials(solver=solver) == solver.setup.materials.fluid
+    assert (
+        FluidMaterial(solver=solver, name="air") == solver.setup.materials.fluid["air"]
+    )
+    assert SolidMaterials(solver=solver) == solver.setup.materials.solid
+    assert (
+        SolidMaterial(solver=solver, name="aluminum")
+        == solver.setup.materials.solid["aluminum"]
+    )
+    assert CellZoneConditions(solver=solver) == solver.setup.cell_zone_conditions
+    assert (
+        CellZoneCondition(solver=solver, name="fluid")
+        == solver.setup.cell_zone_conditions["fluid"]
+    )
+    assert FluidCellZones(solver=solver) == solver.setup.cell_zone_conditions.fluid
+    assert (
+        FluidCellZone(solver=solver, name="fluid")
+        == solver.setup.cell_zone_conditions.fluid["fluid"]
+    )
+    assert BoundaryConditions(solver=solver) == solver.setup.boundary_conditions
+    assert (
+        BoundaryCondition(solver=solver, name="inlet2")
+        == solver.setup.boundary_conditions["inlet2"]
+    )
+    assert (
+        VelocityInlets(solver=solver) == solver.setup.boundary_conditions.velocity_inlet
+    )
     assert (
         VelocityInlet(solver=solver, name="inlet2")
         == solver.setup.boundary_conditions.velocity_inlet["inlet2"]
     )
-    assert BoundaryConditions(solver=solver) == solver.setup.boundary_conditions
+    assert (
+        InteriorBoundaries(solver=solver) == solver.setup.boundary_conditions.interior
+    )
+    assert (
+        InteriorBoundary(solver=solver, name="interior--fluid")
+        == solver.setup.boundary_conditions.interior["interior--fluid"]
+    )
+    assert (
+        PressureOutlets(solver=solver)
+        == solver.setup.boundary_conditions.pressure_outlet
+    )
+    assert (
+        PressureOutlet(solver=solver, name="outlet")
+        == solver.setup.boundary_conditions.pressure_outlet["outlet"]
+    )
+    assert WallBoundaries(solver=solver) == solver.setup.boundary_conditions.wall
+    assert (
+        WallBoundary(solver=solver, name="wall")
+        == solver.setup.boundary_conditions.wall["wall"]
+    )
+    assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
+    assert DynamicMesh(solver=solver) == solver.setup.dynamic_mesh
+    assert ReferenceValues(solver=solver) == solver.setup.reference_values
+    assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
+    # Fluent 25.1 issue
+    # assert ReferenceFrame(solver=solver, name="global") == solver.setup.reference_frames["global"]
+    assert NamedExpressions(solver=solver) == solver.setup.named_expressions
