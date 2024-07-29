@@ -1,4 +1,4 @@
-"""Solver settings bases."""
+"""Base classes for builtin setting classes."""
 
 from ansys.fluent.core.session_solver import Solver
 

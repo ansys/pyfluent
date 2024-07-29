@@ -1,173 +1,10 @@
 """Generate builtin setting classes."""
 
-from ansys.fluent.core import CODEGEN_OUTDIR
-
-_DATA = [
-    ("Setup", "Singleton", "setup"),
-    ("General", "Singleton", "setup.general"),
-    ("Models", "Singleton", "setup.models"),
-    ("Multiphase", "Singleton", "setup.models.multiphase"),
-    ("Energy", "Singleton", "setup.models.energy"),
-    ("Viscous", "Singleton", "setup.models.viscous"),
-    ("Radiation", "Singleton", "setup.models.radiation"),
-    ("Species", "Singleton", "setup.models.species"),
-    ("DiscretePhase", "Singleton", "setup.models.discrete_phase"),
-    ("Injections", "Singleton", "setup.models.discrete_phase.injections"),
-    ("Injection", "NamedObject", "setup.models.discrete_phase.injections"),
-    ("VirtualBladeModel", "Singleton", "setup.models.virtual_blade_model"),
-    ("Optics", "Singleton", "setup.models.optics"),
-    ("Structure", "Singleton", "setup.models.structure"),
-    ("Ablation", "Singleton", "setup.models.ablation"),
-    ("EChemistry", "Singleton", "setup.models.echemistry"),
-    ("Battery", "Singleton", "setup.models.battery"),
-    ("SystemCoupling", "Singleton", "setup.models.system_coupling"),
-    ("Sofc", "Singleton", "setup.models.sofc"),
-    ("Pemfc", "Singleton", "setup.models.pemfc"),
-    ("Materials", "Singleton", "setup.materials"),
-    ("FluidMaterials", "Singleton", "setup.materials.fluid"),
-    ("FluidMaterial", "NamedObject", "setup.materials.fluid"),
-    ("SolidMaterials", "Singleton", "setup.materials.solid"),
-    ("SolidMaterial", "NamedObject", "setup.materials.solid"),
-    ("MixtureMaterials", "Singleton", "setup.materials.mixture"),
-    ("MixtureMaterial", "NamedObject", "setup.materials.mixture"),
-    ("InertParticles", "Singleton", "setup.materials.inert_particles"),
-    ("InertParticle", "NamedObject", "setup.materials.inert_particles"),
-    ("DropletParticles", "Singleton", "setup.materials.droplet_particles"),
-    ("DropletParticle", "NamedObject", "setup.materials.droplet_particles"),
-    ("CombustingParticles", "Singleton", "setup.materials.combusting_particles"),
-    ("CombustingParticle", "NamedObject", "setup.materials.combusting_particles"),
-    ("ParticleMixtureMaterials", "Singleton", "setup.materials.particle_mixture"),
-    ("ParticleMixtureMaterial", "NamedObject", "setup.materials.particle_mixture"),
-    ("CellZoneConditions", "Singleton", "setup.cell_zone_conditions"),
-    ("CellZoneCondition", "NamedObject", "setup.cell_zone_conditions"),
-    ("FluidCellZones", "Singleton", "setup.cell_zone_conditions.fluid"),
-    ("FluidCellZone", "NamedObject", "setup.cell_zone_conditions.fluid"),
-    ("SolidCellZones", "Singleton", "setup.cell_zone_conditions.solid"),
-    ("SolidCellZone", "NamedObject", "setup.cell_zone_conditions.solid"),
-    ("BoundaryConditions", "Singleton", "setup.boundary_conditions"),
-    ("BoundaryCondition", "NamedObject", "setup.boundary_conditions"),
-    ("AxisBoundaries", "Singleton", "setup.boundary_conditions.axis"),
-    ("AxisBoundary", "NamedObject", "setup.boundary_conditions.axis"),
-    ("DegassingBoundaries", "Singleton", "setup.boundary_conditions.degassing"),
-    ("DegassingBoundary", "NamedObject", "setup.boundary_conditions.degassing"),
-    ("ExhaustFanBoundaries", "Singleton", "setup.boundary_conditions.exhaust_fan"),
-    ("ExhaustFanBoundary", "NamedObject", "setup.boundary_conditions.exhaust_fan"),
-    ("FanBoundaries", "Singleton", "setup.boundary_conditions.fan"),
-    ("FanBoundary", "NamedObject", "setup.boundary_conditions.fan"),
-    ("GeometryBoundaries", "Singleton", "setup.boundary_conditions.geometry"),
-    ("GeometryBoundary", "NamedObject", "setup.boundary_conditions.geometry"),
-    ("InletVentBoundaries", "Singleton", "setup.boundary_conditions.inlet_vent"),
-    ("InletVentBoundary", "NamedObject", "setup.boundary_conditions.inlet_vent"),
-    ("IntakeFanBoundaries", "Singleton", "setup.boundary_conditions.intake_fan"),
-    ("IntakeFanBoundary", "NamedObject", "setup.boundary_conditions.intake_fan"),
-    ("InterfaceBoundaries", "Singleton", "setup.boundary_conditions.interface"),
-    ("InterfaceBoundary", "NamedObject", "setup.boundary_conditions.interface"),
-    ("InteriorBoundaries", "Singleton", "setup.boundary_conditions.interior"),
-    ("InteriorBoundary", "NamedObject", "setup.boundary_conditions.interior"),
-    ("MassFlowInlets", "Singleton", "setup.boundary_conditions.mass_flow_inlet"),
-    ("MassFlowInlet", "NamedObject", "setup.boundary_conditions.mass_flow_inlet"),
-    ("MassFlowOutlets", "Singleton", "setup.boundary_conditions.mass_flow_outlet"),
-    ("MassFlowOutlet", "NamedObject", "setup.boundary_conditions.mass_flow_outlet"),
-    ("NetworkBoundaries", "Singleton", "setup.boundary_conditions.network"),
-    ("NetworkBoundary", "NamedObject", "setup.boundary_conditions.network"),
-    ("NetworkEndBoundaries", "Singleton", "setup.boundary_conditions.network_end"),
-    ("NetworkEndBoundary", "NamedObject", "setup.boundary_conditions.network_end"),
-    ("OutflowBoundaries", "Singleton", "setup.boundary_conditions.outflow"),
-    ("OutflowBoundary", "NamedObject", "setup.boundary_conditions.outflow"),
-    ("OutletVentBoundaries", "Singleton", "setup.boundary_conditions.outlet_vent"),
-    ("OutletVentBoundary", "NamedObject", "setup.boundary_conditions.outlet_vent"),
-    ("OversetBoundaries", "Singleton", "setup.boundary_conditions.overset"),
-    ("OversetBoundary", "NamedObject", "setup.boundary_conditions.overset"),
-    ("PreiodicBoundaries", "Singleton", "setup.boundary_conditions.periodic"),
-    ("PeriodicBoundary", "NamedObject", "setup.boundary_conditions.periodic"),
-    ("PorousJumpBoundaries", "Singleton", "setup.boundary_conditions.porous_jump"),
-    ("PorousJumpBoundary", "NamedObject", "setup.boundary_conditions.porous_jump"),
-    (
-        "PressureFarFieldBoundaries",
-        "Singleton",
-        "setup.boundary_conditions.pressure_far_field",
-    ),
-    (
-        "PressureFarFieldBoundary",
-        "NamedObject",
-        "setup.boundary_conditions.pressure_far_field",
-    ),
-    ("PressureInlets", "Singleton", "setup.boundary_conditions.pressure_inlet"),
-    ("PressureInlet", "NamedObject", "setup.boundary_conditions.pressure_inlet"),
-    ("PressureOutlets", "Singleton", "setup.boundary_conditions.pressure_outlet"),
-    ("PressureOutlet", "NamedObject", "setup.boundary_conditions.pressure_outlet"),
-    ("RadiatorBoundaries", "Singleton", "setup.boundary_conditions.radiator"),
-    ("RadiatorBoundary", "NamedObject", "setup.boundary_conditions.radiator"),
-    (
-        "RansLesInterfaceBoundaries",
-        "Singleton",
-        "setup.boundary_conditions.rans_les_interface",
-    ),
-    (
-        "RansLesInterfaceBoundary",
-        "NamedObject",
-        "setup.boundary_conditions.rans_les_interface",
-    ),
-    (
-        "RecirculationInlets",
-        "Singleton",
-        "setup.boundary_conditions.recirculation_inlet",
-    ),
-    (
-        "RecirculationInlet",
-        "NamedObject",
-        "setup.boundary_conditions.recirculation_inlet",
-    ),
-    (
-        "RecirculationOutlets",
-        "Singleton",
-        "setup.boundary_conditions.recirculation_outlet",
-    ),
-    (
-        "RecirculationOutlet",
-        "NamedObject",
-        "setup.boundary_conditions.recirculation_outlet",
-    ),
-    ("ShadowBoundaries", "Singleton", "setup.boundary_conditions.shadow"),
-    ("ShadowBoundary", "NamedObject", "setup.boundary_conditions.shadow"),
-    ("SymmetryBoundaries", "Singleton", "setup.boundary_conditions.symmetry"),
-    ("SymmetryBoundary", "NamedObject", "setup.boundary_conditions.symmetry"),
-    ("VelocityInlets", "Singleton", "setup.boundary_conditions.velocity_inlet"),
-    ("VelocityInlet", "NamedObject", "setup.boundary_conditions.velocity_inlet"),
-    ("WallBoundaries", "Singleton", "setup.boundary_conditions.wall"),
-    ("WallBoundary", "NamedObject", "setup.boundary_conditions.wall"),
-    (
-        "NonReflectingBoundaries",
-        "Singleton",
-        "setup.boundary_conditions.non_reflecting_bc",
-    ),
-    (
-        "NonReflectingBoundary",
-        "NamedObject",
-        "setup.boundary_conditions.non_reflecting_bc",
-    ),
-    (
-        "PerforatedWallBoundaries",
-        "Singleton",
-        "setup.boundary_conditions.perforated_wall",
-    ),
-    (
-        "PerforatedWallBoundary",
-        "NamedObject",
-        "setup.boundary_conditions.perforated_wall",
-    ),
-    ("MeshInterfaces", "Singleton", "setup.mesh_interfaces"),
-    ("DynamicMesh", "Singleton", "setup.dynamic_mesh"),
-    ("ReferenceValues", "Singleton", "setup.reference_values"),
-    ("ReferenceFrames", "Singleton", "setup.reference_frames"),
-    ("ReferenceFrame", "NamedObject", "setup.reference_frames"),
-    ("NamedExpressions", "Singleton", "setup.named_expressions"),
-    ("NamedExpression", "NamedObject", "setup.named_expressions"),
-]
+from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
+from ansys.fluent.core.solver.settings_builtin_data import DATA
 
 _PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
 _PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
-_VERSIONS = ("222", "231", "232", "241", "242", "251")
 
 
 def generate():
@@ -179,25 +16,27 @@ def generate():
             "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _NamedObjectSetting\n\n\n"
         )
         f.write("__all__ = [\n")
-        for name, _, _ in _DATA:
+        for name, _ in DATA.items():
             f.write(f'    "{name}",\n')
         f.write("]\n\n")
-        for name, kind, path in _DATA:
+        for name, v in DATA.items():
+            kind, path = v
             f.write(f"class {name}(_{kind}Setting):\n")
             f.write(f'    """{name} setting."""\n\n')
             f.write(f'    path = "{path}"\n\n')
 
     with open(_PYI_FILE, "w") as f:
-        for version in _VERSIONS:
+        for version in FluentVersion:
             f.write(
                 f"from ansys.fluent.core.generated.solver.settings_{version} import root as settings_root_{version}\n"
             )
         f.write("\n\n")
-        for name, kind, path in _DATA:
+        for name, v in DATA.items():
+            kind, path = v
             f.write(f"class {name}(\n")
             if kind == "NamedObject":
                 path = f"{path}.child_object_type"
-            for version in _VERSIONS:
+            for version in FluentVersion:
                 f.write(f"    type(settings_root_{version}.{path}),\n")
             f.write("): ...\n\n")
 
