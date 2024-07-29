@@ -27,7 +27,7 @@ def generate():
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
             f.write(
-                f"from ansys.fluent.core.generated.solver.settings_{version.name} import root as settings_root_{version.name}\n"
+                f"from ansys.fluent.core.generated.solver.settings_{version.number} import root as settings_root_{version.number}\n"
             )
         f.write("\n\n")
         for name, v in DATA.items():
@@ -38,7 +38,7 @@ def generate():
             for v, p in path.items():
                 if kind == "NamedObject":
                     p = f"{p}.child_object_type"
-                f.write(f"    type(settings_root_{v.name}.{p}),\n")
+                f.write(f"    type(settings_root_{v.number}.{p}),\n")
             f.write("): ...\n\n")
 
 
