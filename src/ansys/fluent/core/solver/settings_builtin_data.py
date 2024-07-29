@@ -19,10 +19,38 @@ DATA = {
     "Optics": ("Singleton", "setup.models.optics"),
     "Structure": ("Singleton", "setup.models.structure"),
     "Ablation": ("Singleton", "setup.models.ablation"),
-    "EChemistry": ("Singleton", "setup.models.echemistry"),
-    "Battery": ("Singleton", "setup.models.battery"),
-    "SystemCoupling": ("Singleton", "setup.models.system_coupling"),
-    "Sofc": ("Singleton", "setup.models.sofc"),
+    "EChemistry": (
+        "Singleton",
+        {
+            FluentVersion.v241: "setup.models.echemistry",
+            FluentVersion.v242: "setup.models.echemistry",
+            FluentVersion.v251: "setup.models.echemistry",
+        },
+    ),
+    "Battery": (
+        "Singleton",
+        {
+            FluentVersion.v241: "setup.models.battery",
+            FluentVersion.v242: "setup.models.battery",
+            FluentVersion.v251: "setup.models.battery",
+        },
+    ),
+    "SystemCoupling": (
+        "Singleton",
+        {
+            FluentVersion.v241: "setup.models.system_coupling",
+            FluentVersion.v242: "setup.models.system_coupling",
+            FluentVersion.v251: "setup.models.system_coupling",
+        },
+    ),
+    "Sofc": (
+        "Singleton",
+        {
+            FluentVersion.v241: "setup.models.sofc",
+            FluentVersion.v242: "setup.models.sofc",
+            FluentVersion.v251: "setup.models.sofc",
+        },
+    ),
     "Pemfc": (
         "Singleton",
         {

@@ -500,10 +500,26 @@ def test_builtin_settings(static_mixer_case_session):
     assert Optics(solver=solver) == solver.setup.models.optics
     assert Structure(solver=solver) == solver.setup.models.structure
     assert Ablation(solver=solver) == solver.setup.models.ablation
-    assert EChemistry(solver=solver) == solver.setup.models.echemistry
-    assert Battery(solver=solver) == solver.setup.models.battery
-    assert SystemCoupling(solver=solver) == solver.setup.models.system_coupling
-    assert Sofc(solver=solver) == solver.setup.models.sofc
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert EChemistry(solver=solver) == solver.setup.models.echemistry
+    else:
+        with pytest.raises(RuntimeError):
+            EChemistry(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert Battery(solver=solver) == solver.setup.models.battery
+    else:
+        with pytest.raises(RuntimeError):
+            Battery(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert SystemCoupling(solver=solver) == solver.setup.models.system_coupling
+    else:
+        with pytest.raises(RuntimeError):
+            SystemCoupling(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        assert Sofc(solver=solver) == solver.setup.models.sofc
+    else:
+        with pytest.raises(RuntimeError):
+            Sofc(solver=solver)
     if solver.get_fluent_version() >= FluentVersion.v242:
         assert Pemfc(solver=solver) == solver.setup.models.pemfc
     else:
