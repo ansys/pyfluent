@@ -38,10 +38,46 @@ DATA = {
             FluentVersion.v231: "setup.models.discrete_phase",
         },
     ),
-    "Injections": ("Singleton", "setup.models.discrete_phase.injections"),
-    "Injection": ("NamedObject", "setup.models.discrete_phase.injections"),
-    "VirtualBladeModel": ("Singleton", "setup.models.virtual_blade_model"),
-    "Optics": ("Singleton", "setup.models.optics"),
+    "Injections": (
+        "Singleton",
+        {
+            FluentVersion.v251: "setup.models.discrete_phase.injections",
+            FluentVersion.v242: "setup.models.discrete_phase.injections",
+            FluentVersion.v241: "setup.models.discrete_phase.injections",
+            FluentVersion.v232: "setup.models.discrete_phase.injections",
+            FluentVersion.v231: "setup.models.discrete_phase.injections",
+        },
+    ),
+    "Injection": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "setup.models.discrete_phase.injections",
+            FluentVersion.v242: "setup.models.discrete_phase.injections",
+            FluentVersion.v241: "setup.models.discrete_phase.injections",
+            FluentVersion.v232: "setup.models.discrete_phase.injections",
+            FluentVersion.v231: "setup.models.discrete_phase.injections",
+        },
+    ),
+    "VirtualBladeModel": (
+        "Singleton",
+        {
+            FluentVersion.v251: "setup.models.virtual_blade_model",
+            FluentVersion.v242: "setup.models.virtual_blade_model",
+            FluentVersion.v241: "setup.models.virtual_blade_model",
+            FluentVersion.v232: "setup.models.virtual_blade_model",
+            FluentVersion.v231: "setup.models.virtual_blade_model",
+        },
+    ),
+    "Optics": (
+        "Singleton",
+        {
+            FluentVersion.v251: "setup.models.optics",
+            FluentVersion.v242: "setup.models.optics",
+            FluentVersion.v241: "setup.models.optics",
+            FluentVersion.v232: "setup.models.optics",
+            FluentVersion.v231: "setup.models.optics",
+        },
+    ),
     "Structure": (
         "Singleton",
         {

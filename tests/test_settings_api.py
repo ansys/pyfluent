@@ -507,9 +507,25 @@ def test_builtin_settings(static_mixer_case_session):
     else:
         with pytest.raises(RuntimeError):
             DiscretePhase(solver=solver)
-    assert Injections(solver=solver) == solver.setup.models.discrete_phase.injections
-    assert VirtualBladeModel(solver=solver) == solver.setup.models.virtual_blade_model
-    assert Optics(solver=solver) == solver.setup.models.optics
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            Injections(solver=solver) == solver.setup.models.discrete_phase.injections
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            Injections(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            VirtualBladeModel(solver=solver) == solver.setup.models.virtual_blade_model
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            VirtualBladeModel(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert Optics(solver=solver) == solver.setup.models.optics
+    else:
+        with pytest.raises(RuntimeError):
+            Optics(solver=solver)
     if solver.get_fluent_version() >= FluentVersion.v232:
         assert Structure(solver=solver) == solver.setup.models.structure
     else:
