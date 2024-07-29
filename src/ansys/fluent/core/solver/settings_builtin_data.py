@@ -13,29 +13,29 @@ DATA = {
     "Radiation": (
         "Singleton",
         {
-            FluentVersion.v232: "setup.models.radiation",
-            FluentVersion.v241: "setup.models.radiation",
-            FluentVersion.v242: "setup.models.radiation",
             FluentVersion.v251: "setup.models.radiation",
+            FluentVersion.v242: "setup.models.radiation",
+            FluentVersion.v241: "setup.models.radiation",
+            FluentVersion.v232: "setup.models.radiation",
         },
     ),
     "Species": (
         "Singleton",
         {
-            FluentVersion.v232: "setup.models.species",
-            FluentVersion.v241: "setup.models.species",
-            FluentVersion.v242: "setup.models.species",
             FluentVersion.v251: "setup.models.species",
+            FluentVersion.v242: "setup.models.species",
+            FluentVersion.v241: "setup.models.species",
+            FluentVersion.v232: "setup.models.species",
         },
     ),
     "DiscretePhase": (
         "Singleton",
         {
-            FluentVersion.v231: "setup.models.discrete_phase",
-            FluentVersion.v232: "setup.models.discrete_phase",
-            FluentVersion.v241: "setup.models.discrete_phase",
-            FluentVersion.v242: "setup.models.discrete_phase",
             FluentVersion.v251: "setup.models.discrete_phase",
+            FluentVersion.v242: "setup.models.discrete_phase",
+            FluentVersion.v241: "setup.models.discrete_phase",
+            FluentVersion.v232: "setup.models.discrete_phase",
+            FluentVersion.v231: "setup.models.discrete_phase",
         },
     ),
     "Injections": ("Singleton", "setup.models.discrete_phase.injections"),
@@ -45,58 +45,58 @@ DATA = {
     "Structure": (
         "Singleton",
         {
-            FluentVersion.v232: "setup.models.structure",
-            FluentVersion.v241: "setup.models.structure",
-            FluentVersion.v242: "setup.models.structure",
             FluentVersion.v251: "setup.models.structure",
+            FluentVersion.v242: "setup.models.structure",
+            FluentVersion.v241: "setup.models.structure",
+            FluentVersion.v232: "setup.models.structure",
         },
     ),
     "Ablation": (
         "Singleton",
         {
-            FluentVersion.v232: "setup.models.ablation",
-            FluentVersion.v241: "setup.models.ablation",
-            FluentVersion.v242: "setup.models.ablation",
             FluentVersion.v251: "setup.models.ablation",
+            FluentVersion.v242: "setup.models.ablation",
+            FluentVersion.v241: "setup.models.ablation",
+            FluentVersion.v232: "setup.models.ablation",
         },
     ),
     "EChemistry": (
         "Singleton",
         {
-            FluentVersion.v241: "setup.models.echemistry",
-            FluentVersion.v242: "setup.models.echemistry",
             FluentVersion.v251: "setup.models.echemistry",
+            FluentVersion.v242: "setup.models.echemistry",
+            FluentVersion.v241: "setup.models.echemistry",
         },
     ),
     "Battery": (
         "Singleton",
         {
-            FluentVersion.v241: "setup.models.battery",
-            FluentVersion.v242: "setup.models.battery",
             FluentVersion.v251: "setup.models.battery",
+            FluentVersion.v242: "setup.models.battery",
+            FluentVersion.v241: "setup.models.battery",
         },
     ),
     "SystemCoupling": (
         "Singleton",
         {
-            FluentVersion.v241: "setup.models.system_coupling",
-            FluentVersion.v242: "setup.models.system_coupling",
             FluentVersion.v251: "setup.models.system_coupling",
+            FluentVersion.v242: "setup.models.system_coupling",
+            FluentVersion.v241: "setup.models.system_coupling",
         },
     ),
     "Sofc": (
         "Singleton",
         {
-            FluentVersion.v241: "setup.models.sofc",
-            FluentVersion.v242: "setup.models.sofc",
             FluentVersion.v251: "setup.models.sofc",
+            FluentVersion.v242: "setup.models.sofc",
+            FluentVersion.v241: "setup.models.sofc",
         },
     ),
     "Pemfc": (
         "Singleton",
         {
-            FluentVersion.v242: "setup.models.pemfc",
             FluentVersion.v251: "setup.models.pemfc",
+            FluentVersion.v242: "setup.models.pemfc",
         },
     ),
     "Materials": ("Singleton", "setup.materials"),
@@ -223,10 +223,10 @@ DATA = {
     "MeshInterfaces": (
         "Singleton",
         {
-            FluentVersion.v232: "setup.mesh_interfaces",
-            FluentVersion.v241: "setup.mesh_interfaces",
-            FluentVersion.v242: "setup.mesh_interfaces",
             FluentVersion.v251: "setup.mesh_interfaces",
+            FluentVersion.v242: "setup.mesh_interfaces",
+            FluentVersion.v241: "setup.mesh_interfaces",
+            FluentVersion.v232: "setup.mesh_interfaces",
         },
     ),
     "DynamicMesh": ("Singleton", {FluentVersion.v251: "setup.dynamic_mesh"}),
@@ -234,19 +234,19 @@ DATA = {
     "ReferenceFrames": (
         "Singleton",
         {
-            FluentVersion.v232: "setup.reference_frames",
-            FluentVersion.v241: "setup.reference_frames",
-            FluentVersion.v242: "setup.reference_frames",
             FluentVersion.v251: "setup.reference_frames",
+            FluentVersion.v242: "setup.reference_frames",
+            FluentVersion.v241: "setup.reference_frames",
+            FluentVersion.v232: "setup.reference_frames",
         },
     ),
     "ReferenceFrame": (
         "NamedObject",
         {
-            FluentVersion.v232: "setup.reference_frames",
-            FluentVersion.v241: "setup.reference_frames",
-            FluentVersion.v242: "setup.reference_frames",
             FluentVersion.v251: "setup.reference_frames",
+            FluentVersion.v242: "setup.reference_frames",
+            FluentVersion.v241: "setup.reference_frames",
+            FluentVersion.v232: "setup.reference_frames",
         },
     ),
     "NamedExpressions": ("Singleton", "setup.named_expressions"),

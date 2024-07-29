@@ -438,7 +438,7 @@ def test_generated_code_special_cases(new_solver_session):
 
 
 def test_builtin_settings(static_mixer_case_session):
-    from ansys.fluent.core import (  # noqa: F401
+    from ansys.fluent.core import (
         Ablation,
         Battery,
         BoundaryCondition,
