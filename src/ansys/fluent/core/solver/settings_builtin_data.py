@@ -1,5 +1,7 @@
 """Data for for builtin setting classes."""
 
+from ansys.fluent.core import FluentVersion
+
 # {<class name>: (<kind>, <path>)}
 DATA = {
     "Setup": ("Singleton", "setup"),
@@ -144,7 +146,7 @@ DATA = {
         "setup.boundary_conditions.perforated_wall",
     ),
     "MeshInterfaces": ("Singleton", "setup.mesh_interfaces"),
-    "DynamicMesh": ("Singleton", "setup.dynamic_mesh"),
+    "DynamicMesh": ("Singleton", {FluentVersion.v251: "setup.dynamic_mesh"}),
     "ReferenceValues": ("Singleton", "setup.reference_values"),
     "ReferenceFrames": ("Singleton", "setup.reference_frames"),
     "ReferenceFrame": ("NamedObject", "setup.reference_frames"),

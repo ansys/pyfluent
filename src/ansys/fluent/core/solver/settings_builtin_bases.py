@@ -8,6 +8,13 @@ class _SingletonSetting:
     def __new__(cls, solver: Solver):
         obj = solver.settings
         path = DATA[cls.__name__][1]
+        if isinstance(path, dict):
+            version = solver.get_fluent_version()
+            path = path.get(version)
+            if path is None:
+                raise RuntimeError(
+                    f"{cls.__name__} is not supported in Fluent version {version}."
+                )
         for comp in path.split("."):
             obj = getattr(obj, comp)
         return obj

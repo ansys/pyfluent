@@ -558,7 +558,11 @@ def test_builtin_settings(static_mixer_case_session):
         == solver.setup.boundary_conditions.wall["wall"]
     )
     assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
-    assert DynamicMesh(solver=solver) == solver.setup.dynamic_mesh
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert DynamicMesh(solver=solver) == solver.setup.dynamic_mesh
+    else:
+        with pytest.raises(RuntimeError):
+            DynamicMesh(solver=solver)
     assert ReferenceValues(solver=solver) == solver.setup.reference_values
     assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
     # Fluent 25.1 issue
