@@ -492,14 +492,30 @@ def test_builtin_settings(static_mixer_case_session):
     assert Multiphase(solver=solver) == solver.setup.models.multiphase
     assert Energy(solver=solver) == solver.setup.models.energy
     assert Viscous(solver=solver) == solver.setup.models.viscous
-    assert Radiation(solver=solver) == solver.setup.models.radiation
-    assert Species(solver=solver) == solver.setup.models.species
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Radiation(solver=solver) == solver.setup.models.radiation
+    else:
+        with pytest.raises(RuntimeError):
+            Radiation(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Species(solver=solver) == solver.setup.models.species
+    else:
+        with pytest.raises(RuntimeError):
+            Species(solver=solver)
     assert DiscretePhase(solver=solver) == solver.setup.models.discrete_phase
     assert Injections(solver=solver) == solver.setup.models.discrete_phase.injections
     assert VirtualBladeModel(solver=solver) == solver.setup.models.virtual_blade_model
     assert Optics(solver=solver) == solver.setup.models.optics
-    assert Structure(solver=solver) == solver.setup.models.structure
-    assert Ablation(solver=solver) == solver.setup.models.ablation
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Structure(solver=solver) == solver.setup.models.structure
+    else:
+        with pytest.raises(RuntimeError):
+            Structure(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert Ablation(solver=solver) == solver.setup.models.ablation
+    else:
+        with pytest.raises(RuntimeError):
+            Ablation(solver=solver)
     if solver.get_fluent_version() >= FluentVersion.v241:
         assert EChemistry(solver=solver) == solver.setup.models.echemistry
     else:
@@ -577,18 +593,30 @@ def test_builtin_settings(static_mixer_case_session):
         WallBoundary(solver=solver, name="wall")
         == solver.setup.boundary_conditions.wall["wall"]
     )
-    assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
+    else:
+        with pytest.raises(RuntimeError):
+            MeshInterfaces(solver=solver)
     if solver.get_fluent_version() >= FluentVersion.v251:
         assert DynamicMesh(solver=solver) == solver.setup.dynamic_mesh
     else:
         with pytest.raises(RuntimeError):
             DynamicMesh(solver=solver)
     assert ReferenceValues(solver=solver) == solver.setup.reference_values
-    assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
-    # Fluent 25.1 issue
-    if solver.get_fluent_version() < FluentVersion.v251:
-        assert (
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
+    else:
+        with pytest.raises(RuntimeError):
+            ReferenceFrames(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v241:
+        # Fluent 25.1 issue
+        if solver.get_fluent_version() < FluentVersion.v251:
+            assert (
+                ReferenceFrame(solver=solver, name="global")
+                == solver.setup.reference_frames["global"]
+            )
+    else:
+        with pytest.raises(RuntimeError):
             ReferenceFrame(solver=solver, name="global")
-            == solver.setup.reference_frames["global"]
-        )
     assert NamedExpressions(solver=solver) == solver.setup.named_expressions

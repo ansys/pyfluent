@@ -10,15 +10,47 @@ DATA = {
     "Multiphase": ("Singleton", "setup.models.multiphase"),
     "Energy": ("Singleton", "setup.models.energy"),
     "Viscous": ("Singleton", "setup.models.viscous"),
-    "Radiation": ("Singleton", "setup.models.radiation"),
-    "Species": ("Singleton", "setup.models.species"),
+    "Radiation": (
+        "Singleton",
+        {
+            FluentVersion.v232: "setup.models.radiation",
+            FluentVersion.v241: "setup.models.radiation",
+            FluentVersion.v242: "setup.models.radiation",
+            FluentVersion.v251: "setup.models.radiation",
+        },
+    ),
+    "Species": (
+        "Singleton",
+        {
+            FluentVersion.v232: "setup.models.species",
+            FluentVersion.v241: "setup.models.species",
+            FluentVersion.v242: "setup.models.species",
+            FluentVersion.v251: "setup.models.species",
+        },
+    ),
     "DiscretePhase": ("Singleton", "setup.models.discrete_phase"),
     "Injections": ("Singleton", "setup.models.discrete_phase.injections"),
     "Injection": ("NamedObject", "setup.models.discrete_phase.injections"),
     "VirtualBladeModel": ("Singleton", "setup.models.virtual_blade_model"),
     "Optics": ("Singleton", "setup.models.optics"),
-    "Structure": ("Singleton", "setup.models.structure"),
-    "Ablation": ("Singleton", "setup.models.ablation"),
+    "Structure": (
+        "Singleton",
+        {
+            FluentVersion.v232: "setup.models.structure",
+            FluentVersion.v241: "setup.models.structure",
+            FluentVersion.v242: "setup.models.structure",
+            FluentVersion.v251: "setup.models.structure",
+        },
+    ),
+    "Ablation": (
+        "Singleton",
+        {
+            FluentVersion.v232: "setup.models.ablation",
+            FluentVersion.v241: "setup.models.ablation",
+            FluentVersion.v242: "setup.models.ablation",
+            FluentVersion.v251: "setup.models.ablation",
+        },
+    ),
     "EChemistry": (
         "Singleton",
         {
@@ -179,11 +211,35 @@ DATA = {
         "NamedObject",
         "setup.boundary_conditions.perforated_wall",
     ),
-    "MeshInterfaces": ("Singleton", "setup.mesh_interfaces"),
+    "MeshInterfaces": (
+        "Singleton",
+        {
+            FluentVersion.v232: "setup.mesh_interfaces",
+            FluentVersion.v241: "setup.mesh_interfaces",
+            FluentVersion.v242: "setup.mesh_interfaces",
+            FluentVersion.v251: "setup.mesh_interfaces",
+        },
+    ),
     "DynamicMesh": ("Singleton", {FluentVersion.v251: "setup.dynamic_mesh"}),
     "ReferenceValues": ("Singleton", "setup.reference_values"),
-    "ReferenceFrames": ("Singleton", "setup.reference_frames"),
-    "ReferenceFrame": ("NamedObject", "setup.reference_frames"),
+    "ReferenceFrames": (
+        "Singleton",
+        {
+            FluentVersion.v232: "setup.reference_frames",
+            FluentVersion.v241: "setup.reference_frames",
+            FluentVersion.v242: "setup.reference_frames",
+            FluentVersion.v251: "setup.reference_frames",
+        },
+    ),
+    "ReferenceFrame": (
+        "NamedObject",
+        {
+            FluentVersion.v232: "setup.reference_frames",
+            FluentVersion.v241: "setup.reference_frames",
+            FluentVersion.v242: "setup.reference_frames",
+            FluentVersion.v251: "setup.reference_frames",
+        },
+    ),
     "NamedExpressions": ("Singleton", "setup.named_expressions"),
     "NamedExpression": ("NamedObject", "setup.named_expressions"),
 }
