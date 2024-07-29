@@ -504,7 +504,11 @@ def test_builtin_settings(static_mixer_case_session):
     assert Battery(solver=solver) == solver.setup.models.battery
     assert SystemCoupling(solver=solver) == solver.setup.models.system_coupling
     assert Sofc(solver=solver) == solver.setup.models.sofc
-    assert Pemfc(solver=solver) == solver.setup.models.pemfc
+    if solver.get_fluent_version() >= FluentVersion.v242:
+        assert Pemfc(solver=solver) == solver.setup.models.pemfc
+    else:
+        with pytest.raises(RuntimeError):
+            Pemfc(solver=solver)
     assert Materials(solver=solver) == solver.setup.materials
     assert FluidMaterials(solver=solver) == solver.setup.materials.fluid
     assert (
@@ -566,5 +570,9 @@ def test_builtin_settings(static_mixer_case_session):
     assert ReferenceValues(solver=solver) == solver.setup.reference_values
     assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
     # Fluent 25.1 issue
-    # assert ReferenceFrame(solver=solver, name="global") == solver.setup.reference_frames["global"]
+    if solver.get_fluent_version() < FluentVersion.v251:
+        assert (
+            ReferenceFrame(solver=solver, name="global")
+            == solver.setup.reference_frames["global"]
+        )
     assert NamedExpressions(solver=solver) == solver.setup.named_expressions

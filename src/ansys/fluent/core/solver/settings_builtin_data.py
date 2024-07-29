@@ -23,7 +23,13 @@ DATA = {
     "Battery": ("Singleton", "setup.models.battery"),
     "SystemCoupling": ("Singleton", "setup.models.system_coupling"),
     "Sofc": ("Singleton", "setup.models.sofc"),
-    "Pemfc": ("Singleton", "setup.models.pemfc"),
+    "Pemfc": (
+        "Singleton",
+        {
+            FluentVersion.v242: "setup.models.pemfc",
+            FluentVersion.v251: "setup.models.pemfc",
+        },
+    ),
     "Materials": ("Singleton", "setup.materials"),
     "FluidMaterials": ("Singleton", "setup.materials.fluid"),
     "FluidMaterial": ("NamedObject", "setup.materials.fluid"),
