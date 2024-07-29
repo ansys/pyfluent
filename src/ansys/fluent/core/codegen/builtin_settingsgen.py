@@ -23,7 +23,6 @@ def generate():
             kind, path = v
             f.write(f"class {name}(_{kind}Setting):\n")
             f.write(f'    """{name} setting."""\n\n')
-            f.write(f'    path = "{path}"\n\n')
 
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:

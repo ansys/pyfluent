@@ -1,12 +1,14 @@
 """Base classes for builtin setting classes."""
 
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.solver.settings_builtin_data import DATA
 
 
 class _SingletonSetting:
     def __new__(cls, solver: Solver):
         obj = solver.settings
-        for comp in cls.path.split("."):
+        path = DATA[cls.__name__][1]
+        for comp in path.split("."):
             obj = getattr(obj, comp)
         return obj
 
