@@ -151,13 +151,29 @@ DATA = {
     "ParticleMixtureMaterials": ("Singleton", "setup.materials.particle_mixture"),
     "ParticleMixtureMaterial": ("NamedObject", "setup.materials.particle_mixture"),
     "CellZoneConditions": ("Singleton", "setup.cell_zone_conditions"),
-    "CellZoneCondition": ("NamedObject", "setup.cell_zone_conditions"),
+    "CellZoneCondition": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "setup.cell_zone_conditions",
+            FluentVersion.v242: "setup.cell_zone_conditions",
+            FluentVersion.v241: "setup.cell_zone_conditions",
+            FluentVersion.v232: "setup.cell_zone_conditions",
+        },
+    ),
     "FluidCellZones": ("Singleton", "setup.cell_zone_conditions.fluid"),
     "FluidCellZone": ("NamedObject", "setup.cell_zone_conditions.fluid"),
     "SolidCellZones": ("Singleton", "setup.cell_zone_conditions.solid"),
     "SolidCellZone": ("NamedObject", "setup.cell_zone_conditions.solid"),
     "BoundaryConditions": ("Singleton", "setup.boundary_conditions"),
-    "BoundaryCondition": ("NamedObject", "setup.boundary_conditions"),
+    "BoundaryCondition": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "setup.boundary_conditions",
+            FluentVersion.v242: "setup.boundary_conditions",
+            FluentVersion.v241: "setup.boundary_conditions",
+            FluentVersion.v232: "setup.boundary_conditions",
+        },
+    ),
     "AxisBoundaries": ("Singleton", "setup.boundary_conditions.axis"),
     "AxisBoundary": ("NamedObject", "setup.boundary_conditions.axis"),
     "DegassingBoundaries": ("Singleton", "setup.boundary_conditions.degassing"),
@@ -285,6 +301,22 @@ DATA = {
             FluentVersion.v232: "setup.reference_frames",
         },
     ),
-    "NamedExpressions": ("Singleton", "setup.named_expressions"),
-    "NamedExpression": ("NamedObject", "setup.named_expressions"),
+    "NamedExpressions": (
+        "Singleton",
+        {
+            FluentVersion.v251: "setup.named_expressions",
+            FluentVersion.v242: "setup.named_expressions",
+            FluentVersion.v241: "setup.named_expressions",
+            FluentVersion.v232: "setup.named_expressions",
+        },
+    ),
+    "NamedExpression": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "setup.named_expressions",
+            FluentVersion.v242: "setup.named_expressions",
+            FluentVersion.v241: "setup.named_expressions",
+            FluentVersion.v232: "setup.named_expressions",
+        },
+    ),
 }

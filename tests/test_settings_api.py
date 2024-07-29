@@ -572,20 +572,28 @@ def test_builtin_settings(static_mixer_case_session):
         == solver.setup.materials.solid["aluminum"]
     )
     assert CellZoneConditions(solver=solver) == solver.setup.cell_zone_conditions
-    assert (
-        CellZoneCondition(solver=solver, name="fluid")
-        == solver.setup.cell_zone_conditions["fluid"]
-    )
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            CellZoneCondition(solver=solver, name="fluid")
+            == solver.setup.cell_zone_conditions["fluid"]
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            CellZoneCondition(solver=solver, name="fluid")
     assert FluidCellZones(solver=solver) == solver.setup.cell_zone_conditions.fluid
     assert (
         FluidCellZone(solver=solver, name="fluid")
         == solver.setup.cell_zone_conditions.fluid["fluid"]
     )
     assert BoundaryConditions(solver=solver) == solver.setup.boundary_conditions
-    assert (
-        BoundaryCondition(solver=solver, name="inlet2")
-        == solver.setup.boundary_conditions["inlet2"]
-    )
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            BoundaryCondition(solver=solver, name="inlet2")
+            == solver.setup.boundary_conditions["inlet2"]
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            BoundaryCondition(solver=solver, name="inlet2")
     assert (
         VelocityInlets(solver=solver) == solver.setup.boundary_conditions.velocity_inlet
     )
@@ -631,7 +639,7 @@ def test_builtin_settings(static_mixer_case_session):
             ReferenceFrames(solver=solver)
     if solver.get_fluent_version() >= FluentVersion.v241:
         # Fluent 25.1 issue
-        if solver.get_fluent_version() < FluentVersion.v251:
+        if solver.get_fluent_version() != FluentVersion.v251:
             assert (
                 ReferenceFrame(solver=solver, name="global")
                 == solver.setup.reference_frames["global"]
@@ -639,4 +647,8 @@ def test_builtin_settings(static_mixer_case_session):
     else:
         with pytest.raises(RuntimeError):
             ReferenceFrame(solver=solver, name="global")
-    assert NamedExpressions(solver=solver) == solver.setup.named_expressions
+    if solver.get_fluent_version() >= FluentVersion.v232:
+        assert NamedExpressions(solver=solver) == solver.setup.named_expressions
+    else:
+        with pytest.raises(RuntimeError):
+            NamedExpressions(solver=solver)
