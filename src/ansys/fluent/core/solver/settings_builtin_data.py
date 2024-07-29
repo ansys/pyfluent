@@ -28,7 +28,16 @@ DATA = {
             FluentVersion.v251: "setup.models.species",
         },
     ),
-    "DiscretePhase": ("Singleton", "setup.models.discrete_phase"),
+    "DiscretePhase": (
+        "Singleton",
+        {
+            FluentVersion.v231: "setup.models.discrete_phase",
+            FluentVersion.v232: "setup.models.discrete_phase",
+            FluentVersion.v241: "setup.models.discrete_phase",
+            FluentVersion.v242: "setup.models.discrete_phase",
+            FluentVersion.v251: "setup.models.discrete_phase",
+        },
+    ),
     "Injections": ("Singleton", "setup.models.discrete_phase.injections"),
     "Injection": ("NamedObject", "setup.models.discrete_phase.injections"),
     "VirtualBladeModel": ("Singleton", "setup.models.virtual_blade_model"),
