@@ -228,7 +228,6 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(static_mixer_settings_session):
     solver = static_mixer_settings_session
@@ -256,5 +255,15 @@ def test_parameters_list_function(static_mixer_settings_session):
     create_output_param("report-definition", "outlet-temp-avg")
     create_output_param("report-definition", "outlet-vel-avg")
 
-    assert len(solver.parameters.input_parameters.list()) == 4
-    assert len(solver.parameters.output_parameters.list()) == 2
+    input_parameters_list = solver.parameters.input_parameters.list()
+    output_parameters_list = solver.parameters.output_parameters.list()
+    assert input_parameters_list == {
+        "inlet1_temp": [300.0, "K"],
+        "inlet1_vel": [1.0, "m/s"],
+        "inlet2_temp": [350.0, "K"],
+        "inlet2_vel": [1.0, "m/s"],
+    }
+    assert output_parameters_list == {
+        "outlet-temp-avg-op": [0.0, "K"],
+        "outlet-vel-avg-op": [0.0, "m/s"],
+    }
