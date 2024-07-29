@@ -438,12 +438,49 @@ def test_generated_code_special_cases(new_solver_session):
 
 
 def test_builtin_settings(static_mixer_case_session):
-    from ansys.fluent.core import BoundaryConditions, VelocityInlet, Viscous
+    from ansys.fluent.core import (  # noqa: F401
+        Ablation,
+        Battery,
+        BoundaryCondition,
+        BoundaryConditions,
+        CellZoneCondition,
+        CellZoneConditions,
+        DiscretePhase,
+        EChemistry,
+        Energy,
+        FluidCellZone,
+        FluidCellZones,
+        General,
+        Injections,
+        InteriorBoundaries,
+        InteriorBoundary,
+        Material,
+        Materials,
+        Models,
+        Multiphase,
+        Optics,
+        Pemfc,
+        PressureOutlet,
+        PressureOutlets,
+        Radiation,
+        Setup,
+        Sofc,
+        Species,
+        Structure,
+        SystemCoupling,
+        VelocityInlet,
+        VelocityInlets,
+        VirtualBladeModel,
+        Viscous,
+        WallBoundaries,
+        WallBoundary,
+    )
 
     solver = static_mixer_case_session
-    visc = Viscous(solver=solver)
-    assert visc == solver.setup.models.viscous
-    cold_inlet = VelocityInlet(solver=solver, name="inlet2")
-    assert cold_inlet == solver.setup.boundary_conditions.velocity_inlet["inlet2"]
-    bc_group = BoundaryConditions(solver=solver)
-    assert bc_group == solver.setup.boundary_conditions
+    assert Genera
+    assert Viscous(solver=solver) == solver.setup.models.viscous
+    assert (
+        VelocityInlet(solver=solver, name="inlet2")
+        == solver.setup.boundary_conditions.velocity_inlet["inlet2"]
+    )
+    assert BoundaryConditions(solver=solver) == solver.setup.boundary_conditions

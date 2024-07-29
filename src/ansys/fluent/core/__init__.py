@@ -48,7 +48,7 @@ from ansys.fluent.core.warnings import (  # noqa: F401
 )
 
 try:
-    from ansys.fluent.core.generated.settings_builtin import *  # noqa: F401, F403
+    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
 except ImportError:
     pass
 
