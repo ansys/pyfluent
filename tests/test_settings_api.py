@@ -637,7 +637,7 @@ def test_builtin_settings(static_mixer_case_session):
     else:
         with pytest.raises(RuntimeError):
             ReferenceFrames(solver=solver)
-    if solver.get_fluent_version() >= FluentVersion.v241:
+    if solver.get_fluent_version() >= FluentVersion.v232:
         # Fluent 25.1 issue
         if solver.get_fluent_version() != FluentVersion.v251:
             assert (
