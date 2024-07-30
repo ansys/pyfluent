@@ -72,7 +72,19 @@ def _build_parameter_docstring(name: str, t: str):
 
 
 def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
-    doc = f"{indent}Command {name}.\n\n" if is_command else f"{indent}Query {name}.\n\n"
+    if info.get("docstring"):
+        doc = ""
+        for line in info["docstring"].split("."):
+            if line:
+                doc += f"{indent}{line}.\n"
+        if info.get("args"):
+            doc += "\n"
+    else:
+        doc = (
+            f"{indent}Command {name}.\n\n"
+            if is_command
+            else f"{indent}Query {name}.\n\n"
+        )
     if info.get("args"):
         doc += f"{indent}Parameters\n"
         doc += f"{indent}{'-' * len('Parameters')}\n"

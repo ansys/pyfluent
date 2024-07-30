@@ -3,19 +3,20 @@ import pytest
 from ansys.fluent.core import examples
 
 PYTEST_RELATIVE_TOLERANCE = 0.2
+import os
 
 
 def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
-@pytest.mark.codegen_required
-@pytest.mark.nightly
-@pytest.mark.fluent_version(">=24.2")
+# @pytest.mark.codegen_required
+# @pytest.mark.nightly
+# @pytest.mark.fluent_version(">=24.2")
 def test_meshing_utilities(new_meshing_session):
     meshing_session = new_meshing_session
     import_filename = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", save_path=os.getcwd()
     )
     meshing_session.tui.file.read_case(import_filename)
 
@@ -472,12 +473,9 @@ def test_meshing_utilities(new_meshing_session):
         34,
     ]
 
-    assert (
-        meshing_session.meshing_utilities.get_face_zones(
-            xyz_coordinates=[1.4, 1.4, 1.4]
-        )
-        == 34
-    )
+    assert meshing_session.meshing_utilities.get_face_zones(
+        xyz_coordinates=[1.4, 1.4, 1.4]
+    ) == [34]
 
     assert (
         meshing_session.meshing_utilities.get_face_zones(
@@ -591,12 +589,9 @@ def test_meshing_utilities(new_meshing_session):
         is None
     )
 
-    assert (
-        meshing_session.meshing_utilities.get_cell_zones(
-            xyz_coordinates=[1.4, 1.4, 1.4]
-        )
-        is False
-    )
+    assert meshing_session.meshing_utilities.get_cell_zones(
+        xyz_coordinates=[-7, -6, 0.4]
+    ) == [87]
 
     assert meshing_session.meshing_utilities.get_unreferenced_cell_zones() is None
 
@@ -614,21 +609,21 @@ def test_meshing_utilities(new_meshing_session):
 
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-            cell_zone_id_list=[29, 30, 31, 32, 33]
+            face_zone_id_list=[29, 30, 31, 32, 33]
         )
         == [87]
     )
 
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-            cell_zone_name_list=["outlet", "inlet", "wall", "internal"]
+            face_zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         == [87]
     )
 
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-            cell_zone_name_pattern="*"
+            face_zone_name_pattern="*"
         )
         == [87]
     )
@@ -836,7 +831,7 @@ def test_meshing_utilities(new_meshing_session):
 
     assert meshing_session.meshing_utilities.get_region_volume(
         object_name="elbow-fluid", region_name="elbow-fluid"
-    ) == pytest_approx(152.59942809266)
+    ) == [pytest_approx(152.59942809266)]
 
     assert (
         meshing_session.meshing_utilities.get_pairs_of_overlapping_face_zones(
@@ -1439,6 +1434,27 @@ def test_meshing_utilities(new_meshing_session):
 
     # assert meshing_session.meshing_utilities.mark_bad_quality_faces(face_zone_name_pattern="*", quality_limit=0.5,
     #                                                        number_of_rings=2) == 4799
+
+    assert meshing_session.meshing_utilities.mark_faces_by_quality(
+        face_zone_id_list=[30, 31, 32],
+        quality_measure="Skewness",
+        quality_limit=0.9,
+        append_marking=False,
+    ) == [0, 0.2651020901280914]
+
+    assert meshing_session.meshing_utilities.mark_faces_by_quality(
+        face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+        quality_measure="Skewness",
+        quality_limit=0.9,
+        append_marking=False,
+    ) == [0, 0.2651020901280914]
+
+    assert meshing_session.meshing_utilities.mark_faces_by_quality(
+        face_zone_name_pattern="*",
+        quality_measure="Skewness",
+        quality_limit=0.9,
+        append_marking=False,
+    ) == [0, 0.5697421601607908]
 
     assert (
         meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
