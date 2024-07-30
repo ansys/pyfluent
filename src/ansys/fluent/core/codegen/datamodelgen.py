@@ -90,6 +90,8 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
         doc += f"{indent}{'-' * len('Parameters')}\n"
         for arg in info.get("args"):
             doc += f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n'
+            if arg.get("docstring"):
+                doc += f'{indent}    {arg["docstring"]}\n'
     doc += f"\n{indent}Returns\n"
     doc += f"{indent}{'-' * len('Returns')}\n"
     doc += f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n'
