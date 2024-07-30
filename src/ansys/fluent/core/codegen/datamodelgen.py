@@ -76,7 +76,7 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
         doc = ""
         for line in info["docstring"].split("."):
             if line:
-                doc += f"{indent}{line}.\n"
+                doc += f"{indent}{line.lstrip(' ')}.\n"
         if info.get("args"):
             doc += "\n"
     else:
