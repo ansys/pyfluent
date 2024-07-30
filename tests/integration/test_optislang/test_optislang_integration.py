@@ -251,7 +251,7 @@ def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_ses
     base_inputs = base_dp["input_parameters"]
     assert base_inputs == {"inlet2_temp": 500.0}
     base_outputs = base_dp["output_parameters"]
-    assert base_outputs == {"outlet_temp-op": 322.336008}
+    assert base_outputs == {"outlet_temp-op": pytest_approx(322.336008)}
     if session2.get_fluent_version() < FluentVersion.v251:
         pstudy.design_points.create_1()
     else:
