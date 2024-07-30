@@ -3,20 +3,19 @@ import pytest
 from ansys.fluent.core import examples
 
 PYTEST_RELATIVE_TOLERANCE = 0.2
-import os
 
 
 def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
-# @pytest.mark.codegen_required
-# @pytest.mark.nightly
-# @pytest.mark.fluent_version(">=24.2")
+@pytest.mark.codegen_required
+@pytest.mark.nightly
+@pytest.mark.fluent_version(">=24.2")
 def test_meshing_utilities(new_meshing_session):
     meshing_session = new_meshing_session
     import_filename = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow", save_path=os.getcwd()
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
     meshing_session.tui.file.read_case(import_filename)
 
