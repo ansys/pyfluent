@@ -590,12 +590,13 @@ class _Alias:
                 scheme_eval("(api-unecho-python-port pyfluent-journal-str-port)")
                 journal_str = scheme_eval(
                     "(close-output-port pyfluent-journal-str-port)"
-                ).strip()
-                warnings.warn(
-                    "Note: A newer syntax is available to perform the last operation:\n"
-                    f"{journal_str}",
-                    DeprecatedSettingWarning,
                 )
+                if isinstance(journal_str, str):
+                    warnings.warn(
+                        "Note: A newer syntax is available to perform the last operation:\n"
+                        f"{journal_str.strip()}",
+                        DeprecatedSettingWarning,
+                    )
                 if not _Alias.once:
                     warnings.warn(
                         "\nExecute the following code to suppress future warnings like the above:\n\n"
@@ -1164,13 +1165,23 @@ class WildcardPath(Group):
             if fnmatch.fnmatch(item, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield item
 
+    # Note that following 2 are not symmetric as get_state and set_state
+    # are not symmetric.
+    # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
+    # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
+
     def to_scheme_keys(self, value):
         """Convert value to have keys with scheme names."""
-        return self._state_cls.to_scheme_keys(value)
+        return self._settings_cls.to_scheme_keys(value)
 
     def to_python_keys(self, value):
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
+
+    @classmethod
+    def _unalias(cls, value):
+        # Not yet implemented
+        return value
 
 
 class NamedObjectWildcardPath(WildcardPath):
@@ -1762,11 +1773,22 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
 
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            with self._while_creating():
-                self.flproxy.create(self.path, name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
+            if self.flproxy.has_wildcard(name):
+                child = WildcardPath(
+                    self.flproxy,
+                    self.path + "/" + name,
+                    self.__class__,
+                    self.__class__.child_object_type,
+                    self,
+                )
+            else:
+                with self._while_creating():
+                    self.flproxy.create(self.path, name)
+                child = self._create_child_object(name)
+        else:
+            child = self._objects.get(name)
+            if not child:
+                child = self._create_child_object(name)
         child.set_state(value)
 
 
@@ -1797,10 +1819,26 @@ class _NonCreatableNamedObjectMixin(
 ):
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            raise KeyError(name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
+            if self.flproxy.has_wildcard(name):
+                child = WildcardPath(
+                    self.flproxy,
+                    self.path + "/" + name,
+                    self.__class__,
+                    self.__class__.child_object_type,
+                    self,
+                )
+            else:
+                raise KeyError(
+                    allowed_name_error_message(
+                        context=self.__class__.__name__,
+                        trial_name=name,
+                        allowed_values=self.get_object_names(),
+                    )
+                )
+        else:
+            child = self._objects.get(name)
+            if not child:
+                child = self._create_child_object(name)
         child.set_state(value)
 
 

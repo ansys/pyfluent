@@ -412,6 +412,9 @@ class Proxy:
     def is_interactive_mode(self):
         return False
 
+    def has_wildcard(self, name: str) -> bool:
+        return False
+
 
 def test_primitives():
     r = flobject.get_root(Proxy())
@@ -812,14 +815,28 @@ def test_settings_wild_card_access(new_solver_session) -> None:
 
     solver.solution.initialization.hybrid_initialize()
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet["*1"].momentum.velocity.value()[
-            "inlet1"
-        ]["momentum"]["velocity"]["value"]
-        == solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].momentum.velocity.value()
-    )
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert (
+            solver.setup.boundary_conditions.velocity_inlet[
+                "*1"
+            ].momentum.velocity_magnitude.value()["inlet1"]["momentum"][
+                "velocity_magnitude"
+            ][
+                "value"
+            ]
+            == solver.setup.boundary_conditions.velocity_inlet[
+                "inlet1"
+            ].momentum.velocity.value()
+        )
+    else:
+        assert (
+            solver.setup.boundary_conditions.velocity_inlet[
+                "*1"
+            ].momentum.velocity.value()["inlet1"]["momentum"]["velocity"]["value"]
+            == solver.setup.boundary_conditions.velocity_inlet[
+                "inlet1"
+            ].momentum.velocity.value()
+        )
 
     assert solver.setup.boundary_conditions.wall["*"]()
 
@@ -996,9 +1013,7 @@ def _check_vector_units(obj, units):
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    # https://github.com/ansys/pyfluent/issues/3120
-    if solver.get_fluent_version() != FluentVersion.v251:
-        assert isinstance(solver.settings.state_with_units(), dict)
+    assert isinstance(solver.settings.state_with_units(), dict)
     hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
@@ -1053,7 +1068,9 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
-
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        # https://github.com/ansys/pyfluent/issues/3134
+        return
     _check_vector_units(
         solver.setup.reference_frames[
             "global"
