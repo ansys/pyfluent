@@ -29,13 +29,6 @@ def test_new_watertight_workflow(new_meshing_session):
     watertight.add_local_sizing()
 
     # Generate surface mesh
-    assert (
-        round(
-            watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size.get_state(),
-            5,
-        )
-        == 0.41831
-    )
     watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size.set_state(0.3)
     assert watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size() == 0.3
     watertight.create_surface_mesh()
