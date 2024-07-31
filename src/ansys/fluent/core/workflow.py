@@ -1326,7 +1326,7 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
-                _compound_parent_task_python_name_id=[None, 0],
+                _compound_parent_task_python_name_id=["", 0],
                 _compound_task_map={},
                 _compound_task_names_with_children=[],
                 _unwanted_attrs={
