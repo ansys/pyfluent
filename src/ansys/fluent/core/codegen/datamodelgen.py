@@ -9,6 +9,9 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
+    meshing_utility_examples,
+)
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -95,6 +98,11 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
     doc += f"\n{indent}Returns\n"
     doc += f"{indent}{'-' * len('Returns')}\n"
     doc += f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n'
+    if meshing_utility_examples.get(name):
+        doc += f"\n{indent}Examples\n"
+        doc += f"{indent}{'-' * len('Examples')}\n"
+        for example in meshing_utility_examples[name]:
+            doc += f"{indent}>>> {example}\n"
     return doc
 
 

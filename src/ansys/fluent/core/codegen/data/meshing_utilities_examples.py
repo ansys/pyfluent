@@ -330,6 +330,9 @@ meshing_utility_examples = {
         'meshing_session.meshing_utilities.get_face_zones_of_object(object_name="elbow-fluid")',
         'meshing_session.meshing_utilities.get_face_zones_of_object(objects=["elbow-fluid"])',
     ],
+    "get_face_zones_with_zone_specific_prisms_applied": [
+        "meshing_session.meshing_utilities.get_face_zones_with_zone_specific_prisms_applied()"
+    ],
     "get_free_faces_count": [
         "meshing_session.meshing_utilities.get_free_faces_count(face_zone_id_list=[30, 31, 32])",
         'meshing_session.meshing_utilities.get_free_faces_count(face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"])',
