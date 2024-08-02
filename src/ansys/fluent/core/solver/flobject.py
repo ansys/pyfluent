@@ -1604,6 +1604,27 @@ class BaseCommand(Action):
         return self.execute_command(*args, **kwds)
 
 
+# TODO: Remove this after paremater list() method is fixed from Fluent side
+def _fix_parameter_list_return(val):
+    if isinstance(val, dict):
+        new_val = {}
+        for name, v in val.items():
+            value, units = v
+            if len(units) > 0:
+                unit_labels = _fix_parameter_list_return.scheme_eval(
+                    f"(units/inquire-available-label-strings-for-quantity '{units[0]})"
+                )
+                unit_label = unit_labels[0] if len(unit_labels) > 0 else ""
+            else:
+                unit_label = ""
+            new_val[name] = [value, unit_label]
+        return new_val
+    return val
+
+
+_fix_parameter_list_return.scheme_eval = None
+
+
 class Command(BaseCommand):
     """Command object."""
 
@@ -1624,7 +1645,14 @@ class Command(BaseCommand):
                 if response in ["n", "N", "no"]:
                     return
         with self._while_executing_command():
-            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
+                if (self._parent.path, self.obj_name) in [
+                    ("parameters/input-parameters", "list"),
+                    ("parameters/output-parameters", "list"),
+                ]:
+                    ret = _fix_parameter_list_return(ret)
+            return ret
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
@@ -2095,6 +2123,7 @@ def get_root(
     root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
+    _fix_parameter_list_return.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
     root._setattr("_file_transfer_service", file_transfer_service)
     return root

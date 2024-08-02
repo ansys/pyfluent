@@ -7,6 +7,7 @@ from ansys.fluent.core.parametric import (
 )
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3139")
 @pytest.mark.nightly
 def test_local_parametric_run():
     case_filepath = examples.download_file(
