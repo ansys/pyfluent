@@ -418,8 +418,6 @@ class SlurmLauncher:
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
-        if self._argvals["env"] is None:
-            self._argvals["env"] = {}
         kwargs = _get_subprocess_kwargs_for_fluent(self._argvals["env"], self._argvals)
         launch_cmd += _build_journal_argument(
             self._argvals["topy"], self._argvals["journal_file_names"]

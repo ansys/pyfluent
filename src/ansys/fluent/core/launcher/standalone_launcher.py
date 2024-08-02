@@ -202,8 +202,6 @@ class StandaloneLauncher:
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
-        if self.argvals["env"] is None:
-            self.argvals["env"] = {}
         self._kwargs = _get_subprocess_kwargs_for_fluent(
             self.argvals["env"], self.argvals
         )
