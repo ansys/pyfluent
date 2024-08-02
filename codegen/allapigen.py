@@ -10,12 +10,12 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 if __name__ == "__main__":
     t0 = time()
     meshing = launch_fluent(mode=FluentMode.MESHING)
-    version = get_version_for_file_name(session=meshing)
+    version = get_version_for_file_name(session=meshing, py=False)
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
     ge_242 = FluentVersion(version) >= FluentVersion.v242
     solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
+        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER, py=False
     )
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
