@@ -228,13 +228,13 @@ class Base:
         return self._flproxy
 
     @property
-    def _file_transfer_service(self):
+    def __file_transfer_service(self):
         with warnings.catch_warnings():
             warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
             if self._file_transfer_service:
                 return self._file_transfer_service
             elif self._parent:
-                return self._parent._file_transfer_service
+                return self._parent.__file_transfer_service
 
     _name = None
     fluent_name = None
@@ -826,9 +826,9 @@ class FileName(Base):
 class _InputFile(FileName):
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self._file_transfer_service:
+        if self.__file_transfer_service:
             for file_name in file_names:
-                self._file_transfer_service.upload(file_name=file_name)
+                self.__file_transfer_service.upload(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -837,9 +837,9 @@ class _InputFile(FileName):
 class _OutputFile(FileName):
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self._file_transfer_service:
+        if self.__file_transfer_service:
             for file_name in file_names:
-                self._file_transfer_service.download(file_name=file_name)
+                self.__file_transfer_service.download(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
