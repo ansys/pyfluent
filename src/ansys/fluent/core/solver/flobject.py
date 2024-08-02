@@ -826,9 +826,9 @@ class FileName(Base):
 class _InputFile(FileName):
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self.__file_transfer_service:
+        if self._file_transfer_service:
             for file_name in file_names:
-                self.__file_transfer_service.upload(file_name=file_name)
+                self._file_transfer_service.upload(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -837,9 +837,9 @@ class _InputFile(FileName):
 class _OutputFile(FileName):
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self.__file_transfer_service:
+        if self._file_transfer_service:
             for file_name in file_names:
-                self.__file_transfer_service.download(file_name=file_name)
+                self._file_transfer_service.download(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
