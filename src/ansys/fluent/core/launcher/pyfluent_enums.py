@@ -26,64 +26,21 @@ class LaunchMode(Enum):
     SLURM = 4
 
 
-class FluentMode(Enum):
-    """Enumerates over supported Fluent modes."""
-
-    MESHING = (Meshing, "meshing")
-    PURE_MESHING = (PureMeshing, "pure-meshing")
-    SOLVER = (Solver, "solver")
-    SOLVER_ICING = (SolverIcing, "solver-icing")
-
-    @staticmethod
-    def get_mode(mode: str) -> "FluentMode":
-        """Get the FluentMode based on the provided mode string.
-
-        Parameters
-        ----------
-        mode : str
-            Mode
-
-        Returns
-        -------
-        FluentMode
-            Fluent mode.
-
-        Raises
-        ------
-        DisallowedValuesError
-            If an unknown mode is passed.
-        """
-        allowed_modes = []
-        for m in FluentMode:
-            allowed_modes.append(m.value[1])
-            if mode == m.value[1]:
-                return m
-        raise DisallowedValuesError("mode", mode, allowed_modes)
-
-    @staticmethod
-    def is_meshing(mode: "FluentMode") -> bool:
-        """Check if the current mode is meshing.
-
-        Parameters
-        ----------
-        mode : FluentMode
-            mode
-
-        Returns
-        -------
-        bool
-            ``True`` if the mode is ``FluentMode.MESHING`` or ``FluentMode.PURE_MESHING``,
-            ``False`` otherwise.
-        """
-        return mode in [FluentMode.MESHING, FluentMode.PURE_MESHING]
-
-
 @total_ordering
 class FluentEnum(Enum):
     """Provides the base class for Fluent-related enums.
 
     Accepts lowercase member names as values and supports comparison operators.
     """
+
+    @staticmethod
+    def _get_enum_map():
+        _fl_val_map = {}
+        return _fl_val_map
+
+    def get_fl_value(self):
+        """Returns the fluent value of the enum."""
+        return self._get_enum_map()[self.value]
 
     @classmethod
     def _missing_(cls, value: str):
@@ -113,6 +70,68 @@ class FluentEnum(Enum):
                 return False
 
 
+class FluentMode(FluentEnum):
+    """Enumerates over supported Fluent modes."""
+
+    MESHING = "meshing"
+    PURE_MESHING = "pure-meshing"
+    SOLVER = "solver"
+    SOLVER_ICING = "solver-icing"
+
+    @staticmethod
+    def _get_enum_map():
+        _fl_val_map = {
+            "meshing": Meshing,
+            "pure-meshing": PureMeshing,
+            "solver": Solver,
+            "solver-icing": SolverIcing,
+        }
+        return _fl_val_map
+
+    @staticmethod
+    def get_mode(mode: str) -> "FluentMode":
+        """Get the FluentMode based on the provided mode string.
+
+        Parameters
+        ----------
+        mode : str
+            Mode
+
+        Returns
+        -------
+        FluentMode
+            Fluent mode.
+
+        Raises
+        ------
+        DisallowedValuesError
+            If an unknown mode is passed.
+        """
+        allowed_modes = []
+        for m in FluentMode:
+            allowed_modes.append(m.value)
+            if mode == m.value:
+                return m
+        raise DisallowedValuesError("mode", mode, allowed_modes)
+
+    @staticmethod
+    def is_meshing(mode: "FluentMode") -> bool:
+        """Check if the current mode is meshing.
+
+        Parameters
+        ----------
+        mode : FluentMode
+            mode
+
+        Returns
+        -------
+        bool
+            ``True`` if the mode is ``FluentMode.MESHING`` or ``FluentMode.PURE_MESHING``,
+            ``False`` otherwise.
+        """
+        return mode in [FluentMode.MESHING, FluentMode.PURE_MESHING]
+
+
 class UIMode(FluentEnum):
     """Provides supported user interface mode of Fluent."""
 
@@ -122,31 +141,58 @@ class UIMode(FluentEnum):
     HIDDEN_GUI = ("hidden",)
     GUI = ("",)
 
+    @staticmethod
+    def _get_enum_map():
+        _fl_val_map = {
+            "no-gui-or-graphics": ("g",),
+            "no-graphics": ("gr",),
+            "no-gui": ("gu",),
+            "hidden-gui": ("hidden",),
+            "gui": ("",),
+        }
+        return _fl_val_map
 
-class Dimension(Enum):
+
+class Dimension(FluentEnum):
     """Geometric dimensionality of the Fluent simulation."""
 
-    TWO = ("2d",)
-    THREE = ("3d",)
+    TWO = 2
+    THREE = 3
+
+    @staticmethod
+    def _get_enum_map():
+        _fl_val_map = {
+            2: ("2d",),
+            3: ("3d",),
+        }
+        return _fl_val_map
 
     @classmethod
     def _missing_(cls, value: int):
         if value is None:
             return cls.THREE
         for member in cls:
-            if int(member.value[0][0]) == value:
+            if member.value == value:
                 return member
         raise ValueError(
             f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: {", ".join((member.value[0][0]) for member in cls)}."""
+            f""" The supported values are: {", ".join(member.value for member in cls)}."""
         )
 
 
 class Precision(FluentEnum):
     """Floating point precision."""
 
-    SINGLE = ("",)
-    DOUBLE = ("dp",)
+    SINGLE = 1
+    DOUBLE = 2
+
+    @staticmethod
+    def _get_enum_map():
+        _fl_val_map = {
+            1: ("",),
+            2: ("dp",),
+        }
+        return _fl_val_map
 
 
 class FluentWindowsGraphicsDriver(FluentEnum):
