@@ -221,7 +221,7 @@ def test_gpu_launch_arg_additional_arg():
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
     helpers.delete_all_awp_vars()
     with pytest.raises(AnsysVersionNotFound):
-        get_fluent_exe_path(env={})
+        get_fluent_exe_path()
     with pytest.raises(AnsysVersionNotFound):
         FluentVersion.get_latest_installed()
 
@@ -233,7 +233,7 @@ def test_get_fluent_exe_path_from_awp_root_222(helpers):
     else:
         expected_path = Path("ansys_inc/v222/fluent") / "bin" / "fluent"
     assert FluentVersion.get_latest_installed() == FluentVersion.v222
-    assert get_fluent_exe_path(env={}) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_get_fluent_exe_path_from_awp_root_231(helpers):
@@ -243,7 +243,7 @@ def test_get_fluent_exe_path_from_awp_root_231(helpers):
     else:
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
     assert FluentVersion.get_latest_installed() == FluentVersion.v231
-    assert get_fluent_exe_path(env={}) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_get_fluent_exe_path_from_awp_root_232(helpers):
@@ -253,7 +253,7 @@ def test_get_fluent_exe_path_from_awp_root_232(helpers):
     else:
         expected_path = Path("ansys_inc/v232/fluent") / "bin" / "fluent"
     assert FluentVersion.get_latest_installed() == FluentVersion.v232
-    assert get_fluent_exe_path(env={}) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_get_fluent_exe_path_from_awp_root_241(helpers):
@@ -263,7 +263,7 @@ def test_get_fluent_exe_path_from_awp_root_241(helpers):
     else:
         expected_path = Path("ansys_inc/v241/fluent") / "bin" / "fluent"
     assert FluentVersion.get_latest_installed() == FluentVersion.v241
-    assert get_fluent_exe_path(env={}) == expected_path
+    assert get_fluent_exe_path() == expected_path
 
 
 def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
