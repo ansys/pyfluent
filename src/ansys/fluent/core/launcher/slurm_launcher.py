@@ -281,6 +281,7 @@ class SlurmLauncher:
         py: Optional[bool] = None,
         gpu: Optional[bool] = None,
         cwd: Optional[str] = None,
+        custom_fluent_path: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         scheduler_options: Optional[dict] = None,
@@ -353,6 +354,8 @@ class SlurmLauncher:
             If True, Fluent will start with GPU Solver.
         cwd : str, Optional
             Working directory for the Fluent client.
+        custom_fluent_path: str, Optional
+            User provided Fluent installation path.
         topy : bool or str, optional
             A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
             Can optionally take the file name of the new python journal file.
