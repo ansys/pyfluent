@@ -151,8 +151,9 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return get_exe_path(Path(fluent_root))
 
     # 2. Custom Path provided by the user in launch_fluent
-    if launch_argvals["custom_fluent_path"]:
-        return Path(launch_argvals["custom_fluent_path"])
+    fluent_path = launch_argvals.get("custom_fluent_path")
+    if fluent_path:
+        return Path(fluent_path)
 
-    # 2. the latest ANSYS version from AWP_ROOT environment variables
+    # 3. the latest ANSYS version from AWP_ROOT environment variables
     return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
