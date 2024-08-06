@@ -8,6 +8,7 @@ from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
     LoadWorkflow,
     WorkflowMode,
+    name_to_identifier_map,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.session_shared import (
@@ -57,7 +58,6 @@ class BaseMeshing:
         self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._product_version = None
-        self._current_workflow = None
 
     def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
@@ -132,44 +132,40 @@ class BaseMeshing:
     @property
     def watertight_workflow(self):
         """Datamodel root of workflow."""
-        self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
+        return WorkflowMode.WATERTIGHT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
-        return self._current_workflow
 
     @property
     def fault_tolerant_workflow(self):
         """Datamodel root of workflow."""
-        self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
+        return WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.PartManagement,
             self.PMFileManagement,
             self.get_fluent_version(),
         )
-        return self._current_workflow
 
     @property
     def two_dimensional_meshing_workflow(self):
         """Data model root of the workflow."""
-        self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
+        return WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
-        return self._current_workflow
 
     @property
     def topology_based_meshing_workflow(self):
         """Datamodel root of workflow."""
-        self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
+        return WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
-        return self._current_workflow
 
     def load_workflow(self, file_path: str):
         """Datamodel root of workflow."""
@@ -183,17 +179,52 @@ class BaseMeshing:
     @property
     def create_workflow(self):
         """Datamodel root of the workflow."""
-        self._current_workflow = CreateWorkflow(
+        return CreateWorkflow(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
-        return self._current_workflow
 
     @property
     def current_workflow(self):
-        """Datamodel root of the workflow."""
-        return self._current_workflow
+        """Datamodel root of the workflow.
+
+        Raises
+        ------
+        RuntimeError
+            If no workflow is initialized.
+        """
+        if (
+            getattr(
+                self.meshing.GlobalSettings,
+                name_to_identifier_map["Watertight Geometry"],
+            )()
+            and getattr(
+                self.meshing.GlobalSettings,
+                name_to_identifier_map["Fault-tolerant Meshing"],
+            )()
+        ):
+            raise RuntimeError("No workflow initialized.")
+        elif getattr(
+            self.meshing.GlobalSettings, name_to_identifier_map["Watertight Geometry"]
+        )():
+            return self.watertight_workflow
+        elif getattr(
+            self.meshing.GlobalSettings,
+            name_to_identifier_map["Fault-tolerant Meshing"],
+        )():
+            return self.fault_tolerant_workflow
+        elif getattr(
+            self.meshing.GlobalSettings, name_to_identifier_map["2D Meshing"]
+        )():
+            return self.two_dimensional_meshing_workflow
+        elif getattr(
+            self.meshing.GlobalSettings,
+            name_to_identifier_map["Topology Based Meshing"],
+        )():
+            return self.topology_based_meshing_workflow
+        else:
+            return self.create_workflow
 
     @property
     def PartManagement(self):

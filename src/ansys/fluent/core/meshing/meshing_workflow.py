@@ -10,6 +10,13 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow import ClassicWorkflow, Workflow
 
+name_to_identifier_map = {
+    "Watertight Geometry": "EnableCleanCAD",
+    "Fault-tolerant Meshing": "EnableComplexMeshing",
+    "2D Meshing": "EnablePrime2dMeshing",
+    "Topology Based Meshing": "EnablePrimeMeshing",
+}
+
 
 class ClassicMeshingWorkflow(ClassicWorkflow):
     """Provides meshing specialization of the workflow wrapper."""
@@ -107,7 +114,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="Watertight Geometry",
-            identifier="EnableCleanCAD",
+            identifier=name_to_identifier_map["Watertight Geometry"],
             fluent_version=fluent_version,
         )
 
@@ -142,7 +149,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="Fault-tolerant Meshing",
-            identifier="EnableComplexMeshing",
+            identifier=name_to_identifier_map["Fault-tolerant Meshing"],
             fluent_version=fluent_version,
         )
         self._part_management = part_management
@@ -195,7 +202,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="2D Meshing",
-            identifier="EnablePrime2dMeshing",
+            identifier=name_to_identifier_map["2D Meshing"],
             fluent_version=fluent_version,
         )
 
@@ -224,7 +231,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="Topology Based Meshing",
-            identifier="EnablePrimeMeshing",
+            identifier=name_to_identifier_map["Topology Based Meshing"],
             fluent_version=fluent_version,
         )
 

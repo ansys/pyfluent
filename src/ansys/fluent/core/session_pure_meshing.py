@@ -141,6 +141,7 @@ class PureMeshing(BaseSession):
         """Create a meshing workflow."""
         return self._base_meshing.create_workflow
 
+    @property
     def current_workflow(self):
         """Current meshing workflow."""
         return self._base_meshing.current_workflow
