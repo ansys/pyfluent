@@ -1519,10 +1519,6 @@ class Workflow:
         self._workflow.CreateNewWorkflow()
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
-    def has_workflow(self) -> bool:
-        """Returns True if any workflow exist."""
-        return True if len(self._task_list) else False
-
     @property
     def insertable_tasks(self):
         """Tasks that can be inserted on a blank workflow."""

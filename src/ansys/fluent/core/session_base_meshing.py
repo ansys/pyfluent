@@ -6,7 +6,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
-    CurrentWorkflow,
     LoadWorkflow,
     WorkflowMode,
 )
@@ -58,6 +57,7 @@ class BaseMeshing:
         self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._product_version = None
+        self._current_workflow = None
 
     def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
@@ -131,44 +131,48 @@ class BaseMeshing:
 
     @property
     def watertight_workflow(self):
-        """Datamodel root of workflow exposed in object-oriented manner."""
-        return WorkflowMode.WATERTIGHT_MESHING_MODE.value(
+        """Datamodel root of workflow."""
+        self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
+        return self._current_workflow
 
     @property
     def fault_tolerant_workflow(self):
-        """Datamodel root of workflow exposed in object-oriented manner."""
-        return WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
+        """Datamodel root of workflow."""
+        self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.PartManagement,
             self.PMFileManagement,
             self.get_fluent_version(),
         )
+        return self._current_workflow
 
     @property
     def two_dimensional_meshing_workflow(self):
-        """Data model root of the workflow exposed in an object-oriented manner."""
-        return WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
+        """Data model root of the workflow."""
+        self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
+        return self._current_workflow
 
     @property
     def topology_based_meshing_workflow(self):
-        """Datamodel root of workflow exposed in object-oriented manner."""
-        return WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
+        """Datamodel root of workflow."""
+        self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
+        return self._current_workflow
 
     def load_workflow(self, file_path: str):
-        """Datamodel root of workflow exposed in object-oriented manner."""
+        """Datamodel root of workflow."""
         return LoadWorkflow(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
@@ -178,27 +182,18 @@ class BaseMeshing:
 
     @property
     def create_workflow(self):
-        """Datamodel root of the workflow exposed in an object-oriented manner."""
-        return CreateWorkflow(
+        """Datamodel root of the workflow."""
+        self._current_workflow = CreateWorkflow(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
             self.get_fluent_version(),
         )
+        return self._current_workflow
 
     @property
     def current_workflow(self):
-        """Datamodel root of the workflow exposed in an object-oriented manner."""
-        return CurrentWorkflow(
-            _make_datamodel_module(self, "workflow"),
-            self.meshing,
-            self.get_fluent_version(),
-        )
-
-    @property
-    def has_workflow(self) -> bool:
-        """Returns True if any workflow exist."""
-        _task_list = _make_datamodel_module(self, "workflow")()["Workflow"]["TaskList"]
-        return True if len(_task_list) else False
+        """Datamodel root of the workflow."""
+        return self._current_workflow
 
     @property
     def PartManagement(self):

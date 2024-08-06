@@ -297,33 +297,3 @@ class CreateWorkflow(Workflow):
         self._meshing = meshing
         self._unsubscribe_root_affected_callback()
         self._create_workflow()
-
-
-class CurrentWorkflow(Workflow):
-    """Provides a specialization of the workflow wrapper for an existing workflow."""
-
-    def __init__(
-        self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
-        fluent_version: FluentVersion,
-    ) -> None:
-        """Initialize a ``CurrentWorkflow`` instance.
-
-        Parameters
-        ----------
-        workflow : PyMenuGeneric
-            Underlying workflow object.
-        meshing : PyMenuGeneric
-            Meshing object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        """
-        super().__init__(
-            workflow=workflow, command_source=meshing, fluent_version=fluent_version
-        )
-        self._meshing = meshing
-        self._unsubscribe_root_affected_callback()
-        self._activate_dynamic_interface(dynamic_interface=True)
-        if not self.has_workflow():
-            raise RuntimeError("The session has no workflow to connect with.")
