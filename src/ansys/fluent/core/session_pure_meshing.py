@@ -141,6 +141,14 @@ class PureMeshing(BaseSession):
         """Create a meshing workflow."""
         return self._base_meshing.create_workflow
 
+    def has_workflow(self):
+        """Returns True if any workflow exist."""
+        return self._base_meshing.has_workflow
+
+    def current_workflow(self):
+        """Current meshing workflow."""
+        return self._base_meshing.current_workflow
+
     def topology_based(self):
         """Get a new topology-based meshing workflow.
 

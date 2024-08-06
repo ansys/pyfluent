@@ -1559,3 +1559,34 @@ def test_duplicate_children_of_compound_task(
         watertight.add_local_sizing.tasks()[-1].python_name()
         == "add_local_sizing_child_3"
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_current_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    assert not meshing.has_workflow()
+    with pytest.raises(RuntimeError):
+        current_workflow = meshing.current_workflow()
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert meshing.has_workflow()
+    current_workflow = meshing.current_workflow()
+
+    assert current_workflow.import_geometry
+
+    with pytest.raises(AttributeError):
+        current_workflow.import_cad_and_part_management
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+    # This is needed to reflect the backend changes in the workflow,
+    # in this case, the time required to initialize the Fault-tolerant Meshing workflow.
+    time.sleep(2.5)
+
+    assert current_workflow.import_cad_and_part_management
+
+    with pytest.raises(AttributeError):
+        current_workflow.import_geometry

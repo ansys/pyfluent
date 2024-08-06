@@ -6,6 +6,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
+    CurrentWorkflow,
     LoadWorkflow,
     WorkflowMode,
 )
@@ -183,6 +184,21 @@ class BaseMeshing:
             self.meshing,
             self.get_fluent_version(),
         )
+
+    @property
+    def current_workflow(self):
+        """Datamodel root of the workflow exposed in an object-oriented manner."""
+        return CurrentWorkflow(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.get_fluent_version(),
+        )
+
+    @property
+    def has_workflow(self) -> bool:
+        """Returns True if any workflow exist."""
+        _task_list = _make_datamodel_module(self, "workflow")()["Workflow"]["TaskList"]
+        return True if len(_task_list) else False
 
     @property
     def PartManagement(self):
