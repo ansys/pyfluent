@@ -42,6 +42,7 @@ def test_gpu_version_error():
             processor_count=5,
             ui_mode="gui",
             gpu=True,
+            py=False,
         )
         pyfluent.setup_for_fluent(
             mode="meshing",
@@ -50,6 +51,7 @@ def test_gpu_version_error():
             processor_count=5,
             ui_mode="gui",
             gpu=True,
+            py=False,
         )
 
 
@@ -58,6 +60,7 @@ def test_mode():
         pyfluent.launch_fluent(
             mode="meshing-solver",
             start_container=False,
+            py=False,
         )
 
 
@@ -65,7 +68,7 @@ def test_mode():
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
     with pytest.raises(TimeoutError) as msg:
-        pyfluent.launch_fluent(mode="solver", start_timeout=2)
+        pyfluent.launch_fluent(mode="solver", start_timeout=2, py=False)
 
 
 @pytest.mark.fluent_version("<24.1")
@@ -114,12 +117,14 @@ def test_non_gui_in_windows_does_not_throw_exception():
 
 def test_container_launcher():
     # test dry_run
-    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+    container_dict = pyfluent.launch_fluent(
+        start_container=True, dry_run=True, py=False
+    )
     assert isinstance(container_dict, dict)
     assert len(container_dict) > 1
 
     # test run with configuration dict
-    session = pyfluent.launch_fluent(container_dict=container_dict)
+    session = pyfluent.launch_fluent(container_dict=container_dict, py=False)
     assert session.health_check.is_serving
 
 
@@ -130,7 +135,7 @@ def test_case_load():
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_file_name=case_name)
+    session = pyfluent.launch_fluent(case_file_name=case_name, py=False)
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -154,6 +159,7 @@ def test_case_lightweight_setup():
     session = pyfluent.launch_fluent(
         case_file_name=case_name,
         lightweight_mode=True,
+        py=False,
     )
 
     # Case loaded
@@ -175,7 +181,7 @@ def test_case_data_load():
         "mixing_elbow.dat.h5",
         "pyfluent/mixing_elbow",
     )
-    session = pyfluent.launch_fluent(case_data_file_name=case_name)
+    session = pyfluent.launch_fluent(case_data_file_name=case_name, py=False)
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
@@ -287,7 +293,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
 
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
-    pyfluent.launch_fluent(start_watchdog=True)
+    pyfluent.launch_fluent(start_watchdog=True, py=False)
 
 
 @pytest.mark.standalone
@@ -402,7 +408,7 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 @pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
     with pytest.raises(PyFluentDeprecationWarning):
-        pyfluent.launch_fluent(show_gui=True)
+        pyfluent.launch_fluent(show_gui=True, py=False)
 
 
 def test_fluent_enums():
@@ -417,9 +423,11 @@ def test_fluent_enums():
 
 def test_exposure_and_graphics_driver_arguments():
     with pytest.raises(ValueError):
-        pyfluent.launch_fluent(ui_mode="gu")
+        pyfluent.launch_fluent(ui_mode="gu", py=False)
     with pytest.raises(ValueError):
-        pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
+        pyfluent.launch_fluent(
+            graphics_driver="x11" if is_windows() else "dx11", py=False
+        )
     for m in UIMode:
         string1 = _build_fluent_launch_args_string(
             ui_mode=m, additional_arguments="", processor_count=None
@@ -450,11 +458,11 @@ def test_processor_count():
     def get_processor_count(solver):
         return int(solver.rp_vars("parallel/nprocs_string").strip('"'))
 
-    with pyfluent.launch_fluent(processor_count=2) as solver:
+    with pyfluent.launch_fluent(processor_count=2, py=False) as solver:
         assert get_processor_count(solver) == 2
     # The following check is not yet supported for container launch
     # https://github.com/ansys/pyfluent/issues/2624
-    # with pyfluent.launch_fluent(additional_arguments="-t2") as solver:
+    # with pyfluent.launch_fluent(additional_arguments="-t2", py=False) as solver:
     #     assert get_processor_count(solver) == 2
 
 
@@ -463,6 +471,6 @@ def test_container_warning_for_mount_source(caplog):
         "mount_source": os.getcwd(),
         "mount_target": "/mnt/pyfluent/tests",
     }
-    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    solver = pyfluent.launch_fluent(container_dict=container_dict, py=False)
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text

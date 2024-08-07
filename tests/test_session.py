@@ -367,10 +367,13 @@ def test_read_case_using_lightweight_mode():
             lightweight_mode=True,
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
+            py=False,
         )
     else:
         solver = pyfluent.launch_fluent(
-            case_file_name=import_file_name, lightweight_mode=True
+            case_file_name=import_file_name,
+            lightweight_mode=True,
+            py=False,
         )
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver._fluent_connection)
@@ -425,7 +428,7 @@ def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
 
     monkeypatch.setattr(session, "_parse_server_info_file", mock_parse_server_info_file)
     with pytest.raises(LaunchFluentError) as ex:
-        solver = pyfluent.launch_fluent()
+        solver = pyfluent.launch_fluent(py=False)
     # grpc.RpcError -> RuntimeError -> LaunchFluentError
     assert ex.value.__context__.__context__.code() == grpc.StatusCode.UNAVAILABLE
 

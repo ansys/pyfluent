@@ -424,8 +424,8 @@ def test_cache_set_state(
 @pytest.mark.fluent_version(">=23.2")
 def test_cache_per_session():
     with (
-        pyfluent.launch_fluent(mode="meshing") as m1,
-        pyfluent.launch_fluent(mode="meshing") as m2,
+        pyfluent.launch_fluent(mode="meshing", py=False) as m1,
+        pyfluent.launch_fluent(mode="meshing", py=False) as m2,
     ):
         assert m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()

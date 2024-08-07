@@ -72,7 +72,9 @@ def test_read_case_and_data(monkeypatch):
     )
     assert case_file_name
     assert data_file_name
-    solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
+    solver = pyfluent.launch_fluent(
+        file_transfer_service=LocalFileTransferStrategy(), py=False
+    )
 
     solver.file.read(file_type="case-data", file_name=case_file_name)
     solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
@@ -86,7 +88,7 @@ def test_datamodel_execute():
     import ansys.fluent.core as pyfluent
 
     meshing = pyfluent.launch_fluent(
-        mode="meshing", file_transfer_service=RemoteFileTransferStrategy()
+        mode="meshing", file_transfer_service=RemoteFileTransferStrategy(), py=False
     )
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
