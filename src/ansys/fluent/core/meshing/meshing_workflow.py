@@ -70,6 +70,8 @@ class MeshingWorkflow(Workflow):
             Workflow name to identify it from global settings.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
@@ -114,6 +116,8 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow,
@@ -151,6 +155,8 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             File management object in the part management object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow,
@@ -206,6 +212,8 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow,
@@ -237,6 +245,8 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow,
@@ -310,6 +320,8 @@ class CreateWorkflow(Workflow):
             Meshing object.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
