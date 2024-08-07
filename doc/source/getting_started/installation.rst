@@ -8,7 +8,7 @@ Installation
 PyFluent Installation
 ---------------------
 
-PyFluent supports Python 3.9 through Python 3.12 on Windows, Mac OS and Linux.
+PyFluent supports Python 3.10 through Python 3.12 on Windows, Mac OS and Linux.
 
 PyFluent can be installed, along with all its optional dependencies, using:
 
