@@ -227,15 +227,6 @@ class Base:
             return self._parent.flproxy
         return self._flproxy
 
-    @property
-    def __file_transfer_service(self):
-        with warnings.catch_warnings():
-            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
-            if self._file_transfer_service:
-                return self._file_transfer_service
-            elif self._parent:
-                return self._parent.__file_transfer_service
-
     _name = None
     fluent_name = None
     _python_name = None
