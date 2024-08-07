@@ -54,6 +54,7 @@ class MeshingWorkflow(Workflow):
         name: str,
         identifier: str,
         fluent_version: FluentVersion,
+        initialize: bool = True,
     ) -> None:
         """Initialize MeshingWorkflow.
 
@@ -77,7 +78,10 @@ class MeshingWorkflow(Workflow):
         self._name = name
         self._identifier = identifier
         self._unsubscribe_root_affected_callback()
-        self._new_workflow(name=self._name)
+        if initialize:
+            self._new_workflow(name=self._name)
+        else:
+            self._activate_dynamic_interface(dynamic_interface=True)
 
     def __getattribute__(self, item: str):
         if (
@@ -98,6 +102,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
+        initialize: bool = True,
     ) -> None:
         """Initialize WatertightMeshingWorkflow.
 
@@ -116,6 +121,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
             name="Watertight Geometry",
             identifier=name_to_identifier_map["Watertight Geometry"],
             fluent_version=fluent_version,
+            initialize=initialize,
         )
 
 
@@ -129,6 +135,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         part_management: PyMenuGeneric,
         pm_file_management: PyMenuGeneric,
         fluent_version: FluentVersion,
+        initialize: bool = True,
     ) -> None:
         """Initialize FaultTolerantMeshingWorkflow.
 
@@ -151,6 +158,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             name="Fault-tolerant Meshing",
             identifier=name_to_identifier_map["Fault-tolerant Meshing"],
             fluent_version=fluent_version,
+            initialize=initialize,
         )
         self._part_management = part_management
         self._pm_file_management = pm_file_management
@@ -186,6 +194,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
+        initialize: bool = True,
     ) -> None:
         """Initialize TwoDimensionalMeshingWorkflow.
 
@@ -204,6 +213,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
             name="2D Meshing",
             identifier=name_to_identifier_map["2D Meshing"],
             fluent_version=fluent_version,
+            initialize=initialize,
         )
 
 
@@ -215,6 +225,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
+        initialize: bool = True,
     ) -> None:
         """Initialize TopologyBasedMeshingWorkflow.
 
@@ -233,6 +244,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
             name="Topology Based Meshing",
             identifier=name_to_identifier_map["Topology Based Meshing"],
             fluent_version=fluent_version,
+            initialize=initialize,
         )
 
 
@@ -286,6 +298,7 @@ class CreateWorkflow(Workflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
+        initialize: bool = True,
     ) -> None:
         """Initialize a ``CreateWorkflow`` instance.
 
@@ -303,4 +316,7 @@ class CreateWorkflow(Workflow):
         )
         self._meshing = meshing
         self._unsubscribe_root_affected_callback()
-        self._create_workflow()
+        if initialize:
+            self._create_workflow()
+        else:
+            self._activate_dynamic_interface(dynamic_interface=True)

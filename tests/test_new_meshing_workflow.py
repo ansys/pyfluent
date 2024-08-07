@@ -1578,9 +1578,6 @@ def test_current_workflow(new_meshing_session):
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
-    # This is needed to reflect the backend changes in the workflow,
-    # in this case, the time required to initialize the Fault-tolerant Meshing workflow.
-
     assert meshing.current_workflow.import_cad_and_part_management
 
     with pytest.raises(AttributeError):
