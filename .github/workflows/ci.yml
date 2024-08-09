@@ -452,7 +452,7 @@ jobs:
     name: Unit Testing
     if: ${{ always() }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
       matrix:
