@@ -153,6 +153,7 @@ class DatamodelServiceImpl:
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
 
+    # TODO: Remove it from the proto interface
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
@@ -1505,6 +1506,24 @@ class PyNamedObjectContainer:
             Child object.
         """
         return self._get_item(key)
+
+    def get(self, key: str) -> Union[PyMenu, None]:
+        """Return the child object by key.
+
+        Parameters
+        ----------
+        key : str
+            Name of the child object.
+
+        Returns
+        -------
+        PyMenu
+            Child object.
+        """
+        try:
+            return self._get_item(key)
+        except LookupError:
+            return
 
     def __setitem__(self, key: str, value: Any) -> None:
         """Set state of the child object by name.
