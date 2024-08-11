@@ -1365,6 +1365,24 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             obj = self._create_child_object(name)
         return obj
 
+    def get(self, name: str) -> ChildTypeT:
+        """Return the child object by key.
+
+        Parameters
+        ----------
+        name : str
+            Name of the child object.
+
+        Returns
+        -------
+        ChildTypeT
+            Child object.
+        """
+        try:
+            return self.__getitem__(name)
+        except Exception:
+            return
+
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
