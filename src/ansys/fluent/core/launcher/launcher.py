@@ -218,7 +218,7 @@ def launch_fluent(
         information like how to determine the GPU IDs.
     cwd : str, Optional
         Working directory for the Fluent client.
-    custom_fluent_path: str, Optional
+    fluent_path: str, Optional
         User provided Fluent installation path.
     topy : bool or str, optional
         A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
