@@ -151,7 +151,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return get_exe_path(Path(fluent_root))
 
     # 2. Custom Path provided by the user in launch_fluent
-    fluent_path = launch_argvals.get("custom_fluent_path")
+    fluent_path = launch_argvals.get("fluent_path")
     if fluent_path:
         return Path(fluent_path)
 
