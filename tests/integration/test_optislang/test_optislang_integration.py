@@ -104,7 +104,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
 
     # output_unit should assert the unit string but it doesn't currently
     # A bug has been submitted to address this
-    assert output_unit == ["temperature", False]
+    assert output_unit == "K"
     assert output_parameters[1] == "K"
 
     solver_session.exit()
@@ -224,7 +224,7 @@ def test_parameters(mixing_elbow_param_case_data_session):
         output_jdict[key] = entry[0]
         output_jdict[key] = entry[1]
 
-    assert output_jdict == {"outlet_temp-op": ["temperature", False]}
+    assert output_jdict == {"outlet_temp-op": "K"}
 
 
 @pytest.mark.nightly
