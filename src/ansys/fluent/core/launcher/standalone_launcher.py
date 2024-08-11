@@ -78,6 +78,7 @@ class StandaloneLauncher:
         py: Optional[bool] = None,
         gpu: Optional[bool] = None,
         cwd: Optional[str] = None,
+        fluent_path: Optional[str] = None,
         topy: Optional[Union[str, list]] = None,
         start_watchdog: Optional[bool] = None,
         file_transfer_service: Optional[Any] = None,
@@ -149,6 +150,8 @@ class StandaloneLauncher:
             If True, Fluent will start with GPU Solver.
         cwd : str, Optional
             Working directory for the Fluent client.
+        fluent_path: str, Optional
+            User provided Fluent installation path.
         topy : bool or str, optional
             A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
             Can optionally take the file name of the new python journal file.
@@ -202,8 +205,6 @@ class StandaloneLauncher:
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
-        if self.argvals["env"] is None:
-            self.argvals["env"] = {}
         self._kwargs = _get_subprocess_kwargs_for_fluent(
             self.argvals["env"], self.argvals
         )
