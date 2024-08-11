@@ -117,7 +117,7 @@ def launch_fluent(
     py: Optional[bool] = None,
     gpu: Union[bool, list[int], None] = None,
     cwd: Optional[str] = None,
-    custom_fluent_path: Optional[str] = None,
+    fluent_path: Optional[str] = None,
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
