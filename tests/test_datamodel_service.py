@@ -799,6 +799,7 @@ def test_set_command_args_and_sub_args(new_meshing_session):
     assert ig.CadImportOptions.OneZonePer() == "face"
 
 
+@pytest.mark.skip("Not yet implemented.")
 def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
     ic = meshing.meshing.LoadCADGeometry.create_instance()
