@@ -1812,9 +1812,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     def set_state(self, state) -> Any:
         """Set state of the command argument."""
-        parent_state = self.parent.get_state()
-        parent_state[self.name] = state
-        self.parent.set_state(parent_state)
+        self.parent.set_state({self.name: state})
 
     setState = set_state
 
