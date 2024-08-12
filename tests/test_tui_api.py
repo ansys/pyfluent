@@ -42,6 +42,9 @@ def test_api_upgrade_message(new_solver_session):
     with redirect_stdout(f):
         solver.tui.file.read_case(case_name)
     s = f.getvalue()
+    print("********************************")
+    print(s)
+    print("********************************")
     if solver.get_fluent_version() >= FluentVersion.v251:
         assert (
             s.split("\n")[-2].split("(")[0]
