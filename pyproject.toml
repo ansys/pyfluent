@@ -38,7 +38,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.10,<4.0"
 ansys-api-fluent = "^0.3.27"
 ansys-platform-instancemanagement = "~=1.0"
 ansys-tools-filetransfer = ">=0.1,<0.3"
