@@ -117,6 +117,7 @@ def launch_fluent(
     py: Optional[bool] = True,
     gpu: Union[bool, list[int], None] = None,
     cwd: Optional[str] = None,
+    fluent_path: Optional[str] = None,
     topy: Optional[Union[str, list]] = None,
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
@@ -217,6 +218,8 @@ def launch_fluent(
         information like how to determine the GPU IDs.
     cwd : str, Optional
         Working directory for the Fluent client.
+    fluent_path: str, Optional
+        User provided Fluent installation path.
     topy : bool or str, optional
         A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
         Can optionally take the file name of the new python journal file.
@@ -256,6 +259,8 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
+    if env is None:
+        env = {}
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
