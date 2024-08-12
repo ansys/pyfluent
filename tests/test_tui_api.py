@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from ansys.fluent.core import FluentVersion
@@ -30,7 +32,9 @@ def test_python_keyword_menu_name(new_meshing_session):
 
 def test_api_upgrade_message(new_solver_session):
     solver = new_solver_session
-    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    case_name = download_file(
+        "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=os.getcwd()
+    )
     from contextlib import redirect_stdout
     import io
 
@@ -38,9 +42,6 @@ def test_api_upgrade_message(new_solver_session):
     with redirect_stdout(f):
         solver.tui.file.read_case(case_name)
     s = f.getvalue()
-    print("***********************************************************")
-    print(s)
-    print("***********************************************************")
     if solver.get_fluent_version() >= FluentVersion.v251:
         assert (
             s.split("\n")[-2].split("(")[0]
