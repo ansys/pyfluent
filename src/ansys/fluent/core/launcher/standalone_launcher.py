@@ -71,6 +71,7 @@ class StandaloneLauncher:
         additional_arguments: Optional[str] = "",
         env: Optional[Dict[str, Any]] = None,
         cleanup_on_exit: bool = True,
+        dry_run: bool = False,
         start_transcript: bool = True,
         case_file_name: Optional[str] = None,
         case_data_file_name: Optional[str] = None,
@@ -127,6 +128,9 @@ class StandaloneLauncher:
             Whether to shut down the connected Fluent session when PyFluent is
             exited, or the ``exit()`` method is called on the session instance,
             or if the session instance becomes unreferenced. The default is ``True``.
+        dry_run : bool, optional
+            Defaults to False. If True, will not launch Fluent, and will instead print configuration information
+            that would be used as if Fluent was being launched.
         start_transcript : bool, optional
             Whether to start streaming the Fluent transcript in the client. The
             default is ``True``. You can stop and start the streaming of the
@@ -162,14 +166,6 @@ class StandaloneLauncher:
             when the current Python process ends.
         file_transfer_service : optional
             File transfer service. Uploads/downloads files to/from the server.
-
-        Returns
-        -------
-        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-        :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-        :class:`~ansys.fluent.core.session_solver.Solver`, \
-        :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
-            Session object or configuration dictionary if ``dry_run = True``.
 
         Raises
         ------
@@ -225,6 +221,9 @@ class StandaloneLauncher:
                 self._launch_cmd = self._launch_string
 
     def __call__(self):
+        if self.argvals["dry_run"]:
+            print(f"Fluent launch string: {self._launch_string}")
+            return
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
 
