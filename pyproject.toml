@@ -88,7 +88,7 @@ autodocsumm = "==0.2.13"
 optional = true
 
 [tool.poetry.group.test.dependencies]
-pytest = "==8.2.2"
+pytest = "==8.3.2"
 pytest-cov = "==5.0.0"
 pytest-mock = "==3.14.0"
 pytest-xdist = "==3.6.1"
