@@ -1,6 +1,7 @@
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.utils.execution import timeout_loop
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -78,4 +79,5 @@ def test_solver_monitors(new_solver_session):
     # trigger callback by running the solver
     assert not monitor_callback.called
     solver.solution.run_calculation.iterate(iter_count=1)
+    assert timeout_loop(lambda: monitor_callback.called, 5)
     assert monitor_callback.called
