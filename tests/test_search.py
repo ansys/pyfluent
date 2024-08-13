@@ -277,7 +277,7 @@ def test_misspelled_search(capsys):
     pyfluent.search("cfb_lma")
     lines = capsys.readouterr().out.splitlines()
     assert (
-        "<solver_session>.setup.models.viscous.geko_options.cbf_lam (Parameter)"
+        "<solver_session>.tui.define.models.viscous.geko_options.cbf_lam (Command)"
         in lines
     )
 
