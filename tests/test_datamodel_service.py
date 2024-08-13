@@ -782,3 +782,18 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     root.delete_all_child_objects("A")
     assert "/test/affected/A:A1" not in solver._se_service.subscriptions
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_dynamic_dependency(new_meshing_session):
+    meshing = new_meshing_session
+    ic = meshing.meshing.LoadCADGeometry.create_instance()
+
+    d = ic.Refaceting.Deviation.get_state()
+    cd = ic.Refaceting.CustomDeviation.get_state()
+    assert d == cd
+
+    ic.Refaceting.Deviation.set_state(1.2)
+    d = ic.Refaceting.Deviation.get_state()
+    cd = ic.Refaceting.CustomDeviation.get_state()
+    assert d == cd
