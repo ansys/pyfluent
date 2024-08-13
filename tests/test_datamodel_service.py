@@ -784,6 +784,7 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
+@pytest.mark.fluent_version(">=24.1")
 def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
     ic = meshing.meshing.LoadCADGeometry.create_instance()
