@@ -842,6 +842,7 @@ class PyStateContainer(PyCallableStateObject):
         self, service: DatamodelService, rules: str, path: Optional[Path] = None
     ) -> None:
         """__init__ method of PyStateContainer class."""
+        super().__init__()
         self.__dict__.update(
             dict(
                 service=service,
@@ -850,7 +851,6 @@ class PyStateContainer(PyCallableStateObject):
                 cached_attrs={},
             )
         )
-        super().__init__()
 
     def get_remote_state(self) -> Any:
         """Get state of the current object."""
@@ -1857,6 +1857,7 @@ class PyCommandArguments(PyStateContainer):
         static_info,
     ) -> None:
         """__init__ method of PyCommandArguments class."""
+        super().__init__(service, rules, path)
         self.__dict__.update(
             dict(
                 static_info=static_info,
@@ -1864,7 +1865,6 @@ class PyCommandArguments(PyStateContainer):
                 id=id,
             )
         )
-        super().__init__(service, rules, path)
         self.path.append((command, id))
 
     def __del__(self) -> None:
