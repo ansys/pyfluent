@@ -1841,7 +1841,10 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         pass
 
     def __setattr__(self, key, value):
-        getattr(self, key).set_state(value)
+        if isinstance(value, PyCommandArgumentsSubItem):
+            super().__setattr__(key, value)
+        else:
+            getattr(self, key).set_state(value)
 
 
 class PyCommandArguments(PyStateContainer):
@@ -1901,7 +1904,10 @@ class PyCommandArguments(PyStateContainer):
         return self._get_remote_attr(attrib)
 
     def __setattr__(self, key, value):
-        getattr(self, key).set_state(value)
+        if isinstance(value, PyCommandArgumentsSubItem):
+            super().__setattr__(key, value)
+        else:
+            getattr(self, key).set_state(value)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
