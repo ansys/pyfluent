@@ -784,6 +784,22 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     assert "/test/affected/A:A1-1" not in solver._se_service.subscriptions
 
 
+@pytest.mark.fluent_version(">=23.2")
+def test_set_command_args_and_sub_args(new_meshing_session):
+    meshing = new_meshing_session
+    ig = meshing.meshing.ImportGeometry.create_instance()
+
+    # Command Arguments
+    assert ig.MeshUnit() == "m"
+    ig.MeshUnit = "mm"
+    assert ig.MeshUnit() == "mm"
+
+    # Command Arguments SubItem
+    assert ig.CadImportOptions.OneZonePer() == "body"
+    ig.CadImportOptions.OneZonePer = "face"
+    assert ig.CadImportOptions.OneZonePer() == "face"
+
+
 @pytest.mark.fluent_version(">=24.1")
 def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session

@@ -843,13 +843,14 @@ class PyStateContainer(PyCallableStateObject):
     ) -> None:
         """__init__ method of PyStateContainer class."""
         super().__init__()
-        self.service: DatamodelService = service
-        self.rules = rules
-        if path is None:
-            self.path = []
-        else:
-            self.path = path
-        self.cached_attrs = {}
+        self.__dict__.update(
+            dict(
+                service=service,
+                rules=rules,
+                path=[] if path is None else path,
+                cached_attrs={},
+            )
+        )
 
     def get_remote_state(self) -> Any:
         """Get state of the current object."""
@@ -1791,13 +1792,16 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         parent_arg,
     ) -> None:
         """__init__ method of PyCommandArgumentsSubItem class."""
-        self.parent = parent
-        self.name = name
-
-        self.service = service
-        self.rules = rules
-        self.path = path
-        self.parent_arg = parent_arg
+        self.__dict__.update(
+            dict(
+                parent=parent,
+                name=name,
+                service=service,
+                rules=rules,
+                path=path,
+                parent_arg=parent_arg,
+            )
+        )
 
     def get_state(self) -> Any:
         """Get state of the command argument."""
@@ -1834,6 +1838,12 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         """Get help."""
         pass
 
+    def __setattr__(self, key, value):
+        if isinstance(value, PyCommandArgumentsSubItem):
+            super().__setattr__(key, value)
+        else:
+            getattr(self, key).set_state(value)
+
 
 class PyCommandArguments(PyStateContainer):
     """Class representing command arguments in datamodel."""
@@ -1848,11 +1858,15 @@ class PyCommandArguments(PyStateContainer):
         static_info,
     ) -> None:
         """__init__ method of PyCommandArguments class."""
-        self.static_info = static_info
         super().__init__(service, rules, path)
+        self.__dict__.update(
+            dict(
+                static_info=static_info,
+                command=command,
+                id=id,
+            )
+        )
         self.path.append((command, id))
-        self.command = command
-        self.id = id
 
     def __del__(self) -> None:
         try:
@@ -1886,6 +1900,12 @@ class PyCommandArguments(PyStateContainer):
             Value of the attribute.
         """
         return self._get_remote_attr(attrib)
+
+    def __setattr__(self, key, value):
+        if isinstance(value, PyCommandArgumentsSubItem):
+            super().__setattr__(key, value)
+        else:
+            getattr(self, key).set_state(value)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
