@@ -472,12 +472,9 @@ def test_meshing_utilities(new_meshing_session):
         34,
     ]
 
-    assert (
-        meshing_session.meshing_utilities.get_face_zones(
-            xyz_coordinates=[1.4, 1.4, 1.4]
-        )
-        == 34
-    )
+    assert meshing_session.meshing_utilities.get_face_zones(
+        xyz_coordinates=[1.4, 1.4, 1.4]
+    ) == [34]
 
     assert (
         meshing_session.meshing_utilities.get_face_zones(
@@ -591,12 +588,9 @@ def test_meshing_utilities(new_meshing_session):
         is None
     )
 
-    assert (
-        meshing_session.meshing_utilities.get_cell_zones(
-            xyz_coordinates=[1.4, 1.4, 1.4]
-        )
-        is False
-    )
+    assert meshing_session.meshing_utilities.get_cell_zones(
+        xyz_coordinates=[-7, -6, 0.4]
+    ) == [87]
 
     assert meshing_session.meshing_utilities.get_unreferenced_cell_zones() is None
 
@@ -614,21 +608,21 @@ def test_meshing_utilities(new_meshing_session):
 
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-            cell_zone_id_list=[29, 30, 31, 32, 33]
+            face_zone_id_list=[29, 30, 31, 32, 33]
         )
         == [87]
     )
 
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-            cell_zone_name_list=["outlet", "inlet", "wall", "internal"]
+            face_zone_name_list=["outlet", "inlet", "wall", "internal"]
         )
         == [87]
     )
 
     assert (
         meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-            cell_zone_name_pattern="*"
+            face_zone_name_pattern="*"
         )
         == [87]
     )
@@ -836,7 +830,7 @@ def test_meshing_utilities(new_meshing_session):
 
     assert meshing_session.meshing_utilities.get_region_volume(
         object_name="elbow-fluid", region_name="elbow-fluid"
-    ) == pytest_approx(152.59942809266)
+    ) == [pytest_approx(152.59942809266)]
 
     assert (
         meshing_session.meshing_utilities.get_pairs_of_overlapping_face_zones(
@@ -1056,6 +1050,125 @@ def test_meshing_utilities(new_meshing_session):
         meshing_session.meshing_utilities.get_cell_zone_shape(cell_zone_id=87)
         == "mixed"
     )
+
+    assert set(
+        meshing_session.meshing_utilities.get_edge_zones_list(filter="*")
+    ) == set([28, 27, 26, 25, 24, 23, 22, 21, 20])
+
+    assert set(
+        meshing_session.meshing_utilities.get_edge_zones_of_object(
+            objects=["elbow-fluid"]
+        )
+    ) == set([20, 21, 22, 23, 24, 25, 26, 27, 28])
+
+    assert set(
+        meshing_session.meshing_utilities.get_edge_zones_of_object(
+            object_name="elbow-fluid"
+        )
+    ) == set([20, 21, 22, 23, 24, 25, 26, 27, 28])
+
+    assert (
+        meshing_session.meshing_utilities.get_face_zones_with_zone_specific_prisms_applied()
+        is None
+    )
+
+    assert set(
+        meshing_session.meshing_utilities.get_labels_on_face_zones_list(
+            face_zone_id_list=[30, 31]
+        )
+    ) == set([["30", "hot-inlet", "elbow-fluid"], ["31", "cold-inlet", "elbow-fluid"]])
+
+    assert set(meshing_session.meshing_utilities.get_node_zones(filter="*")) == set(
+        [163, 91, 19]
+    )
+
+    # Commented due to print only output
+
+    # assert meshing_session.meshing_utilities.get_shared_boundary_face_zones_for_given_cell_zones(cell_zone_id_list=[87]) == "2001 faces on symmetry-xyplane refer to cell zone elbow-fluid \
+    #         55 faces on hot-inlet refer to cell zone elbow-fluid \
+    #         152 faces on cold-inlet refer to cell zone elbow-fluid \
+    #         155 faces on outlet refer to cell zone elbow-fluid \
+    #         268 faces on wall-inlet refer to cell zone elbow-fluid \
+    #         2168 faces on wall-elbow refer to cell zone elbow-fluid"
+
+    # assert meshing_session.meshing_utilities.get_shared_boundary_face_zones_for_given_cell_zones(cell_zone_name_list=["elbow-fluid"]) == "2001 faces on symmetry-xyplane refer to cell zone elbow-fluid \
+    #         55 faces on hot-inlet refer to cell zone elbow-fluid \
+    #         152 faces on cold-inlet refer to cell zone elbow-fluid \
+    #         155 faces on outlet refer to cell zone elbow-fluid \
+    #         268 faces on wall-inlet refer to cell zone elbow-fluid \
+    #         2168 faces on wall-elbow refer to cell zone elbow-fluid"
+
+    # assert meshing_session.meshing_utilities.get_shared_boundary_face_zones_for_given_cell_zones(cell_zone_name_pattern="*") == "2001 faces on symmetry-xyplane refer to cell zone elbow-fluid \
+    #         55 faces on hot-inlet refer to cell zone elbow-fluid \
+    #         152 faces on cold-inlet refer to cell zone elbow-fluid \
+    #         155 faces on outlet refer to cell zone elbow-fluid \
+    #         268 faces on wall-inlet refer to cell zone elbow-fluid \
+    #         2168 faces on wall-elbow refer to cell zone elbow-fluid"
+
+    # assert meshing_session.meshing_utilities.mark_faces_in_self_proximity(face_zone_id_list=[30, 31, 32], relative_tolerance=True, tolerance=0.05, proximity_angle=40.5, ignore_orientation=False) == 0 slit faces, 0
+
+    # assert meshing_session.meshing_utilities.mark_faces_in_self_proximity(face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], relative_tolerance=True, tolerance=0.05, proximity_angle=40.5, ignore_orientation=False) == 0 slit faces, 0
+
+    # assert meshing_session.meshing_utilities.mark_faces_in_self_proximity(face_zone_name_pattern="*", relative_tolerance=True, tolerance=0.05, proximity_angle=40.5, ignore_orientation=False) == 0 slit faces, 0
+
+    # assert meshing_session.meshing_utilities.mark_point_contacts(face_zone_id_list=[30, 31, 32]) == 0 point contacts are identified. 0
+
+    # assert meshing_session.meshing_utilities.mark_point_contacts(face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"]) == 0 point contacts are identified. 0
+
+    # assert meshing_session.meshing_utilities.mark_point_contacts(face_zone_name_pattern="cold*") == 0 point contacts are identified. 0
+
+    # assert meshing_session.meshing_utilities.mesh_check(type_name="face-children", edge_zone_id_list=[22, 23], face_zone_id_list=[30, 31, 32], cell_zone_id_list=[87]) == "Checking face children. \
+    # Checking modified centroid."
+
+    # assert meshing_session.meshing_utilities.mesh_check(type_name="nodes-per-cell", edge_zone_name_pattern="cold-inlet*", face_zone_id_list=[30, 31, 32], cell_zone_id_list=[87]) == "Checking face children. \
+    # Checking modified centroid."
+
+    # assert meshing_session.meshing_utilities.mesh_check(type_name="volume-statistics", edge_zone_id_list=[22, 23], face_zone_name_pattern="*", cell_zone_id_list=[87]) == "Volume statistics. \
+    # minimum volume: 1.491291e-05. \
+    # maximum volume: 3.490789e-02. \
+    #     total volume: 1.525994e+02. \
+    # Checking modified centroid."
+
+    # assert meshing_session.meshing_utilities.mesh_check(type_name="nodes-per-cell", edge_zone_name_pattern="cold-inlet*", face_zone_name_pattern="*", cell_zone_id_list=[87]) == "Checking face children. \
+    # Checking modified centroid."
+
+    # assert meshing_session.meshing_utilities.mesh_check(type_name="face-children", edge_zone_id_list=[22, 23], face_zone_id_list=[30, 31, 32], cell_zone_name_pattern="*") == "Checking face children. \
+    # Checking modified centroid."
+
+    # assert meshing_session.meshing_utilities.mesh_check(type_name="volume-statistics", edge_zone_name_pattern="cold-inlet*", face_zone_name_pattern="*", cell_zone_name_pattern="*") == "Volume statistics. \
+    # minimum volume: 1.491291e-05. \
+    # maximum volume: 3.490789e-02. \
+    #     total volume: 1.525994e+02. \
+    # Checking modified centroid."
+
+    # assert meshing_session.meshing_utilities.print_worst_quality_cell(cell_zone_id_list=[87], measure="Orthogonal Quality") == "Worst Quality Cell (c5018) (quality: 0.24536377), in cell zone (elbow-fluid) at location: ((4.955211100621864 -6.054548533874768 0.1959202011308238))"
+
+    # assert meshing_session.meshing_utilities.print_worst_quality_cell(cell_zone_name_list=["elbow-fluid"], measure="Orthogonal Quality") == == "Worst Quality Cell (c5018) (quality: 0.24536377), in cell zone (elbow-fluid) at location: ((4.955211100621864 -6.054548533874768 0.1959202011308238))"
+
+    # assert meshing_session.meshing_utilities.print_worst_quality_cell(cell_zone_name_pattern="*", measure="Orthogonal Quality") == == "Worst Quality Cell (c5018) (quality: 0.24536377), in cell zone (elbow-fluid) at location: ((4.955211100621864 -6.054548533874768 0.1959202011308238))"
+
+    # assert meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_id=87, face_zone_id_list=[30, 31, 32], nlayers=2) == "No cells are separated"
+
+    # assert meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_id=87, face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], nlayers=2) == "No cells are separated"
+
+    # assert meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_id=87, face_zone_name_pattern="*", nlayers=2) == "Moved 975 cells from elbow-fluid (common to face zones) to elbow-fluid:172 \
+    #             Moved 2116 faces from interior--elbow-fluid to interior--elbow-fluid:174 \
+    #             Moved 211 nodes from node-91 to node-173 \
+    #             Moved 2699 faces from interior--elbow-fluid to interior--elbow-fluid:181 (boundary)"
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(
+    #     cell_zone_name="elbow-fluid", face_zone_id_list=[30, 31, 32], nlayers=2
+    # )
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(
+    #     cell_zone_name="elbow-fluid",
+    #     face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+    #     nlayers=2,
+    # )
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(
+    #     cell_zone_name="elbow-fluid", face_zone_name_pattern="*", nlayers=2
+    # )
 
     # Commented due to variation in 10^-16 th place
 
@@ -1439,6 +1552,27 @@ def test_meshing_utilities(new_meshing_session):
 
     # assert meshing_session.meshing_utilities.mark_bad_quality_faces(face_zone_name_pattern="*", quality_limit=0.5,
     #                                                        number_of_rings=2) == 4799
+
+    assert meshing_session.meshing_utilities.mark_faces_by_quality(
+        face_zone_id_list=[30, 31, 32],
+        quality_measure="Skewness",
+        quality_limit=0.9,
+        append_marking=False,
+    ) == [0, 0.2651020901280914]
+
+    assert meshing_session.meshing_utilities.mark_faces_by_quality(
+        face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+        quality_measure="Skewness",
+        quality_limit=0.9,
+        append_marking=False,
+    ) == [0, 0.2651020901280914]
+
+    assert meshing_session.meshing_utilities.mark_faces_by_quality(
+        face_zone_name_pattern="*",
+        quality_measure="Skewness",
+        quality_limit=0.9,
+        append_marking=False,
+    ) == [0, 0.5697421601607908]
 
     assert (
         meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
