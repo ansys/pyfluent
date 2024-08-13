@@ -14,7 +14,7 @@ def test_single_jou():
     with open(file_name, "w") as journal:
         journal.write('(display "from jou1.jou")')
 
-    solver = pyfluent.launch_fluent(mode="solver", topy=file_name, py=False)
+    solver = pyfluent.launch_fluent(mode="solver", topy=file_name)
     solver.exit()
 
     with open(file_name) as file:

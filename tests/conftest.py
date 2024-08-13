@@ -148,11 +148,10 @@ def create_session(**kwargs):
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
-            py=False,
             **kwargs,
         )
     else:
-        return pyfluent.launch_fluent(py=False, **kwargs)
+        return pyfluent.launch_fluent(**kwargs)
 
 
 @pytest.fixture

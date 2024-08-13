@@ -31,20 +31,16 @@ def test_parametric_workflow():
                 processor_count=2,
                 container_dict=config_dict,
                 file_transfer_service=file_transfer_service,
-                py=False,
             )
         else:
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,
-                py=False,
             )
         container_workdir = PurePosixPath(pyfluent.CONTAINER_MOUNT_TARGET)
     else:
         inside_container = False
-        solver_session = pyfluent.launch_fluent(
-            processor_count=2, cwd=tmp_save_path, py=False
-        )
+        solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
     solver_session.file.read_case(file_name=import_file_name)
     solver_session.solution.run_calculation.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
@@ -182,18 +178,14 @@ def test_parametric_workflow():
                 processor_count=2,
                 container_dict=config_dict,
                 file_transfer_service=file_transfer_service,
-                py=False,
             )
         else:
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,
-                py=False,
             )
     else:
-        solver_session = pyfluent.launch_fluent(
-            processor_count=2, cwd=tmp_save_path, py=False
-        )
+        solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 
     solver_session.file.parametric_project.open(
         project_filename=write_project_file_name
