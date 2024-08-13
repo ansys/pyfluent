@@ -590,13 +590,15 @@ meshing_utility_examples = {
         'meshing_session.meshing_utilities.scale_face_zones_around_pivot(face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], scale=[1.1, 1.2, 1.3], pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645], use_bbox_center=True)',
         'meshing_session.meshing_utilities.scale_face_zones_around_pivot(face_zone_name_pattern="*", scale=[1.1, 1.2, 1.3], pivot=[1.1482939720153809, -2.2965879440307617, 0.7345014897547645], use_bbox_center=True)',
     ],
-    "separate_cell_zone_layers_by_face_zone": [
-        "meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_id=87, face_zone_id_list=[30, 31, 32], nlayers=2)",
-        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_id=87, face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], nlayers=2)',
-        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_id=87, face_zone_name_pattern="*", nlayers=2)',
-        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_name="elbow", face_zone_id_list=[30, 31, 32], nlayers=2)',
-        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_name="elbow", face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], nlayers=2)',
-        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(cell_zone_name="elbow", face_zone_name_pattern="*", nlayers=2)',
+    "separate_cell_zone_layers_by_face_zone_using_id": [
+        "meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_id(cell_zone_id=87, face_zone_id_list=[30, 31, 32], nlayers=2)",
+        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_id(cell_zone_id=87, face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], nlayers=2)',
+        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_id(cell_zone_id=87, face_zone_name_pattern="*", nlayers=2)',
+    ],
+    "separate_cell_zone_layers_by_face_zone_using_name": [
+        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_name(cell_zone_name="elbow-fluid", face_zone_id_list=[30, 31, 32], nlayers=2)',
+        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_name(cell_zone_name="elbow-fluid", face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"], nlayers=2)',
+        'meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_name(cell_zone_name="elbow-fluid", face_zone_name_pattern="*", nlayers=2)',
     ],
     "separate_face_zones_by_cell_neighbor": [
         "meshing_session.meshing_utilities.separate_face_zones_by_cell_neighbor(face_zone_id_list=[30, 31, 32])",
