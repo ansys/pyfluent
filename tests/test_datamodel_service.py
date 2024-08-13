@@ -798,3 +798,18 @@ def test_set_command_args_and_sub_args(new_meshing_session):
     assert ig.CadImportOptions.OneZonePer() == "body"
     ig.CadImportOptions.OneZonePer = "face"
     assert ig.CadImportOptions.OneZonePer() == "face"
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_dynamic_dependency(new_meshing_session):
+    meshing = new_meshing_session
+    ic = meshing.meshing.LoadCADGeometry.create_instance()
+
+    d = ic.Refaceting.Deviation.get_state()
+    cd = ic.Refaceting.CustomDeviation.get_state()
+    assert d == cd
+
+    ic.Refaceting.Deviation.set_state(1.2)
+    d = ic.Refaceting.Deviation.get_state()
+    cd = ic.Refaceting.CustomDeviation.get_state()
+    assert d == cd
