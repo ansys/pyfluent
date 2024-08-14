@@ -116,4 +116,4 @@ SHOW_MESH_AFTER_CASE_READ = False
 SUPPORT_SOLVER_INTERRUPT = False
 
 # Whether to start watchdog
-START_WATCHDOG = False
+START_WATCHDOG = None

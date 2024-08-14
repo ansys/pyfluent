@@ -287,7 +287,7 @@ def launch_fluent(
     )
     common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
-    if not pyfluent.START_WATCHDOG:
+    if pyfluent.START_WATCHDOG is False:
         launcher_argvals["start_watchdog"] = False
     launcher = launcher_type(**launcher_argvals)
     return launcher()
