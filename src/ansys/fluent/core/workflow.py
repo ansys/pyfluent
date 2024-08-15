@@ -1259,7 +1259,7 @@ class CompoundTask(CommandTask):
 def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
     kinds = {
-        None: BaseTask,
+        None: BaseTask,  # To support old fluent journals setting empty state to Task Objects
         "Simple": SimpleTask,
         "Compound Child": CompoundChild,
         "Compound": CompoundTask,
