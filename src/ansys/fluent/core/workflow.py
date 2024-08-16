@@ -732,9 +732,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         """
         self._assign(args, "update_dict")
 
-    def _camel_snake_arguments_map(self, input_dict):
+    def _camel_snake_arguments_map(self, input_dict, cmd_args=None):
         snake_case_state_dict = {}
-        cmd_args = self._task._command_arguments
+        cmd_args = self._task._command_arguments if cmd_args is None else cmd_args
         for key, val in input_dict.items():
             self._snake_to_camel_map[camel_to_snake_case(key)] = key
             if isinstance(
@@ -742,7 +742,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
-                    self._camel_snake_arguments_map(val)
+                    self._camel_snake_arguments_map(cmd_args)
                 )
             else:
                 snake_case_state_dict[camel_to_snake_case(key)] = val
