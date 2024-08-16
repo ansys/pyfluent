@@ -1258,20 +1258,21 @@ class CompoundTask(CommandTask):
 
 def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
-    task_type = task.TaskType()
     kinds = {
+        None: BaseTask,  # To support old fluent journals setting empty state to Task Objects
         "Simple": SimpleTask,
         "Compound Child": CompoundChild,
         "Compound": CompoundTask,
         "Composite": CompositeTask,
         "Conditional": ConditionalTask,
     }
-    kind = kinds[task.TaskType()]
+    task_type = task.TaskType()
+    kind = kinds[task_type]
     if not kind:
         message = (
             "Unhandled empty workflow task type."
-            if not task.TaskType()
-            else f"Unhandled workflow task type, {task.TaskType()}."
+            if not task_type
+            else f"Unhandled workflow task type, {task_type}."
         )
         raise RuntimeError(message)
     return kind(command_source, task)

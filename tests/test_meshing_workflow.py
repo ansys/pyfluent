@@ -573,3 +573,22 @@ def test_new_2d_meshing_workflow(new_meshing_session):
     # Switch to solution mode
     solver = meshing.switch_to_solver()
     assert solver
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_setting_none_type_tasks(new_meshing_session):
+    meshing = new_meshing_session
+    meshing.workflow.InitializeWorkflow(WorkflowType=r"Fault-tolerant Meshing")
+    meshing.workflow.setState(
+        {
+            r"TaskObject:Describe Overset Features": {},
+        }
+    )
+    meshing.workflow.TaskObject["Describe Overset Features"].CommandName.setState(
+        r"OversetOptions"
+    )
+
+    assert (
+        meshing.workflow.TaskObject["Describe Overset Features"].CommandName()
+        == "DescribeOversetFeatures"
+    )
