@@ -28,9 +28,9 @@ from ansys.fluent.core.workflow import (
 
 def _get_api_tree_data_file():
     """Get API tree data file."""
-    codegen_outdir = (Path(__file__) / ".." / "generated").resolve()
-    text_file_folder = Path(os.path.join(codegen_outdir, "api_tree"))
-    return (text_file_folder / "api_objects.json").resolve()
+    from ansys.fluent.core import CODEGEN_OUTDIR
+
+    return (CODEGEN_OUTDIR / "api_tree" / "api_objects.json").resolve()
 
 
 def get_api_tree_file_name(version: str) -> Path:
