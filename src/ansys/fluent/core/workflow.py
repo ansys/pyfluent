@@ -411,6 +411,7 @@ class BaseTask:
         self._command_source._python_name_display_id_map[self._python_name] = disp_text
 
     def _get_camel_case_arg_keys(self):
+        print("BaseTask._get_camel_case_arg_keys")
         args = self.arguments
         camel_args = []
         for arg in args().keys():
@@ -419,6 +420,9 @@ class BaseTask:
         return camel_args
 
     def __getattr__(self, attr):
+        result = getattr(self._task, attr, None)
+        if result:
+            return result
         if self._dynamic_interface:
             if not attr.islower() and attr != "Arguments":
                 raise AttributeError(
@@ -433,12 +437,9 @@ class BaseTask:
                 else attr
             )
             attr = camel_attr or attr
-        try:
-            result = getattr(self._task, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
+        result = getattr(self._task, attr, None)
+        if result:
+            return result
         try:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
