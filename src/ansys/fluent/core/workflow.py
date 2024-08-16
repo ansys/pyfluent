@@ -411,7 +411,6 @@ class BaseTask:
         self._command_source._python_name_display_id_map[self._python_name] = disp_text
 
     def _get_camel_case_arg_keys(self):
-        print("BaseTask._get_camel_case_arg_keys")
         args = self.arguments
         camel_args = []
         for arg in args().keys():
