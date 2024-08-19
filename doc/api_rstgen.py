@@ -16,7 +16,7 @@ def _get_folder_path(folder_name: str):
     -------
         Path of the folder.
     """
-    return (Path(__file__) / ".." / "api" / folder_name).resolve()
+    return (Path(__file__) / ".." / "source" / "api" / folder_name).resolve()
 
 
 def _get_file_path(folder_name: str, file_name: str):
@@ -34,7 +34,9 @@ def _get_file_path(folder_name: str, file_name: str):
     -------
         Path of the file.
     """
-    return (Path(__file__) / ".." / "api" / folder_name / f"{file_name}.rst").resolve()
+    return (
+        Path(__file__) / ".." / "source" / "api" / folder_name / f"{file_name}.rst"
+    ).resolve()
 
 
 hierarchy = {
