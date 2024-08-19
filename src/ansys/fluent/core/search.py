@@ -295,10 +295,10 @@ def _search(
         with open(api_tree_file, "w") as json_file:
             json.dump(api_tree_data, json_file)
 
-    # if write_api_tree_data:
-    #     _write_api_tree_file(
-    #         api_tree_data=api_tree_data, api_object_names=list(api_object_names)
-    #     )
+    if write_api_tree_data:
+        _write_api_tree_file(
+            api_tree_data=api_tree_data, api_object_names=list(api_object_names)
+        )
     return results
 
 
