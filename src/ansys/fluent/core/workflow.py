@@ -742,7 +742,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
-                    self._camel_snake_arguments_map(cmd_args)
+                    self._camel_snake_arguments_map(val)
                 )
             else:
                 snake_case_state_dict[camel_to_snake_case(key)] = val
