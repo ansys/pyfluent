@@ -114,3 +114,6 @@ SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False
+
+# Whether to start watchdog
+START_WATCHDOG = None
