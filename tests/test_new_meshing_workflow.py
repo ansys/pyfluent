@@ -1582,3 +1582,27 @@ def test_current_workflow(new_meshing_session):
 
     with pytest.raises(AttributeError):
         meshing.current_workflow.import_geometry
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_mark_as_updated(new_meshing_session):
+    meshing = new_meshing_session
+
+    watertight = meshing.watertight()
+
+    assert meshing.workflow.TaskObject["Import Geometry"].State() == "Out-of-date"
+    assert meshing.workflow.TaskObject["Describe Geometry"].State() == "Out-of-date"
+    assert meshing.workflow.TaskObject["Add Local Sizing"].State() == "Out-of-date"
+
+    watertight.import_geometry.mark_as_updated()
+    watertight.describe_geometry.mark_as_updated()
+    watertight.add_local_sizing.mark_as_updated()
+
+    assert meshing.workflow.TaskObject["Import Geometry"].State() == "Forced-up-to-date"
+    assert (
+        meshing.workflow.TaskObject["Describe Geometry"].State() == "Forced-up-to-date"
+    )
+    assert (
+        meshing.workflow.TaskObject["Add Local Sizing"].State() == "Forced-up-to-date"
+    )

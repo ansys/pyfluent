@@ -248,6 +248,12 @@ class BaseTask:
             attr="outputs", other_attr="requiredInputs"
         )
 
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
+
     def tasks(self, recompute=True) -> list:
         """Get the ordered task list held by this task.
 
