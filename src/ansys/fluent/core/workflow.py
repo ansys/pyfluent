@@ -659,7 +659,7 @@ class TaskContainer(PyCallableStateObject):
 
     def __getitem__(self, name):
         logger.debug(f"TaskContainer.__getitem__({name})")
-        return _makeTask(self._container, name)
+        return self._container._workflow.TaskObject[name]
 
     def __getattr__(self, attr):
         return getattr(self._task_container, attr)
@@ -1260,7 +1260,6 @@ class CompoundTask(CommandTask):
 def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
     kinds = {
-        None: BaseTask,  # To support old fluent journals setting empty state to Task Objects
         "Simple": SimpleTask,
         "Compound Child": CompoundChild,
         "Compound": CompoundTask,
