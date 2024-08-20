@@ -1,4 +1,3 @@
-
 """Provide a module to generate the Fluent settings tree.
 
 Running this module generates a python module with the definition of the Fluent
