@@ -103,7 +103,7 @@ jobs:
       - name: Unit Testing
         run: |
             echo "Running custom unittest"
-            sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples
+            sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
             make install-test
             poetry python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
         env:

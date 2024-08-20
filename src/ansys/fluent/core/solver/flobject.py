@@ -228,7 +228,7 @@ class Base:
         return self._flproxy
 
     @property
-    def file_transfer_service(self):
+    def _file_transfer_handler(self):
         """Remote file handler.
 
         Supports file upload and download.
@@ -238,7 +238,7 @@ class Base:
             if self._file_transfer_service:
                 return self._file_transfer_service
             elif self._parent:
-                return self._parent.file_transfer_service
+                return self._parent._file_transfer_handler
 
     _name = None
     fluent_name = None
@@ -590,12 +590,13 @@ class _Alias:
                 scheme_eval("(api-unecho-python-port pyfluent-journal-str-port)")
                 journal_str = scheme_eval(
                     "(close-output-port pyfluent-journal-str-port)"
-                ).strip()
-                warnings.warn(
-                    "Note: A newer syntax is available to perform the last operation:\n"
-                    f"{journal_str}",
-                    DeprecatedSettingWarning,
                 )
+                if isinstance(journal_str, str):
+                    warnings.warn(
+                        "Note: A newer syntax is available to perform the last operation:\n"
+                        f"{journal_str.strip()}",
+                        DeprecatedSettingWarning,
+                    )
                 if not _Alias.once:
                     warnings.warn(
                         "\nExecute the following code to suppress future warnings like the above:\n\n"
@@ -829,9 +830,9 @@ class FileName(Base):
 class _InputFile(FileName):
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self.file_transfer_service:
+        if self._file_transfer_handler:
             for file_name in file_names:
-                self.file_transfer_service.upload(file_name=file_name)
+                self._file_transfer_handler.upload(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -840,9 +841,9 @@ class _InputFile(FileName):
 class _OutputFile(FileName):
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self.file_transfer_service:
+        if self._file_transfer_handler:
             for file_name in file_names:
-                self.file_transfer_service.download(file_name=file_name)
+                self._file_transfer_handler.download(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -1164,13 +1165,23 @@ class WildcardPath(Group):
             if fnmatch.fnmatch(item, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield item
 
+    # Note that following 2 are not symmetric as get_state and set_state
+    # are not symmetric.
+    # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
+    # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
+
     def to_scheme_keys(self, value):
         """Convert value to have keys with scheme names."""
-        return self._state_cls.to_scheme_keys(value)
+        return self._settings_cls.to_scheme_keys(value)
 
     def to_python_keys(self, value):
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
+
+    @classmethod
+    def _unalias(cls, value):
+        # Not yet implemented
+        return value
 
 
 class NamedObjectWildcardPath(WildcardPath):
@@ -1353,6 +1364,24 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if not obj:
             obj = self._create_child_object(name)
         return obj
+
+    def get(self, name: str) -> ChildTypeT:
+        """Return the child object by key.
+
+        Parameters
+        ----------
+        name : str
+            Name of the child object.
+
+        Returns
+        -------
+        ChildTypeT
+            Child object.
+        """
+        try:
+            return self.__getitem__(name)
+        except Exception:
+            return
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
@@ -1597,6 +1626,27 @@ class BaseCommand(Action):
         return self.execute_command(*args, **kwds)
 
 
+# TODO: Remove this after paremater list() method is fixed from Fluent side
+def _fix_parameter_list_return(val):
+    if isinstance(val, dict):
+        new_val = {}
+        for name, v in val.items():
+            value, units = v
+            if len(units) > 0:
+                unit_labels = _fix_parameter_list_return.scheme_eval(
+                    f"(units/inquire-available-label-strings-for-quantity '{units[0]})"
+                )
+                unit_label = unit_labels[0] if len(unit_labels) > 0 else ""
+            else:
+                unit_label = ""
+            new_val[name] = [value, unit_label]
+        return new_val
+    return val
+
+
+_fix_parameter_list_return.scheme_eval = None
+
+
 class Command(BaseCommand):
     """Command object."""
 
@@ -1617,7 +1667,14 @@ class Command(BaseCommand):
                 if response in ["n", "N", "no"]:
                     return
         with self._while_executing_command():
-            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
+                if (self._parent.path, self.obj_name) in [
+                    ("parameters/input-parameters", "list"),
+                    ("parameters/output-parameters", "list"),
+                ]:
+                    ret = _fix_parameter_list_return(ret)
+            return ret
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
@@ -1762,11 +1819,22 @@ class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTyp
 
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            with self._while_creating():
-                self.flproxy.create(self.path, name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
+            if self.flproxy.has_wildcard(name):
+                child = WildcardPath(
+                    self.flproxy,
+                    self.path + "/" + name,
+                    self.__class__,
+                    self.__class__.child_object_type,
+                    self,
+                )
+            else:
+                with self._while_creating():
+                    self.flproxy.create(self.path, name)
+                child = self._create_child_object(name)
+        else:
+            child = self._objects.get(name)
+            if not child:
+                child = self._create_child_object(name)
         child.set_state(value)
 
 
@@ -1797,10 +1865,26 @@ class _NonCreatableNamedObjectMixin(
 ):
     def __setitem__(self, name: str, value):
         if name not in self.get_object_names():
-            raise KeyError(name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
+            if self.flproxy.has_wildcard(name):
+                child = WildcardPath(
+                    self.flproxy,
+                    self.path + "/" + name,
+                    self.__class__,
+                    self.__class__.child_object_type,
+                    self,
+                )
+            else:
+                raise KeyError(
+                    allowed_name_error_message(
+                        context=self.__class__.__name__,
+                        trial_name=name,
+                        allowed_values=self.get_object_names(),
+                    )
+                )
+        else:
+            child = self._objects.get(name)
+            if not child:
+                child = self._create_child_object(name)
         child.set_state(value)
 
 
@@ -1939,6 +2023,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(children, cls.child_names)
 
         commands = info.get("commands")
+        if commands and not user_creatable:
+            commands.pop("create", None)
         if commands:
             cls.command_names = []
             _process_cls_names(commands, cls.command_names)
@@ -2059,6 +2145,7 @@ def get_root(
     root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
+    _fix_parameter_list_return.scheme_eval = scheme_eval
     root._setattr("_static_info", obj_info)
     root._setattr("_file_transfer_service", file_transfer_service)
     return root

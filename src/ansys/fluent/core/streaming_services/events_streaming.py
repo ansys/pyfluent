@@ -4,7 +4,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Union
+from typing import Callable, Generic, Type, TypeVar, Union
 import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -15,7 +15,14 @@ from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 network_logger = logging.getLogger("pyfluent.networking")
 
 
-class Event(Enum):
+def _missing_for_events(cls, value):
+    for member in cls:
+        if member.value.lower() == value:
+            return member
+    raise ValueError(f"'{value}' is not a supported '{cls.__name__}'.")
+
+
+class SolverEvent(Enum):
     """Enumerates over supported server (Fluent) events."""
 
     TIMESTEP_STARTED = "TimestepStartedEvent"
@@ -43,24 +50,49 @@ class Event(Enum):
 
     @classmethod
     def _missing_(cls, value: str):
-        for member in cls:
-            if member.value.lower() == value:
-                return member
-        raise ValueError(f"'{value}' is not a supported 'Event'.")
+        return _missing_for_events(cls, value)
 
 
-class EventsManager(StreamingService):
+# alias for backward compatibility
+Event = SolverEvent
+
+
+class MeshingEvent(Enum):
+    """Enumerates over supported server (Fluent) events."""
+
+    ABOUT_TO_LOAD_CASE = "AboutToReadCaseEvent"
+    CASE_LOADED = "CaseReadEvent"
+    SETTINGS_CLEARED = "ClearSettingsDoneEvent"
+    PROGRESS_UPDATED = "ProgressEvent"
+    FATAL_ERROR = "ErrorEvent"
+
+    @classmethod
+    def _missing_(cls, value: str):
+        return _missing_for_events(cls, value)
+
+
+TEvent = TypeVar("TEvent")
+
+
+class EventsManager(Generic[TEvent]):
     """Manages server-side events.
 
     This class allows the client to register and unregister callbacks with server
     events.
     """
 
-    def __init__(self, session_events_service, fluent_error_state, session):
+    def __init__(
+        self,
+        event_type: Type[TEvent],
+        session_events_service,
+        fluent_error_state,
+        session,
+    ):
         """__init__ method of EventsManager class."""
-        super().__init__(
+        self._event_type = event_type
+        self._impl = StreamingService(
             stream_begin_method="BeginStreaming",
-            target=EventsManager._process_streaming,
+            target=partial(EventsManager._process_streaming, self),
             streaming_service=session_events_service,
         )
         self._fluent_error_state = fluent_error_state
@@ -68,20 +100,22 @@ class EventsManager(StreamingService):
         # can also be done in other streaming services
         self._session = session
 
-    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+    def _process_streaming(
+        self, service, id, stream_begin_method, started_evt, *args, **kwargs
+    ):
         request = EventsProtoModule.BeginStreamingRequest(*args, **kwargs)
-        responses = self._streaming_service.begin_streaming(
+        responses = service._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
         while True:
             try:
                 response = next(responses)
-                event_name = Event(response.WhichOneof("as"))
-                with self._lock:
-                    self._streaming = True
+                event_name = self._event_type(response.WhichOneof("as"))
+                with service._lock:
+                    service._streaming = True
                     # error-code 0 from Fluent indicates server running without error
                     if (
-                        event_name == Event.FATAL_ERROR
+                        event_name == self._event_type.FATAL_ERROR
                         and response.errorevent.errorCode != 0
                     ):
                         error_message = response.errorevent.message.rstrip()
@@ -91,7 +125,7 @@ class EventsManager(StreamingService):
                         )
                         self._fluent_error_state.set("fatal", error_message)
                         continue
-                    callbacks_map = self._service_callbacks.get(event_name, {})
+                    callbacks_map = self._impl._service_callbacks.get(event_name, {})
                     for callback in callbacks_map.values():
                         callback(
                             session=self._session,
@@ -122,7 +156,7 @@ class EventsManager(StreamingService):
 
     def register_callback(
         self,
-        event_name: Union[Event, str],
+        event_name: Union[TEvent, str],
         callback: Callable,
         *args,
         **kwargs,
@@ -131,7 +165,7 @@ class EventsManager(StreamingService):
 
         Parameters
         ----------
-        event_name : Event or str
+        event_name : TEvent or str
             Event to register the callback to.
         callback : Callable
             Callback to register. If the custom arguments,
@@ -157,17 +191,19 @@ class EventsManager(StreamingService):
         if event_name is None or callback is None:
             raise InvalidArgument("'event_name' and 'callback' ")
 
-        event_name = Event(event_name)
-        with self._lock:
-            callback_id = f"{event_name}-{next(self._service_callback_id)}"
-            callbacks_map = self._service_callbacks.get(event_name)
+        event_name = self._event_type(event_name)
+        with self._impl._lock:
+            callback_id = f"{event_name}-{next(self._impl._service_callback_id)}"
+            callbacks_map = self._impl._service_callbacks.get(event_name)
             callback_to_call = EventsManager._make_callback_to_call(
                 callback, args, kwargs
             )
             if callbacks_map:
                 callbacks_map.update({callback_id: callback_to_call})
             else:
-                self._service_callbacks[event_name] = {callback_id: callback_to_call}
+                self._impl._service_callbacks[event_name] = {
+                    callback_id: callback_to_call
+                }
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.
@@ -177,7 +213,15 @@ class EventsManager(StreamingService):
         callback_id : str
             ID of the registered callback.
         """
-        with self._lock:
-            for callbacks_map in self._service_callbacks.values():
+        with self._impl._lock:
+            for callbacks_map in self._impl._service_callbacks.values():
                 if callback_id in callbacks_map:
                     del callbacks_map[callback_id]
+
+    def start(self, *args, **kwargs) -> None:
+        """Start streaming."""
+        self._impl.start(*args, **kwargs)
+
+    def stop(self) -> None:
+        """Stop streaming."""
+        self._impl.stop()

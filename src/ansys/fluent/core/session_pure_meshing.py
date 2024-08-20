@@ -10,6 +10,7 @@ from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
+from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -62,6 +63,7 @@ class PureMeshing(BaseSession):
             file_transfer_service=file_transfer_service,
             start_transcript=start_transcript,
             launcher_args=launcher_args,
+            event_type=MeshingEvent,
         )
         self._base_meshing = BaseMeshing(
             self.execute_tui,
@@ -121,15 +123,15 @@ class PureMeshing(BaseSession):
 
     def watertight(self):
         """Get a new watertight workflow."""
-        return self._base_meshing.watertight_workflow
+        return self._base_meshing.watertight_workflow()
 
     def fault_tolerant(self):
         """Get a new fault-tolerant workflow."""
-        return self._base_meshing.fault_tolerant_workflow
+        return self._base_meshing.fault_tolerant_workflow()
 
     def two_dimensional_meshing(self):
         """Get a new 2D meshing workflow."""
-        return self._base_meshing.two_dimensional_meshing_workflow
+        return self._base_meshing.two_dimensional_meshing_workflow()
 
     def load_workflow(self, file_path: str):
         """Load a saved workflow."""
@@ -137,7 +139,12 @@ class PureMeshing(BaseSession):
 
     def create_workflow(self):
         """Create a meshing workflow."""
-        return self._base_meshing.create_workflow
+        return self._base_meshing.create_workflow()
+
+    @property
+    def current_workflow(self):
+        """Current meshing workflow."""
+        return self._base_meshing.current_workflow
 
     def topology_based(self):
         """Get a new topology-based meshing workflow.

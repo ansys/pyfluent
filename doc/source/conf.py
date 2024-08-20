@@ -150,7 +150,9 @@ sphinx_gallery_conf = {
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
     # Pattern to search for example files
-    "filename_pattern": r"\.py",
+    "filename_pattern": r"exhaust_system_settings_api\.py|external_compressible_flow\.py|mixing_elbow_settings_api\.py|modeling_cavitation\.py",
+    # Disabled example scripts
+    "ignore_pattern": r"ahmed_body_workflow\.py|brake\.py|DOE_ML\.py|radiation_headlamp\.py",
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
@@ -246,7 +248,7 @@ texinfo_documents = [
         "ansys.fluent.core Documentation",
         author,
         "ansys.fluent.core",
-        "Pythonic interface for Fluent using gRPC",
+        "Python client library that interfaces to Fluent",
         "Engineering Software",
     ),
 ]

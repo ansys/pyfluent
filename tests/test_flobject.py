@@ -412,6 +412,9 @@ class Proxy:
     def is_interactive_mode(self):
         return False
 
+    def has_wildcard(self, name: str) -> bool:
+        return False
+
 
 def test_primitives():
     r = flobject.get_root(Proxy())
@@ -812,14 +815,28 @@ def test_settings_wild_card_access(new_solver_session) -> None:
 
     solver.solution.initialization.hybrid_initialize()
 
-    assert (
-        solver.setup.boundary_conditions.velocity_inlet["*1"].momentum.velocity.value()[
-            "inlet1"
-        ]["momentum"]["velocity"]["value"]
-        == solver.setup.boundary_conditions.velocity_inlet[
-            "inlet1"
-        ].momentum.velocity.value()
-    )
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        assert (
+            solver.setup.boundary_conditions.velocity_inlet[
+                "*1"
+            ].momentum.velocity_magnitude.value()["inlet1"]["momentum"][
+                "velocity_magnitude"
+            ][
+                "value"
+            ]
+            == solver.setup.boundary_conditions.velocity_inlet[
+                "inlet1"
+            ].momentum.velocity.value()
+        )
+    else:
+        assert (
+            solver.setup.boundary_conditions.velocity_inlet[
+                "*1"
+            ].momentum.velocity.value()["inlet1"]["momentum"]["velocity"]["value"]
+            == solver.setup.boundary_conditions.velocity_inlet[
+                "inlet1"
+            ].momentum.velocity.value()
+        )
 
     assert solver.setup.boundary_conditions.wall["*"]()
 
@@ -1051,7 +1068,9 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
-
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        # https://github.com/ansys/pyfluent/issues/3134
+        return
     _check_vector_units(
         solver.setup.reference_frames[
             "global"
@@ -1168,6 +1187,13 @@ def test_static_info_hash_identity(new_solver_session):
     hash1 = _gethash(solver._settings_service.get_static_info())
     hash2 = _gethash(solver._settings_service.get_static_info())
     assert hash1 == hash2
+
+
+@pytest.mark.codegen_required
+def test_no_hash_mismatch(new_solver_session, caplog):
+    caplog.clear()
+    new_solver_session.setup
+    assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
 @pytest.mark.fluent_version(">=24.2")

@@ -2,6 +2,7 @@ import os
 
 import pytest
 
+from ansys.fluent.core import MeshingEvent
 from ansys.fluent.core.examples.downloads import download_file
 
 
@@ -75,3 +76,93 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session.tui.file.read_journal(file_name)
     if os.path.exists(file_name):
         os.remove(file_name)
+
+
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_launch_meshing_and_switch(new_meshing_session):
+    meshing = new_meshing_session
+    assert not meshing.switched
+    solver = meshing.switch_to_solver()
+    assert meshing.switched
+    assert not meshing.tui
+    assert not meshing.meshing
+    assert not meshing.workflow
+    assert not meshing.watertight
+
+
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_meshing_streaming_and_switch(new_meshing_session):
+
+    def on_case_loaded(session, event_info):
+        on_case_loaded.loaded = True
+
+    on_case_loaded.loaded = False
+
+    def on_trancript(transcript):
+        on_trancript.called = True
+
+    on_trancript.called = False
+
+    meshing = new_meshing_session
+
+    meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
+    meshing.transcript.register_callback(on_trancript)
+
+    solver = meshing.switch_to_solver()
+
+    on_trancript.called = False
+
+    case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
+    try:
+        solver.settings.file.read_case(file_name=case_file_name)
+    except AttributeError:
+        solver.tui.file.read_case(case_file_name)
+
+    assert not on_trancript.called
+    assert not on_case_loaded.loaded
+
+
+@pytest.mark.fluent_version("latest")
+@pytest.mark.codegen_required
+def test_meshing_no_foreign_objects(new_meshing_session):
+    meshing = new_meshing_session
+    with pytest.raises(AttributeError):
+        meshing.monitors
+
+
+def test_fake_session():
+
+    class fake_session_base:
+
+        def bar(self):
+            pass
+
+    class fake_session(fake_session_base):
+
+        def __init__(self) -> None:
+            self.switched = False
+
+        def __getattribute__(self, item: str):
+            if item == "switched":
+                return super(fake_session, self).__getattribute__(item)
+
+            if self.switched:
+                return None
+
+            return super(fake_session, self).__getattribute__(item)
+
+        def foo(self):
+            return 42
+
+    f = fake_session()
+
+    assert f.foo() == 42
+
+    f.switched = True
+
+    assert f.foo is None
+
+    assert f.bar is None

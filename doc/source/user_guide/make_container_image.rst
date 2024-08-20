@@ -47,7 +47,7 @@ command line arguments and run this script to copy needed files from the Ansys i
 2. If you find that some of the excluded files are needed to run your workflows then you can remove those files from the exclusion list.
 
 3. Build the Docker image
-++++++++++++++++++++++
++++++++++++++++++++++++++
 
 Specify ``docker/fluent_<version>`` directory for the particular Fluent release and execute this command to build the Docker image:
 
@@ -87,6 +87,6 @@ to run the Docker container using PyFluent:
     import os
     import ansys.fluent.core as pyfluent
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
-    custom_config = {'fluent_image': 'ansys_inc:latest', 'host_mount_path': f"{os.getcwd()}", 'auto_remove': False}
+    custom_config = {'fluent_image': 'ansys_inc:latest', 'mount_source': f"{os.getcwd()}", 'auto_remove': False}
     solver = pyfluent.launch_fluent(container_dict=custom_config)
 

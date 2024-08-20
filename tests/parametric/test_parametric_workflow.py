@@ -3,17 +3,12 @@ from pathlib import Path, PurePosixPath
 import tempfile
 
 import pytest
+from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.launcher.fluent_container import DEFAULT_CONTAINER_MOUNT_PATH
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
-
-PYTEST_RELATIVE_TOLERANCE = 1e-3
-
-
-def pytest_approx(expected):
-    return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.nightly
@@ -23,16 +18,14 @@ def test_parametric_workflow():
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy(
-            host_mount_path=tmp_save_path
-        )
+        file_transfer_service = RemoteFileTransferStrategy(mount_source=tmp_save_path)
     import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         inside_container = True
         config_dict = {}
-        config_dict.update(host_mount_path=tmp_save_path)
+        config_dict.update(mount_source=tmp_save_path)
         if pyfluent.USE_FILE_TRANSFER_SERVICE:
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
@@ -44,7 +37,7 @@ def test_parametric_workflow():
                 processor_count=2,
                 container_dict=config_dict,
             )
-        container_workdir = PurePosixPath(DEFAULT_CONTAINER_MOUNT_PATH)
+        container_workdir = PurePosixPath(pyfluent.CONTAINER_MOUNT_TARGET)
     else:
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
@@ -110,7 +103,10 @@ def test_parametric_workflow():
     )
     assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
     dp_names = set([*study1.design_points.keys()])
-    study1.design_points.create_1()
+    if solver_session.get_fluent_version() < FluentVersion.v251:
+        study1.design_points.create_1()
+    else:
+        study1.design_points.create()
     dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
     dp1 = study1.design_points[dp1_name]
     dp1.input_parameters["inlet1_temp"] = 500
@@ -232,7 +228,6 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.nightly
 @pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(static_mixer_settings_session):
     solver = static_mixer_settings_session
@@ -260,5 +255,15 @@ def test_parameters_list_function(static_mixer_settings_session):
     create_output_param("report-definition", "outlet-temp-avg")
     create_output_param("report-definition", "outlet-vel-avg")
 
-    assert len(solver.parameters.input_parameters.list()) == 4
-    assert len(solver.parameters.output_parameters.list()) == 2
+    input_parameters_list = solver.parameters.input_parameters.list()
+    output_parameters_list = solver.parameters.output_parameters.list()
+    assert input_parameters_list == {
+        "inlet1_temp": [300.0, "K"],
+        "inlet1_vel": [1.0, "m/s"],
+        "inlet2_temp": [350.0, "K"],
+        "inlet2_vel": [1.0, "m/s"],
+    }
+    assert output_parameters_list == {
+        "outlet-temp-avg-op": [0.0, "K"],
+        "outlet-vel-avg-op": [0.0, "m/s"],
+    }

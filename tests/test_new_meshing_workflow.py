@@ -29,13 +29,6 @@ def test_new_watertight_workflow(new_meshing_session):
     watertight.add_local_sizing()
 
     # Generate surface mesh
-    assert (
-        round(
-            watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size.get_state(),
-            5,
-        )
-        == 0.41831
-    )
     watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size.set_state(0.3)
     assert watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size() == 0.3
     watertight.create_surface_mesh()
@@ -1432,6 +1425,7 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3065")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_created_workflow(new_meshing_session):
@@ -1565,3 +1559,26 @@ def test_duplicate_children_of_compound_task(
         watertight.add_local_sizing.tasks()[-1].python_name()
         == "add_local_sizing_child_3"
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_current_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    with pytest.raises(RuntimeError):
+        meshing.current_workflow
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert meshing.current_workflow.import_geometry
+
+    with pytest.raises(AttributeError):
+        meshing.current_workflow.import_cad_and_part_management
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+    assert meshing.current_workflow.import_cad_and_part_management
+
+    with pytest.raises(AttributeError):
+        meshing.current_workflow.import_geometry

@@ -15,6 +15,7 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
+  PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Documents/ansys_fluent_core_examples"
 
 jobs:
   build_dev_docs:
@@ -65,6 +66,7 @@ jobs:
             rm poetry.lock
           fi
           poetry install --with docs
+          poetry install --all-extras
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

@@ -391,6 +391,8 @@ def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> No
 @pytest.mark.fluent_version(">=24.2")
 def test_reduction_does_not_modify_case(static_mixer_case_session):
     solver = static_mixer_case_session
+    # After reading the static-mixer case in Fluent, case-modifed? flag is somehow True
+    solver.scheme_eval.scheme_eval("(%save-case-id)")
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
     solver.reduction.area_average(
         expression="AbsolutePressure",

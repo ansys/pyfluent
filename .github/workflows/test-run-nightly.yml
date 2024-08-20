@@ -12,12 +12,13 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  MAIN_PYTHON_VERSION: '3.9'
+  MAIN_PYTHON_VERSION: '3.10'
 
 jobs:
   test:
     name: Unit Testing
     runs-on: [self-hosted, pyfluent]
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v4

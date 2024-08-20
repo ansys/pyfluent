@@ -71,7 +71,8 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-    pyfluent.CONTAINER_MOUNT_PATH = pyfluent.EXAMPLES_PATH
+    pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
+    pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
 
 
 class Helpers:
@@ -142,7 +143,7 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"host_mount_path": pyfluent.USER_DATA_PATH}
+        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         file_transfer_service = RemoteFileTransferStrategy()
         return pyfluent.launch_fluent(
             container_dict=container_dict,
@@ -252,7 +253,7 @@ def mixing_elbow_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(file_type="case", file_name=case_name)
+    solver.settings.file.read(file_type="case-data", file_name=case_name)
     return solver
 
 
@@ -260,8 +261,8 @@ def mixing_elbow_case_data_session(new_solver_session):
 def mixing_elbow_param_case_data_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
-    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(file_type="case", file_name=case_name)
+    download_file("elbow_param.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case-data", file_name=case_name)
     return solver
 
 

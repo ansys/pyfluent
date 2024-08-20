@@ -5,8 +5,8 @@ Frequently asked questions
 
 What is PyAnsys?
 ----------------
-PyAnsys is a set of open source technologies that allow you to interface Pythonically
-with Ansys Fluent, Mechanical APDL, AEDT, and other Ansys products. You can use PyAnsys
+PyAnsys is a set of open source technologies that allow you to interface with Ansys
+Fluent, Mechanical APDL, AEDT, and other Ansys products via Python. You can use PyAnsys
 libraries within a Python environment of your choice in conjunction with external Python
 libraries.
 
@@ -16,14 +16,13 @@ libraries.
 
 What is PyFluent?
 -----------------
-PyFluent provides Pythonic access to Ansys Fluent. Its features enable the seamless use of
+PyFluent provides Python access to Ansys Fluent. Its features enable the seamless use of
 Fluent within the Python ecosystem and broad access to native Fluent features for performing
 actions such as these:
 
 - Launch Fluent using a local Ansys installation.
 - Connect to a Fluent instance running on a remote machine.
-- Use Fluent's TUI (text user interface) commands for both meshing and solver features.
-- Use Fluent's built-in postprocessing capabilities.
+- TODO
 
 PyFluent is bundled with the Fluent installation. You can also download and install PyFluent
 separately. For more information, see :ref:`faqs_install`, which appears later on this page.
@@ -144,7 +143,7 @@ all PyFluent packages in a Python *virtual environment*:
 
 Which version of Python should you use?
 ---------------------------------------
-PyFluent supports Python 3.9 through Python 3.12 on Windows and Linux. Python
+PyFluent supports Python 3.10 through Python 3.12 on Windows and Linux. Python
 3.10 is shipped with Ansys 2023 R2 and later. For example, in a 2023 R2 Windows
 installation, the executable file Python 3.10 is typically located at:
 ``C:\Program Files\ANSYS Inc\v232\commonfiles\CPython\3_10\winx64\Release\python.exe``.
@@ -154,7 +153,7 @@ the `Downloads page <https://www.python.org/downloads/>`_ of the Python web
 site.
 
 In either case, run the Python executable file as an administrator, selecting
-the **Add Python 3.9 to PATH** checkbox on the first wizard page before
+the **Add Python 3.10 to PATH** checkbox on the first wizard page before
 proceeding with the installation. On the last wizard page, which indicates that
 Python is installed successfully, follow the instructions for disabling the path
 length limit if you have long file paths.
@@ -186,12 +185,12 @@ processors and activate the Fluent user interface:
 
 .. code:: python
 
-   session=pyfluent.launch_fluent(precision="double", processor_count=2, ui_mode="gui")
+   session=pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, ui_mode="gui")
 
 
-For additional launch examples, see :ref:`ref_user_guide_launch`. For
+For additional launch examples, see :ref:`ref_launch_guide`. For
 descriptions of all parameters, see the :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` method.
+<ansys.fluent.core.launcher.launcher.launch_fluent>` function.
 
 .. _faqs_fluentloc:
 
@@ -200,8 +199,7 @@ How does PyFluent infer the location to launch Fluent?
 PyFluent infers the Fluent location based on the following information, in
 increasing order of precedence:
 
-#. Value of ``product_version`` parameter passed to :func:`launch_fluent()
-   <ansys.fluent.core.launch_fluent>`.
+#. Value of ``product_version`` parameter passed to :func:`launch_fluent <ansys.fluent.core.launch_fluent>`.
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
    when Fluent is installed, where ``<ver>`` is the Fluent release number such
