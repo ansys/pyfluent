@@ -114,7 +114,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
         file_transfer_service = PimFileTransferService(pim_instance=mock_instance)
         assert not file_transfer_service.file_service
-        assert file_transfer_service.is_configured
+        assert file_transfer_service.is_configured()
         assert file_transfer_service.pim_instance
         assert file_transfer_service.upload_server
 
@@ -165,12 +165,17 @@ def test_file_purpose_on_remote_instance(
     import_file_name = rename_downloaded_file(import_file_name, f"_{suffix}")
 
     solver_session.file.read_case(file_name=import_file_name)
+    assert file_service.is_configured()
+    assert file_service.uploads()
     assert len(file_service.uploads()) == 1
     assert file_service.uploads()[0] == import_file_name
 
     solver_session.file.write_case(file_name=import_file_name)
+    assert file_service.downloads()
     assert len(file_service.downloads()) == 1
     assert file_service.downloads()[0] == import_file_name
+
+    solver_session.exit()
 
     meshing = new_meshing_session
 
@@ -187,3 +192,5 @@ def test_file_purpose_on_remote_instance(
     meshing_session.meshing.File.WriteMesh(FileName=import_file_name)
     assert len(file_service.downloads()) == 2
     assert file_service.downloads()[1] == import_file_name
+
+    meshing_session.exit()
