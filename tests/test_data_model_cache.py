@@ -212,7 +212,7 @@ def test_update_cache_internal_names_as_keys(
     assert cache_rules == final_cache
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_get_cached_values_in_command_arguments(new_meshing_session):
     wt = new_meshing_session.watertight()
