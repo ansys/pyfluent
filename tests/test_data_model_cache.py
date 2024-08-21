@@ -215,12 +215,12 @@ def test_update_cache_internal_names_as_keys(
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_get_cached_values_in_command_arguments(new_meshing_session):
-    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    wt = new_meshing_session.watertight()
     geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName="Bob")
     geo_import.Arguments = dict(FileName=None)
-    assert "FileName" in geo_import.command_arguments()
-    assert geo_import.command_arguments()["FileName"] is None
+    assert "FileName" in wt.import_geometry.command_arguments()
+    assert wt.import_geometry.command_arguments()["FileName"] is None
 
 
 @pytest.fixture

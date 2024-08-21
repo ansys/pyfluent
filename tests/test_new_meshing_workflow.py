@@ -1632,6 +1632,8 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     assert import_geom.arguments.length_unit() == "in"
     import_geom.arguments["length_unit"] = "m"
     assert import_geom.arguments["length_unit"] == "m"
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    assert import_geom.arguments.length_unit() == "in"
 
     assert not import_geom.arguments.mesh_unit.is_read_only()
     assert import_geom.arguments.length_unit.is_active()
@@ -1644,6 +1646,15 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     assert msg.value.args[0] == "No attribute named 'file' in 'Import Geometry'."
     with pytest.raises(AttributeError):
         import_geom.arguments.CadImportOptions.OneZonePer = "face"
+
+    assert import_geom.arguments.cad_import_options()
+    assert import_geom.arguments.cad_import_options.one_zone_per()
+
+    assert import_geom.arguments.file_format.get_attrib_value("allowedValues") == [
+        "CAD",
+        "Mesh",
+    ]
+    assert import_geom.arguments.file_format.allowed_values() == ["CAD", "Mesh"]
 
     assert not import_geom.arguments.cad_import_options.one_zone_per.is_read_only()
     assert import_geom.arguments.cad_import_options.one_zone_per() == "body"

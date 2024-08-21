@@ -185,41 +185,6 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_command_args_datamodel_se(new_meshing_session):
-    session_new = new_meshing_session
-    w = session_new.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.TaskObject["Import Geometry"]
-    assert igt.arguments.CadImportOptions()
-    assert igt.arguments.CadImportOptions.OneZonePer()
-    assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_command_args_including_task_object_datamodel_se(new_meshing_session):
-    session_new = new_meshing_session
-    w = session_new.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.TaskObject["Import Geometry"]
-    assert igt.Arguments() == {}
-    assert igt.arguments.CadImportOptions()
-    assert igt.arguments.CadImportOptions.OneZonePer()
-    assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_attribute_query_list_types(new_meshing_session):
-    session_new = new_meshing_session
-    w = session_new.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.TaskObject["Import Geometry"]
-    assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
-
-
 @pytest.mark.skip("Wait for later implementation.")
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
@@ -238,26 +203,6 @@ def test_read_only_behaviour_of_command_arguments(new_meshing_session):
 
     assert "set_state" in dir(m())
     assert "set_state" in dir(m().NumParts)
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_sample_use_of_command_arguments(new_meshing_session):
-    w = new_meshing_session.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.allowed_values() == [
-        "m",
-        "cm",
-        "mm",
-        "in",
-        "ft",
-        "um",
-        "nm",
-    ]
-    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.default_value() == "mm"
-    w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
-    assert w.TaskObject["Import Geometry"].arguments.LengthUnit() == "in"
 
 
 @pytest.mark.codegen_required
@@ -281,38 +226,6 @@ def test_iterate_meshing_workflow_task_container(new_meshing_session):
 
 
 @pytest.mark.codegen_required
-def test_modified_workflow(new_meshing_session):
-    meshing = new_meshing_session
-    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-    task_object_display_names = {
-        "Import Geometry",
-        "Add Local Sizing",
-        "Generate the Surface Mesh",
-        "Describe Geometry",
-        "Apply Share Topology",
-        "Enclose Fluid Regions (Capping)",
-        "Update Boundaries",
-        "Create Regions",
-        "Update Regions",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    }
-
-    task_display_names = []
-    for task in meshing.workflow.TaskObject:
-        task_display_names.append(task.display_name())
-
-    assert set(task_display_names) == task_object_display_names
-
-    task_display_names = []
-    for name, _ in meshing.workflow.TaskObject.items():
-        task_display_names.append(name)
-
-    assert set(task_display_names) == task_object_display_names
-
-
-@pytest.mark.codegen_required
 def test_nonexistent_attrs(new_meshing_session):
     meshing = new_meshing_session
     assert not hasattr(meshing.workflow, "xyz")
@@ -326,7 +239,7 @@ def test_nonexistent_attrs(new_meshing_session):
 def test_old_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    assert meshing.workflow.TaskObject["Import Geometry"].arguments()
+    assert meshing.workflow.TaskObject["Import Geometry"]
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.import_geometry
     assert (
