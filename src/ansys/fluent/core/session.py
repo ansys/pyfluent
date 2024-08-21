@@ -57,7 +57,8 @@ class _IsDataValid:
 
 
 class BaseSession:
-    """Encapsulates a Fluent session. Expose methods for interacting with a Fluent session.
+    """Encapsulates a Fluent session.
+    Expose methods for interacting with a Fluent session.
 
     Attributes
     ----------

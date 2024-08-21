@@ -830,6 +830,8 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments.set_state(args)
 
     def __getattr__(self, attr):
+        if self._dynamic_interface:
+            return getattr(self._task, attr)
         return getattr(self._task._command_arguments, attr)
 
     def __setattr__(self, key, value):
@@ -841,7 +843,15 @@ class ArgumentsWrapper(PyCallableStateObject):
             )
 
     def __setitem__(self, key, value):
-        self._task._command_arguments.__setitem__(key, value)
+        if self._dynamic_interface:
+            getattr(self._task, key).set_state(value)
+        else:
+            self._task._command_arguments.__setitem__(key, value)
+
+    def __getitem__(self, item):
+        if self._dynamic_interface:
+            return getattr(self._task, item).get_state()
+        return self._task._command_arguments.__getitem__(item)
 
 
 class ArgumentWrapper(PyCallableStateObject):
@@ -905,6 +915,8 @@ class ArgumentWrapper(PyCallableStateObject):
         return state_dict
 
     def _get_camel_case_arg_keys(self):
+        if not isinstance(self(), dict):
+            return
         _args = self
         _camel_args = []
         for arg in _args().keys():
@@ -922,7 +934,9 @@ class ArgumentWrapper(PyCallableStateObject):
                     "Camel case attribute access is not supported. "
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
-            camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
+            camel_attr = snake_to_camel_case(
+                str(attr), self._get_camel_case_arg_keys() or []
+            )
             attr = camel_attr or attr
         return getattr(self._arg, attr)
 
@@ -932,7 +946,7 @@ class ArgumentWrapper(PyCallableStateObject):
         else:
             if self._dynamic_interface:
                 camel_attr = snake_to_camel_case(
-                    str(attr), self._get_camel_case_arg_keys()
+                    str(attr), self._get_camel_case_arg_keys() or []
                 )
                 attr = camel_attr or attr
             self.set_state({attr: value})
