@@ -117,3 +117,6 @@ SUPPORT_SOLVER_INTERRUPT = False
 
 # Whether to start watchdog
 START_WATCHDOG = None
+
+# Whether to skip health check
+CHECK_HEALTH = True

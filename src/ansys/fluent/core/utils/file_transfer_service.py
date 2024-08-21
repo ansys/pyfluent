@@ -63,7 +63,8 @@ class FileTransferStrategy(Protocol):
 
 
 class LocalFileTransferStrategy(FileTransferStrategy):
-    """Provides the local file transfer strategy can be used for Fluent launched in the standalone mode.
+    """Provides the local file transfer strategy can be used for Fluent launched in the
+    standalone mode.
 
     Examples
     --------
