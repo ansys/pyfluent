@@ -283,60 +283,6 @@ def _write_settings_cls_helper(out, cls, indent=0):
         raise
 
 
-attrs = {}
-
-
-def _dynamic_class_generation(cls):
-    try:
-        attrs[cls.__name__] = {}
-        cls_data = attrs[cls.__name__]
-    except AttributeError:
-        attrs[cls] = {}
-        cls_data = attrs[cls]
-
-    bases = tuple([c for c in cls.__bases__])
-    cls_data["bases"] = bases
-
-    if hasattr(cls, "__doc__"):
-        cls_data["__doc__"] = cls.__doc__
-
-    if hasattr(cls, "fluent_name"):
-        cls_data["fluent_name"] = cls.fluent_name
-
-    if hasattr(cls, "_child_aliases"):
-        cls_data["_child_aliases"] = cls._child_aliases
-
-    if hasattr(cls, "return_type"):
-        cls_data["return_type"] = cls.return_type
-
-    if hasattr(cls, "child_names"):
-        cls_data["child_names"] = cls.child_names
-
-    if hasattr(cls, "child_object_type"):
-        _dynamic_class_generation(cls.child_object_type)
-
-    if hasattr(cls, "_child_classes"):
-        for _, child in cls._child_classes.items():
-            _dynamic_class_generation(child)
-
-
-def _set_all_attrs(cls, attrs):
-    try:
-        attrs[cls.__name__] = {}
-        cls_data = attrs[cls.__name__]
-    except AttributeError:
-        attrs[cls] = {}
-        cls_data = attrs[cls]
-
-    child_names = cls_data.get("child_names")
-    if child_names:
-        for child_name in child_names:
-            cls_data[child_name] = type(
-                child_name, attrs[child_name]["bases"], attrs[child_name]
-            )
-            _set_all_attrs(child)
-
-
 if __name__ == "__main__":
     import time
 
@@ -350,21 +296,11 @@ if __name__ == "__main__":
     sinfo = session._settings_service.get_static_info()
     cls = flobject.get_cls("", sinfo, version=session._version)
     dyna_root = cls[0]()
-    # with open(
-    #     _get_settings_utils_path(version=session._version), "w"
-    # ) as settings_utils:
-    #     write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
+    with open(
+        _get_settings_utils_path(version=session._version), "w"
+    ) as settings_utils:
+        write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
 
-    # with open(_get_settings_path(version=session._version), "w") as settings:
-    #     write_settings_classes(settings, cls[0], sinfo, settings=True)
+    with open(_get_settings_path(version=session._version), "w") as settings:
+        write_settings_classes(settings, cls[0], sinfo, settings=True)
     print(f"settingsgen.py took {time.time() - start_time} seconds.")
-
-    root = _dynamic_class_generation(cls[0])
-    set_attrs = attrs
-    set_root = _set_all_attrs(cls[0])
-
-    print(f"unique written classes = {len(set(written_classes))}")
-    print(f"unique attrs keys = {len(set(list(attrs.keys())))}")
-    print(
-        f"unique common = {len(set(written_classes).intersection(set(list(attrs.keys()))))}"
-    )
