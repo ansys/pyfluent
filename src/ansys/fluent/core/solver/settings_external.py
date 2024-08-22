@@ -31,12 +31,11 @@ def use_search(codegen_outdir: str, version: str):
     api_tree_files = [
         file for file in os.listdir(codegen_outdir) if file.endswith("pickle")
     ]
-    api_tree_file_count = len(api_tree_files)
     api_tree_file_versions = [
         int(re.findall(r"\d+", file)[0]) for file in api_tree_files
     ]
     latest_api_tree_version = max(api_tree_file_versions)
-    if api_tree_file_count == 1 or fluent_version_int == latest_api_tree_version:
+    if fluent_version_int == latest_api_tree_version:
         return True
     else:
         return False
