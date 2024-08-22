@@ -1452,9 +1452,10 @@ class Workflow:
                 )
             camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
             attr = camel_attr or attr
-            obj = self._attr_from_wrapped_workflow(attr)
-            if obj:
-                return obj
+            try:
+                return getattr(self._workflow, attr)
+            except AttributeError:
+                pass
         return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
@@ -1504,14 +1505,6 @@ class Workflow:
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
-
-    def _attr_from_wrapped_workflow(self, attr):
-        try:
-            result = getattr(self._workflow, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
 
     def _activate_dynamic_interface(self, dynamic_interface: bool):
         self._dynamic_interface = dynamic_interface
@@ -1708,12 +1701,9 @@ class ClassicWorkflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
-        obj = self._attr_from_wrapped_workflow(
-            attr
-        )  # or self._task_with_cmd_matching_help_string(attr)
-        if obj:
-            return obj
-        else:
+        try:
+            return getattr(self._workflow, attr)
+        except AttributeError:
             return super().__getattribute__(attr)
 
     def __dir__(self):
@@ -1726,14 +1716,6 @@ class ClassicWorkflow:
     def __call__(self):
         """Delegate calls to the underlying workflow."""
         return self._workflow()
-
-    def _attr_from_wrapped_workflow(self, attr):
-        try:
-            result = getattr(self._workflow, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
 
 
 class ReadOnlyObject:
