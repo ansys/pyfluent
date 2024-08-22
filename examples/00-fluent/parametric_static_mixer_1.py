@@ -7,11 +7,16 @@ static mixer.
 
 """
 
+import os
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = (
+    r"D:\Installations\Ansys\v242_15072024\ANSYS Inc\v242\fluent"
+)
+
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.parametric import ParametricProject, ParametricStudy
 
 # sphinx_gallery_thumbnail_path = '_static/DP_table.png'
 ############################################################################
@@ -35,17 +40,20 @@ solver_session = pyfluent.launch_fluent(
 # Download the files for this example and read the case for the static mixer.
 
 import_filename = examples.download_file(
-    "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", return_without_path=False
+    "Static_Mixer_main.cas.h5",
+    "pyfluent/static_mixer",
+    return_without_path=False,
+    save_path=os.getcwd(),
 )
 
-solver_session.tui.file.read_case(import_filename)
+solver_session.settings.file.read_case(file_name=import_filename)
 
 ############################################################################
 # Set iterations
 # ~~~~~~~~~~~~~~
 # Set the number of iterations to 100.
 
-solver_session.tui.solve.set.number_of_iterations("100")
+solver_session.settings.solution.run_calculation.iter_count = 100
 
 ############################################################################
 # Create input parameters
@@ -56,23 +64,67 @@ solver_session.tui.solve.set.number_of_iterations("100")
 # Inlet1: velocity (inlet1_vel) 0.5 m/s and temperature (inlet1_temp) at 300 K
 # Inlet2: velocity (inlet2_vel) 0.5 m/s and temperature (inlet2_temp) at 350 K
 
-solver_session.tui.define.parameters.enable_in_TUI("yes")
+solver_session.settings.parameters.enable_in_tui = True
 
-solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit"
-)
+solver_session.settings.setup.named_expressions["inlet1_vel"] = {
+    "output_parameter": False,
+    "input_parameter": True,
+    "unit": "velocity",
+    "parametername": "inlet1_vel",
+    "parameterid": "real-1",
+    "description": "",
+    "definition": "1 [m/s]",
+    "name": "inlet1_vel",
+}
 
-solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit"
-)
+solver_session.settings.setup.boundary_conditions.velocity_inlet["inlet1"] = {
+    "momentum": {"velocity": {"value": "inlet1_vel"}}
+}
 
-solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit"
-)
+solver_session.settings.setup.named_expressions["inlet1_temp"] = {
+    "output_parameter": False,
+    "input_parameter": True,
+    "unit": "temperature",
+    "parametername": "inlet1_temp",
+    "parameterid": "real-2",
+    "description": "",
+    "definition": "300 [K]",
+    "name": "inlet1_temp",
+}
 
-solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit"
-)
+solver_session.settings.setup.boundary_conditions.velocity_inlet["inlet1"] = {
+    "thermal": {"temperature": {"value": "inlet1_temp"}}
+}
+
+solver_session.settings.setup.named_expressions["inlet2_vel"] = {
+    "output_parameter": False,
+    "input_parameter": True,
+    "unit": "velocity",
+    "parametername": "inlet2_vel",
+    "parameterid": "real-3",
+    "description": "",
+    "definition": "1 [m/s]",
+    "name": "inlet2_vel",
+}
+
+solver_session.settings.setup.boundary_conditions.velocity_inlet["inlet2"] = {
+    "momentum": {"velocity": {"value": "inlet2_vel"}}
+}
+
+solver_session.settings.setup.named_expressions["inlet2_temp"] = {
+    "output_parameter": False,
+    "input_parameter": True,
+    "unit": "temperature",
+    "parametername": "inlet2_temp",
+    "parameterid": "real-4",
+    "description": "",
+    "definition": "350 [K]",
+    "name": "inlet2_temp",
+}
+
+solver_session.settings.setup.boundary_conditions.velocity_inlet["inlet2"] = {
+    "thermal": {"temperature": {"value": "inlet2_temp"}}
+}
 
 ###########################################################################
 # Create output parameters
@@ -80,57 +132,63 @@ solver_session.tui.define.boundary_conditions.set.velocity_inlet(
 # Create output parameters named ``outlet-temp-avg`` and ``outlet-vel-avg``
 # using report definitions.
 
-solver_session.solution.report_definitions.surface["outlet-temp-avg"] = {}
-solver_session.solution.report_definitions.surface["outlet-temp-avg"].report_type = (
-    "surface-areaavg"
-)
-solver_session.solution.report_definitions.surface["outlet-temp-avg"].field = (
+solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"] = {}
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-temp-avg"
+].report_type = "surface-areaavg"
+solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"].field = (
     "temperature"
 )
-solver_session.solution.report_definitions.surface["outlet-temp-avg"].surface_names = [
-    "outlet"
-]
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-temp-avg"
+].surface_names = ["outlet"]
 
-solver_session.solution.report_definitions.surface["outlet-vel-avg"] = {}
-solver_session.solution.report_definitions.surface["outlet-vel-avg"].report_type = (
-    "surface-areaavg"
-)
-solver_session.solution.report_definitions.surface["outlet-vel-avg"].field = (
+solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"] = {}
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-vel-avg"
+].report_type = "surface-areaavg"
+solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"].field = (
     "velocity-magnitude"
 )
-solver_session.solution.report_definitions.surface["outlet-vel-avg"].surface_names = [
-    "outlet"
-]
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-vel-avg"
+].surface_names = ["outlet"]
 
-solver_session.tui.define.parameters.enable_in_TUI("yes")
-solver_session.tui.define.parameters.output_parameters.create(
-    "report-definition", "outlet-temp-avg"
-)
-solver_session.tui.define.parameters.output_parameters.create(
-    "report-definition", "outlet-vel-avg"
-)
+solver_session.settings.parameters.output_parameters.report_definitions[
+    "parameter-5"
+] = {}
+solver_session.settings.parameters.output_parameters.report_definitions[
+    "parameter-5"
+] = {"report_definition": "outlet-temp-avg"}
+
+solver_session.settings.parameters.output_parameters.report_definitions[
+    "parameter-6"
+] = {}
+solver_session.settings.parameters.output_parameters.report_definitions[
+    "parameter-6"
+] = {"report_definition": "outlet-vel-avg"}
 
 ###########################################################################
 # Enable convergence condition check
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enable the convergence condition check.
 
-solver_session.tui.solve.monitors.residual.criterion_type("0")
+solver_session.settings.solution.monitor.residual.options.criterion_type = "absolute"
 
 ###########################################################################
 # Write case
 # ~~~~~~~~~~
 # Write the case with all settings in place.
 
-case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
-solver_session.tui.file.write_case(case_path)
+case_path = str(Path(pyfluent.CODEGEN_OUTDIR) / "Static_Mixer_Parameters.cas.h5")
+solver_session.settings.file.write_case(file_name=case_path)
 
 ###########################################################################
 # Initialize parametric study
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Initialize a parametric design point study from a Fluent session.
 
-study_1 = ParametricStudy(solver_session.parametric_studies)
+solver_session.settings.parametric_studies.initialize(project_filename="project_1")
 
 ###############################################################################
 # .. image:: /_static/DP_table_011.png
@@ -142,42 +200,59 @@ study_1 = ParametricStudy(solver_session.parametric_studies)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Access and modify the input parameters of the base design point.
 
-input_parameters_update = study_1.design_points["Base DP"].input_parameters
-input_parameters_update["inlet1_vel"] = 0.5
-study_1.design_points["Base DP"].input_parameters = input_parameters_update
+solver_session.settings.parametric_studies["Static_Mixer_main-Solve"].design_points[
+    "Base DP"
+].input_parameters = {
+    "inlet1_temp": 300,
+    "inlet2_temp": 350,
+    "inlet2_vel": 1,
+    "inlet1_vel": 0.5,
+}
 
 ###########################################################################
 # Update current design point
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Update the current design point.
 
-study_1.update_current_design_point()
+solver_session.settings.parametric_studies[
+    "Static_Mixer_main-Solve"
+].design_points.update_current()
 
 ###########################################################################
 # Add design point
 # ~~~~~~~~~~~~~~~~
 # Add a design point.
 
-design_point_1 = study_1.add_design_point()
-design_point_1_input_parameters = study_1.design_points["DP1"].input_parameters
-design_point_1_input_parameters["inlet1_temp"] = 500
-design_point_1_input_parameters["inlet1_vel"] = 1
-design_point_1_input_parameters["inlet2_vel"] = 1
-study_1.design_points["DP1"].input_parameters = design_point_1_input_parameters
+solver_session.settings.parametric_studies[
+    "Static_Mixer_main-Solve"
+].design_points.create_1(write_data=False, capture_simulation_report_data=True)
+
+solver_session.settings.parametric_studies["Static_Mixer_main-Solve"].design_points[
+    "DP1"
+].input_parameters = {
+    "inlet1_vel": 1,
+    "inlet2_vel": 1,
+    "inlet1_temp": 500,
+    "inlet2_temp": 350,
+}
 
 ##########################################################################
 # Duplicate design point
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Duplicate design point 1 to create design point 2.
 
-design_point_2 = study_1.duplicate_design_point(design_point_1)
+solver_session.settings.parametric_studies[
+    "Static_Mixer_main-Solve"
+].design_points.duplicate(design_point="DP1")
 
 #########################################################################
 # Update all design points
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Update all design points for study 1.
+# Update all design points.
 
-study_1.update_all_design_points()
+solver_session.settings.parametric_studies[
+    "Static_Mixer_main-Solve"
+].design_points.update_all()
 
 ###############################################################################
 # .. image:: /_static/DP_table_012.png
@@ -190,46 +265,55 @@ study_1.update_all_design_points()
 # Export the design point table to a CSV file.
 
 design_point_table = str(
-    Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study_1.csv"
+    Path(pyfluent.CODEGEN_OUTDIR) / "design_point_table_study_1.csv"
 )
-study_1.export_design_table(design_point_table)
+
+solver_session.settings.parametric_studies.export_design_table(
+    filepath=design_point_table
+)
 
 ##########################################################################
 # Delete design point
 # ~~~~~~~~~~~~~~~~~~~
 # Delete design point 1.
 
-study_1.delete_design_points([design_point_1])
+solver_session.settings.parametric_studies[
+    "Static_Mixer_main-Solve"
+].design_points.delete_design_points(design_points=["DP1"])
 
 ##########################################################################
 # Create parametric study
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Create another parametric study by duplicating the current one.
 
-study_2 = study_1.duplicate()
+solver_session.settings.parametric_studies.duplicate(copy_design_points=True)
 
 #########################################################################
 # Rename new parametric study
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Rename the newly created parametric study.
 
-study_2.rename("New Study")
+solver_session.settings.parametric_studies.rename(
+    new="New Study", old="Static_Mixer_main-1-Solve"
+)
 
 #########################################################################
 # Delete old parametric study
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Delete the old parametric study.
 
-study_1.delete()
+solver_session.settings.parametric_studies.delete(name_list="Static_Mixer_main-Solve")
 
 #########################################################################
 # Save parametric project and close Fluent
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Save the parametric project and close Fluent.
 
-project_filepath = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
+project_filepath = str(Path(pyfluent.CODEGEN_OUTDIR) / "static_mixer_study.flprj")
 
-solver_session.tui.file.parametric_project.save_as(project_filepath)
+solver_session.settings.file.parametric_project.save_as(
+    project_filename=project_filepath
+)
 
 solver_session.exit()
 
@@ -241,12 +325,11 @@ solver_session.exit()
 solver_session = pyfluent.launch_fluent(
     precision="double", processor_count=2, mode="solver"
 )
-project_filepath_read = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
-proj = ParametricProject(
-    solver_session.file.parametric_project,
-    solver_session.parametric_studies,
-    project_filepath_read,
+project_filepath_read = str(Path(pyfluent.CODEGEN_OUTDIR) / "static_mixer_study.flprj")
+
+solver_session.settings.file.parametric_project.open(
+    project_filename=project_filepath_read, load_case=True
 )
 
 #########################################################################
@@ -254,7 +337,7 @@ proj = ParametricProject(
 # ~~~~~~~~~~~~~~~~~~~~
 # Save the current project.
 
-proj.save()
+solver_session.settings.file.parametric_project.save()
 
 #########################################################################
 # Save current project as a different project
@@ -262,9 +345,12 @@ proj.save()
 # Save the current project as a different project.
 
 project_filepath_save_as = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
+    Path(pyfluent.CODEGEN_OUTDIR) / "static_mixer_study_save_as.flprj"
 )
-proj.save_as(project_filepath=project_filepath_save_as)
+
+solver_session.settings.file.parametric_project.save(
+    project_filename=project_filepath_save_as
+)
 
 #########################################################################
 # Export current project
@@ -272,16 +358,25 @@ proj.save_as(project_filepath=project_filepath_save_as)
 # Export the current project.
 
 project_filepath_export = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_export.flprj"
+    Path(pyfluent.CODEGEN_OUTDIR) / "static_mixer_study_export.flprj"
 )
-proj.export(project_filepath=project_filepath_export)
+
+solver_session.settings.file.parametric_project.save_as_copy(
+    project_filename=project_filepath_export, convert_to_managed=False
+)
 
 #########################################################################
 # Archive current project
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Archive the current project.
 
-proj.archive()
+project_filepath_archive = str(
+    Path(pyfluent.CODEGEN_OUTDIR) / "static_mixer_study_archive.flprj"
+)
+
+solver_session.settings.file.parametric_project.archive(
+    archive_name=project_filepath_archive
+)
 
 #########################################################################
 # Close Fluent
