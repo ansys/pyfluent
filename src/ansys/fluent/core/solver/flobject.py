@@ -24,6 +24,7 @@ import fnmatch
 import hashlib
 import keyword
 import logging
+import os
 import os.path
 import pickle
 import string
@@ -66,7 +67,7 @@ def _ansys_units():
 import ansys.fluent.core as pyfluent
 
 from .error_message import allowed_name_error_message, allowed_values_error
-from .settings_external import expand_api_file_argument
+from .settings_external import expand_api_file_argument, use_search
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -1062,15 +1063,22 @@ class Group(SettingsBase[DictStateType]):
             return attr
         except AttributeError as ex:
             modified_search_results = []
-            search_results = pyfluent.utils._search(
-                word=name, search_root=self, match_case=False, match_whole_word=False
-            )
-            if search_results:
-                for search_result in search_results:
-                    search_result = search_result.replace(
-                        "<search_root>", self.__class__.__name__
-                    )
-                    modified_search_results.append(search_result)
+            if use_search(
+                codegen_outdir=pyfluent.CODEGEN_OUTDIR,
+                version=self.flproxy._scheme_eval.version,
+            ):
+                search_results = pyfluent.utils._search(
+                    word=name,
+                    search_root=self,
+                    match_case=False,
+                    match_whole_word=False,
+                )
+                if search_results:
+                    for search_result in search_results:
+                        search_result = search_result.replace(
+                            "<search_root>", self.__class__.__name__
+                        )
+                        modified_search_results.append(search_result)
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
