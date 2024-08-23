@@ -719,7 +719,7 @@ Current workflow
 
 Mark as updated
 ---------------
-Use ``mark_as_updated`` to forcefully mark a task as updated.
+Use the ``mark_as_updated()`` method to forcefully mark a task as updated.
 
 .. code:: python
 
