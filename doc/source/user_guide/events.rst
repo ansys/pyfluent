@@ -29,10 +29,21 @@ Examples
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import SolverEvent
+  >>> from ansys.fluent.core import MeshingEvent, SolverEvent
   >>> from ansys.fluent.core.utils.event_loop import execute_in_event_loop_threadsafe
   >>> from ansys.fluent.visualization.matplotlib import matplot_windows_manager
   >>> from ansys.fluent.visualization.pyvista import pyvista_windows_manager
+  >>> from ansys.fluent.visualization import Graphics
+  >>>
+  >>> graphics = Graphics(session=solver)
+  >>>
+  >>> contour1 = graphics.Contours["contour-1"]
+  >>> contour1.field = "temperature"
+  >>> contour1.surfaces_list = ["symmetry"]
+  >>>
+  >>> contour2 = graphics.Contours["contour-2"]
+  >>> contour2.field = "velocity-magnitude"
+  >>> contour2.surfaces_list = ["symmetry"]
   >>> 
   >>> @execute_in_event_loop_threadsafe
   >>> def auto_refersh_call_back_iteration(session, event_info):
@@ -40,14 +51,26 @@ Examples
   >>>       pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
   >>>       matplot_windows_manager.refresh_windows("", ["residual"])
   >>>
-  >>> callback_itr_id = solver.events_manager.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
+  >>> callback_itr_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
   >>>
   >>> @execute_in_event_loop_threadsafe
   >>> def initialize_call_back(session, event_info):
   >>>     pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
   >>>     matplot_windows_manager.refresh_windows("", ["residual"])
   >>>
-  >>> callback_init_id = session.events_manager.register_callback(SolverEvent.SOLUTION_INITIALIZED, initialize_call_back)
+  >>> callback_init_id = solver.events.register_callback(SolverEvent.SOLUTION_INITIALIZED, initialize_call_back)
   >>>
-  >>> callback_data_read_id = session.events_manager.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
-  >>> 
+  >>> callback_data_read_id = solver.events.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
+  >>>
+  >>> def on_case_loaded(session, event_info):
+  >>>     print("Case loaded. Index = ", event_info.index)
+  >>>
+  >>> def on_case_loaded_with_args(x, y, session, event_info):
+  >>>     print(f"Case loaded with {x}, {y}. Index = ", event_info.index)
+  >>>
+  >>> callback = meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
+  >>>
+  >>> callback_case = solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>>
+  >>> callback_case_with_args = solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
+  >>>
