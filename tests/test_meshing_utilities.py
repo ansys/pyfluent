@@ -10,7 +10,6 @@ def pytest_approx(expected):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.nightly
 @pytest.mark.fluent_version(">=25.1")
 def test_meshing_utilities(new_meshing_session):
     meshing_session = new_meshing_session
@@ -472,13 +471,9 @@ def test_meshing_utilities(new_meshing_session):
         34,
     ]
 
-    assert (
-        meshing_session.meshing_utilities.get_face_zones(
-            xyz_coordinates=[1.4, 1.4, 1.4]
-        )
-        == [34]
-        or 34
-    )
+    assert meshing_session.meshing_utilities.get_face_zones(
+        xyz_coordinates=[1.4, 1.4, 1.4]
+    ) == [34]
 
     assert (
         meshing_session.meshing_utilities.get_face_zones(
@@ -594,7 +589,7 @@ def test_meshing_utilities(new_meshing_session):
 
     assert meshing_session.meshing_utilities.get_cell_zones(
         xyz_coordinates=[-7, -6, 0.4]
-    ) is False or [87]
+    ) == [87]
 
     assert meshing_session.meshing_utilities.get_unreferenced_cell_zones() is None
 
@@ -610,26 +605,26 @@ def test_meshing_utilities(new_meshing_session):
         is None
     )
 
-    # assert (
-    #     meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-    #         face_zone_id_list=[29, 30, 31, 32, 33]
-    #     )
-    #     == [87]
-    # )
+    assert (
+        meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
+            face_zone_id_list=[29, 30, 31, 32, 33]
+        )
+        == [87]
+    )
 
-    # assert (
-    #     meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-    #         face_zone_name_list=["outlet", "inlet", "wall", "internal"]
-    #     )
-    #     == [87]
-    # )
+    assert (
+        meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
+            face_zone_name_list=["outlet", "inlet", "wall", "internal"]
+        )
+        == [87]
+    )
 
-    # assert (
-    #     meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
-    #         face_zone_name_pattern="*"
-    #     )
-    #     == [87]
-    # )
+    assert (
+        meshing_session.meshing_utilities.get_adjacent_cell_zones_for_given_face_zones(
+            face_zone_name_pattern="*"
+        )
+        == [87]
+    )
 
     assert (
         meshing_session.meshing_utilities.get_tet_cell_zones(
@@ -834,7 +829,7 @@ def test_meshing_utilities(new_meshing_session):
 
     assert meshing_session.meshing_utilities.get_region_volume(
         object_name="elbow-fluid", region_name="elbow-fluid"
-    ) == [pytest_approx(152.59942809266)] or pytest_approx(152.59942809266)
+    ) == [pytest_approx(152.59942809266)]
 
     assert (
         meshing_session.meshing_utilities.get_pairs_of_overlapping_face_zones(
