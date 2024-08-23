@@ -36,18 +36,48 @@ class FileTransferStrategy(Protocol):
     def upload(
         self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
     ) -> None:
-        """Upload file to the server."""
+        """Upload a file to the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name.
+        remote_file_name : str, optional
+            Remote file name. The default is ``None``.
+        """
         ...
 
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ) -> None:
-        """Download file from the server."""
+        """Download a file from the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name.
+        local_directory : str, optional
+            Local directory. The default is ``None``.
+        """
         ...
 
 
 class LocalFileTransferStrategy(FileTransferStrategy):
-    """Provides the local file transfer strategy."""
+    """Provides the local file transfer strategy can be used for Fluent launched in the
+    standalone mode.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+    >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+    >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=LocalFileTransferStrategy())
+    >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
+    >>> meshing_session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
+    >>> meshing_session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
+    >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
+    """
 
     def __init__(self, server_cwd: Optional[str] = None):
         """Local File Transfer Service.
@@ -80,6 +110,30 @@ class LocalFileTransferStrategy(FileTransferStrategy):
     def upload(
         self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
     ) -> None:
+        """Upload a file to the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name.
+        remote_file_name : str, optional
+            Remote file name. The default is ``None``.
+
+        Raises
+        ------
+        FileNotFoundError
+            If a file does not exist.
+
+        Examples
+        --------
+        >>> import ansys.fluent.core as pyfluent
+        >>> from ansys.fluent.core import examples
+        >>> from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+        >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+        >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=LocalFileTransferStrategy())
+        >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
+        >>> meshing_session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
+        """
         local_file_name = pathlib.Path(file_name)
         if local_file_name.exists() and local_file_name.is_file():
             if remote_file_name:
@@ -95,6 +149,25 @@ class LocalFileTransferStrategy(FileTransferStrategy):
     def download(
         self, file_name: Union[list[str], str], local_directory: Optional[str] = None
     ) -> None:
+        """Download a file from the server.
+
+        Parameters
+        ----------
+        file_name : str
+            File name.
+        local_directory : str, optional
+            Local directory. The default is ``None``.
+
+        Examples
+        --------
+        >>> import ansys.fluent.core as pyfluent
+        >>> from ansys.fluent.core import examples
+        >>> from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+        >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+        >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=LocalFileTransferStrategy())
+        >>> meshing_session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
+        >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
+        """
         remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file_name)}")
         local_file_name = None
         if local_directory:
@@ -125,7 +198,19 @@ def _get_files(
 
 class RemoteFileTransferStrategy(FileTransferStrategy):
     """Provides a file transfer service based on the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_
-    and ``gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
+    and `gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+    >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+    >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
+    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
+    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+    >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
     """
 
     @deprecate_argument("container_mount_path", "mount_target")
@@ -215,6 +300,16 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         ------
         FileNotFoundError
             If a file does not exist.
+
+        Examples
+        --------
+        >>> import ansys.fluent.core as pyfluent
+        >>> from ansys.fluent.core import examples
+        >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+        >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+        >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+        >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
+        >>> solver_session.file.read_case(file_name="elbow.cas.h5")
         """
         files = _get_files(file_name)
         if self.client:
@@ -248,6 +343,16 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             File name.
         local_directory : str, optional
             Local directory. The default is ``None``.
+
+        Examples
+        --------
+        >>> import ansys.fluent.core as pyfluent
+        >>> from ansys.fluent.core import examples
+        >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+        >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+        >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+        >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+        >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
         """
         files = _get_files(file_name)
         if self.client:

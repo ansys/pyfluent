@@ -4,7 +4,7 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.utils.execution import timeout_loop
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=23.2")
 def test_solver_monitors(new_solver_session):
 
     solver = new_solver_session
