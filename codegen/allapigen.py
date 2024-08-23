@@ -57,12 +57,12 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
-    solver.exit()
-
     t1 = time()
     print(f"Time to fetch static info: {t1 - t0:.2f} seconds")
     CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
     print_fluent_version.generate(version, solver.scheme_eval.scheme_eval)
+    solver.exit()
+
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
