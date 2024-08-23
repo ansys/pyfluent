@@ -830,39 +830,6 @@ Switch to solver mode
 Switching to solver mode is not allowed in 2D Meshing mode.
 
 
-Sample use of ``CommandArguments``
-----------------------------------
-This simple example shows how to use the ``CommandArgument`` attributes and explicit
-attribute access methods in a watertight geometry meshing workflow.
-
-.. Note::
-   ``CommandArgument`` attributes are read-only.
-
-.. code:: python
-
-    >>> import ansys.fluent.core as pyfluent
-    >>> from ansys.fluent.core import examples
-
-    >>> import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
-    >>> meshing = pyfluent.launch_fluent(
-    >>>     mode=pyfluent.FluentMode.MESHING,
-    >>>     precision=pyfluent.Precision.DOUBLE,
-    >>>     processor_count=2
-    >>> )
-    >>> workflow = meshing.workflow
-    >>> workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-    >>> tasks = workflow.TaskObject
-    >>> import_geometry = tasks["Import Geometry"]
-    >>> import_geometry.CommandArguments()
-    >>> import_geometry.CommandArguments.FileName.is_read_only()
-    >>> import_geometry.CommandArguments.LengthUnit.is_active()
-    >>> import_geometry.CommandArguments.LengthUnit.allowed_values()
-    >>> import_geometry.CommandArguments.LengthUnit.default_value()
-    >>> import_geometry.CommandArguments.LengthUnit()
-    >>> import_geometry.CommandArguments.CadImportOptions.OneZonePer()
-    >>> import_geometry.CommandArguments.CadImportOptions.FeatureAngle.min()
-
 State access
 ------------
 You can call the ``TaskObject`` container to get its state:
@@ -875,5 +842,5 @@ The ``TaskObject`` container supports dictionary semantics:
 
 .. code:: python
 
-    >>> for name, object in meshing.workflow.TaskObject.items():
-    >>>     print(f"Task name: {name}, state: {object()}")
+    >>> for name, object_dict in meshing.workflow.TaskObject.items():
+    >>>     print(f"Task name: {name}, state: {object_dict}")
