@@ -44,113 +44,147 @@ def _check_in_existing_classes(cls, class_list: list):
         return False
 
 
-written_classes = []
+written_classes = {}
+
+string_classes = {}
 
 
 def _write_utils_cls_helper(out, cls, indent=0):
     try:
-        istr = _get_indent_str(indent)
-        istr1 = _get_indent_str(indent + 1)
-        istr2 = _get_indent_str(indent + 2)
-        if not _check_in_existing_classes(cls, written_classes):
-            out.write("\n")
-            if hasattr(cls, "__name__"):
-                out.write(
-                    f"{istr}class {cls.__name__}"
-                    f'({", ".join(c.__name__ for c in cls.__bases__)}):\n'
-                )
-            else:
-                out.write(f'{istr1}return_type = "{cls}"\n')
+        if hasattr(cls, "__name__") and cls.__name__ in root_childs:
+            root_childs[cls.__name__] += 1
+        elif isinstance(cls, str) and cls in root_childs:
+            root_childs[cls] += 1
 
-            doc = ("\n" + istr1).join(cls.__doc__.split("\n"))
-            out.write(f'{istr1}"""\n')
-            out.write(f"{istr1}{doc}")
-            out.write(f'\n{istr1}"""\n')
-            if hasattr(cls, "fluent_name"):
-                out.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
-
-            child_names = getattr(cls, "child_names", None)
-            if child_names:
-                out.write(f"{istr1}child_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(
-                    child_names,
-                    stream=strout,
-                    compact=True,
-                    width=80 - indent * 4 - 10,
-                )
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                out.write(f"{istr2}{mn}\n")
-                for _, child in cls._child_classes.items():
-                    _write_utils_cls_helper(out, child)
-
-            command_names = getattr(cls, "command_names", None)
-            if command_names:
-                out.write(f"{istr1}command_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(
-                    command_names,
-                    stream=strout,
-                    compact=True,
-                    width=80 - indent * 4 - 10,
-                )
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                out.write(f"{istr2}{mn}\n")
-                for _, child in cls._child_classes.items():
-                    _write_utils_cls_helper(out, child)
-
-            query_names = getattr(cls, "query_names", None)
-            if query_names:
-                out.write(f"{istr1}query_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(
-                    query_names,
-                    stream=strout,
-                    compact=True,
-                    width=80 - indent * 4 - 10,
-                )
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                out.write(f"{istr2}{mn}\n")
-                for _, child in cls._child_classes.items():
-                    _write_utils_cls_helper(out, child)
-
-            arguments = getattr(cls, "argument_names", None)
-            if arguments:
-                out.write(f"{istr1}argument_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(
-                    arguments,
-                    stream=strout,
-                    compact=True,
-                    width=80 - indent * 4 - 10,
-                )
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                out.write(f"{istr2}{mn}\n")
-                for _, child in cls._child_classes.items():
-                    _write_utils_cls_helper(out, child)
-
-            child_object_type = getattr(cls, "child_object_type", None)
-            if child_object_type:
-                _write_utils_cls_helper(
-                    out,
-                    child_object_type,
-                )
-
-            child_aliases = getattr(cls, "_child_aliases", None)
-            if child_aliases:
-                out.write(f"\n{istr1}_child_aliases = dict(\n")
-                out.writelines(
-                    [f'{istr2}{k}="{v}",\n' for k, v in child_aliases.items()]
-                )
-                out.write(f"{istr1})\n\n")
-
-            return_type = getattr(cls, "return_type", None)
-            if return_type:
-                _write_utils_cls_helper(out, return_type)
-        if hasattr(cls, "__name__"):
-            written_classes.append(cls.__name__)
+        if (
+            hasattr(cls, "__name__")
+            and root_childs.get(cls.__name__)
+            and root_childs.get(cls.__name__) > 1
+        ):
+            pass
+        elif isinstance(cls, str) and root_childs.get(cls) and root_childs.get(cls) > 1:
+            pass
         else:
-            written_classes.append(cls)
+            istr = _get_indent_str(indent)
+            istr1 = _get_indent_str(indent + 1)
+            istr2 = _get_indent_str(indent + 2)
+
+            if hasattr(cls, "__name__"):
+                cls_name = cls.__name__
+
+                bases = [c.__name__ for c in cls.__bases__]
+                bases_str = ", ".join(bases)
+
+                if cls_name in written_classes:
+                    if bases_str in written_classes[cls_name]:
+                        written_classes[cls_name][bases_str] += 1
+                    else:
+                        written_classes[cls_name].update({bases_str: 1})
+                else:
+                    written_classes[cls_name] = {bases_str: 1}
+            elif isinstance(cls, str):
+                cls_name = cls
+                if cls_name in string_classes:
+                    string_classes[cls_name] += 1
+                else:
+                    string_classes[cls_name] = 1
+
+            if hasattr(cls, "__name__") and written_classes[cls_name][bases_str] > 1:
+                pass
+            elif isinstance(cls, str) and string_classes[cls] > 1:
+                pass
+            else:
+                out.write("\n")
+                if hasattr(cls, "__name__"):
+                    out.write(f"{istr}class {cls.__name__}" f"({bases_str}):\n")
+                else:
+                    out.write(f'{istr1}return_type = "{cls}"\n')
+
+                doc = ("\n" + istr1).join(cls.__doc__.split("\n"))
+                out.write(f'{istr1}"""\n')
+                out.write(f"{istr1}{doc}")
+                out.write(f'\n{istr1}"""\n')
+                if hasattr(cls, "fluent_name"):
+                    out.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
+
+                child_names = getattr(cls, "child_names", None)
+                if child_names:
+                    out.write(f"{istr1}child_names = \\\n")
+                    strout = io.StringIO()
+                    pprint.pprint(
+                        child_names,
+                        stream=strout,
+                        compact=True,
+                        width=80 - indent * 4 - 10,
+                    )
+                    mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                    out.write(f"{istr2}{mn}\n")
+                    for _, child in cls._child_classes.items():
+                        _write_utils_cls_helper(out, child)
+
+                command_names = getattr(cls, "command_names", None)
+                if command_names:
+                    out.write(f"{istr1}command_names = \\\n")
+                    strout = io.StringIO()
+                    pprint.pprint(
+                        command_names,
+                        stream=strout,
+                        compact=True,
+                        width=80 - indent * 4 - 10,
+                    )
+                    mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                    out.write(f"{istr2}{mn}\n")
+                    for _, child in cls._child_classes.items():
+                        _write_utils_cls_helper(out, child)
+
+                query_names = getattr(cls, "query_names", None)
+                if query_names:
+                    out.write(f"{istr1}query_names = \\\n")
+                    strout = io.StringIO()
+                    pprint.pprint(
+                        query_names,
+                        stream=strout,
+                        compact=True,
+                        width=80 - indent * 4 - 10,
+                    )
+                    mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                    out.write(f"{istr2}{mn}\n")
+                    for _, child in cls._child_classes.items():
+                        _write_utils_cls_helper(out, child)
+
+                arguments = getattr(cls, "argument_names", None)
+                if arguments:
+                    out.write(f"{istr1}argument_names = \\\n")
+                    strout = io.StringIO()
+                    pprint.pprint(
+                        arguments,
+                        stream=strout,
+                        compact=True,
+                        width=80 - indent * 4 - 10,
+                    )
+                    mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                    out.write(f"{istr2}{mn}\n")
+                    for _, child in cls._child_classes.items():
+                        _write_utils_cls_helper(out, child)
+
+                child_object_type = getattr(cls, "child_object_type", None)
+                if child_object_type:
+                    _write_utils_cls_helper(
+                        out,
+                        child_object_type,
+                    )
+
+                child_aliases = getattr(cls, "_child_aliases", None)
+                if child_aliases:
+                    out.write(f"\n{istr1}_child_aliases = dict(\n")
+                    out.writelines(
+                        [f'{istr2}{k}="{v}",\n' for k, v in child_aliases.items()]
+                    )
+                    out.write(f"{istr1})\n\n")
+
+                return_type = getattr(cls, "return_type", None)
+                if return_type:
+                    _write_utils_cls_helper(out, return_type)
     except Exception:
         raise
 
@@ -289,18 +323,18 @@ if __name__ == "__main__":
     # from ansys.fluent.core.launcher.launcher import launch_fluent
 
     session = pyfluent.connect_to_fluent(
-        ip="10.18.44.94", port=61221, password="l0uz1n73"
+        ip="10.18.44.94", port=63640, password="ud1rdd0m"
     )
     # session = launch_fluent()
     start_time = time.time()
     sinfo = session._settings_service.get_static_info()
     cls = flobject.get_cls("", sinfo, version=session._version)
-    dyna_root = cls[0]()
+
     with open(
         _get_settings_utils_path(version=session._version), "w"
     ) as settings_utils:
         write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
 
-    with open(_get_settings_path(version=session._version), "w") as settings:
-        write_settings_classes(settings, cls[0], sinfo, settings=True)
+    # with open(_get_settings_path(version=session._version), "w") as settings:
+    #     write_settings_classes(settings, cls[0], sinfo, settings=True)
     print(f"settingsgen.py took {time.time() - start_time} seconds.")
