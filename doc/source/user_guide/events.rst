@@ -22,3 +22,32 @@ The following code triggers a callback at the end of every iteration.
   >>>     print("Iteration ended. Index = ", event_info.index)
   >>>
   >>> callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
+  >>> 
+
+Examples
+--------
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core import SolverEvent
+  >>> from ansys.fluent.core.utils.event_loop import execute_in_event_loop_threadsafe
+  >>> from ansys.fluent.visualization.matplotlib import matplot_windows_manager
+  >>> from ansys.fluent.visualization.pyvista import pyvista_windows_manager
+  >>> 
+  >>> @execute_in_event_loop_threadsafe
+  >>> def auto_refersh_call_back_iteration(session, event_info):
+  >>>   if event_info.index % 5 == 0:
+  >>>       pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
+  >>>       matplot_windows_manager.refresh_windows("", ["residual"])
+  >>>
+  >>> callback_itr_id = solver.events_manager.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
+  >>>
+  >>> @execute_in_event_loop_threadsafe
+  >>> def initialize_call_back(session, event_info):
+  >>>     pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
+  >>>     matplot_windows_manager.refresh_windows("", ["residual"])
+  >>>
+  >>> callback_init_id = session.events_manager.register_callback(SolverEvent.SOLUTION_INITIALIZED, initialize_call_back)
+  >>>
+  >>> callback_data_read_id = session.events_manager.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
+  >>> 
