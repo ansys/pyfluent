@@ -732,7 +732,7 @@ This simple example shows how to use the ``arguments`` attributes and explicit
 attribute access methods in a watertight geometry meshing workflow.
 
 .. Note::
-   ``command_arguments`` is deprecated.
+   The ``command_arguments()`` method is deprecated.
 
 .. code:: python
 
