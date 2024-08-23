@@ -703,7 +703,7 @@ Duplicate tasks
 
 Current meshing workflow
 ------------------------
-Use the ``current_workflow`` method to access an already loaded workflow.
+Use the ``current_workflow`` property to access an already loaded workflow.
 The following example shows how to use this method.
 
 Current workflow
