@@ -11,6 +11,7 @@ import pytest
 from test_session import MockHealthServicer, MockSchemeEvalServicer
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
@@ -20,6 +21,7 @@ from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
@@ -27,8 +29,8 @@ import ansys.platform.instancemanagement as pypim
 from tests.util import rename_downloaded_file
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2910")
 def test_launch_remote_instance(monkeypatch, new_solver_session):
+    pyfluent.CHECK_HEALTH = False
     fluent = new_solver_session
     # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
@@ -109,6 +111,13 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
+
+        file_transfer_service = PimFileTransferService(pim_instance=mock_instance)
+        assert not file_transfer_service.file_service
+        assert file_transfer_service.is_configured()
+        assert file_transfer_service.pim_instance
+        assert file_transfer_service.upload_server
+
         session.exit(wait=60)
         session._fluent_connection.wait_process_finished(wait=60)
 
@@ -156,12 +165,17 @@ def test_file_purpose_on_remote_instance(
     import_file_name = rename_downloaded_file(import_file_name, f"_{suffix}")
 
     solver_session.file.read_case(file_name=import_file_name)
+    assert file_service.is_configured()
+    assert file_service.uploads()
     assert len(file_service.uploads()) == 1
     assert file_service.uploads()[0] == import_file_name
 
     solver_session.file.write_case(file_name=import_file_name)
+    assert file_service.downloads()
     assert len(file_service.downloads()) == 1
     assert file_service.downloads()[0] == import_file_name
+
+    solver_session.exit()
 
     meshing = new_meshing_session
 
@@ -178,3 +192,5 @@ def test_file_purpose_on_remote_instance(
     meshing_session.meshing.File.WriteMesh(FileName=import_file_name)
     assert len(file_service.downloads()) == 2
     assert file_service.downloads()[1] == import_file_name
+
+    meshing_session.exit()

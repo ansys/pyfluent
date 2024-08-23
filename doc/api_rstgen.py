@@ -16,7 +16,7 @@ def _get_folder_path(folder_name: str):
     -------
         Path of the folder.
     """
-    return (Path(__file__) / ".." / "api" / folder_name).resolve()
+    return (Path(__file__) / ".." / "source" / "api" / folder_name).resolve()
 
 
 def _get_file_path(folder_name: str, file_name: str):
@@ -34,7 +34,9 @@ def _get_file_path(folder_name: str, file_name: str):
     -------
         Path of the file.
     """
-    return (Path(__file__) / ".." / "api" / folder_name / f"{file_name}.rst").resolve()
+    return (
+        Path(__file__) / ".." / "source" / "api" / folder_name / f"{file_name}.rst"
+    ).resolve()
 
 
 hierarchy = {
@@ -84,6 +86,7 @@ hierarchy = {
         "flunits",
         "settings_external",
         "datamodel/index",
+        "settings_root",
         "tui/index",
     ],
     "streaming_services": [
@@ -154,14 +157,27 @@ def _generate_api_source_rst_files(folder: str, files: list):
             with open(rst_file, "w", encoding="utf8") as rst:
                 rst.write(f".. _ref_{file}:\n\n")
                 if folder:
-                    rst.write(f"{file}\n")
-                    rst.write(f'{"="*(len(f"{file}"))}\n\n')
-                    rst.write(f".. automodule:: ansys.fluent.core.{folder}.{file}\n")
+                    if "root" in file:
+                        rst.write(f"solver.settings\n")
+                        rst.write(f'{"="*(len("solver.settings"))}\n\n')
+                        rst.write(
+                            "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
+                        )
+                        rst.write(
+                            "other settings objects in a hierarchical structure.\n"
+                        )
+                    else:
+                        rst.write(f"{file}\n")
+                        rst.write(f'{"="*(len(f"{file}"))}\n\n')
+                        rst.write(
+                            f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
+                        )
                 else:
                     rst.write(f"ansys.fluent.core.{file}\n")
                     rst.write(f'{"="*(len(f"ansys.fluent.core.{file}"))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
-                _write_common_rst_members(rst_file=rst)
+                if not "root" in file:
+                    _write_common_rst_members(rst_file=rst)
 
 
 def _generate_api_index_rst_files():
