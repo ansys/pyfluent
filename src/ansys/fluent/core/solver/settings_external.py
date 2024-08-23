@@ -35,7 +35,7 @@ def use_search(codegen_outdir: str, version: str):
         int(re.findall(r"\d+", file)[0]) for file in api_tree_files
     ]
     latest_api_tree_version = max(api_tree_file_versions)
-    if fluent_version_int == latest_api_tree_version:
+    if len(api_tree_files) == 1 and fluent_version_int == latest_api_tree_version:
         return True
     else:
         return False
