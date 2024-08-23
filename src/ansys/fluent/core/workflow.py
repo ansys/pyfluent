@@ -1719,7 +1719,7 @@ class ClassicWorkflow:
 
 
 class ReadOnlyObject:
-    """Removes set_state() to implement read-only behaviour."""
+    """Removes ``set_state()`` to implement read-only behavior."""
 
     _unwanted_attr = ["set_state", "setState"]
 
