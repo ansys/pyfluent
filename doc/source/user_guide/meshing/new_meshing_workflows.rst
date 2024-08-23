@@ -714,7 +714,7 @@ Current workflow
     meshing.current_workflow
 
 .. Note::
-   ``current_workflow`` raises attribute error when no workflow is initialized.
+   The ``current_workflow`` method raises an attribute error when no workflow is initialized.
 
 
 Mark as updated
