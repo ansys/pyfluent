@@ -219,7 +219,8 @@ def write_settings_classes(out: IO, cls, obj_info: dict, settings: bool):
         out.write("\n")
         _write_settings_cls_helper(out=out, cls=cls, indent=0)
     else:
-        _write_utils_cls_helper(out=out, cls=cls, indent=0)
+        # _write_utils_cls_helper(out=out, cls=cls, indent=0)
+        _write_dynamic_cls_helper(out=out, cls=cls)
 
 
 def _get_settings_path(version: str):
@@ -317,6 +318,104 @@ def _write_settings_cls_helper(out, cls, indent=0):
         raise
 
 
+all_classes = {}
+
+
+def _write_dynamic_cls_helper(out, cls):
+    try:
+        if hasattr(cls, "__name__") and cls.__name__ in root_childs:
+            root_childs[cls.__name__] += 1
+        elif isinstance(cls, str) and cls in root_childs:
+            root_childs[cls] += 1
+
+        if (
+            hasattr(cls, "__name__")
+            and root_childs.get(cls.__name__)
+            and root_childs.get(cls.__name__) > 1
+        ):
+            pass
+        elif isinstance(cls, str) and root_childs.get(cls) and root_childs.get(cls) > 1:
+            pass
+        else:
+            if hasattr(cls, "__name__"):
+                cls_name = cls.__name__
+
+                bases = [c.__name__ for c in cls.__bases__]
+                bases_str = ", ".join(bases)
+
+                if cls_name in written_classes:
+                    if bases_str in written_classes[cls_name]:
+                        written_classes[cls_name][bases_str] += 1
+                    else:
+                        written_classes[cls_name].update({bases_str: 1})
+                else:
+                    written_classes[cls_name] = {bases_str: 1}
+            elif isinstance(cls, str):
+                cls_name = cls
+                if cls_name in string_classes:
+                    string_classes[cls_name] += 1
+                else:
+                    string_classes[cls_name] = 1
+
+            if hasattr(cls, "__name__") and written_classes[cls_name][bases_str] > 1:
+                pass
+            elif isinstance(cls, str) and string_classes[cls] > 1:
+                pass
+            else:
+                # out.write("\n")
+
+                cls_data = {}
+
+                if hasattr(cls, "__name__"):
+                    cls_data["__bases__"] = cls.__bases__
+                else:
+                    cls_data["return_type"] = cls
+
+                if hasattr(cls, "__doc__"):
+                    cls_data["__doc__"] = cls.__doc__
+
+                if hasattr(cls, "fluent_name"):
+                    cls_data["fluent_name"] = cls.fluent_name
+
+                if hasattr(cls, "_child_aliases"):
+                    cls_data["_child_aliases"] = cls._child_aliases
+
+                if hasattr(cls, "return_type"):
+                    cls_data["return_type"] = cls.return_type
+
+                if hasattr(cls, "child_names"):
+                    cls_data["child_names"] = cls.child_names
+
+                if hasattr(cls, "command_names"):
+                    cls_data["command_names"] = cls.command_names
+
+                if hasattr(cls, "query_names"):
+                    cls_data["query_names"] = cls.query_names
+
+                if hasattr(cls, "argument_names"):
+                    cls_data["argument_names"] = cls.argument_names
+
+                # out.write(f"\n {cls_name} = {cls_data}")
+                # all_classes[cls_name] = cls_data
+
+                if cls_name in all_classes:
+                    if bases_str in all_classes[cls_name]:
+                        pass
+                    else:
+                        all_classes[cls_name].update({bases_str: cls_data})
+                else:
+                    all_classes[cls_name] = {bases_str: cls_data}
+
+                if hasattr(cls, "child_object_type"):
+                    _write_dynamic_cls_helper(out, cls.child_object_type)
+
+                if hasattr(cls, "_child_classes"):
+                    for _, child in cls._child_classes.items():
+                        _write_dynamic_cls_helper(out, child)
+    except Exception:
+        raise
+
+
 if __name__ == "__main__":
     import time
 
@@ -330,11 +429,22 @@ if __name__ == "__main__":
     sinfo = session._settings_service.get_static_info()
     cls = flobject.get_cls("", sinfo, version=session._version)
 
+    # with open(
+    #     _get_settings_utils_path(version=session._version), "w"
+    # ) as settings_utils:
+    #     write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
+
     with open(
         _get_settings_utils_path(version=session._version), "w"
     ) as settings_utils:
         write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
+        settings_utils.write("\n")
+        settings_utils.write(f"all_classes = {all_classes}")
 
     # with open(_get_settings_path(version=session._version), "w") as settings:
     #     write_settings_classes(settings, cls[0], sinfo, settings=True)
     print(f"settingsgen.py took {time.time() - start_time} seconds.")
+    print(f"written_classes = {len(written_classes)}")
+    print(f"string_classes = {len(string_classes)}")
+    print(len(all_classes.keys()))
+    print(all_classes["create"]["CommandWithPositionalArgs"])
