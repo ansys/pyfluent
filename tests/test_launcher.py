@@ -424,7 +424,7 @@ def test_exposure_and_graphics_driver_arguments():
         string1 = _build_fluent_launch_args_string(
             ui_mode=m, additional_arguments="", processor_count=None
         ).strip()
-        string2 = f"3ddp -{m.value[0]}" if m.value[0] else "3ddp"
+        string2 = f"3ddp -{m.get_fl_value()[0]}" if m.get_fl_value()[0] else "3ddp"
         assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
@@ -432,8 +432,8 @@ def test_exposure_and_graphics_driver_arguments():
                 _build_fluent_launch_args_string(
                     graphics_driver=m, additional_arguments="", processor_count=None
                 ).strip()
-                == f"3ddp -driver {m.value[0]}"
-                if m.value[0]
+                == f"3ddp -driver {m.get_fl_value()[0]}"
+                if m.get_fl_value()[0]
                 else " 3ddp"
             )
 

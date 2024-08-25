@@ -184,8 +184,8 @@ class Dimension(FluentEnum):
 class Precision(FluentEnum):
     """Floating point precision."""
 
-    SINGLE = 1
-    DOUBLE = 2
+    SINGLE = "single"
+    DOUBLE = "double"
 
     def _get_enum_map(self):
         _fl_val_map = {
