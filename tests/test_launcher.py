@@ -406,7 +406,7 @@ def test_show_gui_raises_warning():
 
 
 def test_fluent_enums():
-    assert UIMode.GUI.str_value() == "gui"
+    assert UIMode.GUI.value == "gui"
     assert UIMode("gui") == UIMode.GUI
     with pytest.raises(ValueError):
         UIMode("")
