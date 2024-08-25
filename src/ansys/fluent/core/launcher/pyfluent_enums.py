@@ -5,7 +5,6 @@ from functools import total_ordering
 import os
 from typing import Optional, Union
 
-from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import is_windows
@@ -32,14 +31,31 @@ class FluentEnum(Enum):
         """Returns the fluent value of the enum."""
         return self._get_enum_map()[self]
 
+    def _default(self):
+        return
+
     @classmethod
-    def _missing_(cls, value: str):
+    def _missing_(cls, value: Union[str, int, None]):
+        if value is None:
+            return cls._default(cls)
         for member in cls:
             if member.value == value:
                 return member
+
+        def is_int():
+            for m in cls:
+                return True if type(m.value) == int else False
+
+        msg = ", " if is_int() else "', '"
+        msg = (
+            f"{msg.join(str(member.value) for member in cls)}"
+            if is_int()
+            else f"'{msg.join(str(member.value) for member in cls)}'"
+        )
         raise ValueError(
-            f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: '{"', '".join(member.value for member in cls)}'."""
+            f"""The specified value: {value if type(value) == int else "'" + str(value) + "'"} """
+            f"""is not a supported value of {cls.__name__}."""
+            f""" The supported values are: {msg}."""
         )
 
     def __lt__(self, other):
@@ -82,6 +98,9 @@ class FluentMode(FluentEnum):
     SOLVER = "solver"
     SOLVER_ICING = "solver-icing"
 
+    def _default(self):
+        return self.SOLVER
+
     def _get_enum_map(self):
         _fl_val_map = {
             self.MESHING: Meshing,
@@ -90,32 +109,6 @@ class FluentMode(FluentEnum):
             self.SOLVER_ICING: SolverIcing,
         }
         return _fl_val_map
-
-    @staticmethod
-    def get_mode(mode: str) -> "FluentMode":
-        """Get the FluentMode based on the provided mode string.
-
-        Parameters
-        ----------
-        mode : str
-            Mode
-
-        Returns
-        -------
-        FluentMode
-            Fluent mode.
-
-        Raises
-        ------
-        DisallowedValuesError
-            If an unknown mode is passed.
-        """
-        allowed_modes = []
-        for m in FluentMode:
-            allowed_modes.append(m.value)
-            if mode == m.value:
-                return m
-        raise DisallowedValuesError("mode", mode, allowed_modes)
 
     @staticmethod
     def is_meshing(mode: "FluentMode") -> bool:
@@ -161,6 +154,9 @@ class Dimension(FluentEnum):
     TWO = 2
     THREE = 3
 
+    def _default(self):
+        return self.THREE
+
     def _get_enum_map(self):
         _fl_val_map = {
             self.TWO: ("2d",),
@@ -168,24 +164,15 @@ class Dimension(FluentEnum):
         }
         return _fl_val_map
 
-    @classmethod
-    def _missing_(cls, value: int):
-        if value is None:
-            return cls.THREE
-        for member in cls:
-            if member.value == value:
-                return member
-        raise ValueError(
-            f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: {", ".join(member.value for member in cls)}."""
-        )
-
 
 class Precision(FluentEnum):
     """Floating point precision."""
 
     SINGLE = "single"
     DOUBLE = "double"
+
+    def _default(self):
+        return self.DOUBLE
 
     def _get_enum_map(self):
         _fl_val_map = {
@@ -284,17 +271,6 @@ def _get_graphics_driver(
     return graphics_driver
 
 
-def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
-    """Update the session information."""
-    if mode is None:
-        mode = FluentMode.SOLVER
-
-    if isinstance(mode, str):
-        mode = FluentMode.get_mode(mode)
-
-    return mode
-
-
 def _get_running_session_mode(
     fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
 ):
@@ -303,7 +279,7 @@ def _get_running_session_mode(
         session_mode = mode
     else:
         try:
-            session_mode = FluentMode.get_mode(
+            session_mode = FluentMode(
                 "solver"
                 if fluent_connection._connection_interface.is_solver_mode()
                 else "meshing"
@@ -387,7 +363,7 @@ def _validate_gpu(gpu: Union[bool, list], dimension: int):
 def _get_argvals_and_session(argvals):
     _validate_gpu(argvals["gpu"], argvals["dimension"])
     argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
-    argvals["mode"] = _get_mode(argvals["mode"])
+    argvals["mode"] = FluentMode(argvals["mode"])
     del argvals["self"]
     new_session = argvals["mode"].get_fl_value()
     return argvals, new_session

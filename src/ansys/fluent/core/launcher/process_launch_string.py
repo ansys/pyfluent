@@ -34,10 +34,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     dimension = kwargs.get("dimension")
     launch_args_string += f" {Dimension(dimension).get_fl_value()[0]}"
     precision = kwargs.get("precision")
-    if precision is None:
-        launch_args_string += f"{Precision.DOUBLE.get_fl_value()[0]}"
-    else:
-        launch_args_string += f"{Precision(precision).get_fl_value()[0]}"
+    launch_args_string += f"{Precision(precision).get_fl_value()[0]}"
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
