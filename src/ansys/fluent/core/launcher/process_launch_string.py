@@ -32,12 +32,12 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         all_options = json.load(fp)
     launch_args_string = ""
     dimension = kwargs.get("dimension")
-    launch_args_string += f" {Dimension(dimension).value[0]}"
+    launch_args_string += f" {Dimension(dimension).get_fl_value()[0]}"
     precision = kwargs.get("precision")
     if precision is None:
-        launch_args_string += f"{Precision.DOUBLE.value[0]}"
+        launch_args_string += f"{Precision.DOUBLE.get_fl_value()[0]}"
     else:
-        launch_args_string += f"{Precision(precision).value[0]}"
+        launch_args_string += f"{Precision(precision).get_fl_value()[0]}"
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
@@ -83,11 +83,11 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     ui_mode = kwargs.get("ui_mode")
     if isinstance(ui_mode, str):
         ui_mode = UIMode(ui_mode)
-    if ui_mode and ui_mode.value[0]:
-        launch_args_string += f" -{ui_mode.value[0]}"
+    if ui_mode and ui_mode.get_fl_value()[0]:
+        launch_args_string += f" -{ui_mode.get_fl_value()[0]}"
     graphics_driver = kwargs.get("graphics_driver")
-    if graphics_driver and graphics_driver.value[0]:
-        launch_args_string += f" -driver {graphics_driver.value[0]}"
+    if graphics_driver and graphics_driver.get_fl_value()[0]:
+        launch_args_string += f" -driver {graphics_driver.get_fl_value()[0]}"
     return launch_args_string
 
 
