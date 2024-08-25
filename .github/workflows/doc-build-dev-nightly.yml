@@ -66,6 +66,7 @@ jobs:
             rm poetry.lock
           fi
           poetry install --with docs
+          poetry install --all-extras
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

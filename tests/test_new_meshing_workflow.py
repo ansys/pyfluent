@@ -1559,3 +1559,147 @@ def test_duplicate_children_of_compound_task(
         watertight.add_local_sizing.tasks()[-1].python_name()
         == "add_local_sizing_child_3"
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_current_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    with pytest.raises(RuntimeError):
+        meshing.current_workflow
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert meshing.current_workflow.import_geometry
+
+    with pytest.raises(AttributeError):
+        meshing.current_workflow.import_cad_and_part_management
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+    assert meshing.current_workflow.import_cad_and_part_management
+
+    with pytest.raises(AttributeError):
+        meshing.current_workflow.import_geometry
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
+def test_mark_as_updated(new_meshing_session):
+    meshing = new_meshing_session
+
+    watertight = meshing.watertight()
+
+    assert meshing.workflow.TaskObject["Import Geometry"].State() == "Out-of-date"
+    assert meshing.workflow.TaskObject["Describe Geometry"].State() == "Out-of-date"
+    assert meshing.workflow.TaskObject["Add Local Sizing"].State() == "Out-of-date"
+
+    watertight.import_geometry.mark_as_updated()
+    watertight.describe_geometry.mark_as_updated()
+    watertight.add_local_sizing.mark_as_updated()
+
+    assert meshing.workflow.TaskObject["Import Geometry"].State() == "Forced-up-to-date"
+    assert (
+        meshing.workflow.TaskObject["Describe Geometry"].State() == "Forced-up-to-date"
+    )
+    assert (
+        meshing.workflow.TaskObject["Add Local Sizing"].State() == "Forced-up-to-date"
+    )
+
+
+@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.codegen_required
+def test_accessors_for_argument_sub_items(new_meshing_session):
+    meshing = new_meshing_session
+    watertight = meshing.watertight()
+
+    import_geom = watertight.import_geometry
+    assert import_geom.length_unit.default_value() == "mm"
+    assert import_geom.arguments.length_unit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert import_geom.arguments.length_unit() == "mm"
+    import_geom.length_unit.set_state("cm")
+    assert import_geom.arguments.length_unit.get_state() == "cm"
+    import_geom.arguments.length_unit = "in"
+    assert import_geom.arguments.length_unit() == "in"
+    import_geom.arguments["length_unit"] = "m"
+    assert import_geom.arguments["length_unit"] == "m"
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    assert import_geom.arguments.length_unit() == "in"
+
+    assert not import_geom.arguments.mesh_unit.is_read_only()
+    assert import_geom.arguments.length_unit.is_active()
+    assert not import_geom.arguments.file_name.is_read_only()
+    assert not import_geom.arguments.file_name()
+    import_geom.arguments.file_name = "xyz.txt"
+    assert import_geom.arguments.file_name() == "xyz.txt"
+    with pytest.raises(AttributeError) as msg:
+        import_geom.arguments.file = "sample.txt"
+    assert msg.value.args[0] == "No attribute named 'file' in 'Import Geometry'."
+    with pytest.raises(AttributeError):
+        import_geom.arguments.CadImportOptions.OneZonePer = "face"
+
+    assert import_geom.arguments.cad_import_options()
+    assert import_geom.arguments.cad_import_options.one_zone_per()
+
+    assert import_geom.arguments.file_format.get_attrib_value("allowedValues") == [
+        "CAD",
+        "Mesh",
+    ]
+    assert import_geom.arguments.file_format.allowed_values() == ["CAD", "Mesh"]
+
+    assert not import_geom.arguments.cad_import_options.one_zone_per.is_read_only()
+    assert import_geom.arguments.cad_import_options.one_zone_per() == "body"
+    import_geom.arguments.cad_import_options.one_zone_per.set_state("face")
+    assert import_geom.arguments.cad_import_options.one_zone_per() == "face"
+    import_geom.arguments.cad_import_options.one_zone_per = "object"
+    assert import_geom.arguments.cad_import_options.one_zone_per() == "object"
+
+    volume_mesh_gen = watertight.create_volume_mesh
+    assert (
+        volume_mesh_gen.arguments.volume_fill_controls.type.default_value()
+        == "Cartesian"
+    )
+
+    # Test particular to string type (allowed_values() only available in string types)
+    assert volume_mesh_gen.arguments.volume_fill_controls.type.allowed_values() == [
+        "Octree",
+        "Cartesian",
+    ]
+    feat_angle = import_geom.arguments.cad_import_options.feature_angle
+    assert feat_angle.default_value() == 40.0
+
+    # Test particular to numerical type (min() only available in numerical types)
+    assert feat_angle.min() == 0.0
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError) as msg:
+        assert feat_angle.allowed_values()
+    assert (
+        msg.value.args[0]
+        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+    )
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError) as msg:
+        assert import_geom.arguments.num_parts.allowed_values()
+    assert (
+        msg.value.args[0]
+        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+    )
+
+    # Test intended to fail in string type (min() only available in numerical types)
+    with pytest.raises(AttributeError) as msg:
+        assert import_geom.arguments.length_unit.min()
+    assert (
+        msg.value.args[0]
+        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
+    )

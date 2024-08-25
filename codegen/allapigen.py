@@ -14,9 +14,7 @@ if __name__ == "__main__":
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
     ge_242 = FluentVersion(version) >= FluentVersion.v242
-    solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
-    )
+
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "workflow"
@@ -30,17 +28,27 @@ if __name__ == "__main__":
         StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
             "PMFileManagement"
         ),
-        StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
-            "preferences"
-        ),
-        StaticInfoType.SETTINGS: solver._settings_service.get_static_info(),
     }
+    if gt_222:
+        static_infos[StaticInfoType.TUI_MESHING] = (
+            meshing._datamodel_service_tui.get_static_info("")
+        )
+    if ge_242:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+        )
+    meshing.exit()
+
+    solver = launch_fluent(
+        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
+    )
+    static_infos[StaticInfoType.DATAMODEL_PREFERENCES] = (
+        solver._datamodel_service_se.get_static_info("preferences")
+    )
+    static_infos[StaticInfoType.SETTINGS] = solver._settings_service.get_static_info()
     if gt_222:
         static_infos[StaticInfoType.TUI_SOLVER] = (
             solver._datamodel_service_tui.get_static_info("")
-        )
-        static_infos[StaticInfoType.TUI_MESHING] = (
-            meshing._datamodel_service_tui.get_static_info("")
         )
     if ge_231:
         static_infos[StaticInfoType.DATAMODEL_FLICING] = (
@@ -49,14 +57,12 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
-    if ge_242:
-        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
-            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
-        )
     t1 = time()
     print(f"Time to fetch static info: {t1 - t0:.2f} seconds")
     CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
     print_fluent_version.generate(version, solver.scheme_eval.scheme_eval)
+    solver.exit()
+
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")

@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 # Check https://python-poetry.org/docs/pyproject/ for all available sections
 name = "ansys-fluent-core"
-version = "0.23.dev0"
+version = "0.25.dev1"
 description = "PyFluent provides Pythonic access to Ansys Fluent"
 license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
@@ -38,8 +38,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
-ansys-api-fluent = "^0.3.26"
+python = ">=3.10,<4.0"
+ansys-api-fluent = "^0.3.27"
 ansys-platform-instancemanagement = "~=1.0"
 ansys-tools-filetransfer = ">=0.1,<0.3"
 ansys-units = "^0.3.2"
@@ -49,7 +49,7 @@ docker = ">=7.1.0"
 grpcio = "^1.30.0"
 grpcio-health-checking = "^1.30.0"
 lxml = ">=4.9.2"
-nltk = ">=3.8.1"
+nltk = ">=3.9.1"
 numpy= ">=1.14.0,<2.0.0"
 pandas = ">=1.1.0,<2.3"
 platformdirs = ">=3.6.0"
@@ -77,18 +77,18 @@ pytest-sphinx = "==0.6.3"
 sphinx-autobuild = "==2021.3.14"
 sphinx-autodoc-typehints = "==1.25.3"
 sphinx-copybutton = "==0.5.2"
-sphinx-gallery = "==0.16.0"
-sphinx-notfound-page = "==1.0.0"
-sphinxcontrib-websupport = "==1.2.7"
+sphinx-gallery = "==0.17.0"
+sphinx-notfound-page = "==1.0.4"
+sphinxcontrib-websupport = "==2.0.0"
 sphinxemoji = "==0.3.1"
 sphinx-toggleprompt = "==0.5.2"
-autodocsumm = "==0.2.12"
+autodocsumm = "==0.2.13"
 
 [tool.poetry.group.test]
 optional = true
 
 [tool.poetry.group.test.dependencies]
-pytest = "==8.2.2"
+pytest = "==8.3.2"
 pytest-cov = "==5.0.0"
 pytest-mock = "==3.14.0"
 pytest-xdist = "==3.6.1"

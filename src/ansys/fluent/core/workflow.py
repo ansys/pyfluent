@@ -248,6 +248,12 @@ class BaseTask:
             attr="outputs", other_attr="requiredInputs"
         )
 
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
+
     def tasks(self, recompute=True) -> list:
         """Get the ordered task list held by this task.
 
@@ -419,6 +425,9 @@ class BaseTask:
         return camel_args
 
     def __getattr__(self, attr):
+        result = getattr(self._task, attr, None)
+        if result:
+            return result
         if self._dynamic_interface:
             if not attr.islower() and attr != "Arguments":
                 raise AttributeError(
@@ -433,12 +442,9 @@ class BaseTask:
                 else attr
             )
             attr = camel_attr or attr
-        try:
-            result = getattr(self._task, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
+        result = getattr(self._task, attr, None)
+        if result:
+            return result
         try:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
@@ -659,7 +665,7 @@ class TaskContainer(PyCallableStateObject):
 
     def __getitem__(self, name):
         logger.debug(f"TaskContainer.__getitem__({name})")
-        return _makeTask(self._container, name)
+        return self._container._workflow.TaskObject[name]
 
     def __getattr__(self, attr):
         return getattr(self._task_container, attr)
@@ -732,12 +738,13 @@ class ArgumentsWrapper(PyCallableStateObject):
         """
         self._assign(args, "update_dict")
 
-    def _camel_snake_arguments_map(self, input_dict):
+    def _camel_snake_arguments_map(self, input_dict, cmd_args=None):
         snake_case_state_dict = {}
+        cmd_args = self._task._command_arguments if cmd_args is None else cmd_args
         for key, val in input_dict.items():
             self._snake_to_camel_map[camel_to_snake_case(key)] = key
             if isinstance(
-                getattr(self._task._command_arguments, key),
+                getattr(cmd_args, key),
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
@@ -823,6 +830,8 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments.set_state(args)
 
     def __getattr__(self, attr):
+        if self._dynamic_interface:
+            return getattr(self._task, attr)
         return getattr(self._task._command_arguments, attr)
 
     def __setattr__(self, key, value):
@@ -834,7 +843,15 @@ class ArgumentsWrapper(PyCallableStateObject):
             )
 
     def __setitem__(self, key, value):
-        self._task._command_arguments.__setitem__(key, value)
+        if self._dynamic_interface:
+            getattr(self._task, key).set_state(value)
+        else:
+            self._task._command_arguments.__setitem__(key, value)
+
+    def __getitem__(self, item):
+        if self._dynamic_interface:
+            return getattr(self._task, item).get_state()
+        return self._task._command_arguments.__getitem__(item)
 
 
 class ArgumentWrapper(PyCallableStateObject):
@@ -898,6 +915,8 @@ class ArgumentWrapper(PyCallableStateObject):
         return state_dict
 
     def _get_camel_case_arg_keys(self):
+        if not isinstance(self(), dict):
+            return
         _args = self
         _camel_args = []
         for arg in _args().keys():
@@ -915,7 +934,9 @@ class ArgumentWrapper(PyCallableStateObject):
                     "Camel case attribute access is not supported. "
                     f"Try using '{camel_to_snake_case(attr)}' instead."
                 )
-            camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
+            camel_attr = snake_to_camel_case(
+                str(attr), self._get_camel_case_arg_keys() or []
+            )
             attr = camel_attr or attr
         return getattr(self._arg, attr)
 
@@ -925,7 +946,7 @@ class ArgumentWrapper(PyCallableStateObject):
         else:
             if self._dynamic_interface:
                 camel_attr = snake_to_camel_case(
-                    str(attr), self._get_camel_case_arg_keys()
+                    str(attr), self._get_camel_case_arg_keys() or []
                 )
                 attr = camel_attr or attr
             self.set_state({attr: value})
@@ -1258,7 +1279,6 @@ class CompoundTask(CommandTask):
 
 def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
-    task_type = task.TaskType()
     kinds = {
         "Simple": SimpleTask,
         "Compound Child": CompoundChild,
@@ -1266,12 +1286,13 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Composite": CompositeTask,
         "Conditional": ConditionalTask,
     }
-    kind = kinds[task.TaskType()]
+    task_type = task.TaskType()
+    kind = kinds[task_type]
     if not kind:
         message = (
             "Unhandled empty workflow task type."
-            if not task.TaskType()
-            else f"Unhandled workflow task type, {task.TaskType()}."
+            if not task_type
+            else f"Unhandled workflow task type, {task_type}."
         )
         raise RuntimeError(message)
     return kind(command_source, task)
@@ -1431,9 +1452,10 @@ class Workflow:
                 )
             camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
             attr = camel_attr or attr
-            obj = self._attr_from_wrapped_workflow(attr)
-            if obj:
-                return obj
+            try:
+                return getattr(self._workflow, attr)
+            except AttributeError:
+                pass
         return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
@@ -1483,14 +1505,6 @@ class Workflow:
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
-
-    def _attr_from_wrapped_workflow(self, attr):
-        try:
-            result = getattr(self._workflow, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
 
     def _activate_dynamic_interface(self, dynamic_interface: bool):
         self._dynamic_interface = dynamic_interface
@@ -1687,12 +1701,9 @@ class ClassicWorkflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
-        obj = self._attr_from_wrapped_workflow(
-            attr
-        )  # or self._task_with_cmd_matching_help_string(attr)
-        if obj:
-            return obj
-        else:
+        try:
+            return getattr(self._workflow, attr)
+        except AttributeError:
             return super().__getattribute__(attr)
 
     def __dir__(self):
@@ -1706,17 +1717,9 @@ class ClassicWorkflow:
         """Delegate calls to the underlying workflow."""
         return self._workflow()
 
-    def _attr_from_wrapped_workflow(self, attr):
-        try:
-            result = getattr(self._workflow, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
-
 
 class ReadOnlyObject:
-    """Removes set_state() to implement read-only behaviour."""
+    """Removes ``set_state()`` to implement read-only behavior."""
 
     _unwanted_attr = ["set_state", "setState"]
 

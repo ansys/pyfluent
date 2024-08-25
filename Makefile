@@ -141,6 +141,7 @@ build-doc-source:
 	@xvfb-run poetry run -- make -C doc html
 
 build-all-docs:
+	@python doc/api_rstgen.py
 	@python doc/datamodel_rstgen.py
 	@python doc/tui_rstgen.py
 	@python doc/settings_rstgen.py

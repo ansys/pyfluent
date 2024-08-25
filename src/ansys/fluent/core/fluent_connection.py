@@ -18,6 +18,7 @@ import weakref
 import grpc
 import psutil
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -376,7 +377,8 @@ class FluentConnection:
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        self.health_check.check_health()
+        if pyfluent.CHECK_HEALTH:
+            self.health_check.check_health()
 
         self._slurm_job_id = slurm_job_id
 

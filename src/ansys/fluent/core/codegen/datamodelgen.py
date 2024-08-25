@@ -9,6 +9,9 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
+    meshing_utility_examples,
+)
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -72,15 +75,36 @@ def _build_parameter_docstring(name: str, t: str):
 
 
 def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
-    doc = f"{indent}Command {name}.\n\n" if is_command else f"{indent}Query {name}.\n\n"
+    if info.get("docstring"):
+        doc = ""
+        for line in info["docstring"].split("."):
+            if line and len(info["docstring"].split(".")) > 2:
+                doc += f"{indent}- {line.lstrip(' ')}.\n"
+            elif line:
+                doc += f"{indent}{line.lstrip(' ')}.\n"
+        if info.get("args"):
+            doc += "\n"
+    else:
+        doc = (
+            f"{indent}Command {name}.\n\n"
+            if is_command
+            else f"{indent}Query {name}.\n\n"
+        )
     if info.get("args"):
         doc += f"{indent}Parameters\n"
         doc += f"{indent}{'-' * len('Parameters')}\n"
         for arg in info.get("args"):
             doc += f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n'
+            if arg.get("docstring"):
+                doc += f'{indent}    {arg["docstring"]}\n'
     doc += f"\n{indent}Returns\n"
     doc += f"{indent}{'-' * len('Returns')}\n"
     doc += f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n'
+    if meshing_utility_examples.get(name):
+        doc += f"\n{indent}Examples\n"
+        doc += f"{indent}{'-' * len('Examples')}\n"
+        for example in meshing_utility_examples[name]:
+            doc += f"{indent}>>> {example}\n"
     return doc
 
 

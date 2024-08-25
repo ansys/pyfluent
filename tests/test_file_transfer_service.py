@@ -79,6 +79,18 @@ def test_read_case_and_data(monkeypatch):
 
     solver.file.read_case_data(file_name=case_file_name)
     solver.file.write_case_data(file_name="write_case_data.cas.h5")
+    solver.exit()
+
+    solver = pyfluent.launch_fluent(
+        file_transfer_service=LocalFileTransferStrategy(server_cwd=os.getcwd())
+    )
+
+    solver.file.read(file_type="case-data", file_name=case_file_name)
+    solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
+
+    solver.file.read_case_data(file_name=case_file_name)
+    solver.file.write_case_data(file_name="write_case_data.cas.h5")
+    solver.exit()
 
 
 @pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")

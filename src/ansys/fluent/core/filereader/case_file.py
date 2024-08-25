@@ -639,7 +639,7 @@ def _get_case_file_name_from_flprj(flprj_file):
     # the scope of the rule is, simply retry with the name prepended:
     folder_obj = (
         root.find(folder_name)
-        if len(root.find(folder_name)) > 0
+        if root.find(folder_name) and len(root.find(folder_name)) > 0
         else root.find("_" + folder_name)
     )
     return folder_obj.find("Input").find("Case").find("Target").get("value")
