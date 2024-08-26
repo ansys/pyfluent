@@ -5,6 +5,7 @@ from functools import total_ordering
 import os
 from typing import Optional, Union
 
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import is_windows
@@ -52,7 +53,7 @@ class FluentEnum(Enum):
             if is_int()
             else f"'{msg.join(str(member.value) for member in cls)}'"
         )
-        raise ValueError(
+        raise DisallowedValuesError(
             f"""The specified value: {value if type(value) == int else "'" + str(value) + "'"} """
             f"""is not a supported value of {cls.__name__}."""
             f""" The supported values are: {msg}."""
