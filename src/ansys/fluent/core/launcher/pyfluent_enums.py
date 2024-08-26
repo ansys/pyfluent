@@ -192,6 +192,9 @@ class FluentWindowsGraphicsDriver(FluentEnum):
     OPENGL = "opengl"
     AUTO = "auto"
 
+    def _default(self):
+        return self.AUTO
+
     def _get_enum_map(self):
         _fl_val_map = {
             self.NULL: ("null",),
@@ -212,6 +215,9 @@ class FluentLinuxGraphicsDriver(FluentEnum):
     OPENGL2 = "opengl2"
     OPENGL = "opengl"
     AUTO = "auto"
+
+    def _default(self):
+        return self.AUTO
 
     def _get_enum_map(self):
         _fl_val_map = {
@@ -257,8 +263,6 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 def _get_graphics_driver(
     graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str]
 ):
-    if graphics_driver is None:
-        graphics_driver = "auto"
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
     ):
@@ -341,9 +345,7 @@ def _get_ui_mode(
         # Not using NO_GUI in windows as it opens a new cmd or
         # shows Fluent output in the current cmd if start <launch_string> is not used
         ui_mode = UIMode.HIDDEN_GUI if is_windows() else UIMode.NO_GUI
-    if isinstance(ui_mode, str):
-        ui_mode = UIMode(ui_mode)
-    return ui_mode
+    return UIMode(ui_mode)
 
 
 def _validate_gpu(gpu: Union[bool, list], dimension: int):
