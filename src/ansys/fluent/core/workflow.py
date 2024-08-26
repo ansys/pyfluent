@@ -1181,9 +1181,9 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
-        return self.last_child()
+        return self._last_child()
 
-    def last_child(self) -> BaseTask:
+    def _last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask and formulate their python name.
 
         Returns

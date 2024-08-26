@@ -716,7 +716,7 @@ def test_watertight_workflow_children(
     assert added_sizing.name() == "facesize_1"
     assert len(added_sizing.arguments())
     added_sizing_by_name = add_local_sizing.compound_child("facesize_1")
-    added_sizing_by_pos = add_local_sizing.last_child()
+    added_sizing_by_pos = add_local_sizing.tasks()[-1]
     assert added_sizing.arguments() == added_sizing_by_name.arguments()
     assert added_sizing.arguments() == added_sizing_by_pos.arguments()
     assert added_sizing.python_name() == "add_local_sizing_child_1"
