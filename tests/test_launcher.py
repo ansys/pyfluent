@@ -54,7 +54,7 @@ def test_gpu_version_error():
 
 
 def test_mode():
-    with pytest.raises(DisallowedValuesError) as msg:
+    with pytest.raises(DisallowedValuesError):
         pyfluent.launch_fluent(
             mode="meshing-solver",
             start_container=False,
@@ -193,13 +193,17 @@ def test_gpu_launch_arg():
         _build_fluent_launch_args_string(
             gpu=True, additional_arguments="", processor_count=None
         ).strip()
-        == "3ddp -gpu"
+        == "3ddp -gpu -hidden"
+        if is_windows()
+        else "3ddp -gpu -gu"
     )
     assert (
         _build_fluent_launch_args_string(
             gpu=[1, 2, 4], additional_arguments="", processor_count=None
         ).strip()
-        == "3ddp -gpu=1,2,4"
+        == "3ddp -gpu=1,2,4 -hidden"
+        if is_windows()
+        else "3ddp -gpu=1,2,4 -gu"
     )
 
 
@@ -208,13 +212,17 @@ def test_gpu_launch_arg_additional_arg():
         _build_fluent_launch_args_string(
             additional_arguments="-gpu", processor_count=None
         ).strip()
-        == "3ddp -gpu"
+        == "3ddp -gpu -hidden"
+        if is_windows()
+        else "3ddp -gpu -gu"
     )
     assert (
         _build_fluent_launch_args_string(
             additional_arguments="-gpu=1,2,4", processor_count=None
         ).strip()
-        == "3ddp -gpu=1,2,4"
+        == "3ddp -gpu=1,2,4 -hidden"
+        if is_windows()
+        else "3ddp -gpu=1,2,4 -gu"
     )
 
 
@@ -428,14 +436,21 @@ def test_exposure_and_graphics_driver_arguments():
         assert string1 == string2
     for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
         for m in e:
-            assert (
-                _build_fluent_launch_args_string(
-                    graphics_driver=m, additional_arguments="", processor_count=None
-                ).strip()
-                == f"3ddp -driver {m.get_fl_value()[0]}"
-                if m.get_fl_value()[0]
-                else " 3ddp"
-            )
+            msg = _build_fluent_launch_args_string(
+                graphics_driver=m, additional_arguments="", processor_count=None
+            ).strip()
+            if is_windows():
+                assert (
+                    msg == f"3ddp -hidden -driver {m.get_fl_value()[0]}"
+                    if m.get_fl_value()[0]
+                    else " 3ddp -hidden"
+                )
+            else:
+                assert (
+                    msg == f"3ddp -gu -driver {m.get_fl_value()[0]}"
+                    if m.get_fl_value()[0]
+                    else " 3ddp -gu"
+                )
 
 
 def test_additional_arguments_fluent_launch_args_string():
