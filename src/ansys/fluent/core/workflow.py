@@ -1029,6 +1029,16 @@ class CompoundChild(SimpleTask):
         """
         super().__init__(command_source, task)
 
+    def python_name(self) -> str:
+        """Get the Pythonic name of this task.
+
+        Returns
+        -------
+        str
+            Pythonic name of the task.
+        """
+        return self._python_name
+
 
 class CompositeTask(BaseTask):
     """Composite task representation for wrapping a Workflow TaskObject instance of
@@ -1174,7 +1184,7 @@ class CompoundTask(CommandTask):
         return self.last_child()
 
     def last_child(self) -> BaseTask:
-        """Get the last child of this CompoundTask.
+        """Get the last child of this CompoundTask and formulate their python name.
 
         Returns
         -------
@@ -1183,7 +1193,23 @@ class CompoundTask(CommandTask):
         """
         children = self.tasks()
         if children:
+            self.tasks()[-1]._python_name = self._get_python_names_for_compound_child()
+            self._command_source.tasks()[
+                -1
+            ]._python_name = self._get_python_names_for_compound_child()
             return children[-1]
+
+    def _get_python_names_for_compound_child(self):
+        py_name = None
+        if self.python_name() in self._command_source.task_names():
+            py_name = self.python_name() + "_child_1"
+
+        while py_name in self._command_source.task_names():
+            temp_name = py_name
+            temp_name = temp_name[:-1] + str(int(temp_name[-1]) + 1)
+            py_name = temp_name
+
+        return py_name
 
     def compound_child(self, name: str):
         """Get the compound child task of this CompoundTask by name.
