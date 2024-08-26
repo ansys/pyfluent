@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 import re
 import threading
-import time
 from typing import Any, Iterable, Iterator, Optional, Tuple, Union
 import warnings
 
@@ -364,13 +363,7 @@ class BaseTask:
         str
             Pythonic name of the task.
         """
-        if self._python_name in self._command_source._compound_task_names_with_children:
-            if (
-                self.task_type() == "Compound Child"
-                and self.name() in self._command_source._compound_task_map
-            ):
-                self._python_name = self._command_source._compound_task_map[self.name()]
-        elif not self._python_name:
+        if not self._python_name:
             if self._command_source._dynamic_python_names:
                 display_name_map = self._command_source._python_name_display_text_map
                 if self.display_name() not in display_name_map.values():
@@ -384,17 +377,9 @@ class BaseTask:
 
         return self._python_name
 
-    def _set_python_name(self, compound=False):
+    def _set_python_name(self):
         this_command = self._command()
-        if compound:
-            p_name = (
-                self._command_source._compound_parent_task_python_name_id[0]
-                + f"_child_{self._command_source._compound_parent_task_python_name_id[1]}"
-            )
-            self._python_name = p_name
-            self._command_source._compound_task_map[self.name()] = p_name
-        else:
-            self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
         self._cache_data(this_command)
 
     def _cache_data(self, command):
@@ -1043,7 +1028,16 @@ class CompoundChild(SimpleTask):
             The name of this task.
         """
         super().__init__(command_source, task)
-        self._set_python_name(compound=True)
+
+    def python_name(self) -> str:
+        """Get the Pythonic name of this task.
+
+        Returns
+        -------
+        str
+            Pythonic name of the task.
+        """
+        return self._python_name
 
 
 class CompositeTask(BaseTask):
@@ -1175,21 +1169,6 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
-        if (
-            self.python_name()
-            != self._command_source._compound_parent_task_python_name_id[0]
-        ):
-            self._command_source._compound_parent_task_python_name_id[0] = (
-                self.python_name()
-            )
-            self._command_source._compound_task_names_with_children.append(
-                self.python_name()
-            )
-            self._command_source._compound_parent_task_python_name_id[1] = 0
-
-        self._command_source._compound_parent_task_python_name_id[1] = (
-            self._command_source._compound_parent_task_python_name_id[1] + 1
-        )
         self._add_child(state)
         if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
@@ -1202,12 +1181,10 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
-        time.sleep(1)
-        self.tasks()[-1]._set_python_name(compound=True)
-        return self.last_child()
+        return self._last_child()
 
-    def last_child(self) -> BaseTask:
-        """Get the last child of this CompoundTask.
+    def _last_child(self) -> BaseTask:
+        """Get the last child of this CompoundTask and formulate their python name.
 
         Returns
         -------
@@ -1216,7 +1193,22 @@ class CompoundTask(CommandTask):
         """
         children = self.tasks()
         if children:
+            py_name = self._get_python_names_for_compound_child()
+            self.tasks()[-1]._python_name = py_name
+            self._command_source.tasks()[-1]._python_name = py_name
             return children[-1]
+
+    def _get_python_names_for_compound_child(self):
+        py_name = None
+        if self.python_name() in self._command_source.task_names():
+            py_name = self.python_name() + "_child_1"
+
+        while py_name in self._command_source.task_names():
+            temp_name = py_name
+            temp_name = temp_name[:-1] + str(int(temp_name[-1]) + 1)
+            py_name = temp_name
+
+        return py_name
 
     def compound_child(self, name: str):
         """Get the compound child task of this CompoundTask by name.
@@ -1306,9 +1298,6 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
-                _compound_parent_task_python_name_id=["", 0],
-                _compound_task_map={},
-                _compound_task_names_with_children=[],
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
