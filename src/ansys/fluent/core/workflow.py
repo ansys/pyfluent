@@ -1193,10 +1193,9 @@ class CompoundTask(CommandTask):
         """
         children = self.tasks()
         if children:
-            self.tasks()[-1]._python_name = self._get_python_names_for_compound_child()
-            self._command_source.tasks()[
-                -1
-            ]._python_name = self._get_python_names_for_compound_child()
+            py_name = self._get_python_names_for_compound_child()
+            self.tasks()[-1]._python_name = py_name
+            self._command_source.tasks()[-1]._python_name = py_name
             return children[-1]
 
     def _get_python_names_for_compound_child(self):
