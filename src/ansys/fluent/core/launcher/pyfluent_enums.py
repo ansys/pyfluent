@@ -137,6 +137,11 @@ class UIMode(FluentEnum):
     HIDDEN_GUI = "hidden-gui"
     GUI = "gui"
 
+    def _default(self):
+        # Not using NO_GUI in windows as it opens a new cmd or
+        # shows Fluent output in the current cmd if start <launch_string> is not used
+        return self.HIDDEN_GUI if is_windows() else self.NO_GUI
+
     def _get_enum_map(self):
         _fl_val_map = {
             self.NO_GUI_OR_GRAPHICS: ("g",),
@@ -322,30 +327,6 @@ def _get_standalone_launch_fluent_version(
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
     return FluentVersion.get_latest_installed()
-
-
-def _get_ui_mode(
-    ui_mode: UIMode,
-):
-    """Get the graphics driver.
-
-    Parameters
-    ----------
-    ui_mode: UIMode
-        Fluent GUI mode.
-
-    Returns
-    -------
-    ui_mode: UIMode
-        Fluent GUI mode.
-    """
-    if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
-        ui_mode = UIMode.GUI
-    if ui_mode is None:
-        # Not using NO_GUI in windows as it opens a new cmd or
-        # shows Fluent output in the current cmd if start <launch_string> is not used
-        ui_mode = UIMode.HIDDEN_GUI if is_windows() else UIMode.NO_GUI
-    return UIMode(ui_mode)
 
 
 def _validate_gpu(gpu: Union[bool, list], dimension: int):
