@@ -406,6 +406,8 @@ class BaseTask:
         return camel_args
 
     def __getattr__(self, attr):
+        if attr in self._command_source._compound_child_task_map:
+            return self._command_source._compound_child_task_map[attr]
         result = getattr(self._task, attr, None)
         if result:
             return result
@@ -1196,6 +1198,7 @@ class CompoundTask(CommandTask):
             py_name = self._get_python_names_for_compound_child()
             self.tasks()[-1]._python_name = py_name
             self._command_source.tasks()[-1]._python_name = py_name
+            self._command_source._compound_child_task_map[py_name] = children[-1]
             return children[-1]
 
     def _get_python_names_for_compound_child(self):
@@ -1298,6 +1301,7 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
+                _compound_child_task_map={},
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
@@ -1387,6 +1391,8 @@ class Workflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
+        if attr in self._compound_child_task_map:
+            return self._compound_child_task_map[attr]
         if attr in self._repeated_task_python_name_display_text_map:
             return self.task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
