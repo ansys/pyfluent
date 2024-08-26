@@ -54,7 +54,7 @@ class FluentEnum(Enum):
             else f"'{msg.join(str(member.value) for member in cls)}'"
         )
         raise DisallowedValuesError(
-            f"""The specified value: {value if type(value) == int else "'" + str(value) + "'"} """
+            f"""The specified value: {repr(value)} """
             f"""is not a supported value of {cls.__name__}."""
             f""" The supported values are: {msg}."""
         )
