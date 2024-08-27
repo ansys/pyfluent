@@ -14,6 +14,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
+from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
@@ -1333,6 +1334,25 @@ class Workflow:
         BaseTask
             wrapped task object.
         """
+        warnings.warn(
+            "Please use task attribute names instead.", DeprecatedSettingWarning
+        )
+        return self._task(name)
+
+    def _task(self, name: str) -> BaseTask:
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
+
+        The wrapper adds extra functionality.
+
+        Parameters
+        ----------
+        name : str
+            Task name - the display name, not the internal ID.
+        Returns
+        -------
+        BaseTask
+            wrapped task object.
+        """
         return _makeTask(self, name)
 
     def tasks(self, recompute=True) -> list:
@@ -1393,7 +1413,7 @@ class Workflow:
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
         if attr in self._repeated_task_python_name_display_text_map:
-            return self.task(self._repeated_task_python_name_display_text_map[attr])
+            return self._task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1453,7 +1473,7 @@ class Workflow:
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
         task_state = workflow_state[task_key]
-        return self.task(task_state["_name_"])
+        return self._task(task_state["_name_"])
 
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
