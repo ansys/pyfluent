@@ -13,6 +13,7 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0.common_api_pb2 import Point
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
@@ -327,6 +328,33 @@ def _convert_variant_to_value(var: Variant) -> _TValue:
         for k, v in var.variant_map_state.item.items():
             val[k] = _convert_variant_to_value(v)
         return val
+
+
+class Vector:
+    """Wrap Fluent's Point type into a Python class."""
+
+    def __init__(self, point: Point):
+        """__init__ of Vector class."""
+        self._val = point
+
+    @property
+    def x(self) -> float:
+        """Returns vector point x."""
+        return self._val.x
+
+    @property
+    def y(self) -> float:
+        """Returns vector point y."""
+        return self._val.y
+
+    @property
+    def z(self) -> float:
+        """Returns vector point z."""
+        return self._val.z
+
+    def __call__(self):
+        """Returns vector as [x, y, z]."""
+        return [self.x, self.y, self.z]
 
 
 class EventSubscription:
