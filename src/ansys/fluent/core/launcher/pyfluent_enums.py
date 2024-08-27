@@ -27,7 +27,7 @@ class FluentEnum(Enum):
     def _get_enum_map(self):
         return {}
 
-    def get_fl_value(self):
+    def get_fluent_value(self):
         """Returns the fluent value of the enum."""
         return self._get_enum_map()[self]
 
@@ -288,7 +288,7 @@ def _get_running_session_mode(
             )
         except Exception as ex:
             raise exceptions.InvalidPassword() from ex
-    return session_mode.get_fl_value()
+    return session_mode.get_fluent_value()
 
 
 def _get_standalone_launch_fluent_version(
@@ -341,5 +341,5 @@ def _get_argvals_and_session(argvals):
     argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
     argvals["mode"] = FluentMode(argvals["mode"])
     del argvals["self"]
-    new_session = argvals["mode"].get_fl_value()
+    new_session = argvals["mode"].get_fluent_value()
     return argvals, new_session
