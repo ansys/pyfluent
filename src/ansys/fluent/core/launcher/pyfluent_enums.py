@@ -25,8 +25,7 @@ class FluentEnum(Enum):
     """
 
     def _get_enum_map(self):
-        _fl_val_map = {}
-        return _fl_val_map
+        return {}
 
     def get_fl_value(self):
         """Returns the fluent value of the enum."""
@@ -82,13 +81,12 @@ class LaunchMode(FluentEnum):
     SLURM = "slurm"
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.STANDALONE: 1,
             self.PIM: 2,
             self.CONTAINER: 3,
             self.SLURM: 4,
         }
-        return _fl_val_map
 
 
 class FluentMode(FluentEnum):
@@ -103,13 +101,12 @@ class FluentMode(FluentEnum):
         return self.SOLVER
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.MESHING: Meshing,
             self.PURE_MESHING: PureMeshing,
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
         }
-        return _fl_val_map
 
     @staticmethod
     def is_meshing(mode: "FluentMode") -> bool:
@@ -144,14 +141,13 @@ class UIMode(FluentEnum):
         return self.HIDDEN_GUI if is_windows() else self.NO_GUI
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.NO_GUI_OR_GRAPHICS: ("g",),
             self.NO_GRAPHICS: ("gr",),
             self.NO_GUI: ("gu",),
             self.HIDDEN_GUI: ("hidden",),
             self.GUI: ("",),
         }
-        return _fl_val_map
 
 
 class Dimension(FluentEnum):
@@ -164,11 +160,10 @@ class Dimension(FluentEnum):
         return self.THREE
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.TWO: ("2d",),
             self.THREE: ("3d",),
         }
-        return _fl_val_map
 
 
 class Precision(FluentEnum):
@@ -181,11 +176,10 @@ class Precision(FluentEnum):
         return self.DOUBLE
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.SINGLE: ("",),
             self.DOUBLE: ("dp",),
         }
-        return _fl_val_map
 
 
 class FluentWindowsGraphicsDriver(FluentEnum):
@@ -202,7 +196,7 @@ class FluentWindowsGraphicsDriver(FluentEnum):
         return self.AUTO
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.NULL: ("null",),
             self.MSW: ("msw",),
             self.DX11: ("dx11",),
@@ -210,7 +204,6 @@ class FluentWindowsGraphicsDriver(FluentEnum):
             self.OPENGL: ("opengl",),
             self.AUTO: ("",),
         }
-        return _fl_val_map
 
 
 class FluentLinuxGraphicsDriver(FluentEnum):
@@ -226,14 +219,13 @@ class FluentLinuxGraphicsDriver(FluentEnum):
         return self.AUTO
 
     def _get_enum_map(self):
-        _fl_val_map = {
+        return {
             self.NULL: ("null",),
             self.X11: ("x11",),
             self.OPENGL2: ("opengl2",),
             self.OPENGL: ("opengl",),
             self.AUTO: ("",),
         }
-        return _fl_val_map
 
 
 def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
