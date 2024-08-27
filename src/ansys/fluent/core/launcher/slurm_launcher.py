@@ -41,6 +41,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 
 from concurrent.futures import Future, ThreadPoolExecutor
 import logging
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -62,7 +63,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     Precision,
     UIMode,
     _get_argvals_and_session,
-    _get_ui_mode,
 )
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
 from ansys.fluent.core.session_meshing import Meshing
@@ -394,7 +394,9 @@ class SlurmLauncher:
             raise RuntimeError("Slurm is not available.")
         self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
-        self._argvals["ui_mode"] = _get_ui_mode(ui_mode)
+        if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+            ui_mode = UIMode.GUI
+        self._argvals["ui_mode"] = UIMode(ui_mode)
         if self._argvals["start_timeout"] is None:
             self._argvals["start_timeout"] = -1
         if self._argvals["scheduler_options"]:
