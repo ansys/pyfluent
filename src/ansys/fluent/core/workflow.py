@@ -1184,7 +1184,7 @@ class CompoundTask(CommandTask):
         return self._last_child()
 
     def _last_child(self) -> BaseTask:
-        """Get the last child of this CompoundTask and formulate their python name.
+        """Get the last child of this CompoundTask and set their Python name.
 
         Returns
         -------
