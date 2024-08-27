@@ -454,36 +454,26 @@ class BaseTask:
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
         self._command_source._dynamic_python_names = True
-        if (
-            self.python_name()
-            in self._command_source._repeated_task_python_name_display_text_map
-        ):
+        py_name = self.python_name()
+        if py_name in self._command_source._repeated_task_python_name_display_text_map:
             self._command_source._python_name_command_id_map[new_name] = (
-                self._command_source._python_name_command_id_map.pop(
-                    self.python_name(), None
-                )
+                self._command_source._python_name_command_id_map.pop(py_name, None)
             )
             self._command_source._python_name_display_id_map[new_name] = (
-                self._command_source._python_name_display_id_map.pop(
-                    self.python_name(), None
-                )
+                self._command_source._python_name_display_id_map.pop(py_name, None)
             )
-            self._command_source._python_name_display_text_map.pop(
-                self.python_name(), None
-            )
+            self._command_source._python_name_display_text_map.pop(py_name, None)
             self._command_source._repeated_task_python_name_display_text_map.pop(
-                self.python_name(), None
+                py_name, None
             )
         else:
             self._command_source._python_name_command_id_map[new_name] = (
-                self._command_source._python_name_command_id_map[self.python_name()]
+                self._command_source._python_name_command_id_map[py_name]
             )
             self._command_source._python_name_display_id_map[new_name] = (
-                self._command_source._python_name_display_id_map[self.python_name()]
+                self._command_source._python_name_display_id_map[py_name]
             )
-            self._command_source._python_name_display_text_map.pop(
-                self.python_name(), None
-            )
+            self._command_source._python_name_display_text_map.pop(py_name, None)
 
         self._command_source._python_name_display_text_map[new_name] = new_name
         self._command_source._repeated_task_python_name_display_text_map[new_name] = (
