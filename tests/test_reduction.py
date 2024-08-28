@@ -163,9 +163,9 @@ def _test_centroid(solver):
     red_val_1 = solver.fields.reduction.centroid(locations=[velocity_inlet["inlet1"]])
     red_val_2 = solver.fields.reduction.centroid(locations=[velocity_inlet["inlet2"]])
     red_val_3 = solver.fields.reduction.centroid(locations=[velocity_inlet])
-    assert [red_val_1.x, red_val_1.y, red_val_1.z] == expr_val_1
-    assert [red_val_2.x, red_val_2.y, red_val_2.z] == expr_val_2
-    assert [red_val_3.x, red_val_3.y, red_val_3.z] == expr_val_3
+    assert [red_val_1[0], red_val_1[1], red_val_1[2]] == expr_val_1
+    assert [red_val_2[0], red_val_2[1], red_val_2[2]] == expr_val_2
+    assert [red_val_3[0], red_val_3[1], red_val_3[2]] == expr_val_3
     solver_named_expressions.pop(key="test_expr_1")
 
 
@@ -284,13 +284,13 @@ def _test_force(solver):
         locations=[solver.setup.boundary_conditions.wall]
     )
 
-    assert [red_total_force.x, red_total_force.y, red_total_force.z] == expr_val_1
+    assert [red_total_force[0], red_total_force[1], red_total_force[2]] == expr_val_1
 
-    assert red_pressure_force.x + red_viscous_force.x == red_total_force.x
+    assert red_pressure_force[0] + red_viscous_force[0] == red_total_force[0]
 
-    assert red_pressure_force.y + red_viscous_force.y == red_total_force.y
+    assert red_pressure_force[1] + red_viscous_force[1] == red_total_force[1]
 
-    assert red_pressure_force.z + red_viscous_force.z == red_total_force.z
+    assert red_pressure_force[2] + red_viscous_force[2] == red_total_force[2]
 
     solver_named_expressions.pop(key="test_expr_1")
 
@@ -316,11 +316,11 @@ def _test_moment(solver):
         expression="['inlet1']", locations=[location]
     )
 
-    assert [red_moment_force.x, red_moment_force.y, red_moment_force.z] == expr_val_1
+    assert [red_moment_force[0], red_moment_force[1], red_moment_force[2]] == expr_val_1
     assert [
-        red_moment_location.x,
-        red_moment_location.y,
-        red_moment_location.z,
+        red_moment_location[0],
+        red_moment_location[1],
+        red_moment_location[2],
     ] == expr_val_2
 
     solver_named_expressions.pop(key="test_expr_1")
@@ -368,7 +368,7 @@ def _test_sum_if(solver):
 static_mixer_case_session2 = static_mixer_case_session
 
 
-@pytest.mark.nightly
+# @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
 def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> None:
     solver1 = static_mixer_case_session
