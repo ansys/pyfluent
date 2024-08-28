@@ -14,7 +14,6 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
-from ansys.fluent.core.solver.flobject import DeprecatedSettingWarning
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
@@ -430,7 +429,10 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
             logger.debug(str(ex))
-        return self._task_objects.get(attr, None)
+        result = self._task_objects.get(attr, None)
+        if result:
+            return result
+        return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
@@ -1335,7 +1337,7 @@ class Workflow:
             wrapped task object.
         """
         warnings.warn(
-            "Please use task attribute names instead.", DeprecatedSettingWarning
+            "Please use task attribute names instead.", PyFluentDeprecationWarning
         )
         return self._task(name)
 
