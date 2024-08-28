@@ -1027,7 +1027,21 @@ class CompoundChild(SimpleTask):
         str
             Pythonic name of the task.
         """
+        if not self._python_name:
+            self._python_name = self._get_python_names_for_compound_child()
         return self._python_name
+
+    def _get_python_names_for_compound_child(self):
+        py_name = (
+            self._command_source._parent_of_compound_child
+            + "_child_"
+            + str(
+                self._command_source._compound_child_map[
+                    self._command_source._parent_of_compound_child
+                ]
+            )
+        )
+        return py_name
 
 
 class CompositeTask(BaseTask):
@@ -1160,6 +1174,15 @@ class CompoundTask(CommandTask):
             Whether to defer the update.
         """
         self._add_child(state)
+        py_name = self.python_name()
+        if py_name not in self._command_source._compound_child_map:
+            self._command_source._compound_child_map[py_name] = 1
+        else:
+            self._command_source._compound_child_map[py_name] = (
+                self._command_source._compound_child_map[py_name] + 1
+            )
+        self._command_source._compound_child = True
+        self._command_source._parent_of_compound_child = py_name
         if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
                 defer_update = False
@@ -1171,9 +1194,10 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
-        return self._last_child()
+        self._command_source._compound_child = False
+        return self.last_child()
 
-    def _last_child(self) -> BaseTask:
+    def last_child(self) -> BaseTask:
         """Get the last child of this CompoundTask and set their Python name.
 
         Returns
@@ -1183,22 +1207,7 @@ class CompoundTask(CommandTask):
         """
         children = self.tasks()
         if children:
-            py_name = self._get_python_names_for_compound_child()
-            self.tasks()[-1]._python_name = py_name
-            self._command_source.tasks()[-1]._python_name = py_name
             return children[-1]
-
-    def _get_python_names_for_compound_child(self):
-        py_name = None
-        if self.python_name() in self._command_source.task_names():
-            py_name = self.python_name() + "_child_1"
-
-        while py_name in self._command_source.task_names():
-            temp_name = py_name
-            temp_name = temp_name[:-1] + str(int(temp_name[-1]) + 1)
-            py_name = temp_name
-
-        return py_name
 
     def compound_child(self, name: str):
         """Get the compound child task of this CompoundTask by name.
@@ -1229,7 +1238,10 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Conditional": ConditionalTask,
     }
     task_type = task.TaskType()
-    kind = kinds[task_type]
+    if task_type is None and command_source._compound_child:
+        kind = CompoundChild
+    else:
+        kind = kinds[task_type]
     if not kind:
         message = (
             "Unhandled empty workflow task type."
@@ -1288,6 +1300,9 @@ class Workflow:
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
+                _parent_of_compound_child=None,
+                _compound_child_map={},
+                _compound_child=False,
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
