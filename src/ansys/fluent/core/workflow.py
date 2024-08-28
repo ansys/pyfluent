@@ -1336,8 +1336,12 @@ class Workflow:
         BaseTask
             wrapped task object.
         """
+        py_name = self.tasks()[
+            [repr(task) for task in self.tasks()].index(repr(self._task(name)))
+        ].python_name()
         warnings.warn(
-            "Please use task attribute names instead.", PyFluentDeprecationWarning
+            f"'task' is deprecated -> Use '{py_name}' instead.",
+            PyFluentDeprecationWarning,
         )
         return self._task(name)
 
