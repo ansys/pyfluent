@@ -368,7 +368,7 @@ def _test_sum_if(solver):
 static_mixer_case_session2 = static_mixer_case_session
 
 
-# @pytest.mark.nightly
+@pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
 def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> None:
     solver1 = static_mixer_case_session
