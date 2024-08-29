@@ -35,6 +35,22 @@ def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 
+root_childs = {
+    "file": 0,
+    "mesh": 0,
+    "server": 0,
+    "setup": 0,
+    "solution": 0,
+    "results": 0,
+    "design": 0,
+    "parametric_studies": 0,
+    "current_parametric_study": 0,
+    "parameters": 0,
+    "parallel": 0,
+    "transient_post_processing": 0,
+    "exit": 0,
+}
+
 written_classes = {}
 
 string_classes = {}
@@ -231,28 +247,28 @@ def write_settings_classes(out: IO, cls, obj_info: dict, settings: bool):
         out.write("\n")
         _write_settings_cls_helper(out=out, cls=cls, indent=0)
     else:
-        # _write_utils_cls_helper(out=out, cls=cls, indent=0)
+        _write_utils_cls_helper(out=out, cls=cls, indent=0)
 
-        root_childs = {
-            "file": 0,
-            "mesh": 0,
-            "server": 0,
-            "setup": 0,
-            "solution": 0,
-            "results": 0,
-            "design": 0,
-            "parametric_studies": 0,
-            "current_parametric_study": 0,
-            "parameters": 0,
-            "parallel": 0,
-            "transient_post_processing": 0,
-            "exit": 0,
-        }
+        # root_childs = {
+        #     "file": 0,
+        #     "mesh": 0,
+        #     "server": 0,
+        #     "setup": 0,
+        #     "solution": 0,
+        #     "results": 0,
+        #     "design": 0,
+        #     "parametric_studies": 0,
+        #     "current_parametric_study": 0,
+        #     "parameters": 0,
+        #     "parallel": 0,
+        #     "transient_post_processing": 0,
+        #     "exit": 0,
+        # }
 
-        written_classes = {}
-        string_classes = {}
+        # written_classes = {}
+        # string_classes = {}
 
-        _write_dynamic_cls_helper(out=out, cls=cls)
+        # _write_dynamic_cls_helper(out=out, cls=cls)
 
 
 def _get_settings_path(version: str):
@@ -279,20 +295,20 @@ def _get_settings_utils_path(version: str):
     )
 
 
-root_childs = {
-    "file": 0,
-    "mesh": 0,
-    "server": 0,
-    "setup": 0,
-    "solution": 0,
-    "results": 0,
-    "design": 0,
-    "parametric_studies": 0,
-    "current_parametric_study": 0,
-    "parameters": 0,
-    "parallel": 0,
-    "transient_post_processing": 0,
-    "exit": 0,
+root_childs_dict = {
+    "file": {"count": 0},
+    "mesh": {"count": 0},
+    "server": {"count": 0},
+    "setup": {"count": 0},
+    "solution": {"count": 0},
+    "results": {"count": 0},
+    "design": {"count": 0},
+    "parametric_studies": {"count": 0},
+    "current_parametric_study": {"count": 0},
+    "parameters": {"count": 0},
+    "parallel": {"count": 0},
+    "transient_post_processing": {"count": 0},
+    "exit": {"count": 0},
 }
 
 
@@ -305,19 +321,30 @@ def _write_settings_cls_helper(out, cls, indent=0):
             if cls == "lightweight_setup":
                 print(cls)
 
-        if hasattr(cls, "__name__") and cls.__name__ in root_childs:
-            root_childs[cls.__name__] += 1
-        elif isinstance(cls, str) and cls in root_childs:
-            root_childs[cls] += 1
+        if hasattr(cls, "__name__") and cls.__name__ in root_childs_dict:
+            root_childs_dict[cls.__name__]["count"] += 1
+        elif isinstance(cls, str) and cls in root_childs_dict:
+            root_childs_dict[cls]["count"] += 1
         if (
             hasattr(cls, "__name__")
-            and root_childs.get(cls.__name__)
-            and root_childs.get(cls.__name__) > 1
+            and cls.__name__ in root_childs_dict
+            and root_childs_dict[cls.__name__].get("count")
+            and root_childs_dict[cls.__name__].get("count") > 1
         ):
             pass
-        elif isinstance(cls, str) and root_childs.get(cls) and root_childs.get(cls) > 1:
+        elif (
+            isinstance(cls, str)
+            and cls in root_childs_dict
+            and root_childs_dict[cls].get("count")
+            and root_childs_dict[cls].get("count") > 1
+        ):
             pass
         else:
+            if hasattr(cls, "__name__"):
+                cls_name = cls.__name__
+            elif isinstance(cls, str):
+                cls_name = cls
+
             istr = _get_indent_str(indent)
             istr1 = _get_indent_str(indent + 1)
             out.write("\n")
@@ -328,23 +355,75 @@ def _write_settings_cls_helper(out, cls, indent=0):
 
             child_names = getattr(cls, "child_names", None)
             if child_names:
-                for _, child in cls._child_classes.items():
-                    _write_settings_cls_helper(out, child, indent + 1)
+                for child_name, child in cls._child_classes.items():
+                    if (
+                        cls_name in root_childs_dict
+                        and child_name in root_childs_dict[cls_name]
+                    ):
+                        root_childs_dict[cls_name][child_name] += 1
+                    elif cls_name in root_childs_dict:
+                        root_childs_dict[cls_name][child_name] = 1
+                    if (
+                        cls_name in root_childs_dict
+                        and root_childs_dict[cls_name][child_name] > 1
+                    ):
+                        pass
+                    else:
+                        _write_settings_cls_helper(out, child, indent + 1)
 
             command_names = getattr(cls, "command_names", None)
             if command_names:
-                for _, child in cls._child_classes.items():
-                    _write_settings_cls_helper(out, child, indent + 1)
+                for child_name, child in cls._child_classes.items():
+                    if (
+                        cls_name in root_childs_dict
+                        and child_name in root_childs_dict[cls_name]
+                    ):
+                        root_childs_dict[cls_name][child_name] += 1
+                    elif cls_name in root_childs_dict:
+                        root_childs_dict[cls_name][child_name] = 1
+                    if (
+                        cls_name in root_childs_dict
+                        and root_childs_dict[cls_name][child_name] > 1
+                    ):
+                        pass
+                    else:
+                        _write_settings_cls_helper(out, child, indent + 1)
 
             query_names = getattr(cls, "query_names", None)
             if query_names:
-                for _, child in cls._child_classes.items():
-                    _write_settings_cls_helper(out, child, indent + 1)
+                for child_name, child in cls._child_classes.items():
+                    if (
+                        cls_name in root_childs_dict
+                        and child_name in root_childs_dict[cls_name]
+                    ):
+                        root_childs_dict[cls_name][child_name] += 1
+                    elif cls_name in root_childs_dict:
+                        root_childs_dict[cls_name][child_name] = 1
+                    if (
+                        cls_name in root_childs_dict
+                        and root_childs_dict[cls_name][child_name] > 1
+                    ):
+                        pass
+                    else:
+                        _write_settings_cls_helper(out, child, indent + 1)
 
             arguments = getattr(cls, "argument_names", None)
             if arguments:
-                for _, child in cls._child_classes.items():
-                    _write_settings_cls_helper(out, child, indent + 1)
+                for child_name, child in cls._child_classes.items():
+                    if (
+                        cls_name in root_childs_dict
+                        and child_name in root_childs_dict[cls_name]
+                    ):
+                        root_childs_dict[cls_name][child_name] += 1
+                    elif cls_name in root_childs_dict:
+                        root_childs_dict[cls_name][child_name] = 1
+                    if (
+                        cls_name in root_childs_dict
+                        and root_childs_dict[cls_name][child_name] > 1
+                    ):
+                        pass
+                    else:
+                        _write_settings_cls_helper(out, child, indent + 1)
 
             child_object_type = getattr(cls, "child_object_type", None)
             if child_object_type:
@@ -578,27 +657,6 @@ if __name__ == "__main__":
     #     settings_utils.write("\n")
     #     settings_utils.write(f"all_classes = {all_classes}")
 
-    # root_childs = {
-    #     "file": 0,
-    #     "mesh": 0,
-    #     "server": 0,
-    #     "setup": 0,
-    #     "solution": 0,
-    #     "results": 0,
-    #     "design": 0,
-    #     "parametric_studies": 0,
-    #     "current_parametric_study": 0,
-    #     "parameters": 0,
-    #     "parallel": 0,
-    #     "transient_post_processing": 0,
-    #     "exit": 0,
-    # }
-
-    # with open(_get_settings_path(version=session._version), "w") as settings:
-    #     write_settings_classes(settings, cls[0], sinfo, settings=True)
-
-    print(f"settingsgen.py took {time.time() - start_time} seconds.")
-
     root_childs = {
         "file": 0,
         "mesh": 0,
@@ -618,10 +676,34 @@ if __name__ == "__main__":
     written_classes = {}
     string_classes = {}
 
-    _set_all_classes(cls[0], all_classes)
-    final_root = root
+    with open(_get_settings_path(version=session._version), "w") as settings:
+        write_settings_classes(settings, cls[0], sinfo, settings=True)
 
-    print(f"written_classes = {len(written_classes)}")
-    print(f"string_classes = {len(string_classes)}")
-    print(len(all_classes.keys()))
-    print(all_classes["name"]["String"])
+    print(f"settingsgen.py took {time.time() - start_time} seconds.")
+
+    # root_childs = {
+    #     "file": 0,
+    #     "mesh": 0,
+    #     "server": 0,
+    #     "setup": 0,
+    #     "solution": 0,
+    #     "results": 0,
+    #     "design": 0,
+    #     "parametric_studies": 0,
+    #     "current_parametric_study": 0,
+    #     "parameters": 0,
+    #     "parallel": 0,
+    #     "transient_post_processing": 0,
+    #     "exit": 0,
+    # }
+
+    # written_classes = {}
+    # string_classes = {}
+
+    # _set_all_classes(cls[0], all_classes)
+    # final_root = root
+
+    # print(f"written_classes = {len(written_classes)}")
+    # print(f"string_classes = {len(string_classes)}")
+    # print(len(all_classes.keys()))
+    # print(all_classes["name"]["String"])
