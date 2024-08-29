@@ -35,15 +35,6 @@ def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 
-def _check_in_existing_classes(cls, class_list: list):
-    if hasattr(cls, "__name__") and cls.__name__ in class_list:
-        return True
-    elif isinstance(cls, str) and cls in class_list:
-        return True
-    else:
-        return False
-
-
 written_classes = {}
 
 string_classes = {}
@@ -51,6 +42,14 @@ string_classes = {}
 
 def _write_utils_cls_helper(out, cls, indent=0):
     try:
+
+        if hasattr(cls, "__name__"):
+            if cls.__name__ == "lightweight_setup":
+                print("lightweight_setup")
+        if isinstance(cls, str):
+            if cls == "lightweight_setup":
+                print(cls)
+
         if hasattr(cls, "__name__") and cls.__name__ in root_childs:
             root_childs[cls.__name__] += 1
         elif isinstance(cls, str) and cls in root_childs:
@@ -74,14 +73,24 @@ def _write_utils_cls_helper(out, cls, indent=0):
 
                 bases = [c.__name__ for c in cls.__bases__]
                 bases_str = ", ".join(bases)
+                arguments_str = ""
+
+                if hasattr(cls, "argument_names"):
+                    arguments = cls.argument_names
+                    arguments_str = ", ".join(arguments)
+
+                if arguments_str:
+                    bases_arguments_str = "_".join([bases_str, arguments_str])
+                else:
+                    bases_arguments_str = ", ".join(bases)
 
                 if cls_name in written_classes:
-                    if bases_str in written_classes[cls_name]:
-                        written_classes[cls_name][bases_str] += 1
+                    if bases_arguments_str in written_classes[cls_name]:
+                        written_classes[cls_name][bases_arguments_str] += 1
                     else:
-                        written_classes[cls_name].update({bases_str: 1})
+                        written_classes[cls_name].update({bases_arguments_str: 1})
                 else:
-                    written_classes[cls_name] = {bases_str: 1}
+                    written_classes[cls_name] = {bases_arguments_str: 1}
             elif isinstance(cls, str):
                 cls_name = cls
                 if cls_name in string_classes:
@@ -89,7 +98,10 @@ def _write_utils_cls_helper(out, cls, indent=0):
                 else:
                     string_classes[cls_name] = 1
 
-            if hasattr(cls, "__name__") and written_classes[cls_name][bases_str] > 1:
+            if (
+                hasattr(cls, "__name__")
+                and written_classes[cls_name][bases_arguments_str] > 1
+            ):
                 pass
             elif isinstance(cls, str) and string_classes[cls] > 1:
                 pass
@@ -219,8 +231,8 @@ def write_settings_classes(out: IO, cls, obj_info: dict, settings: bool):
         out.write("\n")
         _write_settings_cls_helper(out=out, cls=cls, indent=0)
     else:
-        # _write_utils_cls_helper(out=out, cls=cls, indent=0)
-        _write_dynamic_cls_helper(out=out, cls=cls)
+        _write_utils_cls_helper(out=out, cls=cls, indent=0)
+        # _write_dynamic_cls_helper(out=out, cls=cls)
 
 
 def _get_settings_path(version: str):
@@ -266,6 +278,13 @@ root_childs = {
 
 def _write_settings_cls_helper(out, cls, indent=0):
     try:
+        if hasattr(cls, "__name__"):
+            if cls.__name__ == "lightweight_setup":
+                print("lightweight_setup")
+        if isinstance(cls, str):
+            if cls == "lightweight_setup":
+                print(cls)
+
         if hasattr(cls, "__name__") and cls.__name__ in root_childs:
             root_childs[cls.__name__] += 1
         elif isinstance(cls, str) and cls in root_childs:
@@ -416,35 +435,154 @@ def _write_dynamic_cls_helper(out, cls):
         raise
 
 
+from ansys.fluent.core.solver.flobject import *  # noqa F403
+
+
+class root(Group):
+    "Root object."
+    pass
+
+
+def _set_all_classes(cls, all_classes):
+    try:
+        if hasattr(cls, "__name__") and cls.__name__ in root_childs:
+            root_childs[cls.__name__] += 1
+        elif isinstance(cls, str) and cls in root_childs:
+            root_childs[cls] += 1
+
+        if (
+            hasattr(cls, "__name__")
+            and root_childs.get(cls.__name__)
+            and root_childs.get(cls.__name__) > 1
+        ):
+            pass
+        elif isinstance(cls, str) and root_childs.get(cls) and root_childs.get(cls) > 1:
+            pass
+        else:
+            if hasattr(cls, "__name__"):
+                cls_name = cls.__name__
+
+                bases = [c.__name__ for c in cls.__bases__]
+                bases_str = ", ".join(bases)
+
+                # if cls_name in written_classes:
+                #     if bases_str in written_classes[cls_name]:
+                #         written_classes[cls_name][bases_str] += 1
+                #     else:
+                #         written_classes[cls_name].update({bases_str: 1})
+                # else:
+                #     written_classes[cls_name] = {bases_str: 1}
+            elif isinstance(cls, str):
+                cls_name = cls
+                # if cls_name in string_classes:
+                #     string_classes[cls_name] += 1
+                # else:
+                #     string_classes[cls_name] = 1
+
+            # if hasattr(cls, "__name__") and written_classes[cls_name][bases_str] > 1:
+            #     pass
+            # elif isinstance(cls, str) and string_classes[cls] > 1:
+            #     pass
+            # else:
+            if cls_name == "root":
+                for attr, attr_value in all_classes[cls_name][bases_str].items():
+                    setattr(root, attr, attr_value)
+            if hasattr(cls, "_child_classes"):
+                if cls_name == "root":
+                    cls_class = root
+                else:
+                    cls_class = type(
+                        cls_name,
+                        all_classes[cls_name][bases_str]["__bases__"],
+                        all_classes[cls_name][bases_str],
+                    )
+                for child_name, child in cls._child_classes.items():
+                    child_class = type(
+                        child_name,
+                        all_classes[cls_name][bases_str]["__bases__"],
+                        all_classes[cls_name][bases_str],
+                    )
+                    setattr(cls_class, child_name, child_class)
+                    _set_all_classes(child, all_classes)
+            if hasattr(cls, "child_object_type"):
+                _set_all_classes(cls.child_object_type, all_classes)
+    except Exception:
+        raise
+
+
 if __name__ == "__main__":
     import time
 
     # from ansys.fluent.core.launcher.launcher import launch_fluent
 
     session = pyfluent.connect_to_fluent(
-        ip="10.18.44.94", port=63640, password="ud1rdd0m"
+        ip="10.18.44.94", port=62923, password="fozrzpu5"
     )
     # session = launch_fluent()
     start_time = time.time()
     sinfo = session._settings_service.get_static_info()
     cls = flobject.get_cls("", sinfo, version=session._version)
 
-    # with open(
-    #     _get_settings_utils_path(version=session._version), "w"
-    # ) as settings_utils:
-    #     write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
-
     with open(
         _get_settings_utils_path(version=session._version), "w"
     ) as settings_utils:
         write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
-        settings_utils.write("\n")
-        settings_utils.write(f"all_classes = {all_classes}")
 
-    # with open(_get_settings_path(version=session._version), "w") as settings:
-    #     write_settings_classes(settings, cls[0], sinfo, settings=True)
+    # with open(
+    #     _get_settings_utils_path(version=session._version), "w"
+    # ) as settings_utils:
+    #     write_settings_classes(settings_utils, cls[0], sinfo, settings=False)
+    #     settings_utils.write("\n")
+    #     settings_utils.write(f"all_classes = {all_classes}")
+
+    root_childs = {
+        "file": 0,
+        "mesh": 0,
+        "server": 0,
+        "setup": 0,
+        "solution": 0,
+        "results": 0,
+        "design": 0,
+        "parametric_studies": 0,
+        "current_parametric_study": 0,
+        "parameters": 0,
+        "parallel": 0,
+        "transient_post_processing": 0,
+        "exit": 0,
+    }
+
+    with open(_get_settings_path(version=session._version), "w") as settings:
+        write_settings_classes(settings, cls[0], sinfo, settings=True)
+
     print(f"settingsgen.py took {time.time() - start_time} seconds.")
+    # print(f"written_classes = {len(written_classes)}")
+    # print(f"string_classes = {len(string_classes)}")
+    # print(len(all_classes.keys()))
+    # print(all_classes["name"]["String"])
+
+    root_childs = {
+        "file": 0,
+        "mesh": 0,
+        "server": 0,
+        "setup": 0,
+        "solution": 0,
+        "results": 0,
+        "design": 0,
+        "parametric_studies": 0,
+        "current_parametric_study": 0,
+        "parameters": 0,
+        "parallel": 0,
+        "transient_post_processing": 0,
+        "exit": 0,
+    }
+
+    written_classes = {}
+    string_classes = {}
+
+    _set_all_classes(cls[0], all_classes)
+    final_root = root
+
     print(f"written_classes = {len(written_classes)}")
     print(f"string_classes = {len(string_classes)}")
     print(len(all_classes.keys()))
-    print(all_classes["create"]["CommandWithPositionalArgs"])
+    print(all_classes["name"]["String"])
