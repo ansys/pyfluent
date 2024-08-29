@@ -9,6 +9,7 @@ def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
+@pytest.mark.skip("Activate with: https://github.com/ansys/pyfluent/pull/3205")
 @pytest.mark.codegen_required
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=25.1")

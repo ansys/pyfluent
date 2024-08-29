@@ -699,3 +699,60 @@ Duplicate tasks
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     assert watertight.import_boi_geometry.arguments()
     assert watertight.import_boi_geometry_1.arguments()
+
+
+Current meshing workflow
+------------------------
+Use the ``current_workflow`` property to access an already loaded workflow.
+The following example shows how to use this method.
+
+Current workflow
+~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.current_workflow
+
+.. Note::
+   The ``current_workflow`` property raises an attribute error when no workflow is initialized.
+
+
+Mark as updated
+---------------
+Use the ``mark_as_updated()`` method to forcefully mark a task as updated.
+
+.. code:: python
+
+    watertight.import_geometry.mark_as_updated()
+
+
+Sample use of ``arguments``
+----------------------------
+This simple example shows how to use the ``arguments`` attributes and explicit
+attribute access methods in a watertight geometry meshing workflow.
+
+.. Note::
+   The ``command_arguments()`` method is deprecated.
+
+.. code:: python
+
+    >>> import ansys.fluent.core as pyfluent
+    >>> from ansys.fluent.core import examples
+
+    >>> import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
+    >>> meshing = pyfluent.launch_fluent(
+    >>>     mode=pyfluent.FluentMode.MESHING,
+    >>>     precision=pyfluent.Precision.DOUBLE,
+    >>>     processor_count=2
+    >>> )
+    >>> watertight = meshing.watertight()
+
+    >>> import_geometry = watertight.import_geometry
+    >>> import_geometry.arguments()
+    >>> import_geometry.arguments.file_name.is_read_only()
+    >>> import_geometry.arguments.length_unit.is_active()
+    >>> import_geometry.arguments.length_unit.allowed_values()
+    >>> import_geometry.arguments.length_unit.default_value()
+    >>> import_geometry.arguments.length_unit()
+    >>> import_geometry.arguments.cad_import_options.one_zone_per()
+    >>> import_geometry.arguments.cad_import_options.feature_angle.min()
