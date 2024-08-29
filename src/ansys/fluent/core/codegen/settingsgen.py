@@ -231,8 +231,28 @@ def write_settings_classes(out: IO, cls, obj_info: dict, settings: bool):
         out.write("\n")
         _write_settings_cls_helper(out=out, cls=cls, indent=0)
     else:
-        _write_utils_cls_helper(out=out, cls=cls, indent=0)
-        # _write_dynamic_cls_helper(out=out, cls=cls)
+        # _write_utils_cls_helper(out=out, cls=cls, indent=0)
+
+        root_childs = {
+            "file": 0,
+            "mesh": 0,
+            "server": 0,
+            "setup": 0,
+            "solution": 0,
+            "results": 0,
+            "design": 0,
+            "parametric_studies": 0,
+            "current_parametric_study": 0,
+            "parameters": 0,
+            "parallel": 0,
+            "transient_post_processing": 0,
+            "exit": 0,
+        }
+
+        written_classes = {}
+        string_classes = {}
+
+        _write_dynamic_cls_helper(out=out, cls=cls)
 
 
 def _get_settings_path(version: str):
@@ -361,14 +381,24 @@ def _write_dynamic_cls_helper(out, cls):
 
                 bases = [c.__name__ for c in cls.__bases__]
                 bases_str = ", ".join(bases)
+                arguments_str = ""
+
+                if hasattr(cls, "argument_names"):
+                    arguments = cls.argument_names
+                    arguments_str = ", ".join(arguments)
+
+                if arguments_str:
+                    bases_arguments_str = "_".join([bases_str, arguments_str])
+                else:
+                    bases_arguments_str = ", ".join(bases)
 
                 if cls_name in written_classes:
-                    if bases_str in written_classes[cls_name]:
-                        written_classes[cls_name][bases_str] += 1
+                    if bases_arguments_str in written_classes[cls_name]:
+                        written_classes[cls_name][bases_arguments_str] += 1
                     else:
-                        written_classes[cls_name].update({bases_str: 1})
+                        written_classes[cls_name].update({bases_arguments_str: 1})
                 else:
-                    written_classes[cls_name] = {bases_str: 1}
+                    written_classes[cls_name] = {bases_arguments_str: 1}
             elif isinstance(cls, str):
                 cls_name = cls
                 if cls_name in string_classes:
@@ -376,13 +406,14 @@ def _write_dynamic_cls_helper(out, cls):
                 else:
                     string_classes[cls_name] = 1
 
-            if hasattr(cls, "__name__") and written_classes[cls_name][bases_str] > 1:
+            if (
+                hasattr(cls, "__name__")
+                and written_classes[cls_name][bases_arguments_str] > 1
+            ):
                 pass
             elif isinstance(cls, str) and string_classes[cls] > 1:
                 pass
             else:
-                # out.write("\n")
-
                 cls_data = {}
 
                 if hasattr(cls, "__name__"):
@@ -414,16 +445,13 @@ def _write_dynamic_cls_helper(out, cls):
                 if hasattr(cls, "argument_names"):
                     cls_data["argument_names"] = cls.argument_names
 
-                # out.write(f"\n {cls_name} = {cls_data}")
-                # all_classes[cls_name] = cls_data
-
                 if cls_name in all_classes:
-                    if bases_str in all_classes[cls_name]:
+                    if bases_arguments_str in all_classes[cls_name]:
                         pass
                     else:
-                        all_classes[cls_name].update({bases_str: cls_data})
+                        all_classes[cls_name].update({bases_arguments_str: cls_data})
                 else:
-                    all_classes[cls_name] = {bases_str: cls_data}
+                    all_classes[cls_name] = {bases_arguments_str: cls_data}
 
                 if hasattr(cls, "child_object_type"):
                     _write_dynamic_cls_helper(out, cls.child_object_type)
@@ -464,48 +492,63 @@ def _set_all_classes(cls, all_classes):
 
                 bases = [c.__name__ for c in cls.__bases__]
                 bases_str = ", ".join(bases)
+                arguments_str = ""
 
-                # if cls_name in written_classes:
-                #     if bases_str in written_classes[cls_name]:
-                #         written_classes[cls_name][bases_str] += 1
-                #     else:
-                #         written_classes[cls_name].update({bases_str: 1})
-                # else:
-                #     written_classes[cls_name] = {bases_str: 1}
+                if hasattr(cls, "argument_names"):
+                    arguments = cls.argument_names
+                    arguments_str = ", ".join(arguments)
+
+                if arguments_str:
+                    bases_arguments_str = "_".join([bases_str, arguments_str])
+                else:
+                    bases_arguments_str = ", ".join(bases)
+
+                if cls_name in written_classes:
+                    if bases_arguments_str in written_classes[cls_name]:
+                        written_classes[cls_name][bases_arguments_str] += 1
+                    else:
+                        written_classes[cls_name].update({bases_arguments_str: 1})
+                else:
+                    written_classes[cls_name] = {bases_arguments_str: 1}
             elif isinstance(cls, str):
                 cls_name = cls
-                # if cls_name in string_classes:
-                #     string_classes[cls_name] += 1
-                # else:
-                #     string_classes[cls_name] = 1
-
-            # if hasattr(cls, "__name__") and written_classes[cls_name][bases_str] > 1:
-            #     pass
-            # elif isinstance(cls, str) and string_classes[cls] > 1:
-            #     pass
-            # else:
-            if cls_name == "root":
-                for attr, attr_value in all_classes[cls_name][bases_str].items():
-                    setattr(root, attr, attr_value)
-            if hasattr(cls, "_child_classes"):
-                if cls_name == "root":
-                    cls_class = root
+                if cls_name in string_classes:
+                    string_classes[cls_name] += 1
                 else:
-                    cls_class = type(
-                        cls_name,
-                        all_classes[cls_name][bases_str]["__bases__"],
-                        all_classes[cls_name][bases_str],
-                    )
-                for child_name, child in cls._child_classes.items():
-                    child_class = type(
-                        child_name,
-                        all_classes[cls_name][bases_str]["__bases__"],
-                        all_classes[cls_name][bases_str],
-                    )
-                    setattr(cls_class, child_name, child_class)
-                    _set_all_classes(child, all_classes)
-            if hasattr(cls, "child_object_type"):
-                _set_all_classes(cls.child_object_type, all_classes)
+                    string_classes[cls_name] = 1
+
+            if (
+                hasattr(cls, "__name__")
+                and written_classes[cls_name][bases_arguments_str] > 1
+            ):
+                pass
+            elif isinstance(cls, str) and string_classes[cls] > 1:
+                pass
+            else:
+                if cls_name == "root":
+                    for attr, attr_value in all_classes[cls_name][
+                        bases_arguments_str
+                    ].items():
+                        setattr(root, attr, attr_value)
+                if hasattr(cls, "_child_classes"):
+                    if cls_name == "root":
+                        cls_class = root
+                    else:
+                        cls_class = type(
+                            cls_name,
+                            all_classes[cls_name][bases_arguments_str]["__bases__"],
+                            all_classes[cls_name][bases_arguments_str],
+                        )
+                    for child_name, child in cls._child_classes.items():
+                        child_class = type(
+                            child_name,
+                            all_classes[cls_name][bases_arguments_str]["__bases__"],
+                            all_classes[cls_name][bases_arguments_str],
+                        )
+                        setattr(cls_class, child_name, child_class)
+                        _set_all_classes(child, all_classes)
+                if hasattr(cls, "child_object_type"):
+                    _set_all_classes(cls.child_object_type, all_classes)
     except Exception:
         raise
 
@@ -535,30 +578,26 @@ if __name__ == "__main__":
     #     settings_utils.write("\n")
     #     settings_utils.write(f"all_classes = {all_classes}")
 
-    root_childs = {
-        "file": 0,
-        "mesh": 0,
-        "server": 0,
-        "setup": 0,
-        "solution": 0,
-        "results": 0,
-        "design": 0,
-        "parametric_studies": 0,
-        "current_parametric_study": 0,
-        "parameters": 0,
-        "parallel": 0,
-        "transient_post_processing": 0,
-        "exit": 0,
-    }
+    # root_childs = {
+    #     "file": 0,
+    #     "mesh": 0,
+    #     "server": 0,
+    #     "setup": 0,
+    #     "solution": 0,
+    #     "results": 0,
+    #     "design": 0,
+    #     "parametric_studies": 0,
+    #     "current_parametric_study": 0,
+    #     "parameters": 0,
+    #     "parallel": 0,
+    #     "transient_post_processing": 0,
+    #     "exit": 0,
+    # }
 
-    with open(_get_settings_path(version=session._version), "w") as settings:
-        write_settings_classes(settings, cls[0], sinfo, settings=True)
+    # with open(_get_settings_path(version=session._version), "w") as settings:
+    #     write_settings_classes(settings, cls[0], sinfo, settings=True)
 
     print(f"settingsgen.py took {time.time() - start_time} seconds.")
-    # print(f"written_classes = {len(written_classes)}")
-    # print(f"string_classes = {len(string_classes)}")
-    # print(len(all_classes.keys()))
-    # print(all_classes["name"]["String"])
 
     root_childs = {
         "file": 0,
