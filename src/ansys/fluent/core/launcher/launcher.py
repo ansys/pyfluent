@@ -123,6 +123,7 @@ def launch_fluent(
     start_watchdog: Optional[bool] = None,
     scheduler_options: Optional[dict] = None,
     file_transfer_service: Optional[Any] = None,
+    enable_data_model_api_upgrades: Optional[bool] = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -240,7 +241,9 @@ def launch_fluent(
         specified in a similar manner to Fluent's scheduler options.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
-
+    enable_data_model_api_upgrades : bool, optional
+        This option enables experimental code in Fluent, which provides further
+        improvements to the enhanced meshing workflow API.
     Returns
     -------
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
