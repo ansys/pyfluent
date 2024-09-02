@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 import re
 import threading
-import time
 from typing import Any, Iterable, Iterator, Optional, Tuple, Union
 import warnings
 
@@ -204,7 +203,6 @@ class BaseTask:
                 _ordered_children=[],
                 _task_list=[],
                 _task_objects={},
-                _dynamic_interface=command_source._dynamic_interface,
                 _fluent_version=command_source._fluent_version,
             )
         )
@@ -247,6 +245,12 @@ class BaseTask:
         return self._tasks_with_matching_attributes(
             attr="outputs", other_attr="requiredInputs"
         )
+
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
 
     def tasks(self, recompute=True) -> list:
         """Get the ordered task list held by this task.
@@ -359,13 +363,7 @@ class BaseTask:
         str
             Pythonic name of the task.
         """
-        if self._python_name in self._command_source._compound_task_names_with_children:
-            if (
-                self.task_type() == "Compound Child"
-                and self.name() in self._command_source._compound_task_map
-            ):
-                self._python_name = self._command_source._compound_task_map[self.name()]
-        elif not self._python_name:
+        if not self._python_name:
             if self._command_source._dynamic_python_names:
                 display_name_map = self._command_source._python_name_display_text_map
                 if self.display_name() not in display_name_map.values():
@@ -379,21 +377,10 @@ class BaseTask:
 
         return self._python_name
 
-    def _set_python_name(self, compound=False):
-        if self._dynamic_interface:
-            this_command = self._command()
-            if compound:
-                p_name = (
-                    self._command_source._compound_parent_task_python_name_id[0]
-                    + f"_child_{self._command_source._compound_parent_task_python_name_id[1]}"
-                )
-                self._python_name = p_name
-                self._command_source._compound_task_map[self.name()] = p_name
-            else:
-                self._python_name = camel_to_snake_case(
-                    this_command.get_attr("helpString")
-                )
-            self._cache_data(this_command)
+    def _set_python_name(self):
+        this_command = self._command()
+        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._cache_data(this_command)
 
     def _cache_data(self, command):
         disp_text = command.get_attr("displayText")
@@ -419,26 +406,25 @@ class BaseTask:
         return camel_args
 
     def __getattr__(self, attr):
-        if self._dynamic_interface:
-            if not attr.islower() and attr != "Arguments":
-                raise AttributeError(
-                    "Camel case attribute access is not supported. "
-                    f"Try using '{camel_to_snake_case(attr)}' instead."
-                )
-            camel_attr = (
-                snake_to_camel_case(
-                    str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
-                )
-                if attr.islower()
-                else attr
+        result = getattr(self._task, attr, None)
+        if result:
+            return result
+        if not attr.islower() and attr != "Arguments":
+            raise AttributeError(
+                "Camel case attribute access is not supported. "
+                f"Try using '{camel_to_snake_case(attr)}' instead."
             )
-            attr = camel_attr or attr
-        try:
-            result = getattr(self._task, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
+        camel_attr = (
+            snake_to_camel_case(
+                str(attr), [*self._get_camel_case_arg_keys(), *dir(self._task)]
+            )
+            if attr.islower()
+            else attr
+        )
+        attr = camel_attr or attr
+        result = getattr(self._task, attr, None)
+        if result:
+            return result
         try:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
@@ -456,12 +442,8 @@ class BaseTask:
 
     def __dir__(self):
         arg_list = []
-        if self._dynamic_interface:
-            for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
-                arg_list.append(camel_to_snake_case(arg))
-        else:
-            for arg in [*self.arguments().keys(), *dir(self._task)]:
-                arg_list.append(arg)
+        for arg in [*self._get_camel_case_arg_keys(), *dir(self._task)]:
+            arg_list.append(camel_to_snake_case(arg))
 
         return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
 
@@ -471,44 +453,33 @@ class BaseTask:
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
-        if self._dynamic_interface:
-            self._command_source._dynamic_python_names = True
-            if (
-                self.python_name()
-                in self._command_source._repeated_task_python_name_display_text_map
-            ):
-                self._command_source._python_name_command_id_map[new_name] = (
-                    self._command_source._python_name_command_id_map.pop(
-                        self.python_name(), None
-                    )
-                )
-                self._command_source._python_name_display_id_map[new_name] = (
-                    self._command_source._python_name_display_id_map.pop(
-                        self.python_name(), None
-                    )
-                )
-                self._command_source._python_name_display_text_map.pop(
-                    self.python_name(), None
-                )
-                self._command_source._repeated_task_python_name_display_text_map.pop(
-                    self.python_name(), None
-                )
-            else:
-                self._command_source._python_name_command_id_map[new_name] = (
-                    self._command_source._python_name_command_id_map[self.python_name()]
-                )
-                self._command_source._python_name_display_id_map[new_name] = (
-                    self._command_source._python_name_display_id_map[self.python_name()]
-                )
-                self._command_source._python_name_display_text_map.pop(
-                    self.python_name(), None
-                )
+        self._command_source._dynamic_python_names = True
+        py_name = self.python_name()
+        if py_name in self._command_source._repeated_task_python_name_display_text_map:
+            self._command_source._python_name_command_id_map[new_name] = (
+                self._command_source._python_name_command_id_map.pop(py_name, None)
+            )
+            self._command_source._python_name_display_id_map[new_name] = (
+                self._command_source._python_name_display_id_map.pop(py_name, None)
+            )
+            self._command_source._python_name_display_text_map.pop(py_name, None)
+            self._command_source._repeated_task_python_name_display_text_map.pop(
+                py_name, None
+            )
+        else:
+            self._command_source._python_name_command_id_map[new_name] = (
+                self._command_source._python_name_command_id_map[py_name]
+            )
+            self._command_source._python_name_display_id_map[new_name] = (
+                self._command_source._python_name_display_id_map[py_name]
+            )
+            self._command_source._python_name_display_text_map.pop(py_name, None)
 
-            self._command_source._python_name_display_text_map[new_name] = new_name
-            self._command_source._repeated_task_python_name_display_text_map[
-                new_name
-            ] = new_name
-            self._python_name = new_name
+        self._command_source._python_name_display_text_map[new_name] = new_name
+        self._command_source._repeated_task_python_name_display_text_map[new_name] = (
+            new_name
+        )
+        self._python_name = new_name
         return self._task.Rename(NewName=new_name)
 
     def add_child_to_task(self):
@@ -659,7 +630,7 @@ class TaskContainer(PyCallableStateObject):
 
     def __getitem__(self, name):
         logger.debug(f"TaskContainer.__getitem__({name})")
-        return _makeTask(self._container, name)
+        return self._container._workflow.TaskObject[name]
 
     def __getattr__(self, attr):
         return getattr(self._task_container, attr)
@@ -697,7 +668,6 @@ class ArgumentsWrapper(PyCallableStateObject):
         self.__dict__.update(
             dict(
                 _task=task,
-                _dynamic_interface=task._dynamic_interface,
                 _snake_to_camel_map={},
             )
         )
@@ -732,12 +702,13 @@ class ArgumentsWrapper(PyCallableStateObject):
         """
         self._assign(args, "update_dict")
 
-    def _camel_snake_arguments_map(self, input_dict):
+    def _camel_snake_arguments_map(self, input_dict, cmd_args=None):
         snake_case_state_dict = {}
+        cmd_args = self._task._command_arguments if cmd_args is None else cmd_args
         for key, val in input_dict.items():
             self._snake_to_camel_map[camel_to_snake_case(key)] = key
             if isinstance(
-                getattr(self._task._command_arguments, key),
+                getattr(cmd_args, key),
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
@@ -760,10 +731,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task.Arguments() if explicit_only else self._task._command_arguments()
         )
 
-        if self._dynamic_interface:
-            return self._camel_snake_arguments_map(state_dict)
-
-        return state_dict
+        return self._camel_snake_arguments_map(state_dict)
 
     def _assign(self, args: dict, fn) -> None:
         # This function sets the task arguments' state, either via update_dict()
@@ -785,15 +753,10 @@ class ArgumentsWrapper(PyCallableStateObject):
             old_state = self.get_state()
         except Exception:
             old_state = None
-        if self._dynamic_interface:
-            camel_args = {}
-            for key, val in args.items():
-                camel_args[self._snake_to_camel_map[key] if key.islower() else key] = (
-                    val
-                )
-            getattr(self._task.Arguments, fn)(camel_args)
-        else:
-            getattr(self._task.Arguments, fn)(args)
+        camel_args = {}
+        for key, val in args.items():
+            camel_args[self._snake_to_camel_map[key] if key.islower() else key] = val
+        getattr(self._task.Arguments, fn)(camel_args)
         try:
             self._refresh_command_after_changing_args(old_state)
         except Exception as ex:
@@ -813,17 +776,14 @@ class ArgumentsWrapper(PyCallableStateObject):
             raise ex
 
     def _just_set_state(self, args):
-        if self._dynamic_interface:
-            camel_args = {}
-            if isinstance(args, dict):
-                for key, val in args.items():
-                    camel_args[self._snake_to_camel_map[key]] = val
-            self._task.Arguments.set_state(camel_args)
-        else:
-            self._task.Arguments.set_state(args)
+        camel_args = {}
+        if isinstance(args, dict):
+            for key, val in args.items():
+                camel_args[self._snake_to_camel_map[key]] = val
+        self._task.Arguments.set_state(camel_args)
 
     def __getattr__(self, attr):
-        return getattr(self._task._command_arguments, attr)
+        return getattr(self._task, attr)
 
     def __setattr__(self, key, value):
         try:
@@ -834,7 +794,10 @@ class ArgumentsWrapper(PyCallableStateObject):
             )
 
     def __setitem__(self, key, value):
-        self._task._command_arguments.__setitem__(key, value)
+        getattr(self._task, key).set_state(value)
+
+    def __getitem__(self, item):
+        return getattr(self._task, item).get_state()
 
 
 class ArgumentWrapper(PyCallableStateObject):
@@ -855,7 +818,6 @@ class ArgumentWrapper(PyCallableStateObject):
                 _task=task,
                 _arg_name=arg,
                 _arg=getattr(task._command_arguments, arg),
-                _dynamic_interface=task._dynamic_interface,
                 _snake_to_camel_map={},
             )
         )
@@ -886,9 +848,7 @@ class ArgumentWrapper(PyCallableStateObject):
             self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
         )
 
-        if self._dynamic_interface and isinstance(
-            self._arg, PySingletonCommandArgumentsSubItem
-        ):
+        if isinstance(self._arg, PySingletonCommandArgumentsSubItem):
             snake_case_state_dict = {}
             for key, val in state_dict.items():
                 self._snake_to_camel_map[camel_to_snake_case(key)] = key
@@ -898,6 +858,8 @@ class ArgumentWrapper(PyCallableStateObject):
         return state_dict
 
     def _get_camel_case_arg_keys(self):
+        if not isinstance(self(), dict):
+            return
         _args = self
         _camel_args = []
         for arg in _args().keys():
@@ -909,33 +871,31 @@ class ArgumentWrapper(PyCallableStateObject):
         return _camel_args
 
     def __getattr__(self, attr):
-        if self._dynamic_interface:
-            if not attr.islower():
-                raise AttributeError(
-                    "Camel case attribute access is not supported. "
-                    f"Try using '{camel_to_snake_case(attr)}' instead."
-                )
-            camel_attr = snake_to_camel_case(str(attr), self._get_camel_case_arg_keys())
-            attr = camel_attr or attr
+        if not attr.islower():
+            raise AttributeError(
+                "Camel case attribute access is not supported. "
+                f"Try using '{camel_to_snake_case(attr)}' instead."
+            )
+        camel_attr = snake_to_camel_case(
+            str(attr), self._get_camel_case_arg_keys() or []
+        )
+        attr = camel_attr or attr
         return getattr(self._arg, attr)
 
     def __setattr__(self, attr, value):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
-            if self._dynamic_interface:
-                camel_attr = snake_to_camel_case(
-                    str(attr), self._get_camel_case_arg_keys()
-                )
-                attr = camel_attr or attr
+            camel_attr = snake_to_camel_case(
+                str(attr), self._get_camel_case_arg_keys() or []
+            )
+            attr = camel_attr or attr
             self.set_state({attr: value})
 
     def __dir__(self):
         arg_list = []
         for arg in self():
-            arg_list.append(
-                camel_to_snake_case(arg) if self._dynamic_interface else arg
-            )
+            arg_list.append(camel_to_snake_case(arg))
         return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
 
 
@@ -1058,7 +1018,30 @@ class CompoundChild(SimpleTask):
             The name of this task.
         """
         super().__init__(command_source, task)
-        self._set_python_name(compound=True)
+
+    def python_name(self) -> str:
+        """Get the Pythonic name of this task.
+
+        Returns
+        -------
+        str
+            Pythonic name of the task.
+        """
+        if not self._python_name:
+            self._python_name = self._get_python_names_for_compound_child()
+        return self._python_name
+
+    def _get_python_names_for_compound_child(self):
+        py_name = (
+            self._command_source._parent_of_compound_child
+            + "_child_"
+            + str(
+                self._command_source._compound_child_map[
+                    self._command_source._parent_of_compound_child
+                ]
+            )
+        )
+        return py_name
 
 
 class CompositeTask(BaseTask):
@@ -1177,12 +1160,8 @@ class CompoundTask(CommandTask):
             Optional state.
         """
         state = state or {}
-        if self._dynamic_interface:
-            state.update({"add_child": "yes"})
-            self.arguments.update_dict(state)
-        else:
-            state.update({"AddChild": "yes"})
-            self._task.Arguments.update_dict(state)
+        state.update({"add_child": "yes"})
+        self.arguments.update_dict(state)
 
     def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
@@ -1194,22 +1173,16 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
-        if (
-            self.python_name()
-            != self._command_source._compound_parent_task_python_name_id[0]
-        ):
-            self._command_source._compound_parent_task_python_name_id[0] = (
-                self.python_name()
-            )
-            self._command_source._compound_task_names_with_children.append(
-                self.python_name()
-            )
-            self._command_source._compound_parent_task_python_name_id[1] = 0
-
-        self._command_source._compound_parent_task_python_name_id[1] = (
-            self._command_source._compound_parent_task_python_name_id[1] + 1
-        )
         self._add_child(state)
+        py_name = self.python_name()
+        if py_name not in self._command_source._compound_child_map:
+            self._command_source._compound_child_map[py_name] = 1
+        else:
+            self._command_source._compound_child_map[py_name] = (
+                self._command_source._compound_child_map[py_name] + 1
+            )
+        self._command_source._compound_child = True
+        self._command_source._parent_of_compound_child = py_name
         if self._fluent_version >= FluentVersion.v241:
             if defer_update is None:
                 defer_update = False
@@ -1221,12 +1194,11 @@ class CompoundTask(CommandTask):
                     PyFluentUserWarning,
                 )
             self._task.AddChildAndUpdate()
-        time.sleep(1)
-        self.tasks()[-1]._set_python_name(compound=True)
+        self._command_source._compound_child = False
         return self.last_child()
 
     def last_child(self) -> BaseTask:
-        """Get the last child of this CompoundTask.
+        """Get the last child of this CompoundTask and set their Python name.
 
         Returns
         -------
@@ -1258,7 +1230,6 @@ class CompoundTask(CommandTask):
 
 def _makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
-    task_type = task.TaskType()
     kinds = {
         "Simple": SimpleTask,
         "Compound Child": CompoundChild,
@@ -1266,12 +1237,16 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Composite": CompositeTask,
         "Conditional": ConditionalTask,
     }
-    kind = kinds[task.TaskType()]
+    task_type = task.TaskType()
+    if task_type is None and command_source._compound_child:
+        kind = CompoundChild
+    else:
+        kind = kinds[task_type]
     if not kind:
         message = (
             "Unhandled empty workflow task type."
-            if not task.TaskType()
-            else f"Unhandled workflow task type, {task.TaskType()}."
+            if not task_type
+            else f"Unhandled workflow task type, {task_type}."
         )
         raise RuntimeError(message)
     return kind(command_source, task)
@@ -1320,15 +1295,14 @@ class Workflow:
                 _getattr_recurse_depth=0,
                 _main_thread_ident=None,
                 _task_objects={},
-                _dynamic_interface=False,
                 _python_name_command_id_map={},
                 _python_name_display_id_map={},
                 _python_name_display_text_map={},
                 _repeated_task_python_name_display_text_map={},
                 _initial_task_python_names_map={},
-                _compound_parent_task_python_name_id=["", 0],
-                _compound_task_map={},
-                _compound_task_names_with_children=[],
+                _parent_of_compound_child=None,
+                _compound_child_map={},
+                _compound_child=False,
                 _unwanted_attrs={
                     "reset_workflow",
                     "initialize_workflow",
@@ -1431,9 +1405,10 @@ class Workflow:
                 )
             camel_attr = snake_to_camel_case(str(attr), dir(self._workflow))
             attr = camel_attr or attr
-            obj = self._attr_from_wrapped_workflow(attr)
-            if obj:
-                return obj
+            try:
+                return getattr(self._workflow, attr)
+            except AttributeError:
+                pass
         return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
@@ -1484,16 +1459,7 @@ class Workflow:
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
 
-    def _attr_from_wrapped_workflow(self, attr):
-        try:
-            result = getattr(self._workflow, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
-
     def _activate_dynamic_interface(self, dynamic_interface: bool):
-        self._dynamic_interface = dynamic_interface
         self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _unsubscribe_root_affected_callback(self):
@@ -1673,7 +1639,6 @@ class ClassicWorkflow:
         self._lock = (
             threading.RLock()
         )  # TODO: sort out issues with these un-used variables.
-        self._dynamic_interface = False
         self._fluent_version = fluent_version
 
     @property
@@ -1687,12 +1652,9 @@ class ClassicWorkflow:
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
-        obj = self._attr_from_wrapped_workflow(
-            attr
-        )  # or self._task_with_cmd_matching_help_string(attr)
-        if obj:
-            return obj
-        else:
+        try:
+            return getattr(self._workflow, attr)
+        except AttributeError:
             return super().__getattribute__(attr)
 
     def __dir__(self):
@@ -1706,17 +1668,9 @@ class ClassicWorkflow:
         """Delegate calls to the underlying workflow."""
         return self._workflow()
 
-    def _attr_from_wrapped_workflow(self, attr):
-        try:
-            result = getattr(self._workflow, attr)
-            if result:
-                return result
-        except AttributeError:
-            pass
-
 
 class ReadOnlyObject:
-    """Removes set_state() to implement read-only behaviour."""
+    """Removes ``set_state()`` to implement read-only behavior."""
 
     _unwanted_attr = ["set_state", "setState"]
 

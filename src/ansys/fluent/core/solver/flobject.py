@@ -24,6 +24,7 @@ import fnmatch
 import hashlib
 import keyword
 import logging
+import os
 import os.path
 import pickle
 import string
@@ -66,7 +67,7 @@ def _ansys_units():
 import ansys.fluent.core as pyfluent
 
 from .error_message import allowed_name_error_message, allowed_values_error
-from .settings_external import expand_api_file_argument
+from .settings_external import expand_api_file_argument, use_search
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -228,7 +229,7 @@ class Base:
         return self._flproxy
 
     @property
-    def file_transfer_service(self):
+    def _file_transfer_handler(self):
         """Remote file handler.
 
         Supports file upload and download.
@@ -238,7 +239,7 @@ class Base:
             if self._file_transfer_service:
                 return self._file_transfer_service
             elif self._parent:
-                return self._parent.file_transfer_service
+                return self._parent._file_transfer_handler
 
     _name = None
     fluent_name = None
@@ -830,9 +831,9 @@ class FileName(Base):
 class _InputFile(FileName):
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self.file_transfer_service:
+        if self._file_transfer_handler:
             for file_name in file_names:
-                self.file_transfer_service.upload(file_name=file_name)
+                self._file_transfer_handler.upload(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -841,9 +842,9 @@ class _InputFile(FileName):
 class _OutputFile(FileName):
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
-        if self.file_transfer_service:
+        if self._file_transfer_handler:
             for file_name in file_names:
-                self.file_transfer_service.download(file_name=file_name)
+                self._file_transfer_handler.download(file_name=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -1062,15 +1063,22 @@ class Group(SettingsBase[DictStateType]):
             return attr
         except AttributeError as ex:
             modified_search_results = []
-            search_results = pyfluent.utils._search(
-                word=name, search_root=self, match_case=False, match_whole_word=False
-            )
-            if search_results:
-                for search_result in search_results:
-                    search_result = search_result.replace(
-                        "<search_root>", self.__class__.__name__
-                    )
-                    modified_search_results.append(search_result)
+            if use_search(
+                codegen_outdir=pyfluent.CODEGEN_OUTDIR,
+                version=self.flproxy._scheme_eval.version,
+            ):
+                search_results = pyfluent.utils._search(
+                    word=name,
+                    search_root=self,
+                    match_case=False,
+                    match_whole_word=False,
+                )
+                if search_results:
+                    for search_result in search_results:
+                        search_result = search_result.replace(
+                            "<search_root>", self.__class__.__name__
+                        )
+                        modified_search_results.append(search_result)
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],

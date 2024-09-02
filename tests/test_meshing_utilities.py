@@ -9,9 +9,10 @@ def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
 
 
+@pytest.mark.skip("Activate with: https://github.com/ansys/pyfluent/pull/3205")
 @pytest.mark.codegen_required
 @pytest.mark.nightly
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_meshing_utilities(new_meshing_session):
     meshing_session = new_meshing_session
     import_filename = examples.download_file(
@@ -1156,9 +1157,29 @@ def test_meshing_utilities(new_meshing_session):
     #             Moved 211 nodes from node-91 to node-173 \
     #             Moved 2699 faces from interior--elbow-fluid to interior--elbow-fluid:181 (boundary)"
 
-    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(
-    #     cell_zone_name="elbow-fluid", face_zone_id_list=[30, 31, 32], nlayers=2
-    # )
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_name(cell_zone_name="elbow-fluid",
+    #                                                                                     face_zone_id_list=[30, 31, 32],
+    #                                                                                     nlayers=2)
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_name(cell_zone_name="elbow-fluid",
+    #                                                                                     face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+    #                                                                                     nlayers=2)
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_name(cell_zone_name="elbow-fluid",
+    #                                                                                     face_zone_name_pattern="*",
+    #                                                                                     nlayers=2)
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_id(cell_zone_id=87,
+    #                                                                                 face_zone_id_list=[30, 31, 32],
+    #                                                                                 nlayers=2)
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_id(cell_zone_id=87,
+    #                                                                                 face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+    #                                                                                 nlayers=2)
+
+    # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone_using_id(cell_zone_id=87,
+    #                                                                                 face_zone_name_pattern="*",
+    #                                                                                 nlayers=2)
 
     # meshing_session.meshing_utilities.separate_cell_zone_layers_by_face_zone(
     #     cell_zone_name="elbow-fluid",
