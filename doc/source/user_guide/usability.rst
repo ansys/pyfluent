@@ -7,10 +7,10 @@ Usability features
 API search
 ----------
 
-:ref:`API search <ref_search>` allows to search for a word through the Fluent's object hierarchy. It provides results
-based on the supported features like semantic matching, wildcard pattern matching, whole word matching and misspelled
-word correction matching. Semantic search is the default. For semantic search the default is ``eng`` for English. For
-the list of supported languages, see `OMW Version 1 <https://omwn.org/omw1.html>`_.
+The :ref:`API search <ref_search>` allows you to search for a word throughout Fluent's object hierarchy. It provides results
+based on supported features, including semantic matching, wildcard pattern matching, whole word matching, and misspelled
+word correction. Semantic search is the default, with English (``eng``) as the default language. For
+a list of supported languages, see `OMW Version 1 <https://omwn.org/omw1.html>`_.
 
 Examples
 --------
