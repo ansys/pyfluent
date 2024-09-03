@@ -8,7 +8,7 @@ settings and issue commands to be executed in the Fluent solver.
 Accessing solver settings
 -------------------------
 An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
-function returns an object (named ``solver`` in
+function returns an object (named :ref:`solver <ref_root>` in
 the following code snippets) whose interface directly exposes the
 :ref:`ref_root` of the solver settings hierarchy.
 
@@ -18,7 +18,7 @@ the following code snippets) whose interface directly exposes the
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
 
 
-The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.generated.solver.settings_232.file.file`,
+The :ref:`solver <ref_root>` object contains attributes such as :ref:`file <_file>`,
 :obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`,
 :obj:`~ansys.fluent.core.generated.solver.settings_232.solution.solution`, and
 :obj:`~ansys.fluent.core.generated.solver.settings_232.results.results`,

@@ -84,5 +84,5 @@ Offline features
 
 :ref:`Get rapid access to Fluent case and solution data through offline tools<ref_offline_guide>`.
 PyFluent offers Python classes that represent case, data, and project files, enabling you to work with
-Fluent data efficiently offline. The ``FileSession`` class mimics the functionality of live ``Session``
-objects, allowing you to access field data and other relevant information without a live Fluent session.
+Fluent data efficiently offline. The :obj:`~ansys.fluent.core.file_session.FileSession` class mimics the functionality of live 
+:class:`~ansys.fluent.core.session_solver.Solver` objects, allowing you to access field data and other relevant information without a live Fluent session.
