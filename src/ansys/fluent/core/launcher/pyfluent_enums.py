@@ -1,7 +1,6 @@
 """Provides a module for enums used in the PyFluent."""
 
 from enum import Enum
-from functools import total_ordering
 import os
 from typing import Optional, Union
 
@@ -17,7 +16,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
-@total_ordering
 class FluentEnum(Enum):
     """Provides the base class for Fluent-related enums.
 
@@ -57,19 +55,6 @@ class FluentEnum(Enum):
             f"""is not a supported value of {cls.__name__}."""
             f""" The supported values are: {msg}."""
         )
-
-    def __lt__(self, other):
-        if not isinstance(other, type(self)):
-            raise TypeError(
-                f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
-            )
-        if self == other:
-            return False
-        for member in type(self):
-            if self == member:
-                return True
-            if other == member:
-                return False
 
 
 class LaunchMode(FluentEnum):
