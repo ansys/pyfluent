@@ -46,12 +46,6 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system_settings.png'
 
-import os
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = (
-    r"D:\Installations\Ansys\v251_03072021\ANSYS Inc\v251\fluent"
-)
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
