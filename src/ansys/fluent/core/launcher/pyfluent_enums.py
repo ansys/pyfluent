@@ -78,9 +78,9 @@ class FluentMode(FluentEnum):
     """Enumerates over supported Fluent modes."""
 
     MESHING = "meshing"
-    PURE_MESHING = "pure-meshing"
+    PURE_MESHING = "pure_meshing"
     SOLVER = "solver"
-    SOLVER_ICING = "solver-icing"
+    SOLVER_ICING = "solver_icing"
 
     def _default(self):
         return self.SOLVER
@@ -114,10 +114,10 @@ class FluentMode(FluentEnum):
 class UIMode(FluentEnum):
     """Provides supported user interface mode of Fluent."""
 
-    NO_GUI_OR_GRAPHICS = "no-gui-or-graphics"
-    NO_GRAPHICS = "no-graphics"
-    NO_GUI = "no-gui"
-    HIDDEN_GUI = "hidden-gui"
+    NO_GUI_OR_GRAPHICS = "no_gui_or_graphics"
+    NO_GRAPHICS = "no_graphics"
+    NO_GUI = "no_gui"
+    HIDDEN_GUI = "hidden_gui"
     GUI = "gui"
 
     def _default(self):
