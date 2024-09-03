@@ -134,6 +134,19 @@ class UIMode(FluentEnum):
             self.GUI: ("",),
         }
 
+    def __lt__(self, other):
+        if not isinstance(other, type(self)):
+            raise TypeError(
+                f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
+            )
+        if self == other:
+            return False
+        for member in type(self):
+            if self == member:
+                return True
+            if other == member:
+                return False
+
 
 class Dimension(FluentEnum):
     """Geometric dimensionality of the Fluent simulation."""
