@@ -379,7 +379,9 @@ class BaseTask:
 
     def _set_python_name(self):
         this_command = self._command()
-        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._python_name = camel_to_snake_case(
+            this_command.get_attr("APIName") or this_command.get_attr("helpString")
+        )
         self._cache_data(this_command)
 
     def _cache_data(self, command):
@@ -500,11 +502,12 @@ class BaseTask:
     def _get_next_python_task_names(self) -> list[str]:
         self._python_task_names_map = {}
         for command_name in self._task.GetNextPossibleTasks():
+            comm_obj = getattr(
+                self._command_source._command_source, command_name
+            ).create_instance()
             self._python_task_names_map[
                 camel_to_snake_case(
-                    getattr(self._command_source._command_source, command_name)
-                    .create_instance()
-                    .get_attr("helpString")
+                    comm_obj.get_attr("APIName") or comm_obj.get_attr("helpString")
                 )
             ] = command_name
         return list(self._python_task_names_map.keys())
@@ -1562,7 +1565,9 @@ class Workflow:
                 if isinstance(command_obj, PyCommand):
                     command_obj_instance = command_obj.create_instance()
                     if not command_obj_instance.get_attr("requiredInputs"):
-                        help_str = command_obj_instance.get_attr("helpString")
+                        help_str = command_obj_instance.get_attr(
+                            "APIName"
+                        ) or command_obj_instance.get_attr("helpString")
                         if help_str:
                             self._initial_task_python_names_map[help_str] = command
                     del command_obj_instance
