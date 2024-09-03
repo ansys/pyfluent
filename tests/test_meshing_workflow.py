@@ -419,3 +419,31 @@ def test_setting_none_type_tasks(new_meshing_session):
         meshing.workflow.TaskObject["Describe Overset Features"].CommandName()
         == "DescribeOversetFeatures"
     )
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_meshing_workflow_data_model_subscriptions(
+    new_meshing_session,
+):
+    meshing = new_meshing_session
+    workflow = meshing.workflow
+
+    workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    def on_changed(obj):
+        on_changed.changed = True
+
+    on_changed.changed = False
+
+    m = meshing.meshing
+    ig = m.ImportGeometry.create_instance()
+    # is not working for command arguments
+    # ig.FileName.add_on_changed(on_changed)
+    ig.FileName = "dummy"
+    # assert on_changed.changed is True
+
+    on_changed.changed = False
+
+    workflow.Workflow.WorkflowType.add_on_changed(on_changed)
+    workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    assert on_changed.changed is True

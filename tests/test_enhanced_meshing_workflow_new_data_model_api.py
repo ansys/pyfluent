@@ -3,6 +3,7 @@ import pytest
 from tests.conftest import new_meshing_session_new_api_enabled  # noqa: F401
 
 
+# @pytest.mark.skip("Pending server availability.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_new_watertight_workflow(new_meshing_session_new_api_enabled):
@@ -33,3 +34,16 @@ def test_new_watertight_workflow(new_meshing_session_new_api_enabled):
     assert import_cad.file_loaded() is False
     with pytest.raises(AttributeError):
         import_cad.file_loaded.allowed_values()
+
+    # Doesn't work for command arguments:
+    # def on_changed(obj):
+    #    on_changed.changed = True
+
+    # on_changed.changed = False
+
+    # import_cad.jt_lod.add_on_changed(on_changed)
+    # assert on_changed.changed is False
+    # import_cad.jt_lod.set_state(7)
+    # assert on_changed.changed is False
+    # import_cad.jt_lod.set_state(6)
+    # assert on_changed.changed is True
