@@ -163,5 +163,3 @@ The following rules are implied in the preceding examples:
     ``"Pa"`` in the preceding example) must be wrapped in single quotation marks
     so that the original quotation marks are preserved.
   - The contents of string arguments are preserved.
-
-For more examples of TUI command usage, see :ref:`ref_mixing_elbow_tui_api`.
