@@ -640,7 +640,6 @@ class CaseFile(RPVarProcessor):
         return self._mesh
 
     def __dir__(self):
-        """dir() method"""
         if self._is_case_file:
             return sorted(set(list(self.__dict__.keys()) + dir(type(self))))
         else:
