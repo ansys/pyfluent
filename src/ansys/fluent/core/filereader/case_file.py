@@ -221,6 +221,7 @@ class MeshType(Enum):
 
     SURFACE = "surface"
     VOLUME = "volume"
+    UNKNOWN = "unknown"
 
 
 class Mesh:
@@ -246,10 +247,13 @@ class Mesh:
 
     def get_mesh_type(self) -> MeshType:
         """Returns the type of the mesh."""
-        if "cells" in self._file_handle["meshes"]["1"].keys():
-            return MeshType.VOLUME
-        else:
-            return MeshType.SURFACE
+        try:
+            if "cells" in self._file_handle["meshes"]["1"].keys():
+                return MeshType.VOLUME
+            else:
+                return MeshType.SURFACE
+        except Exception:
+            return MeshType.UNKNOWN
 
     def get_surface_ids(self) -> list:
         """Returns list of ids of all available surfaces."""
@@ -650,11 +654,13 @@ class CaseFile(RPVarProcessor):
         return self._mesh
 
     def __getattribute__(self, item):
-        if item != "_is_case_file" and not self._is_case_file:
-            if item in set(
-                filter(lambda k: not k.startswith("__"), dir(RPVarProcessor))
-            ):
-                return EmptyContainer()
+        if (
+            item != "_is_case_file"
+            and not self._is_case_file
+            and item
+            in set(filter(lambda k: not k.startswith("__"), dir(RPVarProcessor)))
+        ):
+            return EmptyContainer()
         return super().__getattribute__(item)
 
 
