@@ -52,3 +52,8 @@ def test_enhanced_meshing_workflow_new_data_model_api(
     assert on_changed.changed is False
     import_cad.jt_lod.set_state(6)
     assert on_changed.changed is True
+
+    on_changed.changed = False
+    import_cad.add_on_changed(on_changed)
+    import_cad.jt_lod.set_state(4)
+    assert on_changed.changed is True
