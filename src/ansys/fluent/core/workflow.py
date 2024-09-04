@@ -495,10 +495,6 @@ class BaseTask:
         """Update child tasks."""
         self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
 
-    def insert_compound_child_task(self):
-        """Insert a compound child task."""
-        return self._task.InsertCompoundChildTask()
-
     def _get_next_python_task_names(self) -> list[str]:
         self._python_task_names_map = {}
         for command_name in self._task.GetNextPossibleTasks():
@@ -1168,6 +1164,10 @@ class CompoundTask(CommandTask):
         state = state or {}
         state.update({"add_child": "yes"})
         self.arguments.update_dict(state)
+
+    def insert_compound_child_task(self):
+        """Insert a compound child task."""
+        return self.add_child_and_update()
 
     def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
