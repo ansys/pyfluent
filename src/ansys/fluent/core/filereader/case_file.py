@@ -16,6 +16,7 @@ Example
 """
 
 import codecs
+from enum import Enum
 import gzip
 import os
 from os.path import dirname
@@ -215,6 +216,14 @@ class CaseVariable:
             return CaseVariable(self._variables, name + "/")
 
 
+class MeshType(Enum):
+    """Types of Mesh."""
+
+    SURFACE = "surface"
+    VOLUME = "volume"
+    UNKNOWN = "unknown"
+
+
 class Mesh:
     """Class to provide mesh data.
 
@@ -235,6 +244,16 @@ class Mesh:
     def __init__(self, file_handle):
         """Initialize the object."""
         self._file_handle = file_handle
+
+    def get_mesh_type(self) -> MeshType:
+        """Returns the type of the mesh."""
+        try:
+            if "cells" in self._file_handle["meshes"]["1"].keys():
+                return MeshType.VOLUME
+            else:
+                return MeshType.SURFACE
+        except Exception:
+            return MeshType.UNKNOWN
 
     def get_surface_ids(self) -> list:
         """Returns list of ids of all available surfaces."""
@@ -528,6 +547,16 @@ class SettingsFile(RPVarProcessor):
         super().__init__(rp_vars_str)
 
 
+class EmptyContainer:
+    """Empty Container."""
+
+    def __getattr__(self, item):
+        return lambda *args, **kwargs: None
+
+    def __call__(self, *args, **kwargs):
+        return None
+
+
 class CaseFile(RPVarProcessor):
     """Class to read a Fluent case file.
 
@@ -552,6 +581,7 @@ class CaseFile(RPVarProcessor):
         project_file_name : Optional[str]
             The path of a project file from which the case file is selected.
         """
+        self._is_case_file = False
 
         if (not case_file_name) == (not project_file_name):
             raise RuntimeError(
@@ -572,23 +602,35 @@ class CaseFile(RPVarProcessor):
                 )
 
         try:
-            if Path(case_file_name).match("*.cas.h5"):
+            if Path(case_file_name).match("*.cas.h5") or Path(case_file_name).match(
+                "*.msh.h5"
+            ):
                 _file = h5py.File(case_file_name)
-                settings = _file["settings"]
-                rpvars = settings["Rampant Variables"][0]
-                rp_vars_str = rpvars.decode()
-            elif Path(case_file_name).match("*.cas"):
+                if Path(case_file_name).match("*.cas.h5"):
+                    self._is_case_file = True
+                    settings = _file["settings"]
+                    rpvars = settings["Rampant Variables"][0]
+                    rp_vars_str = rpvars.decode()
+            elif Path(case_file_name).match("*.cas") or Path(case_file_name).match(
+                "*.msh"
+            ):
                 with open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
-                rp_vars_str = _get_processed_string(rp_vars_str)
-            elif Path(case_file_name).match("*.cas.gz"):
+                if Path(case_file_name).match("*.cas"):
+                    self._is_case_file = True
+                    rp_vars_str = _get_processed_string(rp_vars_str)
+            elif Path(case_file_name).match("*.cas.gz") or Path(case_file_name).match(
+                "*.msh.gz"
+            ):
                 with gzip.open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
-                rp_vars_str = _get_processed_string(rp_vars_str)
+                if Path(case_file_name).match("*.cas.gz"):
+                    self._is_case_file = True
+                    rp_vars_str = _get_processed_string(rp_vars_str)
             else:
                 error_message = (
                     "Could not read case file. "
-                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
+                    "Only valid Case files (.h5, .cas, .cas.gz) or Mesh files (.msh.h5, .msh, .msh.gz) can be read. "
                 )
                 raise RuntimeError(error_message)
 
@@ -603,12 +645,23 @@ class CaseFile(RPVarProcessor):
         except Exception as e:
             raise RuntimeError(f"Could not read case file {case_file_name}") from e
 
-        super().__init__(rp_vars_str=rp_vars_str)
+        if self._is_case_file:
+            super().__init__(rp_vars_str=rp_vars_str)
         self._mesh = Mesh(_file)
 
     def get_mesh(self):
         """Get the mesh data."""
         return self._mesh
+
+    def __getattribute__(self, item):
+        if (
+            item != "_is_case_file"
+            and not self._is_case_file
+            and item
+            in set(filter(lambda k: not k.startswith("__"), dir(RPVarProcessor)))
+        ):
+            return EmptyContainer()
+        return super().__getattribute__(item)
 
 
 def _get_processed_string(input_string: bytes) -> str:
