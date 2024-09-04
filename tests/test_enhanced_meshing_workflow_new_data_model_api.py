@@ -41,19 +41,43 @@ def test_enhanced_meshing_workflow_new_data_model_api(
     # works given server-side changes, implemented
     # for the "new" service.
 
-    def on_changed(obj):
-        on_changed.changed = True
+    def on_param_changed(obj):
+        on_param_changed.changed = True
 
-    on_changed.changed = False
+    on_param_changed.changed = False
 
-    import_cad.jt_lod.add_on_changed(on_changed)
-    assert on_changed.changed is False
+    import_cad.jt_lod.add_on_changed(on_param_changed)
+    assert on_param_changed.changed is False
     import_cad.jt_lod.set_state(7)
-    assert on_changed.changed is False
+    assert on_param_changed.changed is False
     import_cad.jt_lod.set_state(6)
-    assert on_changed.changed is True
+    assert on_param_changed.changed is True
 
-    on_changed.changed = False
-    import_cad.add_on_changed(on_changed)
+    def on_cmd_changed(obj):
+        on_cmd_changed.changed = True
+
+    on_cmd_changed.changed = False
+
+    import_cad.add_on_changed(on_cmd_changed)
     import_cad.jt_lod.set_state(4)
-    assert on_changed.changed is True
+    assert on_cmd_changed.changed is True
+
+    # I can't see how on_affected is working without
+    # the equivalent changes that were done for on_changed
+    def on_affected(obj):
+        on_affected.changed = True
+
+    on_affected.changed = False
+
+    import_cad.add_on_affected(on_affected)
+    import_cad.jt_lod.set_state(2)
+    assert on_affected.changed is True
+
+    # for parameters, on_changed can always be called
+    # def on_param_affected(obj):
+    #    on_param_affected.changed = True
+    # on_param_affected.changed = False
+
+    # import_cad.jt_lod.add_on_affected(on_param_affected)
+    # import_cad.jt_lod.set_state(3)
+    # assert on_param_affected.changed is True
