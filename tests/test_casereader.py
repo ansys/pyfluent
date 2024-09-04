@@ -298,12 +298,20 @@ def test_lispy_for_quotes():
 
 def test_mesh_reader():
     mesh_file_2d = examples.download_file(
-        "sample_2d_mesh.msh.h5", "pyfluent/surface_mesh"
+        "sample_2d_mesh.msh.h5",
+        "pyfluent/surface_mesh",
+        return_without_path=False,
     )
     mesh_file_3d = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
     )
-    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    case_file = examples.download_file(
+        "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
+    )
     mesh_reader_2d = CaseReader(case_file_name=mesh_file_2d)
     mesh_reader_3d = CaseReader(case_file_name=mesh_file_3d)
     case_reader = CaseReader(case_file_name=case_file)
