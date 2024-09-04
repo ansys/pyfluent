@@ -50,7 +50,7 @@ def _raise_non_gui_exception_in_windows(
 
     if (
         launcher_utils.is_windows()
-        and ui_mode < UIMode.HIDDEN_GUI
+        and UIMode(ui_mode) not in [UIMode.GUI and UIMode.HIDDEN_GUI]
         and product_version < FluentVersion.v241
     ):
         raise InvalidArgument(

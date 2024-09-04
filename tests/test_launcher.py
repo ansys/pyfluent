@@ -418,7 +418,6 @@ def test_fluent_enums():
     assert UIMode("gui") == UIMode.GUI
     with pytest.raises(ValueError):
         UIMode("")
-    assert UIMode.NO_GUI < UIMode.GUI
     with pytest.raises(TypeError):
         UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
 
