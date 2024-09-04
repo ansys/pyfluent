@@ -3,7 +3,7 @@ import pytest
 from tests.conftest import new_meshing_session_new_api_enabled  # noqa: F401
 
 
-# @pytest.mark.skip("Pending server availability.")
+@pytest.mark.skip("Pending server availability.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_enhanced_meshing_workflow_new_data_model_api(
