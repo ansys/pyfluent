@@ -1705,6 +1705,7 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     )
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3263")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
