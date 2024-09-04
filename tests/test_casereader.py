@@ -10,6 +10,7 @@ from ansys.fluent.core.filereader import lispy
 from ansys.fluent.core.filereader.case_file import (
     InputParameter,
     InputParameterOld,
+    MeshType,
     _get_processed_string,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
@@ -293,3 +294,22 @@ def test_lispy_for_quotes():
         "x",
         '"\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")"',
     ]
+
+
+def test_mesh_reader():
+    mesh_file_2d = r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\D2.msh.h5"
+    mesh_file_3d = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    mesh_reader_2d = CaseReader(case_file_name=mesh_file_2d)
+    mesh_reader_3d = CaseReader(case_file_name=mesh_file_3d)
+    case_reader = CaseReader(case_file_name=case_file)
+
+    assert "rp_vars" not in dir(mesh_reader_2d)
+    assert "rp_vars" not in dir(mesh_reader_3d)
+    assert "rp_vars" in dir(case_reader)
+
+    assert mesh_reader_2d.get_mesh().get_mesh_type() == MeshType.SURFACE
+    assert mesh_reader_3d.get_mesh().get_mesh_type() == MeshType.VOLUME
+    assert case_reader.get_mesh().get_mesh_type() == MeshType.VOLUME
