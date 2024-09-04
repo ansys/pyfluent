@@ -1197,7 +1197,7 @@ class CompoundTask(CommandTask):
             else:
                 if defer_update is not None:
                     warnings.warn(
-                        " The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
+                        "The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
                         PyFluentUserWarning,
                     )
                 self._task.AddChildAndUpdate()
