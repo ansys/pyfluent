@@ -297,7 +297,9 @@ def test_lispy_for_quotes():
 
 
 def test_mesh_reader():
-    mesh_file_2d = r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\D2.msh.h5"
+    mesh_file_2d = examples.download_file(
+        "sample_2d_mesh.msh.h5", "pyfluent/surface_mesh"
+    )
     mesh_file_3d = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
@@ -306,10 +308,10 @@ def test_mesh_reader():
     mesh_reader_3d = CaseReader(case_file_name=mesh_file_3d)
     case_reader = CaseReader(case_file_name=case_file)
 
-    assert "rp_vars" not in dir(mesh_reader_2d)
-    assert "rp_vars" not in dir(mesh_reader_3d)
-    assert "rp_vars" in dir(case_reader)
-
     assert mesh_reader_2d.get_mesh().get_mesh_type() == MeshType.SURFACE
     assert mesh_reader_3d.get_mesh().get_mesh_type() == MeshType.VOLUME
     assert case_reader.get_mesh().get_mesh_type() == MeshType.VOLUME
+
+    assert mesh_reader_2d.precision() is None
+    assert mesh_reader_3d.precision() is None
+    assert case_reader.precision() == 2

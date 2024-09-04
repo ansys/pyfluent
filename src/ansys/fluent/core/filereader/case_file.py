@@ -543,6 +543,16 @@ class SettingsFile(RPVarProcessor):
         super().__init__(rp_vars_str)
 
 
+class EmptyContainer:
+    """Empty Container."""
+
+    def __getattr__(self, item):
+        return lambda *args, **kwargs: None
+
+    def __call__(self, *args, **kwargs):
+        return None
+
+
 class CaseFile(RPVarProcessor):
     """Class to read a Fluent case file.
 
@@ -639,14 +649,13 @@ class CaseFile(RPVarProcessor):
         """Get the mesh data."""
         return self._mesh
 
-    def __dir__(self):
-        if self._is_case_file:
-            return sorted(set(list(self.__dict__.keys()) + dir(type(self))))
-        else:
-            return sorted(
-                set(list(self.__dict__.keys()) + dir(type(self)))
-                - set(filter(lambda k: not k.startswith("__"), dir(RPVarProcessor)))
-            )
+    def __getattribute__(self, item):
+        if item != "_is_case_file" and not self._is_case_file:
+            if item in set(
+                filter(lambda k: not k.startswith("__"), dir(RPVarProcessor))
+            ):
+                return EmptyContainer()
+        return super().__getattribute__(item)
 
 
 def _get_processed_string(input_string: bytes) -> str:
