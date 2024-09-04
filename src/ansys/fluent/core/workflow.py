@@ -379,7 +379,9 @@ class BaseTask:
 
     def _set_python_name(self):
         this_command = self._command()
-        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._python_name = camel_to_snake_case(
+            this_command.get_attr("APIName") or this_command.get_attr("helpString")
+        )
         self._cache_data(this_command)
 
     def _cache_data(self, command):
@@ -429,7 +431,10 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
             logger.debug(str(ex))
-        return self._task_objects.get(attr, None)
+        result = self._task_objects.get(attr, None)
+        if result:
+            return result
+        return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
@@ -490,18 +495,15 @@ class BaseTask:
         """Update child tasks."""
         self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
 
-    def insert_compound_child_task(self):
-        """Insert a compound child task."""
-        return self._task.InsertCompoundChildTask()
-
     def _get_next_python_task_names(self) -> list[str]:
         self._python_task_names_map = {}
         for command_name in self._task.GetNextPossibleTasks():
+            comm_obj = getattr(
+                self._command_source._command_source, command_name
+            ).create_instance()
             self._python_task_names_map[
                 camel_to_snake_case(
-                    getattr(self._command_source._command_source, command_name)
-                    .create_instance()
-                    .get_attr("helpString")
+                    comm_obj.get_attr("APIName") or comm_obj.get_attr("helpString")
                 )
             ] = command_name
         return list(self._python_task_names_map.keys())
@@ -1163,6 +1165,10 @@ class CompoundTask(CommandTask):
         state.update({"add_child": "yes"})
         self.arguments.update_dict(state)
 
+    def insert_compound_child_task(self):
+        """Insert a compound child task."""
+        return self.add_child_and_update()
+
     def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
 
@@ -1183,18 +1189,20 @@ class CompoundTask(CommandTask):
             )
         self._command_source._compound_child = True
         self._command_source._parent_of_compound_child = py_name
-        if self._fluent_version >= FluentVersion.v241:
-            if defer_update is None:
-                defer_update = False
-            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
-        else:
-            if defer_update is not None:
-                warnings.warn(
-                    " The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
-                    PyFluentUserWarning,
-                )
-            self._task.AddChildAndUpdate()
-        self._command_source._compound_child = False
+        try:
+            if self._fluent_version >= FluentVersion.v241:
+                if defer_update is None:
+                    defer_update = False
+                self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+            else:
+                if defer_update is not None:
+                    warnings.warn(
+                        "The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
+                        PyFluentUserWarning,
+                    )
+                self._task.AddChildAndUpdate()
+        finally:
+            self._command_source._compound_child = False
         return self.last_child()
 
     def last_child(self) -> BaseTask:
@@ -1333,6 +1341,29 @@ class Workflow:
         BaseTask
             wrapped task object.
         """
+        py_name = self.tasks()[
+            [repr(task) for task in self.tasks()].index(repr(self._task(name)))
+        ].python_name()
+        warnings.warn(
+            f"'task' is deprecated -> Use '{py_name}' instead.",
+            PyFluentDeprecationWarning,
+        )
+        return self._task(name)
+
+    def _task(self, name: str) -> BaseTask:
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
+
+        The wrapper adds extra functionality.
+
+        Parameters
+        ----------
+        name : str
+            Task name - the display name, not the internal ID.
+        Returns
+        -------
+        BaseTask
+            wrapped task object.
+        """
         return _makeTask(self, name)
 
     def tasks(self, recompute=True) -> list:
@@ -1393,7 +1424,7 @@ class Workflow:
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
         if attr in self._repeated_task_python_name_display_text_map:
-            return self.task(self._repeated_task_python_name_display_text_map[attr])
+            return self._task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1453,7 +1484,7 @@ class Workflow:
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
         task_state = workflow_state[task_key]
-        return self.task(task_state["_name_"])
+        return self._task(task_state["_name_"])
 
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
@@ -1536,7 +1567,9 @@ class Workflow:
                 if isinstance(command_obj, PyCommand):
                     command_obj_instance = command_obj.create_instance()
                     if not command_obj_instance.get_attr("requiredInputs"):
-                        help_str = command_obj_instance.get_attr("helpString")
+                        help_str = command_obj_instance.get_attr(
+                            "APIName"
+                        ) or command_obj_instance.get_attr("helpString")
                         if help_str:
                             self._initial_task_python_names_map[help_str] = command
                     del command_obj_instance

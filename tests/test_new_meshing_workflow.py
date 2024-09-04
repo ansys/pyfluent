@@ -1703,3 +1703,28 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         msg.value.args[0]
         == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
     )
+
+
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3263")
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
+    meshing = new_meshing_session
+
+    fault_tolerant = meshing.fault_tolerant()
+
+    # Check if all task names are unique.
+    assert len(fault_tolerant.task_names()) == len(set(fault_tolerant.task_names()))
+
+    # APIName from fdl file
+    assert "create_volume_mesh" in fault_tolerant.task_names()
+    assert "generate_volume_mesh" in fault_tolerant.task_names()
+    assert "generate_surface_mesh" in fault_tolerant.task_names()
+
+    watertight = meshing.watertight()
+    # Check if all task names are unique.
+    assert len(watertight.task_names()) == len(set(watertight.task_names()))
+
+    two_dimensional = meshing.two_dimensional_meshing()
+    # Check if all task names are unique.
+    assert len(two_dimensional.task_names()) == len(set(two_dimensional.task_names()))
