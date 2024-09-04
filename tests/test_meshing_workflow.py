@@ -454,7 +454,7 @@ def test_meshing_workflow_data_model_subscriptions(
     assert on_changed.changed is True
 
 
-# @pytest.mark.skip("Pending server availability.")
+@pytest.mark.skip("Pending server availability.")
 @pytest.mark.fluent_version(">=25.1")
 def test_meshing_workflow_data_model_subscriptions_with_new_dm_api(
     new_meshing_session_new_api_enabled,
