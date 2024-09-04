@@ -253,7 +253,9 @@ resid_eqns["vf-vapor"].absolute_criteria = 1e-5
 initialization = solver.solution.initialization
 
 initialization.initialization_type = "hybrid"
-initialization.hybrid_init_options.general_settings.initial_pressure = True
+initialization.hybrid_init_options.general_settings.initialization_options.initial_pressure = (
+    True
+)
 initialization.hybrid_initialize()
 
 ###############################################################################
