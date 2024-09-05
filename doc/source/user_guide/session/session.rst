@@ -5,7 +5,7 @@
 Using PyFluent sessions
 =======================
 
-You can obtain a PyFluent session object by calling either :func:`launch_fluent()
+You can obtain a PyFluent session object by calling either of the functions, :func:`launch_fluent()
 <ansys.fluent.core.launcher.launcher.launch_fluent>` or :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`. 
 
 
@@ -162,7 +162,7 @@ A :obj:`~ansys.fluent.core.session_meshing.Meshing` mode session object exposes 
 has ``fields`` and ``events`` children. Each has the same interface as the identically named
 child of the :obj:`~ansys.fluent.core.session_solver.Solver` session object respectively.
 
-You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` :
+You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session:
 
 
 .. code:: python
@@ -179,9 +179,11 @@ of minimal server images, which becomes significant in the context of containeri
 Switching between sessions
 --------------------------
 
-You switch between meshing and solution modes by calling the ``switch_to_solver()`` method.
+You switch between meshing and solution modes by calling the :obj:`switch_to_solver() <ansys.fluent.core.session_meshing.Meshing.switch_to_solver>` method.
+
 
 .. code:: python
+
   >>> switched_solver = meshing.switch_to_solver()
 
 
@@ -190,7 +192,9 @@ The ``switched_solver`` session uses the same Fluent instance that was previousl
 
 A similar action with the :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session raises an exception:
 
+
 .. code:: python
+
   >>> failed_solver = pure_meshing.switch_to_solver() # raises an AttributeError!
 
 
@@ -203,8 +207,11 @@ Sharing cases between sessions
 An alternative to mode switching is to transfer your case between sessions, an operation
 that's allowed both for pure and for regular meshing sessions:
 
+
 .. code:: python
+
   >>> pure_meshing.transfer_mesh_to_solvers(solvers=[solver, switched_solver])
+
 
 Ending PyFluent sessions
 ------------------------
@@ -213,7 +220,9 @@ Just as PyFluent session objects start and exist independently within a single P
 each session can be ended independently of the others. Calling the ``exit()`` method on the :obj:`~ansys.fluent.core.session_solver.Solver` and
 :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session objects ends those PyFluent sessions and terminates the connected Fluent sessions:
 
+
 .. code:: python
+
   >>> solver.exit()
   >>> pure_meshing.exit()
 
@@ -228,7 +237,9 @@ regarding Fluent termination whether the exit is explicit via an ``<session>.exi
 Implicit exiting occurs via the Python garbage collector. Calling ``session.exit()`` is equivalent to the session
 being garbage collected:
 
+
 .. code:: python
+
   >>> def run_solver():
   >>>     solver = pyfluent.launch_fluent()
   >>>     # <insert some PyFluent solver actions>

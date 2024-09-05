@@ -3,7 +3,7 @@
 Physics models
 ==============
 
-The guide for each Python physics model uses a ``solver`` session object
+The guide for each Python physics model uses a :obj:`~ansys.fluent.core.session_solver.Solver` session object
 created using the code below. For the physics models to be active you generally
 need to have loaded a case or mesh file; e.g.:
 
