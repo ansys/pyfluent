@@ -506,7 +506,7 @@ def test_solver_structure(new_solver_session):
     }.issubset(set(dir(solver.fields)))
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.2")
 def test_general_exception_behaviour_in_session(new_solver_session):
     solver = new_solver_session
 
