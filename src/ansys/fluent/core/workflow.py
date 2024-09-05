@@ -756,6 +756,8 @@ class ArgumentsWrapper(PyCallableStateObject):
         except Exception:
             old_state = None
         camel_args = {}
+        if "add_child" in args:
+            self._snake_to_camel_map["add_child"] = "AddChild"
         for key, val in args.items():
             camel_args[self._snake_to_camel_map[key] if key.islower() else key] = val
         getattr(self._task.Arguments, fn)(camel_args)
