@@ -16,15 +16,11 @@ the following code snippets) whose interface directly exposes the
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> file = solver.settings.file
+  >>> setup = solver.settings.setup
+  >>> solution = solver.settings.solution
+  >>> results = solver.settings.results
 
-
-The :ref:`solver <ref_root>` object contains attributes such as :ref:`file <_file>`,
-:obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`,
-:obj:`~ansys.fluent.core.generated.solver.settings_232.solution.solution`, and
-:obj:`~ansys.fluent.core.generated.solver.settings_232.results.results`,
-which are also instances of settings objects. Note that the last three are
-top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
-of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
 Types of settings objects
 -------------------------

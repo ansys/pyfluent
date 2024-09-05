@@ -1,5 +1,7 @@
 .. _ref_session_guide:
 
+.. vale Google.Spacing = NO
+
 Using PyFluent sessions
 =======================
 
@@ -22,10 +24,10 @@ Note: You can find out more about using :ref:`ref_session_guide`, and :ref:`ref_
 Solution mode sessions
 ----------------------
 
-The above ``solver`` session object exposes a variety of Python child objects that provide access to the data
+The above :obj:`~ansys.fluent.core.session_solver.Solver` session object exposes a variety of Python child objects that provide access to the data
 and functions of the connected Fluent solver. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
-the ``solver`` session provides child objects for solver settings and field data access respectively.
+the :obj:`~ansys.fluent.core.session_solver.Solver` session provides child objects for solver settings and field data access respectively.
 You can see these ``fields`` and ``settings`` children by executing ``dir(solver)``. You can discover the
 children of ``fields`` and ``settings`` by calling ``dir(solver.fields)`` and ``dir(solver.settings)`` respectively,
 and so on:
@@ -46,8 +48,8 @@ You can call the Python ``help()`` function to find out more about each item in 
   >>> help(solver.settings.file.read_case)
 
 
-You can create additional PyFluent sessions. The following code creates a meshing mode
-session that starts a second Fluent instance and is independent of your PyFluent solver session.
+You can create additional PyFluent sessions. The following code creates a :obj:`~ansys.fluent.core.session_meshing.Meshing` mode
+session that starts a second Fluent instance and is independent of your PyFluent :obj:`~ansys.fluent.core.session_solver.Solver` session.
 
 .. code:: python
 
@@ -156,11 +158,12 @@ task-based meshing workflow code:
 Note: You can find out more about meshing workflows here:
 :ref:`ref_new_meshing_workflows_guide`.
 
-A meshing mode session object exposes additional child objects. For instance, ``meshing``
+A :obj:`~ansys.fluent.core.session_meshing.Meshing` mode session object exposes additional child objects. For instance, ``meshing``
 has ``fields`` and ``events`` children. Each has the same interface as the identically named
-child of the ``solver`` session object respectively.
+child of the :obj:`~ansys.fluent.core.session_solver.Solver` session object respectively.
 
-You can also create a pure meshing session:
+You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing`:
+
 
 .. code:: python
 
@@ -183,9 +186,9 @@ You switch between meshing and solution modes by calling the ``switch_to_solver(
 
 
 The ``switched_solver`` session uses the same Fluent instance that was previously used by the
-``messing`` session, which is now unusable.
+:obj:`~ansys.fluent.core.session_meshing.Meshing` session, which is now unusable.
 
-A similar action with the ``pure_meshing`` session raises an exception:
+A similar action with the :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session raises an exception:
 
 .. code:: python
   >>> failed_solver = pure_meshing.switch_to_solver() # raises an AttributeError!
@@ -207,20 +210,20 @@ Ending PyFluent sessions
 ------------------------
 
 Just as PyFluent session objects start and exist independently within a single Python interpreter session,
-each session can be ended independently of the others. Calling the ``exit()`` method on the ``solver`` and
-``pure_meshing`` session objects ends those PyFluent sessions and terminates the connected Fluent sessions:
+each session can be ended independently of the others. Calling the ``exit()`` method on the :obj:`~ansys.fluent.core.session_solver.Solver` and
+:obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` session objects ends those PyFluent sessions and terminates the connected Fluent sessions:
 
 .. code:: python
   >>> solver.exit()
   >>> pure_meshing.exit()
 
 
-Each Fluent session terminates in this scenario because both PyFluent ``Session`` objects were obtained by
-calling the ``launch_fluent()`` function. If the ``connect_to_fluent()`` function were used instead, the
-Fluent session would terminate upon the ``exit()`` method call if and only if the ``connect_to_fluent()``
+Each Fluent session terminates in this scenario because both PyFluent :ref:`Session <ref_session_guide>` objects were obtained by
+calling the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function. If the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>` function were used instead, the
+Fluent session would terminate upon the ``exit()`` method call if and only if the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
 function were called with the argument value ``cleanup_on_exit=True``.
 
-Session exiting can also happen implicitly when ``Session`` objects are garbage collected. The same rules apply
+Session exiting can also happen implicitly when :ref:`Session <ref_session_guide>` objects are garbage collected. The same rules apply
 regarding Fluent termination whether the exit is explicit via an ``<session>.exit()`` method call or implicit.
 Implicit exiting occurs via the Python garbage collector. Calling ``session.exit()`` is equivalent to the session
 being garbage collected:
@@ -230,6 +233,5 @@ being garbage collected:
   >>>     solver = pyfluent.launch_fluent()
   >>>     # <insert some PyFluent solver actions>
   >>>     # solver is exited at the end of the function
-
 
 When you end your Python interpreter session, all active PyFluent sessions are exited automatically.
