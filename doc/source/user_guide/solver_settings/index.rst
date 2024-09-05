@@ -21,6 +21,9 @@ the following code snippets) whose interface directly exposes the
   >>> solution = solver.settings.solution
   >>> results = solver.settings.results
 
+Note that the last three are top-level nodes in the outline tree view in Fluent's graphical 
+user interface (GUI) --- much of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
+
 
 Types of settings objects
 -------------------------

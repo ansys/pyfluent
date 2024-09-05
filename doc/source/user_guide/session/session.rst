@@ -162,7 +162,7 @@ A :obj:`~ansys.fluent.core.session_meshing.Meshing` mode session object exposes 
 has ``fields`` and ``events`` children. Each has the same interface as the identically named
 child of the :obj:`~ansys.fluent.core.session_solver.Solver` session object respectively.
 
-You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing`:
+You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing` :
 
 
 .. code:: python
