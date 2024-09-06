@@ -426,7 +426,7 @@ def test_setting_none_type_tasks(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.2")
 def test_meshing_workflow_data_model_subscriptions(
     new_meshing_session,
 ):
