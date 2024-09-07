@@ -3,7 +3,7 @@ from typing import Iterable
 
 import pytest
 
-from ansys.fluent.core import examples
+from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.workflow import camel_to_snake_case
 from tests.conftest import new_meshing_session
 from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
@@ -429,7 +429,10 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.choose_mesh_control_options()
 
     # Generate surface mesh
-    fault_tolerant.generate_the_surface_mesh()
+    if meshing.get_fluent_version() < FluentVersion.v251:
+        fault_tolerant.generate_the_surface_mesh()
+    else:
+        fault_tolerant.generate_surface_mesh()
 
     # Update boundaries
     fault_tolerant.update_boundaries_ftm()
@@ -444,7 +447,11 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.add_boundary_layer_ftm_child_1()
 
     # Generate volume mesh
-    fault_tolerant.generate_the_volume_mesh.all_region_name_list.set_state(
+    if meshing.get_fluent_version() < FluentVersion.v251:
+        generate_volume_mesh = fault_tolerant.generate_the_volume_mesh
+    else:
+        generate_volume_mesh = fault_tolerant.create_volume_mesh
+    generate_volume_mesh.all_region_name_list.set_state(
         [
             "main",
             "flow_pipe",
@@ -455,14 +462,10 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
             "fluid-region-1",
         ]
     )
-    fault_tolerant.generate_the_volume_mesh.all_region_size_list.set_state(
-        ["11.33375"] * 7
-    )
-    fault_tolerant.generate_the_volume_mesh.all_region_volume_fill_list.set_state(
-        ["none"] * 6 + ["tet"]
-    )
-    fault_tolerant.generate_the_volume_mesh.enable_parallel.set_state(True)
-    fault_tolerant.generate_the_volume_mesh()
+    generate_volume_mesh.all_region_size_list.set_state(["11.33375"] * 7)
+    generate_volume_mesh.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
+    generate_volume_mesh.enable_parallel.set_state(True)
+    generate_volume_mesh()
 
     # Generate volume mesh
     solver = meshing.switch_to_solver()
