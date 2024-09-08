@@ -11,6 +11,7 @@ from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
@@ -81,6 +82,7 @@ class FluentMode(FluentEnum):
     PURE_MESHING = "pure_meshing"
     SOLVER = "solver"
     SOLVER_ICING = "solver_icing"
+    SOLVER_AERO = "solver_aero"
 
     def _default(self):
         return self.SOLVER
@@ -91,6 +93,7 @@ class FluentMode(FluentEnum):
             self.PURE_MESHING: PureMeshing,
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
+            self.SOLVER_AERO: SolverAero,
         }
 
     @staticmethod
@@ -266,11 +269,7 @@ def _get_running_session_mode(
         session_mode = mode
     else:
         try:
-            session_mode = FluentMode(
-                "solver"
-                if fluent_connection._connection_interface.is_solver_mode()
-                else "meshing"
-            )
+            session_mode = fluent_connection._connection_interface.get_mode()
         except Exception as ex:
             raise exceptions.InvalidPassword() from ex
     return session_mode.get_fluent_value()
