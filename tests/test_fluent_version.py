@@ -59,3 +59,8 @@ def test_ne():
 def test_eq():
     assert FluentVersion.v232 == FluentVersion.v232
     assert FluentVersion.v241 == FluentVersion.v241
+
+
+def test_str_output():
+    assert str(FluentVersion.v232) == "Fluent version 2023 R2"
+    assert str(FluentVersion.v251) == "Fluent version 2025 R1"
