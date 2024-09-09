@@ -1,5 +1,7 @@
 .. _ref_fields_guide:
 
+.. vale Google.Spacing = NO
+
 Fields
 ======
 

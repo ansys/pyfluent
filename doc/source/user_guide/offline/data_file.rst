@@ -1,5 +1,7 @@
 .. _ref_data_file_guide:
 
+.. vale Google.Spacing = NO
+
 DataFile
 ========
 

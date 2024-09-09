@@ -1,5 +1,7 @@
 .. _ref_events_guide:
 
+.. vale Google.Spacing = NO
+
 Observing events
 ================
 

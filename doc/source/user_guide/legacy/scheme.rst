@@ -1,5 +1,7 @@
 .. _ref_schemeeval_guide:
 
+.. vale Google.Spacing = NO
+
 Scheme code evaluation
 ======================
 

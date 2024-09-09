@@ -1,5 +1,7 @@
 .. _ref_file_session_guide:
 
+.. vale Google.Spacing = NO
+
 File Session
 ============
 

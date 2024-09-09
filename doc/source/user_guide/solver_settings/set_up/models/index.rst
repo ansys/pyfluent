@@ -1,5 +1,7 @@
 .. _ref_models_guide:
 
+.. vale Google.Spacing = NO
+
 Physics models
 ==============
 

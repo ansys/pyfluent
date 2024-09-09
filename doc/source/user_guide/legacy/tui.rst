@@ -1,5 +1,7 @@
 .. _ref_tui_commands_guide:
 
+.. vale Google.Spacing = NO
+
 Use TUI commands
 ================
 

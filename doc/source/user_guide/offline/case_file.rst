@@ -1,5 +1,7 @@
 .. _ref_case_file_guide:
 
+.. vale Google.Spacing = NO
+
 CaseFile
 ========
 
