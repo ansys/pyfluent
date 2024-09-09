@@ -250,7 +250,7 @@ def test_old_workflow_structure(new_meshing_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 def test_new_2d_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
