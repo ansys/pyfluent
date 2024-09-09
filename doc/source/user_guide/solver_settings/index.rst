@@ -8,7 +8,7 @@ settings and issue commands to be executed in the Fluent solver.
 Accessing solver settings
 -------------------------
 An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
-function returns an object (named ``solver`` in
+function returns an object (named :ref:`solver <ref_root>` in
 the following code snippets) whose interface directly exposes the
 :ref:`ref_root` of the solver settings hierarchy.
 
@@ -16,15 +16,14 @@ the following code snippets) whose interface directly exposes the
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> file = solver.settings.file
+  >>> setup = solver.settings.setup
+  >>> solution = solver.settings.solution
+  >>> results = solver.settings.results
 
+Note that the last three are top-level nodes in the outline tree view in Fluent's graphical 
+user interface (GUI) --- much of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
-The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.generated.solver.settings_232.file.file`,
-:obj:`~ansys.fluent.core.generated.solver.settings_232.setup.setup`,
-:obj:`~ansys.fluent.core.generated.solver.settings_232.solution.solution`, and
-:obj:`~ansys.fluent.core.generated.solver.settings_232.results.results`,
-which are also instances of settings objects. Note that the last three are
-top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
-of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
 Types of settings objects
 -------------------------
