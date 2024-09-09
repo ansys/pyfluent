@@ -696,7 +696,10 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
             "inlet1"
         ].turbulence.turbulent_viscosity_ratio
 
-        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+        if solver.get_fluent_version() > FluentVersion.v251:
+            path = '<session>.settings.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+        else:
+            path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
         name = "turbulent_viscosity_ratio"
 
     assert turbulent_viscosity_ratio.python_path == path
