@@ -397,7 +397,7 @@ def test_new_2d_meshing_workflow(new_meshing_session):
 
     meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Arguments.set_state(
         {
-            r"FileName": r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\out\case1.msh.h5",
+            r"FileName": r"case1.msh.h5",
         }
     )
     meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Execute()
