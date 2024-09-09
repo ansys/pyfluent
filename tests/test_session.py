@@ -504,3 +504,71 @@ def test_solver_structure(new_solver_session):
         "solution_variable_info",
         "reduction",
     }.issubset(set(dir(solver.fields)))
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_general_exception_behaviour_in_session(new_solver_session):
+    solver = new_solver_session
+
+    # Read case with non-existent path
+    with pytest.raises(RuntimeError):
+        # File not found
+        solver.settings.file.read(
+            file_type="case", file_name=r"incorrect_path\incorrect_file.cas.h5"
+        )
+
+    # Iterate with no case
+    with pytest.raises(RuntimeError):
+        # The object is not active
+        solver.solution.run_calculation.iterate(iter_count=5)
+
+    # Write case without any case loaded or created
+    with pytest.raises(RuntimeError):
+        # Uninitialized case
+        solver.file.write(file_name="sample.cas.h5", file_type="case")
+
+    graphics = solver.results.graphics
+
+    # # Post-process without case
+    # with pytest.raises(RuntimeError):
+    #     # Does not exist.
+    #     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
+    #     graphics.mesh["mesh-1"].display()
+
+    case_file = examples.download_file(
+        "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
+    )
+    solver.settings.file.read(file_type="case", file_name=case_file)
+    solver.file.write(file_name="sample.cas.h5", file_type="case")
+
+    graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
+    graphics.mesh["mesh-1"].display()
+
+    # Post-process without data
+    with pytest.raises(RuntimeError):
+        # Invalid result.
+        graphics.contour["contour-velocity"] = {
+            "field": "velocity-magnitude",
+            "surfaces_list": ["wall-elbow"],
+        }
+        graphics.contour["contour-velocity"].display()
+
+    solver.solution.run_calculation.iterate(iter_count=5)
+    graphics.contour["contour-velocity"] = {
+        "field": "velocity-magnitude",
+        "surfaces_list": ["wall-elbow"],
+    }
+    graphics.contour["contour-velocity"].display()
+
+    mesh_file_2d = examples.download_file(
+        "sample_2d_mesh.msh.h5",
+        "pyfluent/surface_mesh",
+        return_without_path=False,
+    )
+
+    # Error in server:
+    # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
+    # with pytest.raises(RuntimeError):
+    #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)

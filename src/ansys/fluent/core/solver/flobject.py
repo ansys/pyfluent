@@ -2074,7 +2074,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             # No need to differentiate in the Python implementation
             for k, v in (child_aliases | command_aliases | query_aliases).items():
                 cls._child_aliases[to_python_name(k)] = "/".join(
-                    to_python_name(x) for x in v.split("/")
+                    x if x == ".." else to_python_name(x) for x in v.split("/")
                 )
 
     except Exception:
