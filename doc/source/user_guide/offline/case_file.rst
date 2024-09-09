@@ -3,14 +3,14 @@
 CaseFile
 ========
 
-The ``CaseFile`` class allows you to access Fluent case information without a live Fluent session.
-You command ``CaseFile`` objects to read your Fluent case files before you access the case information through
-the ``CaseFile`` methods. 
+The :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` class allows you to access Fluent case information without a live Fluent session.
+You command :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` objects to read your Fluent case files before you access the case information through
+the :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` methods. 
 
 Sample usage
 ------------
 
-This example shows how to command a ``CaseFile`` object to read a case file, and query its interface:
+This example shows how to command a :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` object to read a case file, and query its interface:
 
 .. code-block:: python
 
@@ -56,7 +56,7 @@ Along with basic functionality, the CaseFile class provides many additional feat
 
 - **Extracts mesh data**
   The CaseReader can be used to extract mesh data. This example shows how to
-  command a ``CaseFile`` object to read a case file and extract and use the mesh data:
+  command a :obj:`~ansys.fluent.core.filereader.case_file.CaseFile` object to read a case file and extract and use the mesh data:
 
   .. code-block:: python
 
