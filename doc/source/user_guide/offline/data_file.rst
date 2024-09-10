@@ -1,16 +1,18 @@
 .. _ref_data_file_guide:
 
+.. vale Google.Spacing = NO
+
 DataFile
 ========
 
-The ``DataFile`` class allows you to access solution data without a live Fluent session.
-You command ``DataFile`` objects to read your Fluent data files before you access the data through
-the ``DataFile`` methods. 
+The :obj:`~ansys.fluent.core.filereader.data_file.DataFile` class allows you to access solution data without a live Fluent session.
+You command :obj:`~ansys.fluent.core.filereader.data_file.DataFile` objects to read your Fluent data files before you access the data through
+the :obj:`~ansys.fluent.core.filereader.data_file.DataFile` methods. 
 
 Sample usage
 ------------
 
-This example shows how to command a ``DataFile`` object to access case and data files, and query its interface:
+This example shows how to command a :obj:`~ansys.fluent.core.filereader.data_file.DataFile` object to access case and data files, and query its interface:
 
 .. code-block:: python
 

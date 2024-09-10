@@ -1,12 +1,14 @@
 .. _ref_file_session_guide:
 
+.. vale Google.Spacing = NO
+
 File Session
 ============
 
-The ``FileSession`` class mimics the functionality of live ``Session`` objects, allowing you
+The :obj:`~ansys.fluent.core.file_session.FileSession` class mimics the functionality of :ref:`live session objects <ref_session_guide>`, allowing you
 to access field data and other relevant information without a live Fluent session.
-You command ``FileSession`` objects to read your input files before you access the data through
-the ``FileSession`` object methods. 
+You command :obj:`~ansys.fluent.core.file_session.FileSession` objects to read your input files before you access the data through
+the :obj:`~ansys.fluent.core.file_session.FileSession` object methods. 
 
 Sample usage
 ------------
@@ -162,7 +164,7 @@ Multiphase
 Visualization sample usage
 --------------------------
 
-You can use the ``ansys-fluent-visualization`` package to display the
+You can use the `ansys-fluent-visualization <https://visualization.fluent.docs.pyansys.com/version/stable/>`_ package to display the
 mesh and to visualize results via contours, vectors and other
 post-processing objects.
 

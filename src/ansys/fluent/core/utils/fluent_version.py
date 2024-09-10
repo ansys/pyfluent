@@ -127,3 +127,9 @@ class FluentVersion(Enum):
     def __repr__(self) -> str:
         """Return a string representation for the Fluent version."""
         return self.value
+
+    def __str__(self) -> str:
+        """String output for the Fluent version."""
+        return (
+            f"Fluent version 20{self.value.split('.')[0]} R{self.value.split('.')[1]}"
+        )
