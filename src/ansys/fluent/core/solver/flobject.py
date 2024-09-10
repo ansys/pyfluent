@@ -39,6 +39,7 @@ from typing import (
     NewType,
     Tuple,
     TypeVar,
+    Union,
     _eval_type,
     get_args,
     get_origin,
@@ -91,25 +92,25 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", float | str)  # constant or expression
+RealType = NewType("real", Union[float, str])  # constant or expression
 RealListType = List[RealType]
 RealVectorType = Tuple[RealType, RealType, RealType]
 IntListType = List[int]
 StringListType = List[str]
 BoolListType = List[bool]
-PrimitiveStateType = (
-    str
-    | RealType
-    | int
-    | bool
-    | RealListType
-    | IntListType
-    | StringListType
-    | BoolListType
-)
+PrimitiveStateType = Union[
+    str,
+    RealType,
+    int,
+    bool,
+    RealListType,
+    IntListType,
+    StringListType,
+    BoolListType,
+]
 DictStateType = Dict[str, "StateType"]
 ListStateType = List["StateType"]
-StateType = PrimitiveStateType | DictStateType | ListStateType
+StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
 def check_type(val, tp):
@@ -127,8 +128,6 @@ def check_type(val, tp):
         return isinstance(val, tuple) and all(
             check_type(x, t) for x, t in zip(val, get_args(tp))
         )
-    elif origin == Union:
-        return any(check_type(val, t) for t in get_args(tp))
     elif origin == dict:
         k_t, k_v = get_args(tp)
         return isinstance(val, dict) and all(

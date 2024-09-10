@@ -187,7 +187,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
 
 def _get_files(
-    file_name: str | pathlib.PurePath | list[str | pathlib.Purepath],
+    file_name: str | pathlib.PurePath | list[str | pathlib.PurePath],
 ):
     if isinstance(file_name, (str, pathlib.PurePath)):
         files = [pathlib.Path(file_name)]
