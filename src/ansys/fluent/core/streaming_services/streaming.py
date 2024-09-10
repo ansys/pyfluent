@@ -3,7 +3,7 @@
 import itertools
 import logging
 import threading
-from typing import Callable, Optional
+from typing import Callable
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -21,7 +21,7 @@ class StreamingService:
         self._stream_begin_method = stream_begin_method
         self._target = target
         self._streaming_service = streaming_service
-        self._stream_thread: Optional[threading.Thread] = None
+        self._stream_thread: threading.Thread = None
         self._service_callback_id = itertools.count()
         self._service_callbacks: dict = {}
 

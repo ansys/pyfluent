@@ -16,7 +16,6 @@ Example
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Optional
 import xml.etree.ElementTree as ET
 
 from lxml import etree
@@ -53,8 +52,8 @@ class DataFile:
 
     def __init__(
         self,
-        data_file_name: Optional[str] = None,
-        project_file_name: Optional[str] = None,
+        data_file_name: str = None,
+        project_file_name: str = None,
         case_file_handle=None,
     ):
         """__init__ method of CaseFile class."""

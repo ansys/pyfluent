@@ -5,7 +5,6 @@ For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide
 
 import logging.config
 import os
-from typing import Optional, Union
 
 _logging_file_enabled = False
 
@@ -23,7 +22,7 @@ def root_config():
         logger.addHandler(ch)
 
 
-def set_console_logging_level(level: Union[str, int]):
+def set_console_logging_level(level: str | int):
     """Sets the level of PyFluent logging being output to console.
 
     Parameters
@@ -88,7 +87,7 @@ def get_default_config() -> dict:
     return config
 
 
-def enable(level: Union[str, int] = "DEBUG", custom_config: Optional[dict] = None):
+def enable(level: str | int = "DEBUG", custom_config: dict = None):
     """Enables PyFluent logging to file.
 
     Parameters
@@ -148,7 +147,7 @@ def get_logger(*args, **kwargs):
     return logging.getLogger(*args, **kwargs)
 
 
-def set_global_level(level: Union[str, int]):
+def set_global_level(level: str | int):
     """Changes the levels of all PyFluent loggers that write to log file.
 
     Parameters

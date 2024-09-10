@@ -103,8 +103,6 @@ Unhandled:
 
 from __future__ import annotations
 
-from typing import Optional
-
 _fl_unit_table = {
     "acceleration": "m s^-2",
     "angle": "radian",
@@ -255,9 +253,7 @@ class UnhandledQuantity(RuntimeError):
         )
 
 
-def get_si_unit_for_fluent_quantity(
-    quantity: Optional[str], unit_table: Optional[dict] = None
-):
+def get_si_unit_for_fluent_quantity(quantity: str, unit_table: dict = None):
     """Get the SI unit for the given Fluent quantity.
 
     Raises

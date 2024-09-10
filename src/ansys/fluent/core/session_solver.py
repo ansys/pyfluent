@@ -4,7 +4,7 @@ from asyncio import Future
 import functools
 import logging
 import threading
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 import warnings
 
 import ansys.fluent.core as pyfluent
@@ -79,9 +79,9 @@ class Solver(BaseSession):
         self,
         fluent_connection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any = None,
         start_transcript: bool = True,
-        launcher_args: Optional[Dict[str, Any]] = None,
+        launcher_args: Dict[str, Any] = None,
     ):
         """Solver session.
 
@@ -113,7 +113,7 @@ class Solver(BaseSession):
         self,
         fluent_connection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any = None,
     ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
@@ -289,7 +289,7 @@ class Solver(BaseSession):
         """Get the state of the object."""
         return self.settings.get_state()
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
+    def set_state(self, state: StateT = None, **kwargs):
         """Set the state of the object."""
         self.settings.set_state(state, **kwargs)
 

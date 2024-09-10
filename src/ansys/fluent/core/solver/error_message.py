@@ -2,7 +2,7 @@
 
 import difflib
 from functools import partial
-from typing import Any, List, Optional
+from typing import Any, List
 
 
 def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
@@ -12,11 +12,11 @@ def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
 
 
 def allowed_name_error_message(
-    allowed_values: Optional[Any] = None,
-    context: Optional[str] = None,
-    trial_name: Optional[str] = None,
-    message: Optional[str] = None,
-    search_results: Optional[list] = None,
+    allowed_values: Any = None,
+    context: str = None,
+    trial_name: str = None,
+    message: str = None,
+    search_results: list = None,
 ) -> str:
     """Provide an error message with the closest names matching the 'trial_name' from
     the 'allowed_values' list."""

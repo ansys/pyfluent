@@ -11,7 +11,7 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Optional, Tuple, Union
+from typing import Any, Callable, List, Tuple, Union
 import warnings
 import weakref
 
@@ -192,14 +192,14 @@ class FluentConnectionProperties:
     '127.0.0.1'
     """
 
-    ip: Optional[str] = None
-    port: Optional[int] = None
-    password: Optional[str] = None
-    cortex_pwd: Optional[str] = None
-    cortex_pid: Optional[int] = None
-    cortex_host: Optional[str] = None
-    fluent_host_pid: Optional[int] = None
-    inside_container: Optional[Union[bool, Container, None]] = None
+    ip: str = None
+    port: int = None
+    password: str = None
+    cortex_pwd: str = None
+    cortex_pid: int = None
+    cortex_host: str = None
+    fluent_host_pid: int = None
+    inside_container: bool | Container | None = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
@@ -210,9 +210,7 @@ class FluentConnectionProperties:
         return vars(self)
 
 
-def _get_ip_and_port(
-    ip: Optional[str] = None, port: Optional[int] = None
-) -> (str, int):
+def _get_ip_and_port(ip: str = None, port: int = None) -> (str, int):
     if not ip:
         ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
     if not port:
@@ -301,19 +299,19 @@ class FluentConnection:
 
     _on_exit_cbs: List[Callable] = []
     _id_iter = itertools.count()
-    _monitor_thread: Optional[MonitorThread] = None
+    _monitor_thread: MonitorThread = None
 
     def __init__(
         self,
-        ip: Optional[str] = None,
-        port: Optional[int] = None,
-        password: Optional[str] = None,
-        channel: Optional[grpc.Channel] = None,
+        ip: str = None,
+        port: int = None,
+        password: str = None,
+        channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
-        remote_instance: Optional[Instance] = None,
-        file_transfer_service: Optional[Any] = None,
-        slurm_job_id: Optional[str] = None,
-        inside_container: Optional[bool] = None,
+        remote_instance: Instance = None,
+        file_transfer_service: Any = None,
+        slurm_job_id: str = None,
+        inside_container: bool = None,
     ):
         """Initialize a Session.
 
@@ -608,9 +606,9 @@ class FluentConnection:
 
     def exit(
         self,
-        timeout: Optional[float] = None,
+        timeout: float = None,
         timeout_force: bool = True,
-        wait: Optional[Union[float, int, bool]] = False,
+        wait: float | int | bool = False,
     ) -> None:
         """Close the Fluent connection and exit Fluent.
 

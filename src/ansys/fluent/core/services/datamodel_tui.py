@@ -2,7 +2,7 @@
 
 import keyword
 import logging
-from typing import Any, Union
+from typing import Any
 
 from google.protobuf.json_format import MessageToDict
 import grpc
@@ -189,7 +189,7 @@ class PyMenu:
     """
 
     def __init__(
-        self, service: DatamodelService, version, mode, path: Union[Path, str]
+        self, service: DatamodelService, version, mode, path: Path | str
     ) -> None:
         """__init__ method of PyMenu class."""
         self._service = service

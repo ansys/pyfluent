@@ -3,7 +3,7 @@
 import inspect
 import logging
 from types import ModuleType
-from typing import Optional, TypeVar
+from typing import TypeVar
 import weakref
 
 from google.protobuf.message import Message
@@ -68,11 +68,11 @@ class BatchOps:
     access the ``mesh-1`` mesh object which has not been created yet.
     """
 
-    _proto_files: Optional[list[ModuleType]] = None
+    _proto_files: list[ModuleType] = None
     _instance = lambda: None
 
     @classmethod
-    def instance(cls) -> Optional[_TBatchOps]:
+    def instance(cls) -> _TBatchOps:
         """Get the BatchOps instance.
 
         Returns

@@ -5,7 +5,7 @@ import os
 import pathlib
 import random
 import shutil
-from typing import Any, Callable, List, Optional, Protocol, Union  # noqa: F401
+from typing import Any, Callable, List, Protocol, Union  # noqa: F401
 import warnings
 
 import platformdirs
@@ -33,9 +33,7 @@ class PyPIMConfigurationError(ConnectionError):
 class FileTransferStrategy(Protocol):
     """Provides the file transfer strategy."""
 
-    def upload(
-        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
-    ) -> None:
+    def upload(self, file_name: list[str] | str, remote_file_name: str = None) -> None:
         """Upload a file to the server.
 
         Parameters
@@ -47,9 +45,7 @@ class FileTransferStrategy(Protocol):
         """
         ...
 
-    def download(
-        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
-    ) -> None:
+    def download(self, file_name: list[str] | str, local_directory: str = None) -> None:
         """Download a file from the server.
 
         Parameters
@@ -79,7 +75,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
     >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
     """
 
-    def __init__(self, server_cwd: Optional[str] = None):
+    def __init__(self, server_cwd: str = None):
         """Local File Transfer Service.
 
         Parameters
@@ -107,9 +103,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         full_file_name = pathlib.Path(self.fluent_cwd) / os.path.basename(file_name)
         return full_file_name.is_file()
 
-    def upload(
-        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
-    ) -> None:
+    def upload(self, file_name: list[str] | str, remote_file_name: str = None) -> None:
         """Upload a file to the server.
 
         Parameters
@@ -146,9 +140,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
                     file_name, str(self.fluent_cwd / f"{os.path.basename(file_name)}")
                 )
 
-    def download(
-        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
-    ) -> None:
+    def download(self, file_name: list[str] | str, local_directory: str = None) -> None:
         """Download a file from the server.
 
         Parameters
@@ -217,11 +209,11 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
     @deprecate_argument("host_mount_path", "mount_source")
     def __init__(
         self,
-        image_name: Optional[str] = None,
-        image_tag: Optional[str] = None,
-        port: Optional[int] = None,
-        mount_target: Optional[str] = None,
-        mount_source: Optional[str] = None,
+        image_name: str = None,
+        image_tag: str = None,
+        port: int = None,
+        mount_target: str = None,
+        mount_source: str = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -233,9 +225,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             Tag of the image.
         port: int, optional
             Port for the file transfer service to use.
-        mount_target: Union[str, Path], optional
+        mount_target: str | Path, optional
             Path inside the container where ``mount_source`` will be mounted to.
-        mount_source: Union[str, Path], optional
+        mount_source: str | Path, optional
             Existing path in the host operating system that will be mounted to ``mount_target``.
         """
         import docker
@@ -284,9 +276,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         full_file_name = pathlib.Path(self.mount_source) / os.path.basename(file_name)
         return full_file_name.is_file()
 
-    def upload(
-        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
-    ):
+    def upload(self, file_name: list[str] | str, remote_file_name: str = None):
         """Upload a file to the server.
 
         Parameters
@@ -332,9 +322,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 else:
                     raise FileNotFoundError(f"{file} does not exist.")
 
-    def download(
-        self, file_name: Union[list[str], str], local_directory: Optional[str] = None
-    ):
+    def download(self, file_name: list[str] | str, local_directory: str = None):
         """Download a file from the server.
 
         Parameters
@@ -397,7 +385,7 @@ class PimFileTransferService:
         Download a file from the server.
     """
 
-    def __init__(self, pim_instance: Optional[Any] = None):
+    def __init__(self, pim_instance: Any = None):
         self.pim_instance = pim_instance
         self.upload_server = None
         self.file_service = None
@@ -440,7 +428,7 @@ class PimFileTransferService:
         """Check pypim configuration."""
         return pypim.is_configured()
 
-    def upload_file(self, file_name: str, remote_file_name: Optional[str] = None):
+    def upload_file(self, file_name: str, remote_file_name: str = None):
         """Upload a file to the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -469,9 +457,7 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError(f"{file_name} does not exist.")
 
-    def upload(
-        self, file_name: Union[list[str], str], remote_file_name: Optional[str] = None
-    ):
+    def upload(self, file_name: list[str] | str, remote_file_name: str = None):
         """Upload a file to the server.
 
         Parameters
@@ -506,7 +492,7 @@ class PimFileTransferService:
                     elif not self.file_service.file_exist(os.path.basename(file)):
                         raise FileNotFoundError(f"{file} does not exist.")
 
-    def download_file(self, file_name: str, local_directory: Optional[str] = None):
+    def download_file(self, file_name: str, local_directory: str = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
 
         Parameters
@@ -531,9 +517,7 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError("Remote file does not exist.")
 
-    def download(
-        self, file_name: Union[list[str], str], local_directory: Optional[str] = "."
-    ):
+    def download(self, file_name: list[str] | str, local_directory: str = "."):
         """Download a file from the server.
 
         Parameters
@@ -561,5 +545,5 @@ class PimFileTransferService:
                         )
                         bar()
 
-    def __call__(self, pim_instance: Optional[Any] = None):
+    def __call__(self, pim_instance: Any = None):
         self.pim_instance = pim_instance

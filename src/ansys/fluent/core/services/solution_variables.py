@@ -1,7 +1,7 @@
 """Wrappers over SVAR gRPC service of Fluent."""
 
 import math
-from typing import Dict, List, Optional
+from typing import Dict, List
 import warnings
 
 import grpc
@@ -569,7 +569,7 @@ class SolutionVariableData:
         self,
         solution_variable_name: str,
         zone_names: List[str],
-        domain_name: Optional[str] = "mixture",
+        domain_name: str = "mixture",
     ) -> Data:
         """Get SVAR data on zones.
 
@@ -612,7 +612,7 @@ class SolutionVariableData:
         self,
         svar_name: str,
         zone_names: List[str],
-        domain_name: Optional[str] = "mixture",
+        domain_name: str = "mixture",
     ) -> Data:
         """Get solution variable data."""
         warnings.warn(
@@ -729,7 +729,7 @@ class SolutionVariableData:
         self,
         svar_name: str,
         zone_names_to_svar_data: List[str],
-        domain_name: Optional[str] = "mixture",
+        domain_name: str = "mixture",
     ) -> Data:
         """Set solution variable data."""
         warnings.warn(

@@ -1,7 +1,7 @@
 """Module for monitors management."""
 
 import threading
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Tuple
 
 import numpy as np
 
@@ -71,9 +71,7 @@ class MonitorsManager(StreamingService):
         with self._lock:
             return self._monitors_info.get(monitor_set_name, {}).get(property)
 
-    def get_monitor_set_plot(
-        self, monitor_set_name, *args, **kwargs
-    ) -> Union[None, object]:
+    def get_monitor_set_plot(self, monitor_set_name, *args, **kwargs) -> None | object:
         """Get monitor set plot.
 
         Parameters
@@ -87,7 +85,7 @@ class MonitorsManager(StreamingService):
 
         Returns
         -------
-        Union[None, object]
+        None | object
             Returns ``None`` if the `DataFrame <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html>`_
             is empty. Otherwise, it returns the plot object, depending on the ``plotting.backend``.
         """
@@ -96,7 +94,7 @@ class MonitorsManager(StreamingService):
             return None if df.empty else df.plot(*args, **kwargs)
 
     def get_monitor_set_data(
-        self, monitor_set_name, start_index: int = 0, end_index: Optional[int] = None
+        self, monitor_set_name, start_index: int = 0, end_index: int = None
     ) -> Tuple[np.array, Dict[str, np.array]]:
         """Get monitor set data.
 

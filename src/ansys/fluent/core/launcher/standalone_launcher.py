@@ -17,7 +17,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
@@ -56,7 +56,7 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        mode: Optional[Union[FluentMode, str, None]] = None,
+        mode: FluentMode | str | None = None,
         ui_mode: Union[UIMode, str, None] = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
@@ -64,24 +64,24 @@ class StandaloneLauncher:
         product_version: Union[FluentVersion, str, float, int, None] = None,
         dimension: Union[Dimension, int, None] = None,
         precision: Union[Precision, str, None] = None,
-        processor_count: Optional[int] = None,
+        processor_count: int = None,
         journal_file_names: Union[None, str, list[str]] = None,
         start_timeout: int = 60,
-        additional_arguments: Optional[str] = "",
-        env: Optional[Dict[str, Any]] = None,
+        additional_arguments: str = "",
+        env: Dict[str, Any] = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
-        case_file_name: Optional[str] = None,
-        case_data_file_name: Optional[str] = None,
-        lightweight_mode: Optional[bool] = None,
-        py: Optional[bool] = None,
-        gpu: Optional[bool] = None,
-        cwd: Optional[str] = None,
-        fluent_path: Optional[str] = None,
-        topy: Optional[Union[str, list]] = None,
-        start_watchdog: Optional[bool] = None,
-        file_transfer_service: Optional[Any] = None,
+        case_file_name: str = None,
+        case_data_file_name: str = None,
+        lightweight_mode: bool = None,
+        py: bool = None,
+        gpu: bool = None,
+        cwd: str = None,
+        fluent_path: str = None,
+        topy: str | list = None,
+        start_watchdog: bool = None,
+        file_transfer_service: Any = None,
     ):
         """Launch Fluent session in standalone mode.
 

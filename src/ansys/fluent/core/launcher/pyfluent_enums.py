@@ -2,7 +2,6 @@
 
 from enum import Enum
 import os
-from typing import Optional, Union
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -259,7 +258,7 @@ def _get_graphics_driver(
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
+    fluent_connection: FluentConnection, mode: FluentMode = None
 ):
     """Get the mode of the running session if the mode has not been explicitly given."""
     if mode:
@@ -278,7 +277,7 @@ def _get_running_session_mode(
 
 def _get_standalone_launch_fluent_version(
     product_version: Union[FluentVersion, str, float, int, None]
-) -> Optional[FluentVersion]:
+) -> FluentVersion:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
 

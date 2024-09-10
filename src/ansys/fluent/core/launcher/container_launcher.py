@@ -15,7 +15,7 @@ Examples
 
 import logging
 import os
-from typing import Any, Optional, Union
+from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -47,7 +47,7 @@ class DockerLauncher:
 
     def __init__(
         self,
-        mode: Optional[Union[FluentMode, str, None]] = None,
+        mode: FluentMode | str | None = None,
         ui_mode: Union[UIMode, str, None] = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
@@ -55,17 +55,17 @@ class DockerLauncher:
         product_version: Union[FluentVersion, str, float, int] = None,
         dimension: Union[Dimension, int, None] = None,
         precision: Union[Precision, str, None] = None,
-        processor_count: Optional[int] = None,
+        processor_count: int = None,
         start_timeout: int = 60,
-        additional_arguments: Optional[str] = "",
-        container_dict: Optional[dict] = None,
+        additional_arguments: str = "",
+        container_dict: dict = None,
         dry_run: bool = False,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        py: Optional[bool] = None,
-        gpu: Optional[bool] = None,
-        start_watchdog: Optional[bool] = None,
-        file_transfer_service: Optional[Any] = None,
+        py: bool = None,
+        gpu: bool = None,
+        start_watchdog: bool = None,
+        file_transfer_service: Any = None,
     ):
         """Launch Fluent session in container mode.
 

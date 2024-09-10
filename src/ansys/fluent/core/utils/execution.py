@@ -5,7 +5,7 @@ import functools
 from multiprocessing.context import TimeoutError
 import multiprocessing.pool
 import time
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 from ansys.fluent.core.exceptions import InvalidArgument
 
@@ -96,8 +96,8 @@ def timeout_exec(obj, timeout, args=None, kwargs=None):
 def timeout_loop(
     obj: Any,
     timeout: float,
-    args: Optional[Any] = None,
-    kwargs: Optional[Any] = None,
+    args: Any = None,
+    kwargs: Any = None,
     idle_period: float = 0.2,
     expected: str = "truthy",
 ) -> Any:

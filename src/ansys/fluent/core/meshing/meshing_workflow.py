@@ -4,7 +4,6 @@ core functionality."""
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -170,12 +169,12 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         self._pm_file_management = pm_file_management
 
     @property
-    def part_management(self) -> Optional[PyMenuGeneric]:
+    def part_management(self) -> PyMenuGeneric:
         """Access part-management in fault-tolerant mode.
 
         Returns
         -------
-        Optional[PyMenuGeneric]
+        PyMenuGeneric
             Part-management.
         """
         return self._part_management
@@ -186,7 +185,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        Optional[PyMenuGeneric]
+        PyMenuGeneric
             File management object in the part management object.
         """
         return self._pm_file_management

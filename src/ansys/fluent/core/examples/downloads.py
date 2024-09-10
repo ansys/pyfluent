@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import Optional
 import warnings
 import zipfile
 
@@ -44,7 +43,7 @@ def _decompress(file_name: str) -> None:
     return zip_ref.close()
 
 
-def _get_file_url(file_name: str, directory: Optional[str] = None) -> str:
+def _get_file_url(file_name: str, directory: str = None) -> str:
     """Get file URL."""
     if directory:
         return (
@@ -57,8 +56,8 @@ def _get_file_url(file_name: str, directory: Optional[str] = None) -> str:
 def _retrieve_file(
     url: str,
     file_name: str,
-    save_path: Optional[str] = None,
-    return_without_path: Optional[bool] = False,
+    save_path: str = None,
+    return_without_path: bool = False,
 ) -> str:
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
@@ -110,9 +109,9 @@ def _retrieve_file(
 
 def download_file(
     file_name: str,
-    directory: Optional[str] = None,
-    save_path: Optional[str] = None,
-    return_without_path: Optional[bool] = None,
+    directory: str = None,
+    save_path: str = None,
+    return_without_path: bool = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 

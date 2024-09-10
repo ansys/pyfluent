@@ -2,7 +2,7 @@
 
 from abc import abstractmethod
 import logging
-from typing import List, NamedTuple, Optional
+from typing import List, NamedTuple
 
 from ansys.fluent.core.post_objects.meta import (
     Attribute,
@@ -38,7 +38,7 @@ class GraphicsDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract)
     """Abstract base class for graphics objects."""
 
     @abstractmethod
-    def display(self, window_id: Optional[str] = None):
+    def display(self, window_id: str = None):
         """Display graphics.
 
         Parameters
@@ -53,7 +53,7 @@ class PlotDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
     """Abstract base class for plot objects."""
 
     @abstractmethod
-    def plot(self, window_id: Optional[str] = None):
+    def plot(self, window_id: str = None):
         """Draw plot.
 
         Parameters

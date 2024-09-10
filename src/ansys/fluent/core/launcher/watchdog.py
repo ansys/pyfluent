@@ -11,7 +11,6 @@ import string
 import subprocess
 import sys
 import time
-from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -28,9 +27,7 @@ class UnsuccessfulWatchdogLaunch(RuntimeError):
     pass
 
 
-def launch(
-    main_pid: int, sv_port: int, sv_password: str, sv_ip: Optional[str] = None
-) -> None:
+def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None) -> None:
     """Function to launch the Watchdog. Automatically used and managed by PyFluent.
 
     Parameters

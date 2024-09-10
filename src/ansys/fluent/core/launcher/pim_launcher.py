@@ -15,7 +15,7 @@ Examples
 
 import logging
 import os
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -45,7 +45,7 @@ class PIMLauncher:
 
     def __init__(
         self,
-        mode: Optional[Union[FluentMode, str, None]] = None,
+        mode: FluentMode | str | None = None,
         ui_mode: Union[UIMode, str, None] = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
@@ -53,15 +53,15 @@ class PIMLauncher:
         product_version: Union[FluentVersion, str, float, int] = None,
         dimension: Union[Dimension, int, None] = None,
         precision: Union[Precision, str, None] = None,
-        processor_count: Optional[int] = None,
+        processor_count: int = None,
         start_timeout: int = 60,
-        additional_arguments: Optional[str] = "",
+        additional_arguments: str = "",
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        py: Optional[bool] = None,
-        gpu: Optional[bool] = None,
-        start_watchdog: Optional[bool] = None,
-        file_transfer_service: Optional[Any] = None,
+        py: bool = None,
+        gpu: bool = None,
+        start_watchdog: bool = None,
+        file_transfer_service: Any = None,
     ):
         """Launch Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
@@ -177,12 +177,12 @@ class PIMLauncher:
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
-    product_version: Optional[str] = None,
+    product_version: str = None,
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
-    dimensionality: Optional[str] = None,
-    launcher_args: Optional[Dict[str, Any]] = None,
-    file_transfer_service: Optional[Any] = None,
+    dimensionality: str = None,
+    launcher_args: Dict[str, Any] = None,
+    file_transfer_service: Any = None,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
