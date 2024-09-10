@@ -81,7 +81,7 @@ class Solver(BaseSession):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | Path | None = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """Solver session.
 

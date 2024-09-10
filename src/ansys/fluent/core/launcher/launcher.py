@@ -296,7 +296,7 @@ def launch_fluent(
 def connect_to_fluent(
     ip: str | None = None,
     port: int | None = None,
-    cleanup_on_exit: bool | None = False,
+    cleanup_on_exit: bool = False,
     start_transcript: bool = True,
     server_info_file_name: str | None = None,
     password: str | None = None,

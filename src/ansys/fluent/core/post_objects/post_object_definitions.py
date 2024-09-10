@@ -396,7 +396,7 @@ class ContourDefn(GraphicsDefn):
     class node_values(metaclass=PyLocalPropertyMeta):
         """Draw nodal data."""
 
-        _value: bool | None = True
+        _value: bool = True
 
         @property
         def value(self):

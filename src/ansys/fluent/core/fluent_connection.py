@@ -607,7 +607,7 @@ class FluentConnection:
     def exit(
         self,
         timeout: float | None = None,
-        timeout_force: bool | None = True,
+        timeout_force: bool = True,
         wait: float | int | bool | None = False,
     ) -> None:
         """Close the Fluent connection and exit Fluent.

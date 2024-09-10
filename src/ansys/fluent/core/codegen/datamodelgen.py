@@ -119,7 +119,7 @@ class DataModelStaticInfo:
         rules: str,
         modes: tuple,
         version: str,
-        rules_save_name: str | None = "",
+        rules_save_name: str = "",
     ):
         self.static_info_type = static_info_type
         self.rules = rules

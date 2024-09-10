@@ -83,7 +83,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | Path | None = None,
+        launcher_args: Dict[str, Any] | None = None,
         event_type: Enum | None = None,
     ):
         """BaseSession.
@@ -257,7 +257,7 @@ class BaseSession:
         server_info_file_name: str,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | Path | None = None,
+        launcher_args: Dict[str, Any] | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.

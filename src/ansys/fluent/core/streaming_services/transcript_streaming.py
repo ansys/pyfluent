@@ -36,7 +36,7 @@ class Transcript(StreamingService):
         self._writing_transcript_to_interpreter = False
 
     def start(
-        self, file_name: str | None = None, write_to_stdout: bool | None = False
+        self, file_name: str | None = None, write_to_stdout: bool = False
     ) -> None:
         """Start streaming of Fluent transcript.
 

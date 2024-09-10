@@ -181,7 +181,7 @@ def launch_remote_fluent(
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: str | None = None,
-    launcher_args: Dict[str, Any] | Path | None = None,
+    launcher_args: Dict[str, Any] | None = None,
     file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.

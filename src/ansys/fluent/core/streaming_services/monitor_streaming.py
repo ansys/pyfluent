@@ -96,7 +96,7 @@ class MonitorsManager(StreamingService):
     def get_monitor_set_data(
         self,
         monitor_set_name,
-        start_index: int | None = 0,
+        start_index: int = 0,
         end_index: int | None = None,
     ) -> Tuple[np.array, Dict[str, np.array]]:
         """Get monitor set data.

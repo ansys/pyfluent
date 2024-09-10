@@ -463,7 +463,7 @@ def _search_whole_word(
     search_string: str,
     match_case: bool = False,
     match_whole_word: bool = False,
-    api_tree_data: dict | None = None,
+    api_tree_data: dict = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.
 
