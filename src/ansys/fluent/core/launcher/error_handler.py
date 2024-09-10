@@ -54,7 +54,7 @@ def _raise_non_gui_exception_in_windows(
         and product_version < FluentVersion.v241
     ):
         raise InvalidArgument(
-            f"'{ui_mode}' supported in Windows only for Fluent version 24.1 or later."
+            f"'{ui_mode}' supported in Windows only for {str(FluentVersion.v241)} or later."
         )
 
 
