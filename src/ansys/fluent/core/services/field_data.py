@@ -1095,7 +1095,7 @@ class FieldData:
         service: FieldDataService,
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
-        scheme_eval: Optional = None,
+        scheme_eval=None,
     ):
         """__init__ method of FieldData class."""
         self._service = service
