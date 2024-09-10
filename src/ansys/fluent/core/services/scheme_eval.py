@@ -276,8 +276,8 @@ class SchemeEval:
     def exec(
         self,
         commands: Sequence[str],
-        wait: bool | None = True,
-        silent: bool | None = True,
+        wait: bool = True,
+        silent: bool = True,
     ) -> str:
         """Executes a sequence of scheme commands.
 

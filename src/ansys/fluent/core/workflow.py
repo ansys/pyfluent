@@ -839,7 +839,7 @@ class ArgumentWrapper(PyCallableStateObject):
         """
         self._task.arguments.update_dict({self._arg_name: value})
 
-    def get_state(self, explicit_only: bool | None = False) -> Any:
+    def get_state(self, explicit_only: bool = False) -> Any:
         """Get the state of this argument.
 
         Parameters
@@ -1161,7 +1161,7 @@ class CompoundTask(CommandTask):
 
         Parameters
         ----------
-        state : dict
+        state : dict | None
             Optional state.
         """
         state = state or {}
@@ -1177,7 +1177,7 @@ class CompoundTask(CommandTask):
 
         Parameters
         ----------
-        state : dict
+        state : dict | None
             Optional state.
         defer_update : bool, default: False
             Whether to defer the update.
@@ -1501,11 +1501,11 @@ class Workflow:
             self._root_affected_cb_by_server[self._workflow.service].unsubscribe()
             self._root_affected_cb_by_server.pop(self._workflow.service)
 
-    def _new_workflow(self, name: str, dynamic_interface: bool | None = True):
+    def _new_workflow(self, name: str, dynamic_interface: bool = True):
         self._workflow.InitializeWorkflow(WorkflowType=name)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
-    def _load_workflow(self, file_path: str, dynamic_interface: bool | None = True):
+    def _load_workflow(self, file_path: str, dynamic_interface: bool = True):
         self._workflow.LoadWorkflow(FilePath=file_path)
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 
@@ -1515,7 +1515,7 @@ class Workflow:
         self._populate_first_tasks_python_name_command_id_map()
         return list(self._initial_task_python_names_map)
 
-    def _create_workflow(self, dynamic_interface: bool | None = True):
+    def _create_workflow(self, dynamic_interface: bool = True):
         self._workflow.CreateNewWorkflow()
         self._activate_dynamic_interface(dynamic_interface=dynamic_interface)
 

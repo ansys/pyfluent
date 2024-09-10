@@ -307,7 +307,7 @@ class FluentConnection:
         port: int | None = None,
         password: str | None = None,
         channel: grpc.Channel | None = None,
-        cleanup_on_exit: bool | None = True,
+        cleanup_on_exit: bool = True,
         remote_instance: Instance | None = None,
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
@@ -356,7 +356,7 @@ class FluentConnection:
         """
         self._error_state = ErrorState()
         self._data_valid = False
-        self._channel_str | None = None
+        self._channel_str = None
         self._slurm_job_id = None
         self.finalizer_cbs = []
         if channel is not None:

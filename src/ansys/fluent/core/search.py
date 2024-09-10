@@ -150,8 +150,8 @@ def _get_version_path_prefix_from_obj(obj: Any):
 
 def _search(
     word: str,
-    match_whole_word: bool | None = False,
-    match_case: bool | None = False,
+    match_whole_word: bool = False,
+    match_case: bool = False,
     version: str | None = None,
     search_root: Any | None = None,
     write_api_tree_data: bool | None = False,
@@ -461,8 +461,8 @@ def _get_close_matches_for_word_from_names(
 
 def _search_whole_word(
     search_string: str,
-    match_case: bool | None = False,
-    match_whole_word: bool | None = False,
+    match_case: bool = False,
+    match_whole_word: bool = False,
     api_tree_data: dict | None = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.
@@ -602,7 +602,7 @@ def search(
     search_string: str,
     language: str | None = "eng",
     wildcard: bool | None = False,
-    match_whole_word: bool | None = False,
+    match_whole_word: bool = False,
     match_case: bool | None = True,
 ):
     """Search for a word through the Fluent's object hierarchy.

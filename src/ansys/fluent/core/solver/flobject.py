@@ -1852,7 +1852,7 @@ class CreatableNamedObjectMixinOld(CreatableNamedObjectMixin):
     """Provides creatable named objects for Fluent 2024 R2 and earlier."""
 
     # In Fluent 2025 R1, the ``create()`` method is available as commands in the ``NamedObject`` class.
-    def create(self, name: str | None = "") -> ChildTypeT:
+    def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
         Parameters
@@ -2096,7 +2096,7 @@ def _gethash(obj_info):
 
 def get_root(
     flproxy,
-    version: str | None = "",
+    version: str = "",
     interrupt: Any | None = None,
     file_transfer_service: Any | None = None,
     scheme_eval=None,

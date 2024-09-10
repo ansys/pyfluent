@@ -249,9 +249,7 @@ class DataModelGenerator:
                         "Information: Problem accessing flserver datamodel for icing settings\n"
                     )
 
-    def _write_static_info(
-        self, name: str, info: Any, f: FileIO, level: int | None = 0
-    ):
+    def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}
         # preferences contains a deprecated object Meshing Workflow (with a space)
         # which migrates to MeshingWorkflow automatically. Simplest thing to do is

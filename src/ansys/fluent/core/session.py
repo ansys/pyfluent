@@ -82,7 +82,7 @@ class BaseSession:
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
-        start_transcript: bool | None = True,
+        start_transcript: bool = True,
         launcher_args: Dict[str, Any] | Path | None = None,
         event_type: Enum | None = None,
     ):
@@ -256,7 +256,7 @@ class BaseSession:
         cls,
         server_info_file_name: str,
         file_transfer_service: Any | None = None,
-        start_transcript: bool | None = True,
+        start_transcript: bool = True,
         launcher_args: Dict[str, Any] | Path | None = None,
         **connection_kwargs,
     ):

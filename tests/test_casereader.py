@@ -111,9 +111,7 @@ def test_casereader_static_mixer_text_gz():
     )
 
 
-def create_dir_structure_locally(
-    copy_1: bool | None = False, copy_2: bool | None = False
-):
+def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
     # Copying from and then creating the entire directory structure locally
     case_file_dir = (
         "Static_Mixer_Parameter_project_file/"

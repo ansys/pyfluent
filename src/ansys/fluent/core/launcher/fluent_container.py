@@ -105,7 +105,7 @@ def configure_container_dict(
     port: int | None = None,
     license_server: str | None = None,
     container_server_info_file: str | Path | None = None,
-    remove_server_info_file: bool | None = True,
+    remove_server_info_file: bool = True,
     fluent_image: str | None = None,
     image_name: str | None = None,
     image_tag: str | None = None,

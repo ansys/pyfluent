@@ -30,8 +30,8 @@ class HealthCheckService:
     class Status(Enum):
         """Health check status."""
 
-        UNKNOWN: int | None = 0
-        SERVING: int | None = 1
+        UNKNOWN: int = 0
+        SERVING: int = 1
         NOT_SERVING: int = 2
         SERVICE_UNKNOWN: int = 3
 

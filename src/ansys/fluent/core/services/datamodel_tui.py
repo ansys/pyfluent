@@ -197,7 +197,7 @@ class PyMenu:
         self._mode = mode
         self._path = path if isinstance(path, str) else convert_path_to_grpc_path(path)
 
-    def get_child_names(self, include_unavailable: bool | None = False) -> list[str]:
+    def get_child_names(self, include_unavailable: bool = False) -> list[str]:
         """Get the names of child menus.
 
         Parameters
@@ -238,7 +238,7 @@ class PyMenu:
             else:
                 return self._service.execute_command(self._path, *args, **kwargs)
 
-    def get_doc_string(self, include_unavailable: bool | None = False) -> str:
+    def get_doc_string(self, include_unavailable: bool = False) -> str:
         """Get docstring for a menu.
 
         Parameters

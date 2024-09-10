@@ -342,7 +342,7 @@ class EventSubscription:
         SubscribeEventError
             If server fails to subscribe from event.
         """
-        self.is_subscribed: bool | None = False
+        self.is_subscribed: bool = False
         self._service: DatamodelService = service
         self.path: str = path
         response = service.subscribe_events(request_dict)
@@ -1585,7 +1585,7 @@ class PyQuery:
         service: DatamodelService,
         rules: str,
         query: str,
-        path: Path | None = None,
+        path: Path = None,
     ):
         """__init__ method of PyQuery class."""
         self.service = service

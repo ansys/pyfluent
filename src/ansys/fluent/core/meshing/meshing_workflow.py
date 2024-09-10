@@ -53,7 +53,7 @@ class MeshingWorkflow(Workflow):
         name: str,
         identifier: str,
         fluent_version: FluentVersion,
-        initialize: bool | None = True,
+        initialize: bool = True,
     ) -> None:
         """Initialize MeshingWorkflow.
 
@@ -103,7 +103,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool | None = True,
+        initialize: bool = True,
     ) -> None:
         """Initialize WatertightMeshingWorkflow.
 
@@ -138,7 +138,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         part_management: PyMenuGeneric,
         pm_file_management: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool | None = True,
+        initialize: bool = True,
     ) -> None:
         """Initialize FaultTolerantMeshingWorkflow.
 
@@ -199,7 +199,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool | None = True,
+        initialize: bool = True,
     ) -> None:
         """Initialize TwoDimensionalMeshingWorkflow.
 
@@ -232,7 +232,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool | None = True,
+        initialize: bool = True,
     ) -> None:
         """Initialize TopologyBasedMeshingWorkflow.
 
@@ -307,7 +307,7 @@ class CreateWorkflow(Workflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool | None = True,
+        initialize: bool = True,
     ) -> None:
         """Initialize a ``CreateWorkflow`` instance.
 

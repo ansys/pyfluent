@@ -199,7 +199,7 @@ class SlurmFuture:
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
-        self, timeout: int | None = None
+        self, timeout: int = None
     ) -> Meshing | PureMeshing | Solver | SolverIcing:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
@@ -223,7 +223,7 @@ class SlurmFuture:
         """
         return self._future.result(timeout)
 
-    def exception(self, timeout: int | None = None) -> Exception:
+    def exception(self, timeout: int = None) -> Exception:
         """Return the exception raised by the Fluent launch. If Fluent hasn't yet
         launched, then this method will wait up to timeout seconds. If Fluent hasn't
         launched in timeout seconds, then a TimeoutError will be raised. If timeout is
@@ -273,8 +273,8 @@ class SlurmLauncher:
         start_timeout: int = -1,
         additional_arguments: str | None = "",
         env: Dict[str, Any] | Path | None = None,
-        cleanup_on_exit: bool | None = True,
-        start_transcript: bool | None = True,
+        cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
         case_file_name: str | None = None,
         case_data_file_name: str | None = None,
         lightweight_mode: bool | None = None,

@@ -105,14 +105,14 @@ class FieldInfo:
     def __init__(
         self,
         service: FieldDataService,
-        is_data_valid: Callable[[], bool] | None,
+        is_data_valid: Callable[[], bool],
     ):
         """__init__ method of FieldInfo class."""
         self._service = service
         self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool | None = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -241,7 +241,7 @@ class _AllowedNames:
 class _AllowedFieldNames(_AllowedNames):
     def __init__(
         self,
-        is_data_valid: Callable[[], bool] | None,
+        is_data_valid: Callable[[], bool],
         field_info: FieldInfo | None = None,
         info: dict | None = None,
     ):
@@ -266,7 +266,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 
 class _AllowedSurfaceNames(_AllowedNames):
-    def __call__(self, respect_data_valid: bool | None = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return self._info if self._info else self._field_info.get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
@@ -283,7 +283,7 @@ class _AllowedSurfaceNames(_AllowedNames):
 
 
 class _AllowedSurfaceIDs(_AllowedNames):
-    def __call__(self, respect_data_valid: bool | None = True) -> List[int]:
+    def __call__(self, respect_data_valid: bool = True) -> List[int]:
         try:
             return [
                 info["surface_id"][0]
@@ -297,7 +297,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_name_error = DisallowedValuesError
     _field_unavailable_error = FieldUnavailable
 
-    def __call__(self, respect_data_valid: bool | None = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
         field_dict = (
             self._info if self._info else self._field_info.get_scalar_fields_info()
         )
@@ -316,7 +316,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
     _field_name_error = DisallowedValuesError
     _field_unavailable_error = FieldUnavailable
 
-    def __call__(self, respect_data_valid: bool | None = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return (
             self._info
             if self._info
@@ -1094,7 +1094,7 @@ class FieldData:
         self,
         service: FieldDataService,
         field_info: FieldInfo,
-        is_data_valid: Callable[[], bool] | None,
+        is_data_valid: Callable[[], bool],
         scheme_eval: Optional = None,
     ):
         """__init__ method of FieldData class."""
