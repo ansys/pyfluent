@@ -371,12 +371,12 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
+    def input_parameters(self) -> List[InputParameter] | List[InputParameterOld]:
         """Get the input parameters.
 
         Returns
         -------
-        Union[List[InputParameter], List[InputParameterOld]]
+        List[InputParameter] | List[InputParameterOld]
             The list of input parameters.
         """
         exprs = self._named_expressions()

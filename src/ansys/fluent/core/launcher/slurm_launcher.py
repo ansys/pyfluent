@@ -200,7 +200,7 @@ class SlurmFuture:
 
     def result(
         self, timeout: int = None
-    ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    ) -> Meshing | PureMeshing | Solver | SolverIcing:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
         hasn't launched in timeout seconds, then a TimeoutError will be raised. If
@@ -262,10 +262,10 @@ class SlurmLauncher:
         self,
         mode: FluentMode | str | None = None,
         ui_mode: UIMode | str | None = None,
-        graphics_driver: Union[
-            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
-        ] = None,
-        product_version: Union[FluentVersion, str, float, int, None] = None,
+        graphics_driver: (
+            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+        ) = None,
+        product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
         precision: Precision | str | None = None,
         processor_count: int = None,
@@ -435,7 +435,7 @@ class SlurmLauncher:
         self._argvals["slurm_job_id"] = slurm_job_id
         return slurm_job_id
 
-    def _launch(self, slurm_job_id) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    def _launch(self, slurm_job_id) -> Meshing | PureMeshing | Solver | SolverIcing:
         _await_fluent_launch(
             self._server_info_file_name,
             self._argvals["start_timeout"],

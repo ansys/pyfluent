@@ -32,7 +32,7 @@ class FluentEnum(Enum):
         return
 
     @classmethod
-    def _missing_(cls, value: Union[str, int, None]):
+    def _missing_(cls, value: str | int | None):
         if value is None:
             return cls._default(cls)
         for member in cls:
@@ -243,7 +243,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 
 
 def _get_graphics_driver(
-    graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str]
+    graphics_driver: FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str,
 ):
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
@@ -276,7 +276,7 @@ def _get_running_session_mode(
 
 
 def _get_standalone_launch_fluent_version(
-    product_version: Union[FluentVersion, str, float, int, None]
+    product_version: FluentVersion | str | float | int | None,
 ) -> FluentVersion:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
@@ -306,7 +306,7 @@ def _get_standalone_launch_fluent_version(
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: Union[bool, list], dimension: int):
+def _validate_gpu(gpu: bool | list, dimension: int):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters

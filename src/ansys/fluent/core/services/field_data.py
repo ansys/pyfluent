@@ -740,7 +740,7 @@ def _get_surface_ids(
 
     Parameters
     ----------
-    surfaces : Union[List[int], List[str]]
+    surfaces : List[int], | List[str]
         List of surface IDs or surface names.
 
     Returns
@@ -1182,7 +1182,7 @@ class FieldData:
         surfaces: List[int | str],
         node_value: bool = True,
         boundary_value: bool = True,
-    ) -> Union[ScalarFieldData, Dict[int, ScalarFieldData]]:
+    ) -> ScalarFieldData | Dict[int, ScalarFieldData]:
         """Get scalar field data on a surface.
 
         Parameters
@@ -1200,7 +1200,7 @@ class FieldData:
 
         Returns
         -------
-        Union[ScalarFieldData, Dict[int, ScalarFieldData]]
+        ScalarFieldData | Dict[int, ScalarFieldData]
             If a surface name is provided as input, scalar field data is returned. If surface
             IDs are provided as input, a dictionary containing a map of surface IDs to scalar
             field data.
@@ -1264,10 +1264,13 @@ class FieldData:
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool = False,
-    ) -> Union[
-        Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
-        Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
-    ]:
+    ) -> (
+        Vertices
+        | FacesConnectivity
+        | FacesNormal
+        | FacesCentroid
+        | Dict[int, Vertices | FacesConnectivity | FacesNormal | FacesCentroid]
+    ):
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
@@ -1281,8 +1284,7 @@ class FieldData:
 
         Returns
         -------
-        Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid,
-        Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]]]
+        Vertices, FacesConnectivity, FacesNormal, FacesCentroid | Dict[int, Vertices | FacesConnectivity | FacesNormal | FacesCentroid]
              If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
@@ -1388,7 +1390,7 @@ class FieldData:
         self,
         field_name: str,
         surfaces: List[int | str],
-    ) -> Union[VectorFieldData, Dict[int, VectorFieldData]]:
+    ) -> VectorFieldData | Dict[int, VectorFieldData]:
         """Get vector field data on a surface.
 
         Parameters
@@ -1400,7 +1402,7 @@ class FieldData:
 
         Returns
         -------
-        Union[VectorFieldData, Dict[int, VectorFieldData]]
+        VectorFieldData | Dict[int, VectorFieldData]
             If a surface name is provided as input, vector field data is returned.
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.

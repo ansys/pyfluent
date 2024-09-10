@@ -54,7 +54,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         Keyword arguments.
     Returns
     -------
-    launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
+    launcher: DockerLauncher | PimLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
@@ -94,7 +94,7 @@ def _version_to_dimension(old_arg_val):
     warning_cls=PyFluentDeprecationWarning,
 )
 def launch_fluent(
-    product_version: Union[FluentVersion, str, float, int, None] = None,
+    product_version: FluentVersion | str | float | int | None = None,
     dimension: Dimension | int | None = None,
     precision: Precision | str | None = None,
     processor_count: int = None,
@@ -108,22 +108,22 @@ def launch_fluent(
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     ui_mode: UIMode | str | None = None,
-    graphics_driver: Union[
-        FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
-    ] = None,
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    ) = None,
     case_file_name: str = None,
     case_data_file_name: str = None,
     lightweight_mode: bool = None,
     mode: FluentMode | str | None = None,
     py: bool = None,
-    gpu: Union[bool, list[int], None] = None,
+    gpu: bool | list[int] | None = None,
     cwd: str = None,
     fluent_path: str = None,
     topy: str | list = None,
     start_watchdog: bool = None,
     scheduler_options: dict = None,
     file_transfer_service: Any = None,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
+) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
@@ -301,7 +301,7 @@ def connect_to_fluent(
     server_info_file_name: str = None,
     password: str = None,
     start_watchdog: bool = None,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
     Parameters

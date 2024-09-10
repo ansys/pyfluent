@@ -27,8 +27,7 @@ from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 Path = list[tuple[str, str]]
-_TValue = Union[None, bool, int, float, str, Sequence["_TValue"], dict[str, "_TValue"]]
-
+_TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 member_specs_oneof_fields = [
@@ -37,9 +36,7 @@ member_specs_oneof_fields = [
 ]
 
 
-def _get_value_from_message_dict(
-    d: dict[str, Any], key: list[Union[str, Sequence[str]]]
-):
+def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str]]):
     """Get value from a protobuf message dict by a sequence of keys.
 
     A key can also be a list of oneof types.
@@ -1507,7 +1504,7 @@ class PyNamedObjectContainer:
         """
         return self._get_item(key)
 
-    def get(self, key: str) -> Union[PyMenu, None]:
+    def get(self, key: str) -> PyMenu | None:
         """Return the child object by key.
 
         Parameters
@@ -2079,7 +2076,7 @@ class PyMenuGeneric(PyMenu):
 
     def _get_child(
         self, name: str
-    ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand, PyQuery]:
+    ) -> "PyMenuGeneric" | PyNamedObjectContainer | PyCommand | PyQuery:
         singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]
