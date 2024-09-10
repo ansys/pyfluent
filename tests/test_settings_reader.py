@@ -4,7 +4,9 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.case_file import SettingsFile as SettingsReader
 
 
-def call_settings_reader(settings_file_name: str = None, expected: dict = None):
+def call_settings_reader(
+    settings_file_name: str | None = None, expected: dict | None = None
+):
     reader = SettingsReader(settings_file_name=settings_file_name)
     if expected is not None:
         assert reader.precision() == expected["precision"]
@@ -19,7 +21,7 @@ def call_settings_reader(settings_file_name: str = None, expected: dict = None):
 
 
 def call_settings_reader_static_mixer(
-    settings_file_name: str = None,
+    settings_file_name: str | None = None,
 ):
     call_settings_reader(
         settings_file_name=settings_file_name,

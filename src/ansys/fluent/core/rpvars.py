@@ -19,7 +19,7 @@ class RPVars:
     def __init__(self, eval_fn):
         self._eval_fn = eval_fn
 
-    def __call__(self, var: str = None, val: Any = None) -> Any:
+    def __call__(self, var: str | None = None, val: Any | None = None) -> Any:
         """Set or get a specific rpvar, or get the full rpvar state.
 
         Parameters

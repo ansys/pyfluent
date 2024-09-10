@@ -16,12 +16,12 @@ class StreamingService:
     def __init__(self, stream_begin_method, target, streaming_service):
         """__init__ method of StreamingService class."""
         self._lock: threading.RLock = threading.RLock()
-        self._streaming: bool = False
+        self._streaming: bool | None = False
         self._id = f"stream-{next(StreamingService._service_id)}"
         self._stream_begin_method = stream_begin_method
         self._target = target
         self._streaming_service = streaming_service
-        self._stream_thread: threading.Thread = None
+        self._stream_thread: threading.Thread | None = None
         self._service_callback_id = itertools.count()
         self._service_callbacks: dict = {}
 

@@ -52,8 +52,8 @@ class DataFile:
 
     def __init__(
         self,
-        data_file_name: str = None,
-        project_file_name: str = None,
+        data_file_name: str | None = None,
+        project_file_name: str | None = None,
         case_file_handle=None,
     ):
         """__init__ method of CaseFile class."""

@@ -81,10 +81,10 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Any = None,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
-        event_type: Enum = None,
+        file_transfer_service: Any | None = None,
+        start_transcript: bool | None = True,
+        launcher_args: Dict[str, Any] | Path | None = None,
+        event_type: Enum | None = None,
     ):
         """BaseSession.
 
@@ -118,7 +118,7 @@ class BaseSession:
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Any = None,
+        file_transfer_service: Any | None = None,
         event_type=None,
     ):
         """Build a BaseSession object from fluent_connection object."""
@@ -255,9 +255,9 @@ class BaseSession:
     def _create_from_server_info_file(
         cls,
         server_info_file_name: str,
-        file_transfer_service: Any = None,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
+        file_transfer_service: Any | None = None,
+        start_transcript: bool | None = True,
+        launcher_args: Dict[str, Any] | Path | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -344,7 +344,7 @@ class BaseSession:
         file interactions require explicit use of {method_name}  method \
         for relevant files."
 
-    def upload(self, file_name: list[str] | str, remote_file_name: str = None):
+    def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
         """Upload a file to the server.
 
         Parameters
@@ -358,7 +358,7 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_directory: str = "."):
+    def download(self, file_name: str, local_directory: str | None = "."):
         """Download a file from the server.
 
         Parameters

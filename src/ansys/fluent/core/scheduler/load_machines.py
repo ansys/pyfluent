@@ -15,9 +15,9 @@ from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
 def load_machines(
-    machine_info: List[Dict[str, int]] = None,
-    host_info: str = None,
-    ncores: int = None,
+    machine_info: List[Dict[str, int]] | None = None,
+    host_info: str | None = None,
+    ncores: int | None = None,
 ) -> MachineList:
     """Provide a function to construct a machine list from allocated machines.
 

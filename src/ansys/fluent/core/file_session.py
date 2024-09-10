@@ -147,8 +147,8 @@ class Transaction:
         self,
         field_name: str,
         surfaces: List[int | str],
-        node_value: bool = True,
-        boundary_value: bool = True,
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
     ) -> None:
         """Add request to get scalar field data on surfaces.
 
@@ -379,7 +379,7 @@ class FileFieldData:
         self,
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
-        overset_mesh: bool = False,
+        overset_mesh: bool | None = False,
     ):
         """Get surface data (vertices and faces connectivity).
 
@@ -470,8 +470,8 @@ class FileFieldData:
         self,
         field_name: str,
         surfaces: List[int | str],
-        node_value: bool = True,
-        boundary_value: bool = True,
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
     ):
         """Get scalar field data on a surface.
 
@@ -686,7 +686,7 @@ class FileFieldInfo:
         self._file_session = file_session
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool | None = False, surface_ids: List[int] = None
     ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 

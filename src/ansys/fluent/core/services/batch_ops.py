@@ -68,11 +68,11 @@ class BatchOps:
     access the ``mesh-1`` mesh object which has not been created yet.
     """
 
-    _proto_files: list[ModuleType] = None
+    _proto_files: list[ModuleType] | None = None
     _instance = lambda: None
 
     @classmethod
-    def instance(cls) -> _TBatchOps:
+    def instance(cls) -> _TBatchOps | None:
         """Get the BatchOps instance.
 
         Returns

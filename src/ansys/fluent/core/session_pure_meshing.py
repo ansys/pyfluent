@@ -37,9 +37,9 @@ class PureMeshing(BaseSession):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Any = None,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
+        file_transfer_service: Any | None = None,
+        start_transcript: bool | None = True,
+        launcher_args: Dict[str, Any] | Path | None = None,
     ):
         """PureMeshing session.
 
@@ -178,10 +178,10 @@ class PureMeshing(BaseSession):
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: str = None,
-        num_files_to_try: int = 1,
-        clean_up_mesh_file: bool = True,
-        overwrite_previous: bool = True,
+        file_name_stem: str | None = None,
+        num_files_to_try: int | None = 1,
+        clean_up_mesh_file: bool | None = True,
+        overwrite_previous: bool | None = True,
     ):
         """Transfer mesh to Fluent solver instances.
 

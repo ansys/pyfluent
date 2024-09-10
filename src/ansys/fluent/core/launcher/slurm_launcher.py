@@ -199,7 +199,7 @@ class SlurmFuture:
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
-        self, timeout: int = None
+        self, timeout: int | None = None
     ) -> Meshing | PureMeshing | Solver | SolverIcing:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
@@ -223,7 +223,7 @@ class SlurmFuture:
         """
         return self._future.result(timeout)
 
-    def exception(self, timeout: int = None) -> Exception:
+    def exception(self, timeout: int | None = None) -> Exception:
         """Return the exception raised by the Fluent launch. If Fluent hasn't yet
         launched, then this method will wait up to timeout seconds. If Fluent hasn't
         launched in timeout seconds, then a TimeoutError will be raised. If timeout is
@@ -268,24 +268,24 @@ class SlurmLauncher:
         product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
         precision: Precision | str | None = None,
-        processor_count: int = None,
+        processor_count: int | None = None,
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
-        additional_arguments: str = "",
-        env: Dict[str, Any] = None,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        case_file_name: str = None,
-        case_data_file_name: str = None,
-        lightweight_mode: bool = None,
-        py: bool = None,
-        gpu: bool = None,
-        cwd: str = None,
-        fluent_path: str = None,
-        topy: str | list = None,
-        start_watchdog: bool = None,
-        scheduler_options: dict = None,
-        file_transfer_service: Any = None,
+        additional_arguments: str | None = "",
+        env: Dict[str, Any] | Path | None = None,
+        cleanup_on_exit: bool | None = True,
+        start_transcript: bool | None = True,
+        case_file_name: str | None = None,
+        case_data_file_name: str | None = None,
+        lightweight_mode: bool | None = None,
+        py: bool | None = None,
+        gpu: bool | None = None,
+        cwd: str | None = None,
+        fluent_path: str | None = None,
+        topy: str | list | None = None,
+        start_watchdog: bool | None = None,
+        scheduler_options: dict | None = None,
+        file_transfer_service: Any | None = None,
     ):
         """Launch Fluent session in standalone mode.
 

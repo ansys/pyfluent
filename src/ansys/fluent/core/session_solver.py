@@ -79,9 +79,9 @@ class Solver(BaseSession):
         self,
         fluent_connection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Any = None,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
+        file_transfer_service: Any | None = None,
+        start_transcript: bool | None = True,
+        launcher_args: Dict[str, Any] | Path | None = None,
     ):
         """Solver session.
 
@@ -113,7 +113,7 @@ class Solver(BaseSession):
         self,
         fluent_connection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Any = None,
+        file_transfer_service: Any | None = None,
     ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
@@ -289,7 +289,7 @@ class Solver(BaseSession):
         """Get the state of the object."""
         return self.settings.get_state()
 
-    def set_state(self, state: StateT = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         self.settings.set_state(state, **kwargs)
 

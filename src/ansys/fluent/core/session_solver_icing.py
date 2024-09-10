@@ -22,9 +22,9 @@ class SolverIcing(Solver):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Any = None,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
+        file_transfer_service: Any | None = None,
+        start_transcript: bool | None = True,
+        launcher_args: Dict[str, Any] | Path | None = None,
     ):
         """SolverIcing session.
 

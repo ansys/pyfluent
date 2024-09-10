@@ -274,7 +274,10 @@ class SchemeEval:
             return _convert_scheme_pointer_to_py_value(response.output, self.version)
 
     def exec(
-        self, commands: Sequence[str], wait: bool = True, silent: bool = True
+        self,
+        commands: Sequence[str],
+        wait: bool | None = True,
+        silent: bool | None = True,
     ) -> str:
         """Executes a sequence of scheme commands.
 

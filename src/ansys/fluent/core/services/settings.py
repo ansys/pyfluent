@@ -103,8 +103,8 @@ class _SettingsServiceImpl:
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
 
-trace: bool = False
-_indent: int = 0
+trace: bool | None = False
+_indent: int | None = 0
 
 
 def _trace(fn):
@@ -353,7 +353,9 @@ class SettingsService:
         return ret
 
     @_trace
-    def get_attrs(self, path: str, attrs: list[str], recursive: bool = False) -> Any:
+    def get_attrs(
+        self, path: str, attrs: list[str], recursive: bool | None = False
+    ) -> Any:
         """Return values of given attributes."""
         request = _get_request_instance_for_path(SettingsModule.GetAttrsRequest, path)
         request.attrs[:] = attrs

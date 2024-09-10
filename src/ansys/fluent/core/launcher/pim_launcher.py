@@ -50,18 +50,18 @@ class PIMLauncher:
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
-        product_version: FluentVersion | str | float | int = None,
+        product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
         precision: Precision | str | None = None,
-        processor_count: int = None,
+        processor_count: int | None = None,
         start_timeout: int = 60,
-        additional_arguments: str = "",
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        py: bool = None,
-        gpu: bool = None,
-        start_watchdog: bool = None,
-        file_transfer_service: Any = None,
+        additional_arguments: str | None = "",
+        cleanup_on_exit: bool | None = True,
+        start_transcript: bool | None = True,
+        py: bool | None = None,
+        gpu: bool | None = None,
+        start_watchdog: bool | None = None,
+        file_transfer_service: Any | None = None,
     ):
         """Launch Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
@@ -177,12 +177,12 @@ class PIMLauncher:
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
-    product_version: str = None,
-    cleanup_on_exit: bool = True,
+    product_version: str | None = None,
+    cleanup_on_exit: bool | None = True,
     mode: FluentMode = FluentMode.SOLVER,
-    dimensionality: str = None,
-    launcher_args: Dict[str, Any] = None,
-    file_transfer_service: Any = None,
+    dimensionality: str | None = None,
+    launcher_args: Dict[str, Any] | Path | None = None,
+    file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 

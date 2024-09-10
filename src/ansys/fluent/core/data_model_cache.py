@@ -291,7 +291,9 @@ class DataModelCache:
     def _dm_path_comp_list(obj):
         return [DataModelCache._dm_path_comp(comp) for comp in obj.path]
 
-    def get_state(self, rules: str, obj: object, name_key: NameKey = None) -> Any:
+    def get_state(
+        self, rules: str, obj: object, name_key: NameKey | None = None
+    ) -> Any:
         """Retrieve state from datamodel cache.
 
         Parameters

@@ -253,7 +253,9 @@ class UnhandledQuantity(RuntimeError):
         )
 
 
-def get_si_unit_for_fluent_quantity(quantity: str, unit_table: dict = None):
+def get_si_unit_for_fluent_quantity(
+    quantity: str | None, unit_table: dict | None = None
+):
     """Get the SI unit for the given Fluent quantity.
 
     Raises

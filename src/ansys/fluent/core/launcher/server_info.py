@@ -24,9 +24,9 @@ def _get_server_info_file_name(use_tmpdir=True):
 
 def _get_server_info(
     server_info_file_name: str,
-    ip: str = None,
-    port: int = None,
-    password: str = None,
+    ip: str | None = None,
+    port: int | None = None,
+    password: str | None = None,
 ):
     """Get server connection information of an already running session."""
     if not (ip and port) and not server_info_file_name:

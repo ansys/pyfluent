@@ -87,7 +87,7 @@ def get_default_config() -> dict:
     return config
 
 
-def enable(level: str | int = "DEBUG", custom_config: dict = None):
+def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
     """Enables PyFluent logging to file.
 
     Parameters

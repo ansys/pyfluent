@@ -17,8 +17,8 @@ class SolverLite(Solver):
         self,
         fluent_connection=None,
         scheme_eval=None,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
+        start_transcript: bool | None = True,
+        launcher_args: Dict[str, Any] | Path | None = None,
     ):
         """SolverLite session.
 

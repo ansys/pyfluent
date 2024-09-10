@@ -43,7 +43,7 @@ def _decompress(file_name: str) -> None:
     return zip_ref.close()
 
 
-def _get_file_url(file_name: str, directory: str = None) -> str:
+def _get_file_url(file_name: str, directory: str | None = None) -> str:
     """Get file URL."""
     if directory:
         return (
@@ -56,8 +56,8 @@ def _get_file_url(file_name: str, directory: str = None) -> str:
 def _retrieve_file(
     url: str,
     file_name: str,
-    save_path: str = None,
-    return_without_path: bool = False,
+    save_path: str | None = None,
+    return_without_path: bool | None = False,
 ) -> str:
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
@@ -109,9 +109,9 @@ def _retrieve_file(
 
 def download_file(
     file_name: str,
-    directory: str = None,
-    save_path: str = None,
-    return_without_path: bool = None,
+    directory: str | None = None,
+    save_path: str | None = None,
+    return_without_path: bool | None = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 

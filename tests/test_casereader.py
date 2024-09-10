@@ -16,9 +16,9 @@ from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 
 
 def call_casereader(
-    case_file_name: str = None,
-    project_file_name: str = None,
-    expected: dict = None,
+    case_file_name: str | None = None,
+    project_file_name: str | None = None,
+    expected: dict | None = None,
 ):
     reader = CaseReader(
         case_file_name=case_file_name, project_file_name=project_file_name
@@ -36,7 +36,7 @@ def call_casereader(
 
 
 def call_casereader_static_mixer(
-    case_file_name: str = None, project_file_name: str = None
+    case_file_name: str | None = None, project_file_name: str | None = None
 ):
     call_casereader(
         case_file_name=case_file_name,
@@ -111,7 +111,9 @@ def test_casereader_static_mixer_text_gz():
     )
 
 
-def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
+def create_dir_structure_locally(
+    copy_1: bool | None = False, copy_2: bool | None = False
+):
     # Copying from and then creating the entire directory structure locally
     case_file_dir = (
         "Static_Mixer_Parameter_project_file/"

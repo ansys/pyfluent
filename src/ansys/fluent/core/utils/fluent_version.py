@@ -31,7 +31,7 @@ def get_version(session=None):
     return session.get_fluent_version().value
 
 
-def get_version_for_file_name(version: str = None, session=None):
+def get_version_for_file_name(version: str | None = None, session=None):
     """Get Fluent version for file name."""
     if version is None:
         version = get_version(session)

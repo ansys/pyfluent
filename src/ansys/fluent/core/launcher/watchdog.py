@@ -27,7 +27,9 @@ class UnsuccessfulWatchdogLaunch(RuntimeError):
     pass
 
 
-def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None) -> None:
+def launch(
+    main_pid: int, sv_port: int, sv_password: str, sv_ip: str | None = None
+) -> None:
     """Function to launch the Watchdog. Automatically used and managed by PyFluent.
 
     Parameters

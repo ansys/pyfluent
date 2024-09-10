@@ -130,7 +130,7 @@ class BaseMeshing:
             )
         return self._old_workflow
 
-    def watertight_workflow(self, initialize: bool = True):
+    def watertight_workflow(self, initialize: bool | None = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
@@ -140,7 +140,7 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def fault_tolerant_workflow(self, initialize: bool = True):
+    def fault_tolerant_workflow(self, initialize: bool | None = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
@@ -152,7 +152,7 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def two_dimensional_meshing_workflow(self, initialize: bool = True):
+    def two_dimensional_meshing_workflow(self, initialize: bool | None = True):
         """Data model root of the workflow."""
         self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
@@ -162,7 +162,7 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def topology_based_meshing_workflow(self, initialize: bool = True):
+    def topology_based_meshing_workflow(self, initialize: bool | None = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
@@ -182,7 +182,7 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def create_workflow(self, initialize: bool = True):
+    def create_workflow(self, initialize: bool | None = True):
         """Datamodel root of the workflow."""
         self._current_workflow = CreateWorkflow(
             _make_datamodel_module(self, "workflow"),

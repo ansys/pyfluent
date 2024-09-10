@@ -52,20 +52,20 @@ class DockerLauncher:
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
-        product_version: FluentVersion | str | float | int = None,
+        product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
         precision: Precision | str | None = None,
-        processor_count: int = None,
+        processor_count: int | None = None,
         start_timeout: int = 60,
-        additional_arguments: str = "",
-        container_dict: dict = None,
-        dry_run: bool = False,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        py: bool = None,
-        gpu: bool = None,
-        start_watchdog: bool = None,
-        file_transfer_service: Any = None,
+        additional_arguments: str | None = "",
+        container_dict: dict | None = None,
+        dry_run: bool | None = False,
+        cleanup_on_exit: bool | None = True,
+        start_transcript: bool | None = True,
+        py: bool | None = None,
+        gpu: bool | None = None,
+        start_watchdog: bool | None = None,
+        file_transfer_service: Any | None = None,
     ):
         """Launch Fluent session in container mode.
 

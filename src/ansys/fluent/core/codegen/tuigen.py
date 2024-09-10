@@ -142,7 +142,7 @@ def _is_valid_tui_menu_name(name):
 class _TUIMenu:
     """Class representing Fluent's TUI menu."""
 
-    def __init__(self, path: str, doc: str, is_command: bool = False):
+    def __init__(self, path: str, doc: str, is_command: bool | None = False):
         self.path = path
         self.tui_name = path[-1] if path else ""
         self.name = convert_tui_menu_to_func_name(self.tui_name)
@@ -205,10 +205,10 @@ class TUIGenerator:
                 )
                 menu.children[child_menu.name] = child_menu
 
-    def _write_code_to_tui_file(self, code: str, indent: int = 0):
+    def _write_code_to_tui_file(self, code: str, indent: int | None = 0):
         self.__writer.write(" " * _INDENT_STEP * indent + code)
 
-    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int = 0):
+    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int | None = 0):
         api_tree = {}
         self._write_code_to_tui_file("\n")
         self._write_code_to_tui_file(f"class {menu.name}(TUIMenu):\n", indent)

@@ -38,7 +38,7 @@ class GraphicsDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract)
     """Abstract base class for graphics objects."""
 
     @abstractmethod
-    def display(self, window_id: str = None):
+    def display(self, window_id: str | None = None):
         """Display graphics.
 
         Parameters
@@ -53,7 +53,7 @@ class PlotDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
     """Abstract base class for plot objects."""
 
     @abstractmethod
-    def plot(self, window_id: str = None):
+    def plot(self, window_id: str | None = None):
         """Draw plot.
 
         Parameters
@@ -80,7 +80,7 @@ class MonitorDefn(PlotDefn):
     class monitor_set_name(metaclass=PyLocalPropertyMeta):
         """Monitor set name."""
 
-        value: str = None
+        value: str | None = None
 
         @Attribute
         def allowed_values(self):
@@ -96,12 +96,12 @@ class XYPlotDefn(PlotDefn):
     class node_values(metaclass=PyLocalPropertyMeta):
         """Plot nodal values."""
 
-        value: bool = True
+        value: bool | None = True
 
     class boundary_values(metaclass=PyLocalPropertyMeta):
         """Plot Boundary values."""
 
-        value: bool = True
+        value: bool | None = True
 
     class direction_vector(metaclass=PyLocalPropertyMeta):
         """Direction Vector."""
@@ -111,7 +111,7 @@ class XYPlotDefn(PlotDefn):
     class y_axis_function(metaclass=PyLocalPropertyMeta):
         """Y Axis Function."""
 
-        value: str = None
+        value: str | None = None
 
         @Attribute
         def allowed_values(self):
@@ -161,17 +161,17 @@ class MeshDefn(GraphicsDefn):
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges for mesh."""
 
-        value: bool = False
+        value: bool | None = False
 
     class show_nodes(metaclass=PyLocalPropertyMeta):
         """Show nodes for mesh."""
 
-        value: bool = False
+        value: bool | None = False
 
     class show_faces(metaclass=PyLocalPropertyMeta):
         """Show faces for mesh."""
 
-        value: bool = True
+        value: bool | None = True
 
 
 class PathlinesDefn(GraphicsDefn):
@@ -182,7 +182,7 @@ class PathlinesDefn(GraphicsDefn):
     class field(metaclass=PyLocalPropertyMeta):
         """Pathlines field."""
 
-        value: str = None
+        value: str | None = None
 
         @Attribute
         def allowed_values(self):
@@ -210,7 +210,7 @@ class SurfaceDefn(GraphicsDefn):
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges for surface."""
 
-        value: bool = True
+        value: bool | None = True
 
     class definition(metaclass=PyLocalObjectMeta):
         """Specify surface definition type."""
@@ -314,7 +314,7 @@ class SurfaceDefn(GraphicsDefn):
             class field(metaclass=PyLocalPropertyMeta):
                 """Iso surface field."""
 
-                value: str = None
+                value: str | None = None
 
                 @Attribute
                 def allowed_values(self):
@@ -334,7 +334,7 @@ class SurfaceDefn(GraphicsDefn):
             class iso_value(metaclass=PyLocalPropertyMeta):
                 """Iso value for field."""
 
-                _value: float = None
+                _value: float | None = None
 
                 def _reset_on_change(self):
                     return [self._parent.field]
@@ -369,7 +369,7 @@ class ContourDefn(GraphicsDefn):
     class field(metaclass=PyLocalPropertyMeta):
         """Contour field."""
 
-        value: str = None
+        value: str | None = None
 
         @Attribute
         def allowed_values(self):
@@ -391,12 +391,12 @@ class ContourDefn(GraphicsDefn):
     class filled(metaclass=PyLocalPropertyMeta):
         """Draw filled contour."""
 
-        value: bool = True
+        value: bool | None = True
 
     class node_values(metaclass=PyLocalPropertyMeta):
         """Draw nodal data."""
 
-        _value: bool = True
+        _value: bool | None = True
 
         @property
         def value(self):
@@ -419,17 +419,17 @@ class ContourDefn(GraphicsDefn):
     class boundary_values(metaclass=PyLocalPropertyMeta):
         """Draw boundary values."""
 
-        value: bool = False
+        value: bool | None = False
 
     class contour_lines(metaclass=PyLocalPropertyMeta):
         """Draw contour lines."""
 
-        value: bool = False
+        value: bool | None = False
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges."""
 
-        value: bool = False
+        value: bool | None = False
 
     class range(metaclass=PyLocalObjectMeta):
         """Range definition."""
@@ -455,7 +455,7 @@ class ContourDefn(GraphicsDefn):
             class global_range(metaclass=PyLocalPropertyMeta):
                 """Show global range."""
 
-                value: bool = False
+                value: bool | None = False
 
         class auto_range_off(metaclass=PyLocalObjectMeta):
             """Auto range off definition."""
@@ -468,12 +468,12 @@ class ContourDefn(GraphicsDefn):
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """Clip contour within range."""
 
-                value: bool = False
+                value: bool | None = False
 
             class minimum(metaclass=PyLocalPropertyMeta):
                 """Range minimum."""
 
-                _value: float = None
+                _value: float | None = None
 
                 def _reset_on_change(self):
                     return [
@@ -502,7 +502,7 @@ class ContourDefn(GraphicsDefn):
             class maximum(metaclass=PyLocalPropertyMeta):
                 """Range maximum."""
 
-                _value: float = None
+                _value: float | None = None
 
                 def _reset_on_change(self):
                     return [
@@ -550,7 +550,7 @@ class VectorDefn(GraphicsDefn):
     class field(metaclass=PyLocalPropertyMeta):
         """Vector color field."""
 
-        value: str = None
+        value: str | None = None
 
         @Attribute
         def allowed_values(self):
@@ -577,12 +577,12 @@ class VectorDefn(GraphicsDefn):
     class skip(metaclass=PyLocalPropertyMeta):
         """Vector skip."""
 
-        value: int = 0
+        value: int | None = 0
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges."""
 
-        value: bool = False
+        value: bool | None = False
 
     class range(metaclass=PyLocalObjectMeta):
         """Range definition."""
@@ -608,7 +608,7 @@ class VectorDefn(GraphicsDefn):
             class global_range(metaclass=PyLocalPropertyMeta):
                 """Show global range."""
 
-                value: bool = False
+                value: bool | None = False
 
         class auto_range_off(metaclass=PyLocalObjectMeta):
             """Auto range off definition."""
@@ -621,12 +621,12 @@ class VectorDefn(GraphicsDefn):
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """Clip vector within range."""
 
-                value: bool = False
+                value: bool | None = False
 
             class minimum(metaclass=PyLocalPropertyMeta):
                 """Range minimum."""
 
-                _value: float = None
+                _value: float | None = None
 
                 @property
                 def value(self):
@@ -647,7 +647,7 @@ class VectorDefn(GraphicsDefn):
             class maximum(metaclass=PyLocalPropertyMeta):
                 """Range maximum."""
 
-                _value: float = None
+                _value: float | None = None
 
                 @property
                 def value(self):

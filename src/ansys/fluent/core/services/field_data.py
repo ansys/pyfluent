@@ -105,14 +105,14 @@ class FieldInfo:
     def __init__(
         self,
         service: FieldDataService,
-        is_data_valid: Callable[[], bool],
+        is_data_valid: Callable[[], bool] | None,
     ):
         """__init__ method of FieldInfo class."""
         self._service = service
         self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool | None = False, surface_ids: List[int] = None
     ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -229,7 +229,7 @@ class SurfaceDataType(Enum):
 
 
 class _AllowedNames:
-    def __init__(self, field_info: FieldInfo = None, info: dict = None):
+    def __init__(self, field_info: FieldInfo | None = None, info: dict | None = None):
         self._field_info = field_info
         self._info = info
 
@@ -241,9 +241,9 @@ class _AllowedNames:
 class _AllowedFieldNames(_AllowedNames):
     def __init__(
         self,
-        is_data_valid: Callable[[], bool],
-        field_info: FieldInfo = None,
-        info: dict = None,
+        is_data_valid: Callable[[], bool] | None,
+        field_info: FieldInfo | None = None,
+        info: dict | None = None,
     ):
         super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
@@ -266,7 +266,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 
 class _AllowedSurfaceNames(_AllowedNames):
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool | None = True) -> List[str]:
         return self._info if self._info else self._field_info.get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
@@ -283,7 +283,7 @@ class _AllowedSurfaceNames(_AllowedNames):
 
 
 class _AllowedSurfaceIDs(_AllowedNames):
-    def __call__(self, respect_data_valid: bool = True) -> List[int]:
+    def __call__(self, respect_data_valid: bool | None = True) -> List[int]:
         try:
             return [
                 info["surface_id"][0]
@@ -297,7 +297,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_name_error = DisallowedValuesError
     _field_unavailable_error = FieldUnavailable
 
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool | None = True) -> List[str]:
         field_dict = (
             self._info if self._info else self._field_info.get_scalar_fields_info()
         )
@@ -316,7 +316,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
     _field_name_error = DisallowedValuesError
     _field_unavailable_error = FieldUnavailable
 
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+    def __call__(self, respect_data_valid: bool | None = True) -> List[str]:
         return (
             self._info
             if self._info
@@ -443,7 +443,7 @@ class FieldTransaction:
         self,
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
-        overset_mesh: bool = False,
+        overset_mesh: bool | None = False,
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals).
@@ -501,8 +501,8 @@ class FieldTransaction:
         self,
         field_name: str,
         surfaces: List[int | str],
-        node_value: bool = True,
-        boundary_value: bool = True,
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
     ) -> None:
         """Add request to get scalar field data on surfaces.
 
@@ -605,17 +605,17 @@ class FieldTransaction:
         self,
         field_name: str,
         surfaces: List[int | str],
-        additional_field_name: str = "",
-        provide_particle_time_field: bool = False,
-        node_value: bool = True,
-        steps: int = 500,
-        step_size: float = 0.01,
-        skip: int = 0,
-        reverse: bool = False,
-        accuracy_control_on: bool = False,
-        tolerance: float = 0.001,
-        coarsen: int = 1,
-        velocity_domain: str = "all-phases",
+        additional_field_name: str | None = "",
+        provide_particle_time_field: bool | None = False,
+        node_value: bool | None = True,
+        steps: int | None = 500,
+        step_size: float | None = 500,
+        skip: int | None = 0,
+        reverse: bool | None = False,
+        accuracy_control_on: bool | None = False,
+        tolerance: float | None = 0.001,
+        coarsen: int | None = 1,
+        velocity_domain: str | None = "all-phases",
         zones: list = [],
     ) -> None:
         """Add request to get pathlines field on surfaces.
@@ -1094,7 +1094,7 @@ class FieldData:
         self,
         service: FieldDataService,
         field_info: FieldInfo,
-        is_data_valid: Callable[[], bool],
+        is_data_valid: Callable[[], bool] | None,
         scheme_eval: Optional = None,
     ):
         """__init__ method of FieldData class."""
@@ -1180,8 +1180,8 @@ class FieldData:
         self,
         field_name: str,
         surfaces: List[int | str],
-        node_value: bool = True,
-        boundary_value: bool = True,
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
     ) -> ScalarFieldData | Dict[int, ScalarFieldData]:
         """Get scalar field data on a surface.
 
@@ -1263,7 +1263,7 @@ class FieldData:
         self,
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
-        overset_mesh: bool = False,
+        overset_mesh: bool | None = False,
     ) -> (
         Vertices
         | FacesConnectivity
@@ -1459,17 +1459,17 @@ class FieldData:
         self,
         field_name: str,
         surfaces: List[int | str],
-        additional_field_name: str = "",
-        provide_particle_time_field: bool = False,
-        node_value: bool = True,
-        steps: int = 500,
-        step_size: float = 0.01,
-        skip: int = 0,
-        reverse: bool = False,
-        accuracy_control_on: bool = False,
-        tolerance: float = 0.001,
-        coarsen: int = 1,
-        velocity_domain: str = "all-phases",
+        additional_field_name: str | None = "",
+        provide_particle_time_field: bool | None = False,
+        node_value: bool | None = True,
+        steps: int | None = 500,
+        step_size: float | None = 500,
+        skip: int | None = 0,
+        reverse: bool | None = False,
+        accuracy_control_on: bool | None = False,
+        tolerance: float | None = 0.001,
+        coarsen: int | None = 1,
+        velocity_domain: str | None = "all-phases",
         zones: list = [],
     ) -> Dict:
         """Get the pathlines field data on a surface.

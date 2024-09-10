@@ -172,7 +172,7 @@ class OutputParameter:
 class CaseVariable:
     """Provides access to variables defined in the case."""
 
-    def __init__(self, variables: dict, path: str = ""):
+    def __init__(self, variables: dict, path: str | None = ""):
         """Initialize CaseVariable.
 
         Parameters
@@ -185,7 +185,7 @@ class CaseVariable:
         self._variables = variables
         self._path = path
 
-    def __call__(self, name: str = ""):
+    def __call__(self, name: str | None = ""):
         if not name:
             error_name = self._path[:-1] if self._path else self._path
             raise RuntimeError(f"Invalid variable {error_name}")
@@ -513,7 +513,7 @@ class RPVarProcessor:
 class SettingsFile(RPVarProcessor):
     """Class to read a Fluent Settings file."""
 
-    def __init__(self, settings_file_name: str = None) -> None:
+    def __init__(self, settings_file_name: str | None = None) -> None:
         """Initialize a SettingsFile object. Exactly one file path argument must be
         specified.
 
@@ -568,8 +568,8 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_file_name: str = None,
-        project_file_name: str = None,
+        case_file_name: str | None = None,
+        project_file_name: str | None = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.

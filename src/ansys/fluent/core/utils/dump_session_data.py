@@ -11,8 +11,8 @@ from ansys.fluent.core.services.field_data import SurfaceDataType
 def dump_session_data(
     session,
     file_name: str,
-    fields: list = None,
-    surfaces: list = None,
+    fields: list | None = None,
+    surfaces: list | None = None,
 ):
     """Dump session data.
 

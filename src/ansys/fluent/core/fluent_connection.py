@@ -149,7 +149,7 @@ class ErrorState:
         """Get details."""
         return self._details
 
-    def __init__(self, name: str = "", details: str = ""):
+    def __init__(self, name: str | None = "", details: str | None = ""):
         """Initializes the error state object.
 
         Parameters
@@ -192,13 +192,13 @@ class FluentConnectionProperties:
     '127.0.0.1'
     """
 
-    ip: str = None
-    port: int = None
-    password: str = None
-    cortex_pwd: str = None
-    cortex_pid: int = None
-    cortex_host: str = None
-    fluent_host_pid: int = None
+    ip: str | None = None
+    port: int | None = None
+    password: str | None = None
+    cortex_pwd: str | None = None
+    cortex_pid: int | None = None
+    cortex_host: str | None = None
+    fluent_host_pid: int | None = None
     inside_container: bool | Container | None = None
 
     def list_names(self) -> list:
@@ -210,7 +210,7 @@ class FluentConnectionProperties:
         return vars(self)
 
 
-def _get_ip_and_port(ip: str = None, port: int = None) -> (str, int):
+def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
         ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
     if not port:
@@ -299,19 +299,19 @@ class FluentConnection:
 
     _on_exit_cbs: List[Callable] = []
     _id_iter = itertools.count()
-    _monitor_thread: MonitorThread = None
+    _monitor_thread: MonitorThread | None = None
 
     def __init__(
         self,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        channel: grpc.Channel = None,
-        cleanup_on_exit: bool = True,
-        remote_instance: Instance = None,
-        file_transfer_service: Any = None,
-        slurm_job_id: str = None,
-        inside_container: bool = None,
+        ip: str | None = None,
+        port: int | None = None,
+        password: str | None = None,
+        channel: grpc.Channel | None = None,
+        cleanup_on_exit: bool | None = True,
+        remote_instance: Instance | None = None,
+        file_transfer_service: Any | None = None,
+        slurm_job_id: str | None = None,
+        inside_container: bool | None = None,
     ):
         """Initialize a Session.
 
@@ -356,7 +356,7 @@ class FluentConnection:
         """
         self._error_state = ErrorState()
         self._data_valid = False
-        self._channel_str = None
+        self._channel_str | None = None
         self._slurm_job_id = None
         self.finalizer_cbs = []
         if channel is not None:
@@ -606,9 +606,9 @@ class FluentConnection:
 
     def exit(
         self,
-        timeout: float = None,
-        timeout_force: bool = True,
-        wait: float | int | bool = False,
+        timeout: float | None = None,
+        timeout_force: bool | None = True,
+        wait: float | int | bool | None = False,
     ) -> None:
         """Close the Fluent connection and exit Fluent.
 

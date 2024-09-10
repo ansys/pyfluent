@@ -298,8 +298,8 @@ class LocalParametricStudy:
         self,
         num_servers: int,
         launcher: Any = launch_fluent,
-        start_transcript: bool = False,
-        capture_report_data: bool = False,
+        start_transcript: bool | None = False,
+        capture_report_data: bool | None = False,
     ):
         """Run the local study in fluent."""
         _run_local_study_in_fluent(

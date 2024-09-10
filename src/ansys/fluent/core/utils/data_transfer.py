@@ -51,8 +51,8 @@ def transfer_case(
     num_files_to_try: int,
     clean_up_temp_file: bool,
     overwrite_previous: bool,
-    workdir: str = None,
-    container_workdir: str = None,
+    workdir: str | None = None,
+    container_workdir: str | None = None,
 ):
     """Transfer case between instances.
 

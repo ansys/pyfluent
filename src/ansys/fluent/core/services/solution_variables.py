@@ -201,7 +201,7 @@ class SolutionVariableInfo:
         self._service = service
 
     def get_variables_info(
-        self, zone_names: List[str], domain_name: str = "mixture"
+        self, zone_names: List[str], domain_name: str | None = "mixture"
     ) -> SolutionVariables:
         """Get SVARs info for zones in the domain.
 
@@ -236,7 +236,7 @@ class SolutionVariableInfo:
         return solution_variables_info
 
     def get_svars_info(
-        self, zone_names: List[str], domain_name: str = "mixture"
+        self, zone_names: List[str], domain_name: str | None = "mixture"
     ) -> SolutionVariables:
         """Get solution variables info."""
         warnings.warn(
@@ -299,7 +299,7 @@ class _AllowedSvarNames:
         self._solution_variable_info = solution_variable_info
 
     def __call__(
-        self, zone_names: List[str], domain_name: str = "mixture"
+        self, zone_names: List[str], domain_name: str | None = "mixture"
     ) -> List[str]:
         return self._solution_variable_info.get_variables_info(
             zone_names=zone_names, domain_name=domain_name
@@ -309,7 +309,7 @@ class _AllowedSvarNames:
         self,
         solution_variable_name,
         zone_names: List[str],
-        domain_name: str = "mixture",
+        domain_name: str | None = "mixture",
     ):
         """Check whether solution variable name is valid or not."""
         return solution_variable_name in self(
@@ -320,7 +320,7 @@ class _AllowedSvarNames:
         self,
         solution_variable_name,
         zone_names: List[str],
-        domain_name: str = "mixture",
+        domain_name: str | None = "mixture",
     ):
         """Get a valid solution variable name.
 
@@ -545,7 +545,10 @@ class SolutionVariableData:
         )
 
     def create_empty_array(
-        self, solution_variable_name: str, zone_name: str, domain_name: str = "mixture"
+        self,
+        solution_variable_name: str,
+        zone_name: str,
+        domain_name: str | None = "mixture",
     ) -> np.zeros:
         """Get numpy zeros array for the SVAR on a zone.
 
@@ -569,7 +572,7 @@ class SolutionVariableData:
         self,
         solution_variable_name: str,
         zone_names: List[str],
-        domain_name: str = "mixture",
+        domain_name: str | None = "mixture",
     ) -> Data:
         """Get SVAR data on zones.
 
@@ -612,7 +615,7 @@ class SolutionVariableData:
         self,
         svar_name: str,
         zone_names: List[str],
-        domain_name: str = "mixture",
+        domain_name: str | None = "mixture",
     ) -> Data:
         """Get solution variable data."""
         warnings.warn(
@@ -629,7 +632,7 @@ class SolutionVariableData:
         self,
         solution_variable_name: str,
         zone_names_to_solution_variable_data: Dict[str, np.array],
-        domain_name: str = "mixture",
+        domain_name: str | None = "mixture",
     ) -> None:
         """Set SVAR data on zones.
 
@@ -729,7 +732,7 @@ class SolutionVariableData:
         self,
         svar_name: str,
         zone_names_to_svar_data: List[str],
-        domain_name: str = "mixture",
+        domain_name: str | None = "mixture",
     ) -> Data:
         """Set solution variable data."""
         warnings.warn(

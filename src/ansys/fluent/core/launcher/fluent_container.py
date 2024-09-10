@@ -99,17 +99,17 @@ class LicenseServerNotSpecified(KeyError):
 @deprecate_argument("host_mount_path", "mount_source")
 def configure_container_dict(
     args: List[str],
-    mount_source: str | Path = None,
-    mount_target: str | Path = None,
+    mount_source: str | Path | None = None,
+    mount_target: str | Path | None = None,
     timeout: int = 60,
-    port: int = None,
-    license_server: str = None,
-    container_server_info_file: str | Path = None,
-    remove_server_info_file: bool = True,
-    fluent_image: str = None,
-    image_name: str = None,
-    image_tag: str = None,
-    file_transfer_service: Any = None,
+    port: int | None = None,
+    license_server: str | None = None,
+    container_server_info_file: str | Path | None = None,
+    remove_server_info_file: bool | None = True,
+    fluent_image: str | None = None,
+    image_name: str | None = None,
+    image_tag: str | None = None,
+    file_transfer_service: Any | None = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -337,7 +337,9 @@ def configure_container_dict(
     )
 
 
-def start_fluent_container(args: List[str], container_dict: dict = None) -> (int, str):
+def start_fluent_container(
+    args: List[str], container_dict: dict | None = None
+) -> (int, str):
     """Start a Fluent container.
 
     Parameters

@@ -939,4 +939,4 @@ class PyLocalContainer(MutableMapping):
         class name(metaclass=PyLocalPropertyMeta):
             """Local name property."""
 
-            value: str = None
+            value: str | None = None

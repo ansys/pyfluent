@@ -243,7 +243,9 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 
 
 def _get_graphics_driver(
-    graphics_driver: FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str,
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    ) = None,
 ):
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
@@ -258,7 +260,7 @@ def _get_graphics_driver(
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: FluentMode = None
+    fluent_connection: FluentConnection, mode: FluentMode | None = None
 ):
     """Get the mode of the running session if the mode has not been explicitly given."""
     if mode:
@@ -277,7 +279,7 @@ def _get_running_session_mode(
 
 def _get_standalone_launch_fluent_version(
     product_version: FluentVersion | str | float | int | None,
-) -> FluentVersion:
+) -> FluentVersion | None:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
 

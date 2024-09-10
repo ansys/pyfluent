@@ -35,7 +35,9 @@ class Transcript(StreamingService):
         self.callback_ids = []
         self._writing_transcript_to_interpreter = False
 
-    def start(self, file_name: str = None, write_to_stdout: bool = False) -> None:
+    def start(
+        self, file_name: str | None = None, write_to_stdout: bool | None = False
+    ) -> None:
         """Start streaming of Fluent transcript.
 
          Parameters

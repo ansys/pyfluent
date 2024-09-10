@@ -10,9 +10,9 @@ class DisallowedValuesError(ValueError):
 
     def __init__(
         self,
-        context: Any = None,
-        name: Any = None,
-        allowed_values: Any = None,
+        context: Any | None = None,
+        name: Any | None = None,
+        allowed_values: Any | None = None,
     ):
         super().__init__(
             allowed_name_error_message(

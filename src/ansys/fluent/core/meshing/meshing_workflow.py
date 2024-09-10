@@ -53,7 +53,7 @@ class MeshingWorkflow(Workflow):
         name: str,
         identifier: str,
         fluent_version: FluentVersion,
-        initialize: bool = True,
+        initialize: bool | None = True,
     ) -> None:
         """Initialize MeshingWorkflow.
 
@@ -103,7 +103,7 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool = True,
+        initialize: bool | None = True,
     ) -> None:
         """Initialize WatertightMeshingWorkflow.
 
@@ -138,7 +138,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         part_management: PyMenuGeneric,
         pm_file_management: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool = True,
+        initialize: bool | None = True,
     ) -> None:
         """Initialize FaultTolerantMeshingWorkflow.
 
@@ -169,12 +169,12 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         self._pm_file_management = pm_file_management
 
     @property
-    def part_management(self) -> PyMenuGeneric:
+    def part_management(self) -> PyMenuGeneric | None:
         """Access part-management in fault-tolerant mode.
 
         Returns
         -------
-        PyMenuGeneric
+        PyMenuGeneric | None
             Part-management.
         """
         return self._part_management
@@ -185,7 +185,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
 
         Returns
         -------
-        PyMenuGeneric
+        PyMenuGeneric | None
             File management object in the part management object.
         """
         return self._pm_file_management
@@ -199,7 +199,7 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool = True,
+        initialize: bool | None = True,
     ) -> None:
         """Initialize TwoDimensionalMeshingWorkflow.
 
@@ -232,7 +232,7 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool = True,
+        initialize: bool | None = True,
     ) -> None:
         """Initialize TopologyBasedMeshingWorkflow.
 
@@ -307,7 +307,7 @@ class CreateWorkflow(Workflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        initialize: bool = True,
+        initialize: bool | None = True,
     ) -> None:
         """Initialize a ``CreateWorkflow`` instance.
 
