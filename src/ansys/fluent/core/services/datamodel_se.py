@@ -1631,7 +1631,7 @@ class PyCommand:
         Print the command help string.
     """
 
-    _full_static_info: dict[str, Dict[str, Any]] = {}
+    _full_static_info: dict[str, dict[str, Any]] = {}
 
     def __init__(
         self,
