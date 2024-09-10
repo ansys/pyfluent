@@ -90,25 +90,25 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
+RealType = NewType("real", float | str)  # constant or expression
 RealListType = List[RealType]
 RealVectorType = Tuple[RealType, RealType, RealType]
 IntListType = List[int]
 StringListType = List[str]
 BoolListType = List[bool]
-PrimitiveStateType = Union[
-    str,
-    RealType,
-    int,
-    bool,
-    RealListType,
-    IntListType,
-    StringListType,
-    BoolListType,
-]
+PrimitiveStateType = (
+    str
+    | RealType
+    | int
+    | bool
+    | RealListType
+    | IntListType
+    | StringListType
+    | BoolListType
+)
 DictStateType = Dict[str, "StateType"]
 ListStateType = List["StateType"]
-StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
+StateType = PrimitiveStateType | DictStateType | ListStateType
 
 
 def check_type(val, tp):
@@ -1403,7 +1403,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return getattr(super(), name)
 
 
-def _rename(obj: Union[NamedObject, _Alias], new: str, old: str):
+def _rename(obj: NamedObject | _Alias, new: str, old: str):
     """Rename a named object.
 
     Parameters

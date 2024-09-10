@@ -57,15 +57,15 @@ class StandaloneLauncher:
     def __init__(
         self,
         mode: FluentMode | str | None = None,
-        ui_mode: Union[UIMode, str, None] = None,
+        ui_mode: UIMode | str | None = None,
         graphics_driver: Union[
             FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
         ] = None,
         product_version: Union[FluentVersion, str, float, int, None] = None,
-        dimension: Union[Dimension, int, None] = None,
-        precision: Union[Precision, str, None] = None,
+        dimension: Dimension | int | None = None,
+        precision: Precision | str | None = None,
         processor_count: int = None,
-        journal_file_names: Union[None, str, list[str]] = None,
+        journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str = "",
         env: Dict[str, Any] = None,

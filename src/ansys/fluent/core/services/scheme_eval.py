@@ -19,7 +19,7 @@ Example
 0.7
 """
 
-from typing import Any, Sequence, Union
+from typing import Any, Sequence
 
 import grpc
 
@@ -149,9 +149,7 @@ def _convert_py_value_to_scheme_pointer(
                 _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
 
 
-def _convert_scheme_pointer_to_py_list(
-    p: SchemePointer, version: str
-) -> Union[dict, list]:
+def _convert_scheme_pointer_to_py_list(p: SchemePointer, version: str) -> dict | list:
     val = []
     val.append(_convert_scheme_pointer_to_py_value(p.pair.car, version))
     if p.pair.cdr.HasField("pair"):

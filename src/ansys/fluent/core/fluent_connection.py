@@ -11,7 +11,7 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, Union
+from typing import Any, Callable, List, Tuple
 import warnings
 import weakref
 
@@ -93,12 +93,12 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
+def get_container(container_id_or_name: str) -> bool | Container | None:
     """Get the Docker container object.
 
     Returns
     -------
-    Union[bool, Container, None]
+    bool | Container | None
         If the system is not correctly set up to run Docker containers, returns ``None``.
         If the container was not found, returns ``False``.
         If the container is found, returns the associated Docker container object.
@@ -555,7 +555,7 @@ class FluentConnection:
         warnings.warn("Use -> health_check.status()", PyFluentDeprecationWarning)
         return self.health_check.status()
 
-    def wait_process_finished(self, wait: Union[float, int, bool] = 60):
+    def wait_process_finished(self, wait: float | int | bool = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
         are still running when wait limit (default 60 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.

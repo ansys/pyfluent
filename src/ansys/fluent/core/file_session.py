@@ -284,7 +284,7 @@ class Transaction:
         -------
         Dict[int, Dict[int, Dict[str, np.array]]]
             Data is returned as dictionary of dictionaries in the following structure:
-            tag Union[int, Tuple]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+            tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
 
         Raises
         ------
@@ -394,7 +394,7 @@ class FileFieldData:
 
         Returns
         -------
-        Union[Vertices, FacesConnectivity, Dict[int, Union[Vertices, FacesConnectivity]]]
+        Vertices | FacesConnectivity | Dict[int, Vertices | FacesConnectivity]
              If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.

@@ -179,7 +179,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
 
 def _get_files(
-    file_name: Union[str, pathlib.PurePath, list[Union[str, pathlib.PurePath]]],
+    file_name: str | pathlib.PurePath | list[str | pathlib.Purepath],
 ):
     if isinstance(file_name, (str, pathlib.PurePath)):
         files = [pathlib.Path(file_name)]

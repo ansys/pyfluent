@@ -29,7 +29,7 @@ Display results
 """
 
 from math import ceil
-from typing import Any, Dict, Union
+from typing import Any, Dict
 
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.utils.execution import asynchronous
@@ -38,8 +38,8 @@ BASE_DP_NAME = "Base DP"
 
 
 def convert_design_point_parameter_units(
-    value: Dict[str, Union[float, int, str]]
-) -> Dict[str, Union[float, int]]:
+    value: Dict[str, float | int | str]
+) -> Dict[str, float | int]:
     """Convert design point parameter units."""
 
     def conv(val):

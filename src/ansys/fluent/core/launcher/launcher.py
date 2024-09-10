@@ -95,10 +95,10 @@ def _version_to_dimension(old_arg_val):
 )
 def launch_fluent(
     product_version: Union[FluentVersion, str, float, int, None] = None,
-    dimension: Union[Dimension, int, None] = None,
-    precision: Union[Precision, str, None] = None,
+    dimension: Dimension | int | None = None,
+    precision: Precision | str | None = None,
     processor_count: int = None,
-    journal_file_names: Union[None, str, list[str]] = None,
+    journal_file_names: None | str | list[str] = None,
     start_timeout: int = None,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
@@ -107,7 +107,7 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    ui_mode: Union[UIMode, str, None] = None,
+    ui_mode: UIMode | str | None = None,
     graphics_driver: Union[
         FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
     ] = None,

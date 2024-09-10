@@ -2,7 +2,7 @@
 
 from enum import Enum
 from functools import reduce
-from typing import Callable, Dict, List, Tuple, Union
+from typing import Callable, Dict, List, Tuple
 
 import grpc
 import numpy as np
@@ -686,14 +686,14 @@ class FieldTransaction:
             ]
         )
 
-    def get_fields(self) -> Dict[Union[int, Tuple], Dict[int, Dict[str, np.array]]]:
+    def get_fields(self) -> Dict[int | Tuple, Dict[int, Dict[str, np.array]]]:
         """Get data for previously added requests and then clear all requests.
 
         Returns
         -------
         Dict[int, Dict[int, Dict[str, np.array]]]
             Data is returned as dictionary of dictionaries in the following structure:
-            tag Union[int, Tuple]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+            tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
