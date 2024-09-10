@@ -1741,7 +1741,7 @@ class PyCommand:
             )
         return self._static_info
 
-    def create_instance(self) -> "PyCommandArguments" | None:
+    def create_instance(self) -> PyCommandArguments | None:
         """Create a command instance."""
         try:
             static_info = self._get_static_info()
