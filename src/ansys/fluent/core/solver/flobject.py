@@ -128,6 +128,8 @@ def check_type(val, tp):
         return isinstance(val, tuple) and all(
             check_type(x, t) for x, t in zip(val, get_args(tp))
         )
+    elif origin == Union:
+        return any(check_type(val, t) for t in get_args(tp))
     elif origin == dict:
         k_t, k_v = get_args(tp)
         return isinstance(val, dict) and all(
