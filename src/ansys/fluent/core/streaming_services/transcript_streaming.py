@@ -2,7 +2,6 @@
 
 import os
 from pathlib import Path
-from typing import Optional
 
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
@@ -37,7 +36,7 @@ class Transcript(StreamingService):
         self._writing_transcript_to_interpreter = False
 
     def start(
-        self, file_name: Optional[str] = None, write_to_stdout: bool = False
+        self, file_name: str | None = None, write_to_stdout: bool = False
     ) -> None:
         """Start streaming of Fluent transcript.
 

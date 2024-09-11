@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, Optional, Tuple, Union
+from typing import Any, Iterable, Iterator, Tuple
 import warnings
 
 from ansys.fluent.core.services.datamodel_se import (
@@ -177,7 +177,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize BaseTask.
@@ -913,7 +913,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -982,7 +982,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -1010,7 +1010,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -1055,7 +1055,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -1107,7 +1107,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -1142,7 +1142,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundTask.
@@ -1156,12 +1156,12 @@ class CompoundTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def _add_child(self, state: Optional[dict] = None) -> None:
+    def _add_child(self, state: dict | None = None) -> None:
         """Add a child to this CompoundTask.
 
         Parameters
         ----------
-        state : Optional[dict]
+        state : dict | None
             Optional state.
         """
         state = state or {}
@@ -1177,7 +1177,7 @@ class CompoundTask(CommandTask):
 
         Parameters
         ----------
-        state : Optional[dict]
+        state : dict | None
             Optional state.
         defer_update : bool, default: False
             Whether to defer the update.

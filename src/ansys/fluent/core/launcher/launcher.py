@@ -7,7 +7,8 @@ with gRPC.
 import inspect
 import logging
 import os
-from typing import Any, Dict, Optional, Union
+from pathlib import Path
+from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -54,7 +55,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         Keyword arguments.
     Returns
     -------
-    launcher: Union[DockerLauncher, PimLauncher, StandaloneLauncher]
+    launcher: DockerLauncher | PimLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
@@ -94,36 +95,36 @@ def _version_to_dimension(old_arg_val):
     warning_cls=PyFluentDeprecationWarning,
 )
 def launch_fluent(
-    product_version: Union[FluentVersion, str, float, int, None] = None,
-    dimension: Union[Dimension, int, None] = None,
-    precision: Union[Precision, str, None] = None,
-    processor_count: Optional[int] = None,
-    journal_file_names: Union[None, str, list[str]] = None,
-    start_timeout: Optional[int] = None,
-    additional_arguments: Optional[str] = "",
-    env: Optional[Dict[str, Any]] = None,
-    start_container: Optional[bool] = None,
-    container_dict: Optional[dict] = None,
+    product_version: FluentVersion | str | float | int | None = None,
+    dimension: Dimension | int | None = None,
+    precision: Precision | str | None = None,
+    processor_count: int | None = None,
+    journal_file_names: None | str | list[str] = None,
+    start_timeout: int = None,
+    additional_arguments: str | None = "",
+    env: Dict[str, Any] | Path | None = None,
+    start_container: bool | None = None,
+    container_dict: dict | None = None,
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-    ui_mode: Union[UIMode, str, None] = None,
-    graphics_driver: Union[
-        FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
-    ] = None,
-    case_file_name: Optional[str] = None,
-    case_data_file_name: Optional[str] = None,
-    lightweight_mode: Optional[bool] = None,
-    mode: Optional[Union[FluentMode, str, None]] = None,
-    py: Optional[bool] = None,
-    gpu: Union[bool, list[int], None] = None,
-    cwd: Optional[str] = None,
-    fluent_path: Optional[str] = None,
-    topy: Optional[Union[str, list]] = None,
-    start_watchdog: Optional[bool] = None,
-    scheduler_options: Optional[dict] = None,
-    file_transfer_service: Optional[Any] = None,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing, SlurmFuture, dict]:
+    ui_mode: UIMode | str | None = None,
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    ) = None,
+    case_file_name: str | None = None,
+    case_data_file_name: str | None = None,
+    lightweight_mode: bool | None = None,
+    mode: FluentMode | str | None = None,
+    py: bool | None = None,
+    gpu: bool | list[int] | None = None,
+    cwd: str | None = None,
+    fluent_path: str | None = None,
+    topy: str | list | None = None,
+    start_watchdog: bool | None = None,
+    scheduler_options: dict | None = None,
+    file_transfer_service: Any | None = None,
+) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
@@ -294,14 +295,14 @@ def launch_fluent(
 
 
 def connect_to_fluent(
-    ip: Optional[str] = None,
-    port: Optional[int] = None,
+    ip: str | None = None,
+    port: int | None = None,
     cleanup_on_exit: bool = False,
     start_transcript: bool = True,
-    server_info_file_name: Optional[str] = None,
-    password: Optional[str] = None,
-    start_watchdog: Optional[bool] = None,
-) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    server_info_file_name: str | None = None,
+    password: str | None = None,
+    start_watchdog: bool | None = None,
+) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
     Parameters

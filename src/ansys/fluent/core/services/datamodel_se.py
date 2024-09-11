@@ -6,7 +6,7 @@ import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
+from typing import Any, Callable, Iterator, NoReturn, Sequence
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -27,8 +27,7 @@ from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 Path = list[tuple[str, str]]
-_TValue = Union[None, bool, int, float, str, Sequence["_TValue"], dict[str, "_TValue"]]
-
+_TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 member_specs_oneof_fields = [
@@ -37,9 +36,7 @@ member_specs_oneof_fields = [
 ]
 
 
-def _get_value_from_message_dict(
-    d: dict[str, Any], key: list[Union[str, Sequence[str]]]
-):
+def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str]]):
     """Get value from a protobuf message dict by a sequence of keys.
 
     A key can also be a list of oneof types.
@@ -57,9 +54,9 @@ class DisallowedFilePurpose(ValueError):
 
     def __init__(
         self,
-        context: Optional[Any] = None,
-        name: Optional[Any] = None,
-        allowed_values: Optional[Any] = None,
+        context: Any | None = None,
+        name: Any | None = None,
+        allowed_values: Any | None = None,
     ):
         super().__init__(
             allowed_name_error_message(
@@ -139,7 +136,7 @@ class DatamodelServiceImpl:
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
     ) -> None:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
@@ -456,7 +453,7 @@ class DatamodelService(StreamingService):
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -839,7 +836,7 @@ class PyStateContainer(PyCallableStateObject):
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+        self, service: DatamodelService, rules: str, path: Path | None = None
     ) -> None:
         """__init__ method of PyStateContainer class."""
         super().__init__()
@@ -874,7 +871,7 @@ class PyStateContainer(PyCallableStateObject):
 
     fixState = fix_state
 
-    def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
+    def set_state(self, state: Any | None = None, **kwargs) -> None:
         """Set state of the current object.
 
         Parameters
@@ -1029,7 +1026,7 @@ class PyMenu(PyStateContainer):
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+        self, service: DatamodelService, rules: str, path: Path | None = None
     ) -> None:
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
@@ -1285,18 +1282,18 @@ class PyParameter(PyStateContainer):
         )
 
 
-def _bool_value_if_none(val: Optional[bool], default: bool) -> bool:
+def _bool_value_if_none(val: bool | None, default: bool) -> bool:
     if isinstance(val, bool) or val is None:
         return default if val is None else val
     raise TypeError(f"{val} should be a bool or None")
 
 
-def true_if_none(val: Optional[bool]) -> bool:
+def true_if_none(val: bool | None) -> bool:
     """Returns true if 'val' is true or None, else returns false."""
     return _bool_value_if_none(val, default=True)
 
 
-def false_if_none(val: Optional[bool]) -> bool:
+def false_if_none(val: bool | None) -> bool:
     """Returns false if 'val' is false or None, else returns true."""
     return _bool_value_if_none(val, default=False)
 
@@ -1388,7 +1385,7 @@ class PyNamedObjectContainer:
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+        self, service: DatamodelService, rules: str, path: Path | None = None
     ) -> None:
         """__init__ method of PyNamedObjectContainer class."""
         self.service = service
@@ -1507,7 +1504,7 @@ class PyNamedObjectContainer:
         """
         return self._get_item(key)
 
-    def get(self, key: str) -> Union[PyMenu, None]:
+    def get(self, key: str) -> PyMenu | None:
         """Return the child object by key.
 
         Parameters
@@ -1584,7 +1581,11 @@ class PyQuery:
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, query: str, path: Path = None
+        self,
+        service: DatamodelService,
+        rules: str,
+        query: str,
+        path: Path = None,
     ):
         """__init__ method of PyQuery class."""
         self.service = service
@@ -1637,7 +1638,7 @@ class PyCommand:
         service: DatamodelService,
         rules: str,
         command: str,
-        path: Optional[Path] = None,
+        path: Path | None = None,
     ) -> None:
         """__init__ method of PyCommand class."""
         self.service = service
@@ -1740,7 +1741,7 @@ class PyCommand:
             )
         return self._static_info
 
-    def create_instance(self) -> Optional["PyCommandArguments"]:
+    def create_instance(self) -> "PyCommandArguments":
         """Create a command instance."""
         try:
             static_info = self._get_static_info()
@@ -1879,7 +1880,7 @@ class PyCommandArguments(PyStateContainer):
         except Exception as exc:
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
-    def __getattr__(self, attr: str) -> Optional[PyCommandArgumentsSubItem]:
+    def __getattr__(self, attr: str) -> PyCommandArgumentsSubItem | None:
         for arg in self.static_info:
             if arg["name"] == attr:
                 mode = DataModelType.get_mode(arg["type"])
@@ -2077,9 +2078,7 @@ class PyMenuGeneric(PyMenu):
                 query_names = [x["name"] for x in struct_field.get("queries", [])]
         return singleton_names, creatable_type_names, command_names, query_names
 
-    def _get_child(
-        self, name: str
-    ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand, PyQuery]:
+    def _get_child(self, name: str) -> PyNamedObjectContainer | PyCommand | PyQuery:
         singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]

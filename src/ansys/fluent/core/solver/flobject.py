@@ -37,7 +37,6 @@ from typing import (
     Generic,
     List,
     NewType,
-    Optional,
     Tuple,
     TypeVar,
     Union,
@@ -191,7 +190,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -310,7 +309,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: Optional[Union[type, Tuple[type]]] = None,
+        attr_type_or_types: type | Tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -480,7 +479,7 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
-    def as_quantity(self) -> Optional[ansys.units.Quantity]:
+    def as_quantity(self) -> ansys.units.Quantity | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
         if not _ansys_units():
@@ -500,7 +499,7 @@ class RealNumerical(Numerical):
                 error = "Could not determine units."
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object.
 
         Parameters
@@ -543,7 +542,7 @@ class RealNumerical(Numerical):
 
         return self.base_set_state(state=state, **kwargs)
 
-    def units(self) -> Optional[str]:
+    def units(self) -> str | None:
         """Get the physical units of the object as a string."""
         quantity = self.get_attr("units-quantity")
         return get_si_unit_for_fluent_quantity(quantity)
@@ -718,7 +717,7 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             return value
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
             if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
@@ -931,7 +930,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -1227,7 +1226,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -1409,7 +1408,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return getattr(super(), name)
 
 
-def _rename(obj: Union[NamedObject, _Alias], new: str, old: str):
+def _rename(obj: NamedObject | _Alias, new: str, old: str):
     """Rename a named object.
 
     Parameters
@@ -1560,7 +1559,7 @@ class Action(Base):
     _child_aliases = {}
     argument_names = []
 
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
@@ -2099,8 +2098,8 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
-    interrupt: Optional[Any] = None,
-    file_transfer_service: Optional[Any] = None,
+    interrupt: Any | None = None,
+    file_transfer_service: Any | None = None,
     scheme_eval=None,
 ) -> Group:
     """Get the root settings object.

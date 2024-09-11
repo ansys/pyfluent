@@ -1,6 +1,6 @@
 """Provides a module for file session."""
 
-from typing import List, Optional, Union
+from typing import List
 import warnings
 
 import numpy as np
@@ -94,17 +94,17 @@ class Transaction:
     )
     def add_surfaces_request(
         self,
-        data_types: Union[List[SurfaceDataType], List[str]],
-        surfaces: List[Union[int, str]],
+        data_types: List[SurfaceDataType] | List[str],
+        surfaces: List[int | str],
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals).
 
         Parameters
         ----------
-        data_types : Union[List[SurfaceDataType], List[str]],
+        data_types : List[SurfaceDataType] | List[str],
             SurfaceDataType Enum members.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
 
         Returns
@@ -146,9 +146,9 @@ class Transaction:
     def add_scalar_fields_request(
         self,
         field_name: str,
-        surfaces: List[Union[int, str]],
-        node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = True,
+        surfaces: List[int | str],
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
     ) -> None:
         """Add request to get scalar field data on surfaces.
 
@@ -156,7 +156,7 @@ class Transaction:
         ----------
         field_name : str
             Name of the scalar field.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
         node_value : bool, optional
             Whether to provide the nodal location. The default is ``True``. If
@@ -207,7 +207,7 @@ class Transaction:
     def add_vector_fields_request(
         self,
         field_name: str,
-        surfaces: List[Union[int, str]],
+        surfaces: List[int | str],
     ) -> None:
         """Add request to get vector field data on surfaces.
 
@@ -215,7 +215,7 @@ class Transaction:
         ----------
         field_name : str
             Name of the vector field.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
 
         Returns
@@ -260,7 +260,7 @@ class Transaction:
     def add_pathlines_fields_request(
         self,
         field_name: str,
-        surfaces: List[Union[int, str]],
+        surfaces: List[int | str],
     ):
         """Add request to get pathlines field on surfaces.
 
@@ -268,7 +268,7 @@ class Transaction:
         ----------
         field_name : str
             Name of the scalar field to color pathlines.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
 
         Returns
@@ -284,7 +284,7 @@ class Transaction:
         -------
         Dict[int, Dict[int, Dict[str, np.array]]]
             Data is returned as dictionary of dictionaries in the following structure:
-            tag Union[int, Tuple]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+            tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
 
         Raises
         ------
@@ -377,24 +377,24 @@ class FileFieldData:
     )
     def get_surface_data(
         self,
-        data_types: Union[List[SurfaceDataType], List[str]],
-        surfaces: List[Union[int, str]],
-        overset_mesh: Optional[bool] = False,
+        data_types: List[SurfaceDataType] | List[str],
+        surfaces: List[int | str],
+        overset_mesh: bool | None = False,
     ):
         """Get surface data (vertices and faces connectivity).
 
         Parameters
         ----------
-        data_types : Union[List[SurfaceDataType], List[str]],
+        data_types : List[SurfaceDataType] | List[str],
             SurfaceDataType Enum members.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
 
         Returns
         -------
-        Union[Vertices, FacesConnectivity, Dict[int, Union[Vertices, FacesConnectivity]]]
+        Vertices | FacesConnectivity | Dict[int, Vertices | FacesConnectivity]
              If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
@@ -469,9 +469,9 @@ class FileFieldData:
     def get_scalar_field_data(
         self,
         field_name: str,
-        surfaces: List[Union[int, str]],
-        node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = True,
+        surfaces: List[int | str],
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
     ):
         """Get scalar field data on a surface.
 
@@ -479,7 +479,7 @@ class FileFieldData:
         ----------
         field_name : str
             Name of the scalar field.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
         node_value : bool, optional
             Whether to provide data for the nodal location. The default is ``True``.
@@ -490,7 +490,7 @@ class FileFieldData:
 
         Returns
         -------
-        Union[ScalarFieldData, Dict[int, ScalarFieldData]]
+        ScalarFieldData | Dict[int, ScalarFieldData]
             If a surface name is provided as input, scalar field data is returned. If surface
             IDs are provided as input, a dictionary containing a map of surface IDs to scalar
             field data.
@@ -567,7 +567,7 @@ class FileFieldData:
     def get_vector_field_data(
         self,
         field_name: str,
-        surfaces: List[Union[int, str]],
+        surfaces: List[int | str],
     ):
         """Get vector field data on a surface.
 
@@ -575,12 +575,12 @@ class FileFieldData:
         ----------
         field_name : str
             Name of the vector field.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
 
         Returns
         -------
-        Union[VectorFieldData, Dict[int, VectorFieldData]]
+        VectorFieldData | Dict[int, VectorFieldData]
             If a surface name is provided as input, vector field data is returned.
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
@@ -659,7 +659,7 @@ class FileFieldData:
     def get_pathlines_field_data(
         self,
         field_name: str,
-        surfaces: List[Union[int, str]],
+        surfaces: List[int | str],
     ):
         """Get the pathlines field data on a surface.
 
@@ -667,7 +667,7 @@ class FileFieldData:
         ----------
         field_name : str
             Name of the scalar field to color pathlines.
-        surfaces : List[Union[int, str]]
+        surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
 
         Returns
@@ -852,13 +852,13 @@ class FileSession:
 
 def _get_surface_ids(
     field_info: FileFieldInfo,
-    surfaces: List[Union[int, str]],
+    surfaces: List[int | str],
 ) -> List[int]:
     """Get surface IDs based on surface names or IDs.
 
     Parameters
     ----------
-    surfaces : Union[List[int], List[str]]
+    surfaces : List[int], | List[str]
         List of surface IDs or surface names.
 
     Returns

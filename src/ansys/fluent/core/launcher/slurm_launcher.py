@@ -46,7 +46,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any, Callable, Dict
 
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -200,7 +200,7 @@ class SlurmFuture:
 
     def result(
         self, timeout: int = None
-    ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    ) -> Meshing | PureMeshing | Solver | SolverIcing:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
         hasn't launched in timeout seconds, then a TimeoutError will be raised. If
@@ -260,32 +260,32 @@ class SlurmLauncher:
 
     def __init__(
         self,
-        mode: Optional[Union[FluentMode, str, None]] = None,
-        ui_mode: Union[UIMode, str, None] = None,
-        graphics_driver: Union[
-            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
-        ] = None,
-        product_version: Union[FluentVersion, str, float, int, None] = None,
-        dimension: Union[Dimension, int, None] = None,
-        precision: Union[Precision, str, None] = None,
-        processor_count: Optional[int] = None,
-        journal_file_names: Union[None, str, list[str]] = None,
+        mode: FluentMode | str | None = None,
+        ui_mode: UIMode | str | None = None,
+        graphics_driver: (
+            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+        ) = None,
+        product_version: FluentVersion | str | float | int | None = None,
+        dimension: Dimension | int | None = None,
+        precision: Precision | str | None = None,
+        processor_count: int | None = None,
+        journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
-        additional_arguments: Optional[str] = "",
-        env: Optional[Dict[str, Any]] = None,
+        additional_arguments: str | None = "",
+        env: Dict[str, Any] | Path | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        case_file_name: Optional[str] = None,
-        case_data_file_name: Optional[str] = None,
-        lightweight_mode: Optional[bool] = None,
-        py: Optional[bool] = None,
-        gpu: Optional[bool] = None,
-        cwd: Optional[str] = None,
-        fluent_path: Optional[str] = None,
-        topy: Optional[Union[str, list]] = None,
-        start_watchdog: Optional[bool] = None,
-        scheduler_options: Optional[dict] = None,
-        file_transfer_service: Optional[Any] = None,
+        case_file_name: str | None = None,
+        case_data_file_name: str | None = None,
+        lightweight_mode: bool | None = None,
+        py: bool | None = None,
+        gpu: bool | None = None,
+        cwd: str | None = None,
+        fluent_path: str | None = None,
+        topy: str | list | None = None,
+        start_watchdog: bool | None = None,
+        scheduler_options: dict | None = None,
+        file_transfer_service: Any | None = None,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -435,7 +435,7 @@ class SlurmLauncher:
         self._argvals["slurm_job_id"] = slurm_job_id
         return slurm_job_id
 
-    def _launch(self, slurm_job_id) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
+    def _launch(self, slurm_job_id) -> Meshing | PureMeshing | Solver | SolverIcing:
         _await_fluent_launch(
             self._server_info_file_name,
             self._argvals["start_timeout"],
