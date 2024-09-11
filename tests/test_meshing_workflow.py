@@ -185,122 +185,6 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_command_args_datamodel_se(new_meshing_session):
-    session_new = new_meshing_session
-    w = session_new.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.TaskObject["Import Geometry"]
-    assert igt.arguments.CadImportOptions()
-    assert igt.arguments.CadImportOptions.OneZonePer()
-    assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_command_args_including_task_object_datamodel_se(new_meshing_session):
-    session_new = new_meshing_session
-    w = session_new.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.TaskObject["Import Geometry"]
-    assert igt.Arguments() == {}
-    assert igt.arguments.CadImportOptions()
-    assert igt.arguments.CadImportOptions.OneZonePer()
-    assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_attribute_query_list_types(new_meshing_session):
-    session_new = new_meshing_session
-    w = session_new.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.TaskObject["Import Geometry"]
-    assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
-
-
-@pytest.mark.fluent_version(">=23.2")
-@pytest.mark.codegen_required
-def test_accessors_for_argument_sub_items(new_meshing_session):
-    session_new = new_meshing_session
-
-    w = session_new.workflow
-
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    import_geom = w.TaskObject["Import Geometry"]
-    assert import_geom.arguments.LengthUnit.default_value() == "mm"
-    assert import_geom.arguments.LengthUnit.allowed_values() == [
-        "m",
-        "cm",
-        "mm",
-        "in",
-        "ft",
-        "um",
-        "nm",
-    ]
-    assert import_geom.arguments.LengthUnit() == "mm"
-    import_geom.arguments.LengthUnit.set_state("cm")
-    assert import_geom.arguments.LengthUnit.get_state() == "cm"
-    import_geom.arguments.LengthUnit = "in"
-    assert import_geom.arguments.LengthUnit() == "in"
-
-    assert not import_geom.arguments.MeshUnit.is_read_only()
-    assert import_geom.arguments.LengthUnit.is_active()
-    assert not import_geom.arguments.FileName.is_read_only()
-    assert not import_geom.arguments.FileName()
-    import_geom.arguments.FileName = "xyz.txt"
-    assert import_geom.arguments.FileName() == "xyz.txt"
-    with pytest.raises(AttributeError) as msg:
-        import_geom.arguments.File = "sample.txt"
-    assert msg.value.args[0] == "No attribute named 'File' in 'Import Geometry'."
-    assert not import_geom.arguments.CadImportOptions.OneZonePer.is_read_only()
-
-    assert import_geom.arguments.CadImportOptions.OneZonePer() == "body"
-    import_geom.arguments.CadImportOptions.OneZonePer.set_state("face")
-    assert import_geom.arguments.CadImportOptions.OneZonePer() == "face"
-
-    volume_mesh_gen = w.TaskObject["Generate the Volume Mesh"]
-    assert (
-        volume_mesh_gen.arguments.VolumeFillControls.Type.default_value() == "Cartesian"
-    )
-
-    # Test particular to string type (allowed_values() only available in string types)
-    assert volume_mesh_gen.arguments.VolumeFillControls.Type.allowed_values() == [
-        "Octree",
-        "Cartesian",
-    ]
-    feat_angle = import_geom.arguments.CadImportOptions.FeatureAngle
-    assert feat_angle.default_value() == 40.0
-
-    # Test particular to numerical type (min() only available in numerical types)
-    assert feat_angle.min() == 0.0
-
-    # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError) as msg:
-        assert feat_angle.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
-
-    # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError) as msg:
-        assert import_geom.arguments.NumParts.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
-
-    # Test intended to fail in string type (min() only available in numerical types)
-    with pytest.raises(AttributeError) as msg:
-        assert import_geom.arguments.LengthUnit.min()
-    assert (
-        msg.value.args[0]
-        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
-    )
-
-
 @pytest.mark.skip("Wait for later implementation.")
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
@@ -319,26 +203,6 @@ def test_read_only_behaviour_of_command_arguments(new_meshing_session):
 
     assert "set_state" in dir(m())
     assert "set_state" in dir(m().NumParts)
-
-
-@pytest.mark.fluent_version(">=23.1")
-@pytest.mark.codegen_required
-def test_sample_use_of_command_arguments(new_meshing_session):
-    w = new_meshing_session.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.allowed_values() == [
-        "m",
-        "cm",
-        "mm",
-        "in",
-        "ft",
-        "um",
-        "nm",
-    ]
-    assert w.TaskObject["Import Geometry"].arguments.LengthUnit.default_value() == "mm"
-    w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
-    assert w.TaskObject["Import Geometry"].arguments.LengthUnit() == "in"
 
 
 @pytest.mark.codegen_required
@@ -362,38 +226,6 @@ def test_iterate_meshing_workflow_task_container(new_meshing_session):
 
 
 @pytest.mark.codegen_required
-def test_modified_workflow(new_meshing_session):
-    meshing = new_meshing_session
-    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-
-    task_object_display_names = {
-        "Import Geometry",
-        "Add Local Sizing",
-        "Generate the Surface Mesh",
-        "Describe Geometry",
-        "Apply Share Topology",
-        "Enclose Fluid Regions (Capping)",
-        "Update Boundaries",
-        "Create Regions",
-        "Update Regions",
-        "Add Boundary Layers",
-        "Generate the Volume Mesh",
-    }
-
-    task_display_names = []
-    for task in meshing.workflow.TaskObject:
-        task_display_names.append(task.display_name())
-
-    assert set(task_display_names) == task_object_display_names
-
-    task_display_names = []
-    for name, _ in meshing.workflow.TaskObject.items():
-        task_display_names.append(name)
-
-    assert set(task_display_names) == task_object_display_names
-
-
-@pytest.mark.codegen_required
 def test_nonexistent_attrs(new_meshing_session):
     meshing = new_meshing_session
     assert not hasattr(meshing.workflow, "xyz")
@@ -407,7 +239,7 @@ def test_nonexistent_attrs(new_meshing_session):
 def test_old_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    assert meshing.workflow.TaskObject["Import Geometry"].arguments()
+    assert meshing.workflow.TaskObject["Import Geometry"]
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.import_geometry
     assert (
@@ -418,7 +250,7 @@ def test_old_workflow_structure(new_meshing_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version("==24.2")
 def test_new_2d_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")

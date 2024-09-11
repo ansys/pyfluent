@@ -1,5 +1,7 @@
 .. _ref_field_data_guide:
 
+.. vale Google.Spacing = NO
+
 Field data
 ==========
 
@@ -22,7 +24,7 @@ by reading case and data files).
   >>> solver.settings.file.read(file_type="case", file_name=import_file_name)
   >>> solver.settings.solution.initialization.hybrid_initialize()
 
-The field data object is an attribute of the solver object:
+The field data object is an attribute of the :obj:`~ansys.fluent.core.session_solver.Solver` object:
 
 .. code-block:: python
 

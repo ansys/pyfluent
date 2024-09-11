@@ -40,7 +40,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
-    _get_ui_mode,
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
@@ -180,7 +179,9 @@ class StandaloneLauncher:
         """
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
-        self.argvals["ui_mode"] = _get_ui_mode(ui_mode)
+        if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+            ui_mode = UIMode.GUI
+        self.argvals["ui_mode"] = UIMode(ui_mode)
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60
         if self.argvals["lightweight_mode"] is None:

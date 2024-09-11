@@ -1,7 +1,6 @@
 """Provides a module for enums used in the PyFluent."""
 
 from enum import Enum
-from functools import total_ordering
 import os
 from typing import Optional, Union
 
@@ -17,48 +16,82 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
-class LaunchMode(Enum):
+class FluentEnum(Enum):
+    """Provides the base class for Fluent-related enums.
+
+    Accepts lowercase member names as values and supports comparison operators.
+    """
+
+    def _get_enum_map(self):
+        return {}
+
+    def get_fluent_value(self):
+        """Returns the fluent value of the enum."""
+        return self._get_enum_map()[self]
+
+    def _default(self):
+        return
+
+    @classmethod
+    def _missing_(cls, value: Union[str, int, None]):
+        if value is None:
+            return cls._default(cls)
+        for member in cls:
+            if member.value == value:
+                return member
+
+        def is_int():
+            for m in cls:
+                return True if type(m.value) == int else False
+
+        msg = ", " if is_int() else "', '"
+        msg = (
+            f"{msg.join(str(member.value) for member in cls)}"
+            if is_int()
+            else f"'{msg.join(str(member.value) for member in cls)}'"
+        )
+        raise DisallowedValuesError(
+            f"""The specified value: {repr(value)} """
+            f"""is not a supported value of {cls.__name__}."""
+            f""" The supported values are: {msg}."""
+        )
+
+
+class LaunchMode(FluentEnum):
     """Enumerates over supported Fluent launch modes."""
 
-    STANDALONE = 1
-    PIM = 2
-    CONTAINER = 3
-    SLURM = 4
+    STANDALONE = "standalone"
+    PIM = "pim"
+    CONTAINER = "container"
+    SLURM = "slurm"
+
+    def _get_enum_map(self):
+        return {
+            self.STANDALONE: 1,
+            self.PIM: 2,
+            self.CONTAINER: 3,
+            self.SLURM: 4,
+        }
 
 
-class FluentMode(Enum):
+class FluentMode(FluentEnum):
     """Enumerates over supported Fluent modes."""
 
-    MESHING = (Meshing, "meshing")
-    PURE_MESHING = (PureMeshing, "pure-meshing")
-    SOLVER = (Solver, "solver")
-    SOLVER_ICING = (SolverIcing, "solver-icing")
+    MESHING = "meshing"
+    PURE_MESHING = "pure_meshing"
+    SOLVER = "solver"
+    SOLVER_ICING = "solver_icing"
 
-    @staticmethod
-    def get_mode(mode: str) -> "FluentMode":
-        """Get the FluentMode based on the provided mode string.
+    def _default(self):
+        return self.SOLVER
 
-        Parameters
-        ----------
-        mode : str
-            Mode
-
-        Returns
-        -------
-        FluentMode
-            Fluent mode.
-
-        Raises
-        ------
-        DisallowedValuesError
-            If an unknown mode is passed.
-        """
-        allowed_modes = []
-        for m in FluentMode:
-            allowed_modes.append(m.value[1])
-            if mode == m.value[1]:
-                return m
-        raise DisallowedValuesError("mode", mode, allowed_modes)
+    def _get_enum_map(self):
+        return {
+            self.MESHING: Meshing,
+            self.PURE_MESHING: PureMeshing,
+            self.SOLVER: Solver,
+            self.SOLVER_ICING: SolverIcing,
+        }
 
     @staticmethod
     def is_meshing(mode: "FluentMode") -> bool:
@@ -78,96 +111,106 @@ class FluentMode(Enum):
         return mode in [FluentMode.MESHING, FluentMode.PURE_MESHING]
 
 
-@total_ordering
-class FluentEnum(Enum):
-    """Provides the base class for Fluent-related enums.
-
-    Accepts lowercase member names as values and supports comparison operators.
-    """
-
-    @classmethod
-    def _missing_(cls, value: str):
-        for member in cls:
-            if member.str_value() == value:
-                return member
-        raise ValueError(
-            f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: '{"', '".join(member.str_value() for member in cls)}'."""
-        )
-
-    def str_value(self):
-        """Returns string value of the enum."""
-        return self.name.lower()
-
-    def __lt__(self, other):
-        if not isinstance(other, type(self)):
-            raise TypeError(
-                f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
-            )
-        if self == other:
-            return False
-        for member in type(self):
-            if self == member:
-                return True
-            if other == member:
-                return False
-
-
 class UIMode(FluentEnum):
     """Provides supported user interface mode of Fluent."""
 
-    NO_GUI_OR_GRAPHICS = ("g",)
-    NO_GRAPHICS = ("gr",)
-    NO_GUI = ("gu",)
-    HIDDEN_GUI = ("hidden",)
-    GUI = ("",)
+    NO_GUI_OR_GRAPHICS = "no_gui_or_graphics"
+    NO_GRAPHICS = "no_graphics"
+    NO_GUI = "no_gui"
+    HIDDEN_GUI = "hidden_gui"
+    GUI = "gui"
+
+    def _default(self):
+        # Not using NO_GUI in windows as it opens a new cmd or
+        # shows Fluent output in the current cmd if start <launch_string> is not used
+        return self.HIDDEN_GUI if is_windows() else self.NO_GUI
+
+    def _get_enum_map(self):
+        return {
+            self.NO_GUI_OR_GRAPHICS: ("g",),
+            self.NO_GRAPHICS: ("gr",),
+            self.NO_GUI: ("gu",),
+            self.HIDDEN_GUI: ("hidden",),
+            self.GUI: ("",),
+        }
 
 
-class Dimension(Enum):
+class Dimension(FluentEnum):
     """Geometric dimensionality of the Fluent simulation."""
 
-    TWO = ("2d",)
-    THREE = ("3d",)
+    TWO = 2
+    THREE = 3
 
-    @classmethod
-    def _missing_(cls, value: int):
-        if value is None:
-            return cls.THREE
-        for member in cls:
-            if int(member.value[0][0]) == value:
-                return member
-        raise ValueError(
-            f"The specified value '{value}' is not a supported value of {cls.__name__}."
-            f""" The supported values are: {", ".join((member.value[0][0]) for member in cls)}."""
-        )
+    def _default(self):
+        return self.THREE
+
+    def _get_enum_map(self):
+        return {
+            self.TWO: ("2d",),
+            self.THREE: ("3d",),
+        }
 
 
 class Precision(FluentEnum):
     """Floating point precision."""
 
-    SINGLE = ("",)
-    DOUBLE = ("dp",)
+    SINGLE = "single"
+    DOUBLE = "double"
+
+    def _default(self):
+        return self.DOUBLE
+
+    def _get_enum_map(self):
+        return {
+            self.SINGLE: ("",),
+            self.DOUBLE: ("dp",),
+        }
 
 
 class FluentWindowsGraphicsDriver(FluentEnum):
     """Provides supported graphics driver of Fluent in Windows."""
 
-    NULL = ("null",)
-    MSW = ("msw",)
-    DX11 = ("dx11",)
-    OPENGL2 = ("opengl2",)
-    OPENGL = ("opengl",)
-    AUTO = ("",)
+    NULL = "null"
+    MSW = "msw"
+    DX11 = "dx11"
+    OPENGL2 = "opengl2"
+    OPENGL = "opengl"
+    AUTO = "auto"
+
+    def _default(self):
+        return self.AUTO
+
+    def _get_enum_map(self):
+        return {
+            self.NULL: ("null",),
+            self.MSW: ("msw",),
+            self.DX11: ("dx11",),
+            self.OPENGL2: ("opengl2",),
+            self.OPENGL: ("opengl",),
+            self.AUTO: ("",),
+        }
 
 
 class FluentLinuxGraphicsDriver(FluentEnum):
     """Provides supported graphics driver of Fluent in Linux."""
 
-    NULL = ("null",)
-    X11 = ("x11",)
-    OPENGL2 = ("opengl2",)
-    OPENGL = ("opengl",)
-    AUTO = ("",)
+    NULL = "null"
+    X11 = "x11"
+    OPENGL2 = "opengl2"
+    OPENGL = "opengl"
+    AUTO = "auto"
+
+    def _default(self):
+        return self.AUTO
+
+    def _get_enum_map(self):
+        return {
+            self.NULL: ("null",),
+            self.X11: ("x11",),
+            self.OPENGL2: ("opengl2",),
+            self.OPENGL: ("opengl",),
+            self.AUTO: ("",),
+        }
 
 
 def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
@@ -203,29 +246,16 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 def _get_graphics_driver(
     graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str]
 ):
-    if graphics_driver is None:
-        graphics_driver = "auto"
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
     ):
-        graphics_driver = graphics_driver.str_value()
+        graphics_driver = graphics_driver.value
     graphics_driver = (
         FluentWindowsGraphicsDriver(graphics_driver)
         if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
     return graphics_driver
-
-
-def _get_mode(mode: Optional[Union[FluentMode, str, None]] = None):
-    """Update the session information."""
-    if mode is None:
-        mode = FluentMode.SOLVER
-
-    if isinstance(mode, str):
-        mode = FluentMode.get_mode(mode)
-
-    return mode
 
 
 def _get_running_session_mode(
@@ -236,14 +266,14 @@ def _get_running_session_mode(
         session_mode = mode
     else:
         try:
-            session_mode = FluentMode.get_mode(
+            session_mode = FluentMode(
                 "solver"
                 if fluent_connection._connection_interface.is_solver_mode()
                 else "meshing"
             )
         except Exception as ex:
             raise exceptions.InvalidPassword() from ex
-    return session_mode.value[0]
+    return session_mode.get_fluent_value()
 
 
 def _get_standalone_launch_fluent_version(
@@ -277,32 +307,6 @@ def _get_standalone_launch_fluent_version(
     return FluentVersion.get_latest_installed()
 
 
-def _get_ui_mode(
-    ui_mode: UIMode,
-):
-    """Get the graphics driver.
-
-    Parameters
-    ----------
-    ui_mode: UIMode
-        Fluent GUI mode.
-
-    Returns
-    -------
-    ui_mode: UIMode
-        Fluent GUI mode.
-    """
-    if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
-        ui_mode = UIMode.GUI
-    if ui_mode is None:
-        # Not using NO_GUI in windows as it opens a new cmd or
-        # shows Fluent output in the current cmd if start <launch_string> is not used
-        ui_mode = UIMode.HIDDEN_GUI if is_windows() else UIMode.NO_GUI
-    if isinstance(ui_mode, str):
-        ui_mode = UIMode(ui_mode)
-    return ui_mode
-
-
 def _validate_gpu(gpu: Union[bool, list], dimension: int):
     """Raise an exception if the GPU Solver is unsupported.
 
@@ -320,7 +324,7 @@ def _validate_gpu(gpu: Union[bool, list], dimension: int):
 def _get_argvals_and_session(argvals):
     _validate_gpu(argvals["gpu"], argvals["dimension"])
     argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
-    argvals["mode"] = _get_mode(argvals["mode"])
+    argvals["mode"] = FluentMode(argvals["mode"])
     del argvals["self"]
-    new_session = argvals["mode"].value[0]
+    new_session = argvals["mode"].get_fluent_value()
     return argvals, new_session

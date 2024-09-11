@@ -49,6 +49,7 @@ import warnings
 import weakref
 from zipimport import zipimporter
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
@@ -291,7 +292,10 @@ class Base:
         Constructed in python syntax from 'python_path' and the parents python path.
         """
         if self._parent is None:
-            return "<session>"
+            if FluentVersion(self.flproxy._scheme_eval.version).number < 251:
+                return "<session>"
+            else:
+                return "<session>.settings"
         ppath = self._parent.python_path
         if not ppath:
             return self.python_name
@@ -723,7 +727,7 @@ class SettingsBase(Base, Generic[StateT]):
                 self.value.set_state(state, **kwargs)
             else:
                 state = self._unalias(kwargs or state)
-                return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+                self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -2074,7 +2078,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             # No need to differentiate in the Python implementation
             for k, v in (child_aliases | command_aliases | query_aliases).items():
                 cls._child_aliases[to_python_name(k)] = "/".join(
-                    to_python_name(x) for x in v.split("/")
+                    x if x == ".." else to_python_name(x) for x in v.split("/")
                 )
 
     except Exception:
