@@ -1,3 +1,7 @@
+import os.path
+from pathlib import Path
+import shutil
+
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -10,6 +14,7 @@ def test_icing_session():
     assert "aero" in dir(aero_session)
 
 
+@pytest.mark.skip("Run this locally only as of now.")
 @pytest.mark.fluent_version(">=24.2")
 def test_sample_setup():
     mesh_filepath = examples.download_file(
@@ -17,8 +22,11 @@ def test_sample_setup():
         "pyfluent/aero",
         return_without_path=False,
     )
+    solver_aero_path = str(Path(pyfluent.EXAMPLES_PATH) / "solver_aero")
+    if os.path.exists(solver_aero_path + ".cffdb"):
+        shutil.rmtree(solver_aero_path + ".cffdb")
     solver = pyfluent.launch_fluent(mode="solver_aero")
-    solver.new_project(project_name="sample_aero_proj")
+    solver.new_project(project_name=solver_aero_path)
     solver.new_simulation(case_file_name=mesh_filepath)
 
     # Geometric Properties
@@ -76,3 +84,5 @@ def test_sample_setup():
 
     # Calculate, Disconnect, Exit
     solver.aero.AeroWorkflow.Solution.Solve.AeroCalculate()
+
+    solver.exit()
