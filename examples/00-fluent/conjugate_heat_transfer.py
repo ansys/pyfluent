@@ -685,7 +685,7 @@ solver.solution.run_calculation.pseudo_time_settings.time_step_method.length_sca
     "aggressive"
 )
 
-solver.solution.run_calculation.iterate(iter_count=25)
+solver.solution.run_calculation.iterate(iter_count=250)
 
 save_case_data_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.dat.h5")
 solver.file.write(file_type="case-data", file_name=save_case_data_as)
