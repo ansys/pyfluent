@@ -9,7 +9,7 @@ from pathlib import Path
 import pickle
 import re
 import sys
-from typing import Any, Optional
+from typing import Any
 import warnings
 
 from ansys.fluent.core.solver import flobject
@@ -152,9 +152,9 @@ def _search(
     word: str,
     match_whole_word: bool = False,
     match_case: bool = False,
-    version: Optional[str] = None,
-    search_root: Optional[Any] = None,
-    write_api_tree_data: Optional[bool] = False,
+    version: str | None = None,
+    search_root: Any | None = None,
+    write_api_tree_data: bool | None = False,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -600,10 +600,10 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
 
 def search(
     search_string: str,
-    language: Optional[str] = "eng",
-    wildcard: Optional[bool] = False,
-    match_whole_word: Optional[bool] = False,
-    match_case: Optional[bool] = True,
+    language: str | None = "eng",
+    wildcard: bool | None = False,
+    match_whole_word: bool = False,
+    match_case: bool | None = True,
 ):
     """Search for a word through the Fluent's object hierarchy.
 

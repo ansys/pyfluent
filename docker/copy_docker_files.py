@@ -3,17 +3,16 @@
 from pathlib import Path
 import shutil
 import sys
-from typing import Union
 
 
-def create_file_folders_list(files_list: list, fluent_version: Union[Path, str]):
+def create_file_folders_list(files_list: list, fluent_version: Path | str):
     """Create a list of files and folders specified in a text file.
 
     Parameters
     ----------
     files_list: list
         List of text files containing relative paths of files and folders.
-    fluent_version: Union[Path, str]
+    fluent_version: Path | str
         Path of ``docker/fluent_<version>`` folder.
 
     Returns
@@ -29,14 +28,14 @@ def create_file_folders_list(files_list: list, fluent_version: Union[Path, str])
     return file_folders
 
 
-def copy_files(src: Union[Path, str], fluent_version: Union[Path, str]):
+def copy_files(src: Path | str, fluent_version: Path | str):
     """Copy files from the Ansys installation directory.
 
     Parameters
     ----------
-    src: Union[Path, str]
+    src: Path | str
         Path of ``ansys_inc`` folder in the Ansys installation directory.
-    fluent_version: Union[Path, str]
+    fluent_version: Path | str
         Path of ``docker/fluent_<version>`` folder.
     """
     copy_files = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
