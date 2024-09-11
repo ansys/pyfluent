@@ -53,7 +53,7 @@ import logging
 import os
 from pathlib import Path, PurePosixPath
 import tempfile
-from typing import Any, List, Optional, Union
+from typing import Any, List
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
@@ -99,17 +99,17 @@ class LicenseServerNotSpecified(KeyError):
 @deprecate_argument("host_mount_path", "mount_source")
 def configure_container_dict(
     args: List[str],
-    mount_source: Optional[Union[str, Path]] = None,
-    mount_target: Optional[Union[str, Path]] = None,
+    mount_source: str | Path | None = None,
+    mount_target: str | Path | None = None,
     timeout: int = 60,
-    port: Optional[int] = None,
-    license_server: Optional[str] = None,
-    container_server_info_file: Optional[Union[str, Path]] = None,
+    port: int | None = None,
+    license_server: str | None = None,
+    container_server_info_file: str | Path | None = None,
     remove_server_info_file: bool = True,
-    fluent_image: Optional[str] = None,
-    image_name: Optional[str] = None,
-    image_tag: Optional[str] = None,
-    file_transfer_service: Optional[Any] = None,
+    fluent_image: str | None = None,
+    image_name: str | None = None,
+    image_tag: str | None = None,
+    file_transfer_service: Any | None = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -118,9 +118,9 @@ def configure_container_dict(
     ----------
     args : List[str]
         List of Fluent launch arguments.
-    mount_source : Union[str, Path], optional
+    mount_source : str | Path, optional
         Existing path in the host operating system that will be mounted to ``mount_target``.
-    mount_target : Union[str, Path], optional
+    mount_target : str | Path, optional
         Path inside the container where ``mount_source`` will be mounted to.
     timeout : int, optional
         Time limit  for the Fluent container to start, in seconds. By default, 30 seconds.
@@ -128,7 +128,7 @@ def configure_container_dict(
         Port for Fluent container to use.
     license_server : str, optional
         License server for Ansys Fluent to use.
-    container_server_info_file : Union[str, Path], optional
+    container_server_info_file : str | Path, optional
         Name of the server information file for Fluent to write on the ``mount_source``.
     remove_server_info_file : bool, optional
         Defaults to True, and automatically deletes the server information file after PyFluent has finished using it.
@@ -338,7 +338,7 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str], container_dict: Optional[dict] = None
+    args: List[str], container_dict: dict | None = None
 ) -> (int, str):
     """Start a Fluent container.
 

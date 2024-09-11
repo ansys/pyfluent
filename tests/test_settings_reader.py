@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 
 from ansys.fluent.core import examples
@@ -7,7 +5,7 @@ from ansys.fluent.core.filereader.case_file import SettingsFile as SettingsReade
 
 
 def call_settings_reader(
-    settings_file_name: Optional[str] = None, expected: Optional[dict] = None
+    settings_file_name: str | None = None, expected: dict | None = None
 ):
     reader = SettingsReader(settings_file_name=settings_file_name)
     if expected is not None:
@@ -23,7 +21,7 @@ def call_settings_reader(
 
 
 def call_settings_reader_static_mixer(
-    settings_file_name: Optional[str] = None,
+    settings_file_name: str | None = None,
 ):
     call_settings_reader(
         settings_file_name=settings_file_name,

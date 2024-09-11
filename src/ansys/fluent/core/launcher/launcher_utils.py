@@ -7,7 +7,7 @@ import platform
 import socket
 import subprocess
 import time
-from typing import Any, Dict, Union
+from typing import Any, Dict
 
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.utils.networking import find_remoting_ip
@@ -78,7 +78,7 @@ def _confirm_watchdog_start(start_watchdog, cleanup_on_exit, fluent_connection):
 
 
 def _build_journal_argument(
-    topy: Union[None, bool, str], journal_file_names: Union[None, str, list[str]]
+    topy: None | bool | str, journal_file_names: None | str | list[str]
 ) -> str:
     """Build Fluent commandline journal argument."""
 
@@ -86,7 +86,7 @@ def _build_journal_argument(
 
     @beartype(conf=BeartypeConf(violation_type=TypeError))
     def _impl(
-        topy: Union[None, bool, str], journal_file_names: Union[None, str, list[str]]
+        topy: None | bool | str, journal_file_names: None | str | list[str]
     ) -> str:
         if topy and not journal_file_names:
             raise InvalidArgument(

@@ -1,6 +1,6 @@
 """Module for Field data streaming."""
 
-from typing import Callable, Dict, List, Union
+from typing import Callable, Dict, List
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.services.field_data import ChunkParser
@@ -35,6 +35,6 @@ class FieldDataStreaming(StreamingService):
             )
         )
 
-    def callbacks(self) -> List[List[Union[Callable, List, Dict]]]:
+    def callbacks(self) -> List[List[Callable | List | Dict]]:
         """Get list of callbacks along with arguments and keyword arguments."""
         return self._service_callbacks.values()

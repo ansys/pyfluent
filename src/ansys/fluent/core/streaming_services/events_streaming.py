@@ -4,7 +4,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Type, TypeVar, Union
+from typing import Callable, Generic, Type, TypeVar
 import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -156,7 +156,7 @@ class EventsManager(Generic[TEvent]):
 
     def register_callback(
         self,
-        event_name: Union[TEvent, str],
+        event_name: TEvent | str,
         callback: Callable,
         *args,
         **kwargs,

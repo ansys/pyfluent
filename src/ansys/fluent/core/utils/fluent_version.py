@@ -3,7 +3,6 @@
 from enum import Enum
 from functools import total_ordering
 import os
-from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._version import fluent_release_version
@@ -32,7 +31,7 @@ def get_version(session=None):
     return session.get_fluent_version().value
 
 
-def get_version_for_file_name(version: Optional[str] = None, session=None):
+def get_version_for_file_name(version: str | None = None, session=None):
     """Get Fluent version for file name."""
     if version is None:
         version = get_version(session)
@@ -128,3 +127,9 @@ class FluentVersion(Enum):
     def __repr__(self) -> str:
         """Return a string representation for the Fluent version."""
         return self.value
+
+    def __str__(self) -> str:
+        """String output for the Fluent version."""
+        return (
+            f"Fluent version 20{self.value.split('.')[0]} R{self.value.split('.')[1]}"
+        )
