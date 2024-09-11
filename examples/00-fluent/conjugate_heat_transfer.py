@@ -1,5 +1,4 @@
-"""
-.. _conjugate_heat_transfer:
+""".. _conjugate_heat_transfer:
 
 Conjugate Heat Transfer
 -----------------------

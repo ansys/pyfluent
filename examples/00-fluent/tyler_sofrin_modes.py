@@ -1,5 +1,4 @@
-"""
-.. _ref_ts_mode_calculator:
+""".. _ref_ts_mode_calculator:
 
 Tyler-Sofrin Compressor Modes Post-Processing
 ---------------------------------------------
