@@ -72,7 +72,6 @@ meshing = pyfluent.launch_fluent(
     ui_mode="gui",
     processor_count=4,
 )
-meshing.journal.start("xyz111.py")
 meshing.health_check.check_health()
 
 #############################################################################
@@ -548,9 +547,7 @@ solver.setup.cell_zone_conditions.solid["solid-tube-2"].set_state(tube_dict)
 # Set Boundary Condition for Inlet and Outlet
 # ===========================================
 
-solver.setup.boundary_conditions.velocity_inlet["inlet"].momentum.velocity_magnitude = (
-    4.0
-)
+solver.setup.boundary_conditions.velocity_inlet["inlet"].momentum.velocity = 4.0
 solver.setup.boundary_conditions.velocity_inlet["inlet"].thermal.temperature = (
     293.15  # Need to specify in Kelvin
 )
@@ -630,75 +627,71 @@ solver.solution.monitor.report_plots["outlet-enthalpy-flow-plot"].report_defs = 
     "outlet-enthalpy-flow"
 )
 
-solver.tui.solve.report_files.add(
-    "outlet-enthalpy-flow-file",
-    "report-defs",
-    "outlet-enthalpy-flow",
-    "()",
-    "file-name",
-    "outlet-enthalpy-flow.out",
-    "q",
-)
+solver.solution.monitor.report_files["outlet-enthalpy-flow-file"] = {}
+solver.solution.monitor.report_files["outlet-enthalpy-flow-file"] = {
+    "report_defs": ["outlet-enthalpy-flow"],
+    "file_name": r"outlet-enthalpy-flow.out",
+}
 
-solver.tui.solve.report_plots.add(
-    "avg-pressure-inlet-plot", "report-defs", "avg-pressure-inlet", "()", "q"
-)
-solver.tui.solve.report_files.add(
-    "avg-pressure-inlet-file",
-    "report-defs",
-    "avg-pressure-inlet",
-    "()",
-    "file-name",
-    "avg-pressure-inlet.out",
-    "q",
-)
+solver.solution.monitor.report_plots["avg-pressure-inlet-plot"] = {}
+solver.solution.monitor.report_plots["avg-pressure-inlet-plot"] = {
+    "report_defs": ["avg-pressure-inlet"]
+}
 
-solver.tui.solve.report_plots.add(
-    "max-vel-louvers4-plot", "report-defs", "max-vel-louvers4", "()", "q"
-)
-solver.tui.solve.report_files.add(
-    "max-vel-louvers4-file",
-    "report-defs",
-    "max-vel-louvers4",
-    "()",
-    "file-name",
-    "max-vel-louvers4.out",
-    "q",
-)
+solver.solution.monitor.report_files["avg-pressure-inlet-file"] = {}
+solver.solution.monitor.report_files["avg-pressure-inlet-file"] = {
+    "report_defs": ["avg-pressure-inlet"],
+    "file_name": r"avg-pressure-inlet.out",
+}
 
-solver.tui.solve.report_plots.add(
-    "wall-shear-int-plot", "report-defs", "wall-shear-int", "()", "q"
-)
-solver.tui.solve.report_files.add(
-    "wall-shear-int-file",
-    "report-defs",
-    "wall-shear-int",
-    "()",
-    "file-name",
-    "wall-shear-int.out",
-    "q",
-)
+solver.solution.monitor.report_plots["max-vel-louvers4-plot"] = {}
+solver.solution.monitor.report_plots["max-vel-louvers4-plot"] = {
+    "report_defs": ["max-vel-louvers4"]
+}
+
+solver.solution.monitor.report_files["max-vel-louvers4-file"] = {}
+solver.solution.monitor.report_files["max-vel-louvers4-file"] = {
+    "report_defs": ["max-vel-louvers4"],
+    "file_name": r"max-vel-louvers4.out",
+}
+
+solver.solution.monitor.report_plots["wall-shear-int-plot"] = {}
+solver.solution.monitor.report_plots["wall-shear-int-plot"] = {
+    "report_defs": ["wall-shear-int"]
+}
+
+solver.solution.monitor.report_files["wall-shear-int-file"] = {}
+solver.solution.monitor.report_files["wall-shear-int-file"] = {
+    "report_defs": ["wall-shear-int"],
+    "file_name": r"wall-shear-int.out",
+}
 
 #############################################################################
 # Hybrid Initialization; Slit Interior between Solid Zones; Save Case
 # ===================================================================
 
-solver.tui.solve.initialize.hyb_initialization()
-solver.tui.mesh.modify_zones.slit_interior_between_diff_solids()
+solver.solution.initialization.initialization_type = "hybrid"
+solver.solution.initialization.hybrid_initialize()
+
+solver.setup.boundary_conditions.slit_interior_between_diff_solids()
 save_case_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.cas.h5")
-solver.tui.file.write_case(save_case_as)
-solver.tui.solve.initialize.hyb_initialization()
+solver.file.write(file_type="case", file_name=save_case_as)
 
 #############################################################################
 # Set Aggressive Length Scale Method; Run Calculation & Save Data
 # ===============================================================
 
-solver.tui.solve.set.pseudo_time_method.global_time_step_settings(
-    "yes", "0", "1", "yes", "1"
+solver.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_method = (
+    "automatic"
 )
-solver.tui.solve.iterate("250")
+solver.solution.run_calculation.pseudo_time_settings.time_step_method.length_scale_methods = (
+    "aggressive"
+)
+
+solver.solution.run_calculation.iterate(iter_count=25)
+
 save_case_data_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.dat.h5")
-solver.tui.file.write_case_data(save_case_data_as)
+solver.file.write(file_type="case-data", file_name=save_case_data_as)
 
 #############################################################################
 # Post-Processing Mass Balance Report
@@ -814,9 +807,9 @@ p.add_scalar_bar(
 # Create Iso-Surface of X=0.012826 m
 # ==================================
 
-solver.tui.surface.iso_surface(
-    "x-coordinate", "x=0.012826", "()", "()", "0.012826", "()"
-)
+solver.results.surfaces.iso_surface["x=0.012826"] = {}
+solver.results.surfaces.iso_surface["x=0.012826"].field = "x-coordinate"
+solver.results.surfaces.iso_surface["x=0.012826"] = {"iso_values": [0.012826]}
 
 #############################################################################
 # Vecotor Plot
@@ -881,5 +874,4 @@ p1.plot("p1")
 #############################################################################
 # Exit Fluent Session
 # ===================
-solver.journal.stop()
 solver.exit()
