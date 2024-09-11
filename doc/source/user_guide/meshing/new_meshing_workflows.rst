@@ -408,7 +408,7 @@ Generate surface mesh
 
 .. code:: python
 
-    fault_tolerant.generate_the_surface_mesh()
+    fault_tolerant.generate_surface_mesh()
 
 Update boundaries
 ~~~~~~~~~~~~~~~~~
@@ -433,7 +433,7 @@ Generate volume mesh
 
 .. code:: python
 
-    fault_tolerant.generate_the_volume_mesh.all_region_name_list.set_state([
+    fault_tolerant.create_volume_mesh.all_region_name_list.set_state([
                 "main",
                 "flow_pipe",
                 "outpipe3",
@@ -442,10 +442,10 @@ Generate volume mesh
                 "void-region-1",
                 "fluid-region-1",
             ])
-    fault_tolerant.generate_the_volume_mesh.all_region_size_list.set_state(["11.33375"] * 7)
-    fault_tolerant.generate_the_volume_mesh.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
-    fault_tolerant.generate_the_volume_mesh.enable_parallel.set_state(True)
-    fault_tolerant.generate_the_volume_mesh()
+    fault_tolerant.create_volume_mesh.all_region_size_list.set_state(["11.33375"] * 7)
+    fault_tolerant.create_volume_mesh.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
+    fault_tolerant.create_volume_mesh.enable_parallel.set_state(True)
+    fault_tolerant.create_volume_mesh()
 
 Switch to solution mode
 ~~~~~~~~~~~~~~~~~~~~~~~

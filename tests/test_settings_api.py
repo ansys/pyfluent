@@ -435,3 +435,13 @@ def test_generated_code_special_cases(new_solver_session):
     write_file_bases = solver.file.write_case.file_name.__class__.__bases__
     assert _InputFile not in write_file_bases
     assert _OutputFile in write_file_bases
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_special_characters_in_child_alias(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.solution.initialization.hybrid_initialize()
+    assert (
+        solver.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
+        == {"gaussian_factor": "../gaussian_factor", "option": "../kernel_type"}
+    )

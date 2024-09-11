@@ -5,7 +5,7 @@ variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
 """
 
-from typing import Any, List, Optional
+from typing import Any, List
 
 import ansys.fluent.core.filereader.lispy as lispy
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -19,7 +19,7 @@ class RPVars:
     def __init__(self, eval_fn):
         self._eval_fn = eval_fn
 
-    def __call__(self, var: Optional[str] = None, val: Optional[Any] = None) -> Any:
+    def __call__(self, var: str | None = None, val: Any | None = None) -> Any:
         """Set or get a specific rpvar, or get the full rpvar state.
 
         Parameters

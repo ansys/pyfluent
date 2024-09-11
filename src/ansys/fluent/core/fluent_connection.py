@@ -11,7 +11,7 @@ from pathlib import Path
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Optional, Tuple, Union
+from typing import Any, Callable, List, Tuple
 import warnings
 import weakref
 
@@ -93,12 +93,12 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
+def get_container(container_id_or_name: str) -> bool | Container | None:
     """Get the Docker container object.
 
     Returns
     -------
-    Union[bool, Container, None]
+    bool | Container | None
         If the system is not correctly set up to run Docker containers, returns ``None``.
         If the container was not found, returns ``False``.
         If the container is found, returns the associated Docker container object.
@@ -149,7 +149,7 @@ class ErrorState:
         """Get details."""
         return self._details
 
-    def __init__(self, name: str = "", details: str = ""):
+    def __init__(self, name: str | None = "", details: str | None = ""):
         """Initializes the error state object.
 
         Parameters
@@ -192,14 +192,14 @@ class FluentConnectionProperties:
     '127.0.0.1'
     """
 
-    ip: Optional[str] = None
-    port: Optional[int] = None
-    password: Optional[str] = None
-    cortex_pwd: Optional[str] = None
-    cortex_pid: Optional[int] = None
-    cortex_host: Optional[str] = None
-    fluent_host_pid: Optional[int] = None
-    inside_container: Optional[Union[bool, Container, None]] = None
+    ip: str | None = None
+    port: int | None = None
+    password: str | None = None
+    cortex_pwd: str | None = None
+    cortex_pid: int | None = None
+    cortex_host: str | None = None
+    fluent_host_pid: int | None = None
+    inside_container: bool | Container | None = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
@@ -210,9 +210,7 @@ class FluentConnectionProperties:
         return vars(self)
 
 
-def _get_ip_and_port(
-    ip: Optional[str] = None, port: Optional[int] = None
-) -> (str, int):
+def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
         ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
     if not port:
@@ -301,19 +299,19 @@ class FluentConnection:
 
     _on_exit_cbs: List[Callable] = []
     _id_iter = itertools.count()
-    _monitor_thread: Optional[MonitorThread] = None
+    _monitor_thread: MonitorThread | None = None
 
     def __init__(
         self,
-        ip: Optional[str] = None,
-        port: Optional[int] = None,
-        password: Optional[str] = None,
-        channel: Optional[grpc.Channel] = None,
+        ip: str | None = None,
+        port: int | None = None,
+        password: str | None = None,
+        channel: grpc.Channel | None = None,
         cleanup_on_exit: bool = True,
-        remote_instance: Optional[Instance] = None,
-        file_transfer_service: Optional[Any] = None,
-        slurm_job_id: Optional[str] = None,
-        inside_container: Optional[bool] = None,
+        remote_instance: Instance | None = None,
+        file_transfer_service: Any | None = None,
+        slurm_job_id: str | None = None,
+        inside_container: bool | None = None,
     ):
         """Initialize a Session.
 
@@ -557,7 +555,7 @@ class FluentConnection:
         warnings.warn("Use -> health_check.status()", PyFluentDeprecationWarning)
         return self.health_check.status()
 
-    def wait_process_finished(self, wait: Union[float, int, bool] = 60):
+    def wait_process_finished(self, wait: float | int | bool = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
         are still running when wait limit (default 60 seconds) is reached. Immediately
         cancels and returns ``None`` if ``wait`` is set to ``False``.
@@ -608,9 +606,9 @@ class FluentConnection:
 
     def exit(
         self,
-        timeout: Optional[float] = None,
+        timeout: float | None = None,
         timeout_force: bool = True,
-        wait: Optional[Union[float, int, bool]] = False,
+        wait: float | int | bool | None = False,
     ) -> None:
         """Close the Fluent connection and exit Fluent.
 

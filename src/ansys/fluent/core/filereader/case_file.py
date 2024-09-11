@@ -16,11 +16,12 @@ Example
 """
 
 import codecs
+from enum import Enum
 import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List
 import xml.etree.ElementTree as ET
 
 from lxml import etree
@@ -171,20 +172,20 @@ class OutputParameter:
 class CaseVariable:
     """Provides access to variables defined in the case."""
 
-    def __init__(self, variables: dict, path: Optional[str] = ""):
+    def __init__(self, variables: dict, path: str | None = ""):
         """Initialize CaseVariable.
 
         Parameters
         ----------
         variables : dict
             The variables dictionary.
-        path : Optional[str]
+        path : str
             The path to the variables.
         """
         self._variables = variables
         self._path = path
 
-    def __call__(self, name: str = ""):
+    def __call__(self, name: str | None = ""):
         if not name:
             error_name = self._path[:-1] if self._path else self._path
             raise RuntimeError(f"Invalid variable {error_name}")
@@ -215,6 +216,14 @@ class CaseVariable:
             return CaseVariable(self._variables, name + "/")
 
 
+class MeshType(Enum):
+    """Types of Mesh."""
+
+    SURFACE = "surface"
+    VOLUME = "volume"
+    UNKNOWN = "unknown"
+
+
 class Mesh:
     """Class to provide mesh data.
 
@@ -235,6 +244,16 @@ class Mesh:
     def __init__(self, file_handle):
         """Initialize the object."""
         self._file_handle = file_handle
+
+    def get_mesh_type(self) -> MeshType:
+        """Returns the type of the mesh."""
+        try:
+            if "cells" in self._file_handle["meshes"]["1"].keys():
+                return MeshType.VOLUME
+            else:
+                return MeshType.SURFACE
+        except Exception:
+            return MeshType.UNKNOWN
 
     def get_surface_ids(self) -> list:
         """Returns list of ids of all available surfaces."""
@@ -352,12 +371,12 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
+    def input_parameters(self) -> List[InputParameter] | List[InputParameterOld]:
         """Get the input parameters.
 
         Returns
         -------
-        Union[List[InputParameter], List[InputParameterOld]]
+        List[InputParameter] | List[InputParameterOld]
             The list of input parameters.
         """
         exprs = self._named_expressions()
@@ -494,13 +513,13 @@ class RPVarProcessor:
 class SettingsFile(RPVarProcessor):
     """Class to read a Fluent Settings file."""
 
-    def __init__(self, settings_file_name: Optional[str] = None) -> None:
+    def __init__(self, settings_file_name: str | None = None) -> None:
         """Initialize a SettingsFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        settings_file_name : Optional[str]
+        settings_file_name : str
             The path of a settings file.
         """
         if settings_file_name:
@@ -528,6 +547,16 @@ class SettingsFile(RPVarProcessor):
         super().__init__(rp_vars_str)
 
 
+class EmptyContainer:
+    """Empty Container."""
+
+    def __getattr__(self, item):
+        return lambda *args, **kwargs: None
+
+    def __call__(self, *args, **kwargs):
+        return None
+
+
 class CaseFile(RPVarProcessor):
     """Class to read a Fluent case file.
 
@@ -539,19 +568,20 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_file_name: Optional[str] = None,
-        project_file_name: Optional[str] = None,
+        case_file_name: str | None = None,
+        project_file_name: str | None = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        case_file_name : Optional[str]
+        case_file_name : str
             The path of a case file.
-        project_file_name : Optional[str]
+        project_file_name : str
             The path of a project file from which the case file is selected.
         """
+        self._is_case_file = False
 
         if (not case_file_name) == (not project_file_name):
             raise RuntimeError(
@@ -572,23 +602,35 @@ class CaseFile(RPVarProcessor):
                 )
 
         try:
-            if Path(case_file_name).match("*.cas.h5"):
+            if Path(case_file_name).match("*.cas.h5") or Path(case_file_name).match(
+                "*.msh.h5"
+            ):
                 _file = h5py.File(case_file_name)
-                settings = _file["settings"]
-                rpvars = settings["Rampant Variables"][0]
-                rp_vars_str = rpvars.decode()
-            elif Path(case_file_name).match("*.cas"):
+                if Path(case_file_name).match("*.cas.h5"):
+                    self._is_case_file = True
+                    settings = _file["settings"]
+                    rpvars = settings["Rampant Variables"][0]
+                    rp_vars_str = rpvars.decode()
+            elif Path(case_file_name).match("*.cas") or Path(case_file_name).match(
+                "*.msh"
+            ):
                 with open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
-                rp_vars_str = _get_processed_string(rp_vars_str)
-            elif Path(case_file_name).match("*.cas.gz"):
+                if Path(case_file_name).match("*.cas"):
+                    self._is_case_file = True
+                    rp_vars_str = _get_processed_string(rp_vars_str)
+            elif Path(case_file_name).match("*.cas.gz") or Path(case_file_name).match(
+                "*.msh.gz"
+            ):
                 with gzip.open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()
-                rp_vars_str = _get_processed_string(rp_vars_str)
+                if Path(case_file_name).match("*.cas.gz"):
+                    self._is_case_file = True
+                    rp_vars_str = _get_processed_string(rp_vars_str)
             else:
                 error_message = (
                     "Could not read case file. "
-                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
+                    "Only valid Case files (.h5, .cas, .cas.gz) or Mesh files (.msh.h5, .msh, .msh.gz) can be read. "
                 )
                 raise RuntimeError(error_message)
 
@@ -603,12 +645,23 @@ class CaseFile(RPVarProcessor):
         except Exception as e:
             raise RuntimeError(f"Could not read case file {case_file_name}") from e
 
-        super().__init__(rp_vars_str=rp_vars_str)
+        if self._is_case_file:
+            super().__init__(rp_vars_str=rp_vars_str)
         self._mesh = Mesh(_file)
 
     def get_mesh(self):
         """Get the mesh data."""
         return self._mesh
+
+    def __getattribute__(self, item):
+        if (
+            item != "_is_case_file"
+            and not self._is_case_file
+            and item
+            in set(filter(lambda k: not k.startswith("__"), dir(RPVarProcessor)))
+        ):
+            return EmptyContainer()
+        return super().__getattribute__(item)
 
 
 def _get_processed_string(input_string: bytes) -> str:

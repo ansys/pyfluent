@@ -1,6 +1,6 @@
 """Module containing class encapsulating Fluent connection."""
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
@@ -22,9 +22,9 @@ class Meshing(PureMeshing):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Optional[Dict[str, Any]] = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """Meshing session.
 
