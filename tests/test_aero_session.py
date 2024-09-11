@@ -1,6 +1,7 @@
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -11,11 +12,14 @@ def test_icing_session():
 
 @pytest.mark.fluent_version(">=24.2")
 def test_sample_setup():
+    mesh_filepath = examples.download_file(
+        "wing.msh.h5",
+        "pyfluent/aero",
+        return_without_path=False,
+    )
     solver = pyfluent.launch_fluent(mode="solver_aero")
     solver.new_project(project_name="sample_aero_proj")
-    solver.new_simulation(
-        case_file_name=r"C:\ANSYSDev\PyFluent_Dev_01\pf_aero\wing.msh.h5"
-    )
+    solver.new_simulation(case_file_name=mesh_filepath)
 
     # Geometric Properties
     solver.aero.AeroWorkflow.Setup.GeometricProperties.MomentCenterX = 0.2
