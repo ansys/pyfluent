@@ -336,7 +336,7 @@ solver.solution.run_calculation.dual_time_iterate(
 # ====================
 # Write case and data files
 save_case_data_as = Path(save_path) / "ablation_Solved.cas.h5"
-solver.file.write(file_type="case-data", file_name=save_case_data_as)
+solver.file.write(file_type="case-data", file_name=str(save_case_data_as))
 
 ####################################################################################
 # Post Processing
