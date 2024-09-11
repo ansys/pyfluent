@@ -21,7 +21,7 @@ import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List
 import xml.etree.ElementTree as ET
 
 from lxml import etree
@@ -172,20 +172,20 @@ class OutputParameter:
 class CaseVariable:
     """Provides access to variables defined in the case."""
 
-    def __init__(self, variables: dict, path: Optional[str] = ""):
+    def __init__(self, variables: dict, path: str | None = ""):
         """Initialize CaseVariable.
 
         Parameters
         ----------
         variables : dict
             The variables dictionary.
-        path : Optional[str]
+        path : str
             The path to the variables.
         """
         self._variables = variables
         self._path = path
 
-    def __call__(self, name: str = ""):
+    def __call__(self, name: str | None = ""):
         if not name:
             error_name = self._path[:-1] if self._path else self._path
             raise RuntimeError(f"Invalid variable {error_name}")
@@ -371,12 +371,12 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> Union[List[InputParameter], List[InputParameterOld]]:
+    def input_parameters(self) -> List[InputParameter] | List[InputParameterOld]:
         """Get the input parameters.
 
         Returns
         -------
-        Union[List[InputParameter], List[InputParameterOld]]
+        List[InputParameter] | List[InputParameterOld]
             The list of input parameters.
         """
         exprs = self._named_expressions()
@@ -513,13 +513,13 @@ class RPVarProcessor:
 class SettingsFile(RPVarProcessor):
     """Class to read a Fluent Settings file."""
 
-    def __init__(self, settings_file_name: Optional[str] = None) -> None:
+    def __init__(self, settings_file_name: str | None = None) -> None:
         """Initialize a SettingsFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        settings_file_name : Optional[str]
+        settings_file_name : str
             The path of a settings file.
         """
         if settings_file_name:
@@ -568,17 +568,17 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_file_name: Optional[str] = None,
-        project_file_name: Optional[str] = None,
+        case_file_name: str | None = None,
+        project_file_name: str | None = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        case_file_name : Optional[str]
+        case_file_name : str
             The path of a case file.
-        project_file_name : Optional[str]
+        project_file_name : str
             The path of a project file from which the case file is selected.
         """
         self._is_case_file = False

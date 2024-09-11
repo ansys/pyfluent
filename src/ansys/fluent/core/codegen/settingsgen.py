@@ -168,13 +168,13 @@ class _CommandInfo:
 _arg_type_strings = {
     flobject.Boolean: "bool",
     flobject.Integer: "int",
-    flobject.Real: "Union[float, str]",
+    flobject.Real: "float | str",
     flobject.String: "str",
     flobject.Filename: "str",
     flobject.BooleanList: "List[bool]",
     flobject.IntegerList: "List[int]",
-    flobject.RealVector: "Tuple[Union[float, str], Union[float, str], Union[float, str]",
-    flobject.RealList: "List[Union[float, str]]",
+    flobject.RealVector: "Tuple[float | str, float | str, float | str",
+    flobject.RealList: "List[float | str]",
     flobject.StringList: "List[str]",
     flobject.FilenameList: "List[str]",
 }

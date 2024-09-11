@@ -5,22 +5,22 @@ from contextlib import contextmanager
 import copy
 from enum import Enum
 from threading import RLock
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 
-StateType = Union[
-    bool,
-    int,
-    float,
-    str,
-    List[bool],
-    List[int],
-    List[float],
-    List[str],
-    List["StateType"],
-    Dict[str, "StateType"],
-]
+StateType = (
+    bool
+    | int
+    | float
+    | str
+    | List[bool]
+    | List[int]
+    | List[float]
+    | List[str]
+    | List["StateType"]
+    | Dict[str, "StateType"]
+)
 
 
 class NameKey(Enum):
@@ -292,7 +292,7 @@ class DataModelCache:
         return [DataModelCache._dm_path_comp(comp) for comp in obj.path]
 
     def get_state(
-        self, rules: str, obj: object, name_key: Optional[NameKey] = None
+        self, rules: str, obj: object, name_key: NameKey | None = None
     ) -> Any:
         """Retrieve state from datamodel cache.
 

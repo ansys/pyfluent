@@ -114,7 +114,7 @@ Getting started
 
 Launching Fluent
 ~~~~~~~~~~~~~~~~
-To launch Fluent from Python, use the ``launch_fluent`` method:
+To launch Fluent from Python, use the ``launch_fluent`` function:
 
 .. code:: python
 
