@@ -47,7 +47,6 @@ from ansys.fluent.visualization.pyvista.pyvista_windows_manager import PyVistaWi
 # * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
 # * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
 # * Path("~/pyfluent-examples-tests") in Linux.
-pyfluent.EXAMPLES_PATH = r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent-examples"
 save_path = Path(pyfluent.EXAMPLES_PATH)
 
 geom_filename = examples.download_file(
@@ -69,7 +68,6 @@ meshing = pyfluent.launch_fluent(
     mode="meshing",
     dimension=3,
     precision="double",
-    ui_mode="gui",
     processor_count=4,
 )
 meshing.health_check.check_health()
