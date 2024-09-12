@@ -678,44 +678,50 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    @classmethod
-    def _unalias(cls, value):
-        """Unalias the given value.
-
-        Raises
-        ------
-        NotImplementedError
-            If '..' is present in the alias path.
-        """
+    def _unalias(self, cls, value):
+        """Unalias the given value."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
+            outer_set_states = []
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
-                    # TODO: handle ".." in alias path
-                    if ".." in alias:
-                        raise NotImplementedError(
-                            'Cannot handle ".." in alias path while setting dictionary state.'
-                        )
-                    ret_alias = ret
                     comps = alias.split("/")
-                    aliased_cls = cls
-                    for i, comp in enumerate(comps):
-                        aliased_cls = aliased_cls._child_classes[comp]
-                        if i == len(comps) - 1:
-                            ret_alias[comp] = aliased_cls._unalias(v)
-                        else:
-                            ret_alias[comp] = {}
-                            ret_alias = ret_alias[comp]
+                    if comps[0] == "..":
+                        outer_obj = self
+                        while comps[0] == "..":
+                            outer_obj = outer_obj.parent
+                            comps = comps[1:]
+                        for comp in comps:
+                            outer_obj = getattr(outer_obj, comp)
+                        outer_set_states.append((outer_obj, v))
+                    else:
+                        ret_alias = ret
+                        aliased_cls = cls
+                        obj = self
+                        for i, comp in enumerate(comps):
+                            aliased_cls = aliased_cls._child_classes[comp]
+                            obj = getattr(obj, comp)
+                            if i == len(comps) - 1:
+                                ret_alias[comp], o_set_states = obj._unalias(
+                                    aliased_cls, v
+                                )
+                                outer_set_states.extend(o_set_states)
+                            else:
+                                ret_alias[comp] = {}
+                                ret_alias = ret_alias[comp]
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
-                        ret[k] = ccls._unalias(v)
+                        cobj = getattr(self, k)
+                        ret[k], o_set_states = cobj._unalias(ccls, v)
+                        outer_set_states.extend(o_set_states)
                     else:
-                        ret[k] = cls._unalias(v)
-            return ret
+                        ret[k], o_set_states = self._unalias(cls, v)
+                        outer_set_states.extend(o_set_states)
+            return ret, outer_set_states
         else:
-            return value
+            return value, []
 
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
@@ -725,8 +731,12 @@ class SettingsBase(Base, Generic[StateT]):
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                state = self._unalias(kwargs or state)
+                state, outer_set_states = self._unalias(self.__class__, kwargs or state)
+                # The outer set-states are applied separately which is OK for the current settings API.
+                # Ideally, we should do a single set-state operation at a common parent object.
                 self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+                for obj, state in outer_set_states:
+                    obj.set_state(state)
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -1189,8 +1199,7 @@ class WildcardPath(Group):
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
-    @classmethod
-    def _unalias(cls, value):
+    def _unalias(self, cls, value):
         # Not yet implemented
         return value
 
