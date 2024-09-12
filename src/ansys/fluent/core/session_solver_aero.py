@@ -63,7 +63,9 @@ class SolverAero(Solver):
     def open_project(self, project_name: str):
         """Open a saved project."""
         # TODO: Update Aero DM
-        self.scheme_eval.scheme_eval(f"""(aero-open-prjname "{project_name}")""")
+        self.scheme_eval.scheme_eval(
+            f"""(prjapp-project-open-project-cb #f "{project_name}")"""
+        )
 
     def new_simulation(self, case_file_name: str):
         """Add a new simulation by loading a case-file."""
@@ -76,7 +78,7 @@ class SolverAero(Solver):
         """Open a saved simulation."""
         # TODO: Update Aero DM
         self.scheme_eval.scheme_eval(
-            f"""(aero-open-simname "{simulation_file_name}")"""
+            f"""(aero-server-project-open-simulation "{simulation_file_name}")"""
         )
 
     @property
