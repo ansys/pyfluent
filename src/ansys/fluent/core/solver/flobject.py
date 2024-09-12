@@ -765,13 +765,12 @@ class SettingsBase(Base, Generic[StateT]):
             else:
                 state, outer_set_states = self._unalias(self.__class__, kwargs or state)
                 if outer_set_states:
-                    path, state = _combine_set_states(
-                        [(self.path, self.to_scheme_keys(state))]
-                        + [
-                            (obj.path, obj.to_scheme_keys(state))
-                            for obj, state in outer_set_states
-                        ]
-                    )
+                    set_states = []
+                    if state:
+                        set_states.append((self.path, self.to_scheme_keys(state)))
+                    for obj, state in outer_set_states:
+                        set_states.append((obj.path, obj.to_scheme_keys(state)))
+                    path, state = _combine_set_states(set_states)
                     self.flproxy.set_var(path, state)
                 else:
                     self.flproxy.set_var(self.path, self.to_scheme_keys(state))
