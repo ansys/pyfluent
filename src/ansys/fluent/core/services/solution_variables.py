@@ -522,6 +522,7 @@ class SolutionVariableData:
     ):
         self._service = service
         self._solution_variable_info = solution_variable_info
+        self._flag = False
 
     def _update_solution_variable_info(self):
         self._allowed_zone_names = _AllowedZoneNames(self._solution_variable_info)
@@ -531,18 +532,21 @@ class SolutionVariableData:
         self._allowed_solution_variable_names = _AllowedSvarNames(
             self._solution_variable_info
         )
-        svar_args = dict(
-            zone_names=self._allowed_zone_names,
-            solution_variable_name=self._allowed_solution_variable_names,
-        )
 
-        self.get_data = override_help_text(
-            _SvarMethod(
-                svar_accessor=self.get_data,
-                args_allowed_values_accessors=svar_args,
-            ),
-            SolutionVariableData.get_data,
-        )
+        if not self._flag:
+            svar_args = dict(
+                zone_names=self._allowed_zone_names,
+                solution_variable_name=self._allowed_solution_variable_names,
+            )
+
+            self.get_data = override_help_text(
+                _SvarMethod(
+                    svar_accessor=self.get_data,
+                    args_allowed_values_accessors=svar_args,
+                ),
+                SolutionVariableData.get_data,
+            )
+            self._flag = True
 
     def create_empty_array(
         self,
