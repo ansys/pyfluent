@@ -105,3 +105,12 @@ def test_enhanced_meshing_workflow_new_data_model_api(
 
     # assert attr_err_count == 0
     assert add_multizone_controls
+
+    bias_method = add_multizone_controls.bias_method
+
+    assert sorted(bias_method.allowed_values()) == sorted(
+        ["none", "right", "left", "in"]
+    )
+
+    bias_method.set_state("right")
+    assert bias_method.get_state() == "right"
