@@ -218,7 +218,7 @@ class StandaloneLauncher:
             # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
             self._launch_cmd = 'start "" ' + self._launch_string
         else:
-            if self.argvals["ui_mode"] < UIMode.HIDDEN_GUI:
+            if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
