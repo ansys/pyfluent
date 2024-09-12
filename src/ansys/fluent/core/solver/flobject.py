@@ -1238,7 +1238,7 @@ class WildcardPath(Group):
 
     def _unalias(self, cls, value):
         # Not yet implemented
-        return value
+        return value, []
 
 
 class NamedObjectWildcardPath(WildcardPath):
