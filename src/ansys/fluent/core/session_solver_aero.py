@@ -1,20 +1,20 @@
 """Module containing class encapsulating Fluent connection.
 
-Expose icing capabilities.
+Expose aero capabilities.
 """
 
-import importlib
 from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
+from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.session_solver import Solver
 
 
-class SolverIcing(Solver):
-    """Encapsulates a Fluent server for Icing session connection.
+class SolverAero(Solver):
+    """Encapsulates a Fluent server for Aero session connection.
 
-    SolverIcing(Session) holds the top-level objects for solver TUI, settings and icing
+    SolverAero(Session) holds the top-level objects for solver TUI, settings and aero
     datamodel objects calls.
     """
 
@@ -26,7 +26,7 @@ class SolverIcing(Solver):
         start_transcript: bool = True,
         launcher_args: Dict[str, Any] | None = None,
     ):
-        """SolverIcing session.
+        """SolverAero session.
 
         Parameters
         ----------
@@ -42,7 +42,7 @@ class SolverIcing(Solver):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(SolverIcing, self).__init__(
+        super(SolverAero, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
@@ -52,22 +52,44 @@ class SolverIcing(Solver):
         self._flserver_root = None
         self._fluent_version = None
         self._fluent_connection = fluent_connection
+        # TODO: Update Aero DM
+        scheme_eval.scheme_eval("(aero-load-addon)")
+
+    def new_project(self, project_name: str):
+        """Define a new project."""
+        # TODO: Update Aero DM
+        self.scheme_eval.scheme_eval(f"""(prjapp-new-project-cb #f "{project_name}")""")
+
+    def open_project(self, project_name: str):
+        """Open a saved project."""
+        # TODO: Update Aero DM
+        self.scheme_eval.scheme_eval(
+            f"""(prjapp-project-open-project-cb #f "{project_name}")"""
+        )
+
+    def new_simulation(self, case_file_name: str):
+        """Add a new simulation by loading a case-file."""
+        # TODO: Update Aero DM
+        self.scheme_eval.scheme_eval(
+            f"""(gui-aero-project-add-workflow-cb #f "{case_file_name}" #f #f)"""
+        )
+
+    def open_simulation(self, simulation_file_name: str):
+        """Open a saved simulation."""
+        # TODO: Update Aero DM
+        self.scheme_eval.scheme_eval(
+            f"""(aero-server-project-open-simulation "{simulation_file_name}")"""
+        )
 
     @property
     def _flserver(self):
         """Root datamodel object."""
-        if self._flserver_root is None:
-            se = self._datamodel_service_se
-            dm_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self._version}.flicing"
-            )
-            self._flserver_root = dm_module.Root(se, "flserver", [])
-        return self._flserver_root
+        return PyMenuGeneric(service=self._se_service, rules="flserver")
 
     @property
-    def icing(self):
-        """Instance of icing (Case.App) -> root datamodel object."""
+    def aero(self):
+        """Instance of aero (Case.App) -> root datamodel object."""
         return self._flserver.Case.App
 
     def __dir__(self):
-        return super(SolverIcing, self).__dir__()
+        return super(SolverAero, self).__dir__()
