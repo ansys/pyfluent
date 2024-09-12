@@ -1,7 +1,6 @@
 """Client side implementation of the stand-alone datamodel server."""
 
 from pathlib import Path
-from typing import Union
 
 import grpc
 
@@ -12,7 +11,7 @@ from ansys.fluent.core.services.datamodel_se import (
 from tests.run_stateengine_server import kill_server, run_server
 
 
-def run_datamodel_server(batch_file_name: Union[str, Path], rules):
+def run_datamodel_server(batch_file_name: str | Path, rules):
     """Run the datamodel server."""
     run_command = str(batch_file_name) + " " + rules
     run_server(run_command)

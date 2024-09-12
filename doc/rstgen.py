@@ -5,7 +5,6 @@ import os
 import pathlib
 from pathlib import Path
 import re
-from typing import Optional
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 
@@ -167,9 +166,7 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
     return full_name, full_path
 
 
-def _get_docdir(
-    mode: str, path: Optional[str] = None, is_datamodel: Optional[bool] = None
-):
+def _get_docdir(mode: str, path: str | None = None, is_datamodel: bool | None = None):
     """Get tui doc directory to generate all RST files.
 
     Parameters
@@ -191,7 +188,7 @@ def _get_docdir(
         return doc_path / f"doc/source/api/{mode}/tui/{path}"
 
 
-def _get_path(mode: str, is_datamodel: Optional[bool] = None):
+def _get_path(mode: str, is_datamodel: bool | None = None):
     """Get datamodel_* or tui_*.py file path.
 
     Parameters
