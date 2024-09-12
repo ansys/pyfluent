@@ -1,6 +1,6 @@
 """Module containing class encapsulating Fluent connection.
 
-**********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
+Exposes aero capabilities.
 """
 
 from typing import Any, Dict
