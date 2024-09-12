@@ -1,6 +1,6 @@
 """Module containing class encapsulating Fluent connection.
 
-Exposes aero capabilities.
+Expose aero capabilities.
 """
 
 from typing import Any, Dict

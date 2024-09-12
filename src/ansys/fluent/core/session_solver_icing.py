@@ -1,6 +1,6 @@
 """Module containing class encapsulating Fluent connection.
 
-Exposes icing capabilities.
+Expose icing capabilities.
 """
 
 import importlib
