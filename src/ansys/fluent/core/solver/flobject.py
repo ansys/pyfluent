@@ -640,6 +640,38 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
+def _combine_set_states(states: List[Tuple[str, StateT]]) -> Tuple[str, StateT]:
+    """Combines multiple set-states into a single set-state at a common parent path.
+
+    Parameters
+    ----------
+    states : list[tuple[str, StateT]]
+        List of (<path>, <state>) tuples.
+
+    Returns
+    -------
+    tuple[str, StateT]
+        Common parent path, combined state.
+    """
+    paths, _ = zip(*states)
+    common_path = []
+    paths = [path.split("/") for path in paths]
+    for comps in zip(*paths):
+        if len(set(comps)) == 1:
+            common_path.append(comps[0])
+        else:
+            break
+    combined_state = {}
+    for path, state in states:
+        comps = path.split("/")
+        comps = comps[len(common_path) :]
+        obj = combined_state
+        for comp in comps[:-1]:
+            obj = obj.setdefault(comp, {})
+        obj[comps[-1]] = state
+    return "/".join(common_path), combined_state
+
+
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -732,11 +764,17 @@ class SettingsBase(Base, Generic[StateT]):
                 self.value.set_state(state, **kwargs)
             else:
                 state, outer_set_states = self._unalias(self.__class__, kwargs or state)
-                # The outer set-states are applied separately which is OK for the current settings API.
-                # Ideally, we should do a single set-state operation at a common parent object.
-                self.flproxy.set_var(self.path, self.to_scheme_keys(state))
-                for obj, state in outer_set_states:
-                    obj.set_state(state)
+                if outer_set_states:
+                    path, state = _combine_set_states(
+                        [(self.path, self.to_scheme_keys(state))]
+                        + [
+                            (obj.path, obj.to_scheme_keys(state))
+                            for obj, state in outer_set_states
+                        ]
+                    )
+                    self.flproxy.set_var(path, state)
+                else:
+                    self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
