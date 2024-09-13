@@ -234,8 +234,6 @@ class Solver(BaseSession):
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme_eval.scheme_eval,
             )
-            if hasattr(self._settings_root, "exit"):
-                del self._settings_root.exit
         return self._settings_root
 
     @property

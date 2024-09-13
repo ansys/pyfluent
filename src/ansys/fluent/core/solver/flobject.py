@@ -2080,6 +2080,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(children, cls.child_names)
 
         commands = info.get("commands")
+        if commands:
+            commands.pop("exit", None)
         if commands and not user_creatable:
             commands.pop("create", None)
         if commands:
