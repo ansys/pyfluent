@@ -272,14 +272,20 @@ class _ConnectionInterface:
 
         return fluent_host_pid, cortex_host, cortex_pid, cortex_pwd
 
-    def is_solver_mode(self):
-        """Checks if the Fluent session is in solver mode.
+    def get_mode(self):
+        """Get the mode of a running fluent session."""
+        from ansys.fluent.core import FluentMode
 
-        Returns
-        --------
-            ``True`` if the Fluent session is in solver mode, ``False`` otherwise.
-        """
-        return self.scheme_eval.scheme_eval("(cx-solver-mode?)")
+        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
+            mode_str = self.scheme_eval.scheme_eval('(getenv "PRJAPP_APP")')
+            if mode_str == "flaero_server":
+                return FluentMode.SOLVER_AERO
+            elif mode_str == "flicing":
+                return FluentMode.SOLVER_ICING
+            else:
+                return FluentMode.SOLVER
+        else:
+            return FluentMode.MESHING
 
     def exit_server(self):
         """Exits the server."""

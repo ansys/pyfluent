@@ -7,14 +7,6 @@
         },
         "fluent_format": "{}"
     },
-    "fluent_icing": {
-        "type": "bool",
-        "fluent_map": {
-            "true": " -flicing",
-            "false": ""
-        },
-        "fluent_format": "{}"
-    },
     "py": {
         "type": "bool",
         "default": "null",

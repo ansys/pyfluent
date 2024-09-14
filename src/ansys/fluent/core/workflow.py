@@ -1037,16 +1037,16 @@ class CompoundChild(SimpleTask):
         return self._python_name
 
     def _get_python_names_for_compound_child(self):
-        py_name = (
-            self._command_source._parent_of_compound_child
-            + "_child_"
-            + str(
-                self._command_source._compound_child_map[
-                    self._command_source._parent_of_compound_child
-                ]
+        if self._command_source._parent_of_compound_child:
+            return (
+                self._command_source._parent_of_compound_child
+                + "_child_"
+                + str(
+                    self._command_source._compound_child_map[
+                        self._command_source._parent_of_compound_child
+                    ]
+                )
             )
-        )
-        return py_name
 
 
 class CompositeTask(BaseTask):

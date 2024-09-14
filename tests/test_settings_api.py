@@ -438,10 +438,45 @@ def test_generated_code_special_cases(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_special_characters_in_child_alias(mixing_elbow_settings_session):
+def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
     assert (
-        solver.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
         == {"gaussian_factor": "../gaussian_factor", "option": "../kernel_type"}
     )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = (
+        True
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type = (
+        "inverse-distance"
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel = {
+        "option": "gaussian",
+        "gaussian_factor": 0.5,
+    }
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type()
+        == "gaussian"
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
+        == 0.5
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
+        0.6
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
+        == 0.6
+    )
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_exit_not_in_settings(new_solver_session):
+    solver = new_solver_session
+
+    assert "exit" not in dir(solver.settings)
+
+    with pytest.raises(AttributeError):
+        solver.settings.exit()

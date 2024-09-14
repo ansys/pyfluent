@@ -640,6 +640,38 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
+def _combine_set_states(states: List[Tuple[str, StateT]]) -> Tuple[str, StateT]:
+    """Combines multiple set-states into a single set-state at a common parent path.
+
+    Parameters
+    ----------
+    states : list[tuple[str, StateT]]
+        List of (<path>, <state>) tuples.
+
+    Returns
+    -------
+    tuple[str, StateT]
+        Common parent path, combined state.
+    """
+    paths, _ = zip(*states)
+    common_path = []
+    paths = [path.split("/") for path in paths]
+    for comps in zip(*paths):
+        if len(set(comps)) == 1:
+            common_path.append(comps[0])
+        else:
+            break
+    combined_state = {}
+    for path, state in states:
+        comps = path.split("/")
+        comps = comps[len(common_path) :]
+        obj = combined_state
+        for comp in comps[:-1]:
+            obj = obj.setdefault(comp, {})
+        obj[comps[-1]] = state
+    return "/".join(common_path), combined_state
+
+
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -678,44 +710,50 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    @classmethod
-    def _unalias(cls, value):
-        """Unalias the given value.
-
-        Raises
-        ------
-        NotImplementedError
-            If '..' is present in the alias path.
-        """
+    def _unalias(self, cls, value):
+        """Unalias the given value."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
+            outer_set_states = []
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
-                    # TODO: handle ".." in alias path
-                    if ".." in alias:
-                        raise NotImplementedError(
-                            'Cannot handle ".." in alias path while setting dictionary state.'
-                        )
-                    ret_alias = ret
                     comps = alias.split("/")
-                    aliased_cls = cls
-                    for i, comp in enumerate(comps):
-                        aliased_cls = aliased_cls._child_classes[comp]
-                        if i == len(comps) - 1:
-                            ret_alias[comp] = aliased_cls._unalias(v)
-                        else:
-                            ret_alias[comp] = {}
-                            ret_alias = ret_alias[comp]
+                    if comps[0] == "..":
+                        outer_obj = self
+                        while comps[0] == "..":
+                            outer_obj = outer_obj.parent
+                            comps = comps[1:]
+                        for comp in comps:
+                            outer_obj = getattr(outer_obj, comp)
+                        outer_set_states.append((outer_obj, v))
+                    else:
+                        ret_alias = ret
+                        aliased_cls = cls
+                        obj = self
+                        for i, comp in enumerate(comps):
+                            aliased_cls = aliased_cls._child_classes[comp]
+                            obj = getattr(obj, comp)
+                            if i == len(comps) - 1:
+                                ret_alias[comp], o_set_states = obj._unalias(
+                                    aliased_cls, v
+                                )
+                                outer_set_states.extend(o_set_states)
+                            else:
+                                ret_alias[comp] = {}
+                                ret_alias = ret_alias[comp]
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
-                        ret[k] = ccls._unalias(v)
+                        cobj = getattr(self, k)
+                        ret[k], o_set_states = cobj._unalias(ccls, v)
+                        outer_set_states.extend(o_set_states)
                     else:
-                        ret[k] = cls._unalias(v)
-            return ret
+                        ret[k], o_set_states = self._unalias(cls, v)
+                        outer_set_states.extend(o_set_states)
+            return ret, outer_set_states
         else:
-            return value
+            return value, []
 
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
@@ -725,8 +763,17 @@ class SettingsBase(Base, Generic[StateT]):
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                state = self._unalias(kwargs or state)
-                self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+                state, outer_set_states = self._unalias(self.__class__, kwargs or state)
+                if outer_set_states:
+                    set_states = []
+                    if state:
+                        set_states.append((self.path, self.to_scheme_keys(state)))
+                    for obj, state in outer_set_states:
+                        set_states.append((obj.path, obj.to_scheme_keys(state)))
+                    path, state = _combine_set_states(set_states)
+                    self.flproxy.set_var(path, state)
+                else:
+                    self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -1189,10 +1236,9 @@ class WildcardPath(Group):
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
-    @classmethod
-    def _unalias(cls, value):
+    def _unalias(self, cls, value):
         # Not yet implemented
-        return value
+        return value, []
 
 
 class NamedObjectWildcardPath(WildcardPath):
@@ -2034,6 +2080,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(children, cls.child_names)
 
         commands = info.get("commands")
+        if commands:
+            commands.pop("exit", None)
         if commands and not user_creatable:
             commands.pop("create", None)
         if commands:
