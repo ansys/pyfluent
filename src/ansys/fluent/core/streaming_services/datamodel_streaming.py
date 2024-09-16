@@ -1,8 +1,14 @@
 """Provides a module for datamodel streaming."""
 
+import logging
+
+from google.protobuf.json_format import MessageToDict
+
 from ansys.api.fluent.v0 import datamodel_se_pb2
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.streaming_services.streaming import StreamingService
+
+network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
 class DatamodelStream(StreamingService):
@@ -41,6 +47,9 @@ class DatamodelStream(StreamingService):
         while True:
             try:
                 response: datamodel_se_pb2.DataModelResponse = next(responses)
+                network_logger.debug(
+                    f"GRPC_TRACE: RPC = /grpcRemoting.DataModel/BeginStreaming, response = {MessageToDict(response)}"
+                )
                 with self._lock:
                     self._streaming = True
                     for _, cb_list in self._service_callbacks.items():
