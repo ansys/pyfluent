@@ -665,10 +665,15 @@ def _combine_set_states(states: List[Tuple[str, StateT]]) -> Tuple[str, StateT]:
     for path, state in states:
         comps = path.split("/")
         comps = comps[len(common_path) :]
-        obj = combined_state
-        for comp in comps[:-1]:
-            obj = obj.setdefault(comp, {})
-        obj[comps[-1]] = state
+        if comps:
+            if not isinstance(combined_state, dict):
+                combined_state = {}
+            obj = combined_state
+            for comp in comps[:-1]:
+                obj = obj.setdefault(comp, {})
+            obj[comps[-1]] = state
+        else:
+            combined_state = state
     return "/".join(common_path), combined_state
 
 
