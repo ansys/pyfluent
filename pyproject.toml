@@ -22,7 +22,7 @@ classifiers = [
 include = [
     { path = "src/ansys/fluent/core/generated/fluent_version_*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/meshing/tui_*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/solver/tui_*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/datamodel_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },

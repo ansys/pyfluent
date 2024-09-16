@@ -47,6 +47,11 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     warning,
 )
 
+try:
+    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
+except (ImportError, AttributeError):
+    pass
+
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
 
