@@ -226,11 +226,14 @@ class DataModelCache:
             else:
                 if key not in source:
                     source[key] = {}
-            source = source[key]
-            for k, v in state.variant_map_state.item.items():
-                self._update_cache_from_variant_state(
-                    rules, source, k, v, dict.__setitem__
-                )
+            if state.variant_map_state.item:
+                source = source[key]
+                for k, v in state.variant_map_state.item.items():
+                    self._update_cache_from_variant_state(
+                        rules, source, k, v, dict.__setitem__
+                    )
+            else:
+                source[key] = {}
         else:
             updaterFn(source, key, None)
 
