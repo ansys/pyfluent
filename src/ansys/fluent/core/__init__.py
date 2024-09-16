@@ -102,8 +102,11 @@ DATAMODEL_USE_STATE_CACHE = True
 # Whether to use datamodel attribute caching
 DATAMODEL_USE_ATTR_CACHE = True
 
-# Whether stream and cache commands state
+# Whether to stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+# Whether to return the state changes on mutating datamodel rpcs
+DATAMODEL_RETURN_STATE_CHANGES = True
 
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False

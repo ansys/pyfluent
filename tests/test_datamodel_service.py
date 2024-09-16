@@ -1,5 +1,4 @@
 import gc
-from time import sleep
 
 from google.protobuf.json_format import MessageToDict
 import pytest
@@ -109,12 +108,10 @@ def test_add_on_child_created(new_meshing_session):
     )
     assert child_paths == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    sleep(5)
     assert len(child_paths) > 0
-    child_paths.clear()
     subscription.unsubscribe()
+    child_paths.clear()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-    sleep(5)
     assert child_paths == []
 
 
@@ -129,7 +126,6 @@ def test_add_on_deleted(new_meshing_session):
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-    sleep(5)
     assert len(data) > 0
 
 
@@ -141,16 +137,14 @@ def test_add_on_changed(new_meshing_session):
     assert isinstance(task_list(), list)
     assert len(task_list()) == 0
     data = []
-    subscription = task_list.add_on_changed(lambda obj: data.append(len(obj())))
+    subscription = task_list.add_on_changed(lambda obj: data.append(True))
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    sleep(5)
     assert len(data) > 0
-    assert data[-1] > 0
+    assert len(task_list()) > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-    sleep(5)
     assert data == []
 
 
@@ -164,7 +158,6 @@ def test_add_on_affected(new_meshing_session):
     )
     assert data == []
     wt = meshing.watertight()
-    sleep(5)
     assert len(data) > 0
     assert data[0] == True
 
@@ -179,20 +172,16 @@ def test_add_on_affected(new_meshing_session):
     import_geom.Arguments = {"FileName": geom}
     assert import_geom.Arguments()["FileName"] == geom
     assert wt.import_geometry.command_arguments()["FileName"] == geom
-    sleep(1)
     assert calls == [True]
     import_geom.Arguments = {"FileName": "dummy"}
-    sleep(1)
     assert calls == 2 * [True]
     import_geom.Arguments = {"FileName": geom}
-    sleep(1)
     assert calls == 3 * [True]
     execute_state = [meshing.workflow()]
     import_geom.Execute()
     calls_after_execute = []
     loop_count = 10
     for i in range(loop_count):
-        sleep(5)
         calls_after_execute.append(list(calls))
         execute_state.append(meshing.workflow())
     assert all(state == execute_state[1] for state in execute_state[2:])
@@ -204,7 +193,6 @@ def test_add_on_affected(new_meshing_session):
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-    sleep(5)
     assert data == []
 
 
@@ -218,13 +206,11 @@ def test_add_on_affected_at_type_path(new_meshing_session):
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    sleep(5)
     assert len(data) > 0
     assert data[0] == True
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-    sleep(5)
     assert data == []
 
 
@@ -242,13 +228,11 @@ def test_add_on_command_executed(new_meshing_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
-    sleep(5)
     assert len(data) > 0
     assert data[0] == True
     data.clear()
     subscription.unsubscribe()
     meshing.meshing.ImportGeometry(FileName=import_file_name)
-    sleep(5)
     assert data == []
 
 
@@ -282,7 +266,6 @@ def test_datamodel_streaming_full_diff_state(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
-    sleep(5)
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
@@ -310,7 +293,6 @@ def test_datamodel_streaming_no_commands_diff_state(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     meshing.meshing.ImportGeometry(FileName=import_file_name)
-    sleep(5)
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
 
 

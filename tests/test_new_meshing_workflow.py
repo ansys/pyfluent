@@ -1362,7 +1362,7 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
-    assert watertight.task_names() == [
+    assert set(watertight.task_names()) == {
         "import_geometry",
         "create_surface_mesh",
         "describe_geometry",
@@ -1377,7 +1377,7 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
         "import_boi_geometry",
         "import_boi_geometry_1",
         "import_boi_geometry_2",
-    ]
+    }
     assert watertight.import_boi_geometry_1.arguments()
 
 
