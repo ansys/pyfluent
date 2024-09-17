@@ -490,7 +490,7 @@ def test_command_creation_inside_singleton(new_meshing_session):
 
 
 @pytest.mark.codegen_required
-def test_read_ony_set_state(new_meshing_session):
+def test_read_only_set_state(new_meshing_session):
     meshing = new_meshing_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
     assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
