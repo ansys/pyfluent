@@ -454,6 +454,7 @@ class DatamodelService(StreamingService):
         metadata: list[tuple[str, str]],
         fluent_error_state,
         file_transfer_service: Any | None = None,
+        scheme_eval=None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -465,6 +466,7 @@ class DatamodelService(StreamingService):
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
+        self.scheme_eval = scheme_eval
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         """Get attribute value."""
@@ -497,7 +499,12 @@ class DatamodelService(StreamingService):
         request.wait = True
         response = self._impl.rename(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def delete_child_objects(
         self, rules: str, path: str, obj_type: str, child_names: list[str]
@@ -511,7 +518,12 @@ class DatamodelService(StreamingService):
         request.wait = True
         response = self._impl.delete_child_objects(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
         """Delete all child objects."""
@@ -522,7 +534,12 @@ class DatamodelService(StreamingService):
         request.wait = True
         response = self._impl.delete_child_objects(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
         """Set state."""
@@ -532,7 +549,12 @@ class DatamodelService(StreamingService):
         _convert_value_to_variant(state, request.state)
         response = self._impl.set_state(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def fix_state(self, rules, path) -> None:
         """Fix state."""
@@ -541,7 +563,12 @@ class DatamodelService(StreamingService):
         request.path = convert_path_to_se_path(path)
         response = self._impl.fix_state(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
@@ -553,7 +580,12 @@ class DatamodelService(StreamingService):
         _convert_value_to_variant(dict_state, request.dicttomerge)
         response = self._impl.update_dict(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def delete_object(self, rules: str, path: str) -> None:
         """Delete an object."""
@@ -562,7 +594,12 @@ class DatamodelService(StreamingService):
         )
         response = self._impl.delete_object(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
 
     def execute_command(
         self, rules: str, path: str, command: str, args: dict[str, _TValue]
@@ -574,7 +611,12 @@ class DatamodelService(StreamingService):
         _convert_value_to_variant(args, request.args)
         response = self._impl.execute_command(request)
         if self.cache is not None:
-            self.cache.update_cache(rules, response.state, response.deletedpaths)
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                scheme_eval=self.scheme_eval,
+            )
         return _convert_variant_to_value(response.result)
 
     def execute_query(

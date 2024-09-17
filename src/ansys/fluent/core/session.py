@@ -149,6 +149,7 @@ class BaseSession:
             fluent_connection._metadata,
             self._error_state,
             self._file_transfer_service,
+            self.scheme_eval,
         )
 
         self._datamodel_events = DatamodelEvents(self._datamodel_service_se)

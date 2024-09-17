@@ -101,6 +101,19 @@ class _CacheImpl:
                 d[k] = v1
 
 
+def is_dict_parameter_type(scheme_eval, rules, rules_path):
+    """Check if a parameter is a dict type."""
+    return (
+        scheme_eval.scheme_eval(
+            f'(state/rules/is-parameter-type "{rules}" "{rules_path}")'
+        )
+        and scheme_eval.scheme_eval(
+            f'(state/rules/get-parameter-type "{rules}" "{rules_path}")'
+        )
+        == "Dict"
+    )
+
+
 class DataModelCache:
     """Class to manage datamodel cache."""
 
@@ -177,6 +190,8 @@ class DataModelCache:
         key: str,
         state: Variant,
         updaterFn,
+        rules_str: str,
+        scheme_eval,
     ):
         if state.HasField("bool_state"):
             updaterFn(source, key, state.bool_state)
@@ -198,7 +213,13 @@ class DataModelCache:
             updaterFn(source, key, [])
             for item in state.variant_vector_state.item:
                 self._update_cache_from_variant_state(
-                    rules, source, key, item, lambda d, k, v: d[k].append(v)
+                    rules,
+                    source,
+                    key,
+                    item,
+                    lambda d, k, v: d[k].append(v),
+                    rules_str + "/" + key.split(":", maxsplit=1)[0],
+                    scheme_eval,
                 )
         elif state.HasField("variant_map_state"):
             internal_names_as_keys = (
@@ -226,18 +247,28 @@ class DataModelCache:
             else:
                 if key not in source:
                     source[key] = {}
+            if scheme_eval and is_dict_parameter_type(scheme_eval, rules, rules_str):
+                source[key] = {}
             if state.variant_map_state.item:
                 source = source[key]
                 for k, v in state.variant_map_state.item.items():
                     self._update_cache_from_variant_state(
-                        rules, source, k, v, dict.__setitem__
+                        rules,
+                        source,
+                        k,
+                        v,
+                        dict.__setitem__,
+                        rules_str + "/" + k.split(":", maxsplit=1)[0],
+                        scheme_eval,
                     )
             else:
                 source[key] = {}
         else:
             updaterFn(source, key, None)
 
-    def update_cache(self, rules: str, state: Variant, deleted_paths: List[str]):
+    def update_cache(
+        self, rules: str, state: Variant, deleted_paths: List[str], scheme_eval=None
+    ):
         """Update datamodel cache from streamed state.
 
         Parameters
@@ -248,6 +279,8 @@ class DataModelCache:
             streamed state
         deleted_paths : List[str]
             list of deleted paths
+        scheme_eval : SchemeEval, optional
+            scheme_eval service
         """
         cache = self.rules_str_to_cache[rules]
         with self._with_lock(rules):
@@ -283,7 +316,13 @@ class DataModelCache:
                             break
             for k, v in state.variant_map_state.item.items():
                 self._update_cache_from_variant_state(
-                    rules, cache, k, v, dict.__setitem__
+                    rules,
+                    cache,
+                    k,
+                    v,
+                    dict.__setitem__,
+                    k.split(":", maxsplit=1)[0],
+                    scheme_eval,
                 )
 
     @staticmethod
