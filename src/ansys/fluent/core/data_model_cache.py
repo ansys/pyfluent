@@ -103,6 +103,17 @@ class _CacheImpl:
 
 def is_dict_parameter_type(scheme_eval, rules, rules_path):
     """Check if a parameter is a dict type."""
+    partial_path = ""
+    comps = rules_path.split("/")
+    for i, comp in enumerate(comps):
+        partial_path += "/" + comp
+        if (
+            scheme_eval.scheme_eval(
+                f'(state/rules/is-parameter-type "{rules}" "{partial_path}")'
+            )
+            and i < len(comps) - 1
+        ):
+            return False  # path within dict-type parameter
     return (
         scheme_eval.scheme_eval(
             f'(state/rules/is-parameter-type "{rules}" "{rules_path}")'
