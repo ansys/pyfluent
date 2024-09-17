@@ -105,7 +105,7 @@ class _CacheImpl:
 def is_dict_parameter_type(scheme_eval, rules, rules_path):
     """Check if a parameter is a dict type."""
     if FluentVersion(scheme_eval.version) <= FluentVersion.v232:
-        return False  # state/rules/get-parameter-type is not available in Fluent 23.1 and earlier
+        return False  # state/rules/get-parameter-type is not available in Fluent 23.2 and earlier
     partial_path = ""
     comps = rules_path.split("/")
     for i, comp in enumerate(comps):
