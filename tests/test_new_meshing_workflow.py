@@ -763,7 +763,6 @@ def test_watertight_workflow_dynamic_interface(
             "<Insertable 'custom_journal_task' task>",
         ]
     )
-
     watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
     assert "create_volume_mesh" in watertight.task_names()
     create_volume_mesh = watertight.create_volume_mesh

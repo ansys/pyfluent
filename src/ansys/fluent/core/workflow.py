@@ -530,9 +530,8 @@ class BaseTask:
             raise ValueError(
                 f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
             )
-        return self._task.InsertNextTask(
-            CommandName=self._python_task_names_map[task_name]
-        )
+        self._task.InsertNextTask(CommandName=self._python_task_names_map[task_name])
+        _call_refresh_task_accessors(self._command_source)
 
     @property
     def insertable_tasks(self):
@@ -570,7 +569,9 @@ class BaseTask:
     def __call__(self, **kwds) -> Any:
         if kwds:
             self._task.Arguments.set_state(**kwds)
-        return self._task.Execute()
+        result = self._task.Execute()
+        _call_refresh_task_accessors(self._command_source)
+        return result
 
     def _tasks_with_matching_attributes(self, attr: str, other_attr: str) -> list:
         this_command = self._command()
