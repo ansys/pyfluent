@@ -102,30 +102,29 @@ class _CacheImpl:
                 d[k] = v1
 
 
-def is_dict_parameter_type(scheme_eval, rules, rules_path):
+def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
     """Check if a parameter is a dict type."""
-    if FluentVersion(scheme_eval.version) <= FluentVersion.v232:
-        return False  # state/rules/get-parameter-type is not available in Fluent 23.2 and earlier
-    partial_path = ""
+    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core.services.datamodel_se import (
+        PyDictionary,
+        PyNamedObjectContainer,
+        PyParameter,
+    )
+    from ansys.fluent.core.utils import load_module
+
+    module = load_module(
+        rules, CODEGEN_OUTDIR / f"datamodel_{version.number}" / f"{rules}.py"
+    )
+    cls = module.Root
     comps = rules_path.split("/")
     for i, comp in enumerate(comps):
-        partial_path += "/" + comp
-        if (
-            scheme_eval.scheme_eval(
-                f'(state/rules/is-parameter-type "{rules}" "{partial_path}")'
-            )
-            and i < len(comps) - 1
-        ):
-            return False  # path within dict-type parameter
-    return (
-        scheme_eval.scheme_eval(
-            f'(state/rules/is-parameter-type "{rules}" "{rules_path}")'
-        )
-        and scheme_eval.scheme_eval(
-            f'(state/rules/get-parameter-type "{rules}" "{rules_path}")'
-        )
-        == "Dict"
-    )
+        if hasattr(cls, comp):
+            cls = getattr(cls, comp)
+            if issubclass(cls, PyParameter) and i < len(comps) - 1:
+                return False
+            if issubclass(cls, PyNamedObjectContainer):
+                cls = getattr(cls, f"_{comp}")
+    return issubclass(cls, PyDictionary)
 
 
 class DataModelCache:
@@ -205,7 +204,7 @@ class DataModelCache:
         state: Variant,
         updaterFn,
         rules_str: str,
-        scheme_eval,
+        version,
     ):
         if state.HasField("bool_state"):
             updaterFn(source, key, state.bool_state)
@@ -233,7 +232,7 @@ class DataModelCache:
                     item,
                     lambda d, k, v: d[k].append(v),
                     rules_str + "/" + key.split(":", maxsplit=1)[0],
-                    scheme_eval,
+                    version,
                 )
         elif state.HasField("variant_map_state"):
             internal_names_as_keys = (
@@ -261,7 +260,7 @@ class DataModelCache:
             else:
                 if key not in source:
                     source[key] = {}
-            if scheme_eval and is_dict_parameter_type(scheme_eval, rules, rules_str):
+            if version and _is_dict_parameter_type(version, rules, rules_str):
                 source[key] = {}
             if state.variant_map_state.item:
                 source = source[key]
@@ -273,7 +272,7 @@ class DataModelCache:
                         v,
                         dict.__setitem__,
                         rules_str + "/" + k.split(":", maxsplit=1)[0],
-                        scheme_eval,
+                        version,
                     )
             else:
                 source[key] = {}
@@ -281,7 +280,7 @@ class DataModelCache:
             updaterFn(source, key, None)
 
     def update_cache(
-        self, rules: str, state: Variant, deleted_paths: List[str], scheme_eval=None
+        self, rules: str, state: Variant, deleted_paths: List[str], version=None
     ):
         """Update datamodel cache from streamed state.
 
@@ -293,8 +292,8 @@ class DataModelCache:
             streamed state
         deleted_paths : List[str]
             list of deleted paths
-        scheme_eval : SchemeEval, optional
-            scheme_eval service
+        version : FluentVersion, optional
+            Fluent version
         """
         cache = self.rules_str_to_cache[rules]
         with self._with_lock(rules):
@@ -336,7 +335,7 @@ class DataModelCache:
                     v,
                     dict.__setitem__,
                     k.split(":", maxsplit=1)[0],
-                    scheme_eval,
+                    version,
                 )
 
     @staticmethod

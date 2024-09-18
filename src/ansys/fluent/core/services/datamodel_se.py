@@ -25,6 +25,7 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
 _TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
@@ -452,9 +453,9 @@ class DatamodelService(StreamingService):
         self,
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
+        version: FluentVersion,
         fluent_error_state,
         file_transfer_service: Any | None = None,
-        scheme_eval=None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -466,7 +467,7 @@ class DatamodelService(StreamingService):
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
-        self.scheme_eval = scheme_eval
+        self.version = version
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         """Get attribute value."""
@@ -503,7 +504,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def delete_child_objects(
@@ -522,7 +523,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
@@ -538,7 +539,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
@@ -553,7 +554,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def fix_state(self, rules, path) -> None:
@@ -567,7 +568,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def update_dict(
@@ -584,7 +585,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def delete_object(self, rules: str, path: str) -> None:
@@ -598,7 +599,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
 
     def execute_command(
@@ -615,7 +616,7 @@ class DatamodelService(StreamingService):
                 rules,
                 response.state,
                 response.deletedpaths,
-                scheme_eval=self.scheme_eval,
+                version=self.version,
             )
         return _convert_variant_to_value(response.result)
 

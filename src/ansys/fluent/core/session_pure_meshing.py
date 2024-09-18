@@ -91,7 +91,7 @@ class PureMeshing(BaseSession):
                     functools.partial(
                         datamodel_service_se.cache.update_cache,
                         rules=rules,
-                        scheme_eval=datamodel_service_se.scheme_eval,
+                        version=datamodel_service_se.version,
                     )
                 )
                 self.datamodel_streams[rules] = stream
