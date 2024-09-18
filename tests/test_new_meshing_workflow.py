@@ -1732,3 +1732,22 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     two_dimensional = meshing.two_dimensional_meshing()
     # Check if all task names are unique.
     assert len(two_dimensional.task_names()) == len(set(two_dimensional.task_names()))
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_return_state_changes(new_meshing_session):
+    meshing = new_meshing_session
+    wt = meshing.watertight()
+
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+
+    wt.import_geometry.file_name.set_state(import_file_name)
+
+    # trigger creation of downstream task when this task is updated:
+    wt.describe_geometry.multizone.set_state("Yes")
+    wt.describe_geometry()
+
+    assert wt.add_multizone_controls
