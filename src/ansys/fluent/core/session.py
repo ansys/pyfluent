@@ -147,6 +147,7 @@ class BaseSession:
         self._datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
+            self.get_fluent_version(),
             self._error_state,
             self._file_transfer_service,
         )

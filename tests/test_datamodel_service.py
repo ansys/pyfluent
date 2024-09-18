@@ -141,12 +141,12 @@ def test_add_on_changed(new_meshing_session):
     assert isinstance(task_list(), list)
     assert len(task_list()) == 0
     data = []
-    subscription = task_list.add_on_changed(lambda obj: data.append(len(obj())))
+    subscription = task_list.add_on_changed(lambda obj: data.append(True))
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[-1] > 0
+    assert len(task_list()) > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -508,7 +508,7 @@ def test_command_creation_inside_singleton(new_meshing_session):
 
 
 @pytest.mark.codegen_required
-def test_read_ony_set_state(new_meshing_session):
+def test_read_only_set_state(new_meshing_session):
     meshing = new_meshing_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
     assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()

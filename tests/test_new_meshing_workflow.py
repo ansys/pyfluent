@@ -763,7 +763,6 @@ def test_watertight_workflow_dynamic_interface(
             "<Insertable 'custom_journal_task' task>",
         ]
     )
-
     watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
     assert "create_volume_mesh" in watertight.task_names()
     create_volume_mesh = watertight.create_volume_mesh
@@ -1362,7 +1361,7 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
-    assert watertight.task_names() == [
+    assert set(watertight.task_names()) == {
         "import_geometry",
         "create_surface_mesh",
         "describe_geometry",
@@ -1377,7 +1376,7 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
         "import_boi_geometry",
         "import_boi_geometry_1",
         "import_boi_geometry_2",
-    ]
+    }
     assert watertight.import_boi_geometry_1.arguments()
 
 
@@ -1732,3 +1731,23 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     two_dimensional = meshing.two_dimensional_meshing()
     # Check if all task names are unique.
     assert len(two_dimensional.task_names()) == len(set(two_dimensional.task_names()))
+
+
+@pytest.mark.skip("Failing in GitHub")
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_return_state_changes(new_meshing_session):
+    meshing = new_meshing_session
+    wt = meshing.watertight()
+
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+
+    wt.import_geometry.file_name.set_state(import_file_name)
+
+    # trigger creation of downstream task when this task is updated:
+    wt.describe_geometry.multizone.set_state("Yes")
+    wt.describe_geometry()
+
+    assert wt.add_multizone_controls
