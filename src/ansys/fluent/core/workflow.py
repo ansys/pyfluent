@@ -1583,22 +1583,6 @@ class Workflow:
 
     def _initialize_methods(self, dynamic_interface: bool):
         _init_task_accessors(self)
-        if dynamic_interface:
-            self._main_thread_ident = threading.get_ident()
-            logger.debug(f"setting main thread to {self._main_thread_ident}")
-
-            def refresh_after_sleep(_):
-                while self._refreshing:
-                    logger.debug("Already _refreshing, ...")
-                self._refreshing = True
-                logger.debug("Call _refresh_task_accessors")
-                _call_refresh_task_accessors(self)
-                self._refresh_count += 1
-                self._refreshing = False
-
-            self._root_affected_cb_by_server[self._workflow.service] = (
-                self.add_on_affected(refresh_after_sleep)
-            )
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to the location provided."""
