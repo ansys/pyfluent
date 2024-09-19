@@ -359,7 +359,7 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
     }
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_deprecated_settings_with_settings_api_aliases(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
