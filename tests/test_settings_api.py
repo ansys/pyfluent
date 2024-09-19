@@ -217,7 +217,7 @@ def test_api_upgrade(new_solver_session, capsys):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_deprecated_settings(new_solver_session):
+def test_deprecated_settings_with_custom_aliases(new_solver_session):
     solver = new_solver_session
     if solver.get_fluent_version() >= FluentVersion.v251:
         # https://github.com/ansys/pyfluent/issues/3134
@@ -356,6 +356,27 @@ def test_deprecated_settings(new_solver_session):
 
     solver.setup.boundary_conditions.wall["wall-inlet"] = {
         "thermal": {"q_dot": {"value": 2000000000}, "wall_thickness": {"value": 0.002}}
+    }
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_deprecated_settings_with_settings_api_aliases(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case_data(file_name=case_path)
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {}
+    assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
+        "minimum": 0,
+        "maximum": 0,
+    }
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {
+        "min": -0.0001,
+        "max": 0.0001,
+    }
+    assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
+        "minimum": -0.0001,
+        "maximum": 0.0001,
     }
 
 
