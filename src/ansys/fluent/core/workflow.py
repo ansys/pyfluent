@@ -458,7 +458,6 @@ class BaseTask:
     def delete(self) -> None:
         """Delete this task from the workflow."""
         self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
-        _call_refresh_task_accessors(self._command_source)
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
@@ -1634,7 +1633,11 @@ class Workflow:
                     "Use the 'task_names()' method to view a list of allowed tasks."
                 ) from ex
 
-        return self._workflow.DeleteTasks(ListOfTasks=list_of_tasks_with_display_name)
+        ret_val = self._workflow.DeleteTasks(
+            ListOfTasks=list_of_tasks_with_display_name
+        )
+        _call_refresh_task_accessors(self)
+        return ret_val
 
 
 class ClassicWorkflow:
