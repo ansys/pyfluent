@@ -1480,6 +1480,23 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
+    def _get_id_name(self):
+        child_object_id_name_list = []
+        obj_type = self.path[-1][0]
+        for name in self._get_child_object_names():
+            child_object_id_name_list.append(obj_type + ":" + name)
+        return child_object_id_name_list
+
+    def _check_via_internal_names(self, name) -> str:
+        if name in self._get_id_name() or name in self._get_child_object_names():
+            _name = name.split(":")[-1] if ":" in name else name
+            name_path = self.path[0:-1]
+            name_path.append((self.path[-1][0], _name))
+            name_path.append(("_name_", ""))
+            return PyMenu(self.service, self.rules, name_path).get_state()
+        else:
+            return name
+
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
         return self.service.get_object_names(
@@ -1514,6 +1531,7 @@ class PyNamedObjectContainer:
             )
 
     def _get_item(self, key: str) -> PyMenu:
+        key = self._check_via_internal_names(key)
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
@@ -1526,6 +1544,7 @@ class PyNamedObjectContainer:
             )
 
     def _del_item(self, key: str) -> None:
+        key = self._check_via_internal_names(key)
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
@@ -2195,6 +2214,7 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
             yield PyMenuGeneric(self.service, self.rules, child_path)
 
     def _get_item(self, key: str) -> PyMenuGeneric:
+        key = self._check_via_internal_names(key)
         if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))

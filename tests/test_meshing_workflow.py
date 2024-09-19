@@ -424,3 +424,12 @@ def test_setting_none_type_tasks(new_meshing_session):
         meshing.workflow.TaskObject["Describe Overset Features"].CommandName()
         == "DescribeOversetFeatures"
     )
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_named_object_access(new_meshing_session):
+    meshing = new_meshing_session
+    meshing.workflow.InitializeWorkflow(WorkflowType=r"Watertight Geometry")
+    assert meshing.workflow.TaskObject["Import Geometry"]
+    assert meshing.workflow.TaskObject["TaskObject1"]
+    assert meshing.workflow.TaskObject["TaskObject:TaskObject1"]
