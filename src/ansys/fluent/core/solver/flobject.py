@@ -745,8 +745,7 @@ class SettingsBase(Base, Generic[StateT]):
                                 )
                                 outer_set_states.extend(o_set_states)
                             else:
-                                ret_alias[comp] = {}
-                                ret_alias = ret_alias[comp]
+                                ret_alias = ret_alias.setdefault(comp, {})
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
