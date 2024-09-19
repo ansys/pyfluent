@@ -458,6 +458,7 @@ class BaseTask:
     def delete(self) -> None:
         """Delete this task from the workflow."""
         self._command_source.delete_tasks(list_of_tasks=[self.python_name()])
+        _call_refresh_task_accessors(self._command_source)
 
     def rename(self, new_name: str):
         """Rename the current task to a given name."""
@@ -488,7 +489,9 @@ class BaseTask:
             new_name
         )
         self._python_name = new_name
-        return self._task.Rename(NewName=new_name)
+        ret_val = self._task.Rename(NewName=new_name)
+        _call_refresh_task_accessors(self._command_source)
+        return ret_val
 
     def add_child_to_task(self):
         """Add a child task."""
@@ -1210,6 +1213,7 @@ class CompoundTask(CommandTask):
                 self._task.AddChildAndUpdate()
         finally:
             self._command_source._compound_child = False
+        _call_refresh_task_accessors(self._command_source)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
