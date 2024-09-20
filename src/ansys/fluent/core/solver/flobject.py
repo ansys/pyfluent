@@ -1119,7 +1119,7 @@ class Group(SettingsBase[DictStateType]):
             modified_search_results = []
             if use_search(
                 codegen_outdir=pyfluent.CODEGEN_OUTDIR,
-                version=self.version,
+                version=super().__getattribute__("version"),
             ):
                 search_results = pyfluent.utils._search(
                     word=name,
