@@ -48,7 +48,6 @@ def generate(version: str):
         for name, v in DATA.items():
             kind, path = v
             if kind == "NamedObject":
-                path = path[FluentVersion(version)] if isinstance(path, dict) else path
                 if isinstance(path, dict):
                     if FluentVersion(version) not in path:
                         continue
