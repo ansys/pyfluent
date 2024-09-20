@@ -505,21 +505,14 @@ def test_exit_not_in_settings(new_solver_session):
 
 def test_builtin_settings(static_mixer_case_session):
     from ansys.fluent.core import (
-        Ablation,
-        Battery,
-        BoundaryCondition,
         BoundaryConditions,
         CalculationActivity,
         CaseModification,
         CellRegister,
         CellRegisters,
-        CellZoneCondition,
         CellZoneConditions,
         Controls,
         ConvergenceConditions,
-        DiscretePhase,
-        DynamicMesh,
-        EChemistry,
         Energy,
         ExecuteCommands,
         FluidCellZone,
@@ -528,23 +521,15 @@ def test_builtin_settings(static_mixer_case_session):
         FluidMaterials,
         General,
         Initialization,
-        Injections,
         InteriorBoundaries,
         InteriorBoundary,
         Materials,
-        MeshInterfaces,
         Methods,
         Models,
         Monitor,
         Multiphase,
-        NamedExpressions,
-        Optics,
-        Pemfc,
         PressureOutlet,
         PressureOutlets,
-        Radiation,
-        ReferenceFrame,
-        ReferenceFrames,
         ReferenceValues,
         ReportDefinitions,
         ReportFile,
@@ -554,15 +539,10 @@ def test_builtin_settings(static_mixer_case_session):
         Residual,
         RunCalculation,
         Setup,
-        Sofc,
         SolidMaterial,
         SolidMaterials,
-        Species,
-        Structure,
-        SystemCoupling,
         VelocityInlet,
         VelocityInlets,
-        VirtualBladeModel,
         Viscous,
         WallBoundaries,
         WallBoundary,
@@ -576,74 +556,100 @@ def test_builtin_settings(static_mixer_case_session):
     assert Energy(solver=solver) == solver.setup.models.energy
     assert Viscous(solver=solver) == solver.setup.models.viscous
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import Radiation
+
         assert Radiation(solver=solver) == solver.setup.models.radiation
     else:
-        with pytest.raises(RuntimeError):
-            Radiation(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Radiation
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import Species
+
         assert Species(solver=solver) == solver.setup.models.species
     else:
-        with pytest.raises(RuntimeError):
-            Species(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Species
     if solver.get_fluent_version() >= FluentVersion.v231:
+        from ansys.fluent.core import DiscretePhase
+
         assert DiscretePhase(solver=solver) == solver.setup.models.discrete_phase
     else:
-        with pytest.raises(RuntimeError):
-            DiscretePhase(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import DiscretePhase
     if solver.get_fluent_version() >= FluentVersion.v231:
+        from ansys.fluent.core import Injections
+
         assert (
             Injections(solver=solver) == solver.setup.models.discrete_phase.injections
         )
     else:
-        with pytest.raises(RuntimeError):
-            Injections(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Injections
     if solver.get_fluent_version() >= FluentVersion.v231:
+        from ansys.fluent.core import VirtualBladeModel
+
         assert (
             VirtualBladeModel(solver=solver) == solver.setup.models.virtual_blade_model
         )
     else:
-        with pytest.raises(RuntimeError):
-            VirtualBladeModel(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import VirtualBladeModel
     if solver.get_fluent_version() >= FluentVersion.v231:
+        from ansys.fluent.core import Optics
+
         assert Optics(solver=solver) == solver.setup.models.optics
     else:
-        with pytest.raises(RuntimeError):
-            Optics(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Optics
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import Structure
+
         assert Structure(solver=solver) == solver.setup.models.structure
     else:
-        with pytest.raises(RuntimeError):
-            Structure(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Structure
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import Ablation
+
         assert Ablation(solver=solver) == solver.setup.models.ablation
     else:
-        with pytest.raises(RuntimeError):
-            Ablation(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Ablation
     if solver.get_fluent_version() >= FluentVersion.v241:
+        from ansys.fluent.core import EChemistry
+
         assert EChemistry(solver=solver) == solver.setup.models.echemistry
     else:
-        with pytest.raises(RuntimeError):
-            EChemistry(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import EChemistry
     if solver.get_fluent_version() >= FluentVersion.v241:
+        from ansys.fluent.core import Battery
+
         assert Battery(solver=solver) == solver.setup.models.battery
     else:
-        with pytest.raises(RuntimeError):
-            Battery(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Battery
     if solver.get_fluent_version() >= FluentVersion.v241:
+        from ansys.fluent.core import SystemCoupling
+
         assert SystemCoupling(solver=solver) == solver.setup.models.system_coupling
     else:
-        with pytest.raises(RuntimeError):
-            SystemCoupling(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import SystemCoupling
     if solver.get_fluent_version() >= FluentVersion.v241:
+        from ansys.fluent.core import Sofc
+
         assert Sofc(solver=solver) == solver.setup.models.sofc
     else:
-        with pytest.raises(RuntimeError):
-            Sofc(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Sofc
     if solver.get_fluent_version() >= FluentVersion.v242:
+        from ansys.fluent.core import Pemfc
+
         assert Pemfc(solver=solver) == solver.setup.models.pemfc
     else:
-        with pytest.raises(RuntimeError):
-            Pemfc(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import Pemfc
     assert Materials(solver=solver) == solver.setup.materials
     assert FluidMaterials(solver=solver) == solver.setup.materials.fluid
     assert (
@@ -656,13 +662,15 @@ def test_builtin_settings(static_mixer_case_session):
     )
     assert CellZoneConditions(solver=solver) == solver.setup.cell_zone_conditions
     if solver.get_fluent_version() >= FluentVersion.v231:
+        from ansys.fluent.core import CellZoneCondition
+
         assert (
             CellZoneCondition(solver=solver, name="fluid")
             == solver.setup.cell_zone_conditions["fluid"]
         )
     else:
-        with pytest.raises(RuntimeError):
-            CellZoneCondition(solver=solver, name="fluid")
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import CellZoneCondition
     assert FluidCellZones(solver=solver) == solver.setup.cell_zone_conditions.fluid
     assert (
         FluidCellZone(solver=solver, name="fluid")
@@ -670,13 +678,15 @@ def test_builtin_settings(static_mixer_case_session):
     )
     assert BoundaryConditions(solver=solver) == solver.setup.boundary_conditions
     if solver.get_fluent_version() >= FluentVersion.v231:
+        from ansys.fluent.core import BoundaryCondition
+
         assert (
             BoundaryCondition(solver=solver, name="inlet2")
             == solver.setup.boundary_conditions["inlet2"]
         )
     else:
-        with pytest.raises(RuntimeError):
-            BoundaryCondition(solver=solver, name="inlet2")
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import BoundaryCondition
     assert (
         VelocityInlets(solver=solver) == solver.setup.boundary_conditions.velocity_inlet
     )
@@ -707,22 +717,30 @@ def test_builtin_settings(static_mixer_case_session):
     with pytest.raises(TypeError):
         WallBoundary(solver=solver, new_instance_name="wall-1")
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import MeshInterfaces
+
         assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
     else:
-        with pytest.raises(RuntimeError):
-            MeshInterfaces(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import MeshInterfaces
     if solver.get_fluent_version() >= FluentVersion.v251:
+        from ansys.fluent.core import DynamicMesh
+
         assert DynamicMesh(solver=solver) == solver.setup.dynamic_mesh
     else:
-        with pytest.raises(RuntimeError):
-            DynamicMesh(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import DynamicMesh
     assert ReferenceValues(solver=solver) == solver.setup.reference_values
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import ReferenceFrames
+
         assert ReferenceFrames(solver=solver) == solver.setup.reference_frames
     else:
-        with pytest.raises(RuntimeError):
-            ReferenceFrames(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import ReferenceFrames
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import ReferenceFrame
+
         # Fluent 25.1 issue
         if solver.get_fluent_version() != FluentVersion.v251:
             assert (
@@ -730,13 +748,15 @@ def test_builtin_settings(static_mixer_case_session):
                 == solver.setup.reference_frames["global"]
             )
     else:
-        with pytest.raises(RuntimeError):
-            ReferenceFrame(solver=solver, name="global")
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import ReferenceFrame
     if solver.get_fluent_version() >= FluentVersion.v232:
+        from ansys.fluent.core import NamedExpressions
+
         assert NamedExpressions(solver=solver) == solver.setup.named_expressions
     else:
-        with pytest.raises(RuntimeError):
-            NamedExpressions(solver=solver)
+        with pytest.raises(ImportError):
+            from ansys.fluent.core import NamedExpressions
     assert Methods(solver=solver) == solver.solution.methods
     assert Controls(solver=solver) == solver.solution.controls
     assert ReportDefinitions(solver=solver) == solver.solution.report_definitions
