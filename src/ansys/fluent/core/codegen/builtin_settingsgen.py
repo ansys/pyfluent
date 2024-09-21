@@ -48,10 +48,7 @@ def generate(version: str):
         for name, v in DATA.items():
             kind, path = v
             if kind == "NamedObject":
-                if isinstance(path, dict):
-                    if FluentVersion(version) not in path:
-                        continue
-                    path = path[FluentVersion(version)]
+                path = path[FluentVersion(version)] if isinstance(path, dict) else path
                 kind = f"{_get_named_object_type(root, path)}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
             f.write(f'    """{name} setting."""\n\n')
@@ -64,10 +61,6 @@ def generate(version: str):
         f.write("\n\n")
         for name, v in DATA.items():
             kind, path = v
-            if isinstance(path, dict):
-                if FluentVersion(version) not in path:
-                    continue
-                path = path[FluentVersion(version)]
             f.write(f"class {name}(\n")
             if isinstance(path, str):
                 path = {v: path for v in FluentVersion}
