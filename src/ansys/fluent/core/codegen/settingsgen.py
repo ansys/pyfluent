@@ -357,9 +357,11 @@ def _populate_classes(parent_dir):
                 doc = f"'child_object_type' of {parent_name}."
 
             _write_doc_string(doc, istr1, f)
-            f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
+            f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n')
+            f.write(f'{istr1}version = "{cls.version}"\n\n')
             if stub_f:
                 stub_f.write(f"{istr1}fluent_name = ...\n")
+                stub_f.write(f"{istr1}version = ...\n\n")
 
             child_class_strings = []
 

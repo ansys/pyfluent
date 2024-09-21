@@ -112,9 +112,12 @@ def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str)
     )
     from ansys.fluent.core.utils import load_module
 
-    module = load_module(
-        rules, CODEGEN_OUTDIR / f"datamodel_{version.number}" / f"{rules}.py"
-    )
+    try:
+        module = load_module(
+            rules, CODEGEN_OUTDIR / f"datamodel_{version.number}" / f"{rules}.py"
+        )
+    except FileNotFoundError:  # no codegen or during codegen
+        return False
     cls = module.Root
     comps = rules_path.split("/")
     for i, comp in enumerate(comps):

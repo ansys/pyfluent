@@ -291,7 +291,7 @@ class Base:
         Constructed in python syntax from 'python_path' and the parents python path.
         """
         if self._parent is None:
-            if FluentVersion(self.flproxy._scheme_eval.version).number < 251:
+            if FluentVersion(self.version).number < 251:
                 return "<session>"
             else:
                 return "<session>.settings"
@@ -1119,7 +1119,7 @@ class Group(SettingsBase[DictStateType]):
             modified_search_results = []
             if use_search(
                 codegen_outdir=pyfluent.CODEGEN_OUTDIR,
-                version=self.flproxy._scheme_eval.version,
+                version=super().__getattribute__("version"),
             ):
                 search_results = pyfluent.utils._search(
                     word=name,
@@ -1982,7 +1982,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 f"Falling back to String."
             )
             base = String
-        dct = {"fluent_name": name}
+        dct = {"fluent_name": name, "version": version}
         helpinfo = info.get("help")
         if helpinfo:
             dct["__doc__"] = _clean_helpinfo(helpinfo)

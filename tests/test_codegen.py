@@ -470,6 +470,7 @@ class root(Group):
     """
 
     fluent_name = ""
+    version = "251"
 
     child_names = \\
         ['G1', 'P1', 'N1']
@@ -511,7 +512,8 @@ class A1(String):
     A1 help.
     """
 
-    fluent_name = "A1"'''
+    fluent_name = "A1"
+    version = "251"'''
 
 
 _expected_C1_settings_api_output = '''#
@@ -544,6 +546,7 @@ class C1(Command):
     """
 
     fluent_name = "C1"
+    version = "251"
 
     argument_names = \\
         ['A1']
@@ -580,6 +583,7 @@ class G1(Group):
     """
 
     fluent_name = "G1"
+    version = "251"
 
     child_names = \\
         ['G2', 'P2']
@@ -624,6 +628,7 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     """
 
     fluent_name = "N1"
+    version = "251"
 
     child_names = \\
         ['P4']
@@ -660,7 +665,8 @@ class N1_child(Group):
     'child_object_type' of N1.
     """
 
-    fluent_name = "child-object-type"'''
+    fluent_name = "child-object-type"
+    version = "251"'''
 
 
 _expected_P1_settings_api_output = '''#
@@ -685,7 +691,8 @@ class P1(String):
     P1 help.
     """
 
-    fluent_name = "P1"'''
+    fluent_name = "P1"
+    version = "251"'''
 
 
 _expected_Q1_settings_api_output = '''#
@@ -718,6 +725,7 @@ class Q1(Query):
     """
 
     fluent_name = "Q1"
+    version = "251"
 
     argument_names = \\
         ['A1']

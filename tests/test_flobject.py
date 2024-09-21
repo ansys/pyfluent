@@ -515,7 +515,7 @@ def test_command():
 
 
 def test_attrs():
-    r = flobject.get_root(Proxy())
+    r = flobject.get_root(Proxy(), version="251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True
