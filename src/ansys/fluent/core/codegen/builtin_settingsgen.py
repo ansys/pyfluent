@@ -34,6 +34,7 @@ def _get_named_object_type(root, path):
 
 def generate(version: str):
     """Generate builtin setting classes."""
+    print("Generating builtin settings...")
     CODEGEN_OUTDIR.mkdir(exist_ok=True)
     root = _get_settings_root(version)
     with open(_PY_FILE, "w") as f:

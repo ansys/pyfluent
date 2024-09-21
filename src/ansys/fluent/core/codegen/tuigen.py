@@ -132,7 +132,7 @@ def _populate_xml_helpstrings():
         else:
             v = "".join(node.find("p").itertext())
             _XML_HELPSTRINGS[k] = v
-    _XML_HELP_FILE.unlink()
+    _XML_HELP_FILE.unlink(missing_ok=True)
 
 
 def _is_valid_tui_menu_name(name):
@@ -301,6 +301,11 @@ class TUIGenerator:
 def generate(version, static_infos: dict):
     """Generate TUI API classes."""
     api_tree = {}
+    if (
+        StaticInfoType.TUI_MESHING not in static_infos
+        and StaticInfoType.TUI_SOLVER not in static_infos
+    ):
+        return api_tree
     gt_222 = FluentVersion(version) > FluentVersion.v222
     if gt_222:
         _copy_tui_help_xml_file(version)

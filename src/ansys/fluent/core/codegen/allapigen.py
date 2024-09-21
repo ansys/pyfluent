@@ -3,6 +3,7 @@
 from pathlib import Path
 import pickle
 
+from ansys.fluent.core import codegen
 from ansys.fluent.core.codegen import (
     builtin_settingsgen,
     datamodelgen,
@@ -28,7 +29,9 @@ def generate(version: str, static_infos: dict):
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)
-    if FluentVersion(version) == next(iter(FluentVersion)):
+    if codegen.CODEGEN_GENERATE_BUILTIN_SETTINGS and FluentVersion(version) == next(
+        iter(FluentVersion)
+    ):
         builtin_settingsgen.generate(version)
 
 
