@@ -461,6 +461,24 @@ def test_generated_code_special_cases(new_solver_session):
 @pytest.mark.fluent_version(">=25.1")
 def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
+
+    # Following set_state should not throw InactiveObjectError
+    solver.settings.setup.materials.fluid["air"] = {
+        "density": {"option": "ideal-gas"},
+        "specific_heat": {"value": 1006.43, "option": "constant"},
+        "thermal_conductivity": {"value": 0.0242, "option": "constant"},
+        "molecular_weight": {"value": 28.966, "option": "constant"},
+    }
+    assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
+    assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
+    assert (
+        solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
+        == 0.0242
+    )
+    assert (
+        solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
+    )
+
     solver.settings.solution.initialization.hybrid_initialize()
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases

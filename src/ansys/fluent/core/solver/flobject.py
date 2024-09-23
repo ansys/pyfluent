@@ -715,6 +715,8 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
+    # Following is not a classmethod, as parent (required to support ".." in alias-path)
+    # is available only at the instance level.
     def _unalias(self, cls, value):
         """Unalias the given value."""
         if isinstance(value, collections.abc.Mapping):
@@ -730,7 +732,12 @@ class SettingsBase(Base, Generic[StateT]):
                             outer_obj = outer_obj.parent
                             comps = comps[1:]
                         for comp in comps:
-                            outer_obj = getattr(outer_obj, comp)
+                            try:
+                                outer_obj = getattr(outer_obj, comp)
+                            except InactiveObjectError:
+                                outer_obj = super(
+                                    SettingsBase, outer_obj
+                                ).__getattribute__(comp)
                         outer_set_states.append((outer_obj, v))
                     else:
                         ret_alias = ret
@@ -738,7 +745,10 @@ class SettingsBase(Base, Generic[StateT]):
                         obj = self
                         for i, comp in enumerate(comps):
                             aliased_cls = aliased_cls._child_classes[comp]
-                            obj = getattr(obj, comp)
+                            try:
+                                obj = getattr(obj, comp)
+                            except InactiveObjectError:
+                                obj = super(SettingsBase, obj).__getattribute__(comp)
                             if i == len(comps) - 1:
                                 ret_alias[comp], o_set_states = obj._unalias(
                                     aliased_cls, v
@@ -749,7 +759,10 @@ class SettingsBase(Base, Generic[StateT]):
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
-                        cobj = getattr(self, k)
+                        try:
+                            cobj = getattr(self, k)
+                        except InactiveObjectError:
+                            cobj = super(SettingsBase, self).__getattribute__(k)
                         ret[k], o_set_states = cobj._unalias(ccls, v)
                         outer_set_states.extend(o_set_states)
                     else:
