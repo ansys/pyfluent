@@ -142,12 +142,6 @@ DATA = {
     "SolidMaterial": ("NamedObject", "setup.materials.solid"),
     "MixtureMaterials": ("Singleton", "setup.materials.mixture"),
     "MixtureMaterial": ("NamedObject", "setup.materials.mixture"),
-    "InertParticles": ("Singleton", "setup.materials.inert_particles"),
-    "InertParticle": ("NamedObject", "setup.materials.inert_particles"),
-    "DropletParticles": ("Singleton", "setup.materials.droplet_particles"),
-    "DropletParticle": ("NamedObject", "setup.materials.droplet_particles"),
-    "CombustingParticles": ("Singleton", "setup.materials.combusting_particles"),
-    "CombustingParticle": ("NamedObject", "setup.materials.combusting_particles"),
     "ParticleMixtureMaterials": ("Singleton", "setup.materials.particle_mixture"),
     "ParticleMixtureMaterial": ("NamedObject", "setup.materials.particle_mixture"),
     "CellZoneConditions": ("Singleton", "setup.cell_zone_conditions"),
@@ -260,19 +254,35 @@ DATA = {
     "WallBoundary": ("NamedObject", "setup.boundary_conditions.wall"),
     "NonReflectingBoundaries": (
         "Singleton",
-        "setup.boundary_conditions.non_reflecting_bc",
+        {
+            FluentVersion.v251: "setup.boundary_conditions.non_reflecting_bc",
+            FluentVersion.v242: "setup.boundary_conditions.non_reflecting_bc",
+            FluentVersion.v241: "setup.boundary_conditions.non_reflecting_bc",
+        },
     ),
     "NonReflectingBoundary": (
         "NamedObject",
-        "setup.boundary_conditions.non_reflecting_bc",
+        {
+            FluentVersion.v251: "setup.boundary_conditions.non_reflecting_bc",
+            FluentVersion.v242: "setup.boundary_conditions.non_reflecting_bc",
+            FluentVersion.v241: "setup.boundary_conditions.non_reflecting_bc",
+        },
     ),
     "PerforatedWallBoundaries": (
         "Singleton",
-        "setup.boundary_conditions.perforated_wall",
+        {
+            FluentVersion.v251: "setup.boundary_conditions.perforated_wall",
+            FluentVersion.v242: "setup.boundary_conditions.perforated_wall",
+            FluentVersion.v241: "setup.boundary_conditions.perforated_wall",
+        },
     ),
     "PerforatedWallBoundary": (
         "NamedObject",
-        "setup.boundary_conditions.perforated_wall",
+        {
+            FluentVersion.v251: "setup.boundary_conditions.perforated_wall",
+            FluentVersion.v242: "setup.boundary_conditions.perforated_wall",
+            FluentVersion.v241: "setup.boundary_conditions.perforated_wall",
+        },
     ),
     "MeshInterfaces": (
         "Singleton",
@@ -321,4 +331,125 @@ DATA = {
             FluentVersion.v232: "setup.named_expressions",
         },
     ),
+    "Methods": ("Singleton", "solution.methods"),
+    "Controls": ("Singleton", "solution.controls"),
+    "ReportDefinitions": ("Singleton", "solution.report_definitions"),
+    "Monitor": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.monitor",
+            FluentVersion.v242: "solution.monitor",
+            FluentVersion.v241: "solution.monitor",
+            FluentVersion.v232: "solution.monitor",
+            FluentVersion.v231: "solution.monitor",
+        },
+    ),
+    "Residual": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.monitor.residual",
+            FluentVersion.v242: "solution.monitor.residual",
+            FluentVersion.v241: "solution.monitor.residual",
+        },
+    ),
+    "ReportFiles": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.monitor.report_files",
+            FluentVersion.v242: "solution.monitor.report_files",
+            FluentVersion.v241: "solution.monitor.report_files",
+            FluentVersion.v232: "solution.monitor.report_files",
+            FluentVersion.v231: "solution.monitor.report_files",
+        },
+    ),
+    "ReportFile": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "solution.monitor.report_files",
+            FluentVersion.v242: "solution.monitor.report_files",
+            FluentVersion.v241: "solution.monitor.report_files",
+            FluentVersion.v232: "solution.monitor.report_files",
+            FluentVersion.v231: "solution.monitor.report_files",
+        },
+    ),
+    "ReportPlots": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.monitor.report_plots",
+            FluentVersion.v242: "solution.monitor.report_plots",
+            FluentVersion.v241: "solution.monitor.report_plots",
+            FluentVersion.v232: "solution.monitor.report_plots",
+            FluentVersion.v231: "solution.monitor.report_plots",
+        },
+    ),
+    "ReportPlot": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "solution.monitor.report_plots",
+            FluentVersion.v242: "solution.monitor.report_plots",
+            FluentVersion.v241: "solution.monitor.report_plots",
+            FluentVersion.v232: "solution.monitor.report_plots",
+            FluentVersion.v231: "solution.monitor.report_plots",
+        },
+    ),
+    "ConvergenceConditions": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.monitor.convergence_conditions",
+            FluentVersion.v242: "solution.monitor.convergence_conditions",
+            FluentVersion.v241: "solution.monitor.convergence_conditions",
+            FluentVersion.v232: "solution.monitor.convergence_conditions",
+            FluentVersion.v231: "solution.monitor.convergence_conditions",
+        },
+    ),
+    "CellRegisters": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.cell_registers",
+            FluentVersion.v242: "solution.cell_registers",
+            FluentVersion.v241: "solution.cell_registers",
+            FluentVersion.v232: "solution.cell_registers",
+            FluentVersion.v231: "solution.cell_registers",
+        },
+    ),
+    "CellRegister": (
+        "NamedObject",
+        {
+            FluentVersion.v251: "solution.cell_registers",
+            FluentVersion.v242: "solution.cell_registers",
+            FluentVersion.v241: "solution.cell_registers",
+            FluentVersion.v232: "solution.cell_registers",
+            FluentVersion.v231: "solution.cell_registers",
+        },
+    ),
+    "Initialization": ("Singleton", "solution.initialization"),
+    "CalculationActivity": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.calculation_activity",
+            FluentVersion.v242: "solution.calculation_activity",
+            FluentVersion.v241: "solution.calculation_activity",
+            FluentVersion.v232: "solution.calculation_activity",
+            FluentVersion.v231: "solution.calculation_activity",
+        },
+    ),
+    "ExecuteCommands": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.calculation_activity.execute_commands",
+            FluentVersion.v242: "solution.calculation_activity.execute_commands",
+            FluentVersion.v241: "solution.calculation_activity.execute_commands",
+            FluentVersion.v232: "solution.calculation_activity.execute_commands",
+            FluentVersion.v231: "solution.calculation_activity.execute_commands",
+        },
+    ),
+    "CaseModification": (
+        "Singleton",
+        {
+            FluentVersion.v251: "solution.calculation_activity.case_modification",
+            FluentVersion.v242: "solution.calculation_activity.case_modification",
+            FluentVersion.v241: "solution.calculation_activity.case_modification",
+        },
+    ),
+    "RunCalculation": ("Singleton", "solution.run_calculation"),
 }

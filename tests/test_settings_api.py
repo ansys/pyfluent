@@ -527,23 +527,33 @@ def test_builtin_settings(static_mixer_case_session):
         Battery,
         BoundaryCondition,
         BoundaryConditions,
+        CalculationActivity,
+        CaseModification,
+        CellRegister,
+        CellRegisters,
         CellZoneCondition,
         CellZoneConditions,
+        Controls,
+        ConvergenceConditions,
         DiscretePhase,
         DynamicMesh,
         EChemistry,
         Energy,
+        ExecuteCommands,
         FluidCellZone,
         FluidCellZones,
         FluidMaterial,
         FluidMaterials,
         General,
+        Initialization,
         Injections,
         InteriorBoundaries,
         InteriorBoundary,
         Materials,
         MeshInterfaces,
+        Methods,
         Models,
+        Monitor,
         Multiphase,
         NamedExpressions,
         Optics,
@@ -554,6 +564,13 @@ def test_builtin_settings(static_mixer_case_session):
         ReferenceFrame,
         ReferenceFrames,
         ReferenceValues,
+        ReportDefinitions,
+        ReportFile,
+        ReportFiles,
+        ReportPlot,
+        ReportPlots,
+        Residual,
+        RunCalculation,
         Setup,
         Sofc,
         SolidMaterial,
@@ -705,6 +722,8 @@ def test_builtin_settings(static_mixer_case_session):
         WallBoundary(solver=solver, name="wall")
         == solver.setup.boundary_conditions.wall["wall"]
     )
+    with pytest.raises(TypeError):
+        WallBoundary(solver=solver, new_instance_name="wall-1")
     if solver.get_fluent_version() >= FluentVersion.v232:
         assert MeshInterfaces(solver=solver) == solver.setup.mesh_interfaces
     else:
@@ -736,3 +755,87 @@ def test_builtin_settings(static_mixer_case_session):
     else:
         with pytest.raises(RuntimeError):
             NamedExpressions(solver=solver)
+    assert Methods(solver=solver) == solver.solution.methods
+    assert Controls(solver=solver) == solver.solution.controls
+    assert ReportDefinitions(solver=solver) == solver.solution.report_definitions
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert Monitor(solver=solver) == solver.solution.monitor
+        if solver.get_fluent_version() >= FluentVersion.v241:
+            assert Residual(solver=solver) == solver.solution.monitor.residual
+        else:
+            with pytest.raises(RuntimeError):
+                Residual(solver=solver)
+        assert ReportFiles(solver=solver) == solver.solution.monitor.report_files
+        assert (
+            ReportFile(solver=solver, new_instance_name="report-file-1")
+            == solver.solution.monitor.report_files["report-file-1"]
+        )
+        assert (
+            ReportFile(solver=solver, name="report-file-1")
+            == solver.solution.monitor.report_files["report-file-1"]
+        )
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            assert (
+                ReportFile(solver=solver)
+                == solver.solution.monitor.report_files["report-file-2"]
+            )
+        assert ReportPlots(solver=solver) == solver.solution.monitor.report_plots
+        assert (
+            ReportPlot(solver=solver, new_instance_name="report-plot-1")
+            == solver.solution.monitor.report_plots["report-plot-1"]
+        )
+        assert (
+            ReportPlot(solver=solver, name="report-plot-1")
+            == solver.solution.monitor.report_plots["report-plot-1"]
+        )
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            assert (
+                ReportPlot(solver=solver)
+                == solver.solution.monitor.report_plots["report-plot-2"]
+            )
+        assert (
+            ConvergenceConditions(solver=solver)
+            == solver.solution.monitor.convergence_conditions
+        )
+    else:
+        with pytest.raises(RuntimeError):
+            Monitor(solver=solver)
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert CellRegisters(solver=solver) == solver.solution.cell_registers
+        assert (
+            CellRegister(solver=solver, new_instance_name="cell_register_1")
+            == solver.solution.cell_registers["cell_register_1"]
+        )
+        assert (
+            CellRegister(solver=solver, name="cell_register_1")
+            == solver.solution.cell_registers["cell_register_1"]
+        )
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            assert (
+                CellRegister(solver=solver)
+                == solver.solution.cell_registers["cell_register_2"]
+            )
+    else:
+        with pytest.raises(RuntimeError):
+            CellRegisters(solver=solver)
+    assert Initialization(solver=solver) == solver.solution.initialization
+    if solver.get_fluent_version() >= FluentVersion.v231:
+        assert (
+            CalculationActivity(solver=solver) == solver.solution.calculation_activity
+        )
+        assert (
+            ExecuteCommands(solver=solver)
+            == solver.solution.calculation_activity.execute_commands
+        )
+        if solver.get_fluent_version() >= FluentVersion.v241:
+            assert (
+                CaseModification(solver=solver)
+                == solver.solution.calculation_activity.case_modification
+            )
+        else:
+            with pytest.raises(RuntimeError):
+                CaseModification(solver=solver)
+    else:
+        with pytest.raises(RuntimeError):
+            CalculationActivity(solver=solver)
+    assert RunCalculation(solver=solver) == solver.solution.run_calculation

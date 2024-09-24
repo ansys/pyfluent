@@ -1,19 +1,46 @@
 """Generate builtin setting classes."""
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
+from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 
 _PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
 _PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
 
 
-def generate():
+def _get_settings_root(version: str):
+    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
+
+    if CODEGEN_ZIP_SETTINGS:
+        importer = zipimporter(
+            str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+        )
+        settings = importer.load_module("settings")
+    else:
+        settings = utils.load_module(
+            f"settings_{version}",
+            CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+        )
+    return settings.root
+
+
+def _get_named_object_type(root, path):
+    for comp in path.split("."):
+        root = root._child_classes[comp]
+    return (
+        "Creatable" if issubclass(root, CreatableNamedObjectMixin) else "NonCreatable"
+    )
+
+
+def generate(version: str):
     """Generate builtin setting classes."""
+    print("Generating builtin settings...")
     CODEGEN_OUTDIR.mkdir(exist_ok=True)
+    root = _get_settings_root(version)
     with open(_PY_FILE, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
-            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _NamedObjectSetting\n\n\n"
+            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting\n\n\n"
         )
         f.write("__all__ = [\n")
         for name, _ in DATA.items():
@@ -21,6 +48,9 @@ def generate():
         f.write("]\n\n")
         for name, v in DATA.items():
             kind, path = v
+            if kind == "NamedObject":
+                path = path[FluentVersion(version)] if isinstance(path, dict) else path
+                kind = f"{_get_named_object_type(root, path)}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
             f.write(f'    """{name} setting."""\n\n')
 
@@ -43,4 +73,5 @@ def generate():
 
 
 if __name__ == "__main__":
-    generate()
+    version = "251"  # for development
+    generate(version)
