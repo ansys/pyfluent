@@ -325,6 +325,7 @@ class TUIMenu:
         self._path = path
 
     def __dir__(self) -> list[str]:
+        """....."""
         ret_val = [
             convert_tui_menu_to_func_name(x)
             for x in PyMenu(
