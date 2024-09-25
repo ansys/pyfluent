@@ -902,10 +902,12 @@ class ArgumentWrapper(PyCallableStateObject):
             self.set_state({attr: value})
 
     def __dir__(self):
-        arg_list = []
-        for arg in self():
-            arg_list.append(camel_to_snake_case(arg))
-        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+        arg_list = [arg for arg in self() if isinstance(self(), dict)]
+        return sorted(
+            set(
+                list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir(self._arg)
+            )
+        )
 
 
 class CommandTask(BaseTask):
