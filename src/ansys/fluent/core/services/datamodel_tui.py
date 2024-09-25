@@ -325,14 +325,13 @@ class TUIMenu:
         self._path = path
 
     def __dir__(self) -> list[str]:
-        ret_val = [
+        return [
             convert_tui_menu_to_func_name(x)
             for x in PyMenu(
                 self._service, self._version, self._mode, self._path
             ).get_child_names()
+            if convert_tui_menu_to_func_name(x) != "exit"
         ]
-        ret_val.remove("exit") if "exit" in ret_val else None
-        return ret_val
 
     def __getattribute__(self, name) -> Any:
         if name == "exit" and not self._path:
