@@ -21,7 +21,6 @@ from typing import Any, Dict
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _license_error,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -297,9 +296,8 @@ class StandaloneLauncher:
 
             return session
         except Exception as ex:
-            if not _license_error(ex):
-                logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
-                raise LaunchFluentError(self._launch_cmd) from ex
+            logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
+            raise LaunchFluentError(self._launch_cmd) from ex
         finally:
             server_info_file = Path(self._server_info_file_name)
             if server_info_file.exists():
