@@ -333,8 +333,9 @@ def test_builtin_singleton_setting_assign_session(
     models = Models()
     assert isinstance(models, Models)
     with pytest.raises(TypeError):
-        models.solver = meshing
-    models.solver = solver
+        models.settings_source = meshing
+    models.settings_source = solver
+    assert models.settings_source == solver.settings
     assert not isinstance(models, Models)
     assert models.path == "setup/models"
     assert not models.is_active()
@@ -346,8 +347,15 @@ def test_builtin_singleton_setting_assign_session(
     )
     assert models.is_active()
     assert models == solver.setup.models
-    with pytest.raises(AttributeError):  # re-assignment is not allowed
-        models.solver
+    # TODO: Ideally an AttributeError should be raised here from flobject.py
+    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+        models.settings_source = solver
+
+    models = Models()
+    assert isinstance(models, Models)
+    models.settings_source = solver.settings
+    assert models == solver.setup.models
+    assert models.settings_source == solver.settings
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -360,11 +368,19 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     inlet = BoundaryCondition(name="inlet1")
     assert isinstance(inlet, BoundaryCondition)
     with pytest.raises(TypeError):
-        inlet.solver = meshing
-    inlet.solver = solver
+        inlet.settings_source = meshing
+    inlet.settings_source = solver
     assert inlet == solver.settings.setup.boundary_conditions["inlet1"]
-    with pytest.raises(AttributeError):  # re-assignment is not allowed
-        inlet.solver
+    assert inlet.settings_source == solver.settings
+    # TODO: Ideally an AttributeError should be raised here from flobject.py
+    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+        inlet.settings_source = solver
+
+    inlet = BoundaryCondition(name="inlet1")
+    assert isinstance(inlet, BoundaryCondition)
+    inlet.settings_source = solver.settings
+    assert inlet == solver.settings.setup.boundary_conditions["inlet1"]
+    assert inlet.settings_source == solver.settings
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -377,19 +393,29 @@ def test_builtin_creatable_named_object_setting_assign_session(
     report_file = ReportFile(new_instance_name="report-file-1")
     assert isinstance(report_file, ReportFile)
     with pytest.raises(TypeError):
-        report_file.solver = meshing
-    report_file.solver = solver
+        report_file.settings_source = meshing
+    report_file.settings_source = solver
     assert report_file == solver.solution.monitor.report_files["report-file-1"]
-    with pytest.raises(AttributeError):
-        report_file.solver
+    assert report_file.settings_source == solver.settings
+    # TODO: Ideally an AttributeError should be raised here from flobject.py
+    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+        report_file.settings_source = solver
 
     report_file = ReportFile(name="report-file-1")
     assert isinstance(report_file, ReportFile)
-    report_file.solver = solver
+    report_file.settings_source = solver
     assert report_file == solver.solution.monitor.report_files["report-file-1"]
+    assert report_file.settings_source == solver.settings
+
+    report_file = ReportFile(name="report-file-1")
+    assert isinstance(report_file, ReportFile)
+    report_file.settings_source = solver.settings
+    assert report_file == solver.solution.monitor.report_files["report-file-1"]
+    assert report_file.settings_source == solver.settings
 
     if solver.get_fluent_version() >= FluentVersion.v251:
         report_file = ReportFile()
         assert isinstance(report_file, ReportFile)
-        report_file.solver = solver
+        report_file.settings_source = solver
         assert report_file == solver.solution.monitor.report_files["report-file-2"]
+        assert report_file.settings_source == solver.settings
