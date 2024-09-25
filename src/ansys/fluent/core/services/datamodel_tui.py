@@ -330,7 +330,7 @@ class TUIMenu:
             for x in PyMenu(
                 self._service, self._version, self._mode, self._path
             ).get_child_names()
-            if convert_tui_menu_to_func_name(x) != "exit"
+            if x != "exit"
         ]
 
     def __getattribute__(self, name) -> Any:
