@@ -1,7 +1,5 @@
 """Provides a module for customized error handling."""
 
-import os
-
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -11,14 +9,15 @@ class InaccessibleAnsysLicense(RuntimeError):
     """Raised when license is inaccessible."""
 
     def __init__(self):
-        super().__init__(
-            "Enable license server in `Licensing Settings` application and set `ANSYSLMD_LICENSE_FILE` environment variable correctly."
-        )
+        super().__init__("Ansys license is inaccessible.")
 
 
-def _check_license():
-    if not os.getenv("ANSYSLMD_LICENSE_FILE", None):
+def _license_error(exception):
+    exception_msg = "IOCP/Socket: Connection reset (An existing connection was forcibly closed by the remote host.\r\n -- 10054)"
+    if type(exception) == RuntimeError and exception.args[0] == exception_msg:
         raise InaccessibleAnsysLicense()
+    else:
+        return False
 
 
 class InvalidPassword(ValueError):
