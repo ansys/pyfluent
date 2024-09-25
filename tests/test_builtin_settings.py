@@ -323,6 +323,7 @@ def test_builtin_settings(static_mixer_case_session):
     assert RunCalculation(solver=solver) == solver.solution.run_calculation
 
 
+@pytest.mark.fluent_version(">=23.2")
 def test_builtin_singleton_setting_assign_session(
     new_meshing_session, new_solver_session
 ):
@@ -387,7 +388,8 @@ def test_builtin_creatable_named_object_setting_assign_session(
     report_file.solver = solver
     assert report_file == solver.solution.monitor.report_files["report-file-1"]
 
-    report_file = ReportFile()
-    assert isinstance(report_file, ReportFile)
-    report_file.solver = solver
-    assert report_file == solver.solution.monitor.report_files["report-file-2"]
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        report_file = ReportFile()
+        assert isinstance(report_file, ReportFile)
+        report_file.solver = solver
+        assert report_file == solver.solution.monitor.report_files["report-file-2"]
