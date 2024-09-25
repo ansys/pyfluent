@@ -1620,6 +1620,7 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
 
     import_geom = watertight.import_geometry
     assert import_geom.length_unit.default_value() == "mm"
+    assert "allowed_values" in dir(import_geom.length_unit)
     assert import_geom.arguments.length_unit.allowed_values() == [
         "m",
         "cm",
