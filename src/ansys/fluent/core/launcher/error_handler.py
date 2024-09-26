@@ -3,6 +3,7 @@
 import glob
 import os
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -93,12 +94,11 @@ def _process_kwargs(kwargs):
 
 
 def _check_license():
-    file_pattern = os.path.join(os.getcwd(), "*.trn")
+    folder = pyfluent.CWD if pyfluent.CWD else os.getcwd()
+    file_pattern = os.path.join(folder, "*.trn")
     files = glob.glob(file_pattern)
-
     if files:
         latest_file = max(files, key=os.path.getctime)
-
     with open(latest_file, "r") as f:
         lines = f.readlines()
         for line in lines:

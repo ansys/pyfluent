@@ -82,6 +82,9 @@ EXAMPLES_PATH = os.path.join(
     platformdirs.user_documents_dir(), "ansys_fluent_core_examples"
 )
 
+# Working directory for the Fluent client
+CWD = None
+
 # Host path which is mounted to the container
 CONTAINER_MOUNT_SOURCE = None
 
