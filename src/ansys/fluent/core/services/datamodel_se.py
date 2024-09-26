@@ -1626,6 +1626,8 @@ class PyNamedObjectContainer:
 
         return dict(sorted(returned_state.items()))
 
+    getState = __call__ = get_state
+
 
 class PyQuery:
     """Query class using the StateEngine-based DatamodelService as the backend. Use this
