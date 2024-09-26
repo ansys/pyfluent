@@ -902,11 +902,14 @@ class ArgumentWrapper(PyCallableStateObject):
             self.set_state({attr: value})
 
     def __dir__(self):
-        arg_list = [arg for arg in self() if isinstance(self(), dict)]
+        arg_list = (
+            [arg for arg in self() if isinstance(self(), dict)]
+            if self() is not None
+            else []
+        )
+        dir_arg = [item for item in dir(self._arg) if item.islower()]
         return sorted(
-            set(
-                list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir(self._arg)
-            )
+            set(list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir_arg)
         )
 
 
