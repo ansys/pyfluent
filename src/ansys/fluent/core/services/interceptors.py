@@ -8,7 +8,7 @@ from google.protobuf.json_format import MessageToDict
 from google.protobuf.message import Message
 import grpc
 
-from ansys.fluent.core.launcher.error_handler import _license_error
+from ansys.fluent.core.launcher.error_handler import _check_license
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
@@ -110,7 +110,7 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
             grpc_ex = response.exception()
             ex = RuntimeError(grpc_ex.details())
             ex.__context__ = grpc_ex
-            if not _license_error(ex):
+            if not _check_license():
                 raise ex from None
         return response
 

@@ -1,5 +1,8 @@
 """Provides a module for customized error handling."""
 
+import glob
+import os
+
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -10,14 +13,6 @@ class InaccessibleAnsysLicense(RuntimeError):
 
     def __init__(self):
         super().__init__("Ansys license is inaccessible.")
-
-
-def _license_error(exception):
-    exception_msg = "IOCP/Socket: Connection reset (An existing connection was forcibly closed by the remote host.\r\n -- 10054)"
-    if type(exception) == RuntimeError and exception.args[0] == exception_msg:
-        raise InaccessibleAnsysLicense()
-    else:
-        return False
 
 
 class InvalidPassword(ValueError):
@@ -95,3 +90,17 @@ def _process_kwargs(kwargs):
             raise UnexpectedKeywordArgument(
                 f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
             )
+
+
+def _check_license():
+    file_pattern = os.path.join(os.getcwd(), "*.trn")
+    files = glob.glob(file_pattern)
+
+    if files:
+        latest_file = max(files, key=os.path.getctime)
+
+    with open(latest_file, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if "Unexpected license problem" in line:
+                raise InaccessibleAnsysLicense()
