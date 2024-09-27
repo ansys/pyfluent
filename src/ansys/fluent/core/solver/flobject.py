@@ -199,11 +199,12 @@ class Base:
             self._setattr("_name", name)
         self._setattr("_child_alias_objs", {})
 
-    def _root(self, obj):
-        if obj._parent is None:
-            return obj
+    @property
+    def _root(self):
+        if self._parent is None:
+            return self
         else:
-            return self._root(obj._parent)
+            return self._parent._root
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
@@ -1758,7 +1759,7 @@ class Command(BaseCommand):
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            self._root(self)._on_interrupt(self)
+            self._root._on_interrupt(self)
             raise KeyboardInterrupt
 
 
@@ -1789,7 +1790,7 @@ class CommandWithPositionalArgs(BaseCommand):
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            self._root(self)._on_interrupt(self)
+            self._root._on_interrupt(self)
             raise KeyboardInterrupt
 
 
