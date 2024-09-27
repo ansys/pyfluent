@@ -905,7 +905,7 @@ class ArgumentWrapper(PyCallableStateObject):
         arg_state = self.get_state()
         arg_list = (
             [arg for arg in arg_state if isinstance(arg_state, dict)]
-            if self() is not None
+            if arg_state is not None
             else []
         )
         dir_arg = [item for item in dir(self._arg) if item.islower()]
