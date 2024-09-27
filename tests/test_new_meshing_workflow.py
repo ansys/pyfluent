@@ -1612,7 +1612,7 @@ def test_mark_as_updated(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing = new_meshing_session
