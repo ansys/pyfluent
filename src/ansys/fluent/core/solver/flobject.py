@@ -437,6 +437,9 @@ class Base:
         """Avoid additional processing while executing a command."""
         return nullcontext()
 
+    def __eq__(self, other):
+        return self.flproxy == other.flproxy and self.path == other.path
+
 
 StateT = TypeVar("StateT")
 
