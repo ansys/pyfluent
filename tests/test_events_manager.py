@@ -160,3 +160,25 @@ def test_timestep_ended_sync_event(static_mixer_case_session):
         time_step_count=5, max_iter_per_step=2
     )
     assert count == 10
+
+
+def test_sync_event_exception_in_callback(static_mixer_case_session, caplog):
+    solver = static_mixer_case_session
+    solver.settings.solution.initialization.hybrid_initialize()
+
+    def cb(session, event_info):
+        raise RuntimeError
+
+    cb_id = solver.events.register_callback(
+        pyfluent.SolverEvent.ITERATION_ENDED_SYNC, cb
+    )
+    with caplog.at_level("ERROR", logger="pyfluent.networking"):
+        solver.settings.solution.run_calculation.iterate(iter_count=10)
+    assert len(caplog.records) == 10
+    for record in caplog.records:
+        assert "Error in callback" in record.message
+    caplog.clear()
+    solver.events.unregister_callback(cb_id)
+    with caplog.at_level("ERROR", logger="pyfluent.networking"):
+        solver.settings.solution.run_calculation.iterate(iter_count=5)
+    assert len(caplog.records) == 0

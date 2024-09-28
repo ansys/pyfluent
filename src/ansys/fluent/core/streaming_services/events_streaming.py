@@ -290,10 +290,17 @@ class EventsManager(Generic[TEvent]):
                     else EventsProtoModule.IterationEndedEvent
                 )
                 event_info = event_info_cls(index=event_info.index)
-                callback(session, event_info)
-                session.scheme_eval.scheme_eval(
-                    f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{unique_id})"
-                )
+                try:
+                    callback(session, event_info)
+                except Exception as e:
+                    network_logger.error(
+                        f"Error in callback for event {event_type}: {e}",
+                        exc_info=True,
+                    )
+                finally:
+                    session.scheme_eval.scheme_eval(
+                        f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{unique_id})"
+                    )
 
         self._sync_event_ids[callback_id] = unique_id
         return SolverEvent.SOLUTION_PAUSED, on_pause
