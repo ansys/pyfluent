@@ -945,6 +945,9 @@ class BaseFieldData:
     def __getitem__(self, item):
         return self._data[item]
 
+    def __call__(self, *args, **kwargs):
+        return self.data
+
 
 class ScalarFieldData(BaseFieldData):
     """Contains scalar field data."""

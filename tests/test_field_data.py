@@ -192,17 +192,17 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     )
 
     assert abs_press_data.size == 241
-    assert abs_press_data[120].scalar_data == 101325.0
+    assert abs_press_data[120].data == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
     )
-    assert round(float(vertices_data[5].x), 2) == -0.2
+    assert round(float(vertices_data[5].data[0]), 2) == -0.2
 
     faces_centroid_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
     )
-    assert round(float(faces_centroid_data[5].y), 2) == -0.18
+    assert round(float(faces_centroid_data[5].data[1]), 2) == -0.18
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
@@ -256,17 +256,17 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     )
 
     assert abs_press_data.size == 11
-    assert abs_press_data[5].scalar_data == 101325.0
+    assert abs_press_data[5].data == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=["interior-4"]
     )
-    assert round(float(vertices_data[5].x), 2) == 0.0
+    assert round(float(vertices_data[5].data[0]), 2) == 0.0
 
     faces_centroid_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesCentroid], surfaces=["velocity-inlet-2"]
     )
-    assert round(float(faces_centroid_data[5].y), 2) == 0.02
+    assert round(float(faces_centroid_data[5].data[1]), 2) == 0.02
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
