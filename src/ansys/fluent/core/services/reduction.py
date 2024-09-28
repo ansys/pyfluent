@@ -4,6 +4,7 @@ from typing import Any, List, Tuple
 import weakref
 
 import grpc
+import numpy as np
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
