@@ -3,6 +3,7 @@
 from enum import Enum
 from functools import reduce
 from typing import Callable, Dict, List, Tuple
+import warnings
 
 import grpc
 import numpy as np
@@ -18,6 +19,7 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -740,7 +742,7 @@ def _get_surface_ids(
 
     Parameters
     ----------
-    surfaces : List[int], | List[str]
+    surfaces : List[int] | List[str]
         List of surface IDs or surface names.
 
     Returns
@@ -952,7 +954,16 @@ class ScalarFieldData(BaseFieldData):
 
         def __init__(self, data):
             """__init__ method of ScalarData class."""
-            self.scalar_data = data
+            self.data = data
+
+        @property
+        def scalar_data(self):
+            """Returns the scalar data."""
+            warnings.warn("Use -> data", PyFluentDeprecationWarning)
+            return self.data
+
+        def __call__(self, *args, **kwargs):
+            return self.data
 
     def __init__(self, i_d, data):
         """__init__ method of ScalarFieldData class."""
@@ -971,16 +982,19 @@ class Vector:
     @property
     def x(self) -> float:
         """Returns vector point x."""
+        warnings.warn("Use -> data[0]", PyFluentDeprecationWarning)
         return self._x
 
     @property
     def y(self) -> float:
         """Returns vector point y."""
+        warnings.warn("Use -> data[1]", PyFluentDeprecationWarning)
         return self._y
 
     @property
     def z(self) -> float:
         """Returns vector point z."""
+        warnings.warn("Use -> data[2]", PyFluentDeprecationWarning)
         return self._z
 
 
@@ -997,11 +1011,16 @@ class VectorFieldData(BaseFieldData):
     """Provides a container for vector field data."""
 
     class VectorData(Vector):
-        """Stores and provides the data as a vector."""
+        """Stores and provides the data as a numpy array."""
 
         def __init__(self, x, y, z):
             """__init__ method of VectorData class."""
+            self.data = np.array([x, y, z])
+            # TODO: Remove reference to 'Vector' with Deprecation.
             super().__init__(x, y, z)
+
+        def __call__(self, *args, **kwargs):
+            return self.data
 
     def __init__(self, i_d, data, scale):
         """__init__ method of VectorFieldData class."""
@@ -1019,11 +1038,16 @@ class Vertices(BaseFieldData):
     """Provides a container for the vertex data."""
 
     class Vertex(Vector):
-        """Stores and provides the data as a vector of a vertex."""
+        """Stores and provides the data as a numpy array."""
 
         def __init__(self, x, y, z):
             """__init__ method of Vertex class."""
+            self.data = np.array([x, y, z])
+            # TODO: Remove reference to 'Vector' with Deprecation.
             super().__init__(x, y, z)
+
+        def __call__(self, *args, **kwargs):
+            return self.data
 
     def __init__(self, i_d, data):
         """__init__ method of Vertices class."""
@@ -1035,11 +1059,16 @@ class FacesCentroid(BaseFieldData):
     """Provides the container for the face centroid data."""
 
     class Centroid(Vector):
-        """Stores and provides the face centroid data as a vector."""
+        """Stores and provides the face centroid data as a numpy array."""
 
         def __init__(self, x, y, z):
             """__init__ method of Centroid class."""
+            self.data = np.array([x, y, z])
+            # TODO: Remove reference to 'Vector' with Deprecation.
             super().__init__(x, y, z)
+
+        def __call__(self, *args, **kwargs):
+            return self.data
 
     def __init__(self, i_d, data):
         """__init__ method of FacesCentroid class."""
@@ -1051,12 +1080,15 @@ class FacesConnectivity(BaseFieldData):
     """Provides the container for the face connectivity data."""
 
     class Faces:
-        """Stores and provides the face connectivity data as an array."""
+        """Stores and provides the face connectivity data as a numpy array."""
 
         def __init__(self, node_count, node_indices):
             """__init__ method of Faces class."""
             self.node_count = node_count
-            self.node_indices = node_indices
+            self.node_indices = np.array(node_indices)
+
+        def __call__(self, *args, **kwargs):
+            return {self.node_count: self.node_indices}
 
     def __init__(self, i_d, data):
         """__init__ method of FacesConnectivity class."""
@@ -1079,7 +1111,12 @@ class FacesNormal(BaseFieldData):
 
         def __init__(self, x, y, z):
             """__init__ method of Normal class."""
+            self.data = np.array([x, y, z])
+            # TODO: Remove reference to 'Vector' with Deprecation.
             super().__init__(x, y, z)
+
+        def __call__(self, *args, **kwargs):
+            return self.data
 
     def __init__(self, i_d, data):
         """__init__ method of FacesNormal class."""
