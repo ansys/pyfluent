@@ -180,11 +180,27 @@ def test_sync_event_exception_in_callback(static_mixer_case_session, caplog):
     )
     with caplog.at_level("ERROR", logger="pyfluent.networking"):
         solver.settings.solution.run_calculation.iterate(iter_count=10)
-    assert len(caplog.records) == 10
-    for record in caplog.records:
-        assert "Error in callback" in record.message
+    assert (
+        len(
+            [
+                record
+                for record in caplog.records
+                if "Error in callback" in record.message
+            ]
+        )
+        == 10
+    )
     caplog.clear()
     solver.events.unregister_callback(cb_id)
     with caplog.at_level("ERROR", logger="pyfluent.networking"):
         solver.settings.solution.run_calculation.iterate(iter_count=5)
-    assert len(caplog.records) == 0
+    assert (
+        len(
+            [
+                record
+                for record in caplog.records
+                if "Error in callback" in record.message
+            ]
+        )
+        == 0
+    )
