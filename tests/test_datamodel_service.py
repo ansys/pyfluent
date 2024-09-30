@@ -498,6 +498,10 @@ def test_named_object_specific_methods(new_meshing_session):
 
     assert not meshing.workflow.TaskObject.get_object_names()
 
+    # test availability of different ways to get container state:
+    TaskObject = meshing.workflow.TaskObject
+    assert TaskObject.get_state() == TaskObject.getState() == TaskObject()
+
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
