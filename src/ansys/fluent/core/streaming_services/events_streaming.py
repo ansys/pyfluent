@@ -27,10 +27,8 @@ class SolverEvent(Enum):
 
     TIMESTEP_STARTED = "TimestepStartedEvent"
     TIMESTEP_ENDED = "TimestepEndedEvent"
-    TIMESTEP_ENDED_SYNC = "TimestepEndedSyncEvent"
     ITERATION_STARTED = "IterationStartedEvent"
     ITERATION_ENDED = "IterationEndedEvent"
-    ITERATION_ENDED_SYNC = "IterationEndedSyncEvent"
     CALCULATIONS_STARTED = "CalculationsStartedEvent"
     CALCULATIONS_ENDED = "CalculationsEndedEvent"
     CALCULATIONS_PAUSED = "CalculationsPausedEvent"
@@ -201,8 +199,8 @@ class EventsManager(Generic[TEvent]):
                 callback, args, kwargs
             )
             if event_name in [
-                SolverEvent.ITERATION_ENDED_SYNC,
-                SolverEvent.TIMESTEP_ENDED_SYNC,
+                SolverEvent.ITERATION_ENDED,
+                SolverEvent.TIMESTEP_ENDED,
             ]:
                 event_name, callback_to_call = (
                     self._register_solution_event_sync_callback(
@@ -246,9 +244,7 @@ class EventsManager(Generic[TEvent]):
 
     def _register_solution_event_sync_callback(
         self,
-        event_type: Literal[
-            SolverEvent.ITERATION_ENDED_SYNC, SolverEvent.TIMESTEP_ENDED_SYNC
-        ],
+        event_type: Literal[SolverEvent.ITERATION_ENDED, SolverEvent.TIMESTEP_ENDED],
         callback_id: str,
         callback: Callable,
     ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
@@ -275,7 +271,7 @@ class EventsManager(Generic[TEvent]):
                             )
                         ()
                         )
-                    {'#t' if event_type == SolverEvent.TIMESTEP_ENDED_SYNC else '#f'}
+                    {'#t' if event_type == SolverEvent.TIMESTEP_ENDED else '#f'}
                     )
                 (car ids)
                 )
@@ -286,7 +282,7 @@ class EventsManager(Generic[TEvent]):
             if unique_id == event_info.level:
                 event_info_cls = (
                     EventsProtoModule.TimestepEndedEvent
-                    if event_type == SolverEvent.TIMESTEP_ENDED_SYNC
+                    if event_type == SolverEvent.TIMESTEP_ENDED
                     else EventsProtoModule.IterationEndedEvent
                 )
                 event_info = event_info_cls(index=event_info.index)

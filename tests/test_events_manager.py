@@ -96,9 +96,7 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
         nonlocal count
         count += 1
 
-    cb_id = solver.events.register_callback(
-        pyfluent.SolverEvent.ITERATION_ENDED_SYNC, cb
-    )
+    cb_id = solver.events.register_callback(pyfluent.SolverEvent.ITERATION_ENDED, cb)
     solver.settings.solution.run_calculation.iterate(iter_count=10)
     assert count == 10
     solver.events.unregister_callback(cb_id)
@@ -130,12 +128,8 @@ def test_iteration_ended_sync_event_multiple_connections(static_mixer_case_sessi
             nonlocal solver2_count
             solver2_count += 1
 
-    solver1.events.register_callback(
-        pyfluent.SolverEvent.ITERATION_ENDED_SYNC, solver1_cb
-    )
-    solver2.events.register_callback(
-        pyfluent.SolverEvent.ITERATION_ENDED_SYNC, solver2_cb
-    )
+    solver1.events.register_callback(pyfluent.SolverEvent.ITERATION_ENDED, solver1_cb)
+    solver2.events.register_callback(pyfluent.SolverEvent.ITERATION_ENDED, solver2_cb)
     solver2.settings.solution.run_calculation.iterate(iter_count=5)
     assert solver1_count == 2
     assert solver2_count == 3
@@ -153,9 +147,7 @@ def test_timestep_ended_sync_event(static_mixer_case_session):
         nonlocal count
         count += 1
 
-    cb_id = solver.events.register_callback(
-        pyfluent.SolverEvent.TIMESTEP_ENDED_SYNC, cb
-    )
+    cb_id = solver.events.register_callback(pyfluent.SolverEvent.TIMESTEP_ENDED, cb)
     solver.settings.solution.run_calculation.dual_time_iterate(
         time_step_count=10, max_iter_per_step=2
     )
@@ -175,9 +167,7 @@ def test_sync_event_exception_in_callback(static_mixer_case_session, caplog):
     def cb(session, event_info):
         raise RuntimeError
 
-    cb_id = solver.events.register_callback(
-        pyfluent.SolverEvent.ITERATION_ENDED_SYNC, cb
-    )
+    cb_id = solver.events.register_callback(pyfluent.SolverEvent.ITERATION_ENDED, cb)
     with caplog.at_level("ERROR", logger="pyfluent.networking"):
         solver.settings.solution.run_calculation.iterate(iter_count=10)
     assert (
