@@ -225,7 +225,7 @@ class MeshType(Enum):
 
 
 class Mesh:
-    """Class to provide information about Fluent mesh files.
+    """Class to provide data from and information about Fluent mesh files.
 
     This class is applicable only to HDF5, Fluent's default format for mesh files.
     HDF5 (Hierarchical Data Format version 5) is commonly used for storing large amounts
