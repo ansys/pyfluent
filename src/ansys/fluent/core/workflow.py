@@ -443,7 +443,7 @@ class BaseTask:
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
-        elif attr in self.arguments():
+        elif attr in self.arguments() or attr == "arguments":
             getattr(self, attr).set_state(value)
         else:
             setattr(self._task, attr, value)

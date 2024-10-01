@@ -597,18 +597,26 @@ def test_updating_state_in_new_meshing_workflow(new_meshing_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     watertight = new_meshing_session.watertight()
-    watertight.import_geometry.file_name.set_state(import_file_name)
     assert watertight.import_geometry.length_unit() == "mm"
-    watertight.import_geometry.length_unit = "in"
-    assert watertight.import_geometry.length_unit.get_state() == "in"
     assert watertight.import_geometry.cad_import_options.feature_angle() == 40.0
-    watertight.import_geometry.cad_import_options.feature_angle.set_state(25.0)
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
     assert (
         watertight.import_geometry.cad_import_options.one_zone_per.allowed_values()
         == ["body", "face", "object"]
     )
     assert watertight.import_geometry.cad_import_options.one_zone_per() == "body"
+    watertight.import_geometry.arguments = {
+        "file_name": import_file_name,
+        "length_unit": "in",
+        "cad_import_options": {"feature_angle": 35, "one_zone_per": "object"},
+    }
+    assert watertight.import_geometry.cad_import_options.feature_angle() == 35.0
+    assert (
+        watertight.import_geometry.cad_import_options.one_zone_per.get_state()
+        == "object"
+    )
+    assert watertight.import_geometry.length_unit.get_state() == "in"
+    watertight.import_geometry.cad_import_options.feature_angle = 25.0
+    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
     watertight.import_geometry.cad_import_options.one_zone_per = "face"
     assert watertight.import_geometry.cad_import_options.one_zone_per() == "face"
     watertight.import_geometry()
