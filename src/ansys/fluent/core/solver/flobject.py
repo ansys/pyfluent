@@ -1682,14 +1682,15 @@ class BaseCommand(Action):
                 self._parent.path, self.obj_name, **newkwds
             )
             if prompt:
+                valid_responses = {"y": True, "yes": True, "n": False, "no": False}
                 while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
+                    response = input(prompt + ": y[es]/n[o] ").strip().lower()
+                    if response in valid_responses:
+                        if not valid_responses[response]:
+                            return
                         break
                     else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
+                        print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
             if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
