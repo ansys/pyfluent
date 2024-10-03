@@ -1071,7 +1071,7 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-        all_children = self.__dict__.keys()
+        all_children = list(self.__dict__) + dir(type(self))
         if hasattr(self.service, "is_in_datamodel"):
             filtered_children = []
 
@@ -1090,9 +1090,9 @@ class PyStateContainer(PyCallableStateObject):
                     filtered_children.append(name)
 
         else:
-            filtered_children = list(all_children)
+            filtered_children = all_children
 
-        dir_set = set(filtered_children + dir(type(self)))
+        dir_set = set(filtered_children)
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             dir_set = dir_set - {"setState", "set_state"}
 
