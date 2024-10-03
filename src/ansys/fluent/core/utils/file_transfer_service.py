@@ -473,7 +473,7 @@ class PimFileTransferService:
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         remote_file_name : str, optional
             Remote file name. The default is ``None``.
@@ -533,7 +533,7 @@ class PimFileTransferService:
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         local_directory : str, optional
             Local directory. The default is the current working directory.
