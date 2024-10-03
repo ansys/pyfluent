@@ -958,8 +958,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    docstring = None
-
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
