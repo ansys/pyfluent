@@ -114,7 +114,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         remote_file_name : str, optional
             Remote file name. The default is ``None``.
@@ -134,17 +134,18 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
         >>> meshing_session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
         """
-        local_file_name = pathlib.Path(file_name)
-        if local_file_name.exists() and local_file_name.is_file():
-            if remote_file_name:
-                shutil.copyfile(
-                    file_name,
-                    str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
-                )
-            else:
-                shutil.copyfile(
-                    file_name, str(self.fluent_cwd / f"{os.path.basename(file_name)}")
-                )
+        files = _get_files(file_name)
+        for file in files:
+            if file.exists() and file.is_file():
+                if remote_file_name:
+                    shutil.copyfile(
+                        file,
+                        str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
+                    )
+                else:
+                    shutil.copyfile(
+                        file, str(self.fluent_cwd / f"{os.path.basename(file)}")
+                    )
 
     def download(
         self, file_name: list[str] | str, local_directory: str | None = None
@@ -153,7 +154,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         local_directory : str, optional
             Local directory. The default is ``None``.
@@ -168,22 +169,24 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         >>> meshing_session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
         >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
         """
-        remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file_name)}")
-        local_file_name = None
-        if local_directory:
-            if pathlib.Path(local_directory).is_dir():
-                local_file_name = pathlib.Path(local_directory) / os.path.basename(
-                    file_name
+        files = _get_files(file_name)
+        for file in files:
+            remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file)}")
+            local_file_name = None
+            if local_directory:
+                if pathlib.Path(local_directory).is_dir():
+                    local_file_name = pathlib.Path(local_directory) / os.path.basename(
+                        file
+                    )
+                elif not pathlib.Path(local_directory).is_dir():
+                    local_file_name = pathlib.Path(local_directory)
+            else:
+                local_file_name = pathlib.Path(self.pyfluent_cwd) / os.path.basename(
+                    file
                 )
-            elif not pathlib.Path(local_directory).is_dir():
-                local_file_name = pathlib.Path(local_directory)
-        else:
-            local_file_name = pathlib.Path(self.pyfluent_cwd) / os.path.basename(
-                file_name
-            )
-        if local_file_name.exists() and local_file_name.samefile(remote_file_name):
-            return
-        shutil.copyfile(remote_file_name, str(local_file_name))
+            if local_file_name.exists() and local_file_name.samefile(remote_file_name):
+                return
+            shutil.copyfile(remote_file_name, str(local_file_name))
 
 
 def _get_files(
@@ -289,7 +292,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         remote_file_name : str, optional
             Remote file name. The default is ``None``.
@@ -335,7 +338,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         local_directory : str, optional
             Local directory. The default is ``None``.
