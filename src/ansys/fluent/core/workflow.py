@@ -784,7 +784,10 @@ class ArgumentsWrapper(PyCallableStateObject):
                 camel_args[camel_arg] = updated_dict
             else:
                 camel_args[camel_arg] = val
-        getattr(self._task.Arguments, fn)(camel_args)
+        if fn == "update_dict":
+            self._task.Arguments.update_dict(camel_args, recursive=True)
+        else:
+            getattr(self._task.Arguments, fn)(camel_args)
         try:
             self._refresh_command_after_changing_args(old_state)
         except Exception as ex:

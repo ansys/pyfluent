@@ -572,7 +572,11 @@ class DatamodelService(StreamingService):
             )
 
     def update_dict(
-        self, rules: str, path: str, dict_state: dict[str, _TValue]
+        self,
+        rules: str,
+        path: str,
+        dict_state: dict[str, _TValue],
+        recursive=False,
     ) -> None:
         """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
@@ -1392,7 +1396,7 @@ class PyDictionary(PyParameter):
         to dict.update semantics (same as update_dict(dict_state))]
     """
 
-    def update_dict(self, dict_state: dict[str, Any]) -> None:
+    def update_dict(self, dict_state: dict[str, Any], recursive=False) -> None:
         """Update the state of the current object if the current object is a Dict in the
         data model, else throws RuntimeError (currently not showing up in Python).
         Update is executed according to dict.update semantics.
@@ -1402,6 +1406,9 @@ class PyDictionary(PyParameter):
         dict_state : dict[str, Any]
             Incoming dict state
 
+        recursive: bool
+            Flag to update the nested dictionary structure.
+
         Raises
         ------
         ReadOnlyObjectError
@@ -1410,7 +1417,7 @@ class PyDictionary(PyParameter):
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
         self.service.update_dict(
-            self.rules, convert_path_to_se_path(self.path), dict_state
+            self.rules, convert_path_to_se_path(self.path), dict_state, recursive
         )
 
     updateDict = update_dict
