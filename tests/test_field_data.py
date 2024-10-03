@@ -191,18 +191,18 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
 
-    assert abs_press_data.size == 241
-    assert abs_press_data[120].data == 101325.0
+    assert len(abs_press_data) == 241
+    assert abs_press_data[120] == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
     )
-    assert round(float(vertices_data[5].data[0]), 2) == -0.2
+    assert round(float(vertices_data[5][0]), 2) == -0.2
 
     faces_centroid_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
     )
-    assert round(float(faces_centroid_data[5].data[1]), 2) == -0.18
+    assert round(float(faces_centroid_data[5][1]), 2) == -0.18
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
@@ -213,8 +213,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     faces_normal_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
     )
-    assert faces_normal_data.size == 152
-    assert faces_normal_data.surface_id == 3
+    assert len(faces_normal_data) == 152
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["cold-inlet"]
