@@ -136,7 +136,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         """
         files = _get_files(file_name)
         for file in files:
-            if file.exists() and file.is_file():
+            if file.is_file():
                 if remote_file_name:
                     shutil.copyfile(
                         file,
@@ -171,19 +171,16 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         """
         files = _get_files(file_name)
         for file in files:
-            remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file)}")
+            remote_file_name = str(self.fluent_cwd / file.name)
             local_file_name = None
             if local_directory:
-                if pathlib.Path(local_directory).is_dir():
-                    local_file_name = pathlib.Path(local_directory) / os.path.basename(
-                        file
-                    )
-                elif not pathlib.Path(local_directory).is_dir():
-                    local_file_name = pathlib.Path(local_directory)
+                local_dir_path = pathlib.Path(local_directory)
+                if local_dir_path.is_dir():
+                    local_file_name = local_dir_path / file.name
+                else:
+                    local_file_name = local_dir_path
             else:
-                local_file_name = pathlib.Path(self.pyfluent_cwd) / os.path.basename(
-                    file
-                )
+                local_file_name = self.pyfluent_cwd / file.name
             if local_file_name.exists() and local_file_name.samefile(remote_file_name):
                 return
             shutil.copyfile(remote_file_name, str(local_file_name))
