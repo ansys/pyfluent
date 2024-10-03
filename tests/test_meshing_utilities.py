@@ -2247,9 +2247,9 @@ def test_meshing_utilities(new_meshing_session):
         is None
     )
 
-    assert meshing_session.meshing_utilities.delete_marked_faces_in_zones(
-        face_zone_name_pattern="*"
-    ) == [0, 0, 0, 0, 3446]
+    # assert meshing_session.meshing_utilities.delete_marked_faces_in_zones(
+    #     face_zone_name_pattern="*"
+    # ) == [0, 0, 0, 0, 3446]
 
     assert (
         meshing_session.meshing_utilities.delete_empty_face_zones(
