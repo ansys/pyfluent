@@ -106,3 +106,24 @@ def test_datamodel_execute():
 
     with pytest.raises(RuntimeError):
         import_geom.Execute()
+
+
+def test_file_list_in_datamodel(fault_tolerant_workflow_session):
+    meshing = fault_tolerant_workflow_session
+    fmd_file = examples.download_file("exhaust_system.fmd", "pyfluent/exhaust_system")
+    meshing.PartManagement.AppendFmdFiles(
+        AssemblyParentNode=0,
+        FilePath=[fmd_file],
+        FileUnit="mm",
+        IgnoreSolidNamesAppend=False,
+        JtLOD="1",
+        Options={
+            "Line": False,
+            "Solid": True,
+            "Surface": True,
+        },
+        PartPerBody=False,
+        PrefixParentName=False,
+        RemoveEmptyParts=True,
+        Route="Native",
+    )
