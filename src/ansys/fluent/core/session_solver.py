@@ -261,6 +261,7 @@ class Solver(BaseSession):
             super(Solver, self)._build_from_fluent_connection(
                 fut_session._fluent_connection,
                 fut_session._fluent_connection._connection_interface.scheme_eval,
+                event_type=SolverEvent,
             )
             self._build_from_fluent_connection(
                 fut_session._fluent_connection,
