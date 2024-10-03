@@ -129,6 +129,28 @@ class Attribute(Enum):
     DEPRECATED_VERSION: str = "deprecatedVersion"
 
 
+class _FilterDatamodelNames:
+    def __init__(self, service):
+        self._filter_fn = getattr(service, "is_in_datamodel", None)
+
+    def __call__(self, parent, names):
+        if self._filter_fn is None:
+            return names
+
+        filtered_children = []
+
+        def validate_name(name):
+            obj = getattr(parent, name)
+            # might need to make this more flexible (e.g., enhanced workflow types)
+            is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
+            if is_in_datamodel:
+                return self._filter_fn(parent.rules, convert_path_to_se_path(obj.path))
+            else:
+                return True
+
+        return [name for name in names if validate_name(name)]
+
+
 class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
@@ -1067,26 +1089,10 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
+
         all_children = list(self.__dict__) + dir(type(self))
-        if hasattr(self.service, "is_in_datamodel"):
-            filtered_children = []
 
-            def validate_name(name):
-                obj = getattr(self, name)
-                is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
-                if is_in_datamodel:
-                    return self.service.is_in_datamodel(
-                        self.rules, convert_path_to_se_path(obj.path)
-                    )
-                else:
-                    return True
-
-            for name in all_children:
-                if validate_name(name):
-                    filtered_children.append(name)
-
-        else:
-            filtered_children = all_children
+        filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
 
         dir_set = set(filtered_children)
         if self.get_attr(Attribute.IS_READ_ONLY.value):
