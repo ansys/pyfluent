@@ -4,7 +4,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Type, TypeVar
+from typing import Callable, Generic, Literal, Type, TypeVar
 import warnings
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -99,6 +99,7 @@ class EventsManager(Generic[TEvent]):
         # This has been updated from id to session, which
         # can also be done in other streaming services
         self._session = session
+        self._sync_event_ids = {}
 
     def _process_streaming(
         self, service, id, stream_begin_method, started_evt, *args, **kwargs
@@ -194,16 +195,26 @@ class EventsManager(Generic[TEvent]):
         event_name = self._event_type(event_name)
         with self._impl._lock:
             callback_id = f"{event_name}-{next(self._impl._service_callback_id)}"
-            callbacks_map = self._impl._service_callbacks.get(event_name)
             callback_to_call = EventsManager._make_callback_to_call(
                 callback, args, kwargs
             )
+            if event_name in [
+                SolverEvent.ITERATION_ENDED,
+                SolverEvent.TIMESTEP_ENDED,
+            ]:
+                event_name, callback_to_call = (
+                    self._register_solution_event_sync_callback(
+                        event_name, callback_id, callback_to_call
+                    )
+                )
+            callbacks_map = self._impl._service_callbacks.get(event_name)
             if callbacks_map:
                 callbacks_map.update({callback_id: callback_to_call})
             else:
                 self._impl._service_callbacks[event_name] = {
                     callback_id: callback_to_call
                 }
+            return callback_id
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.
@@ -217,6 +228,11 @@ class EventsManager(Generic[TEvent]):
             for callbacks_map in self._impl._service_callbacks.values():
                 if callback_id in callbacks_map:
                     del callbacks_map[callback_id]
+            sync_event_id = self._sync_event_ids.pop(callback_id, None)
+            if sync_event_id:
+                self._session.scheme_eval.scheme_eval(
+                    f"(cancel-solution-monitor 'pyfluent-{sync_event_id})"
+                )
 
     def start(self, *args, **kwargs) -> None:
         """Start streaming."""
@@ -225,3 +241,62 @@ class EventsManager(Generic[TEvent]):
     def stop(self) -> None:
         """Stop streaming."""
         self._impl.stop()
+
+    def _register_solution_event_sync_callback(
+        self,
+        event_type: Literal[SolverEvent.ITERATION_ENDED, SolverEvent.TIMESTEP_ENDED],
+        callback_id: str,
+        callback: Callable,
+    ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
+        unique_id = self._session.scheme_eval.scheme_eval(
+            f"""
+            (let
+                ((ids
+                    (let loop ((i 1))
+                        (define next-id (string->symbol (format #f "pyfluent-~d" i)))
+                        (if (check-monitor-existence next-id)
+                            (loop (1+ i))
+                            (list i next-id)
+                            )
+                        )
+                    ))
+                (register-solution-monitor
+                    (cadr ids)
+                    (lambda (niter time)
+                        (if (integer? niter)
+                            (begin
+                                (events/transmit 'auto-pause (cons (car ids) niter))
+                                (grpcserver/auto-pause (is-server-running?) (cadr ids))
+                                )
+                            )
+                        ()
+                        )
+                    {'#t' if event_type == SolverEvent.TIMESTEP_ENDED else '#f'}
+                    )
+                (car ids)
+                )
+        """
+        )
+
+        def on_pause(session, event_info: EventsProtoModule.AutoPauseEvent):
+            if unique_id == event_info.level:
+                event_info_cls = (
+                    EventsProtoModule.TimestepEndedEvent
+                    if event_type == SolverEvent.TIMESTEP_ENDED
+                    else EventsProtoModule.IterationEndedEvent
+                )
+                event_info = event_info_cls(index=event_info.index)
+                try:
+                    callback(session, event_info)
+                except Exception as e:
+                    network_logger.error(
+                        f"Error in callback for event {event_type}: {e}",
+                        exc_info=True,
+                    )
+                finally:
+                    session.scheme_eval.scheme_eval(
+                        f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{unique_id})"
+                    )
+
+        self._sync_event_ids[callback_id] = unique_id
+        return SolverEvent.SOLUTION_PAUSED, on_pause
