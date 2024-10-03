@@ -449,6 +449,11 @@ class SubscriptionList:
 class DatamodelService(StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
+    ## TEMP - remove !
+    # def is_in_datamodel(self, rules, path):
+    #    print(f"is_in_datamodel {rules} {path}")
+    #    return True
+
     def __init__(
         self,
         channel: grpc.Channel,
@@ -1066,11 +1071,32 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        if self.get_attr(Attribute.IS_READ_ONLY.value):
-            dir_list = dir_list - {"setState", "set_state"}
+        all_children = self.__dict__.keys()
+        if hasattr(self.service, "is_in_datamodel"):
+            filtered_children = []
 
-        return sorted(dir_list)
+            def validate_name(name):
+                obj = getattr(self, name)
+                is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
+                if is_in_datamodel:
+                    return self.service.is_in_datamodel(
+                        self.rules, convert_path_to_se_path(obj.path)
+                    )
+                else:
+                    return True
+
+            for name in all_children:
+                if validate_name(name):
+                    filtered_children.append(name)
+
+        else:
+            filtered_children = list(all_children)
+
+        dir_set = set(filtered_children + dir(type(self)))
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_set = dir_set - {"setState", "set_state"}
+
+        return sorted(dir_set)
 
 
 class PyMenu(PyStateContainer):
