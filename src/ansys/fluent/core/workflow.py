@@ -767,6 +767,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         cmd_args = self._task._command_arguments
         for key, val in args.items():
             camel_arg = self._snake_to_camel_map[key] if key.islower() else key
+            # TODO: Implement enhanced meshing workflow to hide away internal info.
             if isinstance(
                 getattr(cmd_args, camel_arg), PySingletonCommandArgumentsSubItem
             ):
@@ -913,11 +914,7 @@ class ArgumentWrapper(PyCallableStateObject):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
-            camel_attr = snake_to_camel_case(
-                str(attr), self._get_camel_case_arg_keys() or []
-            )
-            attr = camel_attr or attr
-            self._task.Arguments.update_dict({self._arg_name: {attr: value}})
+            self.set_state({attr: value})
 
     def __dir__(self):
         arg_list = []
