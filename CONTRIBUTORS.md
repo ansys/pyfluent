@@ -6,7 +6,6 @@
 
 ## Individual Contributors
 
-* [Sean Pearson](https://github.com/seanpearsonuk)
 * [Aseem Jain](https://github.com/ajain-work)
 * [Mainak Kundu](https://github.com/mkundu1)
 * [Prithwish Mukherjee](https://github.com/prmukherj)
