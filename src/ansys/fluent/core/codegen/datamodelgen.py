@@ -75,19 +75,19 @@ def _write_meshing_utilities_stub(file_path):
     file.write("#\n")
     file.write("# pylint: disable=line-too-long\n\n")
     file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
-    file.write("\n\n\n")
+    file.write("from typing import *\n")
+    file.write("\n\n")
     file.write(f"class Root(PyMenu):\n")
     return file
 
 
 def _write_command_query_stub(name: str, info: Any, f: FileIO):
-    signature = "(\n, self,\n"
+    indent = "        "
+    signature = f"(\n{indent}self,\n"
     if info.get("args"):
         for arg in info.get("args"):
-            signature += (
-                f'{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
-            )
-    signature += f') -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...'
+            signature += f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
+    signature += f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...'
     f.write(f"    def {name}{signature}\n")
 
 
