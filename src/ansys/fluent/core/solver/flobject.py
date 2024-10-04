@@ -1596,7 +1596,7 @@ class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
 
-def _get_new_keywords(obj, args, kwds):
+def _get_new_keywords(obj, *args, **kwds):
     newkwds = {}
     argNames = []
     argumentNames = []
@@ -1674,6 +1674,33 @@ class Action(Base):
 class BaseCommand(Action):
     """Executes command."""
 
+    def _execute_command(self, *args, **kwds):
+        """Execute a command with the specified positional and keyword arguments."""
+        newkwds = _get_new_keywords(self, *args, **kwds)
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **newkwds
+            )
+            if prompt:
+                valid_responses = {"y": True, "yes": True, "n": False, "no": False}
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ").strip().lower()
+                    if response in valid_responses:
+                        if not valid_responses[response]:
+                            return
+                        break
+                    else:
+                        print("Please enter 'y[es]' or 'n[o]'.")
+        with self._while_executing_command():
+            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
+                if (self._parent.path, self.obj_name) in [
+                    ("parameters/input-parameters", "list"),
+                    ("parameters/output-parameters", "list"),
+                ]:
+                    ret = _fix_parameter_list_return(ret)
+            return ret
+
     def execute_command(self, *args, **kwds):
         """Execute command."""
         for arg, value in kwds.items():
@@ -1701,7 +1728,11 @@ class BaseCommand(Action):
             return ret
 
     def __call__(self, *args, **kwds):
-        return self.execute_command(*args, **kwds)
+        try:
+            return self.execute_command(*args, **kwds)
+        except KeyboardInterrupt:
+            self._root._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 # TODO: Remove this after paremater list() method is fixed from Fluent side
@@ -1728,32 +1759,6 @@ _fix_parameter_list_return.scheme_eval = None
 class Command(BaseCommand):
     """Command object."""
 
-    def _execute_command(self, **kwds):
-        """Execute a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, [], kwds)
-        if self.flproxy.is_interactive_mode():
-            prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
-            )
-            if prompt:
-                while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
-                        break
-                    else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
-        with self._while_executing_command():
-            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
-                if (self._parent.path, self.obj_name) in [
-                    ("parameters/input-parameters", "list"),
-                    ("parameters/output-parameters", "list"),
-                ]:
-                    ret = _fix_parameter_list_return(ret)
-            return ret
-
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         try:
@@ -1764,29 +1769,10 @@ class Command(BaseCommand):
 
 
 class CommandWithPositionalArgs(BaseCommand):
-    """Command Object."""
-
-    def _execute_command(self, *args, **kwds):
-        """Execute a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, args, kwds)
-        if self.flproxy.is_interactive_mode():
-            prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
-            )
-            if prompt:
-                while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
-                        break
-                    else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
-        with self._while_executing_command():
-            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+    """Command Object supporting positional arguments."""
 
     def __call__(self, *args, **kwds):
-        """Call a command with the specified keyword arguments."""
+        """Call a command with the specified positional and keyword arguments."""
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
@@ -1799,7 +1785,7 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, [], kwds)
+        newkwds = _get_new_keywords(self, **kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 

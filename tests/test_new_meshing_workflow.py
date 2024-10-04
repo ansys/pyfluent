@@ -1612,7 +1612,7 @@ def test_mark_as_updated(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing = new_meshing_session
@@ -1620,6 +1620,7 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
 
     import_geom = watertight.import_geometry
     assert import_geom.length_unit.default_value() == "mm"
+    assert "allowed_values" in dir(import_geom.length_unit)
     assert import_geom.arguments.length_unit.allowed_values() == [
         "m",
         "cm",

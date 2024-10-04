@@ -1017,8 +1017,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    docstring = None
-
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
@@ -1738,7 +1736,9 @@ class PyCommand:
     def before_execute(self, value):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+            return self._do_before_execute(value)
+        else:
+            return value
 
     def after_execute(self, value):
         """Executes after command execution."""
@@ -1755,8 +1755,7 @@ class PyCommand:
         """
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
-                self.before_execute(value)
-                kwds[f"{arg}"] = os.path.basename(value)
+                kwds[arg] = self.before_execute(value)
         command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
@@ -1824,15 +1823,22 @@ class PyCommand:
 class _InputFile:
     def _do_before_execute(self, value):
         try:
-            self.service.file_transfer_service.upload(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            base_names = []
+            for file_name in file_names:
+                self.service.file_transfer_service.upload(file_name=file_name)
+                base_names.append(os.path.basename(file_name))
+            return base_names if isinstance(value, list) else base_names[0]
         except AttributeError:
-            pass
+            return value
 
 
 class _OutputFile:
     def _do_after_execute(self, value):
         try:
-            self.service.file_transfer_service.download(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            for file_name in file_names:
+                self.service.file_transfer_service.download(file_name=file_name)
         except AttributeError:
             pass
 
