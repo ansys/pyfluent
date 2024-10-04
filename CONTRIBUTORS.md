@@ -1,6 +1,6 @@
 # Contributors
 
-## Project Leads
+## Project Lead
 
 * [Sean Pearson](https://github.com/seanpearsonuk)
 
