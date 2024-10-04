@@ -902,10 +902,12 @@ class ArgumentWrapper(PyCallableStateObject):
             self.set_state({attr: value})
 
     def __dir__(self):
-        arg_list = []
-        for arg in self():
-            arg_list.append(camel_to_snake_case(arg))
-        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+        arg_state = self.get_state()
+        arg_list = list(arg_state) if isinstance(arg_state, dict) else []
+        dir_arg = [item for item in dir(self._arg) if item.islower()]
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir_arg)
+        )
 
 
 class CommandTask(BaseTask):
@@ -1253,8 +1255,11 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Conditional": ConditionalTask,
     }
     task_type = task.TaskType()
-    if task_type is None and command_source._compound_child:
-        kind = CompoundChild
+    if task_type is None:
+        if command_source._compound_child:
+            kind = CompoundChild
+        else:
+            kind = SimpleTask
     else:
         kind = kinds[task_type]
     if not kind:
