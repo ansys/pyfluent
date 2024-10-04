@@ -1,9 +1,7 @@
 """Provides a module for enums used in the PyFluent."""
 
 from enum import Enum
-from functools import total_ordering
 import os
-from typing import Optional, Union
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -12,12 +10,12 @@ from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
-@total_ordering
 class FluentEnum(Enum):
     """Provides the base class for Fluent-related enums.
 
@@ -35,7 +33,7 @@ class FluentEnum(Enum):
         return
 
     @classmethod
-    def _missing_(cls, value: Union[str, int, None]):
+    def _missing_(cls, value: str | int | None):
         if value is None:
             return cls._default(cls)
         for member in cls:
@@ -57,19 +55,6 @@ class FluentEnum(Enum):
             f"""is not a supported value of {cls.__name__}."""
             f""" The supported values are: {msg}."""
         )
-
-    def __lt__(self, other):
-        if not isinstance(other, type(self)):
-            raise TypeError(
-                f"Cannot compare between {type(self).__name__} and {type(other).__name__}"
-            )
-        if self == other:
-            return False
-        for member in type(self):
-            if self == member:
-                return True
-            if other == member:
-                return False
 
 
 class LaunchMode(FluentEnum):
@@ -93,9 +78,10 @@ class FluentMode(FluentEnum):
     """Enumerates over supported Fluent modes."""
 
     MESHING = "meshing"
-    PURE_MESHING = "pure-meshing"
+    PURE_MESHING = "pure_meshing"
     SOLVER = "solver"
-    SOLVER_ICING = "solver-icing"
+    SOLVER_ICING = "solver_icing"
+    SOLVER_AERO = "solver_aero"
 
     def _default(self):
         return self.SOLVER
@@ -106,6 +92,7 @@ class FluentMode(FluentEnum):
             self.PURE_MESHING: PureMeshing,
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
+            self.SOLVER_AERO: SolverAero,
         }
 
     @staticmethod
@@ -129,10 +116,10 @@ class FluentMode(FluentEnum):
 class UIMode(FluentEnum):
     """Provides supported user interface mode of Fluent."""
 
-    NO_GUI_OR_GRAPHICS = "no-gui-or-graphics"
-    NO_GRAPHICS = "no-graphics"
-    NO_GUI = "no-gui"
-    HIDDEN_GUI = "hidden-gui"
+    NO_GUI_OR_GRAPHICS = "no_gui_or_graphics"
+    NO_GRAPHICS = "no_graphics"
+    NO_GUI = "no_gui"
+    HIDDEN_GUI = "hidden_gui"
     GUI = "gui"
 
     def _default(self):
@@ -259,7 +246,9 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
 
 
 def _get_graphics_driver(
-    graphics_driver: Union[FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str]
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    ) = None,
 ):
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
@@ -274,26 +263,22 @@ def _get_graphics_driver(
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: Optional[FluentMode] = None
+    fluent_connection: FluentConnection, mode: FluentMode | None = None
 ):
     """Get the mode of the running session if the mode has not been explicitly given."""
     if mode:
         session_mode = mode
     else:
         try:
-            session_mode = FluentMode(
-                "solver"
-                if fluent_connection._connection_interface.is_solver_mode()
-                else "meshing"
-            )
+            session_mode = fluent_connection._connection_interface.get_mode()
         except Exception as ex:
             raise exceptions.InvalidPassword() from ex
     return session_mode.get_fluent_value()
 
 
 def _get_standalone_launch_fluent_version(
-    product_version: Union[FluentVersion, str, float, int, None]
-) -> Optional[FluentVersion]:
+    product_version: FluentVersion | str | float | int | None,
+) -> FluentVersion | None:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
 
@@ -322,7 +307,7 @@ def _get_standalone_launch_fluent_version(
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: Union[bool, list], dimension: int):
+def _validate_gpu(gpu: bool | list, dimension: int):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters

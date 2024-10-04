@@ -1,10 +1,10 @@
 """Module containing class encapsulating Fluent connection.
 
-**********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
+Expose icing capabilities.
 """
 
 import importlib
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
@@ -22,9 +22,9 @@ class SolverIcing(Solver):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Optional[Dict[str, Any]] = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """SolverIcing session.
 

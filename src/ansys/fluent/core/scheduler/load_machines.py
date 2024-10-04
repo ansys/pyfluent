@@ -9,15 +9,15 @@ import csv
 import os
 from pathlib import Path
 import subprocess
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
 def load_machines(
-    machine_info: Optional[List[Dict[str, int]]] = None,
-    host_info: Optional[str] = None,
-    ncores: Optional[int] = None,
+    machine_info: List[Dict[str, int]] | None = None,
+    host_info: str | None = None,
+    ncores: int | None = None,
 ) -> MachineList:
     """Provide a function to construct a machine list from allocated machines.
 

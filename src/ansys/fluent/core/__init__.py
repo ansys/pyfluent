@@ -47,6 +47,11 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     warning,
 )
 
+try:
+    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
+except (ImportError, AttributeError):
+    pass
+
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
 
@@ -97,8 +102,11 @@ DATAMODEL_USE_STATE_CACHE = True
 # Whether to use datamodel attribute caching
 DATAMODEL_USE_ATTR_CACHE = True
 
-# Whether stream and cache commands state
+# Whether to stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+# Whether to return the state changes on mutating datamodel rpcs
+DATAMODEL_RETURN_STATE_CHANGES = True
 
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False

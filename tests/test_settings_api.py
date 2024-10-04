@@ -217,7 +217,7 @@ def test_api_upgrade(new_solver_session, capsys):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_deprecated_settings(new_solver_session):
+def test_deprecated_settings_with_custom_aliases(new_solver_session):
     solver = new_solver_session
     if solver.get_fluent_version() >= FluentVersion.v251:
         # https://github.com/ansys/pyfluent/issues/3134
@@ -359,6 +359,27 @@ def test_deprecated_settings(new_solver_session):
     }
 
 
+@pytest.mark.fluent_version(">=25.1")
+def test_deprecated_settings_with_settings_api_aliases(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read_case_data(file_name=case_path)
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {}
+    assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
+        "minimum": 0,
+        "maximum": 0,
+    }
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {
+        "min": -0.0001,
+        "max": 0.0001,
+    }
+    assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
+        "minimum": -0.0001,
+        "maximum": 0.0001,
+    }
+
+
 @pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
@@ -435,3 +456,66 @@ def test_generated_code_special_cases(new_solver_session):
     write_file_bases = solver.file.write_case.file_name.__class__.__bases__
     assert _InputFile not in write_file_bases
     assert _OutputFile in write_file_bases
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_child_alias_with_parent_path(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+
+    # Following set_state should not throw InactiveObjectError
+    solver.settings.setup.materials.fluid["air"] = {
+        "density": {"option": "ideal-gas"},
+        "specific_heat": {"value": 1006.43, "option": "constant"},
+        "thermal_conductivity": {"value": 0.0242, "option": "constant"},
+        "molecular_weight": {"value": 28.966, "option": "constant"},
+    }
+    assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
+    assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
+    assert (
+        solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
+        == 0.0242
+    )
+    assert (
+        solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
+    )
+
+    solver.settings.solution.initialization.hybrid_initialize()
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
+        == {"gaussian_factor": "../gaussian_factor", "option": "../kernel_type"}
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = (
+        True
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type = (
+        "inverse-distance"
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel = {
+        "option": "gaussian",
+        "gaussian_factor": 0.5,
+    }
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type()
+        == "gaussian"
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
+        == 0.5
+    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
+        0.6
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
+        == 0.6
+    )
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_exit_not_in_settings(new_solver_session):
+    solver = new_solver_session
+
+    assert "exit" not in dir(solver.settings)
+
+    with pytest.raises(AttributeError):
+        solver.settings.exit()

@@ -6,7 +6,7 @@ import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Optional, Sequence, Union
+from typing import Any, Callable, Iterator, NoReturn, Sequence
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -25,10 +25,10 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
-_TValue = Union[None, bool, int, float, str, Sequence["_TValue"], dict[str, "_TValue"]]
-
+_TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 member_specs_oneof_fields = [
@@ -37,9 +37,7 @@ member_specs_oneof_fields = [
 ]
 
 
-def _get_value_from_message_dict(
-    d: dict[str, Any], key: list[Union[str, Sequence[str]]]
-):
+def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str]]):
     """Get value from a protobuf message dict by a sequence of keys.
 
     A key can also be a list of oneof types.
@@ -57,9 +55,9 @@ class DisallowedFilePurpose(ValueError):
 
     def __init__(
         self,
-        context: Optional[Any] = None,
-        name: Optional[Any] = None,
-        allowed_values: Optional[Any] = None,
+        context: Any | None = None,
+        name: Any | None = None,
+        allowed_values: Any | None = None,
     ):
         super().__init__(
             allowed_name_error_message(
@@ -139,7 +137,7 @@ class DatamodelServiceImpl:
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
     ) -> None:
         """__init__ method of DatamodelServiceImpl class."""
         intercept_channel = grpc.intercept_channel(
@@ -455,8 +453,9 @@ class DatamodelService(StreamingService):
         self,
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
+        version: FluentVersion,
         fluent_error_state,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
@@ -468,6 +467,7 @@ class DatamodelService(StreamingService):
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
+        self.version = version
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         """Get attribute value."""
@@ -498,7 +498,14 @@ class DatamodelService(StreamingService):
         request.path = path
         request.new_name = new_name
         request.wait = True
-        self._impl.rename(request)
+        response = self._impl.rename(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def delete_child_objects(
         self, rules: str, path: str, obj_type: str, child_names: list[str]
@@ -510,7 +517,14 @@ class DatamodelService(StreamingService):
         for name in child_names:
             request.child_names.names.append(name)
         request.wait = True
-        self._impl.delete_child_objects(request)
+        response = self._impl.delete_child_objects(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
         """Delete all child objects."""
@@ -519,7 +533,14 @@ class DatamodelService(StreamingService):
         request.path = path + "/" + obj_type
         request.delete_all = True
         request.wait = True
-        self._impl.delete_child_objects(request)
+        response = self._impl.delete_child_objects(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
         """Set state."""
@@ -527,14 +548,28 @@ class DatamodelService(StreamingService):
             rules=rules, path=path, wait=True
         )
         _convert_value_to_variant(state, request.state)
-        self._impl.set_state(request)
+        response = self._impl.set_state(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def fix_state(self, rules, path) -> None:
         """Fix state."""
         request = DataModelProtoModule.FixStateRequest()
         request.rules = rules
         request.path = convert_path_to_se_path(path)
-        self._impl.fix_state(request)
+        response = self._impl.fix_state(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def update_dict(
         self, rules: str, path: str, dict_state: dict[str, _TValue]
@@ -544,14 +579,28 @@ class DatamodelService(StreamingService):
             rules=rules, path=path, wait=True
         )
         _convert_value_to_variant(dict_state, request.dicttomerge)
-        self._impl.update_dict(request)
+        response = self._impl.update_dict(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def delete_object(self, rules: str, path: str) -> None:
         """Delete an object."""
         request = DataModelProtoModule.DeleteObjectRequest(
             rules=rules, path=path, wait=True
         )
-        self._impl.delete_object(request)
+        response = self._impl.delete_object(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def execute_command(
         self, rules: str, path: str, command: str, args: dict[str, _TValue]
@@ -562,6 +611,13 @@ class DatamodelService(StreamingService):
         )
         _convert_value_to_variant(args, request.args)
         response = self._impl.execute_command(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
         return _convert_variant_to_value(response.result)
 
     def execute_query(
@@ -839,7 +895,7 @@ class PyStateContainer(PyCallableStateObject):
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+        self, service: DatamodelService, rules: str, path: Path | None = None
     ) -> None:
         """__init__ method of PyStateContainer class."""
         super().__init__()
@@ -874,7 +930,7 @@ class PyStateContainer(PyCallableStateObject):
 
     fixState = fix_state
 
-    def set_state(self, state: Optional[Any] = None, **kwargs) -> None:
+    def set_state(self, state: Any | None = None, **kwargs) -> None:
         """Set state of the current object.
 
         Parameters
@@ -961,8 +1017,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    docstring = None
-
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
@@ -1029,7 +1083,7 @@ class PyMenu(PyStateContainer):
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+        self, service: DatamodelService, rules: str, path: Path | None = None
     ) -> None:
         """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
@@ -1285,18 +1339,18 @@ class PyParameter(PyStateContainer):
         )
 
 
-def _bool_value_if_none(val: Optional[bool], default: bool) -> bool:
+def _bool_value_if_none(val: bool | None, default: bool) -> bool:
     if isinstance(val, bool) or val is None:
         return default if val is None else val
     raise TypeError(f"{val} should be a bool or None")
 
 
-def true_if_none(val: Optional[bool]) -> bool:
+def true_if_none(val: bool | None) -> bool:
     """Returns true if 'val' is true or None, else returns false."""
     return _bool_value_if_none(val, default=True)
 
 
-def false_if_none(val: Optional[bool]) -> bool:
+def false_if_none(val: bool | None) -> bool:
     """Returns false if 'val' is false or None, else returns true."""
     return _bool_value_if_none(val, default=False)
 
@@ -1388,7 +1442,7 @@ class PyNamedObjectContainer:
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, path: Optional[Path] = None
+        self, service: DatamodelService, rules: str, path: Path | None = None
     ) -> None:
         """__init__ method of PyNamedObjectContainer class."""
         self.service = service
@@ -1507,7 +1561,7 @@ class PyNamedObjectContainer:
         """
         return self._get_item(key)
 
-    def get(self, key: str) -> Union[PyMenu, None]:
+    def get(self, key: str) -> PyMenu | None:
         """Return the child object by key.
 
         Parameters
@@ -1570,6 +1624,8 @@ class PyNamedObjectContainer:
 
         return dict(sorted(returned_state.items()))
 
+    getState = __call__ = get_state
+
 
 class PyQuery:
     """Query class using the StateEngine-based DatamodelService as the backend. Use this
@@ -1584,7 +1640,11 @@ class PyQuery:
     """
 
     def __init__(
-        self, service: DatamodelService, rules: str, query: str, path: Path = None
+        self,
+        service: DatamodelService,
+        rules: str,
+        query: str,
+        path: Path = None,
     ):
         """__init__ method of PyQuery class."""
         self.service = service
@@ -1637,7 +1697,7 @@ class PyCommand:
         service: DatamodelService,
         rules: str,
         command: str,
-        path: Optional[Path] = None,
+        path: Path | None = None,
     ) -> None:
         """__init__ method of PyCommand class."""
         self.service = service
@@ -1676,7 +1736,9 @@ class PyCommand:
     def before_execute(self, value):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+            return self._do_before_execute(value)
+        else:
+            return value
 
     def after_execute(self, value):
         """Executes after command execution."""
@@ -1693,8 +1755,7 @@ class PyCommand:
         """
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
-                self.before_execute(value)
-                kwds[f"{arg}"] = os.path.basename(value)
+                kwds[arg] = self.before_execute(value)
         command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
@@ -1740,7 +1801,7 @@ class PyCommand:
             )
         return self._static_info
 
-    def create_instance(self) -> Optional["PyCommandArguments"]:
+    def create_instance(self) -> "PyCommandArguments":
         """Create a command instance."""
         try:
             static_info = self._get_static_info()
@@ -1762,15 +1823,22 @@ class PyCommand:
 class _InputFile:
     def _do_before_execute(self, value):
         try:
-            self.service.file_transfer_service.upload(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            base_names = []
+            for file_name in file_names:
+                self.service.file_transfer_service.upload(file_name=file_name)
+                base_names.append(os.path.basename(file_name))
+            return base_names if isinstance(value, list) else base_names[0]
         except AttributeError:
-            pass
+            return value
 
 
 class _OutputFile:
     def _do_after_execute(self, value):
         try:
-            self.service.file_transfer_service.download(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            for file_name in file_names:
+                self.service.file_transfer_service.download(file_name=file_name)
         except AttributeError:
             pass
 
@@ -1879,7 +1947,7 @@ class PyCommandArguments(PyStateContainer):
         except Exception as exc:
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
 
-    def __getattr__(self, attr: str) -> Optional[PyCommandArgumentsSubItem]:
+    def __getattr__(self, attr: str) -> PyCommandArgumentsSubItem | None:
         for arg in self.static_info:
             if arg["name"] == attr:
                 mode = DataModelType.get_mode(arg["type"])
@@ -2077,9 +2145,7 @@ class PyMenuGeneric(PyMenu):
                 query_names = [x["name"] for x in struct_field.get("queries", [])]
         return singleton_names, creatable_type_names, command_names, query_names
 
-    def _get_child(
-        self, name: str
-    ) -> Union["PyMenuGeneric", PyNamedObjectContainer, PyCommand, PyQuery]:
+    def _get_child(self, name: str) -> PyNamedObjectContainer | PyCommand | PyQuery:
         singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
             child_path = self.path + [(name, "")]

@@ -98,9 +98,11 @@ def _generate_launch_string(
     else:
         exe_path = str(get_fluent_exe_path(**argvals))
     launch_string = exe_path
-    if argvals["mode"] == FluentMode.SOLVER_ICING:
-        argvals["fluent_icing"] = True
     launch_string += _build_fluent_launch_args_string(**argvals)
+    if argvals["mode"] == FluentMode.SOLVER_ICING:
+        launch_string += " -flicing -license=enterprise"
+    if argvals["mode"] == FluentMode.SOLVER_AERO:
+        launch_string += " -flaero_server -license=enterprise"
     if FluentMode.is_meshing(argvals["mode"]):
         launch_string += " -meshing"
     if " " in server_info_file_name:

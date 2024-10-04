@@ -5,12 +5,13 @@ from __future__ import annotations
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, Optional, Tuple, Union
+from typing import Any, Iterable, Iterator, Tuple
 import warnings
 
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
+    PyMenu,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -149,11 +150,13 @@ def _convert_task_list_to_display_names(workflow_root, task_list):
         return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
     else:
         _display_names = []
-        _org_path = workflow_root.path
         for _task_name in task_list:
-            workflow_root.path = [("TaskObject", _task_name), ("_name_", "")]
-            _display_names.append(workflow_root())
-        workflow_root.path = _org_path
+            name_obj = PyMenu(
+                service=workflow_root.service,
+                rules=workflow_root.rules,
+                path=[("TaskObject", _task_name), ("_name_", "")],
+            )
+            _display_names.append(name_obj())
         return _display_names
 
 
@@ -177,7 +180,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize BaseTask.
@@ -379,7 +382,9 @@ class BaseTask:
 
     def _set_python_name(self):
         this_command = self._command()
-        self._python_name = camel_to_snake_case(this_command.get_attr("helpString"))
+        self._python_name = camel_to_snake_case(
+            this_command.get_attr("APIName") or this_command.get_attr("helpString")
+        )
         self._cache_data(this_command)
 
     def _cache_data(self, command):
@@ -429,7 +434,10 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except Exception as ex:
             logger.debug(str(ex))
-        return self._task_objects.get(attr, None)
+        result = self._task_objects.get(attr, None)
+        if result:
+            return result
+        return super().__getattribute__(attr)
 
     def __setattr__(self, attr, value):
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
@@ -490,18 +498,15 @@ class BaseTask:
         """Update child tasks."""
         self._task.UpdateChildTasks(SetupTypeChanged=setup_type_changed)
 
-    def insert_compound_child_task(self):
-        """Insert a compound child task."""
-        return self._task.InsertCompoundChildTask()
-
     def _get_next_python_task_names(self) -> list[str]:
         self._python_task_names_map = {}
         for command_name in self._task.GetNextPossibleTasks():
+            comm_obj = getattr(
+                self._command_source._command_source, command_name
+            ).create_instance()
             self._python_task_names_map[
                 camel_to_snake_case(
-                    getattr(self._command_source._command_source, command_name)
-                    .create_instance()
-                    .get_attr("helpString")
+                    comm_obj.get_attr("APIName") or comm_obj.get_attr("helpString")
                 )
             ] = command_name
         return list(self._python_task_names_map.keys())
@@ -528,9 +533,8 @@ class BaseTask:
             raise ValueError(
                 f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
             )
-        return self._task.InsertNextTask(
-            CommandName=self._python_task_names_map[task_name]
-        )
+        self._task.InsertNextTask(CommandName=self._python_task_names_map[task_name])
+        _call_refresh_task_accessors(self._command_source)
 
     @property
     def insertable_tasks(self):
@@ -568,7 +572,9 @@ class BaseTask:
     def __call__(self, **kwds) -> Any:
         if kwds:
             self._task.Arguments.set_state(**kwds)
-        return self._task.Execute()
+        result = self._task.Execute()
+        _call_refresh_task_accessors(self._command_source)
+        return result
 
     def _tasks_with_matching_attributes(self, attr: str, other_attr: str) -> list:
         this_command = self._command()
@@ -754,6 +760,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         except Exception:
             old_state = None
         camel_args = {}
+        # TODO: Figure out proper way to implement "add_child".
+        if "add_child" in args:
+            self._snake_to_camel_map["add_child"] = "AddChild"
         for key, val in args.items():
             camel_args[self._snake_to_camel_map[key] if key.islower() else key] = val
         getattr(self._task.Arguments, fn)(camel_args)
@@ -893,10 +902,12 @@ class ArgumentWrapper(PyCallableStateObject):
             self.set_state({attr: value})
 
     def __dir__(self):
-        arg_list = []
-        for arg in self():
-            arg_list.append(camel_to_snake_case(arg))
-        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+        arg_state = self.get_state()
+        arg_list = list(arg_state) if isinstance(arg_state, dict) else []
+        dir_arg = [item for item in dir(self._arg) if item.islower()]
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir_arg)
+        )
 
 
 class CommandTask(BaseTask):
@@ -908,7 +919,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -977,7 +988,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -1005,7 +1016,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -1032,16 +1043,16 @@ class CompoundChild(SimpleTask):
         return self._python_name
 
     def _get_python_names_for_compound_child(self):
-        py_name = (
-            self._command_source._parent_of_compound_child
-            + "_child_"
-            + str(
-                self._command_source._compound_child_map[
-                    self._command_source._parent_of_compound_child
-                ]
+        if self._command_source._parent_of_compound_child:
+            return (
+                self._command_source._parent_of_compound_child
+                + "_child_"
+                + str(
+                    self._command_source._compound_child_map[
+                        self._command_source._parent_of_compound_child
+                    ]
+                )
             )
-        )
-        return py_name
 
 
 class CompositeTask(BaseTask):
@@ -1050,7 +1061,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -1102,7 +1113,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -1137,7 +1148,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: Union[ClassicWorkflow, Workflow],
+        command_source: ClassicWorkflow | Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundTask.
@@ -1151,24 +1162,28 @@ class CompoundTask(CommandTask):
         """
         super().__init__(command_source, task)
 
-    def _add_child(self, state: Optional[dict] = None) -> None:
+    def _add_child(self, state: dict | None = None) -> None:
         """Add a child to this CompoundTask.
 
         Parameters
         ----------
-        state : Optional[dict]
+        state : dict | None
             Optional state.
         """
         state = state or {}
         state.update({"add_child": "yes"})
         self.arguments.update_dict(state)
 
+    def insert_compound_child_task(self):
+        """Insert a compound child task."""
+        return self.add_child_and_update()
+
     def add_child_and_update(self, state=None, defer_update=None):
         """Add a child to this CompoundTask and update.
 
         Parameters
         ----------
-        state : Optional[dict]
+        state : dict | None
             Optional state.
         defer_update : bool, default: False
             Whether to defer the update.
@@ -1183,18 +1198,20 @@ class CompoundTask(CommandTask):
             )
         self._command_source._compound_child = True
         self._command_source._parent_of_compound_child = py_name
-        if self._fluent_version >= FluentVersion.v241:
-            if defer_update is None:
-                defer_update = False
-            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
-        else:
-            if defer_update is not None:
-                warnings.warn(
-                    " The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
-                    PyFluentUserWarning,
-                )
-            self._task.AddChildAndUpdate()
-        self._command_source._compound_child = False
+        try:
+            if self._fluent_version >= FluentVersion.v241:
+                if defer_update is None:
+                    defer_update = False
+                self._task.AddChildAndUpdate(DeferUpdate=defer_update)
+            else:
+                if defer_update is not None:
+                    warnings.warn(
+                        "The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
+                        PyFluentUserWarning,
+                    )
+                self._task.AddChildAndUpdate()
+        finally:
+            self._command_source._compound_child = False
         return self.last_child()
 
     def last_child(self) -> BaseTask:
@@ -1238,8 +1255,11 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Conditional": ConditionalTask,
     }
     task_type = task.TaskType()
-    if task_type is None and command_source._compound_child:
-        kind = CompoundChild
+    if task_type is None:
+        if command_source._compound_child:
+            kind = CompoundChild
+        else:
+            kind = SimpleTask
     else:
         kind = kinds[task_type]
     if not kind:
@@ -1333,6 +1353,29 @@ class Workflow:
         BaseTask
             wrapped task object.
         """
+        py_name = self.tasks()[
+            [repr(task) for task in self.tasks()].index(repr(self._task(name)))
+        ].python_name()
+        warnings.warn(
+            f"'task' is deprecated -> Use '{py_name}' instead.",
+            PyFluentDeprecationWarning,
+        )
+        return self._task(name)
+
+    def _task(self, name: str) -> BaseTask:
+        """Get a TaskObject by name, in a ``BaseTask`` wrapper.
+
+        The wrapper adds extra functionality.
+
+        Parameters
+        ----------
+        name : str
+            Task name - the display name, not the internal ID.
+        Returns
+        -------
+        BaseTask
+            wrapped task object.
+        """
         return _makeTask(self, name)
 
     def tasks(self, recompute=True) -> list:
@@ -1393,7 +1436,7 @@ class Workflow:
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object."""
         if attr in self._repeated_task_python_name_display_text_map:
-            return self.task(self._repeated_task_python_name_display_text_map[attr])
+            return self._task(self._repeated_task_python_name_display_text_map[attr])
         _task_object = self._task_objects.get(attr)
         if _task_object:
             return _task_object
@@ -1453,7 +1496,7 @@ class Workflow:
     def _task_by_id_impl(self, task_id, workflow_state):
         task_key = "TaskObject:" + task_id
         task_state = workflow_state[task_key]
-        return self.task(task_state["_name_"])
+        return self._task(task_state["_name_"])
 
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
@@ -1536,7 +1579,9 @@ class Workflow:
                 if isinstance(command_obj, PyCommand):
                     command_obj_instance = command_obj.create_instance()
                     if not command_obj_instance.get_attr("requiredInputs"):
-                        help_str = command_obj_instance.get_attr("helpString")
+                        help_str = command_obj_instance.get_attr(
+                            "APIName"
+                        ) or command_obj_instance.get_attr("helpString")
                         if help_str:
                             self._initial_task_python_names_map[help_str] = command
                     del command_obj_instance

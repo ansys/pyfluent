@@ -50,3 +50,21 @@ def test_api_upgrade_message(new_solver_session):
         )
     else:
         assert s.split("\n")[-2].split("(")[0] == r"<solver_session>.file.read_case"
+
+
+def test_exit_not_in_meshing_tui(new_meshing_session):
+    meshing = new_meshing_session
+
+    assert "exit" not in dir(meshing.tui)
+
+    with pytest.raises(AttributeError):
+        meshing.tui.exit()
+
+
+def test_exit_not_in_solver_tui(new_solver_session):
+    solver = new_solver_session
+
+    assert "exit" not in dir(solver.tui)
+
+    with pytest.raises(AttributeError):
+        solver.tui.exit()

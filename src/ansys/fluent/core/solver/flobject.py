@@ -37,7 +37,6 @@ from typing import (
     Generic,
     List,
     NewType,
-    Optional,
     Tuple,
     TypeVar,
     Union,
@@ -49,6 +48,7 @@ import warnings
 import weakref
 from zipimport import zipimporter
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
@@ -190,7 +190,7 @@ class Base:
     fluent_name
     """
 
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of Base class."""
         self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
@@ -199,11 +199,12 @@ class Base:
             self._setattr("_name", name)
         self._setattr("_child_alias_objs", {})
 
-    def _root(self, obj):
-        if obj._parent is None:
-            return obj
+    @property
+    def _root(self):
+        if self._parent is None:
+            return self
         else:
-            return self._root(obj._parent)
+            return self._parent._root
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
@@ -291,7 +292,10 @@ class Base:
         Constructed in python syntax from 'python_path' and the parents python path.
         """
         if self._parent is None:
-            return "<session>"
+            if FluentVersion(self.version).number < 251:
+                return "<session>"
+            else:
+                return "<session>.settings"
         ppath = self._parent.python_path
         if not ppath:
             return self.python_name
@@ -306,7 +310,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: Optional[Union[type, Tuple[type]]] = None,
+        attr_type_or_types: type | Tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -434,6 +438,9 @@ class Base:
         """Avoid additional processing while executing a command."""
         return nullcontext()
 
+    def __eq__(self, other):
+        return self.flproxy == other.flproxy and self.path == other.path
+
 
 StateT = TypeVar("StateT")
 
@@ -476,7 +483,7 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
-    def as_quantity(self) -> Optional[ansys.units.Quantity]:
+    def as_quantity(self) -> ansys.units.Quantity | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
         if not _ansys_units():
@@ -496,7 +503,7 @@ class RealNumerical(Numerical):
                 error = "Could not determine units."
         warnings.warn(f"Unable to construct 'Quantity'. {error}")
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object.
 
         Parameters
@@ -539,7 +546,7 @@ class RealNumerical(Numerical):
 
         return self.base_set_state(state=state, **kwargs)
 
-    def units(self) -> Optional[str]:
+    def units(self) -> str | None:
         """Get the physical units of the object as a string."""
         quantity = self.get_attr("units-quantity")
         return get_si_unit_for_fluent_quantity(quantity)
@@ -637,6 +644,43 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
+def _combine_set_states(states: List[Tuple[str, StateT]]) -> Tuple[str, StateT]:
+    """Combines multiple set-states into a single set-state at a common parent path.
+
+    Parameters
+    ----------
+    states : list[tuple[str, StateT]]
+        List of (<path>, <state>) tuples.
+
+    Returns
+    -------
+    tuple[str, StateT]
+        Common parent path, combined state.
+    """
+    paths, _ = zip(*states)
+    common_path = []
+    paths = [path.split("/") for path in paths]
+    for comps in zip(*paths):
+        if len(set(comps)) == 1:
+            common_path.append(comps[0])
+        else:
+            break
+    combined_state = {}
+    for path, state in states:
+        comps = path.split("/")
+        comps = comps[len(common_path) :]
+        if comps:
+            if not isinstance(combined_state, dict):
+                combined_state = {}
+            obj = combined_state
+            for comp in comps[:-1]:
+                obj = obj.setdefault(comp, {})
+            obj[comps[-1]] = state
+        else:
+            combined_state = state
+    return "/".join(common_path), combined_state
+
+
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -675,46 +719,64 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    @classmethod
-    def _unalias(cls, value):
-        """Unalias the given value.
-
-        Raises
-        ------
-        NotImplementedError
-            If '..' is present in the alias path.
-        """
+    # Following is not a classmethod, as parent (required to support ".." in alias-path)
+    # is available only at the instance level.
+    def _unalias(self, cls, value):
+        """Unalias the given value."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
+            outer_set_states = []
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
                     alias = cls._child_aliases[k]
-                    # TODO: handle ".." in alias path
-                    if ".." in alias:
-                        raise NotImplementedError(
-                            'Cannot handle ".." in alias path while setting dictionary state.'
-                        )
-                    ret_alias = ret
                     comps = alias.split("/")
-                    aliased_cls = cls
-                    for i, comp in enumerate(comps):
-                        aliased_cls = aliased_cls._child_classes[comp]
-                        if i == len(comps) - 1:
-                            ret_alias[comp] = aliased_cls._unalias(v)
-                        else:
-                            ret_alias[comp] = {}
-                            ret_alias = ret_alias[comp]
+                    if comps[0] == "..":
+                        outer_obj = self
+                        while comps[0] == "..":
+                            outer_obj = outer_obj.parent
+                            comps = comps[1:]
+                        for comp in comps:
+                            try:
+                                outer_obj = getattr(outer_obj, comp)
+                            except InactiveObjectError:
+                                outer_obj = super(
+                                    SettingsBase, outer_obj
+                                ).__getattribute__(comp)
+                        outer_set_states.append((outer_obj, v))
+                    else:
+                        ret_alias = ret
+                        aliased_cls = cls
+                        obj = self
+                        for i, comp in enumerate(comps):
+                            aliased_cls = aliased_cls._child_classes[comp]
+                            try:
+                                obj = getattr(obj, comp)
+                            except InactiveObjectError:
+                                obj = super(SettingsBase, obj).__getattribute__(comp)
+                            if i == len(comps) - 1:
+                                ret_alias[comp], o_set_states = obj._unalias(
+                                    aliased_cls, v
+                                )
+                                outer_set_states.extend(o_set_states)
+                            else:
+                                ret_alias = ret_alias.setdefault(comp, {})
                 else:
                     if issubclass(cls, Group):
                         ccls = cls._child_classes[k]
-                        ret[k] = ccls._unalias(v)
+                        try:
+                            cobj = getattr(self, k)
+                        except InactiveObjectError:
+                            cobj = super(SettingsBase, self).__getattribute__(k)
+                        ret[k], o_set_states = cobj._unalias(ccls, v)
+                        outer_set_states.extend(o_set_states)
                     else:
-                        ret[k] = cls._unalias(v)
-            return ret
+                        ret[k], o_set_states = self._unalias(cls, v)
+                        outer_set_states.extend(o_set_states)
+            return ret, outer_set_states
         else:
-            return value
+            return value, []
 
-    def set_state(self, state: Optional[StateT] = None, **kwargs):
+    def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
             if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
@@ -722,8 +784,17 @@ class SettingsBase(Base, Generic[StateT]):
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                state = self._unalias(kwargs or state)
-                return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+                state, outer_set_states = self._unalias(self.__class__, kwargs or state)
+                if outer_set_states:
+                    set_states = []
+                    if state:
+                        set_states.append((self.path, self.to_scheme_keys(state)))
+                    for obj, state in outer_set_states:
+                        set_states.append((obj.path, obj.to_scheme_keys(state)))
+                    path, state = _combine_set_states(set_states)
+                    self.flproxy.set_var(path, state)
+                else:
+                    self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -927,7 +998,7 @@ class Group(SettingsBase[DictStateType]):
 
     _state_type = DictStateType
 
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
@@ -1065,7 +1136,7 @@ class Group(SettingsBase[DictStateType]):
             modified_search_results = []
             if use_search(
                 codegen_outdir=pyfluent.CODEGEN_OUTDIR,
-                version=self.flproxy._scheme_eval.version,
+                version=super().__getattribute__("version"),
             ):
                 search_results = pyfluent.utils._search(
                     word=name,
@@ -1186,10 +1257,9 @@ class WildcardPath(Group):
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
-    @classmethod
-    def _unalias(cls, value):
+    def _unalias(self, cls, value):
         # Not yet implemented
-        return value
+        return value, []
 
 
 class NamedObjectWildcardPath(WildcardPath):
@@ -1223,7 +1293,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._setattr("_objects", {})
@@ -1405,7 +1475,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return getattr(super(), name)
 
 
-def _rename(obj: Union[NamedObject, _Alias], new: str, old: str):
+def _rename(obj: NamedObject | _Alias, new: str, old: str):
     """Rename a named object.
 
     Parameters
@@ -1526,7 +1596,7 @@ class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
 
-def _get_new_keywords(obj, args, kwds):
+def _get_new_keywords(obj, *args, **kwds):
     newkwds = {}
     argNames = []
     argumentNames = []
@@ -1556,7 +1626,7 @@ class Action(Base):
     _child_aliases = {}
     argument_names = []
 
-    def __init__(self, name: Optional[str] = None, parent=None):
+    def __init__(self, name: str | None = None, parent=None):
         """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
@@ -1604,6 +1674,33 @@ class Action(Base):
 class BaseCommand(Action):
     """Executes command."""
 
+    def _execute_command(self, *args, **kwds):
+        """Execute a command with the specified positional and keyword arguments."""
+        newkwds = _get_new_keywords(self, *args, **kwds)
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **newkwds
+            )
+            if prompt:
+                valid_responses = {"y": True, "yes": True, "n": False, "no": False}
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ").strip().lower()
+                    if response in valid_responses:
+                        if not valid_responses[response]:
+                            return
+                        break
+                    else:
+                        print("Please enter 'y[es]' or 'n[o]'.")
+        with self._while_executing_command():
+            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
+                if (self._parent.path, self.obj_name) in [
+                    ("parameters/input-parameters", "list"),
+                    ("parameters/output-parameters", "list"),
+                ]:
+                    ret = _fix_parameter_list_return(ret)
+            return ret
+
     def execute_command(self, *args, **kwds):
         """Execute command."""
         for arg, value in kwds.items():
@@ -1631,7 +1728,11 @@ class BaseCommand(Action):
             return ret
 
     def __call__(self, *args, **kwds):
-        return self.execute_command(*args, **kwds)
+        try:
+            return self.execute_command(*args, **kwds)
+        except KeyboardInterrupt:
+            self._root._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 # TODO: Remove this after paremater list() method is fixed from Fluent side
@@ -1658,69 +1759,24 @@ _fix_parameter_list_return.scheme_eval = None
 class Command(BaseCommand):
     """Command object."""
 
-    def _execute_command(self, **kwds):
-        """Execute a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, [], kwds)
-        if self.flproxy.is_interactive_mode():
-            prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
-            )
-            if prompt:
-                while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
-                        break
-                    else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
-        with self._while_executing_command():
-            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
-                if (self._parent.path, self.obj_name) in [
-                    ("parameters/input-parameters", "list"),
-                    ("parameters/output-parameters", "list"),
-                ]:
-                    ret = _fix_parameter_list_return(ret)
-            return ret
-
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            self._root(self)._on_interrupt(self)
+            self._root._on_interrupt(self)
             raise KeyboardInterrupt
 
 
 class CommandWithPositionalArgs(BaseCommand):
-    """Command Object."""
-
-    def _execute_command(self, *args, **kwds):
-        """Execute a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, args, kwds)
-        if self.flproxy.is_interactive_mode():
-            prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
-            )
-            if prompt:
-                while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
-                        break
-                    else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
-        with self._while_executing_command():
-            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+    """Command Object supporting positional arguments."""
 
     def __call__(self, *args, **kwds):
-        """Call a command with the specified keyword arguments."""
+        """Call a command with the specified positional and keyword arguments."""
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            self._root(self)._on_interrupt(self)
+            self._root._on_interrupt(self)
             raise KeyboardInterrupt
 
 
@@ -1729,7 +1785,7 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, [], kwds)
+        newkwds = _get_new_keywords(self, **kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -1929,7 +1985,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 f"Falling back to String."
             )
             base = String
-        dct = {"fluent_name": name}
+        dct = {"fluent_name": name, "version": version}
         helpinfo = info.get("help")
         if helpinfo:
             dct["__doc__"] = _clean_helpinfo(helpinfo)
@@ -2031,6 +2087,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             _process_cls_names(children, cls.child_names)
 
         commands = info.get("commands")
+        if commands:
+            commands.pop("exit", None)
         if commands and not user_creatable:
             commands.pop("create", None)
         if commands:
@@ -2074,7 +2132,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             # No need to differentiate in the Python implementation
             for k, v in (child_aliases | command_aliases | query_aliases).items():
                 cls._child_aliases[to_python_name(k)] = "/".join(
-                    to_python_name(x) for x in v.split("/")
+                    x if x == ".." else to_python_name(x) for x in v.split("/")
                 )
 
     except Exception:
@@ -2095,8 +2153,8 @@ def _gethash(obj_info):
 def get_root(
     flproxy,
     version: str = "",
-    interrupt: Optional[Any] = None,
-    file_transfer_service: Optional[Any] = None,
+    interrupt: Any | None = None,
+    file_transfer_service: Any | None = None,
     scheme_eval=None,
 ) -> Group:
     """Get the root settings object.

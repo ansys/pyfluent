@@ -5,14 +5,11 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import Optional
-import warnings
 import zipfile
 
 import requests
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.warnings import PyFluentUserWarning
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -44,7 +41,7 @@ def _decompress(file_name: str) -> None:
     return zip_ref.close()
 
 
-def _get_file_url(file_name: str, directory: Optional[str] = None) -> str:
+def _get_file_url(file_name: str, directory: str | None = None) -> str:
     """Get file URL."""
     if directory:
         return (
@@ -57,8 +54,8 @@ def _get_file_url(file_name: str, directory: Optional[str] = None) -> str:
 def _retrieve_file(
     url: str,
     file_name: str,
-    save_path: Optional[str] = None,
-    return_without_path: Optional[bool] = False,
+    save_path: str | None = None,
+    return_without_path: bool | None = False,
 ) -> str:
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
@@ -75,10 +72,6 @@ def _retrieve_file(
     # First check if file has already been downloaded
     logger.info(f"Checking if {local_path_no_zip} already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        warnings.warn(
-            f"\nFile already exists. File path:\n{local_path_no_zip}\n",
-            PyFluentUserWarning,
-        )
         logger.info("File already exists.")
         if return_without_path:
             return file_name_no_zip
@@ -110,9 +103,9 @@ def _retrieve_file(
 
 def download_file(
     file_name: str,
-    directory: Optional[str] = None,
-    save_path: Optional[str] = None,
-    return_without_path: Optional[bool] = None,
+    directory: str | None = None,
+    save_path: str | None = None,
+    return_without_path: bool | None = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 

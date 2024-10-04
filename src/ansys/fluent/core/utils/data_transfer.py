@@ -4,7 +4,6 @@ from functools import partial
 import logging
 import os
 from pathlib import Path, PurePosixPath
-from typing import Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.execution import asynchronous
@@ -52,8 +51,8 @@ def transfer_case(
     num_files_to_try: int,
     clean_up_temp_file: bool,
     overwrite_previous: bool,
-    workdir: Optional[str] = None,
-    container_workdir: Optional[str] = None,
+    workdir: str | None = None,
+    container_workdir: str | None = None,
 ):
     """Transfer case between instances.
 

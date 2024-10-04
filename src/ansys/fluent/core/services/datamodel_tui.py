@@ -2,7 +2,7 @@
 
 import keyword
 import logging
-from typing import Any, Union
+from typing import Any
 
 from google.protobuf.json_format import MessageToDict
 import grpc
@@ -189,7 +189,7 @@ class PyMenu:
     """
 
     def __init__(
-        self, service: DatamodelService, version, mode, path: Union[Path, str]
+        self, service: DatamodelService, version, mode, path: Path | str
     ) -> None:
         """__init__ method of PyMenu class."""
         self._service = service
@@ -330,9 +330,14 @@ class TUIMenu:
             for x in PyMenu(
                 self._service, self._version, self._mode, self._path
             ).get_child_names()
+            if x != "exit"
         ]
 
     def __getattribute__(self, name) -> Any:
+        if name == "exit" and not self._path:
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute 'exit'"
+            )
         try:
             attr = super().__getattribute__(name)
             if isinstance(attr, TUIMethod):

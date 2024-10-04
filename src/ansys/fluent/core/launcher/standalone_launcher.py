@@ -17,7 +17,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
@@ -56,32 +56,32 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        mode: Optional[Union[FluentMode, str, None]] = None,
-        ui_mode: Union[UIMode, str, None] = None,
-        graphics_driver: Union[
-            FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver, str, None
-        ] = None,
-        product_version: Union[FluentVersion, str, float, int, None] = None,
-        dimension: Union[Dimension, int, None] = None,
-        precision: Union[Precision, str, None] = None,
-        processor_count: Optional[int] = None,
-        journal_file_names: Union[None, str, list[str]] = None,
+        mode: FluentMode | str | None = None,
+        ui_mode: UIMode | str | None = None,
+        graphics_driver: (
+            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
+        ) = None,
+        product_version: FluentVersion | str | float | int | None = None,
+        dimension: Dimension | int | None = None,
+        precision: Precision | str | None = None,
+        processor_count: int | None = None,
+        journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
-        additional_arguments: Optional[str] = "",
-        env: Optional[Dict[str, Any]] = None,
+        additional_arguments: str | None = "",
+        env: Dict[str, Any] | Path | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
-        case_file_name: Optional[str] = None,
-        case_data_file_name: Optional[str] = None,
-        lightweight_mode: Optional[bool] = None,
-        py: Optional[bool] = None,
-        gpu: Optional[bool] = None,
-        cwd: Optional[str] = None,
-        fluent_path: Optional[str] = None,
-        topy: Optional[Union[str, list]] = None,
-        start_watchdog: Optional[bool] = None,
-        file_transfer_service: Optional[Any] = None,
+        case_file_name: str | None = None,
+        case_data_file_name: str | None = None,
+        lightweight_mode: bool | None = None,
+        py: bool | None = None,
+        gpu: bool | None = None,
+        cwd: str | None = None,
+        fluent_path: str | None = None,
+        topy: str | list | None = None,
+        start_watchdog: bool | None = None,
+        file_transfer_service: Any | None = None,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -218,7 +218,7 @@ class StandaloneLauncher:
             # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
             self._launch_cmd = 'start "" ' + self._launch_string
         else:
-            if self.argvals["ui_mode"] < UIMode.HIDDEN_GUI:
+            if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:

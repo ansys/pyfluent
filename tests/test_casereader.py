@@ -1,7 +1,6 @@
 from os.path import dirname, join
 import pathlib
 import shutil
-from typing import Optional
 
 import pytest
 
@@ -10,15 +9,16 @@ from ansys.fluent.core.filereader import lispy
 from ansys.fluent.core.filereader.case_file import (
     InputParameter,
     InputParameterOld,
+    MeshType,
     _get_processed_string,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 
 
 def call_casereader(
-    case_file_name: Optional[str] = None,
-    project_file_name: Optional[str] = None,
-    expected: Optional[dict] = None,
+    case_file_name: str | None = None,
+    project_file_name: str | None = None,
+    expected: dict | None = None,
 ):
     reader = CaseReader(
         case_file_name=case_file_name, project_file_name=project_file_name
@@ -36,7 +36,7 @@ def call_casereader(
 
 
 def call_casereader_static_mixer(
-    case_file_name: Optional[str] = None, project_file_name: Optional[str] = None
+    case_file_name: str | None = None, project_file_name: str | None = None
 ):
     call_casereader(
         case_file_name=case_file_name,
@@ -293,3 +293,32 @@ def test_lispy_for_quotes():
         "x",
         '"\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")"',
     ]
+
+
+def test_mesh_reader():
+    mesh_file_2d = examples.download_file(
+        "sample_2d_mesh.msh.h5",
+        "pyfluent/surface_mesh",
+        return_without_path=False,
+    )
+    mesh_file_3d = examples.download_file(
+        "mixing_elbow.msh.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
+    )
+    case_file = examples.download_file(
+        "mixing_elbow.cas.h5",
+        "pyfluent/mixing_elbow",
+        return_without_path=False,
+    )
+    mesh_reader_2d = CaseReader(case_file_name=mesh_file_2d)
+    mesh_reader_3d = CaseReader(case_file_name=mesh_file_3d)
+    case_reader = CaseReader(case_file_name=case_file)
+
+    assert mesh_reader_2d.get_mesh().get_mesh_type() == MeshType.SURFACE
+    assert mesh_reader_3d.get_mesh().get_mesh_type() == MeshType.VOLUME
+    assert case_reader.get_mesh().get_mesh_type() == MeshType.VOLUME
+
+    assert mesh_reader_2d.precision() is None
+    assert mesh_reader_3d.precision() is None
+    assert case_reader.precision() == 2

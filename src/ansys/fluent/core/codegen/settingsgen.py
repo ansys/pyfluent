@@ -168,13 +168,13 @@ class _CommandInfo:
 _arg_type_strings = {
     flobject.Boolean: "bool",
     flobject.Integer: "int",
-    flobject.Real: "Union[float, str]",
+    flobject.Real: "float | str",
     flobject.String: "str",
     flobject.Filename: "str",
     flobject.BooleanList: "List[bool]",
     flobject.IntegerList: "List[int]",
-    flobject.RealVector: "Tuple[Union[float, str], Union[float, str], Union[float, str]",
-    flobject.RealList: "List[Union[float, str]]",
+    flobject.RealVector: "Tuple[float | str, float | str, float | str",
+    flobject.RealList: "List[float | str]",
     flobject.StringList: "List[str]",
     flobject.FilenameList: "List[str]",
 }
@@ -357,9 +357,11 @@ def _populate_classes(parent_dir):
                 doc = f"'child_object_type' of {parent_name}."
 
             _write_doc_string(doc, istr1, f)
-            f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
+            f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n')
+            f.write(f'{istr1}version = "{cls.version}"\n\n')
             if stub_f:
                 stub_f.write(f"{istr1}fluent_name = ...\n")
+                stub_f.write(f"{istr1}version = ...\n\n")
 
             child_class_strings = []
 

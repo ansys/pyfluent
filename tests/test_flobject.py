@@ -11,6 +11,7 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
+    _combine_set_states,
     _gethash,
     find_children,
 )
@@ -356,6 +357,10 @@ class Root(Group):
     }
 
 
+class _SchemeEval:
+    version = "25.1.0"
+
+
 class Proxy:
     """Proxy class."""
 
@@ -363,6 +368,7 @@ class Proxy:
 
     def __init__(self):
         self.r = self.root(None)
+        self._scheme_eval = _SchemeEval()
 
     def get_obj(self, path):
         if not path:
@@ -509,7 +515,7 @@ def test_command():
 
 
 def test_attrs():
-    r = flobject.get_root(Proxy())
+    r = flobject.get_root(Proxy(), version="251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True
@@ -691,7 +697,10 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
             "inlet1"
         ].turbulence.turbulent_viscosity_ratio
 
-        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+        if solver.get_fluent_version() >= FluentVersion.v251:
+            path = '<session>.settings.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+        else:
+            path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
         name = "turbulent_viscosity_ratio"
 
     assert turbulent_viscosity_ratio.python_path == path
@@ -1230,3 +1239,39 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
     # The following is the default behavior when no arguments are associated with the command.
     assert solver.results.graphics.contour.list.argument_names == []
+
+
+def test_combine_set_states():
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+        ]
+    ) == ("A/B/C", 1)
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+            ("A/B/C", 2),
+        ]
+    ) == ("A/B/C", 2)
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+            ("A/B/C", {"X": 2}),
+        ]
+    ) == ("A/B/C", {"X": 2})
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+            ("A/B/D", 2),
+        ]
+    ) == ("A/B", {"C": 1, "D": 2})
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", {"X": 1}),
+            ("A/B/D/E", 2),
+        ]
+    ) == ("A/B", {"C": {"X": 1}, "D": {"E": 2}})

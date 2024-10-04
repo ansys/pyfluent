@@ -83,7 +83,7 @@ jobs:
     needs: [build_release_docs]
     steps:
       - name: "Deploy release documentation"
-        uses: ansys/actions/doc-deploy-stable@v6
+        uses: ansys/actions/doc-deploy-stable@v8
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
             decompress-artifact: true

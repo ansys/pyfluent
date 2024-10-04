@@ -1,7 +1,7 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
@@ -37,9 +37,9 @@ class PureMeshing(BaseSession):
         self,
         fluent_connection: FluentConnection,
         scheme_eval: SchemeEval,
-        file_transfer_service: Optional[Any] = None,
+        file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Optional[Dict[str, Any]] = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """PureMeshing session.
 
@@ -89,7 +89,9 @@ class PureMeshing(BaseSession):
                 stream = DatamodelStream(datamodel_service_se)
                 stream.register_callback(
                     functools.partial(
-                        datamodel_service_se.cache.update_cache, rules=rules
+                        datamodel_service_se.cache.update_cache,
+                        rules=rules,
+                        version=datamodel_service_se.version,
                     )
                 )
                 self.datamodel_streams[rules] = stream
@@ -178,7 +180,7 @@ class PureMeshing(BaseSession):
         self,
         solvers,
         file_type: str = "case",
-        file_name_stem: Optional[str] = None,
+        file_name_stem: str | None = None,
         num_files_to_try: int = 1,
         clean_up_mesh_file: bool = True,
         overwrite_previous: bool = True,

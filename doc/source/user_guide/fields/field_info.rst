@@ -1,5 +1,7 @@
 .. _ref_field_info_guide:
 
+.. vale Google.Spacing = NO
+
 Field info
 ==========
 
@@ -16,7 +18,7 @@ Accessing field info objects
   >>> solver.settings.solution.initialization.hybrid_initialize()
 
 
-The field info object is an attribute of the solver object:
+The field info object is an attribute of the :obj:`~ansys.fluent.core.session_solver.Solver` object:
 
 .. code-block:: python
 
