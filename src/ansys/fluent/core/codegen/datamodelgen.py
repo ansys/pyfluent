@@ -67,6 +67,8 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 
 
 def _write_meshing_utilities_stub(file_path):
+    if file_path.exists():
+        file_path.unlink()
     file = open(file_path, "w", encoding="utf8")
     file.write("#\n")
     file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
@@ -153,12 +155,9 @@ class DataModelStaticInfo:
         datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
-        stub_file = (
-            (datamodel_dir / "MeshingUtilitiesTest.pyi").resolve()
-            if rules_save_name == "MeshingUtilities"
-            else ""
-        )
-        self.stub_file = _write_meshing_utilities_stub(stub_file)
+        if rules_save_name == "MeshingUtilities":
+            stub_file = (datamodel_dir / "MeshingUtilitiesTest.pyi").resolve()
+            self.stub_file = _write_meshing_utilities_stub(stub_file)
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -387,11 +386,15 @@ class DataModelGenerator:
         if self._static_info.get("MeshingUtilities", None):
             for k in commands:
                 _write_command_query_stub(
-                    k, info["commands"][k]["commandinfo"], info.stub_file
+                    k,
+                    info["commands"][k]["commandinfo"],
+                    self._static_info["MeshingUtilities"].stub_file,
                 )
             for k in queries:
                 _write_command_query_stub(
-                    k, info["queries"][k]["queryinfo"], info.stub_file
+                    k,
+                    info["queries"][k]["queryinfo"],
+                    self._static_info["MeshingUtilities"].stub_file,
                 )
         return api_tree
 
@@ -429,8 +432,6 @@ class DataModelGenerator:
         for _, info in self._static_info.items():
             if info.file_name.exists():
                 info.file_name.unlink()
-            if info.stub_file.exists():
-                info.stub_file.unlink()
         if Path(_MESHING_DM_DOC_DIR).exists():
             shutil.rmtree(Path(_MESHING_DM_DOC_DIR))
         if Path(_SOLVER_DM_DOC_DIR).exists():
@@ -443,6 +444,9 @@ def generate(version, static_infos: dict):
 
 
 if __name__ == "__main__":
+    os.environ["PYFLUENT_FLUENT_ROOT"] = (
+        r"D:\Installations\Ansys\v251_03072021\ANSYS Inc\v251\fluent"
+    )
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
