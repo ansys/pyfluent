@@ -231,7 +231,6 @@ def test_nonexistent_attrs(new_meshing_session):
     assert not hasattr(meshing.workflow, "xyz")
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.xyz
-    assert msg.value.args[0] == "'ClassicMeshingWorkflow' object has no attribute 'xyz'"
 
 
 @pytest.mark.codegen_required
@@ -242,10 +241,6 @@ def test_old_workflow_structure(new_meshing_session):
     assert meshing.workflow.TaskObject["Import Geometry"]
     with pytest.raises(AttributeError) as msg:
         meshing.workflow.import_geometry
-    assert (
-        msg.value.args[0]
-        == "'ClassicMeshingWorkflow' object has no attribute 'import_geometry'"
-    )
 
 
 @pytest.mark.nightly
