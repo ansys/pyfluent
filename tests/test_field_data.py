@@ -258,18 +258,18 @@ def test_field_data_objects_2d(disk_case_session) -> None:
         field_name="absolute-pressure", surfaces=["velocity-inlet-2"]
     )
 
-    assert abs_press_data.size == 11
-    assert abs_press_data[5].data == 101325.0
+    assert abs_press_data["velocity-inlet-2"].shape == (11,)
+    assert abs_press_data["velocity-inlet-2"][5] == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=["interior-4"]
     )
-    assert round(float(vertices_data[5].data[0]), 2) == 0.0
+    assert round(vertices_data["interior-4"][5][0], 2) == 0.0
 
     faces_centroid_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesCentroid], surfaces=["velocity-inlet-2"]
     )
-    assert round(float(faces_centroid_data[5].data[1]), 2) == 0.02
+    assert round(float(faces_centroid_data["velocity-inlet-2"][5][1]), 2) == 0.02
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
@@ -281,19 +281,21 @@ def test_field_data_objects_2d(disk_case_session) -> None:
         field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
-    assert velocity_vector_data.size == 10
-    assert velocity_vector_data.scale == 1.0
+    assert velocity_vector_data["velocity-inlet-2"][0].shape == (10, 3)
+    assert velocity_vector_data["velocity-inlet-2"][1]["scale"] == 1.0
 
     path_lines_data = field_data.get_pathlines_field_data(
         field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
-    assert path_lines_data["vertices"].size == 5010
-    assert path_lines_data["lines"].size == 5000
-    assert path_lines_data["velocity"].size == 5010
+    assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
+    assert path_lines_data["velocity-inlet-2"]["lines"].size == 5000
+    assert path_lines_data["velocity-inlet-2"]["velocity"].shape == (5010,)
 
-    assert path_lines_data["lines"][100].node_count == 2
-    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
+    assert path_lines_data["velocity-inlet-2"]["lines"][100].node_count == 2
+    assert all(
+        path_lines_data["velocity-inlet-2"]["lines"][100].node_indices == [100, 101]
+    )
 
 
 def test_field_data_errors(new_solver_session) -> None:
