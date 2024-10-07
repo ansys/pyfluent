@@ -51,11 +51,9 @@ the ``get_surface_data`` method and specifying ``Vertices`` for ``data_types``.
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
 
   >>> vertices_data = field_data.get_surface_data(surfaces=["cold-inlet"], data_types=[SurfaceDataType.Vertices])
-  >>> vertices_data.size
-  241
-  >>> vertices_data.surface_id
-  3
-  >>> vertices_data[5].data
+  >>> vertices_data["cold-inlet"].shape
+  (241, 3)
+  >>> vertices_data["cold-inlet"][5]
   array([-0.2       , -0.10167995,  0.00362008], dtype=float32)
 
 You can call the same method to get the corresponding surface face normals and centroids.
@@ -96,9 +94,9 @@ You can call the ``get_scalar_field_data`` method to get scalar field data, such
 .. code-block:: python
 
   >>> abs_press_data = field_data.get_scalar_field_data(field_name="absolute-pressure", surfaces=["cold-inlet"])
-  >>> abs_press_data.size
-  241
-  >>> abs_press_data[120].data
+  >>> abs_press_data["cold-inlet"].shape
+  (241,)
+  >>> abs_press_data["cold-inlet"][120]
   101325.0
 
 If a single surface is provided as input, scalar field data is returned.
@@ -111,9 +109,9 @@ You can call the ``get_vector_field_data`` method to get vector field data.
 .. code-block:: python
 
   >>> velocity_vector_data = field_data.get_vector_field_data(field_name="velocity", surfaces=["cold-inlet"])
-  >>> velocity_vector_data.size
-  152
-  >>> velocity_vector_data.scale
+  >>> velocity_vector_data["cold-inlet"][0].shape
+  (152, 3)
+  >>> velocity_vector_data["cold-inlet"][1]["scale"]
   1.0
 
 If a single surface is provided as input, vector field data is returned.
@@ -126,15 +124,15 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
 .. code-block:: python
 
   >>> path_lines_data = field_data.get_pathlines_field_data(field_name="velocity", surfaces=["cold-inlet"])
-  >>> path_lines_data["vertices"].size
-  76152
-  >>> path_lines_data["lines"].size
+  >>> path_lines_data["cold-inlet"]["vertices"].shape
+  (76152, 3)
+  >>> path_lines_data["cold-inlet"]["lines"].size
   76000
-  >>> path_lines_data["velocity"].size
-  76152
-  >>> path_lines_data["lines"][100].node_count
+  >>> path_lines_data["cold-inlet"]["velocity"].shape
+  (76152)
+  >>> path_lines_data["cold-inlet"]["lines"][100].node_count
   2
-  >>> path_lines_data["lines"][100].node_indices
+  >>> path_lines_data["cold-inlet"]["lines"][100].node_indices
   array([100, 101])
 
 Dictionary containing a map of surface IDs to the path-line data is returned.
