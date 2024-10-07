@@ -1,72 +1,76 @@
 import pytest
 
-from ansys.fluent.core import (
-    Ablation,
-    Battery,
-    BoundaryCondition,
-    BoundaryConditions,
-    CalculationActivity,
-    CaseModification,
-    CellRegister,
-    CellRegisters,
-    CellZoneCondition,
-    CellZoneConditions,
-    Controls,
-    ConvergenceConditions,
-    DiscretePhase,
-    DynamicMesh,
-    EChemistry,
-    Energy,
-    ExecuteCommands,
-    FluidCellZone,
-    FluidCellZones,
-    FluidMaterial,
-    FluidMaterials,
-    General,
-    Initialization,
-    Injections,
-    InteriorBoundaries,
-    InteriorBoundary,
-    Materials,
-    MeshInterfaces,
-    Methods,
-    Models,
-    Monitor,
-    Multiphase,
-    NamedExpressions,
-    Optics,
-    Pemfc,
-    PressureOutlet,
-    PressureOutlets,
-    Radiation,
-    ReferenceFrame,
-    ReferenceFrames,
-    ReferenceValues,
-    ReportDefinitions,
-    ReportFile,
-    ReportFiles,
-    ReportPlot,
-    ReportPlots,
-    Residual,
-    RunCalculation,
-    Setup,
-    Sofc,
-    SolidMaterial,
-    SolidMaterials,
-    Species,
-    Structure,
-    SystemCoupling,
-    VelocityInlet,
-    VelocityInlets,
-    VirtualBladeModel,
-    Viscous,
-    WallBoundaries,
-    WallBoundary,
-)
+try:
+    from ansys.fluent.core import (
+        Ablation,
+        Battery,
+        BoundaryCondition,
+        BoundaryConditions,
+        CalculationActivity,
+        CaseModification,
+        CellRegister,
+        CellRegisters,
+        CellZoneCondition,
+        CellZoneConditions,
+        Controls,
+        ConvergenceConditions,
+        DiscretePhase,
+        DynamicMesh,
+        EChemistry,
+        Energy,
+        ExecuteCommands,
+        FluidCellZone,
+        FluidCellZones,
+        FluidMaterial,
+        FluidMaterials,
+        General,
+        Initialization,
+        Injections,
+        InteriorBoundaries,
+        InteriorBoundary,
+        Materials,
+        MeshInterfaces,
+        Methods,
+        Models,
+        Monitor,
+        Multiphase,
+        NamedExpressions,
+        Optics,
+        Pemfc,
+        PressureOutlet,
+        PressureOutlets,
+        Radiation,
+        ReferenceFrame,
+        ReferenceFrames,
+        ReferenceValues,
+        ReportDefinitions,
+        ReportFile,
+        ReportFiles,
+        ReportPlot,
+        ReportPlots,
+        Residual,
+        RunCalculation,
+        Setup,
+        Sofc,
+        SolidMaterial,
+        SolidMaterials,
+        Species,
+        Structure,
+        SystemCoupling,
+        VelocityInlet,
+        VelocityInlets,
+        VirtualBladeModel,
+        Viscous,
+        WallBoundaries,
+        WallBoundary,
+    )
+except ImportError:
+    pass  # for no-codegen testing workflow
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
+@pytest.mark.codegen_required
 def test_builtin_settings(static_mixer_case_session):
     solver = static_mixer_case_session
     assert Setup(settings_source=solver) == solver.setup
@@ -351,6 +355,7 @@ def test_builtin_settings(static_mixer_case_session):
     assert RunCalculation(settings_source=solver) == solver.solution.run_calculation
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_singleton_setting_assign_session(
     new_meshing_session, new_solver_session
@@ -386,6 +391,7 @@ def test_builtin_singleton_setting_assign_session(
     assert models.settings_source == solver.settings
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_non_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
@@ -411,6 +417,7 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     assert inlet.settings_source == solver.settings
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_creatable_named_object_setting_assign_session(
     new_meshing_session, static_mixer_case_session
