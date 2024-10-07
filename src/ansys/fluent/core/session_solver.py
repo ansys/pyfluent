@@ -213,7 +213,8 @@ class Solver(BaseSession):
             )
         return self._workflow
 
-    def _interrupt(self, command):
+    @classmethod
+    def _interrupt(cls, command):
         interruptible_commands = [
             "solution/run-calculation/iterate",
             "solution/run-calculation/calculate",
@@ -221,7 +222,7 @@ class Solver(BaseSession):
         ]
         if pyfluent.SUPPORT_SOLVER_INTERRUPT:
             if command.path in interruptible_commands:
-                self.settings.solution.run_calculation.interrupt()
+                command._root.solution.run_calculation.interrupt()
 
     @property
     def settings(self):
@@ -230,7 +231,7 @@ class Solver(BaseSession):
             self._settings_root = flobject.get_root(
                 flproxy=self._settings_service,
                 version=self._version,
-                interrupt=self._interrupt,
+                interrupt=Solver._interrupt,
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme_eval.scheme_eval,
             )
@@ -260,6 +261,7 @@ class Solver(BaseSession):
             super(Solver, self)._build_from_fluent_connection(
                 fut_session._fluent_connection,
                 fut_session._fluent_connection._connection_interface.scheme_eval,
+                event_type=SolverEvent,
             )
             self._build_from_fluent_connection(
                 fut_session._fluent_connection,

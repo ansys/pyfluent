@@ -443,7 +443,7 @@ class BaseTask:
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
-        elif attr in self.arguments():
+        elif attr in self.arguments() or attr == "arguments":
             getattr(self, attr).set_state(value)
         else:
             setattr(self._task, attr, value)
@@ -763,9 +763,31 @@ class ArgumentsWrapper(PyCallableStateObject):
         # TODO: Figure out proper way to implement "add_child".
         if "add_child" in args:
             self._snake_to_camel_map["add_child"] = "AddChild"
+
+        cmd_args = self._task._command_arguments
         for key, val in args.items():
-            camel_args[self._snake_to_camel_map[key] if key.islower() else key] = val
-        getattr(self._task.Arguments, fn)(camel_args)
+            camel_arg = self._snake_to_camel_map[key] if key.islower() else key
+            # TODO: Implement enhanced meshing workflow to hide away internal info.
+            if isinstance(
+                getattr(cmd_args, camel_arg), PySingletonCommandArgumentsSubItem
+            ):
+                updated_dict = {}
+                for attr, attr_val in val.items():
+                    camel_attr = snake_to_camel_case(
+                        str(attr),
+                        getattr(
+                            self, camel_to_snake_case(key)
+                        )._get_camel_case_arg_keys()
+                        or [],
+                    )
+                    updated_dict[camel_attr] = attr_val
+                camel_args[camel_arg] = updated_dict
+            else:
+                camel_args[camel_arg] = val
+        if fn == "update_dict":
+            self._task.Arguments.update_dict(camel_args, recursive=True)
+        else:
+            getattr(self._task.Arguments, fn)(camel_args)
         try:
             self._refresh_command_after_changing_args(old_state)
         except Exception as ex:
@@ -895,17 +917,15 @@ class ArgumentWrapper(PyCallableStateObject):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
-            camel_attr = snake_to_camel_case(
-                str(attr), self._get_camel_case_arg_keys() or []
-            )
-            attr = camel_attr or attr
             self.set_state({attr: value})
 
     def __dir__(self):
-        arg_list = []
-        for arg in self():
-            arg_list.append(camel_to_snake_case(arg))
-        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+        arg_state = self.get_state()
+        arg_list = list(arg_state) if isinstance(arg_state, dict) else []
+        dir_arg = [item for item in dir(self._arg) if item.islower()]
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir_arg)
+        )
 
 
 class CommandTask(BaseTask):
@@ -1253,8 +1273,11 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Conditional": ConditionalTask,
     }
     task_type = task.TaskType()
-    if task_type is None and command_source._compound_child:
-        kind = CompoundChild
+    if task_type is None:
+        if command_source._compound_child:
+            kind = CompoundChild
+        else:
+            kind = SimpleTask
     else:
         kind = kinds[task_type]
     if not kind:
