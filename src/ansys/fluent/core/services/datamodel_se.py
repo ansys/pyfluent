@@ -471,11 +471,6 @@ class SubscriptionList:
 class DatamodelService(StreamingService):
     """Pure Python wrapper of DatamodelServiceImpl."""
 
-    ## TEMP - remove !
-    # def is_in_datamodel(self, rules, path):
-    #    print(f"is_in_datamodel {rules} {path}")
-    #    return True
-
     def __init__(
         self,
         channel: grpc.Channel,
