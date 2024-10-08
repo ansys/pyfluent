@@ -917,63 +917,6 @@ class ChunkParser:
         return fields_data
 
 
-class BaseFieldData:
-    """Contains common properties required by all field data types."""
-
-    def __init__(self, i_d, data):
-        """__init__ method of BaseFieldData class."""
-        self._data = data
-        self._id = i_d
-
-    @property
-    def data(self):
-        """Returns data."""
-        return self._data
-
-    @property
-    def surface_id(self):
-        """Returns surface ID."""
-        return self._id
-
-    @property
-    def size(self):
-        """Returns size of data."""
-        return len(self._data)
-
-    def __getitem__(self, item):
-        return self._data[item]
-
-    def __call__(self, *args, **kwargs):
-        return self.data
-
-
-class FacesConnectivity(BaseFieldData):
-    """Provides the container for the face connectivity data."""
-
-    class Faces:
-        """Stores and provides the face connectivity data as a numpy array."""
-
-        def __init__(self, node_count, node_indices):
-            """__init__ method of Faces class."""
-            self.node_count = node_count
-            self.node_indices = np.array(node_indices)
-
-        def __call__(self, *args, **kwargs):
-            return {self.node_count: self.node_indices}
-
-    def __init__(self, i_d, data):
-        """__init__ method of FacesConnectivity class."""
-        faces_data = []
-        i = 0
-
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(FacesConnectivity.Faces(data[i], data[i + 1 : end]))
-            i = end
-
-        super().__init__(i_d, faces_data)
-
-
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
@@ -1117,7 +1060,7 @@ class FieldData:
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
-    ) -> Dict[int, FacesConnectivity] | Dict[int | str, np.array]:
+    ) -> Dict[int | str, np.array | List[np.array]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
@@ -1131,7 +1074,7 @@ class FieldData:
 
         Returns
         -------
-        Dict[int, FacesConnectivity] | Dict[int | str, np.array]
+        Dict[int | str, np.array | List[np.array]]
              Returns a map of surface IDs (or names) to face
              vertices, connectivity data, and normal or centroid data.
         """
@@ -1182,14 +1125,26 @@ class FieldData:
             return _get_surfaces_data(SurfaceDataType.FacesNormal)
 
         if SurfaceDataType.FacesConnectivity in data_types:
-            ret_data = {
-                surface_id: FacesConnectivity(
-                    surface_id,
-                    surface_data[surface_id][SurfaceDataType.FacesConnectivity.value],
+            return {
+                surface: (
+                    self._get_faces_connectivity_data(
+                        surface_data[surface_ids[count]][
+                            SurfaceDataType.FacesConnectivity.value
+                        ]
+                    )
                 )
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
-            return ret_data[surface_ids[0]] if len(ret_data) == 1 else ret_data
+
+    @staticmethod
+    def _get_faces_connectivity_data(data):
+        faces_data = []
+        i = 0
+        while i < len(data):
+            end = i + 1 + data[i]
+            faces_data.append(data[i + 1 : end])
+            i = end
+        return faces_data
 
     def get_vector_field_data(
         self,
@@ -1337,9 +1292,8 @@ class FieldData:
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
-                "lines": FacesConnectivity(
-                    surface_ids[count],
-                    pathlines_data[surface_ids[count]]["lines"],
+                "lines": self._get_faces_connectivity_data(
+                    pathlines_data[surface_ids[count]]["lines"]
                 ),
                 field_name: pathlines_data[surface_ids[count]][field_name],
             }

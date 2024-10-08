@@ -216,8 +216,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
-    assert faces_connectivity_data[5].node_count == 4
-    assert (faces_connectivity_data[5].node_indices == [12, 13, 17, 16]).all()
+    assert (faces_connectivity_data["cold-inlet"][5] == [12, 13, 17, 16]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["cold-inlet"]
@@ -231,11 +230,10 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     )
 
     assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
-    assert path_lines_data["cold-inlet"]["lines"].size == 76000
+    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
     assert path_lines_data["cold-inlet"]["velocity"].shape == (76152,)
 
-    assert path_lines_data["cold-inlet"]["lines"][100].node_count == 2
-    assert all(path_lines_data["cold-inlet"]["lines"][100].node_indices == [100, 101])
+    assert all(path_lines_data["cold-inlet"]["lines"][100] == [100, 101])
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -273,9 +271,8 @@ def test_field_data_objects_2d(disk_case_session) -> None:
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
-    )[5]
-    assert faces_connectivity_data.node_count == 2
-    assert (faces_connectivity_data.node_indices == [5, 6]).all()
+    )["velocity-inlet-2"][5]
+    assert (faces_connectivity_data == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["velocity-inlet-2"]
@@ -289,13 +286,10 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     )
 
     assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
-    assert path_lines_data["velocity-inlet-2"]["lines"].size == 5000
+    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
     assert path_lines_data["velocity-inlet-2"]["velocity"].shape == (5010,)
 
-    assert path_lines_data["velocity-inlet-2"]["lines"][100].node_count == 2
-    assert all(
-        path_lines_data["velocity-inlet-2"]["lines"][100].node_indices == [100, 101]
-    )
+    assert all(path_lines_data["velocity-inlet-2"]["lines"][100] == [100, 101])
 
 
 def test_field_data_errors(new_solver_session) -> None:
