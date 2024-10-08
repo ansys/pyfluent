@@ -406,20 +406,20 @@ class FileFieldData:
 
         if SurfaceDataType.Vertices in data_types:
             return {
-                surface_id: self._file_session._case_file.get_mesh()
-                .get_vertices(surface_id)
+                surface: self._file_session._case_file.get_mesh()
+                .get_vertices(surface_ids[count])
                 .reshape(-1, 3)
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
 
         if SurfaceDataType.FacesConnectivity in data_types:
             return {
-                surface_id: self._get_faces_connectivity_data(
+                surface: self._get_faces_connectivity_data(
                     self._file_session._case_file.get_mesh().get_connectivity(
-                        surface_id
+                        surface_ids[count]
                     )
                 )
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
 
     @staticmethod
@@ -486,19 +486,19 @@ class FileFieldData:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
             return {
-                surface_id: self._file_session._data_file.get_face_scalar_field_data(
+                surface: self._file_session._data_file.get_face_scalar_field_data(
                     field_name.split(":")[0],
                     field_name.split(":")[1],
-                    surface_id,
+                    surface_ids[count],
                 )
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
         else:
             return {
-                surface_id: self._file_session._data_file.get_face_scalar_field_data(
-                    "phase-1", field_name, surface_id
+                surface: self._file_session._data_file.get_face_scalar_field_data(
+                    "phase-1", field_name, surface_ids[count]
                 )
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
 
     @deprecate_argument(
@@ -555,17 +555,17 @@ class FileFieldData:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
             return {
-                surface_id: self._file_session._data_file.get_face_vector_field_data(
-                    field_name.split(":")[0], surface_id
+                surface: self._file_session._data_file.get_face_vector_field_data(
+                    field_name.split(":")[0], surface_ids[count]
                 ).reshape(-1, 3)
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
         else:
             return {
-                surface_id: self._file_session._data_file.get_face_vector_field_data(
-                    "phase-1", surface_id
+                surface: self._file_session._data_file.get_face_vector_field_data(
+                    "phase-1", surface_ids[count]
                 ).reshape(-1, 3)
-                for surface_id in surface_ids
+                for count, surface in enumerate(surfaces)
             }
 
     @deprecate_argument(

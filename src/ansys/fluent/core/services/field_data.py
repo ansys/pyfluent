@@ -1188,10 +1188,7 @@ class FieldData:
         vector_field_data = next(iter(fields.values()))
 
         return {
-            surface: (
-                vector_field_data[surface_ids[count]][field_name].reshape(-1, 3),
-                {"scale": vector_field_data[surface_ids[count]]["vector-scale"][0]},
-            )
+            surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
             for count, surface in enumerate(surfaces)
         }
 
