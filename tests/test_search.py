@@ -16,6 +16,7 @@ from ansys.fluent.core.search import (
 )
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version("==24.2")
 def test_nltk_data_download():
     import nltk

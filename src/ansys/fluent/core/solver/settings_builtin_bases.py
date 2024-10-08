@@ -44,6 +44,7 @@ def _get_settings_obj(settings_source: SettingsBase | Solver, cls_name: str):
 
 
 class _SingletonSetting:
+    # Covers both groups and named-object containers
     def __init__(self, settings_source: SettingsBase | Solver | None = None):
         self.__dict__.update(dict(settings_source=None))
         if settings_source is not None:

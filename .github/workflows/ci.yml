@@ -73,7 +73,7 @@ jobs:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/commit-style@v8
+      - uses: ansys/actions/check-pr-title@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
