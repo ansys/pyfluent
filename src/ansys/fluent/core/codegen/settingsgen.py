@@ -118,9 +118,8 @@ def generate(version: str, static_infos: dict) -> None:
     cls, _ = get_cls("", sinfo, version=version)
     data = _populate_data(cls)
     with open(output_file, "w") as f:
-        f.write("from ansys.fluent.core.solver.flobject import (\n")
-        f.write("    Group,\n")
-        f.write(")\n\n")
+        f.write("from ansys.fluent.core.solver.flobject import *\n\n")
+        f.write(f'SHASH = "{_gethash(sinfo)}"\n\n')
         name = data["name"]
         _NAMES_BY_HASES[_gethash(data)] = name
         _write_data(name, data, f, version)
