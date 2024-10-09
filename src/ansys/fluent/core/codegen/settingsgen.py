@@ -52,7 +52,7 @@ def _get_unique_name(name):
     return name
 
 
-def _write_data(cls_name, data, f, version):
+def _write_data(cls_name, python_name, data, f, version):
     bases = ", ".join([base.__name__ for base in data["bases"]])
     s = StringIO()
     s.write(f"class {cls_name}({bases}):\n")
@@ -63,6 +63,7 @@ def _write_data(cls_name, data, f, version):
     s.write('    """\n')
     s.write(f"    version = {version}\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
+    s.write(f"    _python_name = {python_name!r}\n")
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
@@ -87,13 +88,17 @@ def _write_data(cls_name, data, f, version):
             else:
                 unique_name = _get_unique_name(name)
                 s.write(f"        {k}={unique_name},\n")
-                classes_to_write[unique_name] = (v, hash_)
+                classes_to_write[unique_name] = (name, v, hash_)
         s.write("    )\n")
     child_object_type = data["child_object_type"]
     if child_object_type:
         name = f"{cls_name}_child"
         s.write(f"    child_object_type = {name}\n")
-        classes_to_write[name] = (child_object_type, _gethash(child_object_type))
+        classes_to_write[name] = (
+            f"{python_name}_child",
+            child_object_type,
+            _gethash(child_object_type),
+        )
     child_aliases = data["child_aliases"]
     if child_aliases:
         s.write("    _child_aliases = dict(\n")
@@ -104,9 +109,9 @@ def _write_data(cls_name, data, f, version):
     if return_type:
         s.write(f"    return_type = {return_type!r}\n")
     s.write("\n")
-    for name, (data, hash_) in classes_to_write.items():
+    for name, (python_name, data, hash_) in classes_to_write.items():
         _NAME_BY_HASH[hash_] = name
-        _write_data(name, data, f, version)
+        _write_data(name, python_name, data, f, version)
     f.write(s.getvalue())
 
 
@@ -129,7 +134,7 @@ def generate(version: str, static_infos: dict) -> None:
         f.write(f'SHASH = "{_gethash(sinfo)}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
-        _write_data(name, data, f, version)
+        _write_data(name, name, data, f, version)
     file_size = output_file.stat().st_size / 1024 / 1024
     print(
         f"Generated {output_file.name} in {time.time() - start_time:.2f} seconds. Size: {file_size:.2f} MB."
