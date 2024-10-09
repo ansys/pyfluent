@@ -7,10 +7,10 @@ import pickle
 from ansys.fluent.core import codegen
 from ansys.fluent.core.codegen import builtin_settingsgen, datamodelgen, tuigen
 
-if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") == "1":
-    from ansys.fluent.core.codegen import settingsgen_old as settingsgen
-else:
+if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
     from ansys.fluent.core.codegen import settingsgen
+else:
+    from ansys.fluent.core.codegen import settingsgen_old as settingsgen
 
 from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import FluentVersion
