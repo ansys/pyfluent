@@ -2111,7 +2111,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls.__doc__ = doc
 
         if version < "242":
-            cls.return_type = object()
+            cls.return_type = "object"
         else:
             return_type = info.get("return-type") or info.get("return_type")
             if return_type:
