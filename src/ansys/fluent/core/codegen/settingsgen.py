@@ -38,11 +38,11 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
-_NAMES_BY_HASES = {}
+_NAME_BY_HASH = {}
 
 
 def _get_unique_name(name):
-    names = _NAMES_BY_HASES.values()
+    names = _NAME_BY_HASH.values()
     if name not in names and name not in keyword.kwlist:
         return name
     i = 1
@@ -81,7 +81,7 @@ def _write_data(cls_name, data, f, version):
         for k, v in data["child_classes"].items():
             name = v["name"]
             hash_ = _gethash(v)
-            unique_name = _NAMES_BY_HASES.get(hash_)
+            unique_name = _NAME_BY_HASH.get(hash_)
             if unique_name:
                 s.write(f"        {k}={unique_name},\n")
             else:
@@ -105,7 +105,7 @@ def _write_data(cls_name, data, f, version):
         s.write(f"    return_type = {return_type!r}\n")
     s.write("\n")
     for name, (data, hash_) in classes_to_write.items():
-        _NAMES_BY_HASES[hash_] = name
+        _NAME_BY_HASH[hash_] = name
         _write_data(name, data, f, version)
     f.write(s.getvalue())
 
@@ -128,7 +128,7 @@ def generate(version: str, static_infos: dict) -> None:
         f.write(")\n\n")
         f.write(f'SHASH = "{_gethash(sinfo)}"\n\n')
         name = data["name"]
-        _NAMES_BY_HASES[_gethash(data)] = name
+        _NAME_BY_HASH[_gethash(data)] = name
         _write_data(name, data, f, version)
     file_size = output_file.stat().st_size / 1024 / 1024
     print(
