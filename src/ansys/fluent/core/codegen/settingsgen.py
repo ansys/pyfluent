@@ -1,6 +1,7 @@
 """Module to generate the classes corresponding to the Fluent settings API."""
 
 import hashlib
+from io import StringIO
 import keyword
 import pickle
 import time
@@ -56,58 +57,60 @@ def _get_unique_name(name):
 
 def _write_data(cls_name, data, f, version):
     bases = ", ".join([base.__name__ for base in data["bases"]])
-    f.write(f"class {cls_name}({bases}):\n")
+    s = StringIO()
+    s.write(f"class {cls_name}({bases}):\n")
     doc = data["doc"]
     doc = doc.replace("\n", "\n    ")
-    f.write('    """\n')
-    f.write(f"    {doc}\n")
-    f.write('    """\n')
-    f.write(f"    version = {version}\n")
-    f.write(f"    fluent_name = {data['fluent_name']!r}\n")
+    s.write('    """\n')
+    s.write(f"    {doc}\n")
+    s.write('    """\n')
+    s.write(f"    version = {version}\n")
+    s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     child_names = data["child_names"]
     if child_names:
-        f.write(f"    child_names = {child_names}\n")
+        s.write(f"    child_names = {child_names}\n")
     command_names = data["command_names"]
     if command_names:
-        f.write(f"    command_names = {command_names}\n")
+        s.write(f"    command_names = {command_names}\n")
     query_names = data["query_names"]
     if query_names:
-        f.write(f"    query_names = {query_names}\n")
+        s.write(f"    query_names = {query_names}\n")
     argument_names = data["argument_names"]
     if argument_names:
-        f.write(f"    argument_names = {argument_names}\n")
+        s.write(f"    argument_names = {argument_names}\n")
     classes_to_write = {}
     if data["child_classes"]:
-        f.write("    _child_classes = dict(\n")
+        s.write("    _child_classes = dict(\n")
         for k, v in data["child_classes"].items():
             name = v["name"]
             hash_ = _gethash(v)
             unique_name = _NAMES_BY_HASES.get(hash_)
             if unique_name:
-                f.write(f"        {k}={unique_name},\n")
+                s.write(f"        {k}={unique_name},\n")
             else:
                 unique_name = _get_unique_name(name)
-                f.write(f"        {k}={unique_name},\n")
+                s.write(f"        {k}={unique_name},\n")
                 classes_to_write[unique_name] = (v, hash_)
-        f.write("    )\n")
+        s.write("    )\n")
     child_object_type = data["child_object_type"]
     if child_object_type:
         name = f"{cls_name}_child"
-        f.write(f"    child_object_type = {name}\n")
+        s.write(f"    child_object_type = {name}\n")
         classes_to_write[name] = (child_object_type, _gethash(child_object_type))
     child_aliases = data["child_aliases"]
     if child_aliases:
-        f.write("    _child_aliases = dict(\n")
+        s.write("    _child_aliases = dict(\n")
         for k, v in child_aliases.items():
-            f.write(f"        {k}={v!r},\n")
-        f.write("    )\n")
+            s.write(f"        {k}={v!r},\n")
+        s.write("    )\n")
     return_type = data["return_type"]
     if return_type:
-        f.write(f"    return_type = {return_type!r}\n")
-    f.write("\n")
+        s.write(f"    return_type = {return_type!r}\n")
+    s.write("\n")
     for name, (data, hash_) in classes_to_write.items():
         _NAMES_BY_HASES[hash_] = name
         _write_data(name, data, f, version)
+    f.write(s.getvalue())
 
 
 def generate(version: str, static_infos: dict) -> None:
@@ -119,6 +122,13 @@ def generate(version: str, static_infos: dict) -> None:
     data = _populate_data(cls)
     with open(output_file, "w") as f:
         f.write("from ansys.fluent.core.solver.flobject import *\n\n")
+        f.write("from ansys.fluent.core.solver.flobject import (\n")
+        f.write("    _ChildNamedObjectAccessorMixin,\n")
+        f.write("    _NonCreatableNamedObjectMixin,\n")
+        f.write("    _InputFile,\n")
+        f.write("    _OutputFile,\n")
+        f.write("    _InOutFile,\n")
+        f.write(")\n\n")
         f.write(f'SHASH = "{_gethash(sinfo)}"\n\n')
         name = data["name"]
         _NAMES_BY_HASES[_gethash(data)] = name
