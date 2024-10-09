@@ -2,6 +2,7 @@
 
 import hashlib
 import keyword
+import pickle
 import time
 
 from ansys.fluent.core import CODEGEN_OUTDIR, launch_fluent
@@ -19,7 +20,7 @@ def _populate_data(cls):
     data["child_names"] = getattr(cls, "child_names", [])
     data["command_names"] = getattr(cls, "command_names", [])
     data["query_names"] = getattr(cls, "query_names", [])
-    data["argument_names"] = getattr(cls, "_argument_names", [])
+    data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
     child_classes = data.setdefault("child_classes", {})
@@ -131,8 +132,6 @@ if __name__ == "__main__":
     version = get_version_for_file_name(session=solver)
     static_info = solver._settings_service.get_static_info()
     # version = "251"
-    # import pickle
-
     # static_info = pickle.load(open("static_info.pkl", "rb"))
     static_infos = {StaticInfoType.SETTINGS: static_info}
     generate(version, static_infos)
