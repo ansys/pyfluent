@@ -29,9 +29,7 @@ def test_allapigen_files(new_solver_session):
     importlib.import_module(
         f"ansys.fluent.core.generated.datamodel_{version}.PMFileManagement"
     )
-    importlib.import_module(
-        f"ansys.fluent.core.generated.solver.settings_{version}.root"
-    )
+    importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
 
 
 def test_codegen_with_no_static_info(monkeypatch):
@@ -736,6 +734,7 @@ class Q1(Query):
 
 
 def test_codegen_with_settings_static_info(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_OLD_SETTINGSGEN", "1")
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
@@ -820,6 +819,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
 
 
 def test_codegen_with_zipped_settings_static_info(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_OLD_SETTINGSGEN", "1")
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     monkeypatch.setattr(pyfluent, "CODEGEN_ZIP_SETTINGS", True)
