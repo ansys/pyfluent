@@ -6,7 +6,8 @@ import keyword
 import pickle
 import time
 
-from ansys.fluent.core import CODEGEN_OUTDIR, launch_fluent
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver.flobject import get_cls
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
@@ -118,8 +119,12 @@ def _write_data(cls_name, python_name, data, f, version):
 def generate(version: str, static_infos: dict) -> None:
     """Generate the classes corresponding to the Fluent settings API."""
     start_time = time.time()
-    output_file = (CODEGEN_OUTDIR / "solver" / f"settings_{version}.py").resolve()
-    sinfo = static_infos[StaticInfoType.SETTINGS]
+    sinfo = static_infos.get(StaticInfoType.SETTINGS)
+    if not sinfo:
+        return
+    output_file = (
+        pyfluent.CODEGEN_OUTDIR / "solver" / f"settings_{version}.py"
+    ).resolve()
     cls, _ = get_cls("", sinfo, version=version)
     data = _populate_data(cls)
     with open(output_file, "w") as f:
