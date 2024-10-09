@@ -100,7 +100,7 @@ pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
 DATAMODEL_USE_STATE_CACHE = True
 
 # Whether to use datamodel attribute caching
-DATAMODEL_USE_ATTR_CACHE = True
+DATAMODEL_USE_ATTR_CACHE = False
 
 # Whether to stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
