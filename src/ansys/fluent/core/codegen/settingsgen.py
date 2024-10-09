@@ -22,7 +22,10 @@ def _populate_data(cls):
     data["query_names"] = getattr(cls, "query_names", [])
     data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
-    data["return_type"] = getattr(cls, "return_type", None)
+    return_type = getattr(cls, "return_type", None)
+    if isinstance(return_type, object):
+        return_type = "object"
+    data["return_type"] = return_type
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
         child_classes[k] = _populate_data(v)
