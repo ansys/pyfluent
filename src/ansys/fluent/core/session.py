@@ -188,6 +188,12 @@ class BaseSession:
                     _IsDataValid(_session.scheme_eval),
                     _session.scheme_eval,
                 )
+                self.field_data_old = service_creator("field_data_old").create(
+                    _session._field_data_service,
+                    self.field_info,
+                    _IsDataValid(_session.scheme_eval),
+                    _session.scheme_eval,
+                )
                 self.field_data_streaming = FieldDataStreaming(
                     _session._fluent_connection._id, _session._field_data_service
                 )
