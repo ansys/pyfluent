@@ -155,8 +155,8 @@ class DataModelStaticInfo:
         datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
-        if rules_save_name == "MeshingUtilities":
-            stub_file = (datamodel_dir / "MeshingUtilitiesTest.pyi").resolve()
+        if rules == "MeshingUtilities":
+            stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
             self.stub_file = _write_meshing_utilities_stub(stub_file)
         if len(modes) > 1:
             for mode in modes[1:]:
@@ -361,6 +361,19 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Parameter"
+        if "MeshingUtilities" in f.name:
+            for k in commands:
+                _write_command_query_stub(
+                    k,
+                    info["commands"][k]["commandinfo"],
+                    self._static_info["MeshingUtilities"].stub_file,
+                )
+            for k in queries:
+                _write_command_query_stub(
+                    k,
+                    info["queries"][k]["queryinfo"],
+                    self._static_info["MeshingUtilities"].stub_file,
+                )
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
@@ -383,19 +396,6 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Query"
-        if self._static_info.get("MeshingUtilities", None):
-            for k in commands:
-                _write_command_query_stub(
-                    k,
-                    info["commands"][k]["commandinfo"],
-                    self._static_info["MeshingUtilities"].stub_file,
-                )
-            for k in queries:
-                _write_command_query_stub(
-                    k,
-                    info["queries"][k]["queryinfo"],
-                    self._static_info["MeshingUtilities"].stub_file,
-                )
         return api_tree
 
     def write_static_info(self) -> None:
@@ -444,9 +444,6 @@ def generate(version, static_infos: dict):
 
 
 if __name__ == "__main__":
-    os.environ["PYFLUENT_FLUENT_ROOT"] = (
-        r"D:\Installations\Ansys\v251_03072021\ANSYS Inc\v251\fluent"
-    )
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
