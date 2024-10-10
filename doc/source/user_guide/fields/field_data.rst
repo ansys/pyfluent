@@ -51,9 +51,9 @@ the ``get_surface_data`` method and specifying ``Vertices`` for ``data_types``.
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
 
   >>> vertices_data = field_data.get_surface_data(surfaces=["cold-inlet"], data_types=[SurfaceDataType.Vertices])
-  >>> vertices_data["cold-inlet"].shape
+  >>> vertices_data[SurfaceDataType.Vertices]["cold-inlet"].shape
   (241, 3)
-  >>> vertices_data["cold-inlet"][5]
+  >>> vertices_data[SurfaceDataType.Vertices]["cold-inlet"][5]
   array([-0.2       , -0.10167995,  0.00362008], dtype=float32)
 
 You can call the same method to get the corresponding surface face normals and centroids.
@@ -61,13 +61,14 @@ For ``data_types``, specifying ``FacesNormal`` and ``FacesCentroid`` respectivel
 
 .. code-block:: python
 
-  >>> faces_normal_data = field_data.get_surface_data(
-  >>>     data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
+  >>> faces_normal_and_centroid_data = field_data.get_surface_data(
+  >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
   >>> )
 
-  >>> faces_centroid_data = field_data.get_surface_data(
-  >>>     data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
-  >>> )
+  >>> faces_normal_and_centroid_data[SurfaceDataType.FacesNormal]["cold-inlet"].shape
+  (152, 3)
+  >>> faces_normal_and_centroid_data[SurfaceDataType.FacesCentroid]["cold-inlet"][15]
+  array([-0.2       , -0.11418786,  0.03345207], dtype=float32)
 
 You can request face connectivity data for given ``surfaces`` by calling
 the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_types``.
@@ -77,9 +78,7 @@ the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_
   >>> faces_connectivity_data = field_data.get_surface_data(
   >>>     data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
   >>> )
-  >>> faces_connectivity_data[5].node_count
-  4
-  >>> faces_connectivity_data[5].node_indices
+  >>> faces_connectivity_data[SurfaceDataType.FacesConnectivity]["cold-inlet"][5]
   array([12, 13, 17, 16])
 
 
@@ -109,10 +108,8 @@ You can call the ``get_vector_field_data`` method to get vector field data.
 .. code-block:: python
 
   >>> velocity_vector_data = field_data.get_vector_field_data(field_name="velocity", surfaces=["cold-inlet"])
-  >>> velocity_vector_data["cold-inlet"][0].shape
+  >>> velocity_vector_data["cold-inlet"].shape
   (152, 3)
-  >>> velocity_vector_data["cold-inlet"][1]["scale"]
-  1.0
 
 If a single surface is provided as input, vector field data is returned.
 If multiple surfaces are provided as input, a dictionary containing a map of surface IDs to vector field data is returned.
@@ -126,13 +123,11 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
   >>> path_lines_data = field_data.get_pathlines_field_data(field_name="velocity", surfaces=["cold-inlet"])
   >>> path_lines_data["cold-inlet"]["vertices"].shape
   (76152, 3)
-  >>> path_lines_data["cold-inlet"]["lines"].size
+  >>> len(path_lines_data["cold-inlet"]["lines"])
   76000
   >>> path_lines_data["cold-inlet"]["velocity"].shape
-  (76152)
-  >>> path_lines_data["cold-inlet"]["lines"][100].node_count
-  2
-  >>> path_lines_data["cold-inlet"]["lines"][100].node_indices
+  (76152, )
+  >>> path_lines_data["cold-inlet"]["lines"][100]
   array([100, 101])
 
 Dictionary containing a map of surface IDs to the path-line data is returned.
