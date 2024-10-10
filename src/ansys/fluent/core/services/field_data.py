@@ -1118,52 +1118,21 @@ class FieldData:
             }
 
         ret_surf_data = {}
-
-        if SurfaceDataType.Vertices in data_types:
-            if SurfaceDataType.Vertices in str_data_types:
-                ret_surf_data[SurfaceDataType.Vertices.value] = _get_surfaces_data(
-                    SurfaceDataType.Vertices
-                )
-            else:
-                ret_surf_data[SurfaceDataType.Vertices] = _get_surfaces_data(
-                    SurfaceDataType.Vertices
-                )
-
-        if SurfaceDataType.FacesCentroid in data_types:
-            if SurfaceDataType.FacesCentroid in str_data_types:
-                ret_surf_data[SurfaceDataType.FacesCentroid.value] = _get_surfaces_data(
-                    SurfaceDataType.FacesCentroid
-                )
-            else:
-                ret_surf_data[SurfaceDataType.FacesCentroid] = _get_surfaces_data(
-                    SurfaceDataType.FacesCentroid
-                )
-
-        if SurfaceDataType.FacesNormal in data_types:
-            if SurfaceDataType.FacesNormal in str_data_types:
-                ret_surf_data[SurfaceDataType.FacesNormal.value] = _get_surfaces_data(
-                    SurfaceDataType.FacesNormal
-                )
-            else:
-                ret_surf_data[SurfaceDataType.FacesNormal] = _get_surfaces_data(
-                    SurfaceDataType.FacesNormal
-                )
-
-        if SurfaceDataType.FacesConnectivity in data_types:
-            if SurfaceDataType.FacesConnectivity in str_data_types:
-                key = SurfaceDataType.FacesConnectivity.value
-            else:
-                key = SurfaceDataType.FacesConnectivity
-            ret_surf_data[key] = {
-                surface: (
-                    self._get_faces_connectivity_data(
-                        surface_data[surface_ids[count]][
-                            SurfaceDataType.FacesConnectivity.value
-                        ]
+        for data_type in data_types:
+            key = data_type.value if data_type in str_data_types else data_type
+            if data_type == SurfaceDataType.FacesConnectivity:
+                ret_surf_data[key] = {
+                    surface: (
+                        self._get_faces_connectivity_data(
+                            surface_data[surface_ids[count]][
+                                SurfaceDataType.FacesConnectivity.value
+                            ]
+                        )
                     )
-                )
-                for count, surface in enumerate(surfaces)
-            }
+                    for count, surface in enumerate(surfaces)
+                }
+            else:
+                ret_surf_data[key] = _get_surfaces_data(data_type)
 
         return ret_surf_data
 
