@@ -236,77 +236,6 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_old_field_data_objects_3d(new_solver_session) -> None:
-    solver = new_solver_session
-    import_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
-    )
-
-    field_data = solver.fields.old_field_data
-
-    assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
-
-    solver.file.read(file_type="case", file_name=import_file_name)
-
-    allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
-    assert len(allowed_args_no_init) != 0
-
-    assert not field_data.is_data_valid()
-
-    solver.solution.initialization.hybrid_initialize()
-
-    assert field_data.is_data_valid()
-
-    # Absolute Pressure data over the cold-inlet (surface_id=3)
-    abs_press_data = field_data.get_scalar_field_data(
-        field_name="absolute-pressure", surfaces=["cold-inlet"]
-    )
-
-    assert abs_press_data.size == 241
-    assert abs_press_data[120].scalar_data == 101325.0
-
-    vertices_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
-    )
-    assert round(float(vertices_data[5].x), 2) == -0.2
-
-    faces_centroid_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
-    )
-    assert round(float(faces_centroid_data[5].y), 2) == -0.18
-
-    faces_connectivity_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
-    )
-    assert faces_connectivity_data[5].node_count == 4
-    assert (faces_connectivity_data[5].node_indices == [12, 13, 17, 16]).all()
-
-    faces_normal_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
-    )
-    assert faces_normal_data.size == 152
-    assert faces_normal_data.surface_id == 3
-
-    velocity_vector_data = field_data.get_vector_field_data(
-        field_name="velocity", surfaces=["cold-inlet"]
-    )
-
-    assert velocity_vector_data.size == 152
-    assert velocity_vector_data.scale == 1.0
-
-    path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surfaces=["cold-inlet"]
-    )
-
-    assert path_lines_data["vertices"].size == 76152
-    assert path_lines_data["lines"].size == 76000
-    assert path_lines_data["velocity"].size == 76152
-
-    assert path_lines_data["lines"][100].node_count == 2
-    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
-
-
-@pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_2d(disk_case_session) -> None:
     solver = disk_case_session
 
@@ -452,3 +381,76 @@ def test_field_data_does_not_modify_case(new_solver_session):
         field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+
+
+# This is to test the deprecated field data interface.
+# Please delete it, if pushed to main branch.
+@pytest.mark.fluent_version(">=23.2")
+def test_old_field_data_objects_3d(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+
+    field_data = solver.fields.field_data_old
+
+    assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
+
+    solver.file.read(file_type="case", file_name=import_file_name)
+
+    allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
+    assert len(allowed_args_no_init) != 0
+
+    assert not field_data.is_data_valid()
+
+    solver.solution.initialization.hybrid_initialize()
+
+    assert field_data.is_data_valid()
+
+    # Absolute Pressure data over the cold-inlet (surface_id=3)
+    abs_press_data = field_data.get_scalar_field_data(
+        field_name="absolute-pressure", surfaces=["cold-inlet"]
+    )
+
+    assert abs_press_data.size == 241
+    assert abs_press_data[120].scalar_data == 101325.0
+
+    vertices_data = field_data.get_surface_data(
+        data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
+    )
+    assert round(float(vertices_data[5].x), 2) == -0.2
+
+    faces_centroid_data = field_data.get_surface_data(
+        data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
+    )
+    assert round(float(faces_centroid_data[5].y), 2) == -0.18
+
+    faces_connectivity_data = field_data.get_surface_data(
+        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
+    )
+    assert faces_connectivity_data[5].node_count == 4
+    assert (faces_connectivity_data[5].node_indices == [12, 13, 17, 16]).all()
+
+    faces_normal_data = field_data.get_surface_data(
+        data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
+    )
+    assert faces_normal_data.size == 152
+    assert faces_normal_data.surface_id == 3
+
+    velocity_vector_data = field_data.get_vector_field_data(
+        field_name="velocity", surfaces=["cold-inlet"]
+    )
+
+    assert velocity_vector_data.size == 152
+    assert velocity_vector_data.scale == 1.0
+
+    path_lines_data = field_data.get_pathlines_field_data(
+        field_name="velocity", surfaces=["cold-inlet"]
+    )
+
+    assert path_lines_data["vertices"].size == 76152
+    assert path_lines_data["lines"].size == 76000
+    assert path_lines_data["velocity"].size == 76152
+
+    assert path_lines_data["lines"][100].node_count == 2
+    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
