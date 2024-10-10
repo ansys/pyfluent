@@ -2089,7 +2089,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         commands = info.get("commands")
         if commands:
             commands.pop("exit", None)
-            commands.pop("switch_to_meshing_mode", None)
+            commands.pop("switch-to-meshing-mode", None)
         if commands and not user_creatable:
             commands.pop("create", None)
         if commands:
