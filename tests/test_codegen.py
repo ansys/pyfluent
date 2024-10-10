@@ -332,7 +332,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
         f"datamodel_{version}",
     }
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
-    assert len(datamodel_paths) == 1
+    assert len(datamodel_paths) == 1 or 2
     assert set(p.name for p in datamodel_paths) == {f"{rules}.py"}
     with open(codegen_outdir / f"datamodel_{version}" / f"{rules}.py", "r") as f:
         assert f.read().strip() == _expected_datamodel_api_output

@@ -66,6 +66,31 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 )
 
 
+def _write_meshing_utilities_stub(file_path):
+    if file_path.exists():
+        file_path.unlink()
+    file = open(file_path, "w", encoding="utf8")
+    file.write("#\n")
+    file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+    file.write("#\n")
+    file.write("# pylint: disable=line-too-long\n\n")
+    file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
+    file.write("from typing import *\n")
+    file.write("\n\n")
+    file.write(f"class Root(PyMenu):\n")
+    return file
+
+
+def _write_command_query_stub(name: str, info: Any, f: FileIO):
+    indent = "        "
+    signature = f"(\n{indent}self,\n"
+    if info.get("args"):
+        for arg in info.get("args"):
+            signature += f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
+    signature += f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...'
+    f.write(f"\n    def {name}{signature}\n")
+
+
 def _build_singleton_docstring(name: str):
     return f"Singleton {name}."
 
@@ -130,6 +155,9 @@ class DataModelStaticInfo:
         datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        if rules == "MeshingUtilities":
+            stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
+            self.stub_file = _write_meshing_utilities_stub(stub_file)
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -333,6 +361,19 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Parameter"
+        if "MeshingUtilities" in f.name:
+            for k in commands:
+                _write_command_query_stub(
+                    k,
+                    info["commands"][k]["commandinfo"],
+                    self._static_info["MeshingUtilities"].stub_file,
+                )
+            for k in queries:
+                _write_command_query_stub(
+                    k,
+                    info["queries"][k]["queryinfo"],
+                    self._static_info["MeshingUtilities"].stub_file,
+                )
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
