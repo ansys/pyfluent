@@ -4,6 +4,7 @@ from typing import Any, List, Tuple
 import weakref
 
 import grpc
+import numpy as np
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
@@ -251,8 +252,6 @@ class Reduction:
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
 
-    docstring = None
-
     def _validate_str_location(self, loc: str):
         if all(
             loc not in names()
@@ -300,7 +299,7 @@ class Reduction:
         request = ReductionProtoModule.CentroidRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.centroid(request)
-        return (response.value.x, response.value.y, response.value.z)
+        return np.array([response.value.x, response.value.y, response.value.z])
 
     def count(self, locations, ctxt=None) -> Any:
         """Get count."""
@@ -322,7 +321,7 @@ class Reduction:
         request = ReductionProtoModule.ForceRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.force(request)
-        return (response.value.x, response.value.y, response.value.z)
+        return np.array([response.value.x, response.value.y, response.value.z])
 
     def mass_average(self, expression, locations, ctxt=None) -> Any:
         """Get mass average."""
@@ -385,14 +384,14 @@ class Reduction:
         request = ReductionProtoModule.PressureForceRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.pressure_force(request)
-        return (response.value.x, response.value.y, response.value.z)
+        return np.array([response.value.x, response.value.y, response.value.z])
 
     def viscous_force(self, locations, ctxt=None) -> Any:
         """Get viscous force."""
         request = ReductionProtoModule.ViscousForceRequest()
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.viscous_force(request)
-        return (response.value.x, response.value.y, response.value.z)
+        return np.array([response.value.x, response.value.y, response.value.z])
 
     def volume(self, locations, ctxt=None) -> Any:
         """Get volume."""
@@ -423,7 +422,7 @@ class Reduction:
         request.expression = expression
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.moment(request)
-        return (response.value.x, response.value.y, response.value.z)
+        return np.array([response.value.x, response.value.y, response.value.z])
 
     def sum(self, expression, locations, weight, ctxt=None) -> Any:
         """Get sum."""

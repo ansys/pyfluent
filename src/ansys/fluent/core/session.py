@@ -179,6 +179,7 @@ class BaseSession:
 
             def __init__(self, _session):
                 """Initialize Fields."""
+                self._session = _session
                 self.field_info = service_creator("field_info").create(
                     _session._field_data_service, _IsDataValid(_session.scheme_eval)
                 )
@@ -190,6 +191,20 @@ class BaseSession:
                 )
                 self.field_data_streaming = FieldDataStreaming(
                     _session._fluent_connection._id, _session._field_data_service
+                )
+
+            @property
+            def field_data_old(self):
+                """Provides access to Fluent field information."""
+                warnings.warn(
+                    "'field_data_old' is deprecated. Use 'field_data' instead.",
+                    PyFluentDeprecationWarning,
+                )
+                return service_creator("field_data_old").create(
+                    self._session._field_data_service,
+                    self.field_info,
+                    _IsDataValid(self._session.scheme_eval),
+                    self._session.scheme_eval,
                 )
 
         self.fields = Fields(self)

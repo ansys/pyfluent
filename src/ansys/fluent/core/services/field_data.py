@@ -740,7 +740,7 @@ def _get_surface_ids(
 
     Parameters
     ----------
-    surfaces : List[int], | List[str]
+    surfaces : List[int] | List[str]
         List of surface IDs or surface names.
 
     Returns
@@ -757,7 +757,7 @@ def _get_surface_ids(
             )
         else:
             surface_ids.append(surf)
-    return list(set(surface_ids))
+    return surface_ids
 
 
 def get_fields_request():
@@ -917,176 +917,6 @@ class ChunkParser:
         return fields_data
 
 
-class BaseFieldData:
-    """Contains common properties required by all field data types."""
-
-    def __init__(self, i_d, data):
-        """__init__ method of BaseFieldData class."""
-        self._data = data
-        self._id = i_d
-
-    @property
-    def data(self):
-        """Returns data."""
-        return self._data
-
-    @property
-    def surface_id(self):
-        """Returns surface ID."""
-        return self._id
-
-    @property
-    def size(self):
-        """Returns size of data."""
-        return len(self._data)
-
-    def __getitem__(self, item):
-        return self._data[item]
-
-
-class ScalarFieldData(BaseFieldData):
-    """Contains scalar field data."""
-
-    class ScalarData:
-        """Stores and provides the data as a scalar."""
-
-        def __init__(self, data):
-            """__init__ method of ScalarData class."""
-            self.scalar_data = data
-
-    def __init__(self, i_d, data):
-        """__init__ method of ScalarFieldData class."""
-        super().__init__(i_d, [ScalarFieldData.ScalarData(_data) for _data in data])
-
-
-class Vector:
-    """Stores the data as a vector ``(x, y, z)``."""
-
-    def __init__(self, x, y, z):
-        """__init__ method of Vector class."""
-        self._x = x
-        self._y = y
-        self._z = z
-
-    @property
-    def x(self) -> float:
-        """Returns vector point x."""
-        return self._x
-
-    @property
-    def y(self) -> float:
-        """Returns vector point y."""
-        return self._y
-
-    @property
-    def z(self) -> float:
-        """Returns vector point z."""
-        return self._z
-
-
-def _resolve_into_array_of_vectors(data):
-    if data.size % 3:
-        raise ValueError(
-            "Dataset must be resolved as a set of vectors."
-            "The length of the dataset should always be in multiples of 3."
-        )
-    data.shape = data.size // 3, 3
-
-
-class VectorFieldData(BaseFieldData):
-    """Provides a container for vector field data."""
-
-    class VectorData(Vector):
-        """Stores and provides the data as a vector."""
-
-        def __init__(self, x, y, z):
-            """__init__ method of VectorData class."""
-            super().__init__(x, y, z)
-
-    def __init__(self, i_d, data, scale):
-        """__init__ method of VectorFieldData class."""
-        _resolve_into_array_of_vectors(data)
-        self._scale = scale
-        super().__init__(i_d, [VectorFieldData.VectorData(x, y, z) for x, y, z in data])
-
-    @property
-    def scale(self) -> float:
-        """Returns scale of the vector field."""
-        return self._scale
-
-
-class Vertices(BaseFieldData):
-    """Provides a container for the vertex data."""
-
-    class Vertex(Vector):
-        """Stores and provides the data as a vector of a vertex."""
-
-        def __init__(self, x, y, z):
-            """__init__ method of Vertex class."""
-            super().__init__(x, y, z)
-
-    def __init__(self, i_d, data):
-        """__init__ method of Vertices class."""
-        _resolve_into_array_of_vectors(data)
-        super().__init__(i_d, [(Vertices.Vertex(x, y, z)) for x, y, z in data])
-
-
-class FacesCentroid(BaseFieldData):
-    """Provides the container for the face centroid data."""
-
-    class Centroid(Vector):
-        """Stores and provides the face centroid data as a vector."""
-
-        def __init__(self, x, y, z):
-            """__init__ method of Centroid class."""
-            super().__init__(x, y, z)
-
-    def __init__(self, i_d, data):
-        """__init__ method of FacesCentroid class."""
-        _resolve_into_array_of_vectors(data)
-        super().__init__(i_d, [(FacesCentroid.Centroid(x, y, z)) for x, y, z in data])
-
-
-class FacesConnectivity(BaseFieldData):
-    """Provides the container for the face connectivity data."""
-
-    class Faces:
-        """Stores and provides the face connectivity data as an array."""
-
-        def __init__(self, node_count, node_indices):
-            """__init__ method of Faces class."""
-            self.node_count = node_count
-            self.node_indices = node_indices
-
-    def __init__(self, i_d, data):
-        """__init__ method of FacesConnectivity class."""
-        faces_data = []
-        i = 0
-
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(FacesConnectivity.Faces(data[i], data[i + 1 : end]))
-            i = end
-
-        super().__init__(i_d, faces_data)
-
-
-class FacesNormal(BaseFieldData):
-    """Provides the container for the face normal data."""
-
-    class Normal(Vector):
-        """Stores and provides the face normal data as a vector."""
-
-        def __init__(self, x, y, z):
-            """__init__ method of Normal class."""
-            super().__init__(x, y, z)
-
-    def __init__(self, i_d, data):
-        """__init__ method of FacesNormal class."""
-        _resolve_into_array_of_vectors(data)
-        super().__init__(i_d, [FacesNormal.Normal(x, y, z) for x, y, z in data])
-
-
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
@@ -1166,23 +996,13 @@ class FieldData:
             self._allowed_vector_field_names,
         )
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
     def get_scalar_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
-    ) -> ScalarFieldData | Dict[int, ScalarFieldData]:
+    ) -> Dict[int | str, np.array]:
         """Get scalar field data on a surface.
 
         Parameters
@@ -1200,10 +1020,8 @@ class FieldData:
 
         Returns
         -------
-        ScalarFieldData | Dict[int, ScalarFieldData]
-            If a surface name is provided as input, scalar field data is returned. If surface
-            IDs are provided as input, a dictionary containing a map of surface IDs to scalar
-            field data.
+        Dict[int | str, np.array]
+            Returns a map of surface IDs (or names) to scalar field data.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1232,45 +1050,17 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
 
-        if len(surfaces) == 1 and isinstance(surfaces[0], str):
-            return ScalarFieldData(
-                surface_ids[0], scalar_field_data[surface_ids[0]][field_name]
-            )
-        else:
-            return {
-                surface_id: ScalarFieldData(
-                    surface_id, scalar_field_data[surface_id][field_name]
-                )
-                for surface_id in surface_ids
-            }
+        return {
+            surface: scalar_field_data[surface_ids[count]][field_name]
+            for count, surface in enumerate(surfaces)
+        }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="data_types",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
     def get_surface_data(
         self,
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
-    ) -> (
-        Vertices
-        | FacesConnectivity
-        | FacesNormal
-        | FacesCentroid
-        | Dict[int, Vertices | FacesConnectivity | FacesNormal | FacesCentroid]
-    ):
+    ) -> Dict[int | str, np.array | List[np.array]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
@@ -1284,10 +1074,9 @@ class FieldData:
 
         Returns
         -------
-        Vertices, FacesConnectivity, FacesNormal, FacesCentroid | Dict[int, Vertices | FacesConnectivity | FacesNormal | FacesCentroid]
-             If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
-             If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
-             vertices, connectivity data, and normal or centroid data is returned.
+        Dict[int | str, np.array | List[np.array]]
+             Returns a map of surface IDs (or names) to face
+             vertices, connectivity data, and normal or centroid data.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1295,11 +1084,13 @@ class FieldData:
             surfaces=surfaces,
         )
         updated_data = []
+        str_data_types = []
         for d_type in data_types:
+            new_data = SurfaceDataType(d_type)
             if isinstance(d_type, str):
-                updated_data.append(SurfaceDataType(d_type))
-            else:
-                updated_data.append(d_type)
+                str_data_types.append(new_data)
+            updated_data.append(new_data)
+
         data_types = updated_data
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
@@ -1318,79 +1109,48 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
-        def _get_surfaces_data(parent_class, surf_id, _data_type):
-            return parent_class(
-                surf_id,
-                surface_data[surf_id][SurfaceDataType(_data_type).value],
-            )
+        def _get_surfaces_data(surface_data_type):
+            return {
+                surface: surface_data[surface_ids[count]][
+                    surface_data_type.value
+                ].reshape(-1, 3)
+                for count, surface in enumerate(surfaces)
+            }
 
-        if SurfaceDataType.Vertices in data_types:
-            if len(surfaces) == 1 and isinstance(surfaces[0], str):
-                return _get_surfaces_data(
-                    Vertices, surface_ids[0], SurfaceDataType.Vertices
-                )
-            else:
-                return {
-                    surface_id: _get_surfaces_data(
-                        Vertices, surface_id, SurfaceDataType.Vertices
+        ret_surf_data = {}
+        for data_type in data_types:
+            key = data_type.value if data_type in str_data_types else data_type
+            if data_type == SurfaceDataType.FacesConnectivity:
+                ret_surf_data[key] = {
+                    surface: (
+                        self._get_faces_connectivity_data(
+                            surface_data[surface_ids[count]][
+                                SurfaceDataType.FacesConnectivity.value
+                            ]
+                        )
                     )
-                    for surface_id in surface_ids
+                    for count, surface in enumerate(surfaces)
                 }
-
-        if SurfaceDataType.FacesCentroid in data_types:
-            if len(surfaces) == 1 and isinstance(surfaces[0], str):
-                return _get_surfaces_data(
-                    FacesCentroid, surface_ids[0], SurfaceDataType.FacesCentroid
-                )
             else:
-                return {
-                    surface_id: _get_surfaces_data(
-                        FacesCentroid, surface_id, SurfaceDataType.FacesCentroid
-                    )
-                    for surface_id in surface_ids
-                }
+                ret_surf_data[key] = _get_surfaces_data(data_type)
 
-        if SurfaceDataType.FacesConnectivity in data_types:
-            if len(surfaces) == 1 and isinstance(surfaces[0], str):
-                return _get_surfaces_data(
-                    FacesConnectivity, surface_ids[0], SurfaceDataType.FacesConnectivity
-                )
-            else:
-                return {
-                    surface_id: _get_surfaces_data(
-                        FacesConnectivity, surface_id, SurfaceDataType.FacesConnectivity
-                    )
-                    for surface_id in surface_ids
-                }
+        return ret_surf_data
 
-        if SurfaceDataType.FacesNormal in data_types:
-            if len(surfaces) == 1 and isinstance(surfaces[0], str):
-                return _get_surfaces_data(
-                    FacesNormal, surface_ids[0], SurfaceDataType.FacesNormal
-                )
-            else:
-                return {
-                    surface_id: _get_surfaces_data(
-                        FacesNormal, surface_id, SurfaceDataType.FacesNormal
-                    )
-                    for surface_id in surface_ids
-                }
+    @staticmethod
+    def _get_faces_connectivity_data(data):
+        faces_data = []
+        i = 0
+        while i < len(data):
+            end = i + 1 + data[i]
+            faces_data.append(data[i + 1 : end])
+            i = end
+        return faces_data
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
     def get_vector_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
-    ) -> VectorFieldData | Dict[int, VectorFieldData]:
+    ) -> Dict[int | str, np.array]:
         """Get vector field data on a surface.
 
         Parameters
@@ -1402,10 +1162,8 @@ class FieldData:
 
         Returns
         -------
-        VectorFieldData | Dict[int, VectorFieldData]
-            If a surface name is provided as input, vector field data is returned.
-            If surface IDs are provided as input, a dictionary containing a map of
-            surface IDs to vector field data is returned.
+        Dict[int | str, np.array]
+            Returns a  map of surface IDs (or names) to vector field data.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1429,32 +1187,11 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
 
-        if len(surfaces) == 1 and isinstance(surfaces[0], str):
-            return VectorFieldData(
-                surface_ids[0],
-                vector_field_data[surface_ids[0]][field_name],
-                vector_field_data[surface_ids[0]]["vector-scale"][0],
-            )
-        else:
-            return {
-                surface_id: VectorFieldData(
-                    surface_id,
-                    vector_field_data[surface_id][field_name],
-                    vector_field_data[surface_id]["vector-scale"][0],
-                )
-                for surface_id in surface_ids
-            }
+        return {
+            surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
+            for count, surface in enumerate(surfaces)
+        }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
     def get_pathlines_field_data(
         self,
         field_name: str,
@@ -1546,31 +1283,15 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         pathlines_data = next(iter(fields.values()))
 
-        def _get_surfaces_data(parent_class, surf_id, _data_type):
-            return parent_class(
-                surf_id,
-                pathlines_data[surf_id][_data_type],
-            )
-
-        if len(surfaces) == 1 and isinstance(surfaces[0], str):
-            vertices_data = _get_surfaces_data(Vertices, surface_ids[0], "vertices")
-            lines_data = _get_surfaces_data(FacesConnectivity, surface_ids[0], "lines")
-            field_data = ScalarFieldData(
-                surface_ids[0], pathlines_data[surface_ids[0]][field_name]
-            )
-            return {
-                "vertices": vertices_data,
-                "lines": lines_data,
-                field_name: field_data,
+        path_lines_dict = {}
+        for count, surface in enumerate(surfaces):
+            path_lines_dict[surface] = {
+                "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
+                    -1, 3
+                ),
+                "lines": self._get_faces_connectivity_data(
+                    pathlines_data[surface_ids[count]]["lines"]
+                ),
+                field_name: pathlines_data[surface_ids[count]][field_name],
             }
-        else:
-            path_lines_dict = {}
-            for surface_id in surface_ids:
-                path_lines_dict[surface_id] = {
-                    "vertices": _get_surfaces_data(Vertices, surface_id, "vertices"),
-                    "lines": _get_surfaces_data(FacesConnectivity, surface_id, "lines"),
-                    field_name: ScalarFieldData(
-                        surface_id, pathlines_data[surface_id][field_name]
-                    ),
-                }
-            return path_lines_dict
+        return path_lines_dict
