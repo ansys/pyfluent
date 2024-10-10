@@ -1760,3 +1760,42 @@ def test_return_state_changes(new_meshing_session):
     wt.describe_geometry()
 
     assert wt.add_multizone_controls
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_recursive_update_dict(new_meshing_session):
+    meshing = new_meshing_session
+    fault_tolerant = meshing.fault_tolerant()
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
+
+    import_cad = fault_tolerant.import_cad_and_part_management
+    import_cad.feature_angle = 35
+    import_cad.fmd_file_name = import_file_name
+    import_cad()
+
+    descr_geom = fault_tolerant.describe_geometry_and_flow
+    descr_geom.arguments()
+    descr_geom.flow_type = "Internal flow through the object"
+    descr_geom.add_enclosure = "Yes"
+    descr_geom.close_caps = "Yes"
+    descr_geom.local_refinement_regions = "Yes"
+    descr_geom.describe_geometry_and_flow_options.moving_objects = "Yes"
+    descr_geom.describe_geometry_and_flow_options.advanced_options = True
+    descr_geom.describe_geometry_and_flow_options.porous_regions = "Yes"
+    descr_geom.describe_geometry_and_flow_options.enable_overset = "Yes"
+    descr_geom.describe_geometry_and_flow_options.extract_edge_features = "Yes"
+    descr_geom.describe_geometry_and_flow_options.zero_thickness = "Yes"
+    descr_geom.arguments()
+    assert meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments()[
+        "DescribeGeometryAndFlowOptions"
+    ] == {
+        "AdvancedOptions": True,
+        "EnableOverset": "Yes",
+        "ExtractEdgeFeatures": "Yes",
+        "MovingObjects": "Yes",
+        "PorousRegions": "Yes",
+        "ZeroThickness": "Yes",
+    }
