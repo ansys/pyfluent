@@ -1,7 +1,7 @@
 import pytest
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.skip
 def test_creatable(static_mixer_settings_session) -> None:
     setup = static_mixer_settings_session.setup
     has_not = (

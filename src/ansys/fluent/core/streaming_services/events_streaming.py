@@ -27,7 +27,6 @@ class SolverEvent(Enum):
 
     TIMESTEP_STARTED = "TimestepStartedEvent"
     TIMESTEP_ENDED = "TimestepEndedEvent"
-    ITERATION_STARTED = "IterationStartedEvent"
     ITERATION_ENDED = "IterationEndedEvent"
     CALCULATIONS_STARTED = "CalculationsStartedEvent"
     CALCULATIONS_ENDED = "CalculationsEndedEvent"
