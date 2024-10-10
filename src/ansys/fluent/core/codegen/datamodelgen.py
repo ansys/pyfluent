@@ -88,7 +88,7 @@ def _write_command_query_stub(name: str, info: Any, f: FileIO):
         for arg in info.get("args"):
             signature += f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
     signature += f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...'
-    f.write(f"    def {name}{signature}\n")
+    f.write(f"\n    def {name}{signature}\n")
 
 
 def _build_singleton_docstring(name: str):
