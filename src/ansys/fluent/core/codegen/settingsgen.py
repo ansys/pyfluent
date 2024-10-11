@@ -5,6 +5,7 @@ from io import StringIO
 import keyword
 import pickle
 import time
+from typing import IO
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
@@ -13,10 +14,11 @@ from ansys.fluent.core.solver.flobject import Command, NamedObject, Query, get_c
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
-def _populate_data(cls, api_tree):
-    data = {}
+def _populate_data(cls, api_tree: dict, version: str) -> dict:
+    data = {}  # data is nested dict holding string data
+    data["version"] = version
     data["name"] = cls.__name__
-    data["bases"] = cls.__bases__
+    data["bases"] = [base.__name__ for base in cls.__bases__]
     data["doc"] = cls.__doc__
     data["fluent_name"] = getattr(cls, "fluent_name")
     data["child_names"] = getattr(cls, "child_names", [])
@@ -29,19 +31,19 @@ def _populate_data(cls, api_tree):
     for k, v in cls._child_classes.items():
         if issubclass(v, Command):
             api_tree[k] = "Command"
-            child_classes[k] = _populate_data(v, {})
+            child_classes[k] = _populate_data(v, {}, version)
         elif issubclass(v, Query):
             api_tree[k] = "Query"
-            child_classes[k] = _populate_data(v, {})
+            child_classes[k] = _populate_data(v, {}, version)
         else:
             api_key = f"{k}:<name>" if issubclass(v, NamedObject) else k
             child_api_tree = api_tree.setdefault(api_key, {})
-            child_classes[k] = _populate_data(v, child_api_tree)
+            child_classes[k] = _populate_data(v, child_api_tree, version)
             if not child_api_tree:
                 api_tree[k] = "Parameter"
     child_object_type = getattr(cls, "child_object_type", None)
     if child_object_type:
-        data["child_object_type"] = _populate_data(child_object_type, api_tree)
+        data["child_object_type"] = _populate_data(child_object_type, api_tree, version)
     else:
         data["child_object_type"] = None
     return data
@@ -68,10 +70,39 @@ def _get_unique_name(name):
     return name
 
 
-def _write_data(cls_name, python_name, data, f, f_stub, version):
-    bases = ", ".join([base.__name__ for base in data["bases"]])
+_arg_type_strings = {
+    "Boolean": "bool",
+    "Integer": "int",
+    "Real": "float | str",
+    "String": "str",
+    "Filename": "str",
+    "BooleanList": "List[bool]",
+    "IntegerList": "List[int]",
+    "RealVector": "Tuple[float | str, float | str, float | str",
+    "RealList": "List[float | str]",
+    "StringList": "List[str]",
+    "FilenameList": "List[str]",
+}
+
+
+def _write_function_stub(name, data, s_stub):
+    s_stub.write(f"    def {name}(self, ")
+    for arg_name in data["argument_names"]:
+        arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
+        s_stub.write(f"{arg_name}: {arg_type}, ")
+    s_stub.write(f"):")
+    # TODO: add return type
+    doc = data["doc"]
+    doc = doc.replace("\n", "\n        ")
+    s_stub.write('        """\n')
+    s_stub.write(f"        {doc}")
+    s_stub.write('        """\n')
+
+
+def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
     s = StringIO()
     s_stub = StringIO()
+    bases = ", ".join(data["bases"])
     cls_def = f"class {cls_name}({bases}):\n"
     s.write(cls_def)
     s_stub.write(cls_def)
@@ -80,7 +111,7 @@ def _write_data(cls_name, python_name, data, f, f_stub, version):
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
-    s.write(f"    version = {version!r}\n")
+    s.write(f"    version = {data['version']!r}\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     s.write(f"    _python_name = {python_name!r}\n")
     s_stub.write(f"    version: str\n")
@@ -102,7 +133,7 @@ def _write_data(cls_name, python_name, data, f, f_stub, version):
     if argument_names:
         s.write(f"    argument_names = {argument_names}\n")
         s_stub.write(f"    argument_names: List[str]\n")
-    classes_to_write = {}
+    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
     if data["child_classes"]:
         s.write("    _child_classes = dict(\n")
         for k, v in data["child_classes"].items():
@@ -111,12 +142,19 @@ def _write_data(cls_name, python_name, data, f, f_stub, version):
             unique_name = _NAME_BY_HASH.get(hash_)
             if unique_name:
                 s.write(f"        {k}={unique_name},\n")
-                s_stub.write(f"    {k}: {unique_name}\n")
+                if k in command_names + query_names:
+                    _write_function_stub(k, v, s_stub)
+                else:
+                    s_stub.write(f"    {k}: {unique_name}\n")
             else:
                 unique_name = _get_unique_name(name)
                 s.write(f"        {k}={unique_name},\n")
-                s_stub.write(f"    {k}: {unique_name}\n")
-                classes_to_write[unique_name] = (name, v, hash_)
+                if k in command_names + query_names:
+                    _write_function_stub(k, v, s_stub)
+                    classes_to_write[unique_name] = (name, v, hash_, False)
+                else:
+                    s_stub.write(f"    {k}: {unique_name}\n")
+                    classes_to_write[unique_name] = (name, v, hash_, True)
         s.write("    )\n")
     child_object_type = data["child_object_type"]
     if child_object_type:
@@ -126,6 +164,7 @@ def _write_data(cls_name, python_name, data, f, f_stub, version):
             f"{python_name}_child",
             child_object_type,
             _gethash(child_object_type),
+            True,
         )
         s_stub.write(f"    child_object_type: {name}\n")
     child_aliases = data["child_aliases"]
@@ -140,11 +179,12 @@ def _write_data(cls_name, python_name, data, f, f_stub, version):
         s.write(f"    return_type = {return_type!r}\n")
         s_stub.write(f"    return_type: str\n")
     s.write("\n")
-    for name, (python_name, data, hash_) in classes_to_write.items():
+    for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
         _NAME_BY_HASH[hash_] = name
-        _write_data(name, python_name, data, f, f_stub, version)
+        _write_data(name, python_name, data, f, f_stub if should_write_stub else None)
     f.write(s.getvalue())
-    f_stub.write(s_stub.getvalue())
+    if f_stub:
+        f_stub.write(s_stub.getvalue())
 
 
 def generate(version: str, static_infos: dict) -> None:
@@ -159,7 +199,7 @@ def generate(version: str, static_infos: dict) -> None:
     ).resolve()
     output_stub_file = output_file.parent / f"{output_file.stem}.pyi"
     cls, _ = get_cls("", sinfo, version=version)
-    data = _populate_data(cls, api_tree)
+    data = _populate_data(cls, api_tree, version)
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
         header = StringIO()
         header.write("#\n")
@@ -180,7 +220,7 @@ def generate(version: str, static_infos: dict) -> None:
         f_stub.write("from typing import Union, List, Tuple\n\n")
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
-        _write_data(name, name, data, f, f_stub, version)
+        _write_data(name, name, data, f, f_stub)
     file_size = output_file.stat().st_size / 1024 / 1024
     file_size_stub = output_stub_file.stat().st_size / 1024 / 1024
     print(
