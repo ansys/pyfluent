@@ -195,10 +195,10 @@ def generate(version: str, static_infos: dict) -> None:
     shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
-    output_file = (
-        pyfluent.CODEGEN_OUTDIR / "solver" / f"settings_{version}.py"
-    ).resolve()
-    output_stub_file = output_file.parent / f"{output_file.stem}.pyi"
+    output_dir = (pyfluent.CODEGEN_OUTDIR / "solver").resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / f"settings_{version}.py"
+    output_stub_file = output_dir / f"settings_{version}.pyi"
     cls, _ = get_cls("", sinfo, version=version)
     data = _populate_data(cls, api_tree, version)
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
