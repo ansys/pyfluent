@@ -1,0 +1,173 @@
+@import "ansys-sphinx-theme-variable.css";
+
+.results {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: center;
+  position: absolute;
+  background-color: var(--ast-search-bar-enable-background);
+  width: 700px;
+  padding: 10px;
+  border: 1px solid var(--ast-search-bar-enable-border);
+  box-shadow: var(--ast-box-shadow-active);
+  overflow: auto;
+  height: 500px;
+}
+.search-button__wrapper.show .search-button__search-container {
+  overflow: auto;
+}
+.result-item {
+  margin-bottom: 1rem;
+  cursor: pointer; /* Indicate that the item is clickable */
+  transition: box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.result-title {
+  font-size: 1em;
+  font-weight: bold;
+  background-color: var(--ast-suggestion-header-background);
+  font-family: "Open Sans", sans-serif;
+  color: var(--ast-catagory-header-text);
+}
+
+.result-title:focus,
+.result-title:focus-visible,
+.result-text:focus,
+.result-text:focus-visible {
+  box-shadow: var(--ast-ring-shadow-focused);
+}
+
+.result-item.selected {
+  box-shadow: var(--ast-ring-shadow-focused);
+}
+
+.result-text {
+  font-size: 12px;
+  font-family: "Open Sans", sans-serif;
+  color: var(--ast-search-bar-enable-text);
+}
+
+.result-item:focus-visible,
+.result-item:focus {
+  outline: none; /* Remove default focus outline */
+  cursor: pointer;
+  box-shadow: var(--ast-ring-shadow-focused);
+  z-index: 1;
+}
+
+.result-item:hover {
+  background-color: var(
+    --ast-hover-suggestion-text-background
+  ); /* Background when hovered */
+}
+
+.no-results {
+  font-style: italic;
+  color: var(--ast-color-text);
+  font-family: "Open Sans", sans-serif;
+}
+
+html[data-theme="light"] .highlight {
+  color: var(--ast-highlight-color);
+}
+
+.form-control:focus,
+.form-control:focus-visible,
+.form-control {
+  background-color: var(--ast-search-bar-enable-background);
+  color: var(--ast-search-bar-enable-text);
+  font-size: 14px;
+  outline-color: var(--ast-search-bar-enable-border);
+  border: 0px solid var(--ast-search-bar-enable-border);
+  width: 300px;
+  transition: max-width 0.3s ease;
+  max-width: 200%;
+  height: 40px;
+}
+
+.search-button__wrapper.show input,
+.search-button__wrapper.show svg {
+  font-size: 14px;
+}
+
+.bd-search .search-button__kbd-shortcut {
+  background-color: var(--ast-search-bar-enable-background) !important;
+  box-shadow: none !important;
+  height: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.index-select {
+  color: var(--ast-search-bar-enable-text);
+  background: var(--ast-search-bar-enable-background);
+  height: 40px;
+  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+  border: 0.5px solid var(--ast-search-bar-enable-border);
+  border-radius: 4px;
+  box-shadow: none;
+  padding: 0px 8px;
+  margin-left: 2px;
+}
+:focus-visible {
+  outline: none;
+}
+
+#search-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  color: var(--ast-search-bar-enable-text);
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+/* Button Styling */
+.search-button__button {
+  transition: width 0.3s ease;
+  width: 50px; /* Initial width */
+}
+
+/* Result Container Styling */
+.bd-search {
+  gap: 8px;
+  background-color: var(--ast-search-bar-enable-background);
+  border: 0px solid var(--ast-search-bar-enable-border);
+  margin-bottom: 0px;
+}
+
+.bd-search input.expanded {
+  width: 600px;
+}
+
+.search-icon {
+  cursor: pointer;
+}
+
+.bd-main.blurred {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .bd-search input.expanded {
+    width: 100px;
+  }
+
+  .form-control {
+    width: 50px;
+  }
+
+  .result {
+    width: 100px;
+  }
+
+  .bd-search .search-button__kbd-shortcut {
+    display: none;
+  }
+}
