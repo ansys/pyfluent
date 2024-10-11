@@ -192,6 +192,7 @@ def generate(version: str, static_infos: dict) -> None:
     start_time = time.time()
     api_tree = {}
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
+    shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
     output_file = (
@@ -216,7 +217,7 @@ def generate(version: str, static_infos: dict) -> None:
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
-        f.write(f'SHASH = "{_gethash(sinfo)}"\n\n')
+        f.write(f'SHASH = "{shash}"\n\n')
         f_stub.write("from typing import Union, List, Tuple\n\n")
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
