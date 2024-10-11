@@ -2202,13 +2202,13 @@ def get_root(
                     CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
                 )
 
-            if settings.SHASH != _gethash(obj_info):
-                settings_logger.warning(
-                    "Mismatch between generated file and server object "
-                    "info. Dynamically created settings classes will "
-                    "be used."
-                )
-                raise RuntimeError("Mismatch in hash values")
+        if settings.SHASH != _gethash(obj_info):
+            settings_logger.warning(
+                "Mismatch between generated file and server object "
+                "info. Dynamically created settings classes will "
+                "be used."
+            )
+            raise RuntimeError("Mismatch in hash values")
         cls = settings.root
     except Exception:
         cls, _ = get_cls("", obj_info, version=version)

@@ -77,7 +77,7 @@ def _write_data(cls_name, python_name, data, f, version):
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
-    s.write(f"    version = {version}\n")
+    s.write(f"    version = {version!r}\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     s.write(f"    _python_name = {python_name!r}\n")
     child_names = data["child_names"]
