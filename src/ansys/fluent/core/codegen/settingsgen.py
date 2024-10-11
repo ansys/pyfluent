@@ -77,26 +77,26 @@ _arg_type_strings = {
     "Real": "float | str",
     "String": "str",
     "Filename": "str",
-    "BooleanList": "List[bool]",
-    "IntegerList": "List[int]",
-    "RealVector": "Tuple[float | str, float | str, float | str",
-    "RealList": "List[float | str]",
-    "StringList": "List[str]",
-    "FilenameList": "List[str]",
+    "BooleanList": "list[bool]",
+    "IntegerList": "list[int]",
+    "RealVector": "tuple[float | str, float | str, float | str",
+    "RealList": "list[float | str]",
+    "StringList": "list[str]",
+    "FilenameList": "list[str]",
 }
 
 
 def _write_function_stub(name, data, s_stub):
-    s_stub.write(f"    def {name}(self, ")
+    s_stub.write(f"    def {name}(self")
     for arg_name in data["argument_names"]:
         arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
-        s_stub.write(f"{arg_name}: {arg_type}, ")
-    s_stub.write(f"):")
+        s_stub.write(f", {arg_name}: {arg_type}")
+    s_stub.write(f"):\n")
     # TODO: add return type
     doc = data["doc"]
-    doc = doc.replace("\n", "\n        ")
+    doc = doc.strip().replace("\n", "\n        ")
     s_stub.write('        """\n')
-    s_stub.write(f"        {doc}")
+    s_stub.write(f"        {doc}\n")
     s_stub.write('        """\n')
 
 
@@ -104,11 +104,24 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s = StringIO()
     s_stub = StringIO()
     bases = ", ".join(data["bases"])
-    cls_def = f"class {cls_name}({bases}):\n"
-    s.write(cls_def)
-    s_stub.write(cls_def)
+    bases_stub = data["bases"].copy()
+    # Resetting bases in stub file
+    # as intellisense doesn't work otherwise
+    for base in (
+        "_ChildNamedObjectAccessorMixin",
+        "CreatableNamedObjectMixinOld",
+        "CreatableNamedObjectMixin",
+        "_NonCreatableNamedObjectMixin",
+    ):
+        if base in bases_stub:
+            bases_stub.remove(base)
+    if "NamedObject" in bases_stub:
+        bases_stub.remove("NamedObject")
+        bases_stub.append(f"NamedObject[{cls_name}_child]")
+    s.write(f"class {cls_name}({bases}):\n")
+    s_stub.write(f"class {cls_name}({', '.join(bases_stub)}):\n")
     doc = data["doc"]
-    doc = doc.replace("\n", "\n    ")
+    doc = doc.strip().replace("\n", "\n    ")
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
@@ -121,19 +134,19 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
-        s_stub.write(f"    child_names: List[str]\n")
+        s_stub.write(f"    child_names: list[str]\n")
     command_names = data["command_names"]
     if command_names:
         s.write(f"    command_names = {command_names}\n")
-        s_stub.write(f"    command_names: List[str]\n")
+        s_stub.write(f"    command_names: list[str]\n")
     query_names = data["query_names"]
     if query_names:
         s.write(f"    query_names = {query_names}\n")
-        s_stub.write(f"    query_names: List[str]\n")
+        s_stub.write(f"    query_names: list[str]\n")
     argument_names = data["argument_names"]
     if argument_names:
         s.write(f"    argument_names = {argument_names}\n")
-        s_stub.write(f"    argument_names: List[str]\n")
+        s_stub.write(f"    argument_names: list[str]\n")
     classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
     if data["child_classes"]:
         s.write("    _child_classes = dict(\n")
@@ -209,17 +222,9 @@ def generate(version: str, static_infos: dict) -> None:
         header.write("#\n")
         header.write("\n")
         header.write("from ansys.fluent.core.solver.flobject import *\n\n")
-        header.write("from ansys.fluent.core.solver.flobject import (\n")
-        header.write("    _ChildNamedObjectAccessorMixin,\n")
-        header.write("    _NonCreatableNamedObjectMixin,\n")
-        header.write("    _InputFile,\n")
-        header.write("    _OutputFile,\n")
-        header.write("    _InOutFile,\n")
-        header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
         f.write(f'SHASH = "{shash}"\n\n')
-        f_stub.write("from typing import Union, List, Tuple\n\n")
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
         _write_data(name, name, data, f, f_stub)

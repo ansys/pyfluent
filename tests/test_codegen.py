@@ -845,14 +845,6 @@ _expected_settings_api_output = '''#
 
 from ansys.fluent.core.solver.flobject import *
 
-from ansys.fluent.core.solver.flobject import (
-    _ChildNamedObjectAccessorMixin,
-    _NonCreatableNamedObjectMixin,
-    _InputFile,
-    _OutputFile,
-    _InOutFile,
-)
-
 SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"
 
 class P3(Integer):
@@ -899,7 +891,6 @@ class C2(Command):
     ----------
         A2 : real
             A2 help.
-    
     """
     version = '251'
     fluent_name = 'C2'
@@ -917,7 +908,6 @@ class Q2(Query):
     ----------
         A2 : real
             A2 help.
-    
     """
     version = '251'
     fluent_name = 'Q2'
@@ -997,7 +987,6 @@ class C1(Command):
     ----------
         A1 : str
             A1 help.
-    
     """
     version = '251'
     fluent_name = 'C1'
@@ -1015,7 +1004,6 @@ class Q1(Query):
     ----------
         A1 : str
             A1 help.
-    
     """
     version = '251'
     fluent_name = 'Q1'
