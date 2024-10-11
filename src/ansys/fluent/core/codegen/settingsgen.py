@@ -55,7 +55,8 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
-# Takes care of data duplication and name collisions
+# Store the top level class names and their data hash.
+# This is used to avoid name collisions and data duplication.
 _NAME_BY_HASH = {}
 
 

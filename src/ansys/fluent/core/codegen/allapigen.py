@@ -16,9 +16,8 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def _update_first_level(d, u):
-    if isinstance(u, dict):  # temporary
-        for k in d:
-            d[k].update(u.get(k, {}))
+    for k in d:
+        d[k].update(u.get(k, {}))
 
 
 def generate(version: str, static_infos: dict):
