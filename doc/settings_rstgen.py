@@ -59,37 +59,37 @@ def _populate_parents_list(cls):
     if hasattr(cls, "child_names"):
         for child in cls.child_names:
             child_cls = cls._child_classes[child]
-            child_file = child_cls.__module__.split(".")[-1]
-            if not parents_dict.get(child_file):
-                parents_dict[child_file] = []
-            if not cls in parents_dict[child_file]:
-                parents_dict[child_file].append(cls)
+            child_cls_name = child_cls.__name__
+            if not parents_dict.get(child_cls_name):
+                parents_dict[child_cls_name] = []
+            if not cls in parents_dict[child_cls_name]:
+                parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "command_names"):
         for child in cls.command_names:
             child_cls = cls._child_classes[child]
-            child_file = child_cls.__module__.split(".")[-1]
-            if not parents_dict.get(child_file):
-                parents_dict[child_file] = []
-            if not cls in parents_dict[child_file]:
-                parents_dict[child_file].append(cls)
+            child_cls_name = child_cls.__name__
+            if not parents_dict.get(child_cls_name):
+                parents_dict[child_cls_name] = []
+            if not cls in parents_dict[child_cls_name]:
+                parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "argument_names"):
         for child in cls.argument_names:
             child_cls = cls._child_classes[child]
-            child_file = child_cls.__module__.split(".")[-1]
-            if not parents_dict.get(child_file):
-                parents_dict[child_file] = []
-            if not cls in parents_dict[child_file]:
-                parents_dict[child_file].append(cls)
+            child_cls_name = child_cls.__name__
+            if not parents_dict.get(child_cls_name):
+                parents_dict[child_cls_name] = []
+            if not cls in parents_dict[child_cls_name]:
+                parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "child_object_type"):
         child_cls = getattr(cls, "child_object_type")
-        child_file = child_cls.__module__.split(".")[-1]
-        if not parents_dict.get(child_file):
-            parents_dict[child_file] = []
-        if not cls in parents_dict[child_file]:
-            parents_dict[child_file].append(cls)
+        child_cls_name = child_cls.__name__
+        if not parents_dict.get(child_cls_name):
+            parents_dict[child_cls_name] = []
+        if not cls in parents_dict[child_cls_name]:
+            parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "child_names"):
         for child in cls.child_names:
@@ -110,8 +110,8 @@ def _populate_parents_list(cls):
 def _populate_rst_from_settings(rst_dir, cls, version):
     istr1 = _get_indent_str(1)
     cls_name = cls.__name__
-    file_name = cls.__module__.split(".")[-1]
-    rstpath = os.path.normpath(os.path.join(rst_dir, file_name + ".rst"))
+    cls_orig_name = cls._python_name
+    rstpath = os.path.normpath(os.path.join(rst_dir, cls_name + ".rst"))
     has_children = hasattr(cls, "child_names") and len(cls.child_names) > 0
     has_commands = hasattr(cls, "command_names") and len(cls.command_names) > 0
     has_arguments = hasattr(cls, "argument_names") and len(cls.argument_names) > 0
@@ -119,14 +119,14 @@ def _populate_rst_from_settings(rst_dir, cls, version):
     with open(rstpath, "w") as r:
         # Populate initial rst
         r.write(":orphan:\n\n")
-        if file_name == "root":
-            r.write(f".. _ref_{file_name}:\n\n")
+        if cls_orig_name == "root":
+            r.write(f".. _ref_{cls_name}:\n\n")
         else:
-            r.write(f".. _{file_name}:\n\n")
-        r.write(f"{cls_name}\n")
-        r.write(f'{"="*(len(cls_name))}\n\n')
+            r.write(f".. _{cls_name}:\n\n")
+        r.write(f"{cls_orig_name}\n")
+        r.write(f'{"="*(len(cls_orig_name))}\n\n')
         r.write(
-            f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{file_name}.{cls_name}\n"
+            f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
         )
         r.write(f"{istr1}:show-inheritance:\n\n")
 
@@ -136,7 +136,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             data_dict["Attribute"] = "Summary"
             for child in cls.child_names:
                 child_cls = cls._child_classes[child]
-                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
+                ref_string = f":ref:`{child} <{child_cls.__name__}>`"
                 data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
             _generate_table_for_rst(r, data_dict)
 
@@ -146,7 +146,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             data_dict["Method"] = "Summary"
             for child in cls.command_names:
                 child_cls = cls._child_classes[child]
-                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
+                ref_string = f":ref:`{child} <{child_cls.__name__}>`"
                 data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
             _generate_table_for_rst(r, data_dict)
 
@@ -156,27 +156,27 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             data_dict["Argument"] = "Summary"
             for child in cls.argument_names:
                 child_cls = cls._child_classes[child]
-                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
+                ref_string = f":ref:`{child} <{child_cls.__name__}>`"
                 data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
             _generate_table_for_rst(r, data_dict)
 
         if has_named_object:
             child_cls = getattr(cls, "child_object_type")
-            ref_string = (
-                f":ref:`{child_cls.__name__} <{child_cls.__module__.split('.')[-1]}>`"
-            )
+            ref_string = f":ref:`{child_cls.__name__} <{child_cls.__name__}>`"
             data_dict = {}
             data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
             r.write(f".. rubric:: Named object type\n\n")
             r.write(f"{ref_string}\n\n\n")
 
-        if parents_dict.get(file_name):
+        if parents_dict.get(cls_name):
             r.write(f".. rubric:: Included in:\n\n")
             data_dict = {}
             data_dict["Parent"] = "Summary"
-            for parent in parents_dict.get(file_name):
-                parent_file = parent.__module__.split(".")[-1]
-                ref_string = f":ref:`{parent.__name__} <{parent_file}>`"
+            for parent in parents_dict.get(cls_name):
+                parent_ref = parent.__name__
+                if parent_ref == "root":
+                    parent_ref = "ref_root"
+                ref_string = f":ref:`{parent.__name__} <{parent_ref}>`"
                 data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
             _generate_table_for_rst(r, data_dict)
 

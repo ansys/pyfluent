@@ -11,7 +11,46 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.solver.flobject import ListObject, NamedObject, get_cls
+from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+
+
+def _construct_bases(original_bases, child_object_name):
+    bases = []
+    for base in original_bases:
+        if base in (
+            "NamedObject",
+            "ListObject",
+            "CreatableNamedObjectMixinOld",
+            "CreatableNamedObjectMixin",
+            "_NonCreatableNamedObjectMixin",
+        ):
+            bases.append(f"{base}[{child_object_name}]")
+        else:
+            bases.append(base)
+    return bases
+
+
+def _construct_bases_stub(original_bases, child_object_name):
+    bases = []
+    for base in original_bases:
+        # Removing these bases from stub file
+        # as intellisense doesn't work otherwise
+        if base in (
+            "_ChildNamedObjectAccessorMixin",
+            "CreatableNamedObjectMixinOld",
+            "CreatableNamedObjectMixin",
+            "_NonCreatableNamedObjectMixin",
+        ):
+            continue
+        elif base in (
+            "NamedObject",
+            "ListObject",
+        ):
+            bases.append(f"{base}[{child_object_name}]")
+        else:
+            bases.append(base)
+    return bases
 
 
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
@@ -19,7 +58,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["version"] = version
     data["name"] = cls.__name__
     data["bases"] = [base.__name__ for base in cls.__bases__]
-    data["doc"] = cls.__doc__
+    data["doc"] = fix_settings_doc(cls.__doc__)
     data["fluent_name"] = getattr(cls, "fluent_name")
     data["child_names"] = getattr(cls, "child_names", [])
     command_names = getattr(cls, "command_names", [])
@@ -51,6 +90,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     child_object_type = getattr(cls, "child_object_type", None)
     if child_object_type:
         data["child_object_type"] = _populate_data(child_object_type, api_tree, version)
+        data["child_object_type"]["doc"] = f"'child_object_type' of {cls.__name__}."
     else:
         data["child_object_type"] = None
     return data
@@ -65,6 +105,11 @@ def _gethash(obj_info):
 # Store the top level class names and their data hash.
 # This is used to avoid name collisions and data duplication.
 _NAME_BY_HASH = {}
+
+# As the child classes are written before the parent classes,
+# we need to keep track of the classes that have been written
+# while writing the child classes to avoid duplicate writes.
+_CLASS_WRITTEN = set()
 
 
 def _get_unique_name(name):
@@ -110,23 +155,13 @@ def _write_function_stub(name, data, s_stub):
 def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
     s = StringIO()
     s_stub = StringIO()
-    bases = ", ".join(data["bases"])
-    bases_stub = data["bases"].copy()
-    # Resetting bases in stub file
-    # as intellisense doesn't work otherwise
-    for base in (
-        "_ChildNamedObjectAccessorMixin",
-        "CreatableNamedObjectMixinOld",
-        "CreatableNamedObjectMixin",
-        "_NonCreatableNamedObjectMixin",
-    ):
-        if base in bases_stub:
-            bases_stub.remove(base)
-    if "NamedObject" in bases_stub:
-        bases_stub.remove("NamedObject")
-        bases_stub.append(f"NamedObject[{cls_name}_child]")
+    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
+    bases = _construct_bases(data["bases"], child_object_name)
+    bases = ", ".join(bases)
+    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
+    bases_stub = ", ".join(bases_stub)
     s.write(f"class {cls_name}({bases}):\n")
-    s_stub.write(f"class {cls_name}({', '.join(bases_stub)}):\n")
+    s_stub.write(f"class {cls_name}({bases_stub}):\n")
     doc = data["doc"]
     doc = doc.strip().replace("\n", "\n    ")
     s.write('    """\n')
@@ -161,33 +196,27 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             name = v["name"]
             hash_ = _gethash(v)
             unique_name = _NAME_BY_HASH.get(hash_)
-            if unique_name:
-                s.write(f"        {k}={unique_name},\n")
-                if k in command_names + query_names:
-                    _write_function_stub(k, v, s_stub)
-                else:
-                    s_stub.write(f"    {k}: {unique_name}\n")
-            else:
+            if not unique_name:
                 unique_name = _get_unique_name(name)
-                s.write(f"        {k}={unique_name},\n")
-                if k in command_names + query_names:
-                    _write_function_stub(k, v, s_stub)
-                    classes_to_write[unique_name] = (name, v, hash_, False)
-                else:
-                    s_stub.write(f"    {k}: {unique_name}\n")
-                    classes_to_write[unique_name] = (name, v, hash_, True)
+                _NAME_BY_HASH[hash_] = unique_name
+            s.write(f"        {k}={unique_name},\n")
+            if k in command_names + query_names:
+                _write_function_stub(k, v, s_stub)
+                classes_to_write[unique_name] = (name, v, hash_, False)
+            else:
+                s_stub.write(f"    {k}: {unique_name}\n")
+                classes_to_write[unique_name] = (name, v, hash_, True)
         s.write("    )\n")
-    child_object_type = data["child_object_type"]
-    if child_object_type:
-        name = f"{cls_name}_child"
-        s.write(f"    child_object_type = {name}\n")
-        classes_to_write[name] = (
+    if child_object_name:
+        child_object_type = data["child_object_type"]
+        s.write(f"    child_object_type = {child_object_name}\n")
+        classes_to_write[child_object_name] = (
             f"{python_name}_child",
             child_object_type,
             _gethash(child_object_type),
             True,
         )
-        s_stub.write(f"    child_object_type: {name}\n")
+        s_stub.write(f"    child_object_type: {child_object_name}\n")
     child_aliases = data["child_aliases"]
     if child_aliases:
         s.write("    _child_aliases = dict(\n")
@@ -201,8 +230,11 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         s_stub.write(f"    return_type: str\n")
     s.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
-        _NAME_BY_HASH[hash_] = name
-        _write_data(name, python_name, data, f, f_stub if should_write_stub else None)
+        if name not in _CLASS_WRITTEN:
+            _write_data(
+                name, python_name, data, f, f_stub if should_write_stub else None
+            )
+            _CLASS_WRITTEN.add(name)
     f.write(s.getvalue())
     if f_stub:
         f_stub.write(s_stub.getvalue())

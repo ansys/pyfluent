@@ -960,13 +960,13 @@ class P4(String):
 
 class N1_child(Group):
     """
-    G3 help.
+    'child_object_type' of N1.
     """
     version = '251'
     fluent_name = 'child-object-type'
     _python_name = 'N1_child'
 
-class N1(NamedObject, _NonCreatableNamedObjectMixin):
+class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     """
     N1 help.
     """
