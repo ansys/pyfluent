@@ -243,6 +243,9 @@ def _search(
                 if k.endswith(":<name>"):
                     k = _remove_suffix(k, ":<name>")
                     next_path = f'{path}.{k}["<name>"]'
+                elif k.endswith(":<index>"):
+                    k = _remove_suffix(k, ":<index>")
+                    next_path = f"{path}.{k}[<index>]"
                 else:
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v

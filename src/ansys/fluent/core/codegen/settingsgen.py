@@ -10,7 +10,7 @@ from typing import IO
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
-from ansys.fluent.core.solver.flobject import Command, NamedObject, Query, get_cls
+from ansys.fluent.core.solver.flobject import ListObject, NamedObject, get_cls
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 
@@ -22,25 +22,32 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["doc"] = cls.__doc__
     data["fluent_name"] = getattr(cls, "fluent_name")
     data["child_names"] = getattr(cls, "child_names", [])
-    data["command_names"] = getattr(cls, "command_names", [])
-    data["query_names"] = getattr(cls, "query_names", [])
+    command_names = getattr(cls, "command_names", [])
+    data["command_names"] = command_names
+    query_names = getattr(cls, "query_names", [])
+    data["query_names"] = query_names
     data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
-        if issubclass(v, Command):
+        if k in command_names:
             api_tree[k] = "Command"
             child_classes[k] = _populate_data(v, {}, version)
-        elif issubclass(v, Query):
+        elif k in query_names:
             api_tree[k] = "Query"
             child_classes[k] = _populate_data(v, {}, version)
         else:
-            api_key = f"{k}:<name>" if issubclass(v, NamedObject) else k
+            if issubclass(v, NamedObject):
+                api_key = f"{k}:<name>"
+            elif issubclass(v, ListObject):
+                api_key = f"{k}:<index>"
+            else:
+                api_key = k
             child_api_tree = api_tree.setdefault(api_key, {})
             child_classes[k] = _populate_data(v, child_api_tree, version)
             if not child_api_tree:
-                api_tree[k] = "Parameter"
+                api_tree[api_key] = "Parameter"
     child_object_type = getattr(cls, "child_object_type", None)
     if child_object_type:
         data["child_object_type"] = _populate_data(child_object_type, api_tree, version)
