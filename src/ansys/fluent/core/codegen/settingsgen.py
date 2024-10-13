@@ -54,7 +54,7 @@ def _construct_bases_stub(original_bases, child_object_name):
 
 
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
-    data = {}  # data is nested dict holding string data
+    data = {}
     data["version"] = version
     data["name"] = cls.__name__
     data["bases"] = [base.__name__ for base in cls.__bases__]
@@ -106,9 +106,8 @@ def _gethash(obj_info):
 # This is used to avoid name collisions and data duplication.
 _NAME_BY_HASH = {}
 
-# As the child classes are written before the parent classes,
-# we need to keep track of the classes that have been written
-# while writing the child classes to avoid duplicate writes.
+# Keeps tracks of which classes have been written to the file.
+# See the implementation note in _write_data() for more details.
 _CLASS_WRITTEN = set()
 
 
@@ -153,6 +152,9 @@ def _write_function_stub(name, data, s_stub):
 
 
 def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
+    # We are traversing the class tree from root to leaves. But the class definitions must
+    # be written to the file from leaves to root. We gather the parent definition within
+    # in a string buffer which is written after writing the child class definitions.
     s = StringIO()
     s_stub = StringIO()
     child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
@@ -169,6 +171,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write('    """\n')
     s.write(f"    version = {data['version']!r}\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
+    # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")
     s_stub.write(f"    version: str\n")
     s_stub.write(f"    fluent_name: str\n")
@@ -195,11 +198,22 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         for k, v in data["child_classes"].items():
             name = v["name"]
             hash_ = _gethash(v)
+            # We are within a tree-traversal, so the global _NAME_BY_HASH dict
+            # must be updated immediately at the point of lookup. Same lookup
+            # can happen at a child-level which will be evaluated incorrectly
+            # without the previous lookup result.
             unique_name = _NAME_BY_HASH.get(hash_)
             if not unique_name:
                 unique_name = _get_unique_name(name)
                 _NAME_BY_HASH[hash_] = unique_name
             s.write(f"        {k}={unique_name},\n")
+            # We include the child-class to write irrespective of the above
+            # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
+            # set to avoid duplicate writes. This is necessary because class
+            # definition must be written to the file before writing its usage.
+            # If we didn't have this constraint, we could include the child-class
+            # to write only if it is not found in the _NAME_BY_HASH dict and avoid
+            # the _CLASS_WRITTEN set.
             if k in command_names + query_names:
                 _write_function_stub(k, v, s_stub)
                 classes_to_write[unique_name] = (name, v, hash_, False)
@@ -253,6 +267,8 @@ def generate(version: str, static_infos: dict) -> None:
     output_file = output_dir / f"settings_{version}.py"
     output_stub_file = output_dir / f"settings_{version}.pyi"
     cls, _ = get_cls("", sinfo, version=version)
+    # _populate_data() collects all strings to write to the file in a nested dict.
+    # which is then written to the file using _write_data().
     data = _populate_data(cls, api_tree, version)
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
         header = StringIO()
